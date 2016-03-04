@@ -17,7 +17,7 @@ module TahiStandardTasks
     end
 
     def latest_decision_ready?
-      latest_decision && latest_decision.verdict
+      latest_decision.present? && latest_decision.verdict.present?
     end
 
     def complete_decision

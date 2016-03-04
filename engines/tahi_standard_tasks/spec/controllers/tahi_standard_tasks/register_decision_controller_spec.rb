@@ -29,10 +29,10 @@ describe TahiStandardTasks::RegisterDecisionController do
 
     context "Paper in a submitted state, with a valid Decision" do
       let(:paper) do
-        FactoryGirl.create(
-          :paper, :submitted, :with_tasks,
-          title: 'Science - the Complete Works',
-          journal: journal)
+        FactoryGirl.create(:paper, :submitted, :with_tasks,
+                           title: 'Science - the Complete Works',
+                           journal: journal
+                          )
       end
 
       before do
@@ -67,6 +67,25 @@ describe TahiStandardTasks::RegisterDecisionController do
           do_request
           expect(response).to have_http_status(:forbidden)
         end
+      end
+    end
+
+    context "Paper in a submitted state, without a Decision verdict" do
+      let(:paper) do
+        FactoryGirl.create(:paper, :submitted, :with_tasks,
+                           title: 'Science - the Complete Works',
+                           journal: journal
+                          )
+      end
+
+      before do
+        paper.decisions.first.update(verdict: nil)
+      end
+
+      it "returns an error" do
+        do_request
+        expect(res_body["errors"]).to \
+          eq "errors" => ["You must register a verdict first."]
       end
     end
 

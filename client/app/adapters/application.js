@@ -1,11 +1,12 @@
 import DS from 'ember-data';
+import getOwner from 'ember-getowner-polyfill';
 
 export default DS.ActiveModelAdapter.extend({
   namespace: 'api',
   headers: function() {
     return {
       namespace: 'api',
-      'PUSHER_SOCKET_ID': this.get('container').lookup('pusher:main').get('socketId')
+      'PUSHER_SOCKET_ID': getOwner(this).lookup('pusher:main').get('socketId')
     };
   }.property().volatile(),
 

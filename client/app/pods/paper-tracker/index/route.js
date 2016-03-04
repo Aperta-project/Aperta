@@ -55,6 +55,8 @@ export default AuthorizedRoute.extend({
     controller.set('page', this.get('metaData.page'));
     controller.set('totalCount', this.get('metaData.totalCount'));
     controller.set('perPage', this.get('metaData.perPage'));
+    controller.set('paperTrackerQueries',
+                   this.store.findAll('paper-tracker-query'));
   },
 
   actions: {

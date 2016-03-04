@@ -1,70 +1,87 @@
 <div class="base-screen">
-  <div class='row' class='search-controls' id='search-controls-top'>
-    <div class="input-group">
+  <div class="paper-tracker-saved-searches">
+    <h3>Saved Searches</h3>
+    <ul>
+    {{#each paperTrackerQueries as |query|}}
+      <li>{{paper-tracker-query query=query}}</li>
+    {{/each}}
 
-      {{input type="text"
-      class="form-control"
-      id="query-input"
-      value=queryInput
-      enter="search"
-      placeholder="Title keyword or Manuscript ID number"}}
+    {{#if newQueryState}}
+      <li>{{input value=newQueryTitle action="saveQuery"}}</li>
+    {{/if}}
+    </ul>
+  </div>
 
-      <div class="input-group-btn">
-        <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
+  <div class="paper-tracker-search">
+    <div class='row' class='search-controls' id='search-controls-top'>
+      <div class="input-group">
+
+        {{input type="text"
+        class="form-control"
+        id="query-input"
+        value=queryInput
+        enter="search"
+        placeholder="Title keyword or Manuscript ID number"}}
+
+        <div class="input-group-btn">
+          <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+
+      <a class="save-search-button" {{action "startNewSavedQuery"}}>Save this Search</a>
+
+      <div class='pagination-col'>
+        {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
       </div>
     </div>
 
-    <div class='pagination-col'>
-      {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
-    </div>
-  </div>
+    <table class="paper-tracker-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{sort-link text="Title"
+            orderBy="title"
+            activeOrderBy=orderBy
+            activeOrderDir=orderDir
+            sortAction=(action "sort")
+            }}</th>
+            <th>{{sort-link text="Manuscript ID"
+              orderBy="doi"
+              activeOrderBy=orderBy
+              activeOrderDir=orderDir
+              sortAction=(action "sort")
+              }}</th>
+              <th>{{sort-link text="Date Submitted"
+                orderBy="submitted_at"
+                activeOrderBy=orderBy
+                activeOrderDir=orderDir
+                sortAction=(action "sort")
+                }}</th>
+                <th>{{sort-link text="Article Type"
+                  orderBy="paper_type"
+                  activeOrderBy=orderBy
+                  activeOrderDir=orderDir
+                  sortAction=(action "sort")
+                  }}</th>
 
-  <table class="paper-tracker-table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>{{sort-link text="Title"
-                        orderBy="title"
-                        activeOrderBy=orderBy
-                        activeOrderDir=orderDir
-                        sortAction=(action "sort")
-        }}</th>
-        <th>{{sort-link text="Manuscript ID"
-                        orderBy="doi"
-                        activeOrderBy=orderBy
-                        activeOrderDir=orderDir
-                        sortAction=(action "sort")
-        }}</th>
-        <th>{{sort-link text="Date Submitted"
-                        orderBy="submitted_at"
-                        activeOrderBy=orderBy
-                        activeOrderDir=orderDir
-                        sortAction=(action "sort")
-        }}</th>
-        <th>{{sort-link text="Article Type"
-                        orderBy="paper_type"
-                        activeOrderBy=orderBy
-                        activeOrderDir=orderDir
-                        sortAction=(action "sort")
-        }}</th>
+                  <th>Members</th>
+        </tr>
+      </thead>
 
-        <th>Members</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {{#each model as |paper|}}
+      <tbody>
+        {{#each model as |paper|}}
         {{partial "paper-tracker/row"}}
-      {{/each}}
-    </tbody>
+        {{/each}}
+      </tbody>
 
-  </table>
+    </table>
 
-  <div class='row' class='search-controls'>
-    <div class='col-sm-6 search-col'> </div>
+    <div class='row' class='search-controls'>
+      <div class='col-sm-6 search-col'> </div>
 
-    <div class='col-sm-6 pagination-col'>
-      {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+      <div class='col-sm-6 pagination-col'>
+        {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+      </div>
     </div>
   </div>
 </div>

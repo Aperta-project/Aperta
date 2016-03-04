@@ -14,11 +14,11 @@ feature 'journal admin old_role', js: true do
       visit "/"
     end
 
-    scenario 'the user can see the admin link on the dashboard' do
+    scenario 'the user can see admin-y links' do
+      # the user can see the admin link on the dashboard
       expect(dashboard.admin_link).to be_present
-    end
 
-    scenario 'the user can view the admin page for a journal', selenium: true do
+      # the user can view the admin page for a journal
       admin_page = dashboard.visit_admin
       expect(admin_page).to have_journal_name(journal.name)
       admin_page.visit_journal(journal)

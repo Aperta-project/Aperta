@@ -1,3 +1,4 @@
+# rubocop:disable LineLength
 module SalesforceServices
   module ObjectTranslations
 
@@ -20,7 +21,7 @@ module SalesforceServices
         }
 
         if new_sfdc_record?
-          hash["OriginalSubmissionDate__c"] = @paper.submitted_at
+          hash["Initial_Date_Submitted__c"] = @paper.submitted_at
         end
 
         hash
@@ -60,9 +61,6 @@ module SalesforceServices
           'Subject'                    => @paper.manuscript_id,
           'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{@paper.manuscript_id}",
           'Origin'                     => "PFA Request",
-
-          #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card
-
           'PFA_Question_1__c'          => yes_no_answer_for("plos_billing--pfa_question_1"),
           'PFA_Question_1a__c'         => answer_for("plos_billing--pfa_question_1a"),
           'PFA_Question_1b__c'         => float_answer_for("plos_billing--pfa_question_1b"),
@@ -75,11 +73,23 @@ module SalesforceServices
           'PFA_Question_4a__c'         => float_answer_for("plos_billing--pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => float_answer_for("plos_billing--pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("plos_billing--pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs")
+          'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs"),
+          'PFA_Funding_Statement__c'   => funding_statement
         }
       end
 
       private
+
+      def funding_statement
+        financial_disclosure_task.funding_statement
+      end
+
+      def financial_disclosure_task
+        @paper
+          .tasks
+          .where(type: 'TahiStandardTasks::FinancialDisclosureTask')
+          .first
+      end
 
       def answer_for(ident)
         answer = billing_card.answer_for(ident)
@@ -98,10 +108,6 @@ module SalesforceServices
 
       def billing_card
         @paper.billing_card
-      end
-
-      def manuscript_id # TODO ask product what to do in case of no DOI
-        @paper.doi || "doi_missing_for_id_#{@paper.id}"
       end
     end
   end

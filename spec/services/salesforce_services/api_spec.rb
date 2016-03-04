@@ -94,6 +94,7 @@ describe SalesforceServices::API do
         old_role: 'author'
       }
       paper = FactoryGirl.create(:paper_with_task, :with_integration_journal, :with_creator, task_params: task_params)
+      FactoryGirl.create(:financial_disclosure_task, paper: paper)
 
       VCR.use_cassette("salesforce_instantiate_client") do
         @api = SalesforceServices::API

@@ -56,10 +56,10 @@ sa_login = {'user': 'jgray_sa'}        # super admin login
 # Accounts for new permissions scheme
 # These are NED CAS logins.
 creator_login1 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1000@gmail.com'}
-creator_login2 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1001@gmail.com'}
-creator_login3 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1002@gmail.com'}
-creator_login4 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1003@gmail.com'}
-creator_login5 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1004@gmail.com'}
+creator_login2 = {'user': 'aauthor2', 'name': 'Atest Author2', 'email': 'sealresq+1001@gmail.com'}
+creator_login3 = {'user': 'aauthor3', 'name': 'Atest Author3', 'email': 'sealresq+1002@gmail.com'}
+creator_login4 = {'user': 'aauthor4', 'name': 'Atest Author4', 'email': 'sealresq+1003@gmail.com'}
+creator_login5 = {'user': 'aauthor5', 'name': 'Atest Author5', 'email': 'sealresq+1004@gmail.com'}
 reviewer_login = {'user': 'areviewer', 'name': 'Atest Reviewer', 'email': 'sealresq+1005@gmail.com'}
 staff_admin_login = {'user': 'astaffadmin', 'name': 'Atest Staffadmin', 'email': 'sealresq+1006@gmail.com'}
 handling_editor_login = {'user': 'ahandedit', 'name': 'Atest Handedit', 'email': 'sealresq+1007@gmail.com'}

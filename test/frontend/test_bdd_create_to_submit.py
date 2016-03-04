@@ -73,7 +73,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def test_validate_full_submit(self):
+  def test_validate_full_submit(self, init=True):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -82,12 +82,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     """
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
     # Temporary changing timeout
     dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
@@ -176,7 +171,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       publishing_state: submitted
       gradual_engagement: true
   """
-  def test_validate_initial_submit(self):
+  def test_validate_initial_submit(self, init=True):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -185,12 +180,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     """
     creator_user = random.choice(users)
     logging.info('Logging in as user: {}'.format(creator_user))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(creator_user['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login(email=creator_user['email']) if init else DashboardPage(self.getDriver())
     # Temporary changing timeout
     dashboard_page.set_timeout(60)
     # We recently became slow drawing this overlay (20151006)
@@ -199,17 +189,14 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
                                 type_='OnlyInitialDecisionCard',
                                 random_bit=True,
                                 init=False,
-                                title='full submit',
+                                title='initial submit',
                                 )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # The flash success message is not loading in all cases, even for successful conversion
-    #   temporarily disabling it. replacing with a sleep
-    time.sleep(15)
-    # manuscript_page.validate_ihat_conversions_success()
-    # manuscript_page.close_flash_message()
+    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
@@ -235,17 +222,19 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][2], sub_data[0][2]
     manuscript_page.logout()
     time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
     admin_user = random.choice(admin_users)
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(admin_user['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
+    dashboard_page = self.cas_login(email=admin_user['email'])
     # Need time to finish initial redirect to dashboard page
     time.sleep(3)
     new_paper_url = paper_url + '/workflow'
     self._driver.get(new_paper_url)
     self._driver.navigated = True
-    time.sleep(10)
+    time.sleep(5)
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_card('initial_decision')
     id_card = InitialDecisionCard(self.getDriver())
@@ -253,7 +242,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     decision = id_card.execute_decision()
     logging.info('Decision: {}'.format(decision))
     id_card.click_close_button()
-    time.sleep(5)
+    time.sleep(2)
     sub_data = workflow_page.get_db_submission_data(paper_id)
     if decision == 'reject':
       assert sub_data[0][0] == 'rejected', sub_data[0][0]
@@ -270,10 +259,11 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       return False
     workflow_page.logout()
     time.sleep(2)
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(creator_user['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
+    self.cas_login(email=creator_user['email'])
     # Need time to finish initial redirect to dashboard page
     time.sleep(3)
     self._driver.get(paper_url)
@@ -287,13 +277,13 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button
     # and it takes time
-    time.sleep(2)
+    time.sleep(1)
     manuscript_page.click_submit_btn()
     time.sleep(1)
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(2)
+    time.sleep(1)
     manuscript_page.validate_so_overlay_elements_styles('congrats_is_full', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()

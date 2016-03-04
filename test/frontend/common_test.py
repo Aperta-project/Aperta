@@ -140,3 +140,14 @@ class CommonTest(FrontEndTest):
     dashboard = self.login(email=user)
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
+
+  def invalidate_cas_token(self):
+    invalidation_url = 'https://cas-aperta-integration.plos.org/cas/logout'
+    self._driver.get(invalidation_url)
+    self._driver.navigated = True
+    time.sleep(2)
+
+  def return_to_login_page(self, login_url):
+    self._driver.get(login_url)
+    self._driver.navigated = True
+    time.sleep(2)

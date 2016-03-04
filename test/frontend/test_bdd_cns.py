@@ -114,7 +114,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     Hit SUBMIT and confirm
 
   """
-  def test_validate_components_styles(self):
+  def test_validate_components_styles(self, init=True):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -123,12 +123,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     """
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
     # Validate Create New Submissions modal
     # Set long timeout due to the time it takes to load this page
     dashboard_page.set_timeout(120)
@@ -149,21 +144,9 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard_page.click_upload_button()
-    # Wait for progress spinner
-    # Need to figure out a locator for the spinner and text
 
     # Time needed for iHat conversion.
     time.sleep(5)
-
-    # manuscript_page = ManuscriptPage(self.getDriver())
-    #
-    # manuscript_page.click_card(figures)
-    # time.sleep(3)
-    # figures_card = FiguresCard(self.getDriver())
-    # figures_card.click_completed_checkbox()
-    # figures_card.click_close_button()
-    # time.sleep(3)
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

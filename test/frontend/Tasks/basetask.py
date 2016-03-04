@@ -21,8 +21,8 @@ class BaseTask(AuthenticatedPage):
     super(BaseTask, self).__init__(driver)
 
     # Common element for all tasks
-    self._completed_cb = (By.CLASS_NAME, 'task-completed')
-    self._completed_label = (By.CLASS_NAME, 'task-completed-section')
+    self.task_title = (By.CSS_SELECTOR, 'task-disclosure-heading')
+    self._completion_button = (By.CSS_SELECTOR, 'button.task-completed')
     # Error Messaging
     self._task_error_msg = (By.CSS_SELECTOR, 'span.task-completed-section div.error-message')
     # Versioning locators - only applicable to metadata cards
@@ -30,15 +30,20 @@ class BaseTask(AuthenticatedPage):
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
 
   # Common actions for all cards
-  def click_completed_checkbox(self):
+  def click_completion_button(self):
     """Click completed checkbox"""
-    self._get(self._completed_cb).click()
+    self._get(self._completion_button).click()
 
-  def completed_cb_is_selected(self):
-    """Returns the selected state of the task completed checkbox as a boolean"""
+  def completed_state(self):
+    """Returns the selected state of the task completed button as a boolean"""
     time.sleep(.5)
-    completed_checkbox_state = self._get(self._completed_cb).is_selected()
-    return completed_checkbox_state
+    btn_label = self._get(self._completion_button).text
+    if btn_label == 'I am done with this task':
+      return False
+    elif btn_label == 'Make changes to this task':
+      return True
+    else:
+      raise ValueError('Completed button in unexpected state {}'.format(btn_label))
 
   def validate_completion_error(self):
     """

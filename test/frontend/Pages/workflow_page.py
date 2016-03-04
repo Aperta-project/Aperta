@@ -53,8 +53,7 @@ class WorkflowPage(AuthenticatedPage):
     self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
     # Card Locators
-    self._initial_decision_card = (By.XPATH,
-                                   "//div[@class='column-content']/div/div[contains(., 'Initial Decision')]/a/div[2]")
+    self._initial_decision_card = (By.XPATH, "//div[@class='card-title'][contains(., 'Initial Decision')]")
     self._invite_editor_card = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., 'Invite Editor')]")
 
     # End of not used elements

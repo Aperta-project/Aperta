@@ -403,9 +403,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if task_name == 'Initial Decision':
       initial_decision_task = InitialDecisionTask(self._driver)
       initial_decision_task.execute_decision()
-      completed = base_task.completed_cb_is_selected()
+      completed = base_task.completed_state()
       if not completed:
-        self._get(base_task._completed_cb).click()
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name == 'Register Decision':
@@ -414,24 +414,24 @@ class ManuscriptViewerPage(AuthenticatedPage):
         register_decision_task.execute_decision(data)
       else:
         register_decision_task.execute_decision()
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name == 'Additional Information':
       ai_task = AITask(self._driver)
       ai_task.complete_ai(data)
-      #complete_prq
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      # complete_addl info task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name == 'Billing':
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
-      #complete_prq
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      # complete_billing task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
@@ -443,16 +443,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
         logging.info('Accordion was closed, opening: {}'.format(task.text))
         task.click()
       # Check completed_check status
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     else:

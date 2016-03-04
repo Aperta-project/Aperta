@@ -41,6 +41,12 @@ class Figure < ActiveRecord::Base
     { filename: filename, alt: alt, id: id, src: src }
   end
 
+  def rank
+    return unless title
+    number_match = title.match /\d+/
+    number_match[0].to_i if number_match
+  end
+
   private
 
   def done?

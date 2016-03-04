@@ -89,6 +89,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'test_after_commit'
   gem 'awesome_print'
+  gem 'equivalent-xml'
 end
 
 group :development do

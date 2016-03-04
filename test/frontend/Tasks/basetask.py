@@ -45,8 +45,8 @@ class BaseTask(AuthenticatedPage):
     Validates that we properly put up an error in the case of attempting completion of a task with validation errors
     :return: void function
     """
-    error_msg = self._get(self._task_error_msg).text
-    assert 'Please fix validation errors above.' in error_msg
+    error_msg = self._get(self._task_error_msg)
+    assert 'Please fix all errors' in error_msg.text, error_msg.text
 
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""

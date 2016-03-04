@@ -41,19 +41,16 @@ class AuthorsTaskTest(CommonTest):
      - validate trying to close a task without completing author profile
   """
 
-  def test_validate_components(self):
+  def test_validate_components(self, init=True):
     """Validates styles for the author task"""
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
+    dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
     title = self.create_article(journal='PLOS Wombat',
                                 type_='Research',
                                 )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
+    time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.click_task('authors')
     authors_task = AuthorsTask(self.getDriver())

@@ -23,27 +23,28 @@ class AuthorsTask(BaseTask):
     self._authors_text = (By.CSS_SELECTOR, 'div.authors-task div.task-disclosure-body div.task-main-content p')
     self._add_new_author_btn = (By.CSS_SELECTOR,
                                 'div.authors-task div.task-disclosure-body div.task-main-content button')
-    self._first_lbl = (By.XPATH, ".//div[contains(@class, 'author-name')]/span")
-    self._first_input = (By.XPATH, ".//div[contains(@class, 'author-name')]/input")
-    self._middle_lbl = (By.XPATH, ".//div[contains(@class, 'author-middle')]/span")
+    self._first_lbl = (By.CSS_SELECTOR, 'div.author-name div label')
+    self._first_input = (By.CSS_SELECTOR, 'input.author-first')
+    self._middle_lbl = (By.CSS_SELECTOR, 'div.author-middle-initial div label')
     self._middle_input = (By.XPATH, ".//div[contains(@class, 'author-middle')]/input")
-    self._last_lbl = (By.XPATH, ".//div[contains(@class, 'author-top')]/div[3]/span")
-    self._last_input = (By.XPATH, ".//div[contains(@class, 'author-top')]/div[3]/input")
-    self._email_lbl = (By.XPATH, ".//div[contains(@class, 'author-half')]/span")
-    self._email_input = (By.XPATH, ".//div[contains(@class, 'author-half')]/input")
-    self._title_lbl = (By.XPATH, ".//div[contains(@class, 'add-author-form')]/div[2]/div/span")
-    self._title_input = (By.XPATH, ".//div[contains(@class, 'add-author-form')]/div[2]/div/input")
-    self._department_lbl = (By.XPATH,
-      ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/span")
-    self._department_input = (By.XPATH,
-      ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/input")
+    self._last_lbl = (By.CSS_SELECTOR, 'div.author-middle-initial + div.author-name div label')
+    self._last_input = (By.CSS_SELECTOR, 'input.author-last')
+    self._email_lbl = (By.CSS_SELECTOR, 'div.author-middle-initial + div + div div label')
+    self._email_input = (By.CSS_SELECTOR, 'input.author-email')
+    self._title_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div div label')
+    self._title_input = (By.CSS_SELECTOR, 'input.author-title')
+    self._department_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div + div div label')
+    self._department_input = (By.CSS_SELECTOR, 'input.author-department')
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
-    self._author_lbls = (By.CLASS_NAME, 'author-label')
+    #self._author_lbls = (By.CLASS_NAME, 'author-label')
+    self._author_lbls = (By.CLASS_NAME, 'question-checkbox')
+    self._author_other_lbl = (By.CSS_SELECTOR, 'div.author-contributions div.flex-group + div.flex-group '
+                                               'div.flex-element label')
     self._designed_chkbx = (By.XPATH,
       ".//input[@name='author--contributions--conceived_and_designed_experiments']/following-sibling::span")
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'h4.required')
-    self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
-    self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
+    self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
+    self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
@@ -105,10 +106,11 @@ class AuthorsTask(BaseTask):
     sec_institution_icon = sec_institution_div.find_element_by_css_selector('button i')
     assert set(['fa', 'fa-search']) == set(sec_institution_icon.get_attribute('class').split(' '))
     corresponding_lbl, deceased_lbl, conceived_lbl, perfomed_lbl, data_lbl, \
-      materials_lbl, writing_lbl, other_lbl = self._gets(self._author_lbls)
+      materials_lbl, writing_lbl = self._gets(self._author_lbls)
     assert corresponding_lbl.text == ('This person will be listed as the corresponding author'
       ' on the published article'), corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
+    other_lbl = self._get(self._author_other_lbl)
     assert other_lbl.text == 'Other', other_lbl.text
     assert conceived_lbl.text == 'Conceived and designed the experiments', conceived_lbl.text
     assert perfomed_lbl.text == 'Performed the experiments', perfomed_lbl.text

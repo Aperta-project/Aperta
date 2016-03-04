@@ -11,7 +11,7 @@ export default DS.ActiveModelAdapter.extend({
   }.property().volatile(),
 
   ajaxError: function(event, jqXHR, ajaxSettings, thrownError) {
-    let status     = jqXHR.status;
+    const status = jqXHR.status;
 
     // don't blow up in case of a 403 from rails
     if (status === 403 || event.status === 403) { return; }

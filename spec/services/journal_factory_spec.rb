@@ -112,6 +112,15 @@ describe JournalFactory do
           )
         end
 
+        it 'is able to see most submission_tasks like the ReviewerRecommendationsTask' do
+          expect(Task.descendants.select { |klass| klass <=> SubmissionTask }
+                                 .select { |klass| klass.name == 'TahiStandardTasks::ReviewerRecommendationsTask' }
+                ).to be_present
+          expect(journal.collaborator_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+          )
+        end
+
         it 'but should not be able to see the Billing Task' do
           expect(journal.collaborator_role.permissions).not_to include(
             Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
@@ -132,6 +141,15 @@ describe JournalFactory do
         it 'but should not be able to see the Billing Task' do
           expect(journal.academic_editor_role.permissions).not_to include(
             Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
+          )
+        end
+
+        it 'is able to view and edit the ReviewerRecommendationsTask' do
+          expect(journal.academic_editor_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+          )
+          expect(journal.academic_editor_role.permissions).to include(
+            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
           )
         end
       end

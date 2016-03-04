@@ -14,9 +14,20 @@ feature "Journal Administration", js: true do
   let(:journal_page) { admin_page.visit_journal(journal) }
 
   scenario "shows a list of journal thumbnails with name and description for each", selenium: true do
-    expect(admin_page.journal_names).to match_array [journal.name, journal2.name]
-    expect(admin_page.journal_descriptions).to match_array [journal.description, journal2.description]
-    expect(admin_page.journal_paper_counts).to match_array [journal.papers.count, journal2.papers.count]
+    expect(admin_page).to have_journal_names(journal.name, journal2.name)
+    expect(admin_page).to have_journal_descriptions(journal.description, journal2.description)
+
+    within("#journal-#{journal.id}") do
+      expect(admin_page).to have_journal_paper_count(journal.papers.count)
+      expect(admin_page).to have_journal_name(journal.name)
+      expect(admin_page).to have_journal_description(journal.description)
+    end
+
+    within("#journal-#{journal2.id}") do
+      expect(admin_page).to have_journal_paper_count(journal2.papers.count)
+      expect(admin_page).to have_journal_name(journal2.name)
+      expect(admin_page).to have_journal_description(journal2.description)
+    end
   end
 
   describe "creating a journal" do
@@ -26,13 +37,13 @@ feature "Journal Administration", js: true do
       new_journal_form.description = 'New journal description cool cool'
       new_journal_form.save
 
-      expect(admin_page.journal_names).to match_array [journal.name, journal2.name, 'New Journal Cool Cool']
-      expect(admin_page.journal_descriptions).to match_array [journal.description, journal2.description, 'New journal description cool cool']
+      expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
+      expect(admin_page).to have_journal_descriptions(journal.description, journal2.description, 'New journal description cool cool')
 
       admin_page.reload sync_on: 'Add new journal'
 
-      expect(admin_page.journal_names).to match_array [journal.name, journal2.name, 'New Journal Cool Cool']
-      expect(admin_page.journal_descriptions).to match_array [journal.description, journal2.description, 'New journal description cool cool']
+      expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
+      expect(admin_page).to have_journal_descriptions(journal.description, journal2.description, 'New journal description cool cool')
     end
   end
 

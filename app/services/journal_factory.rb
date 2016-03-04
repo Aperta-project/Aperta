@@ -57,9 +57,16 @@ class JournalFactory
         role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
       end
 
-      # Collaborators can view and edit some other cards too
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
+      # Collaborators can view and edit any submission card except billing
+      metadata_task_klasses = Task.descendants.select { |klass| klass <=> SubmissionTask }
+      metadata_task_klasses -= [PlosBilling::BillingTask]
+      metadata_task_klasses.each do |klass|
+        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
+      end
     end
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -90,8 +97,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -113,8 +118,6 @@ class JournalFactory
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -134,8 +137,6 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -160,8 +161,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -186,8 +185,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -214,15 +211,15 @@ class JournalFactory
 
       classes = Task.submission_task_types
 
-      # AEs cannot view billing task or reviewer recommendation tasks
+      # AEs cannot view billing task reviewer report tasks
       classes -= [PlosBilling::BillingTask]
-      classes -= [TahiStandardTasks::ReviewerRecommendationsTask]
       classes -= [TahiStandardTasks::ReviewerReportTask]
       classes << TahiStandardTasks::RegisterDecisionTask
       classes.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end
 
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask)
       # AEs can ONLY view reviewer report tasks
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end

@@ -13,6 +13,11 @@ class Figure < ActiveRecord::Base
 
   mount_uploader :attachment, AttachmentUploader
 
+  after_update :insert_figures!, if: :title_changed?
+  after_destroy :insert_figures!
+
+  delegate :insert_figures!, to: :paper
+
   def self.acceptable_content_type?(content_type)
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end

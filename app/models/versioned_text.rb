@@ -8,12 +8,16 @@ class VersionedText < ActiveRecord::Base
 
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
+  has_many :figures, through: :paper
 
   delegate :figures, to: :paper, allow_nil: true
 
   scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
 
   mount_uploader :source, SourceUploader # CarrierWave obj
+
+  before_create :insert_figures
+  before_update :insert_figures, if: :original_text_changed?
 
   before_update do
     fail ActiveRecord::ReadOnlyRecord unless

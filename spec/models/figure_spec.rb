@@ -101,4 +101,23 @@ describe Figure, redis: true do
       expect(figure.rank).to be_nil
     end
   end
+
+  describe 'inserting figures into a paper' do
+    let(:paper_double) { double 'paper' }
+
+    it 'triggers when the figure title is updated' do
+      allow(figure).to receive(:paper).and_return(paper_double)
+      expect(paper_double).to receive(:insert_figures!)
+
+      figure.update!(title: 'new title')
+    end
+
+    it 'triggers when the figure is destroyed' do
+      allow(figure).to receive(:paper).and_return(paper_double)
+      expect(paper_double).to receive(:insert_figures!)
+      allow(paper_double).to receive(:id)
+
+      figure.destroy!
+    end
+  end
 end

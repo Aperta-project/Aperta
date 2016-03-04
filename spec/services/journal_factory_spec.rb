@@ -4,10 +4,6 @@ describe JournalFactory do
   describe '.create' do
     include AuthorizationSpecHelper
 
-    before do
-      clear_roles_and_permissions
-    end
-
     it 'creates a new journal' do
       expect do
         JournalFactory.create(name: 'Journal of the Stars')
@@ -20,7 +16,16 @@ describe JournalFactory do
     end
 
     context 'creating the default roles and permission for the journal' do
-      let(:journal) { JournalFactory.create(name: 'Genetics Journal') }
+      before(:all) do
+        clear_roles_and_permissions
+        JournalFactory.create(name: 'Genetics Journal')
+      end
+
+      after(:all) do
+        clear_roles_and_permissions
+      end
+
+      let!(:journal) { Journal.first! }
       let(:view_paper_permission) do
         Permission.where(action: 'view', applies_to: 'Paper').first
       end
@@ -37,6 +42,50 @@ describe JournalFactory do
           expect(view_paper_permission.states).to contain_exactly(
             PermissionState.wildcard
           )
+        end
+
+        describe 'permissions on tasks' do
+          let(:accessible_task_klasses) do
+            ::Task.descendants - inaccessible_task_klasses
+          end
+          let(:inaccessible_task_klasses) do
+            [TahiStandardTasks::ProductionMetadataTask]
+          end
+
+          it 'can :view and :edit all Tasks except ProductionMetadataTask' do
+            accessible_task_klasses.each do |klass|
+              expect(journal.creator_role.permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :edit, applies_to: klass.name)
+              )
+            end
+
+            inaccessible_task_klasses.each do |klass|
+              expect(journal.creator_role.permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :edit, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can view/add/remove participants on all Tasks except ProductionMetadataTask' do
+            accessible_task_klasses.each do |klass|
+              expect(journal.creator_role.permissions).to include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name),
+                Permission.find_by(action: :add_participants, applies_to: klass.name),
+                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+              )
+            end
+
+            inaccessible_task_klasses.each do |klass|
+              expect(journal.creator_role.permissions).to_not include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name),
+                Permission.find_by(action: :add_participants, applies_to: klass.name),
+                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+              )
+            end
+          end
+
         end
       end
 
@@ -63,6 +112,15 @@ describe JournalFactory do
           )
         end
 
+        it 'is able to see most submission_tasks like the ReviewerRecommendationsTask' do
+          expect(Task.descendants.select { |klass| klass <=> SubmissionTask }
+                                 .select { |klass| klass.name == 'TahiStandardTasks::ReviewerRecommendationsTask' }
+                ).to be_present
+          expect(journal.collaborator_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+          )
+        end
+
         it 'but should not be able to see the Billing Task' do
           expect(journal.collaborator_role.permissions).not_to include(
             Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
@@ -83,6 +141,15 @@ describe JournalFactory do
         it 'but should not be able to see the Billing Task' do
           expect(journal.academic_editor_role.permissions).not_to include(
             Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
+          )
+        end
+
+        it 'is able to view and edit the ReviewerRecommendationsTask' do
+          expect(journal.academic_editor_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+          )
+          expect(journal.academic_editor_role.permissions).to include(
+            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
           )
         end
       end

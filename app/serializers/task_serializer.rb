@@ -1,3 +1,5 @@
+# Serializes properties for Ember
+# rubocop:disable Style/PredicateName
 class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :type, :completed, :body, :old_role, :position,
              :is_metadata_task, :is_submission_task, :links,

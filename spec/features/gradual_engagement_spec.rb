@@ -60,6 +60,18 @@ feature 'Gradual Engagement', js: true do
       end
     end
 
+    context 'when the paper is not gradual engagement' do
+      scenario 'and there are tasks to complete' do
+        paper = FactoryGirl.create :paper,
+                                   :with_integration_journal,
+                                   :with_tasks,
+                                   creator: user,
+                                   gradual_engagement: false
+        visit "/papers/#{paper.id}"
+        expect(page).to have_text('You must complete the following tasks before submitting')
+      end
+    end
+
     context 'and the paper has never been submitted and is submittable' do
       scenario 'the sidebar submission text shows journal name and message to
                 fill out info and INITIAL submission state information' do

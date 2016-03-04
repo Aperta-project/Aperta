@@ -59,6 +59,7 @@
       left: 12px;
       color: $tahi-green;
       font-size: 24px;
+      z-index: 1;
     }
   }
 }
@@ -67,6 +68,7 @@
   @include position(absolute, 5px 13px auto 13px);
   @include display(flex);
   pointer-events: none;
+  z-index: 1;
 
   label {
     overflow: hidden;

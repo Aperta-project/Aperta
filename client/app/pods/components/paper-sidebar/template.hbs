@@ -56,9 +56,9 @@
     </div>
   {{/if}}
 
-  {{#if metadataTasks}}
-    <div id="paper-metadata-tasks">
-      {{#each sortedMetadataTasks as |task|}}
+  {{#if submissionTasks}}
+    <div id="paper-submission-tasks">
+      {{#each sortedSubmissionTasks as |task|}}
         {{#task-disclosure title=task.title completed=task.completed class=(task-component-name task.type)}}
           {{#task-load task=task}}
             {{component (task-component-name task.type) task=task}}
@@ -69,4 +69,5 @@
       {{/each}}
     </div>
   {{/if}}
+
 {{/sticky-headers}}

@@ -15,7 +15,6 @@ from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2,
     creator_login5, reviewer_login, handling_editor_login, academic_editor_login, internal_editor_login, \
     staff_admin_login, pub_svcs_login, super_admin_login, au_login, co_login, rv_login, ae_login, he_login, fm_login, \
     oa_login, sa_login
-
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.dashboard import DashboardPage
@@ -89,30 +88,27 @@ class CommonTest(FrontEndTest):
     Select a preexisting article.
     first is true for selecting first article in list.
     init is True when the user needs to logged in
-    and needs to invoque login script to reach the homepage.
+    and needs to invoke login script to reach the homepage.
     """
-    dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
+    dashboard_page = DashboardPage(self.getDriver())
     if first:
-      return dashboard.click_on_first_manuscript()
+      return dashboard_page.click_on_first_manuscript()
     else:
-      return dashboard.click_on_existing_manuscript_link_partial_title(title)
+      return dashboard_page.click_on_existing_manuscript_link_partial_title(title)
 
   def create_article(self, title='', journal='journal', type_='Research1',
-      random_bit=False, init=True, doc='random'):
+      random_bit=False, doc='random'):
     """
     Create a new article.
     title: Title of the article.
     journal: Journal name of the article.
     type_: Type of article
     random_bit: If true, append some random string
-    init: Flag when need to invoke login script to reach the homepage
     doc: Name of the document to upload. If blank will default to 'random', this will choose
     on of available papers
-    user: Username
     Return the title of the article.
     """
     dashboard = DashboardPage(self.getDriver())
-    dashboard.click_create_new_submission_button()
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
     logging.info('Creating paper in {} journal, in {} type with {} as title'.format(journal,

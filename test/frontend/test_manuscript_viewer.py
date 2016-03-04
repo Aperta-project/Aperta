@@ -6,8 +6,9 @@ This test case validates the article editor page and its associated overlays.
 __author__ = 'sbassi@plos.org'
 
 import logging
-import time
 import random
+import time
+
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -57,9 +58,16 @@ class ViewPaperTest(CommonTest):
       - button for worflow
       - button for more options
     """
+    user = random.choice(users)
+    logging.info('Running test_validate_components_styles')
+    logging.info('Logging in as {}'.format(user))
+    dashboard_page = self.cas_login(email=user['email'])
     article_title = self.select_preexisting_article(first=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.validate_page_elements_styles_functions()
+    if user in (staff_admin_login, super_admin_login):
+      manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'], admin=True)
+    else:
+      manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'], admin=False)
     return self
 
   def _test_role_aware_menus(self):
@@ -86,12 +94,7 @@ class ViewPaperTest(CommonTest):
       logging.info('Logging in as user: {}'.format(user))
       logging.info('role: {}'.format(roles[user['user']]))
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
-      login_page = LoginPage(self.getDriver())
-      login_page.enter_login_field(user['email'])
-      login_page.enter_password_field(login_valid_pw)
-      login_page.click_sign_in_button()
-      # the following call should only succeed for sa_login
-      dashboard_page = DashboardPage(self.getDriver())
+      dashboard_page = self.cas_login(user['email'])
       dashboard_page.set_timeout(120)
       if dashboard_page.validate_manuscript_section_main_title(user['user']) > 0:
         dashboard_page.restore_timeout()
@@ -108,15 +111,16 @@ class ViewPaperTest(CommonTest):
             if ('editor',) == x:
               roles[user['user']] = 8
         manuscript_viewer.validate_roles(roles[user['user']])
-        url = self._driver.current_url
-        signout_url = url[:url.index('/papers/')] + '/users/sign_out'
       else:
         dashboard_page.restore_timeout()
         logging.info('No manuscripts present for user: {}'.format(user['user']))
-        # Logout
-        url = self._driver.current_url
-        signout_url = '{}/users/sign_out'.format(url)
-      self._driver.get(signout_url)
+    # Logout
+    dashboard_page.logout()
+    time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
     return self
 
   def test_initial_submission_infobox(self):
@@ -141,12 +145,7 @@ class ViewPaperTest(CommonTest):
       AC#10 on hold until APERTA-5725 is fixed
     """
     logging.info('Logging in as user: {}'.format(creator_login5))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(creator_login5['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    # the following call should only succeed for sa_login
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login(email=creator_login5['email'])
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
@@ -156,7 +155,6 @@ class ViewPaperTest(CommonTest):
     title = self.create_article(journal='PLOS Wombat',
                                 type_='Images+InitialDecision',
                                 random_bit=True,
-                                init=False,
                                 )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
@@ -221,10 +219,14 @@ class ViewPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text(),\
             manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
-    # Following block disabled due to APERTA-5987
-    """
-    # Loging as collaborator
-    dashboard_page = self.login(email=creator_login4['email'], password=login_valid_pw)
+    time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
+    # Logging in as collaborator
+    dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -238,25 +240,21 @@ class ViewPaperTest(CommonTest):
       assert False, "Infobox still open. AC4 fails"
     manuscript_page.restore_timeout()
     # Submit
-    """
-    # Start temporaty worfaround until APERTA-5987 is fixed
-    dashboard_page = self.login(email=super_admin_login['email'], password=login_valid_pw)
-    dashboard_page.go_to_manuscript(paper_id)
-    time.sleep(1)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # End temporaty worfaround until APERTA-5987 is fixed
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
-    # Aprove initial Decision
     manuscript_page.logout()
+    time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
+    # Approve initial Decision
     logging.info('Logging in as user: {}'.format(super_admin_login['user']))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(super_admin_login['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    # the following call should only succeed for sa_login
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login(email=super_admin_login['email'], password=login_valid_pw)
+    time.sleep(1)
+    # the following call should only succeed for superadm
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -265,17 +263,21 @@ class ViewPaperTest(CommonTest):
     workflow_page.click_card('initial_decision')
     initial_decision_card = InitialDecisionCard(self.getDriver())
     initial_decision_card.execute_decision('invite')
+    time.sleep(10)
     initial_decision_card.click_close_button()
     time.sleep(2)
     manuscript_page.logout()
+    time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
     # Test for AC8
     logging.info('Logging in as user: {}'.format(creator_login5))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(creator_login5['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
+    dashboard_page = self.cas_login(email=creator_login5['email'])
+    time.sleep(1)
     # the following call should only succeed for sa_login
-    dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     #AC8: Message for full submission when is ready for submition

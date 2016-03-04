@@ -126,12 +126,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
-  def validate_page_elements_styles_functions(self, username='', admin=True):
+  def validate_page_elements_styles_functions(self, useremail='', admin=''):
     """
     Main method to validate styles and basic functions for all elements
     in the page
-    :username: String with the username whom the page is rendered to
-    :admin: Boolean to indicate if the page is rendered for an admin user
+    :username: String with the email whom the page is rendered to
+    :Admin: Boolean to indicate if the page is rendered for an admin user
     """
     if admin:
       self._get(self._tb_workflow_link)
@@ -140,8 +140,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_collaborator()
     self._check_download_btns()
     self._check_recent_activity()
-    self._check_discussion()
-    self._check_more_btn()
+    self._check_discussion(useremail)
+    self._check_more_btn(useremail)
 
   def _check_version_btn_style(self):
     """
@@ -205,6 +205,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
+    time.sleep(1)
+    collaborator_btn.click()
+    time.sleep(1)
 
   def _check_download_btns(self):
     """
@@ -217,6 +220,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     epub_link = self._get(self._tb_dl_epub_link)
     assert 'download.epub' in epub_link.get_attribute('href')
     assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
+    time.sleep(1)
+    downloads_link.click()
+    time.sleep(1)
 
   def _check_recent_activity(self):
     """
@@ -234,11 +240,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
+    time.sleep(1)
 
-  def _check_discussion(self):
+  def _check_discussion(self, useremail=''):
     """
     Check discussion modal styles
     """
+    logging.info('Checking Discussions toolbar for {}'.format(useremail))
     discussion_link = self._get(self._discussion_link)
     discussion_link.click()
     discussion_container = self._get(self._discussion_container)
@@ -246,28 +254,34 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Note: The following method is parametrized since we don't have a guide for modals
     self.validate_modal_title_style(discussion_container_title, '36px', '500', '39.6px')
     assert 'Discussions' in discussion_container_title.text
-    discussion_create_new_btn = self._get(self._discussion_create_new_btn)
-    ##self.validate_secondary_green_button_style(discussion_create_new_btn)
-    ##self.validate_secondary_small_green_button_style(discussion_create_new_btn)
-    self.validate_secondary_big_green_button_style(discussion_create_new_btn)
-    discussion_create_new_btn.click()
-    create_new_topic = self._get(self._create_new_topic)
-    assert 'Create New Topic' in create_new_topic.text
-    # TODO: Styles for cancel since is not in the style guide
-    cancel = self._get(self._create_topic_cancel)
-    assert application_typeface in cancel.value_of_css_property('font-family')
-    assert cancel.value_of_css_property('font-size') == '14px'
-    assert cancel.value_of_css_property('line-height') == '60px'
-    assert cancel.value_of_css_property('background-color') == 'transparent'
-    assert cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert cancel.value_of_css_property('font-weight') == '400'
-    # TODO: Styles for create_new_topic since is not in the style guide
-    titles = self._gets(self._topic_title)
-    assert 'Topic Title' == titles[0].text
-    assert 'Message' == titles[1].text
-    create_topic_btn = self._get(self._create_topic_btn)
-    ##self.validate_green_backed_button_style(create_topic_btn)
-    self.validate_primary_big_green_button_style(create_topic_btn)
+    # Only Admins, Internal Editors and PubSvcs Staff can initiate a discussion APERTA-5627
+    if useremail in ['sealresq+1006@gmail.com',
+                     'sealresq+1008@gmail.com',
+                     'sealresq+1010@gmail.com',
+                     'sealresq_1011@gmail.com',
+                     ]:
+      discussion_create_new_btn = self._get(self._discussion_create_new_btn)
+      ##self.validate_secondary_green_button_style(discussion_create_new_btn)
+      ##self.validate_secondary_small_green_button_style(discussion_create_new_btn)
+      self.validate_secondary_big_green_button_style(discussion_create_new_btn)
+      discussion_create_new_btn.click()
+      create_new_topic = self._get(self._create_new_topic)
+      assert 'Create New Topic' in create_new_topic.text
+      # TODO: Styles for cancel since is not in the style guide
+      cancel = self._get(self._create_topic_cancel)
+      assert application_typeface in cancel.value_of_css_property('font-family')
+      assert cancel.value_of_css_property('font-size') == '14px'
+      assert cancel.value_of_css_property('line-height') == '60px'
+      assert cancel.value_of_css_property('background-color') == 'transparent'
+      assert cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+      assert cancel.value_of_css_property('font-weight') == '400'
+      # TODO: Styles for create_new_topic since is not in the style guide
+      titles = self._gets(self._topic_title)
+      assert 'Topic Title' == titles[0].text
+      assert 'Message' == titles[1].text
+      create_topic_btn = self._get(self._create_topic_btn)
+      ##self.validate_green_backed_button_style(create_topic_btn)
+      self.validate_primary_big_green_button_style(create_topic_btn)
     close_icon_overlay = self._get(self._sheet_close_x)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px', '42px')
@@ -275,41 +289,53 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
 
-  def _check_more_btn(self):
+  def _check_more_btn(self, useremail=''):
     """
     Check all options inside More button (Appeal and Withdraw).
     Note that Appeal is not implemented yet, so it is not tested.
     """
+    logging.info('Checking More Toolbar menu for {}'.format(useremail))
     more_btn = self._get(self._tb_more_link)
     more_btn.click()
     self._get(self._tb_more_appeal_link)
-    withdraw_link = self._get(self._tb_more_withdraw_link)
-    withdraw_link.click()
-    self._get(self._wm_modal)
-    self._get(self._wm_exclamation_circle)
-    modal_title = self._get(self._wm_modal_title)
-    assert 'Are you sure?' == modal_title.text
-    # TODO: Style parametrized due to lack of styleguide for modals
-    self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
+    # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
+    if useremail in ['sealresq+1000@gmail.com',
+                     'sealresq+1001@gmail.com',
+                     'sealresq+1002@gmail.com',
+                     'sealresq+1003@gmail.com',
+                     'sealresq+1004@gmail.com',
+                     'sealresq+1006@gmail.com',
+                     'sealresq+1008@gmail.com',
+                     'sealresq+1010@gmail.com',
+                     'sealresq_1011@gmail.com',
+                     ]:
+      withdraw_link = self._get(self._tb_more_withdraw_link)
+      withdraw_link.click()
+      self._get(self._wm_modal)
+      self._get(self._wm_exclamation_circle)
+      modal_title = self._get(self._wm_modal_title)
+      assert 'Are you sure?' == modal_title.text
+      # TODO: Style parametrized due to lack of styleguide for modals
+      self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
                                     font_weight='500', color='rgba(119, 119, 119, 1)')
-    withdraw_modal_text = self._get(self._wm_modal_text)
-    # TODO: Leave comment out until solved. Pivotal bug#103864752
-    #self.validate_application_ptext(withdraw_modal_text)
-    assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
-            'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
-    yes_btn = self._get(self._wm_modal_yes)
-    assert 'YES, WITHDRAW' == yes_btn.text
-    no_btn = self._get(self._wm_modal_no)
-    assert "NO, I'M STILL WORKING" == no_btn.text
-    self.validate_link_big_grey_button_style(yes_btn)
-    # TODO: Leave comment out until solved. Pivotal bug#103858114
-    #self.validate_secondary_grey_small_button_modal_style(no_btn)
-    close_icon_overlay = self._get(self._overlay_header_close)
-    # TODO: Change following line after bug #102078080 is solved
-    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
-    assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-    close_icon_overlay.click()
+      withdraw_modal_text = self._get(self._wm_modal_text)
+      # TODO: Leave comment out until solved. Pivotal bug#103864752
+      #self.validate_application_ptext(withdraw_modal_text)
+      assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
+              'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
+      yes_btn = self._get(self._wm_modal_yes)
+      assert 'YES, WITHDRAW' == yes_btn.text
+      no_btn = self._get(self._wm_modal_no)
+      assert "NO, I'M STILL WORKING" == no_btn.text
+      self.validate_link_big_grey_button_style(yes_btn)
+      # TODO: Leave comment out until solved. Pivotal bug#103858114
+      #self.validate_secondary_grey_small_button_modal_style(no_btn)
+      close_icon_overlay = self._get(self._overlay_header_close)
+      # TODO: Change following line after bug #102078080 is solved
+      assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
+      assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+      assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+      close_icon_overlay.click()
 
   def validate_roles(self, user_buttons):
     """

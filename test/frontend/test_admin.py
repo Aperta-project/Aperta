@@ -14,7 +14,6 @@ from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login,
     internal_editor_login, pub_svcs_login
 from Pages.admin import AdminPage
 from Pages.dashboard import DashboardPage
-from Pages.login_page import LoginPage
 from frontend.common_test import CommonTest
 
 
@@ -51,18 +50,14 @@ class ApertaAdminTest(CommonTest):
      Validate Add New Journal
      Validate Edit existing journal
   """
-  def test_validate_components_styles(self):
+  def test_validate_components_styles(self, init=True):
     """
     Validates the presence UI elements of base admin page
     """
     logging.info('Validating Admin page components and styles')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login(email=user_type['email']) if init else DashboardPage(self.getDriver())
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles(user_type['user'])
@@ -77,7 +72,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating base admin page user search function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=staff_admin_login['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))
@@ -89,7 +84,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating add new journal function')
     user_type = super_admin_login
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=staff_admin_login['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
@@ -101,7 +96,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating edit journal function')
     user_type = super_admin_login
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=staff_admin_login['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_edit_journal(user_type['user'])

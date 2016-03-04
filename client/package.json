@@ -41,6 +41,7 @@
     "ember-cli-release": "0.2.8",
     "ember-cli-sri": "^1.2.0",
     "ember-cli-deprecation-workflow": "0.1.4",
+    "ember-concurrency": "0.5.17",
     "ember-data": "1.0.0-beta.18",
     "ember-data-factory-guy": "1.0.7",
     "ember-disable-proxy-controllers": "^1.0.1",

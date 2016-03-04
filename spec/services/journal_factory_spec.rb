@@ -102,38 +102,6 @@ describe JournalFactory do
           )
         end
 
-        it 'is able to see most metadata_tasks like the Data Availability Task' do
-          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
-                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
-                ).to be_present
-          expect(journal.collaborator_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
-          )
-        end
-
-        it 'is able to see most submission_tasks like the ReviewerRecommendationsTask' do
-          expect(Task.descendants.select { |klass| klass <=> SubmissionTask }
-                                 .select { |klass| klass.name == 'TahiStandardTasks::ReviewerRecommendationsTask' }
-                ).to be_present
-          expect(journal.collaborator_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
-          )
-        end
-
-        it 'but should not be able to see the Billing Task' do
-          expect(journal.collaborator_role.permissions).not_to include(
-            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
-          )
-        end
-
-        it 'does not have FinalTechCheck permission' do
-          permissions = Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard })
-
-          expect(journal.collaborator_role.permissions).not_to include(
-            permissions.find_by(action: 'manage')
-          )
-        end
-
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
             accessible_for_role = ::Task.descendants.select { |klass| klass <=> MetadataTask } + [TahiStandardTasks::CoverLetterTask]
@@ -277,11 +245,11 @@ describe JournalFactory do
       context 'Academic Editor' do
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::RegisterDecisionTask]
+            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::RegisterDecisionTask, TahiStandardTasks::ReviewerRecommendationsTask]
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask, TahiStandardTasks::ReviewerRecommendationsTask]
+            [PlosBilling::BillingTask]
           end
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses

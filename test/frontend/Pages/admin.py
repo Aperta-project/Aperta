@@ -359,7 +359,7 @@ class AdminPage(AuthenticatedPage):
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
     self._base_admin_journal_block_name = (By.XPATH,
-         '//div[@class="ember-view journal-thumbnail"][{}]/a/h3[@class="journal-thumbnail-name"]'\
+         '//div[@class="ember-view journal-thumbnail"][{}]/div/a/h3[@class="journal-thumbnail-name"]'\
                                            .format(selected_journal_index))
     journal_link = self._get(self._base_admin_journal_block_name)
     journal_name = journal_link.text

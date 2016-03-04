@@ -50,7 +50,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal admin component display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -68,7 +68,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal user search display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -87,7 +87,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal role display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -115,7 +115,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal task types display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -139,7 +139,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -171,7 +171,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating Journal Style Settings display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())

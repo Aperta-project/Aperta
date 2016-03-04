@@ -235,7 +235,7 @@ class JournalAdminPage(AdminPage):
     task_names = ['Ad-hoc', 'Additional Information', 'Assign Admin', 'Assign Team', 'Authors', 'Billing',
                   'Competing Interests', 'Cover Letter', 'Data Availability', 'Editor Discussion', 'Ethics Statement',
                   'Figures', 'Final Tech Check', 'Financial Disclosure', 'Initial Decision', 'Initial Tech Check',
-                  'Invite Editor', 'Invite Reviewers', 'New Taxon', 'Production Metadata', 'Register Decision',
+                  'Invite Academic Editor', 'Invite Reviewers', 'New Taxon', 'Production Metadata', 'Register Decision',
                   'Reporting Guidelines', 'Reviewer Candidates', 'Revision Tech Check', 'Send to Apex',
                   'Supporting Info', 'Upload Manuscript']
     att_title = self._get(self._journal_admin_avail_task_types_title)

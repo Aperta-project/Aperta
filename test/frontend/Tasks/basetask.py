@@ -14,7 +14,8 @@ class BaseTask(AuthenticatedPage):
   """
   Common elements shared between tasks as displayed on the manuscript viewer page
   This had to be separated from the cards infrastructure as the workflow implementation
-  was not changing.
+  was not changing. This should be used only for manuscript viewer situated tasks. If you
+  you need to interact with a card from the workflow page, get thee to the Cards!
   """
 
   def __init__(self, driver):

@@ -191,8 +191,8 @@ class AuthorsTask(BaseTask):
     :author_data:
     return None
     """
-    completed = self._get(self._completed_cb)
-    if completed.is_selected():
+    completed = self.completed_state()
+    if completed:
       return None
     author = self._get(self._author_items)
     self._actions.move_to_element(author).perform()
@@ -201,7 +201,7 @@ class AuthorsTask(BaseTask):
     title_input = self._get(self._title_input)
     department_input = self._get(self._department_input)
     institutions = self._gets(self._institution_div)
-    if len(institutions)==2:
+    if len(institutions) == 2:
       institution_div = institutions[0]
       institution_input = institution_div.find_element_by_tag_name('input')
       institution_input.clear()
@@ -219,8 +219,8 @@ class AuthorsTask(BaseTask):
       author_contribution_chck.click()
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
-    completed = self._get(self._completed_cb)
-    completed.click()
+    completed = self.completed_state()
+    self.click_completion_button()
     time.sleep(.2)
 
   def press_submit_btn(self):

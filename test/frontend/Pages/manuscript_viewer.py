@@ -398,7 +398,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def complete_task(self, task_name, click_override=False, data=None, click=False):
     """
     On a given task, check complete and then close
-    :task_name: The name of the task to conmplete (str)
+    :task_name: The name of the task to complete (str)
     :click_override:
     :data:
     """
@@ -446,7 +446,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     elif task_name == 'Additional Information':
       ai_task = AITask(self._driver)
-      ai_task.complete_ai(data)
+      # If the task is read only due to completion state, set read-write
+      if base_task.completed_state():
+        base_task.click_completion_button()
+      ai_task.complete_ai()
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()

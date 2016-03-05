@@ -12,7 +12,9 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
 from Base.Resources import login_valid_pw, creator_login3, staff_admin_login, internal_editor_login
+
 
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
@@ -38,22 +40,22 @@ class MetadataVersioningTest(CommonTest):
     are not implemented in this method
     """
     title = 'For metadata versioning'
-    # Commented out due to bug APERTA-5948
-    #types = ('Research', 'Research w/Initial Decision Card')
-    types = ('Research No Authors', 'Research IDC no authors')
-    journal_type = random.choice(types)
+    types = ('Research', 'Research w/Initial Decision Card')
+    paper_type = random.choice(types)
     new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                'q5':'More Data'}
-    dashboard_page = self.login(email=creator_login3['email'], password=login_valid_pw)
+    logging.info('Logging in as {}'.format(creator_login3['name']))
+    dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
     dashboard_page.set_timeout(120)
-
+    dashboard_page.click_create_new_submission_button()
+    time.sleep(.5)
+    logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
     title = self.create_article(title=title,
                                 journal='PLOS Wombat',
-                                type_=journal_type,
+                                type_=paper_type,
                                 random_bit=True,
-                                init=False,
                                 )
     dashboard_page.restore_timeout()
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -73,23 +75,43 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.refresh()
     time.sleep(3)
 
-    # make initial submission
+    # make submission
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
     paper_viewer.close_submit_overlay()
     # logout
     paper_viewer.logout()
-    dashboard_page = self.login(email=staff_admin_login['email'], password=login_valid_pw)
-    # go to article
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    if journal_type == 'Research w/Initial Decision Card':
+    time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    logging.info(login_url)
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
+    # If this is an initial decision submission, admin has to invite
+    if paper_type == 'Research w/Initial Decision Card':
+      logging.info('This is an initial decision paper, logging in as admin to invite.')
+      dashboard_page = self.cas_login(email=staff_admin_login['email'], password=login_valid_pw)
+      # go to article
+      time.sleep(5)
+      dashboard_page.go_to_manuscript(paper_id)
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
       # click register initial decision on task
-      paper_viewer.complete_task('Initial Decision')
+      paper_viewer.click_workflow_lnk()
+      workflow_page = WorkflowPage(self.getDriver())
+      workflow_page.click_initial_decision_card()
+      workflow_page.complete_card('Initial Decision')
       time.sleep(1)
       paper_viewer.logout()
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+      login_url = self._driver.current_url
+      logging.info(login_url)
+      self.invalidate_cas_token()
+      self.return_to_login_page(login_url)
+
+      logging.info('Paper type is initial submission, logging in as creator to complete full submission')
       # Log in as a author to make first final submission
-      dashboard_page = self.login(email=creator_login3['email'], password=login_valid_pw)
+      dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
@@ -99,16 +121,33 @@ class MetadataVersioningTest(CommonTest):
       paper_viewer.close_submit_overlay()
       # logout
       paper_viewer.logout()
-      # Log as editor to approve the manuscript with modifications
-      dashboard_page = self.login(email=internal_editor_login['email'], password=login_valid_pw)
-      # go to article
-      dashboard_page.go_to_manuscript(paper_id)
-      paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.complete_task('Register Decision')
+      time.sleep(2)
+      # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+      login_url = self._driver.current_url
+      self.invalidate_cas_token()
+      self.return_to_login_page(login_url)
+
+    logging.info('Logging in as the Internal Editor to Register a Decision')
+    # Log as editor to approve the manuscript with modifications
+    dashboard_page = self.cas_login(email=internal_editor_login['email'], password=login_valid_pw)
+    # go to article
+    dashboard_page.go_to_manuscript(paper_id)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.click_workflow_lnk()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.click_register_decision_card()
+    workflow_page.complete_card('Register Decision')
     time.sleep(1)
-    paper_viewer.logout()
+    workflow_page.logout()
+    time.sleep(2)
+    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+
     # Log in as a author to make some changes
-    dashboard_page = self.login(email=creator_login3['user'], password=login_valid_pw)
+    logging.info('Logging in as creator to make changes')
+    dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.complete_task('Additional Information', click_override=True, data=new_prq, click=True)
@@ -121,7 +160,6 @@ class MetadataVersioningTest(CommonTest):
     # Following command disabled due to bug APERTA-5849
     #paper_viewer.click_task('prq')
     return self
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

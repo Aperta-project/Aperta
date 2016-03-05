@@ -13,7 +13,7 @@ __author__ = 'sbassi@plos.org'
 
 class BaseCard(AuthenticatedPage):
   """
-  Common elements shared between cards
+  Common elements shared between cards. Cards are the view available from the Workflow page.
   """
 
   def __init__(self, driver):
@@ -32,6 +32,7 @@ class BaseCard(AuthenticatedPage):
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._completed_check = (By.CSS_SELECTOR, 'label.task-completed-section')
     self._message_comment = (By.CLASS_NAME, 'message-comment')
+    self._completion_button = (By.CSS_SELECTOR, 'button.task-completed')
     self._completed_label = (By.XPATH, '//div[@class="overlay-completed-checkbox"]/div/label')
     self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')
     # Versioning locators - only applicable to metadata cards
@@ -39,6 +40,22 @@ class BaseCard(AuthenticatedPage):
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
 
   # Common actions for all cards
+  def click_completion_button(self):
+    """Click completed checkbox"""
+    self._get(self._completion_button).click()
+
+  def completed_state(self):
+    """Returns the selected state of the card completed button as a boolean"""
+    time.sleep(.5)
+    btn_label = self._get(self._completion_button).text
+    if btn_label == 'I am done with this task':
+      return False
+    elif btn_label == 'Make changes to this task':
+      return True
+    else:
+      raise ValueError('Completed button in unexpected state {}'.format(btn_label))
+
+
   def click_completed_checkbox(self):
     """Click completed checkbox"""
     self._get(self._completed_check).click()

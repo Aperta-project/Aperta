@@ -259,6 +259,7 @@ class AuthenticatedPage(PlosPage):
   def go_to_manuscript(self, manuscript_id):
     """
     """
+    time.sleep(5)
     url = self._driver.current_url
     id_url = url.split('/')[0]+'//'+url.split('/')[2]+'/papers/'+str(manuscript_id)
     self._driver.get(id_url)

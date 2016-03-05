@@ -45,6 +45,6 @@ class RegisterDecisionTask(BaseTask):
     # Since there is no feedback on this action and sometimes it fails, will check
     # for checkbox that is completed after successful register.
     time.sleep(2)
-    if not self._get(self._completed_cb).get_attribute('checked'):
+    if not self.completed_state():
       self._get(self._register_btn).click()
-    logging.info(self._get(self._completed_cb).get_attribute('checked'))
+    logging.info('Initial Decision card is in completed state: {}'.format(self.completed_state()))

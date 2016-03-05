@@ -1,12 +1,16 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface
-
+from frontend.Cards.authors_card import AuthorsCard
+from frontend.Cards.basecard import BaseCard
+from frontend.Cards.initial_decision_card import InitialDecisionCard
+from frontend.Cards.register_decision_card import RegisterDecisionCard
 
 __author__ = 'sbassi@plos.org'
 
@@ -50,11 +54,11 @@ class WorkflowPage(AuthenticatedPage):
         ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
     self._remove_cancel_button = (By.XPATH,
         ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
-    self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
+    self._register_decision_card = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
     # Card Locators
     self._initial_decision_card = (By.XPATH, "//div[@class='card-title'][contains(., 'Initial Decision')]")
-    self._invite_editor_card = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., 'Invite Editor')]")
+    self._invite_editor_card = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., 'Invite Academic Editor')]")
 
     # End of not used elements
 
@@ -72,14 +76,22 @@ class WorkflowPage(AuthenticatedPage):
     self.validate_wf_top_elements()
     assert self._get(self._column_header)
 
+  def click_initial_decision_card(self):
+    """Open the Initial Decision Card from the workflow page"""
+    self._get(self._initial_decision_card).click()
+
   def click_editor_assignment_button(self):
     """Click editor assignment button"""
     self._get(self._click_editor_assignment_button).click()
     return self
 
   def click_invite_editor_card(self):
-    """Click Invite Editor Card"""
+    """Click Invite Academic Editor Card"""
     self._get(self._invite_editor_card).click()
+
+  def click_register_decision_card(self):
+    """Open the Register Decison Card from the workflow page"""
+    self._get(self._register_decision_card).click()
 
   def get_assess_button(self):
     return self._get(self._assess_button)
@@ -204,7 +216,7 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[4].text == 'Final Tech Check', staff_cards[4].text
     assert staff_cards[5].text == 'Initial Decision', staff_cards[5].text
     assert staff_cards[6].text == 'Initial Tech Check', staff_cards[6].text
-    assert staff_cards[7].text == 'Invite Editor', staff_cards[7].text
+    assert staff_cards[7].text == 'Invite Academic Editor', staff_cards[7].text
     assert staff_cards[8].text == 'Invite Reviewers', staff_cards[8].text
     assert staff_cards[9].text == 'Production Metadata', staff_cards[9].text
     assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
@@ -265,3 +277,25 @@ class WorkflowPage(AuthenticatedPage):
     staff_cards[7].click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)
+
+  def complete_card(self, card_name, click_override=False):
+    """
+    On a given card, check complete and then close
+    Assumes you have already opened card
+    """
+    base_card = BaseCard(self._driver)
+    if card_name == 'Register Decision':
+      # Complete decision data before mark close
+      register_decision_card = RegisterDecisionCard(self._driver)
+      register_decision_card.register_decision('Major Revision')
+    elif card_name == 'Initial Decision':
+      initial_decision_card = InitialDecisionCard(self._driver)
+      id_state = initial_decision_card.execute_decision(choice='invite')
+      logging.info('Executed intial decision of {}'.format(id_state))
+    else:
+      completed = base_card._get(base_card._completed_check)
+      if not completed.is_selected():
+        completed.click()
+        #time.sleep(.2)
+      base_card._get(base_card._close_button).click()
+      time.sleep(1)

@@ -33,6 +33,7 @@ class BillingTask(BaseTask):
     self._city = (By.NAME, 'plos_billing--city')
     self._zip = (By.NAME, 'plos_billing--postal_code')
     self._payment_option = (By.CLASS_NAME, 'affiliation-field')
+    self._payment_items_parent = (By.ID, 'select2-results-2')
 
    #POM Actions
   def complete(self, data=data):
@@ -63,10 +64,18 @@ class BillingTask(BaseTask):
     self._get(self._zip).send_keys(data['zip'])
     payment_select = self._get(self._payment_option)
     payment_select.click()
-    payment_select.find_element_by_tag_name('input').send_keys('I will' + Keys.ENTER)
+    # Grab the items in the select2 dropdown, then make selection
+    # previous send_keys method no longer works.
+    parent_div = self._get(self._payment_items_parent)
+    for item in parent_div.find_elements_by_tag_name('li'):
+      if item.text == 'I will pay the full fee upon article acceptance':
+        item.click()
+        time.sleep(1)
+        break
+
     time.sleep(2)
-    completed = self.completed_cb_is_selected()
+    completed = self.completed_state()
     if not completed:
-      self._get(self._completed_cb).click()
+      self.click_completion_button()
       time.sleep(1)
     return self

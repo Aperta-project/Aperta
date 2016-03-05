@@ -69,4 +69,6 @@ class InitialDecisionCard(BaseCard):
     # Time to allow the button to change to clickleable state
     time.sleep(1)
     self._get(self._register_decision_btn).click()
+    self.click_close_button()
+    time.sleep(.5)
     return choice

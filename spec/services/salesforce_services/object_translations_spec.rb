@@ -2,13 +2,20 @@
 require 'rails_helper'
 
 describe SalesforceServices::ObjectTranslations do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :submitted, :with_integration_journal) }
-  let(:mt) do
-    SalesforceServices::ObjectTranslations::ManuscriptTranslator.new(user_id: user.id, paper: paper)
+  before do
+    allow(Paper).to receive(:find).with(paper.id).and_return(paper)
+    allow(paper).to receive(:creator) { user }
+    paper.submit! user
   end
 
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:user) { FactoryGirl.create(:user) }
+
   describe "ManuscriptTranslator#paper_to_manuscript_hash" do
+    let(:mt) do
+      SalesforceServices::ObjectTranslations::ManuscriptTranslator.new(user_id: user.id, paper: paper)
+    end
+
     let(:submit_time) { Time.now.utc + 20 }
     let(:accepted_time) { Time.now.utc + 30 }
     let(:rejected_time) { Time.now.utc + 40 }
@@ -96,6 +103,33 @@ describe SalesforceServices::ObjectTranslations do
                          name: "funder001",
                          grant_number: '000-2222-111')
     end
+
+    let(:journal) do
+      FactoryGirl.create(
+        :journal,
+        :with_doi,
+        name: 'journal name'
+      )
+    end
+
+    let(:user) do
+      FactoryGirl.create(:user,
+                         first_name: 'lou',
+                         last_name: 'prima',
+                         email: 'pfa@pfa.com'
+                        )
+    end
+
+    let(:paper) do
+      FactoryGirl.create(:paper_with_task,
+                         journal: journal,
+                         task_params: {
+                           title: "Billing",
+                           type: "PlosBilling::BillingTask",
+                           old_role: "author" }
+                        )
+    end
+
     it "return a hash" do
       paper = make_paper
       FactoryGirl.create(:financial_disclosure_task,
@@ -133,17 +167,6 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   def make_paper
-    journal = FactoryGirl.create(
-      :journal,
-      :with_roles_and_permissions,
-      :with_doi,
-      name: 'journal name'
-    )
-    paper = FactoryGirl.create :paper_with_task, {
-      creator: FactoryGirl.create(:user, { first_name: 'lou', last_name: 'prima', email: 'pfa@pfa.com' }),
-      journal: journal,
-      task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" }
-    }
     make_questions paper
     paper
   end

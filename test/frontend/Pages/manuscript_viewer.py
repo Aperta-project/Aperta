@@ -516,7 +516,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     closer = self._get(self._overlay_header_close)
     closer.click()
 
-  def click_workflow_lnk(self):
+  def click_workflow_link(self):
     """Click workflow button"""
     self._get(self._tb_workflow_link).click()
 

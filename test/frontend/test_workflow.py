@@ -5,10 +5,13 @@ This test case validates the Aperta workflow page
 """
 __author__ = 'sbassi@plos.org'
 
+import logging
+import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from frontend.Pages.manuscript_page import ManuscriptPage
+from Base.Resources import internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login
+from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
 
@@ -30,22 +33,40 @@ class ApertaWorkflowTest(CommonTest):
 
   def _go_to_workflow(self):
     """Internal method to reach workflow page"""
-    self.select_preexisting_article()
-    #self.create_article()
-    create_manuscript_page = ManuscriptPage(self.getDriver())
-    create_manuscript_page.click_workflow_button()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_workflow_link()
     return WorkflowPage(self.getDriver())
 
-  def test_validate_components_styles(self):
+  def test_validate_components_styles(self, init=True):
     """
     Validates the presence of the initial page elements
     """
+    workflow_users = [internal_editor_login,
+                      staff_admin_login,
+                      pub_svcs_login,
+                      super_admin_login,
+                      ]
+    workflow_user = random.choice(workflow_users)
+    logging.info('Logging in as {}'.format(workflow_user['name']))
+    dashboard_page = self.cas_login(workflow_user['email']) if init else DashboardPage(self.getDriver())
+    dashboard_page.click_on_first_manuscript()
+    time.sleep(2)
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
     return self
 
-  def test_add_new_card(self):
+  def test_add_new_card(self, init=True):
     """Testing adding a new card"""
+    workflow_users = [internal_editor_login,
+                      staff_admin_login,
+                      pub_svcs_login,
+                      super_admin_login,
+                      ]
+    workflow_user = random.choice(workflow_users)
+    logging.info('Logging in as {}'.format(workflow_user['name']))
+    dashboard_page = self.cas_login(workflow_user['email']) if init else DashboardPage(self.getDriver())
+    dashboard_page.click_on_first_manuscript()
+    time.sleep(2)
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)

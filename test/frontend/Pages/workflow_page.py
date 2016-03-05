@@ -4,10 +4,8 @@ import logging
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface
-from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.initial_decision_card import InitialDecisionCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard

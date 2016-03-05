@@ -398,7 +398,7 @@ class JournalAdminPage(AdminPage):
     Validate the elements of the manuscript manager template (aka paper type)
     :return: void function
     """
-    time.sleep(.5)
+    time.sleep(2)
     template_field = self._get(self._mmt_template_name_field)
     assert 'Research' in template_field.get_attribute('value'), template_field.get_attribute('value')
     self._get(self._mmt_template_save_button)

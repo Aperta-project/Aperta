@@ -1,22 +1,19 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import time
+
+from selenium.webdriver.common.by import By
+
+from Base.PlosPage import PlosPage
+from Base.PostgreSQL import PgSQL
+from Base.Resources import fm_login, oa_login, sa_login
+
 """
 A class to be inherited from every page for which one is authenticated and wants to access
 the navigation menu also vital for ensuring style consistency across the application.
 """
 
 __author__ = 'jgray@plos.org'
-
-import time
-
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-
-from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.PlosPage import PlosPage
-from Base.PostgreSQL import PgSQL
-from Base.Resources import fm_login, oa_login, sa_login
-
 
 # Variable definitions
 # We are in process of migrating fonts in the interface, until this is deployed to lean, we can
@@ -63,7 +60,7 @@ class AuthenticatedPage(PlosPage):
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
     self._nav_feedback_link = (By.ID, 'nav-give-feedback')
-    self._nav_hamburger_icon = (By.CLASS_NAME,'fa-list-ul')
+    self._nav_hamburger_icon = (By.CLASS_NAME, 'fa-list-ul')
     # Global toolbar Icons
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
@@ -177,7 +174,7 @@ class AuthenticatedPage(PlosPage):
     # assert editable.value_of_css_property('text-align') == 'center'
     ec = self._get(self._editable_checkbox)
     assert ec.get_attribute('type') == 'checkbox'
-    #assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
+    # assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
     # assert ec.value_of_css_property('font-size') == '10px'
     # assert ec.value_of_css_property('font-weight') == '700'
     # recent_activity_icon = self._get(self._recent_activity_icon)
@@ -253,15 +250,18 @@ class AuthenticatedPage(PlosPage):
   def logout(self):
     """Logout from any page"""
     url = self._driver.current_url
-    signout_url = url.split('/')[0]+'//'+url.split('/')[2]+'/users/sign_out'
+    signout_url = url.split('/')[0] + '//' + url.split('/')[2] + '/users/sign_out'
     self._driver.get(signout_url)
 
   def go_to_manuscript(self, manuscript_id):
     """
+    Navigate to the manuscript viewer page of the provided paper id
+    :param manuscript_id: papers.id of the requested paper
+    :return: void function
     """
     time.sleep(5)
     url = self._driver.current_url
-    id_url = url.split('/')[0]+'//'+url.split('/')[2]+'/papers/'+str(manuscript_id)
+    id_url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(manuscript_id)
     self._driver.get(id_url)
 
   def validate_ihat_conversions_success(self):
@@ -301,8 +301,6 @@ class AuthenticatedPage(PlosPage):
     :return: None
     """
     self._get(self._overlay_header_close).click()
-
-
 
   @staticmethod
   def get_db_submission_data(manu_id):
@@ -529,6 +527,7 @@ class AuthenticatedPage(PlosPage):
   def validate_manuscript_h2_style(title):
     """
     Ensure consistency in rendering page and overlay h2 section headings within the manuscript
+    :param title: Title to validate
     """
     assert manuscript_typeface in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
@@ -589,8 +588,12 @@ class AuthenticatedPage(PlosPage):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
+    :param font_size
+    :param font_weight
+    :param line_height
+    :param color
     :return: None
-    TODO: Leave this method with parameters until fixed lack of styleguide for this
+    TODO: Leave this method with parameters until fixed lack of style guide for this
     """
     assert application_typeface in title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == font_size
@@ -610,8 +613,6 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('line-height') == '40px', title.value_of_css_property('line-height')
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
-
-
 
   # Ordinary Text Styles ============================
   @staticmethod

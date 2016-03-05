@@ -1,11 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-A page model for the dashboard page that validates state-dependent element existence
-and style and functionality of the View Invitations and Create New Submission flows
-without executing an invitation accept or reject, and without a CNS creation.
-"""
-
 import logging
 import os
 import random
@@ -13,13 +7,17 @@ import string
 import time
 import uuid
 
+from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface
-
+"""
+A page model for the dashboard page that validates state-dependent element existence
+and style and functionality of the View Invitations and Create New Submission flows
+without executing an invitation accept or reject, and without a CNS creation.
+"""
 
 __author__ = 'jgray@plos.org'
 
@@ -35,8 +33,7 @@ class DashboardPage(AuthenticatedPage):
     # Locators - Instance members
     # Base Page Locators
     # TODO: Change after APERTA-5666 is fixed
-    self._dashboard_top_menu_paper_tracker = (By.XPATH,
-      "//a[contains(@class, 'main-nav-item')][3]")
+    self._dashboard_top_menu_paper_tracker = (By.XPATH, "//a[contains(@class, 'main-nav-item')][3]")
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
     self._dashboard_view_invitations_btn = (By.CSS_SELECTOR,
                                             'section.dashboard-section button.button-primary.button--green')
@@ -47,8 +44,7 @@ class DashboardPage(AuthenticatedPage):
     self._dash_active_role_th = (By.XPATH, "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
     self._dash_active_status_th = (By.XPATH, "//div[@class='table-responsive'][1]/table/thead/tr/th[3]")
 
-    self._dash_active_title = (By.CSS_SELECTOR,
-                               'td.active-paper-title a')
+    self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
     self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
     self._dash_active_role = (By.CSS_SELECTOR, 'td.active-paper-title + td')
     self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
@@ -56,8 +52,7 @@ class DashboardPage(AuthenticatedPage):
     self._dash_inactive_section_title = (By.CSS_SELECTOR, 'thead.inactive-papers tr th')
     self._dash_inactive_role_th = (By.XPATH, "//div[@class='table-responsive'][2]/table/thead/tr/th[2]")
     self._dash_inactive_status_th = (By.XPATH, "//div[@class='table-responsive'][2]/table/thead/tr/th[3]")
-    self._dash_inactive_title = (By.CSS_SELECTOR,
-                                 'td.inactive-paper-title a')
+    self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
     self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
     self._dash_inactive_status = (By.CSS_SELECTOR, 'td.inactive-paper-title + td + td div')
@@ -102,7 +97,6 @@ class DashboardPage(AuthenticatedPage):
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
 
-
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
     """
@@ -130,18 +124,21 @@ class DashboardPage(AuthenticatedPage):
   def accept_invitation(self, title):
     """
     Accepts a given invitation
-    :title: Title of the publication to accept the invitation
+    :param title: Title of the publication to accept the invitation
+    :return: void function
     """
     try:
       h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
     except UnicodeEncodeError:
-      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(
-        title.encode('utf8')))
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title.encode('utf8')))
     btn = h3.find_element_by_xpath("./following-sibling::button")
     btn.click()
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
-    """Click on existing manuscript link using partial title"""
+    """
+    Click on existing manuscript link using partial title
+    :param partial_title: substring to match
+    """
     first_article_link = self.driver.find_element_by_partial_link_text(partial_title)
     title = first_article_link.text
     first_article_link.click()
@@ -204,9 +201,9 @@ class DashboardPage(AuthenticatedPage):
                                          'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                          'WHERE paper_roles.user_id=%s '
                                          'AND papers.publishing_state NOT IN (\'withdrawn\', \'rejected\');', (uid,))
-    except:
-      print('Database access error.')
-      return False
+    except DatabaseError:
+      logging.error('Database access error.')
+      raise
     manuscript_count = len(active_manuscripts)
     print('Expecting ' + str(manuscript_count) + ' active manuscripts')
     if manuscript_count > 1:
@@ -267,9 +264,9 @@ class DashboardPage(AuthenticatedPage):
                                            'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                            'WHERE paper_roles.user_id=%s '
                                            'AND papers.publishing_state IN (\'withdrawn\', \'rejected\');', (uid,))
-    except:
-      print('Could not retrieve inactive manuscripts from the database')
-      return False
+    except DatabaseError:
+      logging.error('Database access error.')
+      raise
     inactive_manuscript_count = len(inactive_manuscripts)
     if inactive_manuscript_count <= 0:
       print('No manuscripts are inactive for user.')
@@ -304,13 +301,14 @@ class DashboardPage(AuthenticatedPage):
     """
     Validates the manuscript listings dynamic display based on assigned roles for papers. Papers should be ordered by
     paper_role.created_at DESC
-    :param username, list_: username, list
+    :param username: username for whom to validate dashboard section
+    :param list_: Whether we are validating the active or inactive list display
     :return: None
     """
     logging.info('Starting validation of {0} papers for {1}'.format(list_, username))
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # We MUST validate that manuscript_count is > 0 for list before calling this
-    if list == 'inactive':
+    if list_ == 'inactive':
       paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
       manu_ids = self._gets(self._dash_inactive_manu_id)
@@ -435,15 +433,16 @@ class DashboardPage(AuthenticatedPage):
   def select_journal_and_type(self, journal, paper_type):
     """
     Select a journal with its type
-    journal: Title of the journal
-    paper_type: Paper type
+    :param journal: Title of the journal
+    :param paper_type: Paper type
+    :return: void function
     """
     journal_dd, type_dd = self._gets((By.CLASS_NAME, 'ember-basic-dropdown-trigger'))
     journal_dd.click()
     time.sleep(.5)
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
 
-    #for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+    # for item in self._gets((By.CLASS_NAME, 'select-box-item')):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
         item.click()
@@ -456,7 +455,7 @@ class DashboardPage(AuthenticatedPage):
     type_dd.click()
     # Note have to recall this element here because is not the same as last call
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
-    #div.find_element_by_class_name('ember-power-select-options').click()
+    # div.find_element_by_class_name('ember-power-select-options').click()
     for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
       if item.text == paper_type:
         item.click()
@@ -467,7 +466,12 @@ class DashboardPage(AuthenticatedPage):
 
   @staticmethod
   def title_generator(prefix='', random_bit=True):
-    """Creates a new unique title"""
+    """
+    Creates a new unique title
+    :param prefix: string to prepend to generated string
+    :param random_bit: If true generate unique uuid
+    :return: generated title
+    """
     if not prefix:
       return str(uuid.uuid4())
     elif prefix and random_bit:
@@ -566,8 +570,6 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
     assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
-    ## TEST
-    ##journal_chooser = self._get(self._cns_journal_chooser_placeholder)
     journal_chooser = self._get((By.CLASS_NAME, 'ember-power-select-placeholder'))
     assert 'Select a journal' in journal_chooser.text, journal_chooser.text
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
@@ -601,5 +603,5 @@ class DashboardPage(AuthenticatedPage):
     closer.click()
 
   def return_cns_base_overlay_div(self):
-    """Method for debbuging purposes only"""
+    """Method for debugging purposes only"""
     return self._get(self._cns_base_overlay_div)

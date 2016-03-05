@@ -1,5 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import random
+import time
+
+from Base.Decorators import MultiBrowserFixture
+from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5, reviewer_login, handling_editor_login, academic_editor_login, internal_editor_login, \
+    staff_admin_login, pub_svcs_login, super_admin_login
+from frontend.common_test import CommonTest
+from Pages.dashboard import DashboardPage
+
 """
 This test case validates the Aperta dashboard page and its associated View Invitations and Create New Submission
 overlays.
@@ -9,17 +19,6 @@ Those acts are expected to be defined in
 
 """
 __author__ = 'jgray@plos.org'
-
-import random
-import time
-
-from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, reviewer_login, handling_editor_login, academic_editor_login, internal_editor_login, \
-    staff_admin_login, pub_svcs_login, super_admin_login
-from frontend.common_test import CommonTest
-from Pages.dashboard import DashboardPage
-from Pages.login_page import LoginPage
 
 users = [creator_login1,
          creator_login2,
@@ -34,6 +33,7 @@ users = [creator_login1,
          pub_svcs_login,
          super_admin_login,
          ]
+
 
 @MultiBrowserFixture
 class ApertaDashboardTest(CommonTest):
@@ -62,7 +62,7 @@ class ApertaDashboardTest(CommonTest):
     dashboard_page.validate_invite_dynamic_content(user_type['user'])
     active_manuscript_count = dashboard_page.validate_manuscript_section_main_title(user_type['user'])
     if active_manuscript_count > 0:
-      dashboard_page.validate_active_manuscript_section(user_type['email'], active_manuscript_count)
+      dashboard_page.validate_active_manuscript_section(user_type['user'], active_manuscript_count)
     inactive_manuscript_count = dashboard_page.validate_inactive_manuscript_section(user_type['user'])
     if active_manuscript_count == 0 and inactive_manuscript_count == 0:
       dashboard_page.validate_no_manus_info_msg()
@@ -81,7 +81,6 @@ class ApertaDashboardTest(CommonTest):
     # We recently became slow drawing this overlay (20151006)
     time.sleep(5)
     dashboard_page.validate_create_new_submission()
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

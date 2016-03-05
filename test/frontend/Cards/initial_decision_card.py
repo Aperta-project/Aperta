@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import random
 import time
 
@@ -9,6 +10,7 @@ from frontend.Cards.basecard import BaseCard
 
 __author__ = 'jgray@plos.org'
 
+
 class InitialDecisionCard(BaseCard):
   """
   Page Object Model for the Initial Decision Card
@@ -16,19 +18,18 @@ class InitialDecisionCard(BaseCard):
   def __init__(self, driver):
     super(InitialDecisionCard, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._card_title = (By.TAG_NAME, 'h1')
     self._intro_text = (By.TAG_NAME, 'p')
     self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
-    #TD: Find out why classn_name and tag_name locator not working here
-    #self._register_decision_btn = (By.CLASS_NAME, 'button-primary')
+    # TODO: Find out why class_name and tag_name locator not working here
+    # self._register_decision_btn = (By.CLASS_NAME, 'button-primary')
     self._alert_info = (By.CLASS_NAME, 'alert-info')
 
-   #POM Actions
-
+   # POM Actions
   def validate_styles(self):
     """
     Validate styles for the Initial Decision Card
@@ -43,13 +44,12 @@ class InitialDecisionCard(BaseCard):
     self._get(self._invite_radio_button)
     self._get(self._decision_letter_textarea)
     reg_dcn_btn = self._get(self._register_decision_btn)
-    # the following button is disabled by default now
-    # this is failing due to bug APERTA-5946
-    #self.validate_secondary_big_disabled_button_style(reg_dcn_btn)
+    self.validate_secondary_big_disabled_button_style(reg_dcn_btn)
 
   def execute_decision(self, choice='random'):
     """
     Randomly renders an initial decision of reject or invite, populates the decision letter
+    :param choice: indicates whether to generate a choice randomly or to reject, else invite
     :return: selected choice
     """
     choices = ['reject', 'invite']

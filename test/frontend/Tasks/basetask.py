@@ -1,14 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import time
 
-from loremipsum import generate_paragraph
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
-from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface
+from frontend.Pages.authenticated_page import AuthenticatedPage
 
 __author__ = 'jgray@plos.org'
+
 
 class BaseTask(AuthenticatedPage):
   """
@@ -61,15 +61,14 @@ class BaseTask(AuthenticatedPage):
     """Validate styles from elements common to all cards"""
     completed_btn = self._get(self._completion_button)
     assert 'I am done with this task' in completed_btn.text, completed_btn.text
-    # TODO: When styleguide catches up, assert this checkbox and label matches that guide
 
   def is_versioned_view(self):
     """
     Evaluate whether the card view is a versioned view
     :return: True if versioned view of card, False otherwise
     """
-    if self.get(self._versioned_metadata_div):
-      assert self.get(self._versioned_metadata_div).text == 'Viewing', self.get(self._versioned_metadata_div).text
+    if self._get(self._versioned_metadata_div):
+      assert self._get(self._versioned_metadata_div).text == 'Viewing', self._get(self._versioned_metadata_div).text
       return True
     else:
       return False
@@ -79,4 +78,4 @@ class BaseTask(AuthenticatedPage):
     Returns the currently viewed version for a given metadata card
     :return: Version string
     """
-    return self.get(self._versioned_metadata_version_string).text
+    return self._get(self._versioned_metadata_version_string).text

@@ -1,22 +1,21 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
+import random
+import time
+
+from Base.Decorators import MultiBrowserFixture
+from Base.Resources import staff_admin_login, super_admin_login, creator_login1, creator_login2, \
+    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, handling_editor_login, \
+    internal_editor_login, pub_svcs_login
+from frontend.Tasks.authors_task import AuthorsTask
+from Pages.manuscript_viewer import ManuscriptViewerPage
+from frontend.common_test import CommonTest
+
 """
 This test case validates the Authors Task.
 """
 __author__ = 'sbassi@plos.org'
-
-from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, handling_editor_login, \
-    internal_editor_login, pub_svcs_login
-from frontend.Tasks.authors_task import AuthorsTask
-from Pages.login_page import LoginPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from frontend.common_test import CommonTest
-
-import logging
-import random
-import time
 
 users = [creator_login1,
          creator_login2,
@@ -32,6 +31,7 @@ users = [creator_login1,
          super_admin_login,
          ]
 
+
 @MultiBrowserFixture
 class AuthorsTaskTest(CommonTest):
   """
@@ -41,15 +41,13 @@ class AuthorsTaskTest(CommonTest):
      - validate trying to close a task without completing author profile
   """
 
-  def test_validate_components(self, init=True):
+  def test_validate_components(self):
     """Validates styles for the author task"""
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
+    dashboard = self.cas_login()
     dashboard.click_create_new_submission_button()
-    title = self.create_article(journal='PLOS Wombat',
-                                type_='Research',
-                                )
+    self.create_article(journal='PLOS Wombat', type_='Research',)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -60,7 +58,7 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_delete_author()
     authors_task.click_completion_button()
     # Attempting to close authors task without a complete author should fail
-    # Time for GUI to automatically unselect complete checkbox
+    # Time for GUI to automatically deselect complete checkbox
     time.sleep(1)
     assert not authors_task.completed_state()
     authors_task.validate_completion_error()

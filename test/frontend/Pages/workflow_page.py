@@ -20,57 +20,43 @@ class WorkflowPage(AuthenticatedPage):
   def __init__(self, driver):
     super(WorkflowPage, self).__init__(driver, '/')
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._click_editor_assignment_button = (By.XPATH, './/div[2]/div[2]/div/div[4]/div')
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
     self._manuscript_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._manuscript_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/a")
-    self._manuscript_text = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
-    self._column_header = (By.XPATH,
-      ".//div[contains(@class, 'column-header')]/div/h2")
-    self._column_header_save = (By.XPATH,
-      ".//div[contains(@class, 'column-header')]/div/div/button[2]")
-    self._column_header_cancel = (By.XPATH,
-      ".//div[contains(@class, 'column-header')]/div/div/button")
+    self._manuscript_text = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
+    self._column_header = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/h2")
+    self._column_header_save = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/div/button[2]")
+    self._column_header_cancel = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
     self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
     self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
-    self._cancel_button_overlay = (By.XPATH,
-      ".//div[@class='overlay-action-buttons']/button[2]")
-    self._first_column = (By.XPATH,
-      ".//div[@class='column-content']/div")
+    self._cancel_button_overlay = (By.XPATH,  ".//div[@class='overlay-action-buttons']/button[2]")
+    self._first_column = (By.XPATH,  ".//div[@class='column-content']/div")
     self._first_column_cards = (By.CSS_SELECTOR, 'div.card')
     # Note: Not used due to not reaching this menu from automation
-    self._remove_confirmation_title = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-title')]/h1")
-    self._remove_confirmation_subtitle = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-title')]/h2")
-    self._remove_yes_button = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
-    self._remove_cancel_button = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
+    self._remove_confirmation_title = (By.XPATH, ".//div[contains(@class, 'delete-card-title')]/h1")
+    self._remove_confirmation_subtitle = (By.XPATH, ".//div[contains(@class, 'delete-card-title')]/h2")
+    self._remove_yes_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
+    self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
     self._register_decision_card = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
+    self._add_card_overlay_div = (By.CSS_SELECTOR, 'div.overlay-container')
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
     # Card Locators
     self._initial_decision_card = (By.XPATH, "//div[@class='card-title'][contains(., 'Initial Decision')]")
-    self._invite_editor_card = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., 'Invite Academic Editor')]")
+    self._invite_editor_card = (By.XPATH,
+                                "//div[@class='column-content']/div/div//div[contains(., 'Invite Academic Editor')]")
 
     # End of not used elements
 
-  #POM Actions
-
+  # POM Actions
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)
-    # https://www.pivotaltracker.com/story/show/103343910
-    # https://www.pivotaltracker.com/story/show/104018188
     assert self._get(self._toolbar_items)
-    # Right menu items
-    # https://www.pivotaltracker.com/story/show/103343910
-    # https://www.pivotaltracker.com/story/show/104018188
     self.validate_wf_top_elements()
     assert self._get(self._column_header)
 
@@ -90,44 +76,6 @@ class WorkflowPage(AuthenticatedPage):
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""
     self._get(self._register_decision_card).click()
-
-  def get_assess_button(self):
-    return self._get(self._assess_button)
-
-  def click_reviewer_agreement_button(self):
-    """Click reviewer agreement button"""
-    self._get(self._reviewer_agreement_button).click()
-    return self
-
-  def click_completed_review_button(self):
-    """Click completed review button"""
-    self._get(self._completed_review_button).click()
-    return self
-
-  def click_reviewer_recommendation_button(self):
-    """Click reviewer recommendation button"""
-    self._get(self._reviewer_recommendation_button).click()
-    return self
-
-  def click_editorial_decision_button(self):
-    """Click editorial decision button"""
-    self._get(self._editorial_decision_button).click()
-    return self
-
-  def click_assess_button(self):
-    """Click assess button"""
-    self._get(self._assess_button).click()
-    return self
-
-  def click_sign_out_link(self):
-    """Click sign out link"""
-    self._get(self._sign_out_link).click()
-    return self
-
-  def click_close_navigation(self):
-    """Click on the close icon to close left navigation bar"""
-    self._get(self._nav_close).click()
-    return self
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""
@@ -153,13 +101,12 @@ class WorkflowPage(AuthenticatedPage):
     self._get(self._add_new_card_button).click()
     return self
 
-
   def check_overlay(self):
     """
     Check CSS properties of the overlay that appears when the user click on add new card
     TODO: Disabled until StyleGuide is ready: APERTA-5414
     """
-    card_overlay = self._get(self._add_card_overlay)
+    card_overlay = self._get(self._add_card_overlay_div)
     assert card_overlay.text == 'Pick the type of card to add'
     self.validate_application_title_style(card_overlay)
     assert card_overlay.value_of_css_property('text-align') == 'center'
@@ -259,7 +206,7 @@ class WorkflowPage(AuthenticatedPage):
     assert remove_subtitle.value_of_css_property('font-size') == '30px'
     assert remove_subtitle.value_of_css_property('font-weight') == '500'
     remove_yes = self._get(self._remove_confirmation_title)
-    self.validate_green_backed_button_style(remove_yes)
+    self.validate_primary_big_green_button_style(remove_yes)
     assert remove_yes.text == "Yes, Delete this Card"
     remove_cancel = self._get(self._remove_confirmation_subtitle)
     assert remove_cancel.text == "cancel"
@@ -276,10 +223,12 @@ class WorkflowPage(AuthenticatedPage):
     self._get(self._add_button_overlay).click()
     time.sleep(2)
 
-  def complete_card(self, card_name, click_override=False):
+  def complete_card(self, card_name):
     """
     On a given card, check complete and then close
     Assumes you have already opened card
+    :param card_name: name of card to complete
+    :return void function
     """
     base_card = BaseCard(self._driver)
     if card_name == 'Register Decision':
@@ -295,6 +244,5 @@ class WorkflowPage(AuthenticatedPage):
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():
         completed.click()
-        #time.sleep(.2)
       base_card._get(base_card._close_button).click()
       time.sleep(1)

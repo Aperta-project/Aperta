@@ -9,6 +9,7 @@ Those acts are expected to be defined in
 """
 __author__ = 'jgray@plos.org'
 
+import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
@@ -34,23 +35,19 @@ class ApertaPaperTrackerTest(CommonTest):
       - presentation of the table
       - presentation of individual data points for each paper
   """
-  def test_validate_paper_tracker(self):
+  def test_validate_paper_tracker(self, init=True):
     """
     Validates the presence of the following elements:
       Welcome Text, subhead, table presentation
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type['user']))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['email'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    print('Logging in as user: {}'.format(user_type['name']))
+    dashboard_page = self.cas_login(email=user_type['email']) if init else DashboardPage(self.getDriver())
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
     (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type['user'])
+    logging.info('Total count is {0} for {1}'.format(total_count, journals_list))
     pt_page.validate_table_presentation_and_function(total_count, journals_list)
     pt_page.validate_nav_toolbar_elements(user_type['user'])
 

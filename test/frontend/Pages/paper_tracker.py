@@ -38,7 +38,10 @@ class PaperTrackerPage(AuthenticatedPage):
 
   # POM Actions
   def validate_heading_and_subhead(self, username):
-    # Validating Main Heading
+    # Validating Main Heading - these have been removed as part of the
+    #   roles and permissions work. Not sure if they will be reintroduced
+    #   so leaving in place and commented out for now
+    """
     title = self._get(self._paper_tracker_title)
     self.validate_application_title_style(title)
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
@@ -50,6 +53,7 @@ class PaperTrackerPage(AuthenticatedPage):
     assert subhead.value_of_css_property('font-size') == '18px'
     assert subhead.value_of_css_property('line-height') == '25.7167px'
     assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    """
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
     journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
@@ -68,6 +72,7 @@ class PaperTrackerPage(AuthenticatedPage):
                                   (journal, 'unsubmitted'))[0][0]
       total_count += int(paper_count)
 
+    """
     if total_count == 1:
       assert subhead.text == 'You have {0} paper in your tracker.'.format(total_count), \
         (subhead.text, str(total_count))
@@ -76,6 +81,7 @@ class PaperTrackerPage(AuthenticatedPage):
       #assert subhead.text == 'You have {0} papers in your tracker.'.format(total_count), \
       #  (subhead.text, str(total_count))
       pass
+    """
     return total_count, journals_list
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):

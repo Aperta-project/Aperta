@@ -288,8 +288,9 @@ class WorkflowPage(AuthenticatedPage):
       register_decision_card.register_decision('Major Revision')
     elif card_name == 'Initial Decision':
       initial_decision_card = InitialDecisionCard(self._driver)
+      time.sleep(2)
       id_state = initial_decision_card.execute_decision(choice='invite')
-      logging.info('Executed intial decision of {}'.format(id_state))
+      logging.info('Executed initial decision of {}'.format(id_state))
     else:
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():

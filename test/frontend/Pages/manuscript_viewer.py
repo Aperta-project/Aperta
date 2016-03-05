@@ -13,6 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import affiliation, billing_data, rv_login
 from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
@@ -21,10 +22,6 @@ from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
-from frontend.Tasks.initial_decision_task import InitialDecisionTask
-from frontend.Tasks.register_decision_task import RegisterDecisionTask
-from frontend.Cards.figures_card import FiguresCard
-from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
 
 __author__ = 'sbassi@plos.org'
 
@@ -347,41 +344,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     buttons = self._gets(self._control_bar_right_items)
     assert self._get(self._tb_workflow_link) if user_buttons == 8 else (len(buttons) == 7), len(buttons)
 
-  def complete_card(self, card_name, click_override=False):
-    """On a given card, check complete and then close"""
-    cards = self._gets((By.CLASS_NAME, 'card-title'))
-    # if card is marked as complete, leave is at is.
-    if not click_override:
-      for card in cards:
-        card_div = card.find_element_by_xpath('../..')
-        if card.text == card_name and 'card--completed' not in card_div.get_attribute('class'):
-          card.find_element_by_xpath('.//ancestor::a').click()
-          break
-        elif card.text == card_name and 'card--completed' in card_div.get_attribute('class'):
-          return None
-      else:
-        return None
-    else:
-      for card in cards:
-        if card.text == card_name:
-          card.find_element_by_xpath('.//ancestor::a').click()
-          break
-      else:
-        return None
-
-    base_card = BaseCard(self._driver)
-    if card_name == 'Authors':
-      # Complete authors data before mark close
-      author_card = AuthorsCard(self._driver)
-      author_card.edit_author(affiliation)
-    else:
-      completed = base_card._get(base_card._completed_check)
-      if not completed.is_selected():
-        completed.click()
-        #time.sleep(.2)
-      base_card._get(base_card._close_button).click()
-      time.sleep(1)
-
   def is_task_present(self, task_name):
     """
     Check if a task is available in the task list
@@ -393,7 +355,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if task.text == task_name:
         return True
     return False
-
 
   def complete_task(self, task_name, click_override=False, data=None, click=False):
     """
@@ -426,25 +387,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return None
     base_task = BaseTask(self._driver)
     base_task.set_timeout(60)
-    if task_name == 'Initial Decision':
-      initial_decision_task = InitialDecisionTask(self._driver)
-      initial_decision_task.execute_decision()
-      completed = base_task.completed_state()
-      if not completed:
-        base_task.click_completion_button()
-      task.click()
-      time.sleep(1)
-    elif task_name == 'Register Decision':
-      register_decision_task = RegisterDecisionTask(self._driver)
-      if data:
-        register_decision_task.execute_decision(data)
-      else:
-        register_decision_task.execute_decision()
-      if not base_task.completed_state():
-        base_task.click_completion_button()
-      task.click()
-      time.sleep(1)
-    elif task_name == 'Additional Information':
+    if task_name == 'Additional Information':
       ai_task = AITask(self._driver)
       # If the task is read only due to completion state, set read-write
       if base_task.completed_state():
@@ -478,14 +421,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
+      logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-      if not base_task.completed_state():
-        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     else:
-      raise ValueError('No information on this card: {}'.format(task_name))
+      raise ValueError('No information on this task: {}'.format(task_name))
     base_task.restore_timeout()
 
   def get_paper_title_from_page(self):

@@ -54,21 +54,28 @@ class InitialDecisionCard(BaseCard):
     """
     choices = ['reject', 'invite']
     decision_letter_input = self._get(self._decision_letter_textarea)
+    logging.info('Initial Decision Choice is: {0}'.format(choice))
     if choice == 'random':
       choice = random.choice(choices)
+      logging.info('Since choice was random, new choice is {}'.format(choice))
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
-      time.sleep(.5)
+      time.sleep(1)
       decision_letter_input.send_keys('Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
-      time.sleep(.5)
+      time.sleep(1)
       decision_letter_input.send_keys('Invited')
-    # Time to allow the button to change to clickleable state
+    # Time to allow the button to change to clickable state
     time.sleep(1)
     self._get(self._register_decision_btn).click()
+    time.sleep(5)
+    # look for alert info
+    alert_msg = self._get(self._alert_info)
+    assert "An initial decision of 'Invite full submission' decision has been made." in \
+        alert_msg.text, alert_msg.text
     self.click_close_button()
     time.sleep(.5)
     return choice

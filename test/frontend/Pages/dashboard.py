@@ -487,6 +487,7 @@ class DashboardPage(AuthenticatedPage):
     :param username: username
     :return: Count of unaccepted invites (does not include rejected or accepted invites)
     """
+    logging.info(username)
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
                                      'WHERE state = %s AND invitee_id = %s;', ('invited', uid))[0][0]

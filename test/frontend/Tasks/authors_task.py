@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import time
 
 from selenium.webdriver.common.by import By
@@ -7,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 
 from frontend.Tasks.basetask import BaseTask
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import author
 
 __author__ = 'jgray@plos.org'
@@ -220,8 +222,15 @@ class AuthorsTask(BaseTask):
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
     completed = self.completed_state()
-    self.click_completion_button()
-    time.sleep(.2)
+    logging.info('Completed State of the Author task is: {}'.format(completed))
+    if not completed:
+      self.click_completion_button()
+      time.sleep(2)
+      try:
+        self.validate_completion_error()
+      except ElementDoesNotExistAssertionError:
+        logging.info('No validation errors completing Author Task')
+    time.sleep(2)
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

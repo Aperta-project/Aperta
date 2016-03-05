@@ -84,13 +84,13 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     logging.info('Logging in as user: {}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
     # Temporary changing timeout
+    dashboard_page.click_create_new_submission_button()
     dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
     title = self.create_article(journal='PLOS Wombat',
                                 type_='NoCards',
                                 random_bit=True,
-                                init=False,
                                 title='full submit',
                                 )
     dashboard_page.restore_timeout()
@@ -181,6 +181,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     creator_user = random.choice(users)
     logging.info('Logging in as user: {}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email']) if init else DashboardPage(self.getDriver())
+    dashboard_page.click_create_new_submission_button()
     # Temporary changing timeout
     dashboard_page.set_timeout(60)
     # We recently became slow drawing this overlay (20151006)
@@ -188,7 +189,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     title = self.create_article(journal='PLOS Wombat',
                                 type_='OnlyInitialDecisionCard',
                                 random_bit=True,
-                                init=False,
                                 title='initial submit',
                                 )
     dashboard_page.restore_timeout()
@@ -241,7 +241,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     id_card.validate_styles()
     decision = id_card.execute_decision()
     logging.info('Decision: {}'.format(decision))
-    id_card.click_close_button()
     time.sleep(2)
     sub_data = workflow_page.get_db_submission_data(paper_id)
     if decision == 'reject':

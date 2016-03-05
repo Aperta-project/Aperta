@@ -97,7 +97,7 @@ class MetadataVersioningTest(CommonTest):
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       # click register initial decision on task
-      paper_viewer.click_workflow_lnk()
+      paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page.click_initial_decision_card()
       workflow_page.complete_card('Initial Decision')
@@ -133,7 +133,7 @@ class MetadataVersioningTest(CommonTest):
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.click_workflow_lnk()
+    paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')

@@ -53,10 +53,10 @@ class InitialDecisionCardTest(CommonTest):
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email']) if init else DashboardPage(self.getDriver())
     dashboard_page.set_timeout(60)
+    dashboard_page.click_create_new_submission_button()
     self.create_article(journal = 'PLOS Wombat',
                         type_ = 'Images+InitialDecision',
                         random_bit = True,
-                        init = False,
                         )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
@@ -107,10 +107,6 @@ class InitialDecisionCardTest(CommonTest):
     assert initial_decision._get(initial_decision._decision_letter_textarea).text == ''
     # AC 1 and 3
     initial_decision.execute_decision('invite')
-    # look for alert info
-    alert_msg = initial_decision._get(initial_decision._alert_info)
-    assert "An initial decision of 'Invite full submission' decision has been made." in \
-      alert_msg.text, alert_msg.text
     # Test that card is editable by author
     manuscript_page.logout()
     # The following sequence is a workaround for our failure to invalidate CAS token on sign out

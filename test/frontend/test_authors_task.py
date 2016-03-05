@@ -46,6 +46,7 @@ class AuthorsTaskTest(CommonTest):
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
     dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
+    dashboard.click_create_new_submission_button()
     title = self.create_article(journal='PLOS Wombat',
                                 type_='Research',
                                 )
@@ -57,11 +58,11 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_styles()
     authors_task.validate_author_task_action()
     authors_task.validate_delete_author()
-    authors_task.click_completed_checkbox()
+    authors_task.click_completion_button()
     # Attempting to close authors task without a complete author should fail
     # Time for GUI to automatically unselect complete checkbox
     time.sleep(1)
-    assert not authors_task.completed_cb_is_selected()
+    assert not authors_task.completed_state()
     authors_task.validate_completion_error()
     return self
 

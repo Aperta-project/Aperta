@@ -67,6 +67,7 @@ pub_svcs_login = {'user': 'apubsvcs', 'name': 'atest pubsvcs', 'email': 'sealres
 academic_editor_login = {'user':'aacadedit', 'name': 'atest acadedit', 'email': 'sealresq+1009@gmail.com'}
 internal_editor_login = {'user':'aintedit', 'name': 'atest intedit', 'email': 'sealresq+1010@gmail.com'}
 super_admin_login = {'user':'asuperadm', 'name': 'atest superadm', 'email': 'sealresq+1011@gmail.com'}
+cover_editor_login = {'user':'acoveredit', 'name': 'atest coveredit', 'email': 'sealresq+1012@gmail.com'}
 # anyone can be a discussion_participant
 # everyone has a user role for their own profile page
 

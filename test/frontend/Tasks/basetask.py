@@ -51,14 +51,16 @@ class BaseTask(AuthenticatedPage):
     Validates that we properly put up an error in the case of attempting completion of a task with validation errors
     :return: void function
     """
+    self.set_timeout(2)
     error_msg = self._get(self._task_error_msg)
+    logging.info('Validation Error was thrown Completing Task')
     assert 'Please fix all errors' in error_msg.text, error_msg.text
+    self.restore_timeout()
 
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
-    completed_lbl = self._get(self._completed_label)
-    assert 'I am done with this task' in completed_lbl.text, completed_lbl.text
-    completed_check = self._get(self._completed_cb)
+    completed_btn = self._get(self._completion_button)
+    assert 'I am done with this task' in completed_btn.text, completed_btn.text
     # TODO: When styleguide catches up, assert this checkbox and label matches that guide
 
   def is_versioned_view(self):

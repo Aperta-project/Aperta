@@ -102,15 +102,13 @@ class AdminPage(AuthenticatedPage):
       # Ordinary Admin role is assigned on a per journal basis
       logging.info('Validating admin page elements for Ordinary Admin user')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      roles = PgSQL().query('SELECT old_role_id FROM user_roles WHERE user_id = %s;', (uid,))
-      role_list = []
-      for role in roles:
-        role_list.append(role[0])
       journals = []
-      for role in role_list:
-        journals.append(PgSQL().query('SELECT journal_id FROM old_roles WHERE id = %s;', (role,))[0][0])
+      journals.append(PgSQL().query('SELECT assigned_to_id '
+                                    'FROM assignments '
+                                    'WHERE user_id = %s AND assigned_to_type=\'Journal\';', (uid,))[0][0])
       db_journals = []
       for journal in journals:
+        logging.info(journal)
         db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '
                                          'FROM journals LEFT JOIN papers '
                                          'ON journals.id = papers.journal_id '
@@ -124,12 +122,11 @@ class AdminPage(AuthenticatedPage):
       # Once again, while less than ideal, these must be defined on the fly
       self._base_admin_journal_block_paper_count = \
           (By.XPATH,
-           '//div[@class="ember-view journal-thumbnail"][%s]/a/span[@class="journal-thumbnail-paper-count"]'
+           '//div[@class="ember-view journal-thumbnail"][%s]/div/a/span[@class="journal-thumbnail-paper-count"]'
            % str(count + 1))
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
-           % str(count + 1))
-      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/p'
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/h3[@class="journal-thumbnail-name"]' % str(count + 1))
+      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/p'
                                              % str(count + 1))
 
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
@@ -137,8 +134,7 @@ class AdminPage(AuthenticatedPage):
       journal_desc = self._iget(self._base_admin_journal_block_desc).text
       if username == 'asuperadm':
         self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
-                                                    % (count + 1))
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']" % (count + 1))
         self._get(self._base_admin_journal_block_edit_icon)
       if not journal_desc:
         journal_desc = None
@@ -255,7 +251,7 @@ class AdminPage(AuthenticatedPage):
       assert cancel_link.value_of_css_property('vertical-align') == 'middle', \
           cancel_link.value_of_css_property('vertical-align')
       self._actions.move_to_element(cancel_link).perform()
-      time.sleep(1)
+      time.sleep(.5)
       assert cancel_link.value_of_css_property('text-decoration') == 'underline', \
           cancel_link.value_of_css_property('text-decoration')
       self._actions.move_to_element(cancel_link).perform()
@@ -275,7 +271,7 @@ class AdminPage(AuthenticatedPage):
       journal_count = self.select_named_journal(named_journal)
       logging.info(journal_count)
       self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']"
                                                     % str(journal_count))
       edit_journal = self._get(self._base_admin_journal_block_edit_icon)
       edit_journal.click()
@@ -377,8 +373,8 @@ class AdminPage(AuthenticatedPage):
     count = 0
     for journal_block in journal_blocks:
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
-           % str(count + 1))
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][{}]/div/a/h3[@class="journal-thumbnail-name"]'\
+           .format(count + 1))
       journal_title = self._get(self._base_admin_journal_block_name)
       logging.debug(journal_title.text)
       logging.debug(journal)

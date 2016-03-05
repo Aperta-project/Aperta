@@ -59,11 +59,11 @@ class ApertaDashboardTest(CommonTest):
     print('Logging in as user: {}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email']) if init else DashboardPage(self.getDriver())
     dashboard_page.validate_initial_page_elements_styles()
-    dashboard_page.validate_invite_dynamic_content(user_type['email'])
-    active_manuscript_count = dashboard_page.validate_manuscript_section_main_title(user_type['email'])
+    dashboard_page.validate_invite_dynamic_content(user_type['user'])
+    active_manuscript_count = dashboard_page.validate_manuscript_section_main_title(user_type['user'])
     if active_manuscript_count > 0:
       dashboard_page.validate_active_manuscript_section(user_type['email'], active_manuscript_count)
-    inactive_manuscript_count = dashboard_page.validate_inactive_manuscript_section(user_type['email'])
+    inactive_manuscript_count = dashboard_page.validate_inactive_manuscript_section(user_type['user'])
     if active_manuscript_count == 0 and inactive_manuscript_count == 0:
       dashboard_page.validate_no_manus_info_msg()
     # The dashboard navigation elements will change based on a users permissions

@@ -28,8 +28,11 @@ class JournalFactory
 
       # Creator(s) cannot view/edit production metadata or final tech check tasks
       task_klasses = Task.descendants
-      task_klasses -= [TahiStandardTasks::ProductionMetadataTask]
-      task_klasses -= [PlosBioTechCheck::FinalTechCheckTask]
+      task_klasses -= [
+        TahiStandardTasks::ProductionMetadataTask,
+        TahiStandardTasks::RegisterDecisionTask,
+        PlosBioTechCheck::FinalTechCheckTask
+      ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)

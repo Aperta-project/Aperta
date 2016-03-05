@@ -291,7 +291,9 @@ class AuthenticatedPage(PlosPage):
     Close any type of flash message: error, info or success
     :return: void function
     """
+    self.set_timeout(90)
     self._get(self._flash_closer).click()
+    self.restore_timeout()
 
   def close_modal(self):
     """

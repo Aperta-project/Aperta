@@ -5,8 +5,8 @@ describe PlosBilling::Paper::Submitted::Salesforce do
     class_double(PlosBilling::SalesforceManuscriptUpdateWorker)
       .as_stubbed_const(transfer_nested_constants: true)
   end
-  let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:user) { FactoryGirl.build_stubbed(:user) }
+  let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
   before do
     allow(Paper).to receive(:find).with(paper.id).and_return(paper)

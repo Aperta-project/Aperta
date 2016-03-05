@@ -9,7 +9,7 @@ __author__ = 'sbassi@plos.org'
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_uid
+from Base.Resources import login_valid_uid, super_admin_login
 from frontend.common_test import CommonTest
 from frontend.Pages.profile_page import ProfilePage
 from Pages.dashboard import DashboardPage
@@ -28,7 +28,8 @@ class ApertaProfileTest(CommonTest):
 
   def _go_to_profile(self, init=True):
     """Go to the profile page"""
-    dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
+    # APERTA-6146 Can only use super admin login for the time being.
+    dashboard = self.cas_login(email=super_admin_login['email']) if init else DashboardPage(self.getDriver())
     dashboard.click_profile_link()
     return ProfilePage(self.getDriver())
 

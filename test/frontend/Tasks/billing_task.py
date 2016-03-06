@@ -66,7 +66,7 @@ class BillingTask(BaseTask):
     payment_select.click()
     # Grab the items in the select2 dropdown, then make selection
     # previous send_keys method no longer works.
-    time.sleep(1)
+    time.sleep(2)
     parent_div = self._get(self._payment_items_parent)
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == 'I will pay the full fee upon article acceptance':

@@ -7,6 +7,7 @@ __author__ = 'jgray@plos.org'
 
 import logging
 import random
+import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
@@ -133,7 +134,6 @@ class ApertaJournalAdminTest(CommonTest):
     Validates the function of the:
       Add new Template button
     Validates Editing extant MMT
-    Validates Deleting extant MMT
     :return: void function
     """
     logging.info('Validating journal mmt (paper type) display and function')
@@ -148,9 +148,10 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
 
-  def test_validate_add_mmt_function(self):
+  def test_validate_add_delete_mmt_function(self):
     """
     Validates Add new Template
+    Validates Delete new Template
     :return: void function
     """
     logging.info('Validating journal add mmt (paper type) function')
@@ -163,7 +164,12 @@ class ApertaJournalAdminTest(CommonTest):
     adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
+    time.sleep(1)
     ja_page.add_new_mmt_template()
+    # This driver reload seems to be the only way to avoid a Stale Reference Exception
+    ja_page = JournalAdminPage(self.getDriver())
+    time.sleep(1)
+    ja_page.delete_new_mmt_template()
 
   def test_validate_style_settings_display_function(self):
     """

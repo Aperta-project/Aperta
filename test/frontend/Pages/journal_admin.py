@@ -87,6 +87,7 @@ class JournalAdminPage(AdminPage):
     self._journal_styles_css_overlay_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons a + button')
 
     self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
+    self._mmt_template_error_msg = (By.CSS_SELECTOR, 'div.mmt-edit-error-message')
     self._mmt_template_save_button = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-save-button')
     self._mmt_template_cancel_link = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-cancel-button')
     self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')
@@ -262,7 +263,7 @@ class JournalAdminPage(AdminPage):
   def validate_mmt_section(self):
     """
     Assert the existence and function of the elements of the Manuscript Manager Templates section.
-    Validate Add new template, edit and delete existing templates, validate presentation of staging.
+    Validate Add new template, edit existing templates, validate presentation of staging.
     :return: void function
     """
     time.sleep(1)
@@ -301,26 +302,7 @@ class JournalAdminPage(AdminPage):
         # Journals must have at least one MMT, so if only one, no delete icon is present
         if len(mmts) > 1:
           self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa.fa-trash.animation-scale-in')
-          if name.text == 'Research<-False':
-            logging.info('Found MMT to delete - moving to trash icon')
-            time.sleep(1)
-            delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
-            logging.info('Clicking on MMT trash icon')
-            self._actions.click(delete_mmt).perform()
-            time.sleep(1)
-            self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p')
-            confirm_text = self._get(self._journal_admin_manu_mgr_delete_confirm_paragraph)
-            assert 'This will permanently delete your template. Are you sure?' in confirm_text.text, confirm_text.text
-            self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p + button')
-            self._journal_admin_manu_mgr_thumb_delete_confirm = (By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
-            time.sleep(1)
-            self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)  # cancel mmt delete should be present
-            confirm_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_confirm)
-            confirm_delete.click()
-            # If this mmt is found before the end of the list of mmt, the DOM will be stale so
-            break
-          else:
-            mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+          mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
     # Need to ensure the Add New Template button is not under the top toolbar
     att_title = self._get(self._journal_admin_avail_task_types_title)
@@ -428,8 +410,8 @@ class JournalAdminPage(AdminPage):
 
   def add_new_mmt_template(self):
     """
-    A function to add a new mmt (paper type) template to a journal)
-    :return: the name of the added template
+    A function to add a new mmt (paper type) template to a journal
+    :return: void function
     """
     logging.info('Add New Template called')
     # Need to ensure the Add New Template button is not under the top toolbar
@@ -443,13 +425,66 @@ class JournalAdminPage(AdminPage):
     template_field.click()
     template_field.send_keys(Keys.ARROW_DOWN + '<-False')
     time.sleep(1)
+    # If this mmt template already exists, this save should return an error and the name link won't exist
     save_template_button.click()
     time.sleep(1)
-    self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
-    template_link = self._get(self._mmt_template_name_link)
-    template_name = template_link.text
-    self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
-    back_btn = self._get(self._journal_admin_manu_mgr_back_link)
-    back_btn.click()
-    time.sleep(.5)
-    return template_name
+    self.set_timeout(2)
+    try:
+      logging.info('The following message will only be found if there is a particular data state, it is not an error.')
+      msg = self._get(self._mmt_template_error_msg)
+    except ElementDoesNotExistAssertionError:
+      self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
+      self._get(self._mmt_template_name_link)
+      self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
+      back_btn = self._get(self._journal_admin_manu_mgr_back_link)
+      back_btn.click()
+      self.restore_timeout()
+      return
+    assert 'Has already been taken' in msg.text, msg.text
+    cancel = self._get(self._mmt_template_cancel_link)
+    cancel.click()
+    time.sleep(1)
+
+  def delete_new_mmt_template(self):
+    """
+    A function to delete a newly added mmt (paper type) template to a journal
+    :return: void function
+    """
+    url = self._driver.current_url
+    logging.info('Delete New Template called')
+    mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
+    if mmts:
+      count = 0
+      for mmt in mmts:
+        name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
+        logging.info(name.text)
+        self._actions.move_to_element(mmt).perform()
+        self._journal_admin_manu_mgr_thumb_edit = (By.CSS_SELECTOR, 'a.fa-pencil')
+        mmt.find_element(*self._journal_admin_manu_mgr_thumb_edit)
+        # Journals must have at least one MMT, so if only one, no delete icon is present
+        if len(mmts) > 1:
+          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa.fa-trash.animation-scale-in')
+          if name.text == 'Research<-False':
+            logging.info('Found MMT to delete - moving to trash icon')
+            time.sleep(1)
+            delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+            logging.info('Clicking on MMT trash icon')
+            self._actions.click(delete_mmt).perform()
+            time.sleep(1)
+            self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p')
+            confirm_text = self._get(self._journal_admin_manu_mgr_delete_confirm_paragraph)
+            assert 'This will permanently delete your template. Are you sure?' in confirm_text.text, confirm_text.text
+            self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p + button')
+            self._journal_admin_manu_mgr_thumb_delete_confirm = (By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
+            time.sleep(1)
+            self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)  # cancel mmt delete should be present
+            confirm_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_confirm)
+            confirm_delete.click()
+            # If this mmt is found before the end of the list of mmt, the DOM will be stale so
+            break
+          else:
+            mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+        count += 1
+
+
+

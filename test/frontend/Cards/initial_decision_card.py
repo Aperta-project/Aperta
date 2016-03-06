@@ -75,8 +75,11 @@ class InitialDecisionCard(BaseCard):
     time.sleep(5)
     # look for alert info
     alert_msg = self._get(self._alert_info)
-    assert "An initial decision of 'Invite full submission' decision has been made." in \
-        alert_msg.text, alert_msg.text
+    if choice != 'reject':
+      assert "An initial decision of 'Invite full submission' decision has been made." in \
+          alert_msg.text, alert_msg.text
+    else:
+      assert "An initial decision of 'Reject' decision has been made." in alert_msg.text, alert_msg.text
     self.click_close_button()
     time.sleep(.5)
     return choice

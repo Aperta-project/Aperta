@@ -57,9 +57,10 @@ class ApertaWorkflowTest(CommonTest):
 
   def test_add_new_card(self):
     """Testing adding a new card"""
-    workflow_users = [internal_editor_login,
+    # APERTA-6186 stops the internal editor and publication services logins from adding a new card
+    workflow_users = [# internal_editor_login,
                       staff_admin_login,
-                      pub_svcs_login,
+                      # pub_svcs_login,
                       super_admin_login,
                       ]
     workflow_user = random.choice(workflow_users)
@@ -78,7 +79,7 @@ class ApertaWorkflowTest(CommonTest):
     # Elements in add new card
     # Following check commented out until APERTA-5414 is solved
     # workflow_page.check_overlay()
-    time.sleep(1)
+    time.sleep(2)
     workflow_page.check_new_tasks_overlay()
     # Check that after adding a card returns to workflow APERTA-5513 AC 4
     time.sleep(1)

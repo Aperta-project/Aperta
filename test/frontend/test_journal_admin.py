@@ -40,7 +40,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def test_validate_journal_admin_components_styles(self):
+  def rest_validate_journal_admin_components_styles(self):
     """
     Validates the presence of the following elements:
       toolbar elements
@@ -58,7 +58,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_nav_toolbar_elements(user_type['email'])
 
-  def test_validate_journal_admin_user_search_display_function(self):
+  def rest_validate_journal_admin_user_search_display_function(self):
     """
     Validates the presence of the following elements:
       user section heading and user search form elements, user search icon
@@ -76,7 +76,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def test_validate_journal_admin_roles_display_function(self):
+  def rest_validate_journal_admin_roles_display_function(self):
     """
     Validates the presence of the following elements:
       role section heading
@@ -123,7 +123,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_task_types_section()
 
-  def test_validate_mmt_display_function(self):
+  def rest_validate_mmt_display_function(self):
     """
     Validates the presence of the following elements:
       Section Heading
@@ -146,7 +146,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
 
-  def test_validate_add_delete_mmt_function(self):
+  def rest_validate_add_delete_mmt_function(self):
     """
     Validates Add new Template
     Validates Delete new Template
@@ -169,7 +169,7 @@ class ApertaJournalAdminTest(CommonTest):
     time.sleep(1)
     ja_page.delete_new_mmt_template()
 
-  def test_validate_style_settings_display_function(self):
+  def rest_validate_style_settings_display_function(self):
     """
     Validates the presence of the following elements:
       Section Heading

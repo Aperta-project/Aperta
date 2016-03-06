@@ -57,6 +57,7 @@ class JournalAdminPage(AdminPage):
                                                     'div.admin-roles div.admin-roles-header + div.admin-roles-header')
     self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
 
+    self._journal_admin_avail_task_types_div = (By.XPATH, '//div[@class="admin-section"][2]')
     self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
     self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][2]/div')
 
@@ -227,6 +228,7 @@ class JournalAdminPage(AdminPage):
     so not investing too much here at present.
     :return: void function
     """
+    att_section = self._get(self._journal_admin_avail_task_types_div)
     task_names = ['Ad-hoc', 'Additional Information', 'Assign Admin', 'Assign Team', 'Authors', 'Billing',
                   'Competing Interests', 'Cover Letter', 'Data Availability', 'Editor Discussion', 'Ethics Statement',
                   'Figures', 'Final Tech Check', 'Financial Disclosure', 'Initial Decision', 'Initial Tech Check',
@@ -238,8 +240,8 @@ class JournalAdminPage(AdminPage):
     assert 'Available Task Types' in att_title.text, att_title.text
     edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
     assert 'EDIT TASK TYPES' in edit_tt_btn.text
-    self._actions.move_to_element_with_offset(att_title, 0, -40).perform()
-    time.sleep(1)
+    self._actions.move_to_element(att_section).perform()
+    time.sleep(.5)
     edit_tt_btn.click()
     # time for animation of overlay
     time.sleep(.5)

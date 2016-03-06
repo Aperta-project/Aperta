@@ -41,7 +41,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def rest_validate_journal_admin_components_styles(self):
+  def test_validate_journal_admin_components_styles(self):
     """
     Validates the presence of the following elements:
       toolbar elements
@@ -49,7 +49,7 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal admin component display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
@@ -59,7 +59,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_nav_toolbar_elements(user_type['email'])
 
-  def rest_validate_journal_admin_user_search_display_function(self):
+  def test_validate_journal_admin_user_search_display_function(self):
     """
     Validates the presence of the following elements:
       user section heading and user search form elements, user search icon
@@ -67,7 +67,7 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal user search display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
@@ -77,7 +77,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def rest_validate_journal_admin_roles_display_function(self):
+  def test_validate_journal_admin_roles_display_function(self):
     """
     Validates the presence of the following elements:
       role section heading
@@ -86,7 +86,7 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal role display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
@@ -96,7 +96,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_roles_section()
 
-  def rest_validate_task_types_display_function(self):
+  def test_validate_task_types_display_function(self):
     """
     Validates the presence of the following elements:
       Section Heading
@@ -114,7 +114,7 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal task types display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
@@ -138,17 +138,34 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    journal = adm_page.select_random_journal()
+    adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
 
-  def rest_validate_style_settings_display_function(self):
+  def test_validate_add_mmt_function(self):
+    """
+    Validates Add new Template
+    :return: void function
+    """
+    logging.info('Validating journal add mmt (paper type) function')
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.select_random_journal()
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.add_new_mmt_template()
+
+  def test_validate_style_settings_display_function(self):
     """
     Validates the presence of the following elements:
       Section Heading
@@ -170,7 +187,7 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating Journal Style Settings display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 

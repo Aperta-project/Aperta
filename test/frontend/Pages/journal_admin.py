@@ -49,7 +49,6 @@ class JournalAdminPage(AdminPage):
                                                    'tr.user-row td div div ul li.select2-search-field input')
     self._journal_admin_user_row_role_search_result_item = (By. CSS_SELECTOR, 'ul.select2-results li div')
 
-
     self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
     self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
     self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
@@ -57,7 +56,6 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_roles_permission_heading = (By.CSS_SELECTOR,
                                                     'div.admin-roles div.admin-roles-header + div.admin-roles-header')
     self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
-
 
     self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
     self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][2]/div')
@@ -87,8 +85,6 @@ class JournalAdminPage(AdminPage):
     self._journal_styles_css_overlay_field = (By.CSS_SELECTOR, 'div.overlay-header + p + textarea')
     self._journal_styles_css_overlay_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a')
     self._journal_styles_css_overlay_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons a + button')
-
-
 
     self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
     self._mmt_template_save_button = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-save-button')
@@ -269,6 +265,7 @@ class JournalAdminPage(AdminPage):
     Validate Add new template, edit and delete existing templates, validate presentation of staging.
     :return: void function
     """
+    time.sleep(1)
     dbmmts = []
     dbids = []
     manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
@@ -279,7 +276,7 @@ class JournalAdminPage(AdminPage):
     try:
       mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
     except ElementDoesNotExistAssertionError:
-      logging.warning('No extant MMT found for Journal')
+      logging.error('No extant MMT found for Journal. This should never happen.')
     curr_journal_id = self._driver.current_url.split('/')[-1]
     db_mmts = PgSQL().query('SELECT paper_type, id '
                             'FROM manuscript_manager_templates '
@@ -317,7 +314,7 @@ class JournalAdminPage(AdminPage):
             self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p + button')
             self._journal_admin_manu_mgr_thumb_delete_confirm = (By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
             time.sleep(1)
-            cancel_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)
+            self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)  # cancel mmt delete should be present
             confirm_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_confirm)
             confirm_delete.click()
             # If this mmt is found before the end of the list of mmt, the DOM will be stale so
@@ -325,12 +322,12 @@ class JournalAdminPage(AdminPage):
           else:
             mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
-    time.sleep(2)
+    # Need to ensure the Add New Template button is not under the top toolbar
+    att_title = self._get(self._journal_admin_avail_task_types_title)
+    self._actions.move_to_element(att_title).perform()
     add_mmt_btn.click()
     time.sleep(2)
     self._validate_mmt_template_items()
-    template = self._add_new_mmt_template()
-
 
   def validate_style_settings_section(self):
     """
@@ -398,18 +395,24 @@ class JournalAdminPage(AdminPage):
     Validate the elements of the manuscript manager template (aka paper type)
     :return: void function
     """
-    time.sleep(2)
     template_field = self._get(self._mmt_template_name_field)
+    # The default name should be Research
     assert 'Research' in template_field.get_attribute('value'), template_field.get_attribute('value')
     self._get(self._mmt_template_save_button)
     template_cancel = self._get(self._mmt_template_cancel_link)
     self._gets(self._mmt_template_add_phase_icons)
+    time.sleep(3)
     columns = self._gets(self._mmt_template_columns)
+    # For each column, validate its widgets
     for column in columns:
       col_title = column.find_element(*self._mmt_template_column_title)
-      time.sleep(.5)
+      time.sleep(1)
+      # For a reason I can't fathom, the first click is not always registered, second is always.
       col_title.click()
-      time.sleep(2)
+      col_title.click()
+      # The click should pull up some column editing widgets.
+      # We sometimes have a delayed drawing of these items
+      time.sleep(.5)
       self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
       column.find_element(*self._mmt_template_column_delete)
       self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')
@@ -420,14 +423,18 @@ class JournalAdminPage(AdminPage):
       column.find_element(*self._mmt_template_column_no_cards_card)
       column.find_element(*self._mmt_template_column_add_new_card_btn)
     template_cancel.click()
-    time.sleep(.5)
+    # Time to clear the overlay
+    time.sleep(2)
 
-  def _add_new_mmt_template(self):
+  def add_new_mmt_template(self):
     """
     A function to add a new mmt (paper type) template to a journal)
     :return: the name of the added template
     """
     logging.info('Add New Template called')
+    # Need to ensure the Add New Template button is not under the top toolbar
+    att_title = self._get(self._journal_admin_avail_task_types_title)
+    self._actions.move_to_element(att_title).perform()
     add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
     add_mmt_btn.click()
     time.sleep(.5)

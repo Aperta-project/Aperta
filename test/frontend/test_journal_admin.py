@@ -1,10 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-This test case validates the Aperta Journal-specific Admin page.
-"""
-__author__ = 'jgray@plos.org'
-
 import logging
 import random
 import time
@@ -14,7 +9,10 @@ from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
 from frontend.common_test import CommonTest
-
+"""
+This test case validates the Aperta Journal-specific Admin page.
+"""
+__author__ = 'jgray@plos.org'
 
 users = [staff_admin_login,
          super_admin_login,

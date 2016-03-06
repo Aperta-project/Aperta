@@ -96,7 +96,6 @@ class JournalAdminPage(AdminPage):
     self._mmt_template_column_no_cards_card = (By.CSS_SELECTOR, 'div.sortable-no-cards')
     self._mmt_template_column_add_new_card_btn = (By.CSS_SELECTOR, 'a.button-secondary')
 
-
   # POM Actions
   def validate_users_section(self, journal):
     """
@@ -201,9 +200,9 @@ class JournalAdminPage(AdminPage):
       role_name = self._get(self._role_name)
       if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
         self._role_delete_icon = (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{}]\
-              /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
-        delete_role = self._get(self._role_delete_icon)
+            "//div[@class='ember-view admin-role not-editing'][{}]\
+            /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
+        self._get(self._role_delete_icon)
       self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
            /div[@class='admin-role-permissions']".format(count))
       self._get(self._role_permissions_div)
@@ -211,12 +210,11 @@ class JournalAdminPage(AdminPage):
           /div[@class='admin-role-permissions']/label".format(count))
       self.set_timeout(1)
       try:
-        permissions = self._gets(self._role_assigned_permission)
-        # print(permissions)
+        self._gets(self._role_assigned_permission)
       except ElementDoesNotExistAssertionError:
         logging.warning('No permissions found for role {}'.format(role_name.text))
       try:
-        role_perms = self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
+        self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
       except ElementDoesNotExistAssertionError:
         logging.warning('No permissions found for role: {}'.format(role_name.text))
       self.restore_timeout()
@@ -245,7 +243,7 @@ class JournalAdminPage(AdminPage):
     edit_tt_btn.click()
     # time for animation of overlay
     time.sleep(.5)
-    closer = self._get(self._overlay_header_close)
+    self._get(self._overlay_header_close)
     title = self._get(self._overlay_header_title)
     assert 'Available Task Types' in title.text, title.text
     task_title_heading = self._get(self._journal_admin_att_overlay_task_title_heading)
@@ -269,6 +267,7 @@ class JournalAdminPage(AdminPage):
     time.sleep(1)
     dbmmts = []
     dbids = []
+    mmts = []
     manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
     self.validate_application_h2_style(manu_mgr_title)
     assert 'Manuscript Manager Templates' in manu_mgr_title.text, manu_mgr_title.text
@@ -339,36 +338,36 @@ class JournalAdminPage(AdminPage):
     assert 'ePub CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
     assert label.text == 'Enter or edit CSS to format the ePub output for this journal\'s papers.', label.text
-    css_input = self._get(self._journal_styles_css_overlay_field)
-    cancel = self._get(self._journal_styles_css_overlay_cancel)
-    save = self._get(self._journal_styles_css_overlay_save)
+    self._get(self._journal_styles_css_overlay_field)
+    self._get(self._journal_styles_css_overlay_cancel)
+    self._get(self._journal_styles_css_overlay_save)
     closer.click()
     time.sleep(.5)
     edit_pdf_css_btn = self._get(self._journal_admin_edit_pdf_css_btn)
     assert edit_pdf_css_btn.text == 'EDIT PDF CSS', edit_pdf_css_btn.text
     edit_pdf_css_btn.click()
     time.sleep(.5)
-    closer = self._get(self._overlay_header_close)
+    self._get(self._overlay_header_close)
     title = self._get(self._overlay_header_title)
     assert 'PDF CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
     assert label.text == 'Enter or edit CSS to format the PDF output for this journal\'s papers.', label.text
-    css_input = self._get(self._journal_styles_css_overlay_field)
+    self._get(self._journal_styles_css_overlay_field)
     cancel = self._get(self._journal_styles_css_overlay_cancel)
-    save = self._get(self._journal_styles_css_overlay_save)
+    self._get(self._journal_styles_css_overlay_save)
     cancel.click()
     time.sleep(.5)
     edit_ms_css_btn = self._get(self._journal_admin_edit_ms_css_btn)
     assert edit_ms_css_btn.text == 'EDIT MANUSCRIPT CSS', edit_ms_css_btn.text
     edit_ms_css_btn.click()
     time.sleep(.5)
-    closer = self._get(self._overlay_header_close)
+    self._get(self._overlay_header_close)
     title = self._get(self._overlay_header_title)
     assert 'Manuscript CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
     assert label.text == 'Enter or edit CSS to format the manuscript editor and output for this journal.', label.text
-    css_input = self._get(self._journal_styles_css_overlay_field)
-    cancel = self._get(self._journal_styles_css_overlay_cancel)
+    self._get(self._journal_styles_css_overlay_field)
+    self._get(self._journal_styles_css_overlay_cancel)
     save = self._get(self._journal_styles_css_overlay_save)
     save.click()
 
@@ -394,7 +393,7 @@ class JournalAdminPage(AdminPage):
       col_title.click()
       # The click should pull up some column editing widgets.
       # We sometimes have a delayed drawing of these items
-      time.sleep(.5)
+      time.sleep(1)
       self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
       column.find_element(*self._mmt_template_column_delete)
       self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')
@@ -450,7 +449,6 @@ class JournalAdminPage(AdminPage):
     A function to delete a newly added mmt (paper type) template to a journal
     :return: void function
     """
-    url = self._driver.current_url
     logging.info('Delete New Template called')
     mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
     if mmts:
@@ -471,10 +469,12 @@ class JournalAdminPage(AdminPage):
             logging.info('Clicking on MMT trash icon')
             self._actions.click(delete_mmt).perform()
             time.sleep(1)
-            self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p')
+            self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR,
+                                                                     'div.mmt-thumbnail-overlay-confirm-destroy p')
             confirm_text = self._get(self._journal_admin_manu_mgr_delete_confirm_paragraph)
             assert 'This will permanently delete your template. Are you sure?' in confirm_text.text, confirm_text.text
-            self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p + button')
+            self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR,
+                                                                'div.mmt-thumbnail-overlay-confirm-destroy p + button')
             self._journal_admin_manu_mgr_thumb_delete_confirm = (By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
             time.sleep(1)
             self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)  # cancel mmt delete should be present
@@ -485,6 +485,3 @@ class JournalAdminPage(AdminPage):
           else:
             mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
-
-
-

@@ -238,7 +238,7 @@ class JournalAdminPage(AdminPage):
     assert 'Available Task Types' in att_title.text, att_title.text
     edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
     assert 'EDIT TASK TYPES' in edit_tt_btn.text
-    self._actions.move_to_element(att_title).perform()
+    self._actions.move_to_element_with_offset(att_title, 0, -40).perform()
     time.sleep(1)
     edit_tt_btn.click()
     # time for animation of overlay

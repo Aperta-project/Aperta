@@ -12,8 +12,9 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from Base.PostgreSQL import PgSQL
 from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.PostgreSQL import PgSQL
+from Base.Resources import task_names
 from admin import AdminPage
 
 __author__ = 'jgray@plos.org'
@@ -229,12 +230,6 @@ class JournalAdminPage(AdminPage):
     :return: void function
     """
     att_section = self._get(self._journal_admin_avail_task_types_div)
-    task_names = ['Ad-hoc', 'Additional Information', 'Assign Admin', 'Assign Team', 'Authors', 'Billing',
-                  'Competing Interests', 'Cover Letter', 'Data Availability', 'Editor Discussion', 'Ethics Statement',
-                  'Figures', 'Final Tech Check', 'Financial Disclosure', 'Initial Decision', 'Initial Tech Check',
-                  'Invite Academic Editor', 'Invite Reviewers', 'New Taxon', 'Production Metadata', 'Register Decision',
-                  'Reporting Guidelines', 'Reviewer Candidates', 'Revision Tech Check', 'Send to Apex',
-                  'Supporting Info', 'Upload Manuscript']
     att_title = self._get(self._journal_admin_avail_task_types_title)
     self.validate_application_h2_style(att_title)
     assert 'Available Task Types' in att_title.text, att_title.text

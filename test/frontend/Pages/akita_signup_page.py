@@ -84,7 +84,7 @@ class AkitaSignupPage(PlosPage):
     assert disclaimer_link.get_attribute('href') == 'https://www.plos.org/about/terms-use', \
         disclaimer_link.get_attribute('href')
     create_account_btn = self._get(self._create_acct_button)
-    assert 'Create Account' in create_account_btn.text
+    assert 'Create Account' in create_account_btn.text, create_account_btn.text
     cancel = self._get(self._cancel_button)
     assert cancel.text == 'Cancel', cancel.text
 

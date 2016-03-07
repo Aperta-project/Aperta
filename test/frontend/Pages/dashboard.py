@@ -205,7 +205,7 @@ class DashboardPage(AuthenticatedPage):
       logging.error('Database access error.')
       raise
     manuscript_count = len(active_manuscripts)
-    print('Expecting ' + str(manuscript_count) + ' active manuscripts')
+    logging.info('Expecting {0} active manuscripts'.format(manuscript_count))
     if manuscript_count > 1:
       assert 'Hi, ' + first_name + '. You have {0} active manuscripts.'.format(manuscript_count) in welcome_msg.text, \
              welcome_msg.text + str(manuscript_count)

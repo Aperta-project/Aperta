@@ -51,7 +51,7 @@ describe JournalFactory do
           let(:inaccessible_task_klasses) do
             [
               TahiStandardTasks::ProductionMetadataTask,
-              PlosBioTechCheck::FinalTechCheckTask
+              PlosBioTechCheck::FinalTechCheckTask,
               TahiStandardTasks::RegisterDecisionTask
             ]
           end
@@ -249,11 +249,11 @@ describe JournalFactory do
       context 'Academic Editor' do
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::RegisterDecisionTask, TahiStandardTasks::ReviewerReportTask]
+            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::ReviewerReportTask]
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask]
+            [PlosBilling::BillingTask, TahiStandardTasks::RegisterDecisionTask]
           end
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses
@@ -271,6 +271,15 @@ describe JournalFactory do
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
             end
+          end
+
+          it 'is able to view and edit the ReviewerRecommendationsTask' do
+            expect(journal.academic_editor_role.permissions).to include(
+              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+            )
+            expect(journal.academic_editor_role.permissions).to include(
+              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+            )
           end
         end
       end

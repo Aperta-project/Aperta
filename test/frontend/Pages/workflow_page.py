@@ -24,12 +24,16 @@ class WorkflowPage(AuthenticatedPage):
     self._click_editor_assignment_button = (By.XPATH, './/div[2]/div[2]/div/div[4]/div')
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
     self._manuscript_icon = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
+        ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() \
+        = 'svg']/*[local-name() = 'path']")
     self._manuscript_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/a")
-    self._manuscript_text = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
+    self._manuscript_text = (By.XPATH,
+                             ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
     self._column_header = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/h2")
-    self._column_header_save = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/div/button[2]")
-    self._column_header_cancel = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/div/button")
+    self._column_header_save = (By.XPATH,
+                                ".//div[contains(@class, 'column-header')]/div/div/button[2]")
+    self._column_header_cancel = (By.XPATH,
+                                  ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
     self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
@@ -39,17 +43,21 @@ class WorkflowPage(AuthenticatedPage):
     self._first_column_cards = (By.CSS_SELECTOR, 'div.card')
     # Note: Not used due to not reaching this menu from automation
     self._remove_confirmation_title = (By.XPATH, ".//div[contains(@class, 'delete-card-title')]/h1")
-    self._remove_confirmation_subtitle = (By.XPATH, ".//div[contains(@class, 'delete-card-title')]/h2")
-    self._remove_yes_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
-    self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
+    self._remove_confirmation_subtitle = (By.XPATH,
+                                          ".//div[contains(@class, 'delete-card-title')]/h2")
+    self._remove_yes_button = (By.XPATH,
+                               ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
+    self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]\
+        /div[2]/button")
     self._register_decision_card = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
     self._add_card_overlay_div = (By.CSS_SELECTOR, 'div.overlay-container')
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
     # Card Locators
-    self._initial_decision_card = (By.XPATH, "//div[@class='card-title'][contains(., 'Initial Decision')]")
+    self._initial_decision_card = (By.XPATH,
+                                   "//div[@class='card-title'][contains(., 'Initial Decision')]")
     self._invite_editor_card = (By.XPATH,
-                                "//div[@class='column-content']/div/div//div[contains(., 'Invite Academic Editor')]")
-
+                                "//div[@class='column-content']/div/div\
+                                //div[contains(., 'Invite Academic Editor')]")
     # End of not used elements
 
   # POM Actions

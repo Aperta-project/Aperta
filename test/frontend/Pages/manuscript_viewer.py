@@ -10,11 +10,11 @@ import time
 from datetime import datetime
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import affiliation, billing_data, rv_login
+from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, creator_login4, creator_login5,\
+                           staff_admin_login, pub_svcs_login, internal_editor_login, super_admin_login
 from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
@@ -252,10 +252,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self.validate_modal_title_style(discussion_container_title, '36px', '500', '39.6px')
     assert 'Discussions' in discussion_container_title.text
     # Only Admins, Internal Editors and PubSvcs Staff can initiate a discussion APERTA-5627
-    if useremail in ['sealresq+1006@gmail.com',
-                     'sealresq+1008@gmail.com',
-                     'sealresq+1010@gmail.com',
-                     'sealresq_1011@gmail.com',
+    if useremail in [staff_admin_login['email'],
+                     pub_svcs_login['email'],
+                     internal_editor_login['email'],
+                     super_admin_login['email'],
                      ]:
       discussion_create_new_btn = self._get(self._discussion_create_new_btn)
       ##self.validate_secondary_green_button_style(discussion_create_new_btn)
@@ -296,15 +296,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
     more_btn.click()
     self._get(self._tb_more_appeal_link)
     # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
-    if useremail in ['sealresq+1000@gmail.com',
-                     'sealresq+1001@gmail.com',
-                     'sealresq+1002@gmail.com',
-                     'sealresq+1003@gmail.com',
-                     'sealresq+1004@gmail.com',
-                     'sealresq+1006@gmail.com',
-                     'sealresq+1008@gmail.com',
-                     'sealresq+1010@gmail.com',
-                     'sealresq_1011@gmail.com',
+    if useremail in [creator_login1['email'],
+                     creator_login2['email'],
+                     creator_login3['email'],
+                     creator_login4['email'],
+                     creator_login5['email'],
+                     staff_admin_login['email'],
+                     pub_svcs_login['email'],
+                     internal_editor_login['email'],
+                     super_admin_login['email'],
                      ]:
       withdraw_link = self._get(self._tb_more_withdraw_link)
       withdraw_link.click()

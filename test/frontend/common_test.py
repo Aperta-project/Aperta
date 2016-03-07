@@ -13,8 +13,8 @@ import time
 from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, reviewer_login, handling_editor_login, academic_editor_login, internal_editor_login, \
-    staff_admin_login, pub_svcs_login, super_admin_login, au_login, co_login, rv_login, ae_login, he_login, fm_login, \
-    oa_login, sa_login
+    staff_admin_login, pub_svcs_login, super_admin_login, cover_editor_login, au_login, co_login, rv_login, ae_login, \
+  he_login, fm_login, oa_login, sa_login
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.dashboard import DashboardPage
@@ -65,6 +65,7 @@ class CommonTest(FrontEndTest):
               creator_login5['email'],
               reviewer_login['email'],
               handling_editor_login['email'],
+              cover_editor_login['email'],
               academic_editor_login['email'],
               internal_editor_login['email'],
               staff_admin_login['email'],

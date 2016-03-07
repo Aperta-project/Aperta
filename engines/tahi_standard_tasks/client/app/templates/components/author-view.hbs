@@ -1,40 +1,41 @@
-{{#unless editState}}
-  <div class="authors-overlay-item--text">
-    <div class="author-name">{{author.fullName}}</div>
-    {{author.email}}<br>
-    {{author.title}} &nbsp; &nbsp; {{author.department}}
-    <br>
-    {{author.affiliation}} &nbsp; &nbsp; {{author.secondaryAffiliation}}
-  </div>
+{{#if viewState}}
+  <div class="author-task-item-view flex-group">
+    {{#unless isNotEditable}}
+      <div class="author-task-item-view-drag-handle flex-element"></div>
 
-  {{#if showHover}}
-    <div class="authors-overlay-item--actions">
-      <div class="drag"></div>
-      <div class="actions">
-        <div class="action" {{action "toggleEditForm"}}>
-          <span class="fa fa-pencil scaleIn"></span>
-        </div>
-        {{#unless fieldsDisabled}}
-          <div class="action" {{action "toggleDeleteConfirmation"}}>
-            <span class="fa fa-trash scaleIn"></span>
-          </div>
-        {{/unless}}
+      {{!--
+      <div class="author-task-item-view-checkbox flex-element">
+        <input type="checkbox">
       </div>
+      --}}
+    {{/unless}}
+
+    <div class="author-task-item-position flex-element">.</div>
+
+    <div class="author-task-item-view-text flex-element flex-group" {{action "toggleEditForm"}}>
+      <div class="author-name flex-element">{{author.fullName}}</div>
+      <div class="author-email flex-element">{{author.email}}</div>
     </div>
-  {{/if}}
-{{/unless}}
+
+    {{#unless isNotEditable}}
+      <div class="author-task-item-view-actions flex-element">
+        <span class="fa fa-trash scaleIn" {{action "toggleDeleteConfirmation"}}></span>
+      </div>
+    {{/unless}}
+  </div>
+{{/if}}
 
 {{#if editState}}
   {{add-author-form author=author
                     validationErrors=errors
                     validateField=(action "validateField")
                     hideAuthorForm="toggleEditForm"
-                    fieldsDisabled=fieldsDisabled
+                    isNotEditable=isNotEditable
                     saveAuthor="save"}}
 {{/if}}
 
 {{#if deleteState}}
-  <div class="authors-overlay-item--delete">
+  <div class="authors-overlay-item-delete">
     <p>This will permanently delete the author. Are you sure?</p>
     <button class="button-secondary button--green knockout" {{action "toggleDeleteConfirmation"}}>Cancel</button>
     <button class="button-secondary button--green knockout" {{action "deleteAuthor"}}>Delete Forever</button>

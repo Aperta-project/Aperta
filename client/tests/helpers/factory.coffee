@@ -444,6 +444,23 @@ FactoryAttributes.ReportingGuidelinesTask =
   title: "Reporting Guidelines"
   type: "ReportingGuidelinesTask"
 
+FactoryAttributes.AuthorsTask =
+  _rootKey: 'task'
+  body: null
+  comment_ids: []
+  completed: false
+  id: null
+  lite_paper_id: null
+  paper_id: null
+  paper_title: "Test"
+  participation_ids: []
+  phase_id: null
+  question_ids: []
+  assigned_to_me: true
+  old_role: "author"
+  title: "Authors"
+  type: "AuthorsTask"
+
 FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null

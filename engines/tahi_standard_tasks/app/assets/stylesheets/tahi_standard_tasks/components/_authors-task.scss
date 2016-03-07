@@ -1,91 +1,86 @@
-.authors-overlay-item {
+.authors-task {
+  counter-reset: authorTaskItem;
+}
+
+.author-task-item {
   position: relative;
-  margin-bottom: 15px;
-  min-height: 135px;
+  counter-increment: authorTaskItem;
 }
 
-.authors-overlay-item--text {
-  padding: 15px 20px;
-  font-size: 16px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.author-task-item-view {
+  @include align-items(center);
+  background: $tahi-grey-xlight;
 
-  > div {
-    margin-bottom: 6px;
-  }
-
-  .author-name {
-    font-size: 24px;
+  .flex-group {
+    margin-left: 1rem;
   }
 }
 
-
-.authors-overlay-item--actions {
-  @include position(absolute, 0px 0px 0px 0px);
-  display: none;
-  color: #fff;
-  font-size: 40px;
+.author-task-item-view-checkbox {
+  max-width: 20px;
   text-align: center;
+}
 
-  .drag {
-    @include position(absolute, 4px 4px auto 4px);
-    border-top: 1px solid rgba(0,0,0, 0.35);
-    height: 20px;
-    cursor: move;
-    cursor: -webkit-grab;
+.author-task-item-view-drag-handle {
+  @include align-self(stretch);
+  max-width: 12px;
+  cursor: move;
+  cursor: -webkit-grab;
+  background: url(image-path('drag-circle.svg'));
+  background-size: 6px;
+  opacity: 0;
+}
 
-    &:before {
-      content: ' ';
-      @include position(absolute, 2px 0px auto 0px);
-      height: 1px;
-      background: rgba(0,0,0, 0.35);
-    }
+.author-task-item-position {
+  max-width: 1rem;
 
-    &:after {
-      content: ' ';
-      @include position(absolute, 5px 0px auto 0px);
-      height: 1px;
-      background: rgba(0,0,0, 0.35);
-    }
+  &:before {
+    content: counter(authorTaskItem);
+  }
+}
+
+.author-task-item-view-text {
+  padding: 2.5rem 0.5rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+
+  .flex-element {
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.author-task-item-view-actions {
+  max-width: 4rem;
+  padding-right: 2rem;
+  font-size: 2.2rem;
+  text-align: right;
+
+  .fa {
+    color: #bbb;
+    cursor: pointer;
+    opacity: 0;
+  }
+}
+
+.author-task-item-view:hover {
+  .author-task-item-view-drag-handle {
+    opacity: 1.0;
   }
 
-  // vertical align icons
-  // TODO: break out?
-  .actions {
-    @include position(absolute, 50% 0px 0px 0px);
-    margin-top: -23px;
+  .author-task-item-view-actions .fa {
+    opacity: 1.0;
 
-    .action {
-      @include position(absolute, 0px auto 0px auto);
-      cursor: pointer;
-      opacity: 0.85;
-
-      &:hover { opacity: 1.0; }
-    }
-
-    .action:first-of-type {
-      left: 0;
-      right: 52%;
-      text-align: right;
-    }
-
-    .action:last-of-type {
-      left: 52%;
-      right: 0;
-      text-align: left;
+    &:hover {
+      color: #444;
     }
   }
 }
 
-.__hover.__editable .authors-overlay-item--actions {
-  display: block;
-  background: rgba(68, 175, 54, 0.7);
-}
-
-
-.authors-overlay-item--delete {
-  @include position(absolute, 0px 0px 0px 0px);
-  padding: 20px 30px 0 30px;
+.authors-overlay-item-delete {
+  padding: 10px 15px;
   color: #fff;
   background-color: $tahi-green;
   z-index: 1;
@@ -93,13 +88,16 @@
   p { margin-left: 0; }
 }
 
+.authors-task-acknowledgements .error-message {
+  margin-left: 0; // override default
+}
+
 .author-drop-target {
-  height: 5px;
-  margin-bottom: 5px;
+  height: 6px;
 
   &.current-drop-target {
-    height: 90px;
-    border: 4px dashed $tahi-green-light;
+    height: 80px;
+    border: 2px dashed $tahi-green-light;
   }
 }
 
@@ -109,8 +107,32 @@
     width: 418px;
   }
 
+  .author-government label {
+    margin-right: 1.5rem;
+  }
+
+  .author-current-address-country {
+    min-width: 100px;
+  }
+
   .author-contributions {
-    margin-bottom: 40px;
+    legend {
+      position: relative;
+      margin-bottom: 0.5rem;
+
+      &::after {
+        content: '*';
+        position: relative;
+        top: 0.75rem;
+        font-size: 21pt;
+        color: $tahi-green;
+      }
+    }
+
+    a {
+      color: #000;
+      text-decoration: underline;
+    }
   }
 
   .text-field-title {
@@ -122,9 +144,10 @@
     vertical-align: top;
   }
 
+  .author-initial,
   .author-middle-initial {
-    @include flex-basis(7rem);
-    min-width: 7rem;
+    @include flex-basis(10rem);
+    min-width: 10rem;
   }
 
   .author-affiliation {
@@ -139,7 +162,8 @@
   .author-contribution {
     position: relative;
     @include flex-basis(50%);
-    min-width: 185px;
+    min-width: 160px;
+    margin-bottom: 0.25rem;
 
     input {
       position: absolute;

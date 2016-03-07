@@ -1,16 +1,26 @@
 import Ember from 'ember';
 
-export default Ember.Service.extend({
-  restless: Ember.inject.service('restless'),
+const {
+  computed,
+  inject: { service },
+  isEmpty,
+  Service
+} = Ember;
+
+export default Service.extend({
+  restless: service('restless'),
 
   loaded: false,
   loading: false,
   error: false,
 
   _data: [],
-  data: Ember.computed({
+  data: computed({
     get() {
-      if(Ember.isEmpty(this.get('_data'))) { this.fetch(); return []; }
+      if(isEmpty(this.get('_data'))) {
+        this.fetch();
+      }
+
       return this.get('_data');
     },
 
@@ -20,7 +30,7 @@ export default Ember.Service.extend({
   }),
 
   fetch() {
-    if(!Ember.isEmpty(this.get('_data'))) { return; }
+    if(!isEmpty(this.get('_data'))) { return; }
     this._didStartLoading();
 
     this.get('restless').get('/api/countries').then((response)=> {

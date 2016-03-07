@@ -1,5 +1,15 @@
-.reviewer-canditates-wrapper {
+.reviewer-recommendations-task {
+  .author-task-item-view-text {
+    .email,
+    .author-name {
+      width: 40%;
+    }
 
+    .decision { width: 20%; }
+  }
+}
+
+.reviewer-canditates-wrapper {
   .button-primary.button--green {
     margin-bottom: 10px;
   }

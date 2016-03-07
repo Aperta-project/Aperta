@@ -30,6 +30,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Applying new roles and permissions to ethics card
 - Academic Editor role for the PLOS Bio journal has been implemented with new roles and permissions
 - Journal admins will receive an email if a manuscript fails to be sent to Salesforce after ~1.5 days
+- Authors Task UI changes and new questions
 
 ### Changed
 - The Authors card now enforces validations

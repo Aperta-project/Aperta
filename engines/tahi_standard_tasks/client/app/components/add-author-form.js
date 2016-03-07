@@ -1,24 +1,29 @@
 import Ember from 'ember';
 import { contributionIdents } from 'tahi/authors-task-validations';
 
-const { computed } = Ember;
+const {
+  Component,
+  computed,
+  inject: { service }
+} = Ember;
 
-export default Ember.Component.extend({
+export default Component.extend({
+  countries: service(),
   classNames: ['add-author-form'],
   author: null,
 
-  authorContributionIdents: contributionIdents,
+  init() {
+    this._super(...arguments);
+    this.get('countries').fetch();
+  },
 
-  isOtherContributionSelected: computed('author.nestedQuestions', function(){
-    const answer = this.get('author')
-                       .answerForQuestion('author--contributions--other');
-
-    if(answer){
-      return answer.get('value');
-    }
-
-    return false;
+  formattedCountries: computed('countries.data', function() {
+    return this.get('countries.data').map(function(c) {
+      return { id: c, text: c };
+    });
   }),
+
+  authorContributionIdents: contributionIdents,
 
   affiliation: computed('author', function() {
     if (this.get('author.affiliation')) {
@@ -36,6 +41,13 @@ export default Ember.Component.extend({
         name: this.get('author.secondaryAffiliation')
       };
     }
+  }),
+
+  selectedCurrentAddressCountry: computed('author.currentAddressCountry', function() {
+    return this.get('formattedCountries').findBy(
+      'text',
+      this.get('author.currentAddressCountry')
+    );
   }),
 
   resetAuthor() {
@@ -85,12 +97,8 @@ export default Ember.Component.extend({
       this.set('author.secondaryRinggoldId', '');
     },
 
-    toggleOtherContribution(checkbox){
-      if(!checkbox.get('checked')){
-        const answer = this.get('author')
-                           .answerForQuestion('author--contributions--other');
-        answer.destroyRecord();
-      }
+    currentAddressCountrySelected(data) {
+      this.set('author.currentAddressCountry', data.text);
     },
 
     validateField(key, value) {

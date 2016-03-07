@@ -2,29 +2,37 @@ import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 import validations from 'tahi/authors-task-validations';
+import { taskValidations } from 'tahi/authors-task-validations';
 
-const { computed, on } = Ember;
+const {
+  computed,
+  computed: { sort },
+  on
+} = Ember;
 
 export default TaskComponent.extend({
+  validations: taskValidations,
   newAuthorFormVisible: false,
 
   validateData() {
+    this.validateAll();
     const objs = this.get('sortedAuthorsWithErrors');
-    objs.invoke('validateAllKeys');
+    objs.invoke('validateAll');
 
+    const taskErrors    = this.validationErrorsPresent();
     const authorsErrors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
     let newAuthorErrors = false;
 
     if(this.get('newAuthorFormVisible')) {
       const newAuthor= this.get('newAuthor');
-      newAuthor.validateAllKeys();
+      newAuthor.validateAll();
 
       if(newAuthor.validationErrorsPresent()) {
         newAuthorErrors = true;
       }
     }
 
-    if(authorsErrors || newAuthorErrors) {
+    if(taskErrors || authorsErrors || newAuthorErrors) {
       this.set('validationErrors.completed', 'Please fix all errors');
     }
   },
@@ -34,7 +42,7 @@ export default TaskComponent.extend({
   }),
 
   authorSort: ['position:asc'],
-  sortedAuthors: computed.sort('task.authors', 'authorSort'),
+  sortedAuthors: sort('task.authors', 'authorSort'),
   sortedAuthorsWithErrors: computed('sortedAuthors.[]', function() {
     return this.get('sortedAuthors').map(function(a) {
       return ObjectProxyWithErrors.create({
@@ -54,9 +62,9 @@ export default TaskComponent.extend({
 
   newAuthor: computed('newAuthorFormVisible', function(){
     const newAuthor = this.store.createRecord('author', {
-        paper: this.get('task.paper'),
-        position: 0,
-        nestedQuestions: this.get('nestedQuestionsForNewAuthor')
+      paper: this.get('task.paper'),
+      position: 0,
+      nestedQuestions: this.get('nestedQuestionsForNewAuthor')
     });
 
     return ObjectProxyWithErrors.create({

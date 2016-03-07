@@ -8,12 +8,14 @@
     If the article has been submitted on behalf of a consortium, all author names and affiliations should be listed at the end of the article.
   </p>
 
+  <p>Note: Ensure the authors are in the correct publication order.</p>
+
   <div>
     {{#if isEditable}}
-      <button class="button-primary button--green" {{action "toggleAuthorForm" group}}>
+      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
         Add a New Author
       </button>
-      <br>
+      <br><br>
 
       {{error-message message=validationErrors.corresponding}}
 
@@ -32,14 +34,37 @@
 
     {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
       {{author-view isEditable=isEditable
+                    isNotEditable=isNotEditable
                     delete="removeAuthor"
                     save="saveAuthor"
-                    model=authorWithErrors
-                    isEditable=isEditable}}
+                    model=authorWithErrors}}
 
-      {{author-drop-target index=authorWithErrors.model.position
+      {{author-drop-target index=authorWithErrors.object.position
                            isEditable=isEditable
                            changePosition=(action "changeAuthorPosition")}}
     {{/each}}
+
+    <br>
+
+    <p class="authors-task-acknowledgements">
+      To submit your manuscript, please acknowledge each statement below
+      {{error-message message=validationErrors.acknowledgements
+                      displayIcon=true}}
+    </p>
+
+    {{nested-question-check ident="authors--persons_agreed_to_be_named"
+                            owner=task
+                            textClassNames=""
+                            disabled=isNotEditable}}
+
+    {{nested-question-check ident="authors--authors_confirm_icmje_criteria"
+                            owner=task
+                            textClassNames=""
+                            disabled=isNotEditable}}
+
+    {{nested-question-check ident="authors--authors_agree_to_submission"
+                            owner=task
+                            textClassNames=""
+                            disabled=isNotEditable}}
   </div>
 </div>

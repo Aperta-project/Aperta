@@ -1,11 +1,16 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-const { assert, isEmpty } = Ember;
+const {
+  assert,
+  isEmpty,
+  Object
+} = Ember;
 
-const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
+const ObjectProxy = Object.extend(ValidationErrorsMixin, {
   errorsPresent: false,
   validations: null,
+  questionValidations: null,
 
   init() {
     this._super(...arguments);
@@ -25,11 +30,15 @@ const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
     );
   },
 
-  validateAllKeys() {
+  validateAll() {
     this.set('validationErrors.save', '');
 
     _.keys(this.get('validations')).forEach((key) => {
-      this.validateKey(key);
+      this.validateProperty(key);
+    });
+
+    _.keys(this.get('questionValidations')).forEach((key) => {
+      this.validateQuestion(key);
     });
 
     const errorsPresent = this.validationErrorsPresent();
@@ -41,10 +50,19 @@ const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
     }
   },
 
-  validateKey(key) {
+  validateProperty(key) {
     this.validate(key, this.get(`object.${key}`));
 
     if(this.validationErrorsPresentForKey(key)) {
+      this.set('errorsPresent', true);
+    }
+  },
+
+  validateQuestion(ident) {
+    const value = this.get('object').findQuestion(ident);
+    this.validate(ident, value);
+
+    if(this.validationErrorsPresentForKey(ident)) {
       this.set('errorsPresent', true);
     }
   }

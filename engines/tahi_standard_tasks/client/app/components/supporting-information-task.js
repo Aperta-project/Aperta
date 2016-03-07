@@ -14,7 +14,7 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   validateData() {
     const objs = this.get('filesWithErrors');
-    objs.invoke('validateAllKeys');
+    objs.invoke('validateAll');
 
     const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
 

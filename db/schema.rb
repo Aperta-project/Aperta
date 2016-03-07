@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160213225024) do
+ActiveRecord::Schema.define(version: 20160225184558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,13 @@ ActiveRecord::Schema.define(version: 20160213225024) do
     t.string   "secondary_affiliation"
     t.string   "ringgold_id"
     t.string   "secondary_ringgold_id"
+    t.string   "author_initial"
+    t.string   "current_address_street"
+    t.string   "current_address_street2"
+    t.string   "current_address_city"
+    t.string   "current_address_state"
+    t.string   "current_address_country"
+    t.string   "current_address_postal"
   end
 
   create_table "bibitems", force: :cascade do |t|

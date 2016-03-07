@@ -69,7 +69,7 @@
 }
 
 .main-nav-item--spacer {
-  flex-grow: 1;
+  @include flex-grow(1);
 }
 
 @media only screen and (max-width: 750px) {

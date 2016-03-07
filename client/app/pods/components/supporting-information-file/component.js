@@ -67,23 +67,23 @@ export default Component.extend({
     },
 
     validateTitle() {
-      this.get('model').validateKey('title');
+      this.get('model').validateProperty('title');
     },
 
     validateCategory() {
-      this.get('model').validateKey('category');
+      this.get('model').validateProperty('category');
     },
 
     cancelEdit(){
       this.get('file').rollback();
-      this.get('model').validateAllKeys();
+      this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
       this.set('uiState', 'view');
     },
 
     saveEdit(){
-      this.get('model').validateAllKeys();
+      this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
       this.attrs.updateFile(this.get('file'));

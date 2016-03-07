@@ -7,7 +7,7 @@ namespace 'nested-questions:seed' do
       owner_type: Author.name,
       ident: "author--published_as_corresponding_author",
       value_type: "boolean",
-      text: "This person will be listed as the corresponding author on the published article",
+      text: "This person should be identified as corresponding author on the published article",
       position: 1
     }
 
@@ -31,52 +31,125 @@ namespace 'nested-questions:seed' do
         {
           owner_id: nil,
           owner_type: Author.name,
-          ident: "author--contributions--conceived_and_designed_experiments",
+          ident: "author--contributions--conceptualization",
           value_type: "boolean",
-          text: "Conceived and designed the experiments",
+          text: "Conceptualization",
           position: 1
         },
         {
           owner_id: nil,
           owner_type: Author.name,
-          ident: "author--contributions--performed_the_experiments",
+          ident: "author--contributions--investigation",
           value_type: "boolean",
-          text: "Performed the experiments",
+          text: "Investigation",
           position: 2
         },
         {
           owner_id: nil,
           owner_type: Author.name,
-          ident: "author--contributions--analyzed_data",
+          ident: "author--contributions--visualization",
           value_type: "boolean",
-          text: "Analyzed the data",
+          text: "Visualization",
           position: 3
         },
         {
           owner_id: nil,
           owner_type: Author.name,
-          ident: "author--contributions--contributed_tools",
+          ident: "author--contributions--methodology",
           value_type: "boolean",
-          text: "Contributed reagents/materials/analysis tools",
+          text: "Methodology",
           position: 4
         },
         {
           owner_id: nil,
           owner_type: Author.name,
-          ident: "author--contributions--contributed_writing",
+          ident: "author--contributions--resources",
           value_type: "boolean",
-          text: "Contributed to the writing of the manuscript",
+          text: "Resources",
           position: 5
         },
         {
           owner_id: nil,
           owner_type: Author.name,
-          ident: "author--contributions--other",
-          value_type: "text",
-          text: "Other",
+          ident: "author--contributions--supervision",
+          value_type: "boolean",
+          text: "Supervision",
           position: 6
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--software",
+          value_type: "boolean",
+          text: "Software",
+          position: 7
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--data-curation",
+          value_type: "boolean",
+          text: "Data Curation",
+          position: 8
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--project-administration",
+          value_type: "boolean",
+          text: "Project Administration",
+          position: 9
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--validation",
+          value_type: "boolean",
+          text: "Validation",
+          position: 10
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--writing-original-draft",
+          value_type: "boolean",
+          text: "Writing - Original Draft",
+          position: 11
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--writing-review-and-editing",
+          value_type: "boolean",
+          text: "Writing - Review and Editing",
+          position: 12
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--funding-acquisition",
+          value_type: "boolean",
+          text: "Funding Acquisition",
+          position: 13
+        },
+        {
+          owner_id: nil,
+          owner_type: Author.name,
+          ident: "author--contributions--formal-analysis",
+          value_type: "boolean",
+          text: "Formal Analysis",
+          position: 14
         }
       ]
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: Author.name,
+      ident: "author--government-employee",
+      value_type: "boolean",
+      text: "Is this author an employee of the United States Government?",
+      position: 4
     }
 
     NestedQuestion.where(owner_type: Author.name).update_all_exactly!(questions)

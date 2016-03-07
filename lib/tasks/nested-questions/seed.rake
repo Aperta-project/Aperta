@@ -2,6 +2,7 @@ namespace 'nested-questions' do
   desc "Seed all of the nested questions"
   task seed: [
     'nested-questions:seed:author',
+    'nested-questions:seed:authors-task',
     'nested-questions:seed:competing-interests-task',
     'nested-questions:seed:data-availability-task',
     'nested-questions:seed:ethics-task',

@@ -1,39 +1,33 @@
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
-const { computed, on } = Ember;
-const { alias } = computed;
+const {
+  computed,
+  computed: { alias, not },
+  on
+} = Ember;
 
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
-  classNames: ['authors-overlay-item'],
-  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
-
+  classNames: ['author-task-item'],
+  deleteState: false,
   author: alias('model.object'),
   errors: alias('model.validationErrors'),
   errorsPresent: alias('model.errorsPresent'),
   editState: alias('errorsPresent'),
-
-  fieldsDisabled: Ember.computed.not('isEditable'),
-
-  // canHover is true, now, but should be Ember.computed.alias('isEditable')
-  // once the read-only author-view contains all needed information.
-  canHover: true,
-  isHovering: false,
-  showHover: Ember.computed.and('isHovering', 'canHover'),
-
-  _setupHover: Ember.on('didInsertElement', function(){
-    this.$().hover(() => {
-      this.toggleProperty('isHovering');
-    });
+  viewState: computed('editState', 'deleteState', function() {
+    return !this.get('editState') && !this.get('deleteState');
   }),
-
-  _destroyHover: Ember.on('willDestroyElement', function(){
-    this.$().off('mouseenter mouseleave');
+  draggable: computed('isNotEditable', 'editState', function() {
+    return !this.get('isNotEditable') && !this.get('editState');
   }),
 
   dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
     DragNDrop.dragItem = this.get('author');
+
+    // REQUIRED for Firefox to let something drag
+    // http://html5doctor.com/native-drag-and-drop
+    e.dataTransfer.setData('Text', this.get('author.id'));
   },
 
   actions: {
@@ -44,7 +38,7 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     },
 
     save() {
-      this.get('model').validateAllKeys();
+      this.get('model').validateAll();
       if(this.get('errorsPresent')) { return; }
 
       this.sendAction('save', this.get('author'));

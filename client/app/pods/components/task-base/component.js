@@ -1,11 +1,16 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-const { computed, isEmpty } = Ember;
-const { alias, not, or, and } = computed;
+const {
+  Component,
+  computed,
+  computed: { alias, and, not, or },
+  inject: { service },
+  isEmpty
+} = Ember;
 
-export default Ember.Component.extend(ValidationErrorsMixin, {
-  can: Ember.inject.service('can'),
+export default Component.extend(ValidationErrorsMixin, {
+  can: service(),
   classNames: ['task'],
   classNameBindings: [
     'isNotEditable:read-only',
@@ -56,13 +61,30 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     });
   },
 
+  validateAll() {
+    this.validateProperties();
+    this.validateQuestions();
+  },
+
+  validateProperty(key) {
+    this.validate(key, this.get(`task.${key}`));
+  },
+
+  validateProperties() {
+    const validations = this.get('validations');
+    if(isEmpty(validations)) { return; }
+
+    _.keys(validations).forEach(key => {
+      this.validateProperty(key);
+    });
+  },
+
   validateQuestion(key, value) {
     this.validate(key, value);
   },
 
   validateQuestions() {
-    const allValidations = this.get('validations');
-    if(isEmpty(allValidations)) { return; }
+    if(isEmpty(this.get('questionValidations'))) { return; }
 
     const nestedQuestionAnswers = this.get('task.nestedQuestions')
                                       .mapProperty('answers');
@@ -88,7 +110,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     close() { this.attrs.close(); },
 
     validateQuestion(key, value) {
-      this.validate(key, value);
+      this.validateQuestion(key, value);
     },
 
     toggleTaskCompletion() {

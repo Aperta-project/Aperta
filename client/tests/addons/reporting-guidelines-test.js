@@ -1,97 +1,101 @@
-import Ember from "ember";
-import { module, test } from "qunit";
-import startApp from "../helpers/start-app";
-import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from "../helpers/setups";
-import setupMockServer from "../helpers/mock-server";
-import Factory from "../helpers/factory";
-import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
+import Ember from 'ember';
+import { module, test } from 'qunit';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import Factory from '../helpers/factory';
+import startApp from '../helpers/start-app';
+import setupMockServer from '../helpers/mock-server';
+import {
+  paperWithTask, addUserAsParticipant, addNestedQuestionToTask
+} from '../helpers/setups';
 
-let app = null;
-let server = null;
+let app      = null;
+let server   = null;
 let fakeUser = null;
-let currentPaper = null;
-let taskId = 94139;
+const taskId = 90210;
 
 module('Integration: Reporting Guidelines Card', {
-  afterEach: function() {
+  afterEach() {
     server.restore();
-    Ember.run(function() {
-      return TestHelper.teardown();
-    });
-    return Ember.run(app, app.destroy);
+    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(app, 'destroy');
   },
 
-  beforeEach: function() {
-    var paperPayload, paperResponse, records, task, taskPayload, taskResponse;
-    app = startApp();
-    server = setupMockServer();
+  beforeEach() {
+    app      = startApp();
+    server   = setupMockServer();
     fakeUser = window.currentUserData.user;
-    TestHelper.handleFindAll("discussion-topic", 1);
 
-    records = paperWithTask("ReportingGuidelinesTask", {
+    const records = paperWithTask('ReportingGuidelinesTask', {
       id: taskId,
-      oldRole: "author"
+      oldRole: 'author'
     });
 
     Factory.createPermission('ReportingGuidelinesTask', taskId, ['edit']);
+    TestHelper.handleFindAll('discussion-topic', 1);
 
-    currentPaper = records[0];
-    task = records[1];
+    const task = records[1];
 
-    paperPayload = Factory.createPayload('paper');
+    // -- Paper Setup
+
+    const paperPayload = Factory.createPayload('paper');
+    paperId = paperPayload.id;
     paperPayload.addRecords(records.concat([fakeUser]));
-    paperResponse = paperPayload.toJSON();
+    const paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
 
-
-    taskPayload = Factory.createPayload('task');
-    taskPayload.addRecords([task, fakeUser]);
-    taskResponse = taskPayload.toJSON();
-
-    var nestedQuestions = [];
-
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 1, ident: 'reporting_guidelines--clinical_trial', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 2, ident: 'reporting_guidelines--systematic_reviews', text: "Systematic Reviews" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 22, parent_id: 2, ident: 'reporting_guidelines--systematic_reviews--checklist', text: "Provide a completed PRISMA checklist as supporting information." }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 3, ident: 'reporting_guidelines--meta_analyses', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 33, parent_id: 3, ident: 'reporting_guidelines--meta_analyses--checklist', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 4, ident: 'reporting_guidelines--diagnostic_studies', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 5, ident: 'reporting_guidelines--epidemiological_studies', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 6, ident: 'reporting_guidelines--microarray_studies', text: "Doesn't Matter" }));
-    _.each(nestedQuestions, function(nestedQuestion) {
-      addNestedQuestionToTask(nestedQuestion, task);
-    });
-    var nestedQuestionsPayload = {nested_questions: nestedQuestions};
-
-    server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+    server.respondWith('GET', '/api/papers/' + paperId, [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify(paperResponse)
     ]);
 
-    server.respondWith('GET', "/api/tasks/" + taskId, [
+    // -- Task Setup
+
+    const taskPayload = Factory.createPayload('task');
+    taskPayload.addRecords([task, fakeUser]);
+
+    server.respondWith('GET', '/api/tasks/' + taskId, [
       200, {
-        "Content-Type": "application/json"
-      }, JSON.stringify(taskResponse)
+        'Content-Type': 'application/json'
+      }, JSON.stringify(taskPayload.toJSON())
     ]);
 
-    server.respondWith('GET', "/api/tasks/" + taskId + "/nested_questions", [
+    // -- Nested Question Setup
+
+    const nestedQuestions = [];
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 1, ident: 'reporting_guidelines--clinical_trial', text: 'Whatever' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 2, ident: 'reporting_guidelines--systematic_reviews', text: 'Systematic Reviews' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 22, parent_id: 2, ident: 'reporting_guidelines--systematic_reviews--checklist', text: 'Provide a completed PRISMA checklist as supporting information.' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 3, ident: 'reporting_guidelines--meta_analyses', text: 'Whatever' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 33, parent_id: 3, ident: 'reporting_guidelines--meta_analyses--checklist', text: 'Whatever' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 4, ident: 'reporting_guidelines--diagnostic_studies', text: 'Whatever' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 5, ident: 'reporting_guidelines--epidemiological_studies', text: 'Whatever' }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 6, ident: 'reporting_guidelines--microarray_studies', text: 'Whatever' }));
+    _.each(nestedQuestions, function(nestedQuestion) {
+      addNestedQuestionToTask(nestedQuestion, task);
+    });
+
+    server.respondWith('GET', '/api/tasks/' + taskId + '/nested_questions', [
       200, {
-        "Content-Type": "application/json"
-      }, JSON.stringify(nestedQuestionsPayload)
+        'Content-Type': 'application/json'
+      }, JSON.stringify({ nested_questions: nestedQuestions })
     ]);
 
-    server.respondWith('GET', "/api/tasks/" + taskId + "/nested_question_answers", [
+    server.respondWith('GET', '/api/tasks/' + taskId + '/nested_question_answers', [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify({nested_question_answers: []})
     ]);
 
-    server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
-
-    return server.respondWith('POST', "/api/nested_questions/" + nestedQuestions[1].id + "/answers", [
+    server.respondWith('GET', '/api/journals', [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
+      }, JSON.stringify({journals:[]})
+    ]);
+
+    server.respondWith('POST', '/api/nested_questions/' + nestedQuestions[1].id + '/answers', [
+      200, {
+        'Content-Type': 'application/json'
       }, JSON.stringify({})
     ]);
   }
@@ -104,14 +108,14 @@ test('Supporting Guideline is a meta data card, contains the right questions and
     });
   };
 
-  visit('/papers/' + currentPaper.id + '/tasks/' + taskId).then(function() {
+  visit('/papers/' + paperId + '/tasks/' + taskId).then(function() {
     assert.equal(find('.question .item').length, 6);
-    assert.equal(find(".overlay-body-title").text().trim(), "Reporting Guidelines");
+    assert.equal(find('.overlay-body-title').text().trim(), 'Reporting Guidelines');
     const questionLi = findQuestionLi('Systematic Reviews');
     // assert.ok(!questionLi.find('.additional-data input[type=file]').length);
   });
 
-  return click('input[name="reporting_guidelines--systematic_reviews"]').then(function() {
+  click('input[name="reporting_guidelines--systematic_reviews"]').then(function() {
     const questionLi = findQuestionLi('Systematic Reviews');
     assert.equal(0, questionLi.find('.additional-data.hidden').length);
     // assert.ok(questionLi.find('.additional-data input[type=file]').length);

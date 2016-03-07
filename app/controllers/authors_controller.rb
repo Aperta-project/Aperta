@@ -46,6 +46,7 @@ class AuthorsController < ApplicationController
   def author_params
     params.require(:author).permit(
       :authors_task_id,
+      :author_initial,
       :first_name,
       :last_name,
       :position,
@@ -58,7 +59,13 @@ class AuthorsController < ApplicationController
       :affiliation,
       :secondary_affiliation,
       :title,
-      :department
+      :department,
+      :current_address_street,
+      :current_address_street2,
+      :current_address_city,
+      :current_address_state,
+      :current_address_country,
+      :current_address_postal
     )
   end
 end

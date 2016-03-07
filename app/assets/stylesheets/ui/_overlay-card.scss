@@ -44,7 +44,7 @@ $ov--card-breakpoint: 900px;
     padding: 5.0rem 5px 1.0rem 5px;
 
     span:first-of-type {
-      flex-grow: 1;
+      @include flex-grow(1);
       margin-right: 1rem;
     }
   }

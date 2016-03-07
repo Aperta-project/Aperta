@@ -59,6 +59,7 @@ $task-disclosure-radius: 4px;
   }
 }
 
+
 // TaskLoad overrides ---------------------------------------------------------
 
 .task-disclosure {
@@ -98,6 +99,12 @@ $task-disclosure-radius: 4px;
   .task-main-content {
     @include clearfix;
     padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .task-main-content legend {
+    border: 0;
+    color: #000;
+    font-size: 1.7rem;
   }
 
   .task-main-content .question label {

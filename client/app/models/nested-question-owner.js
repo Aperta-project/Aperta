@@ -19,7 +19,7 @@ export default DS.Model.extend({
   },
 
   findQuestion: function(ident){
-    let nestedQuestions = this.get('nestedQuestions').toArray();
+    const nestedQuestions = this.get('nestedQuestions').toArray();
     return _.detect(nestedQuestions, (q) => { return q.get('ident') === ident; });
   }
 });

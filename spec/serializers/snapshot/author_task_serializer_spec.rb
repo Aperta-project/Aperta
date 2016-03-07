@@ -7,9 +7,43 @@ describe Snapshot::AuthorTaskSerializer do
   describe "#as_json" do
     it "serializes to JSON" do
       expect(serializer.as_json).to eq(
-        name: "authors-task",
-        type: "properties",
-        children: []
+        :name=>"authors-task",
+        :type=>"properties",
+        :children=> [
+          {
+            :name=>"authors--persons_agreed_to_be_named",
+            :type=>"question",
+            :value=>{
+              :title=>"Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.",
+              :answer_type=>"boolean",
+              :answer=>nil,
+              :attachments=>[]
+            },
+            :children=>[]
+          },
+          {
+            :name=>"authors--authors_confirm_icmje_criteria",
+            :type=>"question",
+            :value=>{
+              :title=>"All authors have read, and confirm, that they meet, ICMJE criteria for authorship.",
+              :answer_type=>"boolean",
+              :answer=>nil,
+              :attachments=>[]
+            },
+            :children=>[]
+          },
+          {
+            :name=>"authors--authors_agree_to_submission",
+            :type=>"question",
+            :value=>{
+              :title=>"All contributing authors are aware of and agree to the submission of this manuscript.",
+              :answer_type=>"boolean",
+              :answer=>nil,
+              :attachments=>[]
+            },
+            :children=>[]
+          }
+        ]
       )
     end
 
@@ -39,8 +73,35 @@ describe Snapshot::AuthorTaskSerializer do
 
       it "serializes each author(s) associated with the task in order by their respective position" do
         expect(serializer.as_json[:children]).to eq([
-          { author: "sally's json here" },
-          { author: "bob's json here" }
+          {:name=>"authors--persons_agreed_to_be_named",
+          :type=>"question",
+          :value=>
+           {:title=>
+             "Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.",
+            :answer_type=>"boolean",
+            :answer=>nil,
+            :attachments=>[]},
+          :children=>[]},
+          {:name=>"authors--authors_confirm_icmje_criteria",
+          :type=>"question",
+          :value=>
+           {:title=>
+             "All authors have read, and confirm, that they meet, ICMJE criteria for authorship.",
+            :answer_type=>"boolean",
+            :answer=>nil,
+            :attachments=>[]},
+          :children=>[]},
+          {:name=>"authors--authors_agree_to_submission",
+          :type=>"question",
+          :value=>
+           {:title=>
+             "All contributing authors are aware of and agree to the submission of this manuscript.",
+            :answer_type=>"boolean",
+            :answer=>nil,
+            :attachments=>[]},
+          :children=>[]},
+          {:author=>"sally's json here"},
+          {:author=>"bob's json here"}
         ])
       end
     end

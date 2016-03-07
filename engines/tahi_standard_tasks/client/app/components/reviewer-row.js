@@ -2,24 +2,10 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
-  classNames: ['authors-overlay-item'],
-  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
+  classNames: ['author-task-item', 'reviewer'],
+  classNameBindings: ['isEditable:__editable'],
   isDeleting: false,
   isEditing: false,
-
-  canHover: Ember.computed.alias('isEditable'),
-  isHovering: false,
-  showHover: Ember.computed.and('isHovering', 'canHover'),
-
-  _setupHover: Ember.on('didInsertElement', function(){
-    this.$().hover(() => {
-      this.toggleProperty('isHovering');
-    });
-  }),
-
-  _destroyHover: Ember.on('willDestroyElement', function(){
-    this.$().off('mouseenter mouseleave');
-  }),
 
   actions: {
 

@@ -1729,6 +1729,13 @@ authors:
   - secondary_affiliation
   - ringgold_id
   - secondary_ringgold_id
+  - author_initial
+  - current_address_street
+  - current_address_street2
+  - current_address_city
+  - current_address_state
+  - current_address_country
+  - current_address_postal
   records: 
   - - '1'
     - Arthur
@@ -1740,6 +1747,13 @@ authors:
     - '2'
     - 
     - author@example.com
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -1762,6 +1776,13 @@ authors:
     - University of Michigan
     - 
     - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
   - - '3'
     - Jane
     - Janesford
@@ -1776,6 +1797,13 @@ authors:
     - Second Greatest Author
     - Vanguard University of Southern California
     - Northwestern Oklahoma State University
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
     - 
     - 
   - - '4'
@@ -1794,6 +1822,13 @@ authors:
     - Adler Graduate School
     - 
     - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
   - - '5'
     - Barb
     - Jones
@@ -1808,6 +1843,13 @@ authors:
     - World's Best Author
     - Abraham Baldwin Agricultural College
     - Adler Graduate School
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
     - 
     - 
   - - '6'
@@ -1826,6 +1868,13 @@ authors:
     - Adelphi University
     - 
     - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
   - - '7'
     - Jeffrey SA
     - Gray
@@ -1839,6 +1888,13 @@ authors:
     - 
     - 
     - Affiliation 1
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -1858,6 +1914,13 @@ authors:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
   - - '9'
     - Adam
     - Administrator
@@ -1871,6 +1934,13 @@ authors:
     - 
     - 
     - PLOS
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 

@@ -1,12 +1,15 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 import DATA from 'tahi/plos-billing-form-data';
-import validations from 'tahi/billing-task-validations';
+import questionValidations from 'tahi/billing-task-validations';
 
-const { computed } = Ember;
+const {
+  computed,
+  inject: { service }
+} = Ember;
 
 export default TaskComponent.extend({
-  validations: validations,
+  questionValidations: questionValidations,
   validateData() {
     this.validateQuestions();
   },
@@ -16,7 +19,7 @@ export default TaskComponent.extend({
     this.get('countries').fetch();
   },
 
-  countries: Ember.inject.service(),
+  countries: service(),
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
   states:    DATA.states,

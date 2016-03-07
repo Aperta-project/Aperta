@@ -245,7 +245,7 @@ describe JournalFactory do
       context 'Academic Editor' do
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::RegisterDecisionTask, TahiStandardTasks::ReviewerRecommendationsTask]
+            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::RegisterDecisionTask, TahiStandardTasks::ReviewerReportTask]
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do

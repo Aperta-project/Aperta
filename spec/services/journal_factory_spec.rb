@@ -310,17 +310,26 @@ describe JournalFactory do
 
         describe 'permissions on Task base class' do
           it 'can :view and :edit Task' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(journal.handling_editor_role.permissions).to include(
               Permission.find_by(action: :view, applies_to: 'Task'),
               Permission.find_by(action: :edit, applies_to: 'Task')
             )
           end
 
           it 'can view/add/remove participants on Task' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(journal.handling_editor_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
               Permission.find_by(action: :add_participants, applies_to: 'Task'),
               Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
+
+        describe 'permission to PlosBilling::BillingTask' do
+          it 'cannot :view or :edit' do
+            expect(journal.handling_editor_role.permissions).not_to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -365,17 +374,26 @@ describe JournalFactory do
 
         describe 'permissions on Task base class' do
           it 'can :view and :edit Task' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               Permission.find_by(action: :view, applies_to: 'Task'),
               Permission.find_by(action: :edit, applies_to: 'Task')
             )
           end
 
           it 'can view/add/remove participants on Task' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
               Permission.find_by(action: :add_participants, applies_to: 'Task'),
               Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
+
+        describe 'permission to PlosBilling::BillingTask' do
+          it 'cannot :view or :edit' do
+            expect(journal.internal_editor_role.permissions).not_to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -420,17 +438,26 @@ describe JournalFactory do
 
         describe 'permissions on Task base class' do
           it 'can :view and :edit Task' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.production_staff_role.permissions).to include(
               Permission.find_by(action: :view, applies_to: 'Task'),
               Permission.find_by(action: :edit, applies_to: 'Task')
             )
           end
 
           it 'can view/add/remove participants on Task' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.production_staff_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
               Permission.find_by(action: :add_participants, applies_to: 'Task'),
               Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
+
+        describe 'permission to PlosBilling::BillingTask' do
+          it ':view and :edit' do
+            expect(journal.production_staff_role.permissions).to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -486,6 +513,15 @@ describe JournalFactory do
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
               Permission.find_by(action: :add_participants, applies_to: 'Task'),
               Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
+
+        describe 'permission to PlosBilling::BillingTask' do
+          it ':view and :edit' do
+            expect(journal.publishing_services_role.permissions).to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -590,6 +626,15 @@ describe JournalFactory do
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
               Permission.find_by(action: :add_participants, applies_to: 'Task'),
               Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
+
+        describe 'permission to PlosBilling::BillingTask' do
+          it ':view and :edit' do
+            expect(journal.staff_admin_role.permissions).to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end

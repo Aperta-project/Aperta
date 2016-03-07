@@ -11,10 +11,7 @@ class TestTask < Task
   end
 end
 
-class TestTasksPolicy < TasksPolicy; end
-
 describe InvitationsController do
-
   let(:invitee) { FactoryGirl.create(:user) }
   let(:phase) { FactoryGirl.create(:phase) }
   let(:task) { FactoryGirl.create :invitable_task }
@@ -54,6 +51,32 @@ describe InvitationsController do
       expect(invitation_json).to have_key(:state)
       expect(invitation_json).to have_key(:invitation_type)
     end
+
+    it 'works if this is the invitee' do
+      allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+        .and_return(false)
+
+      get(:show, format: :json, id: invitation.id)
+      expect(response.status).to eq(200)
+    end
+
+    it 'works when the caller has manage_invitations permission' do
+      allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+        .and_return(true)
+      new_user = FactoryGirl.create(:user)
+
+      get(:show, format: :json, id: invitation.id, user: new_user)
+      expect(response.status).to eq(200)
+    end
+
+    it 'returns a 403 when the caller can not manage invitations and is not the invitee' do
+      allow_any_instance_of(User).to receive(:can?).and_return(false)
+      new_user = FactoryGirl.create(:user)
+      sign_in(new_user)
+
+      get(:show, format: :json, id: invitation.id)
+      expect(response.status).to eq(403)
+    end
   end
 
   describe "POST /invitations" do
@@ -72,83 +95,126 @@ describe InvitationsController do
       })
     end
 
-    it "creates a invited invitation" do
-      do_request
+    context 'with manage_invitations permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_invitations, task).and_return(true)
+      end
 
-      expect(response.status).to eq(201)
+      it "creates a invited invitation" do
+        do_request
 
-      data = res_body.with_indifferent_access
-      invitation = Invitation.find(data[:invitation][:id])
+        expect(response.status).to eq(201)
 
-      expect(invitation.invitee).to eq(invitee)
-      expect(invitation.email).to eq(invitee.email)
-      expect(invitation.code).to be_present
-      expect(invitation.actor).to be_nil
-      expect(invitation.state).to eq("invited")
-      expect(invitation.body).to eq(invitation_body)
-    end
+        data = res_body.with_indifferent_access
+        invitation = Invitation.find(data[:invitation][:id])
 
-    it "creates an invitation for new user" do
-      new_user_email = "custom-email@example.com"
-      do_request(email: new_user_email)
+        expect(invitation.invitee).to eq(invitee)
+        expect(invitation.email).to eq(invitee.email)
+        expect(invitation.code).to be_present
+        expect(invitation.actor).to be_nil
+        expect(invitation.state).to eq("invited")
+        expect(invitation.body).to eq(invitation_body)
+      end
 
-      expect(response.status).to eq 201
+      it "creates an invitation for new user" do
+        new_user_email = "custom-email@example.com"
+        do_request(email: new_user_email)
 
-      data = res_body.with_indifferent_access
-      invitation = Invitation.find(data[:invitation][:id])
+        expect(response.status).to eq 201
 
-      expect(invitation.invitee).to eq nil
-      expect(invitation.email).to eq(new_user_email)
-      expect(invitation.code).to be_present
-      expect(invitation.actor).to be_nil
-      expect(invitation.state).to eq("invited")
-    end
+        data = res_body.with_indifferent_access
+        invitation = Invitation.find(data[:invitation][:id])
 
-    it "creates an Activity" do
-      expected_activity = {
-        message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
-        feed_name: "workflow"
-      }
-      expect(Activity).to receive(:create).with hash_including(expected_activity)
-      do_request
-    end
-  end
+        expect(invitation.invitee).to eq nil
+        expect(invitation.email).to eq(new_user_email)
+        expect(invitation.code).to be_present
+        expect(invitation.actor).to be_nil
+        expect(invitation.state).to eq("invited")
+      end
 
-  describe "DELETE /invitations/:id", redis: true do
-    let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
-
-    it "initiates the task callback" do
-      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(invitation)
-      delete(:destroy, {
-        format: "json",
-        id: invitation.id
-      })
-    end
-
-    context "Invitation with invitee" do
-      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
-
-      it "deletes the invitation queues up email job", redis: true do
-        delete(:destroy, {
-          format: "json",
-          id: invitation.id
-        })
-        expect(response.status).to eq 204
-        expect(Invitation.exists?(id: invitation.id)).to eq(false)
+      it "creates an Activity" do
+        expected_activity = {
+          message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
+          feed_name: "workflow"
+        }
+        expect(Activity).to receive(:create).with hash_including(expected_activity)
+        do_request
       end
     end
 
-    context "Invitation witout invitee" do
-      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: "test@example.com", task: task) }
+    context 'without manage_invitations permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_invitations, task).and_return(false)
+      end
 
-      it "deletes the invitation queues up email job", redis: true do
-        expect(invitation.invitee).to be nil
+      it 'returns a 403' do
+        do_request
+
+        expect(response.status).to eq(403)
+      end
+    end
+  end
+
+  describe "DELETE /invitations/:id" do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
+
+    context 'with manage_invitations permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+          .and_return(true)
+      end
+
+      it "initiates the task callback" do
+        expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(invitation)
         delete(:destroy, {
           format: "json",
           id: invitation.id
         })
-        expect(response.status).to eq 204
-        expect(Invitation.exists?(id: invitation.id)).to eq(false)
+      end
+
+      context "Invitation with invitee" do
+        let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
+
+        it "deletes the invitation queues up email job" do
+          delete(:destroy,
+                 format: "json",
+                 id: invitation.id
+                )
+          expect(response.status).to eq 204
+          expect(Invitation.exists?(id: invitation.id)).to eq(false)
+        end
+      end
+
+      context "Invitation witout invitee" do
+        let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: "test@example.com", task: task) }
+
+        it "deletes the invitation queues up email job" do
+          expect(invitation.invitee).to be nil
+          delete(:destroy,
+                 format: "json",
+                 id: invitation.id
+                )
+          expect(response.status).to eq 204
+          expect(Invitation.exists?(id: invitation.id)).to eq(false)
+        end
+      end
+    end
+
+    context 'without manage_invitations permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_invitations, task).and_return(false)
+      end
+
+      it 'returns a 403' do
+        delete(:destroy,
+               format: "json",
+               id: invitation.id
+              )
+
+        expect(response.status).to eq(403)
       end
     end
   end

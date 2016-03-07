@@ -9,10 +9,14 @@ class InvitationsController < ApplicationController
   end
 
   def show
+    fail AuthorizationError unless current_user == invitation.invitee ||
+                                   current_user.can?(:manage_invitations,
+                                                     invitation.task)
     respond_with invitation
   end
 
   def create
+    requires_user_can(:manage_invitations, task)
     invitation = task.invitations.build(invitation_params)
     invitation.invite!
     Activity.invitation_created!(invitation, user: current_user)
@@ -20,12 +24,15 @@ class InvitationsController < ApplicationController
   end
 
   def destroy
+    task = invitation.task
+    requires_user_can(:manage_invitations, task)
     invitation.destroy
     Activity.invitation_withdrawn!(invitation, user: current_user)
     respond_with(invitation)
   end
 
   def accept
+    fail AuthorizationError unless invitation.invitee == current_user
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)
@@ -33,6 +40,7 @@ class InvitationsController < ApplicationController
   end
 
   def reject
+    fail AuthorizationError unless invitation.invitee == current_user
     invitation.actor = current_user
     invitation.reject!
     Activity.invitation_rejected!(invitation, user: current_user)

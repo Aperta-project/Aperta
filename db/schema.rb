@@ -87,7 +87,6 @@ ActiveRecord::Schema.define(version: 20160303203916) do
     t.integer  "author_id",   null: false
     t.string   "author_type", null: false
     t.integer  "task_id",     null: false
-    t.string   "task_type",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

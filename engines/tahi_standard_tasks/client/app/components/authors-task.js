@@ -104,7 +104,7 @@ export default TaskComponent.extend({
 
       // set this here, not when initially built so it doesn't show up in
       // the list of existing authors as the user fills out the form
-      model.set('authorsTask', this.get('task'));
+      model.set('task', this.get('task'));
 
       model.save().then( (savedAuthor) => {
         model.get('nestedQuestionAnswers').toArray().forEach(function(answer){

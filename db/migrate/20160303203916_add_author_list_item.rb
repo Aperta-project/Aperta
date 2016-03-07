@@ -10,7 +10,7 @@ class AddAuthorListItem < ActiveRecord::Migration
     create_table :author_list_items do |t|
       t.integer :position
       t.references :author, null: false, polymorphic: true
-      t.references :task, null: false, polymorphic: true
+      t.references :task, null: false
       t.timestamps
     end
 
@@ -19,8 +19,7 @@ class AddAuthorListItem < ActiveRecord::Migration
         author_id: author.id,
         author_type: "Author",
         position: author.position,
-        task_id: author.authors_task.id,
-        task_type: "TahiStandardTasks::AuthorsTask"
+        task_id: author.authors_task_id
       )
     end
 

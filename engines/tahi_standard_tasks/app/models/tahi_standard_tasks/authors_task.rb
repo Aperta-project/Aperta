@@ -5,8 +5,8 @@ module TahiStandardTasks
 
     include MetadataTask
 
-    has_many :authors, inverse_of: :authors_task
-    has_many :list_item, as: :owner
+    has_many :authors, through: :author_list_items, source_type: "Author"
+    has_many :author_list_items, foreign_key: :task_id
 
     validates_with AssociationValidator, association: :authors, fail: :set_completion_error, if: :completed?
 

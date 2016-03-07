@@ -36,7 +36,7 @@ describe JournalFactory do
 
       context 'Creator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal.collaborator_role.permissions).to include(
+          expect(journal.creator_role.permissions).to include(
             view_paper_permission
           )
           expect(view_paper_permission.states).to contain_exactly(
@@ -49,7 +49,7 @@ describe JournalFactory do
             ::Task.descendants - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [TahiStandardTasks::ProductionMetadataTask]
+            [TahiStandardTasks::ProductionMetadataTask, PlosBioTechCheck::FinalTechCheckTask]
           end
 
           it 'can :view and :edit all Tasks except ProductionMetadataTask' do
@@ -85,7 +85,6 @@ describe JournalFactory do
               )
             end
           end
-
         end
       end
 
@@ -103,28 +102,51 @@ describe JournalFactory do
           )
         end
 
-        it 'is able to see most metadata_tasks like the Data Availability Task' do
-          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
-                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
-                ).to be_present
-          expect(journal.collaborator_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
-          )
-        end
+        describe 'permissions on tasks' do
+          let(:accessible_task_klasses) do
+            accessible_for_role = ::Task.descendants.select { |klass| klass <=> MetadataTask } + [TahiStandardTasks::CoverLetterTask]
+            accessible_for_role - inaccessible_task_klasses
+          end
+          let(:inaccessible_task_klasses) do
+            [PlosBilling::BillingTask]
+          end
+          let(:all_inaccessible_task_klasses) do
+            ::Task.descendants - accessible_task_klasses
+          end
 
-        it 'is able to see most submission_tasks like the ReviewerRecommendationsTask' do
-          expect(Task.descendants.select { |klass| klass <=> SubmissionTask }
-                                 .select { |klass| klass.name == 'TahiStandardTasks::ReviewerRecommendationsTask' }
-                ).to be_present
-          expect(journal.collaborator_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
-          )
-        end
+          it 'can :view and :edit all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(journal.collaborator_role.permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :edit, applies_to: klass.name)
+              )
+            end
 
-        it 'but should not be able to see the Billing Task' do
-          expect(journal.collaborator_role.permissions).not_to include(
-            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
-          )
+            all_inaccessible_task_klasses.each do |klass|
+              expect(journal.collaborator_role.permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :edit, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can view/add/remove participants on all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(journal.collaborator_role.permissions).to include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name),
+                Permission.find_by(action: :add_participants, applies_to: klass.name),
+                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(journal.collaborator_role.permissions).to_not include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name),
+                Permission.find_by(action: :add_participants, applies_to: klass.name),
+                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+              )
+            end
+          end
         end
       end
 
@@ -221,28 +243,31 @@ describe JournalFactory do
       end
 
       context 'Academic Editor' do
-        it 'is able to see most metadata_tasks like the Data Availability Task' do
-          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
-                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
-                ).to be_present
-          expect(journal.academic_editor_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
-          )
-        end
+        describe 'permissions on tasks' do
+          let(:accessible_task_klasses) do
+            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::RegisterDecisionTask, TahiStandardTasks::ReviewerReportTask]
+            accessible_for_role - inaccessible_task_klasses
+          end
+          let(:inaccessible_task_klasses) do
+            [PlosBilling::BillingTask]
+          end
+          let(:all_inaccessible_task_klasses) do
+            ::Task.descendants - accessible_task_klasses
+          end
 
-        it 'but should not be able to see the Billing Task' do
-          expect(journal.academic_editor_role.permissions).not_to include(
-            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
-          )
-        end
+          it 'can :view all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(journal.academic_editor_role.permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
 
-        it 'is able to view and edit the ReviewerRecommendationsTask' do
-          expect(journal.academic_editor_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
-          )
-          expect(journal.academic_editor_role.permissions).to include(
-            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
-          )
+            all_inaccessible_task_klasses.each do |klass|
+              expect(journal.academic_editor_role.permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+          end
         end
       end
 
@@ -279,6 +304,23 @@ describe JournalFactory do
           it ':reply' do
             expect(journal.handling_editor_role.permissions).to include(
               permissions.find_by(action: 'reply')
+            )
+          end
+        end
+
+        describe 'permissions on Task base class' do
+          it 'can :view and :edit Task' do
+            expect(journal.staff_admin_role.permissions).to include(
+              Permission.find_by(action: :view, applies_to: 'Task'),
+              Permission.find_by(action: :edit, applies_to: 'Task')
+            )
+          end
+
+          it 'can view/add/remove participants on Task' do
+            expect(journal.staff_admin_role.permissions).to include(
+              Permission.find_by(action: :view_participants, applies_to: 'Task'),
+              Permission.find_by(action: :add_participants, applies_to: 'Task'),
+              Permission.find_by(action: :remove_participants, applies_to: 'Task')
             )
           end
         end
@@ -320,6 +362,23 @@ describe JournalFactory do
             )
           end
         end
+
+        describe 'permissions on Task base class' do
+          it 'can :view and :edit Task' do
+            expect(journal.handling_editor_role.permissions).to include(
+              Permission.find_by(action: :view, applies_to: 'Task'),
+              Permission.find_by(action: :edit, applies_to: 'Task')
+            )
+          end
+
+          it 'can view/add/remove participants on Task' do
+            expect(journal.handling_editor_role.permissions).to include(
+              Permission.find_by(action: :view_participants, applies_to: 'Task'),
+              Permission.find_by(action: :add_participants, applies_to: 'Task'),
+              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
       end
 
       context 'Production Staff' do
@@ -355,6 +414,23 @@ describe JournalFactory do
           it ':reply' do
             expect(journal.production_staff_role.permissions).to include(
               permissions.find_by(action: 'reply')
+            )
+          end
+        end
+
+        describe 'permissions on Task base class' do
+          it 'can :view and :edit Task' do
+            expect(journal.internal_editor_role.permissions).to include(
+              Permission.find_by(action: :view, applies_to: 'Task'),
+              Permission.find_by(action: :edit, applies_to: 'Task')
+            )
+          end
+
+          it 'can view/add/remove participants on Task' do
+            expect(journal.internal_editor_role.permissions).to include(
+              Permission.find_by(action: :view_participants, applies_to: 'Task'),
+              Permission.find_by(action: :add_participants, applies_to: 'Task'),
+              Permission.find_by(action: :remove_participants, applies_to: 'Task')
             )
           end
         end
@@ -396,6 +472,23 @@ describe JournalFactory do
             )
           end
         end
+
+        describe 'permissions on Task base class' do
+          it 'can :view and :edit Task' do
+            expect(journal.publishing_services_role.permissions).to include(
+              Permission.find_by(action: :view, applies_to: 'Task'),
+              Permission.find_by(action: :edit, applies_to: 'Task')
+            )
+          end
+
+          it 'can view/add/remove participants on Task' do
+            expect(journal.publishing_services_role.permissions).to include(
+              Permission.find_by(action: :view_participants, applies_to: 'Task'),
+              Permission.find_by(action: :add_participants, applies_to: 'Task'),
+              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+            )
+          end
+        end
       end
 
       context 'Discussion Participant' do
@@ -416,24 +509,43 @@ describe JournalFactory do
         end
       end
 
+      context 'Reviewer' do
+        describe 'permissions on tasks' do
+          let(:accessible_task_klasses) do
+            accessible_for_role = ::Task.descendants.select { |klass| klass <=> MetadataTask } + [TahiStandardTasks::ReviseTask]
+            accessible_for_role - inaccessible_task_klasses
+          end
+          let(:inaccessible_task_klasses) do
+            [PlosBilling::BillingTask]
+          end
+          let(:all_inaccessible_task_klasses) do
+            ::Task.descendants - accessible_task_klasses
+          end
+
+          it 'can :view and :view_participants for all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(journal.reviewer_role.permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(journal.reviewer_role.permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
+              )
+            end
+          end
+        end
+      end
+
       context 'Staff Admin' do
         it 'has :start_discussion permissions on Paper' do
           permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
 
           expect(journal.staff_admin_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
-          )
-        end
-
-        it 'is able to see Tasks in general' do
-          expect(journal.staff_admin_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'Task').first
-          )
-        end
-
-        it 'but should not be able to see the Billing Task' do
-          expect(journal.staff_admin_role.permissions).to include(
-            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
           )
         end
 
@@ -461,6 +573,23 @@ describe JournalFactory do
           it ':reply' do
             expect(journal.staff_admin_role.permissions).to include(
               permissions.find_by(action: 'reply')
+            )
+          end
+        end
+
+        describe 'permissions on Task base class' do
+          it 'can :view and :edit Task' do
+            expect(journal.staff_admin_role.permissions).to include(
+              Permission.find_by(action: :view, applies_to: 'Task'),
+              Permission.find_by(action: :edit, applies_to: 'Task')
+            )
+          end
+
+          it 'can view/add/remove participants on Task' do
+            expect(journal.staff_admin_role.permissions).to include(
+              Permission.find_by(action: :view_participants, applies_to: 'Task'),
+              Permission.find_by(action: :add_participants, applies_to: 'Task'),
+              Permission.find_by(action: :remove_participants, applies_to: 'Task')
             )
           end
         end

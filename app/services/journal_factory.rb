@@ -65,9 +65,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
@@ -229,7 +231,7 @@ class JournalFactory
 
       # AEs cannot view billing task or reviewer recommendation tasks
       task_klasses -= [PlosBilling::BillingTask]
-      task_klasses << [TahiStandardTasks::ReviewerReportTask]
+      task_klasses << TahiStandardTasks::ReviewerReportTask
       task_klasses << TahiStandardTasks::RegisterDecisionTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)

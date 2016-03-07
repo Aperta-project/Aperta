@@ -9,12 +9,10 @@ import getJSONTask from 'tahi/lib/get-json-task';
 const {
   Component,
   computed,
-  inject: { service },
   isEmpty
 } = Ember;
 
 export default Component.extend({
-  restless: service('restless'),
   classNameBindings: [
     ':did-you-mean',
     'errorPresent:error'

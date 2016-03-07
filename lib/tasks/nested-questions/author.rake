@@ -7,7 +7,7 @@ namespace 'nested-questions:seed' do
       owner_type: Author.name,
       ident: "author--published_as_corresponding_author",
       value_type: "boolean",
-      text: "This is a post publication corresponding author",
+      text: "This person should be identified as corresponding author on the published article",
       position: 1
     }
 

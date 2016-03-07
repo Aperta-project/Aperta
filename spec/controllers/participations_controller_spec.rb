@@ -1,24 +1,21 @@
 require 'rails_helper'
 
 describe ParticipationsController do
-  # Since journals w/R&P are expensive create once for the entire test then remove.
-  before(:all) do
-    Journal.destroy_all
-    FactoryGirl.create(:journal, :with_roles_and_permissions)
-  end
-  after(:all) do
-    Journal.destroy_all
-  end
-
   let(:user) { FactoryGirl.create(:user) }
   let(:participant) { FactoryGirl.create(:user) }
-  let(:journal) { Journal.first! }
+  let(:journal){ FactoryGirl.create(:journal) }
   let!(:paper) do
-    FactoryGirl.create(:paper, creator: user, journal: journal)
+    FactoryGirl.create(:paper, journal: journal)
   end
   let(:task) { FactoryGirl.create(:task, paper: paper) }
 
-  before { sign_in user }
+  before do
+    Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: journal) do |role|
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+    end
+
+    sign_in user
+  end
 
   describe "#index" do
     let!(:participation1) { task.add_participant(user) }

@@ -49,7 +49,11 @@ describe JournalFactory do
             ::Task.descendants - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [TahiStandardTasks::ProductionMetadataTask, PlosBioTechCheck::FinalTechCheckTask]
+            [
+              TahiStandardTasks::ProductionMetadataTask,
+              PlosBioTechCheck::FinalTechCheckTask
+              TahiStandardTasks::RegisterDecisionTask
+            ]
           end
 
           it 'can :view and :edit all Tasks except ProductionMetadataTask' do

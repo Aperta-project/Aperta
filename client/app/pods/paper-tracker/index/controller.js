@@ -53,10 +53,14 @@ export default Ember.Controller.extend({
         query: this.get('queryInput')
       }).save();
       this.set('newQueryState', false);
+      this.set('newQueryTitle', '');
     },
 
     startNewSavedQuery() {
       this.set('newQueryState', true);
+      Ember.run.later(() => {
+        $('#new-query-title').focus();
+      });
     }
   }
 });

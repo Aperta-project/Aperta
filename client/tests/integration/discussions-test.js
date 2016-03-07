@@ -18,7 +18,7 @@ module('Integration: Discussions', {
     App = startApp();
     TestHelper.setup(App);
 
-    paper = make('paper', { phases: [], tasks: [] });
+    paper = make('paper_with_discussion', { phases: [], tasks: [] });
     topic = make('topic_with_replies', { paperId: paper.id, title: 'Hipster Ipsum Dolor' });
 
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
@@ -40,6 +40,8 @@ module('Integration: Discussions', {
 
 test('can see a list of topics', function(assert) {
   Ember.run(function() {
+    TestHelper.handleFind(topic);
+
     visit('/papers/' + paper.id + '/workflow/discussions/');
 
     andThen(function() {

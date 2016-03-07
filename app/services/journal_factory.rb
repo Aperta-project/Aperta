@@ -26,13 +26,8 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
 
-      # Creator(s) cannot view/edit production metadata or final tech check tasks
-      task_klasses = Task.descendants
-      task_klasses -= [
-        TahiStandardTasks::ProductionMetadataTask,
-        TahiStandardTasks::RegisterDecisionTask,
-        PlosBioTechCheck::FinalTechCheckTask
-      ]
+      # Creator(s) only get access to the submission task types
+      task_klasses = Task.submission_task_types
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)

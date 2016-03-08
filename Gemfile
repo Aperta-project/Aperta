@@ -94,6 +94,7 @@ end
 
 group :development do
   gem 'bullet'
+  gem 'capistrano-rails'
   gem 'foreman', require: false
   gem 'overcommit'
   gem 'rubocop'

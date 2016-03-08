@@ -2,18 +2,17 @@ require 'rails_helper'
 
 describe FigureInserter do
   let(:raw_html_tree) { parse raw_html }
+  let(:raw_html) do
+    <<-HTML
+      <p>Doesn't matter</p>
+      <p id="only-for-testing">Figure 1. This is the caption</p>
+      <p>Also doesn't matter</p>
+    HTML
+  end
+  let(:figure_inserter) { FigureInserter.new(raw_html, []) }
 
   describe "#call" do
-    let(:raw_html) do
-      <<-HTML
-        <p>Doesn't matter</p>
-        <p id="only-for-testing">Figure 1. This is the caption</p>
-        <p>Also doesn't matter</p>
-      HTML
-    end
-
     context "there are no figures" do
-      let(:figure_inserter) { FigureInserter.new(raw_html, []) }
       it "returns the same html as that inputted" do
         return_tree = parse figure_inserter.call
         expect(return_tree).to be_equivalent_to(raw_html_tree)

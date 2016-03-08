@@ -54,6 +54,11 @@ describe Figure, redis: true do
       expect(figure.detail_src)
         .to eq figure.non_expiring_proxy_url(version: :detail)
     end
+
+    it 'returns a path with a cache buster if requested' do
+      url = figure.detail_src(cache_buster: true)
+      expect(url).to match /\?cb=\w+$/
+    end
   end
 
   describe '.acceptable_content_type?' do
@@ -118,6 +123,13 @@ describe Figure, redis: true do
       allow(paper_double).to receive(:id)
 
       figure.destroy!
+    end
+
+    it 'triggers if the attachment is updated' do
+      expect(figure).to receive(:insert_figures!)
+      with_aws_cassette('figure') do
+        figure.update!(attachment: File.open('spec/fixtures/yeti.jpg'))
+      end
     end
   end
 end

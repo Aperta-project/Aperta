@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Paper tracker: shared saved searches
+- Figures display in the manuscript
 
 ### Changed
 -

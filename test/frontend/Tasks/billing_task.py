@@ -69,7 +69,7 @@ class BillingTask(BaseTask):
     # for item in parent_div.find_elements_by_tag_name('li'):
     for item in parent_div.find_elements_by_class_name('select2-result-label'):
       if item.text == payment_option_default:
-        logging.info('Selecting Payment Option: {}'.format(payment_option_default))
+        logging.info('Selecting Payment Option: {0}'.format(payment_option_default))
         item.click()
         time.sleep(1)
         break

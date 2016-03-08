@@ -247,7 +247,7 @@ class WorkflowPage(AuthenticatedPage):
       initial_decision_card = InitialDecisionCard(self._driver)
       time.sleep(2)
       id_state = initial_decision_card.execute_decision(choice='invite')
-      logging.info('Executed initial decision of {}'.format(id_state))
+      logging.info('Executed initial decision of {0}'.format(id_state))
     else:
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():

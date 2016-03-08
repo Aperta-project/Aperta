@@ -132,27 +132,33 @@ class PaperTrackerPage(AuthenticatedPage):
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
     papers = withdrawn_papers + submitted_papers
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     if total_count > 0:
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       count = 0
       for row in table_rows:
-        print('Validating Row: {0}'.format(count))
+        logging.info('Validating Row: {0}'.format(count))
         # Once again, while less than ideal, these must be defined on the fly
-        self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a'
+        self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[%s]\
+                                                 /td[@class="paper-tracker-title-column"]/a'
                                                  % str(count + 1))
-        self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-paper-id-column"]/a'
+        self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[%s]\
+                                                 /td[@class="paper-tracker-paper-id-column"]/a'
                                                  % str(count + 1))
-        self._paper_tracker_table_tbody_subdate = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-date-column"]'
+        self._paper_tracker_table_tbody_subdate = (By.XPATH, '//tbody/tr[%s]\
+                                                   /td[@class="paper-tracker-date-column"]'
                                                    % str(count + 1))
-        self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"]'
+        self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[%s]\
+                                                   /td[@class="paper-tracker-type-column"]'
                                                    % str(count + 1))
-        self._paper_tracker_table_tbody_members = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"]'
+        self._paper_tracker_table_tbody_members = (By.XPATH, '//tbody/tr[%s]\
+                                                   /td[@class="paper-tracker-members-column"]'
                                                    % str(count + 1))
 
         title = self._get(self._paper_tracker_table_tbody_title)
         if not title:
-          raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
+          raise ValueError('Error: No title in db! Illogical, Illogical, '
+                           'Norman Coordinate: Invalid document')
         if papers[count][0]:
           db_title = papers[count][0]
           # strip tags

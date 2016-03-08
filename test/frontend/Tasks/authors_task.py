@@ -222,7 +222,7 @@ class AuthorsTask(BaseTask):
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
     completed = self.completed_state()
-    logging.info('Completed State of the Author task is: {}'.format(completed))
+    logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
       self.click_completion_button()
       time.sleep(2)

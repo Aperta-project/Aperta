@@ -129,7 +129,7 @@ class JournalAdminPage(AdminPage):
         print(user.text)
         print('\n')
     else:
-      logging.info('No users assigned roles in journal: {}, so will add one...'.format(journal))
+      logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
       self._add_user_with_role('jgray_author', 'Flow Manager')
       logging.info('Verifying added user')
       self._validate_user_with_role('jgray_author', 'Flow Manager')
@@ -194,31 +194,32 @@ class JournalAdminPage(AdminPage):
       logging.info(row.text)
       self._role_edit_icon = \
           (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{}]\
+           "//div[@class='ember-view admin-role not-editing'][{0}]\
               /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
       self._get(self._role_edit_icon)
-      self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
+      self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{0}]\
           /div/span".format(count))
       role_name = self._get(self._role_name)
       if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
         self._role_delete_icon = (By.XPATH,
-            "//div[@class='ember-view admin-role not-editing'][{}]\
+            "//div[@class='ember-view admin-role not-editing'][{0}]\
             /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
         self._get(self._role_delete_icon)
-      self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
-           /div[@class='admin-role-permissions']".format(count))
+      self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing']\
+          [{0}]/div[@class='admin-role-permissions']".format(count))
       self._get(self._role_permissions_div)
-      self._role_assigned_permission = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
-          /div[@class='admin-role-permissions']/label".format(count))
+      self._role_assigned_permission = (By.XPATH,
+                                        "//div[@class='ember-view admin-role not-editing'][{0}]\
+                                        /div[@class='admin-role-permissions']/label".format(count))
       self.set_timeout(1)
       try:
         self._gets(self._role_assigned_permission)
       except ElementDoesNotExistAssertionError:
-        logging.warning('No permissions found for role {}'.format(role_name.text))
+        logging.warning('No permissions found for role {0}'.format(role_name.text))
       try:
         self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
       except ElementDoesNotExistAssertionError:
-        logging.warning('No permissions found for role: {}'.format(role_name.text))
+        logging.warning('No permissions found for role: {0}'.format(role_name.text))
       self.restore_timeout()
       count += 1
 

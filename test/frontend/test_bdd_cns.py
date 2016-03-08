@@ -1,10 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-This behavioral test case validates the Aperta Create New Submission through Submit process.
-"""
-__author__ = 'jgray@plos.org'
-
+import logging
 import os
 import random
 import time
@@ -16,8 +12,11 @@ from Base.Resources import login_valid_pw, creator_login1, creator_login2, creat
 from frontend.common_test import CommonTest
 from Base.Resources import docs
 from Pages.dashboard import DashboardPage
-from Pages.login_page import LoginPage
 
+"""
+This behavioral test case validates the Aperta Create New Submission through Submit process.
+"""
+__author__ = 'jgray@plos.org'
 
 users = [creator_login1,
          creator_login2,
@@ -58,12 +57,14 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     choose the type of paper (Research)
     drag manuscript/attach to “upload manuscript” or click “upload manuscript” to upload manuscript
     end up on the manuscript page
-    begin working through the cards on the right-hand side (don’t have to go in order that they are displayed)
+    begin working through the cards on the right-hand side (don’t have to go in order that they are
+      displayed)
     general
     after you complete each card, check “complete” and “close” to return to manuscript page
     for a few cards, try to:
     check complete and close and then reopen to make sure that the comments saved
-    don’t check complete, close and then reopen to see if the comments saved (everything should save)
+    don’t check complete, close and then reopen to see if the comments saved (everything should
+        save)
     billing
     enter payee details
     select how you would like to pay
@@ -84,7 +85,8 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     enter reviewer details for 2 reviewers (either recommend or oppose)
     enter a reviewer who doesn’t have an account in Aperta
     enter a reviewer who does have an account in Aperta
-    confirm that the editor receives the reviewer recommendation card as it was completed by the submitting author
+    confirm that the editor receives the reviewer recommendation card as it was completed by the
+        submitting author
     reporting guidelines
     check Systematic Review or Meta-Analysis
     select and upload word doc
@@ -97,8 +99,10 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     answer question “yes” and add 2 funders
     enter funder information
     indicate that one of them has a role in study design and input descriptoin
-    be sure to confirm that the funder name appears appropriately in the published financial disclosure statement that is indicated at the bottom
-    confirm that once a website is added to the funder information, a hyperlink is automatically created (associated to funder name below)
+    be sure to confirm that the funder name appears appropriately in the published financial
+        disclosure statement that is indicated at the bottom
+    confirm that once a website is added to the funder information, a hyperlink is automatically
+        created (associated to funder name below)
     authors
     add a corresponding author
     add one additional authors
@@ -122,7 +126,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
     # Validate Create New Submissions modal
     # Set long timeout due to the time it takes to load this page
@@ -133,15 +137,17 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     time.sleep(2)
     title = dashboard_page.title_generator()
     dashboard_page.enter_title_field(title)
-    # This should be expanded to make a random choice of journal and a random choice within that journal of type
-    # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this must be called stripped
-    #    of the same
+    # This should be expanded to make a random choice of journal and a random choice within that
+    # journal of type
+    # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this
+    # must be called stripped of the same
     # dashboard_page.select_journal_and_type('PLOS Wombat', 'MinimalMMTforCreatetoSubmitAT')
     dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
     time.sleep(3)
     doc2upload = random.choice(docs)
-    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
+    logging.info('Sending document: {0}'.format(os.path.join(os.getcwd(),
+                                                             '/frontend/assets/docs/', doc2upload)))
+    fn = os.path.join(os.getcwd(), '/frontend/assets/docs/', doc2upload)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard_page.click_upload_button()
 

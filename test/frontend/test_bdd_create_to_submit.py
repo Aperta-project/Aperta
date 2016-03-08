@@ -1,29 +1,29 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
+import random
+import time
+
+from Base.Decorators import MultiBrowserFixture
+from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5, staff_admin_login, super_admin_login
+from frontend.common_test import CommonTest
+from Cards.initial_decision_card import InitialDecisionCard
+from Pages.dashboard import DashboardPage
+from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
+
 """
 This behavioral test case validates the Aperta Create New Submission through Submit process.
 This test requires the following data:
 A journal named "PLOS Wombat"
 An MMT in that journal with no cards populated in its workflow, named "NoCards"
-An MMT in that journal with only the initial decision card populated in its workflow, named "OnlyInitialDecisionCard"
-The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into frontend/assets/docs/
+An MMT in that journal with only the initial decision card populated in its workflow,
+    named "OnlyInitialDecisionCard"
+The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
+    frontend/assets/docs/
 """
 __author__ = 'jgray@plos.org'
-
-import logging
-import os
-import random
-import time
-
-from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, super_admin_login
-from frontend.common_test import CommonTest
-from Cards.initial_decision_card import InitialDecisionCard
-from Pages.dashboard import DashboardPage
-from Pages.login_page import LoginPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
 
 users = [creator_login1,
          creator_login2,
@@ -81,18 +81,18 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    logging.info('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
     # Temporary changing timeout
     dashboard_page.click_create_new_submission_button()
     dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = self.create_article(journal='PLOS Wombat',
-                                type_='NoCards',
-                                random_bit=True,
-                                title='full submit',
-                                )
+    self.create_article(journal='PLOS Wombat',
+                        type_='NoCards',
+                        random_bit=True,
+                        title='full submit',
+                        )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
@@ -104,9 +104,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
-    logging.info('paper_title_from_page: '.format(paper_title_from_page))
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
     paper_id = manuscript_page.get_current_url().split('papers/')[1].split('?')[0]
-    logging.info('paper_id: '.format(paper_id))
+    logging.info('paper_id: {0}'.format(paper_id))
     manuscript_page.click_submit_btn()
     time.sleep(3)
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
@@ -171,7 +171,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       publishing_state: submitted
       gradual_engagement: true
   """
-  def test_validate_initial_submit(self, init=True):
+  def test_validate_initial_submit(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -179,18 +179,18 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     creator_user = random.choice(users)
-    logging.info('Logging in as user: {}'.format(creator_user))
-    dashboard_page = self.cas_login(email=creator_user['email']) if init else DashboardPage(self.getDriver())
+    logging.info('Logging in as user: {0}'.format(creator_user))
+    dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.click_create_new_submission_button()
     # Temporary changing timeout
     dashboard_page.set_timeout(60)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = self.create_article(journal='PLOS Wombat',
-                                type_='OnlyInitialDecisionCard',
-                                random_bit=True,
-                                title='initial submit',
-                                )
+    self.create_article(journal='PLOS Wombat',
+                        type_='OnlyInitialDecisionCard',
+                        random_bit=True,
+                        title='initial submit',
+                        )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
@@ -200,7 +200,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
-    logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
+    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
@@ -228,7 +228,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     self.return_to_login_page(login_url)
 
     admin_user = random.choice(admin_users)
-    dashboard_page = self.cas_login(email=admin_user['email'])
+    self.cas_login(email=admin_user['email'])
     # Need time to finish initial redirect to dashboard page
     time.sleep(3)
     new_paper_url = paper_url + '/workflow'
@@ -240,7 +240,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     id_card = InitialDecisionCard(self.getDriver())
     id_card.validate_styles()
     decision = id_card.execute_decision()
-    logging.info('Decision: {}'.format(decision))
+    logging.info('Decision: {0}'.format(decision))
     time.sleep(2)
     sub_data = workflow_page.get_db_submission_data(paper_id)
     if decision == 'reject':
@@ -272,7 +272,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     time.sleep(1)
     manuscript_page.click_submit_btn()
-    manuscript_page.validate_so_overlay_elements_styles('initial_submit_full', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('initial_submit_full',
+                                                        paper_title_from_page)
     manuscript_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button
     # and it takes time

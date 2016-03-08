@@ -243,7 +243,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Check discussion modal styles
     """
-    logging.info('Checking Discussions toolbar for {}'.format(useremail))
+    logging.info('Checking Discussions toolbar for {0}'.format(useremail))
     discussion_link = self._get(self._discussion_link)
     discussion_link.click()
     discussion_container = self._get(self._discussion_container)
@@ -291,7 +291,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Check all options inside More button (Appeal and Withdraw).
     Note that Appeal is not implemented yet, so it is not tested.
     """
-    logging.info('Checking More Toolbar menu for {}'.format(useremail))
+    logging.info('Checking More Toolbar menu for {0}'.format(useremail))
     more_btn = self._get(self._tb_more_link)
     more_btn.click()
     self._get(self._tb_more_appeal_link)
@@ -412,7 +412,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
         # accordion is close it, open it:
-        logging.info('Accordion was closed, opening: {}'.format(task.text))
+        logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
       # Check completed_check status
       if not base_task.completed_state():
@@ -427,7 +427,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       task.click()
       time.sleep(1)
     else:
-      raise ValueError('No information on this task: {}'.format(task_name))
+      raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()
 
   def get_paper_title_from_page(self):
@@ -494,7 +494,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     paper_url = self.get_current_url()
     paper_id = int(paper_url.split('papers/')[1])
-    print('The paper DB ID is: {0}'.format(paper_id))
+    logging.info('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):
@@ -557,7 +557,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         time.sleep(.5)
         break
     else:
-      raise Exception("User {} not found".format(user['name']))
+      raise Exception("User {0} not found".format(user['name']))
     time.sleep(1)
     self._get(self._add_collaborators_modal_save).click()
 

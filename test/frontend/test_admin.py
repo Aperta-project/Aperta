@@ -1,21 +1,20 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-This test case validates the Aperta Admin page.
-"""
-__author__ = 'jgray@plos.org'
-
 import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, handling_editor_login, \
-    internal_editor_login, pub_svcs_login
+from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, \
+    creator_login2, creator_login3, creator_login4, creator_login5, reviewer_login, \
+    academic_editor_login, handling_editor_login, cover_editor_login, internal_editor_login, \
+    pub_svcs_login
 from Pages.admin import AdminPage
-from Pages.dashboard import DashboardPage
 from frontend.common_test import CommonTest
 
+"""
+This test case validates the Aperta Admin page.
+"""
+__author__ = 'jgray@plos.org'
 
 users = [staff_admin_login,
          super_admin_login,
@@ -31,11 +30,13 @@ all_users = [super_admin_login,
              reviewer_login,
              academic_editor_login,
              handling_editor_login,
+             cover_editor_login,
              internal_editor_login,
              pub_svcs_login,
              ]
 
 user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
+
 
 @MultiBrowserFixture
 class ApertaAdminTest(CommonTest):
@@ -50,14 +51,14 @@ class ApertaAdminTest(CommonTest):
      Validate Add New Journal
      Validate Edit existing journal
   """
-  def test_validate_components_styles(self, init=True):
+  def test_validate_components_styles(self):
     """
     Validates the presence UI elements of base admin page
     """
     logging.info('Validating Admin page components and styles')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email']) if init else DashboardPage(self.getDriver())
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles(user_type['user'])
@@ -71,7 +72,7 @@ class ApertaAdminTest(CommonTest):
     """
     logging.info('Validating base admin page user search function')
     user_type = random.choice(users)
-    logging.info('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
@@ -83,7 +84,7 @@ class ApertaAdminTest(CommonTest):
     """
     logging.info('Validating add new journal function')
     user_type = super_admin_login
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
@@ -95,7 +96,7 @@ class ApertaAdminTest(CommonTest):
     """
     logging.info('Validating edit journal function')
     user_type = super_admin_login
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())

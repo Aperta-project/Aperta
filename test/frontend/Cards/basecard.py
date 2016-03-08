@@ -53,7 +53,7 @@ class BaseCard(AuthenticatedPage):
     elif btn_label == 'Make changes to this task':
       return True
     else:
-      raise ValueError('Completed button in unexpected state {}'.format(btn_label))
+      raise ValueError('Completed button in unexpected state {0}'.format(btn_label))
 
 
   def click_completed_checkbox(self):

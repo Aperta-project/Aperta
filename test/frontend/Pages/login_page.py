@@ -114,7 +114,7 @@ class LoginPage(AuthenticatedPage):
     :return: None
     """
     self._get(self._login_textbox).clear()
-    logging.info('Login as {}'.format(username))
+    logging.info('Login as {0}'.format(username))
     self._get(self._login_textbox).send_keys(username)
 
   def enter_password_field(self, password):

@@ -128,9 +128,10 @@ class DashboardPage(AuthenticatedPage):
     :return: void function
     """
     try:
-      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]".format(title))
     except UnicodeEncodeError:
-      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title.encode('utf8')))
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]"
+                                              .format(title.encode('utf8')))
     btn = h3.find_element_by_xpath("./following-sibling::button")
     btn.click()
 
@@ -367,10 +368,10 @@ class DashboardPage(AuthenticatedPage):
         # Split both to eliminate differences in whitespace
         db_title = title.split()
         paper_text = paper.text.split()
-        logging.error('db_title: {}'.format(db_title))
-        logging.error('paper_text: {}'.format(paper_text))
+        logging.error('db_title: {0}'.format(db_title))
+        logging.error('paper_text: {0}'.format(paper_text))
         if not title:
-          logging.info('Paper id: {}'.format(db_papers_list[count]))
+          logging.info('Paper id: {0}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
           assert db_title == paper_text, unicode(title) + unicode(' is not equal to ') + unicode(paper.text)
@@ -530,7 +531,7 @@ class DashboardPage(AuthenticatedPage):
       # however, the ordering of the presentation of the invite blocks is currently non-deterministic, so this
       # can't currently be done. https://www.pivotaltracker.com/n/projects/880854/stories/100832196
       # For the time being, just printing the titles to the test run log
-      logging.info('Title from the database: \n{}'.format(title))
+      logging.info('Title from the database: \n{0}'.format(title))
       # The following locators are dynamically assigned and must be defined inline in this loop to succeed.
       self._view_invites_pending_invite_div = (By.XPATH, '//div[@class="pending-invitation"][' + str(count) + ']')
       self._view_invites_pending_invite_heading = (By.TAG_NAME, 'h4')
@@ -542,7 +543,7 @@ class DashboardPage(AuthenticatedPage):
 
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_heading)
       pt = self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_paper_title)
-      logging.info('Title presented on the page: \n{}'.format(pt.text.encode('utf-8')))
+      logging.info('Title presented on the page: \n{0}'.format(pt.text.encode('utf-8')))
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_manuscript_icon)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_abstract)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_yes_btn)

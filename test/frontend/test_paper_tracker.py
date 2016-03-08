@@ -1,29 +1,30 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-This test case validates the Aperta paper_tracker page.
-
-Note that this case does NOT test actually creating a new manuscript, or accepting or declining an invitation
-Those acts are expected to be defined in
-
-"""
-__author__ = 'jgray@plos.org'
-
 import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Pages.login_page import LoginPage
-from Pages.dashboard import DashboardPage
 from Pages.paper_tracker import PaperTrackerPage
-from Base.Resources import login_valid_pw, staff_admin_login, internal_editor_login, pub_svcs_login, super_admin_login
+from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
+    super_admin_login
 from frontend.common_test import CommonTest
+
+"""
+This test case validates the Aperta paper_tracker page.
+
+Note that this case does NOT test actually creating a new manuscript, or accepting or declining an
+    invitation
+Those acts are expected to be defined in
+
+"""
+__author__ = 'jgray@plos.org'
 
 users = [staff_admin_login,
          internal_editor_login,
          pub_svcs_login,
          super_admin_login,
          ]
+
 
 @MultiBrowserFixture
 class ApertaPaperTrackerTest(CommonTest):
@@ -35,14 +36,14 @@ class ApertaPaperTrackerTest(CommonTest):
       - presentation of the table
       - presentation of individual data points for each paper
   """
-  def test_validate_paper_tracker(self, init=True):
+  def test_validate_paper_tracker(self):
     """
     Validates the presence of the following elements:
       Welcome Text, subhead, table presentation
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type['name']))
-    dashboard_page = self.cas_login(email=user_type['email']) if init else DashboardPage(self.getDriver())
+    logging.info('Logging in as user: {0}'.format(user_type['name']))
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())

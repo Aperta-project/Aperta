@@ -139,7 +139,7 @@ class AdminPage(AuthenticatedPage):
       if not journal_desc:
         journal_desc = None
       journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
-      assert journal_t in db_journals, '{} not found in \n{}'.format(journal_t, db_journals)
+      assert journal_t in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
       count += 1
 
   def validate_add_new_journal(self, username):
@@ -355,11 +355,11 @@ class AdminPage(AuthenticatedPage):
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
     self._base_admin_journal_block_name = (By.XPATH,
-         '//div[@class="ember-view journal-thumbnail"][{}]/div/a/h3[@class="journal-thumbnail-name"]'\
-                                           .format(selected_journal_index))
+         '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+         /h3[@class="journal-thumbnail-name"]'.format(selected_journal_index))
     journal_link = self._get(self._base_admin_journal_block_name)
     journal_name = journal_link.text
-    logging.info('Opening {} journal.'.format(journal_name))
+    logging.info('Opening {0} journal.'.format(journal_name))
     self._actions.click_and_hold(journal_link).release().perform()
     return journal_name
 
@@ -373,8 +373,8 @@ class AdminPage(AuthenticatedPage):
     count = 0
     for journal_block in journal_blocks:
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][{}]/div/a/h3[@class="journal-thumbnail-name"]'\
-           .format(count + 1))
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+           /h3[@class="journal-thumbnail-name"]'.format(count + 1))
       journal_title = self._get(self._base_admin_journal_block_name)
       logging.debug(journal_title.text)
       logging.debug(journal)

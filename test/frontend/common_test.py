@@ -44,7 +44,7 @@ class CommonTest(FrontEndTest):
     if not email:
       email = random.choice(logins)
     """Login into Aperta"""
-    print('Logging in as user: {}'.format(email))
+    logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(email)
     login_page.enter_password_field(password)
@@ -75,7 +75,7 @@ class CommonTest(FrontEndTest):
     if not email:
       email = random.choice(logins)
     """Login into Aperta"""
-    print('Logging in as user: {}'.format(email))
+    logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.login_cas()
     cas_signin_page = AkitaLoginPage(self.getDriver())
@@ -112,8 +112,8 @@ class CommonTest(FrontEndTest):
     dashboard = DashboardPage(self.getDriver())
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
-    logging.info('Creating paper in {} journal, in {} type with {} as title'.format(journal,
-          type_, title))
+    logging.info('Creating paper in {0} journal, in {1} type with {2} as title'.format(journal,
+        type_, title))
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)
     # This time helps to avoid random upload failures
@@ -121,10 +121,10 @@ class CommonTest(FrontEndTest):
 
     if doc == 'random':
       doc2upload = random.choice(docs)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{}'.format(doc2upload))
+      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
     else:
-      fn = os.path.join(os.getcwd(),'frontend/assets/docs/{}'.format(doc))
-    logging.info('Sending document: {}'.format(fn))
+      fn = os.path.join(os.getcwd(),'frontend/assets/docs/{0}'.format(doc))
+    logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard.click_upload_button()

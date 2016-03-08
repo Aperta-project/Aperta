@@ -1,10 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-This test case validates metadata versioning for Aperta.
-"""
-__author__ = 'sbassi@plos.org'
-
 import logging
 import random
 import time
@@ -14,6 +9,11 @@ from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 from Base.Resources import login_valid_pw, creator_login3, staff_admin_login, internal_editor_login
+
+"""
+This test case validates metadata versioning for Aperta.
+"""
+__author__ = 'sbassi@plos.org'
 
 
 @MultiBrowserFixture
@@ -36,15 +36,15 @@ class MetadataVersioningTest(CommonTest):
     - Changed text
     - Added text
 
-    Note: Due to bugs APERTA-5794, APERTA-5810, APERTA-5808 and PERTA-5849, assertions
+    Note: Due to bugs APERTA-5794, APERTA-5810, APERTA-5808 and APERTA-5849, assertions
     are not implemented in this method
     """
     title = 'For metadata versioning'
     types = ('Research', 'Research w/Initial Decision Card')
     paper_type = random.choice(types)
-    new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
-               'q5':'More Data'}
-    logging.info('Logging in as {}'.format(creator_login3['name']))
+    new_prq = {'q1': 'Yes', 'q2': 'Yes', 'q3': [0, 1, 0, 0], 'q4': 'New Data',
+               'q5': 'More Data'}
+    logging.info('Logging in as {0}'.format(creator_login3['name']))
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
@@ -52,18 +52,18 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
-    title = self.create_article(title=title,
-                                journal='PLOS Wombat',
-                                type_=paper_type,
-                                random_bit=True,
-                                )
+    self.create_article(title=title,
+                        journal='PLOS Wombat',
+                        type_=paper_type,
+                        random_bit=True,
+                        )
     dashboard_page.restore_timeout()
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     paper_viewer.validate_ihat_conversions_success()
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {}".format(paper_id))
+    logging.info("Assigned paper id: {0}".format(paper_id))
     paper_viewer.complete_task('Billing')
     time.sleep(.2)
     paper_viewer.complete_task('Cover Letter')
@@ -109,7 +109,8 @@ class MetadataVersioningTest(CommonTest):
       self.invalidate_cas_token()
       self.return_to_login_page(login_url)
 
-      logging.info('Paper type is initial submission, logging in as creator to complete full submission')
+      logging.info('Paper type is initial submission, logging in as creator to complete '
+                   'full submission')
       # Log in as a author to make first final submission
       dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
       dashboard_page.go_to_manuscript(paper_id)
@@ -150,7 +151,10 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.complete_task('Additional Information', click_override=True, data=new_prq, click=True)
+    paper_viewer.complete_task('Additional Information',
+                               click_override=True,
+                               data=new_prq,
+                               click=True)
     # check versioning
     version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
     version_btn.click()
@@ -158,7 +162,7 @@ class MetadataVersioningTest(CommonTest):
     # click on
     bar_items[2].find_elements_by_tag_name('option')[1].click()
     # Following command disabled due to bug APERTA-5849
-    #paper_viewer.click_task('prq')
+    # paper_viewer.click_task('prq')
     return self
 
 if __name__ == '__main__':

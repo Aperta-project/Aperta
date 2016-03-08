@@ -5,7 +5,8 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login
+from Base.Resources import internal_editor_login, staff_admin_login, pub_svcs_login, \
+    super_admin_login
 from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
@@ -47,7 +48,7 @@ class ApertaWorkflowTest(CommonTest):
                       super_admin_login,
                       ]
     workflow_user = random.choice(workflow_users)
-    logging.info('Logging in as {}'.format(workflow_user['name']))
+    logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
     dashboard_page.click_on_first_manuscript()
     time.sleep(2)
@@ -64,7 +65,7 @@ class ApertaWorkflowTest(CommonTest):
                       super_admin_login,
                       ]
     workflow_user = random.choice(workflow_users)
-    logging.info('Logging in as {}'.format(workflow_user['name']))
+    logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
     dashboard_page.click_on_first_manuscript()
     time.sleep(2)

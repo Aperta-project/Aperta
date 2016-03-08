@@ -44,7 +44,7 @@ class AuthorsTaskTest(CommonTest):
   def test_validate_components(self):
     """Validates styles for the author task"""
     user_type = random.choice(users)
-    logging.info('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login()
     dashboard.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research',)

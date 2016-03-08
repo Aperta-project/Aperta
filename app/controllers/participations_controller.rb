@@ -14,41 +14,29 @@ class ParticipationsController < ApplicationController
   end
 
   def create
-    requires_user_can(:add_participants, task)
-    if participation.save
-      # create new R&P assignment
-      Assignment.where(
-        user: participation.user,
-        role: task.journal.task_participant_role,
-        assigned_to: participation.task
-      ).first_or_create!
+    requires_user_can(:manage_participant, task)
+    participant = User.find(participation_params[:user_id])
+    participation = task.add_participant(participant)
 
-      CommentLookManager.sync_task(task)
-      if participation.user_id != current_user.id
-        participation.task.notify_new_participant(current_user, participation)
-      end
-      Activity.participation_created! participation, user: current_user
+    CommentLookManager.sync_task(task)
+    if participation.user_id != current_user.id
+      task.notify_new_participant(current_user, participation)
     end
-    respond_with participation
+    Activity.participation_created! participation, user: current_user
+
+    respond_with participation, root: :participation
   end
 
   def show
     requires_user_can(:view_participants, task)
-    respond_with participation
+    respond_with participation, root: :participation
   end
 
   def destroy
-    requires_user_can(:remove_participants, task)
-    # destroy new R&P assignment
-    Assignment.where(
-      user: participation.user,
-      role: task.journal.task_participant_role,
-      assigned_to: participation.task
-    ).destroy_all
-
+    requires_user_can(:manage_participant, task)
     participation.destroy
     Activity.participation_destroyed! participation, user: current_user
-    respond_with participation
+    respond_with participation, root: :participation
   end
 
   private
@@ -58,7 +46,7 @@ class ParticipationsController < ApplicationController
       if params[:task_id]
         Task.find(params[:task_id])
       elsif params[:id].present?
-        participation.task
+        participation.assigned_to
       else
         Task.find(participation_params[:task_id])
       end
@@ -66,13 +54,7 @@ class ParticipationsController < ApplicationController
   end
 
   def participation
-    @participation ||= begin
-      if params[:id].present?
-        Participation.find(params[:id])
-      else
-        Participation.new(participation_params)
-      end
-    end
+    @participation ||= Assignment.find(params[:id])
   end
 
   def participation_params

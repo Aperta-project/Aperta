@@ -36,6 +36,7 @@ module('Integration: Paper Tracker', {
     App = startApp();
     server = setupMockServer();
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
+    $.mockjax({url: '/api/paper_tracker_queries', status: 200, responseText: '{"paper_tracker_queries":[]}'});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/comment_looks', status: 200, responseText: {comment_looks: []}});

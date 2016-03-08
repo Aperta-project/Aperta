@@ -1,8 +1,8 @@
 module TahiStandardTasks
   class RegisterDecisionController < ApplicationController
-
     def decide
       task = Task.find(params[:id])
+      requires_user_can :register_decision, task.paper
 
       if !task || !task.paper.submitted?
         render json: { error: "Invalid Task and/or Paper" }
@@ -18,6 +18,5 @@ module TahiStandardTasks
         render json: {}, status: :created
       end
     end
-
   end
 end

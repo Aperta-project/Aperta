@@ -12,5 +12,9 @@ FactoryGirl.define do
     trait :collaborator do
       fail 'Use Role.collaborator instead of this factory'
     end
+
+    trait :task_participant do
+      name Role::TASK_PARTICIPANT_ROLE
+    end
   end
 end

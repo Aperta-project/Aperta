@@ -17,14 +17,18 @@
 
 .search-controls {
   padding: 0px;
-  margin: 50px 0 20px;
+  margin: 0px 0 20px;
   #clear-search {
     cursor: pointer;
   }
   .pagination-col {
-    text-align:right;
-    padding-top: 10px;
-    padding-right: 15px;
+    padding: 20px 0;
+    font-weight: bold;
+  }
+
+  .save-search-button {
+    float: right;
+    padding: 20px 0;
   }
 }
 
@@ -56,4 +60,29 @@
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
+}
+
+
+.paper-tracker-saved-searches {
+  float: right;
+  padding-left: 30px;
+  width: 20%;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    li {
+      padding: 5px 0;
+    }
+  }
+
+  h3 {
+    color: $tahi-grey;
+  }
+}
+
+.paper-tracker-search {
+  float: left;
+  border-right: 1px solid $tahi-grey-light;
+  padding-right: 30px;
+  width: 80%;
 }

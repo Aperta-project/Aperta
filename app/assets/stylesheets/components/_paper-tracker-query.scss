@@ -1,0 +1,17 @@
+.paper-tracker-query {
+  i.fa {
+    visibility: hidden;
+    margin-left: 5px;
+    color: $tahi-grey;
+    &.fa-pencil {
+      margin-left: 15px;
+    }
+  }
+
+  &:hover {
+    i.fa {
+      visibility: visible;
+      cursor: pointer;
+    }
+  }
+}

@@ -17,6 +17,10 @@ export default Ember.Controller.extend({
   //on-page props
   queryInput: null,
 
+  // true when naming a new saved query
+  newQueryState: false,
+  newQueryTitle: '',
+
   actions: {
     setPage(page) {
       this.set('page', page);
@@ -42,5 +46,21 @@ export default Ember.Controller.extend({
       this.set('page',     null);
       this.set('query',    null);
     },
+
+    saveQuery() {
+      this.store.createRecord('paper-tracker-query', {
+        title: this.get('newQueryTitle'),
+        query: this.get('queryInput')
+      }).save();
+      this.set('newQueryState', false);
+      this.set('newQueryTitle', '');
+    },
+
+    startNewSavedQuery() {
+      this.set('newQueryState', true);
+      Ember.run.later(() => {
+        $('#new-query-title').focus();
+      });
+    }
   }
 });

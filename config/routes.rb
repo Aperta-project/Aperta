@@ -118,6 +118,7 @@ Tahi::Application.routes.draw do
         put :upload
       end
     end
+    resources :paper_tracker_queries, only: [:index, :create, :update, :destroy]
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates
     resources :phases, only: [:create, :update, :show, :destroy]

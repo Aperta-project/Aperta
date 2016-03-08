@@ -26,8 +26,10 @@
                            onRemove=(action "removeRecipient")
                            onSelect=(action "addRecipientById")
                            label="Following:"
-                           taskId=model.id
-                           paperId=paperId}}
+                           task=task
+                           taskId=task.id
+                           paperId=paperId
+                           canManage=(can 'add_email_participants' task)}}
     <button class="button-secondary button--green knockout" {{action "toggleChooseReceivers"}}>Cancel</button>
     <button class="button-secondary button--green knockout send-email-action" {{action "sendEmail" model}}>Send Email</button>
   </div>

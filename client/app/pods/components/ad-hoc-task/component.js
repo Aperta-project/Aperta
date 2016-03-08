@@ -14,7 +14,7 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
   }),
 
   paperId: Ember.computed('task', function() {
-    return this.get('task').get('paper').get('id');
+    return this.get('task.paper.id');
   }),
 
   attachmentsRequest(path, method, s3Url, file) {

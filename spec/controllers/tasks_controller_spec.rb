@@ -22,19 +22,35 @@ describe TasksController, redis: true do
              paper_id: paper.to_param,
            }
     end
+    let(:tasks){ [FactoryGirl.build_stubbed(:task)] }
 
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in(user)
+
+        allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return true
+
+        allow(user).to receive(:filter_authorized).and_return instance_double(
+          'Authorizations::Query::Result',
+          objects: tasks
+        )
       end
 
-      it "returns the paper's tasks" do
+      it "returns only the paper's tasks the user has access to" do
+        expect(user).to receive(:filter_authorized).with(
+          :view,
+          paper.tasks.includes(:paper),
+          participations_only: false
+        ).and_return instance_double(
+          'Authorizations::Query::Result',
+          objects: tasks
+        )
         do_request
-        expect(res_body['tasks'].count).to eq(paper.tasks.count)
+        expect(res_body['tasks'].count).to eq(1)
       end
     end
 

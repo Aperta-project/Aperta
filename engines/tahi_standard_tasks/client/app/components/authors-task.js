@@ -61,18 +61,7 @@ export default TaskComponent.extend({
     });
   }),
 
-  newAuthor: computed('newAuthorFormVisible', function(){
-    const newAuthor = this.store.createRecord('author', {
-      paper: this.get('task.paper'),
-      position: 0,
-      nestedQuestions: this.get('nestedQuestionsForNewAuthor')
-    });
-
-    return ObjectProxyWithErrors.create({
-      object: newAuthor,
-      validations: validations
-    });
-  }),
+  newAuthor: null,
 
   clearNewAuthorAnswers(){
     this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
@@ -86,6 +75,17 @@ export default TaskComponent.extend({
 
   actions: {
     toggleAuthorForm() {
+      const newAuthor = this.store.createRecord('author', {
+        paper: this.get('task.paper'),
+        position: 0,
+        nestedQuestions: this.get('nestedQuestionsForNewAuthor')
+      });
+
+      this.set('newAuthor', ObjectProxyWithErrors.create({
+        object: newAuthor,
+        validations: validations
+      }));
+
       this.clearNewAuthorAnswers();
       this.toggleProperty('newAuthorFormVisible');
     },

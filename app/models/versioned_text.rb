@@ -7,8 +7,9 @@ class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
 
   belongs_to :paper
-
   belongs_to :submitting_user, class_name: "User"
+
+  delegate :figures, to: :paper, allow_nil: true
 
   scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
 
@@ -32,6 +33,17 @@ class VersionedText < ActiveRecord::Base
 
   def submitted?
     submitting_user_id.present?
+  end
+
+  def insert_figures
+    return unless figures
+    figureful_text = FigureInserter.new(original_text, figures).call
+    self.text = figureful_text
+  end
+
+  def insert_figures!
+    insert_figures
+    save!
   end
 
   private

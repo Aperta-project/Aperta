@@ -3,13 +3,19 @@ require 'rails_helper'
 describe ParticipationsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:participant) { FactoryGirl.create(:user) }
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:journal){ FactoryGirl.create(:journal) }
   let!(:paper) do
-    FactoryGirl.create(:paper, creator: user, journal: journal)
+    FactoryGirl.create(:paper, journal: journal)
   end
   let(:task) { FactoryGirl.create(:task, paper: paper) }
 
-  before { sign_in user }
+  before do
+    Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: journal) do |role|
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+    end
+
+    sign_in user
+  end
 
   describe "#index" do
     let!(:participation1) { task.add_participant(user) }
@@ -59,10 +65,10 @@ describe ParticipationsController do
   end
 
   describe "#show" do
-    let!(:participation1) { FactoryGirl.create(:participation, task: task) }
+    let!(:participation) { FactoryGirl.create(:assignment, assigned_to: task) }
 
     subject(:do_request) do
-      get :show, format: 'json', id: participation1.to_param
+      get :show, format: 'json', id: participation.to_param
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -77,7 +83,7 @@ describe ParticipationsController do
         do_request
 
         expect(res_body['participation']).to be
-        expect(res_body['participation']['id']).to eq(participation1.id)
+        expect(res_body['participation']['id']).to eq(participation.id)
       end
 
       context "and the participation does not exist" do
@@ -96,7 +102,6 @@ describe ParticipationsController do
     end
   end
 
-
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
@@ -107,7 +112,7 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:add_participants, task).and_return true
+          receive(:can?).with(:manage_participant, task).and_return true
       end
 
       it_behaves_like "an unauthenticated json request"
@@ -119,12 +124,12 @@ describe ParticipationsController do
             format: :json,
             participation: {user_id: nil,
                             task_id: task.id}
-          }.to_not change { Participation.count }
+          }.to_not change { task.participations.count }
         end
       end
 
       it "creates a new participation" do
-        expect{ do_request }.to change(Participation, :count).by(1)
+        expect { do_request }.to change { task.participations.count }.by(1)
       end
 
       it "creates an activity" do
@@ -137,7 +142,7 @@ describe ParticipationsController do
       end
 
       it 'creates an Role.participant assignment on the task' do
-        expect { do_request }.to change(task.participations, :count).by(1)
+        expect { do_request }.to change { task.participations.count }.by(1)
         expect(task.participations.last).to eq \
           Assignment.where(
             user: participant,
@@ -149,7 +154,7 @@ describe ParticipationsController do
       it "returns the new participation as json" do
         do_request
         expect(response.status).to eq(201)
-        expect(res_body["participation"]["id"]).to eq(Participation.last.id)
+        expect(res_body["participation"]["id"]).to eq(task.participations.last.id)
       end
 
       context "participants" do
@@ -187,7 +192,7 @@ describe ParticipationsController do
         context "when the task type is EditorsDiscussionTask" do
           before do
             allow_any_instance_of(User).to \
-              receive(:can?).with(:add_participants, editors_discussion_task)
+              receive(:can?).with(:manage_participant, editors_discussion_task)
               .and_return true
           end
 
@@ -219,7 +224,7 @@ describe ParticipationsController do
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:add_participants, task)
+          .with(:manage_participant, task)
           .and_return false
       end
 
@@ -233,13 +238,18 @@ describe ParticipationsController do
     end
 
     let!(:participation) do
-      FactoryGirl.create(:participation, task: task, user: participant)
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: task,
+        role: FactoryGirl.create(:role, :task_participant, journal: task.journal),
+        user: participant
+      )
     end
 
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:remove_participants, task).and_return true
+          receive(:can?).with(:manage_participant, task).and_return true
       end
 
       context "with a valid participation id" do
@@ -247,19 +257,19 @@ describe ParticipationsController do
           delete :destroy, format: :json, id: participation.id
         end
 
-        it "destroys the associated author" do
+        it "destroys the associated participation" do
           expect {
             do_request
-          }.to change { Participation.count }.by -1
+          }.to change { task.participations.count }.by -1
         end
 
         it 'destroy the associated Role.participant assignment on the task' do
           Assignment.create!(
             user: participant,
             role: task.journal.task_participant_role,
-            assigned_to: participation.task
+            assigned_to: task
           )
-          expect { do_request }.to change(task.participations, :count).by(-1)
+          expect { do_request }.to change { task.participations.count }.by(-1)
         end
 
         it "creates an activity" do
@@ -281,7 +291,7 @@ describe ParticipationsController do
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:remove_participants, task)
+          .with(:manage_participant, task)
           .and_return false
       end
 
@@ -302,7 +312,7 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:add_participants, task).and_return true
+          receive(:can?).with(:manage_participant, task).and_return true
       end
 
       it "calls the task's #notify_new_participant method" do
@@ -319,7 +329,7 @@ describe ParticipationsController do
       context "when the task type is EditorsDiscussionTask" do
         before do
           allow_any_instance_of(User).to \
-            receive(:can?).with(:add_participants, editors_discussion_task).and_return true
+            receive(:can?).with(:manage_participant, editors_discussion_task).and_return true
         end
 
         it "sends a different email to the editor participants" do

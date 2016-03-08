@@ -170,7 +170,7 @@ class Activity < ActiveRecord::Base
     create(
       feed_name: "workflow",
       activity_key: "participation.created",
-      subject: participation.paper,
+      subject: participation.assigned_to.paper,
       user: user,
       message: "Added Contributor: #{participation.user.full_name}"
     )
@@ -180,7 +180,7 @@ class Activity < ActiveRecord::Base
     create(
       feed_name: "workflow",
       activity_key: "particpation.destroyed",
-      subject: participation.paper,
+      subject: participation.assigned_to.paper,
       user: user,
       message: "Removed Contributor: #{participation.user.full_name}"
     )

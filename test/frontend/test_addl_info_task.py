@@ -24,8 +24,9 @@ class AddlInfoTaskTest(CommonTest):
   """
   def _go_to_addl_info_task(self, init=True):
     """Go to the addl info task"""
-    dashboard = self.login() if init else DashboardPage(self.getDriver())
+    dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
     logging.info('Calling Create new Article')
+    dashboard.click_create_new_submission_button()
     article_name = self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.wait_for_viewer_page_population()

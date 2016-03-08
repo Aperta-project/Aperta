@@ -78,7 +78,7 @@ class AdminPage(AuthenticatedPage):
     journals_title = self._get(self._base_admin_journals_section_title)
     self.validate_application_h2_style(journals_title)
     logging.info(username)
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       logging.info('Validating super admin specific page element')
       self._get(self._base_admin_journals_su_add_new_journal_btn)
     self.validate_journal_block_display(username)
@@ -90,7 +90,7 @@ class AdminPage(AuthenticatedPage):
     :return: void function
     """
     logging.info(username)
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       logging.info('Validating journal blocks for Super Admin user')
       # Validate the presentation of journal blocks
       # Super Admin gets all journals
@@ -102,15 +102,13 @@ class AdminPage(AuthenticatedPage):
       # Ordinary Admin role is assigned on a per journal basis
       logging.info('Validating admin page elements for Ordinary Admin user')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      roles = PgSQL().query('SELECT old_role_id FROM user_roles WHERE user_id = %s;', (uid,))
-      role_list = []
-      for role in roles:
-        role_list.append(role[0])
       journals = []
-      for role in role_list:
-        journals.append(PgSQL().query('SELECT journal_id FROM old_roles WHERE id = %s;', (role,))[0][0])
+      journals.append(PgSQL().query('SELECT assigned_to_id '
+                                    'FROM assignments '
+                                    'WHERE user_id = %s AND assigned_to_type=\'Journal\';', (uid,))[0][0])
       db_journals = []
       for journal in journals:
+        logging.info(journal)
         db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '
                                          'FROM journals LEFT JOIN papers '
                                          'ON journals.id = papers.journal_id '
@@ -124,26 +122,24 @@ class AdminPage(AuthenticatedPage):
       # Once again, while less than ideal, these must be defined on the fly
       self._base_admin_journal_block_paper_count = \
           (By.XPATH,
-           '//div[@class="ember-view journal-thumbnail"][%s]/a/span[@class="journal-thumbnail-paper-count"]'
+           '//div[@class="ember-view journal-thumbnail"][%s]/div/a/span[@class="journal-thumbnail-paper-count"]'
            % str(count + 1))
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
-           % str(count + 1))
-      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/p'
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/h3[@class="journal-thumbnail-name"]' % str(count + 1))
+      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/p'
                                              % str(count + 1))
 
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
       journal_title = self._get(self._base_admin_journal_block_name)
       journal_desc = self._iget(self._base_admin_journal_block_desc).text
-      if username == 'jgray_sa':
+      if username == 'asuperadm':
         self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
-                                                    % (count + 1))
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']" % (count + 1))
         self._get(self._base_admin_journal_block_edit_icon)
       if not journal_desc:
         journal_desc = None
       journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
-      assert journal_t in db_journals, '{} not found in \n{}'.format(journal_t, db_journals)
+      assert journal_t in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
       count += 1
 
   def validate_add_new_journal(self, username):
@@ -151,10 +147,10 @@ class AdminPage(AuthenticatedPage):
     Note this currently doesn't actually create the journal, it merely calls the create form up and validates the
     components of that form. Because we don't have a means of deleting a journal, even an empty one, it is prohibitive
     to test this in an automated fashion as we would end up with hundreds of journals over time.
-    :param username: Must be jgray_sa or this is a no-op.
+    :param username: Must be asuperadm or this is a no-op.
     :return: void function
     """
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
       page_initial_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -255,7 +251,7 @@ class AdminPage(AuthenticatedPage):
       assert cancel_link.value_of_css_property('vertical-align') == 'middle', \
           cancel_link.value_of_css_property('vertical-align')
       self._actions.move_to_element(cancel_link).perform()
-      time.sleep(1)
+      time.sleep(.5)
       assert cancel_link.value_of_css_property('text-decoration') == 'underline', \
           cancel_link.value_of_css_property('text-decoration')
       self._actions.move_to_element(cancel_link).perform()
@@ -266,16 +262,16 @@ class AdminPage(AuthenticatedPage):
   def validate_edit_journal(self, username):
     """
     Validates the edit function of the statically named_journal
-    :param username: needs to be jgray_sa, otherwise a no-op
+    :param username: needs to be asuperadm, otherwise a no-op
     :return: void function
     """
     named_journal = 'PLOS Wombat'
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       logging.info('Validating editing journal block for Super Admin user')
       journal_count = self.select_named_journal(named_journal)
       logging.info(journal_count)
       self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']"
                                                     % str(journal_count))
       edit_journal = self._get(self._base_admin_journal_block_edit_icon)
       edit_journal.click()
@@ -359,11 +355,11 @@ class AdminPage(AuthenticatedPage):
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
     self._base_admin_journal_block_name = (By.XPATH,
-         '//div[@class="ember-view journal-thumbnail"][{}]/a/h3[@class="journal-thumbnail-name"]'\
-                                           .format(selected_journal_index))
+         '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+         /h3[@class="journal-thumbnail-name"]'.format(selected_journal_index))
     journal_link = self._get(self._base_admin_journal_block_name)
     journal_name = journal_link.text
-    logging.info('Opening {} journal.'.format(journal_name))
+    logging.info('Opening {0} journal.'.format(journal_name))
     self._actions.click_and_hold(journal_link).release().perform()
     return journal_name
 
@@ -377,8 +373,8 @@ class AdminPage(AuthenticatedPage):
     count = 0
     for journal_block in journal_blocks:
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
-           % str(count + 1))
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+           /h3[@class="journal-thumbnail-name"]'.format(count + 1))
       journal_title = self._get(self._base_admin_journal_block_name)
       logging.debug(journal_title.text)
       logging.debug(journal)

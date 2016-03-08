@@ -1,12 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface
-
+from frontend.Cards.basecard import BaseCard
+from frontend.Cards.initial_decision_card import InitialDecisionCard
+from frontend.Cards.register_decision_card import RegisterDecisionCard
 
 __author__ = 'sbassi@plos.org'
 
@@ -18,60 +20,57 @@ class WorkflowPage(AuthenticatedPage):
   def __init__(self, driver):
     super(WorkflowPage, self).__init__(driver, '/')
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._click_editor_assignment_button = (By.XPATH, './/div[2]/div[2]/div/div[4]/div')
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
     self._manuscript_icon = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
+        ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() \
+        = 'svg']/*[local-name() = 'path']")
     self._manuscript_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/a")
     self._manuscript_text = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
-    self._column_header = (By.XPATH,
-      ".//div[contains(@class, 'column-header')]/div/h2")
+                             ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
+    self._column_header = (By.XPATH, ".//div[contains(@class, 'column-header')]/div/h2")
     self._column_header_save = (By.XPATH,
-      ".//div[contains(@class, 'column-header')]/div/div/button[2]")
+                                ".//div[contains(@class, 'column-header')]/div/div/button[2]")
     self._column_header_cancel = (By.XPATH,
-      ".//div[contains(@class, 'column-header')]/div/div/button")
+                                  ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
     self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
     self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
-    self._cancel_button_overlay = (By.XPATH,
-      ".//div[@class='overlay-action-buttons']/button[2]")
-    self._first_column = (By.XPATH,
-      ".//div[@class='column-content']/div")
+    self._cancel_button_overlay = (By.XPATH,  ".//div[@class='overlay-action-buttons']/button[2]")
+    self._first_column = (By.XPATH,  ".//div[@class='column-content']/div")
     self._first_column_cards = (By.CSS_SELECTOR, 'div.card')
     # Note: Not used due to not reaching this menu from automation
-    self._remove_confirmation_title = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-title')]/h1")
+    self._remove_confirmation_title = (By.XPATH, ".//div[contains(@class, 'delete-card-title')]/h1")
     self._remove_confirmation_subtitle = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-title')]/h2")
+                                          ".//div[contains(@class, 'delete-card-title')]/h2")
     self._remove_yes_button = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
-    self._remove_cancel_button = (By.XPATH,
-        ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
-    self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
+                               ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
+    self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]\
+        /div[2]/button")
+    self._register_decision_card = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
+    self._add_card_overlay_div = (By.CSS_SELECTOR, 'div.overlay-container')
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
     # Card Locators
     self._initial_decision_card = (By.XPATH,
-                                   "//div[@class='column-content']/div/div[contains(., 'Initial Decision')]/a/div[2]")
-    self._invite_editor_card = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., 'Invite Editor')]")
-
+                                   "//div[@class='card-title'][contains(., 'Initial Decision')]")
+    self._invite_editor_card = (By.XPATH,
+                                "//div[@class='column-content']/div/div\
+                                //div[contains(., 'Invite Academic Editor')]")
     # End of not used elements
 
-  #POM Actions
-
+  # POM Actions
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)
-    # https://www.pivotaltracker.com/story/show/103343910
-    # https://www.pivotaltracker.com/story/show/104018188
     assert self._get(self._toolbar_items)
-    # Right menu items
-    # https://www.pivotaltracker.com/story/show/103343910
-    # https://www.pivotaltracker.com/story/show/104018188
     self.validate_wf_top_elements()
     assert self._get(self._column_header)
+
+  def click_initial_decision_card(self):
+    """Open the Initial Decision Card from the workflow page"""
+    self._get(self._initial_decision_card).click()
 
   def click_editor_assignment_button(self):
     """Click editor assignment button"""
@@ -79,46 +78,12 @@ class WorkflowPage(AuthenticatedPage):
     return self
 
   def click_invite_editor_card(self):
-    """Click Invite Editor Card"""
+    """Click Invite Academic Editor Card"""
     self._get(self._invite_editor_card).click()
 
-  def get_assess_button(self):
-    return self._get(self._assess_button)
-
-  def click_reviewer_agreement_button(self):
-    """Click reviewer agreement button"""
-    self._get(self._reviewer_agreement_button).click()
-    return self
-
-  def click_completed_review_button(self):
-    """Click completed review button"""
-    self._get(self._completed_review_button).click()
-    return self
-
-  def click_reviewer_recommendation_button(self):
-    """Click reviewer recommendation button"""
-    self._get(self._reviewer_recommendation_button).click()
-    return self
-
-  def click_editorial_decision_button(self):
-    """Click editorial decision button"""
-    self._get(self._editorial_decision_button).click()
-    return self
-
-  def click_assess_button(self):
-    """Click assess button"""
-    self._get(self._assess_button).click()
-    return self
-
-  def click_sign_out_link(self):
-    """Click sign out link"""
-    self._get(self._sign_out_link).click()
-    return self
-
-  def click_close_navigation(self):
-    """Click on the close icon to close left navigation bar"""
-    self._get(self._nav_close).click()
-    return self
+  def click_register_decision_card(self):
+    """Open the Register Decison Card from the workflow page"""
+    self._get(self._register_decision_card).click()
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""
@@ -144,13 +109,12 @@ class WorkflowPage(AuthenticatedPage):
     self._get(self._add_new_card_button).click()
     return self
 
-
   def check_overlay(self):
     """
     Check CSS properties of the overlay that appears when the user click on add new card
     TODO: Disabled until StyleGuide is ready: APERTA-5414
     """
-    card_overlay = self._get(self._add_card_overlay)
+    card_overlay = self._get(self._add_card_overlay_div)
     assert card_overlay.text == 'Pick the type of card to add'
     self.validate_application_title_style(card_overlay)
     assert card_overlay.value_of_css_property('text-align') == 'center'
@@ -205,7 +169,7 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[4].text == 'Final Tech Check', staff_cards[4].text
     assert staff_cards[5].text == 'Initial Decision', staff_cards[5].text
     assert staff_cards[6].text == 'Initial Tech Check', staff_cards[6].text
-    assert staff_cards[7].text == 'Invite Editor', staff_cards[7].text
+    assert staff_cards[7].text == 'Invite Academic Editor', staff_cards[7].text
     assert staff_cards[8].text == 'Invite Reviewers', staff_cards[8].text
     assert staff_cards[9].text == 'Production Metadata', staff_cards[9].text
     assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
@@ -250,7 +214,7 @@ class WorkflowPage(AuthenticatedPage):
     assert remove_subtitle.value_of_css_property('font-size') == '30px'
     assert remove_subtitle.value_of_css_property('font-weight') == '500'
     remove_yes = self._get(self._remove_confirmation_title)
-    self.validate_green_backed_button_style(remove_yes)
+    self.validate_primary_big_green_button_style(remove_yes)
     assert remove_yes.text == "Yes, Delete this Card"
     remove_cancel = self._get(self._remove_confirmation_subtitle)
     assert remove_cancel.text == "cancel"
@@ -266,3 +230,27 @@ class WorkflowPage(AuthenticatedPage):
     staff_cards[7].click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)
+
+  def complete_card(self, card_name):
+    """
+    On a given card, check complete and then close
+    Assumes you have already opened card
+    :param card_name: name of card to complete
+    :return void function
+    """
+    base_card = BaseCard(self._driver)
+    if card_name == 'Register Decision':
+      # Complete decision data before mark close
+      register_decision_card = RegisterDecisionCard(self._driver)
+      register_decision_card.register_decision('Major Revision')
+    elif card_name == 'Initial Decision':
+      initial_decision_card = InitialDecisionCard(self._driver)
+      time.sleep(2)
+      id_state = initial_decision_card.execute_decision(choice='invite')
+      logging.info('Executed initial decision of {0}'.format(id_state))
+    else:
+      completed = base_card._get(base_card._completed_check)
+      if not completed.is_selected():
+        completed.click()
+      base_card._get(base_card._close_button).click()
+      time.sleep(1)

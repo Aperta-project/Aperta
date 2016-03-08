@@ -10,6 +10,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, tahi_green, white
+from Base.CustomException import ElementDoesNotExistAssertionError
 
 __author__ = 'jgray@plos.org'
 
@@ -56,30 +57,55 @@ class LoginPage(AuthenticatedPage):
     Validates elements and styles of the login page and the Forgot Your Password page.
     :return: None
     """
+    native_login_disabled = False
+    cas_login_disabled = False
+    orcid_login_disabled = False
+
     welcome_msg = self._get(self._welcome_message)
     assert welcome_msg.text == 'Welcome to Aperta', welcome_msg.text
     # APERTA-6107 Filed for the following
     # self.validate_application_title_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?
     assert welcome_msg.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'
-    forgot_msg = self._get(self._forgot_pw_link)
-    assert forgot_msg.text == 'Forgot your password?'
-    self.validate_default_link_style(forgot_msg)
-    remember_cb = self._get(self._remember_me_cb)
-    assert not remember_cb.is_selected()
-    self._get(self._remember_me_cb)
-    remember_msg = self._get(self._remember_me_label).text
-    assert remember_msg == 'Remember me'
-    self._get(self._signup_link)
-    cas_signin = self._get(self._cas_signin)
-    # APERTA-5717
-    # self.validate_primary_big_blue_button_style(cas_signin)
-    cas_signup = self._get(self._cas_signup)
-    # APERTA-5717
-    # self.validate_secondary_big_green_button_style(cas_signup)
-    orcid_signin = self._get(self._orcid_signin)
-    # APERTA-5717
-    # self.validate_primary_big_green_button_style(orcid_signin)
+    self.set_timeout(1)
+    try:
+      forgot_msg = self._get(self._forgot_pw_link)
+    except ElementDoesNotExistAssertionError:
+      native_login_disabled = True
+    self.restore_timeout()
+    if not native_login_disabled:
+      logging.info('Native login enabled, validating components')
+      assert forgot_msg.text == 'Forgot your password?'
+      self.validate_default_link_style(forgot_msg)
+      remember_cb = self._get(self._remember_me_cb)
+      assert not remember_cb.is_selected()
+      self._get(self._remember_me_cb)
+      remember_msg = self._get(self._remember_me_label).text
+      assert remember_msg == 'Remember me'
+      self._get(self._signup_link)
+    self.set_timeout(1)
+    try:
+      cas_signin = self._get(self._cas_signin)
+    except ElementDoesNotExistAssertionError:
+      cas_login_disabled = True
+    self.restore_timeout()
+    if not cas_login_disabled:
+      logging.info('CAS login enabled, validating components')
+      # APERTA-5717
+      # self.validate_primary_big_blue_button_style(cas_signin)
+      cas_signup = self._get(self._cas_signup)
+      # APERTA-5717
+      # self.validate_secondary_big_green_button_style(cas_signup)
+    self.set_timeout(1)
+    try:
+      orcid_signin = self._get(self._orcid_signin)
+    except ElementDoesNotExistAssertionError:
+      orcid_login_disabled = True
+    self.restore_timeout()
+    if not orcid_login_disabled:
+      logging.info('Orcid login enabled, validating components')
+      # APERTA-5717
+      # self.validate_primary_big_green_button_style(orcid_signin)
 
   def enter_login_field(self, username):
     """
@@ -88,7 +114,7 @@ class LoginPage(AuthenticatedPage):
     :return: None
     """
     self._get(self._login_textbox).clear()
-    logging.info('Login as {}'.format(username))
+    logging.info('Login as {0}'.format(username))
     self._get(self._login_textbox).send_keys(username)
 
   def enter_password_field(self, password):

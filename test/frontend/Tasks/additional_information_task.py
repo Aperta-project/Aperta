@@ -122,7 +122,7 @@ class AITask(BaseTask):
       time.sleep(1)
       questions[4].find_element_by_class_name('format-input-field').send_keys(q5ans)
 
-    if not self.completed_cb_is_selected():
-      self._get(self._completed_cb).click()
+    if not self.completed_state():
+      self.click_completion_button()
 
     self.restore_timeout()

@@ -73,7 +73,8 @@ class WebDriverListener(AbstractEventListener):
     if type(exception) in [NoSuchElementException,
                            ElementDoesNotExistAssertionError,
                            AssertionError,
-                           WebDriverException]:
+                           WebDriverException,
+                           ValueError]:
       self._log('The locator provided did not match any element in the page. %s' % exception.msg)
     driver.save_screenshot(self._generate_png_filename(exception))
 

@@ -1,27 +1,24 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
+import random
+import time
+
+from Base.Decorators import MultiBrowserFixture
+from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
+from Pages.admin import AdminPage
+from Pages.journal_admin import JournalAdminPage
+from frontend.common_test import CommonTest
 """
 This test case validates the Aperta Journal-specific Admin page.
 """
 __author__ = 'jgray@plos.org'
 
-import logging
-import random
-
-from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, sa_login, oa_login
-from Pages.admin import AdminPage
-from Pages.dashboard import DashboardPage
-from Pages.journal_admin import JournalAdminPage
-from Pages.login_page import LoginPage
-from frontend.common_test import CommonTest
-
-
-users = [oa_login,
-         #sa_login,
+users = [staff_admin_login,
+         super_admin_login,
          ]
 
-user_search = ['OA', 'FM', 'MM', 'RV']
+user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
 
 
 @MultiBrowserFixture
@@ -51,15 +48,15 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal admin component display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
     adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
-    ja_page.validate_nav_toolbar_elements(user_type['user'])
+    ja_page.validate_nav_toolbar_elements(user_type['email'])
 
   def test_validate_journal_admin_user_search_display_function(self):
     """
@@ -69,8 +66,8 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal user search display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -88,8 +85,8 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal role display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -116,8 +113,8 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating journal task types display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -135,20 +132,42 @@ class ApertaJournalAdminTest(CommonTest):
     Validates the function of the:
       Add new Template button
     Validates Editing extant MMT
-    Validates Deleting extant MMT
     :return: void function
     """
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    journal = adm_page.select_random_journal()
+    adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
+
+  def test_validate_add_delete_mmt_function(self):
+    """
+    Validates Add new Template
+    Validates Delete new Template
+    :return: void function
+    """
+    logging.info('Validating journal add mmt (paper type) function')
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.select_random_journal()
+
+    ja_page = JournalAdminPage(self.getDriver())
+    time.sleep(1)
+    ja_page.add_new_mmt_template()
+    # This driver reload seems to be the only way to avoid a Stale Reference Exception
+    ja_page = JournalAdminPage(self.getDriver())
+    time.sleep(1)
+    ja_page.delete_new_mmt_template()
 
   def test_validate_style_settings_display_function(self):
     """
@@ -172,8 +191,8 @@ class ApertaJournalAdminTest(CommonTest):
     """
     logging.info('Validating Journal Style Settings display and function')
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())

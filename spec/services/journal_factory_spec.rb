@@ -46,7 +46,7 @@ describe JournalFactory do
 
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            ::Task.submission_task_types
+            ::Task.submission_task_types + [PlosBioTechCheck::ChangesForAuthorTask]
           end
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses

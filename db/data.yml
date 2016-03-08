@@ -1917,7 +1917,7 @@ authors:
     - 
     - 
     - 
-    - 
+    - AA
     - 
     - 
     - 
@@ -5594,43 +5594,6 @@ nested_questions:
     - '2016-01-26 17:37:47.789077'
     - '2016-01-26 17:37:47.789077'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
-  - - '185'
-    - Any persons named in the Acknowledgements section of the manuscript, or referred
-      to as the source of a personal communication, have agreed to being so named.
-    - boolean
-    - authors--persons_agreed_to_be_named
-    - 
-    - '297'
-    - '298'
-    - '1'
-    - '2016-03-08 15:31:47.371936'
-    - '2016-03-08 15:31:47.371936'
-    - TahiStandardTasks::AuthorsTask
-    - 
-  - - '186'
-    - All authors have read, and confirm, that they meet, ICMJE criteria for authorship.
-    - boolean
-    - authors--authors_confirm_icmje_criteria
-    - 
-    - '299'
-    - '300'
-    - '2'
-    - '2016-03-08 15:31:47.387258'
-    - '2016-03-08 15:31:47.387258'
-    - TahiStandardTasks::AuthorsTask
-    - 
-  - - '187'
-    - All contributing authors are aware of and agree to the submission of this manuscript.
-    - boolean
-    - authors--authors_agree_to_submission
-    - 
-    - '301'
-    - '302'
-    - '3'
-    - '2016-03-08 15:31:47.392427'
-    - '2016-03-08 15:31:47.392427'
-    - TahiStandardTasks::AuthorsTask
     - 
 
 ---
@@ -9477,6 +9440,21 @@ permissions_roles:
     - '8'
     - '2016-03-03 19:06:15.383204'
     - '2016-03-03 19:06:15.383204'
+  - - '278'
+    - '77'
+    - '8'
+    - '2016-03-03 19:06:15.483947'
+    - '2016-03-03 19:06:15.483947'
+  - - '279'
+    - '78'
+    - '8'
+    - '2016-03-03 19:06:15.496983'
+    - '2016-03-03 19:06:15.496983'
+  - - '280'
+    - '79'
+    - '8'
+    - '2016-03-03 19:06:15.508468'
+    - '2016-03-03 19:06:15.508468'
   - - '298'
     - '19'
     - '8'
@@ -9867,6 +9845,11 @@ permissions_roles:
     - '8'
     - '2016-03-08 00:13:37.563552'
     - '2016-03-08 00:13:37.563552'
+  - - '483'
+    - '172'
+    - '8'
+    - '2016-03-08 00:13:37.817465'
+    - '2016-03-08 00:13:37.817465'
   - - '486'
     - '175'
     - '8'

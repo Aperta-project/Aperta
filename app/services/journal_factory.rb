@@ -28,6 +28,7 @@ class JournalFactory
 
       # Creator(s) only get access to the submission task types
       task_klasses = Task.submission_task_types
+      task_klasses << PlosBioTechCheck::ChangesForAuthorTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)

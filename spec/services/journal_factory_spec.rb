@@ -106,7 +106,9 @@ describe JournalFactory do
 
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.descendants.select { |klass| klass <=> MetadataTask } + [TahiStandardTasks::CoverLetterTask]
+            accessible_for_role = ::Task.descendants.select do |klass|
+              klass <=> SubmissionTask
+            end
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do

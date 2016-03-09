@@ -42,10 +42,8 @@ export default TaskComponent.extend({
     return this.get('task.authors').filterBy('paper', this.get('paper'));
   }),
 
-  authorSort: ['position:asc'],
-  sortedAuthors: sort('task.authors', 'authorSort'),
-  sortedAuthorsWithErrors: computed('sortedAuthors.[]', function() {
-    return this.get('sortedAuthors').map(function(a) {
+  sortedAuthorsWithErrors: computed('task.allAuthors.[]', function() {
+    return this.get('task.allAuthors').map(function(a) {
       return ObjectProxyWithErrors.create({
         object: a,
         validations: validations

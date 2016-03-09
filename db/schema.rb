@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 20160308211913) do
   end
 
   create_table "group_authors", force: :cascade do |t|
+    t.integer  "paper_id"
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
     t.string   "contact_last_name"

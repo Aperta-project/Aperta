@@ -33,7 +33,7 @@ export default NestedQuestionOwner.extend({
   corresponding: attr('boolean'),
   deceased: attr('boolean'),
 
-  fullName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
+  displayName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
     return [
       this.get('firstName'),
       this.get('middleInitial'),

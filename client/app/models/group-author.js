@@ -15,5 +15,7 @@ export default NestedQuestionOwner.extend({
   name: attr('string'),
   initial: attr('string'),
 
-  position: attr('number')
+  position: attr('number'),
+
+  displayName: Ember.computed.alias('name')
 });

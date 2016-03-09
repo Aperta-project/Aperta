@@ -13,6 +13,11 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   author: alias('model.object'),
   errors: alias('model.validationErrors'),
   errorsPresent: alias('model.errorsPresent'),
+  componentName: computed('model', function() {
+    return this.get('author').constructor
+               .toString()
+               .match(/group/) ? 'add-group-author-form' : 'add-author-form';
+  }),
   editState: alias('errorsPresent'),
   viewState: computed('editState', 'deleteState', function() {
     return !this.get('editState') && !this.get('deleteState');

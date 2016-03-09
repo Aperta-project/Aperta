@@ -3,5 +3,6 @@ import Task from 'tahi/models/task';
 
 export default Task.extend({
   authors: DS.hasMany('author'),
-  qualifiedType: 'TahiStandardTasks::AuthorsTask'
+  groupAuthors: DS.hasMany('group-author'),
+  qualifiedType: 'TahiStandardTasks::GroupAuthorsTask'
 });

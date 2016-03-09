@@ -6,7 +6,7 @@ const { attr, belongsTo } = DS;
 
 export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
-  task: belongsTo('task'),
+  task: belongsTo('authors-task'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),

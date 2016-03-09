@@ -8,7 +8,8 @@ class GroupAuthorSerializer < ActiveModel::Serializer
              :contact_email,
              :position,
              :paper_id,
-             :name
+             :name,
+             :id
 
   has_one :task, embed: :id
   has_many :nested_questions,

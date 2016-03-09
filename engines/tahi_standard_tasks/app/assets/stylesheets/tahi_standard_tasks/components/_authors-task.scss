@@ -107,8 +107,10 @@
     width: 418px;
   }
 
-  .author-government label {
-    margin-right: 1.5rem;
+  .author-government {
+    .error-message { margin-left: 0; }
+
+    label { margin-right: 1.5rem; }
   }
 
   .author-current-address-country {

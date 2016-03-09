@@ -7,6 +7,7 @@ FactoryGirl.define do
     first_name "Luke"
     middle_initial "J"
     last_name "Skywalker"
+    author_initial "LS"
     email
     department "Jedis"
     title "Head Jedi"

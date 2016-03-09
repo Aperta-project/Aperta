@@ -11,7 +11,7 @@ class Author < ActiveRecord::Base
   belongs_to :authors_task, class_name: "TahiStandardTasks::AuthorsTask", inverse_of: :authors
   delegate :completed?, to: :authors_task, prefix: :task, allow_nil: true
 
-  validates :first_name, :last_name, :affiliation, :department, :title, :email, presence: true, if: :task_completed?
+  validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
   validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
   validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
   validates :paper, presence: true

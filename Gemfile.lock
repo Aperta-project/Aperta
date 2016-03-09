@@ -213,6 +213,8 @@ GEM
       html_page (~> 0.1.0)
       railties (>= 3.2, < 5)
     ember-cli-rails-assets (0.6.1)
+    equivalent-xml (0.6.0)
+      nokogiri (>= 1.4.3)
     erubis (2.7.0)
     eventmachine (1.0.8)
     excon (0.45.4)
@@ -656,6 +658,7 @@ DEPENDENCIES
   dotenv-rails
   email_spec
   ember-cli-rails
+  equivalent-xml
   factory_girl_rails
   fake_ftp
   faraday_middleware

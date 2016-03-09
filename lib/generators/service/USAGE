@@ -1,0 +1,9 @@
+Description:
+    Create a new rails service.
+
+Example:
+    rails generate service example_thing
+
+    This will create:
+        app/services/example_thing.rb
+        spec/services/example_thing_spec.rb

@@ -218,7 +218,7 @@ class Paper < ActiveRecord::Base
     if latest_version.nil?
       @new_body = new_body
     else
-      latest_version.update(text: new_body)
+      latest_version.update(original_text: new_body)
       notify(action: "updated") unless changed?
     end
   end
@@ -453,6 +453,11 @@ class Paper < ActiveRecord::Base
     versioned_texts(true).version_desc.first
   end
 
+  def insert_figures!
+    latest_version.insert_figures!
+    notify
+  end
+
   private
 
   def answer_for(ident)
@@ -503,7 +508,8 @@ class Paper < ActiveRecord::Base
   end
 
   def create_versioned_texts
-    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
+    versioned_texts.create!(major_version: 0, minor_version: 0, \
+                            original_text: (@new_body || ''))
   end
 
   def state_changed?

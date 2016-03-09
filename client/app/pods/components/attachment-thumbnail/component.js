@@ -40,6 +40,12 @@ export default Ember.Component.extend({
     return urlRoot + this.get('attachment.id') + '/update_attachment';
   }),
 
+  onProcessingFinished: Ember.observer('isProcessing', function() {
+    if (!this.get('isProcessing')) {
+      this.sendAction('processingFinished');
+    }
+  }),
+
   focusOnFirstInput() {
     Ember.run.schedule('afterRender', this, function() {
       this.$('input[type=text]:first').focus();

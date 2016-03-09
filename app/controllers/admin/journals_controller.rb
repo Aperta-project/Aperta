@@ -1,6 +1,5 @@
 class Admin::JournalsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
 
   respond_to :json
 
@@ -21,24 +20,29 @@ class Admin::JournalsController < ApplicationController
 
   def show
     j = Journal.where(id: journal.id).includes(:journal_task_types, old_roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } }).first!
+    requires_user_can(:administer, j)
     respond_with(j, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def authorization
+    fail AuthorizationError unless current_user.administered_journals.any?
     head 204
   end
 
   def create
+    requires_user_can(:administer, journal)
     journal.save!
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def update
+    requires_user_can(:administer, journal)
     journal.update(journal_params)
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def upload_logo
+    requires_user_can(:administer, journal)
     journal_with_logo = DownloadLogo.call(journal, params[:url])
     respond_with(journal_with_logo) do |format|
       format.json { render json: journal_with_logo, serializer: AdminJournalSerializer, status: :ok }
@@ -46,6 +50,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def upload_epub_cover
+    requires_user_can(:administer, journal)
     journal_with_cover = DownloadEpubCover.call(journal, params[:url])
     respond_with(journal_with_cover) do |format|
       format.json { render json: journal_with_cover, serializer: AdminJournalSerializer, status: :ok }
@@ -62,10 +67,6 @@ class Admin::JournalsController < ApplicationController
         JournalFactory.create(journal_params)
       end
     end
-  end
-
-  def enforce_policy
-    authorize_action!(resource: journal)
   end
 
   def journal_params

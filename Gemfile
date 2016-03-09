@@ -56,7 +56,6 @@ gem 'sort_alphabetical'
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'
-gem 'uglifier'
 gem 'unf'
 gem 'rsec'
 

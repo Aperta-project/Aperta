@@ -25,7 +25,7 @@ describe Snapshot::AuthorTaskSerializer do
             :name=>"authors--authors_confirm_icmje_criteria",
             :type=>"question",
             :value=>{
-              :title=>"All authors have read, and confirm, that they meet, ICMJE criteria for authorship.",
+              :title=>'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
               :answer_type=>"boolean",
               :answer=>nil,
               :attachments=>[]
@@ -85,8 +85,7 @@ describe Snapshot::AuthorTaskSerializer do
           {:name=>"authors--authors_confirm_icmje_criteria",
           :type=>"question",
           :value=>
-           {:title=>
-             "All authors have read, and confirm, that they meet, ICMJE criteria for authorship.",
+           {:title=> 'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
             :answer_type=>"boolean",
             :answer=>nil,
             :attachments=>[]},

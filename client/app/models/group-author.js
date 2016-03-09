@@ -17,5 +17,12 @@ export default NestedQuestionOwner.extend({
 
   position: attr('number'),
 
-  displayName: Ember.computed.alias('name')
+  displayName: Ember.computed.alias('name'),
+
+  validations: {
+    'name': ['presence'],
+    'contactFirstName': ['presence'],
+    'contactLastName': ['presence'],
+    'contactEmail': ['presence', 'email']
+  }
 });

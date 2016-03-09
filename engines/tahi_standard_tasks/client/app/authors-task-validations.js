@@ -34,35 +34,3 @@ export const taskValidations = {
     }
   }]
 };
-
-// This set of validations is used for each Author model
-
-export default {
-  'firstName': ['presence'],
-  'lastName': ['presence'],
-  'authorInitial': ['presence'],
-  'email': ['presence', 'email'],
-  'affiliation': ['presence'],
-  'government': [{
-    type: 'presence',
-    message: 'A selection must be made',
-    validation() {
-      const author = this.get('object');
-      const answer = author.answerForQuestion('author--government-employee')
-                           .get('value');
-
-      return answer === true || answer === false;
-    }
-  }],
-  'contributions': [{
-    type: 'presence',
-    message: 'One must be selected',
-    validation() {
-      const author = this.get('object');
-
-      return _.some(contributionIdents, (ident) => {
-        return author.answerForQuestion(ident).get('value');
-      });
-    }
-  }]
-};

@@ -53,6 +53,7 @@ class JournalFactory
       task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
       task_klasses -= [PlosBilling::BillingTask]
       task_klasses << TahiStandardTasks::CoverLetterTask
+      task_klasses << TahiStandardTasks::ReviewerRecommendationsTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])
@@ -246,6 +247,7 @@ class JournalFactory
         TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
+      task_klasses << TahiStandardTasks::ReviewerRecommendationsTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end

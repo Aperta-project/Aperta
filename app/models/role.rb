@@ -2,6 +2,7 @@ class Role < ActiveRecord::Base
   belongs_to :journal
   has_and_belongs_to_many :permissions
   has_many :assignments, dependent: :destroy
+  has_many :users, through: :assignments
 
   ACADEMIC_EDITOR_ROLE = 'Academic Editor'
   COLLABORATOR_ROLE = 'Collaborator'

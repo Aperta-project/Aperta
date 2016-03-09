@@ -88,7 +88,7 @@ Tahi::Application.routes.draw do
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
       resources :roles, only: [], controller: 'paper_roles' do
-        resources :users, only: :index, controller: 'paper_role_users'
+        resources :eligible_users, only: [:index], controller: 'paper_role_eligible_users'
       end
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show

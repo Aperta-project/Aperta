@@ -50,9 +50,8 @@ class JournalFactory
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
 
       # Collaborators can view and edit any metadata card except billing
-      task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
+      task_klasses = Task.submission_task_types
       task_klasses -= [PlosBilling::BillingTask]
-      task_klasses << TahiStandardTasks::CoverLetterTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])

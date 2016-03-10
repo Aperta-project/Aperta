@@ -11,6 +11,7 @@ __author__ = 'jgray@plos.org'
 
 import random
 
+import logging
 from Base.Decorators import MultiBrowserFixture
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
@@ -20,7 +21,7 @@ from frontend.common_test import CommonTest
 
 # Because we are not deterministically sorting unsubmitted manuscripts, he, oa and sa logins are failing
 # APERTA-3023
-users = [##oa_login, ##FOIR TESTING
+users = [
          #sa_login,
          oa_login,
          ]
@@ -41,7 +42,7 @@ class ApertaPaperTrackerTest(CommonTest):
       Welcome Text, subhead, table presentation
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type['user']))
+    Logging.info('Logging in as user: {}'.format(user_type['user']))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)

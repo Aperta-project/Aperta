@@ -55,7 +55,6 @@ class PaperTrackerPage(AuthenticatedPage):
                  'ms_id': 5,
                  }
     submitted_papers = []
-
     for journal in journal_ids:
       journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
                                        'FROM papers '
@@ -84,8 +83,11 @@ class PaperTrackerPage(AuthenticatedPage):
                                        'WHERE journal_id IN (%s) AND publishing_state = %s '
                                        'AND submitted_at IS NULL ;', (journal, 'withdrawn'))
       for paper in journal_papers:
+        paper = list(paper)
+        paper[5] = paper[5].split('/')[1]
         withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
+
     try:
         papers = sorted(withdrawn_papers + submitted_papers,
                     key=lambda x: x[sort_by_d[sort_by]].lower(),
@@ -106,6 +108,8 @@ class PaperTrackerPage(AuthenticatedPage):
                                 'ON old_roles.id = user_roles.old_role_id '
                                 'WHERE user_roles.user_id = %s;',(uid,))
     journals_set = set(journal_ids)
+    # test for SA, all journals
+    journals_set = [9 , 3, 2, 6, 1, 15, 12, 5]
     total_count = 0
     for journal in journals_set:
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
@@ -195,6 +199,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_participants = name
             participants.sort()
             db_participants.sort()
+            #import pdb; pdb.set_trace()
             assert participants == db_participants, (participants, db_participants)
           elif role.startswith('Collaborator'):
             role = role.split(': ')[1]

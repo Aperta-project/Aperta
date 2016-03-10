@@ -34,24 +34,31 @@ describe TaskSerializer do
   end
 
   describe '#assigned_to_me' do
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) };
+    let(:user) { FactoryGirl.build_stubbed(:user) }
+
+    before do
+      allow(task).to receive(:participations)
+        .and_return []
+    end
 
     it 'returns false if current_user does not exists in the context' do
       expect(subject[:task][:assigned_to_me]).to eq(false)
     end
 
-    context 'task with participations' do
-      let(:user) { FactoryGirl.create(:user) }
-
-      before do
-        task.add_participant user
+    context 'and the user is participating in this task' do
+      let(:serializer) { TaskSerializer.new(task, scope: user) }
+      let(:participation_assignment) do
+        FactoryGirl.build_stubbed(:assignment, user: user)
       end
 
-      context 'setting the user option in the serializer call' do
-        let(:serializer) { TaskSerializer.new(task, scope: user) }
-        it 'returns true if current_user exists in the context' do
-          expect(subject[:task][:assigned_to_me]).to eq(true)
-        end
+      before do
+        allow(task).to receive(:participations)
+          .and_return [participation_assignment]
+      end
+
+      it 'returns true if current_user exists in the context' do
+        expect(subject[:task][:assigned_to_me]).to eq(true)
       end
     end
   end

@@ -36,6 +36,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
         this.get('task').save().then(() => {
           return this.get('latestDecision').save().then(() => {
             this.set('isSavingData', false);
+            this.clearAllValidationErrors();
           });
         });
       }, (response) => {

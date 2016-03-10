@@ -123,8 +123,6 @@ class PaperTrackerPage(AuthenticatedPage):
                                 'ON old_roles.id = user_roles.old_role_id '
                                 'WHERE user_roles.user_id = %s;',(uid,))
     journals_set = set(journal_ids)
-    # test for SA, all journals
-    journals_set = [9 , 3, 2, 6, 1, 15, 12, 5]
     total_count = 0
     for journal in journals_set:
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
@@ -142,7 +140,7 @@ class PaperTrackerPage(AuthenticatedPage):
       #  (subhead.text, str(total_count))
       pass
     """
-    return total_count, journals_list
+    return total_count, journals_set
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):
     """

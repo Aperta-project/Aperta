@@ -27,7 +27,7 @@ else:
 friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 
 
-# Aperta registration resources
+# Aperta native registration resources
 user_email = 'admin'
 user_pw = 'yetishrimp'
 
@@ -52,6 +52,24 @@ he_login = {'user':'jgray_editor', 'name': 'Jeffrey AMM Gray',
 fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
 oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
+
+# Accounts for new permissions scheme
+# These are NED CAS logins.
+creator_login1 = {'user': 'aauthor1', 'name': 'atest author1', 'email': 'sealresq+1000@gmail.com'}
+creator_login2 = {'user': 'aauthor2', 'name': 'atest author2', 'email': 'sealresq+1001@gmail.com'}
+creator_login3 = {'user': 'aauthor3', 'name': 'atest author3', 'email': 'sealresq+1002@gmail.com'}
+creator_login4 = {'user': 'aauthor4', 'name': 'atest author4', 'email': 'sealresq+1003@gmail.com'}
+creator_login5 = {'user': 'aauthor5', 'name': 'atest author5', 'email': 'sealresq+1004@gmail.com'}
+reviewer_login = {'user': 'areviewer', 'name': 'atest reviewer', 'email': 'sealresq+1005@gmail.com'}
+staff_admin_login = {'user': 'astaffadmin', 'name': 'atest staffadmin', 'email': 'sealresq+1006@gmail.com'}
+handling_editor_login = {'user': 'ahandedit', 'name': 'atest handedit', 'email': 'sealresq+1007@gmail.com'}
+pub_svcs_login = {'user': 'apubsvcs', 'name': 'atest pubsvcs', 'email': 'sealresq+1008@gmail.com'}
+academic_editor_login = {'user':'aacadedit', 'name': 'atest acadedit', 'email': 'sealresq+1009@gmail.com'}
+internal_editor_login = {'user':'aintedit', 'name': 'atest intedit', 'email': 'sealresq+1010@gmail.com'}
+super_admin_login = {'user':'asuperadm', 'name': 'atest superadm', 'email': 'sealresq+1011@gmail.com'}
+cover_editor_login = {'user':'acoveredit', 'name': 'atest coveredit', 'email': 'sealresq+1012@gmail.com'}
+# anyone can be a discussion_participant
+# everyone has a user role for their own profile page
 
 # Define connector information for Aperta's Tahi component postgres instance
 # Lean data
@@ -95,6 +113,7 @@ billing_data = {'first': 'Jane', 'last': 'Doe',
           'title': 'Dr.', 'email': 'test@test.org',
           'department':'Molecular Biology', 'affiliation':'Universidad Del Este',
           '2_institution': 'Universidad Nacional del Sur',
+          'address1': 'Codoba 2231',
           'phone': '123-4567-8900', 'city': 'Azul',
           'state': 'CABA', 'ZIP': '12345', 'country':'Argentina'}
 
@@ -105,6 +124,7 @@ docs = ['10yearsRabiesSL20140723.doc',
         '120220_PLoS_Genetics_review.docx',
         '2011_10_28_PLOS-final.doc',
         '2014_04_27_Bakowski_et_al_main_text_subm.docx',
+        '3.User_Testing3_MS_File.docx',
         'Aedes_hensilli_vector_capacity-final-3-clean-plosntd.doc',
         'April_editorial_2012.doc',
         'C6_Text_Final.doc',
@@ -181,3 +201,33 @@ docs = ['10yearsRabiesSL20140723.doc',
         'simpledoctiffnocompress.docx',
         'tbParBSASpl1.docx',
         ]
+
+# Note that this usage of task names doesn't differentiate between presentations as tasks, in the accordion, and
+#   as cards, on the workflow page. This label is being used generically here.
+task_names = ['Ad-hoc',
+              'Additional Information',
+              'Assign Admin',
+              'Assign Team',
+              'Authors',
+              'Billing',
+              'Competing Interests',
+              'Cover Letter',
+              'Data Availability',
+              'Editor Discussion',
+              'Ethics Statement',
+              'Figures',
+              'Final Tech Check',
+              'Financial Disclosure',
+              'Initial Decision',
+              'Initial Tech Check',
+              'Invite Academic Editor',
+              'Invite Reviewers',
+              'New Taxon',
+              'Production Metadata',
+              'Register Decision',
+              'Reporting Guidelines',
+              'Reviewer Candidates',
+              'Revision Tech Check',
+              'Send to Apex',
+              'Supporting Info',
+              'Upload Manuscript']

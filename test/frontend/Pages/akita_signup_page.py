@@ -4,6 +4,7 @@
 Page Object Model for the Akita Login page.
 """
 
+import logging
 import urllib
 
 from selenium.webdriver.common.by import By
@@ -38,8 +39,12 @@ class AkitaSignupPage(PlosPage):
     self._confirm_password_textbox_label = (By.XPATH, '//label[@for="password_verify"]')
     self._confirm_password_textbox = (By.ID, 'password_verify')
 
-    self._email_signup_cb = (By.CSS_SELECTOR, 'receive_emails')
-    self._email_signup_label = (By.CSS_SELECTOR, '#registration_form img + div')
+    # These elements have been coming and going release to release for NED
+    #   leaving in place for the time being
+    # self._email_signup_cb = (By.CSS_SELECTOR, 'receive_emails')
+    # self._email_signup_label = (By.CSS_SELECTOR, '#registration_form img + div')
+    self._disclaimer = (By.CSS_SELECTOR, '#registration_form img + div p')
+    self._disclaimer_link = (By.CSS_SELECTOR, '#registration_form img + div p a')
 
     self._create_acct_button = (By.CSS_SELECTOR, 'button.btn-primary')
     self._cancel_button = (By.CSS_SELECTOR, 'button.btn-blank')
@@ -57,7 +62,7 @@ class AkitaSignupPage(PlosPage):
     forgot_pw_link = self._get(self._forgot_pw_link)
     assert forgot_pw_link.text == 'Forgot Password?'
     cas_resend_confirm = self._get(self._resend_confirm_email_link)
-    assert cas_resend_confirm.text == 'Resend my email confirmation', cas_resend_confirm.text
+    assert cas_resend_confirm.text.lower() == 'resend my email confirmation', cas_resend_confirm.text
 
     assert self._get(self._email_textbox_label).text == 'Email', self._get(self._email_textbox_label).text
     self._get(self._email_textbox)
@@ -70,11 +75,16 @@ class AkitaSignupPage(PlosPage):
     assert self._get(self._confirm_password_textbox_label).text == 'Confirm Password', \
         self._get(self._confirm_password_textbox_label).text
     self._get(self._password_textbox)
-    email_subscribe_msg = self._get(self._email_signup_label)
-    assert 'I would like to receive occasional PLOS news updates.' in email_subscribe_msg.text, email_subscribe_msg.text
-    assert not email_subscribe_msg.is_selected()
+    # email_subscribe_msg = self._get(self._email_signup_label)
+    # assert 'I would like to receive occasional PLOS news updates.' in email_subscribe_msg.text, email_subscribe_msg.text
+    # assert not email_subscribe_msg.is_selected()
+    disclaimer = self._get(self._disclaimer)
+    assert 'By creating an account you agree to the terms of use.' in disclaimer.text, disclaimer.text
+    disclaimer_link = self._get(self._disclaimer_link)
+    assert disclaimer_link.get_attribute('href') == 'https://www.plos.org/about/terms-use', \
+        disclaimer_link.get_attribute('href')
     create_account_btn = self._get(self._create_acct_button)
-    assert 'Create Account' in create_account_btn.text
+    assert 'Create Account' in create_account_btn.text, create_account_btn.text
     cancel = self._get(self._cancel_button)
     assert cancel.text == 'Cancel', cancel.text
 

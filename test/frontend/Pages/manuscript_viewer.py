@@ -7,23 +7,21 @@ NOTE: This POM will be outdated when the Paper Editor is removed.
 
 import logging
 import time
+from datetime import datetime
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
-from Base.Resources import affiliation, billing_data, rv_login
+from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, creator_login4, creator_login5,\
+                           staff_admin_login, pub_svcs_login, internal_editor_login, super_admin_login
 from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
-from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.additional_information_task import AITask
-from frontend.Tasks.initial_decision_task import InitialDecisionTask
-from frontend.Tasks.register_decision_task import RegisterDecisionTask
-from frontend.Cards.billing_card import BillingCard
-from frontend.Cards.figures_card import FiguresCard
-from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
+from frontend.Tasks.authors_task import AuthorsTask
+from frontend.Tasks.billing_task import BillingTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -106,6 +104,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._revise_task_task = (By.CLASS_NAME, 'revise-task')
     self._cfa_task = (By.CLASS_NAME, 'changes-for-author-task')
     # Metadata Tasks
+    self._addl_info_task = (By.CLASS_NAME, 'publishing-related-questions-task')
     self._authors_task = (By.CLASS_NAME, 'authors-task')
     self._competing_ints_task = (By.CLASS_NAME, 'competing-interests-task')
     self._data_avail_task = (By.CLASS_NAME, 'data-availability-task')
@@ -113,7 +112,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._figures_task = (By.CLASS_NAME, 'figure-task')
     self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
     self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
-    self._prq_task = (By.CLASS_NAME, 'publishing-related-questions-task')
     self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
@@ -125,12 +123,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
-  def validate_page_elements_styles_functions(self, username='', admin=True):
+  def validate_page_elements_styles_functions(self, useremail='', admin=''):
     """
     Main method to validate styles and basic functions for all elements
     in the page
-    :username: String with the username whom the page is rendered to
-    :admin: Boolean to indicate if the page is rendered for an admin user
+    :username: String with the email whom the page is rendered to
+    :Admin: Boolean to indicate if the page is rendered for an admin user
     """
     if admin:
       self._get(self._tb_workflow_link)
@@ -139,8 +137,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_collaborator()
     self._check_download_btns()
     self._check_recent_activity()
-    self._check_discussion()
-    self._check_more_btn()
+    self._check_discussion(useremail)
+    self._check_more_btn(useremail)
 
   def _check_version_btn_style(self):
     """
@@ -204,6 +202,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
+    time.sleep(1)
+    collaborator_btn.click()
+    time.sleep(1)
 
   def _check_download_btns(self):
     """
@@ -216,6 +217,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     epub_link = self._get(self._tb_dl_epub_link)
     assert 'download.epub' in epub_link.get_attribute('href')
     assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
+    time.sleep(1)
+    downloads_link.click()
+    time.sleep(1)
 
   def _check_recent_activity(self):
     """
@@ -226,19 +230,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(.5)
     self._get(self._recent_activity_modal)
     modal_title = self._get(self._overlay_header_title)
-    #Temporary disable due to bad style
-    #self.validate_application_h1_style(modal_title)
+    self.validate_application_title_style(modal_title)
     close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
+    time.sleep(1)
 
-  def _check_discussion(self):
+  def _check_discussion(self, useremail=''):
     """
     Check discussion modal styles
     """
+    logging.info('Checking Discussions toolbar for {0}'.format(useremail))
     discussion_link = self._get(self._discussion_link)
     discussion_link.click()
     discussion_container = self._get(self._discussion_container)
@@ -246,28 +251,34 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Note: The following method is parametrized since we don't have a guide for modals
     self.validate_modal_title_style(discussion_container_title, '36px', '500', '39.6px')
     assert 'Discussions' in discussion_container_title.text
-    discussion_create_new_btn = self._get(self._discussion_create_new_btn)
-    ##self.validate_secondary_green_button_style(discussion_create_new_btn)
-    ##self.validate_secondary_small_green_button_style(discussion_create_new_btn)
-    self.validate_secondary_big_green_button_style(discussion_create_new_btn)
-    discussion_create_new_btn.click()
-    create_new_topic = self._get(self._create_new_topic)
-    assert 'Create New Topic' in create_new_topic.text
-    # TODO: Styles for cancel since is not in the style guide
-    cancel = self._get(self._create_topic_cancel)
-    assert application_typeface in cancel.value_of_css_property('font-family')
-    assert cancel.value_of_css_property('font-size') == '14px'
-    assert cancel.value_of_css_property('line-height') == '60px'
-    assert cancel.value_of_css_property('background-color') == 'transparent'
-    assert cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert cancel.value_of_css_property('font-weight') == '400'
-    # TODO: Styles for create_new_topic since is not in the style guide
-    titles = self._gets(self._topic_title)
-    assert 'Topic Title' == titles[0].text
-    assert 'Message' == titles[1].text
-    create_topic_btn = self._get(self._create_topic_btn)
-    ##self.validate_green_backed_button_style(create_topic_btn)
-    self.validate_primary_big_green_button_style(create_topic_btn)
+    # Only Admins, Internal Editors and PubSvcs Staff can initiate a discussion APERTA-5627
+    if useremail in [staff_admin_login['email'],
+                     pub_svcs_login['email'],
+                     internal_editor_login['email'],
+                     super_admin_login['email'],
+                     ]:
+      discussion_create_new_btn = self._get(self._discussion_create_new_btn)
+      ##self.validate_secondary_green_button_style(discussion_create_new_btn)
+      ##self.validate_secondary_small_green_button_style(discussion_create_new_btn)
+      self.validate_secondary_big_green_button_style(discussion_create_new_btn)
+      discussion_create_new_btn.click()
+      create_new_topic = self._get(self._create_new_topic)
+      assert 'Create New Topic' in create_new_topic.text
+      # TODO: Styles for cancel since is not in the style guide
+      cancel = self._get(self._create_topic_cancel)
+      assert application_typeface in cancel.value_of_css_property('font-family')
+      assert cancel.value_of_css_property('font-size') == '14px'
+      assert cancel.value_of_css_property('line-height') == '60px'
+      assert cancel.value_of_css_property('background-color') == 'transparent'
+      assert cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+      assert cancel.value_of_css_property('font-weight') == '400'
+      # TODO: Styles for create_new_topic since is not in the style guide
+      titles = self._gets(self._topic_title)
+      assert 'Topic Title' == titles[0].text
+      assert 'Message' == titles[1].text
+      create_topic_btn = self._get(self._create_topic_btn)
+      ##self.validate_green_backed_button_style(create_topic_btn)
+      self.validate_primary_big_green_button_style(create_topic_btn)
     close_icon_overlay = self._get(self._sheet_close_x)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px', '42px')
@@ -275,41 +286,53 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
 
-  def _check_more_btn(self):
+  def _check_more_btn(self, useremail=''):
     """
     Check all options inside More button (Appeal and Withdraw).
     Note that Appeal is not implemented yet, so it is not tested.
     """
+    logging.info('Checking More Toolbar menu for {0}'.format(useremail))
     more_btn = self._get(self._tb_more_link)
     more_btn.click()
     self._get(self._tb_more_appeal_link)
-    withdraw_link = self._get(self._tb_more_withdraw_link)
-    withdraw_link.click()
-    self._get(self._wm_modal)
-    self._get(self._wm_exclamation_circle)
-    modal_title = self._get(self._wm_modal_title)
-    assert 'Are you sure?' == modal_title.text
-    # TODO: Style parametrized due to lack of styleguide for modals
-    self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
+    # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
+    if useremail in [creator_login1['email'],
+                     creator_login2['email'],
+                     creator_login3['email'],
+                     creator_login4['email'],
+                     creator_login5['email'],
+                     staff_admin_login['email'],
+                     pub_svcs_login['email'],
+                     internal_editor_login['email'],
+                     super_admin_login['email'],
+                     ]:
+      withdraw_link = self._get(self._tb_more_withdraw_link)
+      withdraw_link.click()
+      self._get(self._wm_modal)
+      self._get(self._wm_exclamation_circle)
+      modal_title = self._get(self._wm_modal_title)
+      assert 'Are you sure?' == modal_title.text
+      # TODO: Style parametrized due to lack of styleguide for modals
+      self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
                                     font_weight='500', color='rgba(119, 119, 119, 1)')
-    withdraw_modal_text = self._get(self._wm_modal_text)
-    # TODO: Leave comment out until solved. Pivotal bug#103864752
-    #self.validate_application_ptext(withdraw_modal_text)
-    assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
-            'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
-    yes_btn = self._get(self._wm_modal_yes)
-    assert 'YES, WITHDRAW' == yes_btn.text
-    no_btn = self._get(self._wm_modal_no)
-    assert "NO, I'M STILL WORKING" == no_btn.text
-    self.validate_link_big_grey_button_style(yes_btn)
-    # TODO: Leave comment out until solved. Pivotal bug#103858114
-    #self.validate_secondary_grey_small_button_modal_style(no_btn)
-    close_icon_overlay = self._get(self._overlay_header_close)
-    # TODO: Change following line after bug #102078080 is solved
-    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
-    assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-    close_icon_overlay.click()
+      withdraw_modal_text = self._get(self._wm_modal_text)
+      # TODO: Leave comment out until solved. Pivotal bug#103864752
+      #self.validate_application_ptext(withdraw_modal_text)
+      assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
+              'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
+      yes_btn = self._get(self._wm_modal_yes)
+      assert 'YES, WITHDRAW' == yes_btn.text
+      no_btn = self._get(self._wm_modal_no)
+      assert "NO, I'M STILL WORKING" == no_btn.text
+      self.validate_link_big_grey_button_style(yes_btn)
+      # TODO: Leave comment out until solved. Pivotal bug#103858114
+      #self.validate_secondary_grey_small_button_modal_style(no_btn)
+      close_icon_overlay = self._get(self._overlay_header_close)
+      # TODO: Change following line after bug #102078080 is solved
+      assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
+      assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+      assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+      close_icon_overlay.click()
 
   def validate_roles(self, user_buttons):
     """
@@ -320,41 +343,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
     assert self._get(self._tb_workflow_link) if user_buttons == 8 else (len(buttons) == 7), len(buttons)
-
-  def complete_card(self, card_name, click_override=False):
-    """On a given card, check complete and then close"""
-    cards = self._gets((By.CLASS_NAME, 'card-title'))
-    # if card is marked as complete, leave is at is.
-    if not click_override:
-      for card in cards:
-        card_div = card.find_element_by_xpath('../..')
-        if card.text == card_name and 'card--completed' not in card_div.get_attribute('class'):
-          card.find_element_by_xpath('.//ancestor::a').click()
-          break
-        elif card.text == card_name and 'card--completed' in card_div.get_attribute('class'):
-          return None
-      else:
-        return None
-    else:
-      for card in cards:
-        if card.text == card_name:
-          card.find_element_by_xpath('.//ancestor::a').click()
-          break
-      else:
-        return None
-
-    base_card = BaseCard(self._driver)
-    if card_name == 'Authors':
-      # Complete authors data before mark close
-      author_card = AuthorsCard(self._driver)
-      author_card.edit_author(affiliation)
-    else:
-      completed = base_card._get(base_card._completed_check)
-      if not completed.is_selected():
-        completed.click()
-        #time.sleep(.2)
-      base_card._get(base_card._close_button).click()
-      time.sleep(1)
 
   def is_task_present(self, task_name):
     """
@@ -368,11 +356,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
-
   def complete_task(self, task_name, click_override=False, data=None, click=False):
     """
     On a given task, check complete and then close
-    :task_name: The name of the task to conmplete (str)
+    :task_name: The name of the task to complete (str)
     :click_override:
     :data:
     """
@@ -399,55 +386,49 @@ class ManuscriptViewerPage(AuthenticatedPage):
       else:
         return None
     base_task = BaseTask(self._driver)
-    if task_name == 'Initial Decision':
-      initial_decision_task = InitialDecisionTask(self._driver)
-      initial_decision_task.execute_decision()
-      completed = base_task.completed_cb_is_selected()
-      if not completed:
-        self._get(base_task._completed_cb).click()
-      task.click()
-      time.sleep(1)
-    elif task_name == 'Register Decision':
-      register_decision_task = RegisterDecisionTask(self._driver)
-      if data:
-        register_decision_task.execute_decision(data)
-      else:
-        register_decision_task.execute_decision()
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
-      task.click()
-      time.sleep(1)
-    elif task_name == 'Additional Information':
+    base_task.set_timeout(60)
+    if task_name == 'Additional Information':
       ai_task = AITask(self._driver)
-      ai_task.complete_ai(data)
-      #complete_prq
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      # If the task is read only due to completion state, set read-write
+      if base_task.completed_state():
+        base_task.click_completion_button()
+      ai_task.complete_ai()
+      # complete_addl info task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+      task.click()
+      time.sleep(1)
+    elif task_name == 'Billing':
+      billing_task = BillingTask(self._driver)
+      billing_task.complete(data)
+      # complete_billing task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
-                     'Revise Manuscript', 'Billing'):
+                     'Revise Manuscript', ):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
         # accordion is close it, open it:
-        logging.info('Accordion was closed, opening: {}'.format(task.text))
+        logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
       # Check completed_check status
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
+      if not base_task.completed_state():
+        base_task.click_completion_button()
       task.click()
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
+      logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-      if not base_task.completed_cb_is_selected():
-        self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
     else:
-      raise ValueError('No information on this card: {}'.format(task_name))
+      raise ValueError('No information on this task: {0}'.format(task_name))
+    base_task.restore_timeout()
 
   def get_paper_title_from_page(self):
     """
@@ -463,7 +444,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def confirm_submit_btn(self):
     """Confirm paper submission"""
-    self._get(self._so_submit_confirm).click()
+    # There is a lot going on under the covers in submittal - we need this pregnant delay
+    confirm_btn = self._get(self._so_submit_confirm)
+    confirm_btn.click()
+    time.sleep(15)
 
   def confirm_submit_cancel(self):
     """Cancel on confirm paper submission"""
@@ -474,7 +458,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     closer = self._get(self._overlay_header_close)
     closer.click()
 
-  def click_workflow_lnk(self):
+  def click_workflow_link(self):
     """Click workflow button"""
     self._get(self._tb_workflow_link).click()
 
@@ -510,7 +494,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     paper_url = self.get_current_url()
     paper_id = int(paper_url.split('papers/')[1])
-    print('The paper DB ID is: {0}'.format(paper_id))
+    logging.info('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):
@@ -573,7 +557,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         time.sleep(.5)
         break
     else:
-      raise Exception("User {} not found".format(user['name']))
+      raise Exception("User {0} not found".format(user['name']))
     time.sleep(1)
     self._get(self._add_collaborators_modal_save).click()
 
@@ -581,3 +565,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     """
     return self._get(self._submission_status_info).text
+
+  def wait_for_viewer_page_population(self):
+    logging.info(datetime.now())
+    self.set_timeout(230)
+    self._get(self._paper_sidebar_state_information)
+    logging.info(datetime.now())
+    self.restore_timeout()

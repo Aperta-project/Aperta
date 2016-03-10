@@ -78,7 +78,7 @@ class AdminPage(AuthenticatedPage):
     journals_title = self._get(self._base_admin_journals_section_title)
     self.validate_application_h2_style(journals_title)
     logging.info(username)
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       logging.info('Validating super admin specific page element')
       self._get(self._base_admin_journals_su_add_new_journal_btn)
     self.validate_journal_block_display(username)
@@ -90,7 +90,7 @@ class AdminPage(AuthenticatedPage):
     :return: void function
     """
     logging.info(username)
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       logging.info('Validating journal blocks for Super Admin user')
       # Validate the presentation of journal blocks
       # Super Admin gets all journals
@@ -102,15 +102,13 @@ class AdminPage(AuthenticatedPage):
       # Ordinary Admin role is assigned on a per journal basis
       logging.info('Validating admin page elements for Ordinary Admin user')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      roles = PgSQL().query('SELECT old_role_id FROM user_roles WHERE user_id = %s;', (uid,))
-      role_list = []
-      for role in roles:
-        role_list.append(role[0])
       journals = []
-      for role in role_list:
-        journals.append(PgSQL().query('SELECT journal_id FROM old_roles WHERE id = %s;', (role,))[0][0])
+      journals.append(PgSQL().query('SELECT assigned_to_id '
+                                    'FROM assignments '
+                                    'WHERE user_id = %s AND assigned_to_type=\'Journal\';', (uid,))[0][0])
       db_journals = []
       for journal in journals:
+        logging.info(journal)
         db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '
                                          'FROM journals LEFT JOIN papers '
                                          'ON journals.id = papers.journal_id '
@@ -124,26 +122,24 @@ class AdminPage(AuthenticatedPage):
       # Once again, while less than ideal, these must be defined on the fly
       self._base_admin_journal_block_paper_count = \
           (By.XPATH,
-           '//div[@class="ember-view journal-thumbnail"][%s]/a/span[@class="journal-thumbnail-paper-count"]'
+           '//div[@class="ember-view journal-thumbnail"][%s]/div/a/span[@class="journal-thumbnail-paper-count"]'
            % str(count + 1))
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
-           % str(count + 1))
-      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/p'
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/h3[@class="journal-thumbnail-name"]' % str(count + 1))
+      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/p'
                                              % str(count + 1))
 
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
       journal_title = self._get(self._base_admin_journal_block_name)
       journal_desc = self._iget(self._base_admin_journal_block_desc).text
-      if username == 'jgray_sa':
+      if username == 'asuperadm':
         self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
-                                                    % (count + 1))
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']" % (count + 1))
         self._get(self._base_admin_journal_block_edit_icon)
       if not journal_desc:
         journal_desc = None
       journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
-      assert journal_t in db_journals, '{} not found in \n{}'.format(journal_t, db_journals)
+      assert journal_t in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
       count += 1
 
   def validate_add_new_journal(self, username):
@@ -151,10 +147,10 @@ class AdminPage(AuthenticatedPage):
     Note this currently doesn't actually create the journal, it merely calls the create form up and validates the
     components of that form. Because we don't have a means of deleting a journal, even an empty one, it is prohibitive
     to test this in an automated fashion as we would end up with hundreds of journals over time.
-    :param username: Must be jgray_sa or this is a no-op.
+    :param username: Must be asuperadm or this is a no-op.
     :return: void function
     """
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
       page_initial_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -173,42 +169,64 @@ class AdminPage(AuthenticatedPage):
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
       time.sleep(2)
-      assert upload_button.value_of_css_property('color') == tahi_blue
-      assert upload_button.value_of_css_property('background-color') == white
+      assert upload_button.value_of_css_property('color') == tahi_blue, upload_button.value_of_css_property('color')
+      assert upload_button.value_of_css_property('background-color') == white, \
+          upload_button.value_of_css_property('background-color')
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
-      assert upload_note.text == '(250px x 40px)'
-      assert application_typeface in upload_note.value_of_css_property('font-family')
-      assert upload_note.value_of_css_property('font-size') == '14px'
-      assert upload_note.value_of_css_property('font-style') == 'italic'
-      assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert upload_note.value_of_css_property('line-height') == '40px'
-      assert upload_note.value_of_css_property('padding-left') == '10px'
+      assert upload_note.text == '(250px x 40px)', upload_note.text
+      assert application_typeface in upload_note.value_of_css_property('font-family'), \
+          upload_note.value_of_css_property('font-family')
+      assert upload_note.value_of_css_property('font-size') == '14px', upload_note.value_of_css_property('font-size')
+      assert upload_note.value_of_css_property('font-style') == 'italic', \
+          upload_note.value_of_css_property('font-style')
+      assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+          upload_note.value_of_css_property('color')
+      assert upload_note.value_of_css_property('line-height') == '40px', \
+          upload_note.value_of_css_property('line-height')
+      assert upload_note.value_of_css_property('padding-left') == '10px', \
+          upload_note.value_of_css_property('padding-left')
       journal_title_label = self._get(self._base_admin_journals_edit_title_label)
-      assert journal_title_label.text == 'Journal Title'
+      assert journal_title_label.text == 'Journal Title', journal_title_label.text
       self.validate_input_field_label_style(journal_title_label)
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
-      assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti'
-      assert application_typeface in journal_title_field.value_of_css_property('font-family')
-      assert journal_title_field.value_of_css_property('font-size') == '14px'
-      assert journal_title_field.value_of_css_property('font-weight') == '400'
-      assert journal_title_field.value_of_css_property('font-style') == 'normal'
-      assert journal_title_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)'
-      assert journal_title_field.value_of_css_property('line-height') == '20px'
-      assert journal_title_field.value_of_css_property('padding-left') == '12px'
+      assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti', \
+          journal_title_field.get_attribute('placeholder')
+      assert application_typeface in journal_title_field.value_of_css_property('font-family'), \
+          journal_title_field.value_of_css_property('font-family')
+      assert journal_title_field.value_of_css_property('font-size') == '14px', \
+          journal_title_field.value_of_css_property('font-size')
+      assert journal_title_field.value_of_css_property('font-weight') == '400', \
+          journal_title_field.value_of_css_property('font-weight')
+      assert journal_title_field.value_of_css_property('font-style') == 'normal', \
+          journal_title_field.value_of_css_property('font-style')
+      assert journal_title_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+          journal_title_field.value_of_css_property('color')
+      assert journal_title_field.value_of_css_property('line-height') == '20px', \
+          journal_title_field.value_of_css_property('line-height')
+      assert journal_title_field.value_of_css_property('padding-left') == '12px', \
+          journal_title_field.value_of_css_property('padding-left')
       journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
-      assert journal_desc_label.text == 'Journal Description'
+      assert journal_desc_label.text == 'Journal Description', journal_desc_label.text
       self.validate_input_field_label_style(journal_desc_label)
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
-      assert journal_desc_field.get_attribute('placeholder') == 'Accelerating the publication of peer-reviewed science'
-      assert application_typeface in journal_desc_field.value_of_css_property('font-family')
-      assert journal_desc_field.value_of_css_property('font-size') == '14px'
-      assert journal_desc_field.value_of_css_property('font-weight') == '400'
-      assert journal_desc_field.value_of_css_property('font-style') == 'normal'
-      assert journal_desc_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)'
-      assert journal_desc_field.value_of_css_property('line-height') == '20px'
-      assert journal_desc_field.value_of_css_property('padding-left') == '12px'
+      assert journal_desc_field.get_attribute('placeholder') == \
+             'Accelerating the publication of peer-reviewed science', journal_desc_field.get_attribute('placeholder')
+      assert application_typeface in journal_desc_field.value_of_css_property('font-family'), \
+          journal_desc_field.value_of_css_property('font-family')
+      assert journal_desc_field.value_of_css_property('font-size') == '14px', \
+          journal_desc_field.value_of_css_property('font-size')
+      assert journal_desc_field.value_of_css_property('font-weight') == '400', \
+          journal_desc_field.value_of_css_property('font-weight')
+      assert journal_desc_field.value_of_css_property('font-style') == 'normal', \
+          journal_desc_field.value_of_css_property('font-style')
+      assert journal_desc_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+          journal_desc_field.value_of_css_property('color')
+      assert journal_desc_field.value_of_css_property('line-height') == '20px', \
+          journal_desc_field.value_of_css_property('line-height')
+      assert journal_desc_field.value_of_css_property('padding-left') == '12px', \
+          journal_desc_field.value_of_css_property('padding-left')
       save_button = self._get(self._base_admin_journals_edit_save_button)
-      assert save_button.text == 'SAVE'
+      assert save_button.text == 'SAVE', save_button.text
       self.validate_blue_on_blue_button_style(save_button)
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
@@ -217,18 +235,25 @@ class AdminPage(AuthenticatedPage):
       assert save_button.value_of_css_property('background-color') == white, \
           save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
-      assert cancel_link.text == 'Cancel'
-      assert application_typeface in cancel_link.value_of_css_property('font-family')
-      assert cancel_link.value_of_css_property('font-size') == '14px'
-      assert cancel_link.value_of_css_property('font-weight') == '400'
-      assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert cancel_link.value_of_css_property('background-color') == 'transparent'
-      assert cancel_link.value_of_css_property('line-height') == '20px'
-      assert cancel_link.value_of_css_property('text-align') == 'center'
-      assert cancel_link.value_of_css_property('vertical-align') == 'middle'
+      assert cancel_link.text == 'Cancel', cancel_link.text
+      assert application_typeface in cancel_link.value_of_css_property('font-family'), \
+          cancel_link.value_of_css_property('font-family')
+      assert cancel_link.value_of_css_property('font-size') == '14px', cancel_link.value_of_css_property('font-size')
+      assert cancel_link.value_of_css_property('font-weight') == '400', cancel_link.value_of_css_property('font-weight')
+      assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+          cancel_link.value_of_css_property('color')
+      assert cancel_link.value_of_css_property('background-color') == 'transparent', \
+          cancel_link.value_of_css_property('background-color')
+      assert cancel_link.value_of_css_property('line-height') == '20px', \
+          cancel_link.value_of_css_property('line-height')
+      assert cancel_link.value_of_css_property('text-align') == 'center', \
+          cancel_link.value_of_css_property('text-align')
+      assert cancel_link.value_of_css_property('vertical-align') == 'middle', \
+          cancel_link.value_of_css_property('vertical-align')
       self._actions.move_to_element(cancel_link).perform()
-      time.sleep(1)
-      assert cancel_link.value_of_css_property('text-decoration') == 'underline'
+      time.sleep(.5)
+      assert cancel_link.value_of_css_property('text-decoration') == 'underline', \
+          cancel_link.value_of_css_property('text-decoration')
       self._actions.move_to_element(cancel_link).perform()
       cancel_link.click()
       page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -237,16 +262,16 @@ class AdminPage(AuthenticatedPage):
   def validate_edit_journal(self, username):
     """
     Validates the edit function of the statically named_journal
-    :param username: needs to be jgray_sa, otherwise a no-op
+    :param username: needs to be asuperadm, otherwise a no-op
     :return: void function
     """
     named_journal = 'PLOS Wombat'
-    if username == 'jgray_sa':
+    if username == 'asuperadm':
       logging.info('Validating editing journal block for Super Admin user')
       journal_count = self.select_named_journal(named_journal)
       logging.info(journal_count)
       self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']"
                                                     % str(journal_count))
       edit_journal = self._get(self._base_admin_journal_block_edit_icon)
       edit_journal.click()
@@ -330,11 +355,11 @@ class AdminPage(AuthenticatedPage):
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
     self._base_admin_journal_block_name = (By.XPATH,
-         '//div[@class="ember-view journal-thumbnail"][{}]/a/h3[@class="journal-thumbnail-name"]'\
-                                           .format(selected_journal_index))
+         '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+         /h3[@class="journal-thumbnail-name"]'.format(selected_journal_index))
     journal_link = self._get(self._base_admin_journal_block_name)
     journal_name = journal_link.text
-    logging.info('Opening {} journal.'.format(journal_name))
+    logging.info('Opening {0} journal.'.format(journal_name))
     self._actions.click_and_hold(journal_link).release().perform()
     return journal_name
 
@@ -348,8 +373,8 @@ class AdminPage(AuthenticatedPage):
     count = 0
     for journal_block in journal_blocks:
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
-           % str(count + 1))
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+           /h3[@class="journal-thumbnail-name"]'.format(count + 1))
       journal_title = self._get(self._base_admin_journal_block_name)
       logging.debug(journal_title.text)
       logging.debug(journal)

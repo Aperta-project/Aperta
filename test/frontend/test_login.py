@@ -10,13 +10,30 @@ import logging
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_email, login_invalid_email, login_valid_uid, login_valid_pw, login_invalid_pw
+from Base.Resources import login_valid_email, login_invalid_email, login_valid_uid, login_valid_pw, login_invalid_pw, \
+    creator_login1, creator_login2, creator_login3, creator_login4, creator_login5, reviewer_login, \
+    handling_editor_login, academic_editor_login, internal_editor_login, staff_admin_login, pub_svcs_login, \
+    super_admin_login
 from frontend.common_test import CommonTest
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.akita_signup_page import AkitaSignupPage
 from Pages.dashboard import DashboardPage
 from Pages.orcid_login_page import OrcidLoginPage
+
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         reviewer_login,
+         handling_editor_login,
+         academic_editor_login,
+         internal_editor_login,
+         staff_admin_login,
+         pub_svcs_login,
+         super_admin_login,
+         ]
 
 
 @MultiBrowserFixture
@@ -54,7 +71,7 @@ class ApertaNativeLoginTest(CommonTest):
      - validate remember me function (only by cookie validation)
      - validate forgot password function (excludes email receipt validation)
   """
-  def test_validate_native_login(self):
+  def rest_validate_native_login(self):
     """
     Validates the presence of the following provided elements:
       Welcome Text, Login Field, Password Field, Forgot pw link, Remember me checkbox, Sign In button, Sign Up link
@@ -143,7 +160,7 @@ class ApertaORCIDLoginTest(CommonTest):
   Self imposed AC:
      - validate sign in and sign out using ORCID and accompanying error messages
   """
-  def test_validate_orcid_login(self):
+  def rest_validate_orcid_login(self):
     """
     Validates the Signin via pre-existing ORCID account link
     Note, this is currently not correctly wired in, so just doing a minimal test

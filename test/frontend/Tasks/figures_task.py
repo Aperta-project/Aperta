@@ -1,48 +1,41 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import time
-
 from selenium.webdriver.common.by import By
 
-from frontend.Cards.basecard import BaseCard
+from frontend.Tasks.basetask import BaseTask
 
-__author__ = 'sbassi@plos.org'
+__author__ = 'jgray@plos.org'
 
-class FiguresCard(BaseCard):
+class FiguresTask(BaseTask):
   """
-  Page Object Model for Figures Card
+  Page Object Model for Figures task
   """
+
   def __init__(self, driver, url_suffix='/'):
-    super(FiguresCard, self).__init__(driver)
+    super(FiguresTask, self).__init__(driver)
 
     #Locators - Instance members
-    self._card_title = (By.TAG_NAME, 'h1')
     self._intro_text = (By.TAG_NAME, 'p')
     self._question_label = (By.CLASS_NAME, 'question-checkbox')
     self._question_check = (By.CLASS_NAME, 'ember-checkbox')
     self._add_new_figures_btn = (By.CLASS_NAME, 'button-primary')
 
-   #POM Actions
-
+  # POM Actions
   def validate_styles(self):
     """
-    Validate styles in Figures Card
+    Validate styles in Figures Task
     """
-
-    card_title = self._get(self._card_title)
-    assert card_title.text == 'Figures'
-    self.validate_application_title_style(card_title)
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
     assert intro_text.text == (
-      "Please confirm that your figures comply with our guidelines for preparation and "
-      "have not been inappropriately manipulated. For information on image manipulation, "
-      "please see our general guidance notes on image manipulation."
+        "Please confirm that your figures comply with our guidelines for preparation and "
+        "have not been inappropriately manipulated. For information on image manipulation, "
+        "please see our general guidance notes on image manipulation."
       ), intro_text.text
     assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the guidelines."
     self.validate_application_ptext(self._get(self._question_label))
     add_new_figures_btn = self._get(self._add_new_figures_btn)
-    add_new_figures_btn.text == "ADD NEW FIGURES"
+    assert add_new_figures_btn.text == "ADD NEW FIGURES"
     self.validate_primary_big_green_button_style(add_new_figures_btn)
 
   def check_question(self):
@@ -51,12 +44,17 @@ class FiguresCard(BaseCard):
     "Yes - I confirm our figures comply with the guidelines."
     :return: None
     """
-    self._get(self._question_check).click()
-    time.sleep(.5)
+    writable = not self.completed_state()
+    if writable:
+      self._get(self._question_check).click()
+    else:
+      self.click_completion_button()
+      self._get(self._question_check).click()
+      self.click_completion_button()
 
   def is_question_checked(self):
     """
-    Checks if checkmark for the question on Image card is applied or not
+    Checks if checkmark for the question on Figures task is applied or not
     :return: Bool
     """
     question_check= self._get(self._question_check)
@@ -65,14 +63,9 @@ class FiguresCard(BaseCard):
     else:
       return False
 
+  @staticmethod
   def upload_figure(self, file_path):
     """
-    Placeholder for a function to upload a tiff file in the Figures Card
+    Placeholder for a function to upload a tiff file in the Figures Task
     """
     pass
-
-  def is_marked_completed(self):
-    """
-    Checks if the state of the card is set to completed so that changes can't be made
-    :return: Boolean
-    """

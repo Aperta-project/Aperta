@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Figures display in the manuscript
+- Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 
 ### Changed
 -

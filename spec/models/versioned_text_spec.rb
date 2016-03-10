@@ -4,6 +4,7 @@ require 'rails_helper'
 describe VersionedText do
   let(:paper) { FactoryGirl.create :paper }
   let(:user) { FactoryGirl.create :user }
+  let(:versioned_text) { paper.latest_version }
 
   describe "#new_major_version!" do
     it "creates a new major version while retaining the old" do
@@ -58,6 +59,13 @@ describe VersionedText do
       expect(paper.latest_version.submitted?).to be(false)
       paper.latest_version.update!(submitting_user_id: 1)
       expect(paper.latest_version.submitted?).to be(true)
+    end
+  end
+
+  describe 'updating original_text' do
+    it 'should trigger an update of text' do
+      expect(versioned_text).to receive(:insert_figures)
+      versioned_text.update!(original_text: 'new original text')
     end
   end
 

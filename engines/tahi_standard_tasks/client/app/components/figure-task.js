@@ -22,6 +22,11 @@ export default TaskComponent.extend(FileUploadMixin, {
 
     destroyAttachment(attachment) {
       attachment.destroyRecord();
+    },
+
+    // get updated paper text with figure inserted
+    processingFinished() {
+      this.get('task.paper').reload();
     }
   }
 });

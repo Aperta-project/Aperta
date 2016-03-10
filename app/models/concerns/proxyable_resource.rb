@@ -8,11 +8,12 @@ module ProxyableResource
   #   is a attachment version (size) in carrierwave (:detail, :preview, etc)
   # only_path
   #   allows for relative urls
-  def non_expiring_proxy_url(version: nil, only_path: true)
+  def non_expiring_proxy_url(version: nil, only_path: true, cache_buster: false)
     options = { resource: self.class.to_s.underscore.pluralize,
                 token: token,
                 version: version,
                 only_path: only_path }
+    options[:cb] = cache_buster_value if cache_buster
     url_for(:resource_proxy, options)
   end
 
@@ -29,6 +30,15 @@ module ProxyableResource
   end
 
   private
+
+  def cache_buster_value
+    # This will over-aggressively invalidate attachment caches as it will create
+    # a new cache buster for changes having nothing to do with the file
+    # content. If we want to bust more intelligently, we can ask S3 for an etag
+    # for the file, or keep track of a file checksum or file_updated_at in the
+    # db. Both have downsides that may not be worth the feature.
+    updated_at.to_i
+  end
 
   def expiring_s3_url(version)
     # unfortunately attachment.ur(nil) fails, so can't be 'defaulted'

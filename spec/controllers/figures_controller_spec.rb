@@ -71,7 +71,7 @@ describe FiguresController do
     it "allows updates for title and caption" do
       do_request
 
-      figure = paper.figures.last
+      figure = paper.figures.last.reload
       expect(figure.caption).to eq("new caption")
       expect(figure.title).to eq("new title")
     end

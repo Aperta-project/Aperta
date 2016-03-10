@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225184558) do
+ActiveRecord::Schema.define(version: 20160302232300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -652,6 +652,7 @@ ActiveRecord::Schema.define(version: 20160225184558) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "source"
+    t.text     "original_text"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

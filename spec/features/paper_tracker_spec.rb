@@ -4,10 +4,15 @@ feature 'Paper Tracker', js: true do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let(:per_page) { Kaminari.config.default_per_page }
   let(:search_controls) { '#search-controls-top' }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+
+  before do
+    assign_journal_role(journal, user, :admin)
+  end
 
   scenario 'when only one page worth of results' do
     count = per_page - 1
-    count.times { make_matchable_paper }
+    count.times { FactoryGirl.create(:paper, :completed, journal: journal) }
     login_as(user, scope: :user)
     visit '/paper_tracker'
     expect(find(search_controls)).to have_content('Page 1 of 1')
@@ -19,7 +24,7 @@ feature 'Paper Tracker', js: true do
 
   scenario 'when 2 pages worth of results' do
     count = per_page + 1
-    count.times { make_matchable_paper }
+    count.times { FactoryGirl.create(:paper, :completed, journal: journal) }
     login_as(user, scope: :user)
     visit '/paper_tracker'
     expect(find(search_controls)).to have_content('Page 1 of 2')
@@ -31,7 +36,7 @@ feature 'Paper Tracker', js: true do
 
   scenario 'when on page 2 of 3 pages worth of results' do
     count = 3 * per_page
-    count.times { make_matchable_paper }
+    count.times { FactoryGirl.create(:paper, :completed, journal: journal) }
     login_as(user, scope: :user)
     visit '/paper_tracker?page=2'
     expect(find(search_controls)).to have_content('Page 2 of 3')
@@ -51,7 +56,7 @@ feature 'Paper Tracker', js: true do
   end
 
   scenario 'user can search by fuzzy paper title' do
-    make_matchable_paper(title: 'paper about dogs')
+    FactoryGirl.create(:paper, :completed, journal: journal, title: 'paper about dogs')
     login_as(user, scope: :user)
     visit '/paper_tracker'
 
@@ -61,7 +66,7 @@ feature 'Paper Tracker', js: true do
   end
 
   scenario 'user searches that shouldnt match, dont have results' do
-    make_matchable_paper(title: 'paper about dogs')
+    FactoryGirl.create(:paper, :completed, journal: journal, title: 'paper about dogs')
     login_as(user, scope: :user)
     visit '/paper_tracker'
     fill_in('query-input', with: 'unfindable wordage')
@@ -70,7 +75,7 @@ feature 'Paper Tracker', js: true do
   end
 
   scenario 'user can search by doi' do
-    make_matchable_paper(doi: 'journal/foo.12345')
+    FactoryGirl.create(:paper, :completed, journal: journal, doi: 'journal/foo.12345')
     login_as(user, scope: :user)
     visit '/paper_tracker'
     fill_in('query-input', with: '12345')
@@ -79,7 +84,7 @@ feature 'Paper Tracker', js: true do
   end
 
   scenario 'user can trigger search via enter button' do
-    make_matchable_paper(title: 'paper about dogs')
+    FactoryGirl.create(:paper, :completed, journal: journal, title: 'paper about dogs')
     login_as(user, scope: :user)
     visit '/paper_tracker'
     fill_in('query-input', with: :dog) # fuzzy
@@ -89,8 +94,8 @@ feature 'Paper Tracker', js: true do
 
   scenario 'user can sort results by field asc/desc' do
     rows = '.paper-tracker-table tbody tr'
-    make_matchable_paper(title: 'AAA')
-    make_matchable_paper(title: 'BBB')
+    FactoryGirl.create(:paper, :completed, journal: journal, title: 'AAA')
+    FactoryGirl.create(:paper, :completed, journal: journal, title: 'BBB')
     login_as(user, scope: :user)
     visit '/paper_tracker'
 
@@ -110,13 +115,5 @@ feature 'Paper Tracker', js: true do
     find('tr', text: 'AAA') # built-in waiting - #all doesn't wait
     expect(all(rows)[0].text).to have_content('BBB')
     expect(all(rows)[1].text).to have_content('AAA')
-
-    # next dev might want to check the arrows here if ya care enough
-  end
-
-  def make_matchable_paper(attrs = {})
-    paper = FactoryGirl.create(:paper, :with_integration_journal, :submitted, attrs)
-    assign_journal_role(paper.journal, user, :admin)
-    paper
   end
 end

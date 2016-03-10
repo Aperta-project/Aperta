@@ -7,7 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Figures display in the manuscript
 
 ### Changed
--
+- Institution field will search as you type
 
 ### Deprecated
 -

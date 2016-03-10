@@ -10,8 +10,25 @@ describe Paper::DataExtracted::NotifyUser do
   let(:upload_task) do
     FactoryGirl.create(:upload_manuscript_task, paper: paper)
   end
-  let(:successful_response) { IhatJobResponse.new(state: 'completed', options: { metadata: { paper_id: upload_task.paper.id } }) }
-  let(:errored_response) { IhatJobResponse.new(state: 'errored', options: { metadata: { paper_id: upload_task.paper.id } }) }
+  let(:user) { paper.creator }
+  let(:successful_response) do
+    IhatJobResponse.new(state: 'completed',
+                        options: {
+                          metadata: {
+                            paper_id: upload_task.paper.id,
+                            user_id: user.id
+                          }
+                        })
+  end
+  let(:errored_response) do
+    IhatJobResponse.new(state: 'errored',
+                        options: {
+                          metadata: {
+                            paper_id: upload_task.paper.id,
+                            user_id: user.id
+                          }
+                        })
+  end
 
   it 'sends a message on successful upload' do
     expect(pusher_channel).to receive_push(payload: hash_including(:message, messageType: 'success'), down: 'user', on: 'flashMessage')

@@ -206,10 +206,17 @@ describe Activity do
   end
 
   describe '#collaborator_added!' do
-    subject(:activity) { Activity.collaborator_added!(collaboration, user: user) }
-    let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let!(:collaboration) { paper.add_collaboration(collaborator) }
-    let!(:collaborator) { FactoryGirl.create(:user) }
+    subject(:activity) do
+      Activity.collaborator_added!(collaboration, user: user)
+    end
+    let!(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let!(:collaboration) do
+       FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        user: FactoryGirl.build_stubbed(:user)
+      )
+    end
 
     it do
       is_expected.to have_attributes(
@@ -223,10 +230,17 @@ describe Activity do
   end
 
   describe '#collaborator_removed!' do
-    subject(:activity) { Activity.collaborator_removed!(collaboration, user: user) }
-    let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let!(:collaboration) { paper.add_collaboration(collaborator) }
-    let!(:collaborator) { FactoryGirl.create(:user) }
+    subject(:activity) do
+      Activity.collaborator_removed!(collaboration, user: user)
+    end
+    let!(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let!(:collaboration) do
+       FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        user: FactoryGirl.build_stubbed(:user)
+      )
+    end
 
     it do
       is_expected.to have_attributes(

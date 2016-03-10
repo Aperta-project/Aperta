@@ -8,13 +8,13 @@ class Activity < ActiveRecord::Base
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
   end
 
-  def self.assignment_created!(paper_role, user:)
+  def self.assignment_created!(assignment, user:)
     create(
       feed_name: "workflow",
       activity_key: "assignment.created",
-      subject: paper_role.paper,
+      subject: assignment.assigned_to,
       user: user,
-      message: "#{paper_role.user.full_name} was added as #{paper_role.description}"
+      message: "#{assignment.user.full_name} was added as #{assignment.role.name}"
     )
   end
 

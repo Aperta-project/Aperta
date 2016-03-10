@@ -1,164 +1,227 @@
 require 'rails_helper'
 
 describe AssignmentsController, type: :controller do
-  let(:admin) { create :user, :site_admin }
-  let(:journal) { FactoryGirl.create(:journal_with_roles_and_permissions) }
+  let(:user) { FactoryGirl.create :user }
+  let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let!(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
-  before do
-    sign_in(admin)
-  end
-
-  describe "GET 'index'" do
-    before do
-      @paper_role = PaperRole.create! old_role: old_role.name, user: admin, paper: paper
+  describe '#index' do
+    subject(:do_request) do
+      get :index, {
+        format: 'json',
+        paper_id: paper.to_param
+      }
     end
 
-    context "when the paper id is provided" do
-      expect_policy_enforcement
+    let(:paper_assignments) do
+      [
+        FactoryGirl.create(:assignment, assigned_to: paper),
+        FactoryGirl.create(:assignment, assigned_to: paper)
+      ]
+    end
 
-      it "returns all of the paper old_roles for the paper" do
-        get :index, paper_id: paper.id
-        expect(res_body["assignments"]).to include({"id" => @paper_role.id,
-                                                                     "created_at" => kind_of(String),
-                                                                     "old_role" => old_role.name,
-                                                                     "paper_id" => paper.id,
-                                                                     "user_id" => admin.id})
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+
+        allow(user).to receive(:can?)
+          .with(:assign_roles, paper)
+          .and_return true
+
+        allow(paper).to receive(:assignments)
+          .and_return paper_assignments
+      end
+
+      it { responds_with(200) }
+
+      it 'returns users who are eligible to be assigned to the provided role' do
+        do_request
+        expect(res_body['assignments'].count).to eq(paper_assignments.length)
+        expect(res_body['assignments'][0]['id']).to \
+          eq(paper_assignments.first.id)
       end
     end
 
-    context "when the paper_id isn't provided" do
-      it "returns 404" do
-        get :index
-        expect(response.status).to eq(404)
+    context 'when the user does not have access' do
+      before do
+        allow(user).to receive(:can?)
+          .with(:assign_roles, paper)
+          .and_return false
       end
+
+      it { responds_with(403) }
     end
   end
 
   describe "POST 'create'" do
-    subject(:do_request) { post :create, 'assignment' => assignment_attributes }
-
-    let(:assignment_attributes) do
-      {
-        'old_role' => old_role.name,
+    subject(:do_request) do
+      post :create,
+        format: 'json',
+        assignment: {
+        'role_id' => role.id,
         'user_id' => assignee.id,
         'paper_id' => paper.id
       }
     end
-
+    let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let!(:old_role) do
-      OldRole.where(name: 'Custom Role', journal: journal).first_or_create!
-    end
 
-    before do
-      Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: journal)
-      Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: journal)
-    end
+    it_behaves_like 'an unauthenticated json request'
 
-    expect_policy_enforcement
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
 
-    context 'and the param old_role is Admin' do
-      let!(:old_role) { OldRole.where(name: 'Admin').first_or_create! }
+        allow(user).to receive(:can?)
+          .with(:assign_roles, paper)
+          .and_return true
+      end
 
-      it 'creates an Role.staff_admin assignment' do
-        expect { do_request }.to change(assignee.assignments, :count).by(1)
-        expect(assignee.assignments.last).to eq \
-          Assignment.where(
-            user: assignee,
-            role: journal.staff_admin_role,
-            assigned_to: paper
-          ).first
+      it { responds_with(200) }
+
+      it 'assigns the user to the role' do
+        expect do
+          do_request
+        end.to change {
+          assignee.assignments
+            .where(role: role, assigned_to: paper)
+            .count
+        }.by 1
+      end
+
+      it "creates an activity" do
+        activity = {
+          subject: paper,
+          message: "#{assignee.full_name} was added as #{role.name.capitalize}"
+        }
+        expect(Activity).to receive(:create).with(hash_including(activity))
+        do_request
+      end
+
+      it 'responds with the newly created assignment' do
+        do_request
+        attrs = res_body['assignment'].slice(
+          'id',
+          'assigned_to_id',
+          'assigned_to_type',
+          'role_id'
+        )
+        expect(attrs).to eq(
+          'id' => assignee.assignments.last.id,
+          'assigned_to_id' => paper.id,
+          'assigned_to_type' => paper.class.name,
+          'role_id' => role.id
+        )
+      end
+
+      context <<-DESCRIPTION do
+        and the role_id does not belong to the paper's journal (which
+        would happen if someone tried to maliciously assign a user a role
+        on another journal)
+      DESCRIPTION
+        before do
+          role.update(journal_id: 999)
+        end
+
+        it { responds_with(404) }
       end
     end
 
-    context 'and the param old_role is Editor' do
-      let!(:old_role) { OldRole.where(name: 'Editor').first_or_create! }
-
-      it 'creates an Role.handling_editor assignment' do
-        expect { do_request }.to change(assignee.assignments, :count).by(1)
-        expect(assignee.assignments.last).to eq \
-          Assignment.where(
-            user: assignee,
-            role: journal.handling_editor_role,
-            assigned_to: paper
-          ).first
+    context 'when the user does not have access' do
+      before do
+        allow(user).to receive(:can?)
+          .with(:assign_roles, paper)
+          .and_return false
       end
-    end
 
-    it "creates an assignment between a given old_role and the user for the paper" do
-      do_request
-      expect(res_body["assignment"]).to include(assignment_attributes)
-    end
-
-    it "creates an activity" do
-      activity = {
-        subject: paper,
-        message: "#{assignee.full_name} was added as #{old_role.name.capitalize}"
-      }
-      expect(Activity).to receive(:create).with(hash_including(activity))
-      do_request
+      it { responds_with(403) }
     end
   end
 
   describe "DELETE 'destroy'" do
-    subject(:do_request) { delete :destroy, id: paper_role.id }
-
-    let(:assignee) { FactoryGirl.create :user }
-    let!(:old_role) do
-      OldRole.where(name: old_role_name, journal: journal).first_or_create!
+    subject(:do_request) do
+      delete :destroy,
+        format: 'json',
+        paper_id: paper.to_param,
+        id: assignment.to_param
     end
-    let!(:old_role_name) { 'Custom Role' }
-    let!(:paper_role) do
-      PaperRole.create!(old_role: old_role_name, user: assignee, paper: paper)
-    end
-
-    expect_policy_enforcement
-
-    context 'and the paper_role has an staff admin assignment' do
-      let!(:old_role_name) { 'Admin' }
-      let!(:assignment) do
-        Assignment.where(
-          user: assignee,
-          role: journal.staff_admin_role,
-          assigned_to: paper
-        ).first_or_create!
-      end
-
-      it 'deletes an Role.staff_admin assignment' do
-        expect { do_request }.to change(assignee.assignments, :count).by(-1)
-        expect { assignment.reload }.to \
-          raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    context 'and the paper_role has an handling editor assignment' do
-      let!(:old_role_name) { 'Editor' }
-      let!(:assignment) do
-        Assignment.where(
-          user: assignee,
-          role: journal.handling_editor_role,
-          assigned_to: paper
-        ).first_or_create!
-      end
-
-      it 'deletes an Role.staff_admin assignment' do
-        expect { do_request }.to change(assignee.assignments, :count).by(-1)
-        expect { assignment.reload }.to \
-          raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    it 'destroys an the PaperRole assignment (old role)' do
-      do_request
-      expect(res_body['assignment']).to include(
-        'id' => paper_role.id,
-        'old_role' => old_role.name,
-        'paper_id' => paper.id,
-        'user_id' => assignee.id
+    let!(:assignment) do
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: paper,
+        role: role,
+        user: assignee
       )
+    end
+    let(:role) { FactoryGirl.create(:role, journal: journal) }
+    let(:assignee) { FactoryGirl.create(:user) }
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+
+        allow(user).to receive(:can?)
+          .with(:assign_roles, paper)
+          .and_return true
+      end
+
+      it { responds_with(200) }
+
+      it 'destroys the assignment' do
+        expect do
+          do_request
+        end.to change {
+          assignee.assignments
+            .where(role: role, assigned_to: paper)
+            .count
+        }.by -1
+
+        expect do
+          assignment.reload
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'responds with the deleted assignment' do
+        do_request
+        attrs = res_body['assignment'].slice(
+          'id',
+          'assigned_to_id',
+          'assigned_to_type',
+          'role_id'
+        )
+        expect(attrs).to eq(
+          'id' => assignment.id,
+          'assigned_to_id' => paper.id,
+          'assigned_to_type' => paper.class.name,
+          'role_id' => role.id
+        )
+      end
+
+      context <<-DESCRIPTION do
+        and the assignment does not belong to paper's journal (which could
+        happen if someone tried to maliciously destroy an assignment on
+        a different journal)
+      DESCRIPTION
+        before do
+          role.update(journal_id: 999)
+        end
+
+        it { responds_with(404) }
+      end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        allow(user).to receive(:can?)
+          .with(:assign_roles, paper)
+          .and_return false
+      end
+
+      it { responds_with(403) }
     end
   end
 end

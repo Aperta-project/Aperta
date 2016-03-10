@@ -7,16 +7,24 @@ describe Activity do
   let(:user){ FactoryGirl.build(:user) }
 
   describe "#assignment_created!" do
-    subject(:activity) { Activity.assignment_created!(paper_role, user: user) }
-    let(:paper_role){ FactoryGirl.build(:paper_role, :editor) }
+    subject(:activity) { Activity.assignment_created!(assignment, user: user) }
+    let(:assignment) do
+       FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        role: role,
+        user: user)
+    end
+    let(:paper){ FactoryGirl.build_stubbed(:paper) }
+    let(:role) { FactoryGirl.build_stubbed(:role, name: "Super") }
 
     it {
       is_expected.to have_attributes(
         feed_name: "workflow",
         activity_key: "assignment.created",
-        subject: paper_role.paper,
+        subject: assignment.assigned_to,
         user: user,
-        message: "#{paper_role.user.full_name} was added as Editor"
+        message: "#{user.full_name} was added as #{role.name}"
     )}
   end
 

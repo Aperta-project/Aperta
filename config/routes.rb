@@ -98,6 +98,7 @@ Tahi::Application.routes.draw do
       resources :phases, only: :index
       resources :decisions, only: :index
       resources :discussion_topics, only: :index
+      resources :task_types, only: :index, controller: 'paper_task_types'
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create

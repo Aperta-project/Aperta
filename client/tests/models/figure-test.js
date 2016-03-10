@@ -16,7 +16,8 @@ moduleForModel('figure', 'Unit | Model | figure', {
     'model:supporting-information-file',
     'model:versioned-text',
     'model:snapshot',
-    'model:task'
+    'model:task',
+    'model:paper-task-type'
   ]
 });
 

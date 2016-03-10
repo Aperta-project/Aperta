@@ -12,9 +12,16 @@ class PaperSerializer < LitePaperSerializer
            embed: :ids,
            include: true,
            serializer: AssignmentSerializer
+  has_many :paper_task_types,
+           embed: :ids,
+           include: false
 
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
+
+  def paper_task_types
+    JournalTaskType.where(journal_id: object.journal.id)
+  end
 
   def links
     {
@@ -25,7 +32,9 @@ class PaperSerializer < LitePaperSerializer
       versioned_texts: versioned_texts_paper_path(object),
       discussion_topics: paper_discussion_topics_path(object),
       decisions: paper_decisions_path(object),
-      snapshots: snapshots_paper_path(object)
+      snapshots: snapshots_paper_path(object),
+      paper_task_types: paper_task_types_path(object)
+
     }
   end
 end

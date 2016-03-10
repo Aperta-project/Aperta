@@ -570,6 +570,645 @@ activities:
     - '7'
     - '2015-11-03 23:02:07.359623'
     - '2015-11-03 23:02:07.359623'
+  - - '63'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Supporting Info card was marked as complete
+    - '3'
+    - '2016-03-09 20:30:37.67317'
+    - '2016-03-09 20:30:37.67317'
+  - - '64'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '3'
+    - '2016-03-09 20:31:42.448815'
+    - '2016-03-09 20:31:42.448815'
+  - - '65'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Authors card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:31:44.537131'
+    - '2016-03-09 20:31:44.537131'
+  - - '66'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '3'
+    - '2016-03-09 20:31:45.496585'
+    - '2016-03-09 20:31:45.496585'
+  - - '67'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:31:54.146744'
+    - '2016-03-09 20:31:54.146744'
+  - - '68'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2016-03-09 20:32:02.588972'
+    - '2016-03-09 20:32:02.588972'
+  - - '69'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Competing Interests card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:32:08.021381'
+    - '2016-03-09 20:32:08.021381'
+  - - '70'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Competing Interests card was marked as complete
+    - '3'
+    - '2016-03-09 20:32:11.231495'
+    - '2016-03-09 20:32:11.231495'
+  - - '71'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Cover Letter card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:32:17.781869'
+    - '2016-03-09 20:32:17.781869'
+  - - '72'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Cover Letter card was marked as complete
+    - '3'
+    - '2016-03-09 20:32:21.78029'
+    - '2016-03-09 20:32:21.78029'
+  - - '73'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Data Availability card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:32:28.059425'
+    - '2016-03-09 20:32:28.059425'
+  - - '74'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Data Availability card was marked as complete
+    - '3'
+    - '2016-03-09 20:32:32.556646'
+    - '2016-03-09 20:32:32.556646'
+  - - '75'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Ethics Statement card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:32:40.828844'
+    - '2016-03-09 20:32:40.828844'
+  - - '76'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Ethics Statement card was marked as complete
+    - '3'
+    - '2016-03-09 20:32:48.985827'
+    - '2016-03-09 20:32:48.985827'
+  - - '77'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Financial Disclosure card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:33:09.683774'
+    - '2016-03-09 20:33:09.683774'
+  - - '78'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Financial Disclosure card was marked as complete
+    - '3'
+    - '2016-03-09 20:33:10.996342'
+    - '2016-03-09 20:33:10.996342'
+  - - '79'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Additional Information card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:33:33.408491'
+    - '2016-03-09 20:33:33.408491'
+  - - '80'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Additional Information card was marked as complete
+    - '3'
+    - '2016-03-09 20:33:37.117638'
+    - '2016-03-09 20:33:37.117638'
+  - - '81'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Reporting Guidelines card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:33:44.833191'
+    - '2016-03-09 20:33:44.833191'
+  - - '82'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Reporting Guidelines card was marked as complete
+    - '3'
+    - '2016-03-09 20:33:46.925485'
+    - '2016-03-09 20:33:46.925485'
+  - - '83'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Reviewer Candidates card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:33:55.528898'
+    - '2016-03-09 20:33:55.528898'
+  - - '84'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Reviewer Candidates card was marked as complete
+    - '3'
+    - '2016-03-09 20:33:58.058158'
+    - '2016-03-09 20:33:58.058158'
+  - - '85'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Supporting Info card was marked as complete
+    - '3'
+    - '2016-03-09 20:34:15.346099'
+    - '2016-03-09 20:34:15.346099'
+  - - '86'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Supporting Info card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:34:17.126444'
+    - '2016-03-09 20:34:17.126444'
+  - - '87'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2016-03-09 20:36:41.916659'
+    - '2016-03-09 20:36:41.916659'
+  - - '88'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:36:42.56197'
+    - '2016-03-09 20:36:42.56197'
+  - - '89'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Competing Interests card was marked as complete
+    - '3'
+    - '2016-03-09 20:36:49.244295'
+    - '2016-03-09 20:36:49.244295'
+  - - '90'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Competing Interests card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:36:49.897935'
+    - '2016-03-09 20:36:49.897935'
+  - - '91'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:01.732461'
+    - '2016-03-09 20:37:01.732461'
+  - - '92'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:02.395939'
+    - '2016-03-09 20:37:02.395939'
+  - - '93'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Competing Interests card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:06.166805'
+    - '2016-03-09 20:37:06.166805'
+  - - '94'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Competing Interests card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:06.742'
+    - '2016-03-09 20:37:06.742'
+  - - '95'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Cover Letter card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:10.386124'
+    - '2016-03-09 20:37:10.386124'
+  - - '96'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Cover Letter card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:10.871934'
+    - '2016-03-09 20:37:10.871934'
+  - - '97'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Data Availability card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:18.380766'
+    - '2016-03-09 20:37:18.380766'
+  - - '98'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Data Availability card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:18.851522'
+    - '2016-03-09 20:37:18.851522'
+  - - '99'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Ethics Statement card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:22.588188'
+    - '2016-03-09 20:37:22.588188'
+  - - '100'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Ethics Statement card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:23.043767'
+    - '2016-03-09 20:37:23.043767'
+  - - '101'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Figures card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:27.846938'
+    - '2016-03-09 20:37:27.846938'
+  - - '102'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Figures card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:28.359474'
+    - '2016-03-09 20:37:28.359474'
+  - - '103'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Financial Disclosure card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:34.342631'
+    - '2016-03-09 20:37:34.342631'
+  - - '104'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Financial Disclosure card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:34.894781'
+    - '2016-03-09 20:37:34.894781'
+  - - '105'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Additional Information card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:40.672292'
+    - '2016-03-09 20:37:40.672292'
+  - - '106'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Additional Information card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:41.264941'
+    - '2016-03-09 20:37:41.264941'
+  - - '107'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Reporting Guidelines card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:50.271672'
+    - '2016-03-09 20:37:50.271672'
+  - - '108'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Reporting Guidelines card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:50.777081'
+    - '2016-03-09 20:37:50.777081'
+  - - '109'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Reviewer Candidates card was marked as complete
+    - '3'
+    - '2016-03-09 20:37:56.464552'
+    - '2016-03-09 20:37:56.464552'
+  - - '110'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Reviewer Candidates card was marked as incomplete
+    - '3'
+    - '2016-03-09 20:37:57.26133'
+    - '2016-03-09 20:37:57.26133'
+  - - '111'
+    - workflow
+    - '4'
+    - Paper
+    - paper.editable_toggled
+    - Editability was set to true
+    - '1'
+    - '2016-03-09 20:39:17.23395'
+    - '2016-03-09 20:39:17.23395'
+  - - '112'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Supporting Info card was marked as complete
+    - '1'
+    - '2016-03-09 20:39:26.174875'
+    - '2016-03-09 20:39:26.174875'
+  - - '113'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Authors card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:47:04.566754'
+    - '2016-03-09 20:47:04.566754'
+  - - '114'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '1'
+    - '2016-03-09 20:47:06.559648'
+    - '2016-03-09 20:47:06.559648'
+  - - '115'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Authors card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:47:08.508134'
+    - '2016-03-09 20:47:08.508134'
+  - - '116'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '1'
+    - '2016-03-09 20:47:09.050108'
+    - '2016-03-09 20:47:09.050108'
+  - - '117'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:47:19.60612'
+    - '2016-03-09 20:47:19.60612'
+  - - '118'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '1'
+    - '2016-03-09 20:47:24.352373'
+    - '2016-03-09 20:47:24.352373'
+  - - '119'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Data Availability card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:47:43.399208'
+    - '2016-03-09 20:47:43.399208'
+  - - '120'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Data Availability card was marked as complete
+    - '1'
+    - '2016-03-09 20:47:43.898617'
+    - '2016-03-09 20:47:43.898617'
+  - - '121'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Ethics Statement card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:47:49.362366'
+    - '2016-03-09 20:47:49.362366'
+  - - '122'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Ethics Statement card was marked as complete
+    - '1'
+    - '2016-03-09 20:47:49.810142'
+    - '2016-03-09 20:47:49.810142'
+  - - '123'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Financial Disclosure card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:47:59.3797'
+    - '2016-03-09 20:47:59.3797'
+  - - '124'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Financial Disclosure card was marked as complete
+    - '1'
+    - '2016-03-09 20:47:59.816059'
+    - '2016-03-09 20:47:59.816059'
+  - - '125'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Figures card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:48:01.45909'
+    - '2016-03-09 20:48:01.45909'
+  - - '126'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Figures card was marked as complete
+    - '1'
+    - '2016-03-09 20:48:01.92022'
+    - '2016-03-09 20:48:01.92022'
+  - - '127'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Additional Information card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:48:06.237272'
+    - '2016-03-09 20:48:06.237272'
+  - - '128'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Additional Information card was marked as complete
+    - '1'
+    - '2016-03-09 20:48:06.703743'
+    - '2016-03-09 20:48:06.703743'
+  - - '129'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Reporting Guidelines card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:48:10.668806'
+    - '2016-03-09 20:48:10.668806'
+  - - '130'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Reporting Guidelines card was marked as complete
+    - '1'
+    - '2016-03-09 20:48:11.097733'
+    - '2016-03-09 20:48:11.097733'
+  - - '131'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Reviewer Candidates card was marked as incomplete
+    - '1'
+    - '2016-03-09 20:48:14.391807'
+    - '2016-03-09 20:48:14.391807'
+  - - '132'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Reviewer Candidates card was marked as complete
+    - '1'
+    - '2016-03-09 20:48:14.914997'
+    - '2016-03-09 20:48:14.914997'
+  - - '133'
+    - workflow
+    - '4'
+    - Paper
+    - paper.editable_toggled
+    - Editability was set to false
+    - '1'
+    - '2016-03-09 20:48:19.680565'
+    - '2016-03-09 20:48:19.680565'
 
 ---
 affiliations:
@@ -1709,6 +2348,13 @@ assignments:
     - Paper
     - '2016-02-09 15:01:48.877101'
     - '2016-03-04 17:46:12.23706'
+  - - '143'
+    - '4'
+    - '15'
+    - '4'
+    - Paper
+    - '2016-03-09 20:51:45.688499'
+    - '2016-03-09 20:51:45.688499'
 
 ---
 authors:
@@ -1764,7 +2410,7 @@ authors:
     - Arthur
     - Author
     - '2015-10-30 19:43:28.777757'
-    - '2015-10-30 19:53:18.523309'
+    - '2016-03-09 20:34:46.326941'
     - '4'
     - '2'
     - '23'
@@ -1776,7 +2422,7 @@ authors:
     - University of Michigan
     - 
     - 
-    - 
+    - AA
     - 
     - 
     - 
@@ -1787,7 +2433,7 @@ authors:
     - Jane
     - Janesford
     - '2015-10-30 19:54:25.247759'
-    - '2015-10-30 19:54:28.89091'
+    - '2016-03-09 20:35:02.775085'
     - '5'
     - '2'
     - '23'
@@ -1799,7 +2445,7 @@ authors:
     - Northwestern Oklahoma State University
     - 
     - 
-    - 
+    - JJ
     - 
     - 
     - 
@@ -1810,7 +2456,7 @@ authors:
     - Arthur
     - Author
     - '2015-11-02 14:04:03.280645'
-    - '2015-11-02 14:14:20.64132'
+    - '2016-03-09 20:31:27.855898'
     - '6'
     - '3'
     - '44'
@@ -1822,7 +2468,7 @@ authors:
     - Adler Graduate School
     - 
     - 
-    - 
+    - AA
     - 
     - 
     - 
@@ -1833,7 +2479,7 @@ authors:
     - Barb
     - Jones
     - '2015-11-02 14:15:05.820082'
-    - '2015-11-02 14:15:05.820082'
+    - '2016-03-09 20:31:05.241197'
     - '1'
     - '3'
     - '44'
@@ -1845,7 +2491,7 @@ authors:
     - Adler Graduate School
     - 
     - 
-    - 
+    - BJ
     - 
     - 
     - 
@@ -1856,7 +2502,7 @@ authors:
     - Arthur
     - Author
     - '2015-11-02 14:46:24.189114'
-    - '2015-11-02 15:09:33.10379'
+    - '2016-03-09 20:46:50.824771'
     - '7'
     - '4'
     - '65'
@@ -1868,7 +2514,7 @@ authors:
     - Adelphi University
     - 
     - 
-    - 
+    - AA
     - 
     - 
     - 
@@ -1937,7 +2583,7 @@ authors:
     - 
     - 
     - 
-    - 'AA'
+    - AA
     - 
     - 
     - 
@@ -2543,61 +3189,6 @@ nested_question_answers:
     - 
     - 
     - '2'
-  - - '17'
-    - '105'
-    - '2'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:53:17.606606'
-    - '2016-01-26 17:38:10.627995'
-    - 
-    - 
-    - '2'
-  - - '18'
-    - '106'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.457224'
-    - '2016-01-26 17:38:10.634424'
-    - 
-    - 
-    - '2'
-  - - '19'
-    - '107'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.563501'
-    - '2016-01-26 17:38:10.640788'
-    - 
-    - 
-    - '2'
-  - - '20'
-    - '109'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.65219'
-    - '2016-01-26 17:38:10.646571'
-    - 
-    - 
-    - '2'
-  - - '21'
-    - '108'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.738713'
-    - '2016-01-26 17:38:10.652581'
-    - 
-    - 
-    - '2'
   - - '22'
     - '39'
     - '26'
@@ -3005,61 +3596,6 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:14:19.024204'
     - '2016-01-26 17:38:10.948907'
-    - 
-    - 
-    - '3'
-  - - '62'
-    - '105'
-    - '4'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:14:19.719167'
-    - '2016-01-26 17:38:10.954527'
-    - 
-    - 
-    - '3'
-  - - '63'
-    - '106'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.157802'
-    - '2016-01-26 17:38:10.960128'
-    - 
-    - 
-    - '3'
-  - - '64'
-    - '107'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.242944'
-    - '2016-01-26 17:38:10.965921'
-    - 
-    - 
-    - '3'
-  - - '65'
-    - '109'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.329195'
-    - '2016-01-26 17:38:10.971454'
-    - 
-    - 
-    - '3'
-  - - '66'
-    - '108'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.41443'
-    - '2016-01-26 17:38:10.976904'
     - 
     - 
     - '3'
@@ -3516,17 +4052,6 @@ nested_question_answers:
     - 
     - 
     - '4'
-  - - '107'
-    - '105'
-    - '6'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 15:09:32.31378'
-    - '2016-01-26 17:38:11.20068'
-    - 
-    - 
-    - '4'
   - - '108'
     - '36'
     - '70'
@@ -3811,6 +4336,281 @@ nested_question_answers:
     - 
     - 
     - '10'
+  - - '134'
+    - '195'
+    - '5'
+    - Author
+    - t
+    - boolean
+    - '2016-03-09 20:31:00.550424'
+    - '2016-03-09 20:31:00.550424'
+    - 
+    - 
+    - '3'
+  - - '135'
+    - '199'
+    - '5'
+    - Author
+    - f
+    - boolean
+    - '2016-03-09 20:31:03.925631'
+    - '2016-03-09 20:31:03.925631'
+    - 
+    - 
+    - '3'
+  - - '136'
+    - '197'
+    - '4'
+    - Author
+    - t
+    - boolean
+    - '2016-03-09 20:31:25.100128'
+    - '2016-03-09 20:31:25.100128'
+    - 
+    - 
+    - '3'
+  - - '137'
+    - '199'
+    - '4'
+    - Author
+    - f
+    - boolean
+    - '2016-03-09 20:31:27.126967'
+    - '2016-03-09 20:31:27.126967'
+    - 
+    - 
+    - '3'
+  - - '138'
+    - '200'
+    - '44'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:31:34.496158'
+    - '2016-03-09 20:31:34.496158'
+    - 
+    - 
+    - '3'
+  - - '139'
+    - '201'
+    - '44'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:31:36.780092'
+    - '2016-03-09 20:31:36.780092'
+    - 
+    - 
+    - '3'
+  - - '140'
+    - '202'
+    - '44'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:31:38.954101'
+    - '2016-03-09 20:31:38.954101'
+    - 
+    - 
+    - '3'
+  - - '141'
+    - '179'
+    - '50'
+    - Task
+    - f
+    - boolean
+    - '2016-03-09 20:32:46.209825'
+    - '2016-03-09 20:32:46.209825'
+    - 
+    - 
+    - '3'
+  - - '142'
+    - '18'
+    - '53'
+    - Task
+    - ''
+    - text
+    - '2016-03-09 20:33:33.671086'
+    - '2016-03-09 20:33:33.671086'
+    - 
+    - 
+    - '3'
+  - - '143'
+    - '200'
+    - '23'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:34:24.583744'
+    - '2016-03-09 20:34:24.583744'
+    - 
+    - 
+    - '2'
+  - - '144'
+    - '201'
+    - '23'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:34:25.418234'
+    - '2016-03-09 20:34:25.418234'
+    - 
+    - 
+    - '2'
+  - - '145'
+    - '202'
+    - '23'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:34:26.179851'
+    - '2016-03-09 20:34:26.179851'
+    - 
+    - 
+    - '2'
+  - - '146'
+    - '196'
+    - '2'
+    - Author
+    - t
+    - boolean
+    - '2016-03-09 20:34:42.534911'
+    - '2016-03-09 20:34:42.534911'
+    - 
+    - 
+    - '2'
+  - - '147'
+    - '199'
+    - '2'
+    - Author
+    - f
+    - boolean
+    - '2016-03-09 20:34:45.497696'
+    - '2016-03-09 20:34:45.497696'
+    - 
+    - 
+    - '2'
+  - - '148'
+    - '194'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2016-03-09 20:34:59.082862'
+    - '2016-03-09 20:34:59.082862'
+    - 
+    - 
+    - '2'
+  - - '149'
+    - '199'
+    - '3'
+    - Author
+    - f
+    - boolean
+    - '2016-03-09 20:35:02.392199'
+    - '2016-03-09 20:35:02.392199'
+    - 
+    - 
+    - '2'
+  - - '150'
+    - '18'
+    - '32'
+    - Task
+    - ''
+    - text
+    - '2016-03-09 20:37:38.66101'
+    - '2016-03-09 20:37:38.66101'
+    - 
+    - 
+    - '2'
+  - - '151'
+    - '21'
+    - '32'
+    - Task
+    - ''
+    - text
+    - '2016-03-09 20:37:38.915849'
+    - '2016-03-09 20:37:38.915849'
+    - 
+    - 
+    - '2'
+  - - '152'
+    - '195'
+    - '6'
+    - Author
+    - t
+    - boolean
+    - '2016-03-09 20:39:43.403556'
+    - '2016-03-09 20:39:43.403556'
+    - 
+    - 
+    - '4'
+  - - '153'
+    - '199'
+    - '6'
+    - Author
+    - f
+    - boolean
+    - '2016-03-09 20:39:45.565082'
+    - '2016-03-09 20:39:45.565082'
+    - 
+    - 
+    - '4'
+  - - '154'
+    - '200'
+    - '65'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:39:49.511382'
+    - '2016-03-09 20:39:49.511382'
+    - 
+    - 
+    - '4'
+  - - '155'
+    - '201'
+    - '65'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:39:50.136646'
+    - '2016-03-09 20:39:50.136646'
+    - 
+    - 
+    - '4'
+  - - '156'
+    - '202'
+    - '65'
+    - Task
+    - t
+    - boolean
+    - '2016-03-09 20:39:50.730056'
+    - '2016-03-09 20:39:50.730056'
+    - 
+    - 
+    - '4'
+  - - '157'
+    - '18'
+    - '74'
+    - Task
+    - ''
+    - text
+    - '2016-03-09 20:48:06.348225'
+    - '2016-03-09 20:48:06.348225'
+    - 
+    - 
+    - '4'
+  - - '158'
+    - '21'
+    - '74'
+    - Task
+    - ''
+    - text
+    - '2016-03-09 20:48:06.463195'
+    - '2016-03-09 20:48:06.463195'
+    - 
+    - 
+    - '4'
 
 ---
 nested_questions:
@@ -4551,7 +5351,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-03-02 18:04:17.969663'
+    - '2016-03-09 20:28:22.924837'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -4632,7 +5432,7 @@ nested_questions:
     - PlosBilling::BillingTask
     - 
   - - '101'
-    - This person will be listed as the corresponding author on the published article
+    - This person should be identified as corresponding author on the published article
     - boolean
     - author--published_as_corresponding_author
     - 
@@ -4640,7 +5440,7 @@ nested_questions:
     - '144'
     - '1'
     - '2015-10-29 20:16:38.672785'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.363023'
     - Author
     - 
   - - '102'
@@ -4661,82 +5461,10 @@ nested_questions:
     - author--contributions
     - 
     - '147'
-    - '172'
+    - '188'
     - '3'
     - '2015-10-29 20:16:38.687781'
-    - '2016-01-15 18:04:22.865691'
-    - Author
-    - 
-  - - '105'
-    - Conceived and designed the experiments
-    - boolean
-    - author--contributions--conceived_and_designed_experiments
-    - '104'
-    - '160'
-    - '161'
-    - '1'
-    - '2015-10-29 20:16:38.691902'
-    - '2016-01-15 18:04:22.865691'
-    - Author
-    - 
-  - - '106'
-    - Performed the experiments
-    - boolean
-    - author--contributions--performed_the_experiments
-    - '104'
-    - '162'
-    - '163'
-    - '2'
-    - '2015-10-29 20:16:38.702202'
-    - '2016-01-15 18:04:22.865691'
-    - Author
-    - 
-  - - '107'
-    - Analyzed the data
-    - boolean
-    - author--contributions--analyzed_data
-    - '104'
-    - '164'
-    - '165'
-    - '3'
-    - '2015-10-29 20:16:38.712577'
-    - '2016-01-15 18:04:22.865691'
-    - Author
-    - 
-  - - '108'
-    - Contributed reagents/materials/analysis tools
-    - boolean
-    - author--contributions--contributed_tools
-    - '104'
-    - '166'
-    - '167'
-    - '4'
-    - '2015-10-29 20:16:38.722145'
-    - '2016-01-15 18:04:22.865691'
-    - Author
-    - 
-  - - '109'
-    - Contributed to the writing of the manuscript
-    - boolean
-    - author--contributions--contributed_writing
-    - '104'
-    - '168'
-    - '169'
-    - '5'
-    - '2015-10-29 20:16:38.732929'
-    - '2016-01-15 18:04:22.865691'
-    - Author
-    - 
-  - - '110'
-    - Other
-    - text
-    - author--contributions--other
-    - '104'
-    - '170'
-    - '171'
-    - '6'
-    - '2015-10-29 20:16:38.743536'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - Author
     - 
   - - '118'
@@ -4745,11 +5473,11 @@ nested_questions:
     - boolean
     - funder--had_influence
     - 
-    - '173'
-    - '176'
+    - '189'
+    - '192'
     - '1'
     - '2015-10-30 19:51:03.420015'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::Funder
     - 
   - - '119'
@@ -4758,11 +5486,11 @@ nested_questions:
     - text
     - funder--had_influence--role_description
     - '118'
-    - '174'
-    - '175'
+    - '190'
+    - '191'
     - '1'
     - '2015-10-30 19:51:03.424486'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::Funder
     - 
   - - '120'
@@ -4770,11 +5498,11 @@ nested_questions:
     - text
     - production_metadata--publication_date
     - 
-    - '177'
-    - '178'
+    - '193'
+    - '194'
     - '1'
     - '2015-10-30 19:51:03.462062'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '121'
@@ -4782,11 +5510,11 @@ nested_questions:
     - text
     - production_metadata--volume_number
     - 
-    - '179'
-    - '180'
+    - '195'
+    - '196'
     - '2'
     - '2015-10-30 19:51:03.466022'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '122'
@@ -4794,11 +5522,11 @@ nested_questions:
     - text
     - production_metadata--issue_number
     - 
-    - '181'
-    - '182'
+    - '197'
+    - '198'
     - '3'
     - '2015-10-30 19:51:03.469673'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '123'
@@ -4806,11 +5534,11 @@ nested_questions:
     - text
     - production_metadata--production_notes
     - 
-    - '183'
-    - '184'
+    - '199'
+    - '200'
     - '4'
     - '2015-10-30 19:51:03.473215'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '124'
@@ -4819,11 +5547,11 @@ nested_questions:
     - text
     - reviewer_report--competing_interests
     - 
-    - '185'
-    - '186'
+    - '201'
+    - '202'
     - '2'
     - '2015-10-30 19:51:03.496382'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '125'
@@ -4831,11 +5559,11 @@ nested_questions:
     - boolean
     - reviewer_report--support_conclusions
     - 
-    - '187'
-    - '190'
+    - '203'
+    - '206'
     - '3'
     - '2015-10-30 19:51:03.500418'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '126'
@@ -4843,11 +5571,11 @@ nested_questions:
     - text
     - reviewer_report--support_conclusions--explanation
     - '125'
-    - '188'
-    - '189'
+    - '204'
+    - '205'
     - '1'
     - '2015-10-30 19:51:03.502707'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '127'
@@ -4855,11 +5583,11 @@ nested_questions:
     - boolean
     - reviewer_report--statistical_analysis
     - 
-    - '191'
-    - '194'
+    - '207'
+    - '210'
     - '4'
     - '2015-10-30 19:51:03.511001'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '128'
@@ -4867,11 +5595,11 @@ nested_questions:
     - text
     - reviewer_report--statistical_analysis--explanation
     - '127'
-    - '192'
-    - '193'
+    - '208'
+    - '209'
     - '1'
     - '2015-10-30 19:51:03.513191'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '129'
@@ -4879,11 +5607,11 @@ nested_questions:
     - boolean
     - reviewer_report--standards
     - 
-    - '195'
-    - '198'
+    - '211'
+    - '214'
     - '5'
     - '2015-10-30 19:51:03.521073'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '130'
@@ -4891,11 +5619,11 @@ nested_questions:
     - text
     - reviewer_report--standards--explanation
     - '129'
-    - '196'
-    - '197'
+    - '212'
+    - '213'
     - '1'
     - '2015-10-30 19:51:03.523338'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '131'
@@ -4903,11 +5631,11 @@ nested_questions:
     - text
     - reviewer_report--additional_comments
     - 
-    - '199'
-    - '200'
+    - '215'
+    - '216'
     - '6'
     - '2015-10-30 19:51:03.531234'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '132'
@@ -4916,11 +5644,11 @@ nested_questions:
     - text
     - reviewer_report--identity
     - 
-    - '201'
-    - '202'
+    - '217'
+    - '218'
     - '7'
     - '2015-10-30 19:51:03.534949'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '133'
@@ -4928,11 +5656,11 @@ nested_questions:
     - boolean
     - taxon--zoological
     - 
-    - '203'
-    - '206'
+    - '219'
+    - '222'
     - '1'
     - '2015-10-30 19:51:03.541213'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::TaxonTask
     - 
   - - '134'
@@ -4940,11 +5668,11 @@ nested_questions:
     - boolean
     - taxon--zoological--complies
     - '133'
-    - '204'
-    - '205'
+    - '220'
+    - '221'
     - '1'
     - '2015-10-30 19:51:03.543667'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::TaxonTask
     - 
   - - '135'
@@ -4952,11 +5680,11 @@ nested_questions:
     - boolean
     - taxon--botanical
     - 
-    - '207'
-    - '210'
+    - '223'
+    - '226'
     - '2'
     - '2015-10-30 19:51:03.55182'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::TaxonTask
     - 
   - - '136'
@@ -4964,11 +5692,11 @@ nested_questions:
     - boolean
     - taxon--botanical--complies
     - '135'
-    - '208'
-    - '209'
+    - '224'
+    - '225'
     - '1'
     - '2015-10-30 19:51:03.554061'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::TaxonTask
     - 
   - - '137'
@@ -4976,11 +5704,11 @@ nested_questions:
     - boolean
     - reviewer_recommendations--recommend_or_oppose
     - 
-    - '211'
-    - '212'
+    - '227'
+    - '228'
     - '1'
     - '2015-11-02 13:38:26.272946'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '138'
@@ -4988,11 +5716,11 @@ nested_questions:
     - text
     - reviewer_recommendations--reason
     - 
-    - '213'
-    - '214'
+    - '229'
+    - '230'
     - '2'
     - '2015-11-02 13:38:26.280143'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '139'
@@ -5003,11 +5731,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--open_rejects
     - 
-    - '215'
-    - '216'
+    - '231'
+    - '232'
     - '1'
     - '2015-11-02 13:38:26.296091'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '140'
@@ -5016,11 +5744,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--human_subjects
     - 
-    - '217'
-    - '218'
+    - '233'
+    - '234'
     - '2'
     - '2015-11-02 13:38:26.300112'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '141'
@@ -5030,11 +5758,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--ethics_needed
     - 
-    - '219'
-    - '220'
+    - '235'
+    - '236'
     - '3'
     - '2015-11-02 13:38:26.30383'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '142'
@@ -5043,11 +5771,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_available
     - 
-    - '221'
-    - '222'
+    - '237'
+    - '238'
     - '4'
     - '2015-11-02 13:38:26.307755'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '143'
@@ -5057,11 +5785,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--supporting_information
     - 
-    - '223'
-    - '224'
+    - '239'
+    - '240'
     - '5'
     - '2015-11-02 13:38:26.311478'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '144'
@@ -5070,11 +5798,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--dryad_url
     - 
-    - '225'
-    - '226'
+    - '241'
+    - '242'
     - '6'
     - '2015-11-02 13:38:26.315087'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '145'
@@ -5083,11 +5811,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--financial_disclosure
     - 
-    - '227'
-    - '228'
+    - '243'
+    - '244'
     - '7'
     - '2015-11-02 13:38:26.319212'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
@@ -5096,11 +5824,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--tobacco
     - 
-    - '229'
-    - '230'
+    - '245'
+    - '246'
     - '8'
     - '2015-11-02 13:38:26.322791'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '147'
@@ -5108,11 +5836,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_legible
     - 
-    - '231'
-    - '232'
+    - '247'
+    - '248'
     - '9'
     - '2015-11-02 13:38:26.326519'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '148'
@@ -5121,11 +5849,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--cited
     - 
-    - '233'
-    - '234'
+    - '249'
+    - '250'
     - '10'
     - '2015-11-02 13:38:26.330182'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '149'
@@ -5134,11 +5862,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--cover_letter
     - 
-    - '235'
-    - '236'
+    - '251'
+    - '252'
     - '11'
     - '2015-11-02 13:38:26.333792'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '150'
@@ -5147,11 +5875,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--billing_inquiries
     - 
-    - '237'
-    - '238'
+    - '253'
+    - '254'
     - '12'
     - '2015-11-02 13:38:26.337417'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
@@ -5159,11 +5887,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--ethics_statement
     - 
-    - '239'
-    - '240'
+    - '255'
+    - '256'
     - '13'
     - '2015-11-02 13:38:26.340953'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
@@ -5174,11 +5902,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--open_rejects
     - 
-    - '241'
-    - '242'
+    - '257'
+    - '258'
     - '1'
     - '2015-11-02 13:38:26.346485'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '153'
@@ -5187,11 +5915,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--human_subjects
     - 
-    - '243'
-    - '244'
+    - '259'
+    - '260'
     - '2'
     - '2015-11-02 13:38:26.350087'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '154'
@@ -5201,11 +5929,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_needed
     - 
-    - '245'
-    - '246'
+    - '261'
+    - '262'
     - '3'
     - '2015-11-02 13:38:26.355497'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '155'
@@ -5214,11 +5942,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_available
     - 
-    - '247'
-    - '248'
+    - '263'
+    - '264'
     - '4'
     - '2015-11-02 13:38:26.359242'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '156'
@@ -5228,11 +5956,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--supporting_information
     - 
-    - '249'
-    - '250'
+    - '265'
+    - '266'
     - '5'
     - '2015-11-02 13:38:26.3628'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '157'
@@ -5241,11 +5969,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--dryad_url
     - 
-    - '251'
-    - '252'
+    - '267'
+    - '268'
     - '6'
     - '2015-11-02 13:38:26.366706'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
@@ -5254,11 +5982,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
-    - '253'
-    - '254'
+    - '269'
+    - '270'
     - '7'
     - '2015-11-02 13:38:26.370339'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '159'
@@ -5267,11 +5995,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
-    - '255'
-    - '256'
+    - '271'
+    - '272'
     - '8'
     - '2015-11-02 13:38:26.373836'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '160'
@@ -5279,11 +6007,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_legible
     - 
-    - '257'
-    - '258'
+    - '273'
+    - '274'
     - '9'
     - '2015-11-02 13:38:26.37734'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '161'
@@ -5292,11 +6020,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cited
     - 
-    - '259'
-    - '260'
+    - '275'
+    - '276'
     - '10'
     - '2015-11-02 13:38:26.380912'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '162'
@@ -5305,11 +6033,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cover_letter
     - 
-    - '261'
-    - '262'
+    - '277'
+    - '278'
     - '11'
     - '2015-11-02 13:38:26.384466'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '163'
@@ -5318,11 +6046,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--billing_inquiries
     - 
-    - '263'
-    - '264'
+    - '279'
+    - '280'
     - '12'
     - '2015-11-02 13:38:26.387949'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
@@ -5330,11 +6058,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
-    - '265'
-    - '266'
+    - '281'
+    - '282'
     - '13'
     - '2015-11-02 13:38:26.39145'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '165'
@@ -5345,11 +6073,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--open_rejects
     - 
-    - '267'
-    - '268'
+    - '283'
+    - '284'
     - '1'
     - '2015-11-02 13:38:26.396833'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '166'
@@ -5358,11 +6086,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--human_subjects
     - 
-    - '269'
-    - '270'
+    - '285'
+    - '286'
     - '2'
     - '2015-11-02 13:38:26.400512'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '167'
@@ -5372,11 +6100,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_needed
     - 
-    - '271'
-    - '272'
+    - '287'
+    - '288'
     - '3'
     - '2015-11-02 13:38:26.403989'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '168'
@@ -5385,11 +6113,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--data_available
     - 
-    - '273'
-    - '274'
+    - '289'
+    - '290'
     - '4'
     - '2015-11-02 13:38:26.407564'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '169'
@@ -5399,11 +6127,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--supporting_information
     - 
-    - '275'
-    - '276'
+    - '291'
+    - '292'
     - '5'
     - '2015-11-02 13:38:26.411338'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '170'
@@ -5412,11 +6140,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--dryad_url
     - 
-    - '277'
-    - '278'
+    - '293'
+    - '294'
     - '6'
     - '2015-11-02 13:38:26.415031'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '171'
@@ -5425,11 +6153,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--financial_disclosure
     - 
-    - '279'
-    - '280'
+    - '295'
+    - '296'
     - '7'
     - '2015-11-02 13:38:26.418577'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '172'
@@ -5438,11 +6166,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--tobacco
     - 
-    - '281'
-    - '282'
+    - '297'
+    - '298'
     - '8'
     - '2015-11-02 13:38:26.422021'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '173'
@@ -5450,11 +6178,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--figures_legible
     - 
-    - '283'
-    - '284'
+    - '299'
+    - '300'
     - '9'
     - '2015-11-02 13:38:26.425661'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '174'
@@ -5463,11 +6191,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cited
     - 
-    - '285'
-    - '286'
+    - '301'
+    - '302'
     - '10'
     - '2015-11-02 13:38:26.429237'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '175'
@@ -5476,11 +6204,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cover_letter
     - 
-    - '287'
-    - '288'
+    - '303'
+    - '304'
     - '11'
     - '2015-11-02 13:38:26.433036'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '176'
@@ -5489,11 +6217,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--billing_inquiries
     - 
-    - '289'
-    - '290'
+    - '305'
+    - '306'
     - '12'
     - '2015-11-02 13:38:26.436669'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '177'
@@ -5501,11 +6229,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_statement
     - 
-    - '291'
-    - '292'
+    - '307'
+    - '308'
     - '13'
     - '2015-11-02 13:38:26.440221'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '178'
@@ -5514,11 +6242,11 @@ nested_questions:
     - text
     - ethics--field_study--field_permit_number
     - '179'
-    - '292'
-    - '293'
+    - '308'
+    - '309'
     - '1'
     - '2015-12-21 16:53:24.223742'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::EthicsTask
     - 
   - - '179'
@@ -5527,11 +6255,11 @@ nested_questions:
     - boolean
     - ethics--field_study
     - 
-    - '291'
-    - '294'
+    - '307'
+    - '310'
     - '3'
     - '2015-12-21 16:53:24.230439'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::EthicsTask
     - 
   - - '180'
@@ -5563,11 +6291,11 @@ nested_questions:
     - text
     - reviewer_report--decision_term
     - 
-    - '291'
-    - '292'
+    - '307'
+    - '308'
     - '1'
     - '2015-12-23 17:34:57.06078'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '183'
@@ -5588,12 +6316,230 @@ nested_questions:
     - text
     - publishing_related_questions--short_title
     - 
-    - '295'
-    - '296'
+    - '311'
+    - '312'
     - '8'
     - '2016-01-26 17:37:47.789077'
-    - '2016-01-26 17:37:47.789077'
+    - '2016-03-09 20:28:22.610932'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
+  - - '185'
+    - Conceptualization
+    - boolean
+    - author--contributions--conceptualization
+    - '104'
+    - '160'
+    - '161'
+    - '1'
+    - '2016-03-09 20:28:22.382709'
+    - '2016-03-09 20:28:22.489605'
+    - Author
+    - 
+  - - '186'
+    - Investigation
+    - boolean
+    - author--contributions--investigation
+    - '104'
+    - '162'
+    - '163'
+    - '2'
+    - '2016-03-09 20:28:22.39099'
+    - '2016-03-09 20:28:22.498282'
+    - Author
+    - 
+  - - '187'
+    - Visualization
+    - boolean
+    - author--contributions--visualization
+    - '104'
+    - '164'
+    - '165'
+    - '3'
+    - '2016-03-09 20:28:22.39664'
+    - '2016-03-09 20:28:22.506134'
+    - Author
+    - 
+  - - '188'
+    - Methodology
+    - boolean
+    - author--contributions--methodology
+    - '104'
+    - '166'
+    - '167'
+    - '4'
+    - '2016-03-09 20:28:22.402273'
+    - '2016-03-09 20:28:22.5142'
+    - Author
+    - 
+  - - '189'
+    - Resources
+    - boolean
+    - author--contributions--resources
+    - '104'
+    - '168'
+    - '169'
+    - '5'
+    - '2016-03-09 20:28:22.407791'
+    - '2016-03-09 20:28:22.52313'
+    - Author
+    - 
+  - - '190'
+    - Supervision
+    - boolean
+    - author--contributions--supervision
+    - '104'
+    - '170'
+    - '171'
+    - '6'
+    - '2016-03-09 20:28:22.421519'
+    - '2016-03-09 20:28:22.531643'
+    - Author
+    - 
+  - - '191'
+    - Software
+    - boolean
+    - author--contributions--software
+    - '104'
+    - '172'
+    - '173'
+    - '7'
+    - '2016-03-09 20:28:22.435871'
+    - '2016-03-09 20:28:22.540117'
+    - Author
+    - 
+  - - '192'
+    - Data Curation
+    - boolean
+    - author--contributions--data-curation
+    - '104'
+    - '174'
+    - '175'
+    - '8'
+    - '2016-03-09 20:28:22.441842'
+    - '2016-03-09 20:28:22.549244'
+    - Author
+    - 
+  - - '193'
+    - Project Administration
+    - boolean
+    - author--contributions--project-administration
+    - '104'
+    - '176'
+    - '177'
+    - '9'
+    - '2016-03-09 20:28:22.44697'
+    - '2016-03-09 20:28:22.557931'
+    - Author
+    - 
+  - - '194'
+    - Validation
+    - boolean
+    - author--contributions--validation
+    - '104'
+    - '178'
+    - '179'
+    - '10'
+    - '2016-03-09 20:28:22.452297'
+    - '2016-03-09 20:28:22.567969'
+    - Author
+    - 
+  - - '195'
+    - Writing - Original Draft
+    - boolean
+    - author--contributions--writing-original-draft
+    - '104'
+    - '180'
+    - '181'
+    - '11'
+    - '2016-03-09 20:28:22.457742'
+    - '2016-03-09 20:28:22.57928'
+    - Author
+    - 
+  - - '196'
+    - Writing - Review and Editing
+    - boolean
+    - author--contributions--writing-review-and-editing
+    - '104'
+    - '182'
+    - '183'
+    - '12'
+    - '2016-03-09 20:28:22.463123'
+    - '2016-03-09 20:28:22.58946'
+    - Author
+    - 
+  - - '197'
+    - Funding Acquisition
+    - boolean
+    - author--contributions--funding-acquisition
+    - '104'
+    - '184'
+    - '185'
+    - '13'
+    - '2016-03-09 20:28:22.468199'
+    - '2016-03-09 20:28:22.599833'
+    - Author
+    - 
+  - - '198'
+    - Formal Analysis
+    - boolean
+    - author--contributions--formal-analysis
+    - '104'
+    - '186'
+    - '187'
+    - '14'
+    - '2016-03-09 20:28:22.473334'
+    - '2016-03-09 20:28:22.610932'
+    - Author
+    - 
+  - - '199'
+    - Is this author an employee of the United States Government?
+    - boolean
+    - author--government-employee
+    - 
+    - '313'
+    - '314'
+    - '4'
+    - '2016-03-09 20:28:22.623652'
+    - '2016-03-09 20:28:22.623652'
+    - Author
+    - 
+  - - '200'
+    - Any persons named in the Acknowledgements section of the manuscript, or referred
+      to as the source of a personal communication, have agreed to being so named.
+    - boolean
+    - authors--persons_agreed_to_be_named
+    - 
+    - '315'
+    - '316'
+    - '1'
+    - '2016-03-09 20:28:22.736331'
+    - '2016-03-09 20:28:22.736331'
+    - TahiStandardTasks::AuthorsTask
+    - 
+  - - '201'
+    - All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html"
+      target="_blank">ICMJE</a> criteria for authorship.
+    - boolean
+    - authors--authors_confirm_icmje_criteria
+    - 
+    - '317'
+    - '318'
+    - '2'
+    - '2016-03-09 20:28:22.741799'
+    - '2016-03-09 20:28:22.741799'
+    - TahiStandardTasks::AuthorsTask
+    - 
+  - - '202'
+    - All contributing authors are aware of and agree to the submission of this manuscript.
+    - boolean
+    - authors--authors_agree_to_submission
+    - 
+    - '319'
+    - '320'
+    - '3'
+    - '2016-03-09 20:28:22.74687'
+    - '2016-03-09 20:28:22.74687'
+    - TahiStandardTasks::AuthorsTask
     - 
 
 ---
@@ -5895,7 +6841,7 @@ papers:
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
     - 
     - '2015-11-02 14:46:23.765287'
-    - '2015-11-02 15:14:05.582372'
+    - '2016-03-09 20:48:19.673903'
     - '3'
     - Research
     - '1'
@@ -10499,12 +11445,12 @@ supporting_information_files:
     - 
     - sample.doc
     - '2015-10-30 19:52:32.177953'
-    - '2015-10-30 19:52:32.793467'
+    - '2016-03-09 20:34:13.982477'
     - done
     - true
     - 
     - 
-    - 
+    - Text
     - '22'
   - - '2'
     - '3'
@@ -10512,12 +11458,12 @@ supporting_information_files:
     - 
     - turtles-are-amazing.docx
     - '2015-11-02 14:13:19.427337'
-    - '2015-11-02 14:13:19.701157'
+    - '2016-03-09 20:30:35.9399'
     - done
     - true
     - 
     - 
-    - 
+    - Text
     - '43'
   - - '3'
     - '4'
@@ -10525,12 +11471,12 @@ supporting_information_files:
     - 
     - turtles-are-amazing.docx
     - '2015-11-02 15:09:02.825204'
-    - '2015-11-02 15:09:03.10794'
+    - '2016-03-09 20:39:24.884853'
     - done
     - true
     - 
     - 
-    - 
+    - Text
     - '64'
 
 ---
@@ -11045,7 +11991,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.513727'
-    - '2015-10-30 19:43:28.513727'
+    - '2016-03-09 20:34:17.118591'
     - author
     - "[]"
     - '1'
@@ -11081,7 +12027,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.571079'
-    - '2015-10-30 19:48:47.180823'
+    - '2016-03-09 20:37:02.38663'
     - author
     - "[]"
     - '4'
@@ -11093,7 +12039,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.585311'
-    - '2015-10-30 19:43:28.585311'
+    - '2016-03-09 20:37:06.732951'
     - author
     - "[]"
     - '5'
@@ -11105,7 +12051,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.600041'
-    - '2015-10-30 19:49:44.740631'
+    - '2016-03-09 20:37:10.862917'
     - author
     - '["\u003cdiv\u003e\u003cb style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
       sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eMy Cover
@@ -11130,7 +12076,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.614811'
-    - '2015-10-30 19:43:28.614811'
+    - '2016-03-09 20:37:18.842651'
     - author
     - "[]"
     - '7'
@@ -11142,7 +12088,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.628148'
-    - '2015-10-30 19:43:28.628148'
+    - '2016-03-09 20:37:23.035327'
     - author
     - "[]"
     - '8'
@@ -11154,7 +12100,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.641504'
-    - '2015-10-30 19:43:28.641504'
+    - '2016-03-09 20:37:28.350534'
     - author
     - "[]"
     - '9'
@@ -11166,7 +12112,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.655468'
-    - '2015-10-30 19:43:28.655468'
+    - '2016-03-09 20:37:34.886666'
     - author
     - "[]"
     - '10'
@@ -11178,7 +12124,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.668712'
-    - '2015-10-30 19:43:28.668712'
+    - '2016-03-09 20:37:41.255973'
     - author
     - "[]"
     - '11'
@@ -11190,7 +12136,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.682411'
-    - '2015-10-30 19:43:28.682411'
+    - '2016-03-09 20:37:50.769129'
     - author
     - "[]"
     - '12'
@@ -11202,7 +12148,7 @@ tasks:
     - '6'
     - false
     - '2015-10-30 19:43:28.696454'
-    - '2015-10-30 19:43:28.696454'
+    - '2016-03-09 20:37:57.252942'
     - author
     - "[]"
     - '13'
@@ -11322,12 +12268,12 @@ tasks:
     - '11'
     - true
     - '2015-11-02 14:04:02.99332'
-    - '2015-11-02 14:15:08.969496'
+    - '2016-03-09 20:31:45.487444'
     - author
     - "[]"
     - '2'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:31:45.487143'
   - - '45'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -11346,31 +12292,31 @@ tasks:
     - '11'
     - true
     - '2015-11-02 14:04:03.029095'
-    - '2015-11-02 14:11:35.529725'
+    - '2016-03-09 20:32:02.579319'
     - author
     - "[]"
     - '4'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:32:02.57908'
   - - '47'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
     - '11'
     - true
     - '2015-11-02 14:04:03.046654'
-    - '2015-11-02 14:15:20.503569'
+    - '2016-03-09 20:32:11.223711'
     - author
     - "[]"
     - '5'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:32:11.223442'
   - - '48'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
     - '11'
     - true
     - '2015-11-02 14:04:03.064308'
-    - '2015-11-02 14:12:02.291254'
+    - '2016-03-09 20:32:21.772066'
     - author
     - '["Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s,
@@ -11382,31 +12328,31 @@ tasks:
       versions of Lorem Ipsum."]'
     - '6'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:32:21.771834'
   - - '49'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
     - '11'
     - true
     - '2015-11-02 14:04:03.080743'
-    - '2015-11-02 14:15:31.458101'
+    - '2016-03-09 20:32:32.548446'
     - author
     - "[]"
     - '7'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:32:32.548212'
   - - '50'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
     - '11'
     - true
     - '2015-11-02 14:04:03.095882'
-    - '2015-11-02 14:15:39.843929'
+    - '2016-03-09 20:32:48.977423'
     - author
     - "[]"
     - '8'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:32:48.97718'
   - - '51'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -11425,48 +12371,48 @@ tasks:
     - '11'
     - true
     - '2015-11-02 14:04:03.126435'
-    - '2015-11-02 14:16:15.469464'
+    - '2016-03-09 20:33:10.98904'
     - author
     - "[]"
     - '10'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:33:10.988829'
   - - '53'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '11'
     - true
     - '2015-11-02 14:04:03.141948'
-    - '2015-11-02 14:17:21.863603'
+    - '2016-03-09 20:33:37.109795'
     - author
     - "[]"
     - '11'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:33:37.109582'
   - - '54'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
     - '11'
     - true
     - '2015-11-02 14:04:03.157242'
-    - '2015-11-02 14:18:10.051361'
+    - '2016-03-09 20:33:46.919633'
     - author
     - "[]"
     - '12'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:33:46.91941'
   - - '55'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
     - '11'
     - true
     - '2015-11-02 14:04:03.172924'
-    - '2015-11-02 14:12:55.136726'
+    - '2016-03-09 20:33:58.048894'
     - author
     - "[]"
     - '13'
     - '3'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:33:58.048661'
   - - '56'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -11581,12 +12527,12 @@ tasks:
     - '16'
     - true
     - '2015-11-02 14:46:23.904316'
-    - '2015-11-02 15:09:36.277238'
+    - '2016-03-09 20:47:09.041723'
     - author
     - "[]"
     - '2'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:47:09.041416'
   - - '66'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -11605,12 +12551,12 @@ tasks:
     - '16'
     - true
     - '2015-11-02 14:46:23.937966'
-    - '2015-11-02 15:06:25.129713'
+    - '2016-03-09 20:47:24.3462'
     - author
     - "[]"
     - '4'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:47:24.345963'
   - - '68'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -11651,84 +12597,84 @@ tasks:
     - '16'
     - true
     - '2015-11-02 14:46:23.985016'
-    - '2015-11-02 15:10:01.673227'
+    - '2016-03-09 20:47:43.88958'
     - author
     - "[]"
     - '7'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:47:43.889372'
   - - '71'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
     - '16'
     - true
     - '2015-11-02 14:46:24.001655'
-    - '2015-11-02 15:10:23.39056'
+    - '2016-03-09 20:47:49.801251'
     - author
     - "[]"
     - '8'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:47:49.800969'
   - - '72'
     - Figures
     - TahiStandardTasks::FigureTask
     - '16'
     - true
     - '2015-11-02 14:46:24.017385'
-    - '2015-11-02 15:10:50.452332'
+    - '2016-03-09 20:48:01.91079'
     - author
     - "[]"
     - '9'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:48:01.910544'
   - - '73'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
     - '16'
     - true
     - '2015-11-02 14:46:24.033101'
-    - '2015-11-02 15:10:56.785584'
+    - '2016-03-09 20:47:59.807959'
     - author
     - "[]"
     - '10'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:47:59.807738'
   - - '74'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '16'
     - true
     - '2015-11-02 14:46:24.0489'
-    - '2015-11-02 15:11:50.536703'
+    - '2016-03-09 20:48:06.694394'
     - author
     - "[]"
     - '11'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:48:06.694137'
   - - '75'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
     - '16'
     - true
     - '2015-11-02 14:46:24.064242'
-    - '2015-11-02 15:12:05.240609'
+    - '2016-03-09 20:48:11.089009'
     - author
     - "[]"
     - '12'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:48:11.088754'
   - - '76'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
     - '16'
     - true
     - '2015-11-02 14:46:24.080175'
-    - '2015-11-02 15:07:44.439698'
+    - '2016-03-09 20:48:14.906165'
     - author
     - "[]"
     - '13'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2016-03-09 20:48:14.905907'
   - - '77'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -12668,13 +13614,13 @@ users:
     - 
     - 
     - 
-    - '10'
+    - '11'
+    - '2016-03-09 20:38:59.42917'
     - '2016-01-26 21:41:00.622951'
-    - '2016-01-26 19:52:48.420195'
-    - 127.0.0.1
+    - 10.43.0.68
     - 127.0.0.1
     - '2015-10-29 19:36:19.627844'
-    - '2016-01-26 21:41:00.625502'
+    - '2016-03-09 20:38:59.430505'
     - admin
     - 
     - false
@@ -12706,13 +13652,13 @@ users:
     - 
     - 
     - 
-    - '5'
-    - '2016-01-19 15:39:48.053966'
-    - '2015-12-14 20:48:03.544734'
-    - 127.0.0.1
-    - 127.0.0.1
+    - '7'
+    - '2016-03-09 20:48:54.606019'
+    - '2016-03-09 20:30:16.368171'
+    - 10.43.0.68
+    - 10.43.0.68
     - '2015-10-29 20:11:22.705226'
-    - '2016-01-19 15:39:48.056016'
+    - '2016-03-09 20:48:54.607306'
     - author
     - 
     - false
@@ -12725,13 +13671,13 @@ users:
     - 
     - 
     - 
-    - '1'
-    - '2015-11-02 15:15:33.649157'
-    - '2015-11-02 15:15:33.649157'
-    - 127.0.0.1
-    - 127.0.0.1
+    - '3'
+    - '2016-03-09 20:50:52.002277'
+    - '2016-03-09 20:50:10.8272'
+    - 10.43.0.68
+    - 10.43.0.68
     - '2015-11-02 15:15:33.644561'
-    - '2015-11-02 15:15:33.650134'
+    - '2016-03-09 20:50:52.003927'
     - editor
     - 
     - false

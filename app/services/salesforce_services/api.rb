@@ -67,7 +67,9 @@ module SalesforceServices
     def self.create_billing_and_pfa_case(paper_id:)
       return unless salesforce_active
 
-      paper    = Paper.find(paper_id)
+      paper = Paper.find(paper_id)
+      return if Case.find_by_Subject(paper.manuscript_id)
+
       bt       = BillingTranslator.new(paper: paper)
       kase     = Case.create(bt.paper_to_billing_hash)
       Rails.logger.info("Salesforce Case created: #{kase.Id}")

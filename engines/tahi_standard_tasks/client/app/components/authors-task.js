@@ -50,73 +50,29 @@ export default TaskComponent.extend({
     });
   }),
 
-  nestedQuestionsForNewAuthor: Ember.A(),
-  newAuthorQuestions: on('init', function(){
-    const q = { type: 'Author' };
-    this.store.findQuery('nested-question', q).then((nestedQuestions)=> {
-      this.set('nestedQuestionsForNewAuthor', nestedQuestions);
-    });
-  }),
-
-  newAuthor: null,
-
-  clearNewAuthorAnswers(){
-    this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get('newAuthor.object'));
-    });
-  },
-
   shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();
   },
 
   actions: {
-    toggleAuthorForm() {
-      const newAuthor = this.store.createRecord('author', {
-        paper: this.get('task.paper'),
-        position: 0,
-        nestedQuestions: this.get('nestedQuestionsForNewAuthor')
-      });
-
-      this.set('newAuthor', ObjectProxyWithErrors.create({
-        object: newAuthor,
-        validations: validations
-      }));
-
-      this.clearNewAuthorAnswers();
-      this.toggleProperty('newAuthorFormVisible');
-    },
-
     toggleGroupAuthorForm() {
       this.toggleProperty('newGroupAuthorFormVisible');
     },
 
+    toggleAuthorForm() {
+      this.toggleProperty('newAuthorFormVisible');
+    },
+
+    saveNewAuthorSuccess(model) {
+      this.set('newAuthorFormVisible', false);
+    },
+
+    saveNewGroupAuthorSuccess() {
+      this.set('newGroupAuthorFormVisible', false);
+    },
+
     changeAuthorPosition(author, newPosition) {
       this.shiftAuthorPositions(author, newPosition);
-    },
-
-    saveNewAuthor() {
-      const proxy = this.get('newAuthor');
-      const model = proxy.get('object');
-
-      // set this here, not when initially built so it doesn't show up in
-      // the list of existing authors as the user fills out the form
-      model.set('task', this.get('task'));
-
-      model.save().then( (savedAuthor) => {
-        model.get('nestedQuestionAnswers').toArray().forEach(function(answer){
-          const value = answer.get('value');
-          if(value || value === false){
-            answer.set('owner', savedAuthor);
-            answer.save();
-          }
-        });
-        this.toggleProperty('newAuthorFormVisible');
-      });
-    },
-
-    saveAuthor(author) {
-      author.save();
     },
 
     removeAuthor(author) {

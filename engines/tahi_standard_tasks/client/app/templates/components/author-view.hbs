@@ -27,12 +27,12 @@
 
 {{#if editState}}
   {{component componentName
-              author=author
-              validationErrors=errors
+              author=model.object
+              authorProxy=model
               validateField=(action "validateField")
               hideAuthorForm="toggleEditForm"
               isNotEditable=isNotEditable
-              saveAuthor="save"}}
+              saveSuccess=(action "toggleEditForm")}}
 {{/if}}
 
 {{#if deleteState}}

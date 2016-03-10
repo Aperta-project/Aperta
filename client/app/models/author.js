@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import { contributionIdents } from 'tahi/authors-task-validations';
 
 const { attr, belongsTo } = DS;
 

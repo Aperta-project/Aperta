@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { contributionIdents } from 'tahi/authors-task-validations';
+import { contributionIdents } from 'tahi/models/group-author';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 export default Ember.Component.extend({
@@ -13,15 +13,16 @@ export default Ember.Component.extend({
     this.set('store', this.container.lookup('store:main'));
 
     if(this.get('isNewAuthor')) {
-      this.initNewAuthorQuestions();
-      this.createNewAuthor();
+      this.initNewAuthorQuestions().then(() => {
+        this.createNewAuthor();
+      });
     }
   },
 
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
-    const q = { type: 'Author' };
-    this.store.findQuery('nested-question', q).then((nestedQuestions)=> {
+    const q = { type: 'GroupAuthor' };
+    return this.store.findQuery('nested-question', q).then((nestedQuestions)=> {
       this.set('nestedQuestionsForNewAuthor', nestedQuestions);
     });
   },

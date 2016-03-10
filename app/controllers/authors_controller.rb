@@ -36,7 +36,7 @@ class AuthorsController < ApplicationController
   def author
     @author ||= begin
       if params[:id].present?
-        Author.find(params[:id])
+        Author.includes(:author_list_item).find(params[:id])
       else
         Author.new(author_params)
       end

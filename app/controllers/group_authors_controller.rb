@@ -44,7 +44,7 @@ class GroupAuthorsController < ApplicationController
   def group_author
     @group_author ||= begin
       if params[:id].present?
-        GroupAuthor.find(params[:id])
+        GroupAuthor.includes(:author_list_item).find(params[:id])
       else
         GroupAuthor.new(group_author_params)
       end

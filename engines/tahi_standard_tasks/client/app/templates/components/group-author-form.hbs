@@ -1,6 +1,6 @@
 <div class="flex-form">
   <fieldset>
-    <legend class="flex-element">Group Authors</legend>
+    <legend class="flex-element">Group Author</legend>
     <div class="flex-group">
       <div class="flex-element inset-form-control required {{if validationErrors.name "error"}}">
         <div class="inset-form-control-text">
@@ -99,33 +99,6 @@
     </div>
   </fieldset>
 
-{{!--
-  <fieldset>
-    <div class="author-corresponding {{if validationErrors.corresponding "error"}}">
-      {{#nested-question-check ident="author--published_as_corresponding_author"
-                               owner=author
-                               displayQuestionText=false
-                               disabled=isNotEditable
-                               inputClassNames="author-corresponding" as |check|}}
-        {{#if check.yieldingForText}}
-          {{nested-question-display ident="author--published_as_corresponding_author" owner=author}}
-        {{/if}}
-      {{/nested-question-check}}
-    </div>
-
-    <div class="author-deceased {{if validationErrors.deceased "error"}}">
-      {{#nested-question-check ident="author--deceased"
-                               owner=author
-                               displayQuestionText=false
-                               disabled=isNotEditable
-                               inputClassNames="author-deceased" as |check|}}
-        {{#if check.yieldingForText}}
-          {{nested-question-display ident="author--deceased" owner=author}}
-        {{/if}}
-      {{/nested-question-check}}
-    </div>
-  </fieldset>
-
   <fieldset class="author-contributions">
     <legend class="flex-element required">
       Author
@@ -152,16 +125,17 @@
       </div>
     </div>
   </fieldset>
---}}
 
-{{!--
   <div class="author-government">
-    {{nested-question-radio ident="author--government-employee"
+    {{nested-question-radio ident="group-author--government-employee"
                             owner=author
-                            helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a href='https://creativecommons.org/publicdomain/zero/1.0/' target='_blank'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
+                            helpText="Papers authored by U.S. government organizations are not copyrighted, but are licensed under a <a href='https://creativecommons.org/publicdomain/zero/1.0/' target='_blank'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
                             disabled=isNotEditable}}
+    {{error-message message=validationErrors.government
+                    displayIcon=true
+                    displayText=true}}
   </div>
---}}
+
 
   <div class="author-form-buttons">
     {{#if validationErrors.save}}

@@ -1,9 +1,25 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
-import { contributionIdents } from 'tahi/authors-task-validations';
 
 const { attr, belongsTo } = DS;
+
+export const contributionIdents = [
+  'author--contributions--conceptualization',
+  'author--contributions--investigation',
+  'author--contributions--visualization',
+  'author--contributions--methodology',
+  'author--contributions--resources',
+  'author--contributions--supervision',
+  'author--contributions--software',
+  'author--contributions--data-curation',
+  'author--contributions--project-administration',
+  'author--contributions--validation',
+  'author--contributions--writing-original-draft',
+  'author--contributions--writing-review-and-editing',
+  'author--contributions--funding-acquisition',
+  'author--contributions--formal-analysis',
+];
 
 export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),

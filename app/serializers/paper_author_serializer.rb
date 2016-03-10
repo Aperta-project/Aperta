@@ -11,6 +11,18 @@ class PaperAuthorSerializer < ActiveModel::Serializer
            embed: :ids,
            include: true
 
+  # Hokay let's talk about ordering. Ember data makes a POST to create
+  # a new author (or group author). In response, it expects to see one
+  # Author, or one GroupAuthor, because that's what it requested. But
+  # We know that the *position* of every other author on the paper may
+  # be changed at the insertion of a single new author. So we send
+  # back the whole list of authors. This makes sense. But Ember Data,
+  # because it is expecting one (only one) NEW author, it takes the
+  # first thing we send it and inserts it, and then upserts the rest.
+  # In order to make sure it INSERTS the NEW record, we order so that
+  # the highest ID is first. This is sloppy and confusing, and we
+  # apologize. Sam and Jerry <sam@mutuallyhuman.com>
+  # <jerry@mutuallyhuman.com>
   def authors
     object.authors.order('id DESC')
   end

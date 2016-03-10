@@ -1,13 +1,12 @@
 import Ember from 'ember';
-import { contributionIdents } from 'tahi/authors-task-validations';
+import { contributionIdents } from 'tahi/models/author';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 const {
   Component,
   computed,
   computed: { alias },
-  inject: { service },
-  on
+  inject: { service }
 } = Ember;
 
 export default Component.extend({

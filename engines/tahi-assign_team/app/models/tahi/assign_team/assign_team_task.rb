@@ -4,8 +4,12 @@ module Tahi
       DEFAULT_TITLE = 'Assign Team'
       DEFAULT_ROLE = 'admin'
 
+      def assignable_roles
+        [journal.cover_editor_role, journal.handling_editor_role]
+      end
+
       def assignments
-        paper.paper_roles
+        paper.assignments.where(role_id: assignable_roles)
       end
 
       def active_model_serializer

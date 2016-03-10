@@ -4,34 +4,31 @@ import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
-  init() {
-    this._super(...arguments);
+  isAssignable: Ember.computed.bool('selectedUser'),
 
-    const path = '/api/papers/' + (this.get('task.paper.id')) + '/old_roles';
-    Ember.$.getJSON(path, (data) => {
-      this.set('oldRoles', data.old_roles);
-    });
-  },
+  assignableRoles: Ember.computed.alias('task.assignableRoles'),
 
-  isAssignable: false,
-
-  fetchUsers: function() {
+  fetchUsers: Ember.observer('selectedRole', function() {
     const paperId = this.get('task.paper.id');
-    const oldRoleId  = this.get('selectedOldRole.id');
-    const path    = '/api/papers/' + paperId + '/old_roles/' + oldRoleId + '/users';
+    const selectedRoleId = this.get('selectedRole.id');
 
-    Ember.$.getJSON(path, (data) => {
-      this.set('users', data.users);
-    });
-  }.observes('selectedOldRole'),
+    if(!selectedRoleId){
+      return;
+    } else {
+      const path = `/api/papers/${paperId}/roles/${selectedRoleId}/eligible_users`;
+      Ember.$.getJSON(path, (data) => {
+        this.set('users', data.users);
+      });
+    }
+  }),
 
-  selectableRoles: Ember.computed('oldRoles', function() {
-    const oldRoles = this.get('oldRoles') || [];
+  selectableRoles: Ember.computed('assignableRoles', function() {
+    const roles = this.get('assignableRoles') || [];
 
-    return oldRoles.map(function(oldRole) {
+    return roles.map(function(role) {
       return {
-        id: oldRole.id,
-        text: oldRole.name
+        id: role.get('id'),
+        text: role.get('name')
       };
     });
   }),
@@ -52,32 +49,36 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       assignment.destroyRecord();
     },
 
-    assignOldRoleToUser() {
+    assignRoleToUser() {
       const store = getOwner(this).lookup('store:main');
       const userId = this.get('selectedUser.id');
 
       store.find('user', userId).then(user => {
+        let selectedRoleId = this.get('selectedRole.id');
+        let role = this.get('assignableRoles').findBy('id', selectedRoleId);
         const assignment = this.store.createRecord('assignment', {
           user: user,
           paper: this.get('task.paper'),
-          oldRole: this.get('selectedOldRole.text')
+          role: role
         });
 
         assignment.save().then(()=> {
           this.get('task.assignments').pushObject(assignment);
+          this.set('selectedUser', null);
+          this.set('users', []);
+          this.set('selectedRole', null);
         }, function(response) {
           this.displayValidationErrorsFromResponse(response);
         });
       });
     },
 
-    didSelectRole(oldRole) {
-      this.set('selectedOldRole', oldRole);
+    didSelectRole(role) {
+      this.set('selectedRole', role);
     },
 
     didSelectUser(user) {
       this.set('selectedUser', user);
-      this.set('isAssignable', true);
     }
   }
 });

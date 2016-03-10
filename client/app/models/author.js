@@ -39,8 +39,6 @@ export default NestedQuestionOwner.extend({
     'lastName': ['presence'],
     'authorInitial': ['presence'],
     'email': ['presence', 'email'],
-    'title': ['presence'],
-    'department': ['presence'],
     'affiliation': ['presence'],
     'government': [{
       type: 'presence',

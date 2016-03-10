@@ -12,7 +12,7 @@ class AuthorsController < ApplicationController
     author.save!
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper.authors, each_serializer: AuthorSerializer
+    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
   end
 
   def update
@@ -20,7 +20,7 @@ class AuthorsController < ApplicationController
     author.update!(author_params)
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper.authors, each_serializer: AuthorSerializer
+    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
   end
 
   def destroy
@@ -28,7 +28,7 @@ class AuthorsController < ApplicationController
     author.destroy!
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper.authors, each_serializer: AuthorSerializer
+    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
   end
 
   private

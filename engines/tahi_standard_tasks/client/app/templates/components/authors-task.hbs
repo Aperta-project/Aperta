@@ -33,13 +33,13 @@
         {{group-author-form task=task
                             isNewAuthor=true
                             hideAuthorForm="toggleGroupAuthorForm"
-                            saveSuccess=(action "saveNewAuthorSuccess")}}
+                            saveSuccess=(action "saveNewGroupAuthorSuccess")}}
       {{/if}}
 
       {{#if newAuthorFormVisible}}
         {{author-form task=task
                       isNewAuthor=true
-                      saveSuccess=(action "saveNewGroupAuthorSuccess")
+                      saveSuccess=(action "saveNewAuthorSuccess")
                       hideAuthorForm="toggleAuthorForm"}}
       {{/if}}
     {{/if}}

@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   classNames: ['author-form'],
   author: null,
   authorProxy: null,
+  validationErrors: Ember.computed.alias('authorProxy.validationErrors'),
 
   init() {
     this._super(...arguments);

@@ -4,9 +4,7 @@ import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-erro
 import { taskValidations } from 'tahi/authors-task-validations';
 
 const {
-  computed,
-  computed: { sort },
-  on
+  computed
 } = Ember;
 
 export default TaskComponent.extend({
@@ -63,7 +61,7 @@ export default TaskComponent.extend({
       this.toggleProperty('newAuthorFormVisible');
     },
 
-    saveNewAuthorSuccess(model) {
+    saveNewAuthorSuccess() {
       this.set('newAuthorFormVisible', false);
     },
 

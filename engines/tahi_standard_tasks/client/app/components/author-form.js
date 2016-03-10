@@ -24,17 +24,19 @@ export default Component.extend({
     this.set('store', this.container.lookup('store:main'));
 
     if(this.get('isNewAuthor')) {
-      this.initNewAuthorQuestions();
-      this.createNewAuthor();
+      this.initNewAuthorQuestions().then(() => {
+        this.createNewAuthor();
+      });
     }
   },
 
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'Author' };
-    this.store.findQuery('nested-question', q).then((nestedQuestions)=> {
-      this.set('nestedQuestionsForNewAuthor', nestedQuestions);
-    });
+    return this.store.findQuery('nested-question', q).then(
+      (nestedQuestions) => {
+        this.set('nestedQuestionsForNewAuthor', nestedQuestions);
+      });
   },
 
   clearNewAuthorAnswers(){

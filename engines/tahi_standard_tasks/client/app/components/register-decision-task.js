@@ -8,6 +8,9 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   restless: Ember.inject.service('restless'),
   paperState: computed.alias('task.paper.publishingState'),
   nonPublishable: computed.not('publishable'),
+  nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
+    return this.get('nonPublishable') || !this.get('latestDecision.verdict');
+  }),
   revisionNumberDesc: ['revisionNumber:desc'],
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
   latestDecision: computed.alias('decisions.firstObject'),

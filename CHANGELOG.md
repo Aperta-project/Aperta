@@ -4,7 +4,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Paper tracker: shared saved searches
 - Figures display in the manuscript
 
 ### Changed
@@ -22,6 +21,42 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Security
 -
 
+## [1.4.1] - 2016-03-08
+### Added
+- Adding shared saved searches to Paper tracker
+- Applying new Roles and Permissions to Invite Editor Task
+- Applying new Roles and Permissions to Production Metadata Task
+- Applying new Roles and Permissions to Reviewer Candidates Task
+- Applying new Roles and Permissions to Competing Interests Task
+- Applying new Roles and Permissions to Upload Manuscript Task
+- Applying new Roles and Permissions to Financial Disclosure Task
+- Applying new Roles and Permissions to Final Tech Check Task
+- Applying new Roles and Permissions to Cover Letter Task
+- Applying new Roles and Permissions to Register Decision Task
+- Applying new Roles and Permissions to Authors Task
+- Creating Cover Editor role
+- Creating Bio Invite AE Task
+
+### Changed
+- Authors Task UI changes and new questions
+- Update manuscript fields sent to Salesforce
+- Update PFA case fields sent to Salesforce
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+- Fixing an issue where all Discussion Topics appeared across all Papers
+- Fixing copy and pasting of line breaks in Discussion Replies
+- Updating broken links in Figures, Data Availability and Competing Interests Tasks
+- Replacing the current descriptive text under Question 5 with the descriptive text under Question 4 
+
+### Security
+-
+
 ## [1.4.0] - 2016-02-23
 ### Added
 - Paper tracker search: by user and role, anyone, no one, and any role
@@ -31,7 +66,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Applying new roles and permissions to ethics card
 - Academic Editor role for the PLOS Bio journal has been implemented with new roles and permissions
 - Journal admins will receive an email if a manuscript fails to be sent to Salesforce after ~1.5 days
-- Authors Task UI changes and new questions
 
 ### Changed
 - The Authors card now enforces validations

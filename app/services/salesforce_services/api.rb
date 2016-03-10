@@ -64,7 +64,7 @@ module SalesforceServices
       end
     end
 
-    def self.create_billing_and_pfa_case(paper_id:)
+    def self.ensure_pfa_case(paper_id:)
       return unless salesforce_active
 
       paper = Paper.find(paper_id)

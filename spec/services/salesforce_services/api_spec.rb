@@ -84,7 +84,7 @@ describe SalesforceServices::API do
     end
   end
 
-  describe '#create_billing_and_pfa_case' do
+  describe '#ensure_pfa_case' do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) do |paper|
       task_params = {
@@ -114,7 +114,7 @@ describe SalesforceServices::API do
 
       it "doesn't create a new case" do
         expect(Case).to_not receive(:create)
-        @api.create_billing_and_pfa_case(paper_id: paper.id)
+        @api.ensure_pfa_case(paper_id: paper.id)
       end
     end
 
@@ -130,7 +130,7 @@ describe SalesforceServices::API do
         end
 
         VCR.use_cassette("salesforce_create_billing_and_pfa") do
-          @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
+          @kase = @api.ensure_pfa_case(paper_id: paper.id)
           expect(@kase.class).to eq Case
           expect(@kase.persisted?).to eq true
         end

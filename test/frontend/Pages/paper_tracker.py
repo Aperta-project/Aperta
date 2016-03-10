@@ -123,8 +123,7 @@ class PaperTrackerPage(AuthenticatedPage):
                                 'ON old_roles.id = user_roles.old_role_id '
                                 'WHERE user_roles.user_id = %s;',(uid,))
     journals_set = set(journal_ids)
-    total_count = 0
-    for journal in journals_set:
+    for total_count, journal in enumerate(journals_set):
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
                                   (journal, 'unsubmitted'))[0][0]
@@ -192,12 +191,10 @@ class PaperTrackerPage(AuthenticatedPage):
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
     papers = withdrawn_papers + submitted_papers
-    # import pdb; pdb.set_trace()
     if total_count > 0:
       papers = self._get_paper_list(journal_ids)
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
-      count = 0
-      for row in table_rows:
+      for count, row in enumerate(table_rows):
         logging.info('Validating Row: {0}'.format(count))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a'

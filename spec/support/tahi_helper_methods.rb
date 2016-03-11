@@ -16,11 +16,8 @@ module TahiHelperMethods
   end
 
   # OLD ROLES
-  def make_user_paper_reviewer(user, paper)
-    assign_paper_role(paper, user, PaperRole::REVIEWER)
-  end
-
   def assign_paper_role(paper, user, old_role)
+    # DELETE ME
     paper.paper_roles.create!(old_role: old_role, user: user)
     paper.reload
   end

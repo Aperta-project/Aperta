@@ -27,8 +27,14 @@ describe FilteredUsersController do
     FactoryGirl.create(:user, first_name: "Henry", last_name: "Bob")
   end
 
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:old_role) { FactoryGirl.create(:old_role, :editor, journal: journal) }
+  let(:journal) do
+    FactoryGirl.create(:journal).tap do |journal|
+      journal.roles.create!(name: Role::CREATOR_ROLE)
+      journal.roles.create!(name: Role::HANDLING_EDITOR_ROLE)
+      journal.roles.create!(name: Role::REVIEWER_ROLE)
+      journal.roles.create!(name: Role::STAFF_ADMIN_ROLE)
+    end
+  end
   let(:paper) { FactoryGirl.create(:paper, journal: journal, creator: creator) }
 
   before do
@@ -65,7 +71,12 @@ describe FilteredUsersController do
       end
 
       context "when the user was formerly a reviewer" do
-        before { make_user_paper_reviewer user, paper }
+        before do
+          user.assignments.create!(
+            assigned_to: paper,
+            role: paper.journal.reviewer_role
+          )
+        end
 
         it "sends the user" do
           get :uninvited_users, paper_id: paper.id, query: 'Henry', format: :json
@@ -113,7 +124,10 @@ describe FilteredUsersController do
       end
 
       it "sends the user even if the user was formerly a paper reviewer" do
-        make_user_paper_reviewer user, paper
+        user.assignments.create!(
+          assigned_to: paper,
+          role: paper.journal.reviewer_role
+        )
         get :uninvited_users, paper_id: paper.id, query: 'Henry', format: :json
         expect(res_body["filtered_users"].count).to eq 2
         expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id

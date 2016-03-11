@@ -56,11 +56,15 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_styles()
     authors_task.validate_author_task_action()
     authors_task.validate_delete_author()
+    # The author task is large enough that the Completion button frequently scrolls to an a place
+    #   place obscured by the task title. This two step boogaloo resets the view to the top of the
+    #   task.
+    manuscript_page.click_task('authors')
+    manuscript_page.click_task('authors')
     authors_task = AuthorsTask(self.getDriver())
-    authors_task.scroll_to_task_body_top()
     time.sleep(3)
     authors_task.click_completion_button()
-    # Attempting to close authors task without a complete author should fail
+    # Attempting to close authors task without a complete author or acknowledgements should fail
     # Time for GUI to automatically deselect complete checkbox
     time.sleep(1)
     assert not authors_task.completed_state()

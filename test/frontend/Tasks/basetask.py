@@ -32,15 +32,6 @@ class BaseTask(AuthenticatedPage):
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
 
   # Common actions for all cards
-  def scroll_to_task_body_top(self):
-    """
-    Useful in the case where the completion button may have scrolled out of the task frame in the
-      accordion
-    :return: void function
-    """
-    top = self._get(self._task_body)
-    self._actions.move_to_element(top).perform()
-
   def click_completion_button(self):
     """Click completed checkbox"""
     self._get(self._completion_button).click()
@@ -58,7 +49,8 @@ class BaseTask(AuthenticatedPage):
 
   def validate_completion_error(self):
     """
-    Validates that we properly put up an error in the case of attempting completion of a task with validation errors
+    Validates that we properly put up an error in the case of attempting completion of a task with
+      validation errors
     :return: void function
     """
     self.set_timeout(2)
@@ -78,7 +70,8 @@ class BaseTask(AuthenticatedPage):
     :return: True if versioned view of card, False otherwise
     """
     if self._get(self._versioned_metadata_div):
-      assert self._get(self._versioned_metadata_div).text == 'Viewing', self._get(self._versioned_metadata_div).text
+      assert self._get(self._versioned_metadata_div).text == 'Viewing', \
+          self._get(self._versioned_metadata_div).text
       return True
     else:
       return False

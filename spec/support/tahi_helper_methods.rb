@@ -22,10 +22,6 @@ module TahiHelperMethods
     paper.reload
   end
 
-  def make_user_paper_editor(user, paper)
-    assign_paper_role(paper, user, PaperRole::EDITOR)
-  end
-
   # NEW ROLES
   def assign_academic_editor_role(paper, user)
     FactoryGirl.create(:assignment,

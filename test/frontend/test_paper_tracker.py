@@ -22,8 +22,6 @@ Those acts are expected to be defined in
 __author__ = 'jgray@plos.org'
 
 
-# Because we are not deterministically sorting unsubmitted manuscripts, he, oa and sa logins are failing
-# APERTA-3023
 users = [staff_admin_login,
          internal_editor_login,
          pub_svcs_login,

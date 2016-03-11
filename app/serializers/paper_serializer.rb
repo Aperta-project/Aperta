@@ -12,9 +12,6 @@ class PaperSerializer < LitePaperSerializer
            embed: :ids,
            include: true,
            serializer: AssignmentSerializer
-  has_many :paper_task_types,
-           embed: :ids,
-           include: false
 
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id

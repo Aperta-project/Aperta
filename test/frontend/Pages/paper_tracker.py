@@ -40,7 +40,8 @@ class PaperTrackerPage(AuthenticatedPage):
 
   # POM Actions
 
-  def _get_paper_list(self, journal_ids, sort_by='id', reverse=False):
+  @staticmethod
+  def _get_paper_list(journal_ids, sort_by='id', reverse=False):
     """
     Aux function to retrieve papers displayed on Paper Tracker
     :param journals_id: Iterable with all journals id
@@ -110,13 +111,12 @@ class PaperTrackerPage(AuthenticatedPage):
 
 
   def validate_heading_and_subhead(self, username):
-    # Validating Main Heading - these have been removed as part of the
-    #   roles and permissions work. Not sure if they will be reintroduced
-    #   so leaving in place and commented out for now
+    """
+    Validating Main Heading - these have been removed as part of the
+    roles and permissions work. Not sure if they will be reintroduced
+    so leaving in place and commented out for now
     #title = self._get(self._paper_tracker_title)
     #self.validate_application_title_style(title)
-    #first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
-    #assert title.text == 'Hello, %s!' % first_name, 'Incorrect Tracker Title: ' + title.text
     # Validate Subhead
     #subhead = self._get(self._paper_tracker_subhead)
     # https://www.pivotaltracker.com/story/show/105230462
@@ -124,14 +124,17 @@ class PaperTrackerPage(AuthenticatedPage):
     #assert subhead.value_of_css_property('font-size') == '18px'
     #assert subhead.value_of_css_property('line-height') == '25.7167px'
     #assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    """
 
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
-    #journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
-    #                            'ON old_roles.id = user_roles.old_role_id '
-    #                            'WHERE user_roles.user_id = %s;',(uid,))
     journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE user_id = %s and "
                                 "assigned_to_type = 'Journal';",(uid,))
+    # TODO: Take into account the special case of superadmin
+    #if username == 'asuperadm':
+    #  journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE "
+    #                              "assigned_to_type = 'Journal';")
+
     journals_set = set(journal_ids)
     total_count = 0
     for total_count, journal in enumerate(journals_set):
@@ -139,21 +142,14 @@ class PaperTrackerPage(AuthenticatedPage):
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
                                   (journal, 'unsubmitted'))[0][0]
       total_count += int(paper_count)
-
-    """
-    if total_count == 1:
-      assert subhead.text == 'You have {0} paper in your tracker.'.format(total_count), \
-        (subhead.text, str(total_count))
-    else:
-      # Disabled test due to UXA-31
-      #assert subhead.text == 'You have {0} papers in your tracker.'.format(total_count), \
-      #  (subhead.text, str(total_count))
-      pass
-    """
     return total_count, journals_set
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):
     """
+    Check table contenst and sorting
+    :param total_count: Integer with number of papers
+    :param journal_ids: List with journal ids
+    :return: None
     """
     title_th = self._get(self._paper_tracker_table_title_th)
     self.validate_table_heading_style(title_th)

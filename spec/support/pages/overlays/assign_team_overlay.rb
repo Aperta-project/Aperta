@@ -14,7 +14,7 @@ class AssignTeamOverlay < CardOverlay
     end
   end
 
-  def assign_old_role_for_user(role_name, user)
+  def assign_role_to_user(role_name, user)
     page.assert_selector(".invite-reviewers")
 
     select2 role_name, from: "Role"

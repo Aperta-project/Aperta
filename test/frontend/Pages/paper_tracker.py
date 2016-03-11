@@ -7,6 +7,7 @@ Page Object Model for the Paper Tracker Page. Validates global and dynamic eleme
 from datetime import datetime
 import logging
 import time
+import string
 
 from Base.PostgreSQL import PgSQL
 from Base.Resources import psql_uname, psql_pw
@@ -88,15 +89,22 @@ class PaperTrackerPage(AuthenticatedPage):
         withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
 
+    # Before sorting, remove trailing spaces
+    papers = withdrawn_papers + submitted_papers
+    for paper in papers:
+      paper[0] = paper[0].strip()
+    # Before sorting, remove leading non printable characters
+    for paper in papers:
+      for char in paper[0]:
+        if char not in string.printable:
+          paper[0] = paper[0][1:]
+        else:
+          break
     try:
-        papers = sorted(withdrawn_papers + submitted_papers,
-                    key=lambda x: x[sort_by_d[sort_by]].lower(),
-                    reverse = reverse)
+        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]].lower(), reverse = reverse)
     except AttributeError:
         # For sorting by date
-        papers = sorted(withdrawn_papers + submitted_papers,
-                    key=lambda x: x[sort_by_d[sort_by]],
-                    reverse = reverse)
+        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]], reverse = reverse)
     return papers
 
 
@@ -119,10 +127,13 @@ class PaperTrackerPage(AuthenticatedPage):
 
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
-    journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
-                                'ON old_roles.id = user_roles.old_role_id '
-                                'WHERE user_roles.user_id = %s;',(uid,))
+    #journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
+    #                            'ON old_roles.id = user_roles.old_role_id '
+    #                            'WHERE user_roles.user_id = %s;',(uid,))
+    journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE user_id = %s and "
+                                "assigned_to_type = 'Journal';",(uid,))
     journals_set = set(journal_ids)
+    total_count = 0
     for total_count, journal in enumerate(journals_set):
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
@@ -174,7 +185,6 @@ class PaperTrackerPage(AuthenticatedPage):
       # Now I need to resort this list by the datetime.datetime() objects ASC
       # only trouble is this pukes on the none type objects for papers that are unsubmitted but in other states
       #   (withdrawn)
-      ##import pdb; pdb.set_trace()
       submitted_papers = sorted(submitted_papers, key=lambda x: x[1])
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers with NULL s_a date)
     # https://www.pivotaltracker.com/story/show/105325884 - this ordering is non-deterministic at present so this case
@@ -251,7 +261,6 @@ class PaperTrackerPage(AuthenticatedPage):
             db_participants = name
             participants.sort()
             db_participants.sort()
-            #import pdb; pdb.set_trace()
             assert participants == db_participants, (participants, db_participants)
           elif role.startswith('Collaborator'):
             role = role.split(': ')[1]
@@ -407,6 +416,7 @@ class PaperTrackerPage(AuthenticatedPage):
           'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
       else:
         raise TypeError('Database title or Page title are not both unicode objects')
+
       logging.info('Sorting by Title DESC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
       title_th.click()

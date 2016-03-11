@@ -3,11 +3,13 @@
 import logging
 import random
 
+from Pages.dashboard import DashboardPage
 from Base.Decorators import MultiBrowserFixture
+from frontend.common_test import CommonTest
+from Pages.login_page import LoginPage
 from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
     super_admin_login
-from frontend.common_test import CommonTest
 
 """
 This test case validates the Aperta paper_tracker page.
@@ -19,14 +21,6 @@ Those acts are expected to be defined in
 """
 __author__ = 'jgray@plos.org'
 
-import random
-
-from Base.Decorators import MultiBrowserFixture
-from Pages.login_page import LoginPage
-from Pages.dashboard import DashboardPage
-from Pages.paper_tracker import PaperTrackerPage
-from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_login
-from frontend.common_test import CommonTest
 
 # Because we are not deterministically sorting unsubmitted manuscripts, he, oa and sa logins are failing
 # APERTA-3023

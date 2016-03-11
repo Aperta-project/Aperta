@@ -380,9 +380,9 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
       papers = self._get_paper_list(journal_ids, sort_by='ms_id')
-      db_ms_ID = papers[0][5].split('/')[-1]
-      assert paper_tracker_ms_id == db_ms_ID, \
-        'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_ID)
+      db_ms_id = papers[0][5].split('/')[-1]
+      assert paper_tracker_ms_id == db_ms_id, \
+        'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
       logging.info('Sorting by Manuscript ID DESC')
       self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
@@ -391,9 +391,9 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
       papers = self._get_paper_list(journal_ids, sort_by='ms_id', reverse=True)
-      db_ms_ID = papers[0][5].split('/')[-1]
-      assert paper_tracker_ms_id == db_ms_ID, \
-        'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_ID)
+      db_ms_id = papers[0][5].split('/')[-1]
+      assert paper_tracker_ms_id == db_ms_id, \
+        'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
 
       logging.info('Sorting by Title ASC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')

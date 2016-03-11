@@ -22,12 +22,6 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
   }),
 
   actions: {
-    resetPassword() {
-      $.get('/api/users/reset').always(() => {
-        this.set('resetPasswordSuccess', true);
-      });
-    },
-
     hideNewAffiliationForm() {
       this.clearAllValidationErrors();
       this.set('showAffiliationForm', false);

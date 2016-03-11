@@ -13,11 +13,6 @@ class Admin::JournalUsersController < ApplicationController
     respond_with user, serializer: AdminJournalUserSerializer
   end
 
-  def reset
-    user = User.find(params[:id])
-    head :ok if user.send_reset_password_instructions
-  end
-
   def journal_user_params
     params.require(:admin_journal_user).permit(:first_name, :last_name, :username)
   end

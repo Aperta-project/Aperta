@@ -6,8 +6,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import staff_admin_login, super_admin_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, handling_editor_login, \
-    internal_editor_login, pub_svcs_login
+    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, \
+    handling_editor_login, internal_editor_login, pub_svcs_login
 from frontend.Tasks.authors_task import AuthorsTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
@@ -45,7 +45,7 @@ class AuthorsTaskTest(CommonTest):
     """Validates styles for the author task"""
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard = self.cas_login()
+    dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research',)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
@@ -56,6 +56,9 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_styles()
     authors_task.validate_author_task_action()
     authors_task.validate_delete_author()
+    authors_task = AuthorsTask(self.getDriver())
+    authors_task.scroll_to_task_body_top()
+    time.sleep(3)
     authors_task.click_completion_button()
     # Attempting to close authors task without a complete author should fail
     # Time for GUI to automatically deselect complete checkbox

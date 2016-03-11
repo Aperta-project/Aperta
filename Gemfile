@@ -93,6 +93,9 @@ end
 
 group :development do
   gem 'bullet'
+  gem 'capistrano-chruby'
+  gem 'capistrano-foreman'
+  gem 'capistrano3-puma'
   gem 'capistrano-rails'
   gem 'foreman', require: false
   gem 'overcommit'

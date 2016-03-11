@@ -13,7 +13,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Removed
--
+- Appeal button
 
 ### Fixed
 -

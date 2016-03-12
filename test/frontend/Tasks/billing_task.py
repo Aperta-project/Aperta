@@ -5,6 +5,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import billing_data as bd
 from frontend.Tasks.basetask import BaseTask
 
@@ -65,7 +66,14 @@ class BillingTask(BaseTask):
     # previous send_keys method no longer works.
     payment_option_default = 'I will pay the full fee upon article acceptance'
     time.sleep(2)
-    parent_div = self._get(self._payment_items_parent)
+    # This locator is dynamic and unpredictable
+    self.set_timeout(2)
+    try:
+      parent_div = self._get(self._payment_items_parent)
+    except ElementDoesNotExistAssertionError:
+      self._payment_items_parent = (By.ID, 'select2-results-4')
+      parent_div = self._get(self._payment_items_parent)
+    self.restore_timeout()
     # for item in parent_div.find_elements_by_tag_name('li'):
     for item in parent_div.find_elements_by_class_name('select2-result-label'):
       if item.text == payment_option_default:

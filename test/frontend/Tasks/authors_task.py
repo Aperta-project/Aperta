@@ -64,17 +64,21 @@ class AuthorsTask(BaseTask):
     self._author_other_lbl = (
         By.CSS_SELECTOR,
         'div.author-contributions div.flex-group + div.flex-group div.flex-element label')
-    self._designed_chkbx = (By.XPATH,
-      ".//input[@name='author--contributions--conceived_and_designed_experiments']\
-      /following-sibling::span")
+    self._designed_chkbx = (
+        By.XPATH,
+        ".//input[@name='author--contributions--conceptualization']/following-sibling::span")
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'fieldset.author-contributions legend.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.author-task-item-view')
     self._delete_author_div = (By.CSS_SELECTOR, 'div.authors-overlay-item-delete')
-    self._edit_author = (By.CLASS_NAME, 'div.author-name')
+    self._edit_author = (By.CSS_SELECTOR, 'div.author-name')
     self._corresponding = (By.XPATH,
       ".//input[@name='author--published_as_corresponding_author']")
+    self._govt_employee_div = (By.CSS_SELECTOR, 'div.author-government')
+    self._govt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
+    self._govt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
+    self._govt_employee_radios =
     self._authors_acknowledgement = (By.CLASS_NAME, 'authors-task-acknowledgements')
 
    #POM Actions
@@ -180,6 +184,8 @@ class AuthorsTask(BaseTask):
     assert validation_lbl.text == 'Validation', validation_lbl.text
     assert writing_re_lbl.text == 'Writing - Review and Editing', writing_re_lbl.text
     assert formal_analysis_lbl.text == 'Formal Analysis', formal_analysis_lbl.text
+
+    # Validate the Govt Employee section
 
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'
@@ -288,6 +294,12 @@ class AuthorsTask(BaseTask):
     author_contribution_chck = self._get(self._designed_chkbx)
     if not author_contribution_chck.is_selected():
       author_contribution_chck.click()
+
+    # Need to complete the remaining required elements to successfully complete this card.
+    AuthorInitsInput = self._get(self._author_inits_input)
+    self._actions.send_keys_to_element(AuthorInitsInput, 'AA')
+
+
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
     completed = self.completed_state()

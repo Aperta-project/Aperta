@@ -108,7 +108,7 @@ class AuthorsTask(BaseTask):
     assert authors_text_link.get_attribute('target') == '_blank', \
         authors_text_link.get_attribute('target')
     authors_note = self._get(self._authors_note)
-    assert authors_note.text == 'Note: Ensure the authors are in the correct publication order.',
+    assert authors_note.text == 'Note: Ensure the authors are in the correct publication order.', \
         authors_note.text
     self.validate_application_ptext(authors_text)
     self.validate_application_ptext(authors_note)

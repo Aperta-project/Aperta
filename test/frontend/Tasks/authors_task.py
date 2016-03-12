@@ -39,7 +39,7 @@ class AuthorsTask(BaseTask):
     self._last_input = (By.CSS_SELECTOR, 'input.author-last')
     self._author_inits_field = (By.CSS_SELECTOR, 'div.author-initial')
     self._author_inits_lbl = (By.CSS_SELECTOR, 'div.author-initial > div > label')
-    self._author_inits_input = (By.CSS_SELECTOR, 'div.author-initial > input')
+    self._author_inits_input = (By.CSS_SELECTOR, 'div.author-initial > div + input')
     self._email_field = (
         By.XPATH,
         "//div[@class='flex-group'][2]/div[@class='flex-element inset-form-control required ']"
@@ -78,8 +78,17 @@ class AuthorsTask(BaseTask):
     self._govt_employee_div = (By.CSS_SELECTOR, 'div.author-government')
     self._govt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
     self._govt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
-    self._govt_employee_radios =
+    self._govt_employee_radio_yes = (
+        By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > label > input')
+    self._govt_employee_radio_no = (
+        By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > label + label > input')
     self._authors_acknowledgement = (By.CLASS_NAME, 'authors-task-acknowledgements')
+    self._authors_ack_agree2name = (By.CSS_SELECTOR,
+                                    'p.authors-task-acknowledgements + div > label > input')
+    self._authors_ack_auth_crit = (By.CSS_SELECTOR,
+                                    'p.authors-task-acknowledgements + div + div> label > input')
+    self._authors_ack_agree2submit = (
+        By.CSS_SELECTOR, 'p.authors-task-acknowledgements + div + div + div > label > input')
 
    #POM Actions
   def validate_author_task_styles(self):
@@ -186,6 +195,17 @@ class AuthorsTask(BaseTask):
     assert formal_analysis_lbl.text == 'Formal Analysis', formal_analysis_lbl.text
 
     # Validate the Govt Employee section
+    gquest = self._get(self._govt_employee_question)
+    assert 'Is this author an employee of the United States Government?' in gquest.text, gquest.text
+    ghelp = self._get(self._govt_employee_help)
+    assert 'Papers authored by one or more U.S. government employees are not copyrighted, but ' \
+           'are licensed under a CC0 Public Domain Dedication, which allows unlimited ' \
+           'distribution and reuse of the article for any lawful purpose. This is a legal ' \
+           'requirement for U.S. government employees.' in ghelp.text, ghelp.text
+    ghelp_link = ghelp.find_element_by_tag_name('a')
+    assert ghelp_link.get_attribute('href') == 'https://creativecommons.org/publicdomain/zero/1.0/'
+    self._get(self._govt_employee_radio_yes)
+    self._get(self._govt_employee_radio_no)
 
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'
@@ -296,9 +316,12 @@ class AuthorsTask(BaseTask):
       author_contribution_chck.click()
 
     # Need to complete the remaining required elements to successfully complete this card.
-    AuthorInitsInput = self._get(self._author_inits_input)
-    self._actions.send_keys_to_element(AuthorInitsInput, 'AA')
-
+    author_inits_input = self._get(self._author_inits_input)
+    author_inits_input.send_keys('AA')
+    self._get(self._govt_employee_radio_no).click()
+    self._get(self._authors_ack_agree2name).click()
+    self._get(self._authors_ack_auth_crit).click()
+    self._get(self._authors_ack_agree2submit).click()
 
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()

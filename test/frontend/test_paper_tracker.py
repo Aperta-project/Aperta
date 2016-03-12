@@ -3,11 +3,13 @@
 import logging
 import random
 
+from Pages.dashboard import DashboardPage
 from Base.Decorators import MultiBrowserFixture
+from frontend.common_test import CommonTest
+from Pages.login_page import LoginPage
 from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
     super_admin_login
-from frontend.common_test import CommonTest
 
 """
 This test case validates the Aperta paper_tracker page.
@@ -18,6 +20,7 @@ Those acts are expected to be defined in
 
 """
 __author__ = 'jgray@plos.org'
+
 
 users = [staff_admin_login,
          internal_editor_login,
@@ -42,7 +45,6 @@ class ApertaPaperTrackerTest(CommonTest):
       Welcome Text, subhead, table presentation
     """
     user_type = random.choice(users)
-    logging.info('Logging in as user: {0}'.format(user_type['name']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()
 

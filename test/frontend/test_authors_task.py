@@ -68,6 +68,8 @@ class AuthorsTaskTest(CommonTest):
     # Time for GUI to automatically deselect complete checkbox
     time.sleep(1)
     assert not authors_task.completed_state()
+    # We expect a completion error to to fire because several required elements are not complete.
+    # The metadata versioning test case covers the everything completely filled out case.
     authors_task.validate_completion_error()
     return self
 

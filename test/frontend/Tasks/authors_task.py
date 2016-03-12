@@ -104,10 +104,12 @@ class AuthorsTask(BaseTask):
     authors_text_link = self._get(self._authors_text_link)
     assert 'http://www.icmje.org/recommendations/browse/' in authors_text_link.get_attribute('href')
     assert 'roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html' in \
-        authors_text_link.get_attribute('href')
-    assert authors_text_link.get_attribute('target') == '_blank'
+        authors_text_link.get_attribute('href'), authors_text_link.get_attribute('href')
+    assert authors_text_link.get_attribute('target') == '_blank', \
+        authors_text_link.get_attribute('target')
     authors_note = self._get(self._authors_note)
-    assert authors_note.text == 'Note: Ensure the authors are in the correct publication order.'
+    assert authors_note.text == 'Note: Ensure the authors are in the correct publication order.',
+        authors_note.text
     self.validate_application_ptext(authors_text)
     self.validate_application_ptext(authors_note)
 

@@ -23,6 +23,7 @@ class BaseTask(AuthenticatedPage):
 
     # Common element for all tasks
     self.task_title = (By.CSS_SELECTOR, 'task-disclosure-heading')
+    self._task_body = (By.CSS_SELECTOR, 'div.task-disclosure-body')
     self._completion_button = (By.CSS_SELECTOR, 'button.task-completed')
     # Error Messaging
     self._task_error_msg = (By.CSS_SELECTOR, 'span.task-completed-section div.error-message')
@@ -48,7 +49,8 @@ class BaseTask(AuthenticatedPage):
 
   def validate_completion_error(self):
     """
-    Validates that we properly put up an error in the case of attempting completion of a task with validation errors
+    Validates that we properly put up an error in the case of attempting completion of a task with
+      validation errors
     :return: void function
     """
     self.set_timeout(2)
@@ -68,7 +70,8 @@ class BaseTask(AuthenticatedPage):
     :return: True if versioned view of card, False otherwise
     """
     if self._get(self._versioned_metadata_div):
-      assert self._get(self._versioned_metadata_div).text == 'Viewing', self._get(self._versioned_metadata_div).text
+      assert self._get(self._versioned_metadata_div).text == 'Viewing', \
+          self._get(self._versioned_metadata_div).text
       return True
     else:
       return False

@@ -5,4 +5,6 @@
 .idea/inspectionProfiles/*
 frontent/Output/*.png
 frontend/assets/docs/*
+frontend/assets/imgs/*
+frontend/assets/supportingInfo/*
 

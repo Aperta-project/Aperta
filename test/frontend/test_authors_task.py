@@ -6,8 +6,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import staff_admin_login, super_admin_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, handling_editor_login, \
-    internal_editor_login, pub_svcs_login
+    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, \
+    handling_editor_login, internal_editor_login, pub_svcs_login
 from frontend.Tasks.authors_task import AuthorsTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
@@ -45,7 +45,7 @@ class AuthorsTaskTest(CommonTest):
     """Validates styles for the author task"""
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard = self.cas_login()
+    dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research',)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
@@ -56,11 +56,20 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_styles()
     authors_task.validate_author_task_action()
     authors_task.validate_delete_author()
+    # The author task is large enough that the Completion button frequently scrolls to an a place
+    #   place obscured by the task title. This two step boogaloo resets the view to the top of the
+    #   task.
+    manuscript_page.click_task('authors')
+    manuscript_page.click_task('authors')
+    authors_task = AuthorsTask(self.getDriver())
+    time.sleep(3)
     authors_task.click_completion_button()
-    # Attempting to close authors task without a complete author should fail
+    # Attempting to close authors task without a complete author or acknowledgements should fail
     # Time for GUI to automatically deselect complete checkbox
     time.sleep(1)
     assert not authors_task.completed_state()
+    # We expect a completion error to to fire because several required elements are not complete.
+    # The metadata versioning test case covers the everything completely filled out case.
     authors_task.validate_completion_error()
     return self
 

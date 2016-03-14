@@ -141,7 +141,7 @@ class AuthorsTask(BaseTask):
     assert first_input.get_attribute('placeholder') == 'Jane'
 
     # APERTA-6277 This should be leading Cap for all words
-    assert middle_lbl.text == 'Middle name', middle_lbl.text
+    assert middle_lbl.text == 'Middle Name', middle_lbl.text
     assert middle_input.get_attribute('placeholder') == 'M', \
         middle_input.get_attribute('placeholder')
 
@@ -149,7 +149,7 @@ class AuthorsTask(BaseTask):
     assert last_input.get_attribute('placeholder') == 'Doe', last_input.get_attribute('placeholder')
 
     assert 'required' in initials_field.get_attribute('class')
-    assert initials_lbl.text == 'Author initial', last_lbl.text
+    assert initials_lbl.text == 'Author Initial', last_lbl.text
 
     assert email_lbl.text == 'Email', email_lbl.text
     assert email_input.get_attribute('placeholder') == 'jane.doe@example.com', \

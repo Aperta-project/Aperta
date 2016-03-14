@@ -3,6 +3,8 @@ CodeClimate::TestReporter.start
 
 ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
+require 'rspec/matchers'
+require 'equivalent-xml'
 require File.expand_path("../../config/environment", __FILE__)
 require 'capybara-screenshot/rspec'
 require 'capybara/rspec'

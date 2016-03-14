@@ -16,7 +16,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::AuthorsTask.name,
       ident: 'authors--authors_confirm_icmje_criteria',
       value_type: 'boolean',
-      text: 'All authors have read, and confirm, that they meet, ICMJE criteria for authorship.',
+      text: 'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
       position: 2,
       children: []
     }

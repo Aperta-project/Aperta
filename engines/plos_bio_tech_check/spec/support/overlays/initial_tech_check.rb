@@ -1,13 +1,16 @@
 class InitialTechCheckOverlay < CardOverlay
-  def current_round
-    find('.initial-tech-check-round-number').text.match(/\d/).to_s.to_i
+  def create_author_changes_card
+    click_send_changes_button
+    fill_in 'author-changes-letter', with: 'First round author changes'
+    click_send_changes_button
   end
 
-  def create_author_changes_card
-    click_button 'Write Author Changes Letter'
-    fill_in 'author-changes-letter', with: 'First round author changes'
-    click_button 'Create Author Changes Card'
-    page.has_content? 'Edit Author Changes Letter'
+  def expect_author_chages_saved
+    expect(page).to have_content('Author Changes Letter has been Saved')
+  end
+
+  def expect_task_to_be_completed
+    expect(page).to have_css('button.task-is-completed')
   end
 
   def display_letter
@@ -20,5 +23,11 @@ class InitialTechCheckOverlay < CardOverlay
 
   def click_autogenerate_email_button
     find("button#autogenerate-email").click
+  end
+
+  private
+
+  def click_send_changes_button
+    click_button 'Send Changes to Author'
   end
 end

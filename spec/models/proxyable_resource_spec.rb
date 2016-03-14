@@ -39,6 +39,13 @@ describe ProxyableResource, redis: true do
       url = "http://www.example.com/resource_proxy/supporting_information_files/#{file.token}/detail"
       expect(file.non_expiring_proxy_url(only_path: false, version: :detail)).to eq(url)
     end
+
+    it 'returns a cache busting query sting when requested' do
+      cache_buster = file.updated_at.to_i
+      expect(cache_buster).to be_present
+      url = "/resource_proxy/supporting_information_files/#{file.token}?cb=#{cache_buster}"
+      expect(file.non_expiring_proxy_url(cache_buster: true)).to eq url
+    end
   end
   describe '#proxyable_url' do
     context 'without version' do

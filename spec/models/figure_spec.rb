@@ -54,6 +54,11 @@ describe Figure, redis: true do
       expect(figure.detail_src)
         .to eq figure.non_expiring_proxy_url(version: :detail)
     end
+
+    it 'returns a path with a cache buster if requested' do
+      url = figure.detail_src(cache_buster: true)
+      expect(url).to match /\?cb=\w+$/
+    end
   end
 
   describe '.acceptable_content_type?' do
@@ -76,6 +81,55 @@ describe Figure, redis: true do
       # this spec exists so that we don't duplicate that behavior
       expect(figure).to receive(:remove_attachment!)
       figure.destroy
+    end
+  end
+
+  describe 'rank' do
+    it 'coerces the title into an integer if able' do
+      figure = create :figure, title: "Fig 1"
+      expect(figure.rank).to eq 1
+
+      figure.update!(title: "Figure 2")
+      expect(figure.rank).to eq 2
+
+      figure.update!(title: "42")
+      expect(figure.rank).to eq 42
+    end
+
+    it 'is nil if the title can not be coerced into an integer' do
+      figure = create :figure, title: "I didn't follow instructions"
+      expect(figure.rank).to be_nil
+    end
+
+    it 'is nil if the title is nil' do
+      figure = create :figure, title: nil
+      expect(figure.rank).to be_nil
+    end
+  end
+
+  describe 'inserting figures into a paper' do
+    let(:paper_double) { double 'paper' }
+
+    it 'triggers when the figure title is updated' do
+      allow(figure).to receive(:paper).and_return(paper_double)
+      expect(paper_double).to receive(:insert_figures!)
+
+      figure.update!(title: 'new title')
+    end
+
+    it 'triggers when the figure is destroyed' do
+      allow(figure).to receive(:paper).and_return(paper_double)
+      expect(paper_double).to receive(:insert_figures!)
+      allow(paper_double).to receive(:id)
+
+      figure.destroy!
+    end
+
+    it 'triggers if the attachment is updated' do
+      expect(figure).to receive(:insert_figures!)
+      with_aws_cassette('figure') do
+        figure.update!(attachment: File.open('spec/fixtures/yeti.jpg'))
+      end
     end
   end
 end

@@ -40,10 +40,20 @@ export const taskValidations = {
 export default {
   'firstName': ['presence'],
   'lastName': ['presence'],
+  'authorInitial': ['presence'],
   'email': ['presence', 'email'],
-  'title': ['presence'],
-  'department': ['presence'],
   'affiliation': ['presence'],
+  'government': [{
+    type: 'presence',
+    message: 'A selection must be made',
+    validation() {
+      const author = this.get('object');
+      const answer = author.answerForQuestion('author--government-employee')
+                           .get('value');
+
+      return answer === true || answer === false;
+    }
+  }],
   'contributions': [{
     type: 'presence',
     message: 'One must be selected',

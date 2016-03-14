@@ -46,14 +46,10 @@ describe JournalFactory do
 
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            ::Task.descendants - inaccessible_task_klasses
+            ::Task.submission_task_types + [PlosBioTechCheck::ChangesForAuthorTask]
           end
-          let(:inaccessible_task_klasses) do
-            [
-              TahiStandardTasks::ProductionMetadataTask,
-              PlosBioTechCheck::FinalTechCheckTask,
-              TahiStandardTasks::RegisterDecisionTask
-            ]
+          let(:all_inaccessible_task_klasses) do
+            ::Task.descendants - accessible_task_klasses
           end
 
           it 'can :view and :edit all Tasks except ProductionMetadataTask' do
@@ -64,7 +60,7 @@ describe JournalFactory do
               )
             end
 
-            inaccessible_task_klasses.each do |klass|
+            all_inaccessible_task_klasses.each do |klass|
               expect(journal.creator_role.permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name),
                 Permission.find_by(action: :edit, applies_to: klass.name)
@@ -80,7 +76,7 @@ describe JournalFactory do
               )
             end
 
-            inaccessible_task_klasses.each do |klass|
+            all_inaccessible_task_klasses.each do |klass|
               expect(journal.creator_role.permissions).to_not include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
@@ -106,7 +102,9 @@ describe JournalFactory do
 
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.descendants.select { |klass| klass <=> MetadataTask } + [TahiStandardTasks::CoverLetterTask]
+            accessible_for_role = ::Task.descendants.select do |klass|
+              klass <=> SubmissionTask
+            end
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do

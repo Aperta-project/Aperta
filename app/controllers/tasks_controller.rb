@@ -57,7 +57,7 @@ class TasksController < ApplicationController
       task_email_params[:body],
       task_email_params[:recipients]
     )
-    head :ok
+    head :no_content
   end
 
   def nested_questions

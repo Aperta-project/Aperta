@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "ember-sinon": "0.5.0"
   },
   "dependencies": {
     "broccoli-asset-rev": "^2.2.0",

@@ -13,6 +13,10 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
     return `/api/tasks/${this.get('task.id')}/attachments`;
   }),
 
+  paperId: Ember.computed('task', function() {
+    return this.get('task.paper.id');
+  }),
+
   attachmentsRequest(path, method, s3Url, file) {
     const store = this.container.lookup('store:main');
     const restless = this.get('restless');

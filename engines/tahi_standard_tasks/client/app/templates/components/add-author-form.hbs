@@ -20,7 +20,7 @@
 
       <div class="flex-element inset-form-control author-middle-initial {{if validationErrors.middleInitial "error"}}">
         <div class="inset-form-control-text">
-          <label>Middle name</label>
+          <label>Middle Name</label>
           {{error-message message=validationErrors.middleInitial
                           displayIcon=true
                           displayText=false}}
@@ -47,44 +47,40 @@
                 placeholder="Doe"}}
       </div>
 
-      <div class="flex-element inset-form-control author-initial">
+      <div class="flex-element inset-form-control required author-initial {{if validationErrors.authorInitial "error"}}">
         <div class="inset-form-control-text">
-          <label>Author initial</label>
+          <label>Author Initial</label>
+          {{error-message message=validationErrors.authorInitial
+                          displayIcon=true
+                          displayText=false}}
         </div>
         {{input type="text"
                 value=author.authorInitial
                 class="author-initial inset-form-control-input"
-                disabled=isNotEditable}}
+                disabled=isNotEditable
+                focus-out=(action "validateField" "authorInitial")}}
       </div>
     </div>
     <div class="flex-group">
-      <div class="flex-element inset-form-control required {{if validationErrors.title "error"}}">
+      <div class="flex-element inset-form-control">
         <div class="inset-form-control-text">
           <label>Title</label>
-          {{error-message message=validationErrors.title
-                          displayIcon=true
-                          displayText=false}}
         </div>
         {{input type="text"
                 value=author.title
                 class="author-title inset-form-control-input"
                 disabled=isNotEditable
-                focus-out=(action "validateField" "title")
                 placeholder="Professor"}}
       </div>
 
-      <div class="flex-element inset-form-control required {{if validationErrors.department "error"}}">
+      <div class="flex-element inset-form-control">
         <div class="inset-form-control-text">
           <label>Department</label>
-          {{error-message message=validationErrors.department
-                          displayIcon=true
-                          displayText=false}}
         </div>
         {{input type="text"
                 value=author.department
                 class="author-department inset-form-control-input"
                 disabled=isNotEditable
-                focus-out=(action "validateField" "department")
                 placeholder="Biology"}}
       </div>
 
@@ -115,7 +111,7 @@
                              disabled=isNotEditable
                              validate=(action "validateField" "affiliation")
                              errors=validationErrors.affiliation
-                             placeholder="Institution"}}
+                             placeholder="* Institution"}}
       </div>
 
       <div class="flex-element author-affiliation {{if validationErrors.secondaryAffiliation "error"}}">
@@ -235,7 +231,7 @@
   <fieldset class="author-contributions">
     <legend class="flex-element required">
       Author
-      <a href="http://www.cell.com/pb/assets/raw/shared/guidelines/CRediT-Taxonomy.pdf" target="_blank">Contributions</a>
+      <a href="http://casrai.org/CRediT" target="_blank">Contributions</a>
       {{error-message message=validationErrors.contributions
                       displayIcon=true
                       displayText=true}}
@@ -264,6 +260,9 @@
                             owner=author
                             helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a href='https://creativecommons.org/publicdomain/zero/1.0/' target='_blank'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
                             disabled=isNotEditable}}
+    {{error-message message=validationErrors.government
+                    displayIcon=true
+                    displayText=true}}
   </div>
 
 

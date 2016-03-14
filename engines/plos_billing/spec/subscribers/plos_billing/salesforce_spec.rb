@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PlosBilling::Paper::Submitted::Salesforce do
+describe PlosBilling::Paper::Salesforce do
   let(:salesforce_manuscript_update_worker) do
     class_double(PlosBilling::SalesforceManuscriptUpdateWorker)
       .as_stubbed_const(transfer_nested_constants: true)
@@ -13,12 +13,26 @@ describe PlosBilling::Paper::Submitted::Salesforce do
     allow(paper).to receive(:creator) { user }
   end
 
-  context "paper is submitted" do
-    it "find or create Salesforce Manuscript" do
+  describe "subscribes to state changes" do
+    before do
       expect(salesforce_manuscript_update_worker)
         .to receive(:perform_async).with(paper.id).once
+    end
 
+    it "finds or creates Salesforce Manuscript on submitted" do
       described_class.call("tahi:paper:submitted", record: paper)
+    end
+
+    it "finds or creates Salesforce Manuscript on accept" do
+      described_class.call("tahi:paper:accepted", record: paper)
+    end
+
+    it "finds or creates Salesforce Manuscript on reject" do
+      described_class.call("tahi:paper:rejected", record: paper)
+    end
+
+    it "finds or creates Salesforce Manuscript on withdraw" do
+      described_class.call("tahi:paper:withdrawn", record: paper)
     end
   end
 end

@@ -65,11 +65,13 @@
             autofocus="autofocus"
             value=attachment.title}}
           </div>
+          {{!--
           <div class="field caption">
             {{textarea placeholder="Enter a caption for this attachment"
             class="attachment-caption-field"
             value=attachment.caption rows="5"}}
           </div>
+          --}}
 
           {{#if figure}}
           <div class="field striking">
@@ -92,9 +94,11 @@
             {{if attachment.title attachment.title "Attachment title"}}
           </h2>
 
+          {{!--
           <div class="caption" {{action "toggleEditState" on="doubleClick"}}>
             {{if attachment.caption attachment.caption "There is no caption for this file."}}
           </div>
+          --}}
 
           {{#if confidentiality}}
           <label class="publishable">

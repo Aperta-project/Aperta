@@ -294,7 +294,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Checking More Toolbar menu for {0}'.format(useremail))
     more_btn = self._get(self._tb_more_link)
     more_btn.click()
-    self._get(self._tb_more_appeal_link)
+    # For the time being, the appeals link is being removed for everybody.
+    # self._get(self._tb_more_appeal_link)
     # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
     if useremail in [creator_login1['email'],
                      creator_login2['email'],

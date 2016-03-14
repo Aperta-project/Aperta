@@ -36,8 +36,9 @@ describe AssignmentsController, type: :controller do
       it 'returns users who are eligible to be assigned to the provided role' do
         do_request
         expect(res_body['assignments'].count).to eq(paper_assignments.length)
-        expect(res_body['assignments'][0]['id']).to \
-          eq(paper_assignments.first.id)
+
+        ids = res_body['assignments'].map{ |hsh| hsh['id'] }
+        expect(ids).to include(paper_assignments.first.id)
       end
     end
 

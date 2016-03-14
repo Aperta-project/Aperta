@@ -43,7 +43,6 @@ describe SalesforceServices::API do
         expect(SalesforceServices::API.salesforce_active).to eq(true)
       end
     end
-
   end
 
   describe "#create_manuscript" do
@@ -85,31 +84,57 @@ describe SalesforceServices::API do
     end
   end
 
-  describe '#create_billing_and_pfa_case' do
-    it 'creates and returns a salesforce case object' do
+  describe '#ensure_pfa_case' do
+    let(:journal) { FactoryGirl.create(:journal) }
+    let(:paper) do |paper|
       task_params = {
         title: 'Billing',
         type: 'PlosBilling::BillingTask',
         paper_id: paper.id,
         old_role: 'author'
       }
-      journal = FactoryGirl.create(:journal)
-      paper = FactoryGirl.create(:paper_with_task, task_params: task_params, journal: journal)
+      FactoryGirl.create(:paper_with_task,
+                         task_params: task_params,
+                         journal: journal,
+                         doi: 'ha/haha.2098')
+    end
+
+    before do
       allow(Paper).to receive(:find).with(paper.id).and_return(paper)
       allow(paper).to receive(:creator) { FactoryGirl.build(:user) }
       FactoryGirl.create(:financial_disclosure_task, paper: paper)
+      expect(Case).to receive(:soql_conditions_for)
+        .with("Subject" => "haha.2098")
+    end
 
-      VCR.use_cassette("salesforce_instantiate_client") do
-        @api = SalesforceServices::API
-        @api.client
+    context "existing PFA case on salesforce" do
+      before do
+        expect(Case.client).to receive(:query) { [true] }
       end
 
-      VCR.use_cassette("salesforce_create_billing_and_pfa") do
-        @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
-        expect(@kase.class).to eq Case
-        expect(@kase.persisted?).to eq true
+      it "doesn't create a new case" do
+        expect(Case).to_not receive(:create)
+        @api.ensure_pfa_case(paper_id: paper.id)
+      end
+    end
+
+    context "new PFA case" do
+      before do
+        expect(Case.client).to receive(:query) { nil }
       end
 
+      it 'creates and returns a salesforce case object' do
+        VCR.use_cassette("salesforce_instantiate_client") do
+          @api = SalesforceServices::API
+          @api.client
+        end
+
+        VCR.use_cassette("salesforce_create_billing_and_pfa") do
+          @kase = @api.ensure_pfa_case(paper_id: paper.id)
+          expect(@kase.class).to eq Case
+          expect(@kase.persisted?).to eq true
+        end
+      end
     end
   end
 end

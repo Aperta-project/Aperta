@@ -5,7 +5,7 @@ class PaperTaskTypesController < ApplicationController
 
   def index
     requires_user_can(:manage_workflow, paper)
-    respond_with JournalTaskType.where(journal_id: paper.journal.id)
+    respond_with paper.journal.journal_task_types
   end
 
   private

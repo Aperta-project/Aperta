@@ -17,7 +17,7 @@ class PaperSerializer < LitePaperSerializer
   has_one :striking_image, embed: :id
 
   def paper_task_types
-    JournalTaskType.where(journal_id: object.journal.id)
+    paper.journal.journal_task_types
   end
 
   def links

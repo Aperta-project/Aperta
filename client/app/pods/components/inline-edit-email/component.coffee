@@ -49,7 +49,7 @@ InlineEditEmailComponent = Ember.Component.extend
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @set('lastSentAt', bodyPart.sent)
-
+      // TODOMPM - Email recipients is not sending correctly
       @.attrs.sendEmail
         body: bodyPart.value
         subject: bodyPart.subject

@@ -2,7 +2,7 @@
   {{#if isSendable}}
     <div class="send-email">
       {{#if lastSentAt}} <span class="bodypart-last-sent">Sent {{lastSentAt}}</span>{{/if}}
-      <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
+      <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email</div>
     </div>
   {{/if}}
   <div class="item-text">
@@ -25,7 +25,7 @@
                            everyone=allUsers
                            onRemove=(action "removeRecipient")
                            onSelect=(action "addRecipientById")
-                           label="Following:"
+                           label="Recipients:"
                            task=task
                            taskId=task.id
                            paperId=paperId

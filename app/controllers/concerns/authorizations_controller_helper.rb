@@ -15,11 +15,6 @@ module AuthorizationsControllerHelper
     fail AuthorizationError
   end
 
-  def requires_journal_admin(journal)
-    return if current_user.journal_admin?(journal)
-    fail AuthorizationError
-  end
-
   def requires_any_admin
     return if current_user.admin?
     fail AuthorizationError

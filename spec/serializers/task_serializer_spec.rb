@@ -34,7 +34,7 @@ describe TaskSerializer do
   end
 
   describe '#assigned_to_me' do
-    let(:paper) { FactoryGirl.build_stubbed(:paper) };
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
     let(:user) { FactoryGirl.build_stubbed(:user) }
 
     before do

@@ -134,7 +134,7 @@ describe JournalFactory do
             accessible_task_klasses.each do |klass|
               expect(journal.collaborator_role.permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :manage_participant, applies_to: klass.name),
+                Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
 

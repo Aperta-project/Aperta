@@ -92,6 +92,5 @@ describe EligibleUserService do
         end.to raise_error(NotImplementedError, /Don't know how to find/)
       end
     end
-
   end
 end

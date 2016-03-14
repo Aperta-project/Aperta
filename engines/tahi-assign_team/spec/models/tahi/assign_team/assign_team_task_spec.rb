@@ -22,7 +22,8 @@ describe Tahi::AssignTeam::AssignTeamTask do
     end
 
     it "includes the journal's handling_editor_role" do
-      expect(task.assignable_roles).to include(task.journal.handling_editor_role)
+      expect(task.assignable_roles).to include \
+        task.journal.handling_editor_role
     end
 
     it "includes the journal's cover_editor_role" do
@@ -37,13 +38,28 @@ describe Tahi::AssignTeam::AssignTeamTask do
     let(:user) { FactoryGirl.build_stubbed(:user) }
 
     let(:expected_assignment_1) do
-      FactoryGirl.create(:assignment, assigned_to: task.paper, role: cover_editor_role, user: user)
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: task.paper,
+        role: cover_editor_role,
+        user: user
+      )
     end
     let(:expected_assignment_2) do
-      FactoryGirl.create(:assignment, assigned_to: task.paper, role: handling_editor_role, user: user)
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: task.paper,
+        role: handling_editor_role,
+        user: user
+      )
     end
     let(:not_expected_assignment) do
-      FactoryGirl.create(:assignment, assigned_to: task.paper, role: unsupported_role, user: user)
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: task.paper,
+        role: unsupported_role,
+        user: user
+      )
     end
 
     before do
@@ -54,16 +70,19 @@ describe Tahi::AssignTeam::AssignTeamTask do
         .and_return cover_editor_role
     end
 
-    it "returns the assignments to this task's paper based on the assignable_roles" do
+    it <<-DESCRIPTION do
+      returns the assignments to this task's paper based on the assignable_roles
+    DESCRIPTION
       expect(task.assignments).to contain_exactly(
         expected_assignment_1,
         expected_assignment_2
       )
     end
 
-    it "does not include assignments where the role is not an assignable_role" do
+    it <<-DESCRIPTION do
+      does not include assignments where the role is not an assignable_role
+    DESCRIPTION
       expect(task.assignments).to_not include(not_expected_assignment)
     end
   end
-
 end

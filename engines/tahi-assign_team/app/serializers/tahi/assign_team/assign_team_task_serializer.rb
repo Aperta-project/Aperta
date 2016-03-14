@@ -1,5 +1,7 @@
 module Tahi
   module AssignTeam
+    # The AssignTeamTaskSerializer is responsible for serializing an
+    # AssignTeamTask model as an API response.
     class AssignTeamTaskSerializer < ::TaskSerializer
       has_many \
         :assignments,

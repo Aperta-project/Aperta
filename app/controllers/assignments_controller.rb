@@ -1,3 +1,5 @@
+# The AssignmentsController is the end-point responsible for managing
+# assignments over HTTP.
 class AssignmentsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json

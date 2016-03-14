@@ -7,10 +7,7 @@ describe AssignmentsController, type: :controller do
 
   describe '#index' do
     subject(:do_request) do
-      get :index, {
-        format: 'json',
-        paper_id: paper.to_param
-      }
+      get :index, format: 'json', paper_id: paper.to_param
     end
 
     let(:paper_assignments) do
@@ -57,13 +54,15 @@ describe AssignmentsController, type: :controller do
 
   describe "POST 'create'" do
     subject(:do_request) do
-      post :create,
+      post(
+        :create,
         format: 'json',
         assignment: {
-        'role_id' => role.id,
-        'user_id' => assignee.id,
-        'paper_id' => paper.id
-      }
+          'role_id' => role.id,
+          'user_id' => assignee.id,
+          'paper_id' => paper.id
+        }
+      )
     end
     let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
@@ -142,10 +141,12 @@ describe AssignmentsController, type: :controller do
 
   describe "DELETE 'destroy'" do
     subject(:do_request) do
-      delete :destroy,
+      delete(
+        :destroy,
         format: 'json',
         paper_id: paper.to_param,
         id: assignment.to_param
+      )
     end
     let!(:assignment) do
       FactoryGirl.create(
@@ -178,7 +179,7 @@ describe AssignmentsController, type: :controller do
           assignee.assignments
             .where(role: role, assigned_to: paper)
             .count
-        }.by -1
+        }.by(-1)
 
         expect do
           assignment.reload

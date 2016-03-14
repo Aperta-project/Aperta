@@ -1,3 +1,6 @@
+# An Activity represents an event or action that has taken place in the system.
+# Activities are used to make up a feed for various users in the system. The
+# feed is determined by the feed name assigned to each activity.
 class Activity < ActiveRecord::Base
   belongs_to :subject, polymorphic: true
   belongs_to :user
@@ -9,12 +12,13 @@ class Activity < ActiveRecord::Base
   end
 
   def self.assignment_created!(assignment, user:)
+    msg = "#{assignment.user.full_name} was added as #{assignment.role.name}"
     create(
       feed_name: "workflow",
       activity_key: "assignment.created",
       subject: assignment.assigned_to,
       user: user,
-      message: "#{assignment.user.full_name} was added as #{assignment.role.name}"
+      message: msg
     )
   end
 

@@ -4,21 +4,22 @@ describe PaperRoleEligibleUsersController do
   let(:user) { FactoryGirl.create :user }
   let(:paper) { FactoryGirl.create(:paper) }
   let(:role) { FactoryGirl.create(:role, journal: paper.journal) }
-  let(:json_response){ JSON.parse(response.body).with_indifferent_access }
+  let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
   before { sign_in(user) }
 
   describe '#index' do
     subject(:do_request) do
-      get :index, {
+      get(
+        :index,
         format: 'json',
         paper_id: paper.to_param,
         role_id: role.to_param
-      }
+      )
     end
-    let(:eligible_users) {[
-      FactoryGirl.build_stubbed(:user, username: 'IamEligible')
-    ]}
+    let(:eligible_users) do
+      [FactoryGirl.build_stubbed(:user, username: 'IamEligible')]
+    end
 
     it_behaves_like 'an unauthenticated json request'
 

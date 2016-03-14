@@ -10,7 +10,7 @@ describe Paper::Submitted::EmailAdmins do
   it "sends an email to each admin" do
     expect(paper).to receive(:admins).and_return [user]
     expect(mailer).to receive(:notify_admin_of_paper_submission).with(paper.id, user.id)
-    described_class.call("tahi:paper:submitted", { record: paper })
+    described_class.call("tahi:paper:submitted", record: paper)
   end
 
 end

@@ -1,4 +1,4 @@
-# EligibleUserService is responsible for find the users in the system that
+# EligibleUserService is responsible for finding users in the system that
 # are eligible for various roles on a paper. This is useful when assigning
 # users to various roles on a paper and you don't want a list including users
 # who are already assigned to that role.

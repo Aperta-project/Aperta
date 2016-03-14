@@ -18,17 +18,6 @@
 
 <br class="clear"><br>
 
-<div class="reset-password">
-  <a href="#" class="reset-password-link button-secondary button--blue" {{action "resetPassword" model}}>Reset password</a>
-  {{#if resetPasswordSuccess}}
-    <div class="success">An email with reset password instructions has been sent to the user's email address.</div>
-  {{/if}}
-
-  {{#if resetPasswordFailure}}
-    <div class="error">Server Error</div>
-  {{/if}}
-</div>
-
 <div class="overlay-action-buttons">
   <a class="button-link button--blue cancel-link" {{action "rollbackUser"}}>Cancel</a>
   <button class="button-primary button--blue" {{action "saveUser"}}>Save</button>

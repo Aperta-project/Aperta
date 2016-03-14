@@ -263,15 +263,6 @@ describe ParticipationsController do
           }.to change { task.participations.count }.by -1
         end
 
-        it 'destroy the associated Role.participant assignment on the task' do
-          Assignment.create!(
-            user: participant,
-            role: task.journal.task_participant_role,
-            assigned_to: task
-          )
-          expect { do_request }.to change { task.participations.count }.by(-1)
-        end
-
         it "creates an activity" do
           expect{ do_request }.to change(Activity, :count).by(1)
         end

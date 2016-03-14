@@ -55,3 +55,21 @@ fetch(:bundle_bins).each do |command|
   SSHKit.config.command_map.prefix[command.to_sym].push("bundle exec dotenv -f env.production")
 end
 
+namespace :deploy do
+  desc 'Load the database schema'
+  task schema_load: [:set_rails_env] do
+    on primary fetch(:migration_role) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'db:schema:load'
+        end
+      end
+    end
+  end
+
+  desc 'First deploy: loads database schema'
+  task :cold do
+    before 'deploy:updated', 'deploy:schema_load'
+    invoke 'deploy'
+  end
+end

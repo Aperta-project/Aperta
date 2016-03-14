@@ -158,7 +158,9 @@ describe Task do
 
   describe 'Task.all_task_types' do
     it 'includes a new subclass of Task' do
-      class NewTask < Task; end
+      class NewTask < Task
+        DEFAULT_TITLE = "New Task for Testing"
+      end
       expect(Task.all_task_types).to include(NewTask)
     end
 

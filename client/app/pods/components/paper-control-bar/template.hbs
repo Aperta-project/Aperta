@@ -54,12 +54,6 @@
 
   <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="more-dropdown-menu">
     {{#unless paperWithdrawn}}
-      <li>
-        <a href="#" class="appeal-link" id="nav-appeal">
-          <span class="fa fa-image"></span>
-          Appeal
-        </a>
-      </li>
       {{#if (can 'withdraw' paper)}}
       <li>
         <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">

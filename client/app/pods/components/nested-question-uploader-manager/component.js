@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
 
 export default NestedQuestionComponent.extend({
@@ -20,8 +21,8 @@ export default NestedQuestionComponent.extend({
       Ember.assert(s3Url, 'Must provide an s3Url');
       Ember.assert(file, 'Must provide a file');
 
-      let answer = this.get('model.answer');
-      let store =  this.container.lookup('store:main');
+      const answer = this.get('model.answer');
+      const store =  getOwner(this).lookup('store:main');
       answer.save().then( (savedAnswer) => {
         if(!attachment){
           attachment = store.createRecord('question-attachment');

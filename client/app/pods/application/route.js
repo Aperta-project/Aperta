@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
+import getOwner from 'ember-getowner-polyfill';
 
 const debug = function(description, obj) {
   const devOrTest = ENV.environment === 'development' ||
@@ -47,7 +48,7 @@ export default Ember.Route.extend({
   },
 
   applicationSerializer: Ember.computed(function() {
-    return this.get('container').lookup('serializer:application');
+    return getOwner(this).lookup('serializer:application');
   }),
 
   actions: {

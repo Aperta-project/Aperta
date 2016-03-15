@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 
 ### Changed
--
+- Institution field will search as you type
 
 ### Deprecated
 -

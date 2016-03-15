@@ -1,6 +1,7 @@
 /* jshint unused: false */
 
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import camelizeKeys from 'tahi/lib/camelize-keys';
 
 export default Ember.Service.extend({
@@ -11,7 +12,7 @@ export default Ember.Service.extend({
   },
 
   ajaxPromise(method, path, data) {
-    let socketId = this.container.lookup('pusher:main').get('socketId');
+    let socketId = getOwner(this).lookup('pusher:main').get('socketId');
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       return Ember.$.ajax({

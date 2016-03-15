@@ -11,7 +11,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   taskTypeSort: ['title:asc'],
   sortedTaskTypes: computed.sort('journalTaskTypes', 'taskTypeSort'),
   authorTasks: computed.filterBy('sortedTaskTypes', 'oldRole', 'author'),
-  staffTasks: computed.setDiff('sortedTaskTypes', 'authorTasks'),
+  staffTasksUnsorted: computed.setDiff('sortedTaskTypes', 'authorTasks'),
+  staffTasks: computed.sort('staffTasksUnsorted', 'taskTypeSort'),
 
   setuptaskTypeList: on('init', function() {
     if (!this.get('taskTypeList')) {

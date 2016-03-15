@@ -1,8 +1,6 @@
 FactoryGirl.define do
   factory :author do
-    sequence(:position){ |n| n }
     paper
-    authors_task
 
     first_name "Luke"
     middle_initial "J"
@@ -12,5 +10,9 @@ FactoryGirl.define do
     department "Jedis"
     title "Head Jedi"
     affiliation 'university of dagobah'
+
+    after(:create) do |instance|
+      instance.task = FactoryGirl.create :authors_task
+    end
   end
 end

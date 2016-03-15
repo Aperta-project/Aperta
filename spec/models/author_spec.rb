@@ -27,13 +27,13 @@ describe Author do
     end
 
     context "and the corresponding authors_task is completed" do
-      let(:authors_task) { TahiStandardTasks::AuthorsTask.new(completed: true) }
+      let(:authors_task) { FactoryGirl.create(:authors_task, completed: true) }
 
       before do
         # we need a saved author in order to associated answers
         author.save!
         setup_contribution_question_for_author
-        author._task = authors_task
+        author.task = authors_task
       end
 
       it "is not valid without contributions" do

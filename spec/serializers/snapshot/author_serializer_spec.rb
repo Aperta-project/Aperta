@@ -3,13 +3,12 @@ require "rails_helper"
 describe Snapshot::AuthorSerializer do
   subject(:serializer) { described_class.new(author) }
   let(:author) do
-    FactoryGirl.create(
+    author = FactoryGirl.create(
       :author,
       first_name: "Reggie",
       last_name: "Watts",
       middle_initial: "U",
       email: "reggie@example.com",
-      position: 99,
       department: "Music",
       title: "Producer",
       affiliation: "Hip Hop",
@@ -17,6 +16,8 @@ describe Snapshot::AuthorSerializer do
       ringgold_id: "1234",
       secondary_ringgold_id: "9876"
     )
+    author.position = 99
+    author
   end
 
   describe "#as_json" do

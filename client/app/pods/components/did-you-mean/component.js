@@ -1,7 +1,18 @@
 import Ember from 'ember';
+import {
+  task,
+  timeout
+} from 'ember-concurrency';
 
-export default Ember.Component.extend({
-  restless: Ember.inject.service('restless'),
+import getJSONTask from 'tahi/lib/get-json-task';
+
+const {
+  Component,
+  computed,
+  isEmpty
+} = Ember;
+
+export default Component.extend({
   classNameBindings: [
     ':did-you-mean',
     'errorPresent:error'
@@ -13,7 +24,7 @@ export default Ember.Component.extend({
   unknownItemFunction: null,
   itemNameFunction: null,
   placeholder: null,
-  debounce: 300,
+  debounce: 200,
 
   // props:
   highlightedItem: null,
@@ -23,17 +34,16 @@ export default Ember.Component.extend({
   previousSearch: null,
   selectedItem: null,
   recognized: false,
-  searching: 0,
   focused: false,
 
-  errorPresent: Ember.computed('errors', function() {
-    return !Ember.isEmpty(this.get('errors'));
+  errorPresent: computed('errors', function() {
+    return !isEmpty(this.get('errors'));
   }),
 
   selectItem(item) {
     this.set('selectedItem', item);
     this.sendAction('itemSelected', item);
-    let textForInput = this.itemNameFunction(item);
+    const textForInput = this.itemNameFunction(item);
 
     this.set('resultText', textForInput);
     this.set('searchResults', null);
@@ -41,9 +51,9 @@ export default Ember.Component.extend({
   },
 
   findPerfectMatch() {
-    let lookingFor = this.get('resultText').toLowerCase();
-    let lookingIn = this.get('searchResults');
-    let found = _.find(lookingIn, (item) => {
+    const lookingFor = this.get('resultText').toLowerCase();
+    const lookingIn  = this.get('searchResults');
+    const found = _.find(lookingIn, (item) => {
       return lookingFor === this.get('itemNameFunction')(item).toLowerCase();
     });
     if (found) {
@@ -58,6 +68,23 @@ export default Ember.Component.extend({
     this.set('recognized', false);
   },
 
+  search: task(function * (url, data) {
+    yield timeout(this.get('debounce'));
+
+    const response = yield this.get('getData').perform(url, data);
+    const results  = this.get('parseResponseFunction')(response);
+
+    if (isEmpty(results)) {
+      this.selectUnknown();
+    } else {
+      this.set('searchResults', results);
+    }
+
+    this.findPerfectMatch();
+  }).restartable(),
+
+  getData: getJSONTask,
+
   actions: {
     selectItem(item) {
       this.selectItem(item);
@@ -66,33 +93,19 @@ export default Ember.Component.extend({
     search() {
       this.set('focused', false);
       let search = this.get('resultText');
-      if (!search || search === this.previousSearch) { return; }
+      if (isEmpty(search) || search === this.get('previousSearch')) { return; }
 
-      this.incrementProperty('searching');
-      this.previousSearch = search;
-      this.set('searchResults', null);
-
-      let url = this.get('endpoint');
-      let data = {};
+      const data = {};
       data[this.get('queryParameter')] = search;
 
-      this.get('restless').get(url, data).then((response) => {
-        this.decrementProperty('searching');
-        let results = this.get('parseResponseFunction')(response);
-        if (results.length === 0) {
-          this.selectUnknown();
-        } else {
-          this.set('searchResults',  results);
-        }
-
-        this.findPerfectMatch();
-      });
+      this.set('previousSearch', search);
+      this.get('search').perform(this.get('endpoint'), data);
     },
 
     tryAgain() {
       if (this.get('disabled')) { return; }
       this.set('selectedItem', null);
-      this.previousSearch = null;
+      this.set('previousSearch', null);
     },
 
     selectUnknownItem() {

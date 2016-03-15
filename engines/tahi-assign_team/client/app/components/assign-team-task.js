@@ -1,6 +1,7 @@
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
   init() {
@@ -52,7 +53,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     assignOldRoleToUser() {
-      const store = this.container.lookup('store:main');
+      const store = getOwner(this).lookup('store:main');
       const userId = this.get('selectedUser.id');
 
       store.find('user', userId).then(user => {

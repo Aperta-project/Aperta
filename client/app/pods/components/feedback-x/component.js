@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
 export default Ember.Component.extend(EscapeListenerMixin, {
@@ -7,7 +8,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   init() {
     this._super(...arguments);
-    this.set('store', this.container.lookup('store:main'));
+    this.set('store', getOwner(this).lookup('store:main'));
     this.set('model', this.get('store').createRecord('feedback', {
       screenshots: []
     }));

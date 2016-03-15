@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Mixin.create({
   participations: Ember.computed.alias('task.participations'),
@@ -7,7 +8,7 @@ export default Ember.Mixin.create({
   }),
 
   getStore() {
-    return this.container.lookup('store:main');
+    return getOwner(this).lookup('store:main');
   },
 
   findParticipation(participantId) {

@@ -1,5 +1,6 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 
 export default TaskComponent.extend({
   restless: Ember.inject.service('restless'),
@@ -17,7 +18,7 @@ export default TaskComponent.extend({
   }),
 
   attachmentsRequest(path, method, s3Url, file) {
-    const store = this.container.lookup('store:main');
+    const store = getOwner(this).lookup('store:main');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
       response.attachment.filename = file.name;

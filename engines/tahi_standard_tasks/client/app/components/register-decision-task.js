@@ -1,12 +1,16 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const { computed } = Ember;
 
-export default TaskComponent.extend({
+export default TaskComponent.extend(ValidationErrorsMixin, {
   restless: Ember.inject.service('restless'),
   paperState: computed.alias('task.paper.publishingState'),
   nonPublishable: computed.not('publishable'),
+  nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
+    return this.get('nonPublishable') || !this.get('latestDecision.verdict');
+  }),
   revisionNumberDesc: ['revisionNumber:desc'],
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
   latestDecision: computed.alias('decisions.firstObject'),
@@ -33,10 +37,14 @@ export default TaskComponent.extend({
       this.get('restless').post(decidePath).then(() => {
         this.set('task.completed', true);
         this.get('task').save().then(() => {
-          this.get('latestDecision').save().then(() => {
+          return this.get('latestDecision').save().then(() => {
             this.set('isSavingData', false);
+            this.clearAllValidationErrors();
           });
         });
+      }, (response) => {
+        this.set('isSavingData', false);
+        this.displayValidationErrorsFromResponse(response.responseJSON);
       });
     },
 

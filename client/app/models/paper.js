@@ -21,6 +21,7 @@ export default DS.Model.extend({
   }),
   journal: belongsTo('journal', { async: true }),
   phases: hasMany('phase', { async: true }),
+  paperTaskTypes: hasMany('paper-task-type', { async: true }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
   }),

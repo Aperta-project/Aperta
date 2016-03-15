@@ -60,12 +60,9 @@ export default Ember.Controller.extend({
         journalTaskTypesIsLoading: true
       });
 
-      const journalId = phase.get('paper.journal.id');
-      this.store.find('adminJournal', journalId).then(adminJournal => {
-        this.setProperties({
-          journalTaskTypes: adminJournal.get('journalTaskTypes'),
-          journalTaskTypesIsLoading: false
-        });
+      this.setProperties({
+        journalTaskTypes: this.get('model.paperTaskTypes'),
+        journalTaskTypesIsLoading: false
       });
 
       this.set('showChooseNewCardOverlay', true);

@@ -5,10 +5,14 @@ module TahiStandardTasks
       requires_user_can :register_decision, task.paper
 
       if !task || !task.paper.submitted?
-        render json: { error: "Invalid Task and/or Paper" }
+        render json: {
+          errors: { 'errors': ['Invalid Task and/or Paper'] }
+        }, status: 422
 
       elsif not task.latest_decision_ready?
-        render json: { error: "You must register a verdict, first" }, status: 422
+        render json: {
+          errors: { 'errors': ['You must register a verdict first.'] }
+        }, status: 422
 
       else
         decision = task.latest_decision

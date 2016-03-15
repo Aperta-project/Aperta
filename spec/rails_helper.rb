@@ -152,6 +152,13 @@ RSpec.configure do |config|
     Authorizations.reload_configuration
   end
 
+  # Use :pristine_roles_and_permissions when your test should have a blank
+  # slate for R&P. When running feature specs and unit specs in random order
+  # feature specs may have pre-loaded R&P as a speed optimization.
+  config.before(:each, pristine_roles_and_permissions: true) do
+    [Role, Permission, PermissionState].map(&:delete_all)
+  end
+
   config.append_after(:each) do
     DatabaseCleaner.clean
   end

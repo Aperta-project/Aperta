@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe EligibleUserService do
+describe EligibleUserService, pristine_roles_and_permissions: true do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
 

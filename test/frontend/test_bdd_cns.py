@@ -141,7 +141,6 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     # journal of type
     # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this
     # must be called stripped of the same
-    # dashboard_page.select_journal_and_type('PLOS Wombat', 'MinimalMMTforCreatetoSubmitAT')
     dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
     time.sleep(3)
     doc2upload = random.choice(docs)

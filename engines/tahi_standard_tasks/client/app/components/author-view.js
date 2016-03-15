@@ -17,7 +17,9 @@ export default Component.extend(DragNDrop.DraggableMixin, {
                .match(/group/) ? 'group-author-form' : 'author-form';
   }),
 
-  editState: false,
+  editState: computed.or('errorsPresent', 'editing'),
+  editing: false,
+  errorsPresent: alias('model.errorsPresent'),
 
   viewState: computed('editState', 'deleteState', function() {
     return !this.get('editState') && !this.get('deleteState');
@@ -44,7 +46,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     },
 
     toggleEditForm() {
-      this.toggleProperty('editState');
+      this.toggleProperty('editing');
     },
 
     toggleDeleteConfirmation() {

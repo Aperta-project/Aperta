@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 
 describe DefaultAuthorCreator do
@@ -53,7 +54,7 @@ describe DefaultAuthorCreator do
       DefaultAuthorCreator.new(paper, creator).create!
       author = Author.last
 
-      expect(author.authors_task).to eq(authors_task)
+      expect(author.task).to eq(authors_task)
     end
   end
 end

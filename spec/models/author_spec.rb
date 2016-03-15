@@ -33,7 +33,7 @@ describe Author do
         # we need a saved author in order to associated answers
         author.save!
         setup_contribution_question_for_author
-        author.authors_task = authors_task
+        author._task = authors_task
       end
 
       it "is not valid without contributions" do
@@ -110,16 +110,16 @@ describe Author do
 
     it "is true when task is complete" do
       authors_task.completed = true
-      expect(subject.class.new(authors_task: authors_task)).to be_task_completed
+      expect(subject.class.new(task: authors_task)).to be_task_completed
     end
 
     it "is false when task is incomplete" do
       authors_task.completed = false
-      expect(subject.class.new(authors_task: authors_task)).to_not be_task_completed
+      expect(subject.class.new(task: authors_task)).to_not be_task_completed
     end
 
     it "is false when there is no task" do
-      expect(subject.class.new(authors_task: nil)).to_not be_task_completed
+      expect(subject.class.new(task: nil)).to_not be_task_completed
     end
   end
 end

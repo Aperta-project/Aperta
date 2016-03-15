@@ -88,4 +88,32 @@ end
 # ember-cli-rails compiles assets, but does not put them anywhere.
 after 'deploy:compile_assets', 'deploy:copy_ember_assets'
 
+# Use service scripts to restart puma
+namespace :puma do
+  desc 'Restart puma instance for this application'
+  task :restart do
+    on roles(:web) do
+      sudo 'service', 'tahi-web', 'restart'
+    end
+  end
+  desc 'Start puma instance for this application'
+  task :start do
+    on roles(:web) do
+      sudo 'service', 'tahi-web', 'start'
+    end
+  end
+  desc 'Show status of puma for this application'
+  task :status do
+    on roles(:web) do
+      sudo 'service', 'tahi-web', 'status'
+    end
+  end
+  desc 'Stop puma instance for this application'
+  task :stop do
+    on roles(:web) do
+      sudo 'service', 'tahi-web', 'stop'
+    end
+  end
 end
+
+after 'deploy', 'puma:restart'

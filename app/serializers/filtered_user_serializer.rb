@@ -13,6 +13,6 @@ class FilteredUserSerializer < ActiveModel::Serializer
 
   def journal_admin?(user)
     paper = Paper.find_by(id: options[:paper_id])
-    user.old_roles.where(journal: paper.journal, kind: "admin").present?
+    user.can?(:administer, paper.journal)
   end
 end

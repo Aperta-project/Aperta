@@ -33,6 +33,7 @@ describe FilteredUserSerializer do
   end
 
   before do
+    JournalFactory.new(journal).ensure_default_roles_and_permissions_exist
     create :paper_role, :editor, user: editor, paper: paper
     create :paper_role, :reviewer, user: reviewer, paper: paper
     create :paper_role, :collaborator, user: collaborator, paper: paper
@@ -52,7 +53,7 @@ describe FilteredUserSerializer do
     let(:user) { create :user }
 
     before do
-      create :old_role, :admin, users: [user], journal: journal
+      assign_journal_role(journal, user, :admin)
     end
 
     it "serializes all old_roles" do

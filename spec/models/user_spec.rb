@@ -223,11 +223,11 @@ describe User do
     let(:regular_user) { FactoryGirl.create(:user) }
 
     it "returns true if user is an admin for a given journal" do
-      expect(journal_admin.journal_admin? journal).to be true
+      expect(journal_admin.can?(:administer, journal)).to be true
     end
 
     it "returns false if user is not an admin for a given journal" do
-      expect(regular_user.journal_admin? journal).to be false
+      expect(regular_user.can?(:administer, journal)).to be false
     end
   end
 end

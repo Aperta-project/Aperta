@@ -3,13 +3,11 @@
 import logging
 import random
 
-from Pages.dashboard import DashboardPage
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
-from Pages.login_page import LoginPage
 from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login
+    super_admin_login, prod_staff_login
 
 """
 This test case validates the Aperta paper_tracker page.
@@ -24,6 +22,7 @@ __author__ = 'jgray@plos.org'
 
 users = [staff_admin_login,
          internal_editor_login,
+         prod_staff_login,
          pub_svcs_login,
          super_admin_login,
          ]

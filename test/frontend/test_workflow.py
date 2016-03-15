@@ -6,7 +6,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import internal_editor_login, staff_admin_login, pub_svcs_login, \
-    super_admin_login
+    super_admin_login, prod_staff_login
 from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
@@ -44,13 +44,25 @@ class ApertaWorkflowTest(CommonTest):
     """
     workflow_users = [internal_editor_login,
                       staff_admin_login,
+                      prod_staff_login,
                       pub_svcs_login,
                       super_admin_login,
                       ]
     workflow_user = random.choice(workflow_users)
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
-    dashboard_page.click_on_first_manuscript()
+    # We have to ensure there *is* a first manuscript on a users dashboard
+    manuscript_count = dashboard_page.validate_manuscript_section_main_title(workflow_user)
+    if manuscript_count > 0:
+      dashboard_page.click_on_first_manuscript()
+    else:
+      dashboard_page.click_create_new_submission_button()
+      self.create_article(journal='PLOS Wombat',
+                        type_='Research',
+                        random_bit=True,
+                        title='Created Document for Workflow test',
+                        )
+      time.sleep(10)
     time.sleep(2)
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
@@ -59,9 +71,10 @@ class ApertaWorkflowTest(CommonTest):
   def test_add_new_card(self):
     """Testing adding a new card"""
     # APERTA-6186 stops the internal editor and publication services logins from adding a new card
-    workflow_users = [# internal_editor_login,
+    workflow_users = [internal_editor_login,
                       staff_admin_login,
-                      # pub_svcs_login,
+                      prod_staff_login,
+                      pub_svcs_login,
                       super_admin_login,
                       ]
     workflow_user = random.choice(workflow_users)

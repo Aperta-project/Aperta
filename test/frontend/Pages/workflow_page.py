@@ -148,19 +148,20 @@ class WorkflowPage(AuthenticatedPage):
     author_col, staff_col = self._gets(self._add_card_overlay_columns)
     author_cards = author_col.find_elements_by_tag_name('label')
     assert author_cards[0].text == 'Additional Information', author_cards[0].text
-    assert author_cards[1].text == 'Authors', author_cards[0].text
-    assert author_cards[2].text == 'Billing', author_cards[1].text
-    assert author_cards[3].text == 'Competing Interests', author_cards[2].text
-    assert author_cards[4].text == 'Cover Letter', author_cards[3].text
-    assert author_cards[5].text == 'Data Availability', author_cards[4].text
-    assert author_cards[6].text == 'Ethics Statement', author_cards[5].text
-    assert author_cards[7].text == 'Figures', author_cards[6].text
-    assert author_cards[8].text == 'Financial Disclosure', author_cards[7].text
-    assert author_cards[9].text == 'New Taxon', author_cards[8].text
-    assert author_cards[10].text == 'Reporting Guidelines', author_cards[10].text
-    assert author_cards[11].text == 'Reviewer Candidates', author_cards[11].text
-    assert author_cards[12].text == 'Supporting Info', author_cards[12].text
-    assert author_cards[13].text == 'Upload Manuscript', author_cards[13].text
+    assert author_cards[1].text == 'Authors', author_cards[1].text
+    assert author_cards[2].text == 'Billing', author_cards[2].text
+    # APERTA-6333
+    # assert author_cards[3].text == 'Competing Interests', author_cards[3].text
+    # assert author_cards[4].text == 'Cover Letter', author_cards[4].text
+    # assert author_cards[5].text == 'Data Availability', author_cards[5].text
+    # assert author_cards[6].text == 'Ethics Statement', author_cards[6].text
+    # assert author_cards[7].text == 'Figures', author_cards[7].text
+    # assert author_cards[8].text == 'Financial Disclosure', author_cards[8].text
+    # assert author_cards[9].text == 'New Taxon', author_cards[9].text
+    # assert author_cards[10].text == 'Reporting Guidelines', author_cards[10].text
+    # assert author_cards[11].text == 'Reviewer Candidates', author_cards[11].text
+    # assert author_cards[12].text == 'Supporting Info', author_cards[12].text
+    # assert author_cards[13].text == 'Upload Manuscript', author_cards[13].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
     assert staff_cards[0].text == 'Ad-hoc', staff_cards[0].text
     assert staff_cards[1].text == 'Assign Admin', staff_cards[1].text
@@ -173,7 +174,8 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[8].text == 'Invite Reviewers', staff_cards[8].text
     assert staff_cards[9].text == 'Production Metadata', staff_cards[9].text
     assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
-    assert staff_cards[11].text == 'Revision Tech Check', staff_cards[11].text
+    # APERTA-6333
+    # assert staff_cards[11].text == 'Revision Tech Check', staff_cards[11].text
     # APERTA-5513 AC 3
     author_cards[10].click()
     author_cards[11].click()

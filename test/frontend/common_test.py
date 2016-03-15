@@ -11,10 +11,11 @@ import time
 
 
 from Base.FrontEndTest import FrontEndTest
-from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, reviewer_login, handling_editor_login, academic_editor_login, internal_editor_login, \
-    staff_admin_login, pub_svcs_login, super_admin_login, cover_editor_login, au_login, co_login, rv_login, ae_login, \
-  he_login, fm_login, oa_login, sa_login
+from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2, creator_login3, \
+    creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
+    internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login, \
+    cover_editor_login, prod_staff_login, au_login, co_login, rv_login, ae_login, he_login, \
+    fm_login, oa_login
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.dashboard import DashboardPage
@@ -70,6 +71,7 @@ class CommonTest(FrontEndTest):
               internal_editor_login['email'],
               staff_admin_login['email'],
               pub_svcs_login['email'],
+              prod_staff_login['email'],
               super_admin_login['email'],
               )
     if not email:
@@ -84,7 +86,7 @@ class CommonTest(FrontEndTest):
     cas_signin_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
 
-  def select_preexisting_article(self, title='Hendrik', init=True, first=False):
+  def select_preexisting_article(self, title='Hendrik', first=False):
     """
     Select a preexisting article.
     first is true for selecting first article in list.
@@ -98,7 +100,7 @@ class CommonTest(FrontEndTest):
       return dashboard_page.click_on_existing_manuscript_link_partial_title(title)
 
   def create_article(self, title='', journal='journal', type_='Research1',
-      random_bit=False, doc='random'):
+                     random_bit=False, doc='random'):
     """
     Create a new article.
     title: Title of the article.
@@ -113,7 +115,7 @@ class CommonTest(FrontEndTest):
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
     logging.info('Creating paper in {0} journal, in {1} type with {2} as title'.format(journal,
-        type_, title))
+                 type_, title))
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)
     # This time helps to avoid random upload failures
@@ -123,7 +125,7 @@ class CommonTest(FrontEndTest):
       doc2upload = random.choice(docs)
       fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
     else:
-      fn = os.path.join(os.getcwd(),'frontend/assets/docs/{0}'.format(doc))
+      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc))
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
@@ -140,8 +142,10 @@ class CommonTest(FrontEndTest):
 
   def invalidate_cas_token(self):
     """
-    Currently there is a bug in the Akita code base in which the CAS token is not invalidated on logout.
-    This is a temporary method that works around this bug by explicitly calling into CAS to invalidate the token.
+    Currently there is a bug in the Akita code base in which the CAS token is not invalidated on
+      logout.
+    This is a temporary method that works around this bug by explicitly calling into CAS to
+      invalidate the token.
     :return: void function
     """
     invalidation_url = 'https://cas-aperta-integration.plos.org/cas/logout'

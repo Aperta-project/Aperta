@@ -344,6 +344,22 @@ FactoryAttributes.Task =
   participant_ids: []
   comment_ids: []
 
+FactoryAttributes.ReviewerReportTask =
+  _rootKey: 'task'
+  id: null
+  title: "Reviewer Report by Reviewer User"
+  type: "ReviewerReportTask"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  old_role: "reviewer"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  participant_ids: []
+  comment_ids: []
+
 FactoryAttributes.ReviseTask =
   _rootKey: 'task'
   id: null

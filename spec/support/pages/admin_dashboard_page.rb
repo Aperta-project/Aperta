@@ -137,6 +137,7 @@ class EditJournalFragment < PageFragment
 
   def save
     click_on "Save"
+    wait_for_ajax
     session.has_content? @name
   end
 

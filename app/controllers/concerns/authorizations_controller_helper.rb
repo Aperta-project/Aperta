@@ -15,11 +15,6 @@ module AuthorizationsControllerHelper
     fail AuthorizationError
   end
 
-  def requires_any_admin
-    return if current_user.admin?
-    fail AuthorizationError
-  end
-
   private
 
   def unauthorized

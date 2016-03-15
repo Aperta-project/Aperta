@@ -1,5 +1,5 @@
 EmberCli.configure do |c|
-  c.app(:tahi, {
+  c.app(:client, {
     path: Rails.root.join('client'),
     # use locally installed bower bin
     bower_path: Rails.root.join('client', 'node_modules', '.bin', 'bower'),

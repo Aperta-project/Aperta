@@ -10,6 +10,9 @@ module.exports = function(defaults) {
     'ember-cli-qunit': {
       useLintTree: false
     },
+    fingerprint: {
+      prepend: '/client/'
+    },
     sourcemaps: {
       enabled: true,
       extensions: ['js']

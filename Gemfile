@@ -73,6 +73,7 @@ gem 'has_secure_token'
 group :staging, :production do
   gem 'heroku-deflater'
   gem 'rails_12factor'
+  gem 'dotenv', require: false
 end
 
 group :development, :test do

@@ -1,6 +1,6 @@
 class Paper::DataExtracted::NotifyUser < FlashMessageSubscriber
   def user
-    Paper.find(@event_data[:record].paper_id).creator
+    User.find(@event_data[:record].user_id)
   end
 
   def message_type

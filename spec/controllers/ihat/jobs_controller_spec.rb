@@ -8,9 +8,13 @@ describe Ihat::JobsController, type: :controller do
       controller.request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(token)
     end
 
-    let(:encrypted_metadata) { Verifier.new(paper_id: "123").encrypt }
+    let(:encrypted_metadata) { Verifier.new(paper_id: "123", user_id: "456").encrypt }
     let(:ihat_job_params) { { job: { id: 4, state: ihat_job_state, options: { metadata: encrypted_metadata }, outputs: [{ file_type: "epub", url: "http://amazon.localhost/1234" }] }, format: :json } }
-    let(:worker_params) { { id: 4, state: ihat_job_state, options: { metadata: { paper_id: "123" } }, outputs: [{ file_type: "epub", url: "http://amazon.localhost/1234" }] } }
+    let(:worker_params) do
+      { id: 4, state: ihat_job_state,
+        options: { metadata: { paper_id: "123", user_id: "456" } },
+        outputs: [{ file_type: "epub", url: "http://amazon.localhost/1234" }] }
+    end
 
     context "the ihat job status is 'completed'" do
       let(:ihat_job_state) { "completed" }

@@ -191,11 +191,14 @@ class DashboardPage(AuthenticatedPage):
     :param username: username
     :return: active_manuscript_count
     """
+    username = username['user']
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
-    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;',
+                               (username,))[0][0]
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-    # Get count of distinct papers from paper_roles for validating count of manuscripts on dashboard welcome message
+    # Get count of distinct papers from paper_roles for validating count of manuscripts on
+    # dashboard welcome message
     active_manuscripts = []
     try:
       active_manuscripts = PgSQL().query('SELECT DISTINCT paper_roles.paper_id, papers.publishing_state '
@@ -590,7 +593,8 @@ class DashboardPage(AuthenticatedPage):
     # self.validate_secondary_big_green_button_style(create_btn)
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)
-    # I can't quite make out why the previous returns two iterations of the error messages, but, this fixes it
+    # I can't quite make out why the previous returns two iterations of the error messages, but,
+    # this fixes it
     for i in range(len(error_msgs) / 2):
       error_msgs.pop()
     errors = []

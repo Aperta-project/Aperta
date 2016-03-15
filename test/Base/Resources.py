@@ -61,13 +61,28 @@ creator_login3 = {'user': 'aauthor3', 'name': 'atest author3', 'email': 'sealres
 creator_login4 = {'user': 'aauthor4', 'name': 'atest author4', 'email': 'sealresq+1003@gmail.com'}
 creator_login5 = {'user': 'aauthor5', 'name': 'atest author5', 'email': 'sealresq+1004@gmail.com'}
 reviewer_login = {'user': 'areviewer', 'name': 'atest reviewer', 'email': 'sealresq+1005@gmail.com'}
-staff_admin_login = {'user': 'astaffadmin', 'name': 'atest staffadmin', 'email': 'sealresq+1006@gmail.com'}
-handling_editor_login = {'user': 'ahandedit', 'name': 'atest handedit', 'email': 'sealresq+1007@gmail.com'}
+staff_admin_login = {'user': 'astaffadmin',
+                     'name': 'atest staffadmin',
+                     'email': 'sealresq+1006@gmail.com'}
+handling_editor_login = {'user': 'ahandedit',
+                         'name': 'atest handedit',
+                         'email': 'sealresq+1007@gmail.com'}
 pub_svcs_login = {'user': 'apubsvcs', 'name': 'atest pubsvcs', 'email': 'sealresq+1008@gmail.com'}
-academic_editor_login = {'user':'aacadedit', 'name': 'atest acadedit', 'email': 'sealresq+1009@gmail.com'}
-internal_editor_login = {'user':'aintedit', 'name': 'atest intedit', 'email': 'sealresq+1010@gmail.com'}
-super_admin_login = {'user':'asuperadm', 'name': 'atest superadm', 'email': 'sealresq+1011@gmail.com'}
-cover_editor_login = {'user':'acoveredit', 'name': 'atest coveredit', 'email': 'sealresq+1012@gmail.com'}
+academic_editor_login = {'user':'aacadedit',
+                         'name': 'atest acadedit',
+                         'email': 'sealresq+1009@gmail.com'}
+internal_editor_login = {'user':'aintedit',
+                         'name': 'atest intedit',
+                         'email': 'sealresq+1010@gmail.com'}
+super_admin_login = {'user':'asuperadm',
+                     'name': 'atest superadm',
+                     'email': 'sealresq+1011@gmail.com'}
+cover_editor_login = {'user':'acoveredit',
+                      'name': 'atest coveredit',
+                      'email': 'sealresq+1012@gmail.com'}
+prod_staff_login = {'user': 'aprodstaff',
+                    'name': 'atest prodstaff',
+                    'email': 'sealresq+1013@gmail.com'}
 # anyone can be a discussion_participant
 # everyone has a user role for their own profile page
 

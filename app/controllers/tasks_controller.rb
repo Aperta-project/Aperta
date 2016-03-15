@@ -52,11 +52,14 @@ class TasksController < ApplicationController
   end
 
   def send_message
-    AdhocMailer.delay.send_adhoc_email(
-      task_email_params[:subject],
-      task_email_params[:body],
-      task_email_params[:recipients]
-    )
+    users = User.where(id: task_email_params[:recipients])
+    users.each do |user|
+      AdhocMailer.delay.send_adhoc_email(
+        task_email_params[:subject],
+        task_email_params[:body],
+        user
+      )
+    end
     head :no_content
   end
 

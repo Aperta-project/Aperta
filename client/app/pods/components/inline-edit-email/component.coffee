@@ -10,7 +10,7 @@ InlineEditEmailComponent = Ember.Component.extend
   isSendable: true
   showChooseReceivers: false
   mailRecipients: []
-  recipients: []
+  recipients: null
   allUsers: null
   overlayParticipants: null
   emailSentStates: Ember.computed.alias 'parentView.emailSentStates'
@@ -49,7 +49,7 @@ InlineEditEmailComponent = Ember.Component.extend
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @set('lastSentAt', bodyPart.sent)
-      // TODOMPM - Email recipients is not sending correctly
+
       @.attrs.sendEmail
         body: bodyPart.value
         subject: bodyPart.subject

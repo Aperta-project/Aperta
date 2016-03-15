@@ -285,7 +285,7 @@ describe TasksController, redis: true do
         task: {
           subject: "Hello",
           body: "Greetings from Vulcan!",
-          recepients: [user.id]
+          recipients: [user.id]
         }
       }
     end
@@ -299,6 +299,22 @@ describe TasksController, redis: true do
 
       it "adds an email to the SideKiq queue" do
         expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+      end
+
+      it "adds multiple emails to the SideKiq queue" do
+        user2 = FactoryGirl.create(:user)
+        before_queue_size = Sidekiq::Extensions::DelayedMailer.jobs.size
+
+        put :send_message,
+            id: task.id, format: "json",
+            task: {
+              subject: "Hello",
+              body: "Greetings from Vulcan!",
+              recipients: [user.id, user2.id]
+            }
+
+        after_queue_size = Sidekiq::Extensions::DelayedMailer.jobs.size
+        expect(after_queue_size).to eq(before_queue_size + 2)
       end
     end
 

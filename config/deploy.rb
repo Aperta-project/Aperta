@@ -72,4 +72,20 @@ namespace :deploy do
     before 'deploy:updated', 'deploy:schema_load'
     invoke 'deploy'
   end
+
+  desc 'Copy ember-built assets to public/client'
+  task :copy_ember_assets do
+    on release_roles(fetch(:assets_roles)) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rsync, '-a', 'tmp/ember-cli/apps/client/', 'public/client/'
+        end
+      end
+    end
+  end
+end
+
+# ember-cli-rails compiles assets, but does not put them anywhere.
+after 'deploy:compile_assets', 'deploy:copy_ember_assets'
+
 end

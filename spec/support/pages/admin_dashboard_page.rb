@@ -118,14 +118,6 @@ class EditModal < PageFragment
     find('.cancel-link').click
     AdminDashboardPage.new(context: context)
   end
-
-  def reset_password
-    find('.reset-password-link').click
-  end
-
-  def reset_password_status
-    find('.reset-password .success')
-  end
 end
 
 class EditJournalFragment < PageFragment
@@ -145,6 +137,7 @@ class EditJournalFragment < PageFragment
 
   def save
     click_on "Save"
+    wait_for_ajax
     session.has_content? @name
   end
 

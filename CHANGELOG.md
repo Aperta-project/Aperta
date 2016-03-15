@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Figures display in the manuscript
+- Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 
 ### Changed
 - Institution field will search as you type
@@ -13,7 +14,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Removed
--
+- Appeal button
+- Figure caption (temporary)
+- Password reset buttons
 
 ### Fixed
 -
@@ -52,7 +55,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Fixing an issue where all Discussion Topics appeared across all Papers
 - Fixing copy and pasting of line breaks in Discussion Replies
 - Updating broken links in Figures, Data Availability and Competing Interests Tasks
-- Replacing the current descriptive text under Question 5 with the descriptive text under Question 4 
+- Replacing the current descriptive text under Question 5 with the descriptive text under Question 4
 
 ### Security
 -

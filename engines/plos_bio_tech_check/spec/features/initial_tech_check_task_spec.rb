@@ -2,43 +2,44 @@ require 'rails_helper'
 
 feature 'Initial Tech Check', js: true do
   let(:journal) { create :journal, :with_roles_and_permissions }
-  let(:admin) { create :user, site_admin: true }
+  let(:editor) { create :user }
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }
   let(:task) { create :initial_tech_check_task, paper: paper }
-  let(:dashboard) { DashboardPage.new }
-  let(:manuscript_page) { dashboard.view_submitted_paper paper }
 
   before do
-    assign_journal_role journal, admin, :admin
-    task.add_participant(admin)
-
-    SignInPage.visit.sign_in admin
+    assign_journal_role journal, editor, :editor
   end
 
-  pending 'Initial Tech Check starts with round 1' do
-    manuscript_page = dashboard.view_submitted_paper paper
+  scenario 'Initial Tech Check triggers Changes For Author' do
+    # Editor
+    login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
-    expect(overlay.current_round).to eq 1
+    expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
+    overlay.expect_author_chages_saved
     overlay.mark_as_complete
+    overlay.expect_task_to_be_completed
+    overlay.dismiss
+    Warden.test_reset!
 
-    manuscript_page.sign_out
-    SignInPage.visit.sign_in author
+    change_author_task = PlosBioTechCheck::ChangesForAuthorTask.first
 
-    manuscript_page = dashboard.view_submitted_paper paper
-    overlay = Page.view_task_overlay(paper, task)
-    overlay.mark_as_complete
+    # Author
+    login_as(author, scope: :user)
+    overlay = Page.view_task_overlay(paper, change_author_task)
+    overlay.expect_to_see_change_list
+    overlay.click_changes_have_been_made
+    overlay.dismiss
 
-    manuscript_page.submit.submit
-    manuscript_page.sign_out
-    SignInPage.visit.sign_in admin
-    manuscript_page = dashboard.view_submitted_paper paper
-    overlay = Page.view_task_overlay(paper, task)
-    expect(overlay.current_round).to eq 2
+    # creator cannot access iniital tech task
+    visit "/papers/#{paper.id}/tasks/#{task.id}"
+    expect(page).to have_content("You don't have access to that content")
+    Warden.test_reset!
   end
 
   scenario "list the unselected question items in the author changes letter" do
+    login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
     overlay.display_letter
     overlay.click_autogenerate_email_button
@@ -57,6 +58,7 @@ feature 'Initial Tech Check', js: true do
   end
 
   scenario "selected questions don't show up in the auto-generated author change letter" do
+    login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
     overlay.display_letter
     overlay.click_autogenerate_email_button
@@ -73,6 +75,7 @@ feature 'Initial Tech Check', js: true do
   end
 
   scenario "unchecking a box with no associated text has no effect" do
+    login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
     overlay.display_letter
     overlay.click_autogenerate_email_button

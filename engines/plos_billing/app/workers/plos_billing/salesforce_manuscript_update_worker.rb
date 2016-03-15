@@ -13,7 +13,7 @@ module PlosBilling
       return unless SalesforceServices.send_to_salesforce?(paper: paper)
 
       SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
-      SalesforceServices::API.create_billing_and_pfa_case(paper_id: paper.id)
+      SalesforceServices::API.ensure_pfa_case(paper_id: paper.id)
     end
 
     def self.email_admin_on_error(msg)

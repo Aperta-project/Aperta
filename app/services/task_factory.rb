@@ -16,6 +16,7 @@ class TaskFactory
 
   def save
     task.save!
+    task
   end
 
   private

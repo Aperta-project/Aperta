@@ -3,7 +3,7 @@
     {{nested-question-radio-decision ident="reviewer_report--decision_term"
                                      owner=model
                                      decision=decision
-                                     readonly=readonly}}
+                                     readOnly=readOnly}}
   </li>
   <li class="question">
     {{nested-question-textarea ident="reviewer_report--competing_interests"
@@ -11,7 +11,7 @@
       decision=decision
       displayContent=true
       helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"
-      readonly=readonly}}
+      readOnly=readOnly}}
   </li>
 
   <li class="question">
@@ -20,7 +20,7 @@
                         decision=decision
                         helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
                         wrapperClass="yes-no-with-comments"
-                        readonly=readonly as |radio|}}
+                        readOnly=readOnly as |radio|}}
 
         {{#if radio.yieldingForAdditionalData}}
           {{nested-question-textarea ident="reviewer_report--support_conclusions--explanation"
@@ -29,7 +29,7 @@
               displayQuestionText=false
               displayContent=true
               noResponseText=""
-              readonly=readonly}}
+              readOnly=readOnly}}
         {{/if}}
       {{/nested-question-radio}}
   </li>
@@ -39,7 +39,7 @@
                       owner=model
                       decision=decision
                       wrapperClass="yes-no-with-comments"
-                      readonly=readonly as |radio|}}
+                      readOnly=readOnly as |radio|}}
       {{#if radio.yieldingForAdditionalData}}
         {{nested-question-textarea ident="reviewer_report--statistical_analysis--explanation"
             owner=model
@@ -47,7 +47,7 @@
             noResponseText=""
             displayQuestionText=false
             displayContent=true
-            readonly=readonly}}
+            readOnly=readOnly}}
       {{/if}}
     {{/nested-question-radio}}
   </li>
@@ -58,7 +58,7 @@
                       decision=decision
                       helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
                       wrapperClass="yes-no-with-comments"
-                      readonly=readonly as |radio|}}
+                      readOnly=readOnly as |radio|}}
       {{#if radio.yieldingForAdditionalData}}
         {{nested-question-textarea
             ident="reviewer_report--standards--explanation"
@@ -67,7 +67,7 @@
             noResponseText=""
             displayQuestionText=false
             displayContent=true
-            readonly=readonly}}
+            readOnly=readOnly}}
       {{/if}}
     {{/nested-question-radio}}
   </li>
@@ -78,7 +78,7 @@
                         decision=decision
                         displayContent=true
                         helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
-                        readonly=readonly}}
+                        readOnly=readOnly}}
   </li>
 
   <li class="question">
@@ -87,6 +87,6 @@
                         decision=decision
                         displayContent=true
                         helpText="<li>Your name and review will not be published with the manuscript.</li>"
-                        readonly=readonly}}
+                        readOnly=readOnly}}
   </li>
 </ol>

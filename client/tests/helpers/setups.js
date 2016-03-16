@@ -81,8 +81,16 @@ export function paperWithRoles(id, oldRoles) {
   return [paper, journal, litePaper];
 }
 
+export function addNestedQuestionsToTask(nestedQuestions, task){
+  const ids = nestedQuestions.map( (question) => { return question.id; });
+  Factory.mergeArrays(task, 'nested_question_ids', ids);
+  nestedQuestions.forEach( (question) => {
+    question.owner = { owner_id: task.id, owner_type: "Task" };
+  });
+  return nestedQuestions;
+}
+
 export function addNestedQuestionToTask(nestedQuestion, task){
-  Factory.mergeArrays(task, 'nested_question_ids', [nestedQuestion.id]);
-  nestedQuestion.owner = { owner_id: task.id, owner_type: "Task" };
-  return nestedQuestion;
+  const questions = addNestedQuestionsToTask([nestedQuestion], task);
+  return questions[0];
 }

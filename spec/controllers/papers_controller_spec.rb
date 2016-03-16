@@ -287,6 +287,59 @@ describe PapersController do
     end
   end
 
+  describe 'GET versioned_texts' do
+    subject(:do_request) do
+      get :versioned_texts, id: paper.to_param, format: :json
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      let!(:versioned_text) do
+        paper.versioned_texts.create!(
+          major_version: 1,
+          minor_version: 2
+        )
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(200) }
+
+      it "responds with the paper's versioned_texts" do
+        versioned_text_ids = res_body['versioned_texts'].map { |hsh| hsh['id'] }
+        expect(versioned_text_ids.length).to eq paper.versioned_texts.count
+        expect(versioned_text_ids).to \
+          contain_exactly(*paper.versioned_texts.map(&:id))
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+          .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
 
   # describe "GET download" do
   #   expect_policy_enforcement

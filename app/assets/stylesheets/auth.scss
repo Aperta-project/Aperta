@@ -97,12 +97,18 @@ a {
 
   h1 {
     @include flex(0 0 100%);
-    margin-top: 45px;
-    margin-bottom: 1rem;
+    margin-top: 1px;
+    margin-bottom: 0px;
     text-align: center;
     font-size: 44px;
   }
 
+  p {
+    text-align: center;
+    margin: 0 0 25px 0;
+    flex: 0 0 100%;
+    font-size: 16px;
+  }
 }
 
 .auth-group {
@@ -115,10 +121,6 @@ a {
   & > * {
     @include flex(0 0 auto);
   }
-}
-
-.auth-group:nth-of-type(2) {
-  border-left: 1px solid #cccccd;
 }
 
 .auth-remember-me {
@@ -159,7 +161,6 @@ a {
   &:hover { color: $tahi-green; }
 }
 
-
 .auth-orcid {
   background: #7ab727;
 }
@@ -183,4 +184,10 @@ a {
 .auth-signin {
   padding-right: 55px;
   padding-left: 55px;
+}
+
+.auth-logo {
+  padding-top: 50px;
+  max-width: 170px;
+  height: auto;
 }

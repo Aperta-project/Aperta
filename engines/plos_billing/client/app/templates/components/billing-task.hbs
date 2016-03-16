@@ -142,7 +142,7 @@
                                  placeholder="Select Your Country"
                                  displayQuestionText=false
                                  source=formattedCountries
-                                 enable=(not isNotEditable)}}
+                                 enable=isEditable}}
       {{/if}}
       {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}

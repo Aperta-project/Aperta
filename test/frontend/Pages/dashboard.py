@@ -189,7 +189,7 @@ class DashboardPage(AuthenticatedPage):
     This is always present and follows the Invite section if present. The paper
     content of the active and inactive sections are presented separately.
     :param username: username
-    :return: active_manuscript_count
+    :return: active_manuscripts (a count)
     """
     username = username['user']
     welcome_msg = self._get(self._dashboard_my_subs_title)
@@ -199,28 +199,32 @@ class DashboardPage(AuthenticatedPage):
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # Get count of distinct papers from paper_roles for validating count of manuscripts on
     # dashboard welcome message
-    active_manuscripts = []
     try:
-      active_manuscripts = PgSQL().query('SELECT DISTINCT paper_roles.paper_id, papers.publishing_state '
-                                         'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
-                                         'WHERE paper_roles.user_id=%s '
-                                         'AND papers.publishing_state NOT IN (\'withdrawn\', \'rejected\');', (uid,))
+      active_manuscripts = PgSQL().query('SELECT COUNT(DISTINCT assignments.assigned_to_id) '
+                                         'FROM assignments '
+                                         'JOIN roles ON assignments.role_id=roles.id '
+                                         'JOIN papers on papers.id=assignments.assigned_to_id '
+                                         'WHERE assignments.user_id=%s AND '
+                                         'roles.participates_in_papers=True AND '
+                                         'assignments.assigned_to_type=\'Paper\' AND '
+                                         'papers.publishing_state NOT '
+                                         'IN (\'withdrawn\', \'rejected\');', (uid,))[0][0]
     except DatabaseError:
       logging.error('Database access error.')
       raise
-    manuscript_count = len(active_manuscripts)
-    logging.info('Expecting {0} active manuscripts'.format(manuscript_count))
-    if manuscript_count > 1:
-      assert 'Hi, ' + first_name + '. You have {0} active manuscripts.'.format(manuscript_count) in welcome_msg.text, \
-             welcome_msg.text + str(manuscript_count)
+    active_manuscripts = active_manuscripts
+    logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
+    if active_manuscripts > 1:
+      assert 'Hi, ' + first_name + '. You have {0} active manuscripts.'.format(active_manuscripts) in welcome_msg.text, \
+             welcome_msg.text + str(active_manuscripts)
     elif manuscript_count == 1:
-      assert 'Hi, ' + first_name + '. You have {0} active manuscript.'.format(manuscript_count) in welcome_msg.text, \
-             welcome_msg.text + str(manuscript_count)
+      assert 'Hi, ' + first_name + '. You have {0} active manuscript.'.format(active_manuscripts) in welcome_msg.text, \
+             welcome_msg.text + str(active_manuscripts)
     else:
       manuscript_count = 0
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
     self.validate_application_title_style(welcome_msg)
-    return manuscript_count
+    return active_manuscripts
 
   def validate_active_manuscript_section(self, username, active_manuscript_count):
     """

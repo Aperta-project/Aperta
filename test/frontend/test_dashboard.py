@@ -7,7 +7,8 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-    internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login, cover_editor_login
+    internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login, \
+    cover_editor_login, prod_staff_login
 from frontend.common_test import CommonTest
 
 """
@@ -32,6 +33,7 @@ users = [creator_login1,
          internal_editor_login,
          staff_admin_login,
          pub_svcs_login,
+         prod_staff_login,
          super_admin_login,
          ]
 
@@ -62,7 +64,7 @@ class ApertaDashboardTest(CommonTest):
     dashboard_page.validate_initial_page_elements_styles()
     dashboard_page.validate_invite_dynamic_content(user_type['user'])
     active_manuscript_count = \
-        dashboard_page.validate_manuscript_section_main_title(user_type['user'])
+        dashboard_page.validate_manuscript_section_main_title(user_type)
     if active_manuscript_count > 0:
       dashboard_page.validate_active_manuscript_section(user_type['user'], active_manuscript_count)
     inactive_manuscript_count = \

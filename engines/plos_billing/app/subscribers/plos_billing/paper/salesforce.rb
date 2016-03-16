@@ -1,4 +1,4 @@
-class PlosBilling::Paper::Submitted::Salesforce
+class PlosBilling::Paper::Salesforce
   def self.call(_event_name, event_data)
     paper = event_data[:record]
 

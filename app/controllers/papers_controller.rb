@@ -87,7 +87,8 @@ class PapersController < ApplicationController
     DownloadManuscriptWorker.perform_async(paper.id,
                                            params[:url],
                                            ihat_jobs_url,
-                                           paper_id: paper.id)
+                                           paper_id: paper.id,
+                                           user_id: current_user.id)
     respond_with paper
   end
 

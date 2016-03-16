@@ -10,10 +10,6 @@ class UsersController < ApplicationController
     render json: User.all.includes(:affiliations)
   end
 
-  def reset
-    head :ok if current_user.send_reset_password_instructions
-  end
-
   def update_avatar
     if DownloadAvatar.call current_user, params[:url]
       render json: {avatar_url: current_user.avatar.url}

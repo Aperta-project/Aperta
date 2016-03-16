@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Participants from 'tahi/mixins/components/task-participants';
 
 export default Ember.Component.extend(Participants, {
@@ -34,7 +35,7 @@ export default Ember.Component.extend(Participants, {
 
   actions: {
     postComment(body) {
-      const store = this.container.lookup('store:main');
+      const store = getOwner(this).lookup('store:main');
 
       return store.createRecord('comment', {
         commenter: this.currentUser,

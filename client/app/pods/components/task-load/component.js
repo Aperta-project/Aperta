@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 
 /**
  *  task-load ensures the task and other required data is loaded
@@ -21,7 +22,7 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    const store = this.container.lookup('store:main');
+    const store = getOwner(this).lookup('store:main');
     const task = this.get('task');
 
     // Note: task find

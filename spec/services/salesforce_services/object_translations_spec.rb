@@ -141,6 +141,7 @@ describe SalesforceServices::ObjectTranslations do
       # rubocop:disable Style/SingleSpaceBeforeFirstArg
       expect(data.class).to                          eq Hash
       expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
+      expect(data['Manuscript__c']).to               eq(paper.salesforce_manuscript_id)
       expect(data['Exclude_from_EM__c']).to          eq(true)
       expect(data['Journal_Department__c']).to       eq(paper.journal.name)
       expect(data['Subject']).to                     eq(paper.manuscript_id) # will prob change when doi is in RC?

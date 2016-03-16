@@ -55,6 +55,7 @@ module SalesforceServices
       def paper_to_billing_hash # (pfa)
         {
           'RecordTypeId'               => "012U0000000DqUyIAK",
+          'Manuscript__c'              => @paper.salesforce_manuscript_id,
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,

@@ -1,4 +1,5 @@
 `import Ember from 'ember'`
+`import getOwner from 'ember-getowner-polyfill'`
 
 InlineEditEmailComponent = Ember.Component.extend
   editing: false
@@ -61,7 +62,7 @@ InlineEditEmailComponent = Ember.Component.extend
       @get('recipients').removeObject(recipient)
 
     addRecipientById: (recipientId)->
-      store = @container.lookup('store:main')
+      store = getOwner(@).lookup('store:main')
       store.find('user', recipientId).then (recipient)=>
         @get('recipients').addObject(recipient)
 

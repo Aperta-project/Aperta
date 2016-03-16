@@ -4,6 +4,8 @@ class AdhocMailer < ActionMailer::Base
   layout "mailer"
 
   def send_adhoc_email(subject, body, user)
-    mail(to: user.email, subject: subject, body: body)
+    @email_body = body
+    @plain_text_body = Nokogiri::HTML(body.gsub('<br>', "\n\n")).text
+    mail(to: user.email, subject: subject)
   end
 end

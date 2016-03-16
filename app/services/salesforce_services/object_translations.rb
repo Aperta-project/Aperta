@@ -37,6 +37,8 @@ module SalesforceServices
           { status: "Completed Accept", date: @paper.accepted_at }
         when 'rejected'
           { status: "Completed Reject", date: @paper.updated_at }
+        when 'withdrawn'
+          { status: "Completed Withdrawn", date: @paper.updated_at }
         else
           { status: "Manuscript Submitted", date: @paper.submitted_at }
         end

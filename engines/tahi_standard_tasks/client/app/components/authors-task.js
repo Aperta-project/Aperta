@@ -1,11 +1,30 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
-import { taskValidations } from 'tahi/authors-task-validations';
 
 const {
   computed
 } = Ember;
+
+const acknowledgementIdents = [
+  'authors--persons_agreed_to_be_named',
+  'authors--authors_confirm_icmje_criteria',
+  'authors--authors_agree_to_submission',
+];
+
+const taskValidations = {
+  'acknowledgements': [{
+    type: 'equality',
+    message: 'Please acknowledge the statements below',
+    validation() {
+      const author = this.get('task');
+
+      return _.every(acknowledgementIdents, (ident) => {
+        return author.answerForQuestion(ident).get('value');
+      });
+    }
+  }]
+};
 
 export default TaskComponent.extend({
   validations: taskValidations,

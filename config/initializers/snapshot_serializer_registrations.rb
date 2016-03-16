@@ -11,7 +11,6 @@
 ActionDispatch::Reloader.to_prepare do
   if SnapshotService.registry.empty?
     SnapshotService.configure do
-      serialize Attachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
       serialize NestedQuestion, with: Snapshot::NestedQuestionSerializer
       serialize QuestionAttachment, with: Snapshot::QuestionAttachmentSerializer

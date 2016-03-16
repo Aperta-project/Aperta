@@ -11,7 +11,7 @@ describe AuthorsController do
            first_name: "enrico",
            last_name: "fermi",
            paper_id: paper.id,
-           authors_task_id: task.id,
+           task_id: task.id,
            position: 1
          }
   end

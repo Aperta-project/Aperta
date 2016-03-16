@@ -22,11 +22,30 @@ feature 'Authors card', js: true do
 
       overlay = Page.view_task_overlay(paper, paper.tasks.first)
       find_button('Add a New Author').click
+      find('#add-new-individual-author-link').click
       find('.author-first').send_keys('first')
       find('.author-last').send_keys('last')
       find('.author-email').send_keys('email@email.email')
       find('.author-title').send_keys('title')
       find('.author-department').send_keys('department')
+      find_button('done').click
+      overlay.expect_task_to_be_incomplete
+      overlay.dismiss
+
+      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      overlay.expect_task_to_be_incomplete
+    end
+
+    scenario 'validates group authors on completion', selenium: true do
+      login_as(author, scope: :user)
+      visit "/papers/#{paper.id}"
+
+      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      find_button('Add a New Author').click
+      find('#add-new-group-author-link').click
+      find('.contact-first').send_keys('first')
+      find('.contact-last').send_keys('last')
+      find('.contact-email').send_keys('email@email.email')
       find_button('done').click
       overlay.expect_task_to_be_incomplete
       overlay.dismiss

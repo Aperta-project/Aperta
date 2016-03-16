@@ -11,7 +11,7 @@
         </div>
         {{input type="text"
                 value=author.name
-                class="author-first inset-form-control-input"
+                class="group-name inset-form-control-input"
                 disabled=isNotEditable
                 focus-out=(action "validateField" "name")
                 placeholder="Scientific Association of North America"}}
@@ -26,7 +26,7 @@
         </div>
         {{input type="text"
                 value=author.initial
-                class="inset-form-control-input"
+                class="group-initial inset-form-control-input"
                 disabled=isNotEditable
                 placeholder="SANA"}}
       </div>
@@ -46,7 +46,7 @@
         </div>
         {{input type="text"
                 value=author.contactFirstName
-                class="author-first inset-form-control-input"
+                class="contact-first inset-form-control-input"
                 disabled=isNotEditable
                 focus-out=(action "validateField" "contactFirstName")
                 placeholder="Jane"}}
@@ -75,7 +75,7 @@
         </div>
         {{input type="text"
                 value=author.contactLastName
-                class="author-last inset-form-control-input"
+                class="contact-last inset-form-control-input"
                 disabled=isNotEditable
                 focus-out=(action "validateField" "contactLastName")
                 placeholder="Doe"}}
@@ -91,7 +91,7 @@
         </div>
         {{input type="text"
                 value=author.contactEmail
-                class="author-email inset-form-control-input"
+                class="contact-email inset-form-control-input"
                 disabled=isNotEditable
                 focus-out=(action "validateField" "contactEmail")
                 placeholder="jane.doe@example.com"}}

@@ -332,13 +332,106 @@ describe PapersController do
       it { is_expected.to responds_with(403) }
     end
   end
+
+  describe 'GET workflow_activities' do
+    subject(:do_request) do
+      get :workflow_activities, id: paper.to_param, format: :json
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      let!(:activities) { [ manuscript_activity, workflow_activity ] }
+      let!(:manuscript_activity) do
+        FactoryGirl.create(:activity, subject: paper, feed_name: 'manuscript')
+      end
+      let!(:workflow_activity) do
+        FactoryGirl.create(:activity, subject: paper, feed_name: 'workflow')
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, paper)
           .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(200) }
+
+      it "responds with the paper's workflow & manuscript activities" do
+        feed_messages = res_body['feeds'].map { |hsh| hsh['message'] }
+        expect(feed_messages.length).to eq paper.activities.length
+
+        expect(feed_messages).to \
+          contain_exactly(
+            manuscript_activity.message,
+            workflow_activity.message
+          )
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
         do_request
       end
 
       it { is_expected.to responds_with(403) }
     end
   end
+
+  describe 'GET manuscript_activities' do
+    subject(:do_request) do
+      get :manuscript_activities, id: paper.to_param, format: :json
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      let!(:activities) { [ manuscript_activity, workflow_activity ] }
+      let!(:manuscript_activity) do
+        FactoryGirl.create(:activity, subject: paper, feed_name: 'manuscript')
+      end
+      let!(:workflow_activity) do
+        FactoryGirl.create(:activity, subject: paper, feed_name: 'workflow')
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(200) }
+
+      it "responds with the paper's manuscript activities only" do
+        feed_messages = res_body['feeds'].map { |hsh| hsh['messages'] }
+        expect(feed_messages.length).to eq \
+          paper.activities.where(feed_name: 'manuscript').length
+        expect(feed_messages).to \
+          contain_exactly(manuscript_activity.message)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
 
 
   # describe "GET download" do

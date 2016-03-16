@@ -98,6 +98,7 @@ class PapersController < ApplicationController
   end
 
   def download
+    requires_user_can(:view, paper)
     respond_to do |format|
       format.docx do
         if paper.latest_version.source_url.blank?

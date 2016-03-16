@@ -520,7 +520,108 @@ describe PapersController do
       it { is_expected.to responds_with(403) }
     end
   end
-  #
+
+  describe "GET download" do
+    subject(:do_request) do
+      get :download, id: paper.id, format: format
+    end
+    let(:format) { :docx }
+
+    let(:url) { "http://theurl.com" }
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+      end
+
+      context 'requested format is ePub' do
+        let(:format) { :epub }
+        let(:epub_converter) do
+          instance_double(EpubConverter, fs_filename: 'za-file.eps')
+        end
+
+        it 'sends an ePub file back' do
+          expect(EpubConverter).to receive(:new).with(paper, user)
+            .and_return epub_converter
+          expect(epub_converter).to receive_message_chain('epub_stream.string')
+            .and_return 'my epub file contents'
+
+          do_request
+
+          expect(response.body).to eq('my epub file contents')
+          expect(response.headers['Content-Disposition']).to \
+            include('filename="za-file.eps"')
+        end
+      end
+
+      context 'requested format is PDF' do
+        let(:format) { :pdf }
+        let(:pdf_converter) do
+          instance_double(PDFConverter, fs_filename: 'za-file.pdf')
+        end
+
+        it "sends a pdf file back if there's a pdf extension" do
+          expect(PDFConverter).to receive(:new).with(paper, user)
+            .and_return pdf_converter
+          expect(pdf_converter).to receive(:convert)
+            .and_return 'my pdf file contents'
+
+          do_request
+
+          expect(response.body).to eq('my pdf file contents')
+          expect(response.headers['Content-Disposition']).to \
+            include('filename="za-file.pdf"')
+        end
+      end
+
+      context 'requested format is docx' do
+        let(:format) { :docx }
+
+        context 'and no docx was uploaded' do
+          it 'returns 404' do
+            do_request
+            expect(response.status).to eq(404)
+          end
+        end
+
+        context 'and a docx file was uploaded' do
+          let(:docx_url) { 'http://example.com/source.docx' }
+
+          it 'redirects to the docx file' do
+            # Force the controller to use our mocked paper
+            allow(controller).to receive(:paper).and_return(paper)
+            latest_version = double(paper.latest_version)
+            allow(paper).to receive(:latest_version)
+              .and_return(latest_version)
+            expect(latest_version).to receive(:source_url)
+              .and_return(docx_url).twice
+
+            do_request
+            expect(response).to redirect_to(docx_url)
+          end
+        end
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
+
   # describe "PUT 'submit'" do
   #   expect_policy_enforcement
   #
@@ -544,50 +645,6 @@ describe PapersController do
   #   end
   # end
 
-
-  # describe "GET download" do
-  #   expect_policy_enforcement
-  #
-  #   it "sends file back" do
-  #     allow(controller).to receive(:render).and_return(nothing: true)
-  #     expect(controller).to receive(:send_data)
-  #     get :download, id: paper.id, format: :epub
-  #   end
-  #
-  #   it "sends a pdf file back if there's a pdf extension" do
-  #     allow_any_instance_of(PDFConverter).to receive(:convert).and_return "<html><body>PDF CONTENT</body></html>"
-  #     allow(controller).to receive(:render).and_return(nothing: true)
-  #     expect(controller).to receive(:send_data)
-  #     get :download, format: :pdf, id: paper.id
-  #   end
-  #
-  #   context 'when downloading docx' do
-  #     context 'and no docx was uploaded' do
-  #       it 'returns 404' do
-  #         get :download, id: paper.id, format: :docx
-  #         expect(response.status).to eq(404)
-  #       end
-  #     end
-  #
-  #     context 'and a docx file was uploaded' do
-  #       let(:docx_url) { 'http://example.com/source.docx' }
-  #
-  #       it 'redirects to the docx file' do
-  #         # Force the controller to use our mocked paper
-  #         allow(controller).to receive(:paper).and_return(paper)
-  #         latest_version = double(paper.latest_version)
-  #         allow(paper).to receive(:latest_version)
-  #           .and_return(latest_version)
-  #         expect(latest_version).to receive(:source_url)
-  #           .and_return(docx_url).twice
-  #         get :download, id: paper.id, format: :docx
-  #         expect(response).to redirect_to(docx_url)
-  #       end
-  #     end
-  #   end
-  # end
-  #
-  #
   #
   # describe "PUT 'withdraw'" do
   #   let!(:paper) do

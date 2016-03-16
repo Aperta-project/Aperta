@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import ENV from 'tahi/config/environment';
 import taskComponentName from 'tahi/lib/task-component-name';
 
@@ -23,7 +24,7 @@ export default Ember.Component.extend({
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish
   getRouter() {
-    return this.container.lookup('router:main');
+    return getOwner(this).lookup('router:main');
   },
 
   href: Ember.computed('task.id', function() {

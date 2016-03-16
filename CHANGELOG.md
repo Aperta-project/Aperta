@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 
 ### Changed
--
+- Institution field will search as you type
 
 ### Deprecated
 -
@@ -19,7 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Password reset buttons
 
 ### Fixed
--
+- Document upload success message now displays to the uploader, not the creator of a paper.
 
 ### Security
 -

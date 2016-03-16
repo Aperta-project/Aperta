@@ -30,6 +30,8 @@ export default {
       let status     = jqXHR.status;
       let statusText = jqXHR.statusText;
 
+      // don't blow up if xhr was aborted
+      if (statusText === 'abort') { return; }
       // don't blow up in case of a 403 from rails
       if (status === 403) { return; }
       // ember data should handle these errors.

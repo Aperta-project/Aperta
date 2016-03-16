@@ -533,6 +533,7 @@ class DashboardPage(AuthenticatedPage):
     :param username: username
     """
     # global elements
+    logging.info(username)
     modal_title = self._get(self._view_invites_title)
     self.validate_application_title_style(modal_title)
     assert application_typeface in modal_title.value_of_css_property('font-family')

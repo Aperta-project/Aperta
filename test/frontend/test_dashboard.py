@@ -80,7 +80,7 @@ class ApertaDashboardTest(CommonTest):
     invites = dashboard_page.is_invite_stanza_present(user_type)
     if invites > 0:
       dashboard_page.click_view_invites_button()
-      dashboard_page.validate_view_invites(user_type['email'])
+      dashboard_page.validate_view_invites(user_type['user'])
     # Validate Create New Submissions modal
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)

@@ -680,29 +680,62 @@ describe PapersController do
     end
   end
 
+  describe 'PUT submit' do
+    subject(:do_request) do
+       put :submit, id: paper.id, format: :json
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
 
-  # describe "PUT 'submit'" do
-  #   expect_policy_enforcement
-  #
-  #   let(:submit) { put :submit, id: paper.id, format: :json}
-  #
-  #   authorize_policy(PapersPolicy, true)
-  #
-  #   context 'Gradual Engagement' do
-  #     it 'makes an initial submission' do
-  #       paper.update(gradual_engagement: true)
-  #       submit
-  #       expect(paper.reload).to be_initially_submitted
-  #     end
-  #   end
-  #
-  #   it "submits the paper" do
-  #     submit
-  #     expect(response.status).to eq(200)
-  #     expect(paper.reload.submitted?).to eq true
-  #     expect(paper.editable).to eq false
-  #   end
-  # end
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:edit, paper)
+          .and_return true
+      end
+
+      context 'Gradual Engagement' do
+        it 'makes an initial submission' do
+          paper.update(gradual_engagement: true)
+          do_request
+          expect(paper.reload).to be_initially_submitted
+        end
+      end
+
+      context 'Full submission (not gradual engagement)' do
+        it 'submits the paper' do
+          do_request
+          expect(response.status).to eq(200)
+          expect(paper.reload.submitted?).to eq true
+          expect(paper.editable).to eq false
+        end
+
+        it 'creates an Activity' do
+          expect(Activity).to receive(:paper_submitted!)
+            .with(paper, user: user)
+          do_request
+        end
+      end
+
+      it 'responds with 200 OK' do
+        do_request
+        expect(response).to responds_with(200)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:edit, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
 
   #
   # describe "PUT 'withdraw'" do

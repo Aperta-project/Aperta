@@ -75,6 +75,7 @@ class PapersController < ApplicationController
   end
 
   def snapshots
+    requires_user_can(:view, paper)
     snapshots = paper.snapshots
     respond_with snapshots,
                  each_serializer: SnapshotSerializer,

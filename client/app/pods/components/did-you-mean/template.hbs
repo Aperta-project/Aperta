@@ -14,11 +14,12 @@
             placeholder=placeholder
             class=""
             enter="search"
+            key-up="search"
             focus-in="focus"
             focus-out="search"
             disabled=disabled}}
 
-    {{#if searching}}
+    {{#if search.isRunning}}
       {{progress-spinner visible=true size="small"}}
     {{else}}
       <button class="did-you-mean-button"

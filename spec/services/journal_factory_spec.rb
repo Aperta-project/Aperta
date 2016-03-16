@@ -575,29 +575,46 @@ describe JournalFactory do
 
       context 'Reviewer' do
         describe 'permissions on tasks' do
+          let(:permissions) do
+            Permission.joins(:states).where(
+              permission_states: { id: PermissionState.wildcard }
+            )
+          end
+
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.descendants.select { |klass| klass <=> MetadataTask } + [TahiStandardTasks::ReviseTask]
-            accessible_for_role - inaccessible_task_klasses
+            Task.submission_task_types - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask]
+            [
+              PlosBilling::BillingTask,
+              TahiStandardTasks::CoverLetterTask,
+              TahiStandardTasks::ReviewerRecommendationsTask
+            ]
           end
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses
           end
 
-          it 'can :view and :view_participants for all accessible_task_klasses' do
+          it 'can :view associated Paper' do
+            expect(journal.reviewer_role.permissions).to include(
+              permissions.find_by(action: :view, applies_to: 'Paper')
+            )
+          end
+
+          it 'can :view and :view_participants accessible task klasses' do
             accessible_task_klasses.each do |klass|
               expect(journal.reviewer_role.permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :view_participants, applies_to: klass.name)
+                permissions.find_by(action: :view, applies_to: klass.name),
+                permissions.find_by(action: :view_participants, applies_to: klass.name)
               )
             end
+          end
 
+          it 'cannot :view or :view_participants on inaccessible task klasses' do
             all_inaccessible_task_klasses.each do |klass|
               expect(journal.reviewer_role.permissions).to_not include(
-                Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :view_participants, applies_to: klass.name)
+                permissions.find_by(action: :view, applies_to: klass.name),
+                permissions.find_by(action: :view_participants, applies_to: klass.name)
               )
             end
           end

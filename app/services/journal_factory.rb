@@ -82,10 +82,13 @@ class JournalFactory
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
 
-      # Reviewer(s) get access to all metadata cards, but not billing.
-      task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses << TahiStandardTasks::ReviseTask
+      # Reviewer(s) get access to all submission tasks, except a few
+      task_klasses = Task.submission_task_types
+      task_klasses -= [
+        PlosBilling::BillingTask,
+        TahiStandardTasks::CoverLetterTask,
+        TahiStandardTasks::ReviewerRecommendationsTask
+      ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
         role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])

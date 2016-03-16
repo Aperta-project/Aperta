@@ -35,14 +35,17 @@ class DashboardPage(AuthenticatedPage):
     # Base Page Locators
     self._dashboard_top_menu_paper_tracker = (By.ID, 'nav-paper-tracker')
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
-    self._dashboard_view_invitations_btn = (By.CSS_SELECTOR,
-                                            'section.dashboard-section button.button-primary.button--green')
-    self._dashboard_my_subs_title = (By.CSS_SELECTOR, 'section#dashboard-my-submissions h2.welcome-message')
-    self._dashboard_create_new_submission_btn = (By.CSS_SELECTOR,
-                                                 'section#dashboard-my-submissions button.button-primary.button--green')
+    self._dashboard_view_invitations_btn = \
+        (By.CSS_SELECTOR, 'section.dashboard-section button.button-primary.button--green')
+    self._dashboard_my_subs_title = \
+        (By.CSS_SELECTOR, 'section#dashboard-my-submissions h2.welcome-message')
+    self._dashboard_create_new_submission_btn = \
+        (By.CSS_SELECTOR, 'section#dashboard-my-submissions button.button-primary.button--green')
     self._dash_active_section_title = (By.CSS_SELECTOR, 'thead.active-papers tr th')
-    self._dash_active_role_th = (By.XPATH, "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
-    self._dash_active_status_th = (By.XPATH, "//div[@class='table-responsive'][1]/table/thead/tr/th[3]")
+    self._dash_active_role_th = (By.XPATH,
+                                 "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
+    self._dash_active_status_th = (By.XPATH,
+                                   "//div[@class='table-responsive'][1]/table/thead/tr/th[3]")
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
     self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
@@ -50,8 +53,10 @@ class DashboardPage(AuthenticatedPage):
     self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
 
     self._dash_inactive_section_title = (By.CSS_SELECTOR, 'thead.inactive-papers tr th')
-    self._dash_inactive_role_th = (By.XPATH, "//div[@class='table-responsive'][2]/table/thead/tr/th[2]")
-    self._dash_inactive_status_th = (By.XPATH, "//div[@class='table-responsive'][2]/table/thead/tr/th[3]")
+    self._dash_inactive_role_th = (By.XPATH,
+                                   "//div[@class='table-responsive'][2]/table/thead/tr/th[2]")
+    self._dash_inactive_status_th = (By.XPATH,
+                                     "//div[@class='table-responsive'][2]/table/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
     self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
@@ -164,7 +169,7 @@ class DashboardPage(AuthenticatedPage):
     """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
-    # self.validate_primary_big_green_button_style(cns_btn)
+    self.validate_primary_big_green_button_style(cns_btn)
 
   def validate_invite_dynamic_content(self, username):
     """
@@ -203,18 +208,40 @@ class DashboardPage(AuthenticatedPage):
     # dashboard welcome message
     active_manuscript_list = []
     try:
-      active_manuscripts_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, assignments.created_at '
+      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                                'papers.updated_at '
                                                 'FROM assignments '
                                                 'JOIN roles ON assignments.role_id=roles.id '
-                                                'JOIN papers on papers.id=assignments.assigned_to_id '
+                                                'JOIN papers ON '
+                                                'papers.id=assignments.assigned_to_id '
                                                 'WHERE assignments.user_id=%s AND '
                                                 'roles.participates_in_papers=True AND '
                                                 'assignments.assigned_to_type=\'Paper\' AND '
                                                 'papers.publishing_state NOT '
-                                                'IN (\'withdrawn\', \'rejected\') '
-                                                'ORDER BY assignments.created_at;', (uid,))
-      for amt in active_manuscripts_tuples:
+                                                'IN (\'withdrawn\', \'rejected\', \'submitted\', '
+                                                '\'checking\', \'initially_submitted\', '
+                                                '\'in_revision\', \'invited_for_full_submission\') '
+                                                'ORDER BY papers.updated_at DESC;', (uid,))
+      # APERTA-6352 We are not correctly sorting active submitted documents on the dashboard
+      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                               'assignments.created_at '
+                                               'FROM assignments '
+                                               'JOIN roles ON assignments.role_id=roles.id '
+                                               'JOIN papers ON '
+                                               'papers.id=assignments.assigned_to_id '
+                                               'WHERE assignments.user_id=%s AND '
+                                               'roles.participates_in_papers=True AND '
+                                               'assignments.assigned_to_type=\'Paper\' AND '
+                                               'papers.publishing_state '
+                                               'IN (\'submitted\', \'checking\', '
+                                               '\'initially_submitted\', \'in_revision\', '
+                                               '\'invited_for_full_submission\') '
+                                               'ORDER BY assignments.created_at ASC;', (uid,))
+      for amt in activ_manu_unsbmtd_tuples:
         active_manuscript_list.append(amt[0])
+      for amt in active_manu_sbmtd_tuples:
+        active_manuscript_list.append(amt[0])
+
       logging.info(active_manuscript_list)
     except DatabaseError:
       logging.error('Database access error.')
@@ -234,14 +261,21 @@ class DashboardPage(AuthenticatedPage):
     self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
 
-  def validate_active_manuscript_section(self, uid, active_manuscript_count, active_manuscript_list):
+  def validate_active_manuscript_section(self,
+                                         uid,
+                                         active_manuscript_count,
+                                         active_manuscript_list):
     """
-    Validates the display of the active manuscripts section of the dashboard. This may or may not be present.
-    It consists of a title with a parenthetical count of active manuscripts and then a listing of each active
-    manuscript ordered by submitted vs unsubmitted (with unsubmitted first) and display in descending order thereafter.
+    Validates the display of the active manuscripts section of the dashboard. This may or may not
+    be present.
+    It consists of a title with a parenthetical count of active manuscripts and then a listing of
+    each active manuscript ordered by submitted vs unsubmitted (with unsubmitted first) and display
+    in descending order thereafter.
     :param uid: uid of the user under test
-    :param active_manuscript_count: integer representing the total number of active manuscripts for uid
-    :param active_manuscript_list: active_manuscript_list (paper.id ordered by assignments.created_at)
+    :param active_manuscript_count: integer representing the total number of active manuscripts for
+      uid
+    :param active_manuscript_list: active_manuscript_list (paper.id ordered by
+      assignments.created_at)
     :return: None
     """
     try:
@@ -261,8 +295,9 @@ class DashboardPage(AuthenticatedPage):
         number = 'Manuscript'
       else:
         number = 'Manuscripts'
-      assert active_section_title.text == 'Active ' + number + ' (' + str(active_manuscript_count) + ')'
-      # TODO: Correct this call for the new R&P
+      assert active_section_title.text == 'Active {0} ({1})'.format(number,
+                                                                    str(active_manuscript_count))
+      # APERTA-6352 The sorting of Active, submitted titles is incorrect, commenting out
       # self.validate_manu_dynamic_content(uid, active_manuscript_list, 'active')
       assert self._get(self._dash_active_role_th).text == 'Role'
       assert self._get(self._dash_active_status_th).text == 'Status'
@@ -271,24 +306,30 @@ class DashboardPage(AuthenticatedPage):
 
   def validate_inactive_manuscript_section(self, uid):
     """
-    Validates the display of the inactive manuscripts section of the dashboard. This may or may not be present.
-    It consists of a title with a parenthetical count of inactive manuscripts (unsubmitted and rejected) and then a
-    listing of each inactive manuscript ordered by role created_at in descending order thereafter.
+    Validates the display of the inactive manuscripts section of the dashboard. This may or may
+      not be present.
+    It consists of a title with a parenthetical count of inactive manuscripts (unsubmitted and
+      rejected) and then a listing of each inactive manuscript ordered by role created_at in
+      descending order thereafter.
     :param uid: uid of user under test (derived from Dashboard Title validation)
-    :return: inactive_manuscript_count and inactive_manuscript_list (ordered by assignments.created_at
+    :return: inactive_manuscript_count and inactive_manuscript_list (ordered by
+      assignments.created_at)
     """
+    logging.info('Validating Inactive manuscript display on dashboard')
     inactive_manuscript_list = []
     try:
-      inactive_manuscripts_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, assignments.created_at '
+      inactive_manuscripts_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                                  'papers.updated_at '
                                                   'FROM assignments '
                                                   'JOIN roles ON assignments.role_id=roles.id '
-                                                  'JOIN papers on papers.id=assignments.assigned_to_id '
+                                                  'JOIN papers ON '
+                                                  'papers.id=assignments.assigned_to_id '
                                                   'WHERE assignments.user_id=%s AND '
                                                   'roles.participates_in_papers=True AND '
                                                   'assignments.assigned_to_type=\'Paper\' AND '
                                                   'papers.publishing_state '
                                                   'IN (\'withdrawn\', \'rejected\') '
-                                                  'ORDER BY assignments.created_at;', (uid,))
+                                                  'ORDER BY papers.updated_at DESC;', (uid,))
       for imt in inactive_manuscripts_tuples:
         inactive_manuscript_list.append(imt[0])
       logging.info(inactive_manuscript_list)
@@ -304,20 +345,21 @@ class DashboardPage(AuthenticatedPage):
       else:
         number = 'Manuscripts'
       inactive_section_title = self._get(self._dash_inactive_section_title)
-      assert inactive_section_title.text == 'Inactive ' + number + ' (' + str(inactive_manuscripts) + ')'
+      assert inactive_section_title.text == 'Inactive {0} ({1})'.format(number,
+                                                                        str(inactive_manuscripts))
       assert self._get(self._dash_inactive_role_th).text == 'Role'
       assert self._get(self._dash_inactive_status_th).text == 'Status'
       # TODO: Correct this call for the new R&P
-      # self.validate_manu_dynamic_content(uid, inactive_manuscript_list, 'inactive')
+      self.validate_manu_dynamic_content(uid, inactive_manuscript_list, 'inactive')
     return inactive_manuscripts, inactive_manuscript_list
 
   def validate_no_manus_info_msg(self):
     """
-    If there are both no active and no inactive manuscripts, we should present an informational message.
+    If there are both no active and no inactive manuscripts, we should present an informational
+      message.
     :return: None
     """
     info_text = self._get(self._dashboard_info_text)
-    # https://www.pivotaltracker.com/story/show/105122790
     assert info_text.text == 'Your scientific paper submissions will\nappear here.'
     assert application_typeface in info_text.value_of_css_property('font-family')
     assert info_text.value_of_css_property('font-size') == '24px'
@@ -327,8 +369,8 @@ class DashboardPage(AuthenticatedPage):
 
   def validate_manu_dynamic_content(self, uid, manuscript_list, list_):
     """
-    Validates the manuscript listings dynamic display based on assigned roles for papers. Papers should be ordered by
-    paper_role.created_at DESC
+    Validates the manuscript listings dynamic display based on assigned roles for papers. Papers
+      should be ordered by paper_role.created_at DESC
     :param uid: uid of user for whom to validate dashboard section
     :param manuscript_list: list of documents for list_ type in assignments.created_at order
     :param list_: Whether we are validating the active or inactive list display
@@ -342,54 +384,38 @@ class DashboardPage(AuthenticatedPage):
       manu_ids = self._gets(self._dash_inactive_manu_id)
       roles = self._gets(self._dash_inactive_role)
       statuses = self._gets(self._dash_inactive_status)
-
-      paper_tuple_list = PgSQL().query('SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state, '
-                                       'papers.doi '
-                                       'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
-                                       'WHERE paper_roles.user_id=%s '
-                                       'AND papers.publishing_state IN (\'withdrawn\', \'rejected\') '
-                                       'ORDER BY assignments.created_at DESC;', (uid,)
-                                       )
+      db_papers_list = manuscript_list
+      logging.info('The Inactive papers list from the db is {0}'.format(db_papers_list))
     else:
-      paper_tuple_list = []
       papers = self._gets(self._dash_active_title)
       manu_ids = self._gets(self._dash_active_manu_id)
       roles = self._gets(self._dash_active_role)
       statuses = self._gets(self._dash_active_status)
-      unsubmitted_paper_tuples = PgSQL().query(
-                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state, '
-                                   'papers.doi '
-                                   'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
-                                   'WHERE paper_roles.user_id=%s '
-                                   'AND papers.publishing_state = \'unsubmitted\' '
-                                   'ORDER BY paper_roles.created_at DESC;', (uid,)
-                                  )
-      for paper in unsubmitted_paper_tuples:
-        paper_tuple_list.append(paper)
-      other_paper_tuples = PgSQL().query(
-                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state, '
-                                   'papers.doi '
-                                   'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
-                                   'WHERE paper_roles.user_id=%s '
-                                   'AND papers.publishing_state '
-                                   'NOT IN (\'unsubmitted\', \'withdrawn\', \'rejected\') '
-                                   'ORDER BY paper_roles.created_at DESC;', (uid,)
-                                        )
-      for paper in other_paper_tuples:
-        paper_tuple_list.append(paper)
-    db_papers_list = []
-    for i in paper_tuple_list:
-      current_paper = i[0]
-      if current_paper not in db_papers_list:
-        db_papers_list.append(current_paper)
-    # Keeping this around but commented out as it is key to debugging issues with dirty paper data
-    # print(db_papers_list)
+      unsubmitted_list = []
+      submitted_list = []
+      for paper in manuscript_list:
+        submitted_state = PgSQL().query('SELECT publishing_state '
+                                        'FROM papers '
+                                        'WHERE id=%s;', (paper,))
+        if submitted_state == 'unsubmitted':
+          unsubmitted_list.append(paper)
+        else:
+          submitted_list.append(paper)
+      logging.info('The unsubmitted active papers list is {0}'.format(unsubmitted_list))
+      logging.info('The submitted active papers list is {0}'.format(submitted_list))
+
+      # Create one complete list from the two
+      db_papers_list = unsubmitted_list + submitted_list
+      logging.info('The Active papers list from the db is {0}'.format(db_papers_list))
+
     if db_papers_list:
       count = 0
       for paper in papers:  # List of papers for section from page
         # Validate paper title display and ordering
-        # Get title of paper from db based on db ordered list of papers, then compare to papers ordered on page.
-        title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        # Get title of paper from db based on db ordered list of papers, then compare to papers
+        #   ordered on page.
+        title = PgSQL().query('SELECT title '
+                              'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         title = self.get_text(title)
         title = title.strip()
         # Split both to eliminate differences in whitespace
@@ -399,9 +425,11 @@ class DashboardPage(AuthenticatedPage):
         logging.error('paper_text: {0}'.format(paper_text))
         if not title:
           logging.info('Paper id: {0}'.format(db_papers_list[count]))
-          raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
+          raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: '
+                           'Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
-          assert db_title == paper_text, unicode(title) + unicode(' is not equal to ') + unicode(paper.text)
+          assert db_title == paper_text, \
+              unicode(title) + unicode(' is not equal to ') + unicode(paper.text)
         else:
           raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
@@ -409,27 +437,32 @@ class DashboardPage(AuthenticatedPage):
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
                                     'WHERE paper_roles.paper_id = %s AND '
                                     'paper_roles.user_id= %s '
-                                    'ORDER BY paper_roles.created_at DESC;', (db_papers_list[count], uid))
+                                    'ORDER BY paper_roles.created_at DESC;', (db_papers_list[count],
+                                                                              uid))
         rolelist = []
         for role in paper_roles:
           rolelist.append(role[0])
         # print(db_papers_list[count])
-        paper_owner = PgSQL().query('SELECT user_id FROM papers where id = %s;', (db_papers_list[count],))[0][0]
+        paper_owner = PgSQL().query('SELECT user_id '
+                                    'FROM papers where id = %s;', (db_papers_list[count],))[0][0]
         if paper_owner == uid:
           rolelist.append('my paper')
 
         # Validate Status Display
         page_status = statuses[count].text
-        dbstatus = PgSQL().query('SELECT publishing_state FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        dbstatus = PgSQL().query('SELECT publishing_state '
+                                 'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         # For display of status on the home page, we replace '_' with a space.
         transtab = string.maketrans('_', ' ')
         dbstatus = dbstatus.translate(transtab)
         if dbstatus == 'unsubmitted':
           dbstatus = 'draft'
-        assert page_status.lower() == dbstatus.lower(), page_status.lower() + ' is not equal to: ' + dbstatus.lower()
+        assert page_status.lower() == dbstatus.lower(), \
+            page_status.lower() + ' is not equal to: ' + dbstatus.lower()
 
         # Validate Manuscript ID display
-        dbmanuid = PgSQL().query('SELECT doi FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        dbmanuid = PgSQL().query('SELECT doi '
+                                 'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         dbmanuid = 'ID: {0}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
         manu_id = manu_ids[count].text
         assert dbmanuid == manu_id, dbmanuid + ' is not equal to: ' + manu_id
@@ -524,7 +557,8 @@ class DashboardPage(AuthenticatedPage):
     username = username['user']
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
-                                     'WHERE state = %s AND invitee_id = %s;', ('invited', uid))[0][0]
+                                     'WHERE state = %s '
+                                     'AND invitee_id = %s;', ('invited', uid))[0][0]
     return invitation_count
 
   def validate_view_invites(self, username):
@@ -537,14 +571,17 @@ class DashboardPage(AuthenticatedPage):
     logging.info(username)
     modal_title = self._get(self._view_invites_title)
     self.validate_application_title_style(modal_title)
-    assert application_typeface in modal_title.value_of_css_property('font-family')
-    assert modal_title.value_of_css_property('font-size') == '48px'
-    assert modal_title.value_of_css_property('font-weight') == '500'
-    # Current implementation seems wrong Pivotal Ticket:
-    #  https://www.pivotaltracker.com/n/projects/880854/stories/100777180
-    # Not validating until resolved.
-    # assert modal_title.value_of_css_property('line-height') == '43.2px'
-    assert modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert application_typeface in modal_title.value_of_css_property('font-family'), \
+        modal_title.value_of_css_property('font-family')
+    assert modal_title.value_of_css_property('font-size') == '48px', \
+        modal_title.value_of_css_property('font-size')
+    assert modal_title.value_of_css_property('font-weight') == '500', \
+        modal_title.value_of_css_property('font-weight')
+    # TODO: APERTA-3013 Re-enable check when issue resolved.
+    # assert modal_title.value_of_css_property('line-height') == '43.2px', \
+    #     modal_title.value_of_css_property('line-height')
+    assert modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        modal_title.value_of_css_property('color')
     # per invite elements
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitations = PgSQL().query('SELECT task_id FROM invitations '
@@ -557,27 +594,38 @@ class DashboardPage(AuthenticatedPage):
       paper_id = PgSQL().query('SELECT paper_id FROM tasks '
                                'WHERE tasks.id = %s;', (task,))[0][0]
       title = PgSQL().query('SELECT title FROM papers WHERE id = %s;', (paper_id,))[0][0]
-      # The ultimate plan here is to compare titles from the database to those presented on the page,
-      # however, the ordering of the presentation of the invite blocks is currently non-deterministic, so this
-      # can't currently be done. https://www.pivotaltracker.com/n/projects/880854/stories/100832196
+      # TODO: APERTA-3000 The ultimate plan here is to compare titles from the database to those
+      # presented on the page, however, the ordering of the presentation of the invite blocks is
+      # currently non-deterministic, so this can't currently be done.
       # For the time being, just printing the titles to the test run log
       logging.info('Title from the database: \n{0}'.format(title))
-      # The following locators are dynamically assigned and must be defined inline in this loop to succeed.
-      self._view_invites_pending_invite_div = (By.XPATH, '//div[@class="pending-invitation"][' + str(count) + ']')
+      # The following locators are dynamically assigned and must be defined inline in this loop to
+      #   succeed.
+      self._view_invites_pending_invite_div = \
+          (By.XPATH, '//div[@class="pending-invitation"][' + str(count) + ']')
       self._view_invites_pending_invite_heading = (By.TAG_NAME, 'h4')
-      self._view_invites_pending_invite_paper_title = (By.CSS_SELECTOR, 'li.dashboard-paper-title h3')
+      self._view_invites_pending_invite_paper_title = (By.CSS_SELECTOR,
+                                                       'li.dashboard-paper-title h3')
       self._view_invites_pending_invite_manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
       self._view_invites_pending_invite_abstract = (By.CSS_SELECTOR, 'li.dashboard-paper-title p')
-      self._view_invites_pending_invite_yes_btn = (By.CSS_SELECTOR, 'li.dashboard-paper-title button')
-      self._view_invites_pending_invite_no_btn = (By.XPATH, '//li[@class="dashboard-paper-title"]/button[2]')
+      self._view_invites_pending_invite_yes_btn = (By.CSS_SELECTOR,
+                                                   'li.dashboard-paper-title button')
+      self._view_invites_pending_invite_no_btn = (By.XPATH,
+                                                  '//li[@class="dashboard-paper-title"]/button[2]')
 
-      self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_heading)
-      pt = self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_paper_title)
+      self._get(self._view_invites_pending_invite_div)\
+          .find_element(*self._view_invites_pending_invite_heading)
+      pt = self._get(self._view_invites_pending_invite_div)\
+          .find_element(*self._view_invites_pending_invite_paper_title)
       logging.info('Title presented on the page: \n{0}'.format(pt.text.encode('utf-8')))
-      self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_manuscript_icon)
-      self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_abstract)
-      self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_yes_btn)
-      self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_no_btn)
+      self._get(self._view_invites_pending_invite_div)\
+          .find_element(*self._view_invites_pending_invite_manuscript_icon)
+      self._get(self._view_invites_pending_invite_div)\
+          .find_element(*self._view_invites_pending_invite_abstract)
+      self._get(self._view_invites_pending_invite_div)\
+          .find_element(*self._view_invites_pending_invite_yes_btn)
+      self._get(self._view_invites_pending_invite_div)\
+          .find_element(*self._view_invites_pending_invite_no_btn)
       count += 1
     self._get(self._overlay_header_close).click()
     time.sleep(1)
@@ -600,14 +648,16 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_superscript_icon)
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
-    assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
+    assert 'What journal are you submitting to?' in journal_chooser_label.text, \
+        journal_chooser_label.text
     journal_chooser = self._get((By.CLASS_NAME, 'ember-power-select-placeholder'))
     assert 'Select a journal' in journal_chooser.text, journal_chooser.text
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
-    assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text
+    assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, \
+        paper_type_chooser_label.text
     paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
-    self._get(self._upload_btn)
+    upload_btn = self._get(self._upload_btn)
     doc2upload = random.choice(docs)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
@@ -616,8 +666,8 @@ class DashboardPage(AuthenticatedPage):
     else:
       raise IOError('Docx file: {0} not found'.format(doc2upload))
     self.click_upload_button()
-    # TODO: Check this when fixed bug #102130748
-    # self.validate_secondary_big_green_button_style(create_btn)
+    # TODO: Check this when fixed bug APERTA-2831 is resolved
+    # self.validate_secondary_big_green_button_style(upload_btn)
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)
     # I can't quite make out why the previous returns two iterations of the error messages, but,
@@ -630,8 +680,6 @@ class DashboardPage(AuthenticatedPage):
       errors.append(error)
     assert 'Journal can\'t be blank' in errors
     assert 'Paper type can\'t be blank' in errors
-    # Temporarily commented out per ticket APERTA-5413
-    # assert 'Title can\'t be blank' in errors
     closer.click()
 
   def return_cns_base_overlay_div(self):

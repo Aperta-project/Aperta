@@ -66,7 +66,9 @@ class ApertaDashboardTest(CommonTest):
     (active_manuscript_count, active_manuscript_list, uid) = \
         dashboard_page.validate_manuscript_section_main_title(user_type)
     if active_manuscript_count > 0:
-      dashboard_page.validate_active_manuscript_section(uid, active_manuscript_count, active_manuscript_list)
+      dashboard_page.validate_active_manuscript_section(uid,
+                                                        active_manuscript_count,
+                                                        active_manuscript_list)
     (inactive_manuscript_count, inactive_manuscript_list) = \
         dashboard_page.validate_inactive_manuscript_section(uid)
     if active_manuscript_count == 0 and inactive_manuscript_count == 0:

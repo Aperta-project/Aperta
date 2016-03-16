@@ -19,7 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Password reset buttons
 
 ### Fixed
--
+- Document upload success message now displays to the uploader, not the creator of a paper.
 
 ### Security
 -

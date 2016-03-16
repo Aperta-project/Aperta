@@ -30,12 +30,12 @@ export default Ember.TextField.extend({
   dataType: 'json',
   method: 'POST',
   railsMethod: 'POST',
-  
+
   acceptedFileTypes: Ember.computed('accept', function(){
     let types = this.get('accept').replace(/\./g, '').replace(/,/g, '|');
     return new RegExp("(" + types + ")$", 'i');
   }),
-  
+
   checkFileType: function(e, data) {
     var errorMessage, fileName;
     if (this.get('accept')) {
@@ -117,7 +117,7 @@ export default Ember.TextField.extend({
         },
         success: function(data) {
           var uploadFunction;
-          uploadData.url = data.url;
+          uploadData.url = encodeURI(data.url);
           uploadData.formData = {
             key: data.key + '/' + file.name,
             policy: data.policy,

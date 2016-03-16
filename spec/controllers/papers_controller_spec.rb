@@ -240,6 +240,8 @@ describe PapersController do
     let(:url) { "http://theurl.com" }
     it "initiates manuscript download" do
       expect(DownloadManuscriptWorker).to receive(:perform_async)
+        .with(paper.id, url, "http://test.host/api/ihat/jobs",
+              paper_id: paper.id, user_id: user.id)
       put :upload, id: paper.id, url: url, format: :json
     end
   end

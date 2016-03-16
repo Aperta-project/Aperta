@@ -9,7 +9,6 @@ from selenium.webdriver.common.keys import Keys
 from authenticated_page import AuthenticatedPage, application_typeface
 from Base.Resources import affiliation
 
-
 __author__ = 'sbassi@plos.org'
 
 
@@ -20,7 +19,7 @@ class ProfilePage(AuthenticatedPage):
   def __init__(self, driver):
     super(ProfilePage, self).__init__(driver, '/')
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._profile_name_title = (By.XPATH, './/div["profile-section"]/h1')
     self._profile_name = (By.XPATH, './/div["profile-section"]/h2')
     self._profile_username_title = (By.XPATH, './/div[@id="profile-username"]/h1')
@@ -58,7 +57,7 @@ class ProfilePage(AuthenticatedPage):
     self._success_message = (By.CSS_SELECTOR, 'div.success')
     self._error_message = (By.CLASS_NAME, 'error-message')
 
-  #POM Actions
+  # POM Actions
 
   @staticmethod
   def validate_profile_title_style_big(title):
@@ -77,7 +76,10 @@ class ProfilePage(AuthenticatedPage):
     return None
 
   def validate_initial_page_elements_styles(self, username):
-    """Validate initial page elements styles of Profile page"""
+    """
+    Validate initial page elements styles of Profile page
+    :param username: User against which to validate profile page
+    """
     # Validate menu elements (title and icon)
     self.validate_nav_toolbar_elements(username)
     name_title = self._get(self._profile_name_title)
@@ -100,8 +102,6 @@ class ProfilePage(AuthenticatedPage):
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
     self.validate_secondary_small_grey_button_style(affiliation_btn)
-    reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_big_green_button_style(reset_btn)
     avatar = self._get(self._avatar)
     self.validate_large_avatar_style(avatar)
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
@@ -115,7 +115,7 @@ class ProfilePage(AuthenticatedPage):
     Validate the error message for an invalid adding new affiliation.
     :return: None
     """
-    #self.click_left_nav()
+    # self.click_left_nav()
     self.click_add_affiliation_button()
     add_done_btn = self._get(self._add_done_btn)
     add_done_btn.click()
@@ -129,19 +129,9 @@ class ProfilePage(AuthenticatedPage):
     # assert error.value_of_css_property('line-height') == '29.7px'
     # assert error.value_of_css_property('color') == 'rgba(187 ,0 ,0 ,1)'
 
-  def click_reviewer_recommendation_button(self):
-    """Click reviewer recommendation button"""
-    self._get(self._reviewer_recommendation_button).click()
-    return self
-
   def click_add_affiliation_button(self):
     """Click add addiliation button"""
     self._get(self._affiliation_btn).click()
-    return self
-
-  def click_close_navigation(self):
-    """Click on the close icon to close left navigation bar"""
-    self._get(self._nav_close).click()
     return self
 
   def validate_image_upload(self):
@@ -157,16 +147,6 @@ class ProfilePage(AuthenticatedPage):
                            "/frontend/assets/imgs/plos.gif" + Keys.RETURN + Keys.RETURN))
     time.sleep(1)
     return self
-
-  def validate_reset_password(self):
-    """Validate reset password button"""
-    reset_btn = self._get(self._reset_btn)
-    reset_btn.click()
-    time.sleep(3)
-    message = self._get(self._success_message)
-    assert "Reset password instructions have been sent to the your email address." in message.text
-    # https://www.pivotaltracker.com/story/show/103710924
-    # self.validate_flash_success_style(message)
 
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""

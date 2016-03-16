@@ -15,7 +15,7 @@ TIMEOUT = 30         # API call timeout, in seconds
 wait_timeout = 20
 
 # WebDriver's Page Load timeout (in seconds)
-page_load_timeout = 20
+page_load_timeout = 30
 
 # Framework's link verification timeout (in seconds)
 verify_link_timeout = 3

@@ -13,6 +13,8 @@ FactoryGirl.define do
 
     after(:create) do |instance|
       instance.task = FactoryGirl.create :authors_task
+      instance.position = 1
+      instance.save
     end
   end
 end

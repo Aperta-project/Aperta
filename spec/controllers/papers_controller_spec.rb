@@ -473,6 +473,77 @@ describe PapersController do
     end
   end
 
+  describe 'PUT upload' do
+    subject(:do_request) do
+      put :upload, id: paper.id, url: url, format: :json
+    end
+    let(:url) { "http://theurl.com" }
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:edit, paper)
+          .and_return true
+      end
+
+      it "initiates manuscript download" do
+        expect(DownloadManuscriptWorker).to receive(:perform_async)
+          .with(
+            paper.id,
+            url,
+            'http://test.host/api/ihat/jobs',
+            paper_id: paper.id,
+            user_id: user.id
+          )
+        do_request
+      end
+
+      it "responds with 204 NO CONTENT" do
+        do_request
+        expect(response).to responds_with(204)
+        expect(response.body).to eq("")
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:edit, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+  #
+  # describe "PUT 'submit'" do
+  #   expect_policy_enforcement
+  #
+  #   let(:submit) { put :submit, id: paper.id, format: :json}
+  #
+  #   authorize_policy(PapersPolicy, true)
+  #
+  #   context 'Gradual Engagement' do
+  #     it 'makes an initial submission' do
+  #       paper.update(gradual_engagement: true)
+  #       submit
+  #       expect(paper.reload).to be_initially_submitted
+  #     end
+  #   end
+  #
+  #   it "submits the paper" do
+  #     submit
+  #     expect(response.status).to eq(200)
+  #     expect(paper.reload.submitted?).to eq true
+  #     expect(paper.editable).to eq false
+  #   end
+  # end
+
 
   # describe "GET download" do
   #   expect_policy_enforcement
@@ -517,38 +588,6 @@ describe PapersController do
   # end
   #
   #
-  # describe "PUT 'upload'" do
-  #   let(:url) { "http://theurl.com" }
-  #   it "initiates manuscript download" do
-  #     expect(DownloadManuscriptWorker).to receive(:perform_async)
-  #       .with(paper.id, url, "http://test.host/api/ihat/jobs",
-  #             paper_id: paper.id, user_id: user.id)
-  #     put :upload, id: paper.id, url: url, format: :json
-  #   end
-  # end
-  #
-  # describe "PUT 'submit'" do
-  #   expect_policy_enforcement
-  #
-  #   let(:submit) { put :submit, id: paper.id, format: :json}
-  #
-  #   authorize_policy(PapersPolicy, true)
-  #
-  #   context 'Gradual Engagement' do
-  #     it 'makes an initial submission' do
-  #       paper.update(gradual_engagement: true)
-  #       submit
-  #       expect(paper.reload).to be_initially_submitted
-  #     end
-  #   end
-  #
-  #   it "submits the paper" do
-  #     submit
-  #     expect(response.status).to eq(200)
-  #     expect(paper.reload.submitted?).to eq true
-  #     expect(paper.editable).to eq false
-  #   end
-  # end
   #
   # describe "PUT 'withdraw'" do
   #   let!(:paper) do

@@ -86,11 +86,14 @@ class PapersController < ApplicationController
 
   # Upload a word file for the latest version.
   def upload
-    DownloadManuscriptWorker.perform_async(paper.id,
-                                           params[:url],
-                                           ihat_jobs_url,
-                                           paper_id: paper.id,
-                                           user_id: current_user.id)
+    requires_user_can(:edit, paper)
+    DownloadManuscriptWorker.perform_async(
+      paper.id,
+      params[:url],
+      ihat_jobs_url,
+      paper_id: paper.id,
+      user_id: current_user.id
+    )
     respond_with paper
   end
 

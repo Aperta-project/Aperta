@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    if !current_user.journal_admin? task.paper.journal
+    unless current_user.can?(:administer, task.paper.journal)
       ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
     end
     Activity.comment_created! comment, user: current_user

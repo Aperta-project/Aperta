@@ -46,7 +46,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def reactivate?
-    current_user.site_admin? || current_user.journal_admin?(journal: paper.journal)
+    current_user.site_admin? || current_user.can?(:administer, paper.journal)
   end
 
   def workflow_activities?

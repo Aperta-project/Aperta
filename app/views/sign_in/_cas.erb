@@ -1,2 +1,2 @@
 <%= link_to "Sign in with PLOS", omniauth_authorize_path(resource_name, provider), class: "button-primary auth-3rd-party-button auth-cas" %>
-<%= link_to "Create an Account", ENV.fetch("CAS_SIGNUP_URL"), class: "button-secondary auth-3rd-party-button auth-cas" %>
+<%= link_to "Create an account", ENV.fetch("CAS_SIGNUP_URL"), class: "auth-register" %>

@@ -49,7 +49,6 @@ a {
 
   &:focus, &:hover {
     text-decoration: underline;
-    color: $tahi-green;
   }
 }
 
@@ -89,7 +88,7 @@ a {
 
 .auth-container {
   @include flex(0 1 auto);
-  padding: 0 60px 35px 60px;
+  padding: 0 0 30px 60px;
   background: rgba(255,255,255, 0.95);
   @include display(flex);
   @include flex-flow(row wrap);
@@ -109,11 +108,22 @@ a {
     flex: 0 0 100%;
     font-size: 16px;
   }
+
+  .auth-register {
+    color: #83ba78;
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+
+    &:focus, &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .auth-group {
   @include flex(1 0 auto);
-  padding: 15px 0;
+  padding: 10px 0;
   @include display(flex);
   @include flex-flow(column nowrap);
   @include align-items(center);
@@ -142,9 +152,9 @@ a {
 
 .auth-3rd-party-button {
   display: block;
-  width: 210px;
+  width: 170px;
   padding: 10px 20px;
-  margin-bottom: 20px;
+  margin-bottom: 7px;
   font-size: 16px;
   font-weight: 600;
   text-transform: none;
@@ -166,7 +176,7 @@ a {
 }
 
 .auth-cas {
-  background: #2B71B7;
+  background: $tahi-green;
 }
 
 .auth-linkedin {

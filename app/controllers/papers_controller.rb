@@ -128,6 +128,7 @@ class PapersController < ApplicationController
   ## EDITING
 
   def toggle_editable
+    requires_user_can(:manage_workflow, paper)
     paper.toggle!(:editable)
     status = paper.valid? ? 200 : 422
     Activity.editable_toggled!(paper, user: current_user)

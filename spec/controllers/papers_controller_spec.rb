@@ -621,6 +621,65 @@ describe PapersController do
     end
   end
 
+  describe 'PUT toggle_editable' do
+    subject(:do_request) do
+      put :toggle_editable, id: paper.id, format: :json
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, paper)
+          .and_return true
+      end
+
+      it "toggles the paper's editable state" do
+        paper.update_attribute(:editable, false)
+        do_request
+        expect(response.status).to eq(200)
+        expect(paper.reload.editable).to eq true
+      end
+
+      it 'creates an Activity' do
+        expect(Activity).to receive(:editable_toggled!)
+          .with(paper, user: user)
+        do_request
+      end
+
+      it 'responds with the paper' do
+        do_request
+        expect(res_body['paper']['id']).to eq(paper.id)
+      end
+
+      it 'responds with 200 OK when the paper is valid' do
+        do_request
+        expect(response).to responds_with(200)
+      end
+
+      it 'responds with 422 Unprocessible Entity when the paper is invalid' do
+        paper.update_attribute(:title, '')
+        expect(paper.valid?).to be(false)
+        do_request
+        expect(response).to responds_with(422)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
 
   # describe "PUT 'submit'" do
   #   expect_policy_enforcement
@@ -688,18 +747,6 @@ describe PapersController do
   #           format: :json
   #       expect(response.status).to eq(403)
   #     end
-  #   end
-  # end
-  #
-  # describe "PUT 'toggle_editable'" do
-  #   expect_policy_enforcement
-  #
-  #   authorize_policy(PapersPolicy, true)
-  #   it "switches the paper's editable state" do
-  #     paper.update_attribute(:editable, false)
-  #     put :toggle_editable, id: paper.id, format: :json
-  #     expect(response.status).to eq(200)
-  #     expect(paper.reload.editable).to eq true
   #   end
   # end
   #

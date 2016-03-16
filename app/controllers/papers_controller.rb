@@ -1,16 +1,11 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy,
-                except: [:index, :show, :comment_looks]
 
   respond_to :json
 
   def index
-    page = (params[:page_number] || 1).to_i
     papers = current_user.filter_authorized(
       :view,
-      # TODO: we should also eager load short_title_answer, but if a paper does
-      # not have any nested_questiona_answers that breaks the filtered query
       Paper.all.includes(:roles, journal: :creator_role)
     ).objects
     active_papers, inactive_papers = papers.partition(&:active?)
@@ -29,16 +24,18 @@ class PapersController < ApplicationController
       :bibitems,
       :journal
     ).find(params[:id])
+    requires_user_can(:view, paper)
     respond_with(paper)
   end
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    Activity.paper_created!(paper, user: current_user) if @paper.valid?
-    respond_with(@paper)
+    Activity.paper_created!(@paper, user: current_user) if @paper.valid?
+    respond_with @paper
   end
 
   def update
+    requires_user_can(:edit, paper)
     unless paper.editable?
       paper.errors.add(:editable, "This paper is currently locked for review.")
       raise ActiveRecord::RecordInvalid, paper

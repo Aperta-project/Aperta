@@ -13,6 +13,7 @@ from selenium.webdriver.common.by import By
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface
+
 """
 A page model for the dashboard page that validates state-dependent element existence
 and style and functionality of the View Invitations and Create New Submission flows
@@ -32,8 +33,7 @@ class DashboardPage(AuthenticatedPage):
     self.driver = driver
     # Locators - Instance members
     # Base Page Locators
-    # TODO: Change after APERTA-5666 is fixed
-    self._dashboard_top_menu_paper_tracker = (By.XPATH, "//a[contains(@class, 'main-nav-item')][3]")
+    self._dashboard_top_menu_paper_tracker = (By.ID, 'nav-paper-tracker')
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
     self._dashboard_view_invitations_btn = (By.CSS_SELECTOR,
                                             'section.dashboard-section button.button-primary.button--green')
@@ -199,34 +199,39 @@ class DashboardPage(AuthenticatedPage):
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # Get count of distinct papers from paper_roles for validating count of manuscripts on
     # dashboard welcome message
+    active_manuscript_list = []
     try:
-      active_manuscripts = PgSQL().query('SELECT COUNT(DISTINCT assignments.assigned_to_id) '
-                                         'FROM assignments '
-                                         'JOIN roles ON assignments.role_id=roles.id '
-                                         'JOIN papers on papers.id=assignments.assigned_to_id '
-                                         'WHERE assignments.user_id=%s AND '
-                                         'roles.participates_in_papers=True AND '
-                                         'assignments.assigned_to_type=\'Paper\' AND '
-                                         'papers.publishing_state NOT '
-                                         'IN (\'withdrawn\', \'rejected\');', (uid,))[0][0]
+      active_manuscripts_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, assignments.created_at '
+                                                'FROM assignments '
+                                                'JOIN roles ON assignments.role_id=roles.id '
+                                                'JOIN papers on papers.id=assignments.assigned_to_id '
+                                                'WHERE assignments.user_id=%s AND '
+                                                'roles.participates_in_papers=True AND '
+                                                'assignments.assigned_to_type=\'Paper\' AND '
+                                                'papers.publishing_state NOT '
+                                                'IN (\'withdrawn\', \'rejected\') '
+                                                'ORDER BY assignments.created_at;', (uid,))
+      for amt in active_manuscripts_tuples:
+        active_manuscript_list.append(amt[0])
+      logging.info(active_manuscript_list)
     except DatabaseError:
       logging.error('Database access error.')
       raise
-    active_manuscripts = active_manuscripts
+    active_manuscripts = len(active_manuscript_list)
     logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
     if active_manuscripts > 1:
       assert 'Hi, ' + first_name + '. You have {0} active manuscripts.'.format(active_manuscripts) in welcome_msg.text, \
              welcome_msg.text + str(active_manuscripts)
-    elif manuscript_count == 1:
+    elif active_manuscripts == 1:
       assert 'Hi, ' + first_name + '. You have {0} active manuscript.'.format(active_manuscripts) in welcome_msg.text, \
              welcome_msg.text + str(active_manuscripts)
     else:
-      manuscript_count = 0
+      active_manuscripts = 0
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
     self.validate_application_title_style(welcome_msg)
-    return active_manuscripts
+    return active_manuscripts, active_manuscript_list, uid
 
-  def validate_active_manuscript_section(self, username, active_manuscript_count):
+  def validate_active_manuscript_section(self, uid, active_manuscript_count, active_manuscript_list):
     """
     Validates the display of the active manuscripts section of the dashboard. This may or may not be present.
     It consists of a title with a parenthetical count of active manuscripts and then a listing of each active
@@ -252,13 +257,13 @@ class DashboardPage(AuthenticatedPage):
       else:
         number = 'Manuscripts'
       assert active_section_title.text == 'Active ' + number + ' (' + str(active_manuscript_count) + ')'
-      self.validate_manu_dynamic_content(username, 'active')
+      self.validate_manu_dynamic_content(uid, active_manuscript_list, 'active')
       assert self._get(self._dash_active_role_th).text == 'Role'
       assert self._get(self._dash_active_status_th).text == 'Status'
     else:
       print('No manuscripts are active for user.')
 
-  def validate_inactive_manuscript_section(self, username):
+  def validate_inactive_manuscript_section(self, uid):
     """
     Validates the display of the inactive manuscripts section of the dashboard. This may or may not be present.
     It consists of a title with a parenthetical count of inactive manuscripts (unsubmitted and rejected) and then a
@@ -266,30 +271,35 @@ class DashboardPage(AuthenticatedPage):
     :param username: username
     :return: inactive_manuscript_count
     """
-    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     try:
-      inactive_manuscripts = PgSQL().query('SELECT DISTINCT paper_roles.paper_id, papers.publishing_state '
-                                           'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
-                                           'WHERE paper_roles.user_id=%s '
-                                           'AND papers.publishing_state IN (\'withdrawn\', \'rejected\');', (uid,))
+      inactive_manuscripts_list = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, assignments.created_at '
+                                                'FROM assignments '
+                                                'JOIN roles ON assignments.role_id=roles.id '
+                                                'JOIN papers on papers.id=assignments.assigned_to_id '
+                                                'WHERE assignments.user_id=%s AND '
+                                                'roles.participates_in_papers=True AND '
+                                                'assignments.assigned_to_type=\'Paper\' AND '
+                                                'papers.publishing_state '
+                                                'IN (\'withdrawn\', \'rejected\') '
+                                                'ORDER BY assignments.created_at;', (uid,))[0][0]
     except DatabaseError:
       logging.error('Database access error.')
       raise
-    inactive_manuscript_count = len(inactive_manuscripts)
-    if inactive_manuscript_count <= 0:
+    inactive_manuscripts = len(inactive_manuscripts_list)
+    if inactive_manuscripts <= 0:
       print('No manuscripts are inactive for user.')
     else:
-      if len(inactive_manuscripts) == 1:
+      if inactive_manuscripts == 1:
         number = 'Manuscript'
       else:
         number = 'Manuscripts'
       inactive_section_title = self._get(self._dash_inactive_section_title)
-      assert inactive_section_title.text == 'Inactive ' + number + ' (' + str(inactive_manuscript_count) + ')'
+      assert inactive_section_title.text == 'Inactive ' + number + ' (' + str(inactive_manuscripts) + ')'
       assert self._get(self._dash_inactive_role_th).text == 'Role'
       assert self._get(self._dash_inactive_status_th).text == 'Status'
 
       self.validate_manu_dynamic_content(username, 'inactive')
-    return inactive_manuscript_count
+    return inactive_manuscripts, inactive_manuscripts_list
 
   def validate_no_manus_info_msg(self):
     """
@@ -305,7 +315,7 @@ class DashboardPage(AuthenticatedPage):
     assert info_text.value_of_css_property('line-height') == '24px'
     assert info_text.value_of_css_property('color') == 'rgba(128, 128, 128, 1)'
 
-  def validate_manu_dynamic_content(self, username, list_):
+  def validate_manu_dynamic_content(self, uid, manuscript_list, list_):
     """
     Validates the manuscript listings dynamic display based on assigned roles for papers. Papers should be ordered by
     paper_role.created_at DESC
@@ -313,8 +323,7 @@ class DashboardPage(AuthenticatedPage):
     :param list_: Whether we are validating the active or inactive list display
     :return: None
     """
-    logging.info('Starting validation of {0} papers for {1}'.format(list_, username))
-    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+    logging.info('Starting validation of {0} papers for user: {1}'.format(list_, uid))
     # We MUST validate that manuscript_count is > 0 for list before calling this
     if list_ == 'inactive':
       paper_tuple_list = []
@@ -328,7 +337,7 @@ class DashboardPage(AuthenticatedPage):
                                        'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                        'WHERE paper_roles.user_id=%s '
                                        'AND papers.publishing_state IN (\'withdrawn\', \'rejected\') '
-                                       'ORDER BY paper_roles.created_at DESC;', (uid,)
+                                       'ORDER BY assignments.created_at DESC;', (uid,)
                                        )
     else:
       paper_tuple_list = []

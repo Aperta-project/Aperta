@@ -50,6 +50,7 @@ class PapersController < ApplicationController
   ## SUPPLIMENTAL INFORMATION
 
   def comment_looks
+    requires_user_can(:view, paper)
     comment_looks = paper.comment_looks.where(user: current_user).includes(:task)
     respond_with(comment_looks, root: :comment_looks)
   end

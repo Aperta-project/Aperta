@@ -232,6 +232,62 @@ describe PapersController do
     end
   end
 
+  describe 'GET comment_looks' do
+    subject(:do_request) do
+      get :comment_looks, id: paper.to_param, format: :json
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:task) { FactoryGirl.create(:task, paper: paper)}
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      let!(:comment) { FactoryGirl.create(:comment, task: task) }
+      let!(:other_user) { FactoryGirl.create(:user) }
+      let!(:comment_looks) do
+        [current_user_comment_look, other_user_comment_look]
+      end
+      let!(:current_user_comment_look) do
+        FactoryGirl.create(:comment_look, comment: comment, user: user)
+      end
+      let!(:other_user_comment_look) do
+        FactoryGirl.create(:comment_look, comment: comment, user: other_user)
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(200) }
+
+      it "responds with the current user's comment_looks for the paper" do
+        expect(res_body['comment_looks'].length).to be(1)
+        expect(res_body['comment_looks'][0]['id']).to eq(current_user_comment_look.id)
+      end
+
+      it "does not return other user's comment looks on the paper" do
+        look_ids = res_body['comment_looks'].map { |hsh| hsh['id'] }
+        expect(look_ids).to_not include(other_user_comment_look.id)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
+
   # describe "GET download" do
   #   expect_policy_enforcement
   #

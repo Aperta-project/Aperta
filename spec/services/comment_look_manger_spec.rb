@@ -1,15 +1,25 @@
 require 'rails_helper'
 
 describe CommentLookManager do
-  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+  let!(:journal) { FactoryGirl.create(:journal) }
+  let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let!(:task) { FactoryGirl.create(:task, paper: paper) }
+
+  before do
+    journal.roles.create!(
+      journal: journal,
+      name: Role::TASK_PARTICIPANT_ROLE
+    )
+  end
 
   it "creates a comment look if the user was already a participant" do
     user = FactoryGirl.create(:user)
     participant = FactoryGirl.create(:user)
 
-    task = FactoryGirl.create(:task, paper: paper, participants: [participant])
-    comment = FactoryGirl.create(:comment, commenter: user, task: task)
+    task = FactoryGirl.create(:task, paper: paper)
+    task.add_participant(participant)
 
+    comment = FactoryGirl.create(:comment, commenter: user, task: task)
     look = CommentLookManager.create_comment_look(participant, comment)
 
     expect(look).to_not be_nil

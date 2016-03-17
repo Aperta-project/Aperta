@@ -35,6 +35,7 @@ Metrics/LineLength:
     # The it 'some string' line of specs should be allowed to be as
     # long as neccessary to describe the test.
     - 'spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.

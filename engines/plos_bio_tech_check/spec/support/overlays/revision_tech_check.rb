@@ -1,0 +1,2 @@
+class RevisionTechCheckOverlay < TechCheckOverlay
+end

@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-feature 'Initial Tech Check', js: true do
+feature 'Revision Tech Check', js: true do
   let(:journal) { create :journal, :with_roles_and_permissions }
   let(:editor) { create :user }
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }
-  let(:task) { create :initial_tech_check_task, paper: paper }
+  let(:task) { create :revision_tech_check_task, paper: paper }
 
   before do
     assign_journal_role journal, editor, :editor
   end
 
-  scenario 'Initial Tech Check triggers Changes For Author' do
+  scenario 'Revision Tech Check triggers Changes For Author' do
     # Editor
     login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)

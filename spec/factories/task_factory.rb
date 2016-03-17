@@ -98,6 +98,13 @@ FactoryGirl.define do
     old_role 'admin'
   end
 
+  factory :revision_tech_check_task, class: 'PlosBioTechCheck::RevisionTechCheckTask' do
+    phase
+    paper
+    title 'Revision Tech Check'
+    old_role 'admin'
+  end
+
   factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
     phase
     paper

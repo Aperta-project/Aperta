@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html class="outer-wrapper">
+  <head>
+    <%= stylesheet_link_tag "email", media: "all" %>
+  </head>
+  <body class="inner-wrapper">
+    <div class="mailer">
+      <%= @email_body.html_safe %>
+    </div>
+  </body>
+</html>

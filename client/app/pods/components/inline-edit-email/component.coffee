@@ -10,7 +10,7 @@ InlineEditEmailComponent = Ember.Component.extend
   isSendable: true
   showChooseReceivers: false
   mailRecipients: []
-  recipients: []
+  recipients: null
   allUsers: null
   overlayParticipants: null
   emailSentStates: Ember.computed.alias 'parentView.emailSentStates'

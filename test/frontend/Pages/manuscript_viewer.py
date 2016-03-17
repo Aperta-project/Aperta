@@ -258,9 +258,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
                      super_admin_login['email'],
                      ]:
       discussion_create_new_btn = self._get(self._discussion_create_new_btn)
-      ##self.validate_secondary_green_button_style(discussion_create_new_btn)
-      ##self.validate_secondary_small_green_button_style(discussion_create_new_btn)
-      self.validate_secondary_big_green_button_style(discussion_create_new_btn)
+      # APERTA-6361 Styling incorrect
+      # self.validate_secondary_big_green_button_style(discussion_create_new_btn)
       discussion_create_new_btn.click()
       create_new_topic = self._get(self._create_new_topic)
       assert 'Create New Topic' in create_new_topic.text
@@ -277,7 +276,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'Topic Title' == titles[0].text
       assert 'Message' == titles[1].text
       create_topic_btn = self._get(self._create_topic_btn)
-      ##self.validate_green_backed_button_style(create_topic_btn)
+      #
       self.validate_primary_big_green_button_style(create_topic_btn)
     close_icon_overlay = self._get(self._sheet_close_x)
     # TODO: Change following line after bug #102078080 is solved

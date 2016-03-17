@@ -737,6 +737,58 @@ describe PapersController do
     end
   end
 
+describe 'PUT reactivate' do
+  subject(:do_request) do
+     put :reactivate, id: paper.to_param, format: :json
+  end
+  let(:paper) { FactoryGirl.build_stubbed(:paper) }
+
+  before do
+    allow(Paper).to receive(:find)
+      .with(paper.to_param)
+      .and_return paper
+  end
+
+  it_behaves_like "an unauthenticated json request"
+
+  context "when the user has access" do
+    before do
+      stub_sign_in(user)
+      allow(user).to receive(:can?)
+        .with(:edit, paper)
+        .and_return true
+      allow(paper).to receive(:reactivate!)
+    end
+
+    it 'reactivates the paper' do
+      expect(paper).to receive(:reactivate!)
+      do_request
+    end
+
+    it 'responds with the paper' do
+      do_request
+      expect(res_body['paper']['id']).to eq(paper.id)
+    end
+
+    it 'responds with 200 OK' do
+      do_request
+      expect(response).to responds_with(200)
+    end
+  end
+
+  context "when the user does not have access" do
+    before do
+      allow(user).to receive(:can?)
+        .with(:edit, paper)
+        .and_return false
+      do_request
+    end
+
+    it { is_expected.to responds_with(403) }
+  end
+end
+
+
   #
   # describe "PUT 'withdraw'" do
   #   let!(:paper) do

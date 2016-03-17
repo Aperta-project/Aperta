@@ -207,7 +207,7 @@ class Paper < ActiveRecord::Base
   end
 
   def body
-    @new_body || latest_version.text
+    @new_body || latest_version.try(:text)
   end
 
   def body=(new_body)

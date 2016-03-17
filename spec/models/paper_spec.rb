@@ -43,6 +43,13 @@ describe Paper do
     end
   end
 
+  describe '#body' do
+    subject(:paper) { Paper.new }
+    it 'returns nil by default' do
+      expect(paper.body).to be(nil)
+    end
+  end
+
   describe "#body=" do
     it "can set body on creation" do
       paper_new = FactoryGirl.create :paper, body: 'foo'

@@ -38,5 +38,16 @@ feature 'Assign team', js: true do
       overlay.assign_role_to_user journal.cover_editor_role.name, internal_editor
       expect(overlay).to have_content("#{internal_editor.full_name} has been assigned as #{journal.cover_editor_role.name}")
     end
+
+    Page.new.sign_out
+
+    # Internal Editor logs in and sees they have the CoverEditor role
+    # on the paper
+    login_as(internal_editor, scope: :user)
+    visit '/'
+    within "#dashboard-paper-#{paper.id}" do
+      expect(page).to have_content(paper.title)
+      expect(page).to have_content(paper.journal.cover_editor_role.name)
+    end
   end
 end

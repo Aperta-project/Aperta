@@ -1,6 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  attributeBindings: ['id'],
+  id: Ember.computed('model', function(){
+    let paperId = this.get('model.id');
+    return `dashboard-paper-${paperId}`;
+  }),
   tagName: 'tr',
   unreadCommentsCount: Ember.computed.alias('model.commentLooks.length'),
 

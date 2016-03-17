@@ -788,53 +788,58 @@ describe 'PUT reactivate' do
   end
 end
 
+describe 'PUT withdraw' do
+  subject(:do_request) do
+     put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
+  end
+  let(:paper) { FactoryGirl.build_stubbed(:paper) }
+  let(:withdrawal_reason) { 'It was a whoopsie' }
 
-  #
-  # describe "PUT 'withdraw'" do
-  #   let!(:paper) do
-  #     FactoryGirl.create(:paper, journal: journal, creator: user, body: "This is the body")
-  #   end
-  #
-  #   let(:user) { create :user }
-  #
-  #   context 'and the user has withdraw permission' do
-  #     before do
-  #       allow_any_instance_of(User).to receive(:can?)
-  #         .with(:withdraw, paper)
-  #         .and_return true
-  #     end
-  #
-  #     it 'withdraws the paper' do
-  #       put :withdraw,
-  #           id: paper.id,
-  #           reason: 'Conflict of interest',
-  #           format: :json
-  #       expect(response.status).to eq(200)
-  #       reason = paper.reload.latest_withdrawal_reason
-  #       expect(reason).to eq('Conflict of interest')
-  #
-  #       expect(paper.withdrawn?).to eq true
-  #       expect(paper.editable).to eq false
-  #     end
-  #   end
-  #
-  #   context 'does not have withdraw permission' do
-  #     before do
-  #       allow_any_instance_of(User).to receive(:can?)
-  #         .with(:withdraw, paper)
-  #         .and_return false
-  #     end
-  #
-  #     it 'does not withdraw the paper' do
-  #       put :withdraw,
-  #           id: paper.id,
-  #           reason: 'Conflict of interest',
-  #           format: :json
-  #       expect(response.status).to eq(403)
-  #     end
-  #   end
-  # end
-  #
+  before do
+    allow(Paper).to receive(:find)
+      .with(paper.to_param)
+      .and_return paper
+  end
+
+  it_behaves_like "an unauthenticated json request"
+
+  context "when the user has access" do
+    before do
+      stub_sign_in(user)
+      allow(user).to receive(:can?)
+        .with(:withdraw, paper)
+        .and_return true
+      allow(paper).to receive(:withdraw!)
+    end
+
+    it 'withdraws the paper' do
+      expect(paper).to receive(:withdraw!).with(withdrawal_reason)
+      do_request
+    end
+
+    it 'responds with the paper' do
+      do_request
+      expect(res_body['paper']['id']).to eq(paper.id)
+    end
+
+    it 'responds with 200 OK' do
+      do_request
+      expect(response).to responds_with(200)
+    end
+  end
+
+  context "when the user does not have access" do
+    before do
+      allow(user).to receive(:can?)
+        .with(:withdraw, paper)
+        .and_return false
+      do_request
+    end
+
+    it { is_expected.to responds_with(403) }
+  end
+end
+
   # describe "GET 'activity'" do
   #   let(:weak_user) { FactoryGirl.create :user }
   #

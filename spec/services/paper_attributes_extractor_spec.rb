@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe PaperAttributesExtractor do
-
   let(:extractor) { PaperAttributesExtractor.new("fake_stream") }
   let(:paper) { FactoryGirl.create :paper }
 
@@ -48,6 +47,27 @@ describe PaperAttributesExtractor do
       it "updates the paper abstract" do
         extractor.sync!(paper)
         expect(paper.reload.abstract).to eq(content)
+      end
+
+      context "when a too-long abstract is returned" do
+        let(:content) do
+          content = ''
+          (1..2000).each do |i|
+            content += i.to_s + ' '
+          end
+          content
+        end
+
+        before do
+          allow(extractor).to receive(:extract_file) do |filename|
+            content if filename == "abstract"
+          end
+        end
+
+        it "enforces max abstract length" do
+          extractor.sync!(paper)
+          expect(paper.reload.abstract).to eq("")
+        end
       end
     end
   end

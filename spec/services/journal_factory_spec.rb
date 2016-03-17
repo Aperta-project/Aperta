@@ -28,6 +28,12 @@ describe JournalFactory do
         permission_states: { name: 'submitted' }
       )
     end
+    let(:permissions_on_paper_with_withdrawn_state) do
+      Permission.joins(:states).where(
+        applies_to: 'Paper',
+        permission_states: { name: 'withdrawn' }
+      )
+    end
     let(:permissions_on_task) do
       Permission.joins(:states).where(
         applies_to: 'Task',
@@ -561,6 +567,12 @@ describe JournalFactory do
             )
           end
 
+          it ':reactivate' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper_with_withdrawn_state
+                .find_by(action: 'reactivate')
+            )
+          end
           it ':register_decision' do
             expect(journal.internal_editor_role.permissions).to include(
               permissions_on_paper_with_submitted_state
@@ -702,6 +714,13 @@ describe JournalFactory do
             )
           end
 
+          it ':reactivate' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper_with_withdrawn_state
+                .find_by(action: 'reactivate')
+            )
+          end
+
           it ':register_decision' do
             expect(journal.production_staff_role.permissions).to include(
               permissions_on_paper_with_submitted_state
@@ -840,6 +859,13 @@ describe JournalFactory do
             expect(journal.publishing_services_role.permissions).to include(
               permissions_on_paper_with_editable_paper_states
                 .find_by(action: 'edit_authors')
+            )
+          end
+
+          it ':reactivate' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper_with_withdrawn_state
+                .find_by(action: 'reactivate')
             )
           end
 
@@ -1034,6 +1060,13 @@ describe JournalFactory do
             expect(journal.staff_admin_role.permissions).to include(
               permissions_on_paper_with_editable_paper_states
                 .find_by(action: 'edit_authors')
+            )
+          end
+
+          it ':reactivate' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper_with_withdrawn_state
+                .find_by(action: 'reactivate')
             )
           end
 

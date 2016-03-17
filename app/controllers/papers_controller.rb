@@ -150,7 +150,7 @@ class PapersController < ApplicationController
   end
 
   def reactivate
-    requires_user_can(:edit, paper)
+    requires_user_can(:reactivate, paper)
     paper.reactivate!
     render json: paper, status: :ok
   end

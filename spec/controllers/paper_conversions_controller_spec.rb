@@ -3,20 +3,55 @@ require 'rails_helper'
 describe PaperConversionsController, type: :controller do
   include Rails.application.routes.url_helpers
 
-  let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :with_creator)
-  end
+  let(:paper) { FactoryGirl.create(:paper) }
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
-  let(:user) { create :user, :site_admin }
+  let(:user) { FactoryGirl.create :user }
 
   before { sign_in user }
-  describe '#export' do
+
+  describe 'GET export' do
+    subject(:do_request) do
+      get :export, id: paper.to_param, export_format: 'docx', format: :json
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
     context 'as a user with access to a paper' do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        allow(Paper).to receive(:find)
+          .with(paper.to_param)
+          .and_return paper
+      end
+
       context 'with a paper that needs conversion' do
-        it 'returns a url to check later' do
+        subject(:do_request) do
           VCR.use_cassette('convert_to_docx') do
             get :export, id: paper.id, export_format: 'docx', format: :json
           end
+        end
+
+        before do
+          # no source URL, needs conversion
+          allow(paper).to receive_message_chain('latest_version.source_url')
+            .and_return nil
+
+          allow(PaperConverter).to receive(:export)
+            .and_return double('job', job_id: job_id)
+        end
+
+        it 'initiates converting the paper' do
+          expect(PaperConverter).to receive(:export)
+            .with(paper, 'docx', user)
+            .and_return double('job', job_id: job_id)
+          do_request
+        end
+
+        it 'returns a url to check later' do
+          do_request
           expect(response.status).to eq(202)
           expect(res_body['url']).to(
             eq(url_for(controller: :paper_conversions, action: :status,
@@ -28,47 +63,81 @@ describe PaperConversionsController, type: :controller do
         let(:docx_url) { 'http://example.com/source.docx' }
 
         before do
-          # Force the controller to use our mocked paper
-          allow(controller).to receive(:paper).and_return(paper)
-          latest_version = double(paper.latest_version)
-          allow(paper).to receive(:latest_version)
-            .and_return(latest_version)
-          allow(latest_version).to receive(:source_url)
-            .and_return(docx_url)
+          allow(paper).to receive_message_chain('latest_version.source_url')
+            .and_return docx_url
         end
 
         it 'returns a url to check later' do
           get :export, id: paper.id, export_format: 'docx', format: :json
           expect(response.status).to eq(202)
+
           expect(res_body['url']).to(
             eq(url_for(controller: :paper_conversions, action: :status,
                        id: paper.id, job_id: 'source', export_format: 'docx')))
         end
-
-        it 'returns the download url when the status is checked' do
-          get :status, id: paper.id, job_id: 'source', export_format: 'docx'
-          expect(response.status).to eq(200)
-          expect(res_body['url']).to eq(docx_url)
-        end
       end
     end
 
-    context 'as a user with no access' do
-      let(:user) { create :user }
-      it 'returns a 403' do
-        get :export, id: paper.id, export_format: 'docx', format: :json
-        expect(response.status).to eq(403)
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        do_request
       end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 
-  describe 'GET #status' do
-    it 'returns 202 when still processing' do
-      VCR.use_cassette('check_docx_status') do
-        get :status, id: paper.id, job_id: job_id, export_format: 'docx',
-                     format: :json
-        expect(response.status).to eq 202
+  describe 'GET status' do
+    subject(:do_request) do
+      get(
+        :status,
+        id: paper.id, job_id: job_id, export_format: 'docx', format: :json
+      )
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      let(:docx_url) { 'http://example.com/source.docx' }
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        allow(Paper).to receive(:find)
+          .with(paper.to_param)
+          .and_return paper
+        allow(paper).to receive_message_chain('latest_version.source_url')
+          .and_return docx_url
       end
+
+      it 'returns 202 when still processing' do
+        VCR.use_cassette('check_docx_status') do
+          do_request
+          expect(response.status).to eq 202
+        end
+      end
+
+      it 'returns the download url when the status is checked' do
+        get :status, id: paper.id, job_id: 'source', export_format: 'docx', format: :json
+        expect(response.status).to eq(200)
+        expect(res_body['url']).to eq(docx_url)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        do_request
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 end

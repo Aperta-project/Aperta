@@ -14,10 +14,10 @@
 # background processing.
 class PaperConversionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: :status
 
   # Returns 202 and a url to check for status.
   def export
+    requires_user_can(:view, paper)
     export_format = params[:export_format]
     job_id = if export_format == 'docx' &&
                 paper.latest_version.source_url.present?
@@ -43,6 +43,7 @@ class PaperConversionsController < ApplicationController
   # original docx file. This method should probably be updated to reflect
   # that. That may mean that the entire controller is unnecessary.
   def status
+    requires_user_can(:view, paper)
     if params[:job_id] == 'source'
       # Direct download, redirect to download link.
       render status: :ok, json: { url: paper.latest_version.source_url }
@@ -60,10 +61,6 @@ class PaperConversionsController < ApplicationController
   end
 
   private
-
-  def enforce_policy
-    authorize_action!(resource: paper)
-  end
 
   def paper
     @paper ||= Paper.find(params[:id])

@@ -50,12 +50,6 @@ describe PaperFactory do
       expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::PaperAdminTask', 'TahiStandardTasks::DataAvailabilityTask'])
     end
 
-    it "sets user as a participant on tasks with old_role = author" do
-      new_paper = PaperFactory.create(paper_attrs, user)
-      expect(new_paper.tasks.find_by(type: 'TahiStandardTasks::PaperAdminTask').participants).to be_empty
-      expect(new_paper.tasks.find_by(type: 'TahiStandardTasks::DataAvailabilityTask').participants).to include(user)
-    end
-
     it "adds correct positions to new tasks" do
       new_paper = PaperFactory.create(paper_attrs, user)
       new_paper.phases.each do |phase|

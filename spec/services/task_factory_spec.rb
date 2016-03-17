@@ -59,20 +59,4 @@ describe TaskFactory do
     task = TaskFactory.create(klass, paper: paper, phase: phase, participants: participants)
     expect(task.participants).to eq(participants)
   end
-
-  it "Add the creator as participant in task if is submission type" do
-    paper.update(journal: FactoryGirl.create(:journal, :with_roles_and_permissions))
-    user = FactoryGirl.create(:user)
-    expect(UserMailer).to receive_message_chain(:delay, :add_participant)
-    task = TaskFactory.create(klass, paper: paper, phase: phase, creator: user)
-    expect(task.participants).to include(user)
-  end
-
-  it 'Add the creator as participant but do not send notification' do
-    paper.update(journal: FactoryGirl.create(:journal, :with_roles_and_permissions))
-    user = FactoryGirl.create(:user)
-    expect(UserMailer).to_not receive(:delay)
-    task = TaskFactory.create(klass, paper: paper, phase: phase, creator: user, notify: false)
-    expect(task.participants).to include(user)
-  end
 end

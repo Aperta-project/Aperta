@@ -25,6 +25,10 @@ class JournalFactory
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
 
       # Creator(s) only get access to the submission task types
       task_klasses = Task.submission_task_types
@@ -35,15 +39,12 @@ class JournalFactory
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
       end
-
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
     end
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
 
       # Collaborators can view and edit any metadata card except billing
       task_klasses = Task.submission_task_types
@@ -65,6 +66,7 @@ class JournalFactory
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -98,8 +100,11 @@ class JournalFactory
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
+      # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal, states: ['*'])
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
+
+      # Paper
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
@@ -108,6 +113,8 @@ class JournalFactory
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -128,7 +135,10 @@ class JournalFactory
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
+      # Journals
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
+
+      # Paper
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
@@ -137,6 +147,8 @@ class JournalFactory
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -163,6 +175,7 @@ class JournalFactory
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -191,6 +204,7 @@ class JournalFactory
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -220,6 +234,7 @@ class JournalFactory
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])

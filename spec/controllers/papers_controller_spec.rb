@@ -692,7 +692,7 @@ describe PapersController do
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)
-          .with(:edit, paper)
+          .with(:submit, paper)
           .and_return true
       end
 
@@ -728,7 +728,7 @@ describe PapersController do
     context "when the user does not have access" do
       before do
         allow(user).to receive(:can?)
-          .with(:edit, paper)
+          .with(:submit, paper)
           .and_return false
         do_request
       end

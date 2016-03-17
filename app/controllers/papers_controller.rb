@@ -138,7 +138,7 @@ class PapersController < ApplicationController
   ## STATE CHANGES
 
   def submit
-    requires_user_can(:edit, paper)
+    requires_user_can(:submit, paper)
     if paper.gradual_engagement? && paper.unsubmitted?
       paper.initial_submit!
     else

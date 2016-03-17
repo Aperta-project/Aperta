@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe JournalsController do
 
-  let(:user) { create :user, :site_admin  }
+  let(:user) { create :user }
   let(:journal) { FactoryGirl.create(:journal) }
 
   before { sign_in user }

@@ -76,6 +76,8 @@ describe CommentsController do
       before do
         allow_any_instance_of(User).to \
           receive(:can?).with(:view, task).and_return true
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:administer, journal).and_return false
       end
 
       context "the user tries to create a blank comment" do
@@ -107,31 +109,6 @@ describe CommentsController do
         end
       end
 
-      context "the user is a journal admin" do
-        let(:task) do
-          FactoryGirl.create(
-            :task,
-            paper: paper,
-            participants: [],
-            title: "Task",
-            old_role: "admin")
-        end
-
-        it "does not add the journal admin as a participant" do
-          expect(journal_admin.tasks).to_not include(task)
-          do_request_as_journal_admin
-          expect(journal_admin.tasks).to_not include(task)
-        end
-
-        it "increments the comment count" do
-          expect { do_request_as_journal_admin }.to change { Comment.count }.by 1
-        end
-
-        it "does not adds an email to the sidekiq queue" do
-          expect { do_request_as_journal_admin }.not_to change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
-        end
-      end
-
       it "creates a new comment" do
         do_request
         expect(Comment.last.body).to eq('My comment')
@@ -153,7 +130,38 @@ describe CommentsController do
         do_request
       end
 
-      it_behaves_like "an unauthenticated json request"
+      it_behaves_like 'an unauthenticated json request'
+
+      context "the user is a journal admin" do
+        let(:task) do
+          FactoryGirl.create(
+            :task,
+            paper: paper,
+            participants: [],
+            title: "Task",
+            old_role: "admin")
+        end
+
+        before do
+          sign_in journal_admin
+          allow_any_instance_of(User).to \
+            receive(:can?).with(:administer, journal).and_return true
+        end
+
+        it "does not add the journal admin as a participant" do
+          expect(journal_admin.tasks).to_not include(task)
+          do_request_as_journal_admin
+          expect(journal_admin.reload.tasks).to_not include(task)
+        end
+
+        it "increments the comment count" do
+          expect { do_request_as_journal_admin }.to change { Comment.count }.by 1
+        end
+
+        it "does not adds an email to the sidekiq queue" do
+          expect { do_request_as_journal_admin }.not_to change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+        end
+      end
     end
 
     context "when the user does not have access" do

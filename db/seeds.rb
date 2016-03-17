@@ -4,6 +4,7 @@ class ManualSeeds #Use this class to run seeds the old way
     # Create Journal
     plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '', doi_publisher_prefix: "yetipub", doi_journal_prefix: "yetijour", last_doi_issued: "1000000")
 
+    Rake::Task['roles-and-permissions:seed'].invoke
     # Create Users
     # These Users should match Personas, by convention
     admin = User.where(email: 'admin@example.com').first_or_create! do |user|
@@ -15,6 +16,31 @@ class ManualSeeds #Use this class to run seeds the old way
       user.affiliations.first_or_initialize(name: 'PLOS')
       user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::ADMIN, name: OldRole::ADMIN.capitalize).first_or_initialize)
     end
+
+    site_admin = User.where(email: 'site_admin@example.com').first_or_create! do |user|
+      user.first_name = 'Steve'
+      user.last_name = 'SiteAdmin'
+      user.password = 'password'
+      user.username = 'site_admin'
+      user.site_admin = true
+      user.affiliations.first_or_initialize(name: 'PLOS')
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::ADMIN, name: OldRole::ADMIN.capitalize).first_or_initialize)
+    end
+
+    staff_admin = User.where(email: 'staff_admin@example.com').first_or_create! do |user|
+      user.first_name = 'Staff'
+      user.last_name = 'Admin'
+      user.password = 'password'
+      user.username = 'staff_admin'
+      user.site_admin = false
+      user.affiliations.first_or_initialize(name: 'PLOS')
+    end
+    # Assign new Staff Admin Role
+    Assignment.where(
+      user: staff_admin,
+      role: Role.where(name: "Staff Admin").first,
+      assigned_to: Journal.first
+    ).first_or_create!
 
     User.where(email: 'editor@example.com').first_or_create! do |user|
       user.first_name = 'Editor'
@@ -164,7 +190,6 @@ class ManualSeeds #Use this class to run seeds the old way
     Rake::Task['data:update_journal_task_types'].invoke
     Rake::Task['journal:create_default_templates'].invoke
     Rake::Task['nested-questions:seed'].invoke
-    Rake::Task['roles-and-permissions:seed'].invoke
 
     puts 'Tahi Seeds have been loaded successfully'
   end

@@ -16,9 +16,11 @@ describe SalesforceServices::ObjectTranslations do
       SalesforceServices::ObjectTranslations::ManuscriptTranslator.new(user_id: user.id, paper: paper)
     end
 
-    let(:submit_time) { Time.now.utc + 20 }
-    let(:accepted_time) { Time.now.utc + 30 }
-    let(:rejected_time) { Time.now.utc + 40 }
+    let!(:submit_time) { Time.now.utc + 20 }
+    let!(:accepted_time) { Time.now.utc + 30 }
+    let!(:updated_time) { Time.now.utc + 40 }
+    let!(:rejected_time) { updated_time }
+    let!(:withdrawn_time) { updated_time }
 
     it "returns a hash" do
       expect(mt.paper_to_manuscript_hash.class).to eq Hash
@@ -70,6 +72,7 @@ describe SalesforceServices::ObjectTranslations do
           { state: "submitted", time: submit_time, status: "Manuscript Submitted" },
           { state: "unknown_state", time: submit_time, status: "Manuscript Submitted" },
           { state: "accepted", time: accepted_time, status: "Completed Accept" },
+          { state: "withdrawn", time: withdrawn_time, status: "Completed Withdrawn" },
           { state: "rejected", time: rejected_time, status: "Completed Reject" }
         ]
       end
@@ -78,7 +81,7 @@ describe SalesforceServices::ObjectTranslations do
       end
 
       it "uses the correct Editorial_Status_Date__c" do
-        Timecop.freeze(rejected_time) do
+        Timecop.freeze(updated_time) do
           states_config.each do |config|
             paper.update_attributes(publishing_state: config[:state])
             expect(mt.paper_to_manuscript_hash["Editorial_Status_Date__c"])

@@ -16,7 +16,7 @@ module S3
     private
 
     def upload_form
-      S3FormConfigurator.new(
+      @upload_form ||= S3FormConfigurator.new(
         url: ENV['S3_URL'],
         bucket_name: ENV['S3_BUCKET'],
         aws_key: ENV['AWS_ACCESS_KEY_ID'],

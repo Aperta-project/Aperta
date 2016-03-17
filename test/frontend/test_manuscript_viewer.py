@@ -167,8 +167,8 @@ class ViewPaperTest(CommonTest):
 
     # AC5 Test for Message for initial submission
     assert "Please provide the following information to submit your manuscript for "\
-            "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
-            manuscript_page.get_submission_status_info_text()
+        "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
+        manuscript_page.get_submission_status_info_text()
     # AC2 Test closing the infobox
     infobox.find_element_by_id('sp-close').click()
     time.sleep(3)
@@ -215,8 +215,8 @@ class ViewPaperTest(CommonTest):
     # NOTE: At this point browser renders the page with errors only on automation runs
     # AC 6
     assert "Your manuscript is ready for Initial Submission." in \
-            manuscript_page.get_submission_status_info_text(),\
-            manuscript_page.get_submission_status_info_text()
+        manuscript_page.get_submission_status_info_text(),\
+        manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
     time.sleep(2)
     # The following sequence is a workaround for our failure to invalidate CAS token on sign out
@@ -280,9 +280,9 @@ class ViewPaperTest(CommonTest):
     # AC8: Message for full submission when is ready for submition
     manuscript_page._get(manuscript_page._nav_dashboard_link)
     time.sleep(5)
-    assert  "Your manuscript is ready for Full Submission." in \
-      manuscript_page.get_submission_status_info_text(), \
-      manuscript_page.get_submission_status_info_text()
+    assert 'Your manuscript is ready for Full Submission.' in \
+        manuscript_page.get_submission_status_info_text(), \
+        manuscript_page.get_submission_status_info_text()
     return self
 
   def _test_paper_download_buttons(self):

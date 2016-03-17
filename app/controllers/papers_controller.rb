@@ -215,8 +215,4 @@ class PapersController < ApplicationController
       end
     end
   end
-
-  def enforce_policy
-    authorize_action!(paper: paper, params: params)
-  end
 end

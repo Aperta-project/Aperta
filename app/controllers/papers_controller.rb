@@ -28,6 +28,8 @@ class PapersController < ApplicationController
     respond_with(paper)
   end
 
+  # The create action does not require a permission, it's available to any
+  # signed in user.
   def create
     @paper = PaperFactory.create(paper_params, current_user)
     Activity.paper_created!(@paper, user: current_user) if @paper.valid?

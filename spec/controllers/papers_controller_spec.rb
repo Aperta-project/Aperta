@@ -737,189 +737,106 @@ describe PapersController do
     end
   end
 
-describe 'PUT reactivate' do
-  subject(:do_request) do
-     put :reactivate, id: paper.to_param, format: :json
-  end
-  let(:paper) { FactoryGirl.build_stubbed(:paper) }
+  describe 'PUT reactivate' do
+    subject(:do_request) do
+       put :reactivate, id: paper.to_param, format: :json
+    end
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
-  before do
-    allow(Paper).to receive(:find)
-      .with(paper.to_param)
-      .and_return paper
-  end
-
-  it_behaves_like "an unauthenticated json request"
-
-  context "when the user has access" do
     before do
-      stub_sign_in(user)
-      allow(user).to receive(:can?)
-        .with(:edit, paper)
-        .and_return true
-      allow(paper).to receive(:reactivate!)
+      allow(Paper).to receive(:find)
+        .with(paper.to_param)
+        .and_return paper
     end
 
-    it 'reactivates the paper' do
-      expect(paper).to receive(:reactivate!)
-      do_request
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:edit, paper)
+          .and_return true
+        allow(paper).to receive(:reactivate!)
+      end
+
+      it 'reactivates the paper' do
+        expect(paper).to receive(:reactivate!)
+        do_request
+      end
+
+      it 'responds with the paper' do
+        do_request
+        expect(res_body['paper']['id']).to eq(paper.id)
+      end
+
+      it 'responds with 200 OK' do
+        do_request
+        expect(response).to responds_with(200)
+      end
     end
 
-    it 'responds with the paper' do
-      do_request
-      expect(res_body['paper']['id']).to eq(paper.id)
-    end
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:edit, paper)
+          .and_return false
+        do_request
+      end
 
-    it 'responds with 200 OK' do
-      do_request
-      expect(response).to responds_with(200)
+      it { is_expected.to responds_with(403) }
     end
   end
 
-  context "when the user does not have access" do
+  describe 'PUT withdraw' do
+    subject(:do_request) do
+       put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
+    end
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let(:withdrawal_reason) { 'It was a whoopsie' }
+
     before do
-      allow(user).to receive(:can?)
-        .with(:edit, paper)
-        .and_return false
-      do_request
+      allow(Paper).to receive(:find)
+        .with(paper.to_param)
+        .and_return paper
     end
 
-    it { is_expected.to responds_with(403) }
-  end
-end
+    it_behaves_like "an unauthenticated json request"
 
-describe 'PUT withdraw' do
-  subject(:do_request) do
-     put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
-  end
-  let(:paper) { FactoryGirl.build_stubbed(:paper) }
-  let(:withdrawal_reason) { 'It was a whoopsie' }
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:withdraw, paper)
+          .and_return true
+        allow(paper).to receive(:withdraw!)
+      end
 
-  before do
-    allow(Paper).to receive(:find)
-      .with(paper.to_param)
-      .and_return paper
-  end
+      it 'withdraws the paper' do
+        expect(paper).to receive(:withdraw!).with(withdrawal_reason)
+        do_request
+      end
 
-  it_behaves_like "an unauthenticated json request"
+      it 'responds with the paper' do
+        do_request
+        expect(res_body['paper']['id']).to eq(paper.id)
+      end
 
-  context "when the user has access" do
-    before do
-      stub_sign_in(user)
-      allow(user).to receive(:can?)
-        .with(:withdraw, paper)
-        .and_return true
-      allow(paper).to receive(:withdraw!)
+      it 'responds with 200 OK' do
+        do_request
+        expect(response).to responds_with(200)
+      end
     end
 
-    it 'withdraws the paper' do
-      expect(paper).to receive(:withdraw!).with(withdrawal_reason)
-      do_request
-    end
+    context "when the user does not have access" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:withdraw, paper)
+          .and_return false
+        do_request
+      end
 
-    it 'responds with the paper' do
-      do_request
-      expect(res_body['paper']['id']).to eq(paper.id)
-    end
-
-    it 'responds with 200 OK' do
-      do_request
-      expect(response).to responds_with(200)
+      it { is_expected.to responds_with(403) }
     end
   end
-
-  context "when the user does not have access" do
-    before do
-      allow(user).to receive(:can?)
-        .with(:withdraw, paper)
-        .and_return false
-      do_request
-    end
-
-    it { is_expected.to responds_with(403) }
-  end
-end
-
-  # describe "GET 'activity'" do
-  #   let(:weak_user) { FactoryGirl.create :user }
-  #
-  #   before do
-  #     PaperRole.create(
-  #       user: weak_user,
-  #       paper: paper,
-  #       old_role: PaperRole::COLLABORATOR)
-  #   end
-  #
-  #   context "for manuscript feed" do
-  #     context 'and the user can view manuscript_activities' do
-  #       action_policy(PapersPolicy, :manuscript_activities, true)
-  #
-  #       it 'returns the feed' do
-  #         get :manuscript_activities, id: paper.to_param, format: :json
-  #         expect(response.status).to eq(200)
-  #       end
-  #     end
-  #
-  #     context 'and the user cannot view manuscript_activities' do
-  #       action_policy(PapersPolicy, :manuscript_activities, false)
-  #
-  #       it 'returns a 403' do
-  #         sign_in weak_user
-  #         get :manuscript_activities, id: paper.to_param, format: :json
-  #         expect(response.status).to eq(403)
-  #       end
-  #     end
-  #   end
-  #
-  #   context 'for workflow feed' do
-  #     context 'and the user can view workflow_activities' do
-  #       action_policy(PapersPolicy, :workflow_activities, true)
-  #
-  #       it 'returns the feed' do
-  #         get :workflow_activities, id: paper.to_param, format: :json
-  #         expect(response.status).to eq(200)
-  #       end
-  #     end
-  #
-  #     context 'and the user cannot view workflow_activities' do
-  #       action_policy(PapersPolicy, :workflow_activities, false)
-  #
-  #       it 'returns a 403' do
-  #         sign_in weak_user
-  #         get :workflow_activities, id: paper.to_param, format: :json
-  #         expect(response.status).to eq(403)
-  #       end
-  #     end
-  #   end
-  # end
-  #
-  # describe "GET 'snapshots'" do
-  #   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  #   let(:task1) do
-  #     FactoryGirl.create :ethics_task,
-  #                        paper: paper,
-  #                        phase: phase
-  #   end
-  #   let(:task2) do
-  #     FactoryGirl.create :publishing_related_questions_task,
-  #                        paper: paper,
-  #                        phase: phase
-  #   end
-  #
-  #   before do
-  #     SnapshotService.new(paper).snapshot!(task1)
-  #     SnapshotService.new(paper).snapshot!(task2)
-  #   end
-  #
-  #   it 'returns all the snapshots' do
-  #     get :snapshots, id: paper.to_param, format: :json
-  #     expect(response.status).to eq(200)
-  #     expect(res_body['snapshots'].count).to eq(2)
-  #     expect(res_body['snapshots'][0].keys).to include(
-  #       'source_id',
-  #       'major_version',
-  #       'minor_version',
-  #       'contents')
-  #   end
-  # end
 end

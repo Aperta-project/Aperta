@@ -80,6 +80,9 @@ Select2Component = Ember.TextField.extend({
     if (this.get('resultsTemplate')) {
       options.formatResult = this.get('resultsTemplate');
     }
+    if(this.get('dropdownCssClass')) {
+      options.dropdownCssClass = this.get('dropdownCssClass');
+    }
     options.multiple = this.get('multiSelect');
     options.data = this.get('source');
     if (this.get('remoteSource')) {

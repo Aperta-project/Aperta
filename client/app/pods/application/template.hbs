@@ -8,6 +8,11 @@
 
     <span class="main-nav-item main-nav-item--spacer"></span>
 
+    {{#link-to "dashboard" class="main-nav-item" id='nav-manuscripts'
+      title="Dashboard"}}
+      Your Manuscripts
+    {{/link-to}}
+
     <a href="http://journals.plos.org/plosbiology/s/aperta-help" class="main-nav-item" id="nav-help" target="_blank">Help</a>
 
     {{#if isLoggedIn}}

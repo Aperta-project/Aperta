@@ -45,7 +45,7 @@ feature 'Assign team', js: true do
     # on the paper
     login_as(internal_editor, scope: :user)
     visit '/'
-    within "#dashboard-paper-#{paper.id}" do
+    within "[data-test-id=dashboard-paper-#{paper.id}]" do
       expect(page).to have_content(paper.title)
       expect(page).to have_content(paper.journal.cover_editor_role.name)
     end

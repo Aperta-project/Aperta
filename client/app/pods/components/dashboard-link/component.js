@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  attributeBindings: ['id'],
-  id: Ember.computed('model', function(){
+  attributeBindings: ['data-test-id'],
+  'data-test-id': Ember.computed('model', function(){
     let paperId = this.get('model.id');
     return `dashboard-paper-${paperId}`;
   }),

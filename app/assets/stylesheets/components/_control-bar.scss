@@ -124,9 +124,13 @@
   height: 22px;
 }
 
-.activity-link svg {
-  position: relative;
-  top: -5px;
+.activity-link {
+  white-space: nowrap;
+  overflow: hidden;
+  svg {
+    position: relative;
+    top: -5px;
+  }
 }
 
 .paper-navigation-link {

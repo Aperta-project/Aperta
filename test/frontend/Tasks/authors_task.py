@@ -29,6 +29,8 @@ class AuthorsTask(BaseTask):
                           'div.authors-task div.task-disclosure-body div.task-main-content p + p')
     self._add_new_author_btn = (
         By.CSS_SELECTOR, 'div.authors-task div.task-disclosure-body div.task-main-content button')
+    self._add_individual_author_link = (By.ID, 'add-new-individual-author-link')
+    self._add_group_author_link = (By.ID, 'add-new-group-author-link')
     self._individual_author_edit_label = (By. CSS_SELECTOR,
                                           'div.add-author-form > div > fieldset > legend')
     self._first_lbl = (By.CSS_SELECTOR, 'div.author-name div label')
@@ -40,26 +42,19 @@ class AuthorsTask(BaseTask):
     self._author_inits_field = (By.CSS_SELECTOR, 'div.author-initial')
     self._author_inits_lbl = (By.CSS_SELECTOR, 'div.author-initial > div > label')
     self._author_inits_input = (By.CSS_SELECTOR, 'div.author-initial > div + input')
-    self._email_field = (
-        By.XPATH,
-        "//div[@class='flex-group'][2]/div[@class='flex-element inset-form-control required ']"
-        )
-    self._email_lbl = (
-        By.XPATH,
-        "//div[@class='flex-group'][2]\
-        /div[@class='flex-element inset-form-control required ']/div/label"
-        )
-    self._email_input = (
-        By.XPATH,
-        "//div[@class='flex-group'][2]\
-        /div[@class='flex-element inset-form-control required ']/input"
-        )
+    self._email_field = (By.XPATH, "//div[@class='flex-group'][2]\
+                         /div[@class='flex-element inset-form-control required ']")
+    self._email_lbl = (By.XPATH,
+                       "//div[@class='flex-group'][2]\
+                       /div[@class='flex-element inset-form-control required ']/div/label")
+    self._email_input = (By.XPATH,
+                         "//div[@class='flex-group'][2]\
+                         /div[@class='flex-element inset-form-control required ']/input")
     self._title_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div div label')
     self._title_input = (By.CSS_SELECTOR, 'input.author-title')
     self._department_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div + div div label')
     self._department_input = (By.CSS_SELECTOR, 'input.author-department')
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
-    #self._author_lbls = (By.CLASS_NAME, 'author-label')
     self._author_lbls = (By.CLASS_NAME, 'question-checkbox')
     self._author_other_lbl = (
         By.CSS_SELECTOR,
@@ -73,8 +68,8 @@ class AuthorsTask(BaseTask):
     self._author_items = (By.CSS_SELECTOR, 'div.author-task-item-view')
     self._delete_author_div = (By.CSS_SELECTOR, 'div.authors-overlay-item-delete')
     self._edit_author = (By.CSS_SELECTOR, 'div.author-name')
-    self._corresponding = (By.XPATH,
-      ".//input[@name='author--published_as_corresponding_author']")
+    self._corresponding = (
+        By.XPATH, ".//input[@name='author--published_as_corresponding_author']")
     self._govt_employee_div = (By.CSS_SELECTOR, 'div.author-government')
     self._govt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
     self._govt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
@@ -86,21 +81,20 @@ class AuthorsTask(BaseTask):
     self._authors_ack_agree2name = (By.CSS_SELECTOR,
                                     'p.authors-task-acknowledgements + div > label > input')
     self._authors_ack_auth_crit = (By.CSS_SELECTOR,
-                                    'p.authors-task-acknowledgements + div + div> label > input')
+                                   'p.authors-task-acknowledgements + div + div> label > input')
     self._authors_ack_agree2submit = (
         By.CSS_SELECTOR, 'p.authors-task-acknowledgements + div + div + div > label > input')
 
-   #POM Actions
+  # POM Actions
   def validate_author_task_styles(self):
     """Validate"""
     authors_text = self._get(self._authors_text)
     assert authors_text.text == (
-    "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
-    "Submitted to Biomedical Journals: Authorship and Contributorship'. Individuals whose "
-    "contributions fall short of authorship should instead be mentioned in the "
-    "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
-    "author names and affiliations should be listed at the end of the article."
-    )
+        "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
+        "Submitted to Biomedical Journals: Authorship and Contributorship'. Individuals whose "
+        "contributions fall short of authorship should instead be mentioned in the "
+        "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
+        "author names and affiliations should be listed at the end of the article.")
     authors_text_link = self._get(self._authors_text_link)
     assert 'http://www.icmje.org/recommendations/browse/' in authors_text_link.get_attribute('href')
     assert 'roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html' in \
@@ -114,13 +108,21 @@ class AuthorsTask(BaseTask):
     self.validate_application_ptext(authors_note)
 
     add_new_author_btn = self._get(self._add_new_author_btn)
-    assert 'ADD A NEW AUTHOR' == add_new_author_btn.text, add_new_author_btn.text
+    assert 'ADD A NEW AUTHOR' in add_new_author_btn.text, add_new_author_btn.text
     self.validate_primary_big_green_button_style(add_new_author_btn)
+    add_new_author_btn.click()
+    add_ind_link = self._get(self._add_individual_author_link)
+    assert 'Add Individual Author' in add_ind_link.text, add_ind_link.text
+    add_grp_link = self._get(self._add_group_author_link)
+    assert 'Add Group Author' in add_grp_link.text, add_grp_link.text
+    # Close the menu back up after validating elements
+    add_new_author_btn.click()
 
   def validate_author_task_action(self):
-    """Validate working of Author Card. Adds and delete a new author"""
+    """Validate working of Author Card. Adds and delete a new individual author"""
     # Add a new author
     self._get(self._add_new_author_btn).click()
+    self._get(self._add_individual_author_link).click()
     # Check form elements
     first_lbl = self._get(self._first_lbl)
     first_input = self._get(self._first_input)
@@ -219,6 +221,7 @@ class AuthorsTask(BaseTask):
     first_input.send_keys(author['first'] + Keys.ENTER)
     middle_input.send_keys(author['middle'] + Keys.ENTER)
     last_input.send_keys(author['last'] + Keys.ENTER)
+    initials_input.send_keys(author['initials'] + Keys.ENTER)
     email_input.send_keys(author['email'] + Keys.ENTER)
     title_input.send_keys(author['title'] + Keys.ENTER)
     department_input.send_keys(author['department'] + Keys.ENTER)
@@ -241,10 +244,15 @@ class AuthorsTask(BaseTask):
                                   'communication, have agreed to being so named.', \
                                   agree2name_lbl.text
     assert auth_criteria_lbl.text == 'All authors have read, and confirm, that they meet, ICMJE ' \
-                                'criteria for authorship.', auth_criteria_lbl.text
+                                     'criteria for authorship.', auth_criteria_lbl.text
     auth_criteria_link = auth_criteria_lbl.find_element_by_tag_name('a')
-    assert auth_criteria_link.get_attribute('href') == \
-        'http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html'
+    url = '/'.join(['http:/',
+                    'www.icmje.org',
+                    'recommendations',
+                    'browse',
+                    'roles-and-responsibilities',
+                    'defining-the-role-of-authors-and-contributors.html'])
+    assert auth_criteria_link.get_attribute('href') == url
     assert agree2submit_lbl.text == 'All contributing authors are aware of and agree to the ' \
                                     'submission of this manuscript.', agree2submit_lbl.text
 
@@ -260,9 +268,9 @@ class AuthorsTask(BaseTask):
         break
     # Get author to delete
     authors = self._gets(self._author_items)
-    self._actions.move_to_element(authors[n-1]).perform()
+    self._actions.move_to_element(authors[n - 1]).perform()
     time.sleep(5)
-    trash = authors[n-1].find_element_by_css_selector('span.fa-trash')
+    trash = authors[n - 1].find_element_by_css_selector('span.fa-trash')
     trash.click()
     # get buttons
     time.sleep(1)
@@ -277,7 +285,6 @@ class AuthorsTask(BaseTask):
     delete_btn.click()
     time.sleep(2)
 
-
   def validate_styles(self):
     """Validate all styles for Authors Task"""
     self.validate_author_task_styles()
@@ -287,14 +294,14 @@ class AuthorsTask(BaseTask):
   def edit_author(self, author_data):
     """
     Edit the first author in the author task
-    :author_data:
+    :param author_data: data sourced from Resources.py used to fill out author card
     return None
     """
     completed = self.completed_state()
     if completed:
       return None
-    author = self._get(self._author_items)
-    self._actions.move_to_element(author).perform()
+    author_div = self._get(self._author_items)
+    self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
     edit_btn.click()
     title_input = self._get(self._title_input)

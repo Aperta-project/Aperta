@@ -18,7 +18,7 @@ class PaperAttributesExtractor
   def extract_abstract
     abstract = extract_file('abstract')
     return unless abstract
-    return '' if word_count(abstract) > max_abstract_length
+    return nil if word_count(abstract) > max_abstract_length
 
     abstract
   end

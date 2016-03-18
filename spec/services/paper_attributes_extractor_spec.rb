@@ -66,7 +66,7 @@ describe PaperAttributesExtractor do
 
         it "enforces max abstract length" do
           extractor.sync!(paper)
-          expect(paper.reload.abstract).to eq("")
+          expect(paper.reload.abstract).to be_nil
         end
       end
     end

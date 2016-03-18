@@ -1737,81 +1737,6 @@ assignments:
     - '2016-03-15 18:52:16.710225'
 
 ---
-author_list_items:
-  columns:
-  - id
-  - position
-  - author_id
-  - author_type
-  - task_id
-  - created_at
-  - updated_at
-  records: 
-  - - '1'
-    - '3'
-    - '1'
-    - Author
-    - '2'
-    - '2016-03-22 14:32:29.651445'
-    - '2016-03-22 14:32:29.651445'
-  - - '2'
-    - '4'
-    - '2'
-    - Author
-    - '23'
-    - '2016-03-22 14:32:29.665154'
-    - '2016-03-22 14:32:29.665154'
-  - - '3'
-    - '5'
-    - '3'
-    - Author
-    - '23'
-    - '2016-03-22 14:32:29.667169'
-    - '2016-03-22 14:32:29.667169'
-  - - '4'
-    - '6'
-    - '4'
-    - Author
-    - '44'
-    - '2016-03-22 14:32:29.66903'
-    - '2016-03-22 14:32:29.66903'
-  - - '5'
-    - '1'
-    - '5'
-    - Author
-    - '44'
-    - '2016-03-22 14:32:29.670806'
-    - '2016-03-22 14:32:29.670806'
-  - - '6'
-    - '7'
-    - '6'
-    - Author
-    - '65'
-    - '2016-03-22 14:32:29.672594'
-    - '2016-03-22 14:32:29.672594'
-  - - '7'
-    - '8'
-    - '7'
-    - Author
-    - '86'
-    - '2016-03-22 14:32:29.674466'
-    - '2016-03-22 14:32:29.674466'
-  - - '8'
-    - '9'
-    - '8'
-    - Author
-    - '107'
-    - '2016-03-22 14:32:29.676602'
-    - '2016-03-22 14:32:29.676602'
-  - - '9'
-    - '10'
-    - '9'
-    - Author
-    - '128'
-    - '2016-03-22 14:32:29.678322'
-    - '2016-03-22 14:32:29.678322'
-
----
 authors:
   columns:
   - id
@@ -1819,7 +1744,9 @@ authors:
   - last_name
   - created_at
   - updated_at
+  - position
   - paper_id
+  - authors_task_id
   - middle_initial
   - email
   - department
@@ -1841,7 +1768,9 @@ authors:
     - Author
     - '2015-10-29 20:16:37.812595'
     - '2015-10-29 20:16:37.812595'
+    - '3'
     - '1'
+    - '2'
     - 
     - author@example.com
     - 
@@ -1862,7 +1791,9 @@ authors:
     - Author
     - '2015-10-30 19:43:28.777757'
     - '2015-10-30 19:53:18.523309'
+    - '4'
     - '2'
+    - '23'
     - 
     - author@example.com
     - Department of Authoring
@@ -1883,7 +1814,9 @@ authors:
     - Janesford
     - '2015-10-30 19:54:25.247759'
     - '2015-10-30 19:54:28.89091'
+    - '5'
     - '2'
+    - '23'
     - ''
     - jane@example.com
     - Authorship Department
@@ -1904,7 +1837,9 @@ authors:
     - Author
     - '2015-11-02 14:04:03.280645'
     - '2015-11-02 14:14:20.64132'
+    - '6'
     - '3'
+    - '44'
     - 
     - author@example.com
     - Dept. of Authoring
@@ -1925,7 +1860,9 @@ authors:
     - Jones
     - '2015-11-02 14:15:05.820082'
     - '2015-11-02 14:15:05.820082'
+    - '1'
     - '3'
+    - '44'
     - ''
     - barb@example.com
     - Dept. of Authorology
@@ -1946,7 +1883,9 @@ authors:
     - Author
     - '2015-11-02 14:46:24.189114'
     - '2015-11-02 15:09:33.10379'
+    - '7'
     - '4'
+    - '65'
     - 
     - author@example.com
     - Dept. of authoring
@@ -1968,6 +1907,8 @@ authors:
     - '2015-11-03 22:59:21.34928'
     - '2015-11-03 22:59:21.34928'
     - '8'
+    - '8'
+    - '86'
     - 
     - sealresq+7@gmail.com
     - 
@@ -1989,6 +1930,8 @@ authors:
     - '2015-11-03 23:02:07.212995'
     - '2015-11-03 23:02:07.212995'
     - '9'
+    - '9'
+    - '107'
     - 
     - sealresq+7@gmail.com
     - 
@@ -2010,6 +1953,8 @@ authors:
     - '2015-11-10 22:27:27.648594'
     - '2015-11-10 22:27:27.648594'
     - '10'
+    - '10'
+    - '128'
     - 
     - admin@example.com
     - 
@@ -4511,7 +4456,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-03-22 14:32:48.901342'
+    - '2016-03-18 18:56:58.820579'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -4795,7 +4740,7 @@ nested_questions:
     - '216'
     - '6'
     - '2015-10-30 19:51:03.531234'
-    - '2016-03-22 14:32:49.277819'
+    - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '132'
@@ -4883,175 +4828,47 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ReviewerRecommendation
     - 
-  - - '139'
-    - 'Check Section Headings of all new submissions (including Open Rejects). Should
-      broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
-      Discussion, Materials and Methods, References, Acknowledgements, and Figure
-      Legends.'
-    - boolean
-    - plos_bio_initial_tech_check--open_rejects
-    - 
-    - '231'
-    - '232'
-    - '1'
-    - '2015-11-02 13:38:26.296091'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '140'
-    - Check the ethics statement - does it mention Human Participants? If so, flag
-      this with the editor in the discussion below.
-    - boolean
-    - plos_bio_initial_tech_check--human_subjects
-    - 
-    - '233'
-    - '234'
-    - '2'
-    - '2015-11-02 13:38:26.300112'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '141'
-    - Check if there are any obvious ethical flags (mentions of animal/human work
-      in the title/abstract), check that there's an ethics statement. If not, ask
-      the authors about this.
-    - boolean
-    - plos_bio_initial_tech_check--ethics_needed
-    - 
-    - '235'
-    - '236'
-    - '3'
-    - '2015-11-02 13:38:26.30383'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '142'
-    - Is the data available? If not, or it's only available by contacting an author
-      or the institution, make a note in the discussion below.
-    - boolean
-    - plos_bio_initial_tech_check--data_available
-    - 
-    - '237'
-    - '238'
-    - '4'
-    - '2015-11-02 13:38:26.307755'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '143'
-    - If author indicates the data is available in Supporting Information, check to
-      make sure there are Supporting Information files in the submission (don't need
-      to check for specifics at this stage).
-    - boolean
-    - plos_bio_initial_tech_check--supporting_information
-    - 
-    - '239'
-    - '240'
-    - '5'
-    - '2015-11-02 13:38:26.311478'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '144'
-    - If the author has mentioned Dryad in their Data statement, check that they've
-      included the Dryad reviewer URL. If not, make a note in the discussion below.
-    - boolean
-    - plos_bio_initial_tech_check--dryad_url
-    - 
-    - '241'
-    - '242'
-    - '6'
-    - '2015-11-02 13:38:26.315087'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
   - - '145'
-    - If Financial Disclosure Statement is not complete (they've written N/A or something
-      similar), message author.
+    - Check that the Financial Disclosure card has been filled out correctly. Ensure
+      the authors have provided a description of the roles of the funder, if they
+      responded Yes to our standard statement.
     - boolean
     - plos_bio_initial_tech_check--financial_disclosure
     - 
-    - '243'
-    - '244'
-    - '7'
+    - '231'
+    - '232'
+    - '9'
     - '2015-11-02 13:38:26.319212'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-03-18 18:56:59.406461'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
-    - If the Financial Disclosure Statement includes any companies from the Tobacco
-      Industry, make a note in the discussion below.
+    - " If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, start a 'MetaData' discussion and ping the handling editor. See <a
+      href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
+      list</a>."
     - boolean
     - plos_bio_initial_tech_check--tobacco
     - 
-    - '245'
-    - '246'
-    - '8'
-    - '2015-11-02 13:38:26.322791'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '147'
-    - If any figures are completely illegible, contact the author.
-    - boolean
-    - plos_bio_initial_tech_check--figures_legible
-    - 
-    - '247'
-    - '248'
-    - '9'
-    - '2015-11-02 13:38:26.326519'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '148'
-    - If any files or figures are cited but not included in the submission, message
-      the author.
-    - boolean
-    - plos_bio_initial_tech_check--cited
-    - 
-    - '249'
-    - '250'
+    - '233'
+    - '234'
     - '10'
-    - '2015-11-02 13:38:26.330182'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '149'
-    - Have the authors asked any questions in the cover letter? If yes, contact the
-      editor/journal team.
-    - boolean
-    - plos_bio_initial_tech_check--cover_letter
-    - 
-    - '251'
-    - '252'
-    - '11'
-    - '2015-11-02 13:38:26.333792'
-    - '2016-03-10 19:55:38.108421'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
-  - - '150'
-    - Have the authors mentioned any billing information in the cover letter? If yes,
-      contact the editor/journal team.
-    - boolean
-    - plos_bio_initial_tech_check--billing_inquiries
-    - 
-    - '253'
-    - '254'
-    - '12'
-    - '2015-11-02 13:38:26.337417'
-    - '2016-03-10 19:55:38.108421'
+    - '2015-11-02 13:38:26.322791'
+    - '2016-03-18 18:56:59.414719'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
-    - If an Ethics Statement is present, make a note in the discussion below.
+    - Make sure the ethics statement looks complete. If the authors have responded
+      Yes to any question, but have not provided approval information, please request
+      this from them.
     - boolean
     - plos_bio_initial_tech_check--ethics_statement
     - 
-    - '255'
-    - '256'
-    - '13'
+    - '235'
+    - '236'
+    - '1'
     - '2015-11-02 13:38:26.340953'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-03-18 18:56:59.326151'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
@@ -5062,8 +4879,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--open_rejects
     - 
-    - '257'
-    - '258'
+    - '237'
+    - '238'
     - '1'
     - '2015-11-02 13:38:26.346485'
     - '2016-03-10 19:55:38.108421'
@@ -5075,8 +4892,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--human_subjects
     - 
-    - '259'
-    - '260'
+    - '239'
+    - '240'
     - '2'
     - '2015-11-02 13:38:26.350087'
     - '2016-03-10 19:55:38.108421'
@@ -5089,8 +4906,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_needed
     - 
-    - '261'
-    - '262'
+    - '241'
+    - '242'
     - '3'
     - '2015-11-02 13:38:26.355497'
     - '2016-03-10 19:55:38.108421'
@@ -5102,8 +4919,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_available
     - 
-    - '263'
-    - '264'
+    - '243'
+    - '244'
     - '4'
     - '2015-11-02 13:38:26.359242'
     - '2016-03-10 19:55:38.108421'
@@ -5116,8 +4933,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--supporting_information
     - 
-    - '265'
-    - '266'
+    - '245'
+    - '246'
     - '5'
     - '2015-11-02 13:38:26.3628'
     - '2016-03-10 19:55:38.108421'
@@ -5129,8 +4946,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--dryad_url
     - 
-    - '267'
-    - '268'
+    - '247'
+    - '248'
     - '6'
     - '2015-11-02 13:38:26.366706'
     - '2016-03-10 19:55:38.108421'
@@ -5142,8 +4959,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
-    - '269'
-    - '270'
+    - '249'
+    - '250'
     - '7'
     - '2015-11-02 13:38:26.370339'
     - '2016-03-10 19:55:38.108421'
@@ -5155,8 +4972,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
-    - '271'
-    - '272'
+    - '251'
+    - '252'
     - '8'
     - '2015-11-02 13:38:26.373836'
     - '2016-03-10 19:55:38.108421'
@@ -5167,8 +4984,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_legible
     - 
-    - '273'
-    - '274'
+    - '253'
+    - '254'
     - '9'
     - '2015-11-02 13:38:26.37734'
     - '2016-03-10 19:55:38.108421'
@@ -5180,8 +4997,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cited
     - 
-    - '275'
-    - '276'
+    - '255'
+    - '256'
     - '10'
     - '2015-11-02 13:38:26.380912'
     - '2016-03-10 19:55:38.108421'
@@ -5193,8 +5010,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cover_letter
     - 
-    - '277'
-    - '278'
+    - '257'
+    - '258'
     - '11'
     - '2015-11-02 13:38:26.384466'
     - '2016-03-10 19:55:38.108421'
@@ -5206,8 +5023,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--billing_inquiries
     - 
-    - '279'
-    - '280'
+    - '259'
+    - '260'
     - '12'
     - '2015-11-02 13:38:26.387949'
     - '2016-03-10 19:55:38.108421'
@@ -5218,8 +5035,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
-    - '281'
-    - '282'
+    - '261'
+    - '262'
     - '13'
     - '2015-11-02 13:38:26.39145'
     - '2016-03-10 19:55:38.108421'
@@ -5233,8 +5050,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--open_rejects
     - 
-    - '283'
-    - '284'
+    - '263'
+    - '264'
     - '1'
     - '2015-11-02 13:38:26.396833'
     - '2016-03-10 19:55:38.108421'
@@ -5246,8 +5063,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--human_subjects
     - 
-    - '285'
-    - '286'
+    - '265'
+    - '266'
     - '2'
     - '2015-11-02 13:38:26.400512'
     - '2016-03-10 19:55:38.108421'
@@ -5260,8 +5077,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_needed
     - 
-    - '287'
-    - '288'
+    - '267'
+    - '268'
     - '3'
     - '2015-11-02 13:38:26.403989'
     - '2016-03-10 19:55:38.108421'
@@ -5273,8 +5090,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--data_available
     - 
-    - '289'
-    - '290'
+    - '269'
+    - '270'
     - '4'
     - '2015-11-02 13:38:26.407564'
     - '2016-03-10 19:55:38.108421'
@@ -5287,8 +5104,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--supporting_information
     - 
-    - '291'
-    - '292'
+    - '271'
+    - '272'
     - '5'
     - '2015-11-02 13:38:26.411338'
     - '2016-03-10 19:55:38.108421'
@@ -5300,8 +5117,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--dryad_url
     - 
-    - '293'
-    - '294'
+    - '273'
+    - '274'
     - '6'
     - '2015-11-02 13:38:26.415031'
     - '2016-03-10 19:55:38.108421'
@@ -5313,8 +5130,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--financial_disclosure
     - 
-    - '295'
-    - '296'
+    - '275'
+    - '276'
     - '7'
     - '2015-11-02 13:38:26.418577'
     - '2016-03-10 19:55:38.108421'
@@ -5326,8 +5143,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--tobacco
     - 
-    - '297'
-    - '298'
+    - '277'
+    - '278'
     - '8'
     - '2015-11-02 13:38:26.422021'
     - '2016-03-10 19:55:38.108421'
@@ -5338,8 +5155,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--figures_legible
     - 
-    - '299'
-    - '300'
+    - '279'
+    - '280'
     - '9'
     - '2015-11-02 13:38:26.425661'
     - '2016-03-10 19:55:38.108421'
@@ -5351,8 +5168,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cited
     - 
-    - '301'
-    - '302'
+    - '281'
+    - '282'
     - '10'
     - '2015-11-02 13:38:26.429237'
     - '2016-03-10 19:55:38.108421'
@@ -5364,8 +5181,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cover_letter
     - 
-    - '303'
-    - '304'
+    - '283'
+    - '284'
     - '11'
     - '2015-11-02 13:38:26.433036'
     - '2016-03-10 19:55:38.108421'
@@ -5377,8 +5194,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--billing_inquiries
     - 
-    - '305'
-    - '306'
+    - '285'
+    - '286'
     - '12'
     - '2015-11-02 13:38:26.436669'
     - '2016-03-10 19:55:38.108421'
@@ -5389,8 +5206,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_statement
     - 
-    - '307'
-    - '308'
+    - '287'
+    - '288'
     - '13'
     - '2015-11-02 13:38:26.440221'
     - '2016-03-10 19:55:38.108421'
@@ -5402,8 +5219,8 @@ nested_questions:
     - text
     - ethics--field_study--field_permit_number
     - '179'
-    - '308'
-    - '309'
+    - '288'
+    - '289'
     - '1'
     - '2015-12-21 16:53:24.223742'
     - '2016-03-10 19:55:38.108421'
@@ -5415,8 +5232,8 @@ nested_questions:
     - boolean
     - ethics--field_study
     - 
-    - '307'
-    - '310'
+    - '287'
+    - '290'
     - '3'
     - '2015-12-21 16:53:24.230439'
     - '2016-03-10 19:55:38.108421'
@@ -5451,8 +5268,8 @@ nested_questions:
     - text
     - reviewer_report--decision_term
     - 
-    - '307'
-    - '308'
+    - '287'
+    - '288'
     - '1'
     - '2015-12-23 17:34:57.06078'
     - '2016-03-10 19:55:38.108421'
@@ -5476,8 +5293,8 @@ nested_questions:
     - text
     - publishing_related_questions--short_title
     - 
-    - '311'
-    - '312'
+    - '291'
+    - '292'
     - '8'
     - '2016-01-26 17:37:47.789077'
     - '2016-03-10 19:55:38.108421'
@@ -5656,8 +5473,8 @@ nested_questions:
     - boolean
     - author--government-employee
     - 
-    - '313'
-    - '314'
+    - '293'
+    - '294'
     - '4'
     - '2016-03-10 19:55:38.12136'
     - '2016-03-10 19:55:38.12136'
@@ -5669,8 +5486,8 @@ nested_questions:
     - boolean
     - authors--persons_agreed_to_be_named
     - 
-    - '315'
-    - '316'
+    - '295'
+    - '296'
     - '1'
     - '2016-03-10 19:55:38.241783'
     - '2016-03-10 19:55:38.241783'
@@ -5682,8 +5499,8 @@ nested_questions:
     - boolean
     - authors--authors_confirm_icmje_criteria
     - 
-    - '317'
-    - '318'
+    - '297'
+    - '298'
     - '2'
     - '2016-03-10 19:55:38.247863'
     - '2016-03-10 19:55:38.247863'
@@ -5694,204 +5511,195 @@ nested_questions:
     - boolean
     - authors--authors_agree_to_submission
     - 
-    - '319'
-    - '320'
+    - '299'
+    - '300'
     - '3'
     - '2016-03-10 19:55:38.253569'
     - '2016-03-10 19:55:38.253569'
     - TahiStandardTasks::AuthorsTask
     - 
   - - '203'
-    - Conceptualization
+    - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
+      to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
+      or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
+      for researchers who meet the criteria for access to confidential data', start
+      a 'MetaData' discussion and ping the handling editor.
     - boolean
-    - group-author--contributions--conceptualization
-    - '217'
-    - '322'
-    - '323'
-    - '1'
-    - '2016-03-22 14:32:48.202013'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--data_availability_confidential
+    - 
+    - '301'
+    - '302'
+    - '2'
+    - '2016-03-18 18:56:59.334712'
+    - '2016-03-18 18:56:59.334712'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '204'
-    - Investigation
+    - In the Data Availability card, if the authors have not selected one of the reasons
+      listed in Q2 and pasted it into the text box, please request that they complete
+      this section.
     - boolean
-    - group-author--contributions--investigation
-    - '217'
-    - '324'
-    - '325'
-    - '2'
-    - '2016-03-22 14:32:48.217167'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--data_availability_blank
+    - 
+    - '303'
+    - '304'
+    - '3'
+    - '2016-03-18 18:56:59.34572'
+    - '2016-03-18 18:56:59.34572'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '205'
-    - Visualization
+    - 'In the Data Availability card, if the authors have mentioned data submitted
+      to Dryad, check that the author has provided the Dryad reviewer URL and if not,
+      request it from them. '
     - boolean
-    - group-author--contributions--visualization
-    - '217'
-    - '326'
-    - '327'
-    - '3'
-    - '2016-03-22 14:32:48.228819'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--data_availability_dryad
+    - 
+    - '305'
+    - '306'
+    - '4'
+    - '2016-03-18 18:56:59.355664'
+    - '2016-03-18 18:56:59.355664'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '206'
-    - Methodology
+    - Compare the author list between the manuscript file and the Authors card. If
+      the author list does not match, request the authors to update whichever section
+      is missing information. Ignore omissions of middle initials.
     - boolean
-    - group-author--contributions--methodology
-    - '217'
-    - '328'
-    - '329'
-    - '4'
-    - '2016-03-22 14:32:48.241637'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--authors_match
+    - 
+    - '307'
+    - '308'
+    - '5'
+    - '2016-03-18 18:56:59.36559'
+    - '2016-03-18 18:56:59.36559'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '207'
-    - Resources
+    - If we don't have unique email addresses for all authors, send it back.
     - boolean
-    - group-author--contributions--resources
-    - '217'
-    - '330'
-    - '331'
-    - '5'
-    - '2016-03-22 14:32:48.254186'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--author_emails
+    - 
+    - '309'
+    - '310'
+    - '6'
+    - '2016-03-18 18:56:59.376034'
+    - '2016-03-18 18:56:59.376034'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '208'
-    - Supervision
+    - If the author list has changed between initial and full submission, pass it
+      through if an author was added and flag it to the editor/initiate our COPE process
+      if an author was removed.
     - boolean
-    - group-author--contributions--supervision
-    - '217'
-    - '332'
-    - '333'
-    - '6'
-    - '2016-03-22 14:32:48.266474'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--author_removed
+    - 
+    - '311'
+    - '312'
+    - '7'
+    - '2016-03-18 18:56:59.386455'
+    - '2016-03-18 18:56:59.386455'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '209'
-    - Software
+    - Check that the Competing Interest card has been filled out correctly. If the
+      authors have selected Yes and not provided an explanation, send it back.
     - boolean
-    - group-author--contributions--software
-    - '217'
-    - '334'
-    - '335'
-    - '7'
-    - '2016-03-22 14:32:48.277041'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--competing_interests
+    - 
+    - '313'
+    - '314'
+    - '8'
+    - '2016-03-18 18:56:59.395986'
+    - '2016-03-18 18:56:59.395986'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '210'
-    - Data Curation
+    - If the authors mention submitting their paper to a collection in the cover letter
+      or Additional Information card, alert Jenni Horsley by pinging her through the
+      discussion of the ITC card.
     - boolean
-    - group-author--contributions--data-curation
-    - '217'
-    - '336'
-    - '337'
-    - '8'
-    - '2016-03-22 14:32:48.290615'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--collection
+    - 
+    - '315'
+    - '316'
+    - '11'
+    - '2016-03-18 18:56:59.421847'
+    - '2016-03-18 18:56:59.421847'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '211'
-    - Project Administration
+    - Make sure you can view and download all files uploaded to your Figures card.
+      Check against figure citations in the manuscript to ensure there are no missing
+      figures.
     - boolean
-    - group-author--contributions--project-administration
-    - '217'
-    - '338'
-    - '339'
-    - '9'
-    - '2016-03-22 14:32:48.301073'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--figures_viewable
+    - 
+    - '317'
+    - '318'
+    - '12'
+    - '2016-03-18 18:56:59.432403'
+    - '2016-03-18 18:56:59.432403'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '212'
-    - Validation
+    - If main figures or supporting information captions are only available in the
+      file itself (and not in the manuscript), request that the author remove the
+      captions from the file and instead place them in the manuscript file.
     - boolean
-    - group-author--contributions--validation
-    - '217'
-    - '340'
-    - '341'
-    - '10'
-    - '2016-03-22 14:32:48.31193'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - plos_bio_initial_tech_check--embedded_captions
+    - 
+    - '319'
+    - '320'
+    - '13'
+    - '2016-03-18 18:56:59.441471'
+    - '2016-03-18 18:56:59.441471'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '213'
-    - Writing - Original Draft
+    - If main figures or supporting information captions are missing entirely, ask
+      the author to provide them in the manuscript file.
     - boolean
-    - group-author--contributions--writing-original-draft
-    - '217'
-    - '342'
-    - '343'
-    - '11'
-    - '2016-03-22 14:32:48.326853'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
-    - 
-  - - '214'
-    - Writing - Review and Editing
-    - boolean
-    - group-author--contributions--writing-review-and-editing
-    - '217'
-    - '344'
-    - '345'
-    - '12'
-    - '2016-03-22 14:32:48.337572'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
-    - 
-  - - '215'
-    - Funding Acquisition
-    - boolean
-    - group-author--contributions--funding-acquisition
-    - '217'
-    - '346'
-    - '347'
-    - '13'
-    - '2016-03-22 14:32:48.347748'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
-    - 
-  - - '216'
-    - Formal Analysis
-    - boolean
-    - group-author--contributions--formal-analysis
-    - '217'
-    - '348'
-    - '349'
-    - '14'
-    - '2016-03-22 14:32:48.360903'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
-    - 
-  - - '217'
-    - Author Contributions
-    - question-set
-    - group-author--contributions
+    - plos_bio_initial_tech_check--captions_missing
     - 
     - '321'
-    - '350'
-    - '1'
-    - '2016-03-22 14:32:48.399978'
-    - '2016-03-22 14:32:48.653571'
-    - GroupAuthor
+    - '322'
+    - '14'
+    - '2016-03-18 18:56:59.450086'
+    - '2016-03-18 18:56:59.450086'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '218'
-    - Is this group a United States Government agency, department or organization?
+  - - '214'
+    - If any files or figures are cited in the manuscript but not included in the
+      Figures or Supporting Information cards, ask the author to provide the missing
+      information. (Search Fig, Table, Text, Movie and check that they are in the
+      file inventory.
     - boolean
-    - group-author--government-employee
+    - plos_bio_initial_tech_check--figures_missing
     - 
-    - '351'
-    - '352'
-    - '2'
-    - '2016-03-22 14:32:48.669691'
-    - '2016-03-22 14:32:48.669691'
-    - GroupAuthor
+    - '323'
+    - '324'
+    - '15'
+    - '2016-03-18 18:56:59.45863'
+    - '2016-03-18 18:56:59.45863'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '215'
+    - For any resubmissions after an Open Reject decision, ensure the authors have
+      uploaded A 'Response to Reviewer's document. If this information is provided
+      in the cover letter or another part of the submission, ask the authors to upload
+      it as a new file and if this information is not present, request the file from
+      author.
+    - boolean
+    - plos_bio_initial_tech_check--open_reject
+    - 
+    - '325'
+    - '326'
+    - '16'
+    - '2016-03-18 18:56:59.498278'
+    - '2016-03-18 18:56:59.498278'
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
 
 ---
@@ -7848,6 +7656,16 @@ permission_states_permissions:
     - '2'
     - '2016-03-10 15:20:52.723423'
     - '2016-03-10 15:20:52.723423'
+  - - '201'
+    - '198'
+    - '2'
+    - '2016-03-14 14:09:21.861011'
+    - '2016-03-14 14:09:21.861011'
+  - - '202'
+    - '199'
+    - '2'
+    - '2016-03-14 14:09:21.878255'
+    - '2016-03-14 14:09:21.878255'
 
 ---
 permissions:
@@ -8808,6 +8626,16 @@ permissions:
     - Task
     - '2016-03-10 15:20:52.710989'
     - '2016-03-10 15:20:52.710989'
+  - - '198'
+    - view_user_role_eligibility_on_paper
+    - Paper
+    - '2016-03-14 14:09:21.848491'
+    - '2016-03-14 14:09:21.848491'
+  - - '199'
+    - assign_roles
+    - Paper
+    - '2016-03-14 14:09:21.874551'
+    - '2016-03-14 14:09:21.874551'
 
 ---
 permissions_roles:
@@ -10393,6 +10221,66 @@ permissions_roles:
     - '19'
     - '2016-03-10 15:20:53.250773'
     - '2016-03-10 15:20:53.250773'
+  - - '540'
+    - '198'
+    - '21'
+    - '2016-03-14 14:09:21.868961'
+    - '2016-03-14 14:09:21.868961'
+  - - '541'
+    - '199'
+    - '21'
+    - '2016-03-14 14:09:21.881647'
+    - '2016-03-14 14:09:21.881647'
+  - - '542'
+    - '198'
+    - '10'
+    - '2016-03-14 14:09:22.299014'
+    - '2016-03-14 14:09:22.299014'
+  - - '543'
+    - '199'
+    - '10'
+    - '2016-03-14 14:09:22.306629'
+    - '2016-03-14 14:09:22.306629'
+  - - '544'
+    - '198'
+    - '11'
+    - '2016-03-14 14:09:22.405419'
+    - '2016-03-14 14:09:22.405419'
+  - - '545'
+    - '199'
+    - '11'
+    - '2016-03-14 14:09:22.413494'
+    - '2016-03-14 14:09:22.413494'
+  - - '546'
+    - '198'
+    - '15'
+    - '2016-03-14 14:09:22.495417'
+    - '2016-03-14 14:09:22.495417'
+  - - '547'
+    - '199'
+    - '15'
+    - '2016-03-14 14:09:22.502264'
+    - '2016-03-14 14:09:22.502264'
+  - - '548'
+    - '198'
+    - '20'
+    - '2016-03-14 14:09:22.59522'
+    - '2016-03-14 14:09:22.59522'
+  - - '549'
+    - '199'
+    - '20'
+    - '2016-03-14 14:09:22.602002'
+    - '2016-03-14 14:09:22.602002'
+  - - '550'
+    - '198'
+    - '19'
+    - '2016-03-14 14:09:22.699257'
+    - '2016-03-14 14:09:22.699257'
+  - - '551'
+    - '199'
+    - '19'
+    - '2016-03-14 14:09:22.706021'
+    - '2016-03-14 14:09:22.706021'
 
 ---
 phase_templates:

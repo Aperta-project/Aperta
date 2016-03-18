@@ -1,7 +1,7 @@
 <div class='container'>
   <div class='greeting'>
     <p class='message'>
-      Changes are needed on your Manuscript
+      Changes are needed on your Manuscript in Aperta
     </p>
   </div>
   <hr>
@@ -10,14 +10,9 @@
       Dear <%= @author.full_name %>,
     </p>
     <p>
-      Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>", to <%= @journal.name %>.
-    </p>
-    <p>
-      The <%= @journal.name %> team has reviewed your submission and
-      identified changes that you need to make before we can proceed.
-      Use the following link to make the required changes, either within
-       the manuscript itself or within the manuscript cards:
-       <%= link_to client_paper_url(@paper), client_paper_url(@paper) %>.
+      Thank you for submitting your manuscript to <%= @journal.name %>.
+      Before your submission can proceed through the editorial process,
+      please address the following requests:
     </p>
 
     <blockquote>
@@ -25,18 +20,31 @@
     </blockquote>
 
     <p>
-      To resubmit your manuscript, complete the Changes for Author card:
-      <%= link_to client_paper_task_url(@task.paper, @task), client_paper_task_url(@task.paper, @task) %>
+      Your paper has been made editable to enable you to make these
+      changes. Please click on the link below which will take you to
+      your manuscript. The task “Changes for Author” will be listed on
+      the right hand sidebar and will include the requirements listed
+      above. When you have completed these requests, you can resubmit
+      your paper to the journal office by clicking “These Changes Have
+      Been Made.”
     </p>
 
     <p>
-      Please feel free to contact us with any questions.
+      <%= link_to client_paper_url(@task.paper), client_paper_url(@task.paper) %>
+    </p>
+
+    <p>
+      Please address these technical requirements at your earliest convenience, preferably within 1-2 days.
+    </p>
+
+    <p>
+      If you have any questions feel free to contact us for assistance by replying to this email.
     </p>
   </div>
   <hr>
   <div class='footer'>
-    Sincerely,
+    Best regards,
     <br>
-    <%= @journal.name %> Team
+    The <%= @journal.name %> Team
   </div>
 </div>

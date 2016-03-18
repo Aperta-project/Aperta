@@ -21,7 +21,7 @@ module PlosBioTechCheck
     def add_user_participations(user)
       users = [user] + @task.paper.collaborators
       users.each do |user|
-        task.add_participant(user)
+        @task.add_participant(user)
       end
     end
   end

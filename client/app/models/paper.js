@@ -88,6 +88,12 @@ export default DS.Model.extend({
       });
   },
 
+  taskOfType(taskType) {
+    return this.get('tasks').find((task) => {
+      return task.constructor.modelName === taskType;
+    });
+  },
+
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
   invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
@@ -104,5 +110,5 @@ export default DS.Model.extend({
     else if (this.get('isFullSubmission')) {
       return "full";
     }
-  }),
+  })
 });

@@ -10,7 +10,7 @@
       Dear <%= @author.full_name %>,
     </p>
     <p>
-      Thank you for submitting your manuscript, "<%= @paper.title %>", to <%= @journal.name %>.
+      Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>", to <%= @journal.name %>.
     </p>
     <p>
       The <%= @journal.name %> team has reviewed your submission and

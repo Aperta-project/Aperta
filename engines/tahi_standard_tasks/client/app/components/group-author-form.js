@@ -3,7 +3,7 @@ import { contributionIdents } from 'tahi/models/group-author';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 export default Ember.Component.extend({
-  classNames: ['author-form'],
+  classNames: ['author-form', 'group-author-form'],
   author: null,
   authorProxy: null,
   validationErrors: Ember.computed.alias('authorProxy.validationErrors'),

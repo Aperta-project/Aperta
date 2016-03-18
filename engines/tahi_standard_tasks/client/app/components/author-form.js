@@ -11,7 +11,7 @@ const {
 
 export default Component.extend({
   countries: service(),
-  classNames: ['author-form'],
+  classNames: ['author-form', 'individual-author-form'],
   author: null,
   authorProxy: null,
   isNewAuthor: false,

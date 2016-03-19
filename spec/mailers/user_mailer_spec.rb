@@ -167,13 +167,13 @@ describe UserMailer, redis: true do
     end
   end
 
-  describe '#notify_editor_of_paper_resubmission' do
+  describe '#notify_academic_editor_of_paper_resubmission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:editor) { FactoryGirl.create(:user) }
     let(:paper) do
       FactoryGirl.create(:paper, :submitted, :with_integration_journal, creator: author)
     end
-    let(:email) { UserMailer.notify_editor_of_paper_resubmission(paper.id) }
+    let(:email) { UserMailer.notify_academic_editor_of_paper_resubmission(paper.id) }
 
     before do
       assign_academic_editor_role(paper, editor)

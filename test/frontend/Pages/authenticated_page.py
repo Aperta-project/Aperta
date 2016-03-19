@@ -77,8 +77,27 @@ class AuthenticatedPage(PlosPage):
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
     self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')
+
     self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
-    self._create_new_topic = (By.CSS_SELECTOR, 'h1.discussions-show-title')
+
+    #self._create_new_topic = (By.CSS_SELECTOR, 'h1.discussions-show-title')
+    self._create_new_topic = (By.CSS_SELECTOR, 'div.discussions-index-header a')
+
+    self._topic_title_field = (By.CSS_SELECTOR, 'input')
+
+    self._create_topic = (By.CSS_SELECTOR, 'button')
+
+    self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
+
+    ###self._participan
+    self._participant_field = (By.CSS_SELECTOR, 'input.active')
+
+    self._message_body_field = (By.CSS_SELECTOR, 'textarea')
+
+    self._post_message_btn = (By.CSS_SELECTOR, 'button')
+
+
+
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
     self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
     self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')

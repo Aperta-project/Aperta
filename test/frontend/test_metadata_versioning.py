@@ -155,8 +155,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.complete_task('Additional Information',
                                click_override=True,
-                               data=new_prq,
-                               click=True)
+                               data=new_prq)
     # check versioning
     version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
     version_btn.click()

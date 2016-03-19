@@ -1,27 +1,25 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
-NOTE: This POM will be outdated when the Paper Editor is removed.
-"""
-
 import logging
 import time
 from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
-from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, creator_login4, creator_login5,\
-                           staff_admin_login, pub_svcs_login, internal_editor_login, super_admin_login
+from authenticated_page import AuthenticatedPage, application_typeface
+from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, \
+    creator_login4, creator_login5, staff_admin_login, pub_svcs_login, internal_editor_login, \
+    super_admin_login
 from Base.PostgreSQL import PgSQL
-from frontend.Cards.authors_card import AuthorsCard
-from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
+
+"""
+Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
+NOTE: This POM will be outdated when the Paper Editor is removed.
+"""
 
 __author__ = 'sbassi@plos.org'
 
@@ -55,7 +53,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
-    self._tb_dl_epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
+    self._tb_dl_epub_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
     self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
     self._tb_more_link = (By.ID, 'more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
@@ -64,10 +62,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
-    self._add_collaborators_modal_support_text =  (By.CLASS_NAME, 'overlay-supporting-text')
+    self._add_collaborators_modal_support_text = (By.CLASS_NAME, 'overlay-supporting-text')
     self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
-    #self._add_collaborators_modal_select = (By.CLASS_NAME, 'select2-arrow')
-    #self._add_collaborators_modal_select_input = (By.TAG_NAME, 'input')
     self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
 
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
@@ -80,10 +76,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._wm_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
     self._wm_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
     # Submit Confirmation and Submit Congratulations Overlays (full and initial submit versions)
-    # The overlay close X is universal and defined in authenticated page (self._overlay_header_close)
+    # The overlay close X is universal and defined in
+    # authenticated page (self._overlay_header_close)
     self._so_paper_submit_icon = (By.CLASS_NAME, 'paper-submit-icon')
     self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
-    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
+    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR,
+                                                 'div.overlay-title-text-submit + h5')
     self._so_paper_title = (By.ID, 'paper-submit-title')
     self._so_submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
     self._so_submit_cancel = (By.CSS_SELECTOR, 'div.submit-action-buttons button.button-link')
@@ -117,7 +115,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox
     self._question_mark_icon = (By.ID, 'submission-process-toggle')
-    # While IDs are normally king, for this element, we don't hide the element, we just change its class to "hide" it
+    # While IDs are normally king, for this element, we don't hide the element, we just change
+    # its class to "hide" it
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
     self._title = (By.ID, 'control-bar-paper-title')
@@ -127,8 +126,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Main method to validate styles and basic functions for all elements
     in the page
-    :username: String with the email whom the page is rendered to
-    :Admin: Boolean to indicate if the page is rendered for an admin user
+    :param useremail: String with the email whom the page is rendered to
+    :param admin: Boolean to indicate if the page is rendered for an admin user
     """
     if admin:
       self._get(self._tb_workflow_link)
@@ -171,7 +170,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     paper_id = self.get_paper_db_id()
     print paper_id
-    journal_id = PgSQL().query('SELECT papers.journal_id FROM papers where id = %s;', (paper_id,))[0][0]
+    journal_id = PgSQL().query('SELECT papers.journal_id '
+                               'FROM papers '
+                               'WHERE id = %s;', (paper_id,))[0][0]
     return journal_id
 
   def _check_collaborator(self):
@@ -189,8 +190,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # self.validate_modal_title_style(add_collaborator_header)
     assert ("Select people to collaborate with on this paper. Collaborators can edit the "
             "paper, will be notified about edits on the paper, and can participate in the "
-            "discussion about this paper." == self._get(
-              self._add_collaborators_modal_support_text).text)
+            "discussion about this paper." ==
+            self._get(self._add_collaborators_modal_support_text).text)
     self._get(self._add_collaborators_modal_support_select)
     cancel = self._get(self._overlay_action_button_cancel)
     self.validate_default_link_style(cancel)
@@ -246,7 +247,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Checking Discussions toolbar for {0}'.format(useremail))
     discussion_link = self._get(self._discussion_link)
     discussion_link.click()
-    discussion_container = self._get(self._discussion_container)
+    self._get(self._discussion_container)
     discussion_container_title = self._get(self._discussion_container_title)
     # Note: The following method is parametrized since we don't have a guide for modals
     self.validate_modal_title_style(discussion_container_title, '36px', '500', '39.6px')
@@ -314,19 +315,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'Are you sure?' == modal_title.text
       # TODO: Style parametrized due to lack of styleguide for modals
       self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
-                                    font_weight='500', color='rgba(119, 119, 119, 1)')
+                                      font_weight='500', color='rgba(119, 119, 119, 1)')
       withdraw_modal_text = self._get(self._wm_modal_text)
       # TODO: Leave comment out until solved. Pivotal bug#103864752
-      #self.validate_application_ptext(withdraw_modal_text)
+      # self.validate_application_ptext(withdraw_modal_text)
       assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
-              'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
+              'Please provide your reason for withdrawing this manuscript.' in
+              withdraw_modal_text.text)
       yes_btn = self._get(self._wm_modal_yes)
       assert 'YES, WITHDRAW' == yes_btn.text
       no_btn = self._get(self._wm_modal_no)
       assert "NO, I'M STILL WORKING" == no_btn.text
       self.validate_link_big_grey_button_style(yes_btn)
       # TODO: Leave comment out until solved. Pivotal bug#103858114
-      #self.validate_secondary_grey_small_button_modal_style(no_btn)
+      # self.validate_secondary_grey_small_button_modal_style(no_btn)
       close_icon_overlay = self._get(self._overlay_header_close)
       # TODO: Change following line after bug #102078080 is solved
       assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
@@ -338,16 +340,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Given an amount of expected item, check if they are in the top menu.
     This can be expanded as needed.
+    :param user_buttons: number of expected buttons
     """
     # Time needed to update page and get correct amount of items
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
-    assert self._get(self._tb_workflow_link) if user_buttons == 8 else (len(buttons) == 7), len(buttons)
+    assert self._get(self._tb_workflow_link) if user_buttons == 8 else (len(buttons) == 7), \
+        len(buttons)
 
   def is_task_present(self, task_name):
     """
     Check if a task is available in the task list
-    :task_name:
+    :param task_name: The name of the task to validate
     return True if task is present and False otherwise
     """
     tasks = self._gets(self._task_headings)
@@ -356,19 +360,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None, click=False):
+  def complete_task(self, task_name, click_override=False, data=None):
     """
     On a given task, check complete and then close
-    :task_name: The name of the task to complete (str)
-    :click_override:
-    :data:
+    :param task_name: The name of the task to complete (str)
+    :param click_override:
+    :param data:
     """
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        if task.text == task_name and 'active' \
+        if task.text == task_name \
+            and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           task.click()
           time.sleep(.5)
@@ -487,7 +492,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     return self._get(self._title).text
 
-
   def get_paper_db_id(self):
     """
     Returns the DB paper ID from URL
@@ -500,35 +504,42 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def validate_so_overlay_elements_styles(self, type_, paper_title):
     """
     Validates styles and content on submit overlay
-    :param type: full_submit, initial_submit, initial_submit_full, congrats, congrats_is, congrats_is_full
+    :param type_: full_submit, initial_submit, initial_submit_full, congrats, congrats_is,
+    congrats_is_full
+    :param paper_title: Title of manuscript whose submit overlay you are validating
     :return:
     """
     self._get(self._overlay_header_close)
     self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
-    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
+    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR,
+                                                 'div.overlay-title-text-submit + h5')
     main_head = self._get(self._so_paper_submit_title_text_submit)
     subhead = self._get(self._so_paper_submit_subhead_text_submit)
     if type_ == 'full_submit':
       assert 'Are you sure?' in main_head.text, main_head.text
       assert 'You are about to submit the paper' in subhead.text, subhead.text
     elif type_ == 'congrats':
-      #assert 'Congratulations' in main_head.text, main_head.text
+      # assert 'Congratulations' in main_head.text, main_head.text
       self._get(self._so_paper_submit_icon)
       assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
       self._get(self._so_submit_cancel)
     elif type_ == 'congrats_is':
-      assert 'You have successfully submitted your manuscript for initial review. If the initial review is ' \
-             'favorable, we will invite you to add some information to facilitate peer review.' in subhead.text, \
-             subhead.text
+      assert 'You have successfully submitted your manuscript for initial review. If the initial ' \
+             'review is favorable, we will invite you to add some information to facilitate peer ' \
+             'review.' in subhead.text, subhead.text
     elif type_ == 'congrats_full':
-      assert 'You have successfully submitted your manuscript. We will start the peer review process.'
+      assert 'You have successfully submitted your manuscript. We will start the peer review ' \
+             'process.' in subhead.text, subhead.text
     if type_ in ('full_submit', 'initial_submit', 'initial_submit_full'):
       title = self._get(self._so_paper_title)
       assert paper_title in title.text, '{0} vs {1}'.format(paper_title, title.text)
       self._get(self._so_submit_confirm)
 
   def validate_submit_success(self):
-    """Ensure the successful submit message appears in the upper right corner of the manuscript viewer page"""
+    """
+    Ensure the successful submit message appears in the upper right corner of the manuscript
+    viewer page
+    """
     success_msg = self._get(self._paper_sidebar_state_information)
     assert 'This paper has been submitted.' in success_msg.text, success_msg.text
 
@@ -563,10 +574,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def get_submission_status_info_text(self):
     """
+    Extract the submission status text from the page
     """
     return self._get(self._submission_status_info).text
 
   def wait_for_viewer_page_population(self):
+    """
+    Purgatory, waiting for an update that sometimes takes forever, sigh
+    :return:
+    """
     logging.info(datetime.now())
     self.set_timeout(230)
     self._get(self._paper_sidebar_state_information)

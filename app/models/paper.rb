@@ -351,8 +351,16 @@ class Paper < ActiveRecord::Base
                             journal.collaborator_role])
   end
 
+  def add_academic_editor(user)
+    assignments
+      .where(user: user, role: journal.academic_editor_role)
+      .first_or_create!
+  end
+
   def add_collaboration(user)
-    assignments.create(user: user, role: journal.collaborator_role)
+    assignments
+      .where(user: user, role: journal.collaborator_role)
+      .first_or_create!
   end
 
   def remove_collaboration(collaboration)

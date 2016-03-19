@@ -19,6 +19,10 @@ module Typesetter
     has_many :supporting_information_files,
              serializer: Typesetter::SupportingInformationFileSerializer
 
+    def academic_editor
+      object.academic_editors.first
+    end
+
     def journal_title
       object.journal.name
     end

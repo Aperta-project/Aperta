@@ -796,17 +796,19 @@ describe Paper do
     end
   end
 
-  describe '#academic_editor' do
+  describe '#academic_editors' do
     let(:user) { FactoryGirl.create(:user) }
 
     context 'when the paper has an editor' do
       let!(:assignment) do
-        FactoryGirl.create(:assignment,
-                           role: paper.journal.academic_editor_role,
-                           user: user,
-                           assigned_to: paper)
+        FactoryGirl.create(
+          :assignment,
+          role: paper.journal.academic_editor_role,
+          user: user,
+          assigned_to: paper
+        )
       end
-      specify { expect(paper.academic_editors).to eq([user]) }
+      specify { expect(paper.academic_editors).to contain_exactly(user) }
     end
 
     context "when the paper doesn't have an academic editor" do

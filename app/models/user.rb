@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
     class_name: 'Paper',
     source: :paper
   has_many :invitations, foreign_key: :invitee_id, inverse_of: :invitee
+  has_many :invitations_from_me, foreign_key: :inviter_id, inverse_of: :inviter
   has_many \
     :discussion_replies,
     foreign_key: :replier_id,

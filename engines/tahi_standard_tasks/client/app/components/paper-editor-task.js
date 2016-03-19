@@ -85,7 +85,7 @@ export default TaskComponent.extend({
 
     removeEditor() {
       return this.store.find('user', selectedUser.id).then((user) => {
-        this.get('editors').removeObject(user);
+        this.get('academicEditors').removeObject(user);
         return this.send('saveModel');
       });
     },

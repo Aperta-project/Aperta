@@ -57,7 +57,7 @@ describe "TahiStandardTasks::DecisionReviser" do
           it "has academic editor and paper creator participants" do
             subject
             expect(revise_task.participants).to \
-              match_array([paper.academic_editor, paper.creator])
+              contain_exactly(paper.creator, *paper.academic_editors)
           end
 
           it "task participants include the paper's author" do

@@ -29,7 +29,7 @@ describe TahiStandardTasks::PaperReviewerTask do
   describe "#invitation_invited" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
-    it_behaves_like 'a task that sends out invitations', invitee_role: 'reviewer'
+    it_behaves_like 'a task that sends out invitations'
 
     it "notifies the invited reviewer" do
       expect {task.invitation_invited invitation}.to change {

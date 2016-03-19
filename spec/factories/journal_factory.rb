@@ -22,6 +22,12 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_academic_editor_role) do
+      after(:create) do |journal|
+        journal.academic_editor_role || journal.create_academic_editor_role!
+      end
+    end
+
     %w(publishing_services staff_admin).each do |role|
       trait("with_#{role}_user".to_sym) do
         after(:create) do |journal|

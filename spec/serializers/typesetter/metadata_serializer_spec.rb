@@ -3,12 +3,15 @@ require 'rails_helper'
 describe Typesetter::MetadataSerializer do
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
+  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
   let(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
-      :with_integration_journal,
+      :with_academic_editor_user,
       :with_short_title,
-      short_title: 'my paper short')
+      journal: journal,
+      short_title: 'my paper short'
+    )
   end
   let(:metadata_tasks) do
     [
@@ -105,17 +108,17 @@ describe Typesetter::MetadataSerializer do
   end
 
   describe 'editor' do
-    let(:academic_editor) { FactoryGirl.build(:user) }
+    let(:academic_editor) { FactoryGirl.create(:user) }
     let(:fake_serialized_editor) { 'Fake editor' }
     before do
-      allow(paper).to receive(:academic_editor).and_return academic_editor
+      paper.add_academic_editor(academic_editor)
       expect(Typesetter::EditorSerializer)
         .to receive(:new).and_return(
-          instance_double('TypeSetter::EditorSerialiser',
+          instance_double('TypeSetter::EditorSerializer',
                           serializable_hash: fake_serialized_editor))
     end
 
-    it 'serializes the editors using the typesetter serializer' do
+    it 'serializes the academic editors using the typesetter serializer' do
       expect(output[:academic_editor]).to eq(fake_serialized_editor)
     end
   end

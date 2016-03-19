@@ -7,6 +7,10 @@ module TahiStandardTasks
 
     include Invitable
 
+    def academic_editors
+      paper.academic_editors
+    end
+
     def invitation_invited(invitation)
       PaperEditorMailer.delay.notify_invited invitation_id: invitation.id
     end
@@ -78,8 +82,7 @@ module TahiStandardTasks
 
     def add_invitee_as_academic_editor_on_paper!(invitation)
       invitee = User.find(invitation.invitee_id)
-      role = paper.journal.academic_editor_role
-      paper.assignments.where(user: invitee, role: role).first_or_create!
+      paper.add_academic_editor(invitee)
     end
 
     def template_data

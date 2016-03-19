@@ -5,8 +5,9 @@ class Invitation < ActiveRecord::Base
   belongs_to :task
   belongs_to :decision
   has_one :paper, through: :task
-  belongs_to :invitee, class_name: "User", inverse_of: :invitations
-  belongs_to :actor, class_name: "User"
+  belongs_to :invitee, class_name: 'User', inverse_of: :invitations
+  belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
+  belongs_to :actor, class_name: 'User'
   after_destroy :invitation_rescinded
   before_create :assign_to_latest_decision
 

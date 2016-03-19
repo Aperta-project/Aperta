@@ -89,10 +89,13 @@ class PapersController < ApplicationController
   # Upload a word file for the latest version.
   def upload
     requires_user_can(:edit, paper)
+    url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
+                 port: ENV['IHAT_CALLBACK_PORT'] }
+               .reject { |_, v| v.nil? }
     DownloadManuscriptWorker.perform_async(
       paper.id,
       params[:url],
-      ihat_jobs_url,
+      ihat_jobs_url(url_opts),
       paper_id: paper.id,
       user_id: current_user.id
     )

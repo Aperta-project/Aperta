@@ -59,3 +59,7 @@
 #     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
+# Load from an env.production file managed by salt.
+fetch(:bundle_bins).each do |command|
+  SSHKit.config.command_map.prefix[command.to_sym].push("bundle exec dotenv -f env.production")
+end

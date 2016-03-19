@@ -70,7 +70,9 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
+    paper_viewer.complete_task('Financial Disclosure')
     paper_viewer.complete_task('Additional Information')
+    time.sleep(10)
     # refresh !!
     paper_viewer.refresh()
     time.sleep(3)

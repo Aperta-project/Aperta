@@ -1,56 +1,49 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
-import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees';
 
 const { computed } = Ember;
 
-export default TaskComponent.extend(Select2Assignees, {
+export default TaskComponent.extend({
   restless: Ember.inject.service('restless'),
-  selectedUser: null,
-  composingEmail: false,
 
-  hasInvitedInvitation: computed.equal('task.invitation.state', 'invited'),
-  hasRejectedInvitation: computed.equal('task.invitation.state', 'rejected'),
-
-  showEditorSelect: computed(
-    'task.academicEditor', 'task.invitation', 'task.invitation.state', function() {
-      if (this.get('task.academicEditor')) {
-        return false;
-      } else if (Ember.isEmpty(this.get('task.invitation'))) {
-        return true;
-      } else {
-        return this.get('task.invitation.state') === 'accepted';
-      }
-    }
-  ),
-
-  select2RemoteSource: computed('select2RemoteUrl', function(){
-    return {
-      url: this.get('select2RemoteUrl'),
-      dataType: 'json',
-      quietMillis: 500,
-      data: function(term) {
-        return {
-          query: term
-        };
-      },
-      results: function(data) {
-        return {
-          results: data.filtered_users
-        };
-      }
-    };
-  }),
-
-  select2RemoteUrl: computed('task.paper', function(){
+  autoSuggestSourceUrl: computed('task.paper.id', function(){
     return '/api/filtered_users/editors/' + (this.get('task.paper.id')) + '/';
   }),
 
+  selectedUser: null,
+  composingEmail: false,
+
+  applyTemplateReplacements(str) {
+    let editorName = this.get('selectedUser.full_name');
+    if (editorName) {
+      str = str.replace(/\[EDITOR NAME\]/g, editorName);
+    }
+    return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+  },
+
   setLetterTemplate: function() {
-    const customTemplate = this.get('task.invitationTemplate').
-      replace(/\[EDITOR NAME\]/, this.get('selectedUser.fullName')).
-      replace(/\[YOUR NAME\]/, this.get('currentUser.fullName'));
-    return this.set('updatedTemplate', customTemplate);
+    let body, salutation, template;
+    template = this.get('task.invitationTemplate');
+    if (template.salutation && this.get('selectedUser.full_name')) {
+      salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
+    } else {
+      salutation = '';
+    }
+
+    if (template.body) {
+      body = this.applyTemplateReplacements(template.body);
+    } else {
+      body = '';
+    }
+    return this.set('invitationBody', '' + salutation + body);
+  },
+
+  parseUserSearchResponse(response) {
+    return response.filtered_users;
+  },
+
+  displayUserSelected(user) {
+    return user.full_name + ' [' + user.email + ']';
   },
 
   actions: {
@@ -67,40 +60,40 @@ export default TaskComponent.extend(Select2Assignees, {
       return this.set('composingEmail', true);
     },
 
-    didSelectEditor(select2User) {
-      return this.store.find('user', select2User.id).then((user) => {
-        return this.set('selectedUser', user);
+    destroyInvitation(invitation) {
+      return invitation.destroyRecord();
+    },
+
+    didSelectUser(selectedUser) {
+      return this.set('selectedUser', selectedUser);
+    },
+
+    inviteEditor() {
+      if (!this.get('selectedUser')) {
+        return;
+      }
+      return this.store.createRecord('invitation', {
+        task: this.get('task'),
+        email: this.get('selectedUser.email'),
+        body: this.get('invitationBody')
+      }).save().then((invitation) => {
+        this.get('task.invitations').addObject(invitation);
+        this.set('composingEmail', false);
+        return this.set('selectedUser', null);
       });
     },
 
     removeEditor() {
-      const promises = [],
-            deleteUrl = '/api/papers/' + (this.get('task.paper.id')) + '/editor';
-
-      promises.push(this.get('restless').delete(deleteUrl));
-
-      if (this.get('task.invitation')) {
-        promises.push(this.get('task.invitation').destroyRecord());
-      }
-      return Ember.RSVP.all(promises).then(() => {
-        const editor = this.get('task')._relationships.academicEditor;
-        return editor.setCanonicalRecord(null);
+      return this.store.find('user', selectedUser.id).then((user) => {
+        this.get('editors').removeObject(user);
+        return this.send('saveModel');
       });
     },
 
-    inviteEditor() {
-      const invitation = this.store.createRecord('invitation', {
-        task: this.get('task'),
-        email: this.get('selectedUser.email'),
-        body: this.get('updatedTemplate')
+    inputChanged(val) {
+      return this.set('selectedUser', {
+        email: val
       });
-
-      invitation.save();
-      return this.set('composingEmail', false);
-    },
-
-    destroyInvitation() {
-      return this.get('task.invitation').destroyRecord();
     }
   }
 });

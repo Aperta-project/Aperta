@@ -40,7 +40,7 @@ module TahiStandardTasks
     end
 
     def invitee_role
-      'reviewer'
+      Role::REVIEWER_ROLE
     end
 
     def invitation_template

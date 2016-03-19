@@ -42,7 +42,8 @@
       </div>
 
       {{invitations-display decisions=decisions
-                            invitationType="Reviewer"
+                            groupByDecision=true
+                            invitationType=task.inviteeRole
                             latestDecision=latestDecision
                             onDestroyInvitation='destroyInvitation'}}
     {{/if}}

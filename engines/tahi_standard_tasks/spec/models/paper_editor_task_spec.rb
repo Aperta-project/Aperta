@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::PaperEditorTask do
-  let(:paper) do
-    FactoryGirl.create :paper, :with_integration_journal, :with_tasks
-  end
-
-  let!(:author) { FactoryGirl.create :author, paper: paper }
+  let(:journal) { FactoryGirl.create(:journal )}
+  let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
+  let!(:author) { FactoryGirl.create(:author, paper: paper) }
 
   describe "#invitation_invited" do
     let!(:task) do
@@ -29,14 +27,8 @@ describe TahiStandardTasks::PaperEditorTask do
   end
 
   describe "#invitation_accepted" do
-
-    let!(:sample_editor_task) do
-      Task.create!({
-        paper: paper,
-        phase: paper.phases.first,
-        title: "Sample Editor Task",
-        old_role: "editor"
-      })
+    before do
+      Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE, journal: journal)
     end
 
     let!(:task) do
@@ -50,25 +42,9 @@ describe TahiStandardTasks::PaperEditorTask do
 
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
-    it "replaces the old editor" do
+    it 'adds the invitee as an Academic Editor on the paper' do
       invitation.accept!
-      expect(paper.reload.academic_editor).to eq(invitation.invitee)
-    end
-
-    context "when there's an existing editor" do
-      let(:paper) do
-        FactoryGirl.create(
-          :paper,
-          :with_integration_journal,
-          :with_academic_editor_user,
-          :with_tasks
-        )
-      end
-
-      it "replaces the old editor" do
-        invitation.accept!
-        expect(paper.reload.academic_editor).to eq(invitation.invitee)
-      end
+      expect(paper.academic_editors).to include(invitation.invitee)
     end
   end
 end

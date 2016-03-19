@@ -1,3 +1,23 @@
+.invite-editors .auto-suggest-border {
+  width: 400px;
+  display: inline-block;
+}
+
+.invite-editor-edit-invite {
+  width: 700px;
+
+  .taller-textarea {
+    overflow: auto;
+    white-space: pre-line;
+    height: 265px;
+    margin: 20px 0;
+  }
+
+  .invite-editor-cta {
+    float: right;
+  }
+}
+
 .invite-editor-button {
   margin-left: 20px;
 }

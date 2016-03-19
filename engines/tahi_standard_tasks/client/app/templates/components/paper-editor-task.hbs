@@ -3,7 +3,7 @@
 <div class="task-main-content">
   <div class="invite-editor-text">
     {{#if composingEmail}}
-      <div class="invite-reviewer-edit-invite">
+      <div class="invite-editor-edit-invite">
         <h3 class="invite-to">
           Invitation to
           {{#if selectedUser.fullName}}
@@ -12,46 +12,38 @@
           [{{selectedUser.email}}]
         </h3>
 
-        {{content-editable value=updatedTemplate
+        {{content-editable value=invitationBody
                            class="form-control taller-textarea"}}
 
-        <div class="invite-reviewer-cta">
+        <div class="invite-editor-cta">
           <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
           <button class="button-primary button--green invite-editor-button" {{action "inviteEditor"}}>Send Invitation</button>
         </div>
      </div>
     {{else}}
-      {{#if showEditorSelect}}
-        <label for="editor">Email</label>
-        {{select-2-single
-            class="editor-select2"
-            minimumInputLength=3
-            name="invite_editor"
-            placeholder="Select editor"
-            remoteSource=select2RemoteSource
-            resultsTemplate=resultsTemplate
-            selectedData=task.academicEditor
-            selectedTemplate=resultsTemplate
-            selectionSelected="didSelectEditor"
-            value=""}}
-        <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>Compose Invite</button>
-      {{else}}
-        {{#if task.academicEditor}}
-          {{user-thumbnail user=editor}}
-          {{task.academicEditor.name}}&nbsp;is now the Editor.
-          <div class="fa fa-trash invite-editor-remove" {{action "removeEditor"}}></div>
-        {{else}}
-          {{#if hasRejectedInvitation}}
-            <p>{{task.invitation.email}} has declined this invitation.</p>
-            <button {{action "destroyInvitation"}}  class="button-primary button--green">Invite new editor</button>
-          {{/if}}
+      <div class="invite-editors">
+        <label for="invitation-recipient">Academic Editor</label>
 
-          {{#if hasInvitedInvitation}}
-            <p class="invited-editor">{{task.invitation.email}} has been invited to be Editor on this manuscript.</p>
-            <button {{action "destroyInvitation"}}  class="button-primary button--green">Withdraw invitation</button>
-          {{/if}}
-        {{/if}}
-      {{/if}}
+        {{#auto-suggest endpoint=autoSuggestSourceUrl
+                    queryParameter="query"
+                    inputId="invitation-editor"
+                    placeholder="Invite Academic Editor by name or email"
+                    parseResponseFunction=parseUserSearchResponse
+                    itemSelected="didSelectUser"
+                    inputChanged="inputChanged"
+                    itemDisplayTextFunction=displayUserSelected
+                    as |user|}}
+          {{user.full_name}} [{{user.email}}]
+        {{/auto-suggest}}
+
+        <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>
+          Compose Invite
+        </button>
+      </div>
+
+      {{invitations-display groupByDecision=false
+                            invitations=task.invitations
+                            onDestroyInvitation='destroyInvitation'}}
     {{/if}}
   </div>
 </div>

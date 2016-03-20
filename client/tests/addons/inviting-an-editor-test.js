@@ -50,18 +50,18 @@ module("Integration: Inviting an editor", {
 test("can withdraw the invitation", function(assert) {
   Ember.run(function() {
     let invitation = FactoryGuy.make("invitation", {email: "foo@bar.com", state: "invited"});
-    task.set("invitation", invitation);
+    task.set("invitations", [invitation]);
     TestHelper.handleFind(task);
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Editor')");
 
     andThen(function() {
-      let msgEl = find(".invite-editor-text:contains('foo@bar.com has been invited to be Editor on this manuscript.')");
+      let msgEl = find(".invitation:contains('foo@bar.com')");
       assert.ok(msgEl[0] !== undefined, "has pending invitation");
 
       TestHelper.handleDelete("invitation", invitation.id);
-      click(".button-primary:contains('Withdraw invitation')");
+      click(".invite-remove");
 
       andThen(function() {
         assert.equal(task.get('invitation'), null);

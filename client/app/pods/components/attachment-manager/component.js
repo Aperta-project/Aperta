@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   disabled: false,
   notDisabled: Ember.computed.not('disable'),
   buttonText: 'Upload File',
-  fileUpload: null,
+  fileUploads: [],
   multiple: false,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
   hasAttachments: Ember.computed.notEmpty('attachments'),
@@ -44,21 +44,29 @@ export default Ember.Component.extend({
   actions: {
 
     fileAdded(file){
-      this.set('fileUpload', FileUpload.create({ file: file }));
+      this.get('fileUploads').addObject(FileUpload.create({ file: file }));
     },
 
     uploadProgress(data) {
-      this.get('fileUpload').setProperties({
+      const fileName = data.files[0].name;
+      const upload = this.get('fileUploads').findBy('file.name', fileName);
+
+      upload.setProperties({
         dataLoaded: data.loaded,
         dataTotal: data.total
       });
     },
 
-    uploadFinished(s3Url){
+    uploadFinished(s3Url, data){
+      const fileName = data.files[0].name,
+        uploads = this.get('fileUploads'),
+        upload = uploads.findBy('file.name', fileName);
+
       if (this.attrs.uploadFinished) {
-        this.attrs.uploadFinished(s3Url, this.get('fileUpload.file'));
+        this.attrs.uploadFinished(s3Url, upload.get('file'));
       }
-      this.set('fileUpload', null)
+
+      uploads.removeObject(upload);
     },
 
     uploadFailed(reason){

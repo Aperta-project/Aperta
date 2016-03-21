@@ -75,10 +75,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
   """
   def test_validate_full_submit(self, init=True):
     """
-    Validates the presence of the following elements:
-      Optional Invitation Welcome text and button,
-      My Submissions Welcome Text, button, info text and manuscript display
-      Modals: View Invites and Create New Submission
+    test_bdd_create_to_submit: Validates creating a new document and making a full submission
+    :param init: Determine if login is needed
+    :return: void function
     """
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
@@ -173,10 +172,10 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
   """
   def test_validate_initial_submit(self):
     """
-    Validates the presence of the following elements:
-      Optional Invitation Welcome text and button,
-      My Submissions Welcome Text, button, info text and manuscript display
-      Modals: View Invites and Create New Submission
+    test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
+      bringing it through to full submission
+    :param init: Determine if login is needed
+    :return: void function
     """
     creator_user = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator_user))

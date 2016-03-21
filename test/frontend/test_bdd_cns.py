@@ -118,8 +118,9 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     Hit SUBMIT and confirm
 
   """
-  def test_validate_components_styles(self, init=True):
+  def test_validate_create_to_submit(self, init=True):
     """
+    test_bdd_cns: Validates Creating a new document - needs extension to take it through to Submit
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
       My Submissions Welcome Text, button, info text and manuscript display

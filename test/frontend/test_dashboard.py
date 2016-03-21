@@ -53,6 +53,7 @@ class ApertaDashboardTest(CommonTest):
   """
   def test_validate_components_styles(self):
     """
+    test_dashboard: Validates element presentation and styles for dashboard and associated modals
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
       My Submissions Welcome Text, button, info text and manuscript display

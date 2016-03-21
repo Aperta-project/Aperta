@@ -32,7 +32,7 @@ class BillingTask(BaseTask):
     self._zip = (By.NAME, 'plos_billing--postal_code')
     self._payment_option = (By.CLASS_NAME, 'affiliation-field')
     # This ID is bogus and dynamic, untrustworthy
-    self._payment_items_parent = (By.ID, 'select2-results-2')
+    self._payment_items_parent = (By.CSS_SELECTOR, 'div.payment-method-select-list')
 
    # POM Actions
   def complete(self, data=data):

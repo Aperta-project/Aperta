@@ -46,6 +46,7 @@ class ViewPaperTest(CommonTest):
 
   def test_validate_components_styles(self):
     """
+    test_manuscript_viewer: Validate elements and styles for the manuscript viewer page
     APERTA-3: validate page elements and styles
     Validates the presence of the following elements:
       - icons in text area (editor menu)
@@ -123,6 +124,7 @@ class ViewPaperTest(CommonTest):
 
   def test_initial_submission_infobox(self):
     """
+    test_manuscript_viewer: Validate elements and styles of the initial submission infobox
     Aperta-5515
 
     AC from Aperta-5515:

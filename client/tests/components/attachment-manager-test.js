@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
 
 moduleForComponent('attachment-manager', 'Component: attachment-manager', {
+  unit: true
 });
 
 test('uploading a single file works', function(assert) {

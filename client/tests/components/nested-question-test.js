@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
+
 moduleForComponent('nested-question', 'Component: nested-question', {
+  unit: true,
+
   beforeEach: function() {
     this.q1 = Ember.Object.create({
       ident: "foo",

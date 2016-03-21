@@ -17,6 +17,7 @@
     {{relative-time time=paper.submittedAt}}
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
+  <td class="paper-tracker-type-column">{{paper.publishingState}}</td>
   <td class="paper-tracker-members-column">
     {{#each paper.relatedUsers as |oldRole|}}
       <div class="paper-tracker-members-group">
@@ -24,5 +25,15 @@
         {{comma-separated-user-list users=oldRole.users}}
       </div>
     {{/each}}
+  </td>
+  <td class="paper-tracker-members-column">
+    <div class="paper-tracker-members-group">
+      {{comma-separated-user-list users=paper.handlingEditors}}
+    </div>
+  </td>
+  <td class="paper-tracker-members-column">
+    <div class="paper-tracker-members-group">
+      {{comma-separated-user-list users=paper.coverEditors}}
+    </div>
   </td>
 </tr>

@@ -18,6 +18,7 @@
 .search-controls {
   padding: 0px;
   margin: 0px 0 20px;
+
   #clear-search {
     cursor: pointer;
   }
@@ -32,14 +33,12 @@
   }
 }
 
-.paper-tracker-members-column  { width: 380px; }
+.paper-tracker-members-column, .paper-tracker-title-column  { min-width: 200px; }
 .paper-tracker-date-column     { min-width: 150px; }
 .paper-tracker-type-column     { min-width: 110px; }
 .paper-tracker-paper-id-column { min-width: 100px; }
 
 .paper-tracker-table {
-  width: 100%;
-
   .sortable-table-header {
     cursor: pointer;
   }
@@ -62,11 +61,11 @@
   }
 }
 
-
 .paper-tracker-saved-searches {
   float: right;
   padding-left: 30px;
   width: 20%;
+
   ul {
     list-style-type: none;
     padding: 0;
@@ -85,4 +84,5 @@
   border-right: 1px solid $tahi-grey-light;
   padding-right: 30px;
   width: 80%;
+  overflow: auto;
 }

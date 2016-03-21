@@ -298,6 +298,14 @@ class Paper < ActiveRecord::Base
     users_with_role(journal.academic_editor_role)
   end
 
+  def cover_editors
+    users_with_role(journal.cover_editor_role)
+  end
+
+  def handling_editors
+    users_with_role(journal.handling_editor_role)
+  end
+
   def short_title
     answer = answer_for('publishing_related_questions--short_title')
     answer ? answer.value : ''
@@ -375,39 +383,12 @@ class Paper < ActiveRecord::Base
     collaboration
   end
 
-  def paper_participation_roles
-    [
-      journal.creator_role,
-      journal.collaborator_role,
-      journal.handling_editor_role,
-      journal.reviewer_role
-    ]
-  end
-
   def task_participation_roles
     [journal.task_participant_role]
   end
 
-  def participations # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    root = Assignment.arel_table
-    arel_query = (
-      root[:assigned_to_type].eq(Paper.sti_name)
-      .and(
-        root[:assigned_to_id].eq(id)
-        .and(
-          root[:role_id].in(paper_participation_roles.map(&:id))
-        )
-      )
-    )
-
-    if task_ids.present?
-      arel_query = arel_query.or(
-        root[:assigned_to_type].eq(Task.sti_name)
-        .and(root[:assigned_to_id].in(task_ids))
-      )
-    end
-
-    Assignment.where(arel_query).includes(:role, :user)
+  def participations
+    assignments_for_roles(paper_participation_roles)
   end
 
   def participants
@@ -415,10 +396,11 @@ class Paper < ActiveRecord::Base
   end
 
   def participants_by_role
-    by_role_hsh = participations.group_by(&:role)
-    by_role_hsh.each_with_object({}) do |(role, participation), hsh|
-      hsh[role.name] = participation.map(&:user).uniq
-    end
+    group_participants_by_role(participations)
+  end
+
+  def key_participants_by_role
+    group_participants_by_role(key_participations)
   end
 
   %w(admins reviewers).each do |relation|
@@ -520,5 +502,57 @@ class Paper < ActiveRecord::Base
 
     notify action: publishing_state
     notify action: 'resubmitted' if submitted? && resubmitted?
+  end
+
+  def paper_participation_roles
+    [
+      journal.creator_role,
+      journal.collaborator_role,
+      journal.handling_editor_role,
+      journal.reviewer_role
+    ]
+  end
+
+  def key_participation_roles
+    paper_participation_roles -
+      [
+        journal.collaborator_role,
+        journal.handling_editor_role
+      ]
+  end
+
+  def key_participations
+    assignments_for_roles(key_participation_roles)
+  end
+
+  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def assignments_for_roles(participation_roles)
+    root = Assignment.arel_table
+    arel_query = (
+      root[:assigned_to_type].eq(Paper.sti_name)
+      .and(
+        root[:assigned_to_id].eq(id)
+        .and(
+          root[:role_id].in(participation_roles.map(&:id))
+        )
+      )
+    )
+
+    if task_ids.present?
+      arel_query = arel_query.or(
+        root[:assigned_to_type].eq(Task.sti_name)
+        .and(root[:assigned_to_id].in(task_ids))
+      )
+    end
+
+    Assignment.where(arel_query).includes(:role, :user)
+  end
+  # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
+
+  def group_participants_by_role(participations_to_group)
+    by_role_hsh = participations_to_group.group_by(&:role)
+    by_role_hsh.each_with_object({}) do |(role, participation), hsh|
+      hsh[role.name] = participation.map(&:user).uniq
+    end
   end
 end

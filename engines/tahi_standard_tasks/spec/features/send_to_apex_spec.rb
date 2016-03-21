@@ -3,11 +3,18 @@ require 'rails_helper'
 feature 'Send to Apex task', js: true, selenium: true do
   include SidekiqHelperMethods
 
-  let!(:user) { FactoryGirl.create(:user, :site_admin) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:paper) do
     FactoryGirl.create(:paper_ready_for_export, :with_integration_journal)
   end
-  let!(:task) { FactoryGirl.create(:send_to_apex_task, paper: paper, phase: paper.phases.first) }
+  let!(:task) do
+    FactoryGirl.create(
+      :send_to_apex_task,
+      paper: paper,
+      phase: paper.phases.first
+    )
+  end
+  let(:academic_editor) { FactoryGirl.create(:user) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
   let!(:server) { FakeFtp::Server.new(21212, 21213) }
@@ -17,8 +24,10 @@ feature 'Send to Apex task', js: true, selenium: true do
       request_1.uri.start_with?(request_2.uri)
     end
     server.start
+
+    paper.add_academic_editor(academic_editor)
     task.add_participant(user)
-    paper.paper_roles.create!(user: user, old_role: PaperRole::COLLABORATOR)
+
     login_as(user, scope: :user)
     visit '/'
   end
@@ -34,7 +43,6 @@ feature 'Send to Apex task', js: true, selenium: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.click_button('Send to Apex')
     overlay.ensure_apex_upload_is_pending
-
     VCR.use_cassette('send_to_apex',
                      match_requests_on: [:method, @start_with_matcher]) do
       process_sidekiq_jobs

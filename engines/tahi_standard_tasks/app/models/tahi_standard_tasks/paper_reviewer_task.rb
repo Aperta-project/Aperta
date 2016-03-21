@@ -7,6 +7,11 @@ module TahiStandardTasks
     include Invitable
 
     def invitation_invited(invitation)
+      if paper.authors_list.present?
+        invitation.update! information:
+          "Here are the authors on the paper:\n\n#{paper.authors_list}"
+      end
+
       PaperReviewerMailer.delay.notify_invited invitation_id: invitation.id
     end
 
@@ -64,13 +69,32 @@ module TahiStandardTasks
 
         Sincerely,
         %{journal_name} Team
+
+        ***************** CONFIDENTIAL *****************
+
+        Manuscript Title:
+        %{manuscript_title}
+
+        Authors:
+        %{authors}
+
+        %{abstract}
+
       TEXT
       template % template_data
     end
 
     def template_data
       { manuscript_title: paper.display_title(sanitized: false),
-        journal_name: paper.journal.name }
+        journal_name: paper.journal.name,
+        abstract: abstract,
+        authors:  paper.authors_list
+      }
+    end
+
+    def abstract
+      return unless paper.abstract
+      "Abstract:\n\n#{paper.abstract}\n"
     end
   end
 end

@@ -9,7 +9,8 @@ module TahiStandardTasks
 
     def invitation_invited(invitation)
       if paper.authors_list.present?
-        invitation.update! information: "Here are the authors on the paper:\n\n#{paper.authors_list}"
+        invitation.update! information:
+          "Here are the authors on the paper:\n\n#{paper.authors_list}"
       end
       PaperEditorMailer.delay.notify_invited({
         invitation_id: invitation.id
@@ -61,9 +62,7 @@ Manuscript Title:
 Authors:
 %{authors}
 
-Abstract:
 %{abstract}
-
 To view this manuscript, please use the link presented above in the body of the e-mail.
 
 You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
@@ -81,9 +80,14 @@ You will be directed to your dashboard in Aperta, where you will see your invita
         journal_name: paper.journal.name,
         author_name: paper.creator.full_name,
         authors: paper.authors_list,
-        abstract: paper.abstract,
+        abstract: abstract,
         dashboard_url: client_dashboard_url
       }
+    end
+
+    def abstract
+      return unless paper.abstract
+      "Abstract:\n\n#{paper.abstract}\n"
     end
 
     def replace_editor(invitation)

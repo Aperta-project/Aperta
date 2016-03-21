@@ -8,7 +8,7 @@
         {{select-2-single minimumInputLength=0
                           name="journal_roles"
                           placeholder="Please select Role"
-                          selectedData=selectedOldRole
+                          selectedData=selectedRole
                           source=selectableRoles
                           selectionSelected="didSelectRole"
                           value=""
@@ -25,9 +25,9 @@
                           value=""
                           width="200px"}}
       </span>
-      <button class="button-primary button--green invite-reviewer-button {{if isAssignable "button--green" "button--disabled"}}" {{action "assignOldRoleToUser"}}> Assign </button>
-      {{#if validationErrors.oldRole}}
-        {{error-message message=validationErrors.oldRole}}
+      <button class="button-primary button--green invite-reviewer-button {{if isAssignable "button--green" "button--disabled"}}" {{action "assignRoleToUser"}}> Assign </button>
+      {{#if validationErrors.role}}
+        {{error-message message=validationErrors.role}}
       {{/if}}
     </div>
 
@@ -36,7 +36,7 @@
         {{#each task.assignments as |assignment|}}
           <tr class="invitation">
             <td><span>{{user-thumbnail user=assignment.user classNames="invitee-thumbnail"}}</span></td>
-            <td><span class="invitee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.oldRole}}</td>
+            <td><span class="invitee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role.name}}</td>
             <td><span class="invitation-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
             <td><span class="invitation-state">Assigned</span></td>
             <td><span class="fa fa-trash invite-reviewer-remove" {{action "destroyAssignment" assignment}}></span></td>

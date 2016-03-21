@@ -27,7 +27,6 @@ class AddCollaboratorsOverlay < PageFragment
 
   def save
     find('.button-primary', text: 'SAVE').click
-    element.reload
-    expect(element).to have_no_css('.show-collaborators-overlay')
+    wait_for_ajax
   end
 end

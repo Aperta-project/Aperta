@@ -14,17 +14,6 @@ describe ReviewerReportTaskCreator do
 
   context "assigning reviewer old_role" do
     context "with no existing reviewer" do
-      it "assigns reviewer old_role to the assignee" do
-        subject.process
-        expect(
-          PaperRole.where(
-            paper: paper,
-            user: assignee,
-            old_role: PaperRole::REVIEWER
-          )
-        ).to exist
-      end
-
       it "creates a ReviewerReportTask" do
         expect {
           subject.process
@@ -57,19 +46,12 @@ describe ReviewerReportTaskCreator do
 
     context "with an existing reviewer" do
       before do
-        existing_reviewer = FactoryGirl.create(:user)
-        make_user_paper_reviewer(existing_reviewer, paper)
-      end
-
-      it "assigns reviewer old_role to the assignee" do
-        subject.process
-        expect(
-          PaperRole.where(
-            paper: paper,
-            user: assignee,
-            old_role: PaperRole::REVIEWER
+        FactoryGirl.create(:user).tap do |reviewer|
+          reviewer.assignments.create!(
+            assigned_to: task,
+            role: paper.journal.reviewer_role
           )
-        ).to exist
+        end
       end
 
       it "creates a ReviewerReportTask" do

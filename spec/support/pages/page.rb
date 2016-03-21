@@ -221,5 +221,6 @@ class Page < PageFragment
     within ".auth-container" do
       find(".auth-flash", text: "Signed out successfully.")
     end
+    wait_for_ajax
   end
 end

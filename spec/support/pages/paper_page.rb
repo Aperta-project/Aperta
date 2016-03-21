@@ -72,6 +72,10 @@ class PaperPage < Page
     find '.contributors-add'
   end
 
+  def recent_activity_button
+    first(:css, '.activity-link')
+  end
+
   def version_button
     first(:css, '.versions-link')
   end

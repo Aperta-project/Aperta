@@ -35,7 +35,6 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
   isSubmissionTask: DS.attr('boolean'),
   position: DS.attr('number'),
   qualifiedType: DS.attr('string'),
-  oldRole: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
   assignedToMe: DS.attr(),

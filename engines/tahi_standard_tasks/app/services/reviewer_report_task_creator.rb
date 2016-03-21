@@ -53,15 +53,11 @@ class ReviewerReportTaskCreator
 
   # multiple `assignee` can exist on `paper` as a reviewer
   def assign_paper_role!
-    # New R&P
     Assignment.where(
       user: assignee,
       role: paper.journal.reviewer_role,
       assigned_to: paper
     ).first_or_create!
-
-    # Old roles
-    paper.paper_roles.for_old_role(PaperRole::REVIEWER).where(user: assignee).first_or_create!
   end
 
   def default_phase

@@ -15,20 +15,6 @@ module TahiHelperMethods
     paper_admin_task.save!
   end
 
-  # OLD ROLES
-  def make_user_paper_reviewer(user, paper)
-    assign_paper_role(paper, user, PaperRole::REVIEWER)
-  end
-
-  def assign_paper_role(paper, user, old_role)
-    paper.paper_roles.create!(old_role: old_role, user: user)
-    paper.reload
-  end
-
-  def make_user_paper_editor(user, paper)
-    assign_paper_role(paper, user, PaperRole::EDITOR)
-  end
-
   # NEW ROLES
   def assign_academic_editor_role(paper, user)
     FactoryGirl.create(:assignment,

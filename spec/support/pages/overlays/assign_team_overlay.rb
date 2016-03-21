@@ -1,5 +1,4 @@
 class AssignTeamOverlay < CardOverlay
-
   def self.visit(assign_team_task, &blk)
     page.visit "/papers/#{assign_team_task.paper.id}/tasks/#{assign_team_task.id}"
     wait_for_ajax
@@ -14,7 +13,7 @@ class AssignTeamOverlay < CardOverlay
     end
   end
 
-  def assign_old_role_for_user(role_name, user)
+  def assign_role_to_user(role_name, user)
     page.assert_selector(".invite-reviewers")
 
     select2 role_name, from: "Role"
@@ -31,5 +30,4 @@ class AssignTeamOverlay < CardOverlay
     trash_icon.click
     wait_for_ajax
   end
-
 end

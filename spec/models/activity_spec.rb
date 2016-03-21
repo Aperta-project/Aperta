@@ -4,20 +4,29 @@
 require 'rails_helper'
 
 describe Activity do
-  let(:user){ FactoryGirl.build(:user) }
+  let(:user) { FactoryGirl.build(:user) }
 
   describe "#assignment_created!" do
-    subject(:activity) { Activity.assignment_created!(paper_role, user: user) }
-    let(:paper_role){ FactoryGirl.build(:paper_role, :editor) }
+    subject(:activity) { Activity.assignment_created!(assignment, user: user) }
+    let(:assignment) do
+      FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        role: role,
+        user: user
+      )
+    end
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let(:role) { FactoryGirl.build_stubbed(:role, name: "Super") }
 
-    it {
-      is_expected.to have_attributes(
+    it do
+      is_expected.to have_attributes \
         feed_name: "workflow",
         activity_key: "assignment.created",
-        subject: paper_role.paper,
+        subject: assignment.assigned_to,
         user: user,
-        message: "#{paper_role.user.full_name} was added as Editor"
-    )}
+        message: "#{user.full_name} was added as #{role.name}"
+    end
   end
 
   describe "#author_added!" do
@@ -198,10 +207,17 @@ describe Activity do
   end
 
   describe '#collaborator_added!' do
-    subject(:activity) { Activity.collaborator_added!(collaboration, user: user) }
-    let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let!(:collaboration) { paper.add_collaboration(collaborator) }
-    let!(:collaborator) { FactoryGirl.create(:user) }
+    subject(:activity) do
+      Activity.collaborator_added!(collaboration, user: user)
+    end
+    let!(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let!(:collaboration) do
+       FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        user: FactoryGirl.build_stubbed(:user)
+      )
+    end
 
     it do
       is_expected.to have_attributes(
@@ -215,10 +231,17 @@ describe Activity do
   end
 
   describe '#collaborator_removed!' do
-    subject(:activity) { Activity.collaborator_removed!(collaboration, user: user) }
-    let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let!(:collaboration) { paper.add_collaboration(collaborator) }
-    let!(:collaborator) { FactoryGirl.create(:user) }
+    subject(:activity) do
+      Activity.collaborator_removed!(collaboration, user: user)
+    end
+    let!(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let!(:collaboration) do
+       FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        user: FactoryGirl.build_stubbed(:user)
+      )
+    end
 
     it do
       is_expected.to have_attributes(

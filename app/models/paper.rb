@@ -436,11 +436,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  # overload this method for use in emails
-  def abstract
-    super.present? ? super : default_abstract
-  end
-
   def authors_list
     authors.map.with_index { |author, index|
       "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.affiliation}"
@@ -471,10 +466,6 @@ class Paper < ActiveRecord::Base
 
   def new_minor_version!
     latest_version.new_minor_version!
-  end
-
-  def default_abstract
-    Nokogiri::HTML(body).text.truncate_words 100
   end
 
   def set_editable!

@@ -889,8 +889,8 @@ describe Paper do
     end
 
     context "without an #abstract field value" do
-      it "returns #default_abstract" do
-        expect(paper.abstract).to eq "a bunch of words"
+      it "returns an empty abstract" do
+        expect(paper.abstract).to be_empty
       end
     end
   end

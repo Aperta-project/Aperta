@@ -94,8 +94,7 @@ describe UserMailer, redis: true do
       it 'sends a specific email to the editor invitee' do
         expect(email.subject).to eq "You've been invited to the editor discussion for the manuscript, \"#{task.paper.display_title}\""
         expect(email.body).to include 'View Discussion'
-        expect(email.body).to_not include abstract
-        expect(email.body).to match task.paper.body
+        expect(email.body).to_not include 'Abstract'
       end
     end
   end

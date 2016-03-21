@@ -21,7 +21,7 @@
   </div>
 
   <div>
-    <h3>Revision Details:</h3>
+    <h3>Response to Reviewers:</h3>
     {{#if editingAuthorResponse}}
       {{content-editable
         value=latestDecision.authorResponse
@@ -34,6 +34,16 @@
         {{action "saveAuthorResponse"}}>
         Save
       </button>
+
+      {{attachment-manager filePath="tasks/attachment"
+                           attachments=task.attachments
+                           multiple=true
+                           description="Please select files to add attachment"
+                           disabled=isNotEditable
+                           deleteFile=(action "deleteAttachment")
+                           uploadFinished=(action "createAttachment")
+                           updateAttachment=(action "updateAttachment")
+                           isEditable=isEditable}}
     {{else}}
       <div class="preserve-line-breaks">{{{latestDecision.authorResponse}}}</div>
       <br>

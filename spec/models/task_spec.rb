@@ -171,7 +171,7 @@ describe Task do
                           .map { |path| path.match(%r{models/(.*).rb})[1] }
 
       tasks = Task.all_task_types.map { |c| c.to_s.underscore }.sort -
-              %w(mock_metadata_task test_task invitable_task new_task)
+              %w(mock_submission_task mock_metadata_task test_task invitable_task new_task)
       expect(tasks).to eq((tasks_from_source).sort)
     end
 

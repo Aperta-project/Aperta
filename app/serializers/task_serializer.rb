@@ -9,11 +9,11 @@ class TaskSerializer < ActiveModel::Serializer
   self.root = :task
 
   def is_metadata_task
-    object.metadata_task?
+    Task.metadata_task_types.include?(object.class)
   end
 
   def is_submission_task
-    object.submission_task?
+    Task.submission_task_types.include?(object.class)
   end
 
   def assigned_to_me

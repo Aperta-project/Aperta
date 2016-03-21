@@ -30,7 +30,7 @@ class TaskFactory
   end
 
   def add_creator_as_participant
-    return unless task.submission_task? && creator
+    return unless (task.class <=> SubmissionTask) && creator
     ParticipationFactory.create(task: task, assignee: creator, notify: notify)
   end
 end

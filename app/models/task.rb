@@ -7,13 +7,10 @@ class Task < ActiveRecord::Base
   DEFAULT_ROLE = 'user'
   REQUIRED_PERMISSIONS = {}
 
-  cattr_accessor :metadata_types
-  cattr_accessor :submission_types
-
   before_save :update_completed_at, if: :completed_changed?
 
-  scope :metadata, -> { where(type: metadata_types.to_a) }
-  scope :submission, -> { where(type: submission_types.to_a) }
+  scope :metadata, -> { where(type: Task.metadata_task_types.to_a) }
+  scope :submission, -> { where(type: Task.submission_task_types.to_a) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {
@@ -147,18 +144,12 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def activity_feed_name
+    'workflow'
+  end
+
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
-  end
-
-  def metadata_task?
-    return false if Task.metadata_types.blank?
-    Task.metadata_types.include?(self.class.name)
-  end
-
-  def submission_task?
-    return false if Task.submission_types.blank?
-    Task.submission_types.include?(self.class.name)
   end
 
   def array_attributes

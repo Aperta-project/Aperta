@@ -5,8 +5,7 @@ module SubmissionTask
     paper.editable?
   end
 
-  included do
-    Task.submission_types ||= Set.new
-    Task.submission_types.add name
+  def activity_feed_name
+    'manuscript'
   end
 end

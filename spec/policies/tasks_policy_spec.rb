@@ -17,17 +17,12 @@ describe TasksPolicy do
   context "paper collaborator" do
     let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-
-    before do
-      allow(task).to receive(:submission_task?).and_return true
-    end
+    let(:task) { create(:submission_task, paper: paper) }
 
     include_examples "person who can edit but not create a task"
 
-    context "on a non metadata task" do
-      before do
-        allow(task).to receive(:submission_task?).and_return false
-      end
+    context "on a non submission task" do
+      let(:task) { create(:task, paper: paper) }
 
       include_examples "person who cannot see a task"
     end

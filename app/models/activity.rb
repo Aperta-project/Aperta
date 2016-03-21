@@ -201,8 +201,9 @@ class Activity < ActiveRecord::Base
   end
 
   def self.task_updated!(task, user:)
-    feed_name = task.submission_task? ? 'manuscript' : 'workflow'
-    activity = new(feed_name: feed_name, subject: task.paper, user: user)
+    activity = new(feed_name: task.activity_feed_name,
+                   subject: task.paper,
+                   user: user)
     if task.newly_complete?
       activity.update!(
         activity_key: "task.completed",

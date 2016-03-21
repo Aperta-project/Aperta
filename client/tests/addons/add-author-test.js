@@ -160,7 +160,12 @@ test('validation works', function(assert) {
     click('.author-form-buttons .button-secondary:contains("done")');
 
     andThen(function() {
-      assert.ok(find('.author-task-item .error').length, 'Errors found');
+      assert.ok(find('[data-test-id="author-first-name"].error').length,  'presence error on first name');
+      assert.ok(find('[data-test-id="author-last-name"].error').length,   'presence error on last name');
+      assert.ok(find('[data-test-id="author-initial"].error').length,     'presence error on initial');
+      assert.ok(find('[data-test-id="author-email"].error').length,       'presence error on email');
+      assert.ok(find('[data-test-id="author-affiliation"].error').length, 'presence error on affiliation');
+      assert.ok(find('[data-test-id="author-government"] .error-message:visible').length, 'presence error on government');
     });
   });
 });

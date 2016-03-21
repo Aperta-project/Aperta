@@ -4732,7 +4732,7 @@ nested_questions:
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '131'
-    - "(Optional) Please offer any additional comments to the author."
+    - "(Optional) Please offer any additional confidential comments to the editor"
     - text
     - reviewer_report--additional_comments
     - 

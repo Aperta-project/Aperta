@@ -21,12 +21,14 @@
     <div class='paper-name'>
       <%= @paper.display_title(sanitized: false) %>
     </div>
-    <div class='paper-abstract'>
-      <h5 class='abstract-title'>Abstract</h5>
-      <div class='abstract-text'>
-        <%= @paper.abstract %>
+    <% if !@paper.abstract.blank? then %>
+      <div class='paper-abstract'>
+        <h5 class='abstract-title'>Abstract</h5>
+        <div class='abstract-text'>
+          <%= @paper.abstract %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
   <hr>
   <div class='footer'>

@@ -82,7 +82,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
       ident: "reviewer_report--additional_comments",
       value_type: "text",
-      text: "(Optional) Please offer any additional comments to the author.",
+      text: "(Optional) Please offer any additional confidential comments to the editor",
       position: 6
     }
 

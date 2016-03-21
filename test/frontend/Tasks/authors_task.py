@@ -177,6 +177,12 @@ class AuthorsTask(BaseTask):
     self.validate_group_author_form_styles(add_new_author_btn, add_grp_link)
 
   def validate_individual_author_form_styles(self, add_new_author_btn, add_ind_link):
+    """
+    Validates the elements and styles of the individual author form
+    :param add_new_author_btn: the WebDriver element for the Add New Author button
+    :param add_ind_link: the WebDriver element for the Add New Individual Author link
+    :return: void function
+    """
     add_new_author_btn.click()
     add_ind_link.click()
     ind_auth_form = self._get(self._individual_author_form)
@@ -302,6 +308,12 @@ class AuthorsTask(BaseTask):
     add_author_cancel_lnk.click()
 
   def validate_group_author_form_styles(self, add_new_author_btn, add_grp_link):
+    """
+    Validates the elements and styles of the group author form
+    :param add_new_author_btn: the WebDriver element for the Add New Author button
+    :param add_grp_link: the WebDriver element for the Add New Group Author link
+    :return: void function
+    """
     add_new_author_btn.click()
     add_grp_link.click()
     grp_auth_form = self._get(self._group_author_form)

@@ -10,62 +10,59 @@
           disabled=isNotEditable
           as |selected|}}
 
-        {{#if selected.yes}}
-          <span>Please describe all sources of funding that have supported your work.</span>
-        {{/if}}
-
         {{#if selected.no}}
           <span>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</span>
         {{/if}}
 
+        {{#if selected.yes}}
+          <span>Please describe all sources of funding that have supported your work.</span>
+
+          {{#each funders as |funder|}}
+            <div class="question-dataset">
+              {{funder-dataset model=funder
+                               disabled=isNotEditable}}
+            </div>
+          {{/each}}
+
+          <button class="button-secondary button--green {{if isNotEditable 'button--disabled'}}" disabled={{isNotEditable}} {{action "addFunder"}}>Add Another Funder</button>
+
+          <hr>
+
+          <p>
+            Please note that if your manuscript is accepted, this statement will be published.
+            Your Financial Disclosure Statement will appear as:
+          </p>
+
+          {{#each funders as |funder|}}
+            {{#funder-influence-statement funder=funder as |statement|}}
+              <p>
+                {{#if funder.onlyHasAdditionalComments}}
+                  {{funder.additionalComments}}.
+                {{else}}
+                  This work was supported by
+                   {{#if funder.formattedWebsite}}
+                     <a href={{funder.formattedWebsite}} target="_blank">
+                       <strong>{{if funder.name funder.name "[funder name]"}}</strong>
+                     </a>
+                   {{~else~}}
+                     <strong>{{if funder.name funder.name "[funder name]"}}</strong>
+                   {{~/if~}}
+
+                   {{#if funder.grantNumber}}
+                     (grant number <strong>{{funder.grantNumber}}</strong>)
+                   {{~/if~}}.
+
+                   {{#if funder.additionalComments}}
+                     {{funder.additionalComments}}.
+                   {{/if}}
+
+                   {{statement}}
+                {{/if}}
+              </p>
+            {{/funder-influence-statement}}
+          {{/each}}
+        {{/if}}
       {{/nested-question-radio}}
     </div>
-
-    {{#each funders as |funder|}}
-      <div class="question-dataset">
-        {{funder-dataset model=funder
-                         disabled=isNotEditable}}
-      </div>
-    {{/each}}
-
-    {{#if receivedFunding}}
-      <button class="button-secondary button--green {{if isNotEditable 'button--disabled'}}" disabled={{isNotEditable}} {{action "addFunder"}}>Add Another Funder</button>
-
-      <hr>
-
-      <p>
-        Please note that if your manuscript is accepted, this statement will be published.
-        Your Financial Disclosure Statement will appear as:
-      </p>
-
-      {{#each funders as |funder|}}
-        {{#funder-influence-statement funder=funder as |statement|}}
-          <p>
-            {{#if funder.onlyHasAdditionalComments}}
-              {{funder.additionalComments}}.
-            {{else}}
-              This work was supported by
-               {{#if funder.formattedWebsite}}
-                 <a href={{funder.formattedWebsite}} target="_blank">
-                   <strong>{{if funder.name funder.name "[funder name]"}}</strong>
-                 </a>
-               {{~else~}}
-                 <strong>{{if funder.name funder.name "[funder name]"}}</strong>
-               {{~/if~}}
-
-               {{#if funder.grantNumber}}
-                 (grant number <strong>{{funder.grantNumber}}</strong>)
-               {{~/if~}}.
-
-               {{#if funder.additionalComments}}
-                 {{funder.additionalComments}}.
-               {{/if}}
-
-               {{statement}}
-            {{/if}}
-          </p>
-        {{/funder-influence-statement}}
-      {{/each}}
-    {{/if}}
   </div>
 </div>

@@ -23,4 +23,17 @@ export default NestedQuestionOwner.extend({
     return "http://" + website;
   }).property('website'),
 
+  onlyHasAdditionalComments: Ember.computed(
+      'additionalComments',
+      'name',
+      'website',
+      'grantNumber',
+      function() {
+        const additionalComments = this.get('additionalComments');
+        const name = this.get('name');
+        const website = this.get('website');
+        const grantNumber = this.get('grantNumber');
+        return !!(additionalComments && !name && !website && !grantNumber);
+  })
+
 });

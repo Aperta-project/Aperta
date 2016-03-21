@@ -41,21 +41,28 @@
       {{#each funders as |funder|}}
         {{#funder-influence-statement funder=funder as |statement|}}
           <p>
-            This work was supported by
+            {{#if funder.onlyHasAdditionalComments}}
+              {{funder.additionalComments}}.
+            {{else}}
+              This work was supported by
+               {{#if funder.formattedWebsite}}
+                 <a href={{funder.formattedWebsite}} target="_blank">
+                   <strong>{{if funder.name funder.name "[funder name]"}}</strong>
+                 </a>
+               {{~else~}}
+                 <strong>{{if funder.name funder.name "[funder name]"}}</strong>
+               {{~/if~}}
 
-            {{#if funder.formattedWebsite}}
-              <a href={{funder.formattedWebsite}} target="_blank">
-                <strong>{{if funder.name funder.name "[funder name]"}}</strong>
-              </a>
-            {{~else~}}
-              <strong>{{if funder.name funder.name "[funder name]"}}</strong>
-            {{~/if~}}
+               {{#if funder.grantNumber}}
+                 (grant number <strong>{{funder.grantNumber}}</strong>)
+               {{~/if~}}.
 
-            {{#if funder.grantNumber}}
-              (grant number <strong>{{funder.grantNumber}}</strong>)
-            {{~/if~}}.
+               {{#if funder.additionalComments}}
+                 {{funder.additionalComments}}.
+               {{/if}}
 
-            {{statement}}
+               {{statement}}
+            {{/if}}
           </p>
         {{/funder-influence-statement}}
       {{/each}}

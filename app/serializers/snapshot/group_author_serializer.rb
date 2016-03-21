@@ -13,7 +13,7 @@ class Snapshot::GroupAuthorSerializer < Snapshot::BaseSerializer
         "contact_first_name", "text", model.contact_first_name),
       snapshot_property("contact_last_name", "text", model.contact_last_name),
       snapshot_property(
-        "contact_middle_name", "text", model.contact_middle_initial),
+        "contact_middle_name", "text", model.contact_middle_name),
       snapshot_property("position", "integer", model.position),
       snapshot_property("contact_email", "text", model.contact_email),
       snapshot_property("name", "text", model.name),

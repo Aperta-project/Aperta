@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Figures display in the manuscript
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
+- Group Author form on Authors task
 
 ### Changed
 - Institution field will search as you type

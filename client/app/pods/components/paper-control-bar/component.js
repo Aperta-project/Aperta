@@ -6,8 +6,6 @@ export default Ember.Component.extend({
   classNames: ['control-bar'],
   classNameBindings: ['submenuVisible:control-bar--sub-items-active'],
 
-  hasJournalLogo: computed.notEmpty('paper.journal.logoUrl'),
-  logoUrl: computed.alias('paper.journal.logoUrl'),
   paperWithdrawn: computed.equal('paper.publishingState', 'withdrawn'),
   submenuVisible: false,
   contributorsVisible: false,

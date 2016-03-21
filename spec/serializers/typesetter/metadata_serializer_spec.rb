@@ -107,22 +107,6 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
-  describe 'editor' do
-    let(:academic_editor) { FactoryGirl.create(:user) }
-    let(:fake_serialized_editor) { 'Fake editor' }
-    before do
-      paper.add_academic_editor(academic_editor)
-      expect(Typesetter::EditorSerializer)
-        .to receive(:new).and_return(
-          instance_double('TypeSetter::EditorSerializer',
-                          serializable_hash: fake_serialized_editor))
-    end
-
-    it 'serializes the academic editors using the typesetter serializer' do
-      expect(output[:academic_editor]).to eq(fake_serialized_editor)
-    end
-  end
-
   shared_examples_for 'serializes :has_one paper task' do |opts|
     opts[:factory] || fail(ArgumentError, 'Must pass in a :factory')
     opts[:serializer] || fail(ArgumentError, 'Must pass in a :serializer')
@@ -177,6 +161,16 @@ describe Typesetter::MetadataSerializer do
       actual_output = output[opts[:json_key]]
       expect(actual_output).to eq([fake_serialized_data])
     end
+  end
+
+  context 'academic_editors' do
+    include_examples(
+      'serializes :has_many property',
+      property: :academic_editors,
+      factory: :user,
+      serializer: Typesetter::EditorSerializer,
+      json_key: :academic_editors
+    )
   end
 
   context 'competing_interests' do

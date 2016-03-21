@@ -23,8 +23,9 @@ FactoryGirl.define do
     end
 
     %w(
-      creator collaborator cover_editor discussion_participant handling_editor
-      internal_editor reviewer publishing_services staff_admin task_participant
+      academic_editor creator collaborator cover_editor discussion_participant
+      handling_editor internal_editor reviewer publishing_services staff_admin
+      task_participant
     ).each do |role|
       role_method = "#{role}_role"
       trait("with_#{role_method}".to_sym) do

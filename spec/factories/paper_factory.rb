@@ -98,13 +98,19 @@ FactoryGirl.define do
       end
     end
 
-    %w(academic_editor collaborator reviewer internal_editor handling_editor participant).each do |role|
+    %w(
+      academic_editor creator collaborator cover_editor discussion_participant
+      handling_editor internal_editor reviewer publishing_services staff_admin
+      task_participant
+    ).each do |role|
       trait("with_#{role}_user".to_sym) do
         after(:create) do |paper|
-          FactoryGirl.create(:assignment,
-                             role: paper.journal.send("#{role}_role".to_sym),
-                             user: FactoryGirl.build(:user),
-                             assigned_to: paper)
+          FactoryGirl.create(
+            :assignment,
+            role: paper.journal.send("#{role}_role".to_sym),
+            user: FactoryGirl.build(:user),
+            assigned_to: paper
+          )
         end
       end
     end

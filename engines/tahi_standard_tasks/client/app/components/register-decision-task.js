@@ -28,6 +28,10 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       this.get('task.completed') === false;
   }),
 
+  applyTemplateReplacements(str) {
+    return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+  },
+
   actions: {
     registerDecision() {
       const id = this.get('task.id');
@@ -56,7 +60,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     setDecisionTemplate(decision) {
-      const letter = this.get(`task.${decision.camelize()}LetterTemplate`);
+      const template = this.get(`task.${decision.camelize()}LetterTemplate`);
+      const letter = this.applyTemplateReplacements(template);
       this.get('latestDecision').set('verdict', decision);
       this.get('latestDecision').set('letter', letter);
       this.send('saveLatestDecision');

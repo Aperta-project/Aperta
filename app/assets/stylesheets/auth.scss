@@ -49,7 +49,6 @@ a {
 
   &:focus, &:hover {
     text-decoration: underline;
-    color: $tahi-green;
   }
 }
 
@@ -58,12 +57,15 @@ a {
   padding: 15px 20px;
 
   span {
-    position: absolute;
-    top: 0;
-    right: 0;
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 1px 0 #fff;
+    position: relative;
+    top: -10px;
+    right: -21px;
     padding: 0 7px 3px 7px;
-    font-size: 24px;
-    line-height: 100%;
     cursor: pointer;
   }
 }
@@ -97,17 +99,34 @@ a {
 
   h1 {
     @include flex(0 0 100%);
-    margin-top: 45px;
-    margin-bottom: 1rem;
+    margin-top: 1px;
+    margin-bottom: 0px;
     text-align: center;
     font-size: 44px;
   }
 
+  p {
+    text-align: center;
+    margin: 0 0 25px 0;
+    flex: 0 0 100%;
+    font-size: 16px;
+  }
+
+  .auth-register {
+    color: #83ba78;
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+
+    &:focus, &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .auth-group {
   @include flex(1 0 auto);
-  padding: 15px 0;
+  padding: 10px 0;
   @include display(flex);
   @include flex-flow(column nowrap);
   @include align-items(center);
@@ -117,7 +136,7 @@ a {
   }
 }
 
-.auth-group:nth-of-type(2) {
+.auth-group:nth-of-type(3) {
   border-left: 1px solid #cccccd;
 }
 
@@ -140,9 +159,9 @@ a {
 
 .auth-3rd-party-button {
   display: block;
-  width: 210px;
+  width: 170px;
   padding: 10px 20px;
-  margin-bottom: 20px;
+  margin-bottom: 7px;
   font-size: 16px;
   font-weight: 600;
   text-transform: none;
@@ -159,13 +178,12 @@ a {
   &:hover { color: $tahi-green; }
 }
 
-
 .auth-orcid {
   background: #7ab727;
 }
 
 .auth-cas {
-  background: #2B71B7;
+  background: $tahi-green;
 }
 
 .auth-linkedin {
@@ -183,4 +201,10 @@ a {
 .auth-signin {
   padding-right: 55px;
   padding-left: 55px;
+}
+
+.auth-logo {
+  padding-top: 50px;
+  max-width: 170px;
+  height: auto;
 }

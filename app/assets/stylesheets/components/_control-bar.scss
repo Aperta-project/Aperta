@@ -8,9 +8,8 @@
 */
 
 #control-bar-paper-journal-logo {
-  height: 50px;
-  margin-top: 9px;
-  margin-right: 20px;
+  height: 30px;
+  margin: 15px;
 
   div { padding-top: 6px; }
   img {
@@ -124,9 +123,13 @@
   height: 22px;
 }
 
-.activity-link svg {
-  position: relative;
-  top: -5px;
+.activity-link {
+  white-space: nowrap;
+  overflow: hidden;
+  svg {
+    position: relative;
+    top: -5px;
+  }
 }
 
 .paper-navigation-link {

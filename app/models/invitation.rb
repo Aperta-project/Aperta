@@ -62,7 +62,14 @@ class Invitation < ActiveRecord::Base
     task.invitation_rescinded(self)
   end
 
+  def update_dashboard
+    return unless paper.authors_list.present?
+    invitation.update! information:
+      "Here are the authors on the paper:\n\n#{paper.authors_list}"
+  end
+
   def notify_invitation_invited
+    update_dashboard
     task.invitation_invited(self)
   end
 

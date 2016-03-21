@@ -3,6 +3,7 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import DS from 'ember-data';
 
 export default NestedQuestionOwner.extend({
+  additionalComments: DS.attr('string'),
   task: DS.belongsTo('financialDisclosureTask'),
   authors: DS.hasMany('author'),
   grantNumber: DS.attr('string'),

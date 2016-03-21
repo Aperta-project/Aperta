@@ -3,15 +3,9 @@ require 'rails_helper'
 require 'rails_helper'
 
 describe VersionedTextsController do
-  let(:paper) do
-    FactoryGirl.create(
-      :paper,
-      :with_integration_journal,
-      :with_tasks,
-      creator: user
-    )
-  end
+  let(:paper) { FactoryGirl.create(:paper) }
   let(:user) { FactoryGirl.create(:user) }
+
   # this will have been automagically created by setting the paper
   # body
   let(:versioned_text) { VersionedText.where(paper: paper).first! }
@@ -19,25 +13,44 @@ describe VersionedTextsController do
   before { sign_in user }
 
   describe "GET 'show'" do
-    let(:request) { get :show, id: versioned_text.id, format: :json }
-    let(:versioned_text_data) do
-      JSON.parse(request.body)['versioned_text']
+    let(:do_request) { get :show, id: versioned_text.id, format: :json }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return true
+        do_request
+      end
+
+      it { responds_with(200) }
+
+      it 'returns a version' do
+        expected_keys = %w(
+          id
+          text
+          updated_at
+          paper_id
+          major_version
+          minor_version
+        )
+        expect(res_body['versioned_text'].keys).to eq(expected_keys)
+      end
     end
 
-    it 'succeeds' do
-      expect(request).to be_success
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+      end
+
+      it { responds_with(403) }
     end
 
-    it 'returns a version' do
-      expected_keys = %w(
-        id
-        text
-        updated_at
-        paper_id
-        major_version
-        minor_version
-      )
-      expect(versioned_text_data.keys).to eq(expected_keys)
-    end
   end
 end

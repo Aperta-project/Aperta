@@ -10,6 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - Institution field will search as you type
 - The Assign Team card has been updated to work with the new roles and permissions
+- PLOS branding for login page, dashboard, manuscript page and workflow page
 
 ### Deprecated
 -

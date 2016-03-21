@@ -27,6 +27,9 @@ class MetadataVersioningTest(CommonTest):
 
   def test_metadata_versioning(self):
     """
+    test_metadata_versioning: Validates diffing and versioning functions
+      creates, doc, submits, is invited for major revision, makes changes, submits, views diffs
+      This is a very long test
     Test metadata versioning (APERTA-5747).
     AC being tested:
 
@@ -38,6 +41,7 @@ class MetadataVersioningTest(CommonTest):
 
     Note: Due to bugs APERTA-5794, APERTA-5810, APERTA-5808 and APERTA-5849, assertions
     are not implemented in this method
+    :return: void function
     """
     title = 'For metadata versioning'
     types = ('Research', 'Research w/Initial Decision Card')

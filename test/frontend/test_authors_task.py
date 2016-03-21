@@ -42,7 +42,10 @@ class AuthorsTaskTest(CommonTest):
   """
 
   def test_validate_components(self):
-    """Validates styles for the author task"""
+    """
+    test_authors_task: Validates the elements, styles and functions for the author task
+    :return: void function
+    """
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])

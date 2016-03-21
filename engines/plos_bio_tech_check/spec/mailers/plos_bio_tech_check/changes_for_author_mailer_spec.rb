@@ -13,7 +13,7 @@ describe PlosBioTechCheck::ChangesForAuthorMailer do
     expect(email.to.first).to eq author.email
     expect(email.body.raw_source).to match author.full_name
     expect(email.body.raw_source).to match paper.journal.name
-    expect(email.body.raw_source).to include task.body[:initialTechCheckBody]
+    expect(email.body.raw_source).to include task.body['initialTechCheckBody']
     expect(email.body.raw_source).to match 'http://'
   end
 

@@ -10,7 +10,7 @@ export default TaskComponent.extend({
 
   selectedReviewer: null,
   composingEmail: false,
-  decisions: computed.alias('task.paper.decisions'),
+  decisions: computed.alias('task.decisions'),
 
   customEmail: 'test@lvh.me',
 

@@ -70,7 +70,9 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
+    paper_viewer.complete_task('Financial Disclosure')
     paper_viewer.complete_task('Additional Information')
+    time.sleep(10)
     # refresh !!
     paper_viewer.refresh()
     time.sleep(3)
@@ -153,8 +155,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.complete_task('Additional Information',
                                click_override=True,
-                               data=new_prq,
-                               click=True)
+                               data=new_prq)
     # check versioning
     version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
     version_btn.click()

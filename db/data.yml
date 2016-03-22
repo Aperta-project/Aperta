@@ -4882,7 +4882,7 @@ nested_questions:
     - '2015-11-02 13:38:26.280143'
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ReviewerRecommendation
-    - 
+    -
   - - '145'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
       the authors have provided a description of the roles of the funder, if they
@@ -5773,150 +5773,150 @@ nested_questions:
       a 'MetaData' discussion and ping the handling editor.
     - boolean
     - plos_bio_initial_tech_check--data_availability_confidential
-    - 
+    -
     - '333'
     - '334'
     - '2'
     - '2016-03-22 15:09:05.665082'
     - '2016-03-22 15:09:05.665082'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '220'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
       this section.
     - boolean
     - plos_bio_initial_tech_check--data_availability_blank
-    - 
+    -
     - '335'
     - '336'
     - '3'
     - '2016-03-22 15:09:05.675633'
     - '2016-03-22 15:09:05.675633'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '221'
     - 'In the Data Availability card, if the authors have mentioned data submitted
       to Dryad, check that the author has provided the Dryad reviewer URL and if not,
       request it from them. '
     - boolean
     - plos_bio_initial_tech_check--data_availability_dryad
-    - 
+    -
     - '337'
     - '338'
     - '4'
     - '2016-03-22 15:09:05.684371'
     - '2016-03-22 15:09:05.684371'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '222'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
       is missing information. Ignore omissions of middle initials.
     - boolean
     - plos_bio_initial_tech_check--authors_match
-    - 
+    -
     - '339'
     - '340'
     - '5'
     - '2016-03-22 15:09:05.693357'
     - '2016-03-22 15:09:05.693357'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '223'
     - If we don't have unique email addresses for all authors, send it back.
     - boolean
     - plos_bio_initial_tech_check--author_emails
-    - 
+    -
     - '341'
     - '342'
     - '6'
     - '2016-03-22 15:09:05.70232'
     - '2016-03-22 15:09:05.70232'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '224'
     - If the author list has changed between initial and full submission, pass it
       through if an author was added and flag it to the editor/initiate our COPE process
       if an author was removed.
     - boolean
     - plos_bio_initial_tech_check--author_removed
-    - 
+    -
     - '343'
     - '344'
     - '7'
     - '2016-03-22 15:09:05.712588'
     - '2016-03-22 15:09:05.712588'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '225'
     - Check that the Competing Interest card has been filled out correctly. If the
       authors have selected Yes and not provided an explanation, send it back.
     - boolean
     - plos_bio_initial_tech_check--competing_interests
-    - 
+    -
     - '345'
     - '346'
     - '8'
     - '2016-03-22 15:09:05.726444'
     - '2016-03-22 15:09:05.726444'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '226'
     - If the authors mention submitting their paper to a collection in the cover letter
       or Additional Information card, alert Jenni Horsley by pinging her through the
       discussion of the ITC card.
     - boolean
     - plos_bio_initial_tech_check--collection
-    - 
+    -
     - '347'
     - '348'
     - '11'
     - '2016-03-22 15:09:05.752494'
     - '2016-03-22 15:09:05.752494'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '227'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
       figures.
     - boolean
     - plos_bio_initial_tech_check--figures_viewable
-    - 
+    -
     - '349'
     - '350'
     - '12'
     - '2016-03-22 15:09:05.765773'
     - '2016-03-22 15:09:05.765773'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '228'
     - If main figures or supporting information captions are only available in the
       file itself (and not in the manuscript), request that the author remove the
       captions from the file and instead place them in the manuscript file.
     - boolean
     - plos_bio_initial_tech_check--embedded_captions
-    - 
+    -
     - '351'
     - '352'
     - '13'
     - '2016-03-22 15:09:05.77707'
     - '2016-03-22 15:09:05.77707'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '229'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
     - boolean
     - plos_bio_initial_tech_check--captions_missing
-    - 
+    -
     - '353'
     - '354'
     - '14'
     - '2016-03-22 15:09:05.788747'
     - '2016-03-22 15:09:05.788747'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '230'
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
@@ -5924,14 +5924,14 @@ nested_questions:
       file inventory.
     - boolean
     - plos_bio_initial_tech_check--figures_missing
-    - 
+    -
     - '355'
     - '356'
     - '15'
     - '2016-03-22 15:09:05.801946'
     - '2016-03-22 15:09:05.801946'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
   - - '231'
     - For any resubmissions after an Open Reject decision, ensure the authors have
       uploaded A 'Response to Reviewer's document. If this information is provided
@@ -5940,14 +5940,14 @@ nested_questions:
       author.
     - boolean
     - plos_bio_initial_tech_check--open_reject
-    - 
+    -
     - '357'
     - '358'
     - '16'
     - '2016-03-22 15:09:05.811934'
     - '2016-03-22 15:09:05.811934'
     - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    -
 
 ---
 old_roles:

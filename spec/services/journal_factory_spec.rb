@@ -320,7 +320,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.cover_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'manage_participant')
+              permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
         end
@@ -1114,10 +1114,12 @@ describe JournalFactory do
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
             )
           end
+        end
 
+        context 'has Task permission to' do
           it ':manage_invitations' do
             expect(journal.staff_admin_role.permissions).to include(
-              permissions_on_discussion_topic.find_by(action: 'reply')
+              permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
         end

@@ -73,6 +73,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
 
       # Discussions

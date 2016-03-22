@@ -343,8 +343,7 @@ class AuthorsTask(BaseTask):
     assert first_input.get_attribute('placeholder') == 'Jane', \
         first_input.get_attribute('placeholder')
     middle_lbl = self._get(self._gmiddle_lbl)
-    # Note, this is broken in the implementation - should be 'Middle Name' - commented in PR
-    assert middle_lbl.text == 'Middle name', middle_lbl.text
+    assert middle_lbl.text == 'Middle Name', middle_lbl.text
     middle_input = self._get(self._gmiddle_input)
     assert middle_input.get_attribute('placeholder') == 'M', \
         first_input.get_attribute('placeholder')

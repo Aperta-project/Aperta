@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Invitation do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create(:paper, :with_valid_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
   let(:invitation) { FactoryGirl.build :invitation, task: task }
 
@@ -56,6 +56,11 @@ describe Invitation do
       allow(invitation).to receive(:invite_allowed?).and_return(false)
       expect { invitation.invite! }.to raise_exception(AASM::InvalidTransition)
       expect(invitation.invited?).to be_falsey
+    end
+
+    it "adds the author list to invitation.information" do
+      invitation.invite!
+      expect(invitation.information).to eq("Here are the authors on the paper:\n\n#{paper.authors_list}")
     end
   end
 

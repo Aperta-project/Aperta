@@ -45,8 +45,7 @@ class QueryParser < QueryLanguageParser
   end
 
   add_two_part_expression('USER', 'HAS ROLE') do |username, role|
-    user = User.find_by(username: username)
-    user_id = user ? user.id : -1
+    user_id = get_user_id(username)
     role_ids = Role.where('lower(name) = ?', role.downcase)
                    .pluck(:id)
 
@@ -56,9 +55,8 @@ class QueryParser < QueryLanguageParser
       .and(table['assigned_to_type'].eq('Paper'))
   end
 
-  add_two_part_expression('USER', 'HAS ANY ROLE') do |user, _|
-    user = User.find_by(username: user)
-    user_id = user ? user.id : -1
+  add_two_part_expression('USER', 'HAS ANY ROLE') do |username, _|
+    user_id = get_user_id(username)
 
     table = join(Assignment, 'assigned_to_id')
     table['user_id'].eq(user_id).and(table['assigned_to_type'].eq('Paper'))
@@ -131,7 +129,8 @@ class QueryParser < QueryLanguageParser
     paper_table[:id].not_eq(nil)
   end
 
-  def initialize
+  def initialize(current_user: nil)
+    @current_user = current_user
     @join_counter = 0
     @root = Paper
   end
@@ -142,6 +141,18 @@ class QueryParser < QueryLanguageParser
   end
 
   private
+
+  def get_user_id(username)
+    user = nil
+
+    if username == "currentUser"
+      user = @current_user
+    else
+      user = User.find_by(username: username)
+    end
+
+    user ? user.id : -1
+  end
 
   def join(klass, id = "paper_id")
     table = klass.table_name

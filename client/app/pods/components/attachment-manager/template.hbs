@@ -1,5 +1,7 @@
 <p class="description">
-  {{{description}}}
+  {{#unless disabled}}
+    {{{description}}}
+  {{/unless}}
 </p>
 
 {{#each attachments as |attachment|}}
@@ -12,8 +14,7 @@
                     captionChanged=attrs.captionChanged
                     deleteFile=attrs.deleteFile
                     noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.updateAttachment
-                    isEditable=isEditable}}
+                    uploadFinished=attrs.updateAttachment}}
 {{/each}}
 
 {{#if uploadInProgress}}
@@ -21,12 +22,13 @@
 {{else}}
 
   {{#if showAddButton}}
-    <div class="button-secondary button--green fileinput-button">
+    <div class="button-secondary button--green fileinput-button {{if disabled "button--disabled"}}">
       {{buttonText}}
       {{s3-file-uploader class="add-new-attachment"
                          accept=accept
                          filePath=filePath
                          multiple=multiple
+                         disabled=disabled
                          uploadProgress=(action "uploadProgress")
                          uploadFinished=(action "uploadFinished")
                          uploadFailed=(action "uploadFailed")

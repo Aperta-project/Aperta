@@ -5,13 +5,32 @@ import getOwner from 'ember-getowner-polyfill';
 const {
   computed,
   inject: {service},
+  isEmpty,
   on
 } = Ember;
 
 export default TaskComponent.extend({
   restless: service(),
 
-  latestDecision: computed('previousDecisions', function() {
+  validateData() {
+    this.validateAll();
+  },
+
+  validations: {
+    'response': [{
+      type: 'presence',
+      message: 'Please provide a response or attach a file',
+      validation() {
+        return !isEmpty(this.get('task.attachments')) || !isEmpty(this.get('latestDecision.authorResponse'));
+      }
+    }]
+  },
+
+  canUploadAttachments: computed('editingAuthorResponse', 'isEditable', function () {
+    return this.get('editingAuthorResponse') && this.get('isEditable');
+  }),
+
+  latestDecision: computed('task.paper.decisions.[]', function() {
     return this.get('task.paper.decisions')
                .sortBy('revisionNumber').reverse()[1];
   }),
@@ -24,12 +43,10 @@ export default TaskComponent.extend({
   editingAuthorResponse: false,
 
   _editIfResponseIsEmpty: on('didInsertElement', function() {
-    Ember.run.scheduleOnce('afterRender', ()=> {
-      this.set(
-        'editingAuthorResponse',
-        Ember.isEmpty(this.get('latestDecision.authorResponse'))
-      );
-    });
+    this.set(
+      'editingAuthorResponse',
+      isEmpty(this.get('latestDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
+    );
   }),
 
   attachmentsPath: computed('task.id', function() {
@@ -47,6 +64,9 @@ export default TaskComponent.extend({
 
   actions: {
     saveAuthorResponse() {
+      this.validateData();
+      if(this.validationErrorsPresent()) { return; }
+
       this.get('latestDecision').save().then(()=> {
         this.set('editingAuthorResponse', false);
       });

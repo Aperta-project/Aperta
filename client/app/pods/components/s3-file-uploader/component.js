@@ -21,11 +21,12 @@ import Ember from 'ember';
  *  ```
 **/
 export default Ember.Component.extend({
-  attributeBindings: ['type', 'accept', 'multiple', 'name'],
+  attributeBindings: ['type', 'accept', 'multiple', 'name', 'disabled'],
   tagName: 'input',
   type: 'file',
   name: 'file',
   multiple: false,
+  disabled: false,
 
   init() {
     this._super(...arguments);

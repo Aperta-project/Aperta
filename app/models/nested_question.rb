@@ -16,6 +16,8 @@ class NestedQuestion < ActiveRecord::Base
       Task
     when "Author"
       Author
+    when "GroupAuthor"
+      GroupAuthor
     when "Funder"
       TahiStandardTasks::Funder
     when "ReviewerRecommendation"

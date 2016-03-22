@@ -2,6 +2,12 @@
   counter-reset: authorTaskItem;
 }
 
+.add-new-author-button-container {
+  position: relative;
+
+  .dropdown-menu { left: -5px; }
+}
+
 .author-task-item {
   position: relative;
   counter-increment: authorTaskItem;
@@ -101,7 +107,7 @@
   }
 }
 
-.add-author-form {
+.author-form {
   .affiliation-field, .secondary-affiliation-field {
     border-radius: 4px;
     width: 418px;
@@ -179,7 +185,7 @@
   }
 }
 
-.authors-overlay-item .add-author-form { margin: 0; }
+.authors-overlay-item .author-form { margin: 0; }
 
 .author-form-buttons {
   margin-right: 2px;

@@ -2,19 +2,13 @@
   <div class="author-task-item-view flex-group">
     {{#unless isNotEditable}}
       <div class="author-task-item-view-drag-handle flex-element"></div>
-
-      {{!--
-      <div class="author-task-item-view-checkbox flex-element">
-        <input type="checkbox">
-      </div>
-      --}}
     {{/unless}}
 
     <div class="author-task-item-position flex-element">.</div>
 
     <div class="author-task-item-view-text flex-element flex-group" {{action "toggleEditForm"}}>
-      <div class="author-name flex-element">{{author.fullName}}</div>
-      <div class="author-email flex-element">{{author.email}}</div>
+      <div class="author-name flex-element">{{author.displayName}}</div>
+      <div class="author-email flex-element">{{or author.email author.contactEmail}}</div>
     </div>
 
     {{#unless isNotEditable}}
@@ -26,12 +20,13 @@
 {{/if}}
 
 {{#if editState}}
-  {{add-author-form author=author
-                    validationErrors=errors
-                    validateField=(action "validateField")
-                    hideAuthorForm="toggleEditForm"
-                    isNotEditable=isNotEditable
-                    saveAuthor="save"}}
+  {{component componentName
+              author=model.object
+              authorProxy=model
+              validateField=(action "validateField")
+              hideAuthorForm="toggleEditForm"
+              isNotEditable=isNotEditable
+              saveSuccess=(action "toggleEditForm")}}
 {{/if}}
 
 {{#if deleteState}}

@@ -17,7 +17,10 @@ export default Component.extend({
 
   init(){
     this._super(...arguments);
+    this.setup();
+  },
 
+  setup: Ember.observer('owner', 'ident', function() {
     const ident = this.get('ident');
     const model = this.get('model');
     Ember.assert(
@@ -26,6 +29,7 @@ export default Component.extend({
     );
 
     const owner = this.get('owner');
+    if (!owner) return;
     Ember.assert('Expecting to be given a owner, but wasn\'t', owner);
 
     const decision = this.get('decision');
@@ -51,7 +55,7 @@ export default Component.extend({
       this.set('displayQuestionText', false);
       this.set('placeholder', question.get('text'));
     }
-  },
+  }),
 
   ident: computed('model', function(){
     return this.get('model.ident');

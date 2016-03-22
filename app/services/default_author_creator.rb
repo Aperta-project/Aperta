@@ -31,7 +31,7 @@ class DefaultAuthorCreator
   end
 
   def add_authors_task_association
-    author.authors_task =
+    author.task =
       paper.tasks.find_by(type: 'TahiStandardTasks::AuthorsTask')
   end
 end

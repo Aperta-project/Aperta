@@ -45,3 +45,9 @@ Rails/Delegate:
   # This cop is not rigorously written, and flags cases where delegate
   # cannot replace the flagged method.
   Enabled: false
+
+Style/ClassAndModuleChildren:
+  # Rails autoloading can get us into situations where it is very
+  # difficult to disambiguate the long-hand version of
+  # Module::Submodule definitions
+  Enabled: false

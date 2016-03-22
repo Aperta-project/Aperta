@@ -14,6 +14,11 @@ let fakeUser = null;
 let paperId  = null;
 const taskId = 90210;
 
+const openNewAuthorForm = function() {
+  click('#add-new-author-button');
+  click('#add-new-individual-author-link');
+};
+
 module('Integration: adding an author', {
   afterEach() {
     server.restore();
@@ -134,7 +139,7 @@ test('can add a new author', function(assert) {
     TestHelper.handleCreate('author');
 
     visit(`/papers/${paperId}/tasks/${taskId}`);
-    click('.button-primary:contains("Add a New Author")');
+    openNewAuthorForm();
     fillIn('.author-first', firstName);
     click('.author-form-buttons .button-secondary:contains("done")');
 
@@ -149,13 +154,18 @@ test('validation works', function(assert) {
     TestHelper.handleCreate('author');
 
     visit(`/papers/${paperId}/tasks/${taskId}`);
-    click('.button-primary:contains("Add a New Author")');
+    openNewAuthorForm();
     click('.author-form-buttons .button-secondary:contains("done")');
     click('.author-task-item-view-text');
     click('.author-form-buttons .button-secondary:contains("done")');
 
     andThen(function() {
-      assert.ok(find('.author-task-item .error').length, 'Errors found');
+      assert.ok(find('[data-test-id="author-first-name"].error').length,  'presence error on first name');
+      assert.ok(find('[data-test-id="author-last-name"].error').length,   'presence error on last name');
+      assert.ok(find('[data-test-id="author-initial"].error').length,     'presence error on initial');
+      assert.ok(find('[data-test-id="author-email"].error').length,       'presence error on email');
+      assert.ok(find('[data-test-id="author-affiliation"].error').length, 'presence error on affiliation');
+      assert.ok(find('[data-test-id="author-government"] .error-message:visible').length, 'presence error on government');
     });
   });
 });

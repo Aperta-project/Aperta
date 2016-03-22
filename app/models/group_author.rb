@@ -1,4 +1,6 @@
-class Author < ActiveRecord::Base
+# Authors that are not individual people; they are in the
+# same list as authors, but have different data.
+class GroupAuthor < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
 
@@ -14,9 +16,19 @@ class Author < ActiveRecord::Base
   delegate :completed?, to: :task, prefix: :task, allow_nil: true
   delegate :position, to: :author_list_item
 
-  validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
-  validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
-  validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
+  validates :contact_first_name,
+            :contact_last_name,
+            :contact_email,
+            :name,
+            presence: true,
+            if: :task_completed?
+  validates :contact_email,
+            format: { with: Devise.email_regexp,
+                      message: "needs to be a valid email address" },
+            if: :task_completed?
+  validates :contributions,
+            presence: { message: "one must be selected" },
+            if: :task_completed?
   validates :paper, presence: true
 
   def task_id=(task_id)
@@ -31,12 +43,11 @@ class Author < ActiveRecord::Base
     author_list_item || build_author_list_item
   end
 
-  def self.for_paper(paper)
-    where(paper_id: paper)
-  end
-
   def self.contributions_question
-    NestedQuestion.where(owner_id: nil, owner_type: name, ident: CONTRIBUTIONS_QUESTION_IDENT).first
+    NestedQuestion.find_by(
+      owner_id: nil,
+      owner_type: name,
+      ident: CONTRIBUTIONS_QUESTION_IDENT)
   end
 
   def contributions

@@ -5,9 +5,17 @@ module TahiStandardTasks
 
     include MetadataTask
 
-    has_many :authors, inverse_of: :authors_task
+    has_many :authors, through: :author_list_items, source_type: "Author"
+    has_many :group_authors,
+             through: :author_list_items,
+             source_type: "GroupAuthor",
+             source: :author
+    has_many :author_list_items, foreign_key: :task_id
 
-    validates_with AssociationValidator, association: :authors, fail: :set_completion_error, if: :completed?
+    validates_with AssociationValidator,
+                   association: :authors,
+                   fail: :set_completion_error,
+                   if: :completed?
 
     def active_model_serializer
       TahiStandardTasks::AuthorsTaskSerializer

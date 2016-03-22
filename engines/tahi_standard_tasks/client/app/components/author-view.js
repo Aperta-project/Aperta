@@ -2,21 +2,29 @@ import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
 const {
+  Component,
   computed,
-  computed: { alias, not },
-  on
+  computed: { alias }
 } = Ember;
 
-export default Ember.Component.extend(DragNDrop.DraggableMixin, {
+export default Component.extend(DragNDrop.DraggableMixin, {
   classNames: ['author-task-item'],
   deleteState: false,
   author: alias('model.object'),
-  errors: alias('model.validationErrors'),
+  componentName: computed('model', function() {
+    return this.get('author').constructor
+               .toString()
+               .match(/group/) ? 'group-author-form' : 'author-form';
+  }),
+
+  editState: computed.or('errorsPresent', 'editing'),
+  editing: false,
   errorsPresent: alias('model.errorsPresent'),
-  editState: alias('errorsPresent'),
+
   viewState: computed('editState', 'deleteState', function() {
     return !this.get('editState') && !this.get('deleteState');
   }),
+
   draggable: computed('isNotEditable', 'editState', function() {
     return !this.get('isNotEditable') && !this.get('editState');
   }),
@@ -37,16 +45,8 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
       });
     },
 
-    save() {
-      this.get('model').validateAll();
-      if(this.get('errorsPresent')) { return; }
-
-      this.sendAction('save', this.get('author'));
-      this.set('editState', false);
-    },
-
     toggleEditForm() {
-      this.toggleProperty('editState');
+      this.toggleProperty('editing');
     },
 
     toggleDeleteConfirmation() {

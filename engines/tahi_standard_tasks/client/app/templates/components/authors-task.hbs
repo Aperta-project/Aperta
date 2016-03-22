@@ -12,19 +12,35 @@
 
   <div>
     {{#if isEditable}}
-      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
-        Add a New Author
-      </button>
+      <div class="add-new-author-button-container">
+        <button id="add-new-author-button"
+                class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
+                disabled={{isSubmissionTaskNotEditable}}
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Add a New Author &nbsp; {{fa-icon "caret-down"}}
+        </button>
+
+        <ul id="add-new-author-dropdown" class="dropdown-menu animation-fade-in" aria-labelledby="add-new-author-button">
+          <li><a id="add-new-individual-author-link" {{action "toggleAuthorForm"}}>Add Individual Author</a></li>
+          <li><a id="add-new-group-author-link" {{action "toggleGroupAuthorForm"}}>Add Group Author</a></li>
+        </ul>
+      </div>
       <br><br>
 
       {{error-message message=validationErrors.corresponding}}
 
+      {{#if newGroupAuthorFormVisible}}
+        {{group-author-form task=task
+                            isNewAuthor=true
+                            hideAuthorForm="toggleGroupAuthorForm"
+                            saveSuccess=(action "saveNewGroupAuthorSuccess")}}
+      {{/if}}
+
       {{#if newAuthorFormVisible}}
-        {{add-author-form institutions=task.institutions
-                          author=newAuthor.object
-                          validationErrors=newAuthor.validationErrors
-                          hideAuthorForm="toggleAuthorForm"
-                          saveAuthor="saveNewAuthor"}}
+        {{author-form task=task
+                      isNewAuthor=true
+                      saveSuccess=(action "saveNewAuthorSuccess")
+                      hideAuthorForm="toggleAuthorForm"}}
       {{/if}}
     {{/if}}
 
@@ -33,11 +49,11 @@
                          changePosition=(action "changeAuthorPosition")}}
 
     {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
-      {{author-view isEditable=isEditable
+      {{author-view task=task
+                    model=authorWithErrors
+                    isEditable=isEditable
                     isNotEditable=isNotEditable
-                    delete="removeAuthor"
-                    save="saveAuthor"
-                    model=authorWithErrors}}
+                    delete="removeAuthor"}}
 
       {{author-drop-target index=authorWithErrors.object.position
                            isEditable=isEditable

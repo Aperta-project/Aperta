@@ -38,6 +38,12 @@
   font-size: 1.4em;
   line-height: 1.2em;
 
+  &.required::after {
+    content: ' *';
+    margin: 0 3px 0 -3px;
+    color: $tahi-green;
+  }
+
   p {
     margin-right: 0;
     margin-left: 0;

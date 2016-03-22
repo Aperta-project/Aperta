@@ -12,7 +12,7 @@ class AuthorsController < ApplicationController
     author.save!
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper.authors, each_serializer: AuthorSerializer
+    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
   end
 
   def update
@@ -20,7 +20,7 @@ class AuthorsController < ApplicationController
     author.update!(author_params)
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper.authors, each_serializer: AuthorSerializer
+    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
   end
 
   def destroy
@@ -28,7 +28,7 @@ class AuthorsController < ApplicationController
     author.destroy!
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper.authors, each_serializer: AuthorSerializer
+    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
   end
 
   private
@@ -36,7 +36,7 @@ class AuthorsController < ApplicationController
   def author
     @author ||= begin
       if params[:id].present?
-        Author.find(params[:id])
+        Author.includes(:author_list_item).find(params[:id])
       else
         Author.new(author_params)
       end
@@ -45,7 +45,7 @@ class AuthorsController < ApplicationController
 
   def author_params
     params.require(:author).permit(
-      :authors_task_id,
+      :task_id,
       :author_initial,
       :first_name,
       :last_name,

@@ -9,6 +9,7 @@ namespace 'nested-questions' do
     'nested-questions:seed:figure-task',
     'nested-questions:seed:financial-disclosure-task',
     'nested-questions:seed:funder',
+    'nested-questions:seed:group-author',
     'nested-questions:seed:plos-billing-task',
     'nested-questions:seed:production-metadata-task',
     'nested-questions:seed:publishing-related-questions-task',

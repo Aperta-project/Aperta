@@ -3,7 +3,8 @@
     <legend class="flex-element">Individual Author</legend>
 
     <div class="flex-group">
-      <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}">
+      <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}"
+           data-test-id="author-first-name">
         <div class="inset-form-control-text">
           <label>First Name</label>
           {{error-message message=validationErrors.firstName
@@ -32,7 +33,8 @@
                 placeholder="M"}}
       </div>
 
-      <div class="flex-element inset-form-control required author-name {{if validationErrors.lastName "error"}}">
+      <div class="flex-element inset-form-control required author-name {{if validationErrors.lastName "error"}}"
+           data-test-id="author-last-name">
         <div class="inset-form-control-text">
           <label>Last Name</label>
           {{error-message message=validationErrors.lastName
@@ -47,7 +49,8 @@
                 placeholder="Doe"}}
       </div>
 
-      <div class="flex-element inset-form-control required author-initial {{if validationErrors.authorInitial "error"}}">
+      <div class="flex-element inset-form-control required author-initial {{if validationErrors.authorInitial "error"}}"
+           data-test-id="author-initial">
         <div class="inset-form-control-text">
           <label>Author Initial</label>
           {{error-message message=validationErrors.authorInitial
@@ -84,7 +87,8 @@
                 placeholder="Biology"}}
       </div>
 
-      <div class="flex-element inset-form-control required {{if validationErrors.email "error"}}">
+      <div class="flex-element inset-form-control required {{if validationErrors.email "error"}}"
+           data-test-id="author-email">
         <div class="inset-form-control-text">
           <label>Email</label>
           {{error-message message=validationErrors.email
@@ -101,7 +105,8 @@
     </div>
 
     <div class="flex-group">
-      <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}">
+      <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}"
+           data-test-id="author-affiliation">
         {{error-message message=validationErrors.affiliation
                         displayIcon=true
                         displayText=true}}
@@ -255,10 +260,11 @@
     </div>
   </fieldset>
 
-  <div class="author-government">
+  <div class="author-government" data-test-id="author-government">
     {{nested-question-radio ident="author--government-employee"
                             owner=author
                             helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a href='https://creativecommons.org/publicdomain/zero/1.0/' target='_blank'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
+                            textClassNames="question-text required"
                             disabled=isNotEditable}}
     {{error-message message=validationErrors.government
                     displayIcon=true
@@ -271,6 +277,6 @@
       {{error-message message=validationErrors.save}}
     {{/if}}
     <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
-    <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
+    <button class="button-secondary button--green knockout" {{action "saveAuthor"}}>done</button>
   </div>
 </div>

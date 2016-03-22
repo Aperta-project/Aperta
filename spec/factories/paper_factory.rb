@@ -174,8 +174,8 @@ FactoryGirl.define do
         phase = create(:phase, paper: paper)
 
         # Authors
-        authors_task = FactoryGirl.create(:authors_task, paper: paper),
-        author = FactoryGirl.create(:author, paper: paper, authors_task: authors_task)
+        authors_task = FactoryGirl.create(:authors_task, paper: paper)
+        author = FactoryGirl.create(:author, paper: paper, task: authors_task)
         NestedQuestionableFactory.create(
           author,
           questions: [

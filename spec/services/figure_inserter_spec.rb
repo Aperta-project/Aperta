@@ -202,6 +202,23 @@ describe FigureInserter do
     end
   end
 
+  describe '#figure_url' do
+    let(:figure) do
+      create(:figure).tap do |f|
+        allow(f).to receive(:detail_src).and_return '/resource_proxy/'
+        allow(f).to receive(:proxyable_url).and_return 'amazonaws.com'
+      end
+    end
+    it 'returns a proxyable img url' do
+      expect(figure_inserter.send(:figure_url, figure)).to include 'resource_proxy'
+    end
+
+    it 'returns an expiring AWS url if prompted' do
+      figure_inserter = FigureInserter.new(raw_html, [], direct_img_links: true)
+      expect(figure_inserter.send(:figure_url, figure)).to include 'amazonaws'
+    end
+  end
+
   def parse(html)
     Nokogiri::HTML::DocumentFragment.parse html
   end

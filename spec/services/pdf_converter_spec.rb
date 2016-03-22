@@ -89,23 +89,10 @@ describe PDFConverter do
         # https://developer.plos.org/jira/browse/APERTA-5741
 
         figure = paper.figures.first
-        paper.body = "<img id='figure_#{figure.id}' src='foo'/>"
+        paper.body = "<p>Figure 1.</p>"
 
-        img = doc.css("img#figure_#{figure.id}").first
-        expect(img['src']).to have_s3_url(figure.attachment.url(:detail))
-      end
-
-      it 'works with orphan figures' do
-        # add another figure
-        paper.figures
-          .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                  status: 'done'
-        fig1, fig2 = paper.figures
-        paper.body = "<img id='figure_#{fig1.id}' src='foo'/>"
-        expect(converter.orphan_figures).to eq([fig2])
-
-        expect(doc.css("img#figure_#{fig2.id}").first['src']).to \
-          eq(fig2.attachment.url(:preview))
+        img = doc.css("img").first
+        expect(img['src']).to have_s3_url figure.proxyable_url(version: :detail)
       end
     end
   end

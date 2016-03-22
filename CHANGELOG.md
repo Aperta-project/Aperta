@@ -24,6 +24,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Document upload success message now displays to the uploader, not the creator of a paper.
+- PDF generation now works when a paper has figures.
 
 ### Security
 -

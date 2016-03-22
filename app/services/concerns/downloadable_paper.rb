@@ -43,13 +43,7 @@ module DownloadablePaper
   private
 
   def body_with_aws_figure_urls
-    Nokogiri::HTML.fragment(@paper.body).tap do |doc|
-      @paper.figures.each do |figure|
-        img = doc.css("img#figure_#{figure.id}").first
-        next unless img
-        img.set_attribute 'src', figure.attachment.url(:detail)
-      end
-    end.to_s
+    @paper.figureful_text(direct_img_links: true)
   end
 
   def body_with_fullpath_proxy_figure_urls

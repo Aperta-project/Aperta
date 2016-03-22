@@ -157,6 +157,20 @@ describe QueryParser do
            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed" = 't' AND "tasks_1"."title" ILIKE 'someothertask' AND "tasks_1"."completed" = 'f'
         SQL
       end
+
+      it 'parses TASK x HAS OPEN INVITATIONS' do
+        parse = QueryParser.new.parse 'TASK anytask HAS OPEN INVITATIONS'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks_0"."title" ILIKE 'anytask' AND "invitations_1"."state" IN ('pending', 'invited')
+        SQL
+      end
+
+      it 'parses TASK x HAS NO OPEN INVITATIONS' do
+        parse = QueryParser.new.parse 'TASK anytask HAS NO OPEN INVITATIONS'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks_0"."title" ILIKE 'anytask' AND "invitations_1"."state" NOT IN ('pending', 'invited')
+        SQL
+      end
     end
 
     describe 'people queries' do

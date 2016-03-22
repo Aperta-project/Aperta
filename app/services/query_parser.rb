@@ -87,6 +87,20 @@ class QueryParser < QueryLanguageParser
     table[:title].matches(task).and(table[:completed].eq(true))
   end
 
+  add_two_part_expression('TASK', 'HAS OPEN INVITATIONS') do |task, _|
+    task_table = join Task
+    invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
+    task_table[:title].matches(task).and(
+      invite_table[:state].in(%w(pending, invited])))
+  end
+
+  add_two_part_expression('TASK', 'HAS NO OPEN INVITATIONS') do |task, _|
+    task_table = join Task
+    invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
+    task_table[:title].matches(task).and(
+      invite_table[:state].not_in(%w(pending, invited)))
+  end
+
   add_two_part_expression('TASK',
                           /IS NOT COMPLETE|IS INCOMPLETE/) do |task, _|
     table = join Task
@@ -154,11 +168,11 @@ class QueryParser < QueryLanguageParser
     user ? user.id : -1
   end
 
-  def join(klass, id = "paper_id")
+  def join(klass, id = "paper_id", join_id = "papers.id")
     table = klass.table_name
     name = "#{table}_#{@join_counter}"
     @root = @root.joins(<<-SQL)
-      INNER JOIN #{table} AS #{name} ON #{name}.#{id} = papers.id
+      INNER JOIN #{table} AS #{name} ON #{name}.#{id} = #{join_id}
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)

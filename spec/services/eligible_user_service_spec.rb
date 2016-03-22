@@ -45,6 +45,37 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
       fay.assignments.create(role: internal_editor_role, assigned_to: journal)
     end
 
+    context "and the role matches the journal's academic_editor_role" do
+      let(:role) do
+        FactoryGirl.create(
+          :role,
+          name: Role::ACADEMIC_EDITOR_ROLE,
+          journal: journal
+        )
+      end
+      let(:random_role) do
+        FactoryGirl.create(
+          :role,
+          name: 'Some Random Role',
+          journal: journal
+        )
+      end
+      let(:ray) { FactoryGirl.create(:user) }
+
+      before do
+        ray.assignments.create(role: random_role, assigned_to: journal)
+      end
+
+      it 'returns all users in the system regardless of role' do
+        expect(service.eligible_users).to contain_exactly(bob, fay, ray)
+      end
+
+      it "doesn't include users already assigned as academic_editor_role" do
+        fay.assignments.create(role: role, assigned_to: paper)
+        expect(service.eligible_users).to_not include(fay)
+      end
+    end
+
     context "and the role matches the journal's cover_editor_role" do
       let(:role) do
         FactoryGirl.create(
@@ -58,9 +89,9 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
         expect(service.eligible_users).to contain_exactly(bob, fay)
       end
 
-      it "doesn't include users assigned to the paper as cover_editor_role" do
+      it "doesn't include users already assigned as cover_editor_role" do
         fay.assignments.create(role: role, assigned_to: paper)
-        expect(service.eligible_users).to contain_exactly(bob)
+        expect(service.eligible_users).to_not include(fay)
       end
     end
 
@@ -79,11 +110,11 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
 
       it "doesn't include users already assigned as handling_editor_role" do
         fay.assignments.create(role: role, assigned_to: paper)
-        expect(service.eligible_users).to contain_exactly(bob)
+        expect(service.eligible_users).to_not include(fay)
       end
     end
 
-    context "and the role is unsupported for finding eligible users" do
+    context 'and the role is unsupported for finding eligible users' do
       let(:role) { FactoryGirl.create(:role, name: 'Unsupported') }
 
       it 'raises an exception' do

@@ -14,8 +14,9 @@ class EligibleUserService
     @role = role
 
     @eligible_user_blocks = {
-      role.journal.handling_editor_role => -> { internal_editors },
-      role.journal.cover_editor_role => -> { internal_editors }
+      role.journal.academic_editor_role => -> { User.all },
+      role.journal.cover_editor_role => -> { internal_editors },
+      role.journal.handling_editor_role => -> { internal_editors }
     }
   end
 

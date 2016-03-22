@@ -5,10 +5,6 @@ FactoryGirl.define do
     phase
     paper
 
-    trait :with_participant do
-      participants { [FactoryGirl.create(:user)] }
-    end
-
     trait :with_nested_question_answers do
       nested_question_answers { FactoryGirl.create_list(:nested_question_answer, 3) }
     end

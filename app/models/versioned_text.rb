@@ -19,6 +19,8 @@ class VersionedText < ActiveRecord::Base
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
 
+  validates :paper, :major_version, :minor_version, presence: true
+
   before_update do
     fail ActiveRecord::ReadOnlyRecord unless
       (paper.latest_version == self) && paper.editable? && submitting_user_id_was.blank?

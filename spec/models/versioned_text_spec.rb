@@ -6,6 +6,29 @@ describe VersionedText do
   let(:user) { FactoryGirl.create :user }
   let(:versioned_text) { paper.latest_version }
 
+  context 'validation' do
+    subject(:versioned_text) { FactoryGirl.build(:versioned_text) }
+
+    it 'is valid' do
+      expect(versioned_text.valid?).to be(true)
+    end
+
+    it 'requires a paper' do
+      versioned_text.paper = nil
+      expect(versioned_text.valid?).to be(false)
+    end
+
+    it 'requires a major_version' do
+      versioned_text.major_version = nil
+      expect(versioned_text.valid?).to be(false)
+    end
+
+    it 'requires a minor_version' do
+      versioned_text.minor_version = nil
+      expect(versioned_text.valid?).to be(false)
+    end
+  end
+
   describe "#new_major_version!" do
     it "creates a new major version while retaining the old" do
       old_version = paper.latest_version
@@ -46,9 +69,9 @@ describe VersionedText do
 
   describe "#create" do
     it "should not allow creating multiple versions with the same number" do
-      FactoryGirl.create(:versioned_text, paper_id: 1, major_version: 1, minor_version: 0)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect do
-        FactoryGirl.create(:versioned_text, paper_id: 1, major_version: 1, minor_version: 0)
+        FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       end.to raise_exception(ActiveRecord::RecordNotUnique)
     end
   end

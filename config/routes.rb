@@ -110,7 +110,6 @@ Tahi::Application.routes.draw do
         get :comment_looks
         get :versioned_texts
         get :export, to: 'paper_conversions#export'
-        get :export, to: 'paper_conversions#export'
         get :snapshots
         put :submit
         put :withdraw

@@ -29,7 +29,7 @@ module TahiStandardTasks
 
     def invitation_template
       LetterTemplate.new(
-        salutation: "Dear [EDITOR NAME],",
+        salutation: "Dear Dr. [EDITOR NAME],",
         body: invitation_template_body
       )
     end

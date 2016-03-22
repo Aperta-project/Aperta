@@ -25,7 +25,9 @@ class LoginPage(AuthenticatedPage):
     super(LoginPage, self).__init__(driver, '/users/sign_in')
 
     # Locators - Instance members
+    self._system_logo = (By.CLASS_NAME, 'auth-logo')
     self._welcome_message = (By.TAG_NAME, 'h1')
+    self._welcome_paragraph = (By.TAG_NAME, 'p')
     self._login_textbox = (By.CSS_SELECTOR, '#user_login')
     self._password_textbox = (By.CSS_SELECTOR, '#user_password')
     self._forgot_pw_link = (By.TAG_NAME, 'a')
@@ -35,7 +37,7 @@ class LoginPage(AuthenticatedPage):
     self._signup_link = (By.CLASS_NAME, 'auth-signup')
     # CAS Related items
     self._cas_signin = (By.CSS_SELECTOR, 'div.auth-right a.auth-cas')
-    self._cas_signup = (By.CSS_SELECTOR, 'div.auth-right a.auth-cas + a.auth-cas')
+    self._cas_signup = (By.CSS_SELECTOR, 'div.auth-right a.auth-cas + a.auth-register')
     # ORCID Related items
     self._orcid_signin = (By.CSS_SELECTOR, 'div.auth-right a.auth-orcid')
     # Flash messaging
@@ -60,9 +62,12 @@ class LoginPage(AuthenticatedPage):
     native_login_disabled = False
     cas_login_disabled = False
     orcid_login_disabled = False
-
+    logo = self._get(self._system_logo)
+    assert '/images/plos_logo.png' in logo.get_attribute('src'), logo.get_attribute('src')
     welcome_msg = self._get(self._welcome_message)
     assert welcome_msg.text == 'Welcome to Aperta', welcome_msg.text
+    welcome_p = self._get(self._welcome_paragraph)
+    assert welcome_p.text == 'Submit & manage manuscripts.', welcome_p.text
     # APERTA-6107 Filed for the following
     # self.validate_application_title_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?
@@ -139,12 +144,18 @@ class LoginPage(AuthenticatedPage):
     :return: None
     """
     signout_msg = self._get(self._notice_text)
-    assert 'helvetica' in signout_msg.value_of_css_property('font-family')
-    assert signout_msg.value_of_css_property('font-size') == '14px'
-    assert signout_msg.value_of_css_property('font-weight') == '400'
-    assert signout_msg.value_of_css_property('line-height') == '20px'
-    assert signout_msg.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert signout_msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)'
+    assert 'helvetica' in signout_msg.value_of_css_property('font-family'), \
+        signout_msg.value_of_css_property('font-family')
+    assert signout_msg.value_of_css_property('font-size') == '16px', \
+        signout_msg.value_of_css_property('font-size')
+    assert signout_msg.value_of_css_property('font-weight') == '400', \
+        signout_msg.value_of_css_property('font-weight')
+    assert signout_msg.value_of_css_property('line-height') == '22.85px', \
+        signout_msg.value_of_css_property('line-height')
+    assert signout_msg.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', \
+        signout_msg.value_of_css_property('color')
+    assert signout_msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
+        signout_msg.value_of_css_property('background-color')
     assert 'Signed out successfully.' in signout_msg.text  # why is there an extra span here?
 
   def validate_reset_pw_msg(self):
@@ -153,14 +164,20 @@ class LoginPage(AuthenticatedPage):
     :return: None
     """
     reset_msg = self._get(self._notice_text)
-    assert 'helvetica' in reset_msg.value_of_css_property('font-family')
-    assert reset_msg.value_of_css_property('font-size') == '14px'
-    assert reset_msg.value_of_css_property('font-weight') == '400'
-    assert reset_msg.value_of_css_property('line-height') == '20px'
-    assert reset_msg.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert reset_msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)'
-    assert 'You will receive an email with instructions about how to reset your password in a few minutes.' \
-           in reset_msg.text  # why is there an extra span here?
+    assert 'helvetica' in reset_msg.value_of_css_property('font-family'), \
+        reset_msg.value_of_css_property('font-family')
+    assert reset_msg.value_of_css_property('font-size') == '16px', \
+        reset_msg.value_of_css_property('font-size')
+    assert reset_msg.value_of_css_property('font-weight') == '400', \
+        reset_msg.value_of_css_property('font-weight')
+    assert reset_msg.value_of_css_property('line-height') == '22.85px', \
+        reset_msg.value_of_css_property('line-height')
+    assert reset_msg.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', \
+        reset_msg.value_of_css_property('color')
+    assert reset_msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
+        reset_msg.value_of_css_property('background-color')
+    assert 'You will receive an email with instructions about how to reset your password in a ' \
+           'few minutes.' in reset_msg.text  # why is there an extra span here?
 
   def validate_invalid_login_attempt(self):
     """

@@ -26,7 +26,7 @@ class AssignTeamOverlay < CardOverlay
   end
 
   def unassign_user(user)
-    trash_icon = find(".invitation", text: user.full_name).find(".invite-reviewer-remove")
+    trash_icon = find(".invitation", text: user.full_name).find(".invite-remove")
     trash_icon.click
     wait_for_ajax
   end

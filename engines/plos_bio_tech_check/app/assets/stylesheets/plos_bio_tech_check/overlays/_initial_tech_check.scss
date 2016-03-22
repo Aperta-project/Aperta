@@ -1,10 +1,36 @@
+.overlay .initial-tech-check {
+  .change-instructions {
+    width: 70%;
+  }
+}
+
+
+.task-disclosure .initial-tech-check {
+  .task-list {
+    display: none;
+  }
+}
+
+.initial-tech-check {
+  .checklist {
+    margin-bottom: 30px;
+
+    ul {
+      li {
+        padding-left: 5px;
+        margin-bottom: 15px;
+
+        p {
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+}
+
 .initial-tech-check-round-number {
   font-size: 24px;
   margin-bottom: 20px;
-}
-
-.change-instructions {
-  width: 70%;
 }
 
 .form-control {

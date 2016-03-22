@@ -104,5 +104,5 @@ export default DS.Model.extend({
     else if (this.get('isFullSubmission')) {
       return "full";
     }
-  }),
+  })
 });

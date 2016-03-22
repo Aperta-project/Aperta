@@ -60,7 +60,7 @@ export default TaskComponent.extend({
     setQuestionSelectedText() {
       const owner = this.get('task');
 
-      const text = owner.get('nestedQuestions').filter(function(q) {
+      const text = owner.get('nestedQuestions').sortBy('position').filter(function(q) {
         return !q.answerForOwner(owner).get('value') && q.get('additionalData');
       }).map(function(question) {
         return question.get('additionalData');
@@ -70,4 +70,3 @@ export default TaskComponent.extend({
     }
   }
 });
-

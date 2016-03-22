@@ -1737,6 +1737,81 @@ assignments:
     - '2016-03-15 18:52:16.710225'
 
 ---
+author_list_items:
+  columns:
+  - id
+  - position
+  - author_id
+  - author_type
+  - task_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - '3'
+    - '1'
+    - Author
+    - '2'
+    - '2016-03-22 14:32:29.651445'
+    - '2016-03-22 14:32:29.651445'
+  - - '2'
+    - '4'
+    - '2'
+    - Author
+    - '23'
+    - '2016-03-22 14:32:29.665154'
+    - '2016-03-22 14:32:29.665154'
+  - - '3'
+    - '5'
+    - '3'
+    - Author
+    - '23'
+    - '2016-03-22 14:32:29.667169'
+    - '2016-03-22 14:32:29.667169'
+  - - '4'
+    - '6'
+    - '4'
+    - Author
+    - '44'
+    - '2016-03-22 14:32:29.66903'
+    - '2016-03-22 14:32:29.66903'
+  - - '5'
+    - '1'
+    - '5'
+    - Author
+    - '44'
+    - '2016-03-22 14:32:29.670806'
+    - '2016-03-22 14:32:29.670806'
+  - - '6'
+    - '7'
+    - '6'
+    - Author
+    - '65'
+    - '2016-03-22 14:32:29.672594'
+    - '2016-03-22 14:32:29.672594'
+  - - '7'
+    - '8'
+    - '7'
+    - Author
+    - '86'
+    - '2016-03-22 14:32:29.674466'
+    - '2016-03-22 14:32:29.674466'
+  - - '8'
+    - '9'
+    - '8'
+    - Author
+    - '107'
+    - '2016-03-22 14:32:29.676602'
+    - '2016-03-22 14:32:29.676602'
+  - - '9'
+    - '10'
+    - '9'
+    - Author
+    - '128'
+    - '2016-03-22 14:32:29.678322'
+    - '2016-03-22 14:32:29.678322'
+
+---
 authors:
   columns:
   - id
@@ -1744,9 +1819,7 @@ authors:
   - last_name
   - created_at
   - updated_at
-  - position
   - paper_id
-  - authors_task_id
   - middle_initial
   - email
   - department
@@ -1768,9 +1841,7 @@ authors:
     - Author
     - '2015-10-29 20:16:37.812595'
     - '2015-10-29 20:16:37.812595'
-    - '3'
     - '1'
-    - '2'
     - 
     - author@example.com
     - 
@@ -1791,9 +1862,7 @@ authors:
     - Author
     - '2015-10-30 19:43:28.777757'
     - '2015-10-30 19:53:18.523309'
-    - '4'
     - '2'
-    - '23'
     - 
     - author@example.com
     - Department of Authoring
@@ -1814,9 +1883,7 @@ authors:
     - Janesford
     - '2015-10-30 19:54:25.247759'
     - '2015-10-30 19:54:28.89091'
-    - '5'
     - '2'
-    - '23'
     - ''
     - jane@example.com
     - Authorship Department
@@ -1837,9 +1904,7 @@ authors:
     - Author
     - '2015-11-02 14:04:03.280645'
     - '2015-11-02 14:14:20.64132'
-    - '6'
     - '3'
-    - '44'
     - 
     - author@example.com
     - Dept. of Authoring
@@ -1860,9 +1925,7 @@ authors:
     - Jones
     - '2015-11-02 14:15:05.820082'
     - '2015-11-02 14:15:05.820082'
-    - '1'
     - '3'
-    - '44'
     - ''
     - barb@example.com
     - Dept. of Authorology
@@ -1883,9 +1946,7 @@ authors:
     - Author
     - '2015-11-02 14:46:24.189114'
     - '2015-11-02 15:09:33.10379'
-    - '7'
     - '4'
-    - '65'
     - 
     - author@example.com
     - Dept. of authoring
@@ -1907,8 +1968,6 @@ authors:
     - '2015-11-03 22:59:21.34928'
     - '2015-11-03 22:59:21.34928'
     - '8'
-    - '8'
-    - '86'
     - 
     - sealresq+7@gmail.com
     - 
@@ -1930,8 +1989,6 @@ authors:
     - '2015-11-03 23:02:07.212995'
     - '2015-11-03 23:02:07.212995'
     - '9'
-    - '9'
-    - '107'
     - 
     - sealresq+7@gmail.com
     - 
@@ -1953,8 +2010,6 @@ authors:
     - '2015-11-10 22:27:27.648594'
     - '2015-11-10 22:27:27.648594'
     - '10'
-    - '10'
-    - '128'
     - 
     - admin@example.com
     - 
@@ -4456,7 +4511,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-03-18 18:56:58.820579'
+    - '2016-03-22 15:09:05.272824'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -4740,7 +4795,7 @@ nested_questions:
     - '216'
     - '6'
     - '2015-10-30 19:51:03.531234'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-03-22 14:32:49.277819'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '132'
@@ -4839,7 +4894,7 @@ nested_questions:
     - '232'
     - '9'
     - '2015-11-02 13:38:26.319212'
-    - '2016-03-18 18:56:59.406461'
+    - '2016-03-22 15:09:05.735978'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
@@ -4854,7 +4909,7 @@ nested_questions:
     - '234'
     - '10'
     - '2015-11-02 13:38:26.322791'
-    - '2016-03-18 18:56:59.414719'
+    - '2016-03-22 15:09:05.74447'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
@@ -4868,7 +4923,7 @@ nested_questions:
     - '236'
     - '1'
     - '2015-11-02 13:38:26.340953'
-    - '2016-03-18 18:56:59.326151'
+    - '2016-03-22 15:09:05.657008'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
@@ -5519,6 +5574,198 @@ nested_questions:
     - TahiStandardTasks::AuthorsTask
     - 
   - - '203'
+    - Conceptualization
+    - boolean
+    - group-author--contributions--conceptualization
+    - '217'
+    - '302'
+    - '303'
+    - '1'
+    - '2016-03-22 14:32:48.202013'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '204'
+    - Investigation
+    - boolean
+    - group-author--contributions--investigation
+    - '217'
+    - '304'
+    - '305'
+    - '2'
+    - '2016-03-22 14:32:48.217167'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '205'
+    - Visualization
+    - boolean
+    - group-author--contributions--visualization
+    - '217'
+    - '306'
+    - '307'
+    - '3'
+    - '2016-03-22 14:32:48.228819'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '206'
+    - Methodology
+    - boolean
+    - group-author--contributions--methodology
+    - '217'
+    - '308'
+    - '309'
+    - '4'
+    - '2016-03-22 14:32:48.241637'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '207'
+    - Resources
+    - boolean
+    - group-author--contributions--resources
+    - '217'
+    - '310'
+    - '311'
+    - '5'
+    - '2016-03-22 14:32:48.254186'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '208'
+    - Supervision
+    - boolean
+    - group-author--contributions--supervision
+    - '217'
+    - '312'
+    - '313'
+    - '6'
+    - '2016-03-22 14:32:48.266474'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '209'
+    - Software
+    - boolean
+    - group-author--contributions--software
+    - '217'
+    - '314'
+    - '315'
+    - '7'
+    - '2016-03-22 14:32:48.277041'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '210'
+    - Data Curation
+    - boolean
+    - group-author--contributions--data-curation
+    - '217'
+    - '316'
+    - '317'
+    - '8'
+    - '2016-03-22 14:32:48.290615'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '211'
+    - Project Administration
+    - boolean
+    - group-author--contributions--project-administration
+    - '217'
+    - '318'
+    - '319'
+    - '9'
+    - '2016-03-22 14:32:48.301073'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '212'
+    - Validation
+    - boolean
+    - group-author--contributions--validation
+    - '217'
+    - '320'
+    - '321'
+    - '10'
+    - '2016-03-22 14:32:48.31193'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '213'
+    - Writing - Original Draft
+    - boolean
+    - group-author--contributions--writing-original-draft
+    - '217'
+    - '322'
+    - '323'
+    - '11'
+    - '2016-03-22 14:32:48.326853'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '214'
+    - Writing - Review and Editing
+    - boolean
+    - group-author--contributions--writing-review-and-editing
+    - '217'
+    - '324'
+    - '325'
+    - '12'
+    - '2016-03-22 14:32:48.337572'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '215'
+    - Funding Acquisition
+    - boolean
+    - group-author--contributions--funding-acquisition
+    - '217'
+    - '326'
+    - '327'
+    - '13'
+    - '2016-03-22 14:32:48.347748'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '216'
+    - Formal Analysis
+    - boolean
+    - group-author--contributions--formal-analysis
+    - '217'
+    - '328'
+    - '329'
+    - '14'
+    - '2016-03-22 14:32:48.360903'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '217'
+    - Author Contributions
+    - question-set
+    - group-author--contributions
+    - 
+    - '301'
+    - '330'
+    - '1'
+    - '2016-03-22 14:32:48.399978'
+    - '2016-03-22 14:32:48.653571'
+    - GroupAuthor
+    - 
+  - - '218'
+    - Is this group a United States Government agency, department or organization?
+    - boolean
+    - group-author--government-employee
+    - 
+    - '331'
+    - '332'
+    - '2'
+    - '2016-03-22 14:32:48.669691'
+    - '2016-03-22 14:32:48.669691'
+    - GroupAuthor
+    - 
+  - - '219'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
       to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
       or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
@@ -5527,150 +5774,150 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_confidential
     - 
-    - '301'
-    - '302'
+    - '333'
+    - '334'
     - '2'
-    - '2016-03-18 18:56:59.334712'
-    - '2016-03-18 18:56:59.334712'
+    - '2016-03-22 15:09:05.665082'
+    - '2016-03-22 15:09:05.665082'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '204'
+  - - '220'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
       this section.
     - boolean
     - plos_bio_initial_tech_check--data_availability_blank
     - 
-    - '303'
-    - '304'
+    - '335'
+    - '336'
     - '3'
-    - '2016-03-18 18:56:59.34572'
-    - '2016-03-18 18:56:59.34572'
+    - '2016-03-22 15:09:05.675633'
+    - '2016-03-22 15:09:05.675633'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '205'
+  - - '221'
     - 'In the Data Availability card, if the authors have mentioned data submitted
       to Dryad, check that the author has provided the Dryad reviewer URL and if not,
       request it from them. '
     - boolean
     - plos_bio_initial_tech_check--data_availability_dryad
     - 
-    - '305'
-    - '306'
+    - '337'
+    - '338'
     - '4'
-    - '2016-03-18 18:56:59.355664'
-    - '2016-03-18 18:56:59.355664'
+    - '2016-03-22 15:09:05.684371'
+    - '2016-03-22 15:09:05.684371'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '206'
+  - - '222'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
       is missing information. Ignore omissions of middle initials.
     - boolean
     - plos_bio_initial_tech_check--authors_match
     - 
-    - '307'
-    - '308'
+    - '339'
+    - '340'
     - '5'
-    - '2016-03-18 18:56:59.36559'
-    - '2016-03-18 18:56:59.36559'
+    - '2016-03-22 15:09:05.693357'
+    - '2016-03-22 15:09:05.693357'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '207'
+  - - '223'
     - If we don't have unique email addresses for all authors, send it back.
     - boolean
     - plos_bio_initial_tech_check--author_emails
     - 
-    - '309'
-    - '310'
+    - '341'
+    - '342'
     - '6'
-    - '2016-03-18 18:56:59.376034'
-    - '2016-03-18 18:56:59.376034'
+    - '2016-03-22 15:09:05.70232'
+    - '2016-03-22 15:09:05.70232'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '208'
+  - - '224'
     - If the author list has changed between initial and full submission, pass it
       through if an author was added and flag it to the editor/initiate our COPE process
       if an author was removed.
     - boolean
     - plos_bio_initial_tech_check--author_removed
     - 
-    - '311'
-    - '312'
+    - '343'
+    - '344'
     - '7'
-    - '2016-03-18 18:56:59.386455'
-    - '2016-03-18 18:56:59.386455'
+    - '2016-03-22 15:09:05.712588'
+    - '2016-03-22 15:09:05.712588'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '209'
+  - - '225'
     - Check that the Competing Interest card has been filled out correctly. If the
       authors have selected Yes and not provided an explanation, send it back.
     - boolean
     - plos_bio_initial_tech_check--competing_interests
     - 
-    - '313'
-    - '314'
+    - '345'
+    - '346'
     - '8'
-    - '2016-03-18 18:56:59.395986'
-    - '2016-03-18 18:56:59.395986'
+    - '2016-03-22 15:09:05.726444'
+    - '2016-03-22 15:09:05.726444'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '210'
+  - - '226'
     - If the authors mention submitting their paper to a collection in the cover letter
       or Additional Information card, alert Jenni Horsley by pinging her through the
       discussion of the ITC card.
     - boolean
     - plos_bio_initial_tech_check--collection
     - 
-    - '315'
-    - '316'
+    - '347'
+    - '348'
     - '11'
-    - '2016-03-18 18:56:59.421847'
-    - '2016-03-18 18:56:59.421847'
+    - '2016-03-22 15:09:05.752494'
+    - '2016-03-22 15:09:05.752494'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '211'
+  - - '227'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
       figures.
     - boolean
     - plos_bio_initial_tech_check--figures_viewable
     - 
-    - '317'
-    - '318'
+    - '349'
+    - '350'
     - '12'
-    - '2016-03-18 18:56:59.432403'
-    - '2016-03-18 18:56:59.432403'
+    - '2016-03-22 15:09:05.765773'
+    - '2016-03-22 15:09:05.765773'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '212'
+  - - '228'
     - If main figures or supporting information captions are only available in the
       file itself (and not in the manuscript), request that the author remove the
       captions from the file and instead place them in the manuscript file.
     - boolean
     - plos_bio_initial_tech_check--embedded_captions
     - 
-    - '319'
-    - '320'
+    - '351'
+    - '352'
     - '13'
-    - '2016-03-18 18:56:59.441471'
-    - '2016-03-18 18:56:59.441471'
+    - '2016-03-22 15:09:05.77707'
+    - '2016-03-22 15:09:05.77707'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '213'
+  - - '229'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
     - boolean
     - plos_bio_initial_tech_check--captions_missing
     - 
-    - '321'
-    - '322'
+    - '353'
+    - '354'
     - '14'
-    - '2016-03-18 18:56:59.450086'
-    - '2016-03-18 18:56:59.450086'
+    - '2016-03-22 15:09:05.788747'
+    - '2016-03-22 15:09:05.788747'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '214'
+  - - '230'
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
@@ -5678,14 +5925,14 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_missing
     - 
-    - '323'
-    - '324'
+    - '355'
+    - '356'
     - '15'
-    - '2016-03-18 18:56:59.45863'
-    - '2016-03-18 18:56:59.45863'
+    - '2016-03-22 15:09:05.801946'
+    - '2016-03-22 15:09:05.801946'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
-  - - '215'
+  - - '231'
     - For any resubmissions after an Open Reject decision, ensure the authors have
       uploaded A 'Response to Reviewer's document. If this information is provided
       in the cover letter or another part of the submission, ask the authors to upload
@@ -5694,11 +5941,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--open_reject
     - 
-    - '325'
-    - '326'
+    - '357'
+    - '358'
     - '16'
-    - '2016-03-18 18:56:59.498278'
-    - '2016-03-18 18:56:59.498278'
+    - '2016-03-22 15:09:05.811934'
+    - '2016-03-22 15:09:05.811934'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
 
@@ -6681,6 +6928,10 @@ permission_states:
     - submitted
     - '2016-03-07 23:31:04.071713'
     - '2016-03-07 23:31:04.071713'
+  - - '8'
+    - withdrawn
+    - '2016-03-22 15:12:43.189071'
+    - '2016-03-22 15:12:43.189071'
 
 ---
 permission_states_permissions:
@@ -7659,13 +7910,23 @@ permission_states_permissions:
   - - '201'
     - '198'
     - '2'
-    - '2016-03-14 14:09:21.861011'
-    - '2016-03-14 14:09:21.861011'
+    - '2016-03-22 15:12:41.05001'
+    - '2016-03-22 15:12:41.05001'
   - - '202'
     - '199'
     - '2'
-    - '2016-03-14 14:09:21.878255'
-    - '2016-03-14 14:09:21.878255'
+    - '2016-03-22 15:12:42.813566'
+    - '2016-03-22 15:12:42.813566'
+  - - '203'
+    - '200'
+    - '2'
+    - '2016-03-22 15:12:42.832279'
+    - '2016-03-22 15:12:42.832279'
+  - - '204'
+    - '201'
+    - '8'
+    - '2016-03-22 15:12:43.201934'
+    - '2016-03-22 15:12:43.201934'
 
 ---
 permissions:
@@ -8627,15 +8888,25 @@ permissions:
     - '2016-03-10 15:20:52.710989'
     - '2016-03-10 15:20:52.710989'
   - - '198'
+    - submit
+    - Paper
+    - '2016-03-22 15:12:41.029175'
+    - '2016-03-22 15:12:41.029175'
+  - - '199'
     - view_user_role_eligibility_on_paper
     - Paper
-    - '2016-03-14 14:09:21.848491'
-    - '2016-03-14 14:09:21.848491'
-  - - '199'
+    - '2016-03-22 15:12:42.808033'
+    - '2016-03-22 15:12:42.808033'
+  - - '200'
     - assign_roles
     - Paper
-    - '2016-03-14 14:09:21.874551'
-    - '2016-03-14 14:09:21.874551'
+    - '2016-03-22 15:12:42.826716'
+    - '2016-03-22 15:12:42.826716'
+  - - '201'
+    - reactivate
+    - Paper
+    - '2016-03-22 15:12:43.196418'
+    - '2016-03-22 15:12:43.196418'
 
 ---
 permissions_roles:
@@ -10223,64 +10494,134 @@ permissions_roles:
     - '2016-03-10 15:20:53.250773'
   - - '540'
     - '198'
-    - '21'
-    - '2016-03-14 14:09:21.868961'
-    - '2016-03-14 14:09:21.868961'
+    - '8'
+    - '2016-03-22 15:12:41.071181'
+    - '2016-03-22 15:12:41.071181'
   - - '541'
+    - '198'
+    - '14'
+    - '2016-03-22 15:12:42.082976'
+    - '2016-03-22 15:12:42.082976'
+  - - '542'
     - '199'
     - '21'
-    - '2016-03-14 14:09:21.881647'
-    - '2016-03-14 14:09:21.881647'
-  - - '542'
-    - '198'
-    - '10'
-    - '2016-03-14 14:09:22.299014'
-    - '2016-03-14 14:09:22.299014'
+    - '2016-03-22 15:12:42.818794'
+    - '2016-03-22 15:12:42.818794'
   - - '543'
-    - '199'
-    - '10'
-    - '2016-03-14 14:09:22.306629'
-    - '2016-03-14 14:09:22.306629'
+    - '200'
+    - '21'
+    - '2016-03-22 15:12:42.837151'
+    - '2016-03-22 15:12:42.837151'
   - - '544'
     - '198'
-    - '11'
-    - '2016-03-14 14:09:22.405419'
-    - '2016-03-14 14:09:22.405419'
+    - '21'
+    - '2016-03-22 15:12:42.84823'
+    - '2016-03-22 15:12:42.84823'
   - - '545'
-    - '199'
-    - '11'
-    - '2016-03-14 14:09:22.413494'
-    - '2016-03-14 14:09:22.413494'
+    - '201'
+    - '10'
+    - '2016-03-22 15:12:43.207467'
+    - '2016-03-22 15:12:43.207467'
   - - '546'
-    - '198'
-    - '15'
-    - '2016-03-14 14:09:22.495417'
-    - '2016-03-14 14:09:22.495417'
-  - - '547'
     - '199'
-    - '15'
-    - '2016-03-14 14:09:22.502264'
-    - '2016-03-14 14:09:22.502264'
+    - '10'
+    - '2016-03-22 15:12:43.227405'
+    - '2016-03-22 15:12:43.227405'
+  - - '547'
+    - '200'
+    - '10'
+    - '2016-03-22 15:12:43.239067'
+    - '2016-03-22 15:12:43.239067'
   - - '548'
     - '198'
-    - '20'
-    - '2016-03-14 14:09:22.59522'
-    - '2016-03-14 14:09:22.59522'
+    - '10'
+    - '2016-03-22 15:12:43.249813'
+    - '2016-03-22 15:12:43.249813'
   - - '549'
-    - '199'
-    - '20'
-    - '2016-03-14 14:09:22.602002'
-    - '2016-03-14 14:09:22.602002'
+    - '17'
+    - '10'
+    - '2016-03-22 15:12:43.260952'
+    - '2016-03-22 15:12:43.260952'
   - - '550'
-    - '198'
-    - '19'
-    - '2016-03-14 14:09:22.699257'
-    - '2016-03-14 14:09:22.699257'
+    - '201'
+    - '11'
+    - '2016-03-22 15:12:43.42314'
+    - '2016-03-22 15:12:43.42314'
   - - '551'
     - '199'
+    - '11'
+    - '2016-03-22 15:12:43.442896'
+    - '2016-03-22 15:12:43.442896'
+  - - '552'
+    - '200'
+    - '11'
+    - '2016-03-22 15:12:43.457607'
+    - '2016-03-22 15:12:43.457607'
+  - - '553'
+    - '198'
+    - '11'
+    - '2016-03-22 15:12:43.47082'
+    - '2016-03-22 15:12:43.47082'
+  - - '554'
+    - '17'
+    - '11'
+    - '2016-03-22 15:12:43.482822'
+    - '2016-03-22 15:12:43.482822'
+  - - '555'
+    - '199'
+    - '15'
+    - '2016-03-22 15:12:43.623559'
+    - '2016-03-22 15:12:43.623559'
+  - - '556'
+    - '200'
+    - '15'
+    - '2016-03-22 15:12:43.635298'
+    - '2016-03-22 15:12:43.635298'
+  - - '557'
+    - '198'
+    - '15'
+    - '2016-03-22 15:12:43.64565'
+    - '2016-03-22 15:12:43.64565'
+  - - '558'
+    - '201'
+    - '20'
+    - '2016-03-22 15:12:43.804264'
+    - '2016-03-22 15:12:43.804264'
+  - - '559'
+    - '199'
+    - '20'
+    - '2016-03-22 15:12:43.822981'
+    - '2016-03-22 15:12:43.822981'
+  - - '560'
+    - '200'
+    - '20'
+    - '2016-03-22 15:12:43.833488'
+    - '2016-03-22 15:12:43.833488'
+  - - '561'
+    - '198'
+    - '20'
+    - '2016-03-22 15:12:43.845567'
+    - '2016-03-22 15:12:43.845567'
+  - - '562'
+    - '201'
     - '19'
-    - '2016-03-14 14:09:22.706021'
-    - '2016-03-14 14:09:22.706021'
+    - '2016-03-22 15:12:43.993701'
+    - '2016-03-22 15:12:43.993701'
+  - - '563'
+    - '199'
+    - '19'
+    - '2016-03-22 15:12:44.01177'
+    - '2016-03-22 15:12:44.01177'
+  - - '564'
+    - '200'
+    - '19'
+    - '2016-03-22 15:12:44.022735'
+    - '2016-03-22 15:12:44.022735'
+  - - '565'
+    - '198'
+    - '19'
+    - '2016-03-22 15:12:44.033271'
+    - '2016-03-22 15:12:44.033271'
 
 ---
 phase_templates:

@@ -69,14 +69,13 @@ class MetadataVersioningTest(CommonTest):
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
     paper_viewer.complete_task('Billing')
-    time.sleep(.2)
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Financial Disclosure')
     paper_viewer.complete_task('Additional Information')
-    time.sleep(10)
+    time.sleep(3)
     # refresh !!
     paper_viewer.refresh()
     time.sleep(3)

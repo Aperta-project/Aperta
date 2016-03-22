@@ -414,6 +414,68 @@ describe Paper do
     end
   end
 
+  describe '#key_participants_by_role' do
+    let(:journal) { paper.journal }
+    let(:creator_role) { journal.creator_role }
+    let(:collaborator_role) { journal.collaborator_role }
+    let(:handling_editor_role) { journal.handling_editor_role }
+    let(:reviewer_role) { journal.reviewer_role }
+
+    let(:creator) { user }
+    let(:collaborator) { FactoryGirl.create(:user) }
+    let(:handling_editor) { FactoryGirl.create(:user) }
+    let(:reviewer) { FactoryGirl.create(:user) }
+
+    let!(:creator_assignment) do
+      paper.update(creator: user)
+      paper.assignments.where(role: creator_role).first!
+    end
+    let!(:collaborator_assignment) do
+      paper.assignments.create!(user: collaborator, role: collaborator_role)
+    end
+    let!(:handling_editor_assignment) do
+      paper.assignments.create!(
+        user: handling_editor,
+        role: handling_editor_role
+      )
+    end
+    let!(:reviewer_assignment) do
+      paper.assignments.create!(user: reviewer, role: reviewer_role)
+    end
+
+    it 'returns hash or roles and users' do
+      expect(paper.key_participants_by_role['Creator']).to eq([creator])
+      expect(paper.key_participants_by_role['Collaborator']).to eq([collaborator])
+      expect(paper.key_participants_by_role['Reviewer']).to eq([reviewer])
+    end
+
+    it 'includes Creator, Collaborator, and Reviewer' do
+      expect(paper.key_participants_by_role.keys).to include('Creator')
+      expect(paper.key_participants_by_role.keys).to include('Collaborator')
+      expect(paper.key_participants_by_role.keys).to include('Reviewer')
+    end
+
+    it 'does not include Handling Editor' do
+      expect(paper.key_participants_by_role.keys).to_not include('Handling Editor')
+    end
+
+    it 'does not include task assignments (Participants)' do
+      expect(paper.key_participants_by_role.keys).to_not include('Participants')
+    end
+
+    context 'when a user is assigned different roles on different tasks' do
+      let!(:another_reviewer_assignment) do
+        paper.assignments.create!(user: collaborator, role: reviewer_role)
+      end
+
+      it 'returns the user only once per role' do
+        expect(paper.key_participants_by_role['Creator']).to eq([creator])
+        expect(paper.key_participants_by_role['Collaborator']).to eq([collaborator])
+        expect(paper.key_participants_by_role['Reviewer']).to eq([reviewer, collaborator])
+      end
+    end
+  end
+
   context 'State Machine' do
     describe '#initial_submit' do
       it 'transitions to initially_submitted' do

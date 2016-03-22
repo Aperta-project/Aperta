@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Invitation do
-  let(:paper) { FactoryGirl.create(:paper, :with_valid_author) }
+  let(:paper) { FactoryGirl.create(:paper, :with_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
   let(:invitation) { FactoryGirl.build :invitation, task: task }
 
@@ -59,6 +59,7 @@ describe Invitation do
     end
 
     it "adds the author list to invitation.information" do
+      expect(paper.authors_list).to_not be_empty
       invitation.invite!
       expect(invitation.information).to eq("Here are the authors on the paper:\n\n#{paper.authors_list}")
     end

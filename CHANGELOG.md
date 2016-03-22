@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Attachments to Revise Manuscript Task
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 - Group Author form on Authors task
+- New columns added to Paper Tracker to display publishing status, Handling Editor and Cover Editor
 
 ### Changed
 - Institution field will search as you type

@@ -41,8 +41,11 @@ class AuthorsTaskTest(CommonTest):
      - validate trying to close a task without completing author profile
   """
 
-  def test_validate_styles(self):
-    """Validates styles for the author task"""
+  def test_validate_components(self):
+    """
+    test_authors_task: Validates the elements, styles and functions for the author task
+    :return: void function
+    """
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -57,7 +60,10 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_styles()
 
   def test_validate_add_delete_individual_author(self):
-    """Validates add and delete individual author functions for the author task"""
+    """
+    test_authors_task: Validates add and delete individual author functions for the author task
+    :return: void function
+    """
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -89,7 +95,10 @@ class AuthorsTaskTest(CommonTest):
     return self
 
   def test_validate_add_delete_group_author(self):
-    """Validates add and delete group author functions for the author task"""
+    """
+    test_authors_task: Validates add and delete group author functions for the author task
+    :return: void function
+    """
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])

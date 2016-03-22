@@ -150,7 +150,8 @@ class AuthorsTask(BaseTask):
         "Submitted to Biomedical Journals: Authorship and Contributorship'. Individuals whose "
         "contributions fall short of authorship should instead be mentioned in the "
         "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
-        "author names and affiliations should be listed at the end of the article.")
+        "author names and affiliations should be listed at the end of the article."), \
+        authors_text.text
     authors_text_link = self._get(self._authors_text_link)
     assert 'http://www.icmje.org/recommendations/browse/' in authors_text_link.get_attribute('href')
     assert 'roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html' in \

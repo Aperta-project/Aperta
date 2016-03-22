@@ -40,7 +40,8 @@ class ApertaWorkflowTest(CommonTest):
 
   def test_validate_components_styles(self):
     """
-    Validates the presence of the initial page elements
+    test_workflow: Validates elements and styles of the workflow page
+    :return: void function
     """
     workflow_users = [internal_editor_login,
                       staff_admin_login,
@@ -70,7 +71,10 @@ class ApertaWorkflowTest(CommonTest):
     return self
 
   def test_add_new_card(self):
-    """Testing adding a new card"""
+    """
+    test_workflow: Testing adding a new card
+    :return: void function
+    """
     # APERTA-6186 stops the internal editor and publication services logins from adding a new card
     workflow_users = [internal_editor_login,
                       staff_admin_login,

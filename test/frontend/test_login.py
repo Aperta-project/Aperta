@@ -46,9 +46,12 @@ class ApertaLoginPageLayoutTest(CommonTest):
   """
   def test_validate_components_styles(self):
     """
+    test_login: validates elements and styles for the login page, regardless enabled login methods
     Validates the presence of the following provided elements:
-      Welcome Text, Login Field, Password Field, Forgot pw link, Remember me checkbox, Sign In button, Sign Up link
-      Sign in with PLOS (CAS) button, Create PLOS Account (CAS) button, Sign in with ORCID button
+      Welcome Text, Login Field, Password Field, Forgot pw link, Remember me checkbox, Sign In
+      button, Sign Up link, Sign in with PLOS (CAS) button, Create PLOS Account (CAS) button, Sign
+      in with ORCID button
+    :return: void function
     """
     login_page = LoginPage(self.getDriver())
     login_page.validate_initial_page_elements_styles()
@@ -71,10 +74,13 @@ class ApertaNativeLoginTest(CommonTest):
      - validate remember me function (only by cookie validation)
      - validate forgot password function (excludes email receipt validation)
   """
-  def rest_validate_native_login(self):
+  def test_validate_native_login(self):
     """
+    test_login: Validate Native Login function, if enabled.
     Validates the presence of the following provided elements:
-      Welcome Text, Login Field, Password Field, Forgot pw link, Remember me checkbox, Sign In button, Sign Up link
+      Welcome Text, Login Field, Password Field, Forgot pw link, Remember me checkbox, Sign In
+      button, Sign Up link
+    :return: void function
     """
     login_page = LoginPage(self.getDriver())
     # Valid email, invalid pw
@@ -124,7 +130,8 @@ class ApertaCASLoginTest(CommonTest):
   """
   def test_validate_cas_login(self):
     """
-    Validates the Signin via pre-existing NED CAS account link
+    test_login: Validates signin via NED CAS account, if enabled
+    :return: void function
     """
     login_page = LoginPage(self.getDriver())
     # Valid email, valid pw
@@ -139,7 +146,9 @@ class ApertaCASLoginTest(CommonTest):
 
   def test_validate_cas_signup(self):
     """
-    Validates Signup via NED CAS account link with redirect back to application in signed in state
+    test_login: Validates NED CAS signup wiring, elements and styles
+      Does not actually register a new account
+    :return: void function
     """
     login_page = LoginPage(self.getDriver())
     environment_url = login_page.get_current_url()
@@ -162,9 +171,12 @@ class ApertaORCIDLoginTest(CommonTest):
   """
   def rest_validate_orcid_login(self):
     """
+    test_login: Validates ORCID sign-in wiring, elements and styles
+    Does not validate actual sign-in
     Validates the Signin via pre-existing ORCID account link
     Note, this is currently not correctly wired in, so just doing a minimal test
     that we are pointing at the correct page.
+    :return: void function
     """
     login_page = LoginPage(self.getDriver())
     # Valid email, valid pw

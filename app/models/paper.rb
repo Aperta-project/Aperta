@@ -79,6 +79,8 @@ class Paper < ActiveRecord::Base
     state :published
     state :withdrawn
 
+    after_all_transitions :set_state_updated_at!
+
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
@@ -493,6 +495,10 @@ class Paper < ActiveRecord::Base
   def set_first_submitted_at!
     return if first_submitted_at
     update!(first_submitted_at: Time.current.utc)
+  end
+
+  def set_state_updated_at!
+    update!(state_updated_at: Time.current.utc)
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

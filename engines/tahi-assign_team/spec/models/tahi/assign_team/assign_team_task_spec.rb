@@ -6,38 +6,56 @@ describe Tahi::AssignTeam::AssignTeamTask do
   let(:journal) { FactoryGirl.create(:journal) }
 
   describe '#assignable_roles' do
+    let(:academic_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:cover_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:handling_editor_role) { FactoryGirl.build_stubbed(:role) }
 
     before do
-      allow(task.journal).to receive(:handling_editor_role)
-        .and_return handling_editor_role
+      allow(task.journal).to receive(:academic_editor_role)
+        .and_return academic_editor_role
 
       allow(task.journal).to receive(:cover_editor_role)
         .and_return cover_editor_role
+
+      allow(task.journal).to receive(:handling_editor_role)
+        .and_return handling_editor_role
     end
 
     it 'returns roles that can be assigned thru this task' do
       expect(task.assignable_roles).to be_kind_of(Array)
     end
 
-    it "includes the journal's handling_editor_role" do
-      expect(task.assignable_roles).to include \
-        task.journal.handling_editor_role
+    it "includes the journal's academic_editor_role" do
+      expect(task.assignable_roles).to \
+        include(task.journal.academic_editor_role)
     end
 
     it "includes the journal's cover_editor_role" do
       expect(task.assignable_roles).to include(task.journal.cover_editor_role)
     end
+
+    it "includes the journal's handling_editor_role" do
+      expect(task.assignable_roles).to include \
+        task.journal.handling_editor_role
+    end
   end
 
   describe '#assignments' do
+    let(:academic_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:cover_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:handling_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:unsupported_role) { FactoryGirl.build_stubbed(:role) }
     let(:user) { FactoryGirl.build_stubbed(:user) }
 
-    let(:expected_assignment_1) do
+    let!(:academic_editor_assignment) do
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: task.paper,
+        role: academic_editor_role,
+        user: user
+      )
+    end
+    let!(:cover_editor_assignment) do
       FactoryGirl.create(
         :assignment,
         assigned_to: task.paper,
@@ -45,7 +63,7 @@ describe Tahi::AssignTeam::AssignTeamTask do
         user: user
       )
     end
-    let(:expected_assignment_2) do
+    let!(:handling_editor_assignment) do
       FactoryGirl.create(
         :assignment,
         assigned_to: task.paper,
@@ -53,7 +71,7 @@ describe Tahi::AssignTeam::AssignTeamTask do
         user: user
       )
     end
-    let(:not_expected_assignment) do
+    let!(:not_expected_assignment) do
       FactoryGirl.create(
         :assignment,
         assigned_to: task.paper,
@@ -63,25 +81,25 @@ describe Tahi::AssignTeam::AssignTeamTask do
     end
 
     before do
-      allow(task.journal).to receive(:handling_editor_role)
-        .and_return handling_editor_role
+      allow(task.journal).to receive(:academic_editor_role)
+        .and_return academic_editor_role
 
       allow(task.journal).to receive(:cover_editor_role)
         .and_return cover_editor_role
+
+      allow(task.journal).to receive(:handling_editor_role)
+        .and_return handling_editor_role
     end
 
-    it <<-DESCRIPTION do
-      returns the assignments to this task's paper based on the assignable_roles
-    DESCRIPTION
+    it "returns assignments for this task's paper based on assignable_roles" do
       expect(task.assignments).to contain_exactly(
-        expected_assignment_1,
-        expected_assignment_2
+        academic_editor_assignment,
+        cover_editor_assignment,
+        handling_editor_assignment
       )
     end
 
-    it <<-DESCRIPTION do
-      does not include assignments where the role is not an assignable_role
-    DESCRIPTION
+    it "doesn't include assignments where the role is not an assignable_role" do
       expect(task.assignments).to_not include(not_expected_assignment)
     end
   end

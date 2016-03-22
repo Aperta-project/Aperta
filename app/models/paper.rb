@@ -514,19 +514,15 @@ class Paper < ActiveRecord::Base
   end
 
   def key_participation_roles
-    paper_participation_roles -
-      [
-        journal.collaborator_role,
-        journal.handling_editor_role
-      ]
+    paper_participation_roles - [journal.handling_editor_role]
   end
 
   def key_participations
-    assignments_for_roles(key_participation_roles)
+    assignments_for_roles(key_participation_roles, false)
   end
 
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-  def assignments_for_roles(participation_roles)
+  def assignments_for_roles(participation_roles, with_task_participants = true)
     root = Assignment.arel_table
     arel_query = (
       root[:assigned_to_type].eq(Paper.sti_name)
@@ -538,7 +534,7 @@ class Paper < ActiveRecord::Base
       )
     )
 
-    if task_ids.present?
+    if task_ids.present? && with_task_participants
       arel_query = arel_query.or(
         root[:assigned_to_type].eq(Task.sti_name)
         .and(root[:assigned_to_id].in(task_ids))

@@ -32,8 +32,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
-    # dashboard Link
-    self._dashboard_link = (By.ID, 'nav-dashboard')
     # Main Viewer Div
     self._paper_title = (By.ID, 'control-bar-paper-title')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
@@ -473,7 +471,25 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def click_dashboard_link(self):
     """Click on dashboard link"""
-    self._get(self._dashboard_link).click()
+    self._get(self._nav_aperta_dashboard_link).click()
+
+  def click_your_manuscript_link(self):
+    """Click on Your Manuscripts link"""
+    self._get(self._your_manuscripts_link).click()
+
+  def go_to_dashboard(self, item=''):
+    """
+    Go to the dashboard
+    :param item: string with the item where to click ('aperta' for Aperta Icon or
+                 'your_manuscripts' for Your Manuscripts link)
+    """
+    dashboard = {'aperta': self._nav_aperta_dashboard_link,
+                 'your_manuscripts': self._your_manuscripts_link}
+    if item:
+      self._get(dashboard[item]).click()
+    else:
+      dashboard_link = dashboard[random.choice(dashboard)]
+      self._get(dashboard_link).click()
 
   def get_infobox(self):
     """Get the infobox element"""

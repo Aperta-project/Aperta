@@ -50,7 +50,10 @@ class AuthenticatedPage(PlosPage):
     self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
     self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
     self._nav_spacer = (By.CLASS_NAME, 'control-bar-item-spacer')
-    self._nav_dashboard_link = (By.ID, 'nav-dashboard')
+    # dashboard / your manuscripts Link
+    self._nav_aperta_dashboard_link = (By.ID, 'nav-dashboard')
+    self._nav_your_manuscripts_link = (By.ID, 'nav-manuscripts')
+
     self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
@@ -60,7 +63,6 @@ class AuthenticatedPage(PlosPage):
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
     self._nav_feedback_link = (By.ID, 'nav-give-feedback')
-    self._nav_hamburger_icon = (By.CLASS_NAME, 'fa-list-ul')
     # Global toolbar Icons
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
@@ -145,7 +147,10 @@ class AuthenticatedPage(PlosPage):
     elevated = [fm_login, sa_login]
     self._get(self._nav_title)
     self._get(self._nav_profile_img)
-    self._get(self._nav_dashboard_link)
+    assert 'aperta' == self._get(self._nav_aperta_dashboard_link).text.lower(), \
+      self._get(self._nav_aperta_dashboard_link).text
+    assert 'your manuscripts' == self._get(self._nav_your_manuscripts_link).text.lower(), \
+      self._get(self._nav_your_manuscripts_link).text
     self.click_profile_nav()
     self._get(self._nav_profile_link)
     self._get(self._nav_signout_link)

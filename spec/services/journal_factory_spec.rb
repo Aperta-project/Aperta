@@ -218,7 +218,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.cover_editor_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
+              permissions.find_by(action: 'manage_invitations')
             )
           end
         end
@@ -369,7 +369,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.handling_editor_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
+              permissions.find_by(action: 'manage_invitations')
             )
           end
         end
@@ -482,7 +482,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.internal_editor_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
+              permissions.find_by(action: 'manage_invitations')
             )
           end
         end
@@ -595,7 +595,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.production_staff_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
+              permissions.find_by(action: 'manage_invitations')
             )
           end
         end
@@ -708,7 +708,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.publishing_services_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
+              permissions.find_by(action: 'manage_invitations')
             )
           end
         end
@@ -887,7 +887,7 @@ describe JournalFactory do
 
           it ':manage_invitations' do
             expect(journal.staff_admin_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
+              permissions.find_by(action: 'manage_invitations')
             )
           end
         end

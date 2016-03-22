@@ -119,10 +119,13 @@ affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
                'department':'Molecular Biology', }
 
 # Author for Author card
-author = {'first': 'Jane', 'middle': 'M', 'last': 'Doe',
+author = {'first': 'Jane', 'middle': 'M', 'last': 'Doe', 'initials': 'JMD',
           'title': 'Dr.', 'email': 'test@test.org',
           'department':'Molecular Biology', '1_institution':'Universidad Del Este',
           '2_institution': 'Universidad Nacional del Sur',}
+
+group_author = {'group_name': 'Rebel Alliance', 'group_inits': 'RA',
+                'first': 'Jackson', 'middle': 'V', 'last': 'Stoeffer', 'email': 'test@test.org'}
 
 billing_data = {'first': 'Jane', 'last': 'Doe',
           'title': 'Dr.', 'email': 'test@test.org',

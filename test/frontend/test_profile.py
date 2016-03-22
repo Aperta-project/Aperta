@@ -36,14 +36,20 @@ class ApertaProfileTest(CommonTest):
     return ProfilePage(self.getDriver())
 
   def test_validate_components_styles(self):
-    """Validates the presence of the initial page elements"""
+    """
+    test_profile: Validates elements and styles of the profile page
+    :return: void function
+    """
     profile_page = self._go_to_profile()
     profile_page.validate_initial_page_elements_styles(login_valid_uid)
     profile_page.validate_invalid_add_new_affiliation()
     return self
 
   def test_affiliations(self):
-    """Testing add/delete affiliations"""
+    """
+    test_profile: Validates function of adding/deleting affiliations
+    :return: void function
+    """
     profile_page = self._go_to_profile()
     # Validate image upload
     profile_page.validate_image_upload()

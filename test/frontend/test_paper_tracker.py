@@ -40,6 +40,7 @@ class ApertaPaperTrackerTest(CommonTest):
   """
   def test_validate_paper_tracker(self):
     """
+    test_paper_tracker: Validate elements, styles and functions of the paper tracker page
     Validates the presence of the following elements:
       Welcome Text, subhead, table presentation
     """

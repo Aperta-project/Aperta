@@ -32,7 +32,7 @@ class BillingTask(BaseTask):
     self._zip = (By.NAME, 'plos_billing--postal_code')
     self._payment_option = (By.CLASS_NAME, 'affiliation-field')
     # This ID is bogus and dynamic, untrustworthy
-    self._payment_items_parent = (By.ID, 'select2-results-2')
+    self._payment_items_parent = (By.CSS_SELECTOR, 'div.payment-method-select-list')
 
    # POM Actions
   def complete(self, data=data):
@@ -65,23 +65,12 @@ class BillingTask(BaseTask):
     # Grab the items in the select2 dropdown, then make selection
     # previous send_keys method no longer works.
     payment_option_default = 'I will pay the full fee upon article acceptance'
-    time.sleep(2)
-    # This locator is dynamic and unpredictable
-    self.set_timeout(2)
-    try:
-      parent_div = self._get(self._payment_items_parent)
-    except ElementDoesNotExistAssertionError:
-      self._payment_items_parent = (By.ID, 'select2-results-4')
-      parent_div = self._get(self._payment_items_parent)
-    self.restore_timeout()
-    # for item in parent_div.find_elements_by_tag_name('li'):
+    parent_div = self._get(self._payment_items_parent)
     for item in parent_div.find_elements_by_class_name('select2-result-label'):
       if item.text == payment_option_default:
         logging.info('Selecting Payment Option: {0}'.format(payment_option_default))
         item.click()
-        time.sleep(1)
         break
-    time.sleep(2)
     completed = self.completed_state()
     if not completed:
       self.click_completion_button()

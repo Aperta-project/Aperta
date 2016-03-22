@@ -27,6 +27,9 @@ class MetadataVersioningTest(CommonTest):
 
   def test_metadata_versioning(self):
     """
+    test_metadata_versioning: Validates diffing and versioning functions
+      creates, doc, submits, is invited for major revision, makes changes, submits, views diffs
+      This is a very long test
     Test metadata versioning (APERTA-5747).
     AC being tested:
 
@@ -38,6 +41,7 @@ class MetadataVersioningTest(CommonTest):
 
     Note: Due to bugs APERTA-5794, APERTA-5810, APERTA-5808 and APERTA-5849, assertions
     are not implemented in this method
+    :return: void function
     """
     title = 'For metadata versioning'
     types = ('Research', 'Research w/Initial Decision Card')
@@ -65,14 +69,13 @@ class MetadataVersioningTest(CommonTest):
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
     paper_viewer.complete_task('Billing')
-    time.sleep(.2)
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Financial Disclosure')
     paper_viewer.complete_task('Additional Information')
-    time.sleep(10)
+    time.sleep(3)
     # refresh !!
     paper_viewer.refresh()
     time.sleep(3)

@@ -42,6 +42,7 @@ class ApertaJournalAdminTest(CommonTest):
   """
   def test_validate_journal_admin_components_styles(self):
     """
+    test_journal_admin: Validate toolbar presentation for journal admin
     Validates the presence of the following elements:
       toolbar elements
       section headings save for user and roles that are validated separately
@@ -60,6 +61,8 @@ class ApertaJournalAdminTest(CommonTest):
 
   def test_validate_journal_admin_user_search_display_function(self):
     """
+    test_journal_admin: Validate the function of user search in the journal_admin page for a random
+      journal
     Validates the presence of the following elements:
       user section heading and user search form elements, user search icon
       result set elements
@@ -78,6 +81,7 @@ class ApertaJournalAdminTest(CommonTest):
 
   def test_validate_journal_admin_roles_display_function(self):
     """
+    test_journal_admin: validate the display of the admin user role display section
     Validates the presence of the following elements:
       role section heading
       default and non-default role display
@@ -97,6 +101,7 @@ class ApertaJournalAdminTest(CommonTest):
 
   def test_validate_task_types_display_function(self):
     """
+    test_journal_admin: validate the display of the journal admin task type section and overlay
     Validates the presence of the following elements:
       Section Heading
       Edit Task Types button
@@ -125,6 +130,7 @@ class ApertaJournalAdminTest(CommonTest):
 
   def test_validate_mmt_display_function(self):
     """
+    test_journal_admin: validate the mmt section display and functions of adding/editing an MMT
     Validates the presence of the following elements:
       Section Heading
       Add new Template button
@@ -148,6 +154,7 @@ class ApertaJournalAdminTest(CommonTest):
 
   def test_validate_add_delete_mmt_function(self):
     """
+    test_journal_admin: validate addition and deletion of an MMT from the journal_admin page.
     Validates Add new Template
     Validates Delete new Template
     :return: void function
@@ -171,6 +178,7 @@ class ApertaJournalAdminTest(CommonTest):
 
   def test_validate_style_settings_display_function(self):
     """
+    test_journal_admin: Validate styling & functions of  journal admin page style settings section
     Validates the presence of the following elements:
       Section Heading
       Upload Epub Cover and status text

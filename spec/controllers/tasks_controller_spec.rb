@@ -90,11 +90,6 @@ describe TasksController, redis: true do
       it "creates a task" do
         expect { do_request }.to change(Task, :count).by 1
       end
-
-      it "creates a task, includes the paper creator if is submission task " do
-        do_request
-        expect(Task.last.participants).to include(paper.creator)
-      end
     end
 
     context "when the user does not have access" do

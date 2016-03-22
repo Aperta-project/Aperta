@@ -16,7 +16,6 @@ class TaskFactory
 
   def save
     task.save!
-    add_creator_as_participant
     task
   end
 
@@ -27,10 +26,5 @@ class TaskFactory
       title: task_klass::DEFAULT_TITLE,
       old_role: task_klass::DEFAULT_ROLE
     }
-  end
-
-  def add_creator_as_participant
-    return unless task.submission_task? && creator
-    ParticipationFactory.create(task: task, assignee: creator, notify: notify)
   end
 end

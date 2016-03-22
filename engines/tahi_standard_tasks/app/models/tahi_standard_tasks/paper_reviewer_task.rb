@@ -73,6 +73,7 @@ module TahiStandardTasks
         Authors:
         %{authors}
 
+        Abstract:
         %{abstract}
 
       TEXT
@@ -88,8 +89,8 @@ module TahiStandardTasks
     end
 
     def abstract
-      return unless paper.abstract
-      "Abstract:\n\n#{paper.abstract}\n"
+      return 'Abstract is not available' unless paper.abstract
+      paper.abstract
     end
   end
 end

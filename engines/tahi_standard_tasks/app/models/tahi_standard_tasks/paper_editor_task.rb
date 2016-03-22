@@ -56,7 +56,9 @@ Manuscript Title:
 Authors:
 %{authors}
 
+Abstract:
 %{abstract}
+
 To view this manuscript, please use the link presented above in the body of the e-mail.
 
 You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
@@ -80,8 +82,8 @@ You will be directed to your dashboard in Aperta, where you will see your invita
     end
 
     def abstract
-      return unless paper.abstract
-      "Abstract:\n\n#{paper.abstract}\n"
+      return 'Abstract is not available' unless paper.abstract
+      paper.abstract
     end
 
     def replace_editor(invitation)

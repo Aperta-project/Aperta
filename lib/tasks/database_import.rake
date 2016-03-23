@@ -7,8 +7,11 @@ namespace :db do
     fail "This can only be run in a development environment" unless Rails.env.development?
     source_db = args[:source_db_name].present? ? args[:source_db_name] : 'tahi-staging'
     Rake::Task['db:drop'].invoke
-    system(" `heroku pg:pull DATABASE_URL tahi_development --app #{source_db}`")
+    system("`(heroku pg:pull DATABASE_URL tahi_development --app #{source_db}) && rake db:reset_passwords`")
+  end
 
+  task :reset_passwords => [:environment] do |t, args|
+    fail "This can only be run in a development environment" unless Rails.env.development?
     Journal.update_all(logo: nil)
     User.update_all(avatar: nil)
     User.all.each do |u|

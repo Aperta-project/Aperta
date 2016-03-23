@@ -526,7 +526,7 @@ class DashboardPage(AuthenticatedPage):
         time.sleep(1)
         break
     selected_type = self._gets(self._cns_paper_type_dd)
-    # assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
+    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
 
   @staticmethod
   def title_generator(prefix='', random_bit=True):

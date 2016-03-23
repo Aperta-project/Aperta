@@ -54,17 +54,6 @@ describe "TahiStandardTasks::DecisionReviser" do
             }.to change(paper.tasks.where(type: "TahiStandardTasks::ReviseTask"), :count).by(1)
           end
 
-          it "has academic editor and paper creator participants" do
-            subject
-            expect(revise_task.participants).to \
-              contain_exactly(paper.creator, *paper.academic_editors)
-          end
-
-          it "task participants include the paper's author" do
-            subject
-            expect(revise_task.participants).to include(paper.creator)
-          end
-
           it "task body includes the revise letter" do
             subject
             expect(revise_task.body.first.first['value']).to include task.major_revision_letter

@@ -32,13 +32,17 @@ namespace :deploy do
   end
 end
 
+set(:nginx, 'nginx')
 # Use service scripts to restart puma/sidekiq
 [{ namespace: :puma,
    role: :app,
    service: :web_service_name },
  { namespace: :sidekiq,
    role: :worker,
-   service: :worker_service_name }].each do |config|
+   service: :worker_service_name },
+ { namespace: :nginx,
+   role: :web,
+   service: :nginx }].each do |config|
   namespace config[:namespace] do
     desc "Restart #{config[:service]} instance for this application"
     task :restart do
@@ -49,7 +53,7 @@ end
     desc "Start #{config[:namespace]} instance for this application"
     task :start do
       on roles(config[:role]) do
-        sudo 'service', fetch(config[:service]), 'start'
+        sudo "service #{fetch(config[:service])} start || true"
       end
     end
     desc "Show status of #{config[:namespace]} for this application"
@@ -69,3 +73,4 @@ end
 
 after 'deploy:finished', 'puma:restart'
 after 'deploy:finished', 'sidekiq:restart'
+after 'deploy:finished', 'nginx:start'

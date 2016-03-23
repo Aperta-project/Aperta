@@ -54,12 +54,13 @@ class ApertaLoginPageLayoutTest(CommonTest):
     :return: void function
     """
     login_page = LoginPage(self.getDriver())
-    login_page.validate_initial_page_elements_styles()
-
-    # Forgot password link - modal validation
-    login_page.open_fyp()
-    login_page.validate_fyp_elements_styles_function()
-    login_page.close_fyp()
+    native_login_enabled = login_page.validate_initial_page_elements_styles()
+    logging.info('Native Login is enabled: {0}'.format(str(native_login_enabled)))
+    if native_login_enabled:
+      # Forgot password link - modal validation
+      login_page.open_fyp()
+      login_page.validate_fyp_elements_styles_function()
+      login_page.close_fyp()
 
 
 
@@ -74,7 +75,7 @@ class ApertaNativeLoginTest(CommonTest):
      - validate remember me function (only by cookie validation)
      - validate forgot password function (excludes email receipt validation)
   """
-  def test_validate_native_login(self):
+  def rest_validate_native_login(self):
     """
     test_login: Validate Native Login function, if enabled.
     Validates the presence of the following provided elements:

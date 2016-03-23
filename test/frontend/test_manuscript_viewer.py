@@ -280,7 +280,7 @@ class ViewPaperTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # AC8: Message for full submission when is ready for submition
-    manuscript_page._get(manuscript_page._nav_dashboard_link)
+    manuscript_page._get(manuscript_page._nav_aperta_dashboard_link)
     time.sleep(5)
     assert 'Your manuscript is ready for Full Submission.' in \
         manuscript_page.get_submission_status_info_text(), \

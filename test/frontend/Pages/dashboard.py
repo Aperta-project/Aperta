@@ -34,6 +34,7 @@ class DashboardPage(AuthenticatedPage):
     # Locators - Instance members
     # Base Page Locators
     self._dashboard_top_menu_paper_tracker = (By.ID, 'nav-paper-tracker')
+    self._dashboard_logo = (By.CLASS_NAME, 'dashboard-plos-logo')
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
     self._dashboard_view_invitations_btn = \
         (By.CSS_SELECTOR, 'section.dashboard-section button.button-primary.button--green')
@@ -167,6 +168,8 @@ class DashboardPage(AuthenticatedPage):
     """
     Validates the static page elements existence and styles
     """
+    logo = self._get(self._dashboard_logo)
+    assert '/images/plos_logo.png' in logo.get_attribute('src'), logo.get_attribute('src')
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
     self.validate_primary_big_green_button_style(cns_btn)

@@ -16,14 +16,15 @@
       </span>
       <span class="assign_team_select2_container">
         <label for="user">User</label>
-        {{select-2-single minimumInputLength=0
-                          name="role_users"
-                          placeholder="Please select User"
-                          selectedData=selectedUser
-                          source=selectableUsers
-                          selectionSelected="didSelectUser"
-                          value=""
-                          width="200px"}}
+        {{select-2-single
+            minimumInputLength=3
+            name="role_users"
+            placeholder="Please select User"
+            remoteSource=select2RemoteSource
+            selectedData=selectedUser
+            selectionSelected="didSelectUser"
+            value=""
+            width="200px"}}
       </span>
       <button class="button-primary button--green invite-reviewer-button {{if isAssignable "button--green" "button--disabled"}}" {{action "assignRoleToUser"}}> Assign </button>
       {{#if validationErrors.role}}

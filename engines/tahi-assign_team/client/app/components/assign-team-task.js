@@ -4,27 +4,12 @@ import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
+  paper: Ember.computed.alias('task.paper'),
   isAssignable: Ember.computed.bool('selectedUser'),
 
   assignableRoles: Ember.computed.alias('task.assignableRoles'),
-
-  fetchUsers: Ember.observer('selectedRole', function() {
-    const paperId = this.get('task.paper.id');
-    const selectedRoleId = this.get('selectedRole.id');
-
-    if(!selectedRoleId){
-      return;
-    } else {
-      const path = `/api/papers/${paperId}/roles/${selectedRoleId}/eligible_users`;
-      Ember.$.getJSON(path, (data) => {
-        this.set('users', data.users);
-      });
-    }
-  }),
-
   selectableRoles: Ember.computed('assignableRoles', function() {
     const roles = this.get('assignableRoles') || [];
-
     return roles.map(function(role) {
       return {
         id: role.get('id'),
@@ -33,15 +18,27 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     });
   }),
 
-  selectableUsers: Ember.computed('users', function() {
-    const users = this.get('users') || [];
+  select2RemoteSource: Ember.computed('select2RemoteUrl', function(){
+    const url = this.get('select2RemoteUrl');
+    if(!url) return;
 
-    return users.map(function(user) {
-      return {
-        id: user.id,
-        text: user.full_name
-      };
-    });
+    return {
+      url: url,
+      dataType: 'json',
+      quietMillis: 500,
+      data: function(term) {
+        return { query: term };
+      },
+      results: function(data) {
+        const selectableUsers = data.users.map(function(user){
+          return {
+            id: user.id,
+            text: user.full_name
+          };
+        });
+        return { results: selectableUsers };
+      }
+    };
   }),
 
   actions: {
@@ -74,7 +71,15 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     didSelectRole(role) {
+      const paperId = this.get('paper.id');
+      const roleId = role.id;
+
+      Ember.assert(`Expected to have a paper.id but didn't`, paperId);
+      Ember.assert(`Expected to have a role.id but didn't`, roleId);
+
+      let url = `/api/papers/${paperId}/roles/${roleId}/eligible_users`;
       this.set('selectedRole', role);
+      this.set('select2RemoteUrl', url);
     },
 
     didSelectUser(user) {

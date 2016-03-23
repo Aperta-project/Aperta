@@ -465,7 +465,7 @@ class JournalAdminPage(AdminPage):
             time.sleep(1)
             delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
             logging.info('Clicking on MMT trash icon')
-            self._actions.click(delete_mmt).perform()
+            delete_mmt.click()
             time.sleep(1)
             self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR,
                                                                      'div.mmt-thumbnail-overlay-confirm-destroy p')

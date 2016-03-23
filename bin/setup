@@ -159,7 +159,7 @@ Dir.chdir APP_ROOT do
   create_config_file('.foreman') do |f|
     f.puts "port: 5000"
     f.puts "procfile: Procfile.local"
-    f.puts "env: .env,.env.development"
+    f.puts "env: ''"
   end
 
 

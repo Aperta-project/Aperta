@@ -91,14 +91,14 @@ class QueryParser < QueryLanguageParser
     task_table = join Task
     invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
     task_table[:title].matches(task).and(
-      invite_table[:state].in(%w(pending, invited])))
+      invite_table[:state].in(%w(pending invited)))
   end
 
   add_two_part_expression('TASK', 'HAS NO OPEN INVITATIONS') do |task, _|
     task_table = join Task
     invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
     task_table[:title].matches(task).and(
-      invite_table[:state].not_in(%w(pending, invited)))
+      invite_table[:state].not_in(%w(pending invited)))
   end
 
   add_two_part_expression('TASK',
@@ -123,6 +123,26 @@ class QueryParser < QueryLanguageParser
       Arel::Nodes::SqlLiteral.new(
         Task.arel_table.project(:paper_id).where(
           Task.arel_table[:title].matches(task)).to_sql))
+  end
+
+  add_no_args_expression('ALL REVIEWS COMPLETE') do
+    task_table = Task.arel_table
+    incomplete_reviews = task_table.project(:paper_id).where(
+      task_table[:type].eq(TahiStandardTasks::ReviewerReportTask)
+      .and(task_table[:completed].eq(false)))
+
+    joined_tasks = join Task
+
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(incomplete_reviews.to_sql)).and(
+        joined_tasks[:type].eq(TahiStandardTasks::ReviewerReportTask))
+  end
+
+  add_no_args_expression('NOT ALL REVIEWS COMPLETE') do
+    table = join Task
+
+    table[:type].eq(TahiStandardTasks::ReviewerReportTask)
+      .and(table[:completed].eq(false))
   end
 
   add_statement(/^\d+/.r) do |doi|

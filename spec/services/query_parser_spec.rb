@@ -173,6 +173,22 @@ describe QueryParser do
       end
     end
 
+    describe 'review queries' do
+      it 'parses ALL REVIEWS COMPLETE' do
+        parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks"."completed" = 'f') AND "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask'
+        SQL
+      end
+
+      it 'parses NOT ALL REVIEWS COMPLETE' do
+        parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks_0"."completed" = 'f'
+        SQL
+      end
+    end
+
     describe 'people queries' do
       let!(:president_role) { create(:role, name: 'president') }
       let!(:user) { create(:user, username: 'someuser') }

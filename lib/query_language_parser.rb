@@ -21,6 +21,14 @@ class QueryLanguageParser
       @expressions.push block
     end
 
+    def add_no_args_expression(keyword, &block)
+      add_expression(keywords: [keyword]) do |_|
+        symbol(keyword).map do
+          call_block_with_parsed_strings(block, [])
+        end
+      end
+    end
+
     def add_simple_expression(keyword, &block)
       add_expression(keywords: [keyword]) do |predicate|
         (symbol(keyword) >> predicate).map do |parsed_string|

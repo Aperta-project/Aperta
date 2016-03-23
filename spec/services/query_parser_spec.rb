@@ -189,6 +189,30 @@ describe QueryParser do
       end
     end
 
+    describe 'submission time queries' do
+      it 'parses SUBMITTED > DAYS AGO' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse 'SUBMITTED > 3 DAYS AGO'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" < '#{start_time}'
+          SQL
+        end
+      end
+
+      it 'parses SUBMITTED < DAYS AGO' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse 'SUBMITTED < 3 DAYS AGO'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" >= '#{start_time}'
+          SQL
+        end
+      end
+    end
+
     describe 'people queries' do
       let!(:president_role) { create(:role, name: 'president') }
       let!(:user) { create(:user, username: 'someuser') }

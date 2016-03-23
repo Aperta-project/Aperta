@@ -145,6 +145,16 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
+  add_simple_expression('SUBMITTED >') do |days_ago|
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    paper_table[:submitted_at].lt(start_time)
+  end
+
+  add_simple_expression('SUBMITTED <') do |days_ago|
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    paper_table[:submitted_at].gteq(start_time)
+  end
+
   add_statement(/^\d+/.r) do |doi|
     paper_table[:doi].matches("%#{doi}%")
   end

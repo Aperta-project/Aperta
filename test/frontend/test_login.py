@@ -74,7 +74,7 @@ class ApertaNativeLoginTest(CommonTest):
      - validate remember me function (only by cookie validation)
      - validate forgot password function (excludes email receipt validation)
   """
-  def test_validate_native_login(self):
+  def rest_validate_native_login(self):
     """
     test_login: Validate Native Login function, if enabled.
     Validates the presence of the following provided elements:

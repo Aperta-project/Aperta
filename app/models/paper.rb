@@ -384,7 +384,10 @@ class Paper < ActiveRecord::Base
   end
 
   def participations
-    assignments_for_roles(paper_participation_roles)
+    Assignment.where(
+      role: paper_participation_roles,
+      assigned_to: self
+    ).includes(:role, :user)
   end
 
   def participants
@@ -503,13 +506,6 @@ class Paper < ActiveRecord::Base
       journal.reviewer_role,
       journal.academic_editor_role
     ]
-  end
-
-  def assignments_for_roles
-    Assignment.where(
-      role: paper_participation_roles,
-      assigned_to: self
-    ).includes(:role, :user)
   end
 
   def group_participants_by_role(participations_to_group)

@@ -162,9 +162,7 @@
     "ORCID_SITE_HOST": {
       "required": true
     },
-    "PASSWORD_AUTH_ENABLED": {
-      "required": true
-    },
+    "PASSWORD_AUTH_ENABLED": "true",
     "PUMA_WORKERS": "1",
     "PUSHER_ENABLED": {
       "required": true

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319214646) do
+ActiveRecord::Schema.define(version: 20160322013946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -393,6 +393,7 @@ ActiveRecord::Schema.define(version: 20160319214646) do
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
     t.string   "striking_image_type"
+    t.datetime "state_updated_at"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -503,6 +504,24 @@ ActiveRecord::Schema.define(version: 20160319214646) do
   add_index "roles", ["journal_id"], name: "index_roles_on_journal_id", using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
+
+  create_table "simple_reports", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "initially_submitted",         default: 0, null: false
+    t.integer  "fully_submitted",             default: 0, null: false
+    t.integer  "invited_for_full_submission", default: 0, null: false
+    t.integer  "checking",                    default: 0, null: false
+    t.integer  "in_revision",                 default: 0, null: false
+    t.integer  "accepted",                    default: 0, null: false
+    t.integer  "withdrawn",                   default: 0, null: false
+    t.integer  "rejected",                    default: 0, null: false
+    t.integer  "new_accepted",                default: 0, null: false
+    t.integer  "new_rejected",                default: 0, null: false
+    t.integer  "new_withdrawn",               default: 0, null: false
+    t.integer  "new_initial_submissions",     default: 0, null: false
+    t.integer  "in_process_balance",          default: 0, null: false
+  end
 
   create_table "snapshots", force: :cascade do |t|
     t.string   "source_type"

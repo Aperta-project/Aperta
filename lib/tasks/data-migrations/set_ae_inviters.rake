@@ -1,7 +1,7 @@
 namespace :data do
   namespace :migrate do
     namespace :ae_invitations do
-      desc 'Sets the inviter for AE invit'
+      desc 'Sets the inviter for AE invitations'
       task set_inviters: :environment do
         Invitation.all.includes(task: :paper).each do |invitation|
           task = invitation.task

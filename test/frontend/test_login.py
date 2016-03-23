@@ -54,12 +54,13 @@ class ApertaLoginPageLayoutTest(CommonTest):
     :return: void function
     """
     login_page = LoginPage(self.getDriver())
-    login_page.validate_initial_page_elements_styles()
-
-    # Forgot password link - modal validation
-    login_page.open_fyp()
-    login_page.validate_fyp_elements_styles_function()
-    login_page.close_fyp()
+    native_login_enabled = login_page.validate_initial_page_elements_styles()
+    logging.info('Native Login is enabled: {0}'.format(str(native_login_enabled)))
+    if native_login_enabled:
+      # Forgot password link - modal validation
+      login_page.open_fyp()
+      login_page.validate_fyp_elements_styles_function()
+      login_page.close_fyp()
 
 
 

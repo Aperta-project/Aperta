@@ -18,7 +18,8 @@ __author__ = 'jgray@plos.org'
 class LoginPage(AuthenticatedPage):
   """
   Model an abstract base login page
-  Note that while these are unauthenticated pages, inheriting from them makes style validation across the application
+  Note that while these are unauthenticated pages, inheriting from them makes style validation
+  across the application
   more consistent.
   """
   def __init__(self, driver):
@@ -30,10 +31,11 @@ class LoginPage(AuthenticatedPage):
     self._welcome_paragraph = (By.TAG_NAME, 'p')
     self._login_textbox = (By.CSS_SELECTOR, '#user_login')
     self._password_textbox = (By.CSS_SELECTOR, '#user_password')
-    self._forgot_pw_link = (By.TAG_NAME, 'a')
+    self._forgot_pw_link = (By.CSS_SELECTOR, 'br + a')
     self._remember_me_cb = (By.CSS_SELECTOR, 'input[type="checkbox"]')
     self._remember_me_label = (By.CSS_SELECTOR, 'label.auth-remember-me')
-    self._signin_button = (By.CSS_SELECTOR, '#new_user > input.button-primary.button--green.auth-signin')
+    self._signin_button = (By.CSS_SELECTOR,
+                           '#new_user > input.button-primary.button--green.auth-signin')
     self._signup_link = (By.CLASS_NAME, 'auth-signup')
     # CAS Related items
     self._cas_signin = (By.CSS_SELECTOR, 'div.auth-right a.auth-cas')
@@ -57,11 +59,11 @@ class LoginPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     """
     Validates elements and styles of the login page and the Forgot Your Password page.
-    :return: None
+    :return: Native Login Enabled state - used externally to determine whether to run FYP tests
     """
-    native_login_disabled = False
-    cas_login_disabled = False
-    orcid_login_disabled = False
+    native_login_enabled = True
+    cas_login_enabled = True
+    orcid_login_enabled = True
     logo = self._get(self._system_logo)
     assert '/images/plos_logo.png' in logo.get_attribute('src'), logo.get_attribute('src')
     welcome_msg = self._get(self._welcome_message)
@@ -76,10 +78,10 @@ class LoginPage(AuthenticatedPage):
     try:
       forgot_msg = self._get(self._forgot_pw_link)
     except ElementDoesNotExistAssertionError:
-      native_login_disabled = True
+      native_login_enabled = False
+      logging.info('Native Signin is present: {0}'.format(native_login_enabled))
     self.restore_timeout()
-    if not native_login_disabled:
-      logging.info('Native login enabled, validating components')
+    if native_login_enabled:
       assert forgot_msg.text == 'Forgot your password?'
       self.validate_default_link_style(forgot_msg)
       remember_cb = self._get(self._remember_me_cb)
@@ -92,10 +94,10 @@ class LoginPage(AuthenticatedPage):
     try:
       cas_signin = self._get(self._cas_signin)
     except ElementDoesNotExistAssertionError:
-      cas_login_disabled = True
+      cas_login_enabled = False
+      logging.info('Cas Signin is present: {0}'.format(cas_login_enabled))
     self.restore_timeout()
-    if not cas_login_disabled:
-      logging.info('CAS login enabled, validating components')
+    if cas_login_enabled:
       # APERTA-5717
       # self.validate_primary_big_blue_button_style(cas_signin)
       cas_signup = self._get(self._cas_signup)
@@ -105,12 +107,14 @@ class LoginPage(AuthenticatedPage):
     try:
       orcid_signin = self._get(self._orcid_signin)
     except ElementDoesNotExistAssertionError:
-      orcid_login_disabled = True
+      orcid_login_enabled = False
+      logging.info('ORCID Signin is present: {0}'.format(orcid_login_enabled))
     self.restore_timeout()
-    if not orcid_login_disabled:
-      logging.info('Orcid login enabled, validating components')
+    if orcid_login_enabled:
+      print('ORCID enabled')
       # APERTA-5717
       # self.validate_primary_big_green_button_style(orcid_signin)
+    return native_login_enabled
 
   def enter_login_field(self, username):
     """

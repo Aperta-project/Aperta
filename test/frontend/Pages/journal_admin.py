@@ -398,7 +398,8 @@ class JournalAdminPage(AdminPage):
       self._mmt_template_column_title_edit_save_btn = (By.CSS_SELECTOR, 'button.column-header-update-save')
       col_cancel = column.find_element(*self._mmt_template_column_title_edit_cancel_btn)
       column.find_element(*self._mmt_template_column_title_edit_save_btn)
-      col_cancel.click()
+      # Commenting out until APERTA-6407 is resolved
+      # col_cancel.click()
       column.find_element(*self._mmt_template_column_no_cards_card)
       column.find_element(*self._mmt_template_column_add_new_card_btn)
     template_cancel.click()
@@ -465,7 +466,7 @@ class JournalAdminPage(AdminPage):
             time.sleep(1)
             delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
             logging.info('Clicking on MMT trash icon')
-            self._actions.click(delete_mmt).perform()
+            delete_mmt.click()
             time.sleep(1)
             self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR,
                                                                      'div.mmt-thumbnail-overlay-confirm-destroy p')

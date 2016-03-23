@@ -36,7 +36,7 @@ class RegisterDecisionCard(BaseCard):
          'The manuscript is not in a submitted state.' in alert.text:
         raise ValueError('Manuscript is in unexpected state: {0}'.format(alert.text))
     except ElementDoesNotExistAssertionError:
-      pass
+      logging.info('Manuscript is in submitted state.')
     decision_d = {'Accept': 0, 'Reject': 1, 'Major Revision': 2, 'Minor Revision': 3}
     decision_labels = self._gets(self._decision_labels)
     decision_labels[decision_d[decision]].click()

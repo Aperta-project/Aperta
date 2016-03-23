@@ -114,7 +114,7 @@ class AdminPage(AuthenticatedPage):
       # Ordinary Admin role is assigned on a per journal basis
       logging.info('Validating admin page elements for Ordinary Admin user')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      journals = list()
+      journals = []
       journals.append(PgSQL().query('SELECT assigned_to_id '
                                     'FROM assignments '
                                     'WHERE user_id = %s AND assigned_to_type=\'Journal\';',

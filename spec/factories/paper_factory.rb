@@ -89,12 +89,11 @@ FactoryGirl.define do
       end
     end
 
-    trait(:with_valid_author) do
+    trait(:with_author) do
       after(:create) do |paper|
         FactoryGirl.create(
           :author,
-          paper: paper,
-          authors_task: paper.tasks.find_by(type: "TahiStandardTasks::AuthorsTask")
+          paper: paper
         )
       end
     end

@@ -75,28 +75,4 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       end
     end
   end
-
-  context "as a regular user" do
-    let!(:user) { FactoryGirl.create :user }
-    let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
-    let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: user, journal: journal }
-    let(:task) { paper.tasks_for_type(TahiStandardTasks::UploadManuscriptTask).first }
-
-    before do
-      login_as(user, scope: :user)
-      visit "/"
-    end
-
-    context "on a task" do
-      scenario "comments" do
-        overlay = Page.view_task_overlay(paper, task)
-
-        # comment is added by user
-        task.comments.create!(body: "A new comment by user", commenter: user)
-        expect(overlay.has_last_comment_posted_by?(user)).to eq(true)
-        expect(overlay.has_participants?(user)).to eq(true)
-      end
-    end
-  end
-
 end

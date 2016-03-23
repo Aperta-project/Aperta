@@ -3,8 +3,8 @@
 # users to various roles on a paper and you don't want a list including users
 # who are already assigned to that role.
 class EligibleUserService
-  def self.eligible_users_for(paper:, role:)
-    new(paper: paper, role: role).eligible_users
+  def self.eligible_users_for(paper:, role:, matching: nil)
+    new(paper: paper, role: role).eligible_users(matching: matching)
   end
 
   attr_reader :paper, :role
@@ -20,7 +20,7 @@ class EligibleUserService
     }
   end
 
-  def eligible_users
+  def eligible_users(matching: nil)
     block = @eligible_user_blocks.fetch(role) do
       fail NotImplementedError, <<-MESSAGE.strip_heredoc
         Don't know how to find eligible users for the role:
@@ -30,11 +30,11 @@ class EligibleUserService
       MESSAGE
     end
 
-    eligible_users = block.call.uniq
+    eligible_users = search(block.call, matching).to_a.uniq
     users_already_assigned = begin
       User.all
-      .joins(:assignments)
-      .where(assignments: { role: role, assigned_to: paper })
+        .joins(:assignments)
+        .where(assignments: { role: role, assigned_to: paper })
     end
     eligible_users - users_already_assigned
   end
@@ -43,5 +43,10 @@ class EligibleUserService
 
   def internal_editors
     role.journal.internal_editor_role.users
+  end
+
+  def search(user_relation, matching)
+    return user_relation unless matching
+    user_relation.fuzzy_search(matching)
   end
 end

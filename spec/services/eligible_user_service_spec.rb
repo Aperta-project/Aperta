@@ -12,8 +12,8 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
     )
   end
 
-  let(:bob) { FactoryGirl.create(:user) }
-  let(:fay) { FactoryGirl.create(:user) }
+  let(:bob) { FactoryGirl.create(:user, first_name: 'Bob') }
+  let(:fay) { FactoryGirl.create(:user, first_name: 'Fay') }
 
   describe '.eligible_users_for' do
     before do
@@ -25,6 +25,7 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
       role = FactoryGirl.build_stubbed(:role)
 
       expect(EligibleUserService).to receive(:new)
+        .with(paper: paper, role: role)
         .and_return instance_double(EligibleUserService, eligible_users: [bob])
 
       eligible_users = EligibleUserService.eligible_users_for(
@@ -60,7 +61,7 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
           journal: journal
         )
       end
-      let(:ray) { FactoryGirl.create(:user) }
+      let(:ray) { FactoryGirl.create(:user, first_name: 'Ray') }
 
       before do
         ray.assignments.create(role: random_role, assigned_to: journal)
@@ -73,6 +74,12 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
       it "doesn't include users already assigned as academic_editor_role" do
         fay.assignments.create(role: role, assigned_to: paper)
         expect(service.eligible_users).to_not include(fay)
+      end
+
+      it 'supports fuzzy matching on the user' do
+        expect(service.eligible_users(matching: 'Bob')).to contain_exactly(bob)
+        expect(service.eligible_users(matching: 'Fay')).to contain_exactly(fay)
+        expect(service.eligible_users(matching: 'Ray')).to contain_exactly(ray)
       end
     end
 
@@ -93,6 +100,11 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
         fay.assignments.create(role: role, assigned_to: paper)
         expect(service.eligible_users).to_not include(fay)
       end
+
+      it 'supports fuzzy matching on the user' do
+        expect(service.eligible_users(matching: 'Bob')).to contain_exactly(bob)
+        expect(service.eligible_users(matching: 'Fay')).to contain_exactly(fay)
+      end
     end
 
     context "and the role matches the journal's handling_editor_role" do
@@ -111,6 +123,11 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
       it "doesn't include users already assigned as handling_editor_role" do
         fay.assignments.create(role: role, assigned_to: paper)
         expect(service.eligible_users).to_not include(fay)
+      end
+
+      it 'supports fuzzy matching on the user' do
+        expect(service.eligible_users(matching: 'Bob')).to contain_exactly(bob)
+        expect(service.eligible_users(matching: 'Fay')).to contain_exactly(fay)
       end
     end
 

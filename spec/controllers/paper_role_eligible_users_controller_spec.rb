@@ -14,7 +14,8 @@ describe PaperRoleEligibleUsersController do
         :index,
         format: 'json',
         paper_id: paper.to_param,
-        role_id: role.to_param
+        role_id: role.to_param,
+        query: 'Kangaroo'
       )
     end
     let(:eligible_users) do
@@ -32,7 +33,7 @@ describe PaperRoleEligibleUsersController do
           .and_return true
 
         allow(EligibleUserService).to receive(:eligible_users_for)
-          .with(paper: paper, role: role)
+          .with(paper: paper, role: role, matching: 'Kangaroo')
           .and_return eligible_users
       end
 

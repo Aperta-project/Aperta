@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Paper do
-  let!(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:user) { FactoryGirl.create :user }
 

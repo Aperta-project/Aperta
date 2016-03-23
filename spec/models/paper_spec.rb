@@ -299,7 +299,7 @@ describe Paper do
         expect(paper.participations).to include(collaborator_assignment)
       end
 
-      it 'does include users assigned as the handling editor on the paper' do
+      it 'does not include users assigned as handling editors on the paper' do
         expect(paper.participations).to_not include(handling_editor_assignment)
       end
 

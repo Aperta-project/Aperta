@@ -1,0 +1,39 @@
+.invitees {
+  width: $message-body-width;
+  margin-top: 36px;
+  .invitation-updated-at,
+  .invitation-state {
+    font-size: 14px;
+    text-transform: capitalize;
+  }
+  .revision-human-number {
+    border-bottom: 1px solid $tahi-grey-light;
+    td {
+      padding-top: 45px;
+      padding-bottom: 5px;
+    }
+  }
+  .expired-invitations {
+    &::before {
+      content: '';
+      display: block;
+      height: 25px;
+    }
+  }
+  .invitation {
+    &::after {
+      content: '';
+      display: block;
+      height: 46px;
+    }
+
+    .invite-remove {
+      position: inherit;
+      top: 4px;
+      right: 0;
+      color: #d5d5d5;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
+}

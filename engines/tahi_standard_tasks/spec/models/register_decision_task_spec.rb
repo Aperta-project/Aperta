@@ -1,13 +1,21 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::RegisterDecisionTask do
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_academic_editor_role,
+      :with_creator_role,
+      :with_task_participant_role,
+      name: 'PLOS Yeti'
+    )
+  end
   let!(:paper) do
     FactoryGirl.create(
-      :paper,
-      :with_integration_journal,
+      :paper_with_phases,
       :with_creator,
-      :with_tasks,
-      title: "Crazy stubbing tests on rats"
+      journal: journal,
+      title: 'Crazy stubbing tests on rats'
     )
   end
   let!(:task) do
@@ -22,12 +30,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
   context "letters" do
     before do
       user = double(:last_name, last_name: 'Mazur')
-      editor = double(:full_name, full_name: 'Andi Plantenberg')
-      journal = double(:name, name: 'PLOS Yeti')
       allow(paper).to receive(:creator).and_return(user)
-      allow(paper).to receive(:academic_editors).and_return([editor])
-      allow(paper).to receive(:journal).and_return(journal)
-      allow(task).to receive(:paper).and_return(paper)
     end
 
     describe "#accept_letter" do
@@ -35,8 +38,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.accept_letter).to match(/Mazur/)
       end
 
-      it "returns the letter with the editor's name filled in" do
-        expect(task.accept_letter).to match(/Andi Plantenberg/)
+      it "returns the letter with a placeholder for the AE's name" do
+        expect(task.accept_letter).to match('[YOUR NAME]')
       end
 
       it "returns the letter with journal name filled in" do
@@ -53,8 +56,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.minor_revision_letter).to match(/Mazur/)
       end
 
-      it "returns the letter with the editor's name filled in" do
-        expect(task.minor_revision_letter).to match(/Andi Plantenberg/)
+      it "returns the letter with a placeholder for the AE's name" do
+        expect(task.minor_revision_letter).to match('[YOUR NAME]')
       end
 
       it "returns the letter with journal name filled in" do
@@ -76,8 +79,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.major_revision_letter).to match(/Mazur/)
       end
 
-      it "returns the letter with the editor's name filled in" do
-        expect(task.major_revision_letter).to match(/Andi Plantenberg/)
+      it "returns the letter with a placeholder for the AE's name" do
+        expect(task.major_revision_letter).to match('[YOUR NAME]')
       end
 
       it "returns the letter with journal name filled in" do
@@ -99,8 +102,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.reject_letter).to match(/Mazur/)
       end
 
-      it "returns the letter with the editor's name filled in" do
-        expect(task.reject_letter).to match(/Andi Plantenberg/)
+      it "returns the letter with a placeholder for the AE's name" do
+        expect(task.reject_letter).to match('[YOUR NAME]')
       end
 
       it "returns the letter with journal name filled in" do
@@ -109,14 +112,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
       it "returns the letter with paper title filled in" do
         expect(task.reject_letter).to match(/Crazy stubbing tests on rats/)
-      end
-    end
-
-    context "when the editor hasn't been assigned yet" do
-      it "returns 'Editor not assigned'" do
-        allow(paper).to receive(:academic_editors).and_return([])
-        expect(task.accept_letter).to match(/Editor not assigned/)
-        expect(task.accept_letter).to_not match(/Andi Plantenberg/)
       end
     end
   end

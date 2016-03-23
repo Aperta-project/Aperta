@@ -39,7 +39,7 @@
             <td><span class="invitee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role.name}}</td>
             <td><span class="invitation-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
             <td><span class="invitation-state">Assigned</span></td>
-            <td><span class="fa fa-trash invite-reviewer-remove" {{action "destroyAssignment" assignment}}></span></td>
+            <td><span class="fa fa-trash invite-remove" {{action "destroyAssignment" assignment}}></span></td>
           </tr>
         {{/each}}
       </tbody>

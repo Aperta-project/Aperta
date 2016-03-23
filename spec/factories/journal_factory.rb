@@ -22,6 +22,20 @@ FactoryGirl.define do
       end
     end
 
+    %w(
+      academic_editor creator collaborator cover_editor discussion_participant
+      handling_editor internal_editor reviewer publishing_services staff_admin
+      task_participant
+    ).each do |role|
+      role_method = "#{role}_role"
+      trait("with_#{role_method}".to_sym) do
+        after(:create) do |journal|
+          journal.send(role_method) ||
+            journal.send("create_#{role_method}!")
+        end
+      end
+    end
+
     %w(publishing_services staff_admin).each do |role|
       trait("with_#{role}_user".to_sym) do
         after(:create) do |journal|

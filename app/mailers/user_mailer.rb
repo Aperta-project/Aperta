@@ -56,9 +56,9 @@ class UserMailer < ActionMailer::Base
       subject: "You've been assigned as an editor for the manuscript, \"#{@paper.display_title}\"")
   end
 
-  def notify_editor_of_paper_resubmission(paper_id)
+  def notify_academic_editor_of_paper_resubmission(paper_id, editor_id)
     @paper = Paper.find(paper_id)
-    @editor = @paper.academic_editor
+    @editor = User.find(editor_id)
     @author = @paper.creator
 
     mail(

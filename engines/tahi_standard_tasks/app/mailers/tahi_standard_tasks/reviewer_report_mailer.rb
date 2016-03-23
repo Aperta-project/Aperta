@@ -8,7 +8,7 @@ module TahiStandardTasks
 
     default from: Rails.configuration.from_email
 
-    def notify_editor_email(task_id:, recipient_id:)
+    def notify_academic_editor_email(task_id:, recipient_id:)
       @recipient = User.find(recipient_id)
       @task = Task.find(task_id)
       @paper = @task.paper

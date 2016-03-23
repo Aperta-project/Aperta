@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe Paper do
-  let(:paper) do
-    FactoryGirl.create :paper, :with_integration_journal, :with_creator
-  end
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
+  let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:user) { FactoryGirl.create :user }
 
   describe 'validations' do
@@ -67,7 +66,7 @@ describe Paper do
     end
 
     context "when a pending change already exists on paper" do
-      let(:paper) { FactoryGirl.create(:paper) }
+      let(:paper) { FactoryGirl.create(:paper, journal: journal) }
       before { paper.title = "something new" }
 
       it "will call event stream once" do
@@ -78,7 +77,7 @@ describe Paper do
     end
 
     context "when there are no pending changes on the paper" do
-      let(:paper) { FactoryGirl.create(:paper) }
+      let(:paper) { FactoryGirl.create(:paper, journal: journal) }
 
       it "will call event stream once" do
         expect(paper).to receive(:notify).once
@@ -97,7 +96,7 @@ describe Paper do
     end
 
     context "with tasks" do
-      let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+      let(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
 
       it "delete Phases and Tasks" do
         expect(paper).to have_at_least(1).phase
@@ -122,7 +121,11 @@ describe Paper do
     describe "metadata_tasks_completed?" do
       context "paper with completed metadata task" do
         let(:paper) do
-          FactoryGirl.create(:paper_with_task, task_params: { type: "MockMetadataTask", completed: true })
+          FactoryGirl.create(
+            :paper_with_task,
+            journal: journal,
+            task_params: { type: "MockMetadataTask", completed: true }
+          )
         end
 
         it "returns true" do
@@ -132,7 +135,11 @@ describe Paper do
 
       context "paper with incomplete metadata task" do
         let(:paper) do
-          FactoryGirl.create(:paper_with_task, task_params: { type: "MockMetadataTask", completed: false })
+          FactoryGirl.create(
+            :paper_with_task,
+            journal: journal,
+            task_params: { type: "MockMetadataTask", completed: false }
+          )
         end
 
         it "returns false" do
@@ -144,7 +151,11 @@ describe Paper do
     describe 'short_title' do
       let(:title) { "Hi! I'm a title!" }
       let(:paper) do
-        FactoryGirl.create(:paper, :with_short_title, short_title: title)
+        FactoryGirl.create(:paper,
+          :with_short_title,
+          journal: journal,
+          short_title: title
+        )
       end
 
       it 'fetches short title from a NestedQuestionAnswer' do
@@ -163,12 +174,25 @@ describe Paper do
   context 'collaboration' do
     let(:user) { FactoryGirl.create(:user) }
 
+    before do
+      journal.collaborator_role || journal.create_collaborator_role!
+    end
+
     describe '#add_collaboration' do
       it 'adds the user as a collaborator, returning an assignment' do
         expect do
           collaboration = paper.add_collaboration(user)
           expect(collaboration).to eq(Assignment.last)
         end.to change(paper.collaborators, :count).by(1)
+      end
+
+      context 'and the collaborator is already assigned on the paper' do
+        it 'does nothing' do
+          paper.add_collaboration(user)
+          expect do
+            paper.add_collaboration(user)
+          end.to_not change { paper.collaborators.reload }
+        end
       end
     end
 
@@ -219,7 +243,17 @@ describe Paper do
   end
 
   context 'participation' do
-    let(:journal) { paper.journal }
+    let(:journal) do
+      FactoryGirl.create(
+        :journal,
+        :with_creator_role,
+        :with_collaborator_role,
+        :with_handling_editor_role,
+        :with_reviewer_role,
+        :with_task_participant_role
+      )
+    end
+    let(:paper) { FactoryGirl.create(:paper, :with_creator, journal: journal) }
     let(:creator_role) { journal.creator_role }
     let(:collaborator_role) { journal.collaborator_role }
     let(:handling_editor_role) { journal.handling_editor_role }
@@ -504,7 +538,7 @@ describe Paper do
 
     describe '#withdraw!' do
       let(:paper) do
-        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+        FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "transitions to withdrawn without a reason" do
@@ -525,7 +559,7 @@ describe Paper do
 
     describe '#invite_full_submission' do
       let(:paper) do
-        FactoryGirl.create(:paper, :initially_submitted, :with_integration_journal)
+        FactoryGirl.create(:paper, :initially_submitted, journal: journal)
       end
 
       it 'transitions to invited_for_full_submission' do
@@ -549,7 +583,7 @@ describe Paper do
 
     describe '#reactivate!' do
       let(:paper) do
-        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+        FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "transitions to the previous state" do
@@ -580,7 +614,7 @@ describe Paper do
 
     describe '#minor_check!' do
       let(:paper) do
-        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+        FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper editable" do
@@ -599,7 +633,7 @@ describe Paper do
 
     describe '#submit_minor_check!' do
       let(:paper) do
-        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+        FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper uneditable" do
@@ -624,13 +658,17 @@ describe Paper do
 
     describe '#reject' do
       it 'transitions to rejected state from submitted' do
-        paper = FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+        paper = FactoryGirl.create(:paper, :submitted, journal: journal)
         paper.reject!
         expect(paper.rejected?).to be true
       end
 
       it 'transitions to rejected state from initially_submitted' do
-        paper = FactoryGirl.create(:paper, :initially_submitted, :with_integration_journal)
+        paper = FactoryGirl.create(
+          :paper,
+          :initially_submitted,
+          journal: journal
+        )
         paper.reject!
         expect(paper.rejected?).to be true
       end
@@ -638,7 +676,7 @@ describe Paper do
 
     describe '#publish!' do
       let(:paper) do
-        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+        FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper uneditable" do
@@ -650,7 +688,7 @@ describe Paper do
 
   describe "#make_decision" do
     let(:paper) do
-      FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+      FactoryGirl.create(:paper, :submitted, journal: journal)
     end
 
     context "acceptance" do
@@ -755,7 +793,7 @@ describe Paper do
   end
 
   describe "callbacks" do
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:creator) { paper.creator }
 
     it "assigns all author tasks to the paper's creator" do
@@ -796,21 +834,49 @@ describe Paper do
     end
   end
 
-  describe '#academic_editor' do
-    let(:user) { FactoryGirl.create(:user) }
-
-    context 'when the paper has an editor' do
-      let!(:assignment) do
-        FactoryGirl.create(:assignment,
-                           role: paper.journal.academic_editor_role,
-                           user: user,
-                           assigned_to: paper)
-      end
-      specify { expect(paper.academic_editors).to eq([user]) }
+  describe 'academic editors' do
+    before do
+      journal.academic_editor_role ||
+        journal.create_academic_editor_role!
     end
 
-    context "when the paper doesn't have an academic editor" do
-      specify { expect(paper.academic_editors).to be_blank }
+    it 'has none by default' do
+      expect(paper.academic_editors).to eq([])
+    end
+
+    describe '#add_academic_editor' do
+      let(:editor_1) { FactoryGirl.create(:user) }
+      let(:editor_2) { FactoryGirl.create(:user) }
+
+      it 'adds the given academic editor to the paper' do
+        expect do
+          paper.add_academic_editor(editor_1)
+        end.to change { paper.academic_editors.count }.by 1
+        expect(paper.academic_editors).to contain_exactly(editor_1)
+
+        expect do
+          paper.add_academic_editor(editor_2)
+        end.to change { paper.academic_editors.count }.by 1
+        expect(paper.academic_editors).to contain_exactly(editor_1, editor_2)
+      end
+
+      it 'returns the academic editor assignment' do
+        expect(paper.add_academic_editor(editor_1)).to eq \
+          Assignment.find_by(
+            assigned_to: paper,
+            role: paper.journal.academic_editor_role,
+            user: editor_1
+          )
+      end
+
+      context 'and the academic editor is already assigned on the paper' do
+        it 'does nothing' do
+          paper.add_academic_editor(editor_1)
+          expect do
+            paper.add_academic_editor(editor_1)
+          end.to_not change { paper.academic_editors.reload }
+        end
+      end
     end
   end
 
@@ -926,7 +992,7 @@ describe Paper do
   end
 
   describe "#resubmitted?" do
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
 
     context "with pending decisions" do
       before do
@@ -975,6 +1041,7 @@ describe Paper do
         FactoryGirl.create(
           :paper,
           :with_short_title,
+          journal: journal,
           short_title: '<b>my paper</b>',
           title: '<b>my long paper</b>')
       end

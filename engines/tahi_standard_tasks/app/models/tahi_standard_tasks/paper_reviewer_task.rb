@@ -11,12 +11,23 @@ module TahiStandardTasks
     end
 
     def invitation_accepted(invitation)
-      ReviewerReportTaskCreator.new(originating_task: self, assignee_id: invitation.invitee_id).process
-      ReviewerMailer.delay.reviewer_accepted(invite_reviewer_task_id: id, assigner_id: paper.academic_editor.try(:id), reviewer_id: invitation.try(:invitee_id))
+      ReviewerReportTaskCreator.new(
+        originating_task: self,
+        assignee_id: invitation.invitee_id
+      ).process
+      ReviewerMailer.delay.reviewer_accepted(
+        invite_reviewer_task_id: id,
+        assigner_id: invitation.inviter_id,
+        reviewer_id: invitation.invitee_id
+      )
     end
 
     def invitation_rejected(invitation)
-      ReviewerMailer.delay.reviewer_declined(invite_reviewer_task_id: id, assigner_id: paper.academic_editor.try(:id), reviewer_id: invitation.try(:invitee_id))
+      ReviewerMailer.delay.reviewer_declined(
+        invite_reviewer_task_id: id,
+        assigner_id: invitation.inviter_id,
+        reviewer_id: invitation.invitee_id
+      )
     end
 
     def invitation_rescinded(invitation)
@@ -40,7 +51,7 @@ module TahiStandardTasks
     end
 
     def invitee_role
-      'reviewer'
+      Role::REVIEWER_ROLE
     end
 
     def invitation_template

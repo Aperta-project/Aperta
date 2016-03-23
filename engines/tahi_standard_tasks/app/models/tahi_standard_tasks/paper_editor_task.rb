@@ -8,12 +8,7 @@ module TahiStandardTasks
     include Invitable
 
     def invitation_invited(invitation)
-      if paper.authors_list.present?
-        invitation.update! information: "Here are the authors on the paper:\n\n#{paper.authors_list}"
-      end
-      PaperEditorMailer.delay.notify_invited({
-        invitation_id: invitation.id
-      })
+      PaperEditorMailer.delay.notify_invited invitation_id: invitation.id
     end
 
     def invitation_accepted(invitation)
@@ -81,9 +76,14 @@ You will be directed to your dashboard in Aperta, where you will see your invita
         journal_name: paper.journal.name,
         author_name: paper.creator.full_name,
         authors: paper.authors_list,
-        abstract: paper.abstract,
+        abstract: abstract,
         dashboard_url: client_dashboard_url
       }
+    end
+
+    def abstract
+      return 'Abstract is not available' unless paper.abstract
+      paper.abstract
     end
 
     def replace_editor(invitation)

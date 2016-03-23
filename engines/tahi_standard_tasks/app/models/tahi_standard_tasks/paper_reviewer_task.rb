@@ -64,13 +64,33 @@ module TahiStandardTasks
 
         Sincerely,
         %{journal_name} Team
+
+        ***************** CONFIDENTIAL *****************
+
+        Manuscript Title:
+        %{manuscript_title}
+
+        Authors:
+        %{authors}
+
+        Abstract:
+        %{abstract}
+
       TEXT
       template % template_data
     end
 
     def template_data
       { manuscript_title: paper.display_title(sanitized: false),
-        journal_name: paper.journal.name }
+        journal_name: paper.journal.name,
+        abstract: abstract,
+        authors:  paper.authors_list
+      }
+    end
+
+    def abstract
+      return 'Abstract is not available' unless paper.abstract
+      paper.abstract
     end
   end
 end

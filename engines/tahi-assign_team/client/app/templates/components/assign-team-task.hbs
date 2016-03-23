@@ -1,8 +1,8 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="invite-reviewer-text">
-    <div class="invite-reviewers">
+  <div class="assign-team-content">
+    <div class="assign-team-role-user-selection">
       <span class="assign_team_select2_container assign_team_select2_container_first">
         <label for="role">Role</label>
         {{select-2-single minimumInputLength=0
@@ -26,21 +26,21 @@
             value=""
             width="200px"}}
       </span>
-      <button class="button-primary button--green invite-reviewer-button {{if isAssignable "button--green" "button--disabled"}}" {{action "assignRoleToUser"}}> Assign </button>
+      <button class="button-primary button--green assign-user-button {{if isAssignable "button--green" "button--disabled"}}" {{action "assignRoleToUser"}}> Assign </button>
       {{#if validationErrors.role}}
         {{error-message message=validationErrors.role}}
       {{/if}}
     </div>
 
-    <table class="invitees">
-      <tbody class="active-invitations">
+    <table class="assignments">
+      <tbody class="active-assignments">
         {{#each task.assignments as |assignment|}}
-          <tr class="invitation">
-            <td><span>{{user-thumbnail user=assignment.user classNames="invitee-thumbnail"}}</span></td>
-            <td><span class="invitee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role.name}}</td>
-            <td><span class="invitation-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
-            <td><span class="invitation-state">Assigned</span></td>
-            <td><span class="fa fa-trash invite-remove" {{action "destroyAssignment" assignment}}></span></td>
+          <tr class="assignment">
+            <td><span>{{user-thumbnail user=assignment.user classNames="assignee-thumbnail"}}</span></td>
+            <td><span class="assignee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role.name}}</td>
+            <td><span class="assignment-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
+            <td><span class="assignment-state">Assigned</span></td>
+            <td><span class="fa fa-trash assignment-remove" {{action "destroyAssignment" assignment}}></span></td>
           </tr>
         {{/each}}
       </tbody>

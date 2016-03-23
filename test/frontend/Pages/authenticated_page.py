@@ -147,9 +147,9 @@ class AuthenticatedPage(PlosPage):
     elevated = [fm_login, sa_login]
     self._get(self._nav_title)
     self._get(self._nav_profile_img)
-    assert 'aperta' == self._get(self._nav_aperta_dashboard_link).text.lower(), \
+    assert 'Aperta' == self._get(self._nav_aperta_dashboard_link).text, \
       self._get(self._nav_aperta_dashboard_link).text
-    assert 'your manuscripts' == self._get(self._nav_your_manuscripts_link).text.lower(), \
+    assert 'Your Manuscripts' == self._get(self._nav_your_manuscripts_link).text, \
       self._get(self._nav_your_manuscripts_link).text
     self.click_profile_nav()
     self._get(self._nav_profile_link)

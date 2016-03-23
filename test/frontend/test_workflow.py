@@ -55,17 +55,13 @@ class ApertaWorkflowTest(CommonTest):
     # We have to ensure there *is* a first manuscript on a users dashboard
     manuscript_count = dashboard_page.validate_manuscript_section_main_title(workflow_user)[0]
     logging.info(manuscript_count)
-    if manuscript_count > 0:
-      dashboard_page.click_on_first_manuscript()
-    else:
-      dashboard_page.click_create_new_submission_button()
-      self.create_article(journal='PLOS Wombat',
-                          type_='Research',
-                          random_bit=True,
-                          title='Created Document for Workflow test',
-                          )
-      time.sleep(10)
-    time.sleep(2)
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat',
+                        type_='Research',
+                        random_bit=True,
+                        title='Created Document for Workflow test',
+                        )
+    time.sleep(12)
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
     return self
@@ -85,8 +81,16 @@ class ApertaWorkflowTest(CommonTest):
     workflow_user = random.choice(workflow_users)
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
-    dashboard_page.click_on_first_manuscript()
-    time.sleep(2)
+    # NOTA BENE: The first manuscript on these users desktop is not guaranteed to be in a journal
+    #   on which these users possess the relevant role (super_admin_login excepted) - therefore
+    # switching this from click on first manuscript to an explicit create
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat',
+                          type_='Research',
+                          random_bit=True,
+                          title='Created Document for Workflow test',
+                          )
+    time.sleep(12)
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)

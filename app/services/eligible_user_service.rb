@@ -2,7 +2,14 @@
 # are eligible for various roles on a paper. This is useful when assigning
 # users to various roles on a paper and you don't want a list including users
 # who are already assigned to that role.
+#
+# === Things to note
+#
+# This currently does not take into account invitations.
+#
 class EligibleUserService
+  # Returns a collection of eligible users on the given paper, for the provided
+  # role, and fuzzy-matching the given matching string (optional).
   def self.eligible_users_for(paper:, role:, matching: nil)
     new(paper: paper, role: role).eligible_users(matching: matching)
   end
@@ -20,6 +27,8 @@ class EligibleUserService
     }
   end
 
+  # Returns a collection of eligible users optionally fuzzy-matching
+  # the given matching string.
   def eligible_users(matching: nil)
     block = @eligible_user_blocks.fetch(role) do
       fail NotImplementedError, <<-MESSAGE.strip_heredoc
@@ -33,8 +42,8 @@ class EligibleUserService
     eligible_users = search(block.call, matching).to_a.uniq
     users_already_assigned = begin
       User.all
-        .joins(:assignments)
-        .where(assignments: { role: role, assigned_to: paper })
+      .joins(:assignments)
+      .where(assignments: { role: role, assigned_to: paper })
     end
     eligible_users - users_already_assigned
   end

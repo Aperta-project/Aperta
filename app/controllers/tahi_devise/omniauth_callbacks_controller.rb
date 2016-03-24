@@ -2,8 +2,8 @@ module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     def cas
-      user = get_user_with_credential(auth[:uid], :cas)
       ned = auth[:extra]
+      user = get_user_with_credential(auth[:uid], :cas, ned[:emailAddress])
 
       # update user profile with latest attributes from NED
       user.first_name = ned[:firstName]
@@ -37,13 +37,13 @@ module TahiDevise
 
     private
 
-    def get_user_with_credential(uid, provider)
+    def get_user_with_credential(uid, provider, email=nil)
       if credential
         credential.user
       else
-        User.new do |u|
-          u.credentials.build(uid: uid, provider: provider)
-        end
+        user = User.find_or_create_by(email: email)
+        user.credentials.build(uid: uid, provider: provider)
+        user
       end
     end
 

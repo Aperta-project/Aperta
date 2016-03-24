@@ -4,10 +4,11 @@ describe PaperTrackerSerializer do
   include AuthorizationSpecHelper
 
   describe 'related_users' do
-    let!(:paper) { FactoryGirl.create :paper }
-
-    let!(:creator) { FactoryGirl.create :user }
-    let!(:collaborator) { FactoryGirl.create :user }
+    let!(:paper) { FactoryGirl.build_stubbed :paper  }
+    let!(:creator) { FactoryGirl.build_stubbed :user }
+    let!(:collaborator) { FactoryGirl.build_stubbed :user }
+    let!(:cover_editor) { FactoryGirl.build_stubbed :user }
+    let!(:handling_editor) { FactoryGirl.build_stubbed :user }
 
     let(:roles) do
       serialized_paper = JSON.parse(
@@ -17,9 +18,14 @@ describe PaperTrackerSerializer do
     end
 
     before do
+      allow(paper).to receive(:cover_editors).and_return([cover_editor])
+      allow(paper).to receive(:handling_editors).and_return([handling_editor])
+
       allow(paper).to receive(:participants_by_role).and_return(
         'Creator' => [creator],
-        'Collaborator' => [collaborator]
+        'Collaborator' => [collaborator],
+        'Cover Editor' => [cover_editor],
+        'Handling Editor' => [handling_editor]
       )
     end
 

@@ -1,3 +1,7 @@
+.base-screen.paper-tracker {
+  width: 90%;
+}
+
 .paper-tracker-message {
   margin-bottom: 0;
   font-size: 40px;
@@ -39,25 +43,29 @@
 .paper-tracker-paper-id-column { min-width: 100px; }
 
 .paper-tracker-table {
-  .sortable-table-header {
-    cursor: pointer;
-  }
+  overflow: auto;
 
-  th, td {
-    font-size: 14px;
-    vertical-align: top;
-  }
+  table {
+    .sortable-table-header {
+      cursor: pointer;
+    }
 
-  th {
-    border-bottom: 1px solid $tahi-grey-light;
-    font-weight: bold;
-    padding: 0;
-  }
+    th, td {
+      font-size: 14px;
+      vertical-align: top;
+    }
 
-  td {
-    border-bottom: 1px solid #f2f2f2;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    th {
+      border-bottom: 1px solid $tahi-grey-light;
+      font-weight: bold;
+      padding: 0;
+    }
+
+    td {
+      border-bottom: 1px solid #f2f2f2;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
   }
 }
 
@@ -84,5 +92,4 @@
   border-right: 1px solid $tahi-grey-light;
   padding-right: 30px;
   width: 80%;
-  overflow: auto;
 }

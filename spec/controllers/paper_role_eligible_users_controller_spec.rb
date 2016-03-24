@@ -6,8 +6,6 @@ describe PaperRoleEligibleUsersController do
   let(:role) { FactoryGirl.create(:role, journal: paper.journal) }
   let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
-  before { sign_in(user) }
-
   describe '#index' do
     subject(:do_request) do
       get(

@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+- 
+
+### Changed
+- 
+
+### Deprecated
+-
+
+### Removed
+- 
+
+### Fixed
+- Single-sign-on sessions should now properly end upon Aperta logout
+
+### Security
+-
+
 ## [1.4.2] - 2016-03-24
 ### Added
 - Figures display in the manuscript

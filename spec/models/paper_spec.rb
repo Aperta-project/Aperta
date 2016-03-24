@@ -250,7 +250,9 @@ describe Paper do
         :with_collaborator_role,
         :with_handling_editor_role,
         :with_reviewer_role,
-        :with_task_participant_role
+        :with_task_participant_role,
+        :with_handling_editor_role,
+        :with_academic_editor_role
       )
     end
     let(:paper) { FactoryGirl.create(:paper, :with_creator, journal: journal) }

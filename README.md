@@ -45,18 +45,15 @@ to surprising differences between your machine and the CI server). This differs 
 "Dotenv best practices" which encourage making local changes to `.env.local`; we do not recommend
 that approach.
 
-It is important to note that [foreman](https://github.com/ddollar/foreman/) will also load the
-`.env` file before Rails boots. This is important because any overrides from the
-`.env.(development/test)` or `.env.local` will be missing until the Rails application boots.
-Therefore, it is important to tell `foreman` to load any and all environment files you care about.
-This is easily done in the `.foreman` file itself.
+foreman can also load environment variables. It is recommended that you do not
+use it for this purpose, as interaction with dotenv can lead to bizarre `.env`
+file load orders. Your `.foreman` file should contain the line:
 
 ```
-# .foreman (untracked)
-port: 5000
-procfile: Procfile.local
-env: .env,.env.development
+env: ''
 ```
+
+to prevent `.env` file loading.
 
 ## Event server
 

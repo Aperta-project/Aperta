@@ -3,6 +3,8 @@ import { test, moduleForComponent } from 'ember-qunit';
 import FakeCanService from '../helpers/fake-can-service';
 
 moduleForComponent('task-base', 'TaskBase', {
+  unit: true,
+
   beforeEach() {
     this.paper = Ember.Object.create({
       editable: true

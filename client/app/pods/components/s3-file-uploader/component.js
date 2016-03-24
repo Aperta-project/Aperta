@@ -21,11 +21,12 @@ import Ember from 'ember';
  *  ```
 **/
 export default Ember.Component.extend({
-  attributeBindings: ['type', 'accept', 'multiple', 'name'],
+  attributeBindings: ['type', 'accept', 'multiple', 'name', 'disabled'],
   tagName: 'input',
   type: 'file',
   name: 'file',
   multiple: false,
+  disabled: false,
 
   init() {
     this._super(...arguments);
@@ -86,7 +87,7 @@ export default Ember.Component.extend({
         let uploadedS3Url = $(data.result).find('Location')[0].textContent;
         uploadedS3Url = uploadedS3Url.replace(/%2F/g, '/');
 
-        this.attrs.uploadFinished(uploadedS3Url);
+        this.attrs.uploadFinished(uploadedS3Url, data);
       }
     });
 

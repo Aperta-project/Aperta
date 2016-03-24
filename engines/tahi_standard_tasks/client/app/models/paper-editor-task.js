@@ -5,11 +5,9 @@ import Task from 'tahi/models/task';
 const { computed } = Ember;
 
 export default Task.extend({
-  editor: DS.belongsTo('user'),
-  invitation: DS.belongsTo('invitation'),
-  letter: DS.attr('string'),
-
-  invitationTemplate: computed('letter', function() {
-    return JSON.parse(this.get('letter'));
-  })
+  academicEditors: DS.belongsTo('user'),
+  relationshipsToSerialize: ['academicEditors', 'participants'],
+  inviteeRole: DS.attr('string'),
+  invitations: DS.hasMany('invitation', { async: false }),
+  invitationTemplate: DS.attr()
 });

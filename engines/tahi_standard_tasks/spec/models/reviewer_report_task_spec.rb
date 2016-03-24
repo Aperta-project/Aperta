@@ -14,7 +14,7 @@ describe TahiStandardTasks::ReviewerReportTask do
 
     context "when the task transitions to completed" do
       it "sends emails to the paper's editors" do
-        allow(TahiStandardTasks::ReviewerReportMailer).to receive_message_chain("delay.notify_editor_email") { true }
+        allow(TahiStandardTasks::ReviewerReportMailer).to receive_message_chain("delay.notify_academic_editor_email") { true }
         task.completed = true
         task.save!
         expect(task.send_emails).to eq(paper.academic_editors)

@@ -22,7 +22,7 @@ feature 'Invite Editor', js: true do
   scenario 'Editor can be invited be an Academic Editor on a paper', selenium: true do
     overlay = InviteEditorOverlay.new
     expect(overlay).to_not be_completed
-    overlay.paper_editor = editor
+    overlay.paper_editors = [editor]
     overlay.mark_as_complete
     expect(overlay).to be_completed
     expect(overlay).to have_editor editor
@@ -35,6 +35,7 @@ feature 'Invite Editor', js: true do
     dashboard.view_invitations do |invitations|
       expect(invitations.count).to eq 1
       invitations.first.accept
+      wait_for_ajax
       expect(dashboard.pending_invitations.count).to eq 0
     end
     dashboard.reload

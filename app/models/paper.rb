@@ -285,18 +285,14 @@ class Paper < ActiveRecord::Base
     admins.first
   end
 
-  # Public: Returns the academic editor of the paper
+  # Public: Returns the academic editors assigned to this paper
   #
   # Examples
   #
-  #   editor
-  #   # => <#124: User>
+  #   paper.academic_editors
+  #   # => [<#124: User>, <#125: User>]
   #
-  # Returns a User object.
-  def academic_editor
-    academic_editors.first
-  end
-
+  # Returns a collection of User objects
   def academic_editors
     users_with_role(journal.academic_editor_role)
   end
@@ -355,8 +351,16 @@ class Paper < ActiveRecord::Base
                             journal.collaborator_role])
   end
 
+  def add_academic_editor(user)
+    assignments
+      .where(user: user, role: journal.academic_editor_role)
+      .first_or_create!
+  end
+
   def add_collaboration(user)
-    assignments.create(user: user, role: journal.collaborator_role)
+    assignments
+      .where(user: user, role: journal.collaborator_role)
+      .first_or_create!
   end
 
   def remove_collaboration(collaboration)

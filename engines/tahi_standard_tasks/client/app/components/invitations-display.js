@@ -6,13 +6,18 @@ export default Ember.Component.extend({
   tagName: 'table',
   classNames: ['invitees'],
 
+  groupByDecision: true,
+
+  invitations: [],
+
   latestDecision: null,
   latestDecisionInvitations: computed(
     'latestDecision', 'latestDecision.invitations',
     'latestDecision.invitations.[]', function() {
+      const type = this.get('invitationType');
       if (this.get('latestDecision.invitations')) {
         return this.get('latestDecision.invitations')
-                   .filterBy('invitationType', 'Reviewer');
+                   .filterBy('invitationType', type);
       }
     }
   ),

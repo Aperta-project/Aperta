@@ -17,7 +17,9 @@ class InvitationsController < ApplicationController
 
   def create
     requires_user_can(:manage_invitations, task)
-    invitation = task.invitations.build(invitation_params)
+    invitation = task.invitations.build(
+      invitation_params.merge(inviter: current_user)
+    )
     invitation.invite!
     Activity.invitation_created!(invitation, user: current_user)
     respond_with(invitation)

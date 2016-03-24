@@ -40,11 +40,9 @@ class EligibleUserService
     end
 
     eligible_users = search(block.call, matching).to_a.uniq
-    users_already_assigned = begin
-      User.all
+    users_already_assigned = User.all
       .joins(:assignments)
       .where(assignments: { role: role, assigned_to: paper })
-    end
     eligible_users - users_already_assigned
   end
 

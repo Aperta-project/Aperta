@@ -31,13 +31,13 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DECISION IS NOT') do |decision|
-    table = join Decision
-    table[:verdict].not_eq(decision.parameterize.underscore)
+    verdict = decision.parameterize.underscore
+    decision_where(Decision.arel_table[:verdict].not_eq(verdict))
   end
 
   add_simple_expression('DECISION IS') do |decision|
-    table = join Decision
-    table[:verdict].eq(decision.parameterize.underscore)
+    verdict = decision.parameterize.underscore
+    decision_where(Decision.arel_table[:verdict].eq(verdict))
   end
 
   add_simple_expression('DOI IS') do |doi|
@@ -228,5 +228,29 @@ class QueryParser < QueryLanguageParser
       [language, quoted_query_str])
 
     Arel::Nodes::InfixOperation.new('@@', title_vector, query_vector)
+  end
+
+  def decision_where(where_clause)
+    decision_table = Decision.arel_table
+    decision_alias = "decisions_#{@join_counter}"
+    @join_counter += 1
+    latest_decisions = decision_table.project(
+      :paper_id,
+      decision_table[:revision_number].maximum.as('revision_number'))
+                       .where(decision_table[:verdict].not_eq(nil))
+                       .group(:paper_id)
+                       .to_sql
+    # Unfortunately, Arel doesn't cope with selecting from
+    # sub-selects, so we've got to drop into raw SQL for this bit.
+    good_decisions = <<-SQL.strip_heredoc + where_clause.to_sql
+    SELECT #{decision_alias}.paper_id from (#{latest_decisions})
+        AS #{decision_alias}
+    INNER JOIN decisions ON
+        decisions.paper_id = #{decision_alias}.paper_id
+        AND decisions.revision_number = #{decision_alias}.revision_number
+    WHERE
+    SQL
+
+    Paper.arel_table[:id].in(Arel::Nodes::SqlLiteral.new(good_decisions))
   end
 end

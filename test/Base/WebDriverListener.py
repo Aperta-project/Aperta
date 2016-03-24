@@ -20,7 +20,7 @@ class WebDriverListener(AbstractEventListener):
   processing an event.
 
   These events are triggered from the EventFiringWebDriver instance before and after each
-  available action on the driver's intance.
+  available action on the driver's instance.
   """
 
   # Just a mapping between HTML tag names and their 'human readable' form, for the logger
@@ -51,13 +51,13 @@ class WebDriverListener(AbstractEventListener):
 
   def before_click(self, element, driver):
     friendly_name = self._friendly_tag_name(element)
-    self.lastElement = (self._tidyText(element.text), friendly_name)
+    self.lastElement = (self._tidyText(element.text).encode('utf8'), friendly_name)
     self._log('Clicking on "%s" %s...' % self.lastElement)
 
   def before_find(self, by, value, driver):
     if self._driver is None:
       self._driver = driver
-    message = 'Identifing element using "%s" as locator (%s strategy)...' % (value, str(by))
+    message = 'Identifying element using "%s" as locator (%s strategy)...' % (value, str(by))
     self._log(message)
 
   def before_navigate_back(self, driver):

@@ -50,8 +50,7 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    # self.create_article(journal='PLOS Wombat', type_='Research',)
-    self.create_article(journal='PLOS Yeti', type_='Research',)
+    self.create_article(journal='PLOS Wombat', type_='Research',)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -68,8 +67,7 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    # self.create_article(journal='PLOS Wombat', type_='Research',)
-    self.create_article(journal='PLOS Yeti', type_='Research',)
+    self.create_article(journal='PLOS Wombat', type_='Research',)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -103,8 +101,7 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    # self.create_article(journal='PLOS Wombat', type_='Research',)
-    self.create_article(journal='PLOS Yeti', type_='Research',)
+    self.create_article(journal='PLOS Wombat', type_='Research',)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

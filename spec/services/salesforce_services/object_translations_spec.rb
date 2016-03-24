@@ -197,7 +197,7 @@ describe SalesforceServices::ObjectTranslations do
     nested_question_answer = FactoryGirl.create(
       :nested_question_answer,
       nested_question: nested_question,
-      owner: paper.billing_card,
+      owner: paper.billing_task,
       value: answer,
       value_type: "text"
     )
@@ -209,7 +209,7 @@ describe SalesforceServices::ObjectTranslations do
     nested_question_answer = FactoryGirl.create(
       :nested_question_answer,
       nested_question: nested_question,
-      owner: paper.billing_card,
+      owner: paper.billing_task,
       value: answer,
       value_type: "boolean"
     )

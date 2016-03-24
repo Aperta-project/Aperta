@@ -14,9 +14,9 @@ describe SalesforceServices do
 
     context 'with billing card' do
       before do
-        billing_card = double(:billing_card)
-        allow(paper).to receive(:billing_card) { billing_card }
-        expect(billing_card)
+        billing_task = double(:billing_task)
+        allow(paper).to receive(:billing_task) { billing_task }
+        expect(billing_task)
           .to receive(:answer_for)
           .with("plos_billing--payment_method")
           .and_return(answer)

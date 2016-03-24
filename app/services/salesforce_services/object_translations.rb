@@ -83,6 +83,8 @@ module SalesforceServices
 
       private
 
+      delegate :billing_task, to: :@paper
+
       def funding_statement
         financial_disclosure_task.funding_statement
       end
@@ -95,22 +97,20 @@ module SalesforceServices
       end
 
       def answer_for(ident)
-        answer = billing_card.answer_for(ident)
-        answer.value if answer
+        if billing_task
+          answer = billing_task.answer_for(ident)
+          answer.value if answer
+        end
       end
 
       def float_answer_for(ident)
-        answer = billing_card.answer_for(ident)
+        answer = billing_task.answer_for(ident)
         answer.float_value if answer
       end
 
       def yes_no_answer_for(ident)
-        answer = billing_card.answer_for(ident)
+        answer = billing_task.answer_for(ident)
         answer.yes_no_value if answer
-      end
-
-      def billing_card
-        @paper.billing_card
       end
     end
   end

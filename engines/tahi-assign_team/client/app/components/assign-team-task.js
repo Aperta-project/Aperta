@@ -4,7 +4,6 @@ import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
-  paper: Ember.computed.alias('task.paper'),
   isAssignable: Ember.computed.bool('selectedUser'),
 
   assignableRoles: Ember.computed.alias('task.assignableRoles'),
@@ -71,7 +70,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     didSelectRole(role) {
-      const paperId = this.get('paper.id');
+      const paperId = this.get('task.paper.id');
       const roleId = role.id;
 
       Ember.assert(`Expected to have a paper.id but didn't`, paperId);

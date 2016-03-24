@@ -38,9 +38,8 @@
 }
 
 .paper-tracker-members-column, .paper-tracker-title-column  { min-width: 200px; }
-.paper-tracker-date-column     { min-width: 150px; }
-.paper-tracker-type-column     { min-width: 110px; }
-.paper-tracker-paper-id-column { min-width: 100px; }
+.paper-tracker-date-column { min-width: 150px; }
+.paper-tracker-paper-id-column, .paper-tracker-type-column { min-width: 110px; }
 
 .paper-tracker-table {
   overflow: auto;

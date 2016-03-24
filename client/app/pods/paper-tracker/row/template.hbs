@@ -17,7 +17,7 @@
     {{relative-time time=paper.submittedAt}}
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
-  <td class="paper-tracker-type-column">{{paper.publishingState}}</td>
+  <td class="paper-tracker-type-column">{{humanize paper.publishingState}}</td>
   <td class="paper-tracker-members-column">
     {{#each paper.relatedUsers as |oldRole|}}
       <div class="paper-tracker-members-group">

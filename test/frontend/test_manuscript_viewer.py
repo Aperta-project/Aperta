@@ -64,6 +64,7 @@ class ViewPaperTest(CommonTest):
     self.cas_login(email=user['email'])
     self.select_preexisting_article(first=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.validate_nav_toolbar_elements(user)
     if user in (staff_admin_login, super_admin_login):
       manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'], admin=True)
     else:
@@ -74,8 +75,6 @@ class ViewPaperTest(CommonTest):
   def _test_role_aware_menus(self):
     """
     APERTA-3: Validates role aware menus
-
-    Note: Test disabled until APERTA-5992 is fixed
     """
     roles = {creator_login1['email']: 7,
              creator_login2['email']: 7,

@@ -43,6 +43,8 @@ class ApertaProfileTest(CommonTest):
     profile_page = self._go_to_profile()
     profile_page.validate_initial_page_elements_styles(login_valid_uid)
     profile_page.validate_invalid_add_new_affiliation()
+    # APERTA-6146 Can only use super admin login for the time being.
+    profile_page.validate_nav_toolbar_elements(super_admin_login)
     return self
 
   def test_affiliations(self):

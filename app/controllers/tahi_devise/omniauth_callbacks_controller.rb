@@ -41,14 +41,14 @@ module TahiDevise
       if credential
         credential.user
       else
-        user = User.find_or_create_by(email: email)
-        user.credentials.build(uid: uid, provider: provider)
-        user
+        User.find_or_create_by(email: email).tap do |user|
+          user.credentials.create(uid: uid, provider: provider)
+        end
       end
     end
 
     def credential
-      Credential.find_by(auth.slice(:uid, :provider))
+      @credential ||= Credential.find_by(auth.slice(:uid, :provider))
     end
 
     def auth

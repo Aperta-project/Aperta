@@ -200,7 +200,9 @@ class JournalAdminPage(AdminPage):
       self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{0}]\
           /div/span".format(count))
       role_name = self._get(self._role_name)
-      if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
+      logging.info(role_name.text)
+      # Note that the role Journal Admin is a PLOS Yeti special snowflake - fet!
+      if role_name.text not in ('Admin', 'Flow Manager', 'Editor', 'Journal Admin'):
         self._role_delete_icon = (By.XPATH,
             "//div[@class='ember-view admin-role not-editing'][{0}]\
             /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))

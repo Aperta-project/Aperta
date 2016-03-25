@@ -14,7 +14,7 @@ from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from Base.Resources import task_names
+from Base.Resources import task_names, yeti_task_names
 from admin import AdminPage
 
 __author__ = 'jgray@plos.org'
@@ -223,11 +223,13 @@ class JournalAdminPage(AdminPage):
       self.restore_timeout()
       count += 1
 
-  def validate_task_types_section(self):
+  def validate_task_types_section(self, journal):
     """
     Assert the existence and function of the elements of the Available Task Types section and overlay.
     It is expected that this section will change radically following the roles and permissions work,
     so not investing too much here at present.
+    :param journal: The PLOS Yeti journal is prepopulated with an extra task so requires special
+      handling.
     :return: void function
     """
     att_section = self._get(self._journal_admin_avail_task_types_div)
@@ -250,9 +252,13 @@ class JournalAdminPage(AdminPage):
     assert 'Role' in role_heading.text, role_heading.text
     tasks = self._gets(self._journal_admin_att_overlay_row)
     for task in tasks:
-      # There is little value in validating anything other than name as role assignment is up in the air.
+      # There is little value in validating anything other than name as role assignment is up in
+      # the air.
       name = task.find_element(*self._journal_admin_att_overlay_row_taskname)
-      assert name.text in task_names, name.text
+      if journal == 'PLOS Yeti':
+        assert name.text in yeti_task_names, name.text
+      else:
+        assert name.text in task_names, name.text
       task.find_element(*self._journal_admin_att_overlay_row_selector)
       task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
 

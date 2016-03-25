@@ -259,7 +259,7 @@ class DashboardPage(AuthenticatedPage):
              in welcome_msg.text, welcome_msg.text + str(active_manuscripts)
     else:
       active_manuscripts = 0
-      assert 'Hi, {0). You have no manuscripts.'.format(first_name) \
+      assert 'Hi, {0}. You have no manuscripts.'.format(first_name) \
              in welcome_msg.text, welcome_msg.text
     self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid

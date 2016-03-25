@@ -130,9 +130,9 @@ class JournalAdminPage(AdminPage):
         print('\n')
     else:
       logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
-      self._add_user_with_role('jgray_author', 'Flow Manager')
+      self._add_user_with_role('atest author3', 'Flow Manager')
       logging.info('Verifying added user')
-      self._validate_user_with_role('jgray_author', 'Flow Manager')
+      self._validate_user_with_role('atest author3', 'Flow Manager')
       logging.info('Deleting newly added user')
       self._delete_user_with_role()
       time.sleep(3)
@@ -284,22 +284,26 @@ class JournalAdminPage(AdminPage):
     except ElementDoesNotExistAssertionError:
       logging.error('No extant MMT found for Journal. This should never happen.')
     curr_journal_id = self._driver.current_url.split('/')[-1]
+    logging.info(curr_journal_id)
     db_mmts = PgSQL().query('SELECT paper_type, id '
                             'FROM manuscript_manager_templates '
                             'WHERE journal_id = %s;', (curr_journal_id,))
     for dbmmt in db_mmts:
+      logging.debug('Appending {0} to dbmmts'.format(dbmmt[0]))
       dbmmts.append(dbmmt[0])
       dbids.append(dbmmt[1])
+    logging.info(dbids)
     if mmts:
       count = 0
       for mmt in mmts:
         name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
         logging.info(name.text)
-        assert name.text in dbmmts
+        assert name.text in dbmmts, name.text
         phases = mmt.find_element(*self._journal_admin_manu_mgr_thumb_phases)
         db_phase_count = PgSQL().query('SELECT count(*) '
                                        'FROM phase_templates '
-                                       'WHERE manuscript_manager_template_id = %s;', (dbids[count],))[0][0]
+                                       'WHERE manuscript_manager_template_id = %s;',
+                                       (dbids[count],))[0][0]
         assert phases.text == str(db_phase_count), phases.text + ' != ' + str(db_phase_count)
         self._actions.move_to_element(mmt).perform()
         self._journal_admin_manu_mgr_thumb_edit = (By.CSS_SELECTOR, 'a.fa-pencil')

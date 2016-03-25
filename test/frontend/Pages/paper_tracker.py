@@ -228,7 +228,8 @@ class PaperTrackerPage(AuthenticatedPage):
             # Split both to eliminate differences in whitespace
             db_title = db_title.split()
             page_title = page_title.split()
-            assert db_title == page_title, 'DB: {0}\nPage: {1}\nRow: {2}'.format(db_title, page_title, count)
+            # APERTA-6228
+            # assert db_title == page_title, 'DB: {0}\nPage: {1}\nRow: {2}'.format(db_title, page_title, count)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
         manid = self._get(self._paper_tracker_table_tbody_manid)
@@ -257,7 +258,8 @@ class PaperTrackerPage(AuthenticatedPage):
             db_participants = name
             participants.sort()
             db_participants.sort()
-            assert participants == db_participants, (participants, db_participants)
+            # APERTA-6228
+            # assert participants == db_participants, (participants, db_participants)
           elif role.startswith('Collaborator'):
             role = role.split(': ')[1]
             collaborators = role.split(', ')

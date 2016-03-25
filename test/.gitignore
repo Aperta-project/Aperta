@@ -3,6 +3,7 @@
 .DS_Store
 .idea/*
 .idea/inspectionProfiles/*
+frontend/.cache
 frontent/Output/*.png
 frontend/assets/docs/*
 frontend/assets/imgs/*

@@ -56,7 +56,8 @@ class Paper < ActiveRecord::Base
                     tsearch: {dictionary: "english"} # stems
                   }
 
-  delegate :major_version, :minor_version, to: :latest_version, allow_nil: true
+  delegate :major_version, :minor_version, :figureful_text,
+           to: :latest_version, allow_nil: true
 
   def manuscript_id
     doi.split('/').last if doi

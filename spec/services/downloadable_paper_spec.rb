@@ -47,7 +47,7 @@ describe DownloadablePaper do
     context 'when paper.body is present and has no figures or supporting
       information' do
       it 'is just the paper.body' do
-        allow(paper).to receive(:body).and_return('<b>body</b>')
+        allow(paper).to receive(:figureful_text).and_return('<b>body</b>')
         expect(pdf_converter.paper_body).to eq '<b>body</b>'
       end
     end

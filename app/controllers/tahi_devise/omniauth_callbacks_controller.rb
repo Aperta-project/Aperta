@@ -3,7 +3,14 @@ module TahiDevise
 
     def cas
       ned = auth[:extra]
-      user = get_user_with_credential(auth[:uid], :cas, ned[:emailAddress])
+      user =
+        if credential.present?
+          credential.user
+        else
+          User.find_or_create_by(email: ned[:emailAddress]).tap do |user|
+            user.credentials.build(uid: auth[:uid], provider: :cas)
+          end
+        end
 
       # update user profile with latest attributes from NED
       user.first_name = ned[:firstName]
@@ -26,7 +33,6 @@ module TahiDevise
     # So, redirect to a page that prefills any orcid profile information and collects email.
     #
     def orcid
-      user = get_user_with_credential(auth[:uid], :orchid)
       if credential.present?
         sign_in_and_redirect(credential.user, event: :authentication)
       else
@@ -36,16 +42,6 @@ module TahiDevise
     end
 
     private
-
-    def get_user_with_credential(uid, provider, email=nil)
-      if credential
-        credential.user
-      else
-        User.find_or_create_by(email: email).tap do |user|
-          user.credentials.create(uid: uid, provider: provider)
-        end
-      end
-    end
 
     def credential
       @credential ||= Credential.find_by(auth.slice(:uid, :provider))

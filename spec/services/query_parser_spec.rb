@@ -243,8 +243,8 @@ describe QueryParser do
         SQL
       end
 
-      it 'parses USER currentUser HAS ROLE president' do
-        parse = QueryParser.new(current_user: user).parse 'USER currentUser HAS ROLE president'
+      it 'parses USER me HAS ROLE president' do
+        parse = QueryParser.new(current_user: user).parse 'USER me HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
@@ -265,8 +265,8 @@ describe QueryParser do
         SQL
       end
 
-      it 'parses USER currentUser HAS ANY ROLE' do
-        parse = QueryParser.new(current_user: user).parse 'USER currentUser HAS ANY ROLE'
+      it 'parses USER me HAS ANY ROLE' do
+        parse = QueryParser.new(current_user: user).parse 'USER me HAS ANY ROLE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL

@@ -189,7 +189,7 @@ class QueryParser < QueryLanguageParser
   def get_user_id(username)
     user = nil
 
-    if username == "currentUser"
+    if username == "me"
       user = @current_user
     else
       user = User.find_by(username: username)

@@ -4,3 +4,8 @@
   border: 1px solid #ddd;
   padding: 0.5rem 1rem;
 }
+
+.revise-task .error-message {
+  margin-bottom: 1rem;
+  margin-left: 0; //override default
+}

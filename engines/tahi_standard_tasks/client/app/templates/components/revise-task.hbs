@@ -21,23 +21,37 @@
   </div>
 
   <div>
-    <h3>Revision Details:</h3>
+    <h3>Response to Reviewers:</h3>
+    {{error-message message=validationErrors.response
+                    displayIcon=true}}
+
     {{#if editingAuthorResponse}}
-      {{content-editable
-        value=latestDecision.authorResponse
-        class="revise-overlay-response-field"
-        placeholder="Please detail the changes you've made to your submission here"
-        editable=isEditable}}
-      <button
-        class="button-primary button--green {{if isNotEditable 'button--disabled'}}"
-        disabled={{isNotEditable}}
-        {{action "saveAuthorResponse"}}>
-        Save
-      </button>
+      {{content-editable value=latestDecision.authorResponse
+                         class="revise-overlay-response-field"
+                         placeholder="Please detail the changes you've made to your submission here"
+                         editable=isEditable}}
     {{else}}
       <div class="preserve-line-breaks">{{{latestDecision.authorResponse}}}</div>
       <br>
-      <button class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
+      <button id="revise-task-edit-button" class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
+    {{/if}}
+
+    {{attachment-manager filePath="tasks/attachment"
+                         attachments=task.attachments
+                         multiple=true
+                         description="Please select files to add attachment"
+                         disabled=(not canUploadAttachments)
+                         deleteFile=(action "deleteAttachment")
+                         uploadFinished=(action "createAttachment")
+                         updateAttachment=(action "updateAttachment")}}
+
+    {{#if editingAuthorResponse}}
+      <button id="revise-task-save-button"
+              class="button-primary button--green {{if isNotEditable 'button--disabled'}}"
+              disabled={{isNotEditable}}
+              {{action "saveAuthorResponse"}}>
+        Save
+      </button>
     {{/if}}
   </div>
 

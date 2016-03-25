@@ -7,7 +7,7 @@ import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
 let App, paper, phase, task, inviteeEmail;
 
-module("Integration: Inviting an editor", {
+module("Integration: Inviting an reviewer", {
   afterEach() {
     Ember.run(function() { TestHelper.teardown(); });
     Ember.run(App, "destroy");
@@ -37,13 +37,13 @@ module("Integration: Inviting an editor", {
     });
 
     phase = FactoryGuy.make("phase");
-    task  = FactoryGuy.make("paper-editor-task", { phase: phase, letter: '"A letter"' });
+    task  = FactoryGuy.make("paper-reviewer-task", { phase: phase, letter: '"A letter"' });
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll("discussion-topic", 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
-    Factory.createPermission('PaperEditorTask', task.id, ['edit']);
+    Factory.createPermission('PaperReviewerTask', task.id, ['edit']);
   }
 });
 
@@ -52,7 +52,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
   Ember.run(function(){
     TestHelper.handleFind(task);
     visit(`/papers/${paper.id}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    click(".card-content:contains('Invite Reviewers')");
 
     andThen(function(){
       assert.ok(
@@ -78,19 +78,26 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
 test("can withdraw the invitation", function(assert) {
   Ember.run(function() {
-    let invitation = FactoryGuy.make("invitation", {email: "foo@bar.com", state: "invited"});
-    task.set("invitations", [invitation]);
+    let decision = FactoryGuy.make('decision', { isLatest: true });
+    task.set('decisions', [decision]);
+
+    let invitation = FactoryGuy.make('invitation', {
+      email: 'foo@bar.com',
+      invitationType: 'Reviewer',
+      state: 'invited'
+    });
+    decision.set('invitations', [invitation]);
     TestHelper.handleFind(task);
 
     visit(`/papers/${paper.id}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    click(".card-content:contains('Invite Reviewers')");
 
     andThen(function() {
       let msgEl = find(`.invitation:contains('${invitation.get("email")}')`);
       assert.ok(msgEl[0] !== undefined, "has pending invitation");
 
-      TestHelper.handleDelete("invitation", invitation.id);
-      click(".invite-remove");
+      TestHelper.handleDelete('invitation', invitation.id);
+      click('.invite-remove');
 
       andThen(function() {
         assert.equal(task.get('invitation'), null);

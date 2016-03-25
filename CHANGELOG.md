@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.4.2] - 2016-03-24
 ### Added
 - Figures display in the manuscript
+- Attachments to Revise Manuscript Task
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 - Group Author form on Authors task
 

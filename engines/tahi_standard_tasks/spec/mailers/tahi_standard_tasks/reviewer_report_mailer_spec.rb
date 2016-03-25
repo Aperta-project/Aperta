@@ -1,30 +1,35 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::ReviewerReportMailer do
-  describe ".notify_editor_email" do
+  describe ".notify_academic_editor_email" do
     let(:app_name) { 'TEST-APP-NAME' }
 
     let(:paper) do
       FactoryGirl.create(
         :paper,
-        title: 'Studies on the effects of saying Abracadabra')
+        title: 'Studies on the effects of saying Abracadabra'
+      )
     end
 
-    let(:task) {
-      FactoryGirl.create(:task,
-                         title: "Reviewer Report",
-                         old_role: 'reviewer',
-                         type: "TahiStandardTasks::ReviewerReportTask",
-                         paper: paper,
-                         completed: true)
-    }
+    let(:task) do
+      FactoryGirl.create(
+        :task,
+        title: "Reviewer Report",
+        old_role: 'reviewer',
+        type: "TahiStandardTasks::ReviewerReportTask",
+        paper: paper,
+        completed: true
+      )
+    end
 
-    let(:academic_editor) {
-      FactoryGirl.create(:user,
-                         first_name: 'Andi',
-                         last_name: 'Plantenberg',
-                         email: 'andi@example.com')
-    }
+    let(:academic_editor) do
+      FactoryGirl.create(
+        :user,
+        first_name: 'Andi',
+        last_name: 'Plantenberg',
+        email: 'andi@example.com'
+      )
+    end
 
     before do
       user = double(:user, last_name: 'Mazur')
@@ -37,7 +42,12 @@ describe TahiStandardTasks::ReviewerReportMailer do
       allow_any_instance_of(TemplateHelper).to receive(:app_name).and_return app_name
     end
 
-    let(:email) { described_class.notify_editor_email(task_id: task.id, recipient_id: academic_editor.id) }
+    let(:email) do
+      described_class.notify_academic_editor_email(
+        task_id: task.id,
+        recipient_id: academic_editor.id
+      )
+    end
 
     it "has correct subject line" do
       expect(email.subject).to eq "Reviewer has completed the review on #{app_name}"

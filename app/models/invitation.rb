@@ -5,8 +5,9 @@ class Invitation < ActiveRecord::Base
   belongs_to :task
   belongs_to :decision
   has_one :paper, through: :task
-  belongs_to :invitee, class_name: "User", inverse_of: :invitations
-  belongs_to :actor, class_name: "User"
+  belongs_to :invitee, class_name: 'User', inverse_of: :invitations
+  belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
+  belongs_to :actor, class_name: 'User'
   after_destroy :invitation_rescinded
   before_create :assign_to_latest_decision
 
@@ -62,7 +63,14 @@ class Invitation < ActiveRecord::Base
     task.invitation_rescinded(self)
   end
 
+  def add_authors_to_information(invitation)
+    return unless paper.authors_list.present?
+    invitation.update! information:
+      "Here are the authors on the paper:\n\n#{paper.authors_list}"
+  end
+
   def notify_invitation_invited
+    add_authors_to_information(self)
     task.invitation_invited(self)
   end
 

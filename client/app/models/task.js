@@ -31,6 +31,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
+  decisions: Ember.computed.alias('paper.decisions'),
   isMetadataTask: DS.attr('boolean'),
   isSubmissionTask: DS.attr('boolean'),
   position: DS.attr('number'),

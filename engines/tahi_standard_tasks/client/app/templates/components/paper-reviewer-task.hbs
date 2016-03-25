@@ -36,13 +36,14 @@
           {{user.full_name}} [{{user.email}}]
         {{/auto-suggest}}
 
-        <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>
+        <button class="button-primary button--green compose-invite-button {{unless selectedReviewer 'button--disabled'}}" {{action "composeInvite"}}>
           Compose Invite
         </button>
       </div>
 
       {{invitations-display decisions=decisions
-                            invitationType="Reviewer"
+                            groupByDecision=true
+                            invitationType=task.inviteeRole
                             latestDecision=latestDecision
                             onDestroyInvitation='destroyInvitation'}}
     {{/if}}

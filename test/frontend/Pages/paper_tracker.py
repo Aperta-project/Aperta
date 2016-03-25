@@ -33,7 +33,10 @@ class PaperTrackerPage(AuthenticatedPage):
     self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._paper_tracker_table_paper_type_th = (By.XPATH, '//th[5]')
-    self._paper_tracker_table_members_th = (By.XPATH, '//th[6]')
+    self._paper_tracker_table_status_th = (By.XPATH, '//th[6]')
+    self._paper_tracker_table_members_th = (By.XPATH, '//th[7]')
+    self._paper_tracker_table_he_th = (By.XPATH, '//th[8]')
+    self._paper_tracker_table_ce_th = (By.XPATH, '//th[9]')
     self._paper_tracker_table_header_sort_up = (By.CLASS_NAME, 'fa-caret-up')
     self._paper_tracker_table_header_sort_down = (By.CLASS_NAME, 'fa-caret-down')
     self._paper_tracker_table_tbody_row = (By.CSS_SELECTOR, 'tbody tr')
@@ -59,9 +62,9 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = []
     for journal in journal_ids:
       journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
-                                       'FROM papers '
-                                       'WHERE journal_id IN (%s) AND publishing_state != %s '
-                                       'AND submitted_at IS NOT NULL ;', (journal, 'unsubmitted'))
+                                     'FROM papers '
+                                     'WHERE journal_id IN (%s) AND publishing_state != %s '
+                                     'AND submitted_at IS NOT NULL ;', (journal, 'unsubmitted'))
 
       for paper in journal_papers:
         # when adding papers, change doi to manuscript_id, so can be sorted the same way
@@ -70,20 +73,21 @@ class PaperTrackerPage(AuthenticatedPage):
         paper[5] = paper[5].split('/')[1]
         submitted_papers.append(paper)
       # Now I need to resort this list by the datetime.datetime() objects ASC
-      # only trouble is this pukes on the none type objects for papers that are unsubmitted but in other states
-      #   (withdrawn)
+      # only trouble is this pukes on the none type objects for papers that are unsubmitted but in
+      # other states (withdrawn)
     submitted_papers = sorted(submitted_papers,
                               key=lambda x: x[1],
-                              reverse = reverse)
-    # next the papers with no submitted_at populated (I think this is limited to withdrawn papers with NULL s_a date)
-    # https://www.pivotaltracker.com/story/show/105325884 - this ordering is non-deterministic at present so this case
-    # will fail until this defect is resolved and the test case updated as needed.
+                              reverse=reverse)
+    # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
+    # with NULL s_a date)https://www.pivotaltracker.com/story/show/105325884 - this ordering is
+    # non-deterministic at present so this case will fail until this defect is resolved and the
+    # test case updated as needed.
     withdrawn_papers = []
     for journal in journal_ids:
       journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
-                                       'FROM papers '
-                                       'WHERE journal_id IN (%s) AND publishing_state = %s '
-                                       'AND submitted_at IS NULL ;', (journal, 'withdrawn'))
+                                     'FROM papers '
+                                     'WHERE journal_id IN (%s) AND publishing_state = %s '
+                                     'AND submitted_at IS NULL ;', (journal, 'withdrawn'))
       for paper in journal_papers:
         paper = list(paper)
         paper[5] = paper[5].split('/')[1]
@@ -102,13 +106,11 @@ class PaperTrackerPage(AuthenticatedPage):
         else:
           break
     try:
-        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]].lower(), reverse = reverse)
+        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]].lower(), reverse=reverse)
     except AttributeError:
         # For sorting by date
-        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]], reverse = reverse)
+        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]], reverse=reverse)
     return papers
-
-
 
   def validate_heading_and_subhead(self, username):
     """
@@ -129,11 +131,11 @@ class PaperTrackerPage(AuthenticatedPage):
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
     journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE user_id = %s and "
-                                "assigned_to_type = 'Journal';",(uid,))
+                                "assigned_to_type = 'Journal';", (uid,))
     # TODO: Take into account the special case of superadmin
-    #if username == 'asuperadm':
-    #  journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE "
-    #                              "assigned_to_type = 'Journal';")
+    # if username == 'asuperadm':
+    #   journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE "
+    #                               "assigned_to_type = 'Journal';")
 
     journals_set = set(journal_ids)
     total_count = 0
@@ -156,10 +158,16 @@ class PaperTrackerPage(AuthenticatedPage):
     manid_th = self._get(self._paper_tracker_table_paper_id_th)
     self.validate_table_heading_style(manid_th)
     subdate_th = self._get(self._paper_tracker_table_submit_date_th)
-    subdate_th_a = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+    self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
     self.validate_table_heading_style(subdate_th)
     paptype_th = self._get(self._paper_tracker_table_paper_type_th)
     self.validate_table_heading_style(paptype_th)
+    status_th = self._get(self._paper_tracker_table_status_th)
+    self.validate_table_heading_style(status_th)
+    handedit_th = self._get(self._paper_tracker_table_he_th)
+    self.validate_table_heading_style(handedit_th)
+    covedit_th = self._get(self._paper_tracker_table_ce_th)
+    self.validate_table_heading_style(covedit_th)
     members_th = self._get(self._paper_tracker_table_members_th)
     self.validate_table_heading_style(members_th)
     # Validate the contents of the table: papers, links, sorting, roles
@@ -171,7 +179,8 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = []
     if total_count > 0:
       for journal in journal_ids:
-        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
+        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, '
+                                       'doi '
                                        'FROM papers '
                                        'WHERE journal_id IN (%s) AND publishing_state != %s '
                                        'AND submitted_at IS NOT NULL '
@@ -179,16 +188,18 @@ class PaperTrackerPage(AuthenticatedPage):
         for paper in journal_papers:
           submitted_papers.append(paper)
       # Now I need to resort this list by the datetime.datetime() objects ASC
-      # only trouble is this pukes on the none type objects for papers that are unsubmitted but in other states
-      #   (withdrawn)
+      # only trouble is this pukes on the none type objects for papers that are unsubmitted but in
+      # other states (withdrawn)
       submitted_papers = sorted(submitted_papers, key=lambda x: x[1])
-    # next the papers with no submitted_at populated (I think this is limited to withdrawn papers with NULL s_a date)
-    # https://www.pivotaltracker.com/story/show/105325884 - this ordering is non-deterministic at present so this case
-    # will fail until this defect is resolved and the test case updated as needed.
+    # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
+    # with NULL s_a date) https://www.pivotaltracker.com/story/show/105325884 - this ordering is
+    # non-deterministic at present so this case will fail until this defect is resolved and the
+    # test case updated as needed.
     withdrawn_papers = []
     if total_count > 0:
       for journal in journal_ids:
-        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
+        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, '
+                                       'doi '
                                        'FROM papers '
                                        'WHERE journal_id IN (%s) AND publishing_state = %s '
                                        'AND submitted_at IS NULL '
@@ -196,29 +207,35 @@ class PaperTrackerPage(AuthenticatedPage):
         for paper in journal_papers:
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
-    papers = withdrawn_papers + submitted_papers
+    db_papers = withdrawn_papers + submitted_papers
     if total_count > 0:
       papers = self._get_paper_list(journal_ids)
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       for count, row in enumerate(table_rows):
         logging.info('Validating Row: {0}'.format(count))
         # Once again, while less than ideal, these must be defined on the fly
-        self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a'
-                                                 % (count + 1))
-        self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-paper-id-column"]/a'
-                                                 % (count + 1))
-        self._paper_tracker_table_tbody_subdate = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-date-column"]'
-                                                   % (count + 1))
-        self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"]'
-                                                   % (count + 1))
-        self._paper_tracker_table_tbody_members = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"]'
-                                                   % (count + 1))
+        self._paper_tracker_table_tbody_title = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a' % (count + 1))
+        self._paper_tracker_table_tbody_manid = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-paper-id-column"]/a' % (count + 1))
+        self._paper_tracker_table_tbody_subdate = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-date-column"]' % (count + 1))
+        self._paper_tracker_table_tbody_paptype = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"]' % (count + 1))
+        self._paper_tracker_table_tbody_status = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"][2]' % (count + 1))
+        self._paper_tracker_table_tbody_members = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"]' % (count + 1))
+        self._paper_tracker_table_tbody_he = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"][2]' % (count + 1))
+        self._paper_tracker_table_tbody_ce = (
+            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"][3]' % (count + 1))
         title = self._get(self._paper_tracker_table_tbody_title)
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, '
                            'Norman Coordinate: Invalid document')
         if papers[count][0]:
-          db_title = papers[count][0]
+          db_title = db_papers[count][0]
           # strip tags
           db_title = self.get_text(db_title)
           db_title = db_title.strip()
@@ -229,58 +246,32 @@ class PaperTrackerPage(AuthenticatedPage):
             db_title = db_title.split()
             page_title = page_title.split()
             # APERTA-6228
-            # assert db_title == page_title, 'DB: {0}\nPage: {1}\nRow: {2}'.format(db_title, page_title, count)
+            # assert db_title == page_title, 'DB: {0}\nPage: {1}\nRow: {2}'.format(db_title,
+            #                                                                      page_title,
+            #                                                                      count)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
         manid = self._get(self._paper_tracker_table_tbody_manid)
         manid.number = manid.get_attribute('href').split('/')[-1]
         assert '/papers/%s' % manid.number in title.get_attribute('href'), \
-          (manid.number, title.get_attribute('href'))
+            (manid.number, title.get_attribute('href'))
         assert int(manid.number) == papers[count][1]
         assert '/papers/%s' % manid.number in manid.get_attribute('href'), \
-          (manid.number, title.get_attribute('href'))
+            (manid.number, title.get_attribute('href'))
         self._get(self._paper_tracker_table_tbody_subdate)
         paptype = self._get(self._paper_tracker_table_tbody_paptype)
         assert paptype.text == papers[count][3]
         members = self._get(self._paper_tracker_table_tbody_members)
         page_members_by_role = members.text.split('\n')
         for role in page_members_by_role:
-          if role.startswith('Participant'):
-            role = role.split(': ')[1]
-            participants = role.split(', ')
-            db_participants = PgSQL().query('SELECT users.first_name, users.last_name '
-                                            'FROM paper_roles INNER JOIN users '
-                                            'ON paper_roles.user_id = users.id '
-                                            'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'participant'))
-            name = []
-            for participant in db_participants:
-              name.append(participant[0] + ' ' + participant[1])
-            db_participants = name
-            participants.sort()
-            db_participants.sort()
-            # APERTA-6228
-            # assert participants == db_participants, (participants, db_participants)
-          elif role.startswith('Collaborator'):
-            role = role.split(': ')[1]
-            collaborators = role.split(', ')
-            db_collaborators = PgSQL().query('SELECT users.first_name, users.last_name '
-                                             'FROM paper_roles INNER JOIN users '
-                                             'ON paper_roles.user_id = users.id '
-                                             'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'collaborator'))
-            name = []
-            for collaborator in db_collaborators:
-              name.append(collaborator[0] + ' ' + collaborator[1])
-            db_collaborators = name
-            collaborators.sort()
-            db_collaborators.sort()
-            assert collaborators == db_collaborators, (collaborators, db_collaborators, count+1)
-          elif role.startswith('Reviewer'):
+          if role.startswith('Reviewer'):
             role = role.split(': ')[1]
             reviewers = role.split(', ')
             db_reviewers = PgSQL().query('SELECT users.first_name, users.last_name '
                                          'FROM paper_roles INNER JOIN users '
                                          'ON paper_roles.user_id = users.id '
-                                         'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'reviewer'))
+                                         'WHERE paper_id= %s AND paper_roles.old_role = %s;',
+                                         (manid.number, 'reviewer'))
             name = []
             for reviewer in db_reviewers:
               name.append(reviewer[0] + ' ' + reviewer[1])
@@ -294,7 +285,8 @@ class PaperTrackerPage(AuthenticatedPage):
             db_editors = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'editor'))
+                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;',
+                                       (manid.number, 'editor'))
             name = []
             for editor in db_editors:
               name.append(editor[0] + ' ' + editor[1])
@@ -306,9 +298,10 @@ class PaperTrackerPage(AuthenticatedPage):
             role = role.split(': ')[1]
             admins = role.split(', ')
             db_admins = PgSQL().query('SELECT users.first_name, users.last_name '
-                                       'FROM paper_roles INNER JOIN users '
-                                       'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'admin'))
+                                      'FROM paper_roles INNER JOIN users '
+                                      'ON paper_roles.user_id = users.id '
+                                      'WHERE paper_id= %s AND paper_roles.old_role = %s;',
+                                      (manid.number, 'admin'))
             name = []
             for admin in db_admins:
               name.append(admin[0] + ' ' + admin[1])
@@ -321,25 +314,26 @@ class PaperTrackerPage(AuthenticatedPage):
             pass
         count += 1
 
-
       logging.info('Sorting by Article Type ASC')
       paptype_th = self._get(self._paper_tracker_table_paper_type_th).find_element_by_tag_name('a')
       paptype_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
+      self._paper_tracker_table_tbody_paptype = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       article_type = self._get(self._paper_tracker_table_tbody_paptype).text
       papers = self._get_paper_list(journal_ids, sort_by='paper_type', reverse=False)
       assert article_type == papers[0][3], \
-        'Article Type in page: {0} != Article Type in DB: {1}'.format(article_type, papers[0])
+          'Article Type in page: {0} != Article Type in DB: {1}'.format(article_type, papers[0])
       logging.info('Sorting by Article Type DESC')
       paptype_th = self._get(self._paper_tracker_table_paper_type_th).find_element_by_tag_name('a')
       paptype_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
+      self._paper_tracker_table_tbody_paptype = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       article_type = self._get(self._paper_tracker_table_tbody_paptype).text
       papers = self._get_paper_list(journal_ids, sort_by='paper_type', reverse=True)
       assert article_type == papers[0][3], \
-        'Article Type in page: {0} != Article Type in DB: {1}'.format(article_type, papers[0])
+          'Article Type in page: {0} != Article Type in DB: {1}'.format(article_type, papers[0])
 
       logging.info('Sorting by Date ASC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
@@ -347,7 +341,8 @@ class PaperTrackerPage(AuthenticatedPage):
       date_th.click()
       time.sleep(2)
       # check order
-      self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      self._paper_tracker_table_tbody_manid = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
       pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
       papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=False)
@@ -359,7 +354,8 @@ class PaperTrackerPage(AuthenticatedPage):
       date_th.click()
       time.sleep(2)
       # check order
-      self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      self._paper_tracker_table_tbody_manid = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
       pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
       papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=True)
@@ -367,7 +363,8 @@ class PaperTrackerPage(AuthenticatedPage):
       assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
       """
       Commented code to check content on date field instead of only order
-      self._paper_tracker_table_tbody_date = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-date-column"]')
+      self._paper_tracker_table_tbody_date = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-date-column"]')
       paper_tracker_date = self._get(self._paper_tracker_table_tbody_date).text
       paper_tracker_date = datetime.strptime(paper_tracker_date.split('\n')[0],
                                              '%B %d, %Y %H:%M')
@@ -379,29 +376,32 @@ class PaperTrackerPage(AuthenticatedPage):
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
       msid_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      self._paper_tracker_table_tbody_manid = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
       papers = self._get_paper_list(journal_ids, sort_by='ms_id')
       db_ms_id = papers[0][5].split('/')[-1]
       assert paper_tracker_ms_id == db_ms_id, \
-        'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
+          'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
       logging.info('Sorting by Manuscript ID DESC')
       self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
       msid_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      self._paper_tracker_table_tbody_manid = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
       papers = self._get_paper_list(journal_ids, sort_by='ms_id', reverse=True)
       db_ms_id = papers[0][5].split('/')[-1]
       assert paper_tracker_ms_id == db_ms_id, \
-        'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
+          'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
 
       logging.info('Sorting by Title ASC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
       title_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
+      self._paper_tracker_table_tbody_title = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       paper_tracker_title = self._get(self._paper_tracker_table_tbody_title).text
       papers = self._get_paper_list(journal_ids, sort_by='title')
       db_title = papers[0][0].strip()
@@ -420,7 +420,8 @@ class PaperTrackerPage(AuthenticatedPage):
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
       title_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
+      self._paper_tracker_table_tbody_title = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       paper_tracker_title = self._get(self._paper_tracker_table_tbody_title).text
       papers = self._get_paper_list(journal_ids, sort_by='title', reverse=True)
       paper_tracker_title = paper_tracker_title.strip()
@@ -431,6 +432,6 @@ class PaperTrackerPage(AuthenticatedPage):
         paper_tracker_title = paper_tracker_title.split()
         db_title = db_title.split()
         assert paper_tracker_title == db_title, \
-          'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
+            'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
       else:
         raise TypeError('Database title or Page title are not both unicode objects')

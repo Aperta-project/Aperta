@@ -103,7 +103,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     paper_id = manuscript_page.get_current_url().split('papers/')[1].split('?')[0]
     logging.info('paper_id: {0}'.format(paper_id))
     manuscript_page.click_submit_btn()

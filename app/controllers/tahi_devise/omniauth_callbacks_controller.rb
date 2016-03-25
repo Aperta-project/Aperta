@@ -2,8 +2,15 @@ module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     def cas
-      user = get_user_with_credential(auth[:uid], :cas)
       ned = auth[:extra]
+      user =
+        if credential.present?
+          credential.user
+        else
+          User.find_or_create_by(email: ned[:emailAddress]).tap do |user|
+            user.credentials.build(uid: auth[:uid], provider: :cas)
+          end
+        end
 
       # update user profile with latest attributes from NED
       user.first_name = ned[:firstName]
@@ -26,7 +33,6 @@ module TahiDevise
     # So, redirect to a page that prefills any orcid profile information and collects email.
     #
     def orcid
-      user = get_user_with_credential(auth[:uid], :orchid)
       if credential.present?
         sign_in_and_redirect(credential.user, event: :authentication)
       else
@@ -37,18 +43,8 @@ module TahiDevise
 
     private
 
-    def get_user_with_credential(uid, provider)
-      if credential
-        credential.user
-      else
-        User.new do |u|
-          u.credentials.build(uid: uid, provider: provider)
-        end
-      end
-    end
-
     def credential
-      Credential.find_by(auth.slice(:uid, :provider))
+      @credential ||= Credential.find_by(auth.slice(:uid, :provider))
     end
 
     def auth

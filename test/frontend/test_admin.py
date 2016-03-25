@@ -66,7 +66,7 @@ class ApertaAdminTest(CommonTest):
     adm_page.validate_page_elements_styles(user_type['user'])
     logging.info('Validating journal block display for {0}'.format(user_type['user']))
     adm_page.validate_journal_block_display(user_type['user'])
-    adm_page.validate_nav_toolbar_elements(user_type['user'])
+    adm_page.validate_nav_toolbar_elements(user_type)
 
   def test_validate_user_search(self):
     """

@@ -57,7 +57,7 @@ class ApertaJournalAdminTest(CommonTest):
     adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
-    ja_page.validate_nav_toolbar_elements(user_type['email'])
+    ja_page.validate_nav_toolbar_elements(user_type)
 
   def test_validate_journal_admin_user_search_display_function(self):
     """

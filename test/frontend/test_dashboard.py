@@ -77,7 +77,7 @@ class ApertaDashboardTest(CommonTest):
     # The dashboard navigation elements will change based on a users permissions
     # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator,
     #   Feedback Link
-    dashboard_page.validate_nav_toolbar_elements(user_type['email'])
+    dashboard_page.validate_nav_toolbar_elements(user_type)
 
     # Validate View Invites modal (optional)
     invites = dashboard_page.is_invite_stanza_present(user_type)

@@ -64,6 +64,7 @@ class ApertaWorkflowTest(CommonTest):
     time.sleep(12)
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
+    workflow_page.validate_nav_toolbar_elements(workflow_user)
     return self
 
   def test_add_new_card(self):

@@ -23,6 +23,19 @@ export default NestedQuestionOwner.extend({
     return "http://" + website;
   }).property('website'),
 
+  funderHadInfluence: Ember.computed.alias('funderInfluenceAnswer.value'),
+
+  funderInfluenceAnswer: Ember.computed(function() {
+    return this.answerForQuestion('funder--had_influence');
+  }),
+
+  funderInfluenceDescription: Ember.computed.alias(
+      'funderInfluenceDescriptionAnswer.value'),
+
+  funderInfluenceDescriptionAnswer: Ember.computed(function() {
+    return this.answerForQuestion('funder--had_influence--role_description');
+  }),
+
   onlyHasAdditionalComments: Ember.computed(
       'additionalComments',
       'name',

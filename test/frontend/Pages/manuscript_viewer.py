@@ -121,6 +121,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
     self._title = (By.ID, 'control-bar-paper-title')
+    # Discussion messages
+    self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
+
 
   # POM Actions
   def validate_page_elements_styles_functions(self, useremail='', admin=''):

@@ -61,7 +61,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
         assignment.save().then(()=> {
           this.get('task.assignments').pushObject(assignment);
           this.set('selectedUser', null);
-          this.set('users', []);
           this.set('selectedRole', null);
         }, function(response) {
           this.displayValidationErrorsFromResponse(response);
@@ -75,6 +74,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
       Ember.assert(`Expected to have a paper.id but didn't`, paperId);
       Ember.assert(`Expected to have a role.id but didn't`, roleId);
+
+      this.set('selectedUser', null);
 
       let url = `/api/papers/${paperId}/roles/${roleId}/eligible_users`;
       this.set('selectedRole', role);

@@ -3,6 +3,7 @@
 
 Select2SingleComponent = Select2Component.extend
   setRemoteSource: (->
+    this.set('selectedData', null);
     @repaint()
   ).observes('remoteSource')
 

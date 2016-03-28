@@ -47,6 +47,7 @@ class SimpleReport < ActiveRecord::Base
     @status_queries ||= begin
       queries = Hash[{
         initially_submitted: "STATUS IS initially submitted",
+        invited_for_full_submission: "STATUS IS invited for full submission",
         fully_submitted: "STATUS IS submitted",
         checking: "STATUS IS checking",
         in_revision: "STATUS IS in revision",
@@ -56,8 +57,7 @@ class SimpleReport < ActiveRecord::Base
       }.map { |k, v| [k, QueryParser.new.build(v)] }]
 
       queries[:new_initial_submissions] =
-        queries[:initially_submitted]
-        .where("first_submitted_at >= ?", previous_report_date)
+        Paper.where("first_submitted_at >= ?", previous_report_date)
 
       %w(accepted rejected withdrawn).each do |state|
         queries["new_#{state}".to_sym] =

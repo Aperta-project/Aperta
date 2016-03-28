@@ -56,6 +56,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
@@ -82,6 +83,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return true
@@ -94,6 +96,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return false
@@ -121,6 +124,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
@@ -225,6 +229,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
@@ -236,19 +241,15 @@ describe TasksController, redis: true do
 
   describe "GET 'show'" do
     let(:task) { FactoryGirl.create(:task) }
-    subject(:do_request) { get :show, { id: task.id, format: format } }
+    subject(:do_request) { get :show, { id: task.id, format: :json } }
     let(:format) { :json }
 
     context "when the user has access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
-      end
-
-      context "html requests" do
-        let(:format) { nil }
-        it_behaves_like "when the user is not signed in"
       end
 
       context "json requests" do
@@ -262,6 +263,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
@@ -287,6 +289,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
@@ -314,6 +317,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false

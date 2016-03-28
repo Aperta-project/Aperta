@@ -10,10 +10,12 @@ describe DiscussionParticipantsController do
 
   let(:json) { res_body }
 
-  before { sign_in user }
-
   describe 'POST create' do
     include ActiveJob::TestHelper
+
+    subject(:do_request) do
+      xhr :post, :create, creation_params.merge(format: :json)
+    end
 
     before { ActionMailer::Base.deliveries.clear }
     after  { clear_enqueued_jobs }
@@ -31,6 +33,7 @@ describe DiscussionParticipantsController do
 
     context "when the user has access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_participant, topic_a)
           .and_return true
@@ -38,7 +41,7 @@ describe DiscussionParticipantsController do
 
       it "adds a user to a discussion" do
         expect do
-          xhr :post, :create, format: :json, **creation_params
+          do_request
         end.to change { DiscussionParticipant.count }.by(1)
 
         participant = json["discussion_participant"]
@@ -48,8 +51,9 @@ describe DiscussionParticipantsController do
     end
 
     context "when the user does not have access" do
-      let!(:do_request) { post :create, creation_params }
+      subject(:do_request) { post :create, creation_params }
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_participant, topic_a)
           .and_return false
@@ -61,7 +65,7 @@ describe DiscussionParticipantsController do
 
   describe 'DELETE destroy' do
     subject(:do_request) do
-      xhr :delete, :destroy, format: :json, id: participation.id
+      xhr :delete, :destroy, format: :json, id: participation.to_param
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -82,7 +86,7 @@ describe DiscussionParticipantsController do
     end
 
     context "when the user does not have access" do
-      subject(:do_request) { delete :destroy, id: topic_a.id }
+      subject(:do_request) { delete :destroy, id: participation.to_param }
 
       before do
         stub_sign_in user

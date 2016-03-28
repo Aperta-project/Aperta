@@ -38,16 +38,26 @@ describe CommentsController do
           }
     end
 
-    it_behaves_like "an unauthenticated json request"
+    it_behaves_like 'an unauthenticated json request'
 
-    it "returns the tasks comments" do
-      do_request
-      expect(res_body['comments'].count).to eq(2)
-      expect(res_body['comments'][0]['id']).to eq(comment1.id)
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+      end
+
+      it "returns the tasks comments" do
+        do_request
+        expect(res_body['comments'].count).to eq(2)
+        expect(res_body['comments'][0]['id']).to eq(comment1.id)
+      end
     end
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
@@ -72,12 +82,17 @@ describe CommentsController do
                   task_id: task.id}
     end
 
-    context "the user is authorized" do
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return true
-        allow_any_instance_of(User).to \
-          receive(:can?).with(:administer, journal).and_return false
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+        allow(user).to receive(:can?)
+          .with(:administer, journal)
+          .and_return false
       end
 
       context "the user tries to create a blank comment" do
@@ -130,8 +145,6 @@ describe CommentsController do
         do_request
       end
 
-      it_behaves_like 'an unauthenticated json request'
-
       context "the user is a journal admin" do
         let(:task) do
           FactoryGirl.create(
@@ -166,6 +179,7 @@ describe CommentsController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
@@ -186,11 +200,12 @@ describe CommentsController do
           }
     end
 
-    it_behaves_like "an unauthenticated json request"
+    it_behaves_like 'an unauthenticated json request'
 
-    context "the user has access" do
+    context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to \
+        stub_sign_in user
+        allow(user).to \
           receive(:can?).with(:view, task).and_return true
       end
 
@@ -202,6 +217,7 @@ describe CommentsController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false

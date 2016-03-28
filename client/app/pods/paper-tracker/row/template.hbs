@@ -17,22 +17,22 @@
     {{relative-time time=paper.submittedAt}}
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
-  <td class="paper-tracker-type-column">{{humanize paper.publishingState}}</td>
+  <td class="paper-tracker-status-column">{{humanize paper.publishingState}}</td>
   <td class="paper-tracker-members-column">
     {{#each paper.relatedUsers as |oldRole|}}
-      <div class="paper-tracker-members-group">
+      <div class="paper-tracker-users-group">
         <span>{{pluralize-string string=oldRole.name count=oldRole.users.length}}:</span>
         {{comma-separated-user-list users=oldRole.users}}
       </div>
     {{/each}}
   </td>
-  <td class="paper-tracker-members-column">
-    <div class="paper-tracker-members-group">
+  <td class="paper-tracker-handling-editor-column">
+    <div class="paper-tracker-users-group">
       {{comma-separated-user-list users=paper.handlingEditors}}
     </div>
   </td>
-  <td class="paper-tracker-members-column">
-    <div class="paper-tracker-members-group">
+  <td class="paper-tracker-cover-editor-column">
+    <div class="paper-tracker-users-group">
       {{comma-separated-user-list users=paper.coverEditors}}
     </div>
   </td>

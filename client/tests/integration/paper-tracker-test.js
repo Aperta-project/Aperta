@@ -58,12 +58,18 @@ test('viewing papers', function(assert) {
     );
 
     assert.ok(
-      find('.paper-tracker-members-group').text().trim().match(roleName),
+      find('.paper-tracker-members-column .paper-tracker-users-group')
+        .text()
+        .trim()
+        .match(roleName),
       'Role name is displayed'
     );
 
     assert.ok(
-      find('.paper-tracker-members-group').text().trim().match(lastName),
+      find('.paper-tracker-members-column .paper-tracker-users-group')
+        .text()
+        .trim()
+        .match(lastName),
       'User name is displayed'
     );
   });

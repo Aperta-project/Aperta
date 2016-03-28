@@ -11,7 +11,7 @@
   font-size: 18px;
 }
 
-.paper-tracker-members-group {
+.paper-tracker-users-group {
   margin-bottom: 0.65rem;
   font-size: 12px;
   line-height: 120%;
@@ -37,9 +37,15 @@
   }
 }
 
-.paper-tracker-members-column, .paper-tracker-title-column  { min-width: 200px; }
+.paper-tracker-members-column,
+.paper-tracker-handling-editor-column,
+.paper-tracker-cover-editor-column,
+.paper-tracker-title-column
+ { min-width: 200px; }
 .paper-tracker-date-column { min-width: 150px; }
-.paper-tracker-paper-id-column, .paper-tracker-type-column { min-width: 110px; }
+.paper-tracker-paper-id-column,
+.paper-tracker-type-column,
+.paper-tracker-status-column { min-width: 110px; }
 
 .paper-tracker-table {
   overflow: auto;

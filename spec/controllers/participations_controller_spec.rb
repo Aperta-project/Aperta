@@ -32,7 +32,8 @@ describe ParticipationsController do
 
     context "and the user authorized" do
       before do
-        allow_any_instance_of(User).to \
+        stub_sign_in user
+        allow(user).to \
           receive(:can?).with(:view_participants, task).and_return true
       end
 
@@ -50,12 +51,13 @@ describe ParticipationsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view_participants, task)
           .and_return false
       end
 
-      it { responds_with(200) }
+      it { is_expected.to responds_with(200) }
 
       it 'responds with an empty list of participations' do
         do_request
@@ -65,17 +67,18 @@ describe ParticipationsController do
   end
 
   describe "#show" do
-    let!(:participation) { FactoryGirl.create(:assignment, assigned_to: task) }
-
     subject(:do_request) do
       get :show, format: 'json', id: participation.to_param
     end
+
+    let!(:participation) { FactoryGirl.create(:assignment, assigned_to: task) }
 
     it_behaves_like "an unauthenticated json request"
 
     context "and the user authorized" do
       before do
-        allow_any_instance_of(User).to \
+        stub_sign_in user
+        allow(user).to \
           receive(:can?).with(:view_participants, task).and_return true
       end
 
@@ -87,18 +90,20 @@ describe ParticipationsController do
       end
 
       context "and the participation does not exist" do
-        it { responds_with(404) }
+        before { participation.delete }
+        it { is_expected.to responds_with(404) }
       end
     end
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view_participants, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -109,13 +114,14 @@ describe ParticipationsController do
                         task_id: task.id}
     end
 
+    it_behaves_like "an unauthenticated json request"
+
     context "the user is authorized" do
       before do
-        allow_any_instance_of(User).to \
+        stub_sign_in user
+        allow(user).to \
           receive(:can?).with(:manage_participant, task).and_return true
       end
-
-      it_behaves_like "an unauthenticated json request"
 
       context "the user does not pass a participant" do
         it "doesn't work" do
@@ -191,7 +197,7 @@ describe ParticipationsController do
 
         context "when the task type is EditorsDiscussionTask" do
           before do
-            allow_any_instance_of(User).to \
+            allow(user).to \
               receive(:can?).with(:manage_participant, editors_discussion_task)
               .and_return true
           end
@@ -223,17 +229,18 @@ describe ParticipationsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_participant, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe "DELETE #destroy" do
-    let(:do_request) do
+    subject(:do_request) do
       delete :destroy, format: :json, id: participation.id
     end
 
@@ -246,14 +253,17 @@ describe ParticipationsController do
       )
     end
 
+    it_behaves_like "an unauthenticated json request"    
+
     context "the user is authorized" do
       before do
-        allow_any_instance_of(User).to \
+        stub_sign_in user
+        allow(user).to \
           receive(:can?).with(:manage_participant, task).and_return true
       end
 
       context "with a valid participation id" do
-        let(:do_request) do
+        subject(:do_request) do
           delete :destroy, format: :json, id: participation.id
         end
 
@@ -269,7 +279,7 @@ describe ParticipationsController do
       end
 
       context "with an invalid participation id" do
-        let(:do_request) do
+        subject(:do_request) do
           delete :destroy, format: :json, id: 9999
         end
 
@@ -281,28 +291,32 @@ describe ParticipationsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_participant, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
   context "participants" do
+    subject :do_request do
+      post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
+    end
+
     let(:editors_discussion_task) do
       FactoryGirl.create(:editors_discussion_task, paper: paper)
     end
     let(:new_participant) { FactoryGirl.create(:user) }
 
-    subject :do_request do
-      post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
-    end
+    it_behaves_like "an unauthenticated json request"
 
     context "the user is authorized" do
       before do
-        allow_any_instance_of(User).to \
+        stub_sign_in user
+        allow(user).to \
           receive(:can?).with(:manage_participant, task).and_return true
       end
 
@@ -319,7 +333,7 @@ describe ParticipationsController do
 
       context "when the task type is EditorsDiscussionTask" do
         before do
-          allow_any_instance_of(User).to \
+          allow(user).to \
             receive(:can?).with(:manage_participant, editors_discussion_task).and_return true
         end
 
@@ -338,12 +352,13 @@ describe ParticipationsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, task)
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_participant, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 end

@@ -53,7 +53,7 @@ describe CommentsController do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -171,7 +171,7 @@ describe CommentsController do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -207,7 +207,7 @@ describe CommentsController do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 

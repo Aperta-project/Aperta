@@ -51,7 +51,7 @@ describe PapersController do
         )
       end
 
-      it { responds_with 200 }
+      it { is_expected.to responds_with 200 }
 
       it 'returns papers the user has access to' do
         expect(user).to receive(:filter_authorized).with(

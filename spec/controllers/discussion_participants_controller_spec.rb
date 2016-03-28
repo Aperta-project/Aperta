@@ -55,34 +55,41 @@ describe DiscussionParticipantsController do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe 'DELETE destroy' do
     context "when the user has access" do
+      subject(:do_request) do
+        xhr :delete, :destroy, format: :json, id: participation.id
+      end
+
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_participant, topic_a)
           .and_return true
       end
 
       it "destroys a participant" do
         expect do
-          xhr :delete, :destroy, format: :json, id: participation.id
+          do_request
         end.to change { DiscussionParticipant.count }.by(-1)
       end
     end
 
     context "when the user does not have access" do
-      let!(:do_request) { delete :destroy, id: topic_a.id }
+      subject(:do_request) { delete :destroy, id: topic_a.id }
+
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_participant, topic_a)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 

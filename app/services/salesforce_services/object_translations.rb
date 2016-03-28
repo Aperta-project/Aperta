@@ -77,24 +77,13 @@ module SalesforceServices
           'PFA_Able_to_Pay_R__c'       => float_answer_for("plos_billing--pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("plos_billing--pfa_additional_comments"),
           'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs"),
-          'PFA_Funding_Statement__c'   => funding_statement
+          'PFA_Funding_Statement__c'   => financial_disclosure_task.try(:funding_statement)
         }
       end
 
       private
 
-      delegate :billing_task, to: :@paper
-
-      def funding_statement
-        financial_disclosure_task.funding_statement
-      end
-
-      def financial_disclosure_task
-        @paper
-          .tasks
-          .where(type: 'TahiStandardTasks::FinancialDisclosureTask')
-          .first
-      end
+      delegate :billing_task, :financial_disclosure_task, to: :@paper
 
       def answer_for(ident)
         if billing_task

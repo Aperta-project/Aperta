@@ -15,6 +15,51 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
   let(:bob) { FactoryGirl.create(:user, first_name: 'Bob') }
   let(:fay) { FactoryGirl.create(:user, first_name: 'Fay') }
 
+  describe '.eligible_for?' do
+    subject(:is_eligible) do
+      EligibleUserService.eligible_for?(
+        paper: paper,
+        role: role,
+        user: user
+      )
+    end
+    let(:eligible_users) { [bob] }
+    let(:role) { FactoryGirl.build_stubbed(:role) }
+
+    before do
+      allow(EligibleUserService).to receive(:new)
+        .with(paper: paper, role: role)
+        .and_return instance_double(
+          EligibleUserService,
+          eligible_users: eligible_users
+        )
+    end
+
+    context 'when the user is eligible for the role on the given paper' do
+      it 'returns true 'do
+        expect(
+          EligibleUserService.eligible_for?(
+            paper: paper,
+            role: role,
+            user: bob
+          )
+        ).to be(true)
+      end
+    end
+
+    context 'when the user is not eligible for the on the given paper' do
+      it 'returns true 'do
+        expect(
+          EligibleUserService.eligible_for?(
+            paper: paper,
+            role: role,
+            user: fay
+          )
+        ).to be(false)
+      end
+    end
+  end
+
   describe '.eligible_users_for' do
     before do
       bob.assignments.create(role: internal_editor_role, assigned_to: journal)

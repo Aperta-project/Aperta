@@ -14,6 +14,10 @@ class EligibleUserService
     new(paper: paper, role: role).eligible_users(matching: matching)
   end
 
+  def self.eligible_for?(paper:, role:, user:)
+    eligible_users_for(paper: paper, role: role).include?(user)
+  end
+
   attr_reader :paper, :role
 
   def initialize(paper:, role:)

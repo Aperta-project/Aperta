@@ -1,14 +1,17 @@
 # Module for interacting with Salesforce
 module SalesforceServices
-  class BillingCardMissing < StandardError; end
-  class BillingFundingSourceMissing < StandardError; end
+  class Error < ::StandardError; end
+  class SyncInvalid < Error; end
 
   # Only send data to Salesforce if the author is
   # requesting publication fee assistance.
-  def self.send_to_salesforce?(paper:)
-    fail BillingCardMissing unless paper.billing_task
-    answer = paper.billing_task.answer_for("plos_billing--payment_method")
-    fail BillingFundingSourceMissing unless answer
-    answer.value == "pfa"
+  def self.sync_paper!(paper)
+    answer = paper.answer_for('plos_billing--payment_method')
+    should_send_to_salesforce = answer.try(:value) == "pfa"
+
+    if should_send_to_salesforce
+      SalesforceServices::PaperSync.sync!(paper: paper)
+      SalesforceServices::BillingSync.sync!(paper: paper)
+    end
   end
 end

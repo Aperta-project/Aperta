@@ -436,12 +436,12 @@ class Paper < ActiveRecord::Base
     notify
   end
 
-  private
-
   def answer_for(ident)
     nested_question_answers.includes(:nested_question)
       .find_by(nested_questions: { ident: ident })
   end
+
+  private
 
   def new_major_version!
     latest_version.new_major_version!

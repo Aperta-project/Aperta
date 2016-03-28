@@ -1,50 +1,53 @@
 require 'rails_helper'
 
 describe SalesforceServices do
-  describe 'send_to_salesforce?' do
-    subject { SalesforceServices.send_to_salesforce?(paper: paper) }
-    let(:paper) { FactoryGirl.create(:paper) }
+  describe '.sync_paper!' do
+    subject(:sync_paper!) { SalesforceServices.sync_paper!(paper) }
+    let(:paper) { instance_double(Paper) }
 
-    context 'without billing card' do
-      it 'raises BillingCardMissing' do
-        expect { subject }
-          .to raise_error SalesforceServices::BillingCardMissing
+    context "when the paper's billing payment method is PFA" do
+      before do
+        allow(paper).to receive(:answer_for)
+          .with('plos_billing--payment_method')
+          .and_return instance_double(NestedQuestionAnswer, value: 'pfa')
+      end
+
+      it 'syncs the paper, then the billing information' do
+        expect(SalesforceServices::PaperSync).to receive(:sync!)
+          .with(paper: paper)
+          .ordered
+        expect(SalesforceServices::BillingSync).to receive(:sync!)
+          .with(paper: paper)
+          .ordered
+        sync_paper!
       end
     end
 
-    context 'with billing card' do
+    context "when the paper's billing payment method exists, but is not PFA" do
       before do
-        billing_task = double(:billing_task)
-        allow(paper).to receive(:billing_task) { billing_task }
-        expect(billing_task)
-          .to receive(:answer_for)
-          .with("plos_billing--payment_method")
-          .and_return(answer)
+        allow(paper).to receive(:answer_for)
+          .with('plos_billing--payment_method')
+          .and_return instance_double(NestedQuestionAnswer, value: 'not-pfa')
       end
 
-      context 'no payment method' do
-        let(:answer) { nil }
+      it 'does not sync the paper nor the billing information' do
+        expect(SalesforceServices::PaperSync).to_not receive(:sync!)
+        expect(SalesforceServices::BillingSync).to_not receive(:sync!)
+        sync_paper!
+      end
+    end
 
-        it 'raises BillingFundingSourceMissing' do
-          expect { subject }
-            .to raise_error SalesforceServices::BillingFundingSourceMissing
-        end
+    context 'when the paper is without a billing payment method' do
+      before do
+        allow(paper).to receive(:answer_for)
+          .with('plos_billing--payment_method')
+          .and_return nil
       end
 
-      context 'non pfa payment method' do
-        let(:answer) { OpenStruct.new(value: 'something else') }
-
-        it 'is false' do
-          expect(subject).to eq(false)
-        end
-      end
-
-      context 'pfa payment method' do
-        let(:answer) { OpenStruct.new(value: 'pfa') }
-
-        it 'is true' do
-          expect(subject).to eq(true)
-        end
+      it 'does not sync the paper nor the billing information' do
+        expect(SalesforceServices::PaperSync).to_not receive(:sync!)
+        expect(SalesforceServices::BillingSync).to_not receive(:sync!)
+        sync_paper!
       end
     end
   end

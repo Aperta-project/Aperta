@@ -1,24 +1,76 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe PlosBilling::SalesforceManuscriptUpdateWorker do
-  describe "#email_admin_on_error" do
+  describe '.email_admin_on_sidekiq_error' do
     let(:dbl) { double }
     let(:msg) do
       {
-        "class" => "SomeClass",
-        "args" => [4],
-        "error_message" => "some message"
+        'class' => 'SomeClass',
+        'args' => [4],
+        'error_message' => 'some message'
       }
     end
     let(:error_message) do
       "Failed #{msg['class']} with #{msg['args']}: #{msg['error_message']}"
     end
 
-    it "calls BillingSalesforceMailer" do
-      expect(PlosBilling::BillingSalesforceMailer).to receive(:delay) { dbl }
-      expect(dbl).to receive(:notify_journal_admin_sfdc_error)
+    it 'calls BillingSalesforceMailer' do
+      expect(PlosBilling::BillingSalesforceMailer).to \
+        receive_message_chain('delay.notify_journal_admin_sfdc_error')
         .with(4, error_message)
-      PlosBilling::SalesforceManuscriptUpdateWorker.email_admin_on_error(msg)
+      described_class.email_admin_on_sidekiq_error(msg)
+    end
+  end
+
+  describe '#perform' do
+    subject(:perform) { worker.perform(paper.id, logger: logger) }
+    let(:worker) { described_class.new }
+    let!(:paper) { FactoryGirl.create(Paper, id: 88) }
+    let(:logger) { instance_double(Logger, error: nil) }
+
+    it 'syncs the paper with Salesforce' do
+      expect(SalesforceServices).to receive(:sync_paper!).with(paper)
+      perform
+    end
+
+    context 'and the paper does not exist' do
+      before { paper.destroy }
+
+      it 'does not sync the paper to Salesforce' do
+        expect(SalesforceServices).to_not receive(:sync_paper!)
+        perform
+      end
+
+      it 'logs the error' do
+        expect(logger).to receive(:error) do |message|
+          expect(message).to match(/Couldn't find Paper.*#{paper.id}/)
+        end
+        perform
+      end
+    end
+
+    context 'and syncing to Salesforce raises a SyncInvalid error' do
+      before do
+        expect(SalesforceServices).to receive(:sync_paper!)
+          .and_raise(SalesforceServices::SyncInvalid, "Couldn't do it")
+      end
+
+      it 'logs the error' do
+        expect(logger).to receive(:error) do |message|
+          expect(message).to match(/Couldn't do it/)
+        end
+        perform
+      end
+
+      it 'queues up an email notifying journal admins of the error' do
+        expect(PlosBilling::BillingSalesforceMailer).to receive_message_chain(
+          'delay.notify_journal_admin_sfdc_error'
+        ) do |paper_id, message|
+          expect(paper_id).to eq(paper.id)
+          expect(message).to match(/Couldn't do it/)
+        end
+        perform
+      end
     end
   end
 end

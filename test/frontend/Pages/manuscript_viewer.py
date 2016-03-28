@@ -123,6 +123,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._title = (By.ID, 'control-bar-paper-title')
     # Discussion messages
     self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
+    self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
 
 
   # POM Actions

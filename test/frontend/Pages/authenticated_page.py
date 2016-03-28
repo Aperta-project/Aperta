@@ -96,6 +96,7 @@ class AuthenticatedPage(PlosPage):
 
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
 
+    self._fist_discussion_lnk = (By.CSS_SELECTOR, 'a.discussions-index-topic')
 
 
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')

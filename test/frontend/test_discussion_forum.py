@@ -4,12 +4,14 @@ import logging
 import random
 import time
 
+from loremipsum import generate_paragraph
+
 from Base.Decorators import MultiBrowserFixture
-from frontend.common_test import CommonTest
-from selenium.webdriver.common.keys import Keys
-from Pages.manuscript_viewer import ManuscriptViewerPage
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
     super_admin_login, prod_staff_login, creator_login1
+from frontend.common_test import CommonTest
+from Pages.manuscript_viewer import ManuscriptViewerPage
+from selenium.webdriver.common.keys import Keys
 
 """
 This test case validates the Aperta Discussion Forum
@@ -96,11 +98,9 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     #import pdb; pdb.set_trace()
     paper_viewer._get(paper_viewer._message_body_field).send_keys(
-      'Random text')
+      generate_paragraph()[2])
     paper_viewer._get(paper_viewer._post_message_btn).click()
     # send another msg
-    import pdb; pdb.set_trace()
-
     paper_viewer.logout()
     login_url = self._driver.current_url
     self.invalidate_cas_token()
@@ -110,15 +110,12 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
-    #import pdb; pdb.set_trace()
     red_badge = paper_viewer._get(paper_viewer._badge_red)
     red_badge_first = int(red_badge.text)
-    print "******************* {0}".format(red_badge_first)
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
     paper_viewer._get(paper_viewer._badge_red)
-    ###
     paper_viewer.logout()
     login_url = self._driver.current_url
     self.invalidate_cas_token()
@@ -132,9 +129,34 @@ class DiscussionForumTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
     paper_viewer._get(paper_viewer._discussion_link).click()
-    import pdb; pdb.set_trace()
-
-
+    # click on first discussion
+    ###
+    paper_viewer._get(paper_viewer._fist_discussion_lnk).click()
+    time.sleep(.5)
+    paper_viewer._get(paper_viewer._message_body_field).send_keys(
+      '@' + the_creator['user'])
+    paper_viewer._get(paper_viewer._post_message_btn).click()
+    # send another msg
+    paper_viewer.logout()
+    login_url = self._driver.current_url
+    self.invalidate_cas_token()
+    self.return_to_login_page(login_url)
+    logging.info('Logging in as user: {0}'.format(the_creator))
+    dashboard_page = self.cas_login(email=the_creator['email'])
+    dashboard_page.go_to_manuscript(paper_id)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    # look for icon
+    red_badge = paper_viewer._get(paper_viewer._badge_red)
+    red_badge_last = int(red_badge.text)
+    assert red_badge_first + 1 == red_badge_last, (red_badge_first, red_badge_last)
+    red_badge.click()
+    # look for red icon on workflow page?
+    time.sleep(.5)
+    paper_viewer._get(paper_viewer._fist_discussion_lnk).click()
+    time.sleep(.5)
+    red_badge = paper_viewer._get(paper_viewer._comment_sheet_badge_red)
+    red_badge_current = int(red_badge.text)
+    assert red_badge_first == red_badge_current, (red_badge_first, red_badge_current)
 
 
 

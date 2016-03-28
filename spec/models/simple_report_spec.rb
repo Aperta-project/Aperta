@@ -42,7 +42,11 @@ describe SimpleReport do
     end
 
     context "when there is a previous report" do
-      let!(:older_report) { FactoryGirl.create(:simple_report) }
+      let!(:older_report) do
+        Timecop.freeze(DateTime.new(2016, 3, 28, 1, 0, 0).utc) do
+          FactoryGirl.create(:simple_report)
+        end
+      end
       let!(:newer_report) { FactoryGirl.build_stubbed(:simple_report) }
       it "returns the last report's created date" do
         expect(newer_report.previous_report_date)

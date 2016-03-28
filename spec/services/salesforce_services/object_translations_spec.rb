@@ -101,10 +101,8 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   describe "BillingTranslator#paper_to_billing_hash" do
-    let!(:funder) do
-      FactoryGirl.create(:funder,
-                         name: "funder001",
-                         grant_number: '000-2222-111')
+    subject(:billing_translator) do
+      SalesforceServices::ObjectTranslations::BillingTranslator.new(paper: paper)
     end
 
     let(:journal) do
@@ -116,80 +114,134 @@ describe SalesforceServices::ObjectTranslations do
     end
 
     let(:user) do
-      FactoryGirl.create(:user,
-                         first_name: 'lou',
-                         last_name: 'prima',
-                         email: 'pfa@pfa.com'
-                        )
+      FactoryGirl.create(
+        :user,
+        first_name: 'lou',
+        last_name: 'prima',
+        email: 'pfa@pfa.com'
+      )
     end
 
-    let(:paper) do
-      FactoryGirl.create(:paper_with_task,
-                         journal: journal,
-                         task_params: {
-                           title: "Billing",
-                           type: "PlosBilling::BillingTask",
-                           old_role: "author" }
-                        )
+    let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
+
+    context 'and the paper has everything it needs' do
+      let!(:billing_task) do
+        FactoryGirl.create(:billing_task, title: 'Billing', paper: paper)
+      end
+
+      let!(:financial_disclosure_task) do
+        FactoryGirl.create(
+          :financial_disclosure_task,
+          funders: [funder],
+          paper: paper
+        )
+      end
+
+      let!(:funder) do
+        FactoryGirl.create(
+          :funder,
+          name: "funder001",
+          grant_number: '000-2222-111')
+      end
+
+      before do
+        fill_out_questions_on_paper(paper)
+      end
+
+      it "return a hash" do
+        data = billing_translator.paper_to_billing_hash
+        # rubocop:disable Style/SingleSpaceBeforeFirstArg
+        expect(data.class).to                          eq Hash
+        expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
+        expect(data['Manuscript__c']).to               eq(paper.salesforce_manuscript_id)
+        expect(data['Exclude_from_EM__c']).to          eq(true)
+        expect(data['Journal_Department__c']).to       eq(paper.journal.name)
+        expect(data['Subject']).to                     eq(paper.manuscript_id) # will prob change when doi is in RC?
+        expect(data['Origin']).to                      eq('PFA Request')
+        expect(data['Description']).to                 match('lou prima')
+        expect(data['Description']).to                 match('has applied')
+        expect(data['Description']).to                 match(paper.manuscript_id) # will prob change when doi is in RC?
+        expect(data['PFA_Question_1__c']).to           eq ('Yes')
+        expect(data['PFA_Question_1a__c']).to          eq ('foo')
+        expect(data['PFA_Question_1b__c']).to          eq (100.00)
+        expect(data['PFA_Question_2__c']).to           eq ('Yes')
+        expect(data['PFA_Question_2a__c']).to          eq ('foo')
+        expect(data['PFA_Question_2b__c']).to          eq (100.00)
+        expect(data['PFA_Question_3__c']).to           eq ('Yes')
+        expect(data['PFA_Question_3a__c']).to          eq (100.00)
+        expect(data['PFA_Question_4__c']).to           eq ('Yes')
+        expect(data['PFA_Question_4a__c']).to          eq (100.00)
+        expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
+        expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
+        expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
+        expect(data['PFA_Funding_Statement__c']).to    eq ("This work was supported by funder001 (grant number 000-2222-111).")
+        # rubocop:enable Style/SingleSpaceBeforeFirstArg
+      end
     end
 
-    it "return a hash" do
-      paper = make_paper
-      FactoryGirl.create(:financial_disclosure_task,
-                         funders: [funder],
-                         paper: paper)
+    context 'and the paper does not have a billing_task' do
+      before do
+        expect(paper.billing_task).to be nil
+      end
 
-      bt    = SalesforceServices::ObjectTranslations::BillingTranslator.new(paper: paper)
-      data  = bt.paper_to_billing_hash
-      # rubocop:disable Style/SingleSpaceBeforeFirstArg
-      expect(data.class).to                          eq Hash
-      expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
-      expect(data['Manuscript__c']).to               eq(paper.salesforce_manuscript_id)
-      expect(data['Exclude_from_EM__c']).to          eq(true)
-      expect(data['Journal_Department__c']).to       eq(paper.journal.name)
-      expect(data['Subject']).to                     eq(paper.manuscript_id) # will prob change when doi is in RC?
-      expect(data['Origin']).to                      eq('PFA Request')
-      expect(data['Description']).to                 match('lou prima')
-      expect(data['Description']).to                 match('has applied')
-      expect(data['Description']).to                 match(paper.manuscript_id) # will prob change when doi is in RC?
-      expect(data['PFA_Question_1__c']).to           eq ('Yes')
-      expect(data['PFA_Question_1a__c']).to          eq ('foo')
-      expect(data['PFA_Question_1b__c']).to          eq (100.00)
-      expect(data['PFA_Question_2__c']).to           eq ('Yes')
-      expect(data['PFA_Question_2a__c']).to          eq ('foo')
-      expect(data['PFA_Question_2b__c']).to          eq (100.00)
-      expect(data['PFA_Question_3__c']).to           eq ('Yes')
-      expect(data['PFA_Question_3a__c']).to          eq (100.00)
-      expect(data['PFA_Question_4__c']).to           eq ('Yes')
-      expect(data['PFA_Question_4a__c']).to          eq (100.00)
-      expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
-      expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
-      expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
-      expect(data['PFA_Funding_Statement__c']).to    eq ("funder001 (grant number 000-2222-111).")
-      # rubocop:enable Style/SingleSpaceBeforeFirstArg
+      it 'should not blow up' do
+        data = billing_translator.paper_to_billing_hash
+        # rubocop:disable Style/SingleSpaceBeforeFirstArg
+        expect(data.class).to                          eq Hash
+        expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
+        expect(data['Manuscript__c']).to               eq(paper.salesforce_manuscript_id)
+        expect(data['Exclude_from_EM__c']).to          eq(true)
+        expect(data['Journal_Department__c']).to       eq(paper.journal.name)
+        expect(data['Subject']).to                     eq(paper.manuscript_id) # will prob change when doi is in RC?
+        expect(data['Origin']).to                      eq('PFA Request')
+        expect(data['Description']).to                 match('lou prima')
+        expect(data['Description']).to                 match('has applied')
+        expect(data['Description']).to                 match(paper.manuscript_id) # will prob change when doi is in RC?
+        expect(data['PFA_Question_1__c']).to           eq ('Yes')
+        expect(data['PFA_Question_1a__c']).to          eq ('foo')
+        expect(data['PFA_Question_1b__c']).to          eq (100.00)
+        expect(data['PFA_Question_2__c']).to           eq ('Yes')
+        expect(data['PFA_Question_2a__c']).to          eq ('foo')
+        expect(data['PFA_Question_2b__c']).to          eq (100.00)
+        expect(data['PFA_Question_3__c']).to           eq ('Yes')
+        expect(data['PFA_Question_3a__c']).to          eq (100.00)
+        expect(data['PFA_Question_4__c']).to           eq ('Yes')
+        expect(data['PFA_Question_4a__c']).to          eq (100.00)
+        expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
+        expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
+        expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
+        expect(data['PFA_Funding_Statement__c']).to    eq ("funder001 (grant number 000-2222-111).")
+        # rubocop:enable Style/SingleSpaceBeforeFirstArg
+      end
+    end
+
+    context 'and the paper does not have a financial_disclosure_task' do
+      before do
+        expect(paper.financial_disclosure_task).to be nil
+      end
+
+      it 'should not blow up' do
+        data = billing_translator.paper_to_billing_hash
+      end
+    end
+
+    def fill_out_questions_on_paper(paper)
+      add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_1',          'Yes')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_question_1a',         'foo')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_question_1b',         '100')
+      add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_2',          'Yes')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_question_2a',         'foo')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_question_2b',         '100')
+      add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_3',          'Yes')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_question_3a',         '100')
+      add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_4',          'Yes')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_question_4a',         '100')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_amount_to_pay',       '100')
+      add_text_question_with_answer(paper,    'plos_billing--pfa_additional_comments', 'my comments')
+      add_boolean_question_with_answer(paper, 'plos_billing--pfa_supporting_docs',     'Yes')
     end
   end
 
-  def make_paper
-    make_questions paper
-    paper
-  end
-
-  def make_questions(paper)
-    add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_1',          'Yes')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_question_1a',         'foo')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_question_1b',         '100')
-    add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_2',          'Yes')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_question_2a',         'foo')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_question_2b',         '100')
-    add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_3',          'Yes')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_question_3a',         '100')
-    add_boolean_question_with_answer(paper, 'plos_billing--pfa_question_4',          'Yes')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_question_4a',         '100')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_amount_to_pay',       '100')
-    add_text_question_with_answer(paper,    'plos_billing--pfa_additional_comments', 'my comments')
-    add_boolean_question_with_answer(paper, 'plos_billing--pfa_supporting_docs',     'Yes')
-  end
 
   def add_text_question_with_answer(paper, ident, answer)
     nested_question = NestedQuestion.find_by(ident: ident) ||

@@ -14,7 +14,7 @@ describe QuestionAttachmentsController do
     end
 
     before do
-      allow_any_instance_of(User).to receive(:can?).and_return(true)
+      allow(user).to receive(:can?).and_return(true)
     end
 
     it "succeeds" do
@@ -29,7 +29,7 @@ describe QuestionAttachmentsController do
 
     context 'without permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        allow(user).to receive(:can?).and_return(false)
       end
 
       it 'returns a 403' do
@@ -50,7 +50,7 @@ describe QuestionAttachmentsController do
 
     context 'without permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        allow(user).to receive(:can?).and_return(false)
       end
 
       it 'returns a 403' do
@@ -97,7 +97,7 @@ describe QuestionAttachmentsController do
 
     context 'without permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        allow(user).to receive(:can?).and_return(false)
       end
 
       it 'returns a 403' do
@@ -143,7 +143,7 @@ describe QuestionAttachmentsController do
 
     context 'without permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        allow(user).to receive(:can?).and_return(false)
       end
 
       it 'returns a 403' do

@@ -31,7 +31,7 @@ describe DiscussionParticipantsController do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_participant, topic_a)
           .and_return true
       end
@@ -50,7 +50,7 @@ describe DiscussionParticipantsController do
     context "when the user does not have access" do
       let!(:do_request) { post :create, creation_params }
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_participant, topic_a)
           .and_return false
       end

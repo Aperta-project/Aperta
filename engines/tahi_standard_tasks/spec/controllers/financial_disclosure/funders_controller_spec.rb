@@ -24,7 +24,8 @@ describe TahiStandardTasks::FundersController do
     end
 
     it "creates a funder" do
-      allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+      funder_count = TahiStandardTasks::Funder.count
+      allow(user).to receive(:can?).with(:edit, task)
         .and_return(true)
 
       expect { do_request }.to change { TahiStandardTasks::Funder.count }.by 1
@@ -35,7 +36,7 @@ describe TahiStandardTasks::FundersController do
 
     context "without permission" do
       it "returns a 403 without permission" do
-        allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+        allow(user).to receive(:can?).with(:edit, task)
           .and_return(false)
         do_request
 
@@ -51,7 +52,7 @@ describe TahiStandardTasks::FundersController do
     end
 
     it "patches the funder" do
-      allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+      allow(user).to receive(:can?).with(:edit, task)
         .and_return(true)
       do_request
 
@@ -61,7 +62,7 @@ describe TahiStandardTasks::FundersController do
 
     context "without permission" do
       it 'returns a 403 without permission' do
-        allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+        allow(user).to receive(:can?).with(:edit, task)
           .and_return(false)
         do_request
 
@@ -77,7 +78,7 @@ describe TahiStandardTasks::FundersController do
 
     it "eliminates the funder" do
       funder_count = TahiStandardTasks::Funder.count
-      allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+      allow(user).to receive(:can?).with(:edit, task)
         .and_return(true)
       do_request
 
@@ -87,7 +88,7 @@ describe TahiStandardTasks::FundersController do
 
     context "without permission" do
       it 'returns a 403 without permission' do
-        allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+        allow(user).to receive(:can?).with(:edit, task)
           .and_return(false)
         do_request
 

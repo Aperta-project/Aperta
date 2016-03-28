@@ -48,7 +48,7 @@ describe CommentsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
       end
@@ -166,7 +166,7 @@ describe CommentsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
       end
@@ -202,7 +202,7 @@ describe CommentsController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
       end

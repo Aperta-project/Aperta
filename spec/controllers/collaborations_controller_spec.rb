@@ -22,7 +22,7 @@ describe CollaborationsController do
     context 'when the user has access' do
       before do
         stub_sign_in user
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_collaborators, paper)
           .and_return true
       end

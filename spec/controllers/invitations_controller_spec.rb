@@ -53,7 +53,7 @@ describe InvitationsController do
     end
 
     it 'works if this is the invitee' do
-      allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+      allow(user).to receive(:can?).with(:manage_invitations, task)
         .and_return(false)
 
       get(:show, format: :json, id: invitation.id)
@@ -61,7 +61,7 @@ describe InvitationsController do
     end
 
     it 'works when the caller has manage_invitations permission' do
-      allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+      allow(user).to receive(:can?).with(:manage_invitations, task)
         .and_return(true)
       new_user = FactoryGirl.create(:user)
 
@@ -70,7 +70,7 @@ describe InvitationsController do
     end
 
     it 'returns a 403 when the caller can not manage invitations and is not the invitee' do
-      allow_any_instance_of(User).to receive(:can?).and_return(false)
+      allow(user).to receive(:can?).and_return(false)
       new_user = FactoryGirl.create(:user)
       sign_in(new_user)
 
@@ -97,7 +97,7 @@ describe InvitationsController do
 
     context 'with manage_invitations permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_invitations, task).and_return(true)
       end
 
@@ -145,7 +145,7 @@ describe InvitationsController do
 
     context 'without manage_invitations permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_invitations, task).and_return(false)
       end
 
@@ -162,7 +162,7 @@ describe InvitationsController do
 
     context 'with manage_invitations permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+        allow(user).to receive(:can?).with(:manage_invitations, task)
           .and_return(true)
       end
 
@@ -204,7 +204,7 @@ describe InvitationsController do
 
     context 'without manage_invitations permission' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_invitations, task).and_return(false)
       end
 

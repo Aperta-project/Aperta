@@ -56,7 +56,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
       end
@@ -82,7 +82,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return true
       end
@@ -94,7 +94,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return false
       end
@@ -121,7 +121,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -225,7 +225,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end
@@ -241,7 +241,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
       end
@@ -262,7 +262,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
       end
@@ -287,7 +287,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -314,7 +314,7 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end

@@ -121,7 +121,7 @@ describe DiscussionTopicsController do
       subject(:do_request) { post :create, creation_params }
 
       before do
-        stub_sign_in user
+      stub_sign_in user
         allow(user).to receive(:can?)
           .with(:start_discussion, paper)
           .and_return false

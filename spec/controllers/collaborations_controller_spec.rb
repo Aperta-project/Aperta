@@ -19,6 +19,8 @@ describe CollaborationsController do
       { user_id: collaborator.id, paper_id: paper.id }
     end
 
+    it_behaves_like 'an unauthenticated json request'
+
     context 'when the user has access' do
       before do
         stub_sign_in user
@@ -81,7 +83,10 @@ describe CollaborationsController do
     subject(:do_request) do
       delete :destroy, format: :json, id: collaboration.id
     end
+
     let!(:collaboration) { paper.add_collaboration(collaborator) }
+
+    it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
       before do

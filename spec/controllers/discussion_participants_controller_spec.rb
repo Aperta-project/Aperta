@@ -13,8 +13,6 @@ describe DiscussionParticipantsController do
   before { sign_in user }
 
   describe 'POST create' do
-    render_views
-
     include ActiveJob::TestHelper
 
     before { ActionMailer::Base.deliveries.clear }
@@ -28,6 +26,8 @@ describe DiscussionParticipantsController do
         }
       }
     end
+
+    it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
@@ -60,11 +60,13 @@ describe DiscussionParticipantsController do
   end
 
   describe 'DELETE destroy' do
-    context "when the user has access" do
-      subject(:do_request) do
-        xhr :delete, :destroy, format: :json, id: participation.id
-      end
+    subject(:do_request) do
+      xhr :delete, :destroy, format: :json, id: participation.id
+    end
 
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)

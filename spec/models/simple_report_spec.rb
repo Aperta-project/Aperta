@@ -83,7 +83,7 @@ describe SimpleReport do
 
     describe "#status_queries" do
       let!(:older_repot) do
-        Timecop.freeze(DateTime.new(2016, 3, 28, 1).utc) do
+        Timecop.freeze(DateTime.new(2016, 3, 28, 1, 0, 0).utc) do
           FactoryGirl.create(:simple_report)
         end
       end

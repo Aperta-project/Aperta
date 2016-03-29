@@ -38,15 +38,16 @@ class PaperTrackerPage(AuthenticatedPage):
     # Paper Tracker Search elements
     self._paper_tracker_search_field = (By.ID, 'query-input')
     self._paper_tracker_search_button = (By.ID, 'search')
-    self._paper_tracker_save_search_link = (By.CLASS_NAME, 'save-search_button')
+    self._paper_tracker_save_search_link = (By.CSS_SELECTOR, 'a.save-search-button')
     self._paper_tracker_saved_search_heading = (By.CSS_SELECTOR,
                                                 'div.paper-tracker-saved-searches > h3')
     self._paper_tracker_saved_search_new_query_title_field = (By.ID, 'new-query-title')
+    self._paper_tracker_saved_search_list_div = (By.CSS_SELECTOR, 'div.paper-tracker-query')
     self._paper_tracker_saved_search_query_link = (By.CSS_SELECTOR, 'div.paper-tracker-query a')
     self._paper_tracker_saved_search_edit_link = (By.CSS_SELECTOR,
-                                                  'div.paper-tracker-query a + i.fa-pencil')
+                                                  'a + i.fa-pencil')
     self._paper_tracker_saved_search_delete_link = (By.CSS_SELECTOR,
-                                                    'div.paper-tracker-query a + i + i.fa-trash')
+                                                    'a + i + i.fa-trash')
 
     # Paper Tracker Table elements
     self._paper_tracker_table = (By.CLASS_NAME, 'paper-tracker-table')
@@ -132,6 +133,12 @@ class PaperTrackerPage(AuthenticatedPage):
     return papers
 
   def validate_search_execution(self):
+    """
+    Validates the search and saved search elements of the page, executes a search, saves that query
+    as a saved search, clears the current search, executes the saved search, then deletes that
+    saved search.
+    :return void function
+    """
     queries = ['0000003',
                'Genome',
                'DOI IS pwom',
@@ -148,31 +155,47 @@ class PaperTrackerPage(AuthenticatedPage):
                'USER aacadedit HAS ROLE academic editor AND STATUS IS submitted',
                'USER astaffadmin HAS ROLE staff admin AND NO ONE HAS ROLE academic editor',
                'NO ONE HAS ROLE staff admin',
+               'SUBMITTED > 3 DAYS AGO',
+               'SUBMITTED < 1 DAYS AGO',
+               'USER me HAS ANY ROLE',
+               'TASK invite reviewers HAS OPEN INVITATIONS',
+               'TASK invite academic editors HAS OPEN INVITATIONS',
+               'ALL REVIEWS COMPLETE',
+               'NOT ALL REVIEWS COMPLETE'
                ]
     search_input = self._get(self._paper_tracker_search_field)
     search_button = self._get(self._paper_tracker_search_button)
     search_save_link = self._get(self._paper_tracker_save_search_link)
-    save_search_input = self._get(self._paper_tracker_saved_search_new_query_title_field)
-    saved_searches = self._gets(self._paper_tracker_saved_search_query_link)
     assert 'Title keyword or Manuscript ID number' in search_input.get_attribute('placeholder'), \
         search_input.get_attribute('placeholder')
     query = random.choice(queries)
+    logging.info(query)
     search_input.send_keys(query)
     search_button.click()
     time.sleep(1)
+    search_save_link = self._get(self._paper_tracker_save_search_link)
     search_save_link.click()
+    save_search_input = self._get(self._paper_tracker_saved_search_new_query_title_field)
     save_search_input.send_keys('Saved Search from Automation Test' + Keys.ENTER)
+    search_input = self._get(self._paper_tracker_search_field)
+    search_input.clear()
+    search_button = self._get(self._paper_tracker_search_button)
+    search_button.click()
     saved_search_heading = self._get(self._paper_tracker_saved_search_heading)
     assert 'Saved Searches' in saved_search_heading.text, saved_search_heading
+
+    saved_searches = self._gets(self._paper_tracker_saved_search_query_link)
     for search in saved_searches:
       try:
         assert 'Saved Search from Automation Test' in search.text
-      except ElementDoesNotExistAssertionError:
+      except AssertionError:
         continue
-      self._actions.move_to_element(search).perform()
-      edit_saved_search = self._get(self._paper_tracker_saved_search_edit_link)
-      delete_saved_search = self._get(self._paper_tracker_saved_search_delete_link)
+      time.sleep(.5)
+      edit_saved_search = search.find_element(*self._paper_tracker_saved_search_edit_link)
+      delete_saved_search = search.find_element(*self._paper_tracker_saved_search_delete_link)
+      search.click()
       delete_saved_search.click()
+      time.sleep(1)
 
   def validate_pagination(self, username):
     large_result_set = False

@@ -52,7 +52,13 @@ class ApplicationController < ActionController::Base
 
   # customize devise signout path
   def after_sign_out_path_for(resource_or_scope)
-    new_user_session_path
+    cas_logout_url || new_user_session_path
+  end
+
+  def cas_logout_url
+    return unless Rails.configuration.x.cas['logout_full_url'].present?
+    query = { service: new_user_session_url }.to_query
+    URI.join(Rails.configuration.x.cas['logout_full_url'], "?#{query}").to_s
   end
 
   def authenticate_with_basic_http

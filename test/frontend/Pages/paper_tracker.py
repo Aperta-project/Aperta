@@ -128,21 +128,21 @@ class PaperTrackerPage(AuthenticatedPage):
 
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
-    journal_ids = PgSQL().query("SELECT assigned_to_id FROM assignments WHERE user_id = %s and "
-                                "assigned_to_type = 'Journal';", (uid,))
+    journal_ids = PgSQL().query("SELECT DISTINCT assigned_to_id "
+                                "FROM assignments WHERE user_id = %s "
+                                "AND assigned_to_type = 'Journal';", (uid,))
     # TODO: Take into account the special case of superadmin
     if username == 'asuperadm':
       journal_ids = PgSQL().query("SELECT DISTINCT assigned_to_id FROM assignments WHERE "
                                   "assigned_to_type = 'Journal';")
 
-    journals_set = set(journal_ids)
     total_count = 0
-    for total_count, journal in enumerate(journals_set):
+    for total_count, journal in enumerate(journal_ids):
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
                                   (journal, 'unsubmitted'))[0][0]
       total_count += int(paper_count)
-    return total_count, journals_set
+    return total_count, journal_ids
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):
     """
@@ -366,6 +366,79 @@ class PaperTrackerPage(AuthenticatedPage):
         assert covredits == db_ces, (covredits, db_ces)
 
       # Validating Sorting functions
+      # Note that because cover editor and handling editor are not in the papers array, we can
+      #   only do some cursory sort validations
+      logging.info('Sorting by Cover Editor ASC')
+      ce_th = self._get(self._paper_tracker_table_ce_th).find_element_by_tag_name('a')
+      ce_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_ce = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-cover-editor-column"]')
+      original_ce = self._get(self._paper_tracker_table_tbody_ce).text
+
+      logging.info('Sorting by Cover Editor DESC')
+      ce_th = self._get(self._paper_tracker_table_ce_th).find_element_by_tag_name('a')
+      ce_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_ce = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-cover-editor-column"]')
+      sorted_ce = self._get(self._paper_tracker_table_tbody_ce).text
+      assert original_ce != sorted_ce or original_ce == sorted_ce
+
+      ce_th = self._get(self._paper_tracker_table_ce_th).find_element_by_tag_name('a')
+      ce_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_ce = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-cover-editor-column"]')
+      final_ce = self._get(self._paper_tracker_table_tbody_ce).text
+      assert final_ce == original_ce, '{0} is not equal to {1}'.format(final_ce, original_ce)
+
+      logging.info('Sorting by Handling Editor ASC')
+      he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
+      he_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_he = (
+        By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
+      original_he = self._get(self._paper_tracker_table_tbody_he).text
+
+      logging.info('Sorting by Handling Editor DESC')
+      he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
+      he_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_he = (
+        By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
+      sorted_he = self._get(self._paper_tracker_table_tbody_he).text
+      assert original_he != sorted_he or original_he == sorted_he
+
+      he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
+      he_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_he = (
+        By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
+      final_he = self._get(self._paper_tracker_table_tbody_he).text
+      assert final_he == original_he, '{0} is not equal to {1}'.format(final_he, original_he)
+
+      logging.info('Sorting by Status ASC')
+      status_th = self._get(self._paper_tracker_table_status_th).find_element_by_tag_name('a')
+      status_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_status = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
+      status = self._get(self._paper_tracker_table_tbody_status).text
+      papers = self._get_paper_list(journal_ids, sort_by='status', reverse=False)
+      assert status.lower() == papers[0][5], \
+          'Status in page: {0} != Status in DB: {1}'.format(status.lower(), papers[0][5])
+      logging.info('Sorting by Status DESC')
+      status_th = self._get(self._paper_tracker_table_status_th).find_element_by_tag_name('a')
+      status_th.click()
+      time.sleep(1)
+      self._paper_tracker_table_tbody_status = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
+      status = self._get(self._paper_tracker_table_tbody_status).text
+      papers = self._get_paper_list(journal_ids, sort_by='status', reverse=True)
+      assert status.lower() == papers[0][5], \
+          'Status in page: {0} != Status in DB: {1}'.format(status.lower(), papers[0][5])
+
       logging.info('Sorting by Article Type ASC')
       paptype_th = self._get(self._paper_tracker_table_paper_type_th).find_element_by_tag_name('a')
       paptype_th.click()

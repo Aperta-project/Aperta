@@ -234,4 +234,12 @@ describe User do
       expect(regular_user.can?(:administer, journal)).to be false
     end
   end
+
+  describe "#create" do
+    let(:user) { User.create! attributes_for(:user) }
+
+    it "should create a user record with the User role assigned" do
+      expect(user).to have_role_name 'User'
+    end
+  end
 end

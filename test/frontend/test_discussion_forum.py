@@ -12,6 +12,7 @@ from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_lo
     super_admin_login, prod_staff_login, creator_login1
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 """
@@ -101,7 +102,8 @@ class DiscussionForumTest(CommonTest):
     paper_viewer._get(paper_viewer._message_body_field).send_keys(
       generate_paragraph()[2])
     time.sleep(.5)
-    paper_viewer._get(paper_viewer._post_message_btn).click()
+    post_message_btn = (By.CSS_SELECTOR, 'button')
+    paper_viewer._get(post_message_btn).click()
     # send another msg
     paper_viewer.logout()
     login_url = self._driver.current_url

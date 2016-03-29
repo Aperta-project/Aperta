@@ -32,7 +32,16 @@ export default AuthorizedRoute.extend({
         return this.store.find('paper', id);
       });
     }, (reason) => {
-      return this.handleUnauthorizedRequest(this.get('transition'));
+      if (reason.status === 403) {
+        return this.handleUnauthorizedRequest(this.get('transition'));
+      } else {
+        // Have to add the flash message after the transition has finished.
+        Ember.run.later(() => {
+            this.flash.displayMessage(
+              'error',
+              'Sorry, I don\'t understand how to perform that search');});
+        return [];
+      }
     });
   },
 

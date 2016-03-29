@@ -93,7 +93,7 @@ class PaperTrackerPage(AuthenticatedPage):
 
     # Before sorting, remove trailing spaces
     papers = withdrawn_papers + submitted_papers
-    logging.info(papers)
+    logging.debug(papers)
     for paper in papers:
       paper[1] = paper[1].strip()
     # Before sorting, remove leading non printable characters
@@ -204,7 +204,7 @@ class PaperTrackerPage(AuthenticatedPage):
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
     db_papers = withdrawn_papers + submitted_papers
-    logging.info('DB Papers, ordered: {0}'.format(db_papers))
+    logging.debug('DB Papers, ordered: {0}'.format(db_papers))
     if total_count > 0:
       papers = self._get_paper_list(journal_ids)
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
@@ -212,22 +212,24 @@ class PaperTrackerPage(AuthenticatedPage):
         logging.info('Validating Row: {0}'.format(count))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a' % (count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-title-column"]/a'.format(count + 1))
         self._paper_tracker_table_tbody_manid = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-paper-id-column"]/a' % (count + 1))
+            By.XPATH,
+            '//tbody/tr[{0}]/td[@class="paper-tracker-paper-id-column"]/a'.format(count + 1))
         self._paper_tracker_table_tbody_subdate = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-date-column"]' % (count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_paptype = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"]' % (count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-type-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_status = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-status-column"]' % (count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-status-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_members = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"]' % (count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-members-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_he = (
             By.XPATH,
-            '//tbody/tr[%s]/td[@class="paper-tracker-handling-editor-column"]' % (count + 1))
+            '//tbody/tr[{0}]/td[@class="paper-tracker-handling-editor-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_ce = (
-            By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-cover-editor-column"]' % (count + 1))
+            By.XPATH,
+            '//tbody/tr[{0}]/td[@class="paper-tracker-cover-editor-column"]'.format(count + 1))
         title = self._get(self._paper_tracker_table_tbody_title)
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, '
@@ -325,9 +327,6 @@ class PaperTrackerPage(AuthenticatedPage):
 
       handedits = self._get(self._paper_tracker_table_tbody_he)
       page_hes_by_role = handedits.text.split('\n')
-      logging.info(type(page_hes_by_role))
-      logging.info(len(page_hes_by_role))
-      logging.info(page_hes_by_role)
       for handeditor in page_hes_by_role:
         db_hes = PgSQL().query('SELECT users.first_name, users.last_name '
                                'FROM users '

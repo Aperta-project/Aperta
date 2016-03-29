@@ -7,7 +7,7 @@ class PaperTrackerController < ApplicationController
   def index
     fail AuthorizationError unless journal_ids.length > 0
     # show all papers that user is connected to across all journals
-    papers = QueryParser.new
+    papers = QueryParser.new(current_user: current_user)
              .build(params[:query] || '')
              .where(journal_id: journal_ids)
              .where.not(publishing_state: :unsubmitted)

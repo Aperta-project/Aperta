@@ -23,8 +23,27 @@ describe QueryParser do
 
       it 'parses decision queries' do
         parse = QueryParser.new.parse 'DECISION IS major revision'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "decisions_0"."verdict" = 'major_revision'
+        expect(parse.to_sql).to eq(<<-SQL.strip_heredoc.chomp)
+        "papers"."id" IN (SELECT decisions_0.paper_id from (SELECT paper_id, MAX("decisions"."revision_number") AS revision_number FROM "decisions" WHERE "decisions"."verdict" IS NOT NULL GROUP BY paper_id)
+            AS decisions_0
+        INNER JOIN decisions ON
+            decisions.paper_id = decisions_0.paper_id
+            AND decisions.revision_number = decisions_0.revision_number
+        WHERE
+        "decisions"."verdict" = 'major_revision')
+        SQL
+      end
+
+      it 'parses decision queries' do
+        parse = QueryParser.new.parse 'DECISION IS NOT major revision'
+        expect(parse.to_sql).to eq(<<-SQL.strip_heredoc.chomp)
+        "papers"."id" IN (SELECT decisions_0.paper_id from (SELECT paper_id, MAX("decisions"."revision_number") AS revision_number FROM "decisions" WHERE "decisions"."verdict" IS NOT NULL GROUP BY paper_id)
+            AS decisions_0
+        INNER JOIN decisions ON
+            decisions.paper_id = decisions_0.paper_id
+            AND decisions.revision_number = decisions_0.revision_number
+        WHERE
+        "decisions"."verdict" != 'major_revision')
         SQL
       end
 
@@ -157,6 +176,60 @@ describe QueryParser do
            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed" = 't' AND "tasks_1"."title" ILIKE 'someothertask' AND "tasks_1"."completed" = 'f'
         SQL
       end
+
+      it 'parses TASK x HAS OPEN INVITATIONS' do
+        parse = QueryParser.new.parse 'TASK anytask HAS OPEN INVITATIONS'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks_0"."title" ILIKE 'anytask' AND "invitations_1"."state" IN ('pending', 'invited')
+        SQL
+      end
+
+      it 'parses TASK x HAS NO OPEN INVITATIONS' do
+        parse = QueryParser.new.parse 'TASK anytask HAS NO OPEN INVITATIONS'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks_0"."title" ILIKE 'anytask' AND "invitations_1"."state" NOT IN ('pending', 'invited')
+        SQL
+      end
+    end
+
+    describe 'review queries' do
+      it 'parses ALL REVIEWS COMPLETE' do
+        parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks"."completed" = 'f') AND "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask'
+        SQL
+      end
+
+      it 'parses NOT ALL REVIEWS COMPLETE' do
+        parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks_0"."completed" = 'f'
+        SQL
+      end
+    end
+
+    describe 'submission time queries' do
+      it 'parses SUBMITTED > DAYS AGO' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse 'SUBMITTED > 3 DAYS AGO'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" < '#{start_time}'
+          SQL
+        end
+      end
+
+      it 'parses SUBMITTED < DAYS AGO' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse 'SUBMITTED < 3 DAYS AGO'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" >= '#{start_time}'
+          SQL
+        end
+      end
     end
 
     describe 'people queries' do
@@ -165,6 +238,13 @@ describe QueryParser do
 
       it 'parses USER x HAS ROLE president' do
         parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses USER me HAS ROLE president' do
+        parse = QueryParser.new(current_user: user).parse 'USER me HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
@@ -180,6 +260,13 @@ describe QueryParser do
 
       it 'parses USER x HAS ANY ROLE' do
         parse = QueryParser.new.parse 'USER someuser HAS ANY ROLE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses USER me HAS ANY ROLE' do
+        parse = QueryParser.new(current_user: user).parse 'USER me HAS ANY ROLE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL

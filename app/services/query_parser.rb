@@ -31,13 +31,13 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DECISION IS NOT') do |decision|
-    table = join Decision
-    table[:verdict].not_eq(decision.parameterize.underscore)
+    verdict = decision.parameterize.underscore
+    decision_where(Decision.arel_table[:verdict].not_eq(verdict))
   end
 
   add_simple_expression('DECISION IS') do |decision|
-    table = join Decision
-    table[:verdict].eq(decision.parameterize.underscore)
+    verdict = decision.parameterize.underscore
+    decision_where(Decision.arel_table[:verdict].eq(verdict))
   end
 
   add_simple_expression('DOI IS') do |doi|
@@ -45,8 +45,7 @@ class QueryParser < QueryLanguageParser
   end
 
   add_two_part_expression('USER', 'HAS ROLE') do |username, role|
-    user = User.find_by(username: username)
-    user_id = user ? user.id : -1
+    user_id = get_user_id(username)
     role_ids = Role.where('lower(name) = ?', role.downcase)
                    .pluck(:id)
 
@@ -56,9 +55,8 @@ class QueryParser < QueryLanguageParser
       .and(table['assigned_to_type'].eq('Paper'))
   end
 
-  add_two_part_expression('USER', 'HAS ANY ROLE') do |user, _|
-    user = User.find_by(username: user)
-    user_id = user ? user.id : -1
+  add_two_part_expression('USER', 'HAS ANY ROLE') do |username, _|
+    user_id = get_user_id(username)
 
     table = join(Assignment, 'assigned_to_id')
     table['user_id'].eq(user_id).and(table['assigned_to_type'].eq('Paper'))
@@ -89,6 +87,20 @@ class QueryParser < QueryLanguageParser
     table[:title].matches(task).and(table[:completed].eq(true))
   end
 
+  add_two_part_expression('TASK', 'HAS OPEN INVITATIONS') do |task, _|
+    task_table = join Task
+    invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
+    task_table[:title].matches(task).and(
+      invite_table[:state].in(%w(pending invited)))
+  end
+
+  add_two_part_expression('TASK', 'HAS NO OPEN INVITATIONS') do |task, _|
+    task_table = join Task
+    invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
+    task_table[:title].matches(task).and(
+      invite_table[:state].not_in(%w(pending invited)))
+  end
+
   add_two_part_expression('TASK',
                           /IS NOT COMPLETE|IS INCOMPLETE/) do |task, _|
     table = join Task
@@ -113,6 +125,36 @@ class QueryParser < QueryLanguageParser
           Task.arel_table[:title].matches(task)).to_sql))
   end
 
+  add_no_args_expression('ALL REVIEWS COMPLETE') do
+    task_table = Task.arel_table
+    incomplete_reviews = task_table.project(:paper_id).where(
+      task_table[:type].eq(TahiStandardTasks::ReviewerReportTask)
+      .and(task_table[:completed].eq(false)))
+
+    joined_tasks = join Task
+
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(incomplete_reviews.to_sql)).and(
+        joined_tasks[:type].eq(TahiStandardTasks::ReviewerReportTask))
+  end
+
+  add_no_args_expression('NOT ALL REVIEWS COMPLETE') do
+    table = join Task
+
+    table[:type].eq(TahiStandardTasks::ReviewerReportTask)
+      .and(table[:completed].eq(false))
+  end
+
+  add_simple_expression('SUBMITTED >') do |days_ago|
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    paper_table[:submitted_at].lt(start_time)
+  end
+
+  add_simple_expression('SUBMITTED <') do |days_ago|
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    paper_table[:submitted_at].gteq(start_time)
+  end
+
   add_statement(/^\d+/.r) do |doi|
     paper_table[:doi].matches("%#{doi}%")
   end
@@ -131,7 +173,8 @@ class QueryParser < QueryLanguageParser
     paper_table[:id].not_eq(nil)
   end
 
-  def initialize
+  def initialize(current_user: nil)
+    @current_user = current_user
     @join_counter = 0
     @root = Paper
   end
@@ -143,11 +186,23 @@ class QueryParser < QueryLanguageParser
 
   private
 
-  def join(klass, id = "paper_id")
+  def get_user_id(username)
+    user = nil
+
+    if username == "me"
+      user = @current_user
+    else
+      user = User.find_by(username: username)
+    end
+
+    user ? user.id : -1
+  end
+
+  def join(klass, id = "paper_id", join_id = "papers.id")
     table = klass.table_name
     name = "#{table}_#{@join_counter}"
     @root = @root.joins(<<-SQL)
-      INNER JOIN #{table} AS #{name} ON #{name}.#{id} = papers.id
+      INNER JOIN #{table} AS #{name} ON #{name}.#{id} = #{join_id}
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)
@@ -173,5 +228,29 @@ class QueryParser < QueryLanguageParser
       [language, quoted_query_str])
 
     Arel::Nodes::InfixOperation.new('@@', title_vector, query_vector)
+  end
+
+  def decision_where(where_clause)
+    decision_table = Decision.arel_table
+    decision_alias = "decisions_#{@join_counter}"
+    @join_counter += 1
+    latest_decisions = decision_table.project(
+      :paper_id,
+      decision_table[:revision_number].maximum.as('revision_number'))
+                       .where(decision_table[:verdict].not_eq(nil))
+                       .group(:paper_id)
+                       .to_sql
+    # Unfortunately, Arel doesn't cope with selecting from
+    # sub-selects, so we've got to drop into raw SQL for this bit.
+    good_decisions = <<-SQL.strip_heredoc + where_clause.to_sql
+    SELECT #{decision_alias}.paper_id from (#{latest_decisions})
+        AS #{decision_alias}
+    INNER JOIN decisions ON
+        decisions.paper_id = #{decision_alias}.paper_id
+        AND decisions.revision_number = #{decision_alias}.revision_number
+    WHERE
+    SQL
+
+    Paper.arel_table[:id].in(Arel::Nodes::SqlLiteral.new(good_decisions))
   end
 end

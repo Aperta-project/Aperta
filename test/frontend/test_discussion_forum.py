@@ -100,7 +100,7 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     #import pdb; pdb.set_trace()
     paper_viewer._get(paper_viewer._message_body_field).send_keys(
-      generate_paragraph()[2])
+      generate_paragraph()[2] + Keys.ENTER)
     time.sleep(.5)
     post_message_btn = (By.CSS_SELECTOR, 'button')
     paper_viewer._get(post_message_btn).click()

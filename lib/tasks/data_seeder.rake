@@ -8,10 +8,13 @@ load 'lib/ext/yaml_db.rb' # Only load the patch when running a data:dump or data
 
 namespace :data do
   desc <<-DESC.strip_heredoc
-    A clean bare seed environment with no papers.
-    This is the closest thing to a production seed for a new app.
+    Loads a minimal set of data for starting a production instance of Aperta. Note: This clears existing DB data.
+    This loads a single journal (with no papers) with all of the necessary application
+    data – e.g. roles, permissions, task types, questions, etc – to run the Aperta application.
+
+    Warning: this will clear any existing data in the DB.
   DESC
-  task bare_seed: :environment do
+  task seed_production_instance: :environment do
     Rake::Task['db:schema:load'].invoke
     Journal.first_or_create!(name: 'PLOS Biology', logo: '', doi_publisher_prefix: "10.1371", doi_journal_prefix: "pbio", last_doi_issued: "0000001")
 

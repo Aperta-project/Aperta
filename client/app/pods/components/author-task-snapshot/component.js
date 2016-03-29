@@ -1,33 +1,38 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+const { filterBy, union, sort } = computed;
+
 export default Ember.Component.extend({
   snapshot1: null, //Snapshots are passed in
   snapshot2: null,
   questions: Ember.A(),
+  authors: Ember.A(),
 
-  questionsViewing: Ember.computed('snapshot1.contents.children', function() {
-    return _.filter(this.get('snapshot1.contents.children'), function(o) {
-      return o.type === 'question';
-    });
-  }),
+  authorSorting: ['position', 'id', 'type'],
+  sortedAuthors: sort('authors', 'authorSorting'),
 
-  questionsComparing: Ember.computed('snapshot2.contents.children', function() {
-    return _.filter(this.get('snapshot2.contents.children'), function(o) {
-      return o.type === 'question';
-    });
-  }),
+  questionsViewing: filterBy('snapshot1.contents.children','type','question'),
 
-  authorsViewing: Ember.computed('snapshot1.contents.children', function() {
-    return _.filter(this.get('snapshot1.contents.children'), function(o) {
-      return o.name === 'author' || o.name === 'group-author';
-    });
-  }),
+  questionsComparing: filterBy('snapshot2.contents.children','type','question'),
 
-  authorsComparing: Ember.computed('snapshot2.contents.children', function() {
-    return _.filter(this.get('snapshot2.contents.children'), function(o) {
-      return o.name === 'author' || o.name === 'group-author';
-    });
-  }),
+  unsortedAuthorsViewing: filterBy('snapshot1.contents.children',
+                                   'name', 'author'),
+  unsortedGroupAuthorsViewing: filterBy('snapshot1.contents.children',
+                                        'name', 'group-author'),
+  unsortedViewing: union('unsortedAuthorsViewing',
+                         'unsortedGroupAuthorsViewing'),
+
+  unsortedAuthorsComparing: filterBy('snapshot2.contents.children',
+                                     'name', 'author'),
+  unsortedGroupAuthorsComparing: filterBy('snapshot2.contents.children',
+                                          'name', 'group-author'),
+  unsortedComparing: union('unsortedAuthorsComparing',
+                           'unsortedGroupAuthorsComparing'),
+
+  diffSorting: ['id', 'type'],
+  diffViewing: sort('unsortedViewing', 'diffSorting'),
+  diffComparing: sort('unsortedComparing', 'diffSorting'),
 
   setQuestions: function() {
     var maxLength = Math.max(this.get('questionsViewing').length,
@@ -46,9 +51,32 @@ export default Ember.Component.extend({
     }
   },
 
+  setAuthors: function() {
+    for (var i = 0; i < this.get('diffViewing').length; i++) {
+      var author = {};
+      author.viewing = this.get('diffViewing')[i];
+      author.comparing = _.findWhere(this.get('diffComparing'),
+                        {id: author.viewing.id, type: author.viewing.type});
+      this.get('authors')[i] = author;
+    }
+    var lastAuthor = this.get('diffViewing').length;
+    for (var i = 0; i < this.get('diffComparing').length; i++) {
+      var compare = this.get('diffComparing')[i];
+      var viewing = _.findWhere(this.get('diffViewing'),
+                                {id: compare.id, type: compare.type});
+      if (!viewing) {
+        var author = {};
+        author.viewing = { name: compare.name };
+        author.comparing = compare;
+        this.get('authors')[lastAuthor] = author;
+        lastAuthor++;
+      }
+    }
+  },
+
   init: function() {
     this._super(...arguments);
     this.setQuestions();
-    debugger;
+    this.setAuthors();
   }
 });

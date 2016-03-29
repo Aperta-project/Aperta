@@ -1,3 +1,9 @@
+{{#each authors as |author|}}
+  {{diff-author
+    viewing=author.viewing
+    comparing=author.comparing}}
+{{/each}}
+
 {{#each question in questions}}
   {{nested-snapshot
     snapshot1=question.viewing

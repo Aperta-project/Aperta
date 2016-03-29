@@ -1,4 +1,5 @@
 require 'rails_helper'
+require File.dirname(__FILE__) + '/sync_examples'
 
 describe SalesforceServices::BillingSync do
   subject(:billing_sync) do
@@ -42,6 +43,8 @@ describe SalesforceServices::BillingSync do
       expect(billing_sync.valid?).to be(false)
     end
   end
+
+  it_behaves_like 'salesforce sync object'
 
   describe '#sync!' do
     it 'ensures the PFA case exists in salesforce' do

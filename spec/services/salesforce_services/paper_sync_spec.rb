@@ -1,4 +1,5 @@
 require 'rails_helper'
+require File.dirname(__FILE__) + '/sync_examples'
 
 describe SalesforceServices::PaperSync do
   subject(:paper_sync) do
@@ -15,6 +16,8 @@ describe SalesforceServices::PaperSync do
       expect(paper_sync.valid?).to be(false)
     end
   end
+
+  it_behaves_like 'salesforce sync object'
 
   describe '#sync!' do
     it 'finds or creates the corresponding manuscript in salesforce' do

@@ -83,23 +83,18 @@ module SalesforceServices
 
       private
 
-      delegate :billing_task, :financial_disclosure_task, to: :@paper
+      delegate :financial_disclosure_task, to: :@paper, allow_nil: true
 
       def answer_for(ident)
-        if billing_task
-          answer = billing_task.answer_for(ident)
-          answer.value if answer
-        end
+        @paper.answer_for(ident).try(:value)
       end
 
       def float_answer_for(ident)
-        answer = billing_task.answer_for(ident)
-        answer.float_value if answer
+        @paper.answer_for(ident).try(:float_value)
       end
 
       def yes_no_answer_for(ident)
-        answer = billing_task.answer_for(ident)
-        answer.yes_no_value if answer
+        @paper.answer_for(ident).try(:yes_no_value)
       end
     end
   end

@@ -174,7 +174,7 @@ describe SalesforceServices::ObjectTranslations do
         expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
         expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
         expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
-        expect(data['PFA_Funding_Statement__c']).to    eq ("This work was supported by funder001 (grant number 000-2222-111).")
+        expect(data['PFA_Funding_Statement__c']).to    eq ("funder001 (grant number 000-2222-111).")
         # rubocop:enable Style/SingleSpaceBeforeFirstArg
       end
     end
@@ -184,44 +184,33 @@ describe SalesforceServices::ObjectTranslations do
         expect(paper.billing_task).to be nil
       end
 
-      it 'should not blow up' do
+      it 'should have nil values for all billing related fields' do
         data = billing_translator.paper_to_billing_hash
-        # rubocop:disable Style/SingleSpaceBeforeFirstArg
-        expect(data.class).to                          eq Hash
-        expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
-        expect(data['Manuscript__c']).to               eq(paper.salesforce_manuscript_id)
-        expect(data['Exclude_from_EM__c']).to          eq(true)
-        expect(data['Journal_Department__c']).to       eq(paper.journal.name)
-        expect(data['Subject']).to                     eq(paper.manuscript_id) # will prob change when doi is in RC?
-        expect(data['Origin']).to                      eq('PFA Request')
-        expect(data['Description']).to                 match('lou prima')
-        expect(data['Description']).to                 match('has applied')
-        expect(data['Description']).to                 match(paper.manuscript_id) # will prob change when doi is in RC?
-        expect(data['PFA_Question_1__c']).to           eq ('Yes')
-        expect(data['PFA_Question_1a__c']).to          eq ('foo')
-        expect(data['PFA_Question_1b__c']).to          eq (100.00)
-        expect(data['PFA_Question_2__c']).to           eq ('Yes')
-        expect(data['PFA_Question_2a__c']).to          eq ('foo')
-        expect(data['PFA_Question_2b__c']).to          eq (100.00)
-        expect(data['PFA_Question_3__c']).to           eq ('Yes')
-        expect(data['PFA_Question_3a__c']).to          eq (100.00)
-        expect(data['PFA_Question_4__c']).to           eq ('Yes')
-        expect(data['PFA_Question_4a__c']).to          eq (100.00)
-        expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
-        expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
-        expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
-        expect(data['PFA_Funding_Statement__c']).to    eq ("funder001 (grant number 000-2222-111).")
-        # rubocop:enable Style/SingleSpaceBeforeFirstArg
+        expect(data['PFA_Question_1__c']).to be nil
+        expect(data['PFA_Question_1a__c']).to be nil
+        expect(data['PFA_Question_1b__c']).to be nil
+        expect(data['PFA_Question_2__c']).to be nil
+        expect(data['PFA_Question_2a__c']).to be nil
+        expect(data['PFA_Question_2b__c']).to be nil
+        expect(data['PFA_Question_3__c']).to be nil
+        expect(data['PFA_Question_3a__c']).to be nil
+        expect(data['PFA_Question_4__c']).to be nil
+        expect(data['PFA_Question_4a__c']).to be nil
+        expect(data['PFA_Able_to_Pay_R__c']).to be nil
+        expect(data['PFA_Additional_Comments__c']).to be nil
+        expect(data['PFA_Supporting_Docs__c']).to be nil
+        expect(data['PFA_Funding_Statement__c']).to be nil
       end
     end
 
-    context 'and the paper does not have a financial_disclosure_task' do
+    context 'and the paper has a billing but not a financial_disclosure_task' do
       before do
         expect(paper.financial_disclosure_task).to be nil
       end
 
-      it 'should not blow up' do
+      it 'should have nil value for the funding statement field' do
         data = billing_translator.paper_to_billing_hash
+        expect(data['PFA_Funding_Statement__c']).to be nil
       end
     end
 
@@ -250,6 +239,7 @@ describe SalesforceServices::ObjectTranslations do
       :nested_question_answer,
       nested_question: nested_question,
       owner: paper.billing_task,
+      paper: paper,
       value: answer,
       value_type: "text"
     )
@@ -262,6 +252,7 @@ describe SalesforceServices::ObjectTranslations do
       :nested_question_answer,
       nested_question: nested_question,
       owner: paper.billing_task,
+      paper: paper,
       value: answer,
       value_type: "boolean"
     )

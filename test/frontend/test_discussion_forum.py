@@ -102,7 +102,7 @@ class DiscussionForumTest(CommonTest):
     paper_viewer._get(paper_viewer._message_body_field).send_keys(
       generate_paragraph()[2] + Keys.ENTER)
     time.sleep(5)
-    post_message_btn = (By.CSS_SELECTOR, 'button')
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     paper_viewer._get(post_message_btn).click()
     # send another msg
     paper_viewer.logout()

@@ -100,6 +100,7 @@ class DiscussionForumTest(CommonTest):
     #import pdb; pdb.set_trace()
     paper_viewer._get(paper_viewer._message_body_field).send_keys(
       generate_paragraph()[2])
+    time.sleep(.5)
     paper_viewer._get(paper_viewer._post_message_btn).click()
     # send another msg
     paper_viewer.logout()

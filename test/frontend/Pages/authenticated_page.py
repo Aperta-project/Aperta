@@ -85,7 +85,7 @@ class AuthenticatedPage(PlosPage):
 
     self._topic_title_field = (By.CSS_SELECTOR, 'input')
 
-    self._create_topic = (By.CSS_SELECTOR, 'button')
+    self._create_topic = (By.CSS_SELECTOR, 'div.sheet-content button')
 
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
 
@@ -97,6 +97,7 @@ class AuthenticatedPage(PlosPage):
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
 
     self._fist_discussion_lnk = (By.CSS_SELECTOR, 'a.discussions-index-topic')
+
 
 
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
@@ -178,6 +179,12 @@ class AuthenticatedPage(PlosPage):
     if permissions == (oa_login, sa_login):
       self._get(self._nav_admin_link)
     return None
+
+  def close_sheet(self):
+    """
+    Close overlaping sheet by clicking the upper right X
+    """
+    self._get(self._sheet_close_x).click()
 
   def validate_wf_top_elements(self):
     """Validate styles of elements that are in the top menu from workflow"""

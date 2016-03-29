@@ -6,6 +6,7 @@ import time
 
 from loremipsum import generate_paragraph
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
     super_admin_login, prod_staff_login, creator_login1
@@ -157,6 +158,16 @@ class DiscussionForumTest(CommonTest):
     red_badge = paper_viewer._get(paper_viewer._comment_sheet_badge_red)
     red_badge_current = int(red_badge.text)
     assert red_badge_first == red_badge_current, (red_badge_first, red_badge_current)
+    # close and check if any badge
+    paper_viewer.close_sheet()
+    paper_viewer.set_timeout(2)
+    try:
+      paper_viewer._get(paper_viewer._badge_red)
+      assert False, 'There should not be any discussion badge'
+    except ElementDoesNotExistAssertionError:
+      logging.info('There is no badge')
+    paper_viewer.restore_timeout()
+
 
 
 

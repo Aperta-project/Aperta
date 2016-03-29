@@ -9,6 +9,6 @@ class SimpleReportMailer < ActionMailer::Base
 
     mail(
       to: Rails.configuration.admin_email,
-      subject: prefixed("#{app_name} Daily Simple Report"))
+      subject: prefixed("#{app_name} Daily Workflow Report"))
   end
 end

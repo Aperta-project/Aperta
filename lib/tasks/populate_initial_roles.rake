@@ -12,7 +12,11 @@ namespace :data do
             user.auto_generate_password
             user.save
             roles = csv["Role"].split(',')
-            Journal.all.each do |journal|
+            journals = csv["Journals"].split(',')
+            journals.each do |journal_name|
+              journal_name.strip!
+              journal = Journal.where(name: journal_name).first
+              next unless journal.present?
               roles.each do |role_name|
                 role_name.strip!
                 if role_name == 'Site Admin'

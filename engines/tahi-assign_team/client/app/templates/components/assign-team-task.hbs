@@ -43,7 +43,9 @@
             <td><span class="assignee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role.name}}</td>
             <td><span class="assignment-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
             <td><span class="assignment-state">Assigned</span></td>
-            <td><span class="fa fa-trash assignment-remove" {{action "destroyAssignment" assignment}}></span></td>
+            {{#if isEditable}}
+              <td><span class="fa fa-trash assignment-remove" {{action "destroyAssignment" assignment}}></span></td>
+            {{/if}}
           </tr>
         {{/each}}
       </tbody>

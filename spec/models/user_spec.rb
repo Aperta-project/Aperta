@@ -72,6 +72,11 @@ describe User do
       expect(user.save!).to eq true
     end
 
+    it 'validates a username with dashes' do
+      user = FactoryGirl.build(:user, username: 'blah-blah')
+      expect(user).to be_valid
+    end
+
     it 'validates against blank username' do
       user = FactoryGirl.build(:user, username: '')
       expect(user).to_not be_valid
@@ -80,11 +85,10 @@ describe User do
       expect(user.errors.to_a.last).to eq "Username is invalid"
     end
 
-    it 'validates against username with dashes' do
-      user = FactoryGirl.build(:user, username: 'blah-blah')
-      expect(user).to_not be_valid
+    it 'validates against a username with periods' do
+      user = FactoryGirl.build(:user, username: 'blah.blah')
+      expect(user).not_to be_valid
       expect(user.errors.size).to eq 1
-      expect(user.errors.first).to eq [:username, "is invalid"]
     end
   end
 

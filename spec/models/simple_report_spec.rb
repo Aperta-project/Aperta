@@ -58,8 +58,12 @@ describe SimpleReport do
     context "when there is no previous report" do
       let(:only_report) { FactoryGirl.build_stubbed(:simple_report) }
 
-      it "returns 0" do
-        expect(only_report.previous_in_process_balance).to eq(0)
+      it "returns the current balance in process balance, minus initially_submitted" do
+        user = FactoryGirl.create :user
+        paper = FactoryGirl.create :paper, :initially_submitted
+        paper.submit! user
+        FactoryGirl.create :paper, :initially_submitted
+        expect(only_report.previous_in_process_balance).to eq(1)
       end
     end
 

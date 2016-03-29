@@ -26,7 +26,7 @@ class SimpleReport < ActiveRecord::Base
   end
 
   def previous_in_process_balance
-    return 0 unless last_report
+    return initial_in_process_balance unless last_report
     last_report.in_process_balance
   end
 
@@ -66,6 +66,22 @@ class SimpleReport < ActiveRecord::Base
       end
 
       queries
+    end
+  end
+
+  def initial_in_process_balance
+    total_in_process - status_queries[:new_initial_submissions].count
+  end
+
+  def total_in_process
+    [
+      :initially_submitted,
+      :invited_for_full_submission,
+      :fully_submitted,
+      :checking,
+      :in_revision
+    ].reduce(0) do |memo, state|
+      memo + status_queries[state].count
     end
   end
 

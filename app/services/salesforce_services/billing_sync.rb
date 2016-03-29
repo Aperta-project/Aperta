@@ -21,7 +21,7 @@ module SalesforceServices
     # Otherwise, raises a SyncInvalid error.
     def sync!
       if valid?
-        @salesforce_api.ensure_pfa_case(paper_id: @paper.id)
+        @salesforce_api.ensure_pfa_case(paper: @paper)
       else
         fail SyncInvalid, sync_invalid_message
       end

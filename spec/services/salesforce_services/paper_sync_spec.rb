@@ -22,7 +22,7 @@ describe SalesforceServices::PaperSync do
   describe '#sync!' do
     it 'finds or creates the corresponding manuscript in salesforce' do
       expect(salesforce_api).to receive(:find_or_create_manuscript)
-        .with(paper_id: paper.id)
+        .with(paper: paper)
       paper_sync.sync!
     end
 

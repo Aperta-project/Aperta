@@ -49,7 +49,7 @@ describe SalesforceServices::BillingSync do
   describe '#sync!' do
     it 'ensures the PFA case exists in salesforce' do
       expect(salesforce_api).to receive(:ensure_pfa_case)
-        .with(paper_id: paper.id)
+        .with(paper: paper)
       billing_sync.sync!
     end
 

@@ -13,7 +13,7 @@ module SalesforceServices
 
     def sync!
       if valid?
-        @salesforce_api.find_or_create_manuscript(paper_id: @paper.id)
+        @salesforce_api.find_or_create_manuscript(paper: @paper)
       else
         fail SyncInvalid, sync_invalid_message
       end

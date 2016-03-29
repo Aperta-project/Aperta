@@ -91,30 +91,12 @@ describe EpubConverter do
                     status: 'done'
         end
 
-        it 'replaces img src urls (which are normally relative proxied) with
-          full-path proxy urls' do
+        it 'has expirinig s3 URLs for the images' do
           figure = paper.figures.first
-          paper.body = "<img id='figure_#{figure.id}' src='foo'/>"
+          paper.body = "<p>dammit donnie</p>"
 
-          img = doc.css("img#figure_#{figure.id}").first
-          expect(img['src'])
-            .to eq(figure.non_expiring_proxy_url(
-                     version: :detail, only_path: false))
-        end
-
-        it 'works with orphan figures' do
-          # add another figure
-          paper.figures
-            .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                    status: 'done'
-          fig1, fig2 = paper.figures
-          paper.body = "<img id='figure_#{fig1.id}' src='foo'/>"
-          expect(converter.orphan_figures).to eq([fig2])
-
-          expect(doc.css("img#figure_#{fig2.id}").first['src'])
-            .to eq(fig2.non_expiring_proxy_url(
-                     version: :preview,
-                     only_path: false))
+          img = doc.css("img").first
+          expect(img['src']).to eq figure.proxyable_url(version: :detail)
         end
       end
     end

@@ -4,7 +4,7 @@
   "description": "## Development Notes",
   "main": "index.js",
   "engines": {
-    "node": "4.2.1"
+    "node": "4.2.4"
   },
   "//": "We keep our ember app in client/",
   "cacheDirectories": ["client/node_modules", "client/bower_components", "node_modules"],

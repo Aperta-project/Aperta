@@ -4,7 +4,7 @@
   "description": "Tahi client application",
   "private": true,
   "engines": {
-    "node": "4.2.1"
+    "node": "4.2.4"
   },
   "directories": {
     "doc": "doc",

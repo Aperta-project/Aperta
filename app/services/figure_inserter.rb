@@ -2,13 +2,15 @@
 # A service class for automatically adding figures at the appropriate locations
 # in manuscript texts
 class FigureInserter
-  def initialize(raw_text, figures)
+  def initialize(raw_text, figures, direct_img_links: false)
     @raw_text = raw_text
     @figures = figures
     @html_tree = Nokogiri::HTML::DocumentFragment.parse raw_text
+    @direct_img_links = direct_img_links
   end
 
   def call
+    return @raw_text unless @figures.present?
     sorted_figures.each { |figure| insert_figure figure }
     @html_tree.to_html
   end
@@ -44,7 +46,11 @@ class FigureInserter
   end
 
   def figure_url(figure)
-    figure.detail_src(cache_buster: true)
+    if @direct_img_links
+      figure.proxyable_url(version: :detail)
+    else
+      figure.detail_src(cache_buster: true)
+    end
   end
 
   ##

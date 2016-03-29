@@ -41,9 +41,11 @@ class VersionedText < ActiveRecord::Base
     submitting_user_id.present?
   end
 
+  def figureful_text(**opts)
+    FigureInserter.new(original_text, figures, opts).call
+  end
+
   def insert_figures
-    return unless figures
-    figureful_text = FigureInserter.new(original_text, figures).call
     self.text = figureful_text
   end
 

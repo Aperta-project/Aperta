@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [Unreleased][unreleased]
+## [1.4.2] - 2016-03-24
 ### Added
 - Figures display in the manuscript
 - Attachments to Revise Manuscript Task
@@ -24,6 +24,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Document upload success message now displays to the uploader, not the creator of a paper.
+- PDF generation now works when a paper has figures.
 
 ### Security
 -

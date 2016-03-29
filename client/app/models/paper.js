@@ -40,6 +40,8 @@ export default DS.Model.extend({
   updatedAt: attr('date'),
   relatedAtDate: attr('date'),
   relatedUsers: attr(),
+  handlingEditors: attr(),
+  coverEditors: attr(),
   oldRoles: attr(),
   shortTitle: attr('string'),
   status: attr('string'),

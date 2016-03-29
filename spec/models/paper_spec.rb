@@ -250,7 +250,9 @@ describe Paper do
         :with_collaborator_role,
         :with_handling_editor_role,
         :with_reviewer_role,
-        :with_task_participant_role
+        :with_task_participant_role,
+        :with_handling_editor_role,
+        :with_academic_editor_role
       )
     end
     let(:paper) { FactoryGirl.create(:paper, :with_creator, journal: journal) }
@@ -258,11 +260,13 @@ describe Paper do
     let(:collaborator_role) { journal.collaborator_role }
     let(:handling_editor_role) { journal.handling_editor_role }
     let(:reviewer_role) { journal.reviewer_role }
+    let(:academic_editor_role) { journal.academic_editor_role }
 
     let(:creator) { user }
     let(:collaborator) { FactoryGirl.create(:user) }
     let(:handling_editor) { FactoryGirl.create(:user) }
     let(:reviewer) { FactoryGirl.create(:user) }
+    let(:academic_editor) { FactoryGirl.create(:user) }
 
     let!(:creator_assignment) do
       paper.update(creator: user)
@@ -280,6 +284,9 @@ describe Paper do
     let!(:reviewer_assignment) do
       paper.assignments.create!(user: reviewer, role: reviewer_role)
     end
+    let!(:academic_editor_assignment) do
+      paper.assignments.create!(user: academic_editor, role: academic_editor_role)
+    end
 
     describe '#participations' do
       it 'returns the assignments for the participants on this paper' do
@@ -294,121 +301,59 @@ describe Paper do
         expect(paper.participations).to include(collaborator_assignment)
       end
 
-      it 'includes users assigned as the handling editor on the paper' do
-        expect(paper.participations).to include(handling_editor_assignment)
+      it 'does not include users assigned as handling editors on the paper' do
+        expect(paper.participations).to_not include(handling_editor_assignment)
       end
 
       it 'includes users assigned as the reviewer on the paper' do
         expect(paper.participations).to include(reviewer_assignment)
       end
 
-      it 'includes users assigned as participants on tasks for the paper' do
-        task = FactoryGirl.create(:task, paper: paper)
-        task_assignment = task.assignments.create!(
-          user: FactoryGirl.create(:user), role: FactoryGirl.create(:role)
-        )
-        expect(paper.participations).to include(task_assignment)
+      it 'includes users assigned as the academic editor on the paper' do
+        expect(paper.participations).to include(academic_editor_assignment)
       end
     end
 
     describe '#participants' do
-      let(:task) { FactoryGirl.create(:task, paper: paper) }
-      let(:task_user) { FactoryGirl.create(:user) }
-      let(:task_assignment) do
-        task.assignments.create!(
-          user: task_user,
-          role: FactoryGirl.create(:role)
-        )
-      end
-
-      before do
-        task = FactoryGirl.create(:task, paper: paper)
-        task_assignment = task.assignments.create!(
-          user: task_user,
-          role: FactoryGirl.create(:role)
-        )
-      end
-
       it 'returns the users for all of the participations' do
         expect(paper.participants).to contain_exactly(
-          creator, collaborator, handling_editor, reviewer, task_user
+          creator, collaborator, reviewer, academic_editor
         )
       end
 
       context 'and has a user assigned multiple times to the paper' do
-        it 'returns the users only once' do
-          task.assignments.create!(
-            user: paper.creator,
-            role: paper.journal.task_participant_role
-          )
+        let!(:other_reviewer_assignment) do
+          paper.assignments.create!(user: collaborator, role: reviewer_role)
+        end
 
+        it 'returns the users only once' do
           expect(paper.participants).to contain_exactly(
-            creator, collaborator, handling_editor, reviewer, task_user
+            creator, collaborator, reviewer, academic_editor
           )
         end
       end
     end
 
     describe '#participants_by_role' do
-      let(:paper_user) { FactoryGirl.create(:user) }
-      let(:task_user) { FactoryGirl.create(:user) }
-      let(:task) { FactoryGirl.create(:task, paper: paper) }
-      let(:sanitation_role) { FactoryGirl.create(:role, name: 'Sanitation') }
-
-      before do
-        paper.assignments.destroy_all
-        paper.assignments.create!(
-          user: paper_user,
-          role: paper.journal.creator_role
-        )
-        task.assignments.create!(
-          user: task_user,
-          role: FactoryGirl.create(:role, name: 'Sanitation')
-        )
-      end
-
       it 'returns a hash of <role> => [user1, user2, ...]' do
-        expect(paper.participants_by_role).to eq(
-          'Creator' => [paper_user],
-          sanitation_role.name => [task_user]
-        )
+        expect(paper.participants_by_role['Creator']).to eq([creator])
+        expect(paper.participants_by_role['Collaborator']).to eq([collaborator])
+        expect(paper.participants_by_role['Reviewer']).to eq([reviewer])
+        expect(paper.participants_by_role['Academic Editor']).to eq([academic_editor])
       end
 
-      context 'when a user is assigned multiple tasks with the same role on the paper' do
-        let(:another_task) { FactoryGirl.create(:task, paper: paper) }
-
-        before do
-          another_task.assignments.create!(
-            user: task_user,
-            role: sanitation_role
-          )
-        end
-
-        it 'returns the user only once per role' do
-          expect(paper.participants_by_role).to eq(
-            'Creator' => [paper_user],
-            sanitation_role.name => [task_user]
-          )
-        end
+      it 'does not include Handling Editor' do
+        expect(paper.participants_by_role.keys).to_not include('Handling Editor')
       end
 
       context 'when a user is assigned different roles on different tasks' do
-        let(:another_task) { FactoryGirl.create(:task, paper: paper) }
-        let(:foobar_role) { FactoryGirl.create(:role, name: 'Foobar') }
-
-        before do
-          another_task.assignments.create!(
-            user: task_user,
-            role: FactoryGirl.create(:role, name: 'Foobar')
-          )
+        let!(:other_reviewer_assignment) do
+          paper.assignments.create!(user: collaborator, role: reviewer_role)
         end
 
         it 'returns the user only once per role' do
-          expect(paper.participants_by_role).to eq(
-            'Creator' => [paper_user],
-            sanitation_role.name => [task_user],
-            foobar_role.name => [task_user]
-          )
+          expect(paper.participants_by_role['Collaborator']).to eq([collaborator])
+          expect(paper.participants_by_role['Reviewer']).to eq([reviewer, collaborator])
         end
       end
     end

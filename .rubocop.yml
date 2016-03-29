@@ -51,3 +51,9 @@ Style/ClassAndModuleChildren:
   # difficult to disambiguate the long-hand version of
   # Module::Submodule definitions
   Enabled: false
+
+Style/WordArray:
+  # If an array is *accidentally* made of single-word strings, being
+  # forced to use %w means being forced to rewrite the whole array as
+  # soon as one entry becomes two words
+  Enabled: false

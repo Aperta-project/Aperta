@@ -81,8 +81,18 @@
               }}
             </th>
             <th>Members</th>
-            <th>Handling Editor</th>
-            <th>Cover Editor</th>
+            <th>{{sort-link text="Handling Editor"
+                          orderBy="handling_editor"
+                          activeOrderBy=orderBy
+                          activeOrderDir=orderDir
+                          sortAction=(action "sort")
+              }}</th>
+            <th>{{sort-link text="Cover Editor"
+                          orderBy="cover_editor"
+                          activeOrderBy=orderBy
+                          activeOrderDir=orderDir
+                          sortAction=(action "sort")
+              }}</th>
           </tr>
         </thead>
 

@@ -106,5 +106,12 @@ export default DS.Model.extend({
     else if (this.get('isFullSubmission')) {
       return "full";
     }
+  }),
+
+  simplifiedRelatedUsers: computed.filter('relatedUsers', function(role) {
+    if (role.name === 'Collaborator') {
+      return false;
+    }
+    return true;
   })
 });

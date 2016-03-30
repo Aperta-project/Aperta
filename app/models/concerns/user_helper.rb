@@ -8,6 +8,12 @@ module UserHelper
   end
 
   def can?(permission, target)
+    Rails.cache.fetch("#{cache_key}_can_#{permission}_#{target.cache_key}") do
+      can_uncached?(permission, target)
+    end
+  end
+
+  def can_uncached?(permission, target)
     # TODO: Remove this when site_admin is no more
     return true if site_admin
     filter_authorized(permission, target).objects.length > 0

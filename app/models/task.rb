@@ -2,6 +2,7 @@ class Task < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
   include Commentable
+  include ExpiringCacheKey
 
   DEFAULT_TITLE = 'Ad-hoc'
   DEFAULT_ROLE = 'user'

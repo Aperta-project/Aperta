@@ -44,4 +44,6 @@ Tahi::Application.configure do
   # shouldn't we set this to 'test.host' which is the defaul setting of
   # request.host ? (above)
   config.action_mailer.default_url_options = { host: 'www.example.com' }
+
+  config.cache_store = :null_store
 end

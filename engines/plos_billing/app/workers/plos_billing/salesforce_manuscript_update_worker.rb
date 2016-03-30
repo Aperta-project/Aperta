@@ -3,9 +3,10 @@ module PlosBilling
   class SalesforceManuscriptUpdateWorker
     include Sidekiq::Worker
 
-    # 14 retries is approximately one and a half days with the default
-    # exponential backoff
-    sidekiq_options retry: 14
+    # 10 retries is approximately 2 ~ 3 hours. See
+    # https://github.com/mperham/sidekiq/wiki/Error-Handling#automatic-job-retry
+    # for retry formula
+    sidekiq_options retry: 10
     sidekiq_retries_exhausted { |msg| email_admin_on_sidekiq_error(msg) }
 
     def self.email_admin_on_sidekiq_error(msg)

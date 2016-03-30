@@ -34,7 +34,7 @@ describe TahiStandardTasks::Funder do
     end
 
     it "only includes the comment if that's all that's provided" do
-      expected = "#{comment_only_funder.additional_comments}."
+      expected = "#{comment_only_funder.additional_comments}"
       expect(comment_only_funder.funding_statement).to eq expected
     end
   end

@@ -98,9 +98,12 @@ class DiscussionForumTest(CommonTest):
     #import pdb; pdb.set_trace()
     paper_viewer._get(paper_viewer._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     time.sleep(.5)
-    #import pdb; pdb.set_trace()
-    paper_viewer._get(paper_viewer._message_body_field).send_keys(
-      generate_paragraph()[2] + Keys.ENTER)
+    msg_body = paper_viewer._get(paper_viewer._message_body_field)
+    # Testing to clicks to activate post button
+    msg_body.click()
+    msg_body.click()
+    time.sleep(1)
+    msg_body.send_keys(generate_paragraph()[2])
     time.sleep(5)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     paper_viewer._get(post_message_btn).click()

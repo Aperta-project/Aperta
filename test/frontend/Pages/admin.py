@@ -29,11 +29,15 @@ class AdminPage(AuthenticatedPage):
     # User Search Area
     self._base_admin_user_search_field = (By.CLASS_NAME, 'admin-user-search-input')
     self._base_admin_user_search_button = (By.CLASS_NAME, 'admin-user-search-button')
-    self._base_admin_user_search_default_state_text = (By.CLASS_NAME, 'admin-user-search-default-state-text')
+    self._base_admin_user_search_default_state_text = (By.CLASS_NAME,
+                                                       'admin-user-search-default-state-text')
     self._base_admin_user_search_results_table = (By.CLASS_NAME, 'admin-users')
-    self._base_admin_user_search_results_table_fname_header = (By.XPATH, '//table[@class="admin-users"]/tr/th[1]')
-    self._base_admin_user_search_results_table_lname_header = (By.XPATH, '//table[@class="admin-users"]/tr/th[2]')
-    self._base_admin_user_search_results_table_uname_header = (By.XPATH, '//table[@class="admin-users"]/tr/th[3]')
+    self._base_admin_user_search_results_table_fname_header = (
+        By.XPATH, '//table[@class="admin-users"]/tr/th[1]')
+    self._base_admin_user_search_results_table_lname_header = (
+        By.XPATH, '//table[@class="admin-users"]/tr/th[2]')
+    self._base_admin_user_search_results_table_uname_header = (
+        By.XPATH, '//table[@class="admin-users"]/tr/th[3]')
     self._base_admin_user_search_results_row = (By.CLASS_NAME, 'user-row')
     # Journal Display Area
     # New Journal
@@ -43,13 +47,20 @@ class AdminPage(AuthenticatedPage):
 
     self._base_admin_journals_edit_journal_div = (By.CLASS_NAME, 'journal-thumbnail-edit-form')
     self._base_admin_journals_edit_logo_upload_btn = (By.CLASS_NAME, 'fileinput-button')
-    self._base_admin_journals_edit_logo_upload_note = (By.CLASS_NAME, 'journal-thumbnail-logo-upload-note')
-    self._base_admin_journals_edit_title_label = (By.XPATH, '//div[@class="inset-form-control-text"]/label')
-    self._base_admin_journals_edit_title_field = (By.XPATH, '//div[@class="inset-form-control required "]/input')
-    self._base_admin_journals_edit_desc_label = (By.XPATH, '//div[@class="inset-form-control required "][2]/div/label')
-    self._base_admin_journals_edit_desc_field = (By.XPATH, '//div[@class="inset-form-control required "][2]/textarea')
-    self._base_admin_journals_edit_cancel_link = (By.XPATH, '//div[@class="journal-edit-buttons"]/a[1]')
-    self._base_admin_journals_edit_save_button = (By.XPATH, '//div[@class="journal-edit-buttons"]/a[2]')
+    self._base_admin_journals_edit_logo_upload_note = (By.CLASS_NAME,
+                                                       'journal-thumbnail-logo-upload-note')
+    self._base_admin_journals_edit_title_label = (By.XPATH,
+                                                  '//div[@class="inset-form-control-text"]/label')
+    self._base_admin_journals_edit_title_field = (
+        By.XPATH, '//div[@class="inset-form-control required "]/input')
+    self._base_admin_journals_edit_desc_label = (
+        By.XPATH, '//div[@class="inset-form-control required "][2]/div/label')
+    self._base_admin_journals_edit_desc_field = (
+        By.XPATH, '//div[@class="inset-form-control required "][2]/textarea')
+    self._base_admin_journals_edit_cancel_link = (By.XPATH,
+                                                  '//div[@class="journal-edit-buttons"]/a[1]')
+    self._base_admin_journals_edit_save_button = (By.XPATH,
+                                                  '//div[@class="journal-edit-buttons"]/a[2]')
     # Extant Journal Display Area
     self._base_admin_journals_section_journal_block = (By.CLASS_NAME, 'journal-thumbnail')
 
@@ -86,7 +97,8 @@ class AdminPage(AuthenticatedPage):
   def validate_journal_block_display(self, username):
     """
     Provided a privileged username, validates the display of journal blocks and their elements
-    :param username: a privileged username for determining which journal blocks should be displayed per the db
+    :param username: a privileged username for determining which journal blocks should be displayed
+    per the db
     :return: void function
     """
     logging.info(username)
@@ -105,11 +117,13 @@ class AdminPage(AuthenticatedPage):
       journals = []
       journals.append(PgSQL().query('SELECT assigned_to_id '
                                     'FROM assignments '
-                                    'WHERE user_id = %s AND assigned_to_type=\'Journal\';', (uid,))[0][0])
+                                    'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
+                                    (uid,))[0][0])
       db_journals = []
       for journal in journals:
         logging.info(journal)
-        db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '
+        db_journals.append(PgSQL().query('SELECT journals.name, journals.description, '
+                                         'COUNT(papers.id) '
                                          'FROM journals LEFT JOIN papers '
                                          'ON journals.id = papers.journal_id '
                                          'WHERE journals.id = %s '
@@ -118,23 +132,26 @@ class AdminPage(AuthenticatedPage):
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     logging.debug(journal_blocks)
     count = 0
-    for journal_block in journal_blocks:
+    while count < len(journal_blocks):
       # Once again, while less than ideal, these must be defined on the fly
       self._base_admin_journal_block_paper_count = \
           (By.XPATH,
-           '//div[@class="ember-view journal-thumbnail"][%s]/div/a/span[@class="journal-thumbnail-paper-count"]'
+           '//div[@class="ember-view journal-thumbnail"][%s]\
+           /div/a/span[@class="journal-thumbnail-paper-count"]'
            % str(count + 1))
       self._base_admin_journal_block_name = \
-          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/h3[@class="journal-thumbnail-name"]' % str(count + 1))
-      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/p'
-                                             % str(count + 1))
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]\
+          /div/a/h3[@class="journal-thumbnail-name"]' % str(count + 1))
+      self._base_admin_journal_block_desc = (
+          By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/div/a/p' % str(count + 1))
 
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
       journal_title = self._get(self._base_admin_journal_block_name)
       journal_desc = self._iget(self._base_admin_journal_block_desc).text
       if username == 'asuperadm':
-        self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']" % (count + 1))
+        self._base_admin_journal_block_edit_icon = (
+            By.XPATH, "//div[@class='ember-view journal-thumbnail'][%s]\
+            /div/div[@class='fa fa-pencil edit-icon']" % (count + 1))
         self._get(self._base_admin_journal_block_edit_icon)
       if not journal_desc:
         journal_desc = None
@@ -144,12 +161,17 @@ class AdminPage(AuthenticatedPage):
 
   def validate_add_new_journal(self, username):
     """
-    Note this currently doesn't actually create the journal, it merely calls the create form up and validates the
-    components of that form. Because we don't have a means of deleting a journal, even an empty one, it is prohibitive
+    Note this currently doesn't actually create the journal, it merely calls the create form up and
+    validates the
+    components of that form. Because we don't have a means of deleting a journal, even an empty one,
+    it is prohibitive
     to test this in an automated fashion as we would end up with hundreds of journals over time.
     :param username: Must be asuperadm or this is a no-op.
     :return: void function
     """
+    # The elements of this page attach to the DOM in a haphazard way. A little rest seems to smooth
+    # things over.
+    time.sleep(1)
     if username == 'asuperadm':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
@@ -163,20 +185,23 @@ class AdminPage(AuthenticatedPage):
       assert len(page_initial_journal_count) == db_initial_journal_count
       assert len(page_initial_journal_count) + 1 == len(page_secondary_journal_count)
       # Stopping here as I don't want to automatedly create a journal without a clean means
-      # of deleting the same. Need to ask after a safe method of deleting a created journal to move forward
+      # of deleting the same. Need to ask after a safe method of deleting a created journal to move
+      # forward
       upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
       assert upload_button.text == 'UPLOAD NEW'
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
       time.sleep(2)
-      assert upload_button.value_of_css_property('color') == tahi_blue, upload_button.value_of_css_property('color')
+      assert upload_button.value_of_css_property('color') == tahi_blue, \
+          upload_button.value_of_css_property('color')
       assert upload_button.value_of_css_property('background-color') == white, \
           upload_button.value_of_css_property('background-color')
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
       assert upload_note.text == '(250px x 40px)', upload_note.text
       assert application_typeface in upload_note.value_of_css_property('font-family'), \
           upload_note.value_of_css_property('font-family')
-      assert upload_note.value_of_css_property('font-size') == '14px', upload_note.value_of_css_property('font-size')
+      assert upload_note.value_of_css_property('font-size') == '14px', \
+          upload_note.value_of_css_property('font-size')
       assert upload_note.value_of_css_property('font-style') == 'italic', \
           upload_note.value_of_css_property('font-style')
       assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
@@ -210,7 +235,8 @@ class AdminPage(AuthenticatedPage):
       self.validate_input_field_label_style(journal_desc_label)
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
       assert journal_desc_field.get_attribute('placeholder') == \
-             'Accelerating the publication of peer-reviewed science', journal_desc_field.get_attribute('placeholder')
+          'Accelerating the publication of peer-reviewed science', \
+          journal_desc_field.get_attribute('placeholder')
       assert application_typeface in journal_desc_field.value_of_css_property('font-family'), \
           journal_desc_field.value_of_css_property('font-family')
       assert journal_desc_field.value_of_css_property('font-size') == '14px', \
@@ -231,15 +257,18 @@ class AdminPage(AuthenticatedPage):
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
       time.sleep(2)
-      assert save_button.value_of_css_property('color') == tahi_blue, save_button.value_of_css_property('color')
+      assert save_button.value_of_css_property('color') == tahi_blue, \
+          save_button.value_of_css_property('color')
       assert save_button.value_of_css_property('background-color') == white, \
           save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'Cancel', cancel_link.text
       assert application_typeface in cancel_link.value_of_css_property('font-family'), \
           cancel_link.value_of_css_property('font-family')
-      assert cancel_link.value_of_css_property('font-size') == '14px', cancel_link.value_of_css_property('font-size')
-      assert cancel_link.value_of_css_property('font-weight') == '400', cancel_link.value_of_css_property('font-weight')
+      assert cancel_link.value_of_css_property('font-size') == '14px', \
+          cancel_link.value_of_css_property('font-size')
+      assert cancel_link.value_of_css_property('font-weight') == '400', \
+          cancel_link.value_of_css_property('font-weight')
       assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
           cancel_link.value_of_css_property('color')
       assert cancel_link.value_of_css_property('background-color') == 'transparent', \
@@ -270,9 +299,9 @@ class AdminPage(AuthenticatedPage):
       logging.info('Validating editing journal block for Super Admin user')
       journal_count = self.select_named_journal(named_journal)
       logging.info(journal_count)
-      self._base_admin_journal_block_edit_icon = (By.XPATH,
-                             "//div[@class='ember-view journal-thumbnail'][%s]/div/div[@class='fa fa-pencil edit-icon']"
-                                                    % str(journal_count))
+      self._base_admin_journal_block_edit_icon = (
+          By.XPATH, "//div[@class='ember-view journal-thumbnail'][%s]\
+          /div/div[@class='fa fa-pencil edit-icon']" % str(journal_count))
       edit_journal = self._get(self._base_admin_journal_block_edit_icon)
       edit_journal.click()
       upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
@@ -319,19 +348,16 @@ class AdminPage(AuthenticatedPage):
         result.click()
         # TODO: Validate Styles for these elements
         time.sleep(1)
-        user_details_title = self._get(self._overlay_header_title)
+        self._get(self._overlay_header_title)
         user_details_closer = self._get(self._overlay_header_close)
-        user_details_fname_label = self._get(self._ud_overlay_fname_label)
-        user_details_fname_field = self._get(self._ud_overlay_fname_field)
-        user_details_lname_label = self._get(self._ud_overlay_lname_label)
-        user_details_lname_field = self._get(self._ud_overlay_lname_field)
-        user_details_uname_label = self._get(self._ud_overlay_uname_label)
-        user_details_uname_field = self._get(self._ud_overlay_uname_field)
-        user_details_reset_pw_btn = self._get(self._ud_overlay_reset_pw_btn)
-        user_details_reset_pw_btn.click()
-        user_details_reset_pw_success_msg = self._get(self._ud_overlay_reset_pw_success_msg)
-        user_details_cancel_link = self._get(self._overlay_action_button_cancel)
-        user_details_save_btn = self._get(self._overlay_action_button_save)
+        self._get(self._ud_overlay_fname_label)
+        self._get(self._ud_overlay_fname_field)
+        self._get(self._ud_overlay_lname_label)
+        self._get(self._ud_overlay_lname_field)
+        self._get(self._ud_overlay_uname_label)
+        self._get(self._ud_overlay_uname_field)
+        self._get(self._overlay_action_button_cancel)
+        self._get(self._overlay_action_button_save)
         user_details_closer.click()
     assert success_count > 0
 
@@ -349,14 +375,15 @@ class AdminPage(AuthenticatedPage):
 
   def select_random_journal(self):
     """
-    For all the blocks presented on the page, opens the journal specific admin page for a random choice
+    For all the blocks presented on the page, opens the journal specific admin page for a random
+    choice
     :return: void function
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
-    self._base_admin_journal_block_name = (By.XPATH,
-         '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
-         /h3[@class="journal-thumbnail-name"]'.format(selected_journal_index))
+    self._base_admin_journal_block_name = (
+        By.XPATH, '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
+        /h3[@class="journal-thumbnail-name"]'.format(selected_journal_index))
     journal_link = self._get(self._base_admin_journal_block_name)
     journal_name = journal_link.text
     logging.info('Opening {0} journal.'.format(journal_name))
@@ -371,7 +398,7 @@ class AdminPage(AuthenticatedPage):
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     count = 0
-    for journal_block in journal_blocks:
+    while count < len(journal_blocks):
       self._base_admin_journal_block_name = \
           (By.XPATH, '//div[@class="ember-view journal-thumbnail"][{0}]/div/a\
            /h3[@class="journal-thumbnail-name"]'.format(count + 1))
@@ -383,6 +410,6 @@ class AdminPage(AuthenticatedPage):
       count += 1
     return False
 
-  # TODO: Create method to create journal PLOS Wombat if not exist
+  # TODO: Create method to create journal PLOS Wombat if !exist
 
-  # TODO: Create method to create NoCards and OnlyInitialDecisionCard MMT in PLOS Wombat if not exist
+  # TODO: Create method to create NoCards and OnlyInitialDecisionCard MMT in PLOS Wombat if !exist

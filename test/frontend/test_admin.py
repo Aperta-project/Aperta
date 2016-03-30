@@ -14,6 +14,7 @@ from frontend.common_test import CommonTest
 """
 This test case validates the Aperta Admin page.
 """
+
 __author__ = 'jgray@plos.org'
 
 users = [staff_admin_login,
@@ -53,7 +54,8 @@ class ApertaAdminTest(CommonTest):
   """
   def test_validate_components_styles(self):
     """
-    Validates the presence UI elements of base admin page
+    test_admin: Validate elements and styles for the base Admin page
+    :return: void function
     """
     logging.info('Validating Admin page components and styles')
     user_type = random.choice(users)
@@ -64,11 +66,12 @@ class ApertaAdminTest(CommonTest):
     adm_page.validate_page_elements_styles(user_type['user'])
     logging.info('Validating journal block display for {0}'.format(user_type['user']))
     adm_page.validate_journal_block_display(user_type['user'])
-    adm_page.validate_nav_toolbar_elements(user_type['user'])
+    adm_page.validate_nav_toolbar_elements(user_type)
 
   def test_validate_user_search(self):
     """
-    Validates the user search function and user details overlay
+    test_admin: Validate the function of the base Admin page user search function
+    :return: void function
     """
     logging.info('Validating base admin page user search function')
     user_type = random.choice(users)
@@ -80,7 +83,9 @@ class ApertaAdminTest(CommonTest):
 
   def test_validate_add_new_journal(self):
     """
-    Validates adding a new journal is available to superadmin
+    test_admin: Validate the elements, styles and process of adding a new journal.
+    This test stops short of creating a new journal
+    :return: void function
     """
     logging.info('Validating add new journal function')
     user_type = super_admin_login
@@ -92,7 +97,8 @@ class ApertaAdminTest(CommonTest):
 
   def test_validate_edit_journal(self):
     """
-    Validates editing a journal is available to superadmin
+    test_admin: Validates the edit journal function, form elements and styles.
+    :return: void function
     """
     logging.info('Validating edit journal function')
     user_type = super_admin_login

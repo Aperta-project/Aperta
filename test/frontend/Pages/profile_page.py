@@ -34,24 +34,24 @@ class ProfilePage(AuthenticatedPage):
     self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]/span')
     self._avatar_input = (By.CSS_SELECTOR, 'input[type="file"]')
     self._add_affiliation_title = (By.CSS_SELECTOR, 'div.profile-affiliations-form h3')
-    self._institution_input = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/div/div/div/input")
-    self._department_input = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/input")
-    self._tile_input = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/input[2]")
-    self._country = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/div[3]/input")
-    self._datepicker_1 = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input")
-    self._datepicker_2 = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input[2]")
-    self._email = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/input")
-    self._add_done_btn = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/button")
-    self._add_cancel_btn = (By.XPATH,
-        ".//div[contains(@class, 'profile-affiliations-form')]/a")
+    self._institution_input = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div/div/div/input")
+    self._department_input = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/input")
+    self._tile_input = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/input[2]")
+    self._country = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[3]/input")
+    self._datepicker_1 = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input")
+    self._datepicker_2 = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input[2]")
+    self._email = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/input")
+    self._add_done_btn = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/button")
+    self._add_cancel_btn = (
+        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/a")
     self._profile_affiliations = (By.CSS_SELECTOR, 'div.profile-affiliation')
     self._remove_affiliation_icon = (By.CSS_SELECTOR, 'div.profile-remove-affiliation')
     self._success_message = (By.CSS_SELECTOR, 'div.success')
@@ -154,30 +154,30 @@ class ProfilePage(AuthenticatedPage):
     assert 'helvetica' in add_aff_title.value_of_css_property('font-family')
     assert add_aff_title.text == 'New Affiliation'
     self.validate_application_h3_style(add_aff_title)
+    # Note that the sytle guide is silent on this search selector style (APERTA-6358)
     institution_input = self._get(self._institution_input)
-    # https://www.pivotaltracker.com/story/show/103683668
-    # self.validate_input_field_style(institution_input)
+    # APERTA-6358 Commenting out until style implementation fixed.
     department_input = self._get(self._department_input)
-    # https://www.pivotaltracker.com/story/show/103683668
+    # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(department_input)
     title_input = self._get(self._tile_input)
-    # https://www.pivotaltracker.com/story/show/103683668
+    # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(title_input)
     country = self._get(self._country)
-    # TODO: Following method is here until bug #102008802 is fixed
-    # https://www.pivotaltracker.com/story/show/103683668
-    # self.validate_input_field_style(country)
+    # APERTA-6358 Commenting out until style implementation fixed.
+    # self.validate_single_select_dropdown_style(country)
     datepicker_1 = self._get(self._datepicker_1)
-    # https://www.pivotaltracker.com/story/show/103683668
+    # Note that the sytle guide is silent on this date selector style (APERTA-6358)
     # self.validate_input_field_style(datepicker_1)
     datepicker_2 = self._get(self._datepicker_2)
-    # https://www.pivotaltracker.com/story/show/103683668
+    # Note that the sytle guide is silent on this date selector style (APERTA-6358)
     # self.validate_input_field_style(datepicker_2)
     email = self._get(self._email)
-    # https://www.pivotaltracker.com/story/show/103683668
+    # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(email)
     add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_big_green_button_style(add_done_btn)
+    # APERTA-6358 Commenting out until style implementation fixed.
+    # self.validate_secondary_big_green_button_style(add_done_btn)
     add_cancel_btn = self._get(self._add_cancel_btn)
     self.validate_default_link_style(add_cancel_btn)
     # Insert affiliation data
@@ -192,11 +192,7 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(.5)
     email.send_keys(affiliation['email'])
     time.sleep(.5)
-    add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_big_green_button_style(add_done_btn)
-    '''
-    # This block is cancelled until in-situ investigation on why data
-    # is not entered when add_done_btn is clicked.
+
     add_done_btn.send_keys(Keys.SPACE)
     # Look for data
     # Give some time to end AJAX call
@@ -213,6 +209,4 @@ class ProfilePage(AuthenticatedPage):
     remove_icons[-1].click()
     alert = self._driver.switch_to_alert()
     alert.accept()
-    # TODO: Validate errors after #101686744 and #101686944 are fixed
-    '''
     return self

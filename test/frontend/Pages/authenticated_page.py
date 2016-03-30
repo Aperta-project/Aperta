@@ -6,7 +6,8 @@ from selenium.webdriver.common.by import By
 
 from Base.PlosPage import PlosPage
 from Base.PostgreSQL import PgSQL
-from Base.Resources import fm_login, oa_login, sa_login
+from Base.Resources import staff_admin_login, super_admin_login, \
+    internal_editor_login, prod_staff_login, pub_svcs_login
 
 """
 A class to be inherited from every page for which one is authenticated and wants to access
@@ -50,7 +51,10 @@ class AuthenticatedPage(PlosPage):
     self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
     self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
     self._nav_spacer = (By.CLASS_NAME, 'control-bar-item-spacer')
-    self._nav_dashboard_link = (By.ID, 'nav-dashboard')
+    # dashboard / your manuscripts Link
+    self._nav_aperta_dashboard_link = (By.ID, 'nav-dashboard')
+    self._nav_your_manuscripts_link = (By.ID, 'nav-manuscripts')
+    self._nav_help_link = (By.ID, 'nav-help')
     self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
@@ -60,7 +64,6 @@ class AuthenticatedPage(PlosPage):
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
     self._nav_feedback_link = (By.ID, 'nav-give-feedback')
-    self._nav_hamburger_icon = (By.CLASS_NAME, 'fa-list-ul')
     # Global toolbar Icons
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
@@ -166,21 +169,29 @@ class AuthenticatedPage(PlosPage):
     every logged in page
     :param permissions: username
     """
-    elevated = [fm_login, sa_login]
+    elevated = [staff_admin_login, super_admin_login]
+    ptracker = elevated + [internal_editor_login, prod_staff_login, pub_svcs_login]
     self._get(self._nav_title)
     self._get(self._nav_profile_img)
-    self._get(self._nav_dashboard_link)
+    assert 'Aperta' == self._get(self._nav_aperta_dashboard_link).text, \
+      self._get(self._nav_aperta_dashboard_link).text
+    assert 'Your Manuscripts' == self._get(self._nav_your_manuscripts_link).text, \
+      self._get(self._nav_your_manuscripts_link).text
+    help_link = self._get(self._nav_help_link)
+    assert help_link.text =='Help', help_link.text
+    assert help_link.get_attribute('target') == '_blank', help_link.get_attribute('target')
+    assert help_link.get_attribute('href') == \
+        'http://journals.plos.org/plosbiology/s/aperta-help', help_link.get_attribute('href')
     self.click_profile_nav()
     self._get(self._nav_profile_link)
     self._get(self._nav_signout_link)
     self._get(self._nav_feedback_link)
     # Must have flow mgr, admin or superadmin
     if permissions in elevated:
-      self._get(self._nav_flowmgr_link)
-      self._get(self._nav_paper_tracker_link)
-    # Must have admin or superadmin
-    if permissions == (oa_login, sa_login):
       self._get(self._nav_admin_link)
+      self._get(self._nav_flowmgr_link)
+    if permissions in ptracker:
+      self._get(self._nav_paper_tracker_link)
     return None
 
   def close_sheet(self):
@@ -788,23 +799,34 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_big_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay big white-backed, green text buttons across the application
+    Ensure consistency in rendering page and overlay big white-backed, green text buttons across
+      the application
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '18px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('color') == tahi_green, \
+        button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == white, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_link_big_green_button_style(button):
@@ -1303,11 +1325,15 @@ class AuthenticatedPage(PlosPage):
     :param label: label to validate
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '14px', label.value_of_css_property('font-size')
-    assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
+    assert label.value_of_css_property('font-size') == '14px', \
+        label.value_of_css_property('font-size')
+    assert label.value_of_css_property('font-weight') == '400', \
+        label.value_of_css_property('font-weight')
     # This color is not represented in the tahi palette
-    assert label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', label.value_of_css_property('color')
-    assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
+    assert label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', \
+        label.value_of_css_property('color')
+    assert label.value_of_css_property('line-height') == '20px', \
+        label.value_of_css_property('line-height')
 
   @staticmethod
   def validate_input_field_style(field):
@@ -1316,30 +1342,46 @@ class AuthenticatedPage(PlosPage):
     :param field: field to validate
     """
     assert application_typeface in field.value_of_css_property('font-family')
-    assert field.value_of_css_property('font-size') == '14px', field.value_of_css_property('font-size')
-    assert field.value_of_css_property('font-weight') == '400', field.value_of_css_property('font-weight')
-    # This color is not represented in the tahi palette
-    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '20px', field.value_of_css_property('line-height')
-    assert field.value_of_css_property('padding-top') == '26px', field.value_of_css_property('padding-top')
-    assert field.value_of_css_property('padding-right') == '12px', field.value_of_css_property('padding-right')
-    assert field.value_of_css_property('padding-bottom') == '6px', field.value_of_css_property('padding-bottom')
-    assert field.value_of_css_property('padding-left') == '12px', field.value_of_css_property('padding-left')
+    assert field.value_of_css_property('font-size') == '14px', \
+        field.value_of_css_property('font-size')
+    assert field.value_of_css_property('font-weight') == '400', \
+        field.value_of_css_property('font-weight')
+    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+        field.value_of_css_property('color')
+    assert field.value_of_css_property('line-height') == '18px', \
+        field.value_of_css_property('line-height')
+    assert field.value_of_css_property('padding-top') == '5px', \
+        field.value_of_css_property('padding-top')
+    assert field.value_of_css_property('padding-bottom') == '7px', \
+        field.value_of_css_property('padding-bottom')
+    assert field.value_of_css_property('padding-left') == '10px', \
+        field.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_single_select_dropdown_style(field):
     """
-    Ensure consistency in rendering page, card and overlay single select drop down fields across the application
+    Ensure consistency in rendering page, card and overlay single select drop down fields across
+      the application
     :param field: field to validate
     """
     assert application_typeface in field.value_of_css_property('font-family')
-    assert field.value_of_css_property('font-size') == '14px', field.value_of_css_property('font-size')
-    assert field.value_of_css_property('font-weight') == '400', field.value_of_css_property('font-weight')
-    # This color is not represented in the style guide
-    assert field.value_of_css_property('color') == 'rgba(68, 68, 68, 1)', field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '26px', field.value_of_css_property('line-height')
-    assert field.value_of_css_property('text-overflow') == 'ellipsis', field.value_of_css_property('text-overflow')
-    assert field.value_of_css_property('margin-right') == '26px', field.value_of_css_property('margin-right')
+    assert field.value_of_css_property('font-size') == '14px', \
+        field.value_of_css_property('font-size')
+    assert field.value_of_css_property('font-weight') == '400', \
+        field.value_of_css_property('font-weight')
+    assert field.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        field.value_of_css_property('color')
+    assert field.value_of_css_property('line-height') == '18px', \
+        field.value_of_css_property('line-height')
+    assert field.value_of_css_property('padding-top') == '6px', \
+        field.value_of_css_property('padding-top')
+    assert field.value_of_css_property('padding-bottom') == '6px', \
+        field.value_of_css_property('padding-bottom')
+    assert field.value_of_css_property('padding-left') == '11px', \
+        field.value_of_css_property('padding-left')
+    assert field.value_of_css_property('padding-right') == '12px',\
+        field.value_of_css_property('padding-left')
+
 
   @staticmethod
   def validate_multi_select_dropdown_style(field):
@@ -1462,13 +1504,13 @@ class AuthenticatedPage(PlosPage):
     :param msg: alert message to validate
     """
     assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
-    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    # assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide as a color and is not the color of the actual implementation
     # assert msg.value_of_css_property('color') == 'rgba(122, 51, 78, 1)', msg.value_of_css_property('color')
     # This color is not represented in the style guide
     # assert msg.value_of_css_property('background-color') == 'rgba(247, 239, 233, 1)', \
     #    msg.value_of_css_property('background-color')
-    assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
+    # assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     # assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
     # assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
     # assert msg.value_of_css_property('display') == 'inline-block', msg.value_of_css_property('display')

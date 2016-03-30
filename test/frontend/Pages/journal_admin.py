@@ -14,7 +14,7 @@ from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from Base.Resources import task_names
+from Base.Resources import task_names, yeti_task_names
 from admin import AdminPage
 
 __author__ = 'jgray@plos.org'
@@ -130,9 +130,9 @@ class JournalAdminPage(AdminPage):
         print('\n')
     else:
       logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
-      self._add_user_with_role('jgray_author', 'Flow Manager')
+      self._add_user_with_role('atest author3', 'Flow Manager')
       logging.info('Verifying added user')
-      self._validate_user_with_role('jgray_author', 'Flow Manager')
+      self._validate_user_with_role('atest author3', 'Flow Manager')
       logging.info('Deleting newly added user')
       self._delete_user_with_role()
       time.sleep(3)
@@ -200,7 +200,9 @@ class JournalAdminPage(AdminPage):
       self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{0}]\
           /div/span".format(count))
       role_name = self._get(self._role_name)
-      if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
+      logging.info(role_name.text)
+      # Note that the role Journal Admin is a PLOS Yeti special snowflake - fet!
+      if role_name.text not in ('Admin', 'Flow Manager', 'Editor', 'Journal Admin'):
         self._role_delete_icon = (By.XPATH,
             "//div[@class='ember-view admin-role not-editing'][{0}]\
             /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
@@ -223,11 +225,13 @@ class JournalAdminPage(AdminPage):
       self.restore_timeout()
       count += 1
 
-  def validate_task_types_section(self):
+  def validate_task_types_section(self, journal):
     """
     Assert the existence and function of the elements of the Available Task Types section and overlay.
     It is expected that this section will change radically following the roles and permissions work,
     so not investing too much here at present.
+    :param journal: The PLOS Yeti journal is prepopulated with an extra task so requires special
+      handling.
     :return: void function
     """
     att_section = self._get(self._journal_admin_avail_task_types_div)
@@ -250,9 +254,13 @@ class JournalAdminPage(AdminPage):
     assert 'Role' in role_heading.text, role_heading.text
     tasks = self._gets(self._journal_admin_att_overlay_row)
     for task in tasks:
-      # There is little value in validating anything other than name as role assignment is up in the air.
+      # There is little value in validating anything other than name as role assignment is up in
+      # the air.
       name = task.find_element(*self._journal_admin_att_overlay_row_taskname)
-      assert name.text in task_names, name.text
+      if journal == 'PLOS Yeti':
+        assert name.text in yeti_task_names, name.text
+      else:
+        assert name.text in task_names, name.text
       task.find_element(*self._journal_admin_att_overlay_row_selector)
       task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
 
@@ -276,22 +284,26 @@ class JournalAdminPage(AdminPage):
     except ElementDoesNotExistAssertionError:
       logging.error('No extant MMT found for Journal. This should never happen.')
     curr_journal_id = self._driver.current_url.split('/')[-1]
+    logging.info(curr_journal_id)
     db_mmts = PgSQL().query('SELECT paper_type, id '
                             'FROM manuscript_manager_templates '
                             'WHERE journal_id = %s;', (curr_journal_id,))
     for dbmmt in db_mmts:
+      logging.debug('Appending {0} to dbmmts'.format(dbmmt[0]))
       dbmmts.append(dbmmt[0])
       dbids.append(dbmmt[1])
+    logging.info(dbids)
     if mmts:
       count = 0
       for mmt in mmts:
         name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
         logging.info(name.text)
-        assert name.text in dbmmts
+        assert name.text in dbmmts, name.text
         phases = mmt.find_element(*self._journal_admin_manu_mgr_thumb_phases)
         db_phase_count = PgSQL().query('SELECT count(*) '
                                        'FROM phase_templates '
-                                       'WHERE manuscript_manager_template_id = %s;', (dbids[count],))[0][0]
+                                       'WHERE manuscript_manager_template_id = %s;',
+                                       (dbids[count],))[0][0]
         assert phases.text == str(db_phase_count), phases.text + ' != ' + str(db_phase_count)
         self._actions.move_to_element(mmt).perform()
         self._journal_admin_manu_mgr_thumb_edit = (By.CSS_SELECTOR, 'a.fa-pencil')
@@ -398,7 +410,8 @@ class JournalAdminPage(AdminPage):
       self._mmt_template_column_title_edit_save_btn = (By.CSS_SELECTOR, 'button.column-header-update-save')
       col_cancel = column.find_element(*self._mmt_template_column_title_edit_cancel_btn)
       column.find_element(*self._mmt_template_column_title_edit_save_btn)
-      col_cancel.click()
+      # Commenting out until APERTA-6407 is resolved
+      # col_cancel.click()
       column.find_element(*self._mmt_template_column_no_cards_card)
       column.find_element(*self._mmt_template_column_add_new_card_btn)
     template_cancel.click()
@@ -465,7 +478,7 @@ class JournalAdminPage(AdminPage):
             time.sleep(1)
             delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
             logging.info('Clicking on MMT trash icon')
-            self._actions.click(delete_mmt).perform()
+            delete_mmt.click()
             time.sleep(1)
             self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR,
                                                                      'div.mmt-thumbnail-overlay-confirm-destroy p')

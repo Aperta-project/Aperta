@@ -42,7 +42,10 @@ class AuthorsTaskTest(CommonTest):
   """
 
   def test_validate_components(self):
-    """Validates styles for the author task"""
+    """
+    test_authors_task: Validates the elements, styles and functions for the author task
+    :return: void function
+    """
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -54,7 +57,23 @@ class AuthorsTaskTest(CommonTest):
     manuscript_page.click_task('authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.validate_styles()
-    authors_task.validate_author_task_action()
+
+  def test_validate_add_delete_individual_author(self):
+    """
+    test_authors_task: Validates add and delete individual author functions for the author task
+    :return: void function
+    """
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard = self.cas_login(user_type['email'])
+    dashboard.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research',)
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(10)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_task('authors')
+    authors_task = AuthorsTask(self.getDriver())
+    authors_task.add_individual_author_task_action()
     authors_task.validate_delete_author()
     # The author task is large enough that the Completion button frequently scrolls to an a place
     #   place obscured by the task title. This two step boogaloo resets the view to the top of the
@@ -71,6 +90,25 @@ class AuthorsTaskTest(CommonTest):
     # We expect a completion error to to fire because several required elements are not complete.
     # The metadata versioning test case covers the everything completely filled out case.
     authors_task.validate_completion_error()
+    return self
+
+  def test_validate_add_delete_group_author(self):
+    """
+    test_authors_task: Validates add and delete group author functions for the author task
+    :return: void function
+    """
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard = self.cas_login(user_type['email'])
+    dashboard.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research',)
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(10)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_task('authors')
+    authors_task = AuthorsTask(self.getDriver())
+    authors_task.add_group_author_task_action()
+    authors_task.validate_delete_author()
     return self
 
 if __name__ == '__main__':

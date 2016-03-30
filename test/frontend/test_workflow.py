@@ -40,7 +40,8 @@ class ApertaWorkflowTest(CommonTest):
 
   def test_validate_components_styles(self):
     """
-    Validates the presence of the initial page elements
+    test_workflow: Validates elements and styles of the workflow page
+    :return: void function
     """
     workflow_users = [internal_editor_login,
                       staff_admin_login,
@@ -52,24 +53,25 @@ class ApertaWorkflowTest(CommonTest):
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
     # We have to ensure there *is* a first manuscript on a users dashboard
-    manuscript_count = dashboard_page.validate_manuscript_section_main_title(workflow_user)
-    if manuscript_count > 0:
-      dashboard_page.click_on_first_manuscript()
-    else:
-      dashboard_page.click_create_new_submission_button()
-      self.create_article(journal='PLOS Wombat',
+    manuscript_count = dashboard_page.validate_manuscript_section_main_title(workflow_user)[0]
+    logging.info(manuscript_count)
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat',
                         type_='Research',
                         random_bit=True,
                         title='Created Document for Workflow test',
                         )
-      time.sleep(10)
-    time.sleep(2)
+    time.sleep(12)
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
+    workflow_page.validate_nav_toolbar_elements(workflow_user)
     return self
 
   def test_add_new_card(self):
-    """Testing adding a new card"""
+    """
+    test_workflow: Testing adding a new card
+    :return: void function
+    """
     # APERTA-6186 stops the internal editor and publication services logins from adding a new card
     workflow_users = [internal_editor_login,
                       staff_admin_login,
@@ -80,8 +82,16 @@ class ApertaWorkflowTest(CommonTest):
     workflow_user = random.choice(workflow_users)
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
-    dashboard_page.click_on_first_manuscript()
-    time.sleep(2)
+    # NOTA BENE: The first manuscript on these users desktop is not guaranteed to be in a journal
+    #   on which these users possess the relevant role (super_admin_login excepted) - therefore
+    # switching this from click on first manuscript to an explicit create
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat',
+                          type_='Research',
+                          random_bit=True,
+                          title='Created Document for Workflow test',
+                          )
+    time.sleep(12)
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)

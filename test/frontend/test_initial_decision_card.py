@@ -50,7 +50,10 @@ class InitialDecisionCardTest(CommonTest):
 
   def test_initial_submit_actions(self):
     """
+    test_initial_decision_card: Validates the elements, styles and functions of initial submit
+      from new document creation through inviting for initial submission
     Validates AC 1, 2, 3, 5 and 6 from APERTA-5400
+    :return: void function
     """
     # Users logs in and make a submission
     creator_user = random.choice(users)

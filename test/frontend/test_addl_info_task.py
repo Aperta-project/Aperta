@@ -34,7 +34,10 @@ class AddlInfoTaskTest(CommonTest):
     return AITask(self.getDriver()), article_name
 
   def test_validate_components(self):
-    """Validates styles for the addl_info task"""
+    """
+    test_addl_info_task: Validates the elements, styles and functions of the Additional Info Task
+    :return: void function
+    """
     addl_info_task, title = self._go_to_addl_info_task()
     addl_info_task.complete_ai()
     return self

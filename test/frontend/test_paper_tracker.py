@@ -20,11 +20,12 @@ Those acts are expected to be defined in
 __author__ = 'jgray@plos.org'
 
 
-users = [staff_admin_login,
-         internal_editor_login,
-         prod_staff_login,
-         pub_svcs_login,
-         super_admin_login,
+users = [
+         staff_admin_login,
+         # internal_editor_login,
+         # prod_staff_login,
+         # pub_svcs_login,
+         # super_admin_login,
          ]
 
 
@@ -40,6 +41,7 @@ class ApertaPaperTrackerTest(CommonTest):
   """
   def test_validate_paper_tracker(self):
     """
+    test_paper_tracker: Validate elements, styles and functions of the paper tracker page
     Validates the presence of the following elements:
       Welcome Text, subhead, table presentation
     """
@@ -51,7 +53,7 @@ class ApertaPaperTrackerTest(CommonTest):
     (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type['user'])
     logging.info('Total count is {0} for {1}'.format(total_count, journals_list))
     pt_page.validate_table_presentation_and_function(total_count, journals_list)
-    pt_page.validate_nav_toolbar_elements(user_type['user'])
+    pt_page.validate_nav_toolbar_elements(user_type)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

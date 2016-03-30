@@ -46,6 +46,7 @@ class ViewPaperTest(CommonTest):
 
   def test_validate_components_styles(self):
     """
+    test_manuscript_viewer: Validate elements and styles for the manuscript viewer page
     APERTA-3: validate page elements and styles
     Validates the presence of the following elements:
       - icons in text area (editor menu)
@@ -63,6 +64,7 @@ class ViewPaperTest(CommonTest):
     self.cas_login(email=user['email'])
     self.select_preexisting_article(first=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.validate_nav_toolbar_elements(user)
     if user in (staff_admin_login, super_admin_login):
       manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'], admin=True)
     else:
@@ -73,8 +75,6 @@ class ViewPaperTest(CommonTest):
   def _test_role_aware_menus(self):
     """
     APERTA-3: Validates role aware menus
-
-    Note: Test disabled until APERTA-5992 is fixed
     """
     roles = {creator_login1['email']: 7,
              creator_login2['email']: 7,
@@ -123,6 +123,7 @@ class ViewPaperTest(CommonTest):
 
   def test_initial_submission_infobox(self):
     """
+    test_manuscript_viewer: Validate elements and styles of the initial submission infobox
     Aperta-5515
 
     AC from Aperta-5515:
@@ -167,8 +168,8 @@ class ViewPaperTest(CommonTest):
 
     # AC5 Test for Message for initial submission
     assert "Please provide the following information to submit your manuscript for "\
-            "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
-            manuscript_page.get_submission_status_info_text()
+        "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
+        manuscript_page.get_submission_status_info_text()
     # AC2 Test closing the infobox
     infobox.find_element_by_id('sp-close').click()
     time.sleep(3)
@@ -215,8 +216,8 @@ class ViewPaperTest(CommonTest):
     # NOTE: At this point browser renders the page with errors only on automation runs
     # AC 6
     assert "Your manuscript is ready for Initial Submission." in \
-            manuscript_page.get_submission_status_info_text(),\
-            manuscript_page.get_submission_status_info_text()
+        manuscript_page.get_submission_status_info_text(),\
+        manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
     time.sleep(2)
     # The following sequence is a workaround for our failure to invalidate CAS token on sign out
@@ -278,11 +279,11 @@ class ViewPaperTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # AC8: Message for full submission when is ready for submition
-    manuscript_page._get(manuscript_page._nav_dashboard_link)
+    manuscript_page._get(manuscript_page._nav_aperta_dashboard_link)
     time.sleep(5)
-    assert  "Your manuscript is ready for Full Submission." in \
-      manuscript_page.get_submission_status_info_text(), \
-      manuscript_page.get_submission_status_info_text()
+    assert 'Your manuscript is ready for Full Submission.' in \
+        manuscript_page.get_submission_status_info_text(), \
+        manuscript_page.get_submission_status_info_text()
     return self
 
   def _test_paper_download_buttons(self):

@@ -707,7 +707,7 @@ describe PapersController do
         end
 
         it 'creates an activity' do
-          expect(Activity).to receive(:paper_submitted!)
+          expect(Activity).to receive(:paper_initially_submitted!)
             .with(paper, user: user)
           do_request
         end

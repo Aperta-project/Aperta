@@ -143,10 +143,11 @@ class PapersController < ApplicationController
     requires_user_can(:submit, paper)
     if paper.gradual_engagement? && paper.unsubmitted?
       paper.initial_submit!
+      Activity.paper_initially_submitted! paper, user: current_user
     else
       paper.submit! current_user
+      Activity.paper_submitted! paper, user: current_user
     end
-    Activity.paper_submitted! paper, user: current_user
     render json: paper, status: :ok
   end
 

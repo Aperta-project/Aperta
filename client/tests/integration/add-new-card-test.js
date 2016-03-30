@@ -60,13 +60,6 @@ module('Integration: adding a new card', {
       }, JSON.stringify(taskPayload)
     ]);
 
-    server.respondWith('GET', '\/api\/flows/authorization', [
-      204, {
-        'content-type': 'application/html',
-        'tahi-authorization-check': true
-      }, ''
-    ]);
-
     server.respondWith('GET', '\/api\/admin/journals/1', [
       200, {
         'Content-Type': 'application/json'

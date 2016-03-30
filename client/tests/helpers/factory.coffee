@@ -272,7 +272,6 @@ FactoryAttributes.OldRole =
   can_administer_journal: false
   can_view_assigned_manuscript_managers: false
   can_view_all_manuscript_managers: false
-  can_view_flow_manager: false
   journal_id: null
 
 FactoryAttributes.Author =

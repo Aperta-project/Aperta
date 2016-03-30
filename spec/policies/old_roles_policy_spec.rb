@@ -33,7 +33,7 @@ describe OldRolesPolicy do
 
   context "user who has a old_role" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:old_role) { assign_journal_role(journal, user, :flow_manager) }
+    let(:old_role) { assign_journal_role(journal, user, OldRole.first) }
 
     specify { expect(policy.show?).to be(true) }
   end

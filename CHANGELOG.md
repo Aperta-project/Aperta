@@ -8,13 +8,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Email report to admin counting papers in states
 
 ### Changed
-- 
+-
 
 ### Deprecated
 -
 
 ### Removed
 - Roles section of Admin page removed to avoid confusion since it only applied to old roles
+- Flow Manager
 
 ### Fixed
 - Single-sign-on sessions should now properly end upon Aperta logout

@@ -21,7 +21,6 @@ module('Integration: Discussions', {
     paper = make('paper_with_discussion', { phases: [], tasks: [] });
     topic = make('topic_with_replies', { paperId: paper.id, title: 'Hipster Ipsum Dolor' });
 
-    $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});

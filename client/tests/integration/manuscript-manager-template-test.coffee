@@ -38,11 +38,6 @@ module 'Integration: Manuscript Manager Templates',
       adminJournalResponse = adminJournalPayload.toJSON()
       admin = Factory.createRecord('User', siteAdmin: true)
 
-      # let us see the manuscript template manager
-      server.respondWith 'GET', /\/api\/flows\/authorization/, [
-        204, 'Tahi-Authorization-Check': 'true', ""
-      ]
-
       server.respondWith 'GET', "/api/admin/journals/1", [
         200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
       ]

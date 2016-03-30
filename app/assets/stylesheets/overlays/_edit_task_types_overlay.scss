@@ -44,7 +44,6 @@
   &.is-editing {
     height: auto;
     .action-buttons { display: block; }
-    .admin-modify-flows-link { display: block; }
   }
 
   &.not-editing {
@@ -78,20 +77,4 @@
 
 .admin-role-permissions {
   display: inline-block;
-}
-
-.admin-modify-flows-link {
-  display: none;
-  margin-bottom: 6px;
-  padding: 10px 10px 10px 20px;
-  color: #fff;
-  font-size: 21px;
-  background: $tahi-blue;
-
-  a {
-    color: #fff;
-    text-decoration: underline;
-
-    &:hover { color: #fff; }
-  }
 }

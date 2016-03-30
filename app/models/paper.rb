@@ -9,7 +9,6 @@ class Paper < ActiveRecord::Base
   include Assignable::Model
 
   belongs_to :journal, inverse_of: :papers
-  belongs_to :flow
   belongs_to :striking_image, polymorphic: true
 
   has_many :figures, dependent: :destroy

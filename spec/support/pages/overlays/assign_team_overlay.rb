@@ -14,12 +14,12 @@ class AssignTeamOverlay < CardOverlay
   end
 
   def assign_role_to_user(role_name, user)
-    page.assert_selector(".invite-reviewers")
+    page.assert_selector(".assign-team-content")
 
     select2 role_name, from: "Role"
     wait_for_ajax
 
-    select2 user.full_name, from: "User"
+    select2 user.full_name, css: '.assignment-user-input', search: true
     wait_for_ajax
 
     click_button "Assign"

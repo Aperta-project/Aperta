@@ -144,8 +144,9 @@ class PapersController < ApplicationController
     if paper.gradual_engagement? && paper.unsubmitted?
       paper.initial_submit!
     else
-      full_submission
+      paper.submit! current_user
     end
+    Activity.paper_submitted! paper, user: current_user
     render json: paper, status: :ok
   end
 
@@ -162,12 +163,6 @@ class PapersController < ApplicationController
   end
 
   private
-
-  def full_submission
-    paper.submit! current_user do
-      Activity.paper_submitted! paper, user: current_user
-    end
-  end
 
   def withdrawal_params
     params.permit(:reason)

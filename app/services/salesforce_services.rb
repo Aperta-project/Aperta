@@ -14,7 +14,7 @@ module SalesforceServices
       logger.info "Salesforce: Paper #{paper.id} sync'd successfully"
 
       SalesforceServices::BillingSync.sync!(paper: paper)
-      logger.info "Salesforce: Billing info on #{paper.id} sync'd successfully"
+      logger.info "Salesforce: Billing info on Paper #{paper.id} sync'd successfully"
     else
       logger.info "Salesforce: Paper #{paper.id} is not PFA, skipping sync."
     end

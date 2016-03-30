@@ -32,7 +32,7 @@ describe SalesforceServices do
           .with("Salesforce: Paper #{paper.id} sync'd successfully")
           .ordered
         expect(logger).to receive(:info)
-          .with("Salesforce: Billing info on #{paper.id} sync'd successfully")
+          .with("Salesforce: Billing info on Paper #{paper.id} sync'd successfully")
           .ordered
         sync_paper!
       end

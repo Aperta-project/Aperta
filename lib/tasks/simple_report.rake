@@ -1,6 +1,4 @@
-namespace :simple_report do
+task simple_report: 'environment' do
   desc 'Runs a simple paper workflow status report'
-  task run: 'environment' do
-    SimpleReportMailerWorker.perform_async
-  end
+  SimpleReportMailerWorker.perform_async
 end

@@ -12,7 +12,7 @@ import time
 
 from Base.CustomException import ElementDoesNotExistAssertionError, ErrorAlertThrownException
 from Base.PostgreSQL import PgSQL
-from Base.Resources import psql_uname, psql_pw
+from Base.Resources import paper_tracker_search_queries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
@@ -137,36 +137,13 @@ class PaperTrackerPage(AuthenticatedPage):
     saved search.
     :return void function
     """
-    queries = ['0000003',
-               'Genome',
-               'DOI IS pwom',
-               'TYPE IS research',
-               'DECISION IS major revision',
-               'STATUS IS submitted',
-               'TITLE IS genome',
-               'STATUS IS rejected OR STATUS IS withdrawn',
-               'TYPE IS research AND (STATUS IS rejected OR STATUS IS withdrawn)',
-               'STATUS IS NOT unsubmitted',
-               'USER aacadedit HAS ROLE academic editor',
-               'USER ahandedit HAS ANY ROLE',
-               'ANYONE HAS ROLE cover editor',
-               'USER aacadedit HAS ROLE academic editor AND STATUS IS submitted',
-               'USER astaffadmin HAS ROLE staff admin AND NO ONE HAS ROLE academic editor',
-               'NO ONE HAS ROLE staff admin',
-               'SUBMITTED > 3 DAYS AGO',
-               'SUBMITTED < 1 DAY AGO',
-               'USER me HAS ANY ROLE',
-               'TASK invite reviewers HAS OPEN INVITATIONS',
-               'TASK invite academic editors HAS OPEN INVITATIONS',
-               'ALL REVIEWS COMPLETE',
-               'NOT ALL REVIEWS COMPLETE'
-               ]
+
     search_input = self._get(self._paper_tracker_search_field)
     search_button = self._get(self._paper_tracker_search_button)
     search_save_link = self._get(self._paper_tracker_save_search_link)
     assert 'Title keyword or Manuscript ID number' in search_input.get_attribute('placeholder'), \
         search_input.get_attribute('placeholder')
-    query = random.choice(queries)
+    query = random.choice(paper_tracker_search_queries)
     logging.info(query)
     search_input.send_keys(query)
     search_button.click()
@@ -205,6 +182,11 @@ class PaperTrackerPage(AuthenticatedPage):
       break
 
   def validate_pagination(self, username):
+    """
+    Validate the pagination function and controls of the paper_tracker page
+    :param username: user whose paper_tracker page is being validated
+    :return void function
+    """
     large_result_set = False
     total_count = self.validate_heading_and_subhead(username)[0]
     logging.info("Total count is {0}".format(total_count))

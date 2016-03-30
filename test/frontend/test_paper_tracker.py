@@ -38,7 +38,7 @@ class ApertaPaperTrackerTest(CommonTest):
       - presentation of the table
       - presentation of individual data points for each paper
   """
-  def rest_validate_paper_tracker(self):
+  def test_validate_paper_tracker(self):
     """
     test_paper_tracker: Validate elements, styles and functions of the paper tracker page
     Validates the presence of the following elements:

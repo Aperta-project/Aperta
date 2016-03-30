@@ -62,6 +62,10 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
           this.get('task.assignments').pushObject(assignment);
           this.set('selectedUser', null);
           this.set('selectedRole', null);
+
+          // Make sure we don't allow the previous list of users searchable or
+          // selectable. Force a role must be selected first.
+          this.set('select2RemoteUrl', null);
         }, function(response) {
           this.displayValidationErrorsFromResponse(response);
         });

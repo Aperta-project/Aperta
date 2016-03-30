@@ -22,10 +22,10 @@ __author__ = 'jgray@plos.org'
 
 users = [
          staff_admin_login,
-         # internal_editor_login,
-         # prod_staff_login,
-         # pub_svcs_login,
-         # super_admin_login,
+         internal_editor_login,
+         prod_staff_login,
+         pub_svcs_login,
+         # super_admin_login,  ordering for superadmin is bogus in test
          ]
 
 

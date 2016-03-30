@@ -89,10 +89,13 @@ class AuthenticatedPage(PlosPage):
 
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
 
-    ###self._participan
     self._participant_field = (By.CSS_SELECTOR, 'input.active')
 
+    self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
+
     self._message_body_field = (By.CSS_SELECTOR, 'textarea')
+
+
 
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
 

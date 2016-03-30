@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## Unreleased
+### Added
+- Email report to admin counting papers in states
+
+### Changed
+-
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+-
+
+### Security
+-
+
 ## [1.4.2] - 2016-03-24
 ### Added
 - Figures display in the manuscript

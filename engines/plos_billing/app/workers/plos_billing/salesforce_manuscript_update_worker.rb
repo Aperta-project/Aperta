@@ -22,16 +22,15 @@ module PlosBilling
         .notify_journal_admin_sfdc_error(paper_id, error_message)
     end
 
-    def perform(paper_id, logger: Rails.logger)
-      @logger = logger
+    def perform(paper_id)
       paper = ::Paper.find(paper_id)
       SalesforceServices.sync_paper!(paper)
     rescue ActiveRecord::RecordNotFound => ex
       message = record_not_found_error_message(ex, paper_id: paper_id)
-      @logger.error message
+      logger.error message
     rescue SalesforceServices::SyncInvalid => ex
       message = sync_invalid_error_message(ex, paper_id: paper_id)
-      @logger.error message
+      logger.error message
       self.class.email_admin_error(paper_id, message)
     end
 

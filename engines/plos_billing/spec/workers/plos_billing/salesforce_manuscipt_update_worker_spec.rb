@@ -23,10 +23,20 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
   end
 
   describe '#perform' do
-    subject(:perform) { worker.perform(paper.id, logger: logger) }
+    subject(:perform) { worker.perform(paper.id) }
     let(:worker) { described_class.new }
     let!(:paper) { FactoryGirl.create(Paper, id: 88) }
-    let(:logger) { instance_double(Logger, error: nil) }
+    let(:logger) { Logger.new(log_io) }
+    let(:log_io) { StringIO.new }
+
+    before do
+      @original_sidekiq_logger = Sidekiq.logger
+      Sidekiq.logger = logger
+    end
+
+    after do
+      Sidekiq.logger = @original_sidekiq_logger
+    end
 
     it 'syncs the paper with Salesforce' do
       expect(SalesforceServices).to receive(:sync_paper!).with(paper)
@@ -42,10 +52,9 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
       end
 
       it 'logs the error' do
-        expect(logger).to receive(:error) do |message|
-          expect(message).to match(/Couldn't find Paper.*#{paper.id}/)
-        end
         perform
+        expect(log_io.tap(&:rewind).read).to \
+          match(/Couldn't find Paper.*#{paper.id}/)
       end
     end
 
@@ -56,10 +65,9 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
       end
 
       it 'logs the error' do
-        expect(logger).to receive(:error) do |message|
-          expect(message).to match(/Couldn't do it/)
-        end
         perform
+        expect(log_io.tap(&:rewind).read).to \
+          match(/Couldn't do it/)
       end
 
       it 'queues up an email notifying journal admins of the error' do

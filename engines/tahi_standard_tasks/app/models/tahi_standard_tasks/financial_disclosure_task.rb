@@ -13,9 +13,9 @@ module TahiStandardTasks
     )
 
     def funding_statement
-      statement = funders.map(&:funding_statement).join("\n")
+      statement = funders.map(&:funding_statement).join(";\n")
       if statement.present?
-        statement
+        statement + '.'
       else
         "The author(s) received no specific funding for this work."
       end

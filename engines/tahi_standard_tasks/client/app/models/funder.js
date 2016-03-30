@@ -3,6 +3,7 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import DS from 'ember-data';
 
 export default NestedQuestionOwner.extend({
+  additionalComments: DS.attr('string'),
   task: DS.belongsTo('financialDisclosureTask'),
   authors: DS.hasMany('author'),
   grantNumber: DS.attr('string'),
@@ -21,5 +22,31 @@ export default NestedQuestionOwner.extend({
     }
     return "http://" + website;
   }).property('website'),
+
+  funderHadInfluence: Ember.computed.alias('funderInfluenceAnswer.value'),
+
+  funderInfluenceAnswer: Ember.computed(function() {
+    return this.answerForQuestion('funder--had_influence');
+  }),
+
+  funderInfluenceDescription: Ember.computed.alias(
+      'funderInfluenceDescriptionAnswer.value'),
+
+  funderInfluenceDescriptionAnswer: Ember.computed(function() {
+    return this.answerForQuestion('funder--had_influence--role_description');
+  }),
+
+  onlyHasAdditionalComments: Ember.computed(
+      'additionalComments',
+      'name',
+      'website',
+      'grantNumber',
+      function() {
+        const additionalComments = this.get('additionalComments');
+        const name = this.get('name');
+        const website = this.get('website');
+        const grantNumber = this.get('grantNumber');
+        return !!(additionalComments && !name && !website && !grantNumber);
+  })
 
 });

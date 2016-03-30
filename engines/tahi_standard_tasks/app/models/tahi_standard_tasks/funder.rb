@@ -12,7 +12,17 @@ module TahiStandardTasks
     end
 
     def funding_statement
-      "This work was supported by #{name} (grant number #{grant_number})."
+      return "#{additional_comments}" if only_has_additional_comments?
+      s = "#{name} (grant number #{grant_number})"
+      s << ". #{additional_comments}" if additional_comments.present?
+      s
+    end
+
+    private
+
+    def only_has_additional_comments?
+      additional_comments.present? &&
+        !name.present? && !grant_number.present? && !website.present?
     end
   end
 end

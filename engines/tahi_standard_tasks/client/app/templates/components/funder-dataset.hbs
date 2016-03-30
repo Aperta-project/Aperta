@@ -35,6 +35,17 @@
     disabled=disabled}}
 </div>
 
+<div class="form-group">
+  <span class="text-field-title">Additional Comments</span>
+  {{input
+    type="text"
+    name="additional_comments"
+    value=model.additionalComments
+    class="form-control tall-text-field"
+    placeholder="Additional comments about the funder go here"
+    disabled=disabled}}
+</div>
+
 {{#nested-question-radio ident="funder--had_influence"
     owner=model
     disabled=disabled

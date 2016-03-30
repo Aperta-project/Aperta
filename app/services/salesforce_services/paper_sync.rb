@@ -1,6 +1,7 @@
 module SalesforceServices
   # PaperSync is responsible for validating the details of a paper's
-  # information from the perspective of what PLOS wants in Salesforce.
+  # information from the perspective of what PLOS wants in Salesforce
+  # and then sync'ing that information.
   class PaperSync < Sync
     validates :paper, :salesforce_api, presence: true
 
@@ -11,6 +12,7 @@ module SalesforceServices
       @salesforce_api = salesforce_api
     end
 
+    # Syncs the paper to Salesforce if valid. Otherwise, raises SyncInvalid.
     def sync!
       if valid?
         @salesforce_api.find_or_create_manuscript(paper: @paper)

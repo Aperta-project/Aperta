@@ -1,6 +1,7 @@
 module SalesforceServices
   # BillingSync is responsible for validating the details of a paper's
-  # billing information from the perspective of what PLOS wants in Salesforce.
+  # billing information from the perspective of what PLOS wants in Salesforce
+  # and then sync'ing that information.
   class BillingSync < Sync
     delegate :billing_task, to: :@paper, allow_nil: true
     delegate :financial_disclosure_task, to: :@paper, allow_nil: true

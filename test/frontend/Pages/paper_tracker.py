@@ -10,7 +10,7 @@ import random
 import string
 import time
 
-from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.CustomException import ElementDoesNotExistAssertionError, ErrorAlertThrownException
 from Base.PostgreSQL import PgSQL
 from Base.Resources import psql_uname, psql_pw
 from selenium.webdriver.common.by import By
@@ -43,11 +43,9 @@ class PaperTrackerPage(AuthenticatedPage):
                                                 'div.paper-tracker-saved-searches > h3')
     self._paper_tracker_saved_search_new_query_title_field = (By.ID, 'new-query-title')
     self._paper_tracker_saved_search_list_div = (By.CSS_SELECTOR, 'div.paper-tracker-query')
-    self._paper_tracker_saved_search_query_link = (By.CSS_SELECTOR, 'div.paper-tracker-query a')
-    self._paper_tracker_saved_search_edit_link = (By.CSS_SELECTOR,
-                                                  'a + i.fa-pencil')
-    self._paper_tracker_saved_search_delete_link = (By.CSS_SELECTOR,
-                                                    'a + i + i.fa-trash')
+    self._paper_tracker_saved_search_query_link = (By.CSS_SELECTOR, 'a')
+    self._paper_tracker_saved_search_edit_link = (By.CSS_SELECTOR, 'i.fa-pencil')
+    self._paper_tracker_saved_search_delete_link = (By.CSS_SELECTOR, 'i.fa-trash')
 
     # Paper Tracker Table elements
     self._paper_tracker_table = (By.CLASS_NAME, 'paper-tracker-table')
@@ -156,7 +154,7 @@ class PaperTrackerPage(AuthenticatedPage):
                'USER astaffadmin HAS ROLE staff admin AND NO ONE HAS ROLE academic editor',
                'NO ONE HAS ROLE staff admin',
                'SUBMITTED > 3 DAYS AGO',
-               'SUBMITTED < 1 DAYS AGO',
+               'SUBMITTED < 1 DAY AGO',
                'USER me HAS ANY ROLE',
                'TASK invite reviewers HAS OPEN INVITATIONS',
                'TASK invite academic editors HAS OPEN INVITATIONS',
@@ -184,18 +182,27 @@ class PaperTrackerPage(AuthenticatedPage):
     saved_search_heading = self._get(self._paper_tracker_saved_search_heading)
     assert 'Saved Searches' in saved_search_heading.text, saved_search_heading
 
-    saved_searches = self._gets(self._paper_tracker_saved_search_query_link)
-    for search in saved_searches:
+    saved_search_div = self._gets(self._paper_tracker_saved_search_list_div)
+    for search in saved_search_div:
+      search_link = search.find_element(*self._paper_tracker_saved_search_query_link)
       try:
         assert 'Saved Search from Automation Test' in search.text
       except AssertionError:
         continue
-      time.sleep(.5)
-      edit_saved_search = search.find_element(*self._paper_tracker_saved_search_edit_link)
+      self._actions.move_to_element(search_link).perform()
+      search.find_element(*self._paper_tracker_saved_search_edit_link)
       delete_saved_search = search.find_element(*self._paper_tracker_saved_search_delete_link)
       search.click()
       delete_saved_search.click()
-      time.sleep(1)
+      self.set_timeout(3)
+      try:
+        self._get(self._flash_error_msg)
+        self.restore_timeout()
+        raise ErrorAlertThrownException('Error fired on Delete of Saved Search')
+      except ElementDoesNotExistAssertionError:
+        logging.debug('Delete successful')
+      self.restore_timeout()
+      break
 
   def validate_pagination(self, username):
     large_result_set = False

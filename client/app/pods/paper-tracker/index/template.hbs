@@ -42,7 +42,7 @@
         <thead>
           <tr>
             <th class="paper-tracker-badge-column"></th>
-            <th>
+            <th class="paper-tracker-title-column">
               {{sort-link text="Title"
                           orderBy="title"
                           activeOrderBy=orderBy
@@ -50,7 +50,7 @@
                           sortAction=(action "sort")
               }}
             </th>
-            <th>
+            <th class="paper-tracker-paper-id-column">
               {{sort-link text="Manuscript ID"
                           orderBy="doi"
                           activeOrderBy=orderBy
@@ -58,7 +58,7 @@
                           sortAction=(action "sort")
               }}
             </th>
-            <th>
+            <th class="paper-tracker-date-column">
               {{sort-link text="Date Submitted"
                           orderBy="submitted_at"
                           activeOrderBy=orderBy
@@ -66,7 +66,7 @@
                           sortAction=(action "sort")
               }}
             </th>
-            <th>
+            <th class="paper-tracker-type-column">
               {{sort-link text="Article Type"
                           orderBy="paper_type"
                           activeOrderBy=orderBy
@@ -74,7 +74,7 @@
                           sortAction=(action "sort")
               }}
             </th>
-            <th>
+            <th class="paper-tracker-status-column">
               {{sort-link text="Status"
                           orderBy="publishing_state"
                           activeOrderBy=orderBy
@@ -82,14 +82,16 @@
                           sortAction=(action "sort")
               }}
             </th>
-            <th>Members</th>
-            <th>{{sort-link text="Handling Editor"
+            <th class="paper-tracker-members-column">Members</th>
+            <th class="paper-tracker-handling-editor-column">
+              {{sort-link text="Handling Editor"
                           orderBy="handling_editor"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
                           sortAction=(action "sort")
               }}</th>
-            <th>{{sort-link text="Cover Editor"
+              <th class="paper-tracker-cover-editor-column">
+                {{sort-link text="Cover Editor"
                           orderBy="cover_editor"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir

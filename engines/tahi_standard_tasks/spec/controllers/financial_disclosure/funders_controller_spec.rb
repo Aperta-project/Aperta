@@ -6,6 +6,7 @@ describe TahiStandardTasks::FundersController do
   let(:user) { FactoryGirl.create(:user, :site_admin) }
   let(:task) { FactoryGirl.create(:financial_disclosure_task) }
   let!(:funder) { TahiStandardTasks::Funder.create!(name: "Starfleet", task_id: task.id) }
+  let(:additional_comments) { "Darmok and Jalad at Tanagra" }
 
   before do
     sign_in user
@@ -13,17 +14,23 @@ describe TahiStandardTasks::FundersController do
 
   describe "#create" do
     def do_request
-      post :create, format: :json, funder: { task_id: task.id, name: "Batelle" }
+      post :create,
+           format: :json,
+           funder: {
+             task_id: task.id,
+             name: "Batelle",
+             additional_comments: additional_comments
+           }
     end
 
     it "creates a funder" do
-      funder_count = TahiStandardTasks::Funder.count
       allow_any_instance_of(User).to receive(:can?).with(:edit, task)
         .and_return(true)
-      do_request
 
-      expect(TahiStandardTasks::Funder.count).to eq(funder_count + 1)
+      expect { do_request }.to change { TahiStandardTasks::Funder.count }.by 1
       expect(response).to be_success
+      task = TahiStandardTasks::Funder.last
+      expect(task.additional_comments).to eq additional_comments
     end
 
     context "without permission" do

@@ -2,21 +2,22 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## Unreleased
+## [{version}] - {release_date}
 ### Added
+- Funders now have an "additional comments" field
 - Email report to admin counting papers in states
 
 ### Changed
--
+- 
 
 ### Deprecated
 -
 
 ### Removed
--
+- 
 
 ### Fixed
--
+- Single-sign-on sessions should now properly end upon Aperta logout
 
 ### Security
 -
@@ -27,6 +28,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Attachments to Revise Manuscript Task
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 - Group Author form on Authors task
+- New columns added to Paper Tracker to display publishing status, Handling Editor and Cover Editor
 
 ### Changed
 - Institution field will search as you type

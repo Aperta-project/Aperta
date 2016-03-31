@@ -68,6 +68,10 @@ describe AssignmentsController, type: :controller do
     let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
 
+    before do
+      sign_in user
+    end
+
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
@@ -76,6 +80,10 @@ describe AssignmentsController, type: :controller do
 
         allow(user).to receive(:can?)
           .with(:assign_roles, paper)
+          .and_return true
+
+        allow(EligibleUserService).to receive(:eligible_for?)
+          .with(paper: paper, role: role, user: assignee)
           .and_return true
       end
 
@@ -125,7 +133,21 @@ describe AssignmentsController, type: :controller do
           role.update(journal_id: 999)
         end
 
-        it { responds_with(404) }
+        it { is_expected.to responds_with(404) }
+      end
+
+      context <<-DESCRIPTION do
+        and the user_id is not for an eligible user for this role which
+        would happen if someone tried to maliciously assign a user a role that
+        they are not able to fulfill
+      DESCRIPTION
+        before do
+          allow(EligibleUserService).to receive(:eligible_for?)
+            .with(paper: paper, role: role, user: assignee)
+            .and_return false
+        end
+
+        it { is_expected.to responds_with(422) }
       end
     end
 
@@ -136,7 +158,7 @@ describe AssignmentsController, type: :controller do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -160,6 +182,10 @@ describe AssignmentsController, type: :controller do
     let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
 
+    before do
+      sign_in user
+    end
+
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
@@ -171,7 +197,7 @@ describe AssignmentsController, type: :controller do
           .and_return true
       end
 
-      it { responds_with(200) }
+      it { is_expected.to responds_with(200) }
 
       it 'destroys the assignment' do
         expect do
@@ -202,18 +228,6 @@ describe AssignmentsController, type: :controller do
           'role_id' => role.id
         )
       end
-
-      context <<-DESCRIPTION do
-        and the assignment does not belong to paper's journal (which could
-        happen if someone tried to maliciously destroy an assignment on
-        a different journal)
-      DESCRIPTION
-        before do
-          role.update(journal_id: 999)
-        end
-
-        it { responds_with(404) }
-      end
     end
 
     context 'when the user does not have access' do
@@ -223,7 +237,7 @@ describe AssignmentsController, type: :controller do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 end

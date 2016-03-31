@@ -7,7 +7,11 @@ module Tahi
       DEFAULT_ROLE = 'admin'
 
       def assignable_roles
-        [journal.cover_editor_role, journal.handling_editor_role]
+        [
+          journal.academic_editor_role,
+          journal.cover_editor_role,
+          journal.handling_editor_role
+        ]
       end
 
       def assignments

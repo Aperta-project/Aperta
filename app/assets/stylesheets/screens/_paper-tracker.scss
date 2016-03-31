@@ -1,3 +1,7 @@
+.base-screen.paper-tracker {
+  width: 90%;
+}
+
 .paper-tracker-message {
   margin-bottom: 0;
   font-size: 40px;
@@ -7,7 +11,7 @@
   font-size: 18px;
 }
 
-.paper-tracker-members-group {
+.paper-tracker-users-group {
   margin-bottom: 0.65rem;
   font-size: 12px;
   line-height: 120%;
@@ -18,6 +22,7 @@
 .search-controls {
   padding: 0px;
   margin: 0px 0 20px;
+
   #clear-search {
     cursor: pointer;
   }
@@ -32,41 +37,48 @@
   }
 }
 
-.paper-tracker-members-column  { width: 380px; }
-.paper-tracker-date-column     { min-width: 150px; }
-.paper-tracker-type-column     { min-width: 110px; }
-.paper-tracker-paper-id-column { min-width: 100px; }
+.paper-tracker-members-column,
+.paper-tracker-handling-editor-column,
+.paper-tracker-cover-editor-column,
+.paper-tracker-title-column
+ { min-width: 200px; }
+.paper-tracker-date-column { min-width: 150px; }
+.paper-tracker-paper-id-column,
+.paper-tracker-type-column,
+.paper-tracker-status-column { min-width: 110px; }
 
 .paper-tracker-table {
-  width: 100%;
+  overflow: auto;
 
-  .sortable-table-header {
-    cursor: pointer;
-  }
+  table {
+    .sortable-table-header {
+      cursor: pointer;
+    }
 
-  th, td {
-    font-size: 14px;
-    vertical-align: top;
-  }
+    th, td {
+      font-size: 14px;
+      vertical-align: top;
+    }
 
-  th {
-    border-bottom: 1px solid $tahi-grey-light;
-    font-weight: bold;
-    padding: 0;
-  }
+    th {
+      border-bottom: 1px solid $tahi-grey-light;
+      font-weight: bold;
+      padding: 0;
+    }
 
-  td {
-    border-bottom: 1px solid #f2f2f2;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    td {
+      border-bottom: 1px solid #f2f2f2;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
   }
 }
-
 
 .paper-tracker-saved-searches {
   float: right;
   padding-left: 30px;
   width: 20%;
+
   ul {
     list-style-type: none;
     padding: 0;

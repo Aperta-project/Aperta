@@ -7,11 +7,10 @@ class PaperTrackerController < ApplicationController
   def index
     fail AuthorizationError unless journal_ids.length > 0
     # show all papers that user is connected to across all journals
-    papers = QueryParser.new(current_user: current_user)
+    papers = order(QueryParser.new(current_user: current_user)
              .build(params[:query] || '')
              .where(journal_id: journal_ids)
-             .where.not(publishing_state: :unsubmitted)
-             .reorder("#{order_by} #{order_dir}")
+             .where.not(publishing_state: :unsubmitted))
              .page(page)
 
     respond_with papers,
@@ -26,8 +25,35 @@ class PaperTrackerController < ApplicationController
     params[:page].present? ? params[:page] : 1
   end
 
-  def order_by
-    params[:orderBy].present? ? params[:orderBy] : :created_at
+  def order(query)
+    unless params[:orderBy].present?
+      return query.reorder("submitted_at #{order_dir}")
+    end
+    column = params[:orderBy]
+
+    if ["handling_editor", "cover_editor"].include? column
+      return order_by_role(query, column.titleize)
+    end
+
+    query.reorder("#{column} #{order_dir}")
+  end
+
+  def order_by_role(query, role)
+    role_ids = Role.where(journal_id: journal_ids, name: role)
+               .map(&:id)
+               .join(", ")
+    query.joins(<<-SQL.strip_heredoc)
+        LEFT JOIN assignments
+        ON assignments.assigned_to_id = papers.id AND
+        assignments.assigned_to_type='Paper' AND
+        assignments.role_id IN (#{role_ids})
+      SQL
+      .joins(<<-SQL.strip_heredoc)
+        LEFT JOIN users
+        ON users.id = assignments.user_id
+      SQL
+      .select('papers.*, users.last_name')
+      .order("users.last_name #{order_dir}")
   end
 
   def order_dir

@@ -31,11 +31,12 @@ module TahiStandardTasks
 
     def funder_params
       params.require(:funder)
-      .permit(:name,
-              :grant_number,
-              :website,
-              :task_id,
-              author_ids: [])
+        .permit(:additional_comments,
+                :name,
+                :grant_number,
+                :website,
+                :task_id,
+                author_ids: [])
     end
   end
 end

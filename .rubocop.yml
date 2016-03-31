@@ -17,6 +17,9 @@ Metrics/MethodLength:
   CountComments: false
   Max: 20
 
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
 Style/StringLiterals:
   # English text needs double quotes, to avoid escaping the very
   # common apostrophe.
@@ -50,4 +53,10 @@ Style/ClassAndModuleChildren:
   # Rails autoloading can get us into situations where it is very
   # difficult to disambiguate the long-hand version of
   # Module::Submodule definitions
+  Enabled: false
+
+Style/WordArray:
+  # If an array is *accidentally* made of single-word strings, being
+  # forced to use %w means being forced to rewrite the whole array as
+  # soon as one entry becomes two words
   Enabled: false

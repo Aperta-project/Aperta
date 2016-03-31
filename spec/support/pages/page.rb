@@ -215,12 +215,18 @@ class Page < PageFragment
   end
 
   def sign_out
+    logout_url = Rails.configuration.x.cas['logout_full_url']
+    # Don't visit CAS logout route in CI
+    Rails.configuration.x.cas['logout_full_url'] = nil
+
     find('#profile-dropdown-menu').click
     find('.main-nav a', text: 'Sign Out').click
 
     within ".auth-container" do
       find(".auth-flash", text: "Signed out successfully.")
     end
+
+    Rails.configuration.x.cas['logout_full_url'] = logout_url
     wait_for_ajax
   end
 end

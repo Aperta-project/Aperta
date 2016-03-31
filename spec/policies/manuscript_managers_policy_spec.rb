@@ -32,23 +32,6 @@ describe ManuscriptManagersPolicy do
     it { expect(policy.can_manage_manuscript?).to be(false) }
   end
 
-  context "user with manuscript manager old_role who is assigned to a paper task" do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:paper) do
-      FactoryGirl.create(:paper, :with_tasks, journal: journal)
-    end
-    let(:old_role) { FactoryGirl.create(:old_role, journal: paper.journal, can_view_assigned_manuscript_managers: true) }
-
-    before do
-      assign_journal_role(paper.journal, user, old_role)
-      task = paper.tasks.first
-      task.add_participant(user)
-    end
-
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.can_manage_manuscript?).to be(true) }
-  end
-
   context "user with manuscript manager old_role who is assigned to the paper" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) do

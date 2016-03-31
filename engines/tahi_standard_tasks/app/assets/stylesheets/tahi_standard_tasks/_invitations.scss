@@ -1,8 +1,10 @@
-.invitees {
+.invitees, .assignments {
   width: $message-body-width;
   margin-top: 36px;
+
   .invitation-updated-at,
-  .invitation-state {
+  .invitation-state,
+  .assignment-updated-at {
     font-size: 14px;
     text-transform: capitalize;
   }
@@ -20,14 +22,14 @@
       height: 25px;
     }
   }
-  .invitation {
+  .invitation, .assignment {
     &::after {
       content: '';
       display: block;
       height: 46px;
     }
 
-    .invite-remove {
+    .invite-remove, .assignment-remove {
       position: inherit;
       top: 4px;
       right: 0;

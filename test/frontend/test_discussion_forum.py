@@ -99,7 +99,11 @@ class DiscussionForumTest(CommonTest):
     paper_viewer._get(paper_viewer._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     time.sleep(.5)
 
-    paper_viewer._get(paper_viewer._message_body_div).click()
+    #paper_viewer._get(paper_viewer._message_body_div).click()
+    #paper_viewer._get(paper_viewer._message_body_div).click()
+
+    paper_viewer._driver.execute_script("document.getElementsByClassName('comment-board-form')[0].className += ' editing'");
+
     time.sleep(.5)
     msg_body = paper_viewer._get(paper_viewer._message_body_field)
     # Testing to clicks to activate post button

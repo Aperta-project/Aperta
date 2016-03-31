@@ -66,50 +66,6 @@ feature "Journal Administration", js: true do
       end
     end
 
-    describe "Interacting with old_roles" do
-      let!(:existing_role) { FactoryGirl.create(:old_role, journal: journal) }
-
-      scenario "adding a old_role" do
-        old_role = journal_page.add_role
-        old_role.name = "whatever"
-        old_role.save
-        # NOTE: `expect(old_role).to have_name("whatever")` fails.
-        # Re-finding it works.
-        new_role = journal_page.find_role("whatever")
-        expect(new_role).to have_name("whatever")
-      end
-
-      scenario "modifying a old_role" do
-        old_role = journal_page.find_role(existing_role.name)
-        expect(old_role).to have_name(existing_role.name)
-        old_role.edit
-        old_role.name = "a different name"
-        old_role.save
-        expect(old_role).to have_name("a different name")
-      end
-
-      scenario "deleting a old_role" do
-        old_role = journal_page.find_role(existing_role.name)
-        old_role.delete
-        expect(page).to have_no_content(existing_role.name)
-
-        # the old_role has been deleted from tne page
-        expect { old_role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
-      end
-
-      scenario "new old_role is available for selecting box" do
-        assign_journal_role(journal, user, :admin)
-
-        old_role = journal_page.add_role
-        old_role.name = "New Role"
-        old_role.save
-        wait_for_ajax
-        journal_page.find(".assign-role-button").click
-        journal_page.find(".add-role-input input").set "New"
-        expect(journal_page.find(".select2-results li").text). to eq("New Role")
-      end
-    end
-
     describe "on a Journal's Flow Manager" do
 
       describe do

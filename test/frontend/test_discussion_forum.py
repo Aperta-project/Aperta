@@ -4,8 +4,6 @@ import logging
 import random
 import time
 
-from loremipsum import generate_paragraph
-
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
@@ -13,41 +11,38 @@ from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_lo
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 """
 This test case validates the Aperta Discussion Forum
-
-XXXXXXX
-Note that this case does NOT test actually creating a new manuscript, or accepting or declining an
-    invitation
-
+Automated test case for: add discussion forum notification icons to MS
 """
 __author__ = 'jgray@plos.org'
 
+staff_users = [staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
+               super_admin_login]
 
-staff_users = [staff_admin_login,
-         #internal_editor_login,
-         #prod_staff_login,
-         #pub_svcs_login,
-         super_admin_login,
-         ]
-
-users = [creator_login1, ]
-
+users = [creator_login1, creator_login2, creator_login3, creator_login4, creator_login5]
 
 @MultiBrowserFixture
 class DiscussionForumTest(CommonTest):
   """
-  Self imposed AC:
-     - XXXXXXXXXXXXXX
+  Add discussion forum notification icons to MS
+  AC out of: APERTA-5831
+     - When the user is added to a discussion topic
+     - When mentioned in a topic
+     - Numbered notifications
+
   """
   def test_notification(self):
     """
-    Validates the presence of the following elements:
-      Welcome Text, subhead, table presentation
+    Validates red circle on discussion icon on manuscript, discussion and message topic
+    when added to a discussion and when mentioned in a topic.
+    Validates display the user's total number of messages with a notification in
+    that topic and reset of notifications every time the user click into a discussion
+    message.
     """
     the_creator = random.choice(users)
+    journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(the_creator))
     dashboard_page = self.cas_login(email=the_creator['email'])
     # Create paper
@@ -55,9 +50,9 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     paper_type = 'Research'
-    logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
+    logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications',
-                        journal='PLOS Wombat',
+                        journal=journal,
                         type_=paper_type,
                         random_bit=True,
                         )
@@ -79,37 +74,8 @@ class DiscussionForumTest(CommonTest):
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # click on discussion icon
-    paper_viewer._get(paper_viewer._discussion_link).click()
-    paper_viewer._get(paper_viewer._create_new_topic).click()
-    time.sleep(.5)
-    paper_viewer._get(paper_viewer._topic_title_field).send_keys(
-      'Testing comments in {0}'.format(paper_id))
-    # create topic btn
-    time.sleep(.5)
-    paper_viewer._get(paper_viewer._create_topic).click()
-    # add paper creator to the disussion
-    #the_creator
-    paper_viewer._get(paper_viewer._add_participant_btn).click()
-    time.sleep(.5)
-    paper_viewer._get(paper_viewer._participant_field).send_keys(
-      the_creator['user'] + Keys.ENTER)
-    time.sleep(5)
-    #import pdb; pdb.set_trace()
-    paper_viewer._get(paper_viewer._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
-    time.sleep(.5)
-
-    #paper_viewer._get(paper_viewer._message_body_div).click()
-    #paper_viewer._get(paper_viewer._message_body_div).click()
-
-    paper_viewer._driver.execute_script("document.getElementsByClassName('comment-board-form')[0].className += ' editing'");
-
-    time.sleep(.5)
-    msg_body = paper_viewer._get(paper_viewer._message_body_field)
-    msg_body.send_keys(generate_paragraph()[2])
-    time.sleep(1)
-    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-    paper_viewer._get(post_message_btn).click()
+    paper_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
+                                     msg='', participants=[the_creator['user']])
     # send another msg
     paper_viewer.logout()
     login_url = self._driver.current_url
@@ -123,7 +89,6 @@ class DiscussionForumTest(CommonTest):
     red_badge = paper_viewer._get(paper_viewer._badge_red)
     red_badge_first = int(red_badge.text)
     red_badge.click()
-    # look for red icon on workflow page?
     time.sleep(.5)
     paper_viewer._get(paper_viewer._badge_red)
     paper_viewer.logout()
@@ -138,24 +103,7 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
-    paper_viewer._get(paper_viewer._discussion_link).click()
-    # click on first discussion
-    ###
-    paper_viewer._get(paper_viewer._first_discussion_lnk).click()
-    time.sleep(.5)
-    ## make textarea visible
-    paper_viewer._driver.execute_script("document.getElementsByClassName('comment-board-form')[0].className += ' editing'");
-
-    time.sleep(.5)
-    msg_body = paper_viewer._get(paper_viewer._message_body_field)
-    msg_body.send_keys('@' + the_creator['user'])
-    time.sleep(1)
-    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-    paper_viewer._get(post_message_btn).click()
-    #paper_viewer._get(paper_viewer._message_body_field).send_keys(
-    # '@' + the_creator['user'])
-    #paper_viewer._get(paper_viewer._post_message_btn).click()
-    # send another msg
+    paper_viewer.post_discussion(paper_viewer, '@' + the_creator['user'])
     paper_viewer.logout()
     login_url = self._driver.current_url
     self.invalidate_cas_token()
@@ -164,6 +112,7 @@ class DiscussionForumTest(CommonTest):
     dashboard_page = self.cas_login(email=the_creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+
     # look for icon
     red_badge = paper_viewer._get(paper_viewer._badge_red)
     red_badge_last = int(red_badge.text)

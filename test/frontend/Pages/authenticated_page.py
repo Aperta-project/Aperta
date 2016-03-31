@@ -3,10 +3,13 @@
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from loremipsum import generate_paragraph
 
 from Base.PlosPage import PlosPage
 from Base.PostgreSQL import PgSQL
 from Base.Resources import fm_login, oa_login, sa_login
+
 
 """
 A class to be inherited from every page for which one is authenticated and wants to access
@@ -442,6 +445,71 @@ class AuthenticatedPage(PlosPage):
     # For whatever reason, selenium can't grok a simple click() here
     self._actions.click_and_hold(task_title).release().perform()
     return True
+
+  def post_new_discussion(self, page='', topic='', msg='', participants=[]):
+    """
+    Post a message on a new discussion
+    :param topic: Topic to post. If empty, will post a random text.
+    :param msg: Message to post. If empty, will post a random text.
+    :param participants: List of participants to add
+    :return: None.
+    """
+    self._get(self._discussion_link).click()
+    self._get(self._create_new_topic).click()
+    time.sleep(.5)
+    if topic:
+      self._get(self._topic_title_field).send_keys(topic)
+    else:
+      self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
+    # create topic btn
+    time.sleep(.5)
+    self._get(self._create_topic).click()
+    # add paper creator to the disussion
+    if participants:
+      #the_creator (tm)
+      for participant in participants:
+        self._get(self._add_participant_btn).click()
+        time.sleep(.5)
+        self._get(self._participant_field).send_keys(participant + Keys.ENTER)
+        time.sleep(5)
+        self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
+    time.sleep(.5)
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    self._driver.execute_script(js_cmd);
+    time.sleep(.5)
+    if msg:
+      msg_body.send_keys(msg)
+    else:
+      msg_body = self._get(self._message_body_field)
+      msg_body.send_keys(generate_paragraph()[2])
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._get(post_message_btn).click()
+    return None
+
+  def post_discussion(self, page='', msg=''):
+    """
+    Post a message on an ongoing discussion
+    :param msg: Message to post. If empty, will post a random text.
+    :return: None.
+    """
+    page._get(page._discussion_link).click()
+    # click on first discussion
+    page._get(page._first_discussion_lnk).click()
+    time.sleep(.5)
+    # This shouldn't make baby Jesus cry, since there is good reason for this:
+    # make textarea visible. Selenium won't do it because running JS is not
+    # part of a regular user interaction. Inserting JS is a valid hack when
+    # there is no other way to make this work
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    page._driver.execute_script(js_cmd);
+    time.sleep(.5)
+    msg_body = page._get(page._message_body_field)
+    msg_body.send_keys(msg)
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    page._get(post_message_btn).click()
+    return None
 
   # Style Validations
   # Divider and Border Styles ===========================

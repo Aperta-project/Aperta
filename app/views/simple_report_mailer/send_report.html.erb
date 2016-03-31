@@ -1,0 +1,26 @@
+<div class='container'>
+  <hr>
+  <div class='paper-info'>
+    <div class='paper-abstract'>
+      <h3>How many papers are in the system today?</h3>
+
+      <p>
+        Yesterday's in process balance: <%= @simple_report.previous_in_process_balance %><br>
+        Today's new initial submissions: <%= @simple_report.new_initial_submissions %><br>
+        Today's accepted/withdrawn/rejected: <%= @simple_report.new_exiting_count %><br>
+        Today's in process balance: <%= @simple_report.in_process_balance %><br>
+      </p>
+
+      <h3>Where are papers currently sitting in the workflow?</h3>
+
+      <p>
+        Initially submitted: <%= @simple_report.initially_submitted %><br>
+        Invited for full submission: <%= @simple_report.invited_for_full_submission %><br>
+        Fully submitted: <%= @simple_report.fully_submitted %><br>
+        Checking: <%= @simple_report.checking %><br>
+        In revision: <%= @simple_report.in_revision %><br>
+      </p>
+    </div>
+  </div>
+  <hr>
+</div>

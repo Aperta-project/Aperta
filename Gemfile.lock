@@ -49,7 +49,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.3.2)
-    aasm (4.1.1)
+    aasm (4.9.0)
     actionmailer (4.2.5.1)
       actionpack (= 4.2.5.1)
       actionview (= 4.2.5.1)
@@ -634,7 +634,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aasm (~> 4.1.0)
+  aasm (~> 4.9.0)
   active_model_serializers (= 0.8.3)
   activemodel-globalid!
   activerecord-sqlserver-adapter

@@ -142,7 +142,7 @@ class DiscussionForumTest(CommonTest):
     paper_viewer._get(paper_viewer._discussion_link).click()
     # click on first discussion
     ###
-    paper_viewer._get(paper_viewer._fist_discussion_lnk).click()
+    paper_viewer._get(paper_viewer._first_discussion_lnk).click()
     time.sleep(.5)
     paper_viewer._get(paper_viewer._message_body_field).send_keys(
       '@' + the_creator['user'])
@@ -163,7 +163,7 @@ class DiscussionForumTest(CommonTest):
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
-    paper_viewer._get(paper_viewer._fist_discussion_lnk).click()
+    paper_viewer._get(paper_viewer._first_discussion_lnk).click()
     time.sleep(.5)
     red_badge = paper_viewer._get(paper_viewer._comment_sheet_badge_red)
     red_badge_current = int(red_badge.text)

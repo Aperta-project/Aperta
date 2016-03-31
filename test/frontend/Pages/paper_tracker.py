@@ -6,12 +6,15 @@ Page Object Model for the Paper Tracker Page. Validates global and dynamic eleme
 
 from datetime import datetime
 import logging
-import time
+import random
 import string
+import time
 
+from Base.CustomException import ElementDoesNotExistAssertionError, ErrorAlertThrownException
 from Base.PostgreSQL import PgSQL
-from Base.Resources import psql_uname, psql_pw
+from Base.Resources import paper_tracker_search_queries
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 
 
@@ -28,6 +31,23 @@ class PaperTrackerPage(AuthenticatedPage):
     # Locators - Instance members
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_subhead = (By.CLASS_NAME, 'paper-tracker-paper-count')
+    self._paper_tracker_pagination_previous = (By.CSS_SELECTOR, 'button.prev')
+    self._paper_tracker_pagination_summary = (By.CSS_SELECTOR, 'div.simple-pagination')
+    self._paper_tracker_pagination_next = (By.CSS_SELECTOR, 'button.next')
+
+    # Paper Tracker Search elements
+    self._paper_tracker_search_field = (By.ID, 'query-input')
+    self._paper_tracker_search_button = (By.ID, 'search')
+    self._paper_tracker_save_search_link = (By.CSS_SELECTOR, 'a.save-search-button')
+    self._paper_tracker_saved_search_heading = (By.CSS_SELECTOR,
+                                                'div.paper-tracker-saved-searches > h3')
+    self._paper_tracker_saved_search_new_query_title_field = (By.ID, 'new-query-title')
+    self._paper_tracker_saved_search_list_div = (By.CSS_SELECTOR, 'div.paper-tracker-query')
+    self._paper_tracker_saved_search_query_link = (By.CSS_SELECTOR, 'a')
+    self._paper_tracker_saved_search_edit_link = (By.CSS_SELECTOR, 'i.fa-pencil')
+    self._paper_tracker_saved_search_delete_link = (By.CSS_SELECTOR, 'i.fa-trash')
+
+    # Paper Tracker Table elements
     self._paper_tracker_table = (By.CLASS_NAME, 'paper-tracker-table')
     self._paper_tracker_table_title_th = (By.XPATH, '//th[2]')
     self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
@@ -76,7 +96,7 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = sorted(submitted_papers,
                               key=lambda x: x[3],
                               reverse=reverse)
-    logging.info('Before specific sort paper ordering is: {0}'.format(submitted_papers))
+    logging.debug('Before specific sort paper ordering is: {0}'.format(submitted_papers))
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
     # with NULL s_a date) APERTA-3023 - this ordering is non-deterministic at present so this case
     # will fail until this defect is resolved and the test case updated as needed.
@@ -121,6 +141,85 @@ class PaperTrackerPage(AuthenticatedPage):
       papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]], reverse=reverse)
     logging.debug('Here is the list of papers from db sorted by {0}:\n{1}'.format(sort_by, papers))
     return papers
+
+  def validate_search_execution(self):
+    """
+    Validates the search and saved search elements of the page, executes a search, saves that query
+    as a saved search, clears the current search, executes the saved search, then deletes that
+    saved search.
+    :return void function
+    """
+
+    search_input = self._get(self._paper_tracker_search_field)
+    search_button = self._get(self._paper_tracker_search_button)
+    search_save_link = self._get(self._paper_tracker_save_search_link)
+    assert 'Title keyword or Manuscript ID number' in search_input.get_attribute('placeholder'), \
+        search_input.get_attribute('placeholder')
+    query = random.choice(paper_tracker_search_queries)
+    logging.info(query)
+    search_input.send_keys(query)
+    search_button.click()
+    time.sleep(1)
+    search_save_link = self._get(self._paper_tracker_save_search_link)
+    search_save_link.click()
+    save_search_input = self._get(self._paper_tracker_saved_search_new_query_title_field)
+    save_search_input.send_keys('Saved Search from Automation Test' + Keys.ENTER)
+    search_input = self._get(self._paper_tracker_search_field)
+    search_input.clear()
+    search_button = self._get(self._paper_tracker_search_button)
+    search_button.click()
+    saved_search_heading = self._get(self._paper_tracker_saved_search_heading)
+    assert 'Saved Searches' in saved_search_heading.text, saved_search_heading
+
+    saved_search_div = self._gets(self._paper_tracker_saved_search_list_div)
+    for search in saved_search_div:
+      search_link = search.find_element(*self._paper_tracker_saved_search_query_link)
+      try:
+        assert 'Saved Search from Automation Test' in search.text
+      except AssertionError:
+        continue
+      self._actions.move_to_element(search_link).perform()
+      search.find_element(*self._paper_tracker_saved_search_edit_link)
+      delete_saved_search = search.find_element(*self._paper_tracker_saved_search_delete_link)
+      search.click()
+      delete_saved_search.click()
+      self.set_timeout(3)
+      try:
+        self._get(self._flash_error_msg)
+        self.restore_timeout()
+        raise ErrorAlertThrownException('Error fired on Delete of Saved Search')
+      except ElementDoesNotExistAssertionError:
+        logging.debug('Delete successful')
+      self.restore_timeout()
+      break
+
+  def validate_pagination(self, username):
+    """
+    Validate the pagination function and controls of the paper_tracker page
+    :param username: user whose paper_tracker page is being validated
+    :return void function
+    """
+    large_result_set = False
+    total_count = self.validate_heading_and_subhead(username)[0]
+    logging.debug("Total count is {0}".format(total_count))
+    initial_paginination = self._get(self._paper_tracker_pagination_summary)
+    assert '({0} found)'.format(total_count) in initial_paginination.text, initial_paginination.text
+    assert 'Page 1 of ' in initial_paginination.text, initial_paginination.text
+    try:
+      next = self._get(self._paper_tracker_pagination_next)
+      large_result_set = True
+    except ElementDoesNotExistAssertionError:
+      logging.debug('Only one page of paper tracker results present.')
+    if large_result_set:
+      next.click()
+      current_pagination = self._get(self._paper_tracker_pagination_summary)
+      time.sleep(.5)
+      previous = self._get(self._paper_tracker_pagination_previous)
+      assert 'Page 2 of ' in current_pagination.text, current_pagination.text
+      previous.click()
+      time.sleep(.5)
+      current_pagination = self._get(self._paper_tracker_pagination_summary)
+      assert 'Page 1 of ' in current_pagination.text, current_pagination.text
 
   def validate_heading_and_subhead(self, username):
     """
@@ -439,7 +538,6 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_status = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
       status = self._get(self._paper_tracker_table_tbody_status).text
-      logging.info('The first paper in the page has status {0}'.format(status))
       papers = self._get_paper_list(journal_ids, sort_by='publishing_state', reverse=False)
 
       if status.lower() == 'initially submitted':

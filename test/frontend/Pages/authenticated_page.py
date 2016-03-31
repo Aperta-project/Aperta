@@ -17,9 +17,7 @@ the navigation menu also vital for ensuring style consistency across the applica
 __author__ = 'jgray@plos.org'
 
 # Variable definitions
-# We are in process of migrating fonts in the interface, until this is deployed to lean, we can
-#    only enforce the fallback font and have it work in both environments. Source-Sans-Pro and Lora are what we are
-#    moving to when the next push to lean happens we can correct the following entries.
+
 # typefaces
 application_typeface = 'source-sans-pro'
 manuscript_typeface = 'lora'

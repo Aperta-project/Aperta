@@ -279,3 +279,28 @@ yeti_task_names = ['Ad-hoc',
                    'Test Task',
                    'Upload Manuscript']
 
+paper_tracker_search_queries = ['0000003',
+                                'Genome',
+                                'DOI IS pwom',
+                                'TYPE IS research',
+                                'DECISION IS major revision',
+                                'STATUS IS submitted',
+                                'TITLE IS genome',
+                                'STATUS IS rejected OR STATUS IS withdrawn',
+                                'TYPE IS research AND (STATUS IS rejected OR STATUS IS withdrawn)',
+                                'STATUS IS NOT unsubmitted',
+                                'USER aacadedit HAS ROLE academic editor',
+                                'USER ahandedit HAS ANY ROLE',
+                                'ANYONE HAS ROLE cover editor',
+                                'USER aacadedit HAS ROLE academic editor AND STATUS IS submitted',
+                                'USER astaffadmin HAS ROLE staff admin AND NO ONE HAS ROLE '
+                                'academic editor',
+                                'NO ONE HAS ROLE staff admin',
+                                'SUBMITTED > 3 DAYS AGO',
+                                'SUBMITTED < 1 DAY AGO',
+                                'USER me HAS ANY ROLE',
+                                'TASK invite reviewers HAS OPEN INVITATIONS',
+                                'TASK invite academic editors HAS OPEN INVITATIONS',
+                                'ALL REVIEWS COMPLETE',
+                                'NOT ALL REVIEWS COMPLETE'
+                                ]

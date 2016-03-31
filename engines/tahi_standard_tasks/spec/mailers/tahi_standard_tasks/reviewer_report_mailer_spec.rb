@@ -58,7 +58,7 @@ describe TahiStandardTasks::ReviewerReportMailer do
     end
 
     it "contains link to the paper" do
-      expect(email.body).to match(%r{\/papers\/#{paper.id}\/})
+      expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{task.id}})
     end
 
     it "contains the paper title" do

@@ -20,12 +20,15 @@ class BaseCard(AuthenticatedPage):
     super(BaseCard, self).__init__(driver)
 
     # Common element for all cards
+    self._header_link = (By.CLASS_NAME, 'overlay-header-link')
+    self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._close_button = (By.CSS_SELECTOR, 'a.overlay-close-button')
+    self._card_heading = (By.CSS_SELECTOR, 'h1.overlay-body-title')
+
     self._notepad_textarea = (By.CSS_SELECTOR, 'textarea.notepad')
     self._notepad_toggle_icon = (By.XPATH,
       "//span[contains(text(), 'Your notepad')]/preceding-sibling::i")
-    self._header_link = (By.CLASS_NAME, 'overlay-header-link')
-    self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
+
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
     self._add_comment = (By.CLASS_NAME, 'new-comment-field')
     self._following_label = (By.CLASS_NAME, 'participant-selector-label')

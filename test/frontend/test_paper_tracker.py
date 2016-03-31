@@ -58,6 +58,7 @@ class ApertaPaperTrackerTest(CommonTest):
 
   def test_validate_paper_tracker_search(self):
     """
+    test_paper_tracker: Validate Paper tracker search and saved search functions
     Validate the Aperta Query Language Usage, Search function elements, including saved search, and
     the Saved Search functions
     """

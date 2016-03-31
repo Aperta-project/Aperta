@@ -96,7 +96,7 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = sorted(submitted_papers,
                               key=lambda x: x[3],
                               reverse=reverse)
-    logging.info('Before specific sort paper ordering is: {0}'.format(submitted_papers))
+    logging.debug('Before specific sort paper ordering is: {0}'.format(submitted_papers))
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
     # with NULL s_a date) APERTA-3023 - this ordering is non-deterministic at present so this case
     # will fail until this defect is resolved and the test case updated as needed.
@@ -201,7 +201,7 @@ class PaperTrackerPage(AuthenticatedPage):
     """
     large_result_set = False
     total_count = self.validate_heading_and_subhead(username)[0]
-    logging.info("Total count is {0}".format(total_count))
+    logging.debug("Total count is {0}".format(total_count))
     initial_paginination = self._get(self._paper_tracker_pagination_summary)
     assert '({0} found)'.format(total_count) in initial_paginination.text, initial_paginination.text
     assert 'Page 1 of ' in initial_paginination.text, initial_paginination.text
@@ -209,7 +209,7 @@ class PaperTrackerPage(AuthenticatedPage):
       next = self._get(self._paper_tracker_pagination_next)
       large_result_set = True
     except ElementDoesNotExistAssertionError:
-      logging.info('Only one page of paper tracker results present.')
+      logging.debug('Only one page of paper tracker results present.')
     if large_result_set:
       next.click()
       current_pagination = self._get(self._paper_tracker_pagination_summary)
@@ -538,7 +538,6 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_status = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
       status = self._get(self._paper_tracker_table_tbody_status).text
-      logging.info('The first paper in the page has status {0}'.format(status))
       papers = self._get_paper_list(journal_ids, sort_by='publishing_state', reverse=False)
 
       if status.lower() == 'initially submitted':

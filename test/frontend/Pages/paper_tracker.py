@@ -67,7 +67,7 @@ class PaperTrackerPage(AuthenticatedPage):
   def _get_paper_list(journal_ids, sort_by='id', reverse=False):
     """
     Aux function to retrieve papers displayed on Paper Tracker
-    :param journals_id: Iterable with all journals id
+    :param journal_ids: Iterable with all journals id
     :param sort_by: String with the DB field to sort results. See sort_by_d dictionary
     :param reverse: Boolean value to indicate sort order (False: Ascending, True: Descending)
     :return: A list with all paper data
@@ -77,45 +77,46 @@ class PaperTrackerPage(AuthenticatedPage):
                  'doi': 2,
                  'submitted_at': 3,
                  'paper_type': 4,
-                 'status': 5,
+                 'publishing_state': 5,
                  }
     submitted_papers = []
     for journal in journal_ids:
       journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, paper_type, '
-                                     'publishing_state '
-                                     'FROM papers '
-                                     'WHERE journal_id IN (%s) AND publishing_state != %s '
-                                     'AND submitted_at IS NOT NULL ;', (journal, 'unsubmitted'))
-
-      for paper in journal_papers:
-        paper = list(paper)
-        submitted_papers.append(paper)
-      # Now I need to resort this list by the datetime.datetime() objects ASC
-      # only trouble is this pukes on the none type objects for papers that are unsubmitted but in
-      # other states (withdrawn)
+                                     'publishing_state FROM papers '
+                                     'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
+                                     'AND submitted_at IS NOT NULL '
+                                     'ORDER BY papers.submitted_at ASC;', (journal, 'unsubmitted'))
+    for paper in journal_papers:
+      # convert paper tuples to lists so they are mutable for data sanitization.
+      paper = list(paper)
+      submitted_papers.append(paper)
+    # Now I need to resort this list by the datetime.datetime() objects ASC
+    # only trouble is this pukes on the none type objects for papers that are unsubmitted but in
+    # other states (withdrawn)
     submitted_papers = sorted(submitted_papers,
-                              key=lambda x: x[1],
+                              key=lambda x: x[3],
                               reverse=reverse)
+    logging.info('Before specific sort paper ordering is: {0}'.format(submitted_papers))
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
     # with NULL s_a date) APERTA-3023 - this ordering is non-deterministic at present so this case
     # will fail until this defect is resolved and the test case updated as needed.
     withdrawn_papers = []
     for journal in journal_ids:
       journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, paper_type, '
-                                     'publishing_state '
-                                     'FROM papers '
+                                     'publishing_state FROM papers '
                                      'WHERE journal_id IN (%s) AND publishing_state = %s '
-                                     'AND submitted_at IS NULL ;', (journal, 'withdrawn'))
-      for paper in journal_papers:
-        paper = list(paper)
-        withdrawn_papers.append(paper)
+                                     'AND submitted_at IS NULL '
+                                     'ORDER BY paper_type ASC;', (journal, 'withdrawn'))
+    for paper in journal_papers:
+      # convert paper tuples to lists so they are mutable for data sanitization.
+      paper = list(paper)
+      withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
-
-    # Before sorting, remove trailing spaces
     papers = withdrawn_papers + submitted_papers
-    logging.debug(papers)
+    # Before sorting, remove trailing spaces
     for paper in papers:
       paper[1] = paper[1].strip()
+
     # Before sorting, remove leading non printable characters
     for paper in papers:
       for char in paper[1]:
@@ -124,10 +125,21 @@ class PaperTrackerPage(AuthenticatedPage):
         else:
           break
     try:
+      if sort_by == 'publishing_state':
+        state_order = {'initially_submitted': 0,
+                       'in_revision': 1,
+                       'invited_for_full_submission': 2,
+                       'rejected': 3,
+                       'submitted': 4,
+                       'unsubmitted': 5
+                       }
+        papers = sorted(papers, key=lambda val: state_order[val[5]], reverse=reverse)
+      else:
         papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]].lower(), reverse=reverse)
     except AttributeError:
-        # For sorting by date
-        papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]], reverse=reverse)
+      # For sorting by date
+      papers = sorted(papers, key=lambda x: x[sort_by_d[sort_by]], reverse=reverse)
+    logging.debug('Here is the list of papers from db sorted by {0}:\n{1}'.format(sort_by, papers))
     return papers
 
   def validate_search_execution(self):
@@ -230,10 +242,10 @@ class PaperTrackerPage(AuthenticatedPage):
     journal_ids = PgSQL().query("SELECT DISTINCT assigned_to_id "
                                 "FROM assignments WHERE user_id = %s "
                                 "AND assigned_to_type = 'Journal';", (uid,))
-    # TODO: Take into account the special case of superadmin
+
     if username == 'asuperadm':
       journal_ids = PgSQL().query("SELECT DISTINCT assigned_to_id FROM assignments WHERE "
-                                  "assigned_to_type = 'Journal';")
+                                  "assigned_to_type = 'Journal' ORDER BY assigned_to_id;")
 
     total_count = 0
     for total_count, journal in enumerate(journal_ids):
@@ -276,18 +288,20 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = []
     if total_count > 0:
       for journal in journal_ids:
-
         journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, paper_type, '
                                        'publishing_state FROM papers '
                                        'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
                                        'AND submitted_at IS NOT NULL '
-                                       'ORDER BY papers.journal_id ASC;', (journal, 'unsubmitted'))
+                                       'ORDER BY papers.submitted_at ASC;',
+                                       (journal, 'unsubmitted'))
         for paper in journal_papers:
           submitted_papers.append(paper)
       # Now I need to resort this list by the datetime.datetime() objects ASC
       # only trouble is this pukes on the none type objects for papers that are unsubmitted but in
       # other states (withdrawn)
-      submitted_papers = sorted(submitted_papers, key=lambda x: x[1])
+      submitted_papers = sorted(submitted_papers,
+                                key=lambda x: x[3],
+                                reverse=False)
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
     # with NULL s_a date) APERTA-3023 - this ordering is non-deterministic at present so this case
     # will fail until this defect is resolved and the test case updated as needed.
@@ -363,7 +377,7 @@ class PaperTrackerPage(AuthenticatedPage):
         self._get(self._paper_tracker_table_tbody_subdate)
 
         paptype = self._get(self._paper_tracker_table_tbody_paptype)
-        assert paptype.text == papers[count][4]
+        assert paptype.text == papers[count][4], (paptype.text, papers[count])
 
         members = self._get(self._paper_tracker_table_tbody_members)
         page_members_by_role = members.text.split('\n')
@@ -524,9 +538,21 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_status = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
       status = self._get(self._paper_tracker_table_tbody_status).text
-      papers = self._get_paper_list(journal_ids, sort_by='status', reverse=False)
-      assert status.lower() == papers[0][5], \
-          'Status in page: {0} != Status in DB: {1}'.format(status.lower(), papers[0][5])
+      logging.info('The first paper in the page has status {0}'.format(status))
+      papers = self._get_paper_list(journal_ids, sort_by='publishing_state', reverse=False)
+
+      if status.lower() == 'initially submitted':
+        status = 'initially_submitted'
+      elif status.lower() == 'in revision':
+        status = 'in_revision'
+      elif status.lower() == 'invited for full submission':
+        status = 'invited_for_full_submission'
+      else:
+        status = status.lower()
+      assert status == papers[0][5], \
+          'Status in page: {0} != Status in DB: {1}: {2}'.format(status,
+                                                                 papers[0][5],
+                                                                 papers[0])
       logging.info('Sorting by Status DESC')
       status_th = self._get(self._paper_tracker_table_status_th).find_element_by_tag_name('a')
       status_th.click()
@@ -534,7 +560,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_status = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
       status = self._get(self._paper_tracker_table_tbody_status).text
-      papers = self._get_paper_list(journal_ids, sort_by='status', reverse=True)
+      papers = self._get_paper_list(journal_ids, sort_by='publishing_state', reverse=True)
       assert status.lower() == papers[0][5], \
           'Status in page: {0} != Status in DB: {1}'.format(status.lower(), papers[0][5])
 

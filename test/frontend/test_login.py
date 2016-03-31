@@ -139,7 +139,7 @@ class ApertaCASLoginTest(CommonTest):
     login_page.login_cas()
     akita_signin = AkitaLoginPage(self.getDriver())
     akita_signin.validate_cas_login_elements()
-    akita_signin.enter_login_field('sealresq@gmail.com')
+    akita_signin.enter_login_field('jgray@plos.org')
     akita_signin.enter_password_field('in|fury8')
     akita_signin.click_sign_in_button()
     dashboard_page = DashboardPage(self.getDriver())

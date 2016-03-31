@@ -20,11 +20,12 @@ Those acts are expected to be defined in
 __author__ = 'jgray@plos.org'
 
 
-users = [staff_admin_login,
+users = [
+         staff_admin_login,
          internal_editor_login,
          prod_staff_login,
          pub_svcs_login,
-         super_admin_login,
+         # super_admin_login,  ordering for superadmin is bogus in test
          ]
 
 

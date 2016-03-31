@@ -7,7 +7,10 @@ const noRole = `The funder had no role in study design,
 export default Ember.Component.extend({
   statement: Ember.computed('funder.funderHadInfluence', 'funder.funderInfluenceDescription', function() {
     if (this.get('funder.funderHadInfluence')) {
-      return '. ' + this.get('funder.funderInfluenceDescription');
+      const description = this.get('funder.funderInfluenceDescription');
+      if (description) {
+        return '. ' + description;
+      }
     }
     else if (this.get('funder.funderHadInfluence') === false) {
       return '. ' + noRole;

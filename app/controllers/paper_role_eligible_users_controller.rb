@@ -9,7 +9,8 @@ class PaperRoleEligibleUsersController < ApplicationController
     role = Role.find_by!(id: params[:role_id], journal_id: paper.journal_id)
     eligible_users = EligibleUserService.eligible_users_for(
       paper: paper,
-      role: role
+      role: role,
+      matching: params[:query]
     )
     render json: eligible_users, each_serializer: UserSerializer, root: 'users'
   end

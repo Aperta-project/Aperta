@@ -2,6 +2,11 @@
 `import Select2Component from 'tahi/pods/components/select-2/component'`
 
 Select2SingleComponent = Select2Component.extend
+  setRemoteSource: (->
+    this.set('selectedData', null);
+    @repaint()
+  ).observes('remoteSource')
+
   setSelectedData: (->
     @.$().select2('val', @get('selectedData'))
   ).observes('selectedData')

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319214646) do
+ActiveRecord::Schema.define(version: 20160330164253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -571,6 +571,7 @@ ActiveRecord::Schema.define(version: 20160319214646) do
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "additional_comments"
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree

@@ -30,6 +30,13 @@
                          class="revise-overlay-response-field"
                          placeholder="Please detail the changes you've made to your submission here"
                          editable=isEditable}}
+
+      <button id="revise-task-save-button"
+             class="revise-save-button button-primary button--green {{if isNotEditable 'button--disabled'}}"
+             disabled={{isNotEditable}}
+             {{action "saveAuthorResponse"}}>
+       Save
+      </button>
     {{else}}
       <div class="preserve-line-breaks">{{{latestDecision.authorResponse}}}</div>
       <br>
@@ -44,15 +51,6 @@
                          deleteFile=(action "deleteAttachment")
                          uploadFinished=(action "createAttachment")
                          updateAttachment=(action "updateAttachment")}}
-
-    {{#if editingAuthorResponse}}
-      <button id="revise-task-save-button"
-              class="button-primary button--green {{if isNotEditable 'button--disabled'}}"
-              disabled={{isNotEditable}}
-              {{action "saveAuthorResponse"}}>
-        Save
-      </button>
-    {{/if}}
   </div>
 
   {{#if previousDecisions}}

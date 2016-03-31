@@ -38,6 +38,7 @@ describe Typesetter::FunderSerializer do
 
   it 'has the correct fields' do
     expect(output.keys).to contain_exactly(
+      :additional_comments,
       :name,
       :grant_number,
       :website,

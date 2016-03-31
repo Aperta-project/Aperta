@@ -52,7 +52,7 @@ test('viewing papers', function(assert) {
   visit('/paper_tracker');
   andThen(function() {
     assert.equal(
-      find('.paper-tracker-title-column a').text().trim(),
+      find('td.paper-tracker-title-column a').text().trim(),
       record.short_title,
       'Title is displayed'
     );

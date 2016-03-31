@@ -14,7 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Removed
-- 
+- Roles section of Admin page removed to avoid confusion since it only applied to old roles
 
 ### Fixed
 - Single-sign-on sessions should now properly end upon Aperta logout

@@ -1,5 +1,5 @@
 <tr>
-  <td>
+  <td class="paper-tracker-badge-column">
     {{#if paper.commentLooks}}
       <span class="badge badge--red">{{paper.commentLooks.length}}</span>
     {{/if}}
@@ -19,11 +19,11 @@
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
   <td class="paper-tracker-status-column">{{humanize paper.publishingState}}</td>
   <td class="paper-tracker-members-column">
-    {{#each paper.relatedUsers as |oldRole|}}
-      <div class="paper-tracker-users-group">
-        <span>{{pluralize-string string=oldRole.name count=oldRole.users.length}}:</span>
-        {{comma-separated-user-list users=oldRole.users}}
-      </div>
+    {{#each paper.simplifiedRelatedUsers as |role|}}
+    <div class="paper-tracker-users-group">
+      <span>{{pluralize-string string=role.name count=role.users.length}}:</span>
+      {{comma-separated-user-list users=role.users}}
+    </div>
     {{/each}}
   </td>
   <td class="paper-tracker-handling-editor-column">

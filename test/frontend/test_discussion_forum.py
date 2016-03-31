@@ -106,7 +106,6 @@ class DiscussionForumTest(CommonTest):
 
     time.sleep(.5)
     msg_body = paper_viewer._get(paper_viewer._message_body_field)
-    # Testing to clicks to activate post button
     msg_body.send_keys(generate_paragraph()[2])
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
@@ -144,9 +143,18 @@ class DiscussionForumTest(CommonTest):
     ###
     paper_viewer._get(paper_viewer._first_discussion_lnk).click()
     time.sleep(.5)
-    paper_viewer._get(paper_viewer._message_body_field).send_keys(
-      '@' + the_creator['user'])
-    paper_viewer._get(paper_viewer._post_message_btn).click()
+    ## make textarea visible
+    paper_viewer._driver.execute_script("document.getElementsByClassName('comment-board-form')[0].className += ' editing'");
+
+    time.sleep(.5)
+    msg_body = paper_viewer._get(paper_viewer._message_body_field)
+    msg_body.send_keys('@' + the_creator['user'])
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    paper_viewer._get(post_message_btn).click()
+    #paper_viewer._get(paper_viewer._message_body_field).send_keys(
+    # '@' + the_creator['user'])
+    #paper_viewer._get(paper_viewer._post_message_btn).click()
     # send another msg
     paper_viewer.logout()
     login_url = self._driver.current_url

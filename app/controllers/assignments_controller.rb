@@ -20,16 +20,22 @@ class AssignmentsController < ApplicationController
     requires_user_can :assign_roles, paper
 
     role = paper.journal.roles.find(assignment_params[:role_id])
-    target_user = User.find(assignment_params[:user_id])
+    user = User.find(assignment_params[:user_id])
 
     assignment = Assignment.where(
       assigned_to: paper,
       role: role,
-      user: target_user
-    ).first_or_create!
+      user: user
+    ).first_or_initialize
 
-    Activity.assignment_created!(assignment, user: current_user)
-    render json: assignment, serializer: AssignmentSerializer, root: :assignment
+    if EligibleUserService.eligible_for?(paper: paper, role: role, user: user)
+      assignment.save!
+      Activity.assignment_created!(assignment, user: current_user)
+      render \
+        json: assignment, serializer: AssignmentSerializer, root: :assignment
+    else
+      render json: paper, status: 422
+    end
   end
 
   def destroy

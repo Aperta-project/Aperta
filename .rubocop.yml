@@ -17,6 +17,9 @@ Metrics/MethodLength:
   CountComments: false
   Max: 20
 
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
 Style/StringLiterals:
   # English text needs double quotes, to avoid escaping the very
   # common apostrophe.

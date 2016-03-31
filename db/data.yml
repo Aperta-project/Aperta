@@ -12905,6 +12905,7 @@ tahi_standard_tasks_funders:
   - task_id
   - created_at
   - updated_at
+  - additional_comments
   records: 
   - - '1'
     - Money McMunster
@@ -12913,6 +12914,7 @@ tahi_standard_tasks_funders:
     - '31'
     - '2015-10-30 19:57:11.699874'
     - '2015-10-30 19:57:27.12286'
+    - 
   - - '2'
     - Less MoneyMcMunster
     - 333-333333333
@@ -12920,6 +12922,7 @@ tahi_standard_tasks_funders:
     - '31'
     - '2015-10-30 19:57:44.86309'
     - '2015-10-30 19:58:03.20006'
+    - 
   - - '4'
     - Funder
     - '12345'
@@ -12927,6 +12930,7 @@ tahi_standard_tasks_funders:
     - '157'
     - '2016-03-23 13:24:05.807877'
     - '2016-03-23 13:24:15.962405'
+    - 
 
 ---
 tahi_standard_tasks_reviewer_recommendations:

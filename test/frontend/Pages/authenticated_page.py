@@ -453,7 +453,7 @@ class AuthenticatedPage(PlosPage):
     self._actions.click_and_hold(task_title).release().perform()
     return True
 
-  def post_new_discussion(self, page='', topic='', msg='', participants=[]):
+  def post_new_discussion(self, topic='', msg='', participants=[]):
     """
     Post a message on a new discussion
     :param topic: Topic to post. If empty, will post a random text.
@@ -494,28 +494,28 @@ class AuthenticatedPage(PlosPage):
     self._get(post_message_btn).click()
     return None
 
-  def post_discussion(self, page='', msg=''):
+  def post_discussion(self, msg=''):
     """
     Post a message on an ongoing discussion
     :param msg: Message to post. If empty, will post a random text.
     :return: None.
     """
-    page._get(page._discussion_link).click()
+    self._get(self._discussion_link).click()
     # click on first discussion
-    page._get(page._first_discussion_lnk).click()
+    self._get(self._first_discussion_lnk).click()
     time.sleep(.5)
     # This shouldn't make baby Jesus cry, since there is good reason for this:
     # make textarea visible. Selenium won't do it because running JS is not
     # part of a regular user interaction. Inserting JS is a valid hack when
     # there is no other way to make this work
     js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    page._driver.execute_script(js_cmd);
+    self._driver.execute_script(js_cmd);
     time.sleep(.5)
-    msg_body = page._get(page._message_body_field)
+    msg_body = page._get(self._message_body_field)
     msg_body.send_keys(msg)
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-    page._get(post_message_btn).click()
+    self._get(post_message_btn).click()
     return None
 
   # Style Validations

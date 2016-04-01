@@ -862,7 +862,7 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', \
         button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', \
+    assert button.value_of_css_property('line-height') == '18px', \
         button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == tahi_green, \
         button.value_of_css_property('color')
@@ -1378,11 +1378,15 @@ class AuthenticatedPage(PlosPage):
     :param label: label to validate
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '14px', label.value_of_css_property('font-size')
-    assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
+    assert label.value_of_css_property('font-size') == '14px', \
+        label.value_of_css_property('font-size')
+    assert label.value_of_css_property('font-weight') == '400', \
+        label.value_of_css_property('font-weight')
     # This color is not represented in the tahi palette
-    assert label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', label.value_of_css_property('color')
-    assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
+    assert label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', \
+        label.value_of_css_property('color')
+    assert label.value_of_css_property('line-height') == '20px', \
+        label.value_of_css_property('line-height')
 
   @staticmethod
   def validate_input_field_style(field):
@@ -1404,7 +1408,7 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('padding-top')
     assert field.value_of_css_property('padding-right') == '12px', \
         field.value_of_css_property('padding-right')
-    assert field.value_of_css_property('padding-bottom') == '6px', \
+    assert field.value_of_css_property('padding-bottom') == '7px', \
         field.value_of_css_property('padding-bottom')
     assert field.value_of_css_property('padding-left') == '10px', \
         field.value_of_css_property('padding-left')

@@ -833,9 +833,12 @@ class AuthenticatedPage(PlosPage):
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '18px', \
+        button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == tahi_green, \
         button.value_of_css_property('background-color')
@@ -849,7 +852,8 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_big_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay big white-backed, green text buttons across the application
+    Ensure consistency in rendering page and overlay big white-backed, green text buttons across
+      the application
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
@@ -1394,15 +1398,15 @@ class AuthenticatedPage(PlosPage):
     # This color is not represented in the tahi palette
     assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
         field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '20px', \
+    assert field.value_of_css_property('line-height') == '18px', \
         field.value_of_css_property('line-height')
-    assert field.value_of_css_property('padding-top') == '26px', \
+    assert field.value_of_css_property('padding-top') == '5px', \
         field.value_of_css_property('padding-top')
     assert field.value_of_css_property('padding-right') == '12px', \
         field.value_of_css_property('padding-right')
     assert field.value_of_css_property('padding-bottom') == '6px', \
         field.value_of_css_property('padding-bottom')
-    assert field.value_of_css_property('padding-left') == '12px', \
+    assert field.value_of_css_property('padding-left') == '10px', \
         field.value_of_css_property('padding-left')
 
   @staticmethod

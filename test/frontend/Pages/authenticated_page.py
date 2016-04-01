@@ -453,7 +453,7 @@ class AuthenticatedPage(PlosPage):
     self._actions.click_and_hold(task_title).release().perform()
     return True
 
-  def post_new_discussion(self, topic='', msg='', participants=[]):
+  def post_new_discussion(self, topic='', msg='', participants=None):
     """
     Post a message on a new discussion
     :param topic: Topic to post. If empty, will post a random text.
@@ -461,6 +461,7 @@ class AuthenticatedPage(PlosPage):
     :param participants: List of participants to add
     :return: None.
     """
+    participants = participants or []
     self._get(self._discussion_link).click()
     self._get(self._create_new_topic).click()
     time.sleep(.5)

@@ -473,10 +473,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Click on the question mark to open Infobox"""
     self._get(self._question_mark_icon).click()
 
-  def click_dashboard_link(self):
-    """Click on dashboard link"""
-    self._get(self._nav_aperta_dashboard_link).click()
-
   def click_your_manuscript_link(self):
     """Click on Your Manuscripts link"""
     self._get(self._your_manuscripts_link).click()

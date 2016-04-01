@@ -7,7 +7,8 @@ import time
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login, creator_login1
+    super_admin_login, prod_staff_login, creator_login1, creator_login2, \
+    creator_login3, creator_login4, creator_login5
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from selenium.webdriver.common.by import By

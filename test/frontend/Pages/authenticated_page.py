@@ -1437,7 +1437,7 @@ class AuthenticatedPage(PlosPage):
     assert field.value_of_css_property('line-height') == '18px', \
         field.value_of_css_property('line-height')
     assert field.value_of_css_property('padding-top') == '6px', \
-         field.value_of_css_property('padding-top')
+        field.value_of_css_property('padding-top')
     assert field.value_of_css_property('padding-bottom') == '6px', \
         field.value_of_css_property('padding-bottom')
     assert field.value_of_css_property('padding-left') == '11px', \

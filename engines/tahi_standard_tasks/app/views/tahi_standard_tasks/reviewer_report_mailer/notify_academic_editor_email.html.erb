@@ -17,7 +17,7 @@
       A review of "<%= @paper.display_title(sanitized: false) %>" has been completed.
   </div>
   <div class='footer'>
-    <a class='button' href='<%= client_paper_task_url(@paper, @task) %>' target='_blank'>
+    <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
       View Reviewer Report in <%= app_name %>
     </a>
     <div class='signature'>

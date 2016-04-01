@@ -7337,6 +7337,7 @@ papers:
   - first_submitted_at
   - accepted_at
   - striking_image_type
+  - state_updated_at
   records: 
   - - '1'
     - 
@@ -7358,6 +7359,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7386,6 +7388,7 @@ papers:
     - 
     - 
     - Figure
+    - 
   - - '3'
     - Ready to Submit
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -7406,6 +7409,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7432,6 +7436,7 @@ papers:
     - 
     - 
     - 
+    - 
   - - '8'
     - 
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -7452,6 +7457,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7478,6 +7484,7 @@ papers:
     - 
     - 
     - 
+    - 
   - - '10'
     - The great scientific paper of 2015
     - The most scrumtrulescent scientific paper of 2015.
@@ -7498,6 +7505,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7534,6 +7542,7 @@ papers:
     - true
     - false
     - '2016-03-23 13:16:38.394422'
+    - 
     - 
     - 
 

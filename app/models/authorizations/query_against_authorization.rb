@@ -1,3 +1,4 @@
+# coding: utf-8
 # rubocop:disable all
 module Authorizations
   # QueryAgainstAuthorization builds the query for finding authorized
@@ -23,7 +24,7 @@ module Authorizations
     #            be queried against
     # * state_column - the name of the state column on +klass+ to check
     #            +permissible_states+ against
-    def initialize(authorization:, klass:, target:, assignments:, assigned_to_klass:, permissible_states:, state_column:)
+    def initialize(authorization:, klass:, target:, assignments:, assigned_to_klass:, permissible_states:, state_column:, state_join: nil)
       @authorization = authorization
       @klass = klass
       @target = target
@@ -32,6 +33,7 @@ module Authorizations
       @assigned_to_klass = assigned_to_klass
       @permissible_states = permissible_states
       @state_column = state_column.to_s
+      @state_join = state_join
     end
 
     def query
@@ -51,11 +53,14 @@ module Authorizations
     # If the klass we're querying against doesn't have the @state_column
     # then this won't add any permission/state conditions to the query.
     def add_permissible_state_conditions_to_query(query)
-      if !permissible_states.include?(WILDCARD_STATE) && @klass.column_names.include?(@state_column)
-        query = query.where(@klass.table_name => { @state_column => permissible_states } )
-      else
-        query
+      if !permissible_states.include?(WILDCARD_STATE)
+        if @state_join
+          return query.joins(@state_join).where(@state_join.to_s.pluralize => { @state_column => permissible_states })
+        elsif @klass.column_names.include?(@state_column)
+          return query.where(@klass.table_name => { @state_column => permissible_states } )
+        end
       end
+      query
     end
 
     def base_query_for_active_record_relations

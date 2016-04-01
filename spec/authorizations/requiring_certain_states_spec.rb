@@ -27,10 +27,19 @@ DESC
       applies_to: Authorizations::FakePaper.name,
       states: %w(unsubmitted in_revision)
     )
+    permission(
+      action: 'edit',
+      applies_to: Authorizations::FakeTask.name,
+      states: %w(unsubmitted in_revision)
+    )
   end
 
   role :with_access_to_edit do
     has_permission action: 'edit', applies_to: Authorizations::FakePaper.name
+  end
+
+  role :with_access_to_edit_task do
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name
   end
 
   context <<-DESC do
@@ -99,6 +108,70 @@ DESC
       expect(
         user.filter_authorized(:edit, Authorizations::FakePaper.all).objects
       ).to include(paper)
+    end
+  end
+
+  context <<-DESC do
+    when a user has direct access to an object that delegates its state
+  DESC
+    before do
+      assign_user user, to: task, with_role: role_with_access_to_edit_task
+    end
+
+    context 'and the delegated state is permissible' do
+      it 'grants them access' do
+        paper.update! publishing_state: 'in_revision'
+        expect(user.can?(:edit, task)).to be(true)
+        expect(
+          user.filter_authorized(:edit, Authorizations::FakeTask.all).objects
+        ).to include(task)
+      end
+    end
+
+    context 'and the delegated state is not permissible' do
+      it 'denies them access' do
+        paper.update! publishing_state: 'foo'
+        expect(user.can?(:edit, task)).to be(false)
+        expect(
+          user.filter_authorized(:edit, Authorizations::FakeTask.all).objects
+        ).not_to include(task)
+      end
+    end
+  end
+
+  context <<-DESC do
+    when a user has access to an object through an association that delegates
+    its state
+  DESC
+    before do
+      Authorizations.configure do |config|
+        config.assignment_to(
+          Authorizations::FakePaper,
+          authorizes: Authorizations::FakeTask,
+          via: :fake_tasks
+        )
+      end
+      assign_user user, to: paper, with_role: role_with_access_to_edit_task
+    end
+
+    context 'and the delegated state is permissible' do
+      it 'grants them access' do
+        paper.update! publishing_state: 'in_revision'
+        expect(user.can?(:edit, task)).to be(true)
+        expect(
+          user.filter_authorized(:edit, Authorizations::FakeTask.all).objects
+        ).to include(task)
+      end
+    end
+
+    context 'and the delegated state is not permissible' do
+      it 'denies them access' do
+        paper.update! publishing_state: 'foo'
+        expect(user.can?(:edit, task)).to be(false)
+        expect(
+          user.filter_authorized(:edit, Authorizations::FakeTask.all).objects
+        ).not_to include(task)
+      end
     end
   end
 end

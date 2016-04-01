@@ -83,6 +83,10 @@ module Authorizations
       :publishing_state
     end
 
+    def permission_state_join
+      @klass.try(:delegate_state_to)
+    end
+
     def allowed?(object, states)
       states.include?(WILDCARD_STATE) ||
         !object.respond_to?(permission_state_column) ||
@@ -197,6 +201,7 @@ module Authorizations
             klass: @klass,
             target: @target,
             assignments: assignments,
+            state_join: permission_state_join,
             permissible_states: permissible_states,
             state_column: permission_state_column
           ).query
@@ -218,6 +223,7 @@ module Authorizations
               assigned_to_klass: assigned_to_klass,
               assignments: assignments,
               permissible_states: permissible_states,
+              state_join: permission_state_join,
               state_column: permission_state_column
             ).query
             result_set.add_objects(authorized_objects, with_permissions: all_permissions)

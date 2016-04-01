@@ -48,6 +48,10 @@ module Authorizations
     has_one :fake_task_thing
     has_many :permission_requirements, as: :required_on
     has_many :required_permissions, through: :permission_requirements, source: :permission
+    def self.delegate_state_to
+      :fake_paper
+    end
+    delegate :publishing_state, to: :fake_paper
   end
 
   class SpecializedFakeTask < FakeTask

@@ -18,13 +18,14 @@ module Authorizations
     #            be queried against
     # * state_column - the name of the state column on +klass+ to check
     #            +permissible_states+ against
-    def initialize(klass:, target:, assignments:, permissible_states:, state_column:)
+    def initialize(klass:, target:, assignments:, permissible_states:, state_column:, state_join: nil)
       @klass = klass
       @target = target
       @assignments = assignments
       @assigned_to_ids = assignments.map(&:assigned_to_id)
       @permissible_states = permissible_states.dup
       @state_column = state_column.to_s
+      @state_join = state_join
     end
 
     def query
@@ -47,9 +48,12 @@ module Authorizations
     def short_circuit_query_for_specific_model
       return [] unless @assigned_to_ids.include?(@target.id)
 
-      has_state_column = @target.class.column_names.include?(@state_column)
-      has_state = has_state_column && permissible_states.include?(@target.send(@state_column))
-
+      has_state = if @state_join
+        permissible_states.include?(@target.send(@state_join).send(@state_column))
+      else
+        has_state_column = @target.class.column_names.include?(@state_column)
+        has_state_column && permissible_states.include?(@target.send(@state_column))
+      end
       if permissible_states.include?(WILDCARD_STATE)
         [@target]
       elsif has_state_column
@@ -78,11 +82,14 @@ module Authorizations
     # If the klass we're querying against doesn't have the @state_column
     # then this won't add any permission/state conditions to the query.
     def add_permissible_state_conditions_to_query(query)
-      if !permissible_states.include?(WILDCARD_STATE) && @klass.column_names.include?(@state_column)
-        query.where(@state_column => permissible_states)
-      else
-        query
+      if !permissible_states.include?(WILDCARD_STATE)
+        if @state_join
+          return query.joins(@state_join).where(@state_join.to_s.pluralize => { @state_column => permissible_states })
+        elsif @klass.column_names.include?(@state_column)
+          return query.where(@state_column => permissible_states)
+        end
       end
+      query
     end
   end
 end

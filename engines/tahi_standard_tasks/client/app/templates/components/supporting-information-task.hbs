@@ -40,7 +40,7 @@
     d3.tsv("/test_csv.csv", function (data) {
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(60, 30, 495, 330);
-        
+
       // Define all the axes
       var xAxis = myChart.addMeasureAxis("x", "Distribution");
       var yAxis = myChart.addMeasureAxis("y", "Price");

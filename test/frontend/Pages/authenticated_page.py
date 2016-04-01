@@ -53,6 +53,8 @@ class AuthenticatedPage(PlosPage):
     self._nav_spacer = (By.CLASS_NAME, 'control-bar-item-spacer')
     self._nav_dashboard_link = (By.ID, 'nav-dashboard')
     self._nav_admin_link = (By.ID, 'nav-admin')
+    self._nav_your_manuscripts_link = (By.ID, 'nav-manuscripts')
+    self._nav_help_link = (By.ID, 'nav-help')
     self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
     self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
@@ -153,21 +155,29 @@ class AuthenticatedPage(PlosPage):
     every logged in page
     :param permissions: username
     """
-    elevated = [fm_login, sa_login]
+    elevated = [staff_admin_login, super_admin_login]
+    ptracker = elevated + [internal_editor_login, prod_staff_login, pub_svcs_login]
     self._get(self._nav_title)
     self._get(self._nav_profile_img)
-    self._get(self._nav_dashboard_link)
+    assert 'Aperta' == self._get(self._nav_aperta_dashboard_link).text, \
+      self._get(self._nav_aperta_dashboard_link).text
+    assert 'Your Manuscripts' == self._get(self._nav_your_manuscripts_link).text, \
+      self._get(self._nav_your_manuscripts_link).text
+    help_link = self._get(self._nav_help_link)
+    assert help_link.text =='Help', help_link.text
+    assert help_link.get_attribute('target') == '_blank', help_link.get_attribute('target')
+    assert help_link.get_attribute('href') == \
+        'http://journals.plos.org/plosbiology/s/aperta-help', help_link.get_attribute('href')
     self.click_profile_nav()
     self._get(self._nav_profile_link)
     self._get(self._nav_signout_link)
     self._get(self._nav_feedback_link)
     # Must have flow mgr, admin or superadmin
     if permissions in elevated:
-      self._get(self._nav_flowmgr_link)
-      self._get(self._nav_paper_tracker_link)
-    # Must have admin or superadmin
-    if permissions == (oa_login, sa_login):
       self._get(self._nav_admin_link)
+      self._get(self._nav_flowmgr_link)
+    if permissions in ptracker:
+      self._get(self._nav_paper_tracker_link)
     return None
 
   def close_sheet(self):

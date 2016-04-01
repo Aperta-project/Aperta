@@ -72,6 +72,8 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
+  after_create :add_user_role
+
   if Rails.configuration.password_auth_enabled
     devise(
       :trackable, :omniauthable, :database_authenticatable, :registerable,
@@ -152,5 +154,12 @@ class User < ActiveRecord::Base
         .where('old_roles.journal_id = ?', assigned_users_in_journal_id)
         .uniq
     end
+  end
+
+  private
+
+  def add_user_role
+    return unless user_role = Role.find_by(name: 'User')
+    assignments.where(role: user_role, assigned_to: self).first_or_create!
   end
 end

@@ -63,7 +63,6 @@ class AuthenticatedPage(PlosPage):
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
     self._nav_feedback_link = (By.ID, 'nav-give-feedback')
-    self._nav_hamburger_icon = (By.CLASS_NAME, 'fa-list-ul')
     # Global toolbar Icons
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')

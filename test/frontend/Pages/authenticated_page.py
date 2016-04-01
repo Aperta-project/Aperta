@@ -854,18 +854,28 @@ class AuthenticatedPage(PlosPage):
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('color') == tahi_green, \
+        button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == white, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_link_big_green_button_style(button):
@@ -1377,15 +1387,23 @@ class AuthenticatedPage(PlosPage):
     :param field: field to validate
     """
     assert application_typeface in field.value_of_css_property('font-family')
-    assert field.value_of_css_property('font-size') == '14px', field.value_of_css_property('font-size')
-    assert field.value_of_css_property('font-weight') == '400', field.value_of_css_property('font-weight')
+    assert field.value_of_css_property('font-size') == '14px', \
+        field.value_of_css_property('font-size')
+    assert field.value_of_css_property('font-weight') == '400', \
+        field.value_of_css_property('font-weight')
     # This color is not represented in the tahi palette
-    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '20px', field.value_of_css_property('line-height')
-    assert field.value_of_css_property('padding-top') == '26px', field.value_of_css_property('padding-top')
-    assert field.value_of_css_property('padding-right') == '12px', field.value_of_css_property('padding-right')
-    assert field.value_of_css_property('padding-bottom') == '6px', field.value_of_css_property('padding-bottom')
-    assert field.value_of_css_property('padding-left') == '12px', field.value_of_css_property('padding-left')
+    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+        field.value_of_css_property('color')
+    assert field.value_of_css_property('line-height') == '20px', \
+        field.value_of_css_property('line-height')
+    assert field.value_of_css_property('padding-top') == '26px', \
+        field.value_of_css_property('padding-top')
+    assert field.value_of_css_property('padding-right') == '12px', \
+        field.value_of_css_property('padding-right')
+    assert field.value_of_css_property('padding-bottom') == '6px', \
+        field.value_of_css_property('padding-bottom')
+    assert field.value_of_css_property('padding-left') == '12px', \
+        field.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_single_select_dropdown_style(field):

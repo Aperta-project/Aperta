@@ -828,7 +828,8 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_big_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large green-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay large green-backed, white text buttons across
+      the application
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
@@ -842,12 +843,18 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == tahi_green, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_secondary_big_green_button_style(button):
@@ -1425,11 +1432,18 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
         field.value_of_css_property('font-weight')
-    # This color is not represented in the style guide
-    assert field.value_of_css_property('color') == 'rgba(68, 68, 68, 1)', \
+    assert field.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
         field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '26px', \
+    assert field.value_of_css_property('line-height') == '18px', \
         field.value_of_css_property('line-height')
+    assert field.value_of_css_property('padding-top') == '6px', \
+         field.value_of_css_property('padding-top')
+    assert field.value_of_css_property('padding-bottom') == '6px', \
+        field.value_of_css_property('padding-bottom')
+    assert field.value_of_css_property('padding-left') == '11px', \
+        field.value_of_css_property('padding-left')
+    assert field.value_of_css_property('padding-right') == '12px',\
+        field.value_of_css_property('padding-left')
     assert field.value_of_css_property('text-overflow') == 'ellipsis', \
         field.value_of_css_property('text-overflow')
     assert field.value_of_css_property('margin-right') == '26px', \

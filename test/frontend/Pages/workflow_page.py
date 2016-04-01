@@ -49,16 +49,23 @@ class WorkflowPage(AuthenticatedPage):
                                ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
     self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]\
         /div[2]/button")
-    self._register_decision_card = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
     self._add_card_overlay_div = (By.CSS_SELECTOR, 'div.overlay-container')
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
     # Card Locators
-    self._initial_decision_card = (By.XPATH,
-                                   "//div[@class='card-title'][contains(., 'Initial Decision')]")
-    self._invite_editor_card = (By.XPATH,
-                                "//div[@class='column-content']/div/div\
-                                //div[contains(., 'Invite Academic Editor')]")
-    # End of not used elements
+    self._assign_admin_card = (By.XPATH, "//a/div[contains(., 'Assign Admin')]")
+    self._assign_team_card = (By.XPATH, "//a/div[contains(., 'Assign Team')]")
+    self._editor_discussion_card = (By.XPATH, "//a/div[contains(., 'Editor Discussion')]")
+    self._final_tech_check_card = (By.XPATH, "//a/div[contains(., 'Final Tech Check')]")
+    self._initial_decision_card = (By.XPATH, "//a/div[contains(., 'Initial Decision')]")
+    self._initial_tech_check_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
+    self._invite_academic_editors_card = (By.XPATH,
+                                          "//a/div[contains(., 'Invite Academic Editor')]")
+    self._invite_reviewers_card = (By.XPATH, "//a/div[contains(., 'Invite Reviewers')]")
+    self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
+    self._register_decision_card = (By.XPATH, "//a/div[contains(., 'Register Decision')]")
+    self._reviewer_report_card = (By.XPATH, "//a/div[contains(., 'Reviewer Report')]")
+    self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
+    self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
 
   # POM Actions
   def validate_initial_page_elements_styles(self):

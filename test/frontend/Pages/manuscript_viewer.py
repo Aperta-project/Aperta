@@ -96,9 +96,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Assigned Tasks
     self._billing_task = (By.CLASS_NAME, 'billing-task')
     self._cover_letter_task = (By.CLASS_NAME, 'cover-letter-task')
+    self._cfa_task = (By.CLASS_NAME, 'changes-for-author-task')
     self._review_cands_task = (By.CLASS_NAME, 'reviewer-candidates-task')
     self._revise_task_task = (By.CLASS_NAME, 'revise-task')
-    self._cfa_task = (By.CLASS_NAME, 'changes-for-author-task')
     # Metadata Tasks
     self._addl_info_task = (By.CLASS_NAME, 'publishing-related-questions-task')
     self._authors_task = (By.CLASS_NAME, 'authors-task')

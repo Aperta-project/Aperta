@@ -79,8 +79,9 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def test_validate_journal_admin_roles_display_function(self):
+  def rest_validate_journal_admin_roles_display_function(self):
     """
+    NOTA BENE: This section has been temporarily suppressed in the interface per APERTA-6134
     test_journal_admin: validate the display of the admin user role display section
     Validates the presence of the following elements:
       role section heading

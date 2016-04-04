@@ -31,10 +31,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    unless task.allow_update?
-      task.paper.errors.add(:editable, "This paper cannot be edited at this time.")
-      raise ActiveRecord::RecordInvalid, task.paper
-    end
+    requires_user_can(:edit, task)
 
     task.assign_attributes(task_params(task.class))
     task.save!

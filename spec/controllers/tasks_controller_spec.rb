@@ -173,8 +173,8 @@ describe TasksController, redis: true do
         end
       end
 
-      context "when the paper is not editable" do
-        subject(:do_unathorized_request) do
+      context "when the user cannot edit the task" do
+        subject(:do_unauthorized_request) do
           xhr :patch, :update, {
             format: 'json',
             paper_id: paper.to_param,
@@ -184,30 +184,27 @@ describe TasksController, redis: true do
         end
 
         before do
-          allow_any_instance_of(Task).to receive(:allow_update?)
+          allow_any_instance_of(User).to receive(:can?)
+            .with(:edit, task)
             .and_return false
         end
 
         describe "a submission card" do
-          it "returns a 422" do
-            do_unathorized_request
-            expect(response.status).to eq 422
+          it "returns a 403" do
+            do_unauthorized_request
+            expect(response.status).to eq 403
           end
 
           it "does not update the task" do
-            do_unathorized_request
+            do_unauthorized_request
             expect(task.reload).not_to be_completed
-          end
-
-          it "raises an error" do
-            do_unathorized_request
-            expect(response.body).to include "This paper cannot be edited at this time."
           end
         end
 
-        describe "the paper is editable" do
+        describe "the user can edit the task" do
           before do
-            allow_any_instance_of(Task).to receive(:allow_update?)
+            allow_any_instance_of(User).to receive(:can?)
+              .with(:edit, task)
               .and_return true
           end
 
@@ -227,17 +224,6 @@ describe TasksController, redis: true do
           end
         end
       end
-    end
-
-    context "when the user does not have access" do
-      before do
-        stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:edit, task)
-          .and_return false
-      end
-
-      it { is_expected.to responds_with(403) }
     end
   end
 

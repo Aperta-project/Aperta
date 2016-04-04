@@ -190,10 +190,6 @@ class Task < ActiveRecord::Base
     UpdateResponders::Task
   end
 
-  def allow_update?
-    true
-  end
-
   # Implement this method for Cards that inherit from Task
   def after_update
   end

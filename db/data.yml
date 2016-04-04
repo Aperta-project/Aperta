@@ -5684,7 +5684,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-03-22 15:09:05.272824'
+    - '2016-03-29 20:28:06.951832'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -7120,6 +7120,30 @@ nested_questions:
     - '2016-03-22 15:09:05.811934'
     - '2016-03-22 15:09:05.811934'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '232'
+    - 
+    - text
+    - cover_letter--text
+    - 
+    - '359'
+    - '360'
+    - '1'
+    - '2016-03-29 20:28:06.743537'
+    - '2016-03-29 20:28:06.743537'
+    - TahiStandardTasks::CoverLetterTask
+    - 
+  - - '233'
+    -
+    - attachment
+    - cover_letter--attachment
+    - 
+    - '361'
+    - '362'
+    - '2'
+    - '2016-03-29 20:28:06.750541'
+    - '2016-03-29 20:28:06.750541'
+    - TahiStandardTasks::CoverLetterTask
     - 
 
 ---

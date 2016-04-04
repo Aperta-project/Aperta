@@ -6,7 +6,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 var App;
 
-moduleForModel('paper', 'nit: Paper Model', {
+moduleForModel('paper', 'Unit: Paper Model', {
   needs: ['model:author', 'model:user', 'model:figure', 'model:table', 'model:bibitem', 'model:journal', 'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment', 'model:question-attachment', 'model:comment-look', 'model:discussion-topic', 'model:versioned-text', 'model:discussion-participant', 'model:discussion-reply', 'model:phase', 'model:task', 'model:comment', 'model:participation', 'model:card-thumbnail', 'model:nested-question-owner', 'model:nested-question', 'model:nested-question-answer', 'model:collaboration', 'model:supporting-information-file'],
   afterEach: function() {
     Ember.run(function() {
@@ -38,4 +38,21 @@ test('displayTitle displays title if present', function(assert) {
     shortTitle: ""
   });
   assert.equal(paper.get('displayTitle'), title);
+});
+
+
+test('simplifiedRelatedUsers contains no collaborators', function(assert) {
+  var title;
+  title = 'Test Title';
+  var paper = FactoryGuy.make('paper', {
+    title: title,
+    shortTitle: '',
+    relatedUsers: [
+      {name: 'Creator', users: []},
+      {name: 'Collaborator', users: []}
+    ]
+  });
+  assert.equal(paper.get('simplifiedRelatedUsers.length'), 1);
+  let remaining = paper.get('simplifiedRelatedUsers').objectAt(0).name;
+  assert.equal(remaining, 'Creator');
 });

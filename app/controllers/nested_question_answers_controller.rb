@@ -4,6 +4,7 @@ class NestedQuestionAnswersController < ApplicationController
   respond_to :json
 
   def create
+    # binding.pry
     answer = fetch_and_update_answer
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end

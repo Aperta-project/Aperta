@@ -54,12 +54,12 @@ export default TaskComponent.extend({
     }
   },
 
-  authors: computed('task.authors.@each.paper', function() {
-    return this.get('task.authors').filterBy('paper', this.get('paper'));
+  authors: computed('task.paper.authors.@each', function() {
+    return this.get('task.paper.authors').filterBy('paper', this.get('paper'));
   }),
 
-  sortedAuthorsWithErrors: computed('task.allAuthors.[]', function() {
-    return this.get('task.allAuthors').map(function(a) {
+  sortedAuthorsWithErrors: computed('task.paper.allAuthors.[]', function() {
+    return this.get('task.paper.allAuthors').map(function(a) {
       return ObjectProxyWithErrors.create({
         object: a,
         validations: a.validations

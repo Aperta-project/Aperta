@@ -7158,8 +7158,7 @@ old_roles:
   - can_view_assigned_manuscript_managers
   - can_view_all_manuscript_managers
   - kind
-  - can_view_flow_manager
-  records: 
+  records:
   - - '1'
     - Journal Admin
     - '1'
@@ -7169,7 +7168,6 @@ old_roles:
     - true
     - true
     - admin
-    - false
   - - '2'
     - Editor
     - '1'
@@ -7179,7 +7177,6 @@ old_roles:
     - true
     - true
     - editor
-    - false
   - - '4'
     - Tech Checker
     - '1'
@@ -7189,7 +7186,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
   - - '5'
     - Academic Editor
     - '1'
@@ -7199,7 +7195,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
   - - '6'
     - Reviewer
     - '1'
@@ -7209,7 +7204,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
   - - '7'
     - Admin
     - '1'
@@ -7219,7 +7213,6 @@ old_roles:
     - false
     - false
     - admin
-    - false
   - - '8'
     - Author
     - '1'
@@ -7229,7 +7222,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
 
 ---
 paper_roles:

@@ -17,7 +17,7 @@ from selenium.webdriver.common.by import By
 This test case validates the Aperta Discussion Forum
 Automated test case for: add discussion forum notification icons to MS
 """
-__author__ = 'jgray@plos.org'
+__author__ = 'sbassi@plos.org'
 
 staff_users = [staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
                super_admin_login]
@@ -27,7 +27,7 @@ users = [creator_login1, creator_login2, creator_login3, creator_login4, creator
 @MultiBrowserFixture
 class DiscussionForumTest(CommonTest):
   """
-  Add discussion forum notification icons to MS
+  test_discussion_forum: Add discussion forum notification icons to MS
   AC out of: APERTA-5831
      - When the user is added to a discussion topic
      - When mentioned in a topic
@@ -42,10 +42,10 @@ class DiscussionForumTest(CommonTest):
     that topic and reset of notifications every time the user click into a discussion
     message.
     """
-    the_creator = random.choice(users)
+    creator = random.choice(users)
     journal = 'PLOS Wombat'
-    logging.info('Logging in as user: {0}'.format(the_creator))
-    dashboard_page = self.cas_login(email=the_creator['email'])
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
     dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
@@ -65,10 +65,6 @@ class DiscussionForumTest(CommonTest):
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
     paper_viewer.logout()
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
-    #time.sleep(10)
     user_type = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -76,14 +72,11 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                     msg='', participants=[the_creator['user']])
+                                     msg='', participants=[creator['user']])
     # send another msg
     paper_viewer.logout()
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
-    logging.info('Logging in as user: {0}'.format(the_creator))
-    dashboard_page = self.cas_login(email=the_creator['email'])
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
@@ -93,9 +86,6 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     paper_viewer._get(paper_viewer._badge_red)
     paper_viewer.logout()
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
     #time.sleep(10)
     user_type = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(user_type))
@@ -104,16 +94,12 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
-    paper_viewer.post_discussion(paper_viewer, '@' + the_creator['user'])
+    paper_viewer.post_discussion('@' + creator['user'])
     paper_viewer.logout()
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
-    logging.info('Logging in as user: {0}'.format(the_creator))
-    dashboard_page = self.cas_login(email=the_creator['email'])
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-
     # look for icon
     red_badge = paper_viewer._get(paper_viewer._badge_red)
     red_badge_last = int(red_badge.text)
@@ -135,9 +121,6 @@ class DiscussionForumTest(CommonTest):
     except ElementDoesNotExistAssertionError:
       logging.info('There is no badge')
     paper_viewer.restore_timeout()
-
-
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

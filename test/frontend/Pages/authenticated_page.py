@@ -512,7 +512,7 @@ class AuthenticatedPage(PlosPage):
     js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
     self._driver.execute_script(js_cmd);
     time.sleep(.5)
-    msg_body = page._get(self._message_body_field)
+    msg_body = self._get(self._message_body_field)
     msg_body.send_keys(msg)
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')

@@ -105,7 +105,7 @@ module PlosServices
     private
 
     def answer_for(ident)
-      answer = @paper.billing_card.answer_for(ident)
+      answer = @paper.billing_task.answer_for(ident)
       answer.value if answer
     end
   end

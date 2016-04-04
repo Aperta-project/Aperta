@@ -132,7 +132,7 @@ describe PlosServices::BillingLogManager do
   def add_text_question_with_answer(paper, ident, answer)
     nested_question_answer = FactoryGirl.create(:nested_question_answer, value_type: "text",
       nested_question: nested_question(ident),
-      owner: paper.billing_card,
+      owner: paper.billing_task,
       value: answer,
     )
   end

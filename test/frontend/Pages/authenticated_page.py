@@ -3,11 +3,13 @@
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from loremipsum import generate_paragraph
 
 from Base.PlosPage import PlosPage
 from Base.PostgreSQL import PgSQL
-from Base.Resources import staff_admin_login, super_admin_login, \
-    internal_editor_login, prod_staff_login, pub_svcs_login
+from Base.Resources import fm_login, oa_login, sa_login
+
 
 """
 A class to be inherited from every page for which one is authenticated and wants to access
@@ -49,11 +51,10 @@ class AuthenticatedPage(PlosPage):
     self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
     self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
     self._nav_spacer = (By.CLASS_NAME, 'control-bar-item-spacer')
-    # dashboard / your manuscripts Link
-    self._nav_aperta_dashboard_link = (By.ID, 'nav-dashboard')
+    self._nav_dashboard_link = (By.ID, 'nav-dashboard')
+    self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_your_manuscripts_link = (By.ID, 'nav-manuscripts')
     self._nav_help_link = (By.ID, 'nav-help')
-    self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
     self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
@@ -78,8 +79,18 @@ class AuthenticatedPage(PlosPage):
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
     self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')
+
+    # Discussion related items
     self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
-    self._create_new_topic = (By.CSS_SELECTOR, 'h1.discussions-show-title')
+    self._create_new_topic = (By.CSS_SELECTOR, 'div.discussions-index-header a')
+    self._topic_title_field = (By.CSS_SELECTOR, 'input')
+    self._create_topic = (By.CSS_SELECTOR, 'div.sheet-content button')
+    self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
+    self._participant_field = (By.CSS_SELECTOR, 'input.active')
+    self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
+    self._message_body_field = (By.CSS_SELECTOR, 'textarea')
+    self._post_message_btn = (By.CSS_SELECTOR, 'button')
+    self._first_discussion_lnk = (By.CLASS_NAME, 'discussions-index-topic')
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
     self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
     self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')
@@ -167,6 +178,12 @@ class AuthenticatedPage(PlosPage):
     if permissions in ptracker:
       self._get(self._nav_paper_tracker_link)
     return None
+
+  def close_sheet(self):
+    """
+    Close overlaping sheet by clicking the upper right X
+    """
+    self._get(self._sheet_close_x).click()
 
   def validate_wf_top_elements(self):
     """Validate styles of elements that are in the top menu from workflow"""
@@ -435,6 +452,72 @@ class AuthenticatedPage(PlosPage):
     # For whatever reason, selenium can't grok a simple click() here
     self._actions.click_and_hold(task_title).release().perform()
     return True
+
+  def post_new_discussion(self, topic='', msg='', participants=None):
+    """
+    Post a message on a new discussion
+    :param topic: Topic to post. If empty, will post a random text.
+    :param msg: Message to post. If empty, will post a random text.
+    :param participants: List of participants to add
+    :return: None.
+    """
+    participants = participants or []
+    self._get(self._discussion_link).click()
+    self._get(self._create_new_topic).click()
+    time.sleep(.5)
+    if topic:
+      self._get(self._topic_title_field).send_keys(topic)
+    else:
+      self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
+    # create topic btn
+    time.sleep(.5)
+    self._get(self._create_topic).click()
+    # add paper creator to the disussion
+    if participants:
+      #the_creator (tm)
+      for participant in participants:
+        self._get(self._add_participant_btn).click()
+        time.sleep(.5)
+        self._get(self._participant_field).send_keys(participant + Keys.ENTER)
+        time.sleep(5)
+        self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
+    time.sleep(.5)
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    self._driver.execute_script(js_cmd);
+    time.sleep(.5)
+    if msg:
+      msg_body.send_keys(msg)
+    else:
+      msg_body = self._get(self._message_body_field)
+      msg_body.send_keys(generate_paragraph()[2])
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._get(post_message_btn).click()
+    return None
+
+  def post_discussion(self, msg=''):
+    """
+    Post a message on an ongoing discussion
+    :param msg: Message to post. If empty, will post a random text.
+    :return: None.
+    """
+    self._get(self._discussion_link).click()
+    # click on first discussion
+    self._get(self._first_discussion_lnk).click()
+    time.sleep(.5)
+    # This shouldn't make baby Jesus cry, since there is good reason for this:
+    # make textarea visible. Selenium won't do it because running JS is not
+    # part of a regular user interaction. Inserting JS is a valid hack when
+    # there is no other way to make this work
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    self._driver.execute_script(js_cmd);
+    time.sleep(.5)
+    msg_body = self._get(self._message_body_field)
+    msg_body.send_keys(msg)
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._get(post_message_btn).click()
+    return None
 
   # Style Validations
   # Divider and Border Styles ===========================
@@ -746,23 +829,33 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_big_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large green-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay large green-backed, white text buttons across
+      the application
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '18px', \
+        button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == tahi_green, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_secondary_big_green_button_style(button):
@@ -1314,12 +1407,15 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
         field.value_of_css_property('font-weight')
+    # This color is not represented in the tahi palette
     assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
         field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '18px', \
         field.value_of_css_property('line-height')
     assert field.value_of_css_property('padding-top') == '5px', \
         field.value_of_css_property('padding-top')
+    assert field.value_of_css_property('padding-right') == '12px', \
+        field.value_of_css_property('padding-right')
     assert field.value_of_css_property('padding-bottom') == '7px', \
         field.value_of_css_property('padding-bottom')
     assert field.value_of_css_property('padding-left') == '10px', \
@@ -1349,7 +1445,10 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('padding-left')
     assert field.value_of_css_property('padding-right') == '12px',\
         field.value_of_css_property('padding-left')
-
+    assert field.value_of_css_property('text-overflow') == 'ellipsis', \
+        field.value_of_css_property('text-overflow')
+    assert field.value_of_css_property('margin-right') == '26px', \
+        field.value_of_css_property('margin-right')
 
   @staticmethod
   def validate_multi_select_dropdown_style(field):

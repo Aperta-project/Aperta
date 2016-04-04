@@ -77,40 +77,24 @@ module SalesforceServices
           'PFA_Able_to_Pay_R__c'       => float_answer_for("plos_billing--pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("plos_billing--pfa_additional_comments"),
           'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs"),
-          'PFA_Funding_Statement__c'   => funding_statement
+          'PFA_Funding_Statement__c'   => financial_disclosure_task.try(:funding_statement)
         }
       end
 
       private
 
-      def funding_statement
-        financial_disclosure_task.funding_statement
-      end
-
-      def financial_disclosure_task
-        @paper
-          .tasks
-          .where(type: 'TahiStandardTasks::FinancialDisclosureTask')
-          .first
-      end
+      delegate :financial_disclosure_task, to: :@paper, allow_nil: true
 
       def answer_for(ident)
-        answer = billing_card.answer_for(ident)
-        answer.value if answer
+        @paper.answer_for(ident).try(:value)
       end
 
       def float_answer_for(ident)
-        answer = billing_card.answer_for(ident)
-        answer.float_value if answer
+        @paper.answer_for(ident).try(:float_value)
       end
 
       def yes_no_answer_for(ident)
-        answer = billing_card.answer_for(ident)
-        answer.yes_no_value if answer
-      end
-
-      def billing_card
-        @paper.billing_card
+        @paper.answer_for(ident).try(:yes_no_value)
       end
     end
   end

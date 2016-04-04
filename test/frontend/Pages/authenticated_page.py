@@ -3,6 +3,8 @@
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from loremipsum import generate_paragraph
 
 from Base.PlosPage import PlosPage
 from Base.PostgreSQL import PgSQL
@@ -78,16 +80,27 @@ class AuthenticatedPage(PlosPage):
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
     self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')
+    # Discussion related items
     self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
-    self._create_new_topic = (By.CSS_SELECTOR, 'h1.discussions-show-title')
+    self._create_new_topic = (By.CSS_SELECTOR, 'div.discussions-index-header a')
+    self._topic_title_field = (By.CSS_SELECTOR, 'input')
+    self._create_topic = (By.CSS_SELECTOR, 'div.sheet-content button')
+    self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
+    self._participant_field = (By.CSS_SELECTOR, 'input.active')
+    self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
+    self._message_body_field = (By.CSS_SELECTOR, 'textarea')
+    self._post_message_btn = (By.CSS_SELECTOR, 'button')
+    self._first_discussion_lnk = (By.CLASS_NAME, 'discussions-index-topic')
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
     self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
     self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')
     self._sheet_close_x = (By.CLASS_NAME, 'sheet-close-x')
+    # Discussion messages
+    self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
+    self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
-
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
@@ -262,6 +275,12 @@ class AuthenticatedPage(PlosPage):
     signout_url = url.split('/')[0] + '//' + url.split('/')[2] + '/users/sign_out'
     self._driver.get(signout_url)
 
+  def close_sheet(self):
+    """
+    Close overlaping sheet by clicking the upper right X
+    """
+    self._get(self._sheet_close_x).click()
+
   def go_to_manuscript(self, manuscript_id):
     """
     Navigate to the manuscript viewer page of the provided paper id
@@ -435,6 +454,73 @@ class AuthenticatedPage(PlosPage):
     # For whatever reason, selenium can't grok a simple click() here
     self._actions.click_and_hold(task_title).release().perform()
     return True
+
+  def post_new_discussion(self, topic='', msg='', participants=None):
+    """
+    Post a message on a new discussion
+    :param topic: Topic to post. If empty, will post a random text.
+    :param msg: Message to post. If empty, will post a random text.
+    :param participants: List of participants to add
+    :return: None.
+    """
+    participants = participants or []
+    self._get(self._discussion_link).click()
+    self._get(self._create_new_topic).click()
+    time.sleep(.5)
+    if topic:
+      self._get(self._topic_title_field).send_keys(topic)
+    else:
+      self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
+    # create topic btn
+    time.sleep(.5)
+    self._get(self._create_topic).click()
+    # add paper creator to the disussion
+    if participants:
+      #the_creator (tm)
+      for participant in participants:
+        self._get(self._add_participant_btn).click()
+        time.sleep(.5)
+        self._get(self._participant_field).send_keys(participant + Keys.ENTER)
+        time.sleep(5)
+        self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
+    time.sleep(.5)
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    self._driver.execute_script(js_cmd);
+    time.sleep(.5)
+    if msg:
+      msg_body.send_keys(msg)
+    else:
+      msg_body = self._get(self._message_body_field)
+      msg_body.send_keys(generate_paragraph()[2])
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._get(post_message_btn).click()
+    return None
+
+  def post_discussion(self, msg=''):
+    """
+    Post a message on an ongoing discussion
+    :param msg: Message to post. If empty, will post a random text.
+    :return: None.
+    """
+    self._get(self._discussion_link).click()
+    # click on first discussion
+    self._get(self._first_discussion_lnk).click()
+    time.sleep(.5)
+    # This shouldn't make baby Jesus cry, since there is good reason for this:
+    # make textarea visible. Selenium won't do it because running JS is not
+    # part of a regular user interaction. Inserting JS is a valid hack when
+    # there is no other way to make this work
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    self._driver.execute_script(js_cmd);
+    time.sleep(.5)
+    msg_body = self._get(self._message_body_field)
+    msg_body.send_keys(msg)
+    time.sleep(1)
+    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._get(post_message_btn).click()
+    return None
+
 
   # Style Validations
   # Divider and Border Styles ===========================

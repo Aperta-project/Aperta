@@ -44,10 +44,6 @@ describe FiguresExtractor do
         .to receive(:images).and_return([image_stream_1, image_stream_2])
     end
 
-    it 'creates a Figure for each image in the epub' do
-      expect{ extractor.sync!(paper) }.to change(paper.figures, :count).by(2)
-    end
-
     it 'does not increase paper versions' do
       expect { extractor.sync!(paper) }
         .to_not change(paper.versioned_texts, :count)
@@ -72,11 +68,6 @@ describe FiguresExtractor do
           img = img_tag_by_id figure.id
           expect(img['alt']).to eq("Figure: #{figure.filename}")
         end
-      end
-
-      it 'gives an appropriate id attribute as a useful handle' do
-        # kindof redundant, but I'd rather be explicit
-        expect(img_tag_by_id(paper.figures.first.id)).to be_truthy
       end
 
       it 'gives an appropriate data attribute' do

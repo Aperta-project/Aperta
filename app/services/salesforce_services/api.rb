@@ -20,10 +20,8 @@ module SalesforceServices
       end
     end
 
-    def self.create_manuscript(paper_id:)
+    def self.create_manuscript(paper:)
       return unless salesforce_active
-
-      paper = Paper.find(paper_id)
 
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       sf_paper = Manuscript__c.create(mt.paper_to_manuscript_hash)
@@ -33,10 +31,9 @@ module SalesforceServices
       sf_paper
     end
 
-    def self.update_manuscript(paper_id:)
+    def self.update_manuscript(paper:)
       return unless salesforce_active
 
-      paper = Paper.find(paper_id)
       mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       sf_paper   = Manuscript__c.find(paper.salesforce_manuscript_id)
       Rails.logger.info("Salesforce Manuscript updated: #{sf_paper.Id}")
@@ -46,28 +43,25 @@ module SalesforceServices
     rescue Databasedotcom::SalesForceError => ex
       if ex.message == "The requested resource does not exist"
         Rails.logger.warn(
-          "Paper #{paper_id} not found on SFDC. Removing SFDC Id from paper."
+          "Paper #{paper.inspect} not found on SFDC. Removing SFDC Id from paper."
         )
         paper.update_attribute(:salesforce_manuscript_id, nil)
       end
       raise ex
     end
 
-    def self.find_or_create_manuscript(paper_id:)
+    def self.find_or_create_manuscript(paper:)
       return unless salesforce_active
 
-      p = Paper.find(paper_id)
-      if p.salesforce_manuscript_id
-        update_manuscript(paper_id: paper_id)
+      if paper.salesforce_manuscript_id
+        update_manuscript(paper: paper)
       else
-        create_manuscript(paper_id: paper_id)
+        create_manuscript(paper: paper)
       end
     end
 
-    def self.ensure_pfa_case(paper_id:)
+    def self.ensure_pfa_case(paper:)
       return unless salesforce_active
-
-      paper = Paper.find(paper_id)
       return if Case.find_by_Subject(paper.manuscript_id)
 
       bt       = BillingTranslator.new(paper: paper)

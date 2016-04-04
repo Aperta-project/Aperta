@@ -4,23 +4,24 @@ class Author < ActiveRecord::Base
 
   CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
 
-  belongs_to :paper
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
-  has_one :task,
+  has_one :paper,
           through: :author_list_item,
-          inverse_of: :authors,
-          class_name: "TahiStandardTasks::AuthorsTask"
-  delegate :completed?, to: :task, prefix: :task, allow_nil: true
+          inverse_of: :authors
+  # delegate :completed?, to: :task, prefix: :task, allow_nil: true
   delegate :position, to: :author_list_item
 
   validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
   validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
   validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
-  validates :paper, presence: true
 
-  def task_id=(task_id)
-    ensured_author_list_item.task_id = task_id
+  def paper_id
+    ensured_author_list_item.paper_id
+  end
+
+  def paper_id=(paper_id)
+    ensured_author_list_item.paper_id = paper_id
   end
 
   def position=(position)
@@ -37,6 +38,14 @@ class Author < ActiveRecord::Base
 
   def self.contributions_question
     NestedQuestion.where(owner_id: nil, owner_type: name, ident: CONTRIBUTIONS_QUESTION_IDENT).first
+  end
+
+  def task_completed?
+    task && task.completed
+  end
+
+  def task
+    Task.find_by(paper_id: paper_id, type: TahiStandardTasks::AuthorsTask.name)
   end
 
   def contributions

@@ -28,8 +28,6 @@ class Paper < ActiveRecord::Base
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal
   has_many :activities, as: :subject
-  has_many :authors
-  has_many :group_authors
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
@@ -37,6 +35,13 @@ class Paper < ActiveRecord::Base
   has_many :nested_question_answers
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
+
+  has_many :authors, through: :author_list_items, source_type: "Author"
+  has_many :group_authors,
+           through: :author_list_items,
+           source_type: "GroupAuthor",
+           source: :author
+  has_many :author_list_items
 
   serialize :withdrawals, ArrayHashSerializer
 

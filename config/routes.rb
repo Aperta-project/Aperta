@@ -71,7 +71,6 @@ Tahi::Application.routes.draw do
         get 'uninvited_users/:paper_id', to: 'filtered_users#uninvited_users'
       end
     end
-    resources :flows, except: [:new, :edit]
     resources :formats, only: [:index]
     resources :invitations, only: [:index, :show, :create, :destroy] do
       put :accept, on: :member
@@ -148,10 +147,6 @@ Tahi::Application.routes.draw do
     resources :users, only: [:show, :index] do
       get :reset, on: :collection
       put :update_avatar, on: :collection
-    end
-    resources :user_flows do
-      get :authorization, on: :collection
-      get :potential_flows, on: :collection
     end
     resources :user_roles, only: [:index, :create, :destroy]
     resources :versioned_texts, only: [:show]

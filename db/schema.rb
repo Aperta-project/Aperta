@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330164253) do
+ActiveRecord::Schema.define(version: 20160401221738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,13 +212,6 @@ ActiveRecord::Schema.define(version: 20160330164253) do
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
   add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
 
-  create_table "flows", force: :cascade do |t|
-    t.string  "title",       limit: 255
-    t.integer "old_role_id"
-    t.integer "position"
-    t.text    "query"
-  end
-
   create_table "group_authors", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "contact_first_name"
@@ -344,7 +337,6 @@ ActiveRecord::Schema.define(version: 20160330164253) do
     t.boolean  "can_view_assigned_manuscript_managers",             default: false,    null: false
     t.boolean  "can_view_all_manuscript_managers",                  default: false,    null: false
     t.string   "kind",                                  limit: 255, default: "custom", null: false
-    t.boolean  "can_view_flow_manager",                             default: false,    null: false
   end
 
   add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
@@ -639,13 +631,6 @@ ActiveRecord::Schema.define(version: 20160330164253) do
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
-
-  create_table "user_flows", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "user_id"
-    t.integer  "flow_id"
-  end
 
   create_table "user_roles", force: :cascade do |t|
     t.integer  "user_id"

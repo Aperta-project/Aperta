@@ -33,15 +33,6 @@ class DashboardPage < Page
     PaperPage.new
   end
 
-  def view_flow_manager
-    flow_manager_link.click
-    FlowManagerPage.new
-  end
-
-  def flow_manager_link
-    find(".main-nav a", text: "Flow Manager")
-  end
-
   #doesn't wait for elements to appear.
   def has_no_admin_link?
     all(".main-nav a", text: "Admin").empty?

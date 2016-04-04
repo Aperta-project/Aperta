@@ -354,7 +354,7 @@ describe Paper do
 
         it 'returns the user only once per role' do
           expect(paper.participants_by_role['Collaborator']).to eq([collaborator])
-          expect(paper.participants_by_role['Reviewer']).to eq([reviewer, collaborator])
+          expect(paper.participants_by_role['Reviewer']).to contain_exactly(reviewer, collaborator)
         end
       end
     end

@@ -1,8 +1,5 @@
 import Ember from 'ember';
 
-const { computed } = Ember;
-const { filterBy } = computed;
-
 const findAuthors = function(authors) {
   return authors.filter((child) => {
     return child.name === 'author' ||
@@ -37,28 +34,27 @@ const positionSort = (a, b) => {
 export default Ember.Component.extend({
   snapshot1: null, //Snapshots are passed in
   snapshot2: null,
-  questions: Ember.A(),
 
-  questionsViewing: filterBy('snapshot1.contents.children','type','question'),
+  questions: Ember.computed('snapshot1', 'snapshot2', function() {
+    let viewing = this.get('snapshot1.contents.children')
+      .filterBy('type', 'question');
+    let comparing = this.get('snapshot2.contents.children')
+      .filterBy('type', 'question');
+    let addedAndChanged = viewing.map(function(viewingQuestion) {
+      return {
+        viewing: viewingQuestion,
+        comparing: comparing.findBy('name', viewingQuestion.name)
+      };
+    });
 
-  questionsComparing: filterBy('snapshot2.contents.children','type','question'),
+    let removed = comparing.reject((c) => {
+      return viewing.findBy('name', c.name);
+    }).map((deletedQuestion) => {
+      return {viewing: null, comparing: deletedQuestion};
+    });
 
-  setQuestions: function() {
-    var maxLength = Math.max(this.get('questionsViewing').length,
-                             this.get('questionsComparing').length);
-    for (var i = 0; i < maxLength; i++) {
-      var question = {};
-      question.viewing = null;
-      if (this.get('questionsViewing')[i]) {
-        question.viewing = this.get('questionsViewing')[i];
-      }
-      question.comparing = null;
-      if (this.get('questionsComparing')[i]) {
-        question.comparing = this.get('questionsComparing')[i];
-      }
-      this.get('questions')[i] = question;
-    }
-  },
+    return addedAndChanged.concat(removed);
+  }),
 
   authors: Ember.computed('snapshot1', 'snapshot2', function() {
     let viewing = findAuthors(this.get('snapshot1.contents.children'))
@@ -67,8 +63,10 @@ export default Ember.Component.extend({
     let comparing = findAuthors(this.get('snapshot2.contents.children'));
 
     let addedAndChanged = viewing.map(function(viewingAuthor) {
-      let comparingAuthor = equivalentAuthor(viewingAuthor, comparing);
-      return {viewing: viewingAuthor, comparing: comparingAuthor};
+      return {
+        viewing: viewingAuthor,
+        comparing: equivalentAuthor(viewingAuthor, comparing)
+      };
     });
 
     let removed = comparing.reject((c) => {
@@ -78,10 +76,5 @@ export default Ember.Component.extend({
     });
 
     return addedAndChanged.concat(removed);
-  }),
-
-  init: function() {
-    this._super(...arguments);
-    //this.setQuestions();
-  }
+  })
 });

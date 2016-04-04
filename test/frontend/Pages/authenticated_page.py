@@ -176,7 +176,6 @@ class AuthenticatedPage(PlosPage):
     # Must have flow mgr, admin or superadmin
     if permissions in elevated:
       self._get(self._nav_admin_link)
-      self._get(self._nav_flowmgr_link)
     if permissions in ptracker:
       self._get(self._nav_paper_tracker_link)
     return None

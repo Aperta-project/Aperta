@@ -86,17 +86,16 @@ ActiveRecord::Schema.define(version: 20160401221738) do
     t.integer  "position"
     t.integer  "author_id",   null: false
     t.string   "author_type", null: false
-    t.integer  "task_id",     null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "authors", force: :cascade do |t|
-    t.string   "first_name",            limit: 255
-    t.string   "last_name",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "paper_id"
+  end
+
+  create_table "authors", force: :cascade do |t|
+    t.string   "first_name",              limit: 255
+    t.string   "last_name",               limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "middle_initial"
     t.string   "email"
     t.string   "department"
@@ -213,7 +212,6 @@ ActiveRecord::Schema.define(version: 20160401221738) do
   add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
 
   create_table "group_authors", force: :cascade do |t|
-    t.integer  "paper_id"
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
     t.string   "contact_last_name"
@@ -248,9 +246,9 @@ ActiveRecord::Schema.define(version: 20160401221738) do
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
-    t.string  "title",                          limit: 255
-    t.string  "old_role",                       limit: 255
-    t.string  "kind",                           limit: 255
+    t.string  "title",                limit: 255
+    t.string  "old_role",             limit: 255
+    t.string  "kind",                 limit: 255
     t.json    "required_permissions"
   end
 
@@ -576,9 +574,9 @@ ActiveRecord::Schema.define(version: 20160401221738) do
   add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "grant_number", limit: 255
-    t.string   "website",      limit: 255
+    t.string   "name",                limit: 255
+    t.string   "grant_number",        limit: 255
+    t.string   "website",             limit: 255
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -615,16 +613,16 @@ ActiveRecord::Schema.define(version: 20160401221738) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                  limit: 255,                  null: false
-    t.string   "type",                   limit: 255, default: "Task"
-    t.integer  "phase_id",                                            null: false
-    t.boolean  "completed",                          default: false,  null: false
+    t.string   "title",        limit: 255,                  null: false
+    t.string   "type",         limit: 255, default: "Task"
+    t.integer  "phase_id",                                  null: false
+    t.boolean  "completed",                default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role",               limit: 255,                  null: false
-    t.json     "body",                               default: [],     null: false
-    t.integer  "position",                           default: 0
-    t.integer  "paper_id",                                            null: false
+    t.string   "old_role",     limit: 255,                  null: false
+    t.json     "body",                     default: [],     null: false
+    t.integer  "position",                 default: 0
+    t.integer  "paper_id",                                  null: false
     t.datetime "completed_at"
   end
 
@@ -682,6 +680,7 @@ ActiveRecord::Schema.define(version: 20160401221738) do
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
 
+  add_foreign_key "author_list_items", "papers"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

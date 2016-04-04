@@ -118,10 +118,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
     self._title = (By.ID, 'control-bar-paper-title')
-    # Discussion messages
-    self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
-    self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
-
 
   # POM Actions
   def validate_page_elements_styles_functions(self, useremail='', admin=''):
@@ -472,6 +468,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def click_question_mark(self):
     """Click on the question mark to open Infobox"""
     self._get(self._question_mark_icon).click()
+
+  def click_dashboard_link(self):
+    """Click on dashboard link"""
+    self._get(self._nav_aperta_dashboard_link).click()
 
   def click_your_manuscript_link(self):
     """Click on Your Manuscripts link"""

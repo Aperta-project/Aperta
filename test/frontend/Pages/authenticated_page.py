@@ -8,8 +8,8 @@ from loremipsum import generate_paragraph
 
 from Base.PlosPage import PlosPage
 from Base.PostgreSQL import PgSQL
-from Base.Resources import fm_login, oa_login, sa_login
-
+from Base.Resources import staff_admin_login, super_admin_login, \
+    internal_editor_login, prod_staff_login, pub_svcs_login
 
 """
 A class to be inherited from every page for which one is authenticated and wants to access

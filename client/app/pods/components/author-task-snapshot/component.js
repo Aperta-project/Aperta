@@ -6,13 +6,11 @@ export default Ember.Component.extend({
   snapshot2: null,
 
   questionsViewing: Ember.computed('snapshot1', function() {
-    return this.get('snapshot1.contents.children').filterBy(
-      'type', 'question');
+    return this.get('snapshot1.children').filterBy('type', 'question');
   }),
 
   questionsComparing: Ember.computed('snapshot2', function() {
-    return this.get('snapshot2.contents.children').filterBy(
-      'type', 'questions');
+    return this.get('snapshot2.children').filterBy('type', 'question');
   }),
 
   questions: Ember.computed('questionsViewing', 'questionsComparing',
@@ -23,13 +21,13 @@ export default Ember.Component.extend({
 
   authors: Ember.computed('snapshot1', 'snapshot2', function() {
     var snapshots = new SnapshotsById('author');
-    snapshots.addSnapshots(this.get('snapshot1.contents.children'));
-    snapshots.addSnapshots(this.get('snapshot2.contents.children'));
+    snapshots.addSnapshots(this.get('snapshot1.children'));
+    snapshots.addSnapshots(this.get('snapshot2.children'));
     var authors = snapshots.toArray();
 
     snapshots = new SnapshotsById('group-author');
-    snapshots.addSnapshots(this.get('snapshot1.contents.children'));
-    snapshots.addSnapshots(this.get('snapshot2.contents.children'));
+    snapshots.addSnapshots(this.get('snapshot1.children'));
+    snapshots.addSnapshots(this.get('snapshot2.children'));
     var groupAuthors = snapshots.toArray();
 
     var allAuthors = authors.concat(groupAuthors);
@@ -39,7 +37,7 @@ export default Ember.Component.extend({
           return item.name === 'position';
         }).value;
       }
-      return Number.MAX_SAVE_INTEGER; //Sort removed authors to the bottom
+      return Number.MAX_SAFE_INTEGER; //Sort removed authors to the bottom
     });
   })
 });

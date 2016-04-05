@@ -54,9 +54,11 @@
 {{else}}
 
   {{#if figure}}
-    <li>
-      {{attachment-snapshot snapshot=snapshot1}}
-    </li>
+    {{figure-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
+  {{/if}}
+
+  {{#if authorsTask}}
+    {{author-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
   {{/if}}
 
   {{#if supportingInfo}}

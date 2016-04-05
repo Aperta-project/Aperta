@@ -7,7 +7,7 @@ export default Ember.Component.extend({
 
   generalCase: Ember.computed.not('specialCase'),
   specialCase: Ember.computed.or(
-    'author', 'figure', 'supportingInfo', 'funder'),
+    'authorsTask', 'figure', 'supportingInfo', 'funder'),
 
   raw: Ember.computed('snapshot1.type', function(){
     let type = this.get('snapshot1.type');
@@ -26,12 +26,12 @@ export default Ember.Component.extend({
     return this.get('snapshot1.type') === 'question';
   }),
 
-  author: Ember.computed('snapshot1.name', function(){
-    return this.get('snapshot1.name') === 'author';
+  figure: Ember.computed('snapshot1.name', function(){
+    return this.get('snapshot1.name') === 'figure-task';
   }),
 
-  figure: Ember.computed('snapshot1.name', function(){
-    return this.get('snapshot1.name') === 'figure';
+  authorsTask: Ember.computed('snapshot1.name', function(){
+    return this.get('snapshot1.name') === 'authors-task';
   }),
 
   supportingInfo: Ember.computed('snapshot1.name', function(){

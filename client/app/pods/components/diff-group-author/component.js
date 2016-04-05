@@ -1,5 +1,9 @@
 import Ember from 'ember';
-import { getNamedComputedProperty, fromProperty, fromQuestion } from 'tahi/mixins/components/snapshot-named-computed-property';
+import {
+  namedComputedProperty,
+  fromProperty,
+  diffableTextForQuestion
+} from 'tahi/mixins/components/snapshot-named-computed-property';
 
 const { computed } = Ember;
 
@@ -23,13 +27,15 @@ const DiffableAuthor = Ember.Object.extend({
   contactName: Ember.computed('author', function() {
     return getName(this.get('author'));
   }),
-  email: getNamedComputedProperty('author', 'contact_email'),
-  initials: getNamedComputedProperty('author', 'initial'),
+  email: namedComputedProperty('author', 'contact_email'),
+  initials: namedComputedProperty('author', 'initial'),
   contributions: computed('author', function() {
     return this.getContributions(this.get('author'));
   }),
 
-  government: fromQuestion('author', 'group-author--government-employee'),
+  government: diffableTextForQuestion(
+    'author',
+    'group-author--government-employee'),
 
   getContributions: function(properties) {
     var response = ' ';
@@ -67,4 +73,3 @@ export default Ember.Component.extend({
   }),
 
 });
-

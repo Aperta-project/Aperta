@@ -1,5 +1,9 @@
 import Ember from 'ember';
-import { getNamedComputedProperty, fromProperty, fromQuestion } from 'tahi/mixins/components/snapshot-named-computed-property';
+import {
+  namedComputedProperty,
+  fromProperty,
+  diffableTextForQuestion
+} from 'tahi/mixins/components/snapshot-named-computed-property';
 
 const { computed } = Ember;
 
@@ -18,21 +22,21 @@ const DiffableAuthor = Ember.Object.extend({
   authorName: Ember.computed('author', function() {
     return getName(this.get('author'));
   }),
-  title: getNamedComputedProperty('author', 'title'),
-  email: getNamedComputedProperty('author', 'email'),
-  department: getNamedComputedProperty('author', 'department'),
-  affiliation: getNamedComputedProperty('author', 'affiliation'),
-  secondaryAffiliation: getNamedComputedProperty('author',
+  title: namedComputedProperty('author', 'title'),
+  email: namedComputedProperty('author', 'email'),
+  department: namedComputedProperty('author', 'department'),
+  affiliation: namedComputedProperty('author', 'affiliation'),
+  secondaryAffiliation: namedComputedProperty('author',
                                                  'secondary-affiliation'),
   contributions: computed('author', function() {
     return this.getContributions(this.get('author'));
   }),
 
-  corresponding: fromQuestion('author',
+  corresponding: diffableTextForQuestion('author',
                               'author--published_as_corresponding_author'),
-  deceased: fromQuestion('author', 'author--deceased'),
+  deceased: diffableTextForQuestion('author', 'author--deceased'),
 
-  government: fromQuestion('author', 'author--government-employee'),
+  government: diffableTextForQuestion('author', 'author--government-employee'),
 
   getContributions: function(properties) {
     var response = ' ';
@@ -69,4 +73,3 @@ export default Ember.Component.extend({
       { author: this.get('comparingAuthor.children') } );
   }),
 });
-

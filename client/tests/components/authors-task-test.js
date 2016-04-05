@@ -49,8 +49,8 @@ test('Finds no differences when there are none', function(assert) {
     createAuthor(1, 'group-author', 3, sameAttr)
   ];
 
-  let snapshot1 = {contents: {children: viewing}};
-  let snapshot2 = {contents: {children: comparing}};
+  let snapshot1 = {children: viewing};
+  let snapshot2 = {children: comparing};
 
   this.component.setProperties({snapshot1, snapshot2});
   let authors = this.component.get('authors');
@@ -58,7 +58,7 @@ test('Finds no differences when there are none', function(assert) {
   assert.equal(authors.length, 3, 'there are three authors');
   authors.map((author, idx) => {
     assert.deepEqual(authors[idx][0], viewing[idx], `author ${idx + 1} viewing matches`);
-    assert.deepEqual(authors[idx][1], comparing[idx]), `author ${idx + 1} comparing matches`;
+    assert.deepEqual(authors[idx][1], comparing[idx], `author ${idx + 1} comparing matches`);
   });
 
 });
@@ -79,8 +79,8 @@ test('Finds position differences in lists with the same authors', function(asser
     createAuthor(2, 'author', 3, sameAttr)
   ];
 
-  let snapshot1 = {contents: {children: viewing}};
-  let snapshot2 = {contents: {children: comparing}};
+  let snapshot1 = {children: viewing};
+  let snapshot2 = {children: comparing};
 
   this.component.setProperties({snapshot1, snapshot2});
   let authors = this.component.get('authors');
@@ -106,8 +106,8 @@ test('An author was removed', function(assert) {
     createAuthor(2, 'author', 2, sameAttr),
   ];
 
-  let snapshot1 = {contents: {children: viewing}};
-  let snapshot2 = {contents: {children: comparing}};
+  let snapshot1 = {children: viewing};
+  let snapshot2 = {children: comparing};
 
   this.component.setProperties({snapshot1, snapshot2});
   let authors = this.component.get('authors');
@@ -129,8 +129,8 @@ test('An author was added', function(assert) {
     createAuthor(1, 'author', 1, sameAttr),
   ];
 
-  let snapshot1 = {contents: {children: viewing}};
-  let snapshot2 = {contents: {children: comparing}};
+  let snapshot1 = {children: viewing};
+  let snapshot2 = {children: comparing};
 
   this.component.setProperties({snapshot1, snapshot2});
   let authors = this.component.get('authors');
@@ -154,8 +154,8 @@ test('An author was added and removed', function(assert) {
     createAuthor(1, 'group-author', 2, sameAttr),
   ];
 
-  let snapshot1 = {contents: {children: viewing}};
-  let snapshot2 = {contents: {children: comparing}};
+  let snapshot1 = {children: viewing};
+  let snapshot2 = {children: comparing};
 
   this.component.setProperties({snapshot1, snapshot2});
   let authors = this.component.get('authors');
@@ -166,5 +166,3 @@ test('An author was added and removed', function(assert) {
   assert.equal(authors[2][0], null);
   assert.deepEqual(authors[2][1], comparing[1]);
 });
-
-

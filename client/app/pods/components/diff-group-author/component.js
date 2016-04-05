@@ -1,106 +1,69 @@
 import Ember from 'ember';
+import { getNamedComputedProperty, fromProperty, fromQuestion } from 'tahi/mixins/components/snapshot-named-computed-property';
 
 const { computed } = Ember;
-
-const fromProperty = function(properties, name) {
-  let property = _.findWhere(properties, { name: name } );
-  if (property) {
-    return property.value;
-  }
-  return ' ';
-};
 
 const getName = function(properties) {
   if (!properties) {
     return ' ';
   }
-  console.log(properties);
   return fromProperty(properties, 'contact_first_name') + ' ' +
          fromProperty(properties, 'contact_middle_name') + ' ' +
          fromProperty(properties, 'contact_last_name');
 };
 
-const authorProperty = function(collectionKey, propertyKey) {
-  return Ember.computed(collectionKey + '.[]', function() {
-    return fromProperty(this.get(collectionKey), propertyKey);
-  });
-};
-
-const fromQuestion = function(collectionKey, propertyKey) {
-  return Ember.computed(collectionKey + '.[]', function() {
-    let properties = this.get(collectionKey);
-    let question = _.findWhere(properties, { name: propertyKey });
-    if (question && question.value && question.value.answer === true) {
-      return question.value.title;
-    }
-    return ' ';
-  });
-};
-
 export default Ember.Component.extend({
-  viewing: null, //Snapshots are passed in
-  comparing: null,
+  viewingAuthor: null, //Snapshots are passed in
+  comparingAuthor: null,
 
-  viewingName: computed('viewing.children', function() {
-    return fromProperty(this.get('viewing.children'), 'position') + '. ' +
-           fromProperty(this.get('viewing.children'), 'name');
+  viewing: computed('viewingAuthor', function() {
+    return this.DiffableAuthor.create(
+      { author: this.get('viewingAuthor.children') } );
   }),
 
-  comparingName: computed('comparing.children', function() {
-    return fromProperty(this.get('comparing.children'), 'position') + '. ' +
-           fromProperty(this.get('comparing.children'), 'name');
+  comparing: computed('comparingAuthor', function() {
+    return this.DiffableAuthor.create(
+      { author: this.get('comparingAuthor.children') } );
   }),
 
-  viewingInitials: authorProperty('viewing.children', 'initial'),
-  comparingInitials: authorProperty('comparing.children', 'initial'),
+  DiffableAuthor: Ember.Object.extend({
+    author: null, // this gets passed in
 
-  comparingPosition: authorProperty('comparing.children', 'position'),
-  viewingPosition: authorProperty('viewing.children', 'position'),
+    groupName: computed('author', function() {
+      return fromProperty(this.get('author'), 'position') + '. ' +
+        fromProperty(this.get('author'), 'name');
+    }),
 
-  viewingContactName: computed('viewing.children', function() {
-    return(getName(this.get('viewing.children')));
-  }),
+    contactName: Ember.computed('author', function() {
+      return getName(this.get('author'));
+    }),
+    email: getNamedComputedProperty('author', 'contact_email'),
+    initials: getNamedComputedProperty('author', 'initial'),
+    contributions: computed('author', function() {
+      return this.getContributions(this.get('author'));
+    }),
 
-  comparingContactName: computed('comparing.children', function() {
-    return(getName(this.get('comparing.children')));
-  }),
+    government: fromQuestion('author', 'group-author--government-employee'),
 
-  viewingEmail: authorProperty('viewing.children', 'contact_email'),
-  comparingEmail: authorProperty('comparing.children', 'contact_email'),
-
-  viewingGovernment: fromQuestion('viewing.children',
-                        'group-author--government-employee'),
-  comparingGovernment: fromQuestion('comparing.children',
-                        'group-author--government-employee'),
-
-  viewingContributions: computed('viewing.children', function() {
-    return(this.getContributions(this.get('viewing.children')));
-  }),
-
-  comparingContributions: computed('comparing.children', function() {
-    return(this.getContributions(this.get('comparing.children')));
-  }),
-
-  getContributions: function(properties) {
-    var response = ' ';
-    var contributions = this.fromProperty(properties,
-                                          'group-author--contributions');
-    if (contributions) {
-      _.each(contributions.children, function(contribution) {
-        if (contribution.value.answer) {
-          response += contribution.value.title + ', ';
-        }
-      });
-      if (response.endsWith(', ')) {
-        response = response.substring(0, response.length - 2);
+    getContributions: function(properties) {
+      var response = ' ';
+      if (!properties) {
+        return response;
       }
+
+      var contributions = properties.findBy('name', 'group-author--contributions');
+      if (contributions) {
+        _.each(contributions.children, function(contribution) {
+          if (contribution.value.answer) {
+            response += contribution.value.title + ', ';
+          }
+        });
+        if (response.endsWith(', ')) {
+          response = response.substring(0, response.length - 2);
+        }
+      }
+      return response;
     }
-    return response;
-  },
-
-  fromProperty: function(properties, name) {
-    return _.findWhere(properties, { name: name } );
-  }
-
+  })
 });
 

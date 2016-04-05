@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/shared_examples/paper_state_transition_shared_examples'
 
 describe Paper do
   let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
@@ -353,7 +354,7 @@ describe Paper do
 
         it 'returns the user only once per role' do
           expect(paper.participants_by_role['Collaborator']).to eq([collaborator])
-          expect(paper.participants_by_role['Reviewer']).to eq([reviewer, collaborator])
+          expect(paper.participants_by_role['Reviewer']).to contain_exactly(reviewer, collaborator)
         end
       end
     end
@@ -361,6 +362,8 @@ describe Paper do
 
   context 'State Machine' do
     describe '#initial_submit' do
+      include_examples "transitions save state_updated_at", :initial_submit!
+
       it 'transitions to initially_submitted' do
         paper.initial_submit!
         expect(paper).to be_initially_submitted
@@ -400,6 +403,8 @@ describe Paper do
     end
 
     describe '#submit!' do
+      include_examples "transitions save state_updated_at", :submit!
+
       it 'does not transition when metadata tasks are incomplete' do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
         expect{ paper.submit! user }.to raise_error(AASM::InvalidTransition)
@@ -482,6 +487,8 @@ describe Paper do
     end
 
     describe '#withdraw!' do
+      include_examples "transitions save state_updated_at", :withdraw!
+
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
@@ -503,6 +510,9 @@ describe Paper do
     end
 
     describe '#invite_full_submission' do
+      include_examples "transitions save state_updated_at",
+                       :invite_full_submission!
+
       let(:paper) do
         FactoryGirl.create(:paper, :initially_submitted, journal: journal)
       end
@@ -527,19 +537,23 @@ describe Paper do
     end
 
     describe '#reactivate!' do
+      include_examples "transitions save state_updated_at", :reactivate!
+
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
-      it "transitions to the previous state" do
+      before do
         paper.withdraw!
+      end
+
+      it "transitions to the previous state" do
         expect(paper).to be_withdrawn
         paper.reload.reactivate!
         expect(paper).to be_submitted
       end
 
       it "marks the paper with the previous editable state for submitted papers" do
-        paper.withdraw!
         expect(paper).to_not be_editable
         paper.reload.reactivate!
         expect(paper).to_not be_editable
@@ -558,6 +572,8 @@ describe Paper do
     end
 
     describe '#minor_check!' do
+      include_examples "transitions save state_updated_at", :minor_check!
+
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
@@ -577,24 +593,28 @@ describe Paper do
     end
 
     describe '#submit_minor_check!' do
+      include_examples "transitions save state_updated_at",
+                       :submit_minor_check!
+
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
-      it "marks the paper uneditable" do
+      before do
         paper.minor_check!
+      end
+
+      it "marks the paper uneditable" do
         paper.submit_minor_check! user
         expect(paper).to_not be_editable
       end
 
       it "sets the submitting_user of the latest version" do
-        paper.minor_check!
         paper.submit_minor_check! user
         expect(paper.latest_version.submitting_user).to eq(user)
       end
 
       it "sets the updated_at of the latest version" do
-        paper.minor_check!
         paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
         paper.submit_minor_check! user
         expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
@@ -602,24 +622,40 @@ describe Paper do
     end
 
     describe '#reject' do
-      it 'transitions to rejected state from submitted' do
-        paper = FactoryGirl.create(:paper, :submitted, journal: journal)
-        paper.reject!
-        expect(paper.rejected?).to be true
+      context 'paper is submitted' do
+        let(:paper) do
+          FactoryGirl.create(:paper, :submitted, journal: journal)
+        end
+
+        include_examples "transitions save state_updated_at", :reject!
+
+        it 'transitions to rejected state from submitted' do
+          paper.reject!
+          expect(paper.rejected?).to be true
+        end
       end
 
-      it 'transitions to rejected state from initially_submitted' do
-        paper = FactoryGirl.create(
-          :paper,
-          :initially_submitted,
-          journal: journal
-        )
-        paper.reject!
-        expect(paper.rejected?).to be true
+      context 'paper is initially_submitted' do
+        let(:paper) do
+          FactoryGirl.create(
+            :paper,
+            :initially_submitted,
+            journal: journal
+          )
+        end
+
+        include_examples "transitions save state_updated_at", :reject!
+
+        it 'transitions to rejected state from initially_submitted' do
+          paper.reject!
+          expect(paper.rejected?).to be true
+        end
       end
     end
 
     describe '#publish!' do
+      include_examples "transitions save state_updated_at", :publish!
+
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end

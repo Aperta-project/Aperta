@@ -49,14 +49,4 @@ class JournalPage < Page
   def epub_cover
     find('.epub-cover-image a').text
   end
-
-  def add_flow
-    within ".admin-roles" do
-      first(".admin-role-action-button.fa.fa-pencil").click
-      find("input[name='role[canViewFlowManager]']").set(true)
-      click_link("Edit Flows")
-    end
-
-    find(".control-bar-link-icon").click
-  end
 end

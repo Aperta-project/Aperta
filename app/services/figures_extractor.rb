@@ -7,15 +7,9 @@ class FiguresExtractor
 
   def sync!(paper)
     paper.transaction do
-      relinked_html = paper.body
-      images.each do |image|
-        figure = paper.figures.create!(attachment: image,
-                                       title: image.original_filename,
-                                       status: 'done')
-        relinked_html = relinked_image_anchor(html: relinked_html,
-                                              image: image,
-                                              figure: figure)
-      end
+      f = Nokogiri::XML.fragment(paper.body)
+      f.search('.//img').remove
+      relinked_html = f
       paper.update!(body: relinked_html)
     end
   end

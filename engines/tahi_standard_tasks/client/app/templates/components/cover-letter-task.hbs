@@ -1,55 +1,34 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#show-if-editing initialState=emptyLetterBody
-                     stopEditingCallback=(action "saveCoverLetter")
-                     as |editing startEditing stopEditing|}}
-    {{#if editing}}
-      <div class="edit-cover-letter">
+  <div class="edit-cover-letter">
 
-        <p>To be of most use to editors, we suggest your letter could address the following questions:</p>
+    <p>To be of most use to editors, we suggest your letter could address the following questions:</p>
 
-        <ul>
-          <li>What is the scientific question you are addressing?</li>
-          <li>What is the key finding that answers this question?</li>
-          <li>What is the nature of the evidence you provide in support of your conclusion?</li>
-          <li>What are the three most recently published articles that are relevant to this question?</li>
-          <li>What significance do your results have for the field?</li>
-          <li>What significance do your results have for the broader community (of biologists and/or the public)?</li>
-          <li>What other novel findings do you present?</li>
-          <li>Is there additional information that we should take into account?</li>
-        </ul>
-        <p>Please note that your cover letter may also be seen by reviewers and members of the Editorial Board. If you wish to request to exclude specific scientists from the evaluation process, you may do this using the Reviewer Candidates card, where you should also provide a reason for requesting exclusion. Competing interests can be declared using the Competing Interests card.</p>
+    <ul>
+      <li>What is the scientific question you are addressing?</li>
+      <li>What is the key finding that answers this question?</li>
+      <li>What is the nature of the evidence you provide in support of your conclusion?</li>
+      <li>What are the three most recently published articles that are relevant to this question?</li>
+      <li>What significance do your results have for the field?</li>
+      <li>What significance do your results have for the broader community (of biologists and/or the public)?</li>
+      <li>What other novel findings do you present?</li>
+      <li>Is there additional information that we should take into account?</li>
+    </ul>
+    <p>Please note that your cover letter may also be seen by reviewers and members of the Editorial Board. If you wish to request to exclude specific scientqists from the evaluation process, you may do this using the Reviewer Candidates card, where you should also provide a reason for requesting exclusion. Competing interests can be declared using the Competing Interests card.</p>
 
-        {{content-editable
-          value=letterBody
-          class="form-control taller-textarea cover-letter-field"
-          placeholder="Please type or paste your cover letter into this text field"
-          editable=isEditable}}
+    {{nested-question-textarea
+      ident='cover_letter--text'
+      inputClassNames='form-control cover-letter-field'
+      placeholder="Please type or paste your cover letter into this text field, or attach a file below"
+      owner=task
+      disabled=isNotEditable}}
 
-          {{attachment-manager filePath="tasks/attachment"
-                               attachments=task.attachments
-                               disabled=isNotEditable
-                               deleteFile=(action "deleteAttachment")
-                               uploadFinished=(action "createAttachment")
-                               updateAttachment=(action "updateAttachment")}}
-
-          <button class="button-primary button--green"
-                  disabled={{isNotEditable}}
-                  {{action stopEditing}}>
-            Save
-          </button>
-      </div>
-    {{else}}
-      <div class="preview-cover-letter">
-        <h4>Here is your cover letter:</h4>
-          <div class="cover-letter">{{{letterBody}}}</div>
-          <button class="button-primary button--green {{if isNotEditable 'button--disabled'}}"
-                  disabled={{isNotEditable}}
-                  {{action startEditing}}>
-            Make Changes
-          </button>
-      </div>
-    {{/if}}
-  {{/show-if-editing}}
+    {{nested-question-uploader-manager
+      buttonText="attach file"
+      ident="cover_letter--attachment"
+      owner=task
+      accept=".docx,.pdf"
+      disabled=isNotEditable}}
+  </div>
 </div>

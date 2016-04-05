@@ -49,7 +49,7 @@ describe SalesforceServices::API do
     it "calls create on a Salesforce Manuscript__c object" do
       mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')
       expect(Manuscript__c).to receive(:create).and_return(mock_manuscript)
-      manuscript = @api.create_manuscript(paper_id: paper.id)
+      manuscript = @api.create_manuscript(paper: paper)
       expect(manuscript).to eq mock_manuscript
     end
   end
@@ -64,7 +64,7 @@ describe SalesforceServices::API do
         .with(paper.salesforce_manuscript_id)
         .and_return(mock_manuscript)
       expect(mock_manuscript).to receive(:update_attributes)
-      manuscript = @api.update_manuscript(paper_id: paper.id)
+      manuscript = @api.update_manuscript(paper: paper)
       expect(manuscript).to eq mock_manuscript
     end
   end
@@ -73,14 +73,14 @@ describe SalesforceServices::API do
     it "calls create when salesforce_manuscript_id is not present" do
       expect(paper.salesforce_manuscript_id).to be_nil
       expect(SalesforceServices::API).to receive(:create_manuscript).and_return(true)
-      SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
+      SalesforceServices::API.find_or_create_manuscript(paper: paper)
     end
 
     it "calls update when salesforce_manuscript_id is present" do
       paper.update_attribute(:salesforce_manuscript_id, "foo")
       expect(paper.salesforce_manuscript_id).to be_truthy
       expect(SalesforceServices::API).to receive(:update_manuscript).and_return(true)
-      SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
+      SalesforceServices::API.find_or_create_manuscript(paper: paper)
     end
   end
 
@@ -114,7 +114,7 @@ describe SalesforceServices::API do
 
       it "doesn't create a new case" do
         expect(Case).to_not receive(:create)
-        @api.ensure_pfa_case(paper_id: paper.id)
+        @api.ensure_pfa_case(paper: paper)
       end
     end
 
@@ -130,7 +130,7 @@ describe SalesforceServices::API do
         end
 
         VCR.use_cassette("salesforce_create_billing_and_pfa") do
-          @kase = @api.ensure_pfa_case(paper_id: paper.id)
+          @kase = @api.ensure_pfa_case(paper: paper)
           expect(@kase.class).to eq Case
           expect(@kase.persisted?).to eq true
         end

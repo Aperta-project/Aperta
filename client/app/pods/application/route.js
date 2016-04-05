@@ -38,12 +38,6 @@ export default Ember.Route.extend({
         '/api/admin/journals/authorization',
         'canViewAdminLinks'
       );
-
-      this.get('restless').authorize(
-        controller,
-        '/api/user_flows/authorization',
-        'canViewFlowManagerLink'
-      );
     }
   },
 

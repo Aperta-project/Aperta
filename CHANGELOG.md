@@ -5,15 +5,17 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [{version}] - {release_date}
 ### Added
 - Funders now have an "additional comments" field
+- Email report to admin counting papers in states
 
 ### Changed
-- 
+-
 
 ### Deprecated
 -
 
 ### Removed
-- 
+- Roles section of Admin page removed to avoid confusion since it only applied to old roles
+- Flow Manager
 
 ### Fixed
 - Single-sign-on sessions should now properly end upon Aperta logout

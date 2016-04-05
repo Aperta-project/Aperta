@@ -84,13 +84,10 @@ namespace :maintenance do
       "/papers/1/tasks/4",
       "/papers/1/tasks/5",
 
-      "/flow_manager",
-
       "/paper_tracker",
 
       "/admin/journals",
       "/admin/journals/1",
-      "/admin/journals/1/roles/1/flow_manager",
       "/admin/journals/1/manuscript_manager_templates/1/edit"
     ]
 

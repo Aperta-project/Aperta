@@ -22,8 +22,6 @@ class User < ActiveRecord::Base
     through: :old_roles,
     source: :journal
   )
-  has_many :user_flows, inverse_of: :user, dependent: :destroy
-  has_many :flows, through: :user_flows
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many \
     :participations,
@@ -72,6 +70,8 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
+  after_create :add_user_role
+
   if Rails.configuration.password_auth_enabled
     devise(
       :trackable, :omniauthable, :database_authenticatable, :registerable,
@@ -94,20 +94,12 @@ class User < ActiveRecord::Base
     Rails.configuration.password_auth_enabled && super
   end
 
-  def possible_flows
-    Flow.where('old_role_id IN (?) OR old_role_id IS NULL', old_role_ids)
-  end
-
   def self.site_admins
     where(site_admin: true)
   end
 
   def full_name
     "#{first_name} #{last_name}"
-  end
-
-  def can_view_flow_manager?
-    old_roles.can_view_flow_manager.present?
   end
 
   def auto_generate_password(length=50)
@@ -152,5 +144,12 @@ class User < ActiveRecord::Base
         .where('old_roles.journal_id = ?', assigned_users_in_journal_id)
         .uniq
     end
+  end
+
+  private
+
+  def add_user_role
+    return unless user_role = Role.find_by(name: 'User')
+    assignments.where(role: user_role, assigned_to: self).first_or_create!
   end
 end

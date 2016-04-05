@@ -34,7 +34,7 @@ class ReviewerReportTaskCreator
       ParticipationFactory.create(task: task, assignee: assignee, notify: false)
       TahiStandardTasks::ReviewerMailer
         .delay.welcome_reviewer(assignee_id: assignee.id,
-                                task_id: task.id)
+                                paper_id: paper.id)
     else
       existing_reviewer_report_task.incomplete!
     end

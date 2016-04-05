@@ -34,9 +34,8 @@ module TahiStandardTasks
       mail(to: @assigner.email, subject: "Reviewer invitation was declined on the manuscript, \"#{@paper.display_title}\"")
     end
 
-    def welcome_reviewer(assignee_id:, task_id:)
-      @task = Task.find(task_id)
-      @paper = @task.paper
+    def welcome_reviewer(assignee_id:, paper_id:)
+      @paper = Paper.find(paper_id)
       @journal = @paper.journal
       assignee = User.find_by(id: assignee_id)
       @assignee_name = display_name(assignee)

@@ -2128,13 +2128,6 @@ assignments:
     - User
     - '2016-02-09 15:01:48.872196'
     - '2016-02-09 15:01:48.872196'
-  - - '142'
-    - '13'
-    - '7'
-    - '3'
-    - Paper
-    - '2016-02-09 15:01:48.877101'
-    - '2016-03-04 17:46:12.23706'
   - - '143'
     - '4'
     - '15'
@@ -2163,6 +2156,20 @@ assignments:
     - Task
     - '2016-03-23 13:19:01.690564'
     - '2016-03-23 13:19:01.690564'
+  - - '147'
+    - '13'
+    - '7'
+    - '13'
+    - User
+    - '2016-03-29 22:25:29.913007'
+    - '2016-03-29 22:25:29.913007'
+  - - '148'
+    - '14'
+    - '7'
+    - '14'
+    - User
+    - '2016-03-29 22:25:29.943719'
+    - '2016-03-29 22:25:29.943719'
 
 ---
 author_list_items:
@@ -5677,7 +5684,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-03-22 15:09:05.272824'
+    - '2016-03-29 20:28:06.951832'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -7114,6 +7121,30 @@ nested_questions:
     - '2016-03-22 15:09:05.811934'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+  - - '232'
+    - 
+    - text
+    - cover_letter--text
+    - 
+    - '359'
+    - '360'
+    - '1'
+    - '2016-03-29 20:28:06.743537'
+    - '2016-03-29 20:28:06.743537'
+    - TahiStandardTasks::CoverLetterTask
+    - 
+  - - '233'
+    -
+    - attachment
+    - cover_letter--attachment
+    - 
+    - '361'
+    - '362'
+    - '2'
+    - '2016-03-29 20:28:06.750541'
+    - '2016-03-29 20:28:06.750541'
+    - TahiStandardTasks::CoverLetterTask
+    - 
 
 ---
 old_roles:
@@ -7127,8 +7158,7 @@ old_roles:
   - can_view_assigned_manuscript_managers
   - can_view_all_manuscript_managers
   - kind
-  - can_view_flow_manager
-  records: 
+  records:
   - - '1'
     - Journal Admin
     - '1'
@@ -7138,7 +7168,6 @@ old_roles:
     - true
     - true
     - admin
-    - false
   - - '2'
     - Editor
     - '1'
@@ -7148,17 +7177,6 @@ old_roles:
     - true
     - true
     - editor
-    - false
-  - - '3'
-    - Flow Manager
-    - '1'
-    - '2015-10-29 19:40:11.873561'
-    - '2015-10-29 20:03:38.990113'
-    - false
-    - false
-    - false
-    - flow manager
-    - false
   - - '4'
     - Tech Checker
     - '1'
@@ -7168,7 +7186,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
   - - '5'
     - Academic Editor
     - '1'
@@ -7178,7 +7195,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
   - - '6'
     - Reviewer
     - '1'
@@ -7188,7 +7204,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
   - - '7'
     - Admin
     - '1'
@@ -7198,7 +7213,6 @@ old_roles:
     - false
     - false
     - admin
-    - false
   - - '8'
     - Author
     - '1'
@@ -7208,7 +7222,6 @@ old_roles:
     - false
     - false
     - custom
-    - false
 
 ---
 paper_roles:
@@ -7337,6 +7350,7 @@ papers:
   - first_submitted_at
   - accepted_at
   - striking_image_type
+  - state_updated_at
   records: 
   - - '1'
     - 
@@ -7358,6 +7372,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7386,6 +7401,7 @@ papers:
     - 
     - 
     - Figure
+    - 
   - - '3'
     - Ready to Submit
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -7406,6 +7422,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7432,6 +7449,7 @@ papers:
     - 
     - 
     - 
+    - 
   - - '8'
     - 
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -7452,6 +7470,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7478,6 +7497,7 @@ papers:
     - 
     - 
     - 
+    - 
   - - '10'
     - The great scientific paper of 2015
     - The most scrumtrulescent scientific paper of 2015.
@@ -7498,6 +7518,7 @@ papers:
     - "{}"
     - true
     - false
+    - 
     - 
     - 
     - 
@@ -7534,6 +7555,7 @@ papers:
     - true
     - false
     - '2016-03-23 13:16:38.394422'
+    - 
     - 
     - 
 
@@ -15280,11 +15302,6 @@ user_roles:
     - '2015-11-02 15:16:12.82695'
     - '2015-11-02 15:16:12.82695'
     - '5'
-  - - '3'
-    - '6'
-    - '2015-11-03 19:54:58.522231'
-    - '2015-11-03 19:54:58.522231'
-    - '3'
   - - '4'
     - '7'
     - '2015-11-03 19:54:58.617985'
@@ -15295,11 +15312,6 @@ user_roles:
     - '2015-11-03 19:54:58.710602'
     - '2015-11-03 19:54:58.710602'
     - '7'
-  - - '6'
-    - '9'
-    - '2015-11-03 19:54:58.794289'
-    - '2015-11-03 19:54:58.794289'
-    - '3'
   - - '7'
     - '10'
     - '2015-11-03 19:54:58.8803'
@@ -15431,25 +15443,6 @@ users:
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - 
-    - false
-    - 
-  - - '6'
-    - FlowManager
-    - User
-    - flow_manager@example.com
-    - "$2a$10$er0.fIv6HKSTJDkv/RVGw.YvKAHnDFgGCE6jfOKUcleS0LrJNE.ma"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.518834'
-    - '2015-11-03 19:54:58.518834'
-    - flow_manager
     - 
     - false
     - 

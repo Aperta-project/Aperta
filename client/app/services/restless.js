@@ -50,7 +50,7 @@ export default Ember.Service.extend({
   },
 
   putUpdate(model, path, data) {
-    return this.putModel(model, path).then(function(response) {
+    return this.putModel(model, path, data).then(function(response) {
       return model.get('store').pushPayload(response);
     }, function(xhr) {
       let errors, modelErrors;

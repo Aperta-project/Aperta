@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 
 describe User do
@@ -45,17 +46,6 @@ describe User do
     it 'does not return other papers' do
       created_papers = user.created_papers_for_journal(journal)
       expect(created_papers).to_not include(not_my_paper)
-    end
-  end
-
-  describe "#possible_flows" do
-    it "returns all flows assigned to the user's old_roles" do
-      old_role = FactoryGirl.create(:old_role)
-      flow = FactoryGirl.create(:flow, old_role: old_role)
-      user = FactoryGirl.create(:user)
-      user.old_roles << old_role
-
-      expect(user.possible_flows).to include(flow)
     end
   end
 
@@ -232,6 +222,14 @@ describe User do
 
     it "returns false if user is not an admin for a given journal" do
       expect(regular_user.can?(:administer, journal)).to be false
+    end
+  end
+
+  describe "#create" do
+    let(:user) { User.create! attributes_for(:user) }
+
+    it "should create a user record with the User role assigned" do
+      expect(user).to have_role_name 'User'
     end
   end
 end

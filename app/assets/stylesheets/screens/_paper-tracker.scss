@@ -37,16 +37,6 @@
   }
 }
 
-.paper-tracker-members-column,
-.paper-tracker-handling-editor-column,
-.paper-tracker-cover-editor-column,
-.paper-tracker-title-column
- { min-width: 200px; }
-.paper-tracker-date-column { min-width: 150px; }
-.paper-tracker-paper-id-column,
-.paper-tracker-type-column,
-.paper-tracker-status-column { min-width: 110px; }
-
 .paper-tracker-table {
   overflow: auto;
 
@@ -58,12 +48,12 @@
     th, td {
       font-size: 14px;
       vertical-align: top;
+      padding: 0 15px 0 0;
     }
 
     th {
       border-bottom: 1px solid $tahi-grey-light;
       font-weight: bold;
-      padding: 0;
     }
 
     td {
@@ -72,6 +62,17 @@
       padding-bottom: 2rem;
     }
   }
+
+  .paper-tracker-members-column,
+  .paper-tracker-handling-editor-column,
+  .paper-tracker-cover-editor-column,
+  .paper-tracker-title-column
+   { min-width: 200px; }
+  .paper-tracker-date-column { min-width: 150px; }
+  .paper-tracker-paper-id-column,
+  .paper-tracker-type-column,
+  .paper-tracker-status-column { min-width: 110px; }
+  .paper-tracker-badge-column { padding: 0px; }
 }
 
 .paper-tracker-saved-searches {

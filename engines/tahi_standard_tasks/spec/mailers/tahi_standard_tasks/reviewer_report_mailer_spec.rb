@@ -57,7 +57,7 @@ describe TahiStandardTasks::ReviewerReportMailer do
       expect(email.to).to eq(paper.academic_editors.map(&:email))
     end
 
-    it "contains link to the task" do
+    it "contains link to the paper" do
       expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{task.id}})
     end
 

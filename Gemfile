@@ -12,7 +12,7 @@ gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
 gem 'tahi-assign_team', path: 'engines/tahi-assign_team'
 
 # Gems
-gem 'aasm', '~> 4.1.0'
+gem 'aasm', '~> 4.9.0'
 gem 'active_model_serializers', '0.8.3'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'activerecord-sqlserver-adapter'

@@ -9,7 +9,6 @@ class Paper < ActiveRecord::Base
   include Assignable::Model
 
   belongs_to :journal, inverse_of: :papers
-  belongs_to :flow
   belongs_to :striking_image, polymorphic: true
 
   has_many :figures, dependent: :destroy
@@ -78,6 +77,8 @@ class Paper < ActiveRecord::Base
     state :rejected
     state :published
     state :withdrawn
+
+    after_all_transitions :set_state_updated_at!
 
     event(:initial_submit) do
       transitions from: :unsubmitted,
@@ -436,12 +437,12 @@ class Paper < ActiveRecord::Base
     notify
   end
 
-  private
-
   def answer_for(ident)
     nested_question_answers.includes(:nested_question)
       .find_by(nested_questions: { ident: ident })
   end
+
+  private
 
   def new_major_version!
     latest_version.new_major_version!
@@ -470,6 +471,10 @@ class Paper < ActiveRecord::Base
   def set_first_submitted_at!
     return if first_submitted_at
     update!(first_submitted_at: Time.current.utc)
+  end
+
+  def set_state_updated_at!
+    update!(state_updated_at: Time.current.utc)
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

@@ -3,15 +3,13 @@ class OldRole < ActiveRecord::Base
   ADMIN    = "admin"
   EDITOR   = "editor"
   CUSTOM   = "custom"
-  FLOW_MANAGER = "flow manager"
 
-  REQUIRED_KINDS = [ADMIN, EDITOR, FLOW_MANAGER]
+  REQUIRED_KINDS = [ADMIN, EDITOR]
   KINDS = REQUIRED_KINDS + [CUSTOM]
 
   belongs_to :journal, inverse_of: :old_roles
   has_many :user_roles, inverse_of: :old_role, dependent: :destroy
   has_many :users, through: :user_roles
-  has_many :flows, inverse_of: :old_role, dependent: :destroy
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :journal_id }
@@ -23,20 +21,12 @@ class OldRole < ActiveRecord::Base
     where(kind: ADMIN)
   end
 
-  def self.flow_managers
-    where(kind: FLOW_MANAGER)
-  end
-
   def required?
     REQUIRED_KINDS.include?(kind)
   end
 
   def self.can_administer_journal
     where(can_administer_journal: true)
-  end
-
-  def self.can_view_flow_manager
-    where(can_view_flow_manager: true)
   end
 
   def self.can_view_all_manuscript_managers

@@ -14,7 +14,6 @@ const getName = function(properties) {
   if (!properties) {
     return ' ';
   }
-  console.log(properties);
   return fromProperty(properties, 'position') + '. ' +
          fromProperty(properties, 'first_name') + ' ' +
          fromProperty(properties, 'middle_initial') + ' ' +
@@ -31,7 +30,7 @@ const fromQuestion = function(collectionKey, propertyKey) {
   return Ember.computed(collectionKey + '.[]', function() {
     let properties = this.get(collectionKey);
     let question = _.findWhere(properties, { name: propertyKey });
-    if (question.value.answer === true) {
+    if (question && question.value && question.value.answer === true) {
       return question.value.title;
     }
     return ' ';
@@ -95,6 +94,7 @@ export default Ember.Component.extend({
 
   getContributions: function(properties) {
     var response = ' ';
+    console.log(properties);
     var contributions = this.fromProperty(properties, 'author--contributions');
     if (contributions) {
       _.each(contributions.children, function(contribution) {

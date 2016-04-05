@@ -96,6 +96,7 @@ class PapersController < ApplicationController
       paper_id: paper.id,
       user_id: current_user.id
     )
+    paper.update!(processing: true)
     respond_with paper
   end
 

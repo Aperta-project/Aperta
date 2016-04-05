@@ -507,6 +507,10 @@ describe PapersController do
         expect(response).to responds_with(204)
         expect(response.body).to eq("")
       end
+
+      it "sets the paper status to processing" do
+        expect { do_request }.to change { paper.reload.processing }.from(false).to(true)
+      end
     end
 
     context "when the user does not have access" do

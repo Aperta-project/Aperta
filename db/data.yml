@@ -7122,29 +7122,29 @@ nested_questions:
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '232'
-    - 
+    -
     - text
     - cover_letter--text
-    - 
+    -
     - '359'
     - '360'
     - '1'
     - '2016-03-29 20:28:06.743537'
     - '2016-03-29 20:28:06.743537'
     - TahiStandardTasks::CoverLetterTask
-    - 
+    -
   - - '233'
     -
     - attachment
     - cover_letter--attachment
-    - 
+    -
     - '361'
     - '362'
     - '2'
     - '2016-03-29 20:28:06.750541'
     - '2016-03-29 20:28:06.750541'
     - TahiStandardTasks::CoverLetterTask
-    - 
+    -
 
 ---
 old_roles:
@@ -7351,7 +7351,8 @@ papers:
   - accepted_at
   - striking_image_type
   - state_updated_at
-  records: 
+  - processing
+  records:
   - - '1'
     - 
     - "<b>Unstarted</b>: <i>No tasks filled out</i>"
@@ -7376,6 +7377,7 @@ papers:
     - 
     - 
     - 
+    - false
   - - '2'
     - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
       rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
@@ -7402,6 +7404,7 @@ papers:
     - 
     - Figure
     - 
+    - false
   - - '3'
     - Ready to Submit
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -7426,6 +7429,7 @@ papers:
     - 
     - 
     - 
+    - false
   - - '4'
     - Editors Assigned
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
@@ -7450,6 +7454,7 @@ papers:
     - 
     - 
     - 
+    - false
   - - '8'
     - 
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -7474,6 +7479,7 @@ papers:
     - 
     - 
     - 
+    - false
   - - '9'
     - 
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
@@ -7498,6 +7504,7 @@ papers:
     - 
     - 
     - 
+    - false
   - - '10'
     - The great scientific paper of 2015
     - The most scrumtrulescent scientific paper of 2015.
@@ -7522,6 +7529,7 @@ papers:
     - 
     - 
     - 
+    - false
   - - '11'
     - 
     - "<b>With Versions</b>: <em>Diffable tasks and manuscript</em>"
@@ -7558,6 +7566,7 @@ papers:
     - 
     - 
     - 
+    - false
 
 ---
 participations:
@@ -15443,7 +15452,7 @@ users:
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - 
+    -
     - false
     - 
   - - '7'

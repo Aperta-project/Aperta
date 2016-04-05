@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-from decimal import Decimal
 import logging
 import random
 import time
@@ -10,10 +9,9 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, staff_admin_login, internal_editor_login, handling_editor_login, \
     cover_editor_login, prod_staff_login, pub_svcs_login, super_admin_login, \
-    academic_editor_login, reviewer_login
+    reviewer_login
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
-from Tasks.figures_task import FiguresTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -134,10 +132,38 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(.5)
     workflow_page.logout()
 
-    # login as reviewer
+    # login as reviewer respond to invite
     self.cas_login(email=reviewer_login['email'])
     time.sleep(2)
-    dashboard_page.accept_invitation(manuscript_title)
+    dashboard_page.click_view_invites_button()
+    invite_response = dashboard_page.accept_or_reject_invitation(manuscript_title)
+    logging.info('Invitees response to review request was {0}'.format(invite_response))
+    # If accepted, validate new assignment in db
+    if invite_response == 'Accept':
+      reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'areviewer\';')[0][0]
+      reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                            'name = \'Reviewer\';',
+                                            (wombat_journal_id,))[0][0]
+      test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
+                                    'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
+                                    (reviewer_user_id, paper_id))[0][0]
+      assert test_for_role == reviewer_role_for_env, test_for_role
+    workflow_page.logout()
+
+    # log back in as editorial user and validate status display on card
+    logging.info(editorial_user)
+    self.cas_login(email=editorial_user['email'])
+    paper_workflow_url = '{0}/workflow'.format(paper_url)
+    self._driver.get(paper_workflow_url)
+    # go to card
+    workflow_page = WorkflowPage(self.getDriver())
+    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
+    #   otherwise failures
+    time.sleep(10)
+    workflow_page.click_card('invite_reviewers')
+    time.sleep(3)
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.validate_reviewer_response(reviewer_login, invite_response)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -1,30 +1,40 @@
 import Ember from 'ember';
 
 const { computed } = Ember;
-const { filterBy, union, sort } = computed;
+
+const fromProperty = function(properties, name) {
+  let property = _.findWhere(properties, { name: name } );
+  if (property) {
+    return property.value;
+  }
+  return ' ';
+};
 
 const getName = function(properties) {
   if (!properties) {
     return ' ';
   }
-  return fromProperty(properties, 'first_name').value + ' ' +
-         fromProperty(properties, 'middle_initial').value + ' ' +
-         fromProperty(properties, 'last_name').value;
-};
-
-const fromProperty = function(properties, name) {
-  return _.findWhere(properties, { name: name } );
-};
-
-const authorName = function(author) {
-  return Ember.computed(author, function () {
-    return(getName(this.get(author)));
-  })
+  console.log(properties);
+  return fromProperty(properties, 'position') + '. ' +
+         fromProperty(properties, 'first_name') + ' ' +
+         fromProperty(properties, 'middle_initial') + ' ' +
+         fromProperty(properties, 'last_name');
 };
 
 const authorProperty = function(collectionKey, propertyKey) {
   return Ember.computed(collectionKey + '.[]', function() {
-    return this.get(collectionKey).findBy('name', propertyKey).value || ' ';
+    return fromProperty(this.get(collectionKey), propertyKey);
+  });
+};
+
+const fromQuestion = function(collectionKey, propertyKey) {
+  return Ember.computed(collectionKey + '.[]', function() {
+    let properties = this.get(collectionKey);
+    let question = _.findWhere(properties, { name: propertyKey });
+    if (question.value.answer === true) {
+      return question.value.title;
+    }
+    return ' ';
   });
 };
 
@@ -36,13 +46,29 @@ export default Ember.Component.extend({
   viewingPosition: authorProperty('viewing.children', 'position'),
 
   viewingName: computed('viewing.children', function() {
-    console.log('properties', this.getName(this.get('viewing.children')));
-    return(this.getName(this.get('viewing.children')));
+    return(getName(this.get('viewing.children')));
   }),
 
   comparingName: computed('comparing.children', function() {
-    return(this.getName(this.get('comparing.children')));
+    return(getName(this.get('comparing.children')));
   }),
+
+  viewingDepartment: authorProperty('viewing.children', 'department'),
+  comparingDepartment: authorProperty('comparing.children', 'department'),
+
+  viewingTitle: authorProperty('viewing.children', 'title'),
+  comparingTitle: authorProperty('comparing.children', 'title'),
+
+  viewingEmail: authorProperty('viewing.children', 'email'),
+  comparingEmail: authorProperty('comparing.children', 'email'),
+
+  viewingAffiliation: authorProperty('viewing.children', 'affiliation'),
+  comparingAffiliation: authorProperty('comparing.children', 'affiliation'),
+
+  viewingSecondaryAffiliation: authorProperty('viewing.children',
+                                              'secondary-affiliation'),
+  comparingSecondaryAffiliation: authorProperty('comparing.children',
+                                                'secondary-affiliation'),
 
   viewingContributions: computed('viewing.children', function() {
     return(this.getContributions(this.get('viewing.children')));
@@ -52,14 +78,20 @@ export default Ember.Component.extend({
     return(this.getContributions(this.get('comparing.children')));
   }),
 
-  getName: function(properties) {
-    if (!properties) {
-      return ' ';
-    }
-    return this.fromProperty(properties, 'first_name').value + ' ' +
-           this.fromProperty(properties, 'middle_initial').value + ' ' +
-           this.fromProperty(properties, 'last_name').value;
-  },
+  viewingCorresponding: fromQuestion('viewing.children',
+                        'author--published_as_corresponding_author'),
+  comparingCorresponding: fromQuestion('comparing.children',
+                        'author--published_as_corresponding_author'),
+
+  viewingDeceased: fromQuestion('viewing.children',
+                        'author--deceased'),
+  comparingDeceased: fromQuestion('comparing.children',
+                        'author--deceased'),
+
+  viewingGovernment: fromQuestion('viewing.children',
+                        'author--government-employee'),
+  comparingGovernment: fromQuestion('comparing.children',
+                        'author--government-employee'),
 
   getContributions: function(properties) {
     var response = ' ';

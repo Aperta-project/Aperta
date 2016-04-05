@@ -14,8 +14,8 @@ const getName = function(properties) {
   if (!properties) {
     return ' ';
   }
-  return fromProperty(properties, 'position') + '. ' +
-         fromProperty(properties, 'contact_first_name') + ' ' +
+  console.log(properties);
+  return fromProperty(properties, 'contact_first_name') + ' ' +
          fromProperty(properties, 'contact_middle_name') + ' ' +
          fromProperty(properties, 'contact_last_name');
 };
@@ -41,8 +41,15 @@ export default Ember.Component.extend({
   viewing: null, //Snapshots are passed in
   comparing: null,
 
-  viewingName: authorProperty('viewing.children', 'name'),
-  comparingName: authorProperty('comparing.children', 'name'),
+  viewingName: computed('viewing.children', function() {
+    return fromProperty(this.get('viewing.children'), 'position') + '. ' +
+           fromProperty(this.get('viewing.children'), 'name');
+  }),
+
+  comparingName: computed('comparing.children', function() {
+    return fromProperty(this.get('comparing.children'), 'position') + '. ' +
+           fromProperty(this.get('comparing.children'), 'name');
+  }),
 
   viewingInitials: authorProperty('viewing.children', 'initial'),
   comparingInitials: authorProperty('comparing.children', 'initial'),

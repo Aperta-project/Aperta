@@ -8,7 +8,8 @@ from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, \
     creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-    internal_editor_login, cover_editor_login, staff_admin_login, pub_svcs_login, super_admin_login
+    internal_editor_login, cover_editor_login, staff_admin_login, pub_svcs_login, \
+    prod_staff_login, super_admin_login
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -32,6 +33,7 @@ users = [creator_login1,
          internal_editor_login,
          staff_admin_login,
          pub_svcs_login,
+         prod_staff_login,
          super_admin_login,
          ]
 
@@ -66,7 +68,8 @@ class ViewPaperTest(CommonTest):
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.validate_nav_toolbar_elements(user)
     if user in (staff_admin_login, super_admin_login):
-      manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'], admin=True)
+      manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'],
+                                                                admin=True)
     else:
       manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'],
                                                                 admin=False)

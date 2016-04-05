@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## [1.4.3] - 2016-04-05
 ### Added
 - Funders now have an "additional comments" field
 - Email report to admin counting papers in states

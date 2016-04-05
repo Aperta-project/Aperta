@@ -87,10 +87,6 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # login as staff admin
     dashboard_page = self.cas_login(email=staff_admin_login['email'])
@@ -115,10 +111,6 @@ class InitialDecisionCardTest(CommonTest):
     initial_decision.execute_decision('invite')
     # Test that card is editable by author
     manuscript_page.logout()
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # login as creator
     self.cas_login(email=creator_user['email'])

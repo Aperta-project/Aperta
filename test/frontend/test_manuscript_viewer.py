@@ -114,11 +114,6 @@ class ViewPaperTest(CommonTest):
         logging.info('No manuscripts present for user: {0}'.format(user['user']))
     # Logout
     dashboard_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
     return self
 
   def test_initial_submission_infobox(self):
@@ -219,11 +214,6 @@ class ViewPaperTest(CommonTest):
         manuscript_page.get_submission_status_info_text(),\
         manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # Logging in as collaborator
     dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
@@ -244,11 +234,6 @@ class ViewPaperTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
     manuscript_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # Approve initial Decision
     logging.info('Logging in as user: {0}'.format(super_admin_login['user']))
@@ -265,11 +250,6 @@ class ViewPaperTest(CommonTest):
     initial_decision_card.execute_decision('invite')
     time.sleep(5)
     manuscript_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # Test for AC8
     logging.info('Logging in as user: {0}'.format(creator_login5))

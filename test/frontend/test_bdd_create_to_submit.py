@@ -220,11 +220,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
     manuscript_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     admin_user = random.choice(admin_users)
     self.cas_login(email=admin_user['email'])
@@ -256,10 +251,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       print(decision)
       return False
     workflow_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     self.cas_login(email=creator_user['email'])
     # Need time to finish initial redirect to dashboard page

@@ -159,11 +159,11 @@ class DashboardPage(AuthenticatedPage):
       except UnicodeEncodeError:
         self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]"
                                            .format(title.encode('utf8')))
-      yes_btn = listing.find_element(*self._invite_yes_btn)
-      no_btn = listing.find_element(*self._invite_no_btn)
       if response == 'Accept':
+        yes_btn = listing.find_element(*self._invite_yes_btn)
         btn = yes_btn
       else:
+        no_btn = listing.find_element(*self._invite_no_btn)
         btn = no_btn
       btn.click()
     return response

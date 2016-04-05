@@ -48,7 +48,12 @@ class InviteReviewersCard(BaseCard):
 
   # POM Actions
   def validate_card_elements_styles(self):
-    pass
+    """
+    This method validates the styles of the card elements including the common card elements
+    :return void function
+    """
+    self.validate_common_elements_styles()
+
 
   def validate_invite_reviewer(self, reviewer, title, creator, manu_id):
     """

@@ -35,7 +35,7 @@ class JournalFactory
       task_klasses << PlosBioTechCheck::ChangesForAuthorTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
-        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
       end
@@ -51,7 +51,7 @@ class JournalFactory
       task_klasses -= [PlosBilling::BillingTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
       end
@@ -73,7 +73,7 @@ class JournalFactory
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
@@ -185,7 +185,7 @@ class JournalFactory
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
@@ -198,7 +198,7 @@ class JournalFactory
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
@@ -290,7 +290,7 @@ class JournalFactory
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
     end

@@ -322,7 +322,7 @@ class PaperTrackerPage(AuthenticatedPage):
       papers = self._get_paper_list(journal_ids)
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       for count, row in enumerate(table_rows):
-        logging.info('Validating Row: {0}'.format(count))
+        logging.info('Validating Row: {0}'.format(count + 1))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (
             By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-title-column"]/a'.format(count + 1))
@@ -358,14 +358,19 @@ class PaperTrackerPage(AuthenticatedPage):
             # Split both to eliminate differences in whitespace
             db_title = db_title.split()
             page_title = page_title.split()
-            assert db_title == page_title, 'DB: {0}\nPage: {1}\nRow: {2}'.format(db_title,
-                                                                                 page_title,
-                                                                                 count)
+            logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title,
+                                                                    page_title,
+                                                                    count + 1)
+                         )
+            assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
+                                                                                       page_title,
+                                                                                       count + 1)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
         db_ms_id = db_papers[count][2].split('/')[1]
         db_paper_id = db_papers[count][0]
         manid = self._get(self._paper_tracker_table_tbody_manid)
+        logging.debug('Page id: ' + manid.text + '\nDB id: ' + db_ms_id)
         assert manid.text == db_ms_id, manid.text + ' is not equal to ' + db_ms_id + ' from db.'
 
         page_paper_id = manid.get_attribute('href').split('/')[-1]
@@ -377,7 +382,10 @@ class PaperTrackerPage(AuthenticatedPage):
         self._get(self._paper_tracker_table_tbody_subdate)
 
         paptype = self._get(self._paper_tracker_table_tbody_paptype)
-        assert paptype.text == papers[count][4], (paptype.text, papers[count])
+        logging.debug('Page Article Type: {0}\n'
+                     'DB Article Type: {1}\n'
+                     'Paper Row Count: {2}'.format(paptype.text, db_papers[count][4], count + 1))
+        assert paptype.text == db_papers[count][4], (paptype.text, db_papers[count])
 
         members = self._get(self._paper_tracker_table_tbody_members)
         page_members_by_role = members.text.split('\n')

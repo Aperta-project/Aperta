@@ -50,17 +50,17 @@ class JournalAdminPage(AdminPage):
                                                    'tr.user-row td div div ul li.select2-search-field input')
     self._journal_admin_user_row_role_search_result_item = (By. CSS_SELECTOR, 'ul.select2-results li div')
 
-    self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
-    self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
-    self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
-    self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header')
-    self._journal_admin_roles_permission_heading = (By.CSS_SELECTOR,
-                                                    'div.admin-roles div.admin-roles-header + div.admin-roles-header')
-    self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
+    # self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
+    # self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
+    # self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
+    # self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header')
+    # self._journal_admin_roles_permission_heading = (By.CSS_SELECTOR,
+    #                                                 'div.admin-roles div.admin-roles-header + div.admin-roles-header')
+    # self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
 
-    self._journal_admin_avail_task_types_div = (By.XPATH, '//div[@class="admin-section"][2]')
-    self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
-    self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][2]/div')
+    self._journal_admin_avail_task_types_div = (By.XPATH, '//div[@class="admin-section"][1]')
+    self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
+    self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][1]/div')
 
     self._journal_admin_att_overlay_task_title_heading = (By.CSS_SELECTOR, 'div.task-headers h3')
     self._journal_admin_att_overlay_role_heading = (By.CSS_SELECTOR, 'div.task-headers h3 + h3')
@@ -69,13 +69,13 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_att_overlay_row_selector = (By.CSS_SELECTOR, 'div div.select2-container')
     self._journal_admin_att_overlay_row_clear_btn = (By.CSS_SELECTOR, 'div button')
 
-    self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
-    self._journal_admin_manu_mgr_templates_button = (By.XPATH, '//div[@class="admin-section"][3]/button')
+    self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
+    self._journal_admin_manu_mgr_templates_button = (By.XPATH, '//div[@class="admin-section"][2]/button')
     self._journal_admin_manu_mgr_thumbnail = (By.CLASS_NAME, 'mmt-thumbnail')
     self._journal_admin_manu_mgr_thumb_title = (By.CSS_SELECTOR, 'h3.mmt-thumbnail-title')
     self._journal_admin_manu_mgr_thumb_phases = (By.TAG_NAME, 'span')
 
-    self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][4]/h2')
+    self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
     self._journal_admin_upload_epub_cvr_btn = (By.CSS_SELECTOR, 'span.epub-cover-upload span.fileinput-button')
     self._journal_admin_epub_cvr_image_text = (By.CSS_SELECTOR, 'span.epub-cover-image p')
     self._journal_admin_epub_cvr_image_link = (By.CSS_SELECTOR, 'a.epub-cover')
@@ -128,14 +128,15 @@ class JournalAdminPage(AdminPage):
       for user in page_user_list:
         print(user.text)
         print('\n')
-    else:
-      logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
-      self._add_user_with_role('atest author3', 'Flow Manager')
-      logging.info('Verifying added user')
-      self._validate_user_with_role('atest author3', 'Flow Manager')
-      logging.info('Deleting newly added user')
-      self._delete_user_with_role()
-      time.sleep(3)
+    # Aperta-6134 - Temporarily commenting out adjusting user roles
+    # else:
+    #   logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
+      # self._add_user_with_role('atest author3', 'Flow Manager')
+      # logging.info('Verifying added user')
+      # self._validate_user_with_role('atest author3', 'Flow Manager')
+      # logging.info('Deleting newly added user')
+      # self._delete_user_with_role()
+      # time.sleep(3)
 
   def _add_user_with_role(self, user, role):
     """

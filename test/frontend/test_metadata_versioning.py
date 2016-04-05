@@ -86,12 +86,6 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.close_submit_overlay()
     # logout
     paper_viewer.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    logging.info(login_url)
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # If this is an initial decision submission, admin has to invite
     if paper_type == 'Research w/Initial Decision Card':
@@ -108,11 +102,6 @@ class MetadataVersioningTest(CommonTest):
       workflow_page.complete_card('Initial Decision')
       time.sleep(1)
       paper_viewer.logout()
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-      login_url = self._driver.current_url
-      logging.info(login_url)
-      self.invalidate_cas_token()
-      self.return_to_login_page(login_url)
 
       logging.info('Paper type is initial submission, logging in as creator to complete '
                    'full submission')
@@ -127,11 +116,6 @@ class MetadataVersioningTest(CommonTest):
       paper_viewer.close_submit_overlay()
       # logout
       paper_viewer.logout()
-      time.sleep(2)
-      # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-      login_url = self._driver.current_url
-      self.invalidate_cas_token()
-      self.return_to_login_page(login_url)
 
     logging.info('Logging in as the Internal Editor to Register a Decision')
     # Log as editor to approve the manuscript with modifications
@@ -145,11 +129,6 @@ class MetadataVersioningTest(CommonTest):
     workflow_page.complete_card('Register Decision')
     time.sleep(1)
     workflow_page.logout()
-    time.sleep(2)
-    # The following sequence is a workaround for our failure to invalidate CAS token on sign out
-    login_url = self._driver.current_url
-    self.invalidate_cas_token()
-    self.return_to_login_page(login_url)
 
     # Log in as a author to make some changes
     logging.info('Logging in as creator to make changes')

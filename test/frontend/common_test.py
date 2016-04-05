@@ -152,8 +152,3 @@ class CommonTest(FrontEndTest):
     self._driver.get(invalidation_url)
     self._driver.navigated = True
     time.sleep(2)
-
-  def return_to_login_page(self, login_url):
-    self._driver.get(login_url)
-    self._driver.navigated = True
-    time.sleep(2)

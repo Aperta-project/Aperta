@@ -56,8 +56,6 @@ class AuthenticatedPage(PlosPage):
     self._nav_your_manuscripts_link = (By.ID, 'nav-manuscripts')
     self._nav_help_link = (By.ID, 'nav-help')
     self._nav_admin_link = (By.ID, 'nav-admin')
-    # Temporary commented out since will not be used on plosbiology
-    #self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
     self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
     self._nav_profile_img = (By.CSS_SELECTOR, 'span.main-nav-item img')
@@ -240,11 +238,6 @@ class AuthenticatedPage(PlosPage):
   def click_dashboard_link(self):
     """Click nav toolbar dashboard link"""
     self._get(self._nav_dashboard_link).click()
-    return self
-
-  def click_flow_mgr_link(self):
-    """Click nav toolbar flow manager link"""
-    self._get(self._nav_flowmgr_link).click()
     return self
 
   def click_paper_tracker_link(self):

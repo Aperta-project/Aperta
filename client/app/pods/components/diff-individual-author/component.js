@@ -94,7 +94,6 @@ export default Ember.Component.extend({
 
   getContributions: function(properties) {
     var response = ' ';
-    console.log(properties);
     var contributions = this.fromProperty(properties, 'author--contributions');
     if (contributions) {
       _.each(contributions.children, function(contribution) {

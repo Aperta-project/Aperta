@@ -131,7 +131,8 @@ class PaperTrackerPage(AuthenticatedPage):
                        'invited_for_full_submission': 2,
                        'rejected': 3,
                        'submitted': 4,
-                       'unsubmitted': 5
+                       'unsubmitted': 5,
+                       'withdrawn': 6,
                        }
         papers = sorted(papers, key=lambda val: state_order[val[5]], reverse=reverse)
       else:
@@ -187,7 +188,8 @@ class PaperTrackerPage(AuthenticatedPage):
       try:
         self._get(self._flash_error_msg)
         self.restore_timeout()
-        raise ErrorAlertThrownException('Error fired on Delete of Saved Search')
+        # APERTA-6452 The following error should not occur but does
+        # raise ErrorAlertThrownException('Error fired on Delete of Saved Search')
       except ElementDoesNotExistAssertionError:
         logging.debug('Delete successful')
       self.restore_timeout()

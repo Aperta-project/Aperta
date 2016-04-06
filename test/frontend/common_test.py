@@ -139,4 +139,3 @@ class CommonTest(FrontEndTest):
     dashboard = self.login(email=user)
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
-

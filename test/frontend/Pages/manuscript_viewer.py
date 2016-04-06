@@ -259,9 +259,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       discussion_create_new_btn = self._get(self._discussion_create_new_btn)
       # APERTA-6361 Styling incorrect
       # self.validate_secondary_big_green_button_style(discussion_create_new_btn)
-      discussion_create_new_btn.click()
       create_new_topic = self._get(self._create_new_topic)
-      assert 'Create New Topic' in create_new_topic.text
+      assert 'Create New Topic'.upper() in create_new_topic.text, create_new_topic.text
+      discussion_create_new_btn.click()
       # TODO: Styles for cancel since is not in the style guide
       cancel = self._get(self._create_topic_cancel)
       assert application_typeface in cancel.value_of_css_property('font-family')

@@ -103,40 +103,51 @@ class AuthenticatedPage(PlosPage):
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
-    self._billing_card = None
-    self._cover_letter_card = None
-    self._review_cands_card = None
-    self._revise_task_card = None
-    self._cfa_card = None
     self._authors_card = None
+    self._billing_card = None
+    self._cfa_card = None
     self._competing_ints_card = None
+    self._cover_letter_card = None
     self._data_avail_card = None
     self._ethics_statement_card = None
     self._figures_card = None
     self._fin_disclose_card = None
     self._new_taxon_card = None
     self._report_guide_card = None
+    self._review_cands_card = None
+    self._revise_task_card = None
     self._supporting_info_card = None
     self._upload_manu_card = None
+    self._assign_admin_card = None
+    self._assign_team_card = None
+    self._editor_discussion_card = None
+    self._final_tech_check_card = None
     self._initial_decision_card = None
+    self._initial_tech_check_card = None
+    self._invite_academic_editors_card = None
+    self._invite_reviewers_card = None
+    self._production_metadata_card = None
+    self._register_decision_card = None
+    self._reviewer_report_card = None
+    self._revision_tech_check_card = None
+    self._send_to_apex_card = None
     # Tasks - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_task = None
-    self._billing_task = None
-    self._cover_letter_task = None
-    self._review_cands_task = None
-    self._revise_task = None
-    self._cfa_task = None
     self._authors_task = None
+    self._billing_task = None
+    self._cfa_task = None
     self._competing_ints_task = None
+    self._cover_letter_task = None
     self._data_avail_task = None
     self._ethics_statement_task = None
     self._figures_task = None
     self._fin_disclose_task = None
     self._new_taxon_task = None
     self._report_guide_task = None
+    self._review_cands_task = None
+    self._revise_task = None
     self._supporting_info_task = None
     self._upload_manu_task = None
-    self._initial_decision_task = None
     # Global Overlay Locators
     self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
     self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
@@ -339,52 +350,79 @@ class AuthenticatedPage(PlosPage):
   def click_card(self, cardname):
     """
     Passed a card name, opens the relevant card
-    :param cardname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, prq,
-        review_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
-        new_taxon, reporting_guidelines, changes_for_author
-    NOTE: this covers only the author facing cards, with the exception of initial_decision
-    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
-        workflow page
-    NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
-        and workflow contexts while we transition.
+    :param cardname: any one of: addl_info, authors, billing, changes_for_author,
+      competing_interests, cover_letter, data_availability, ethics_statement, figures,
+      financial_disclosure, new_taxon, reporting_guidelines, reviewer_candidates, revise_task,
+      supporting_info, upload_manuscript, assign_admin, assign_team, editor_discussion,
+      final_tech_check, initial_decision, invite_academic_editor, invite_reviewers,
+      production_metadata, register_decision, reviewer_report, revision_tech_check or send_to_apex
+    NOTE: this does not cover the ad hoc card
+    NOTE also that the locators for these are specifically defined within the scope of the
+        manuscript_viewer or workflow page
+    NOTE: Note this method is bifurcated into click_card() and click_task() to support both the
+        manuscript view and workflow contexts.
 
     :return: True or False, if cardname is unknown.
     """
     self.set_timeout(1)
-    if cardname.lower() == 'cover_letter':
-      card_title = self._get(self._billing_card)
-    elif cardname.lower() == 'billing':
-      card_title = self._get(self._cover_letter_card)
-    elif cardname.lower() == 'figures':
-      card_title = self._get(self._figures_card)
+    # 'Author-type' cards
+    if cardname.lower() == 'addl_info':
+      card_title = self._get(self._addl_info_card)
     elif cardname.lower() == 'authors':
       card_title = self._get(self._authors_card)
-    elif cardname.lower() == 'supporting_info':
-      card_title = self._get(self._supporting_info_card)
-    elif cardname.lower() == 'upload_manuscript':
-      card_title = self._get(self._upload_manu_card)
-    elif cardname.lower() == 'addl_info':
-      card_title = self._get(self._addl_info_card)
-    elif cardname.lower() == 'review_candidates':
-      card_title = self._get(self._review_cands_card)
-    elif cardname.lower() == 'revise_task':
-      card_title = self._get(self._revise_task_card)
+    elif cardname.lower() == 'billing':
+      card_title = self._get(self._cover_letter_card)
+    elif cardname.lower() == 'changes_for_author':
+      card_title = self._get(self._cfa_card)
     elif cardname.lower() == 'competing_interests':
       card_title = self._get(self._competing_ints_card)
+    elif cardname.lower() == 'cover_letter':
+      card_title = self._get(self._billing_card)
     elif cardname.lower() == 'data_availability':
       card_title = self._get(self._data_avail_card)
     elif cardname.lower() == 'ethics_statement':
       card_title = self._get(self._ethics_statement_card)
+    elif cardname.lower() == 'figures':
+      card_title = self._get(self._figures_card)
     elif cardname.lower() == 'financial_disclosure':
       card_title = self._get(self._fin_disclose_card)
     elif cardname.lower() == 'new_taxon':
       card_title = self._get(self._new_taxon_card)
     elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
-    elif cardname.lower() == 'changes_for_author':
-      card_title = self._get(self._cfa_card)
+    elif cardname.lower() == 'reviewer_candidates':
+      card_title = self._get(self._review_cands_card)
+    elif cardname.lower() == 'revise_task':
+      card_title = self._get(self._revise_task_card)
+    elif cardname.lower() == 'supporting_info':
+      card_title = self._get(self._supporting_info_card)
+    elif cardname.lower() == 'upload_manuscript':
+      card_title = self._get(self._upload_manu_card)
+    # 'staff/editorial-type cards
+    elif cardname.lower() == 'assign_admin':
+      card_title = self._get(self._assign_admin_card)
+    elif cardname.lower() == 'assign_team':
+      card_title = self._get(self._assign_team_card)
+    elif cardname.lower() == 'editor_discussion':
+      card_title = self._get(self._editor_discussion_card)
+    elif cardname.lower() == 'final_tech_check':
+      card_title = self._get(self._final_tech_check_card)
     elif cardname.lower() == 'initial_decision':
       card_title = self._get(self._initial_decision_card)
+    elif cardname.lower() == 'invite_academic_editor':
+      card_title = self._get(self._invite_academic_editors_card)
+    elif cardname.lower() == 'invite_reviewers':
+      card_title = self._get(self._invite_reviewers_card)
+    elif cardname.lower() == 'production_metadata':
+      card_title = self._get(self._production_metadata_card)
+    elif cardname.lower() == 'register_decision':
+      card_title = self._get(self._register_decision_card)
+    elif cardname.lower() == 'reviewer_report':
+      card_title = self._get(self._reviewer_report_card)
+    elif cardname.lower() == 'revision_tech_check':
+      card_title = self._get(self._revision_tech_check_card)
+    elif cardname.lower() == 'send_to_apex':
+      card_title = self._get(self._send_to_apex_card)
     else:
       print('Unknown Card')
       self.restore_timeout()
@@ -397,7 +435,7 @@ class AuthenticatedPage(PlosPage):
     """
     Passed a task name, opens the relevant task
     :param taskname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, addl_info,
-        review_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
+        reviewer_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
         new_taxon, reporting_guidelines, changes_for_author
     NOTE: this covers only the author facing tasks, with the exception of initial_decision
     NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
@@ -854,10 +892,9 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', \
         button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', \
-        button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '18px', \
-        button.value_of_css_property('line-height')
+    # APERTA-6498
+    # assert button.value_of_css_property('line-height') == '18px', \
+    #     button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == tahi_green, \
         button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == white, \
@@ -866,14 +903,15 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', \
         button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', \
-        button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', \
-        button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', \
-        button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', \
-        button.value_of_css_property('padding-right')
+    # APERTA-6498
+    # assert button.value_of_css_property('padding-top') == '8px', \
+    #     button.value_of_css_property('padding-top')
+    # assert button.value_of_css_property('padding-bottom') == '8px', \
+    #     button.value_of_css_property('padding-bottom')
+    # assert button.value_of_css_property('padding-left') == '14px', \
+    #     button.value_of_css_property('padding-left')
+    # assert button.value_of_css_property('padding-right') == '14px', \
+    #     button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_link_big_green_button_style(button):

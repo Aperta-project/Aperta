@@ -140,15 +140,3 @@ class CommonTest(FrontEndTest):
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
 
-  def invalidate_cas_token(self):
-    """
-    Currently there is a bug in the Akita code base in which the CAS token is not invalidated on
-      logout.
-    This is a temporary method that works around this bug by explicitly calling into CAS to
-      invalidate the token.
-    :return: void function
-    """
-    invalidation_url = 'https://cas-aperta-integration.plos.org/cas/logout'
-    self._driver.get(invalidation_url)
-    self._driver.navigated = True
-    time.sleep(2)

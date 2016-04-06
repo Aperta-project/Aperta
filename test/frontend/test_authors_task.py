@@ -105,6 +105,8 @@ class AuthorsTaskTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # Need to allow time for tasks to attach to DOM, sadly
+    time.sleep(3)
     manuscript_page.click_task('authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.add_group_author_task_action()

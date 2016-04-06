@@ -68,6 +68,9 @@ class DashboardPage(AuthenticatedPage):
 
     # View Invitations Modal Static Locators
     self._view_invites_title = (By.CLASS_NAME, 'overlay-header-title')
+    self._view_invites_invite_listing = (By.CSS_SELECTOR, 'li.dashboard-paper-title')
+    self._invite_yes_btn = (By.CSS_SELECTOR, 'p + button')
+    self._invite_no_btn = (By.CSS_SELECTOR, 'p + button + button')
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')
 
     # Create New Submission Modal
@@ -140,6 +143,30 @@ class DashboardPage(AuthenticatedPage):
                                               .format(title.encode('utf8')))
     btn = h3.find_element_by_xpath("./following-sibling::button")
     btn.click()
+
+  def accept_or_reject_invitation(self, title):
+    """
+    Returns a random response to a given invitation
+    :param title: Title of the publication for the invitation
+    :return: decision
+    """
+    choices = ['Accept', 'Reject']
+    response = random.choice(choices)
+    invite_listings = self._gets(self._view_invites_invite_listing)
+    for listing in invite_listings:
+      try:
+        self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]".format(title))
+      except UnicodeEncodeError:
+        self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]"
+                                           .format(title.encode('utf8')))
+      if response == 'Accept':
+        yes_btn = listing.find_element(*self._invite_yes_btn)
+        btn = yes_btn
+      else:
+        no_btn = listing.find_element(*self._invite_no_btn)
+        btn = no_btn
+      btn.click()
+    return response
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """

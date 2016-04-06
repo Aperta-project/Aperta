@@ -1,6 +1,6 @@
 class LitePaperSerializer < ActiveModel::Serializer
   attributes :active, :created_at, :editable, :id, :manuscript_id, :old_roles,
-             :publishing_state, :related_at_date, :title,
+             :processing, :publishing_state, :related_at_date, :title,
              :updated_at
 
   def related_at_date

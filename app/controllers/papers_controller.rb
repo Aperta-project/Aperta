@@ -97,7 +97,7 @@ class PapersController < ApplicationController
       user_id: current_user.id
     )
     paper.update!(processing: true)
-    respond_with paper
+    render json: paper, status: :ok
   end
 
   def download

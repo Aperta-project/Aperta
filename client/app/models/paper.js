@@ -44,6 +44,7 @@ export default DS.Model.extend({
   oldRoles: attr(),
   paperType: attr('string'),
   permissionState: Ember.computed.alias('publishingState'),
+  processing: attr('boolean'),
   publishingState: attr('string'),
   relatedAtDate: attr('date'),
   relatedUsers: attr(),

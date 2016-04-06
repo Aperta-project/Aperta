@@ -36,16 +36,19 @@ class Author < ActiveRecord::Base
     where(paper_id: paper)
   end
 
-  def self.contributions_question
-    NestedQuestion.where(owner_id: nil, owner_type: name, ident: CONTRIBUTIONS_QUESTION_IDENT).first
-  end
-
   def task_completed?
     task && task.completed
   end
 
   def task
     Task.find_by(paper_id: paper_id, type: TahiStandardTasks::AuthorsTask.name)
+  end
+
+  def self.contributions_question
+    NestedQuestion.find_by(
+      owner_id: nil,
+      owner_type: name,
+      ident: CONTRIBUTIONS_QUESTION_IDENT)
   end
 
   def contributions

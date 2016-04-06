@@ -3,5 +3,7 @@
     {{{body}}}
   </div>
 {{else}}
-  {{progress-spinner visible=true size="large" align="middle"}}
+  {{#progress-spinner-message visible=true size="large" align="middle"}}
+    Loading . . .
+  {{/progress-spinner-message}}
 {{/if}}

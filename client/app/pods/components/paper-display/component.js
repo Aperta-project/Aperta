@@ -5,7 +5,7 @@ const { alias, not } = Ember.computed;
 export default Ember.Component.extend({
   paper: null, // required
 
-  classNames: ['manuscript'],
+  classNames: ['manuscript', 'paper-display'],
 
   body: alias('paper.body'),
   ready: not('paper.processing')

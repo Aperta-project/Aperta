@@ -131,7 +131,8 @@ class PaperTrackerPage(AuthenticatedPage):
                        'invited_for_full_submission': 2,
                        'rejected': 3,
                        'submitted': 4,
-                       'unsubmitted': 5
+                       'unsubmitted': 5,
+                       'withdrawn': 6,
                        }
         papers = sorted(papers, key=lambda val: state_order[val[5]], reverse=reverse)
       else:

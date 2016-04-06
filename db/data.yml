@@ -7145,6 +7145,30 @@ nested_questions:
     - '2016-03-29 20:28:06.750541'
     - TahiStandardTasks::CoverLetterTask
     - 
+  - - '234'
+    - Provenance
+    - text
+    - production_metadata--provenance
+    - 
+    - '199'
+    - '200'
+    - '4'
+    - '2015-10-30 19:51:03.473215'
+    - '2016-03-10 19:55:38.108421'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '235'
+    - Special Handling Instructions
+    - text
+    - production_metadata--special_handling_instructions
+    - 
+    - '199'
+    - '200'
+    - '4'
+    - '2015-10-30 19:51:03.473215'
+    - '2016-03-10 19:55:38.108421'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
 
 ---
 old_roles:

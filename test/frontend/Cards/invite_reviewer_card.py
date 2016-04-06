@@ -75,7 +75,7 @@ class InviteReviewersCard(BaseCard):
     assert reviewer['email'] in invite_heading, invite_heading
     invite_text = self._get(self._edit_invite_textarea).text
     title = unicode(title, 'utf-8')
-    assert title.decode(encoding='utf-8', errors='strict') in invite_text, invite_text
+    assert title.decode(encoding='utf-8', errors='ignore') in invite_text, invite_text
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
@@ -100,7 +100,6 @@ class InviteReviewersCard(BaseCard):
     status = invitee.find_element(*self._invitee_state)
     assert 'Invited' in status.text
     invitee.find_element(*self._invitee_revoke)
-    time.sleep(5)
 
   def validate_reviewer_response(self, reviewer, response):
     """
@@ -122,4 +121,3 @@ class InviteReviewersCard(BaseCard):
       assert 'Accepted' in status.text
     else:
       assert 'Rejected' in status.text
-    time.sleep(5)

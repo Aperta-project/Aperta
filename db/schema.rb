@@ -92,8 +92,8 @@ ActiveRecord::Schema.define(version: 20160401221738) do
   end
 
   create_table "authors", force: :cascade do |t|
-    t.string   "first_name",              limit: 255
-    t.string   "last_name",               limit: 255
+    t.string   "first_name",            limit: 255
+    t.string   "last_name",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "middle_initial"
@@ -246,9 +246,9 @@ ActiveRecord::Schema.define(version: 20160401221738) do
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
-    t.string  "title",                limit: 255
-    t.string  "old_role",             limit: 255
-    t.string  "kind",                 limit: 255
+    t.string  "title",                          limit: 255
+    t.string  "old_role",                       limit: 255
+    t.string  "kind",                           limit: 255
     t.json    "required_permissions"
   end
 
@@ -574,9 +574,9 @@ ActiveRecord::Schema.define(version: 20160401221738) do
   add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.string   "grant_number",        limit: 255
-    t.string   "website",             limit: 255
+    t.string   "name",         limit: 255
+    t.string   "grant_number", limit: 255
+    t.string   "website",      limit: 255
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -613,16 +613,16 @@ ActiveRecord::Schema.define(version: 20160401221738) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",        limit: 255,                  null: false
-    t.string   "type",         limit: 255, default: "Task"
-    t.integer  "phase_id",                                  null: false
-    t.boolean  "completed",                default: false,  null: false
+    t.string   "title",                  limit: 255,                  null: false
+    t.string   "type",                   limit: 255, default: "Task"
+    t.integer  "phase_id",                                            null: false
+    t.boolean  "completed",                          default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role",     limit: 255,                  null: false
-    t.json     "body",                     default: [],     null: false
-    t.integer  "position",                 default: 0
-    t.integer  "paper_id",                                  null: false
+    t.string   "old_role",               limit: 255,                  null: false
+    t.json     "body",                               default: [],     null: false
+    t.integer  "position",                           default: 0
+    t.integer  "paper_id",                                            null: false
     t.datetime "completed_at"
   end
 

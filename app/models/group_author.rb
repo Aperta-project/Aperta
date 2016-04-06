@@ -11,7 +11,6 @@ class GroupAuthor < ActiveRecord::Base
   has_one :paper,
           through: :author_list_item,
           inverse_of: :authors
-  # delegate :completed?, to: :task, prefix: :task, allow_nil: true
   delegate :position, to: :author_list_item
 
   validates :contact_first_name,

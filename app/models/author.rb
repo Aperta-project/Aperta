@@ -9,7 +9,6 @@ class Author < ActiveRecord::Base
   has_one :paper,
           through: :author_list_item,
           inverse_of: :authors
-  # delegate :completed?, to: :task, prefix: :task, allow_nil: true
   delegate :position, to: :author_list_item
 
   validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?

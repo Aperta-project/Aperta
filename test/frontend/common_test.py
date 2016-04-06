@@ -140,7 +140,3 @@ class CommonTest(FrontEndTest):
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
 
-  def return_to_login_page(self, login_url):
-    self._driver.get(login_url)
-    self._driver.navigated = True
-    time.sleep(2)

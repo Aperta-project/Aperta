@@ -6,53 +6,54 @@ const { attr, belongsTo, hasMany } = DS;
 
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
+  bibitems: hasMany('bibitem', {
+    inverse: 'paper',
+    async: false
+  }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
   decisions: hasMany('decision', { async: true }),
   discussionTopics: hasMany('discussion-topic', { async: true }),
   figures: hasMany('figure', { inverse: 'paper', async: true }),
+  journal: belongsTo('journal', { async: true }),
+  manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
+  paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  phases: hasMany('phase', { async: true }),
+  snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
+  supportingInformationFiles: hasMany('supporting-information-file', {
+    async: false
+  }),
   tables: hasMany('table', {
     inverse: 'paper',
     async: false
   }),
-  bibitems: hasMany('bibitem', {
-    inverse: 'paper',
-    async: false
-  }),
-  journal: belongsTo('journal', { async: true }),
-  phases: hasMany('phase', { async: true }),
-  paperTaskTypes: hasMany('paper-task-type', { async: true }),
-  supportingInformationFiles: hasMany('supporting-information-file', {
-    async: false
-  }),
-  versionedTexts: hasMany('versioned-text', { async: true }),
-  snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
-  manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
+  versionedTexts: hasMany('versioned-text', { async: true }),
+
   active: attr('boolean'),
   body: attr('string'),
+  coverEditors: attr(),
+  createdAt: attr('date'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
   eventName: attr('string'),
+  gradualEngagement: attr('boolean'),
+  handlingEditors: attr(),
+  manuscript_id: attr('string'),
+  oldRoles: attr(),
   paperType: attr('string'),
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
+  permissionState: Ember.computed.alias('publishingState'),
+  publishingState: attr('string'),
   relatedAtDate: attr('date'),
   relatedUsers: attr(),
-  handlingEditors: attr(),
-  coverEditors: attr(),
-  oldRoles: attr(),
   shortTitle: attr('string'),
   status: attr('string'),
   strikingImageId: attr('string'),
   submittedAt: attr('date'),
-  gradualEngagement: attr('boolean'),
-  publishingState: attr('string'),
-  permissionState: Ember.computed.alias('publishingState'),
   title: attr('string'),
+  updatedAt: attr('date'),
   withdrawalReason: attr('string'),
-  manuscript_id: attr('string'),
 
   taskSorting: ['phase.position', 'position'],
   metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),

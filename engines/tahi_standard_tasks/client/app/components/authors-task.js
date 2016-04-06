@@ -64,7 +64,7 @@ export default TaskComponent.extend({
         object: a,
         validations: a.validations
       });
-    });
+    }).filterBy('object.isNew', false);
   }),
 
   shiftAuthorPositions(author, newPosition) {

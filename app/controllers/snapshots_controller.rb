@@ -1,11 +1,10 @@
 class SnapshotsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
-  before_action :enforce_index_policy, only: [:index]
 
   respond_to :json
 
   def index
+    requires_user_can(:view, task)
     snapshots = task.snapshots
     latest = SnapshotService.new(task.paper).preview(task)[0]
     latest.id = -task.id

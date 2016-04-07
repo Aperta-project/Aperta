@@ -29,6 +29,6 @@ feature 'Create a new Manuscript', js: true do
 
     attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
 
-    expect(page).to have_css('#paper-body')
+    expect(page).to have_css('.manuscript')
   end
 end

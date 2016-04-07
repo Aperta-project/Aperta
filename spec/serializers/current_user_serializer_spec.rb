@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CurrentUserSerializer do
+describe CurrentUserSerializer, serializer_test: true do
   include AuthorizationSpecHelper
 
   before do
@@ -8,25 +8,24 @@ describe CurrentUserSerializer do
     clear_roles_and_permissions
   end
 
-  subject(:serializer){ described_class.new(user) }
-  let(:user) { FactoryGirl.create(:user) }
-  
+  let(:subject) { FactoryGirl.create(:user) }
+
   permission action: :view_profile, applies_to: 'User', states: ['*']
+
   role 'User' do
     has_permission action: 'view_profile', applies_to: 'User'
   end
 
   describe '#permissions' do
     it 'sideloads permissions for the current user' do
-      assign_user user, to: user, with_role: role_User
+      assign_user subject, to: subject, with_role: role_User
 
-      expect(serializer.as_json[:permissions]).to eq([
-        {
-          object: { id: user.id, type: 'User' },
-          permissions: { view_profile: { states: ['*'] } },
-          id: "user+#{user.id}"
-        }
-      ].as_json)
+      expect(deserialized_content)
+        .to match(hash_including(
+                    permissions: contain_exactly(
+                      object: { id: subject.id, type: 'User' },
+                      permissions: { view_profile: { states: ['*'] } },
+                      id: "user+#{subject.id}")))
     end
   end
 end

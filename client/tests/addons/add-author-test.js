@@ -161,23 +161,29 @@ test('validation works', function(assert) {
   click('.author-form-buttons .button-secondary:contains("done")');
 
   andThen(function() {
-    assert.ok(
-      find('[data-test-id="author-first-name"].error').length,
-           'presence error on first name');
-    assert.ok(
-      find('[data-test-id="author-last-name"].error').length,
-           'presence error on last name');
-    assert.ok(
-      find('[data-test-id="author-initial"].error').length,
-      'presence error on initial');
-    assert.ok(
-      find('[data-test-id="author-email"].error').length,
-      'presence error on email');
-    assert.ok(
-      find('[data-test-id="author-affiliation"].error').length,
-      'presence error on affiliation');
-    assert.ok(
-      find('[data-test-id="author-government"] .error-message:visible').length,
-      'presence error on government');
+    assert.foundElement(
+      '[data-test-id="author-first-name"].error',
+      'presence error on first name'
+    );
+    assert.foundElement(
+      '[data-test-id="author-last-name"].error',
+      'presence error on last name'
+    );
+    assert.foundElement(
+      '[data-test-id="author-initial"].error',
+      'presence error on initial'
+    );
+    assert.foundElement(
+      '[data-test-id="author-email"].error',
+      'presence error on email'
+    );
+    assert.foundElement(
+      '[data-test-id="author-affiliation"].error',
+      'presence error on affiliation'
+    );
+    assert.foundElement(
+      '[data-test-id="author-government"] .error-message:visible',
+      'presence error on government'
+    );
   });
 });

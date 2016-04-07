@@ -54,8 +54,8 @@ test('disables the Compose Invite button until a user is selected', function(ass
     click(".card-content:contains('Invite Editor')");
 
     andThen(function(){
-      assert.ok(
-        find('.compose-invite-button.button--disabled').length,
+      assert.foundElement(
+        '.compose-invite-button.button--disabled',
         'Expected to find Compose Invite button disabled'
       );
 
@@ -67,8 +67,8 @@ test('disables the Compose Invite button until a user is selected', function(ass
     });
 
     andThen(function(){
-      assert.ok(
-        find('.compose-invite-button:not(.button--disabled)').length,
+      assert.foundElement(
+        '.compose-invite-button:not(.button--disabled)',
         'Expected to find Compose Invite button enabled'
       );
     });

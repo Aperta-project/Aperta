@@ -24,12 +24,4 @@ class SnapshotsController < ApplicationController
   def task
     @task ||= Task.includes(:snapshots, :paper).find(params[:task_id])
   end
-
-  def enforce_index_policy
-    authorize_action!(snapshot: nil, for_task: task)
-  end
-
-  def enforce_policy
-    authorize_action!(snapshot: snapshot, params: params)
-  end
 end

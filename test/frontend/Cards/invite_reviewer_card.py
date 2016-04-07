@@ -1,5 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
+import re
+import string
 import time
 
 from selenium.webdriver.common.by import By
@@ -61,7 +64,7 @@ class InviteReviewersCard(BaseCard):
       then
     :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
         or username
-    :param title: title of the manuscript - for validation of invite content
+    :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
     :param manu_id: paper id of the manuscript
     :return void function
@@ -74,20 +77,31 @@ class InviteReviewersCard(BaseCard):
     # Since the reviewer is potentially off system, we can only validate email
     assert reviewer['email'] in invite_heading, invite_heading
     invite_text = self._get(self._edit_invite_textarea).text
-    title = unicode(title, 'utf-8')
-    assert title.decode(encoding='utf-8', errors='ignore') in invite_text, invite_text
+    # Always remember that our ember text always normalizes whitespaces down to one
+    #  Painful lesson
+    title = re.sub(r'[ \t\f\v]+', ' ', title)
+    # and need to scrub latin-1 non-breaking spaces
+    title = re.sub(u'\xa0', u' ', title)
+    assert title in invite_text, \
+        title + '\nNot found in \n' +invite_text
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
     assert '{0}, {1} from '.format(creator_ln, creator_fn) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
-      abstract = unicode(abstract, 'utf-8')
+      # strip html, and remove whitespace
+      # NOTA BENE: BeautifulSoup4 inherently handles str to unicode conversion
       abstract = InviteReviewersCard.get_text(self, abstract).strip()
     if abstract is not None:
-      lines = abstract.splitlines()
-      for line in lines:
-        assert line in invite_text, invite_text
+      # Always remember that our ember text always normalizes whitespaces down to one
+      #  Painful lesson
+      abstract = re.sub(r'[ \t\f\v]+', ' ', abstract)
+      # It also removes trailing spaces
+      abstract = re.sub(r'[ \t\f\v]+\n', r'\n', abstract)
+      # and need to scrub latin-1 non-breaking spaces
+      abstract = re.sub(u'\xa0', u' ', abstract)
+      assert abstract in invite_text, abstract + '\nNot equal to\n' + invite_text
     else:
       assert 'Abstract is not available' in invite_text, invite_text
     self._get(self._edit_invite_text_send_invite_button).click()
@@ -118,6 +132,6 @@ class InviteReviewersCard(BaseCard):
     invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
     if response == 'Accept':
-      assert 'Accepted' in status.text
+      assert 'Accepted' in status.text, status.text
     else:
-      assert 'Rejected' in status.text
+      assert 'Rejected' in status.text, status.text

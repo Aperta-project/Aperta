@@ -38,7 +38,7 @@ class ApertaPaperTrackerTest(CommonTest):
       - presentation of the table
       - presentation of individual data points for each paper
   """
-  def test_validate_paper_tracker(self):
+  def rest_validate_paper_tracker(self):
     """
     test_paper_tracker: Validate elements, styles of the paper tracker page
     Validates the presence of the following elements:
@@ -52,7 +52,7 @@ class ApertaPaperTrackerTest(CommonTest):
     pt_page.validate_pagination(user_type['user'])
     pt_page.validate_nav_toolbar_elements(user_type)
 
-  def test_validate_paper_tracker_table_content(self):
+  def rest_validate_paper_tracker_table_content(self):
     """
     test_paper_tracker: Validate the contents of the dynamic table
     """

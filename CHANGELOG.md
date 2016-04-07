@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
 ## [1.4.3] - 2016-04-05
 ### Added
 - Attachments to Revise Manuscript Task

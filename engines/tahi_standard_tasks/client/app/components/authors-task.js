@@ -54,14 +54,16 @@ export default TaskComponent.extend({
     }
   },
 
-  sortedAuthorsWithErrors: computed('task.paper.allAuthors.[]', function() {
-    return this.get('task.paper.allAuthors').map(function(a) {
-      return ObjectProxyWithErrors.create({
-        object: a,
-        validations: a.validations
-      });
-    }).filterBy('object.isNew', false);
-  }),
+  sortedAuthorsWithErrors: computed('task.paper.allAuthors.@each.isNew',
+    function() {
+      return this.get('task.paper.allAuthors').map(function(a) {
+        return ObjectProxyWithErrors.create({
+          object: a,
+          validations: a.validations
+        });
+      }).filterBy('object.isNew', false);
+    }
+  ),
 
   shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();

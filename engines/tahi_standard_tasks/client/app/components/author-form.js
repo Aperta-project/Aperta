@@ -99,8 +99,9 @@ export default Component.extend({
   saveAuthor() {
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save();
-    this.attrs.saveSuccess();
+    this.get('author').save().then(function() {
+      this.attrs.saveSuccess();
+    });
   },
 
   saveNewAuthor() {
@@ -113,9 +114,9 @@ export default Component.extend({
           answer.save();
         }
       });
-    });
 
-    this.attrs.saveSuccess();
+      this.attrs.saveSuccess();
+    });
   },
 
   actions: {

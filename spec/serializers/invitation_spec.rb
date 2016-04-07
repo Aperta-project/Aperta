@@ -4,7 +4,8 @@ describe InvitationSerializer, serializer_test: true do
   let(:user) { FactoryGirl.create :user }
   let(:phase) { FactoryGirl.create :phase }
   let(:task) { FactoryGirl.create :invitable_task, phase: phase }
-  subject(:invitation) { FactoryGirl.create :invitation, task: task, invitee: user }
+  let(:invitation) { FactoryGirl.create :invitation, task: task, invitee: user }
+  let(:object_for_serializer) { invitation }
 
   it "serializes successfully" do
     expect(deserialized_content).to match(hash_including(:invitation))

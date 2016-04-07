@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe QuestionAttachmentSerializer, serializer_test: true do
-  subject(:attachment) do
+  let(:attachment) do
     FactoryGirl.create(
       :question_attachment,
       title: 'La Attachment',
@@ -9,6 +9,7 @@ describe QuestionAttachmentSerializer, serializer_test: true do
       status: 'done'
     )
   end
+  let(:object_for_serializer) { attachment }
 
   it 'should serialize succesfully' do
     expect(attachment.id).to_not be(nil)

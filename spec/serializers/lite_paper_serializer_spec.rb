@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe LitePaperSerializer, serializer_test: true do
-  let(:serializer) { described_class.new(paper, user: user) }
-  let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create :paper }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:object_for_serializer) { paper }
+  let(:options_for_serializer) { { user: user } }
 
   describe 'a paper' do
     it 'serializes successfully' do

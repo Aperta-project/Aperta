@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe DiscussionTopicSerializer, serializer_test: true do
-  subject(:discussion) do
+  let(:discussion) do
     FactoryGirl.create(
       :discussion_topic,
       participants: [user],
@@ -9,6 +9,7 @@ describe DiscussionTopicSerializer, serializer_test: true do
   end
   let(:reply) { FactoryGirl.create(:discussion_reply, replier: user) }
   let(:user) { FactoryGirl.create(:user) }
+  let(:object_for_serializer) { discussion }
 
   it 'serializes the topic' do
     expect(deserialized_content)

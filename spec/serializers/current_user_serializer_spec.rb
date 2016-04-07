@@ -8,7 +8,8 @@ describe CurrentUserSerializer, serializer_test: true do
     clear_roles_and_permissions
   end
 
-  let(:subject) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:object_for_serializer) { user }
 
   permission action: :view_profile, applies_to: 'User', states: ['*']
 
@@ -18,14 +19,14 @@ describe CurrentUserSerializer, serializer_test: true do
 
   describe '#permissions' do
     it 'sideloads permissions for the current user' do
-      assign_user subject, to: subject, with_role: role_User
+      assign_user user, to: user, with_role: role_User
 
       expect(deserialized_content)
         .to match(hash_including(
                     permissions: contain_exactly(
-                      object: { id: subject.id, type: 'User' },
+                      object: { id: user.id, type: 'User' },
                       permissions: { view_profile: { states: ['*'] } },
-                      id: "user+#{subject.id}")))
+                      id: "user+#{user.id}")))
     end
   end
 end

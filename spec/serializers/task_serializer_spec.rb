@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe TaskSerializer, serializer_test: true do
   let(:paper) { FactoryGirl.create(:paper) }
-  subject(:task) { FactoryGirl.create(:task, paper: paper) }
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
+  let(:object_for_serializer) { task }
 
   describe '#is_metadata_task' do
     it 'returns false if task is not a metadata type' do

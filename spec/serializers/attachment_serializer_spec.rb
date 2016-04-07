@@ -1,7 +1,8 @@
 require "rails_helper"
 
 describe AttachmentSerializer, serializer_test: true do
-  subject(:attachment) { FactoryGirl.create :attachment, :with_task }
+  let(:attachment) { FactoryGirl.create :attachment, :with_task }
+  let(:object_for_serializer) { attachment }
 
   it "serializes successfully" do
     expect(deserialized_content).to be_kind_of Hash

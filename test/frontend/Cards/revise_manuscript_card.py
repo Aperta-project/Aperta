@@ -47,8 +47,11 @@ class ReviseManuscriptCard(BaseCard):
     self.validate_primary_big_green_button_style(save_btn)
 
    #POM Actions
-  def dummy_function(self):
+  def response_to_reviewers(self):
     """
     Paceholder function
+    Send text
     """
+    self._response_field.send_keys()
+    self._save_btn.click()
     return self

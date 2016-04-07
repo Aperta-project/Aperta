@@ -9,6 +9,7 @@ export default Ember.Component.extend({
   specialCase: Ember.computed.or(
     'authorsTask', 'figure', 'supportingInfo', 'funder'),
 
+  // General Case
   raw: Ember.computed('snapshot1.type', function(){
     let type = this.get('snapshot1.type');
     return type === 'text' || type === 'integer';

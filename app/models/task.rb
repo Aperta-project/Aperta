@@ -14,6 +14,7 @@ class Task < ActiveRecord::Base
 
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
+  scope :of_type, -> (task_type) { where(type: task_type) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {

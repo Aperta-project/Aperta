@@ -6,7 +6,7 @@ const { attr, belongsTo, hasMany } = DS;
 
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
-  groupAuthors: DS.hasMany('group-author', { async: false }),
+  groupAuthors: hasMany('group-author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
   decisions: hasMany('decision', { async: true }),

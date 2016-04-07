@@ -41,7 +41,7 @@ class Paper < ActiveRecord::Base
            through: :author_list_items,
            source_type: "GroupAuthor",
            source: :author
-  has_many :author_list_items
+  has_many :author_list_items, dependent: :destroy
 
   serialize :withdrawals, ArrayHashSerializer
 

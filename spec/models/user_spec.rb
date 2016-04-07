@@ -227,8 +227,10 @@ describe User do
 
   describe "#create" do
     let(:user) { User.create! attributes_for(:user) }
+    let!(:user_role) { Role.where(name: 'User').first_or_create! }
 
     it "should create a user record with the User role assigned" do
+      expect(user_role).to be_present
       expect(user).to have_role_name 'User'
     end
   end

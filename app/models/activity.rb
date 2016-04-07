@@ -170,6 +170,16 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.paper_initially_submitted!(paper, user:)
+    create(
+      feed_name: "manuscript",
+      activity_key: "paper.initially_submitted",
+      subject: paper,
+      user: user,
+      message: "Manuscript was submitted"
+    )
+  end
+
   def self.participation_created!(participation, user:)
     create(
       feed_name: "workflow",

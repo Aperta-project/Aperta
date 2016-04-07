@@ -697,10 +697,19 @@ describe PapersController do
       end
 
       context 'Gradual Engagement' do
-        it 'makes an initial submission' do
+        before do
           paper.update(gradual_engagement: true)
+        end
+
+        it 'makes an initial submission' do
           do_request
           expect(paper.reload).to be_initially_submitted
+        end
+
+        it 'creates an activity' do
+          expect(Activity).to receive(:paper_initially_submitted!)
+            .with(paper, user: user)
+          do_request
         end
       end
 

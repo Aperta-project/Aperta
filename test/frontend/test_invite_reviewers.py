@@ -71,7 +71,11 @@ class InviteReviewersCardTest(CommonTest):
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-
+    # Giving just a little extra time here so the title on the paper gets updated
+    # What I notice is that if we submit before iHat is done updating, the paper title
+    # reverts to the temporary title specified on the CNS overlay (5s is too short)
+    # APERTA-6514
+    time.sleep(10)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -123,7 +127,10 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.validate_card_elements_styles()
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
-    logging.info(manuscript_title)
+    manuscript_title = unicode(manuscript_title,
+                               encoding='utf-8',
+                               errors='strict')
+    # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_reviewers.validate_invite_reviewer(reviewer_login,
                                               manuscript_title,
                                               creator_user,

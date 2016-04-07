@@ -300,7 +300,12 @@ class AuthenticatedPage(PlosPage):
     """
     Validate ihat conversion success
     """
-    self.set_timeout(30)
+    # This needs to be an extrordinary timeout value to cover the case of iHat
+    #  going out to lunch. 103+ seconds is the longest I've seen it take and still
+    #  succeed:
+    # 934edb97-2a49-4028-9523-25f1d31f7dcc
+    # 2016-04-07T00:35:52Z   2016-04-07T00:35:53Z   11 of 11   103.04s completed
+    self.set_timeout(120)
     try:
       ihat_msg = self._get(self._flash_success_msg)
     except Exception as e:

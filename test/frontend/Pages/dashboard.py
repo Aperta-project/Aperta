@@ -155,9 +155,12 @@ class DashboardPage(AuthenticatedPage):
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
       try:
-        self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]".format(title))
+        # Remember to use single quotes outside to ensure you don't run afoul of
+        #  a single quote in the title - More often, double-quotes in titles are
+        #  rendered as smart quotes (unicode) so don't as often cause problems.
+        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
       except UnicodeEncodeError:
-        self._driver.find_element_by_xpath("//*[contains(text(), '{0}')]"
+        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'
                                            .format(title.encode('utf8')))
       if response == 'Accept':
         yes_btn = listing.find_element(*self._invite_yes_btn)

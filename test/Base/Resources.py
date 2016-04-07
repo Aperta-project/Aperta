@@ -135,8 +135,6 @@ billing_data = {'first': 'Jane', 'last': 'Doe',
           'phone': '123-4567-8900', 'city': 'Azul',
           'state': 'CABA', 'ZIP': '12345', 'country':'Argentina'}
 
-
-# Note: Commented out doc until APERTA-5935 is addressed
 docs = ['10yearsRabiesSL20140723.doc',
         '11-OvCa-Collab-HeightBMI-paper-July.doc',
         '120220_PLoS_Genetics_review.docx',
@@ -148,7 +146,6 @@ docs = ['10yearsRabiesSL20140723.doc',
         'C6_Text_Final.doc',
         'CRX.pone.0103411.docx',
         'Chemical Synthesis of Bacteriophage G4.doc',
-        'Commentary_Jan_19_2012.docx',
         'EGFR_PLOS_GENETICS.docx',
         'GIANT-gender-main_20130310.docx',
         'Hamilton_Yu_121611.doc',

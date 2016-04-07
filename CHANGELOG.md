@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Added a loading state for manuscript conversion
 ### Changed
 ### Deprecated
 ### Removed

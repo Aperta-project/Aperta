@@ -32,7 +32,6 @@ namespace :deploy do
   end
 end
 
-set(:nginx, 'nginx')
 # Use service scripts to restart puma/sidekiq
 [{ namespace: :puma,
    role: :app,
@@ -68,6 +67,13 @@ set(:nginx, 'nginx')
         sudo 'service', fetch(config[:service]), 'stop'
       end
     end
+  end
+end
+
+# Hack to fake a puma.rb config, which we do not have on a worker
+before 'deploy:check:linked_files', :remove_junk do
+  on roles(:db, :worker) do
+    execute :touch, shared_path.join('puma.rb')
   end
 end
 

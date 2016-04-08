@@ -55,7 +55,7 @@ class Role < ActiveRecord::Base
     role
   end
 
-  def ensure_permission_exists(action, applies_to:, states: ['*'])
+  def ensure_permission_exists(action, applies_to:, states:)
     perm = Permission.ensure_exists(action, applies_to: applies_to, role: self,
                                             states: states)
     @ensured_permission_ids << perm.id

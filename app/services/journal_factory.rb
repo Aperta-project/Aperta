@@ -34,7 +34,7 @@ class JournalFactory
       task_klasses = Task.submission_task_types
       task_klasses << PlosBioTechCheck::ChangesForAuthorTask
       task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
@@ -299,7 +299,7 @@ class JournalFactory
                        journal: @journal,
                        participates_in: [Paper],
                        delete_stray_permissions: true) do |role|
-      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
 
       task_klasses = Task.submission_task_types
 
@@ -310,10 +310,10 @@ class JournalFactory
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
       task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
       end
 
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask)
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask, states: ['*'])
     end
 
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|

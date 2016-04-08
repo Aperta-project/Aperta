@@ -9,7 +9,7 @@ moduleForModel('task', 'Unit: Task Model', {
     'model:card-thumbnail', 'model:nested-question-owner',
     'model:nested-question', 'model:nested-question-answer', 'model:collaboration',
     'model:supporting-information-file', 'model:paper', 'model:snapshot',
-    'model:paper-task-type']
+    'model:paper-task-type', 'model:group-author']
 });
 
 test("findQuestion finds and returns the first nestedQuestion when the given path matches its ident exactly", function(assert) {

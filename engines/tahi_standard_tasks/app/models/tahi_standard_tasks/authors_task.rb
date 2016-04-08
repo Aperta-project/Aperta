@@ -5,12 +5,8 @@ module TahiStandardTasks
 
     include MetadataTask
 
-    has_many :authors, through: :author_list_items, source_type: "Author"
-    has_many :group_authors,
-             through: :author_list_items,
-             source_type: "GroupAuthor",
-             source: :author
-    has_many :author_list_items, foreign_key: :task_id
+    has_many :authors, through: :paper
+    has_many :group_authors, through: :paper
 
     validates_with AssociationValidator,
                    association: :authors,

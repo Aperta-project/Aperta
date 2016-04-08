@@ -6,6 +6,7 @@ const { attr, belongsTo, hasMany } = DS;
 
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
+  groupAuthors: hasMany('group-author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
   decisions: hasMany('decision', { async: true }),
@@ -53,6 +54,10 @@ export default DS.Model.extend({
   title: attr('string'),
   withdrawalReason: attr('string'),
   manuscript_id: attr('string'),
+
+  allAuthorsUnsorted: Ember.computed.union('authors', 'groupAuthors'),
+  allAuthorsSortingAsc: ['position:asc'],
+  allAuthors: Ember.computed.sort('allAuthorsUnsorted', 'allAuthorsSortingAsc'),
 
   taskSorting: ['phase.position', 'position'],
   metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),

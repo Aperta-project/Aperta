@@ -27,13 +27,14 @@ describe Author do
     end
 
     context "and the corresponding authors_task is completed" do
-      let(:authors_task) { FactoryGirl.create(:authors_task, completed: true) }
+      let(:authors_task) { FactoryGirl.create(:authors_task) }
+      subject(:author) { FactoryGirl.build(:author, paper_id: authors_task.paper_id) }
 
       before do
         # we need a saved author in order to associated answers
-        author.save!
         setup_contribution_question_for_author
-        author.task = authors_task
+        author.save!
+        authors_task.update(completed: true)
       end
 
       it "is not valid without contributions" do
@@ -81,12 +82,14 @@ describe Author do
     end
 
     it "returns an array of contributions (e.g. any answered question under the contributions question-set)" do
-      answer_that_should_be_included = FactoryGirl.build(:nested_question_answer,
+      answer_that_should_be_included = FactoryGirl.build(
+        :nested_question_answer,
         nested_question: question_that_does_belong_to_contributions,
         owner: author
       )
 
-      answer_that_should_not_be_included = FactoryGirl.build(:nested_question_answer,
+      answer_that_should_not_be_included = FactoryGirl.build(
+        :nested_question_answer,
         nested_question: question_that_does_not_belong_to_contributions,
         owner: author
       )
@@ -104,22 +107,23 @@ describe Author do
     end
   end
 
-  # TODO: move these tests to the TahiStandardTasks engines
   describe ".task-completed?" do
-    let(:authors_task) { TahiStandardTasks::AuthorsTask.new }
+    let(:authors_task) { FactoryGirl.create(:authors_task) }
+    let(:author) { Author.create(paper: authors_task.paper) }
 
     it "is true when task is complete" do
       authors_task.completed = true
-      expect(subject.class.new(task: authors_task)).to be_task_completed
+      authors_task.save!
+      expect(author.task_completed?).to be true
     end
 
     it "is false when task is incomplete" do
       authors_task.completed = false
-      expect(subject.class.new(task: authors_task)).to_not be_task_completed
+      expect(author.task_completed?).to be_falsy
     end
 
     it "is false when there is no task" do
-      expect(subject.class.new(task: nil)).to_not be_task_completed
+      expect(Author.new.task_completed?).to be_falsy
     end
   end
 end

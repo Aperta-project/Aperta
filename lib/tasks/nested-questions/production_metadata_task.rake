@@ -32,10 +32,28 @@ namespace 'nested-questions:seed' do
     questions << {
       owner_id: nil,
       owner_type: TahiStandardTasks::ProductionMetadataTask.name,
+      ident: "production_metadata--provenance",
+      value_type: "text",
+      text: "Provenance",
+      position: 3
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: TahiStandardTasks::ProductionMetadataTask.name,
       ident: "production_metadata--production_notes",
       value_type: "text",
       text: "Production Notes",
       position: 4
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: TahiStandardTasks::ProductionMetadataTask.name,
+      ident: "production_metadata--special_handling_instructions",
+      value_type: "text",
+      text: "Special Handling Instructions",
+      position: 5
     }
 
     NestedQuestion.where(

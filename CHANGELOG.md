@@ -4,6 +4,16 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.3] - 2016-04-05
+### Added
+- Attachments to Revise Manuscript Task
+- New columns added to Paper Tracker to display publishing status, Handling Editor and Cover Editor
 - Funders now have an "additional comments" field
 - Email report to admin counting papers in states
 
@@ -18,6 +28,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Flow Manager
 
 ### Fixed
+- PDF generation now works when a paper has figures.
 - Single-sign-on sessions should now properly end upon Aperta logout
 - Problem with discussion reply attribution not showing up
 
@@ -27,10 +38,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.4.2] - 2016-03-24
 ### Added
 - Figures display in the manuscript
-- Attachments to Revise Manuscript Task
 - Manuscript editorial state is updated on SFDC on submit, accept, reject, withdraw
 - Group Author form on Authors task
-- New columns added to Paper Tracker to display publishing status, Handling Editor and Cover Editor
 
 ### Changed
 - Institution field will search as you type
@@ -47,7 +56,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Document upload success message now displays to the uploader, not the creator of a paper.
-- PDF generation now works when a paper has figures.
 
 ### Security
 -

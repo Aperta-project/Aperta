@@ -10,7 +10,8 @@ class GroupAuthorsController < ApplicationController
   end
 
   def create
-    requires_user_can :edit_authors, group_author.paper
+    requires_user_can :edit_authors, Paper.find(group_author_params[:paper_id])
+    group_author = GroupAuthor.new(group_author_params)
     group_author.save!
 
     # render all group_authors, since position is controlled by acts_as_list
@@ -42,18 +43,11 @@ class GroupAuthorsController < ApplicationController
   private
 
   def group_author
-    @group_author ||= begin
-      if params[:id].present?
-        GroupAuthor.includes(:author_list_item).find(params[:id])
-      else
-        GroupAuthor.new(group_author_params)
-      end
-    end
+    @group_author ||= GroupAuthor.includes(:author_list_item).find(params[:id])
   end
 
   def group_author_params
     params.require(:group_author).permit(
-      :task_id,
       :initial,
       :contact_first_name,
       :contact_middle_name,

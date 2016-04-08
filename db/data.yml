@@ -2178,87 +2178,87 @@ author_list_items:
   - position
   - author_id
   - author_type
-  - task_id
   - created_at
   - updated_at
+  - paper_id
   records: 
   - - '1'
     - '3'
     - '1'
     - Author
-    - '2'
     - '2016-03-22 14:32:29.651445'
     - '2016-03-22 14:32:29.651445'
+    - '1'
   - - '2'
     - '4'
     - '2'
     - Author
-    - '23'
     - '2016-03-22 14:32:29.665154'
     - '2016-03-22 14:32:29.665154'
+    - '2'
   - - '3'
     - '5'
     - '3'
     - Author
-    - '23'
     - '2016-03-22 14:32:29.667169'
     - '2016-03-22 14:32:29.667169'
+    - '2'
   - - '4'
     - '6'
     - '4'
     - Author
-    - '44'
     - '2016-03-22 14:32:29.66903'
     - '2016-03-22 14:32:29.66903'
+    - '3'
   - - '5'
     - '1'
     - '5'
     - Author
-    - '44'
     - '2016-03-22 14:32:29.670806'
     - '2016-03-22 14:32:29.670806'
+    - '3'
   - - '6'
     - '7'
     - '6'
     - Author
-    - '65'
     - '2016-03-22 14:32:29.672594'
     - '2016-03-22 14:32:29.672594'
+    - '4'
   - - '7'
     - '8'
     - '7'
     - Author
-    - '86'
     - '2016-03-22 14:32:29.674466'
     - '2016-03-22 14:32:29.674466'
+    - '8'
   - - '8'
     - '9'
     - '8'
     - Author
-    - '107'
     - '2016-03-22 14:32:29.676602'
     - '2016-03-22 14:32:29.676602'
+    - '9'
   - - '9'
     - '10'
     - '9'
     - Author
-    - '128'
     - '2016-03-22 14:32:29.678322'
     - '2016-03-22 14:32:29.678322'
+    - '10'
   - - '10'
     - '1'
     - '10'
     - Author
-    - '149'
     - '2016-03-23 13:00:36.416252'
     - '2016-03-23 13:19:58.383779'
+    - '11'
   - - '11'
     - '2'
     - '1'
     - GroupAuthor
-    - '149'
     - '2016-03-23 13:19:52.44685'
     - '2016-03-23 13:19:52.44685'
+    - '11'
 
 ---
 authors:
@@ -2268,7 +2268,6 @@ authors:
   - last_name
   - created_at
   - updated_at
-  - paper_id
   - middle_initial
   - email
   - department
@@ -2290,7 +2289,6 @@ authors:
     - Author
     - '2015-10-29 20:16:37.812595'
     - '2015-10-29 20:16:37.812595'
-    - '1'
     - 
     - author@example.com
     - 
@@ -2311,7 +2309,6 @@ authors:
     - Author
     - '2015-10-30 19:43:28.777757'
     - '2015-10-30 19:53:18.523309'
-    - '2'
     - 
     - author@example.com
     - Department of Authoring
@@ -2332,7 +2329,6 @@ authors:
     - Janesford
     - '2015-10-30 19:54:25.247759'
     - '2015-10-30 19:54:28.89091'
-    - '2'
     - ''
     - jane@example.com
     - Authorship Department
@@ -2353,7 +2349,6 @@ authors:
     - Author
     - '2015-11-02 14:04:03.280645'
     - '2015-11-02 14:14:20.64132'
-    - '3'
     - 
     - author@example.com
     - Dept. of Authoring
@@ -2374,7 +2369,6 @@ authors:
     - Jones
     - '2015-11-02 14:15:05.820082'
     - '2015-11-02 14:15:05.820082'
-    - '3'
     - ''
     - barb@example.com
     - Dept. of Authorology
@@ -2395,7 +2389,6 @@ authors:
     - Author
     - '2015-11-02 14:46:24.189114'
     - '2015-11-02 15:09:33.10379'
-    - '4'
     - 
     - author@example.com
     - Dept. of authoring
@@ -2416,7 +2409,6 @@ authors:
     - Gray
     - '2015-11-03 22:59:21.34928'
     - '2015-11-03 22:59:21.34928'
-    - '8'
     - 
     - sealresq+7@gmail.com
     - 
@@ -2437,7 +2429,6 @@ authors:
     - Gray
     - '2015-11-03 23:02:07.212995'
     - '2015-11-03 23:02:07.212995'
-    - '9'
     - 
     - sealresq+7@gmail.com
     - 
@@ -2458,7 +2449,6 @@ authors:
     - Administrator
     - '2015-11-10 22:27:27.648594'
     - '2015-11-10 22:27:27.648594'
-    - '10'
     - 
     - admin@example.com
     - 
@@ -2479,7 +2469,6 @@ authors:
     - Author
     - '2016-03-23 13:00:36.414124'
     - '2016-03-23 13:20:18.260494'
-    - '11'
     - ''
     - author@example.com
     - ''
@@ -2781,7 +2770,6 @@ figures:
 group_authors:
   columns:
   - id
-  - paper_id
   - contact_first_name
   - contact_middle_name
   - contact_last_name
@@ -2792,7 +2780,6 @@ group_authors:
   - updated_at
   records: 
   - - '1'
-    - '11'
     - Arthur
     - ''
     - Author
@@ -7134,7 +7121,7 @@ nested_questions:
     - TahiStandardTasks::CoverLetterTask
     - 
   - - '233'
-    -
+    - 
     - attachment
     - cover_letter--attachment
     - 
@@ -7144,6 +7131,30 @@ nested_questions:
     - '2016-03-29 20:28:06.750541'
     - '2016-03-29 20:28:06.750541'
     - TahiStandardTasks::CoverLetterTask
+    - 
+  - - '234'
+    - Provenance
+    - text
+    - production_metadata--provenance
+    - 
+    - '199'
+    - '200'
+    - '4'
+    - '2015-10-30 19:51:03.473215'
+    - '2016-03-10 19:55:38.108421'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '235'
+    - Special Handling Instructions
+    - text
+    - production_metadata--special_handling_instructions
+    - 
+    - '199'
+    - '200'
+    - '4'
+    - '2015-10-30 19:51:03.473215'
+    - '2016-03-10 19:55:38.108421'
+    - TahiStandardTasks::ProductionMetadataTask
     - 
 
 ---
@@ -7158,7 +7169,7 @@ old_roles:
   - can_view_assigned_manuscript_managers
   - can_view_all_manuscript_managers
   - kind
-  records:
+  records: 
   - - '1'
     - Journal Admin
     - '1'

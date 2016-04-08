@@ -7,5 +7,5 @@ loremipsum==1.0.5
 mysql-connector-python==2.0.4
 psycopg2==2.6.1
 requests==2.7.0
-selenium==2.47.1
+selenium==2.53.1
 teamcity-messages==1.14

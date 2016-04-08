@@ -278,7 +278,7 @@ describe Activity do
         activity_key: "paper.initially_submitted",
         subject: paper,
         user: user,
-        message: "Manuscript was submitted")
+        message: "Manuscript was initially submitted")
     end
   end
 

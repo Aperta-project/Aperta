@@ -57,6 +57,25 @@ class InviteReviewersCard(BaseCard):
     """
     self.validate_common_elements_styles()
 
+  def invite_reviewer(self, reviewer, title):
+    """
+    :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
+        or username
+    :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
+    """
+    self._get(self._recipient_field).send_keys(reviewer['email'] + Keys.ENTER)
+    self._get(self._compose_invitation_button).click()
+    time.sleep(2)
+    invite_heading = self._get(self._edit_invite_heading).text
+    invite_text = self._get(self._edit_invite_textarea).text
+    # Always remember that our ember text always normalizes whitespaces down to one
+    #  Painful lesson
+    title = re.sub(r'[ \t\f\v]+', ' ', title)
+    # and need to scrub latin-1 non-breaking spaces
+    title = re.sub(u'\xa0', u' ', title)
+    self._get(self._edit_invite_text_send_invite_button).click()
+    time.sleep(1)
+
 
   def validate_invite_reviewer(self, reviewer, title, creator, manu_id):
     """

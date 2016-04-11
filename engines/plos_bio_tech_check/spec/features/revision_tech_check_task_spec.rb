@@ -17,7 +17,7 @@ feature 'Revision Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
-    overlay.expect_author_chages_saved
+    overlay.expect_author_changes_saved
     overlay.mark_as_complete
     overlay.expect_task_to_be_completed
     overlay.dismiss

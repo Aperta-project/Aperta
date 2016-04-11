@@ -1,3 +1,5 @@
+require_dependency 'emberize'
+
 # rubocop:disable all
 module Authorizations
   class Error < ::StandardError ; end

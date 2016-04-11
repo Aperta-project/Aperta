@@ -1,3 +1,5 @@
+require_dependency 'query_language_parser'
+
 ##
 # This defines our particular query language.
 #

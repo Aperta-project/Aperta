@@ -1,3 +1,5 @@
+require_dependency 'notifier'
+
 module EventStream::Notifiable
   extend ActiveSupport::Concern
   included do

@@ -1,3 +1,5 @@
+require_dependency 'notifier'
+
 class PaperUpdateWorker
   include Sidekiq::Worker
 

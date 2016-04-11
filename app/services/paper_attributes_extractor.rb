@@ -1,3 +1,5 @@
+require_dependency 'tahi_epub'
+
 class PaperAttributesExtractor
   attr_reader :epub_stream
 

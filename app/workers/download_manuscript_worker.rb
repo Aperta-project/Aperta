@@ -1,3 +1,5 @@
+require_dependency 'tahi_epub'
+
 # Used to download the docx from S3 and send it to ihat for
 # transformation into HTML.
 class DownloadManuscriptWorker

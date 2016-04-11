@@ -1,3 +1,5 @@
+require_dependency 'tahi_epub'
+
 class EpubConverter
   attr_reader :paper, :include_source, :downloader, :include_cover_image
 

@@ -1,13 +1,10 @@
 require 'rails_helper'
 
-describe LitePaperSerializer do
-  subject(:serializer) { LitePaperSerializer.new(paper, user: user) }
-  let(:user) { FactoryGirl.create(:user) }
+describe LitePaperSerializer, serializer_test: true do
   let(:paper) { FactoryGirl.create :paper }
-  let(:serialized_content) { serializer.to_json }
-  let(:deserialized_content) do
-    JSON.parse(serialized_content, symbolize_names: true)
-  end
+  let(:user) { FactoryGirl.create(:user) }
+  let(:object_for_serializer) { paper }
+  let(:options_for_serializer) { { user: user } }
 
   describe 'a paper' do
     it 'serializes successfully' do

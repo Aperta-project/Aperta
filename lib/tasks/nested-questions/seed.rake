@@ -4,6 +4,7 @@ namespace 'nested-questions' do
     'nested-questions:seed:author',
     'nested-questions:seed:authors-task',
     'nested-questions:seed:competing-interests-task',
+    'nested-questions:seed:cover-letter-task',
     'nested-questions:seed:data-availability-task',
     'nested-questions:seed:ethics-task',
     'nested-questions:seed:figure-task',

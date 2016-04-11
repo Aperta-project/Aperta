@@ -22,7 +22,10 @@
 }
 
 .card-completed-icon {
-  @extend .fa, .fa-check, .completed-glyph;
+  @extend .fa, .fa-check;
+  display: inline;
+  margin-right: 5px;
+  color: $tahi-green;
 }
 
 .card-remove {

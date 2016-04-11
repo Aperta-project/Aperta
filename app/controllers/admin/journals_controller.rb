@@ -7,7 +7,7 @@ class Admin::JournalsController < ApplicationController
     journals = current_user.administered_journals do |journal_query|
       journal_query.includes(
         :journal_task_types,
-        old_roles: :flows,
+        :old_roles,
         manuscript_manager_templates: {
           phase_templates: {
             task_templates: :journal_task_type
@@ -19,7 +19,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def show
-    j = Journal.where(id: journal.id).includes(:journal_task_types, old_roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } }).first!
+    j = Journal.where(id: journal.id).includes(:journal_task_types, :old_roles, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } }).first!
     requires_user_can(:administer, j)
     respond_with(j, serializer: AdminJournalSerializer, root: 'admin_journal')
   end

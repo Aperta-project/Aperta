@@ -8,7 +8,9 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    requires_user_can :edit_authors, author.paper
+    paper = Paper.find(author_params[:paper_id])
+    requires_user_can :edit_authors, paper
+    author = Author.new(author_params)
     author.save!
 
     # render all authors, since position is controlled by acts_as_list
@@ -34,18 +36,11 @@ class AuthorsController < ApplicationController
   private
 
   def author
-    @author ||= begin
-      if params[:id].present?
-        Author.includes(:author_list_item).find(params[:id])
-      else
-        Author.new(author_params)
-      end
-    end
+    @author ||= Author.includes(:author_list_item).find(params[:id])
   end
 
   def author_params
     params.require(:author).permit(
-      :task_id,
       :author_initial,
       :first_name,
       :last_name,

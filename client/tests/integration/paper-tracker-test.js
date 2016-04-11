@@ -38,7 +38,6 @@ module('Integration: Paper Tracker', {
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
     $.mockjax({url: '/api/paper_tracker_queries', status: 200, responseText: '{"paper_tracker_queries":[]}'});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
-    $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/comment_looks', status: 200, responseText: {comment_looks: []}});
     $.mockjax({url: '/api/journals', status: 200, responseText: JSON.stringify({ 'journals':[{'id':1}] })});
   }

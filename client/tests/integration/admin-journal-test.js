@@ -24,8 +24,7 @@ module('Integration: Admin Journal Test', {
       kind: 'admin',
       can_administer_journal: true,
       can_view_assigned_manuscript_managers: false,
-      can_view_all_manuscript_managers: true,
-      can_view_flow_manager: true
+      can_view_all_manuscript_managers: true
     });
     let adminJournalPayload = Factory.createPayload('adminJournal');
     adminJournalPayload.addRecords([journal, adminRole]);

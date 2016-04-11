@@ -21,9 +21,7 @@ describe OldRolesController do
                          "can_administer_journal" => false,
                          "can_view_assigned_manuscript_managers" => false,
                          "can_view_all_manuscript_managers" => false,
-                         "can_view_flow_manager" => false,
-                         "journal_id" => old_role.journal_id,
-                         "flow_ids" => []}
+                         "journal_id" => old_role.journal_id}
         expect(JSON.parse(response.body)["old_roles"]).to include(expected_role)
       end
     end

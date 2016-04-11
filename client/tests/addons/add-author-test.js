@@ -116,12 +116,17 @@ module('Integration: adding an author', {
     ]);
 
     server.respondWith('GET', '/api/admin/journals/authorization', [204, { 'Content-Type': 'application/json' }, '' ]);
-    server.respondWith('GET', '/api/user_flows/authorization', [204, { 'Content-Type': 'application/json' }, '' ]);
     server.respondWith('GET', '/api/affiliations', [200, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
     server.respondWith('GET', '/api/journals', [
       200, {
         'Content-Type': 'application/json'
       }, JSON.stringify({journals:[]})
+    ]);
+
+    server.respondWith('POST', '/api/authors', [
+      200, {
+        'Content-Type': 'application/json'
+      }, JSON.stringify({authors: [{id: 5}]})
     ]);
 
     server.respondWith('GET', '/api/countries', [
@@ -133,10 +138,7 @@ module('Integration: adding an author', {
 });
 
 test('can add a new author', function(assert) {
-  Ember.run(function() {
     const firstName = 'James';
-
-    TestHelper.handleCreate('author');
 
     visit(`/papers/${paperId}/tasks/${taskId}`);
     openNewAuthorForm();
@@ -144,28 +146,38 @@ test('can add a new author', function(assert) {
     click('.author-form-buttons .button-secondary:contains("done")');
 
     andThen(function() {
-      assert.ok(find(`.author-task-item .author-name:contains('${firstName}')`).length);
+      assert.ok(
+        find(`.author-task-item .author-name:contains('${firstName}')`).length,
+            'New author item displays author name'
+      );
     });
-  });
 });
 
 test('validation works', function(assert) {
-  Ember.run(function() {
-    TestHelper.handleCreate('author');
+  visit(`/papers/${paperId}/tasks/${taskId}`);
+  openNewAuthorForm();
+  click('.author-form-buttons .button-secondary:contains("done")');
+  click('.author-task-item-view-text');
+  click('.author-form-buttons .button-secondary:contains("done")');
 
-    visit(`/papers/${paperId}/tasks/${taskId}`);
-    openNewAuthorForm();
-    click('.author-form-buttons .button-secondary:contains("done")');
-    click('.author-task-item-view-text');
-    click('.author-form-buttons .button-secondary:contains("done")');
-
-    andThen(function() {
-      assert.ok(find('[data-test-id="author-first-name"].error').length,  'presence error on first name');
-      assert.ok(find('[data-test-id="author-last-name"].error').length,   'presence error on last name');
-      assert.ok(find('[data-test-id="author-initial"].error').length,     'presence error on initial');
-      assert.ok(find('[data-test-id="author-email"].error').length,       'presence error on email');
-      assert.ok(find('[data-test-id="author-affiliation"].error').length, 'presence error on affiliation');
-      assert.ok(find('[data-test-id="author-government"] .error-message:visible').length, 'presence error on government');
-    });
+  andThen(function() {
+    assert.ok(
+      find('[data-test-id="author-first-name"].error').length,
+           'presence error on first name');
+    assert.ok(
+      find('[data-test-id="author-last-name"].error').length,
+           'presence error on last name');
+    assert.ok(
+      find('[data-test-id="author-initial"].error').length,
+      'presence error on initial');
+    assert.ok(
+      find('[data-test-id="author-email"].error').length,
+      'presence error on email');
+    assert.ok(
+      find('[data-test-id="author-affiliation"].error').length,
+      'presence error on affiliation');
+    assert.ok(
+      find('[data-test-id="author-government"] .error-message:visible').length,
+      'presence error on government');
   });
 });

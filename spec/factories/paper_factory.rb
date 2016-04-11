@@ -180,7 +180,7 @@ FactoryGirl.define do
 
         # Authors
         authors_task = FactoryGirl.create(:authors_task, paper: paper)
-        author = FactoryGirl.create(:author, paper: paper, task: authors_task)
+        author = FactoryGirl.create(:author, paper: paper)
         NestedQuestionableFactory.create(
           author,
           questions: [

@@ -11,7 +11,6 @@ class GroupAuthorSerializer < ActiveModel::Serializer
              :name,
              :id
 
-  has_one :task, embed: :id
   has_many :nested_questions,
            serializer: NestedQuestionSerializer,
            embed: :ids,

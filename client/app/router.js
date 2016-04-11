@@ -8,7 +8,6 @@ let Router = Ember.Router.extend({
 Router.map(function() {
   this.route('dashboard', { path: '/' }, function() {});
 
-  this.route('flow_manager');
   this.route('paper_tracker', function() {});
 
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
@@ -44,7 +43,6 @@ Router.map(function() {
         this.route('new');
         this.route('edit', { path: '/:manuscript_manager_template_id/edit' });
       });
-      this.route('flow_manager', { path: '/old_roles/:old_role_id/flow_manager' });
 
     });
   });

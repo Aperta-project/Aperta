@@ -268,6 +268,20 @@ describe Activity do
     )}
   end
 
+  describe "#paper_initially_submitted!" do
+    subject(:activity) { Activity.paper_initially_submitted!(paper, user: user) }
+    let(:paper) { FactoryGirl.build(:paper) }
+
+    it do
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
+        activity_key: "paper.initially_submitted",
+        subject: paper,
+        user: user,
+        message: "Manuscript was submitted")
+    end
+  end
+
   describe '#editability_toggled!' do
     subject(:activity) { Activity.editable_toggled!(paper, user: user) }
     let(:paper) { FactoryGirl.build(:paper) }

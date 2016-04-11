@@ -21,7 +21,6 @@
     <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=model.canViewAssignedManuscriptManagers}} Manuscript Manager</label>
     <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=model.canViewAllManuscriptManagers}} All Manuscript Managers</label>
     <label class="token">{{check-box name="role[canAdministerJournal]" checked=model.canAdministerJournal}} Admin</label>
-    <label class="token">{{check-box name="role[canViewFlowManager]" checked=model.canViewFlowManager}} Flow Manager</label>
   {{else}}
     {{#if model.canViewAssignedManuscriptManagers}}
       <label class="token"><span class="fa fa-check"></span> Manuscript Manager</label>
@@ -32,15 +31,6 @@
     {{#if model.canAdministerJournal}}
       <label class="token"><span class="fa fa-check"></span> Admin</label>
     {{/if}}
-    {{#if model.canViewFlowManager}}
-      <label class="token"><span class="fa fa-check"></span> Flow Manager</label>
-    {{/if}}
-  {{/if}}
-
-  {{#if model.canViewFlowManager}}
-    <div class="admin-modify-flows-link">
-      {{#link-to "admin.journal.flow_manager" model.journal model}}Edit Flows{{/link-to}}
-    </div>
   {{/if}}
 
   <div class="action-buttons">

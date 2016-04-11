@@ -69,22 +69,10 @@ respondAuthorized = function() {
       'Content-Type': 'application/html'
     }, ''
   ]);
-
-
-  return server.respondWith('GET', '/api/user_flows/authorization', [
-    204, {
-      'content-type': 'application/html'
-    }, ''
-  ]);
 };
 
 respondUnauthorized = function() {
   server.respondWith('GET', '/api/admin/journals/authorization', [
-    403, {
-      'content-type': 'application/html'
-    }, ''
-  ]);
-  return server.respondWith('GET', '/api/user_flows/authorization', [
     403, {
       'content-type': 'application/html'
     }, ''
@@ -115,22 +103,6 @@ test('all users can see their username', function(assert) {
   });
 });
 
-test('(200 response) can see the Flow Manager link', function(assert) {
-  respondAuthorized();
-  visit('/');
-  andThen(function() {
-    assert.equal(find('.main-nav:contains("Flow Manager")').length, 1);
-  });
-});
-
-test('(403 response) cannot see the Flow Manager link', function(assert) {
-  respondUnauthorized();
-  visit('/');
-  andThen(function() {
-    assert.equal(find('.main-nav:contains("Flow Manager")').length, 0);
-  });
-});
-
 test('(200 response) can see the Admin link', function(assert) {
   respondAuthorized();
   visit('/');
@@ -144,14 +116,6 @@ test('(403 response) cannot see the Admin link', function(assert) {
   visit('/');
   andThen(function() {
     assert.equal(find('.main-nav:contains("Admin")').length, 0);
-  });
-});
-
-test('(403 response) cannot see the Flow Manager link', function(assert) {
-  respondUnauthorized();
-  visit('/');
-  andThen(function() {
-    assert.equal(find('.main-nav:contains("Flow Manager")').length, 0);
   });
 });
 

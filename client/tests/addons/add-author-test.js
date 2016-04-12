@@ -161,27 +161,27 @@ test('validation works', function(assert) {
   click('.author-form-buttons .button-secondary:contains("done")');
 
   andThen(function() {
-    assert.foundElement(
+    assert.elementFound(
       '[data-test-id="author-first-name"].error',
       'presence error on first name'
     );
-    assert.foundElement(
+    assert.elementFound(
       '[data-test-id="author-last-name"].error',
       'presence error on last name'
     );
-    assert.foundElement(
+    assert.elementFound(
       '[data-test-id="author-initial"].error',
       'presence error on initial'
     );
-    assert.foundElement(
+    assert.elementFound(
       '[data-test-id="author-email"].error',
       'presence error on email'
     );
-    assert.foundElement(
+    assert.elementFound(
       '[data-test-id="author-affiliation"].error',
       'presence error on affiliation'
     );
-    assert.foundElement(
+    assert.elementFound(
       '[data-test-id="author-government"] .error-message:visible',
       'presence error on government'
     );

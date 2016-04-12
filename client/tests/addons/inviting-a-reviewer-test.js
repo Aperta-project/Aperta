@@ -54,7 +54,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function(){
-      assert.foundElement(
+      assert.elementFound(
         '.compose-invite-button.button--disabled',
         'Expected to find Compose Invite button disabled'
       );
@@ -67,7 +67,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
     });
 
     andThen(function(){
-      assert.foundElement(
+      assert.elementFound(
         '.compose-invite-button:not(.button--disabled)',
         'Expected to find Compose Invite button enabled'
       );

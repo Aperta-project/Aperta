@@ -1,28 +1,17 @@
 import Ember from 'ember';
+import SnapshotsById from 'tahi/lib/snapshots-by-id'
 
 export default Ember.Component.extend({
   snapshot1: null,
   snapshot2: null,
   classNames: ['figure-snapshot'],
 
-  children: Ember.computed(
-    'snapshot1.children',
-    'snapshot2.children',
-    function(){
-      return _.zip(
-        this.get('snapshot1.children'),
-        this.get('snapshot2.children') || []);
-    }
-  ),
-
-  figures1: Ember.computed.filterBy('snapshot1.children', 'name', 'figure'),
-  figures2: Ember.computed.filterBy('snapshot2.children', 'name', 'figure'),
-
   figures: Ember.computed('figures1', 'figures2', function(){
-    return _.zip(this.get('figures1'), this.get('figures2'));
+    var snapshots = new SnapshotsById('figure');
+    snapshots.addSnapshots(this.get('snapshot1.children'));
+    snapshots.addSnapshots(this.get('snapshot2.children'));
+    return snapshots.toArray();
   }),
-
-
 
   notFigures1: Ember.computed.filter('snapshot1.children', function(child){
     return child.name !== "figure";

@@ -5,7 +5,7 @@
 // must pair our snapshots up by *id*, not by position. This is a helper class
 // to make that pairing fast and easy.
 //
-// See supporting-information-file-snapshot/component.js to see it in action.
+// See supporting-information-task-snapshot/component.js to see it in action.
 //
 export default class SnapshotsById {
   constructor(taskName) {
@@ -26,6 +26,8 @@ export default class SnapshotsById {
   }
 
   addSnapshots(taskSnapshot) {
+    if (!taskSnapshot){return;}
+
     taskSnapshot.forEach((childSnapshot) => {
       if (childSnapshot.name !== this.taskName) { return; }
       let id = this.snapshotId(childSnapshot);

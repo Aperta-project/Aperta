@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import SnapshotsById from 'tahi/lib/snapshots-by-id'
+import SnapshotsById from 'tahi/lib/snapshots/snapshots-by-id'
 
 
 export default Ember.Component.extend({

@@ -18,4 +18,7 @@ export default Ember.Component.extend({
   publishable1: namedComputedProperty('publishable', 'snapshot1'),
   publishable2: namedComputedProperty('publishable', 'snapshot2'),
 
+  strikingImage1: namedComputedProperty('striking_image', 'snapshot1'),
+  strikingImage2: namedComputedProperty('striking_image', 'snapshot2')
+
 })

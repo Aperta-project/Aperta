@@ -1,9 +1,14 @@
 .figure-snapshot {
   margin-bottom: 1rem;
 
-  .figure-snapshot-item-label {
-    font-weight: bold;
-    padding-right: 1em;
+  td , th {
+    padding: .5em 1em 0em 0;
+  }
+  thead {
+    border-bottom: 1px solid $tahi-grey-light;
   }
 
+  .figure-snapshot-item-label {
+    font-weight: bold;
+  }
 }

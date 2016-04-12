@@ -21,6 +21,8 @@ export const diffableTextForQuestion = function(collectionKey, propertyKey) {
 
 export const namedComputedProperty = function(snapshotName, propertyName) {
   return Ember.computed(snapshotName + '.[]', function() {
-    return fromProperty(this.get(snapshotName), propertyName);
+    var properties = this.get(snapshotName);
+    if (!properties) { return null; }
+    return fromProperty(properties, propertyName);
   });
 };

@@ -35,7 +35,7 @@ export default Ember.Component.extend({
   }),
 
   supportingInfo: Ember.computed('snapshot1.name', function(){
-    return this.get('snapshot1.name') === 'supporting-information-file';
+    return this.get('snapshot1.name') === 'supporting-information-task';
   }),
 
   funder: Ember.computed('snapshot1.name', function(){

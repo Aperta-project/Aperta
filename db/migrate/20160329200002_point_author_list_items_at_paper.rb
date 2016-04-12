@@ -5,6 +5,30 @@ class PointAuthorListItemsAtPaper < ActiveRecord::Migration
     add_column :author_list_items, :paper_id, :integer
     add_foreign_key :author_list_items, :papers
 
+    # Delete orphaned records before migrating data
+    execute <<-SQL.strip_heredoc
+      DELETE FROM authors
+      WHERE authors.paper_id NOT IN (SELECT id FROM papers)
+    SQL
+
+    execute <<-SQL.strip_heredoc
+      DELETE FROM author_list_items
+      WHERE author_list_items.author_id NOT IN
+      (SELECT id FROM authors) AND author_list_items.author_type = 'Author'
+    SQL
+
+    execute <<-SQL.strip_heredoc
+      DELETE FROM group_authors
+      WHERE group_authors.paper_id NOT IN (SELECT id FROM papers)
+    SQL
+
+    execute <<-SQL.strip_heredoc
+      DELETE FROM author_list_items
+      WHERE author_list_items.author_id NOT IN
+      (SELECT id FROM group_authors) AND author_list_items.author_type = 'GroupAuthor'
+    SQL
+
+    # Migrate author paper assignments
     execute <<-SQL.strip_heredoc
       UPDATE author_list_items
       SET paper_id = authors.paper_id
@@ -39,9 +63,3 @@ class PointAuthorListItemsAtPaper < ActiveRecord::Migration
 
     remove_column :author_list_items, :paper_id
   end
-end
-
-# This migration may fail, if you have orphaned authors. Try:
-# DELETE FROM authors WHERE authors.paper_id NOT IN (SELECT id FROM papers);
-# DELETE FROM author_list_items WHERE author_list_items.author_id NOT IN
-# (SELECT id FROM authors) AND author_list_items.author_type = 'Author' ;

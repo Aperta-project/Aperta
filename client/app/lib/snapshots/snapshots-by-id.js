@@ -8,8 +8,8 @@
 // See supporting-information-task-snapshot/component.js to see it in action.
 //
 export default class SnapshotsById {
-  constructor(taskName) {
-    this.taskName = taskName;
+  constructor(itemName) {
+    this.itemName = itemName;
     this.currentSnapshot = 0;
     this.pairedSnapshots = {};
   }
@@ -29,7 +29,7 @@ export default class SnapshotsById {
     if (!taskSnapshot){return;}
 
     taskSnapshot.forEach((childSnapshot) => {
-      if (childSnapshot.name !== this.taskName) { return; }
+      if (childSnapshot.name !== this.itemName) { return; }
       let id = this.snapshotId(childSnapshot);
       this.setPairedSnapshot(id, childSnapshot, this.currentSnapshot);
     });

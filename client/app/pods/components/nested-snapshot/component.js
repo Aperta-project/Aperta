@@ -3,7 +3,13 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   snapshot1: null,
   snapshot2: null,
+  nestedLevel: 1,
   classNames: ['snapshot'],
+  classNameBindings: ['levelClassName'],
+
+  levelClassName: Ember.computed('nestedLevel', function(){
+    return `nested-level-${this.get('nestedLevel')}`;
+  }),
 
   generalCase: Ember.computed.not('specialCase'),
   specialCase: Ember.computed.or(
@@ -50,5 +56,9 @@ export default Ember.Component.extend({
       return _.zip(
         this.get('snapshot1.children'),
         this.get('snapshot2.children') || []);
-    })
+    }),
+
+  incrementedNestedLevel: Ember.computed('nestedLevel', function(){
+    return this.incrementProperty('nestedLevel');
+  }),
 });

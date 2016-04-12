@@ -12,17 +12,22 @@ export default Ember.Component.extend({
   // This is the default if nothing else is set
   default: null,
 
+  hasComparisonText: Ember.computed.notEmpty('comparisonText'),
+  hasViewingText: Ember.computed.notEmpty('viewingText'),
+  hasText: Ember.computed.or('hasComparisonText', 'hasViewingText'),
+
   chunks: Ember.computed('comparisonText', 'viewingText', function() {
-    if (!this.get('comparisonText')) {
-      return [{value: this.get('viewingText') || this.get('default')}];
-    } else {
+    if (this.get('hasText')) {
       return this.diff();
+    }
+    else {
+      [{value: this.get('default')}];
     }
   }),
 
   diff() {
     return JsDiff.diffSentences(
-      String(this.get('comparisonText')),
-      String(this.get('viewingText') || this.get('default')));
+      this.get('comparisonText'),
+      this.get('viewingText'));
   }
 });

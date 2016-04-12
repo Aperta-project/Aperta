@@ -1,35 +1,5 @@
 import Ember from 'ember';
-
-const findAuthors = function(authors) {
-  return authors.filter((child) => {
-    return child.name === 'author' ||
-      child.name === 'group-author';
-  });
-};
-
-const findChild = (author, key) => {
-  return author.children.findBy('name', key).value;
-};
-
-const equivalentAuthor = (author, authors) => {
-  return authors.find((item) => {
-    return findChild(item,'id') === findChild(author, 'id') &&
-      item.name === author.name;
-  });
-};
-
-const positionSort = (a, b) => {
-  let posA = findChild(a, 'position');
-  let posB = findChild(b, 'position');
-  if (posA < posB) {
-    return -1;
-  } else if (posA > posB) {
-    return 1;
-  } else {
-    return 0;
-  }
-
-};
+import SnapshotsById from 'tahi/lib/snapshots/snapshots-by-id';
 
 export default Ember.Component.extend({
   snapshot1: null, //Snapshots are passed in
@@ -57,24 +27,21 @@ export default Ember.Component.extend({
   }),
 
   authors: Ember.computed('snapshot1', 'snapshot2', function() {
-    let viewing = findAuthors(this.get('snapshot1.contents.children'))
-      .sort(positionSort);
+    var snapshots = new SnapshotsById('author');
+    snapshots.addSnapshots(this.get('snapshot1.contents.children'));
+    snapshots.addSnapshots(this.get('snapshot2.contents.children'));
+    var authors = snapshots.toArray();
 
-    let comparing = findAuthors(this.get('snapshot2.contents.children'));
+    snapshots = new SnapshotsById('group-author');
+    snapshots.addSnapshots(this.get('snapshot1.contents.children'));
+    snapshots.addSnapshots(this.get('snapshot2.contents.children'));
+    var groupAuthors = snapshots.toArray();
 
-    let addedAndChanged = viewing.map(function(viewingAuthor) {
-      return {
-        viewing: viewingAuthor,
-        comparing: equivalentAuthor(viewingAuthor, comparing)
-      };
+    var allAuthors = authors.concat(groupAuthors);
+    return _.sortBy(allAuthors, function(author) {
+      return _.find(author[0].children, function(item) {
+        return item.name === 'position';
+      }).value;
     });
-
-    let removed = comparing.reject((c) => {
-       return equivalentAuthor(c, viewing);
-    }).map((deletedAuthor) => {
-      return {viewing: null, comparing: deletedAuthor};
-    });
-
-    return addedAndChanged.concat(removed);
   })
 });

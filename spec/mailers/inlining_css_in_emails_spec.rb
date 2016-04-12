@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'erb'
 
-describe 'Inlining CSS into emails', type: :mailer do
+describe 'Inlining CSS into emails with premailer-rails', type: :mailer do
   class FakeMailer < ActionMailer::Base
     default from: Rails.configuration.from_email
     layout 'mailer'
@@ -17,9 +17,18 @@ describe 'Inlining CSS into emails', type: :mailer do
     end
   end
 
-  describe 'premailer-rails' do
-    let(:email) { FakeMailer.send_fake_email }
+  let(:email) { FakeMailer.send_fake_email }
 
+  context 'without precompiled assets' do
+    it 'inlines css' do
+      delivered_email = email.deliver_now
+      body = Nokogiri::HTML(delivered_email.html_part.body.to_s)
+      element = body.search('.mailer[style*="width: 600px"]')
+      expect(element).to be
+    end
+  end
+
+  context 'with precompiled assets' do
     # temporary storage for precompiling assets in this test
     let(:test_assets_path) { Rails.root.join('tmp/test-assets') }
 

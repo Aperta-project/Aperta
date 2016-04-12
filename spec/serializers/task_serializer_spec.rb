@@ -1,34 +1,30 @@
 require 'rails_helper'
 
-describe TaskSerializer do
+describe TaskSerializer, serializer_test: true do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:task) { FactoryGirl.create(:task, paper: paper) }
-  let(:serializer) { TaskSerializer.new(task) }
-
-  subject do
-    JSON.parse(serializer.to_json, symbolize_names: true)
-  end
+  let(:object_for_serializer) { task }
 
   describe '#is_metadata_task' do
     it 'returns false if task is not a metadata type' do
-      expect(subject[:task][:is_metadata_task]).to eq(false)
+      expect(deserialized_content[:task][:is_metadata_task]).to eq(false)
     end
 
     it 'returns true if task is a metadata type' do
       Task.metadata_types << 'Task'
-      expect(subject[:task][:is_metadata_task]).to eq(true)
+      expect(deserialized_content[:task][:is_metadata_task]).to eq(true)
       Task.metadata_types.delete('Task')
     end
   end
 
   describe '#is_submission_task' do
     it 'returns false if task is not a submission type' do
-      expect(subject[:task][:is_submission_task]).to eq(false)
+      expect(deserialized_content[:task][:is_submission_task]).to eq(false)
     end
 
     it 'returns true if task is a submission type' do
       Task.submission_types << 'Task'
-      expect(subject[:task][:is_submission_task]).to eq(true)
+      expect(deserialized_content[:task][:is_submission_task]).to eq(true)
       Task.submission_types.delete('Task')
     end
   end
@@ -43,7 +39,7 @@ describe TaskSerializer do
     end
 
     it 'returns false if current_user does not exists in the context' do
-      expect(subject[:task][:assigned_to_me]).to eq(false)
+      expect(deserialized_content[:task][:assigned_to_me]).to eq(false)
     end
 
     context 'and the user is participating in this task' do
@@ -58,7 +54,7 @@ describe TaskSerializer do
       end
 
       it 'returns true if current_user exists in the context' do
-        expect(subject[:task][:assigned_to_me]).to eq(true)
+        expect(deserialized_content[:task][:assigned_to_me]).to eq(true)
       end
     end
   end

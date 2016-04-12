@@ -30,6 +30,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - PDF generation now works when a paper has figures.
 - Single-sign-on sessions should now properly end upon Aperta logout
+- Problem with discussion reply attribution not showing up
 
 ### Security
 -

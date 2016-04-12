@@ -7,5 +7,7 @@ class MailLoggerObserver
   end
 end
 
+DEFAULT_MAILER_STYLESHEET = 'email'
+
 # Register the MailLoggerObserver class
 ActionMailer::Base.register_observer(MailLoggerObserver)

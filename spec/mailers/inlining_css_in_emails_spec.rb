@@ -56,7 +56,7 @@ describe 'Inlining CSS into emails', type: :mailer do
       environment.append_path(Rails.root.join('app/assets/stylesheets'))
 
       manifest = Sprockets::Manifest.new(environment.index, test_assets_path)
-      manifest.compile('email.css')
+      manifest.compile("#{DEFAULT_MAILER_STYLESHEET}.css")
     end
 
     it 'inlines css' do

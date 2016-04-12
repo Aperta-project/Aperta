@@ -5,25 +5,20 @@ export default Ember.Component.extend({
   snapshot1: null, //Snapshots are passed in
   snapshot2: null,
 
-  questions: Ember.computed('snapshot1', 'snapshot2', function() {
-    let viewing = this.get('snapshot1.contents.children')
-      .filterBy('type', 'question');
-    let comparing = this.get('snapshot2.contents.children')
-      .filterBy('type', 'question');
-    let addedAndChanged = viewing.map(function(viewingQuestion) {
-      return {
-        viewing: viewingQuestion,
-        comparing: comparing.findBy('name', viewingQuestion.name)
-      };
-    });
+  questionsViewing: Ember.computed('snapshot1', function() {
+    return this.get('snapshot1.contents.children').filterBy(
+      'type', 'question');
+  }),
 
-    let removed = comparing.reject((c) => {
-      return viewing.findBy('name', c.name);
-    }).map((deletedQuestion) => {
-      return {viewing: null, comparing: deletedQuestion};
-    });
+  questionsComparing: Ember.computed('snapshot2', function() {
+    return this.get('snapshot2.contents.children').filterBy(
+      'type', 'questions');
+  }),
 
-    return addedAndChanged.concat(removed);
+  questions: Ember.computed('questionsViewing', 'questionsComparing',
+                            function() {
+    return _.zip(this.get('questionsViewing'),
+                 this.get('questionsComparing') || []);
   }),
 
   authors: Ember.computed('snapshot1', 'snapshot2', function() {

@@ -63,3 +63,4 @@ class PointAuthorListItemsAtPaper < ActiveRecord::Migration
 
     remove_column :author_list_items, :paper_id
   end
+end

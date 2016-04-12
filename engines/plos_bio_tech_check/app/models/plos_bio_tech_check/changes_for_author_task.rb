@@ -3,10 +3,6 @@ module PlosBioTechCheck
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 
-    after_save :ensure_paper_editable!
-
-    after_update :uncomplete_task, if: :body_changed?
-
     DEFAULT_TITLE = 'Changes For Author'
     DEFAULT_ROLE = 'author'
 
@@ -32,18 +28,6 @@ module PlosBioTechCheck
           paper_id: paper.id
         )
       end
-    end
-
-    private
-
-    def ensure_paper_editable!
-      if not completed and not paper.checking?
-        paper.minor_check!
-      end
-    end
-
-    def uncomplete_task
-      update_column :completed, false
     end
   end
 end

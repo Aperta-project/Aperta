@@ -24,7 +24,7 @@
 **/
 
 import Ember from 'ember';
-import filetypeRegex from 'tahi/lib/util/string/filetype-regex';
+import checkType from 'tahi/lib/file-upload/check-filetypes'
 
 export default Ember.Component.extend({
   attributeBindings: ['type', 'accept', 'multiple', 'name', 'disabled'],
@@ -60,11 +60,11 @@ export default Ember.Component.extend({
       if (Ember.isPresent(acceptedFileTypes) && this.get('validateFileTypes')) {
         Ember.assert("The addingFileFailed action must be defined if validateFileTypes is true",
                      !!this.attrs.addingFileFailed);
-        if (fileName.length && !filetypeRegex(acceptedFileTypes).test(fileName)) {
-          let types = acceptedFileTypes.split(',').join(' or ');
-          let errorMessage = `Sorry! '${fileName}' is not of an accepted file type (${types})`;
-          return this.attrs.addingFileFailed(errorMessage, {fileName, acceptedFileTypes});
-        }
+      }
+      let {error, msg} = checkType(fileName, acceptedFileTypes);
+      if (error) {
+        this.attrs.addingFileFailed(msg, {fileName, acceptedFileTypes});
+        return;
       }
 
       // call action fileAdded if it's defined

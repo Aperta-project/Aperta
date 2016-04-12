@@ -19,7 +19,7 @@ class DefaultAuthorCreator
     @author = Author.create(first_name: creator.first_name,
                             last_name: creator.last_name,
                             email: creator.email,
-                            paper: paper)
+                            paper_id: paper.id)
   end
 
   def add_affiliation_information

@@ -1,11 +1,12 @@
-import Ember from 'ember';
-
 /**
  *  An input file that wraps jquery-file-upload plugin.
  *  This component calls the API requesting the parameters required
  *  for making a direct request to Amazon S3, it requires the filePath.
  *  You can sent functions as closure actions, that will hook the callbacks from
  *  jquery-file-upload
+ *
+ *  A helpful description of some of the options to the plugin are here:
+ *  https://github.com/blueimp/jQuery-File-Upload/wiki/options
  *
  *  ## How to Use
  *
@@ -17,9 +18,14 @@ import Ember from 'ember';
  *                  uploadProgress=(action "uploadProgress")
  *                  uploadFinished=(action "uploadFinished")
  *                  uploadFailed=(action "uploadFailed")
+ *                  addingFileFailed=(action "addingFileFailed")
  *                  fileAdded=(action "fileAdded")}}
  *  ```
 **/
+
+import Ember from 'ember';
+import filetypeRegex from 'tahi/lib/util/string/filetype-regex';
+
 export default Ember.Component.extend({
   attributeBindings: ['type', 'accept', 'multiple', 'name', 'disabled'],
   tagName: 'input',
@@ -27,6 +33,8 @@ export default Ember.Component.extend({
   name: 'file',
   multiple: false,
   disabled: false,
+  accept: null,
+  validateFileTypes: false,
 
   init() {
     this._super(...arguments);
@@ -47,14 +55,26 @@ export default Ember.Component.extend({
 
     this.$().on('fileuploadadd', (e, data) => {
 
+      let acceptedFileTypes = this.get('accept');
+      let fileName = data.files[0].name;
+      if (Ember.isPresent(acceptedFileTypes) && this.get('validateFileTypes')) {
+        Ember.assert("The addingFileFailed action must be defined if validateFileTypes is true",
+                     !!this.attrs.addingFileFailed);
+        if (fileName.length && !filetypeRegex(acceptedFileTypes).test(fileName)) {
+          let types = acceptedFileTypes.split(',').join(' or ');
+          let errorMessage = `Sorry! '${fileName}' is not of an accepted file type (${types})`;
+          return this.attrs.addingFileFailed(errorMessage, {fileName, acceptedFileTypes});
+        }
+      }
+
       // call action fileAdded if it's defined
       if (this.attrs.fileAdded) {
-        this.attrs.fileAdded(data.files[0]);
+        this.attrs.fileAdded(fileName);
       }
 
       // get keys in order to make a successful request to S3
       const requestPayload = { file_path: this.get('filePath'),
-                               file_name: data.files[0].name,
+                               file_name: fileName,
                                content_type: data.files[0].type };
 
       return $.getJSON('/api/s3/sign', requestPayload, (response) => {

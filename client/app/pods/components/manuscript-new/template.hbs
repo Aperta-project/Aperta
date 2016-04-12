@@ -70,8 +70,10 @@
     <i class="fa fa-upload"></i> Upload Document
     {{s3-file-uploader elementId="upload-files"
                        accept=".docx,.doc"
+                       validateFileTypes=true
                        filePath="paper/manuscript"
                        fileAdded=(action "fileAdded")
+                       addingFileFailed=(action "addingFileFailed")
                        uploadFinished=(action "uploadFinished")
                        uploadFailed=(action "uploadFailed")}}
   </span>

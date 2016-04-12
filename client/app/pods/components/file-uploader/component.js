@@ -18,6 +18,7 @@
 //      processingDone
 
 import Ember from 'ember';
+import filetypeRegex from 'tahi/lib/util/string/filetype-regex';
 
 export default Ember.TextField.extend({
   type: 'file',
@@ -32,8 +33,7 @@ export default Ember.TextField.extend({
   railsMethod: 'POST',
 
   acceptedFileTypes: Ember.computed('accept', function(){
-    let types = this.get('accept').replace(/\./g, '').replace(/,/g, '|');
-    return new RegExp("(" + types + ")$", 'i');
+    return filetypeRegex(this.get('accept'));
   }),
 
   checkFileType: function(e, data) {

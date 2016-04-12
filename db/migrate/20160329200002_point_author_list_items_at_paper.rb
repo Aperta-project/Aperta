@@ -25,7 +25,7 @@ class PointAuthorListItemsAtPaper < ActiveRecord::Migration
     execute <<-SQL.strip_heredoc
       DELETE FROM author_list_items
       WHERE author_list_items.author_id NOT IN
-      (SELECT id FROM authors) AND author_list_items.author_type = 'GroupAuthor'
+      (SELECT id FROM group_authors) AND author_list_items.author_type = 'GroupAuthor'
     SQL
 
     # Migrate author paper assignments

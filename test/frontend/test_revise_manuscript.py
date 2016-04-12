@@ -31,10 +31,7 @@ class ReviseManuscriptTest(CommonTest):
   """
   test_revise_manuscript: XXXX
   AC out of: APERTA-6419
-     - When the user is added to a discussion topic
-     - When mentioned in a topic
-     - Numbered notifications
-
+     -
   """
   def test_response_to_reviewers(self):
     """
@@ -63,11 +60,11 @@ class ReviseManuscriptTest(CommonTest):
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
 
+    paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Billing')
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
-    paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Financial Disclosure')
     # Complete cards
     paper_viewer.click_submit_btn()
@@ -75,8 +72,7 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer.close_submit_overlay()
     # logout
     paper_viewer.logout()
-    # log as editor, there is no need to invite a reviewer because the editor
-    # can review and this path is already tested elsewhere.
+    # log as editor, invite a reviewer
     user_type = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -87,76 +83,28 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     time.sleep(10)
-    # NOTE: logout not done!!!
-    # Invite a reviewer
+    workflow_page.click_card('invite_reviewers')
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.invite_reviewer(reviewer_login, 'TITLE XXX')
+    paper_viewer.logout()
+
+    # As a reviewer, accept the MS
     user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
-    # go to article id paper_id
+    logging.info('Logging in as user: {0}'.format(reviewer_login))
+    dashboard_page = self.cas_login(email=reviewer_login['email'])
+    dashboard_page.accept_all_invitations()
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
     time.sleep(10)
-    workflow_page.click_card('invite_reviewers')
-    invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.invite_reviewer(reviewer_login, 'TITLE XXX')
-    paper_viewer.logout()
-    # login as reviewer
-    logging.info('Logging in as user: {0}'.format(reviewer_login))
-    dashboard_page = self.cas_login(email=reviewer_login['email'])
-    # accept invitation
-    import pdb; pdb.set_trace()
-    dashboard_page.accept_all_invitations()
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
 
 
 
-
-
-
-
-    paper_viewer.logout()
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                     msg='', participants=[creator['user']])
-    # send another msg
-    paper_viewer.logout()
-    logging.info('Logging in as user: {0}'.format(creator))
-    dashboard_page = self.cas_login(email=creator['email'])
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # click on discussion icon
-    paper_viewer.post_discussion('@' + creator['user'])
-    paper_viewer.logout()
-    logging.info('Logging in as user: {0}'.format(creator))
-    dashboard_page = self.cas_login(email=creator['email'])
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # look for icon
-    red_badge = paper_viewer._get(paper_viewer._badge_red)
-    red_badge_last = int(red_badge.text)
-    assert red_badge_first + 1 == red_badge_last, (red_badge_first, red_badge_last)
-    red_badge.click()
-    # close and check if any badge
-    paper_viewer.close_sheet()
     paper_viewer.set_timeout(2)
     paper_viewer.restore_timeout()
 

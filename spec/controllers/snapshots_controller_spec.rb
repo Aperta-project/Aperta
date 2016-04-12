@@ -31,7 +31,7 @@ describe SnapshotsController do
     end
   end
 
-  context 'roles and permissions' do
+  context 'when the user has access' do
     before do
       SnapshotService.new(paper).snapshot!(task)
     end
@@ -42,14 +42,25 @@ describe SnapshotsController do
           task_id: task.to_param
     end
 
-    it 'works with permission' do
+    it 'returns 200' do
       sign_in owner
       do_request
 
       expect(response.status).to eq(200)
     end
+  end
 
-    it 'returns a 403 without permission' do
+  context 'when the user does not have access' do
+    before do
+      SnapshotService.new(paper).snapshot!(task)
+    end
+
+    subject(:do_request) do
+      get :index,
+          format: 'json',
+          task_id: task.to_param
+    end
+    it 'returns a 403 when the user does not have access' do
       sign_in other_user # other_user does not have permission to view the task
       do_request
 

@@ -3,7 +3,7 @@ module Typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
-               :publication_date
+               :publication_date, :provenance, :special_handling_instructions
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
@@ -29,6 +29,16 @@ module Typesetter
       pub_date = production_metadata.publication_date
       return unless pub_date
       Date.strptime(pub_date, '%m/%d/%Y')
+    end
+
+    def provenance
+      production_metadata = task('TahiStandardTasks::ProductionMetadataTask')
+      production_metadata.provenance || ''
+    end
+
+    def special_handling_instructions
+      production_metadata = task('TahiStandardTasks::ProductionMetadataTask')
+      production_metadata.special_handling_instructions || ''
     end
 
     def supporting_information_files

@@ -14,10 +14,7 @@ feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
   end
 
   before do
-    expect(DownloadManuscriptWorker).to receive(:perform_async) do
-      paper.update(title: 'This is a Title About Turtles',
-                   body: 'And this is my subtitle')
-    end
+    expect(DownloadManuscriptWorker).to receive(:perform_async)
     login_as(author, scope: :user)
     visit "/"
   end
@@ -30,7 +27,7 @@ feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
 
     visit "/papers/#{paper.id}"
     edit_paper_page = PaperPage.new
-    expect(edit_paper_page).to have_paper_title("This is a Title About Turtles")
-    expect(edit_paper_page.has_body_text?("And this is my subtitle")).to eq(true)
+
+    expect(edit_paper_page).to be_loading_paper
   end
 end

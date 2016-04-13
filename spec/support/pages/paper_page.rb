@@ -119,6 +119,14 @@ class PaperPage < Page
     find('#paper-body').has_text?(text)
   end
 
+  def paper_loading_spinner
+    find('.progress-spinner-message')
+  end
+
+  def loading_paper?
+    paper_loading_spinner.present?
+  end
+
   def journal
     find(:css, '.paper-journal')
   end

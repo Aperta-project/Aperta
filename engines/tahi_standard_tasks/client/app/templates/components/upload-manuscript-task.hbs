@@ -11,7 +11,7 @@
                       start="uploadStarted"
                       progress="uploadProgress"
                       done="uploadFinished"
-                      addingFileFailed=(action "fileAddError")
+                      addingFileFailed="fileAddError"
                       error="uploadError"
                       filePrefix="paper/manuscript"
                       url=manuscriptUploadUrl
@@ -21,12 +21,9 @@
     <p>You are unable to upload a new manuscript while your submission is under review.</p>
   {{/if}}
 
-  {{#if fileAddError}}
-    <p>{{fileAddError}}</p>
-  {{/if}}
-
   {{#if uploadError}}
-    <span>Sorry! {{fileName}} is not of an accepted file type</span>
+    <p>We're sorry, '{{fileName}}' is not a valid file type.</p>
+    <p> Please upload a Microsoft Word file (.docx or .doc).</p>
   {{/if}}
 
   {{#if isUploading}}

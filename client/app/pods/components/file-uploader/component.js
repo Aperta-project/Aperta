@@ -98,7 +98,7 @@ export default Ember.TextField.extend({
       if (error) {
         // addingFileFailed might not be here, so
         // tryInvoke is more terse than checking for its presence.
-        tryInvoke(this, 'addingFileFailed', [msg]);
+        this.sendAction('addingFileFailed', fileName, msg);
         return;
       }
 

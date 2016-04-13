@@ -30,8 +30,8 @@ export default TaskComponent.extend(FileUploadMixin, {
       }, 500);
     },
 
-    fileAddError(message) {
-      this.set('fileAddError', message);
+    fileAddError(fileName, _message) {
+      this.setProperties({fileName: fileName, uploadError: true});
     },
 
     uploadError(message) {

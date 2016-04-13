@@ -37,7 +37,9 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     addingFileFailed(reason, {fileName, acceptedFileTypes}) {
       this.set('isSaving', false);
-      this.get('flash').displayMessage('error', reason);
+      let msg = `We're sorry, '${fileName}' is not a valid file type.
+      Please upload a Microsoft Word file (.docx or .doc).`
+      this.get('flash').displayMessage('error', msg);
     },
 
     uploadFinished(s3Url){

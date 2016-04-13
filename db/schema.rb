@@ -384,6 +384,7 @@ ActiveRecord::Schema.define(version: 20160413002420) do
     t.datetime "accepted_at"
     t.string   "striking_image_type"
     t.datetime "state_updated_at"
+    t.boolean  "processing",                           default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

@@ -88,6 +88,10 @@ class CommonTest(FrontEndTest):
 
   @staticmethod
   def select_cas_user():
+    """
+    A method for selecting a single CAS user when needed to track which user was chosen
+    :return: selected user dictionary
+    """
     users = (creator_login1,
              creator_login2,
              creator_login3,

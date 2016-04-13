@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html class="outer-wrapper">
   <head>
-    <%= stylesheet_link_tag "email", media: "all" %>
+    <%# hack to work around https://github.com/fphilipe/premailer-rails/issues/145 %>
+    <link rel="stylesheet"
+          href="<%= (Rails.application.config.assets.compile ? DEFAULT_MAILER_STYLESHEET : File.join('/assets', Rails.application.assets_manifest.assets["#{DEFAULT_MAILER_STYLESHEET}.css"])) %>">
   </head>
   <body class="inner-wrapper">
     <div class="mailer">

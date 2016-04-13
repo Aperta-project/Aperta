@@ -549,15 +549,7 @@ class PaperTrackerPage(AuthenticatedPage):
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
       status = self._get(self._paper_tracker_table_tbody_status).text
       papers = self._get_paper_list(journal_ids, sort_by='publishing_state', reverse=False)
-
-      if status.lower() == 'initially submitted':
-        status = 'initially_submitted'
-      elif status.lower() == 'in revision':
-        status = 'in_revision'
-      elif status.lower() == 'invited for full submission':
-        status = 'invited_for_full_submission'
-      else:
-        status = status.lower()
+      status = self._normalize_status(status)
       assert status == papers[0][5], \
           'Status in page: {0} != Status in DB: {1}: {2}'.format(status,
                                                                  papers[0][5],
@@ -570,8 +562,11 @@ class PaperTrackerPage(AuthenticatedPage):
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-status-column"]')
       status = self._get(self._paper_tracker_table_tbody_status).text
       papers = self._get_paper_list(journal_ids, sort_by='publishing_state', reverse=True)
-      assert status.lower() == papers[0][5], \
-          'Status in page: {0} != Status in DB: {1}'.format(status.lower(), papers[0][5])
+      status = self._normalize_status(status)
+      assert status == papers[0][5], \
+          'Status in page: {0} != Status in DB: {1}: {2}'.format(status,
+                                                                 papers[0][5],
+                                                                 papers[0])
 
       logging.info('Sorting by Article Type ASC')
       paptype_th = self._get(self._paper_tracker_table_paper_type_th).find_element_by_tag_name('a')
@@ -684,3 +679,22 @@ class PaperTrackerPage(AuthenticatedPage):
             'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
       else:
         raise TypeError('Database title or Page title are not both unicode objects')
+
+  @staticmethod
+  def _normalize_status(status):
+    """
+    The status as stored in the db is different than presented in the UI. Specifically, statuses
+      that use multiple words live in the UI with '_' in place of spaces. We need to normalize
+      the UI presented status for comparison with the db value.
+    :param status: The status as it appears on the page
+    :return: The corresponding status as it exists in the db
+    """
+    if status.lower() == 'initially submitted':
+      status = 'initially_submitted'
+    elif status.lower() == 'in revision':
+      status = 'in_revision'
+    elif status.lower() == 'invited for full submission':
+      status = 'invited_for_full_submission'
+    else:
+      status = status.lower()
+    return status

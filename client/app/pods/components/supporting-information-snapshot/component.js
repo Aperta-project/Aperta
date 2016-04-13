@@ -20,5 +20,4 @@ export default Ember.Component.extend({
 
   strikingImage1: namedComputedProperty('striking_image', 'snapshot1'),
   strikingImage2: namedComputedProperty('striking_image', 'snapshot2')
-
 })

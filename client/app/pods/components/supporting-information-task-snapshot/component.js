@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import SnapshotsById from 'tahi/lib/snapshots/snapshots-by-id'
 
-
 export default Ember.Component.extend({
   snapshot1: null,
   snapshot2: null,

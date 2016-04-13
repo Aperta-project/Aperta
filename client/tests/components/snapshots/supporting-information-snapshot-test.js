@@ -37,8 +37,8 @@ test('no diff, no added or removed', function(assert){
 });
 
 test('Diffs the title', function(assert){
-  let secondSnaps = snapshot()
-  secondSnaps.children[1].value = 'Title here'
+  let secondSnaps = snapshot();
+  secondSnaps.children[1].value = 'Title here';
 
   this.set('oldSnapshot', snapshot());
   this.set('newSnapshot', secondSnaps);
@@ -49,8 +49,8 @@ test('Diffs the title', function(assert){
 });
 
 test('Diffs the filename', function(assert){
-  let secondSnaps = snapshot()
-  secondSnaps.children[2].value = 'newFile.jpg'
+  let secondSnaps = snapshot();
+  secondSnaps.children[2].value = 'newFile.jpg';
 
   this.set('oldSnapshot', snapshot());
   this.set('newSnapshot', secondSnaps);
@@ -61,7 +61,7 @@ test('Diffs the filename', function(assert){
 });
 
 test('Diffs the caption', function(assert){
-  let secondSnaps = snapshot()
+  let secondSnaps = snapshot();
   secondSnaps.children[3].value = 'look at me'
 
   this.set('oldSnapshot', snapshot());
@@ -73,20 +73,20 @@ test('Diffs the caption', function(assert){
 });
 
 test('Diffs the publishable', function(assert){
-  let secondSnaps = snapshot()
-  secondSnaps.children[4].value = false
+  let secondSnaps = snapshot();
+  secondSnaps.children[4].value = false;
 
   this.set('oldSnapshot', snapshot());
   this.set('newSnapshot', secondSnaps);
 
   this.render(template);
 
-  assert.diffPresent("Yes", "No")
+  assert.diffPresent("Yes", "No");
 });
 
 test('Diffs the striking image bool', function(assert){
-  let secondSnaps = snapshot()
-  secondSnaps.children[5].value = false
+  let secondSnaps = snapshot();
+  secondSnaps.children[5].value = false;
 
   this.set('oldSnapshot', snapshot());
   this.set('newSnapshot', secondSnaps);

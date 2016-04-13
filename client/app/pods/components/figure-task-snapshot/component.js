@@ -23,5 +23,4 @@ export default Ember.Component.extend({
   notFigures: Ember.computed('notFigures1', 'notFigures2', function(){
     return _.zip(this.get('notFigures1'), this.get('notFigures2'));
   })
-
 });

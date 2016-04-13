@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe PaperUpdateWorker do
   subject(:worker) { PaperUpdateWorker.new }
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, processing: true }
 
   describe "#perform" do
     let(:stubbed_url) { "http://s3_url_example" }
@@ -27,6 +27,12 @@ describe PaperUpdateWorker do
     it "requests figure extraction" do
       expect_any_instance_of(FiguresExtractor).to receive(:sync!)
       worker.perform(ihat_job_params)
+    end
+
+    it "sets the paper's status to 'done'" do
+      expect do
+        worker.perform(ihat_job_params)
+      end.to change { paper.reload.processing }.from(true).to(false)
     end
   end
 end

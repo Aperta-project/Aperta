@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('radio-button', 'Component: radio-button', {
+moduleForComponent('radio-button', 'Integration | Component | radio button', {
   integration: true,
 
   beforeEach() {

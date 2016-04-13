@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('show-if-editing', 'Component: show-if-editing', {
+moduleForComponent('show-if-editing', 'Integration | Component | show if editing', {
   integration: true,
 
   beforeEach() {

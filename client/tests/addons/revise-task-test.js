@@ -9,7 +9,7 @@ import {
 import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from '../helpers/fake-can-service';
 
-moduleForComponent('revise-task', 'Component: revise-task', {
+moduleForComponent('revise-task', 'Integration | Component | revise task', {
   integration: true,
 
   beforeEach() {

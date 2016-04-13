@@ -7,7 +7,7 @@ import Ember from 'ember';
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('power-select-other', 'Component: power-select-other', {
+moduleForComponent('power-select-other', 'Integration | Component | power select other', {
   integration: true,
 
   beforeEach() {

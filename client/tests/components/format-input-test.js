@@ -15,7 +15,7 @@ function selectElementText(el) {
 }
 
 
-moduleForComponent('format-input', 'Component: format-input', {
+moduleForComponent('format-input', 'Integration | Component | format input', {
   integration: true,
 
   beforeEach() {

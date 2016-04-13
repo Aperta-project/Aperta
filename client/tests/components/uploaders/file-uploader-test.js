@@ -6,7 +6,7 @@ import {
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('file-uploader',
-                   'Component: file-uploader',
+                   'Integration | Component | file uploader',
                    {integration: true});
 
 test('rejecting improper file types', function(assert) {

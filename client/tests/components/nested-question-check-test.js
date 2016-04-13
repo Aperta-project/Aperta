@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('nested-question-check', 'Component: nested-question-check', {
+moduleForComponent('nested-question-check', 'Integration | Component | nested question check', {
   integration: true
 });
 

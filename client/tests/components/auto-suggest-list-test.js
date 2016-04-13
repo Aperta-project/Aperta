@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('auto-suggest-list', 'Component: auto-suggest-list', {
+moduleForComponent('auto-suggest-list', 'Integration | Component | auto suggest list', {
   integration: true,
 
   beforeEach() {

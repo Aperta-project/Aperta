@@ -12,7 +12,6 @@ FactoryGirl.define do
     affiliation 'university of dagobah'
 
     after(:create) do |instance|
-      instance.task = FactoryGirl.create :authors_task
       instance.position = 1
       instance.save
     end

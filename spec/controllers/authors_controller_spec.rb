@@ -15,7 +15,7 @@ describe AuthorsController do
            position: 1
          }
   end
-  let!(:author) { FactoryGirl.create(:author, paper: paper, task_id: task.id) }
+  let!(:author) { FactoryGirl.create(:author, paper: paper) }
   let(:delete_request) { delete :destroy, format: :json, id: author.id }
   let(:put_request) do
     put :update, format: :json, id: author.id, author: { last_name: "Blabby", author_task_id: task.id }

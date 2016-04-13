@@ -48,8 +48,8 @@ describe Snapshot::AuthorTaskSerializer do
     end
 
     context "and the task has authors" do
-      let!(:author_bob) { FactoryGirl.create(:author) }
-      let!(:author_sally) { FactoryGirl.create(:group_author) }
+      let!(:author_bob) { FactoryGirl.create(:author, paper: task.paper) }
+      let!(:author_sally) { FactoryGirl.create(:group_author, paper: task.paper) }
 
       let(:bobs_author_serializer) do
         double(
@@ -66,8 +66,6 @@ describe Snapshot::AuthorTaskSerializer do
       end
 
       before do
-        task.authors = [author_bob]
-        task.group_authors = [author_sally]
         allow(Snapshot::AuthorSerializer).to receive(:new).with(author_bob).and_return bobs_author_serializer
         allow(Snapshot::GroupAuthorSerializer).to receive(:new).with(author_sally).and_return sallys_author_serializer
       end

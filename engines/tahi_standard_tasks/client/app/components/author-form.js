@@ -99,16 +99,13 @@ export default Component.extend({
   saveAuthor() {
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save();
-    this.attrs.saveSuccess();
+    this.get('author').save().then(function() {
+      this.attrs.saveSuccess();
+    });
   },
 
   saveNewAuthor() {
     const author = this.get('author');
-    // set this here, not when initially built so it doesn't show up in
-    // the list of existing authors as the user fills out the form
-    author.set('task', this.get('task'));
-
     author.save().then(savedAuthor => {
       author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
         const value = answer.get('value');
@@ -117,9 +114,9 @@ export default Component.extend({
           answer.save();
         }
       });
-    });
 
-    this.attrs.saveSuccess();
+      this.attrs.saveSuccess();
+    });
   },
 
   actions: {

@@ -6,15 +6,13 @@ module TahiStandardTasks
     def authors
       object.authors.includes(
         :author_list_item,
-        { nested_question_answers: [:attachments] },
-        :task)
+        nested_question_answers: [:attachments])
     end
 
     def group_authors
       object.group_authors.includes(
         :author_list_item,
-        { nested_question_answers: [:attachments] },
-        :task)
+        nested_question_answers: [:attachments])
     end
   end
 end

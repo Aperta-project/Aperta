@@ -6,15 +6,12 @@ const { attr, belongsTo, hasMany } = DS;
 
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
-  bibitems: hasMany('bibitem', {
-    inverse: 'paper',
-    async: false
-  }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
   decisions: hasMany('decision', { async: true }),
   discussionTopics: hasMany('discussion-topic', { async: true }),
   figures: hasMany('figure', { inverse: 'paper', async: true }),
+  groupAuthors: hasMany('group-author', { async: false }),
   journal: belongsTo('journal', { async: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
@@ -55,6 +52,10 @@ export default DS.Model.extend({
   title: attr('string'),
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
+
+  allAuthorsUnsorted: Ember.computed.union('authors', 'groupAuthors'),
+  allAuthorsSortingAsc: ['position:asc'],
+  allAuthors: Ember.computed.sort('allAuthorsUnsorted', 'allAuthorsSortingAsc'),
 
   taskSorting: ['phase.position', 'position'],
   metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),

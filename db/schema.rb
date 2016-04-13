@@ -86,9 +86,9 @@ ActiveRecord::Schema.define(version: 20160405184045) do
     t.integer  "position"
     t.integer  "author_id",   null: false
     t.string   "author_type", null: false
-    t.integer  "task_id",     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "paper_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -96,7 +96,6 @@ ActiveRecord::Schema.define(version: 20160405184045) do
     t.string   "last_name",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "paper_id"
     t.string   "middle_initial"
     t.string   "email"
     t.string   "department"
@@ -213,7 +212,6 @@ ActiveRecord::Schema.define(version: 20160405184045) do
   add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
 
   create_table "group_authors", force: :cascade do |t|
-    t.integer  "paper_id"
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
     t.string   "contact_last_name"
@@ -683,6 +681,7 @@ ActiveRecord::Schema.define(version: 20160405184045) do
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
 
+  add_foreign_key "author_list_items", "papers"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

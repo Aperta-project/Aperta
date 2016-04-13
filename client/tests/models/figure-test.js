@@ -5,6 +5,7 @@ moduleForModel('figure', 'Unit | Model | figure', {
   needs: [
     'model:paper',
     'model:author',
+    'model:group-author',
     'model:collaboration',
     'model:comment-look',
     'model:decision',

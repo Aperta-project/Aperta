@@ -32,6 +32,8 @@ describe PaperFactory do
 
     it "makes the creator an author on the paper" do
       new_paper = PaperFactory.create(paper_attrs, user)
+      expect(new_paper.authors.length).to eq(1)
+
       author = new_paper.authors.last
       expect(author.first_name).to eq(user.first_name)
       expect(author.last_name).to eq(user.last_name)

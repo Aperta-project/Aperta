@@ -16,7 +16,7 @@ describe GroupAuthorsController do
            position: 1
          }
   end
-  let!(:group_author) { FactoryGirl.create(:group_author, paper: paper, task_id: task.id) }
+  let!(:group_author) { FactoryGirl.create(:group_author, paper: paper) }
   let(:delete_request) { delete :destroy, format: :json, id: group_author.id }
   let(:put_request) do
     put :update,

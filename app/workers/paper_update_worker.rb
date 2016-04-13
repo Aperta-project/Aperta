@@ -18,6 +18,7 @@ class PaperUpdateWorker
     paper.transaction do
       PaperAttributesExtractor.new(epub_stream).sync!(paper)
       FiguresExtractor.new(epub_stream).sync!(paper)
+      paper.update!(processing: false)
     end
   end
 end

@@ -22,6 +22,15 @@ module TahiStandardTasks
       answer_for("production_metadata--publication_date").try(:value)
     end
 
+    def provenance
+      answer_for("production_metadata--provenance").try(:value)
+    end
+
+    def special_handling_instructions
+      answer_for("production_metadata--special_handling_instructions")
+        .try(:value)
+    end
+
     def volume_number
       answer_for("production_metadata--volume_number").try(:value)
     end

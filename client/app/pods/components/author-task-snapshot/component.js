@@ -34,9 +34,12 @@ export default Ember.Component.extend({
 
     var allAuthors = authors.concat(groupAuthors);
     return _.sortBy(allAuthors, function(author) {
-      return _.find(author[0].children, function(item) {
-        return item.name === 'position';
-      }).value;
+      if (author[0]) {
+        return _.find(author[0].children, function(item) {
+          return item.name === 'position';
+        }).value;
+      }
+      return Number.MAX_SAVE_INTEGER; //Sort removed authors to the bottom
     });
   })
 });

@@ -4,7 +4,7 @@ feature 'Initial Tech Check', js: true do
   let(:journal) { create :journal, :with_roles_and_permissions }
   let(:editor) { create :user }
   let(:author) { create :user }
-  let(:paper) { create :paper, :submitted, journal: journal, creator: author }
+  let(:paper) { create :paper, :checking, journal: journal, creator: author }
   let(:task) { create :initial_tech_check_task, paper: paper }
 
   before do
@@ -17,6 +17,7 @@ feature 'Initial Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
+    wait_for_ajax
     overlay.expect_author_changes_saved
     overlay.mark_as_complete
     overlay.expect_task_to_be_completed
@@ -29,6 +30,7 @@ feature 'Initial Tech Check', js: true do
     login_as(author, scope: :user)
     overlay = Page.view_task_overlay(paper, change_author_task)
     overlay.expect_to_see_change_list
+    wait_for_ajax
     overlay.click_changes_have_been_made
     overlay.dismiss
 

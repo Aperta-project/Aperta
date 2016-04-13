@@ -39,6 +39,14 @@ FactoryGirl.define do
       active false
     end
 
+    trait(:checking) do
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.submit! paper.creator
+        paper.minor_check! paper.creator
+      end
+    end
+
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
       publishing_state "submitted"

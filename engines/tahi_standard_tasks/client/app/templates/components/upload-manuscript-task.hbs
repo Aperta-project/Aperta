@@ -11,6 +11,7 @@
                       start="uploadStarted"
                       progress="uploadProgress"
                       done="uploadFinished"
+                      addingFileFailed=(action "fileAddError")
                       error="uploadError"
                       filePrefix="paper/manuscript"
                       url=manuscriptUploadUrl
@@ -18,6 +19,10 @@
     </span>
   {{else}}
     <p>You are unable to upload a new manuscript while your submission is under review.</p>
+  {{/if}}
+
+  {{#if fileAddError}}
+    <p>{{fileAddError}}</p>
   {{/if}}
 
   {{#if uploadError}}

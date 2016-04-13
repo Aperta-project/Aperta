@@ -20,6 +20,8 @@
 import Ember from 'ember';
 import checkType from 'tahi/lib/file-upload/check-filetypes'
 
+const { tryInvoke } = Ember;
+
 export default Ember.TextField.extend({
   type: 'file',
   name: 'file',
@@ -94,9 +96,10 @@ export default Ember.TextField.extend({
       let {error, msg} = checkType(fileName, acceptedFileTypes);
 
       if (error) {
-          this.set('error', msg);
-          this.sendAction('error', msg); //TODO: one of these needs to be a safe string
-          return;
+        // addingFileFailed might not be here, so
+        // tryInvoke is more terse than checking for its presence.
+        tryInvoke(this, 'addingFileFailed', [msg]);
+        return;
       }
 
       let self = this;

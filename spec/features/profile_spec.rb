@@ -5,13 +5,9 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
 
   let(:admin) { create :user, :site_admin }
   let(:profile_page) { ProfilePage.new }
-  permission action: :view_profile, applies_to: 'User', states: ['*']
-  role 'User' do
-    has_permission action: 'view_profile', applies_to: 'User'
-  end
 
   before do
-    assign_user admin, to: admin, with_role: role_User
+    assign_user admin, to: admin, with_role: Role.find_by(name: Role::USER_ROLE)
     login_as(admin, scope: :user)
     visit "/profile"
   end

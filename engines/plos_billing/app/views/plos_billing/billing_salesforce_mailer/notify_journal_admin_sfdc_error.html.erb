@@ -1,21 +1,21 @@
-<div class='container'>
-  <div class='greeting'>
-    <p class='message'>
+<div class="container">
+  <div class="greeting">
+    <p class="message">
       Billing information for <%= @paper.doi %> failed to send to SalesForce.
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='journal-info'>
+  <div class="paper-info">
+    <div class="journal-info">
       <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
       <% else %>
-        <div class='journal-name'>
+        <div class="journal-name">
           <%= @paper.journal.name %>
         </div>
       <% end %>
     </div>
-    <div class='paper-name'>
+    <div class="paper-name">
       <%= @paper.display_title(sanitized: false) %>
     </div>
     <p>
@@ -31,8 +31,8 @@
 
   </div>
   <hr>
-  <div class='footer'>
-    <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
+  <div class="footer">
+    <a class="button" href="<%= client_paper_url(@paper) %>" target="_blank">
       View Paper
     </a>
   </div>

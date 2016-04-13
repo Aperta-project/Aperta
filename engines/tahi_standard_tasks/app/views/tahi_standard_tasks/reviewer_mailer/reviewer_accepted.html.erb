@@ -1,27 +1,27 @@
-<div class='container'>
-  <div class='greeting'>
-    <h3 class='user-name'>
+<div class="container">
+  <div class="greeting">
+    <h3 class="user-name">
       Hello <%= @assigner.first_name %>
     </h3>
-    <p class='message'>
+    <p class="message">
       <%= @reviewer.full_name %> has accepted your invitation
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='journal-info'>
+  <div class="paper-info">
+    <div class="journal-info">
       <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
       <% else %>
-        <div class='journal-name'>
+        <div class="journal-name">
           <%= @paper.journal.name %>
         </div>
       <% end %>
     </div>
-    <div class='paper-name'>
+    <div class="paper-name">
       <%= @paper.display_title(sanitized: false) %>
     </div>
-    <div class='paper-abstract'>
+    <div class="paper-abstract">
       <p>
         <%= @reviewer.full_name %> has accepted your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
       </p>
@@ -32,7 +32,7 @@
     </div>
   </div>
   <hr>
-  <div class='footer'>
+  <div class="footer">
     Sincerely,<br>
     <%= @journal.name %> Team
   </div>

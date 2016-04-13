@@ -1,21 +1,21 @@
-<div class='container'>
-  <div class='greeting'>
-    <h3 class='user-name'>
+<div class="container">
+  <div class="greeting">
+    <h3 class="user-name">
       Hello <%= @recipient.full_name %>,
     </h3>
-    <p class='message'>
+    <p class="message">
       A Decision has been Registered on your Manuscript <%= @paper.display_title(sanitized: false) %>.
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='paper-abstract'>
+  <div class="paper-info">
+    <div class="paper-abstract">
       <%= simple_format @decision.letter %>
     </div>
   </div>
   <hr>
-  <div class='footer'>
-    <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
+  <div class="footer">
+    <a class="button" href="<%= client_paper_url(@paper) %>" target="_blank">
       View Paper
     </a>
     <p>

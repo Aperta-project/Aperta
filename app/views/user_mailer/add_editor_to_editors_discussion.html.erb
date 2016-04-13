@@ -1,38 +1,38 @@
-<div class='container'>
-  <div class='greeting'>
-    <h3 class='user-name'>
+<div class="container">
+  <div class="greeting">
+    <h3 class="user-name">
       Hello <%= @invitee_name %>,
     </h3>
-    <p class='message'>
+    <p class="message">
       You've been invited to the Editor Discussion for the paper:
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='journal-info'>
+  <div class="paper-info">
+    <div class="journal-info">
       <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
       <% else %>
-        <div class='journal-name'>
+        <div class="journal-name">
           <%= @paper.journal.name %>
         </div>
       <% end %>
     </div>
-    <div class='paper-name'>
+    <div class="paper-name">
       <%= @paper.display_title(sanitized: false) %>
     </div>
     <% if !@paper.abstract.blank? then %>
-      <div class='paper-abstract'>
-        <h5 class='abstract-title'>Abstract</h5>
-        <div class='abstract-text'>
+      <div class="paper-abstract">
+        <h5 class="abstract-title">Abstract</h5>
+        <div class="abstract-text">
           <%= @paper.abstract %>
         </div>
       </div>
     <% end %>
   </div>
   <hr>
-  <div class='footer'>
-    <a class='button' href='<%= client_paper_task_url(@paper, @task) %>' target='_blank'>
+  <div class="footer">
+    <a class="button" href="<%= client_paper_task_url(@paper, @task) %>" target="_blank">
       View Discussion
     </a>
   </div>

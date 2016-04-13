@@ -46,6 +46,14 @@ export default Ember.Component.extend({
     this._super(...arguments);
   },
 
+  _submitToS3(fileData, {url, formData}) {
+    fileData.url = url;
+    fileData.formData = formData;
+    return fileData.process().done(() => {
+      return fileData.submit();
+    });
+  },
+
   _setupFileUpload() {
     this.$().fileupload({
       autoUpload: false,
@@ -53,10 +61,10 @@ export default Ember.Component.extend({
       method: 'POST'
     });
 
-    this.$().on('fileuploadadd', (e, data) => {
+    this.$().on('fileuploadadd', (e, addedFileData) => {
 
       let acceptedFileTypes = this.get('accept');
-      let fileName = data.files[0].name;
+      let fileName = addedFileData.files[0].name;
       if (Ember.isPresent(acceptedFileTypes) && this.get('validateFileTypes')) {
         Ember.assert("The addingFileFailed action must be defined if validateFileTypes is true",
                      !!this.attrs.addingFileFailed);
@@ -75,14 +83,10 @@ export default Ember.Component.extend({
       // get keys in order to make a successful request to S3
       const requestPayload = { file_path: this.get('filePath'),
                                file_name: fileName,
-                               content_type: data.files[0].type };
+                               content_type: addedFileData.files[0].type };
 
-      return $.getJSON('/api/s3/sign', requestPayload, (response) => {
-        data.url = response.url;
-        data.formData = response.formData;
-        return data.process().done(() => {
-          return data.submit();
-        });
+      $.getJSON('/api/s3/sign', requestPayload, (response) => {
+        this._submitToS3(addedFileData, response);
       });
     });
 

@@ -96,9 +96,7 @@ export default Ember.TextField.extend({
       let {error, msg} = checkType(fileName, acceptedFileTypes);
 
       if (error) {
-        // addingFileFailed might not be here, so
-        // tryInvoke is more terse than checking for its presence.
-        this.sendAction('addingFileFailed', fileName, msg);
+        this.sendAction('addingFileFailed', msg, {fileName, acceptedFileTypes});
         return;
       }
 

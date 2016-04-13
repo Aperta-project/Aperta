@@ -548,18 +548,28 @@ class AuthorsTask(BaseTask):
     self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
     edit_btn.click()
-    title_input = self._get(self._title_input)
-    department_input = self._get(self._department_input)
-    institutions = self._gets(self._institution_div)
-    if len(institutions) == 2:
-      institution_div = institutions[0]
-      institution_input = institution_div.find_element_by_tag_name('input')
-      institution_input.clear()
-      institution_input.send_keys(author_data['institution'] + Keys.ENTER)
-    title_input.clear()
-    title_input.send_keys(author_data['title'] + Keys.ENTER)
-    department_input.clear()
-    department_input.send_keys(author_data['department'] + Keys.ENTER)
+    time.sleep(1)
+    self._get(self._govt_employee_radio_no).click()
+    self._get(self._authors_ack_agree2name).click()
+    self._get(self._authors_ack_auth_crit).click()
+    self._get(self._authors_ack_agree2submit).click()
+
+    #title_input = self._get(self._title_input)
+    #department_input = self._get(self._department_input)
+
+    #institutions = self._gets(self._institution_div)
+    #print('**********************************************')
+    #print(len(institutions))
+    #if len(institutions) == 2:
+    #  institution_div = institutions[0]
+    #  institution_input = institution_div.find_element_by_tag_name('input')
+    #  institution_input.clear()
+    #  institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+    #import pdb; pdb.set_trace()
+    #title_input.clear()
+    #title_input.send_keys(author_data['title'] + Keys.ENTER)
+    #department_input.clear()
+    #department_input.send_keys(author_data['department'] + Keys.ENTER)
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
@@ -569,12 +579,10 @@ class AuthorsTask(BaseTask):
       author_contribution_chck.click()
 
     # Need to complete the remaining required elements to successfully complete this card.
+    #import pdb; pdb.set_trace()
     author_inits_input = self._get(self._author_inits_input)
-    author_inits_input.send_keys('AA')
-    self._get(self._govt_employee_radio_no).click()
-    self._get(self._authors_ack_agree2name).click()
-    self._get(self._authors_ack_auth_crit).click()
-    self._get(self._authors_ack_agree2submit).click()
+    author_inits_input.send_keys('A' + Keys.ENTER)
+
 
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()

@@ -297,6 +297,7 @@ class JournalAdminPage(AdminPage):
     if mmts:
       count = 0
       for mmt in mmts:
+        logging.debug(mmt)
         name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
         logging.info(name.text)
         assert name.text in dbmmts, name.text

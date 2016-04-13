@@ -42,12 +42,16 @@ login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
 
-au_login = {'user': 'jgray_author', 'name': ''}     # author login
-co_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator',
+au_login = {'user': 'jgray_author',
+            'name': ''}
+co_login = {'user': 'jgray_collab',
+            'name': 'Jeffrey Collaborator',
             'password': login_invalid_pw}  # collaborator login
-rv_login = {'user': 'jgray_reviewer', 'name': 'Jeffrey RV Gray'}  # reviewer login
-ae_login = {'user': 'jgray_assocedit'} # associate editor login mm permissions
-he_login = {'user':'jgray_editor', 'name': 'Jeffrey AMM Gray',
+rv_login = {'user': 'jgray_reviewer',
+            'name': 'Jeffrey RV Gray'}  # reviewer login
+ae_login = {'user': 'jgray_assocedit'}  # associate editor login mm permissions
+he_login = {'user': 'jgray_editor',
+            'name': 'Jeffrey AMM Gray',
             'email': 'sealresq+4@gmail.com'}  # handling editor login amm permissions
 fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
 oa_login = {'user': 'jgray_oa'}        # ordinary admin login
@@ -60,24 +64,28 @@ creator_login2 = {'user': 'aauthor2', 'name': 'atest author2', 'email': 'sealres
 creator_login3 = {'user': 'aauthor3', 'name': 'atest author3', 'email': 'sealresq+1002@gmail.com'}
 creator_login4 = {'user': 'aauthor4', 'name': 'atest author4', 'email': 'sealresq+1003@gmail.com'}
 creator_login5 = {'user': 'aauthor5', 'name': 'atest author5', 'email': 'sealresq+1004@gmail.com'}
-reviewer_login = {'user': 'areviewer', 'name': 'atest reviewer', 'email': 'sealresq+1005@gmail.com'}
+reviewer_login = {'user': 'areviewer',
+                  'name': 'atest reviewer',
+                  'email': 'sealresq+1005@gmail.com'}
 staff_admin_login = {'user': 'astaffadmin',
                      'name': 'atest staffadmin',
                      'email': 'sealresq+1006@gmail.com'}
 handling_editor_login = {'user': 'ahandedit',
                          'name': 'atest handedit',
                          'email': 'sealresq+1007@gmail.com'}
-pub_svcs_login = {'user': 'apubsvcs', 'name': 'atest pubsvcs', 'email': 'sealresq+1008@gmail.com'}
-academic_editor_login = {'user':'aacadedit',
+pub_svcs_login = {'user': 'apubsvcs',
+                  'name': 'atest pubsvcs',
+                  'email': 'sealresq+1008@gmail.com'}
+academic_editor_login = {'user': 'aacadedit',
                          'name': 'atest acadedit',
                          'email': 'sealresq+1009@gmail.com'}
-internal_editor_login = {'user':'aintedit',
+internal_editor_login = {'user': 'aintedit',
                          'name': 'atest intedit',
                          'email': 'sealresq+1010@gmail.com'}
-super_admin_login = {'user':'asuperadm',
+super_admin_login = {'user': 'asuperadm',
                      'name': 'atest superadm',
                      'email': 'sealresq+1011@gmail.com'}
-cover_editor_login = {'user':'acoveredit',
+cover_editor_login = {'user': 'acoveredit',
                       'name': 'atest coveredit',
                       'email': 'sealresq+1012@gmail.com'}
 prod_staff_login = {'user': 'aprodstaff',
@@ -87,6 +95,7 @@ prod_staff_login = {'user': 'aprodstaff',
 # everyone has a user role for their own profile page
 
 # Define connector information for Aperta's Tahi component postgres instance
+# NOTA BENE: Production data should NEVER be included in this file.
 # Lean data
 # psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')
 # psql_port = getenv('APERTA_PSQL_PORT', '5652')
@@ -105,6 +114,12 @@ psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
 # psql_uname = getenv('APERTA_PSQL_USER', 'ytosewhffqfypg')
 # psql_pw = getenv('APERTA_PSQL_PW', 'bS0R1f6NY3-BrB70A49jOAzuTJ')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1n1umf877c2e3')
+# SFO Staging
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
+# psql_port = getenv('APERTA_PSQL_PORT', '5432')
+# psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
+# psql_pw = getenv('APERTA_PSQL_PW', '\'Saurischia cogredient bonduc\'')
+# psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
@@ -113,27 +128,45 @@ user_email_1 = 'trash261121@ariessc.com'
 user_pw_editor = 'test_password'
 
 # Fake affiliations
-affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
-               'country':'Argentina', 'start':'12/01/2014',
-               'end':'08/11/2015', 'email': 'test@test.org',
-               'department':'Molecular Biology', }
+affiliation = {'institution': 'Universidad Del Este',
+               'title': 'Dr.',
+               'country': 'Argentina',
+               'start': '12/01/2014',
+               'end': '08/11/2015',
+               'email': 'test@test.org',
+               'department': 'Molecular Biology'}
 
 # Author for Author card
-author = {'first': 'Jane', 'middle': 'M', 'last': 'Doe', 'initials': 'JMD',
-          'title': 'Dr.', 'email': 'test@test.org',
-          'department':'Molecular Biology', '1_institution':'Universidad Del Este',
-          '2_institution': 'Universidad Nacional del Sur',}
+author = {'first': 'Jane',
+          'middle': 'M',
+          'last': 'Doe',
+          'initials': 'JMD',
+          'title': 'Dr.',
+          'email': 'test@test.org',
+          'department': 'Molecular Biology',
+          '1_institution': 'Universidad Del Este',
+          '2_institution': 'Universidad Nacional del Sur'}
 
-group_author = {'group_name': 'Rebel Alliance', 'group_inits': 'RA',
-                'first': 'Jackson', 'middle': 'V', 'last': 'Stoeffer', 'email': 'test@test.org'}
+group_author = {'group_name': 'Rebel Alliance',
+                'group_inits': 'RA',
+                'first': 'Jackson',
+                'middle': 'V',
+                'last': 'Stoeffer',
+                'email': 'test@test.org'}
 
-billing_data = {'first': 'Jane', 'last': 'Doe',
-          'title': 'Dr.', 'email': 'test@test.org',
-          'department':'Molecular Biology', 'affiliation':'Universidad Del Este',
-          '2_institution': 'Universidad Nacional del Sur',
-          'address1': 'Codoba 2231',
-          'phone': '123-4567-8900', 'city': 'Azul',
-          'state': 'CABA', 'ZIP': '12345', 'country':'Argentina'}
+billing_data = {'first': 'Jane',
+                'last': 'Doe',
+                'title': 'Dr.',
+                'email': 'test@test.org',
+                'department': 'Molecular Biology',
+                'affiliation': 'Universidad Del Este',
+                '2_institution': 'Universidad Nacional del Sur',
+                'address1': 'Codoba 2231',
+                'phone': '123-4567-8900',
+                'city': 'Azul',
+                'state': 'CABA',
+                'ZIP': '12345',
+                'country': 'Argentina'}
 
 docs = ['10yearsRabiesSL20140723.doc',
         '11-OvCa-Collab-HeightBMI-paper-July.doc',
@@ -217,8 +250,8 @@ docs = ['10yearsRabiesSL20140723.doc',
         'tbParBSASpl1.docx',
         ]
 
-# Note that this usage of task names doesn't differentiate between presentations as tasks, in the accordion, and
-#   as cards, on the workflow page. This label is being used generically here.
+# Note that this usage of task names doesn't differentiate between presentations as tasks, in the
+#   accordion, and as cards, on the workflow page. This label is being used generically here.
 task_names = ['Ad-hoc',
               'Additional Information',
               'Assign Admin',

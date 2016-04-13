@@ -86,6 +86,30 @@ class CommonTest(FrontEndTest):
     cas_signin_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
 
+  @staticmethod
+  def select_cas_user():
+    """
+    A method for selecting a single CAS user when needed to track which user was chosen
+    :return: selected user dictionary
+    """
+    users = (creator_login1,
+             creator_login2,
+             creator_login3,
+             creator_login4,
+             creator_login5,
+             reviewer_login,
+             handling_editor_login,
+             cover_editor_login,
+             academic_editor_login,
+             internal_editor_login,
+             staff_admin_login,
+             pub_svcs_login,
+             prod_staff_login,
+             super_admin_login,
+             )
+    user = random.choice(users)
+    return user
+
   def select_preexisting_article(self, title='Hendrik', first=False):
     """
     Select a preexisting article.

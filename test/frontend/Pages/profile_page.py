@@ -81,7 +81,6 @@ class ProfilePage(AuthenticatedPage):
     :param username: User against which to validate profile page
     """
     # Validate menu elements (title and icon)
-    self.validate_nav_toolbar_elements(username)
     name_title = self._get(self._profile_name_title)
     assert 'First and last name:' in name_title.text
     self.validate_profile_title_style(name_title)

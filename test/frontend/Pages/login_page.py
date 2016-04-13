@@ -67,7 +67,7 @@ class LoginPage(AuthenticatedPage):
     logo = self._get(self._system_logo)
     assert '/images/plos_logo.png' in logo.get_attribute('src'), logo.get_attribute('src')
     welcome_msg = self._get(self._welcome_message)
-    assert welcome_msg.text == 'Welcome to Aperta', welcome_msg.text
+    assert 'Welcome to Aperta' in welcome_msg.text, welcome_msg.text
     welcome_p = self._get(self._welcome_paragraph)
     assert welcome_p.text == 'Submit & manage manuscripts.', welcome_p.text
     # APERTA-6107 Filed for the following

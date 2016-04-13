@@ -170,7 +170,7 @@ class AuthenticatedPage(PlosPage):
     ptracker = elevated + [internal_editor_login, prod_staff_login, pub_svcs_login]
     self._get(self._nav_title)
     self._get(self._nav_profile_img)
-    assert 'Aperta' == self._get(self._nav_aperta_dashboard_link).text, \
+    assert 'Aperta' in self._get(self._nav_aperta_dashboard_link).text, \
       self._get(self._nav_aperta_dashboard_link).text
     assert 'Your Manuscripts' == self._get(self._nav_your_manuscripts_link).text, \
       self._get(self._nav_your_manuscripts_link).text

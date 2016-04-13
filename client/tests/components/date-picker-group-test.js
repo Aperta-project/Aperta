@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('date-picker-group', 'DatePickerGroupComponent', {
+moduleForComponent('date-picker-group', 'Component: date-picker-group', {
   integration: true,
 
   beforeEach() {

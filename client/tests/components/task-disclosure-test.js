@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('task-disclosure', 'TaskDisclosureComponent', {
+moduleForComponent('task-disclosure', 'Component: task-disclosure', {
   integration: true,
 
   beforeEach() {

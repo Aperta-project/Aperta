@@ -8,7 +8,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 const { RSVP } = Ember;
 
-moduleForComponent('util/promise-loader', 'PromiseLoaderComponent', {
+moduleForComponent('util/promise-loader', 'Component: promise-loader', {
   integration: true,
 
   beforeEach() {

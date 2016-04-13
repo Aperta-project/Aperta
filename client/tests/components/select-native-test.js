@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('select-native', 'SelectNativeComponent', {
+moduleForComponent('select-native', 'Component: select-native', {
   integration: true,
 
   beforeEach() {

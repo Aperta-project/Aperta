@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 import hbs   from 'htmlbars-inline-precompile';
 
-moduleForComponent('position-near', 'PositionNear', {
+moduleForComponent('position-near', 'Component: position-near', {
   integration: true
 });
 

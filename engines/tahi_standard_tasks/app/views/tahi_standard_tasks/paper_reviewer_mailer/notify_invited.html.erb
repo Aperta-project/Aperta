@@ -1,31 +1,31 @@
-<div class='container'>
-  <div class='paper-info'>
-    <div class='journal-info'>
+<div class="container">
+  <div class="paper-info">
+    <div class="journal-info">
       <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
       <% else %>
-        <div class='journal-name'>
+        <div class="journal-name">
           <%= @paper.journal.name %>
         </div>
       <% end %>
     </div>
 
-    <div class='custom-email'>
+    <div class="custom-email">
       <%= simple_format @invitation.body %>
     </div>
 
     <p>
-      <a class='button' href='<%= client_dashboard_url({ invitation_code: @invitation.code }) %>' target='_blank'>
+      <a class="button" href="<%= client_dashboard_url({ invitation_code: @invitation.code }) %>" target="_blank">
         View Invitation
       </a>
     </p>
   </div>
   <hr>
-  <div class='footer'>
-    <div class='paper-title'>
+  <div class="footer">
+    <div class="paper-title">
       "<%= @paper.display_title(sanitized: false) %>"
     </div>
-    <div class='paper-abstract'>
+    <div class="paper-abstract">
       <%= raw @paper.abstract %>
     </div>
   </div>

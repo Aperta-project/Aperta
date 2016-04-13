@@ -1,25 +1,25 @@
-<div class='container'>
-  <div class='greeting'>
+<div class="container">
+  <div class="greeting">
     <%= @assigner_name %> added you to a conversation
     in <%= app_name %>
   </div>
   <hr>
-  <div class='paper-info'>
+  <div class="paper-info">
     <p>
       Hello <%= @assignee_name %>,
     </p>
-    <p class='message'>
+    <p class="message">
       <%= @assigner_name %> just added you to a conversation in <%= app_name %> for the manuscript,
       "<%= @paper.display_title(sanitized: false) %>".
     </p>
-    <div class='paper-abstract'>
+    <div class="paper-abstract">
       Visit this link to view the conversation,
       and to post your comment:
       <%= link_to client_paper_task_url(@task.paper, @task), client_paper_task_url(@task.paper, @task) %>
     </div>
   </div>
   <hr>
-  <div class='footer'>
+  <div class="footer">
     Sincerely,
     <br>
     <%= @journal.name %> Team

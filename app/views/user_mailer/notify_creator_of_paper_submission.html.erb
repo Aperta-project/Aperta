@@ -1,18 +1,18 @@
-<div class='container'>
-  <div class='greeting'>
-    <p class='message'>
+<div class="container">
+  <div class="greeting">
+    <p class="message">
       Thank you for submitting your manuscript,
       <%= @paper.display_title(sanitized: false) %>, to <%= @journal.name %>.
       Our staff will be in touch with next steps.
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='journal-info'>
+  <div class="paper-info">
+    <div class="journal-info">
       <% if @journal.logo_url %>
-        <img class='journal-logo' src='<%= @journal.logo_url %>'>
+        <img class="journal-logo" src="<%= @journal.logo_url %>">
       <% else %>
-        <div class='journal-name'>
+        <div class="journal-name">
           <%= @journal.name %>
         </div>
       <% end %>
@@ -20,7 +20,7 @@
     <p>
       Hello <%= @author.full_name %>,
     </p>
-    <p class='message'>
+    <p class="message">
       Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>",
       to <%= @journal.name %>.
       Your initial submission is complete, and our staff will be in touch with next steps.
@@ -31,7 +31,7 @@
     </p>
   </div>
   <hr>
-  <div class='footer'>
+  <div class="footer">
     Sincerely,
     <%= @journal.name %> Team
   </div>

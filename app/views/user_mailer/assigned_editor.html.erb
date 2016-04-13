@@ -1,15 +1,15 @@
-<div class='container'>
-  <div class='greeting'>
-    <h3 class='user-name'>
+<div class="container">
+  <div class="greeting">
+    <h3 class="user-name">
       Hello <%= @editor_name %>
     </h3>
-    <p class='message'>
+    <p class="message">
       You've been assigned as an Editor on a Manuscript
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='paper-abstract'>
+  <div class="paper-info">
+    <div class="paper-abstract">
       <p>
         You've been assigned as an Editor on a Manuscript titled
         "<%= @paper.display_title(sanitized: false) %>".
@@ -21,7 +21,7 @@
     </div>
   </div>
   <hr>
-  <div class='footer'>
+  <div class="footer">
     Sincerely,
     <br>
     <%= @journal.name %> Team

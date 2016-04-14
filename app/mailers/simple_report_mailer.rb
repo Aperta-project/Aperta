@@ -8,7 +8,7 @@ class SimpleReportMailer < ActionMailer::Base
     @simple_report = simple_report
 
     mail(
-      to: ENV["REPORTING_EMAIL"] || Rails.configuration.admin_email,
+      to: ENV["REPORTING_EMAIL"] || Rails.configuration.x.admin_email,
       subject: prefixed("#{app_name} Daily Workflow Report"))
   end
 end

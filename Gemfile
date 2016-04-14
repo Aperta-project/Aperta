@@ -100,9 +100,9 @@ group :development do
   gem 'rubocop'
 end
 
-# group :staging do
-#   gem 'mail_safe'
-# end
+group :staging do
+  gem 'mail_safe', require: false
+end
 
 group :test do
   gem 'capybara'

@@ -393,6 +393,8 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    mail_safe (0.3.4)
+      actionmailer (>= 3.0.0)
     method_source (0.8.2)
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
@@ -678,6 +680,7 @@ DEPENDENCIES
   heroku-deflater
   kaminari
   lograge
+  mail_safe
   migration_data
   mini_magick
   newrelic_rpm

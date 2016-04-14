@@ -64,7 +64,8 @@ export default Ember.Component.extend({
     this.$().on('fileuploadadd', (e, addedFileData) => {
 
       let acceptedFileTypes = this.get('accept');
-      let fileName = addedFileData.files[0].name;
+      let file = addedFileData.files[0];
+      let fileName = file.name;
       if (Ember.isPresent(acceptedFileTypes) && this.get('validateFileTypes')) {
         Ember.assert("The addingFileFailed action must be defined if validateFileTypes is true",
                      !!this.attrs.addingFileFailed);
@@ -77,7 +78,7 @@ export default Ember.Component.extend({
 
       // call action fileAdded if it's defined
       if (this.attrs.fileAdded) {
-        this.attrs.fileAdded(fileName);
+        this.attrs.fileAdded(file);
       }
 
       // get keys in order to make a successful request to S3

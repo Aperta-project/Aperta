@@ -63,8 +63,23 @@ class ViewPaperTest(CommonTest):
     user = random.choice(users)
     logging.info('Running test_validate_components_styles')
     logging.info('Logging in as {0}'.format(user))
-    self.cas_login(email=user['email'])
-    self.select_preexisting_article(first=True)
+    dashboard_page = self.cas_login(email=user['email'])
+    # Checking if there is already a manuscript one can use
+    if dashboard_page.validate_manuscript_section_main_title(user)[0]:
+      self.select_preexisting_article(first=True)
+    else:
+      # create a new manuscript
+      dashboard_page.click_create_new_submission_button()
+      # We recently became slow drawing this overlay (20151006)
+      time.sleep(.5)
+      # Temporary changing timeout
+      dashboard_page.set_timeout(120)
+      self.create_article(journal='PLOS Wombat',
+                          type_='Images+InitialDecision',
+                          random_bit=True,
+                          )
+      # Time needed for iHat conversion. This is not quite enough time in all circumstances
+      time.sleep(5)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.validate_nav_toolbar_elements(user)
     if user in (staff_admin_login, super_admin_login):

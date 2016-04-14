@@ -64,7 +64,8 @@ class ViewPaperTest(CommonTest):
     logging.info('Running test_validate_components_styles')
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
-    if dashboard_page.validate_manuscript_section_main_title(user)[0] > 0:
+    # Checking if there is already a manuscript one can use
+    if dashboard_page.validate_manuscript_section_main_title(user)[0]:
       self.select_preexisting_article(first=True)
     else:
       # create a new manuscript
@@ -133,7 +134,7 @@ class ViewPaperTest(CommonTest):
     dashboard_page.logout()
     return self
 
-  def rest_initial_submission_infobox(self):
+  def test_initial_submission_infobox(self):
     """
     test_manuscript_viewer: Validate elements and styles of the initial submission infobox
     Aperta-5515

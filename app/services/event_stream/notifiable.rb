@@ -1,3 +1,5 @@
+# Autoloader is not thread-safe in 4.x; it is fixed for Rails 5.
+# Explicitly require any dependencies outside of app/. See a9a6cc for more info.
 require_dependency 'notifier'
 
 module EventStream::Notifiable

@@ -19,5 +19,12 @@ export default Ember.Component.extend({
   publishable2: namedComputedProperty('publishable', 'snapshot2'),
 
   strikingImage1: namedComputedProperty('striking_image', 'snapshot1'),
-  strikingImage2: namedComputedProperty('striking_image', 'snapshot2')
+  strikingImage2: namedComputedProperty('striking_image', 'snapshot2'),
+
+  fileHash1: namedComputedProperty('file_hash', 'snapshot1'),
+  fileHash2: namedComputedProperty('file_hash', 'snapshot2'),
+
+  fileHashChanged: Ember.computed('fileHash1', 'fileHash2', function() {
+    return this.get('fileHash1') != this.get('fileHash2');
+  }),
 })

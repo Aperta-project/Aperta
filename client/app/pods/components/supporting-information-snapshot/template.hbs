@@ -1,7 +1,12 @@
 <div class="supporting-information-file-snapshot-label">
   File:
 </div>
-{{text-diff viewingText=file1 comparisonText=file2}}
+{{#if fileHashChanged}}
+  {{! If the file contents changed, still show a diff on the file name }}
+  <span class="removed">{{file1}}</span><span class="added">{{file2}}</span>
+{{else}}
+  {{text-diff viewingText=file1 comparisonText=file2}}
+{{/if}}
 
 <div class="supporting-information-file-snapshot-label">
   Title:

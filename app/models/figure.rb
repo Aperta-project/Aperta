@@ -26,6 +26,12 @@ class Figure < ActiveRecord::Base
     self[:attachment]
   end
 
+  def file_hash
+    attachment.file.attributes[:etag]
+  rescue
+    nil
+  end
+
   def alt
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end

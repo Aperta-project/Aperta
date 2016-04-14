@@ -2,7 +2,12 @@
   {{text-diff viewingText=title1 comparisonText=title2}}
 </td>
 <td class="figure-snapshot-item-file">
-  {{text-diff viewingText=file1 comparisonText=file2}}
+  {{#if fileHashChanged}}
+    {{! If the file contents changed, still show a diff on the file name }}
+    <span class="removed">{{file1}}</span><span class="added">{{file2}}</span>
+  {{else}}
+    {{text-diff viewingText=file1 comparisonText=file2}}
+  {{/if}}
 </td>
 <td class="figure-snapshot-item-striking-image">
   {{boolean-diff viewingBool=strikingImage1 comparisonBool=strikingImage2}}

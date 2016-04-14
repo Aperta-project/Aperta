@@ -36,6 +36,12 @@ class SupportingInformationFile < ActiveRecord::Base
     self[:attachment]
   end
 
+  def file_hash
+    attachment.file.attributes[:etag]
+  rescue
+    nil
+  end
+
   def alt
     if attachment.present?
       filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize

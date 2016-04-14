@@ -19,6 +19,7 @@ var snapshot = function (){
       {name: 'caption', value: "I'm the caption now"},
       {name: 'publishable', value: true},
       {name: 'striking_image', value: true},
+      {name: 'file_hash', value: 'a9876a98c987b96h'}
     ]
   }
 };
@@ -94,4 +95,14 @@ test('Diffs the striking image bool', function(assert){
   this.render(template);
 
   assert.diffPresent("Yes", "No")
+});
+
+test('Diffs the filename when the file has changed', function(assert) {
+  let secondSnaps = snapshot();
+  secondSnaps.children[6].value = 'anewhashverydifferentmuchchange';
+  this.set('oldSnapshot', snapshot());
+  this.set('newSnapshot', secondSnaps);
+
+  this.render(template);
+  assert.diffPresent('theFile.jpg', 'theFile.jpg');
 });

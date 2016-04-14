@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'subscriptions/console_formatter'
 
 describe Subscriptions do
   module TestSubscribers

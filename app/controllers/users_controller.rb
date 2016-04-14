@@ -3,11 +3,17 @@ class UsersController < ApplicationController
   respond_to :json
 
   def show
-    respond_with User.find(params[:id])
+    user = User.find(params[:id])
+    requires_user_can :view, user
+    respond_with user
   end
 
   def index
-    render json: User.all.includes(:affiliations)
+    requires_user_can :view, current_user
+    users = current_user
+      .filter_authorized(:view, User.all.includes(:affiliations))
+      .objects
+    render users
   end
 
   def update_avatar

@@ -5,10 +5,12 @@
 <div class="call-to-action">
   {{select-2-single class="collaborator-select"
                     name="collaborators"
+                    minimumInputLength=3
                     placeholder="Add collaborator"
                     selectionSelected="addNewCollaborator"
-                    source=formattedCollaborators
+                    remoteSource=select2RemoteSource
                     value=""}}
+                    <!-- selectedData=selectedCollaborator -->
 
   <div class="overlay-action-buttons">
     <a class="button-link button--green" {{action "cancel"}}>cancel</a>

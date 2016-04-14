@@ -1,3 +1,9 @@
+.wrap {
+  .text-diff {
+    display: inline;
+  }
+}
+
 .text-diff {
   .added {
     background-color: rgba($tahi-green-light, .5);

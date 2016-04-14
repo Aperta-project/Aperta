@@ -10,6 +10,7 @@ class Snapshot::NestedQuestionSerializer
       name: @nested_question.ident,
       type: 'question',
       value: {
+        id: @nested_question.id,
         title: @nested_question.text,
         answer_type: @nested_question.value_type,
         answer: @answer.try(:value),

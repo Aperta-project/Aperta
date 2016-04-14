@@ -118,7 +118,10 @@ class CommonTest(FrontEndTest):
     and needs to invoke login script to reach the homepage.
     """
     dashboard_page = DashboardPage(self.getDriver())
+    # Need delay to ensure articles are attached to DOM
+    time.sleep(1)
     if first:
+      logging.debug('Clicking first pre-existent article')
       return dashboard_page.click_on_first_manuscript()
     else:
       return dashboard_page.click_on_existing_manuscript_link_partial_title(title)

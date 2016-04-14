@@ -97,6 +97,7 @@ group :development do
   gem 'capistrano-chruby'
   gem 'capistrano-rails'
   gem 'foreman', require: false
+  gem 'hipchat'
   gem 'overcommit'
   gem 'rubocop'
 end

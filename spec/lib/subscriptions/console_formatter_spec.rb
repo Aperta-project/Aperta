@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'subscriptions/console_formatter'
 
 describe Subscriptions::ConsoleFormatter do
   let(:formatter) { described_class.new(headers, rows) }

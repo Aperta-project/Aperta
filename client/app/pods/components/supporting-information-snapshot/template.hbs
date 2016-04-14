@@ -3,29 +3,29 @@
 </div>
 {{#if fileHashChanged}}
   {{! If the file contents changed, still show a diff on the file name }}
-  <span class="removed">{{file1}}</span><span class="added">{{file2}}</span>
+  <span class="removed">{{siFile1.file}}</span><span class="added">{{siFile2.file}}</span>
 {{else}}
-  {{text-diff viewingText=file1 comparisonText=file2}}
+  {{text-diff viewingText=siFile1.file comparisonText=siFile2.file}}
 {{/if}}
 
 <div class="supporting-information-file-snapshot-label">
   Title:
 </div>
 <div class="supporting-information-file-snapshot-title">
-  {{text-diff viewingText=title1 comparisonText=title2}}
+  {{text-diff viewingText=siFile1.title comparisonText=siFile2.title}}
 </div>
 
 <div class="supporting-information-file-snapshot-label">
   Caption:
 </div>
-{{text-diff viewingText=caption1 comparisonText=caption2}}
+{{text-diff viewingText=siFile1.caption comparisonText=siFile2.caption}}
 
 <div class="supporting-information-file-snapshot-label">
   Publishable:
 </div>
-{{boolean-diff viewingBool=publishable1 comparisonBool=publishable2}}
+{{boolean-diff viewingBool=siFile1.publishable comparisonBool=siFile2.publishable}}
 
 <div class="supporting-information-file-snapshot-label">
   Striking Image:
 </div>
-{{boolean-diff viewingBool=strikingImage1 comparisonBool=strikingImage2}}
+{{boolean-diff viewingBool=siFile1.strikingImage comparisonBool=siFile2.strikingImage}}

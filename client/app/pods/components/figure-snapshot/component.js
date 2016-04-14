@@ -9,19 +9,27 @@ export default Ember.Component.extend({
   classNames: ['figure-snapshot'],
   tagName: 'tr',
 
-  file1: namedComputedProperty('snapshot1', 'file'),
-  title1: namedComputedProperty('snapshot1', 'title'),
-  strikingImage1: namedComputedProperty('snapshot1', 'striking_image'),
-  fileHash1: namedComputedProperty('snapshot1', 'file_hash'),
-
-  file2: namedComputedProperty('snapshot2', 'file'),
-  title2: namedComputedProperty('snapshot2', 'title'),
-  strikingImage2: namedComputedProperty( 'snapshot2', 'striking_image'),
-  fileHash2: namedComputedProperty('snapshot2', 'file_hash'),
-
-  fileHashChanged: Ember.computed('fileHash1', 'fileHash2', function() {
-    return  this.get('fileHash1') !== this.get('fileHash2');
+  figure1: Ember.computed('snapshot1.children.[]', function() {
+    return FigureSnapshot.create({snapshot: this.get('snapshot1')});
   }),
 
-  showStrikingImage: Ember.computed.or('strikingImage1', 'strikingImage2')
+  figure2: Ember.computed('snapshot2.children.[]', function() {
+    return FigureSnapshot.create({snapshot: this.get('snapshot2')});
+  }),
+
+  fileHashChanged: Ember.computed(
+    'figure1.fileHash',
+    'figure2.fileHash',
+    function() {
+      return this.get('figure1.fileHash') !== this.get('figure2.fileHash');
+    }
+  )
+});
+
+var FigureSnapshot = Ember.Object.extend({
+  snapshot: null,
+  file: namedComputedProperty('snapshot', 'file'),
+  title: namedComputedProperty('snapshot', 'title'),
+  strikingImage: namedComputedProperty('snapshot', 'striking_image'),
+  fileHash: namedComputedProperty('snapshot', 'file_hash')
 });

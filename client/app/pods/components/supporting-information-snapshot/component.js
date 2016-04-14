@@ -6,25 +6,31 @@ export default Ember.Component.extend({
   snapshot2: null,
   classNames: ['supporting-information-file-snapshot'],
 
-  file1: namedComputedProperty('file', 'snapshot1'),
-  file2: namedComputedProperty('file', 'snapshot2'),
+  siFile1: Ember.computed(
+    'snapshot1.children.[]',
+    function() {
+      return SIFileSnapshot({snapshot: this.get('snapshot1')});
+    }
+  ),
 
-  title1: namedComputedProperty('title', 'snapshot1'),
-  title2: namedComputedProperty('title', 'snapshot2'),
+  siFile2: Ember.computed(
+    'snapshot2.children.[]',
+    function() {
+      return SIFileSnapshot({snapshot: this.get('snapshot2')});
+    }
+  ),
 
-  caption1: namedComputedProperty('caption', 'snapshot1'),
-  caption2: namedComputedProperty('caption', 'snapshot2'),
-
-  publishable1: namedComputedProperty('publishable', 'snapshot1'),
-  publishable2: namedComputedProperty('publishable', 'snapshot2'),
-
-  strikingImage1: namedComputedProperty('striking_image', 'snapshot1'),
-  strikingImage2: namedComputedProperty('striking_image', 'snapshot2'),
-
-  fileHash1: namedComputedProperty('file_hash', 'snapshot1'),
-  fileHash2: namedComputedProperty('file_hash', 'snapshot2'),
-
-  fileHashChanged: Ember.computed('fileHash1', 'fileHash2', function() {
-    return this.get('fileHash1') != this.get('fileHash2');
+  fileHashChanged: Ember.computed('siFile1.fileHash', 'siFile2.fileHash', function() {
+    return this.get('siFile1.fileHash') != this.get('siFile2.fileHash');
   }),
 })
+
+var SIFileSnapshot = Ember.Object.extend({
+  snapshot: null,
+  file: namedComputedProperty('file'),
+  title: namedComputedProperty('title'),
+  caption: namedComputedProperty('caption'),
+  strikingImage: namedComputedProperty('striking_image'),
+  publishable: namedComputedProperty('publishable'),
+  fileHash: namedComputedProperty('file_hash'),
+});

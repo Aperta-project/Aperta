@@ -17,6 +17,10 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     });
   }),
 
+  getStore() {
+    return getOwner(this).lookup('store:main');
+  },
+
   select2RemoteSource: Ember.computed('select2RemoteUrl', function(){
     const url = this.get('select2RemoteUrl');
     if(!url) return;
@@ -46,29 +50,28 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     assignRoleToUser() {
-      const store = getOwner(this).lookup('store:main');
-      const userId = this.get('selectedUser.id');
+      const store = this.getStore();
 
-      store.find('user', userId).then(user => {
-        let selectedRoleId = this.get('selectedRole.id');
-        let role = this.get('assignableRoles').findBy('id', selectedRoleId);
-        const assignment = this.store.createRecord('assignment', {
-          user: user,
-          paper: this.get('task.paper'),
-          role: role
-        });
+      let user = store.findOrPush('user', this.get('selectedUser'));
 
-        assignment.save().then(()=> {
-          this.get('task.assignments').pushObject(assignment);
-          this.set('selectedUser', null);
-          this.set('selectedRole', null);
+      let selectedRoleId = this.get('selectedRole.id');
+      let role = this.get('assignableRoles').findBy('id', selectedRoleId);
+      const assignment = store.createRecord('assignment', {
+        user: user,
+        paper: this.get('task.paper'),
+        role: role
+      });
 
-          // Make sure we don't allow the previous list of users searchable or
-          // selectable. Force a role must be selected first.
-          this.set('select2RemoteUrl', null);
-        }, function(response) {
-          this.displayValidationErrorsFromResponse(response);
-        });
+      assignment.save().then(()=> {
+        this.get('task.assignments').pushObject(assignment);
+        this.set('selectedUser', null);
+        this.set('selectedRole', null);
+
+        // Make sure we don't allow the previous list of users searchable or
+        // selectable. Force a role must be selected first.
+        this.set('select2RemoteUrl', null);
+      }, function(response) {
+        this.displayValidationErrorsFromResponse(response);
       });
     },
 

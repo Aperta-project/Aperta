@@ -38,6 +38,27 @@ export default DS.Store.extend({
     }
   },
 
+  findOrPush(type, modelData) {
+    // remember that filteredUserData only has a subset of the 
+    // fields we need to push a proper user in to the store,
+    // so we look up the full user in the availableUsers array
+    //
+    Ember.assert(modelData.id, "Model Data must have an id");
+
+    let stringId = modelData.id.toString();
+    var foundModel = this.getById(type, stringId);
+    if (foundModel) {
+      return foundModel;
+    } else {
+      let typeKey = type.underscore();
+      let payload = {};
+      payload[typeKey] = modelData;
+
+      this.pushPayload(type, payload);
+      return this.getById(type, stringId);
+    }
+  },
+
   allTaskClasses() {
     return Object.keys(this.typeMaps).reduce((function(_this) {
       return function(memo, key) {

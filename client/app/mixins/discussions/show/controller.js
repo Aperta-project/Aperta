@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
+import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   participants: Ember.computed('model.discussionParticipants.@each.user', function() {
@@ -8,6 +9,10 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   replySort: ['createdAt:desc'],
   sortedReplies: Ember.computed.sort('model.discussionReplies', 'replySort'),
+
+  getStore() {
+    return getOwner(this).lookup('store:main');
+  },
 
   actions: {
     saveTopic() {
@@ -28,13 +33,14 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
           .destroyRecord();
     },
 
-    addParticipantByUserId(userId) {
-      this.store.find('user', userId).then((user) => {
-        this.store.createRecord('discussion-participant', {
-          discussionTopic: this.get('model'),
-          user: user,
-        }).save();
-      });
+    saveNewParticipant(newParticipant, availableParticipants) {
+      let participant = availableParticipants.findBy('id', newParticipant.id);
+      let user = this.store.findOrPush('user', participant);
+
+      this.store.createRecord('discussion-participant', {
+        discussionTopic: this.get('model'),
+        user: user,
+      }).save();
     }
   }
 });

@@ -39,7 +39,10 @@ export default Ember.Component.extend(EscapeListenerMixin, {
         return { query: term };
       },
       results: (data) => {
-        this.set('foundCollaborators', data.filtered_users);
+        // data.filtered_users contains more fields than we're using
+        // directly below, and we'll need those fields later.  we're
+        // storing them off for that purpose.
+        this.set('foundCollaborators', data.filtered_users); 
         const selectableUsers = data.filtered_users.map(function(user){
           return {
             id: user.id,
@@ -67,26 +70,18 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     addNewCollaborator(newCollaboratorData) {
       const paper = this.get('paper');
       const store = this.get('store');
-      let userId = newCollaboratorData.id.toString();
 
-      var newCollaborator = store.getById('user', userId);
-      if (!newCollaborator) {
-        let data = this.get('foundCollaborators')
-        .findBy('id', newCollaboratorData.id);
-
-        store.pushPayload('user', {user: data});
-        newCollaborator = store.getById('user', userId);
-
-      }
+      let collaborator = this.get('foundCollaborators').findBy('id', newCollaboratorData.id);
+      let newCollaborator = store.findOrPush('user', collaborator);
 
       // if this collaborator's record was previously removed from the paper
       // make sure we use THAT one and not a new record.
 
-      const existingRecord = this.store.all('collaboration').find(function(c) {
+      const existingRecord = store.all('collaboration').find(function(c) {
         return c.get('oldPaper') === paper && c.get('user') === newCollaborator;
       });
 
-      const newCollaboration = existingRecord || this.store.createRecord(
+      const newCollaboration = existingRecord || store.createRecord(
         'collaboration',
         {
           paper: paper,

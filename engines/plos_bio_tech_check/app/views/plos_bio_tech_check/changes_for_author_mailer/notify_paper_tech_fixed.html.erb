@@ -1,36 +1,36 @@
-<div class='container'>
-  <div class='greeting'>
-    <h3 class='user-name'>
+<div class="container">
+  <div class="greeting">
+    <h3 class="user-name">
       Hello <%= @admin.first_name %>,
     </h3>
-    <p class='message'>
+    <p class="message">
       The author has submitted tech check fixes for the following paper:
     </p>
   </div>
   <hr>
-  <div class='paper-info'>
-    <div class='journal-info'>
+  <div class="paper-info">
+    <div class="journal-info">
       <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
       <% else %>
-        <div class='journal-name'>
+        <div class="journal-name">
           <%= @paper.journal.name %>
         </div>
       <% end %>
     </div>
-    <div class='paper-name'>
+    <div class="paper-name">
       <%= @paper.display_title %>
     </div>
-    <div class='paper-abstract'>
-      <h5 class='abstract-title'>Abstract</h5>
-      <div class='abstract-text'>
+    <div class="paper-abstract">
+      <h5 class="abstract-title">Abstract</h5>
+      <div class="abstract-text">
         <%= @paper.abstract || @paper.body.truncate_words(100) %>
       </div>
     </div>
   </div>
   <hr>
-  <div class='footer'>
-    <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
+  <div class="footer">
+    <a class="button" href="<%= client_paper_url(@paper) %>" target="_blank">
       View Paper
     </a>
   </div>

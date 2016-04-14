@@ -67,6 +67,13 @@ module('Integration: Authorized Profile View', {
 
 test('transition to route without permission fails', function(assert){
   expect(1);
+  // This tells the qunit test runner that it needs to stop and wait for
+  // something asynchronous. calling start() indicates to qunit that the async
+  // code has finished and that it can move on.  Without this, the callback
+  // below is actually executed during the next test which causes it to fail.
+  // https://api.qunitjs.com/async/
+  const start = assert.async();
+
   Ember.run.later(function(){
     var store = getStore();
     Factory.createPermission('User', 1, []);
@@ -78,12 +85,16 @@ test('transition to route without permission fails', function(assert){
         'dashboard.index',
         "Should have redirected to the dashboard"
       );
+      start();
     });
   });
 });
 
 test('transition to route with permission succeedes', function(assert){
   expect(1);
+  // stop qunit for async code. See note above
+  const start = assert.async();
+
   Ember.run.later(function(){
     var store = getStore();
     Factory.createPermission('User', 1, ['view_profile']);
@@ -95,6 +106,7 @@ test('transition to route with permission succeedes', function(assert){
         'profile',
         'Should have visited the profile'
       );
+      start();
     });
   });
 });

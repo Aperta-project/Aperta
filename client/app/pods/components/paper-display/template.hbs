@@ -1,0 +1,9 @@
+{{#if ready}}
+  <div id="paper-body">
+    {{{body}}}
+  </div>
+{{else}}
+  {{#progress-spinner-message visible=true size="large" align="middle"}}
+    Loading . . .
+  {{/progress-spinner-message}}
+{{/if}}

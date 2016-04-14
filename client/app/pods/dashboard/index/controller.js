@@ -108,7 +108,9 @@ export default Ember.Controller.extend({
       this.set('showNewManuscriptOverlay', false);
     },
 
-    newManuscriptCreated(manuscript) {
+    newManuscriptCreated(manuscript, data) {
+      this.store.pushPayload(data);
+
       this.setProperties({
         showNewManuscriptOverlay: false,
         isUploading: false

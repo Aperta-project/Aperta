@@ -502,10 +502,14 @@ describe PapersController do
         do_request
       end
 
-      it "responds with 204 NO CONTENT" do
+      it "responds with 200" do
         do_request
-        expect(response).to responds_with(204)
-        expect(response.body).to eq("")
+        expect(response).to responds_with(200)
+        expect(response.body).to be_present
+      end
+
+      it "sets the paper status to processing" do
+        expect { do_request }.to change { paper.reload.processing }.from(false).to(true)
       end
     end
 

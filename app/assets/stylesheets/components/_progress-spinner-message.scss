@@ -1,0 +1,11 @@
+.progress-spinner-message {
+  @include position(absolute, 30% 30% auto 30%);
+  text-align: center;
+
+  .progress-spinner-message-text {
+    font-family: $tahi-font-family;
+    font-size: 1.5em;
+    font-style: italic;
+    padding-top: 4rem;
+  }
+}

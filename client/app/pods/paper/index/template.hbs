@@ -17,11 +17,7 @@
     {{#split-pane-element class="manuscript-pane"}}
       <div class="manuscript-container">
         {{flash-messages}}
-        <div class="manuscript">
-          <div id="paper-body">
-            {{{model.body}}}
-          </div>
-        </div>
+        {{paper-display paper=model}}
       </div>
     {{/split-pane-element}}
 

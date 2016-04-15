@@ -22,7 +22,7 @@
                   &mdash;
                   {{format-date snapshots.v1.createdAt format='MMM D, YYYY'}}
                 </span>
-                {{#if snapshots.selectedVersion2Snapshot}}
+                {{#if snapshots.v2}}
                   <span class="grey">comparing with</span>
                   <span class="versioned-metadata-version-string">
                     Version {{ snapshots.v2.versionString }}
@@ -36,9 +36,15 @@
             <h2>{{model.title}}</h2>
 
             {{#util/promise-loader promise=selectedSnapshots as |snapshots|}}
-              {{nested-snapshot
-                snapshot1=snapshots.v1.contents
-                snapshot2=snapshots.v2.contents}}
+              {{#if authorsTask}}
+                {{author-task-snapshot
+                    snapshot1=snapshots.v1
+                    snapshot2=snapshots.v2}}
+              {{else}}
+                {{nested-snapshot
+                  snapshot1=snapshots.v1.contents
+                  snapshot2=snapshots.v2.contents}}
+              {{/if}}
             {{else}}
               {{progress-spinner visible=true size="large" center=true}}
             {{/util/promise-loader}}

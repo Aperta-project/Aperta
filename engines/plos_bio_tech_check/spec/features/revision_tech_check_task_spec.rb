@@ -32,7 +32,7 @@ feature 'Revision Tech Check', js: true do
     overlay.click_changes_have_been_made
     overlay.dismiss
 
-    # creator cannot access iniital tech task
+    # creator cannot access revision tech check task
     visit "/papers/#{paper.id}/tasks/#{task.id}"
     wait_for_ajax
     expect(page).to have_content("You don't have access to that content")

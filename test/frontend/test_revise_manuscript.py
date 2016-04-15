@@ -24,8 +24,10 @@ __author__ = 'sbassi@plos.org'
 staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
                super_admin_login)
 
-users = (creator_login1, )
-#creator_login2, creator_login3, creator_login4, creator_login5)
+users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
+
+users = (creator_login1, creator_login2)
+
 
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
@@ -74,9 +76,9 @@ class ReviseManuscriptTest(CommonTest):
     # logout
     paper_viewer.logout()
     # log as editor, invite a reviewer
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
+    staff_user = random.choice(staff_users)
+    logging.info('Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -86,23 +88,43 @@ class ReviseManuscriptTest(CommonTest):
     time.sleep(10)
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.invite_reviewer(reviewer_login, 'TITLE XXX')
+    invite_reviewers.invite_reviewer(reviewer_login)
     paper_viewer.logout()
 
     # As a reviewer, accept the MS
-    user_type = random.choice(staff_users)
+    #user_type = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(reviewer_login))
     dashboard_page = self.cas_login(email=reviewer_login['email'])
+    dashboard_page.click_view_invitations()
     dashboard_page.accept_all_invitations()
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-
+    ##import pdb; pdb.set_trace()
+    # go to wf
+    ##import pdb; pdb.set_trace()
+    paper_viewer.complete_task('Review by atest reviewer')
+    paper_viewer.logout()
+    logging.info('Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    # go to article id paper_id
+    dashboard_page.go_to_manuscript(paper_id)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
+    #time.sleep(10)
+    # make decision
+    #workflow_page.click_register_decision_card()
+    workflow_page.click_register_decision_card()
+    workflow_page.complete_card('Register Decision')
+    workflow_page.logout()
+
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.go_to_manuscript(paper_id)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.complete_task('Revise Manuscript')
+
 
 
 

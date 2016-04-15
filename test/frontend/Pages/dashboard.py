@@ -105,6 +105,7 @@ class DashboardPage(AuthenticatedPage):
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
+    self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -123,7 +124,7 @@ class DashboardPage(AuthenticatedPage):
 
   def accept_all_invitations(self):
     """Accepts all invitations"""
-    all_buttons = self._gets(self._view_invitations)
+    all_buttons = self._gets(self._yes_no_button)
     count = 0
     for button in all_buttons:
       count += 1

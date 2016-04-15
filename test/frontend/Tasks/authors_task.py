@@ -556,15 +556,13 @@ class AuthorsTask(BaseTask):
 
     #title_input = self._get(self._title_input)
     #department_input = self._get(self._department_input)
-
-    #institutions = self._gets(self._institution_div)
-    #print('**********************************************')
-    #print(len(institutions))
-    #if len(institutions) == 2:
-    #  institution_div = institutions[0]
-    #  institution_input = institution_div.find_element_by_tag_name('input')
-    #  institution_input.clear()
-    #  institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+    institutions = self._gets(self._institution_div)
+    if len(institutions) == 2:
+      institution_div = institutions[0]
+      institution_input = institution_div.find_element_by_tag_name('input')
+      institution_input.clear()
+      institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+      time.sleep(5)
     #import pdb; pdb.set_trace()
     #title_input.clear()
     #title_input.send_keys(author_data['title'] + Keys.ENTER)
@@ -581,11 +579,12 @@ class AuthorsTask(BaseTask):
     # Need to complete the remaining required elements to successfully complete this card.
     #import pdb; pdb.set_trace()
     author_inits_input = self._get(self._author_inits_input)
-    author_inits_input.send_keys('A' + Keys.ENTER)
+    #import pdb; pdb.set_trace()
+    author_inits_input.send_keys(author_data['initials'])
 
 
-    add_author_add_btn = self._get(self._add_author_add_btn)
-    add_author_add_btn.click()
+    #add_author_add_btn = self._get(self._add_author_add_btn)
+    #add_author_add_btn.click()
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:

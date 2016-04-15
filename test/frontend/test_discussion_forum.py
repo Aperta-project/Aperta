@@ -80,6 +80,7 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
+    time.sleep(2)
     red_badge = paper_viewer._get(paper_viewer._badge_red)
     red_badge_first = int(red_badge.text)
     red_badge.click()

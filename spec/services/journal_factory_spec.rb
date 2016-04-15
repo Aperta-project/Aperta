@@ -36,7 +36,8 @@ describe JournalFactory do
     end
     let(:permissions_on_task) do
       Permission.joins(:states).where(
-        applies_to: 'Task'
+        applies_to: 'Task',
+        permission_states: { id: PermissionState.wildcard }
       )
     end
     let(:permissions_with_editable_paper_states) do

@@ -54,16 +54,23 @@ export default TaskComponent.extend({
     }
   },
 
-  sortedAuthorsWithErrors: computed('task.paper.allAuthors.@each.isNew',
+  sortedAuthorsWithErrors: computed('task.paper.allAuthors.[]',
     function() {
+      if (!this.get('task.paper.allAuthors')) {
+        return;
+      }
       return this.get('task.paper.allAuthors').map(function(a) {
         return ObjectProxyWithErrors.create({
           object: a,
           validations: a.validations
         });
-      }).filterBy('object.isNew', false);
+      });
     }
   ),
+
+  sortedSavedAuthorsWithErrors: computed.filterBy(
+    'sortedAuthorsWithErrors',
+    'object.isNew', false),
 
   shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();

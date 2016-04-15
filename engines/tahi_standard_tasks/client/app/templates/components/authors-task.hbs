@@ -48,7 +48,7 @@
                          isEditable=isEditable
                          changePosition=(action "changeAuthorPosition")}}
 
-    {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
+    {{#each sortedSavedAuthorsWithErrors as |authorWithErrors|}}
       {{author-view task=task
                     model=authorWithErrors
                     isEditable=isEditable

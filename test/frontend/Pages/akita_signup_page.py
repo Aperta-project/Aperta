@@ -4,7 +4,6 @@
 Page Object Model for the Akita Login page.
 """
 
-import logging
 import urllib
 
 from selenium.webdriver.common.by import By
@@ -62,24 +61,30 @@ class AkitaSignupPage(PlosPage):
     forgot_pw_link = self._get(self._forgot_pw_link)
     assert forgot_pw_link.text == 'Forgot Password?'
     cas_resend_confirm = self._get(self._resend_confirm_email_link)
-    assert cas_resend_confirm.text.lower() == 'resend my email confirmation', cas_resend_confirm.text
-
-    assert self._get(self._email_textbox_label).text == 'Email', self._get(self._email_textbox_label).text
+    assert cas_resend_confirm.text.lower() == 'resend my email confirmation', \
+        cas_resend_confirm.text
+    assert self._get(self._email_textbox_label).text == 'Email', \
+        self._get(self._email_textbox_label).text
     self._get(self._email_textbox)
-    assert self._get(self._fname_textbox_label).text == 'First Name', self._get(self._fname_textbox_label).text
+    assert self._get(self._fname_textbox_label).text == 'First Name', \
+        self._get(self._fname_textbox_label).text
     self._get(self._lname_textbox)
-    assert self._get(self._lname_textbox_label).text == 'Last Name', self._get(self._lname_textbox_label).text
+    assert self._get(self._lname_textbox_label).text == 'Last Name', \
+        self._get(self._lname_textbox_label).text
     self._get(self._lname_textbox)
-    assert self._get(self._password_textbox_label).text == 'Password', self._get(self._password_textbox_label).text
+    assert self._get(self._password_textbox_label).text == 'Password', \
+        self._get(self._password_textbox_label).text
     self._get(self._password_textbox)
     assert self._get(self._confirm_password_textbox_label).text == 'Confirm Password', \
         self._get(self._confirm_password_textbox_label).text
     self._get(self._password_textbox)
     # email_subscribe_msg = self._get(self._email_signup_label)
-    # assert 'I would like to receive occasional PLOS news updates.' in email_subscribe_msg.text, email_subscribe_msg.text
+    # assert 'I would like to receive occasional PLOS news updates.' in email_subscribe_msg.text, \
+    #   email_subscribe_msg.text
     # assert not email_subscribe_msg.is_selected()
     disclaimer = self._get(self._disclaimer)
-    assert 'By creating an account you agree to the terms of use.' in disclaimer.text, disclaimer.text
+    assert 'By creating an account you agree to the terms of use.' in disclaimer.text, \
+        disclaimer.text
     disclaimer_link = self._get(self._disclaimer_link)
     assert disclaimer_link.get_attribute('href') == 'https://www.plos.org/about/terms-use', \
         disclaimer_link.get_attribute('href')
@@ -90,15 +95,18 @@ class AkitaSignupPage(PlosPage):
 
   def confirm_correct_url_form(self, environment_url):
     """
-    Takes a parameter of a normative environment url from which the initial call to Akita signup page is made,
-    and ensures this is the return url present in the Akita end URL parameter.
+    Takes a parameter of a normative environment url from which the initial call to Akita signup
+      page is made, and ensures this is the return url present in the Akita end URL parameter.
 
-    This is currently being used in place of actually validating a NED signup as the cost of validation is very high.
-    :param environment_url: The url of the environment passed as an encoded parameter to the NED sign in URL
+    This is currently being used in place of actually validating a NED signup as the cost of
+      validation is very high.
+    :param environment_url: The url of the environment passed as an encoded parameter to the NED
+      sign in URL
     :return: void function
     """
     signup_urlform = self.get_current_url()
     signup_urlform = signup_urlform.split('=')[1]
+    environment_url = environment_url.split('users')[0]
     signup_urlform = urllib.unquote(signup_urlform)
     assert environment_url in signup_urlform, environment_url + ' not found in ' + signup_urlform
 
@@ -122,10 +130,10 @@ class AkitaSignupPage(PlosPage):
     pw_input.clear()
     pw_input.send_keys(password)
 
-  def click_sign_in_button(self):
+  def click_sign_in_link(self):
     """
-    Click the Sign-In button
+    Click the Sign-In link
     :return: None
     """
-    cas_signin = self._get(self._signin_button)
+    cas_signin = self._get(self._signin_link)
     cas_signin.click()

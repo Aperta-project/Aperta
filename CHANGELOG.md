@@ -18,6 +18,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - New columns added to Paper Tracker to display publishing status, Handling Editor and Cover Editor
 - Funders now have an "additional comments" field
 - Email report to admin counting papers in states
+- Authors card supports diffing
 
 ### Changed
 -

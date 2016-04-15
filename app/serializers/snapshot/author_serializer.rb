@@ -9,6 +9,7 @@ class Snapshot::AuthorSerializer < Snapshot::BaseSerializer
   # rubocop:disable Metrics/AbcSize
   def snapshot_properties
     [
+      snapshot_property("id", "integer", model.id),
       snapshot_property("first_name", "text", model.first_name),
       snapshot_property("last_name", "text", model.last_name),
       snapshot_property("middle_initial", "text", model.middle_initial),

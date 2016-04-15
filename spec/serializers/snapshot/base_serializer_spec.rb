@@ -15,14 +15,14 @@ describe Snapshot::BaseSerializer do
 
   describe "snapshot ordering of children" do
     subject(:serializer) { Snapshot::TestSerializer.new(model) }
-    let(:model){ OpenStruct.new(nested_questions: []) }
+    let(:model) { OpenStruct.new(nested_questions: [], id: 1) }
 
-    it "snapshots nested questions first, then properties" do
+    it "snapshots nested questions first, then id, then other properties" do
       expect(serializer.as_json[:children]).to eq([
         { questions: "here" },
+        { name: "id", type: "integer", value: 1 },
         { properties: "here" }
       ])
     end
-
   end
 end

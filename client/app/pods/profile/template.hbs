@@ -1,6 +1,6 @@
 {{flash-messages}}
 
-<div class="base-screen">
+<div class="base-screen" id="profile">
   <div class="col-md-2">
     {{user-avatar-upload user=model}}
   </div>
@@ -22,5 +22,11 @@
     </div>
 
     {{partial "profile/affiliation-form"}}
+
+    <div class="profile-link">
+      <a href="https://community.plos.org/account/edit-profile">View or edit your full profile</a>
+      <br>
+      Any changes to your username or email will be updated in Aperta on your next login.
+    </div>
   </div>
 </div>

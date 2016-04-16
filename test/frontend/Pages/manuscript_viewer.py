@@ -371,8 +371,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        if task.text == task_name \
-            and 'active' \
+        if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           task.click()
           time.sleep(.5)
@@ -414,7 +413,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
       revise_manuscript.validate_empty_response()
-      revise_manuscript.response_to_reviewers()
+      revise_manuscript.response_to_reviewers(data)
       # complete_billing task
       if not base_task.completed_state():
         base_task.click_completion_button()

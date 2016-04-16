@@ -123,13 +123,9 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.complete_task('Revise Manuscript')
+    data = {'attach': 2}
+    paper_viewer.complete_task('Revise Manuscript', data=data)
 
-
-
-
-    paper_viewer.set_timeout(2)
-    paper_viewer.restore_timeout()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -52,7 +52,7 @@ end
     desc "Start #{config[:namespace]} instance for this application"
     task :start do
       on roles(config[:role]) do
-        sudo "service #{fetch(config[:service])} start || true"
+        sudo "service #{config[:service]} start || true"
       end
     end
     desc "Show status of #{config[:namespace]} for this application"

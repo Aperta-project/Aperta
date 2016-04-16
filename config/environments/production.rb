@@ -93,9 +93,10 @@ Tahi::Application.configure do
     address: 'smtp.sendgrid.net',
     port: '587',
     authentication: :plain,
+    # Assume that foo.bar is the domain of www.foo.bar
+    domain: config.action_mailer.default_url_options[:host].split('.')[-2..-1].join('.'),
     user_name: ENV.fetch('SENDGRID_USERNAME'),
     password: ENV.fetch('SENDGRID_PASSWORD'),
-    domain: 'heroku.com',
     enable_starttls_auto: true
   }
 end

@@ -6159,7 +6159,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-03-29 20:28:06.951832'
+    - '2016-04-18 23:09:30.406641'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -7627,9 +7627,9 @@ nested_questions:
     - 
     - '199'
     - '200'
-    - '4'
+    - '3'
     - '2015-10-30 19:51:03.473215'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-04-18 23:09:30.454792'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '235'
@@ -7639,10 +7639,37 @@ nested_questions:
     - 
     - '199'
     - '200'
-    - '4'
+    - '5'
     - '2015-10-30 19:51:03.473215'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-04-18 23:09:30.476549'
     - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '236'
+    - Tick here if the URLs/accession numbers/DOIs will be available only after acceptance
+      of the manuscript for publication so that we can ensure their inclusion before
+      publication.
+    - boolean
+    - data_availability--additional_information_doi
+    - 
+    - '363'
+    - '364'
+    - '3'
+    - '2016-04-18 23:09:30.193042'
+    - '2016-04-18 23:09:30.193042'
+    - TahiStandardTasks::DataAvailabilityTask
+    - 
+  - - '237'
+    - Tick here if your circumstances are not covered by the questions above and you
+      need the journal’s help to make your data available.
+    - boolean
+    - data_availability--additional_information_other
+    - 
+    - '365'
+    - '366'
+    - '4'
+    - '2016-04-18 23:09:30.20367'
+    - '2016-04-18 23:09:30.20367'
+    - TahiStandardTasks::DataAvailabilityTask
     - 
 
 ---

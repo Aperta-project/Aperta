@@ -46,8 +46,8 @@ test('clicking the feedback button sends feedback', function(assert) {
     click('.overlay-footer-content .button-primary');
 
     andThen(function() {
-      assert.ok(
-        find('.feedback-overlay-thanks').length,
+      assert.elementFound(
+        '.feedback-overlay-thanks',
         'Thank you message visible'
       );
     });

@@ -51,6 +51,7 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
 
       nested_question_1 = FactoryGirl.create(
         :nested_question,
+        id: 9001,
         owner_id: nil,
         owner_type: resource.class.name,
         ident: "question_1",
@@ -59,6 +60,7 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
       )
       nested_question_2 = FactoryGirl.create(
         :nested_question,
+        id: 9002,
         owner_id: nil,
         owner_type: resource.class.name,
         ident: "question_2",
@@ -75,13 +77,13 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
         {
           name: "question_2",
           type: "question",
-          value: { title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
+          value: { id: 9002, title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         },
         {
           name: "question_1",
           type: "question",
-          value: { title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
+          value: { id: 9001, title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         }
       )

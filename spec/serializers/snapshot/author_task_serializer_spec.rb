@@ -14,6 +14,7 @@ describe Snapshot::AuthorTaskSerializer do
             name: "authors--persons_agreed_to_be_named",
             type: "question",
             value: {
+              id: NestedQuestion.where(ident: "authors--persons_agreed_to_be_named").first.id,
               title: "Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.",
               answer_type: "boolean",
               answer: nil,
@@ -25,6 +26,7 @@ describe Snapshot::AuthorTaskSerializer do
             name: "authors--authors_confirm_icmje_criteria",
             type: "question",
             value: {
+              id: NestedQuestion.where(ident: "authors--authors_confirm_icmje_criteria").first.id,
               title: 'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
               answer_type: "boolean",
               answer: nil,
@@ -36,13 +38,15 @@ describe Snapshot::AuthorTaskSerializer do
             name: "authors--authors_agree_to_submission",
             type: "question",
             value: {
+              id: NestedQuestion.where(ident: "authors--authors_agree_to_submission").first.id,
               title: "All contributing authors are aware of and agree to the submission of this manuscript.",
               answer_type: "boolean",
               answer: nil,
               attachments: []
             },
             children: []
-          }
+          },
+          { name: "id", type: "integer", value: task.id }
         ]
       )
     end
@@ -77,6 +81,7 @@ describe Snapshot::AuthorTaskSerializer do
             type: "question",
             value:
               {
+                id: NestedQuestion.where(ident: "authors--persons_agreed_to_be_named").first.id,
                 title:
                   "Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.",
                 answer_type: "boolean",
@@ -90,6 +95,7 @@ describe Snapshot::AuthorTaskSerializer do
             type: "question",
             value:
               {
+                id: NestedQuestion.where(ident: "authors--authors_confirm_icmje_criteria").first.id,
                 title: 'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
                 answer_type: "boolean",
                 answer: nil,
@@ -102,6 +108,7 @@ describe Snapshot::AuthorTaskSerializer do
             type: "question",
             value:
               {
+                id: NestedQuestion.where(ident: "authors--authors_agree_to_submission").first.id,
                 title:
                   "All contributing authors are aware of and agree to the submission of this manuscript.",
                 answer_type: "boolean",
@@ -110,6 +117,7 @@ describe Snapshot::AuthorTaskSerializer do
               },
             children: []
           },
+          { name: "id", type: "integer", value: task.id },
           {
             author: "sally's json here",
             position: 1

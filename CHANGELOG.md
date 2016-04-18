@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Added a loading state for manuscript conversion
 ### Changed
+- Mentions in discussions are now case-insensitive
 ### Deprecated
 ### Removed
 ### Fixed

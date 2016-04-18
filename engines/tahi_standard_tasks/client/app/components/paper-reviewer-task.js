@@ -88,13 +88,6 @@ export default TaskComponent.extend({
       });
     },
 
-    removeReviewer(selectedReviewer) {
-      return this.store.find('user', selectedReviewer.id).then((user) => {
-        this.get('reviewers').removeObject(user);
-        return this.send('saveModel');
-      });
-    },
-
     inputChanged(val) {
       return this.set('selectedReviewer', {
         email: val

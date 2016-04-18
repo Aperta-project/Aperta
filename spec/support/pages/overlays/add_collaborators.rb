@@ -3,7 +3,7 @@ class AddCollaboratorsOverlay < PageFragment
 
   def add_collaborators(*users)
     users.map(&:full_name).each do |name|
-      select2 name, css: '.collaborator-select'
+      select2 name, css: '.collaborator-select', search: true
     end
   end
 

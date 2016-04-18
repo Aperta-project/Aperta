@@ -9,7 +9,11 @@ export default Ember.Component.extend({
   figures: Ember.computed('figures1', 'figures2', function(){
     var snapshots = new SnapshotsById('figure');
     snapshots.addSnapshots(this.get('snapshot1.children'));
-    snapshots.addSnapshots(this.get('snapshot2.children'));
+
+    if (this.get('snapshot2.children')) {
+      snapshots.addSnapshots(this.get('snapshot2.children'));
+    }
+
     return snapshots.toArray();
   }),
 

@@ -15,9 +15,7 @@ export default class SnapshotsById {
   }
 
   snapshotId(snapshot){
-    return _.find(snapshot.children, function(child){
-      return child.name === 'id';
-    }).value;
+    return _.findWhere(snapshot.children, {name: 'id'}).value;
   }
 
   setPairedSnapshot(id, value, snapshotNumber) {
@@ -27,6 +25,10 @@ export default class SnapshotsById {
 
   addSnapshots(taskSnapshot) {
     if (!taskSnapshot){return;}
+
+    _.each(this.pairedSnapshots, (list) => {
+      list[this.currentSnapshot] = {};
+    });
 
     taskSnapshot.forEach((childSnapshot) => {
       if (childSnapshot.name !== this.itemName) { return; }
@@ -39,4 +41,4 @@ export default class SnapshotsById {
   toArray() {
     return _.values(this.pairedSnapshots);
   }
-};
+}

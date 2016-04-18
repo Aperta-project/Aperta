@@ -137,7 +137,7 @@ test('An author was added', function(assert) {
 
   assert.equal(authors.length, 2, 'there are two authors in the diff');
   assert.deepEqual(authors[1][0], viewing[1]);
-  assert.equal(authors[1][1], null);
+  assert.ok(_.isEmpty(authors[1][1]));
 });
 
 test('An author was added and removed', function(assert) {
@@ -162,7 +162,7 @@ test('An author was added and removed', function(assert) {
 
   assert.equal(authors.length, 3, 'there are three authors in the diff');
   assert.deepEqual(authors[1][0], viewing[1]);
-  assert.equal(authors[1][1], null);
+  assert.ok(_.isEmpty(authors[1][1]));
   assert.equal(authors[2][0], null);
   assert.deepEqual(authors[2][1], comparing[1]);
 });

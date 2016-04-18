@@ -1,13 +1,5 @@
 import Ember from 'ember';
 
-export const fromProperty = function(properties, name) {
-  let property = _.findWhere(properties, { name: name } );
-  if (property && property.value) {
-    return property.value;
-  }
-  return ' ';
-};
-
 export const diffableTextForQuestion = function(collectionKey, propertyKey) {
   return Ember.computed(collectionKey + '.[]', function() {
     let properties = this.get(collectionKey);
@@ -20,9 +12,14 @@ export const diffableTextForQuestion = function(collectionKey, propertyKey) {
 };
 
 export const namedComputedProperty = function(snapshotName, propertyName) {
-  return Ember.computed(snapshotName + '.[]', function() {
-    var properties = this.get(snapshotName);
+  return Ember.computed(snapshotName + '.children.[]', function() {
+
+    var properties = this.get(snapshotName + '.children');
     if (!properties) { return null; }
-    return fromProperty(properties, propertyName);
+
+    let property = _.findWhere(properties, { name: propertyName } );
+    if (!property) { return null; }
+
+    return property.value;
   });
 };

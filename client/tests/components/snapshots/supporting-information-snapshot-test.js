@@ -16,12 +16,12 @@ var snapshot = function (){
       {name: 'id', value: 'foo'},
       {name: 'title', value: 'squid'},
       {name: 'file', value: 'theFile.jpg'},
-      {name: 'caption', value: "I'm the caption now"},
+      {name: 'caption', value: 'I\'m the caption now'},
       {name: 'publishable', value: true},
       {name: 'striking_image', value: true},
       {name: 'file_hash', value: 'a9876a98c987b96h'}
     ]
-  }
+  };
 };
 
 var template = hbs`{{supporting-information-snapshot
@@ -63,14 +63,14 @@ test('Diffs the filename', function(assert){
 
 test('Diffs the caption', function(assert){
   let secondSnaps = snapshot();
-  secondSnaps.children[3].value = 'look at me'
+  secondSnaps.children[3].value = 'look at me';
 
   this.set('oldSnapshot', snapshot());
   this.set('newSnapshot', secondSnaps);
 
   this.render(template);
 
-  assert.diffPresent("I'm the caption now", 'look at me');
+  assert.diffPresent('I\'m the caption now', 'look at me');
 });
 
 test('Diffs the publishable', function(assert){
@@ -82,7 +82,7 @@ test('Diffs the publishable', function(assert){
 
   this.render(template);
 
-  assert.diffPresent("Yes", "No");
+  assert.diffPresent('Yes', 'No');
 });
 
 test('Diffs the striking image bool', function(assert){
@@ -94,7 +94,7 @@ test('Diffs the striking image bool', function(assert){
 
   this.render(template);
 
-  assert.diffPresent("Yes", "No")
+  assert.diffPresent('Yes', 'No');
 });
 
 test('Diffs the filename when the file has changed', function(assert) {

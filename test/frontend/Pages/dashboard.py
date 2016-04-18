@@ -222,17 +222,18 @@ class DashboardPage(AuthenticatedPage):
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
-  def validate_manuscript_section_main_title(self, username):
+  def validate_manuscript_section_main_title(self, user):
     """
     Validates the title section of the manuscript presentation part of the page
     This is always present and follows the Invite section if present. The paper
     content of the active and inactive sections are presented separately.
-    :param username: username
+    :param user: user dictionary for validating Dashboard welcome message
     :return: A tuple containing: (active_manuscripts (a count),
                                   active_manuscript_list (ordered by assignment.created_at),
-                                  uid (of username))
+                                  uid (of user))
     """
-    username = username['user']
+    logging.debug(user)
+    username = user['user']
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;',

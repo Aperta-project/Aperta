@@ -1,6 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
+NOTE: This POM will be outdated when the Paper Editor is removed.
+"""
 import logging
+import random
 import time
 from datetime import datetime
 
@@ -16,11 +21,6 @@ from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
-
-"""
-Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
-NOTE: This POM will be outdated when the Paper Editor is removed.
-"""
 
 __author__ = 'sbassi@plos.org'
 
@@ -458,6 +458,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def click_submit_btn(self):
     """Press the submit button"""
+    # Must allow time for the overlay to animate
+    time.sleep(.5)
     self._get(self._submit_button).click()
 
   def confirm_submit_btn(self):
@@ -465,7 +467,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # There is a lot going on under the covers in submittal - we need this pregnant delay
     confirm_btn = self._get(self._so_submit_confirm)
     confirm_btn.click()
-    time.sleep(15)
+    time.sleep(10)
 
   def confirm_submit_cancel(self):
     """Cancel on confirm paper submission"""

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
 
-moduleForComponent('nested-question', 'Component: nested-question', {
+moduleForComponent('nested-question', 'Integration | Component | nested question', {
   unit: true,
 
   beforeEach: function() {

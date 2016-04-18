@@ -11,6 +11,7 @@
                       start="uploadStarted"
                       progress="uploadProgress"
                       done="uploadFinished"
+                      addingFileFailed="fileAddError"
                       error="uploadError"
                       filePrefix="paper/manuscript"
                       url=manuscriptUploadUrl
@@ -21,7 +22,8 @@
   {{/if}}
 
   {{#if uploadError}}
-    <span>Sorry! {{fileName}} is not of an accepted file type</span>
+    <p>We're sorry, '{{fileName}}' is not a valid file type.</p>
+    <p> Please upload a Microsoft Word file (.docx or .doc).</p>
   {{/if}}
 
   {{#if isUploading}}

@@ -35,6 +35,13 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       this.set('isSaving', true);
     },
 
+    addingFileFailed(reason, {fileName, acceptedFileTypes}) {
+      this.set('isSaving', false);
+      let msg = `We're sorry, '${fileName}' is not a valid file type.
+      Please upload a Microsoft Word file (.docx or .doc).`
+      this.get('flash').displayMessage('error', msg);
+    },
+
     uploadFinished(s3Url){
       this.get('paper').save().then((paper) => {
         const path = `/api/papers/${paper.id}/upload`;
@@ -49,6 +56,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     uploadFailed(reason) {
       this.set('isSaving', false);
+      this.get('flash').displayMessage('error', reason);
       console.log(reason);
     },
 

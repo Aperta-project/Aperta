@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
 import FakeCanService from '../helpers/fake-can-service';
 
-moduleForComponent('task-base', 'TaskBase', {
+moduleForComponent('task-base', 'Unit: components/task-base', {
   unit: true,
 
   beforeEach() {

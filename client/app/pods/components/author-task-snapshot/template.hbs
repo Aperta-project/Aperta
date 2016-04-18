@@ -1,0 +1,13 @@
+{{#each authors as |author|}}
+  {{diff-author
+  viewing=author.[0]
+  comparing=author.[1]}}
+  <br />
+{{/each}}
+
+{{#each question in questions}}
+  {{nested-snapshot
+    snapshot1=question.[0]
+    snapshot2=question.[1]}}
+{{/each}}
+

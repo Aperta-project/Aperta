@@ -99,7 +99,7 @@ export default Component.extend({
   saveAuthor() {
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save().then(function() {
+    this.get('author').save().then(() => {
       this.attrs.saveSuccess();
     });
   },

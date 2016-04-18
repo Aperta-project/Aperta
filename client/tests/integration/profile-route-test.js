@@ -5,7 +5,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
 
-server = null
+var server = null;
 
 module('Integration: Authorized Profile View', {
   beforeEach(){
@@ -75,7 +75,6 @@ test('transition to route without permission fails', function(assert){
   const start = assert.async();
 
   Ember.run.later(function(){
-    var store = getStore();
     Factory.createPermission('User', 1, []);
 
     visit('/profile');
@@ -96,7 +95,6 @@ test('transition to route with permission succeedes', function(assert){
   const start = assert.async();
 
   Ember.run.later(function(){
-    var store = getStore();
     Factory.createPermission('User', 1, ['view_profile']);
 
     visit('/profile');
@@ -108,5 +106,26 @@ test('transition to route with permission succeedes', function(assert){
       );
       start();
     });
+  });
+});
+
+test('User is linked to thier Akita profile page', function(assert) {
+  expect(3);
+  Factory.createPermission('User', 1, ['view_profile']);
+
+  visit('/profile');
+  andThen(function() {
+    let profileLink = Ember.$('.profile-link a');
+
+    assert.ok(profileLink.length, 'There is a profile link');
+
+    let expectedLinkText = 'View or edit your full profile';
+    assert.textPresent('.profile-link a', expectedLinkText,
+                       'The profile link is correctly labeled');
+
+    let actualLinkSrc = profileLink.attr('href');
+    let expectedLinkSrc = 'https://community.plos.org/account/edit-profile';
+    assert.equal(actualLinkSrc, expectedLinkSrc,
+                 'The profile link links to akita.');
   });
 });

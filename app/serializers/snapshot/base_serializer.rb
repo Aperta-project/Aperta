@@ -53,7 +53,9 @@ class Snapshot::BaseSerializer
   private
 
   def snapshot_children
-    snapshot_nested_questions + snapshot_properties
+    snapshot_nested_questions +
+      [snapshot_property("id", "integer", model.id)] +
+      snapshot_properties
   end
 
   def snapshot_nested_questions

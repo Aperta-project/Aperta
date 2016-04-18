@@ -13,7 +13,7 @@ export default function() {
       finalMessage = message;
     }
 
-    return this.ok(result, finalMessage);
+    return this.push(result, elementText, text, finalMessage);
   };
 
   QUnit.assert.textNotPresent = function(selector, text, message) {
@@ -27,6 +27,13 @@ export default function() {
       finalMessage = message;
     }
 
-    return this.ok(result, finalMessage);
+    return this.push(result, elementText, text, finalMessage);
   };
+
+  QUnit.assert.elementFound = function(selector, message) {
+    const matches = $(selector).length;
+
+    return this.push(matches === 1, `'${selector}' not found`, `found '${selector}'`, message || `should find element at ${selector}`);
+  };
+
 }

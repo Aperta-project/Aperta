@@ -83,30 +83,7 @@ class ReviseManuscriptTest(CommonTest):
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    time.sleep(10)
-    workflow_page.click_card('invite_reviewers')
-    invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.invite_reviewer(reviewer_login)
-    paper_viewer.logout()
-    # As a reviewer, accept the invite
-    logging.info('Logging in as user: {0}'.format(reviewer_login))
-    dashboard_page = self.cas_login(email=reviewer_login['email'])
-    dashboard_page.click_view_invitations()
-    dashboard_page.accept_all_invitations()
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # Make the review
-    paper_viewer.complete_task('Review by {0}'.format(reviewer_login['name']))
-    paper_viewer.logout()
-    logging.info('Logging in as user: {0}'.format(staff_user))
-    dashboard_page = self.cas_login(email=staff_user['email'])
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # go to wf
-    paper_viewer.click_workflow_link()
-    workflow_page = WorkflowPage(self.getDriver())
-    # make decision
+    time.sleep(2)
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
     workflow_page.logout()

@@ -59,4 +59,20 @@ describe TaskFactory do
     task = TaskFactory.create(klass, paper: paper, phase: phase, participants: participants)
     expect(task.participants).to eq(participants)
   end
+
+  context "roles and permissions exist" do
+    let(:journal) { create :journal, :with_roles_and_permissions }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+    let(:klass) { PlosBilling::BillingTask }
+    let(:journal_task_type) do
+      journal.journal_task_types.find_by(kind: klass.to_s)
+    end
+
+    it "Sets default permissions from the journal_task_type" do
+      expect(journal_task_type.required_permissions).to be_present
+      task = TaskFactory.create(klass, paper: paper, phase: phase)
+      expect(task.required_permissions).to be_present
+    end
+  end
 end

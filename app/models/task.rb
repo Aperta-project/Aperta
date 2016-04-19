@@ -233,6 +233,10 @@ class Task < ActiveRecord::Base
     previously_completed? && !completed
   end
 
+  def set_required_permissions
+    self.required_permissions = journal_task_type.required_permissions
+  end
+
   private
 
   def on_card_completion?

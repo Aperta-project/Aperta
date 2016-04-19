@@ -12,6 +12,7 @@ class TaskFactory
     @task_klass = task_klass
     options = default_options.merge(options)
     @task = task_klass.new(options)
+    @task.set_required_permissions unless @task.required_permissions.present?
   end
 
   def save

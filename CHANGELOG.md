@@ -10,6 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Ensure billing cards created after paper creation have the correct permissions
 ### Security
 
 ## [1.4.3] - 2016-04-05

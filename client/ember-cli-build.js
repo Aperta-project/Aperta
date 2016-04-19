@@ -1,17 +1,15 @@
 /* global require, module */
 var EmberApp   = require('ember-cli/lib/broccoli/ember-app');
 var Funnel     = require('broccoli-funnel');
+var ENV = require('./config/environment.js');
 
 module.exports = function(defaults) {
-  var app = new EmberApp(defaults, {
+  var args = {
     hinting: false,
     storeConfigInMeta: false,
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
     'ember-cli-qunit': {
       useLintTree: false
-    },
-    fingerprint: {
-      prepend: '/client/'
     },
     sourcemaps: {
       enabled: true,
@@ -19,8 +17,14 @@ module.exports = function(defaults) {
     },
     babel: {
       includePolyfill: true,
-    },
-  });
+    }
+  };
+  if (ENV.environment === 'production') {
+    args.fingerprint = {
+      prepend: '/client/'
+    };
+  }
+  var app = new EmberApp(defaults, args);
 
   app.import(app.bowerDirectory + '/underscore/underscore.js');
   app.import(app.bowerDirectory + '/moment/moment.js');

@@ -554,8 +554,8 @@ class AuthorsTask(BaseTask):
     self._get(self._authors_ack_auth_crit).click()
     self._get(self._authors_ack_agree2submit).click()
 
-    #title_input = self._get(self._title_input)
-    #department_input = self._get(self._department_input)
+    title_input = self._get(self._title_input)
+    department_input = self._get(self._department_input)
     institutions = self._gets(self._institution_div)
     if len(institutions) == 2:
       institution_div = institutions[0]
@@ -563,11 +563,10 @@ class AuthorsTask(BaseTask):
       institution_input.clear()
       institution_input.send_keys(author_data['institution'] + Keys.ENTER)
       time.sleep(5)
-    #import pdb; pdb.set_trace()
-    #title_input.clear()
-    #title_input.send_keys(author_data['title'] + Keys.ENTER)
-    #department_input.clear()
-    #department_input.send_keys(author_data['department'] + Keys.ENTER)
+    title_input.clear()
+    title_input.send_keys(author_data['title'] + Keys.ENTER)
+    department_input.clear()
+    department_input.send_keys(author_data['department'] + Keys.ENTER)
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
@@ -575,16 +574,11 @@ class AuthorsTask(BaseTask):
     author_contribution_chck = self._get(self._designed_chkbx)
     if not author_contribution_chck.is_selected():
       author_contribution_chck.click()
-
     # Need to complete the remaining required elements to successfully complete this card.
-    #import pdb; pdb.set_trace()
     author_inits_input = self._get(self._author_inits_input)
-    #import pdb; pdb.set_trace()
     author_inits_input.send_keys(author_data['initials'])
-
-
-    #add_author_add_btn = self._get(self._add_author_add_btn)
-    #add_author_add_btn.click()
+    add_author_add_btn = self._get(self._add_author_add_btn)
+    add_author_add_btn.click()
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:

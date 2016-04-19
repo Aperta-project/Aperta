@@ -1,13 +1,10 @@
 require 'rails_helper'
 
 describe PhasesController do
-
   let(:phase_name) { 'Verification' }
   let(:new_position) { 0 }
   let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let(:user) { FactoryGirl.create(:user) }
-
-  before { sign_in user }
 
   describe 'POST create' do
     subject(:do_request) do
@@ -20,28 +17,52 @@ describe PhasesController do
 
     it_behaves_like "an unauthenticated json request"
 
-    it "returns new the phase object as json" do
-      do_request
-      json = JSON.parse(response.body)
-      expect(json["phase"]["id"]).to eq(Phase.last.id)
+    context 'and the user is authenticated' do
+      before { stub_sign_in user }
+
+      it "returns new the phase object as json" do
+        do_request
+        json = JSON.parse(response.body)
+        expect(json["phase"]["id"]).to eq(Phase.last.id)
+      end
     end
   end
 
   describe 'DELETE destroy' do
-    it "with tasks" do
-      phase = Phase.create(
-        tasks: [Task.new(title: "task", old_role: "author", paper: paper)],
-        paper_id: paper.id,
-        position: 1
-      )
+    let(:phase) { Phase.create paper_id: paper.id, position: 1 }
+
+    subject(:do_request) do
       delete :destroy, format: :json, id: phase.id
-      expect(response).to_not be_success
     end
 
-    it "without tasks" do
-      phase = Phase.create paper_id: paper.id, position: 1
-      delete :destroy, format: :json, id: phase.id
-      expect(response).to be_success
+    it_behaves_like "an unauthenticated json request"
+
+    context 'and the user is authenticated' do
+      before { stub_sign_in user }
+
+      context "and the phase has tasks" do
+        before do
+          phase.update!(
+            tasks: [Task.new(title: "task", old_role: "author", paper: paper)]
+          )
+        end
+
+        it 'responds with 400 BAD REQUEST' do
+          do_request
+          expect(response.status).to eq(400)
+        end
+      end
+
+      context "and the phase does not have tasks" do
+        before do
+          expect(phase.tasks).to be_empty
+        end
+
+        it 'responds with 200 OK' do
+          do_request
+          expect(response.status).to eq(200)
+        end
+      end
     end
   end
 
@@ -53,9 +74,13 @@ describe PhasesController do
 
     it_behaves_like "an unauthenticated json request"
 
-    it "should be successful" do
-      do_request
-      expect(response).to be_success
+    context 'and the user is authenticated' do
+      before { stub_sign_in user }
+
+      it "responds with 204 NO CONTENT" do
+        do_request
+        expect(response.status).to eq(204)
+      end
     end
   end
 end

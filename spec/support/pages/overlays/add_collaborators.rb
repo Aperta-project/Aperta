@@ -1,4 +1,4 @@
-class AddCollaboratorsOverlay < PageFragment
+class AddCollaboratorsOverlay < CardOverlay
   text_assertions :collaborator, ".collaborator .name"
 
   def add_collaborators(*users)

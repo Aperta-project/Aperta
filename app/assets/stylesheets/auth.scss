@@ -25,9 +25,25 @@ body, h1, input {
   font-weight: normal;
 }
 
-html.bg-1 { background-image: url(image-path('auth/bg-1.jpg')); }
-html.bg-2 { background-image: url(image-path('auth/bg-2.jpg')); }
-html.bg-3 { background-image: url(image-path('auth/bg-3.jpg')); }
+
+html.bg-1 { background-image: url(image-path('auth/bg-1.jpg'));
+  .ccby::before { content: "Image credit: Vadim Kurland on Flickr under a "; }
+}
+html.bg-2 { background-image: url(image-path('auth/bg-2.jpg'));
+  .ccby::before { content: "Image credit: Sid Mosdell on Flickr under a "; }
+}
+
+.attribution {
+  display: block;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  color: white;
+}
+.ccby a {
+  color: white;
+  text-decoration: underline;
+}
 
 #tahi-container {
   max-width: 820px;

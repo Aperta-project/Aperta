@@ -36,8 +36,8 @@ class ReviseManuscriptTest(CommonTest):
   """
   def test_response_to_reviewers(self):
     """
-    This test walks through the path to create and article, invite a reviewer, accept the
-    invitation, review the paper and the author will use the response to reviewers card
+    This test walks through the path to create and article, take a decission about the
+    manuscript and the author will use the response to reviewers card
     """
     creator = random.choice(users)
     journal = 'PLOS Wombat'

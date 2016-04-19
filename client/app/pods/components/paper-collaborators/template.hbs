@@ -21,8 +21,7 @@
   {{#each collaborators as |collaborator|}}
     <li class="collaborator">
       <span class="avatar">{{user-thumbnail user=collaborator}}</span>
-      <span class="name">{{collaborator.fullName}}</span>
-      <span class="email">{{collaborator.email}}
+      <span class="name">{{collaborator.fullName}}
         <span class="delete-button fa fa-trash" {{action "removeCollaborator" collaborator}}>
         </span>
       </span>

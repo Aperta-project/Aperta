@@ -18,9 +18,8 @@ class AddCollaboratorsOverlay < CardOverlay
   end
 
   def remove_collaborators(*collaborators)
-    collaborators.map(&:email).each do |email|
-      node = first('.collaborator .email', text: email)
-      node.hover
+    collaborators.map(&:full_name).each do |name|
+      node = first('.collaborator .name', text: name)
       node.first('.delete-button').click
     end
   end

@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 - Sending of email to Academic Editor for completed review
 ### Fixed
+- Ensure that cards created after paper creation have the correct permissions
 ### Security
 
 ## [1.4.3] - 2016-04-05

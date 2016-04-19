@@ -6159,7 +6159,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-04-18 23:09:30.406641'
+    - '2016-04-20 14:32:03.046477'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -6362,37 +6362,13 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ReviewerReportTask
     - 
-  - - '125'
-    - Is the manuscript technically sound, and do the data support the conclusions?
-    - boolean
-    - reviewer_report--support_conclusions
-    - 
-    - '203'
-    - '206'
-    - '3'
-    - '2015-10-30 19:51:03.500418'
-    - '2016-03-10 19:55:38.108421'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
-  - - '126'
-    - Explanation
-    - text
-    - reviewer_report--support_conclusions--explanation
-    - '125'
-    - '204'
-    - '205'
-    - '1'
-    - '2015-10-30 19:51:03.502707'
-    - '2016-03-10 19:55:38.108421'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
   - - '127'
     - Has the statistical analysis been performed appropriately and rigorously?
     - boolean
     - reviewer_report--statistical_analysis
     - 
-    - '207'
-    - '210'
+    - '203'
+    - '206'
     - '4'
     - '2015-10-30 19:51:03.511001'
     - '2016-03-10 19:55:38.108421'
@@ -6403,8 +6379,8 @@ nested_questions:
     - text
     - reviewer_report--statistical_analysis--explanation
     - '127'
-    - '208'
-    - '209'
+    - '204'
+    - '205'
     - '1'
     - '2015-10-30 19:51:03.513191'
     - '2016-03-10 19:55:38.108421'
@@ -6415,8 +6391,8 @@ nested_questions:
     - boolean
     - reviewer_report--standards
     - 
-    - '211'
-    - '214'
+    - '207'
+    - '210'
     - '5'
     - '2015-10-30 19:51:03.521073'
     - '2016-03-10 19:55:38.108421'
@@ -6427,8 +6403,8 @@ nested_questions:
     - text
     - reviewer_report--standards--explanation
     - '129'
-    - '212'
-    - '213'
+    - '208'
+    - '209'
     - '1'
     - '2015-10-30 19:51:03.523338'
     - '2016-03-10 19:55:38.108421'
@@ -6439,8 +6415,8 @@ nested_questions:
     - text
     - reviewer_report--additional_comments
     - 
-    - '215'
-    - '216'
+    - '211'
+    - '212'
     - '6'
     - '2015-10-30 19:51:03.531234'
     - '2016-03-22 14:32:49.277819'
@@ -6452,8 +6428,8 @@ nested_questions:
     - text
     - reviewer_report--identity
     - 
-    - '217'
-    - '218'
+    - '213'
+    - '214'
     - '7'
     - '2015-10-30 19:51:03.534949'
     - '2016-03-10 19:55:38.108421'
@@ -6464,8 +6440,8 @@ nested_questions:
     - boolean
     - taxon--zoological
     - 
-    - '219'
-    - '222'
+    - '215'
+    - '218'
     - '1'
     - '2015-10-30 19:51:03.541213'
     - '2016-03-10 19:55:38.108421'
@@ -6476,8 +6452,8 @@ nested_questions:
     - boolean
     - taxon--zoological--complies
     - '133'
-    - '220'
-    - '221'
+    - '216'
+    - '217'
     - '1'
     - '2015-10-30 19:51:03.543667'
     - '2016-03-10 19:55:38.108421'
@@ -6488,8 +6464,8 @@ nested_questions:
     - boolean
     - taxon--botanical
     - 
-    - '223'
-    - '226'
+    - '219'
+    - '222'
     - '2'
     - '2015-10-30 19:51:03.55182'
     - '2016-03-10 19:55:38.108421'
@@ -6500,8 +6476,8 @@ nested_questions:
     - boolean
     - taxon--botanical--complies
     - '135'
-    - '224'
-    - '225'
+    - '220'
+    - '221'
     - '1'
     - '2015-10-30 19:51:03.554061'
     - '2016-03-10 19:55:38.108421'
@@ -6512,8 +6488,8 @@ nested_questions:
     - boolean
     - reviewer_recommendations--recommend_or_oppose
     - 
-    - '227'
-    - '228'
+    - '223'
+    - '224'
     - '1'
     - '2015-11-02 13:38:26.272946'
     - '2016-03-10 19:55:38.108421'
@@ -6524,8 +6500,8 @@ nested_questions:
     - text
     - reviewer_recommendations--reason
     - 
-    - '229'
-    - '230'
+    - '225'
+    - '226'
     - '2'
     - '2015-11-02 13:38:26.280143'
     - '2016-03-10 19:55:38.108421'
@@ -6538,8 +6514,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--financial_disclosure
     - 
-    - '231'
-    - '232'
+    - '227'
+    - '228'
     - '9'
     - '2015-11-02 13:38:26.319212'
     - '2016-03-22 15:09:05.735978'
@@ -6553,8 +6529,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--tobacco
     - 
-    - '233'
-    - '234'
+    - '229'
+    - '230'
     - '10'
     - '2015-11-02 13:38:26.322791'
     - '2016-03-22 15:09:05.74447'
@@ -6567,8 +6543,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--ethics_statement
     - 
-    - '235'
-    - '236'
+    - '231'
+    - '232'
     - '1'
     - '2015-11-02 13:38:26.340953'
     - '2016-03-22 15:09:05.657008'
@@ -6582,8 +6558,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--open_rejects
     - 
-    - '237'
-    - '238'
+    - '233'
+    - '234'
     - '1'
     - '2015-11-02 13:38:26.346485'
     - '2016-03-10 19:55:38.108421'
@@ -6595,8 +6571,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--human_subjects
     - 
-    - '239'
-    - '240'
+    - '235'
+    - '236'
     - '2'
     - '2015-11-02 13:38:26.350087'
     - '2016-03-10 19:55:38.108421'
@@ -6609,8 +6585,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_needed
     - 
-    - '241'
-    - '242'
+    - '237'
+    - '238'
     - '3'
     - '2015-11-02 13:38:26.355497'
     - '2016-03-10 19:55:38.108421'
@@ -6622,8 +6598,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_available
     - 
-    - '243'
-    - '244'
+    - '239'
+    - '240'
     - '4'
     - '2015-11-02 13:38:26.359242'
     - '2016-03-10 19:55:38.108421'
@@ -6636,8 +6612,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--supporting_information
     - 
-    - '245'
-    - '246'
+    - '241'
+    - '242'
     - '5'
     - '2015-11-02 13:38:26.3628'
     - '2016-03-10 19:55:38.108421'
@@ -6649,8 +6625,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--dryad_url
     - 
-    - '247'
-    - '248'
+    - '243'
+    - '244'
     - '6'
     - '2015-11-02 13:38:26.366706'
     - '2016-03-10 19:55:38.108421'
@@ -6662,8 +6638,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
-    - '249'
-    - '250'
+    - '245'
+    - '246'
     - '7'
     - '2015-11-02 13:38:26.370339'
     - '2016-03-10 19:55:38.108421'
@@ -6675,8 +6651,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
-    - '251'
-    - '252'
+    - '247'
+    - '248'
     - '8'
     - '2015-11-02 13:38:26.373836'
     - '2016-03-10 19:55:38.108421'
@@ -6687,8 +6663,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_legible
     - 
-    - '253'
-    - '254'
+    - '249'
+    - '250'
     - '9'
     - '2015-11-02 13:38:26.37734'
     - '2016-03-10 19:55:38.108421'
@@ -6700,8 +6676,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cited
     - 
-    - '255'
-    - '256'
+    - '251'
+    - '252'
     - '10'
     - '2015-11-02 13:38:26.380912'
     - '2016-03-10 19:55:38.108421'
@@ -6713,8 +6689,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cover_letter
     - 
-    - '257'
-    - '258'
+    - '253'
+    - '254'
     - '11'
     - '2015-11-02 13:38:26.384466'
     - '2016-03-10 19:55:38.108421'
@@ -6726,8 +6702,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--billing_inquiries
     - 
-    - '259'
-    - '260'
+    - '255'
+    - '256'
     - '12'
     - '2015-11-02 13:38:26.387949'
     - '2016-03-10 19:55:38.108421'
@@ -6738,8 +6714,8 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
-    - '261'
-    - '262'
+    - '257'
+    - '258'
     - '13'
     - '2015-11-02 13:38:26.39145'
     - '2016-03-10 19:55:38.108421'
@@ -6753,8 +6729,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--open_rejects
     - 
-    - '263'
-    - '264'
+    - '259'
+    - '260'
     - '1'
     - '2015-11-02 13:38:26.396833'
     - '2016-03-10 19:55:38.108421'
@@ -6766,8 +6742,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--human_subjects
     - 
-    - '265'
-    - '266'
+    - '261'
+    - '262'
     - '2'
     - '2015-11-02 13:38:26.400512'
     - '2016-03-10 19:55:38.108421'
@@ -6780,8 +6756,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_needed
     - 
-    - '267'
-    - '268'
+    - '263'
+    - '264'
     - '3'
     - '2015-11-02 13:38:26.403989'
     - '2016-03-10 19:55:38.108421'
@@ -6793,8 +6769,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--data_available
     - 
-    - '269'
-    - '270'
+    - '265'
+    - '266'
     - '4'
     - '2015-11-02 13:38:26.407564'
     - '2016-03-10 19:55:38.108421'
@@ -6807,8 +6783,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--supporting_information
     - 
-    - '271'
-    - '272'
+    - '267'
+    - '268'
     - '5'
     - '2015-11-02 13:38:26.411338'
     - '2016-03-10 19:55:38.108421'
@@ -6820,8 +6796,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--dryad_url
     - 
-    - '273'
-    - '274'
+    - '269'
+    - '270'
     - '6'
     - '2015-11-02 13:38:26.415031'
     - '2016-03-10 19:55:38.108421'
@@ -6833,8 +6809,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--financial_disclosure
     - 
-    - '275'
-    - '276'
+    - '271'
+    - '272'
     - '7'
     - '2015-11-02 13:38:26.418577'
     - '2016-03-10 19:55:38.108421'
@@ -6846,8 +6822,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--tobacco
     - 
-    - '277'
-    - '278'
+    - '273'
+    - '274'
     - '8'
     - '2015-11-02 13:38:26.422021'
     - '2016-03-10 19:55:38.108421'
@@ -6858,8 +6834,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--figures_legible
     - 
-    - '279'
-    - '280'
+    - '275'
+    - '276'
     - '9'
     - '2015-11-02 13:38:26.425661'
     - '2016-03-10 19:55:38.108421'
@@ -6871,8 +6847,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cited
     - 
-    - '281'
-    - '282'
+    - '277'
+    - '278'
     - '10'
     - '2015-11-02 13:38:26.429237'
     - '2016-03-10 19:55:38.108421'
@@ -6884,8 +6860,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cover_letter
     - 
-    - '283'
-    - '284'
+    - '279'
+    - '280'
     - '11'
     - '2015-11-02 13:38:26.433036'
     - '2016-03-10 19:55:38.108421'
@@ -6897,8 +6873,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--billing_inquiries
     - 
-    - '285'
-    - '286'
+    - '281'
+    - '282'
     - '12'
     - '2015-11-02 13:38:26.436669'
     - '2016-03-10 19:55:38.108421'
@@ -6909,8 +6885,8 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_statement
     - 
-    - '287'
-    - '288'
+    - '283'
+    - '284'
     - '13'
     - '2015-11-02 13:38:26.440221'
     - '2016-03-10 19:55:38.108421'
@@ -6922,8 +6898,8 @@ nested_questions:
     - text
     - ethics--field_study--field_permit_number
     - '179'
-    - '288'
-    - '289'
+    - '284'
+    - '285'
     - '1'
     - '2015-12-21 16:53:24.223742'
     - '2016-03-10 19:55:38.108421'
@@ -6935,8 +6911,8 @@ nested_questions:
     - boolean
     - ethics--field_study
     - 
-    - '287'
-    - '290'
+    - '283'
+    - '286'
     - '3'
     - '2015-12-21 16:53:24.230439'
     - '2016-03-10 19:55:38.108421'
@@ -6971,8 +6947,8 @@ nested_questions:
     - text
     - reviewer_report--decision_term
     - 
-    - '287'
-    - '288'
+    - '283'
+    - '284'
     - '1'
     - '2015-12-23 17:34:57.06078'
     - '2016-03-10 19:55:38.108421'
@@ -6996,8 +6972,8 @@ nested_questions:
     - text
     - publishing_related_questions--short_title
     - 
-    - '291'
-    - '292'
+    - '287'
+    - '288'
     - '8'
     - '2016-01-26 17:37:47.789077'
     - '2016-03-10 19:55:38.108421'
@@ -7176,8 +7152,8 @@ nested_questions:
     - boolean
     - author--government-employee
     - 
-    - '293'
-    - '294'
+    - '289'
+    - '290'
     - '4'
     - '2016-03-10 19:55:38.12136'
     - '2016-03-10 19:55:38.12136'
@@ -7189,8 +7165,8 @@ nested_questions:
     - boolean
     - authors--persons_agreed_to_be_named
     - 
-    - '295'
-    - '296'
+    - '291'
+    - '292'
     - '1'
     - '2016-03-10 19:55:38.241783'
     - '2016-03-10 19:55:38.241783'
@@ -7202,8 +7178,8 @@ nested_questions:
     - boolean
     - authors--authors_confirm_icmje_criteria
     - 
-    - '297'
-    - '298'
+    - '293'
+    - '294'
     - '2'
     - '2016-03-10 19:55:38.247863'
     - '2016-03-10 19:55:38.247863'
@@ -7214,8 +7190,8 @@ nested_questions:
     - boolean
     - authors--authors_agree_to_submission
     - 
-    - '299'
-    - '300'
+    - '295'
+    - '296'
     - '3'
     - '2016-03-10 19:55:38.253569'
     - '2016-03-10 19:55:38.253569'
@@ -7226,8 +7202,8 @@ nested_questions:
     - boolean
     - group-author--contributions--conceptualization
     - '217'
-    - '302'
-    - '303'
+    - '298'
+    - '299'
     - '1'
     - '2016-03-22 14:32:48.202013'
     - '2016-03-22 14:32:48.653571'
@@ -7238,8 +7214,8 @@ nested_questions:
     - boolean
     - group-author--contributions--investigation
     - '217'
-    - '304'
-    - '305'
+    - '300'
+    - '301'
     - '2'
     - '2016-03-22 14:32:48.217167'
     - '2016-03-22 14:32:48.653571'
@@ -7250,8 +7226,8 @@ nested_questions:
     - boolean
     - group-author--contributions--visualization
     - '217'
-    - '306'
-    - '307'
+    - '302'
+    - '303'
     - '3'
     - '2016-03-22 14:32:48.228819'
     - '2016-03-22 14:32:48.653571'
@@ -7262,8 +7238,8 @@ nested_questions:
     - boolean
     - group-author--contributions--methodology
     - '217'
-    - '308'
-    - '309'
+    - '304'
+    - '305'
     - '4'
     - '2016-03-22 14:32:48.241637'
     - '2016-03-22 14:32:48.653571'
@@ -7274,8 +7250,8 @@ nested_questions:
     - boolean
     - group-author--contributions--resources
     - '217'
-    - '310'
-    - '311'
+    - '306'
+    - '307'
     - '5'
     - '2016-03-22 14:32:48.254186'
     - '2016-03-22 14:32:48.653571'
@@ -7286,8 +7262,8 @@ nested_questions:
     - boolean
     - group-author--contributions--supervision
     - '217'
-    - '312'
-    - '313'
+    - '308'
+    - '309'
     - '6'
     - '2016-03-22 14:32:48.266474'
     - '2016-03-22 14:32:48.653571'
@@ -7298,8 +7274,8 @@ nested_questions:
     - boolean
     - group-author--contributions--software
     - '217'
-    - '314'
-    - '315'
+    - '310'
+    - '311'
     - '7'
     - '2016-03-22 14:32:48.277041'
     - '2016-03-22 14:32:48.653571'
@@ -7310,8 +7286,8 @@ nested_questions:
     - boolean
     - group-author--contributions--data-curation
     - '217'
-    - '316'
-    - '317'
+    - '312'
+    - '313'
     - '8'
     - '2016-03-22 14:32:48.290615'
     - '2016-03-22 14:32:48.653571'
@@ -7322,8 +7298,8 @@ nested_questions:
     - boolean
     - group-author--contributions--project-administration
     - '217'
-    - '318'
-    - '319'
+    - '314'
+    - '315'
     - '9'
     - '2016-03-22 14:32:48.301073'
     - '2016-03-22 14:32:48.653571'
@@ -7334,8 +7310,8 @@ nested_questions:
     - boolean
     - group-author--contributions--validation
     - '217'
-    - '320'
-    - '321'
+    - '316'
+    - '317'
     - '10'
     - '2016-03-22 14:32:48.31193'
     - '2016-03-22 14:32:48.653571'
@@ -7346,8 +7322,8 @@ nested_questions:
     - boolean
     - group-author--contributions--writing-original-draft
     - '217'
-    - '322'
-    - '323'
+    - '318'
+    - '319'
     - '11'
     - '2016-03-22 14:32:48.326853'
     - '2016-03-22 14:32:48.653571'
@@ -7358,8 +7334,8 @@ nested_questions:
     - boolean
     - group-author--contributions--writing-review-and-editing
     - '217'
-    - '324'
-    - '325'
+    - '320'
+    - '321'
     - '12'
     - '2016-03-22 14:32:48.337572'
     - '2016-03-22 14:32:48.653571'
@@ -7370,8 +7346,8 @@ nested_questions:
     - boolean
     - group-author--contributions--funding-acquisition
     - '217'
-    - '326'
-    - '327'
+    - '322'
+    - '323'
     - '13'
     - '2016-03-22 14:32:48.347748'
     - '2016-03-22 14:32:48.653571'
@@ -7382,8 +7358,8 @@ nested_questions:
     - boolean
     - group-author--contributions--formal-analysis
     - '217'
-    - '328'
-    - '329'
+    - '324'
+    - '325'
     - '14'
     - '2016-03-22 14:32:48.360903'
     - '2016-03-22 14:32:48.653571'
@@ -7394,8 +7370,8 @@ nested_questions:
     - question-set
     - group-author--contributions
     - 
-    - '301'
-    - '330'
+    - '297'
+    - '326'
     - '1'
     - '2016-03-22 14:32:48.399978'
     - '2016-03-22 14:32:48.653571'
@@ -7406,8 +7382,8 @@ nested_questions:
     - boolean
     - group-author--government-employee
     - 
-    - '331'
-    - '332'
+    - '327'
+    - '328'
     - '2'
     - '2016-03-22 14:32:48.669691'
     - '2016-03-22 14:32:48.669691'
@@ -7422,8 +7398,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_confidential
     - 
-    - '333'
-    - '334'
+    - '329'
+    - '330'
     - '2'
     - '2016-03-22 15:09:05.665082'
     - '2016-03-22 15:09:05.665082'
@@ -7436,8 +7412,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_blank
     - 
-    - '335'
-    - '336'
+    - '331'
+    - '332'
     - '3'
     - '2016-03-22 15:09:05.675633'
     - '2016-03-22 15:09:05.675633'
@@ -7450,8 +7426,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_dryad
     - 
-    - '337'
-    - '338'
+    - '333'
+    - '334'
     - '4'
     - '2016-03-22 15:09:05.684371'
     - '2016-03-22 15:09:05.684371'
@@ -7464,8 +7440,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--authors_match
     - 
-    - '339'
-    - '340'
+    - '335'
+    - '336'
     - '5'
     - '2016-03-22 15:09:05.693357'
     - '2016-03-22 15:09:05.693357'
@@ -7476,8 +7452,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--author_emails
     - 
-    - '341'
-    - '342'
+    - '337'
+    - '338'
     - '6'
     - '2016-03-22 15:09:05.70232'
     - '2016-03-22 15:09:05.70232'
@@ -7490,8 +7466,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--author_removed
     - 
-    - '343'
-    - '344'
+    - '339'
+    - '340'
     - '7'
     - '2016-03-22 15:09:05.712588'
     - '2016-03-22 15:09:05.712588'
@@ -7503,8 +7479,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--competing_interests
     - 
-    - '345'
-    - '346'
+    - '341'
+    - '342'
     - '8'
     - '2016-03-22 15:09:05.726444'
     - '2016-03-22 15:09:05.726444'
@@ -7517,8 +7493,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--collection
     - 
-    - '347'
-    - '348'
+    - '343'
+    - '344'
     - '11'
     - '2016-03-22 15:09:05.752494'
     - '2016-03-22 15:09:05.752494'
@@ -7531,8 +7507,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_viewable
     - 
-    - '349'
-    - '350'
+    - '345'
+    - '346'
     - '12'
     - '2016-03-22 15:09:05.765773'
     - '2016-03-22 15:09:05.765773'
@@ -7545,8 +7521,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--embedded_captions
     - 
-    - '351'
-    - '352'
+    - '347'
+    - '348'
     - '13'
     - '2016-03-22 15:09:05.77707'
     - '2016-03-22 15:09:05.77707'
@@ -7558,8 +7534,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--captions_missing
     - 
-    - '353'
-    - '354'
+    - '349'
+    - '350'
     - '14'
     - '2016-03-22 15:09:05.788747'
     - '2016-03-22 15:09:05.788747'
@@ -7573,8 +7549,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_missing
     - 
-    - '355'
-    - '356'
+    - '351'
+    - '352'
     - '15'
     - '2016-03-22 15:09:05.801946'
     - '2016-03-22 15:09:05.801946'
@@ -7589,8 +7565,8 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--open_reject
     - 
-    - '357'
-    - '358'
+    - '353'
+    - '354'
     - '16'
     - '2016-03-22 15:09:05.811934'
     - '2016-03-22 15:09:05.811934'
@@ -7601,8 +7577,8 @@ nested_questions:
     - text
     - cover_letter--text
     - 
-    - '359'
-    - '360'
+    - '355'
+    - '356'
     - '1'
     - '2016-03-29 20:28:06.743537'
     - '2016-03-29 20:28:06.743537'
@@ -7613,8 +7589,8 @@ nested_questions:
     - attachment
     - cover_letter--attachment
     - 
-    - '361'
-    - '362'
+    - '357'
+    - '358'
     - '2'
     - '2016-03-29 20:28:06.750541'
     - '2016-03-29 20:28:06.750541'
@@ -7651,8 +7627,8 @@ nested_questions:
     - boolean
     - data_availability--additional_information_doi
     - 
-    - '363'
-    - '364'
+    - '359'
+    - '360'
     - '3'
     - '2016-04-18 23:09:30.193042'
     - '2016-04-18 23:09:30.193042'
@@ -7664,12 +7640,36 @@ nested_questions:
     - boolean
     - data_availability--additional_information_other
     - 
-    - '365'
-    - '366'
+    - '361'
+    - '362'
     - '4'
     - '2016-04-18 23:09:30.20367'
     - '2016-04-18 23:09:30.20367'
     - TahiStandardTasks::DataAvailabilityTask
+    - 
+  - - '238'
+    - Comment
+    - text
+    - reviewer_report--plos_biology_suitable--comment
+    - '239'
+    - '364'
+    - '365'
+    - '1'
+    - '2016-04-20 14:32:03.179991'
+    - '2016-04-20 14:32:03.194211'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '239'
+    - Is this manuscript suitable in principle for PLOS Biology? Comments for authors.
+    - boolean
+    - reviewer_report--plos_biology_suitable
+    - 
+    - '363'
+    - '366'
+    - '3'
+    - '2016-04-20 14:32:03.188263'
+    - '2016-04-20 14:32:03.194211'
+    - TahiStandardTasks::ReviewerReportTask
     - 
 
 ---

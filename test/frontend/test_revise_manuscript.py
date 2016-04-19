@@ -23,22 +23,22 @@ __author__ = 'sbassi@plos.org'
 
 staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
                super_admin_login)
-
 users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
-
-users = (creator_login1, creator_login2)
 
 
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
   """
-  test_revise_manuscript: XXXX
+  test_revise_manuscript: Test related with the followinf Use Case: We need to provide a
+  more obvious place for the author to give us their response to reviewers.
   AC out of: APERTA-6419
-     -
+     - Upload files to Response to Reviewers (NOTE: Testint only one file due to APERTA-6672)
+     - Fill a response in a text area in Response to Reviewers
   """
   def test_response_to_reviewers(self):
     """
-    XXXXXXXXXX
+    This test walks through the path to create and article, invite a reviewer, accept the
+    invitation, review the paper and the author will use the response to reviewers card
     """
     creator = random.choice(users)
     journal = 'PLOS Wombat'
@@ -62,7 +62,6 @@ class ReviseManuscriptTest(CommonTest):
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
-
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Billing')
     paper_viewer.complete_task('Cover Letter')
@@ -90,19 +89,15 @@ class ReviseManuscriptTest(CommonTest):
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.invite_reviewer(reviewer_login)
     paper_viewer.logout()
-
-    # As a reviewer, accept the MS
-    #user_type = random.choice(staff_users)
+    # As a reviewer, accept the invite
     logging.info('Logging in as user: {0}'.format(reviewer_login))
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invitations()
     dashboard_page.accept_all_invitations()
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    ##import pdb; pdb.set_trace()
-    # go to wf
-    ##import pdb; pdb.set_trace()
-    paper_viewer.complete_task('Review by atest reviewer')
+    # Make the review
+    paper_viewer.complete_task('Review by {0}'.format(reviewer_login['name']))
     paper_viewer.logout()
     logging.info('Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
@@ -112,19 +107,18 @@ class ReviseManuscriptTest(CommonTest):
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    #time.sleep(10)
     # make decision
-    #workflow_page.click_register_decision_card()
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
     workflow_page.logout()
-
+    # Login as user and complete Revise Manuscript
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     data = {'attach': 2}
     paper_viewer.complete_task('Revise Manuscript', data=data)
+    return self
 
 
 if __name__ == '__main__':

@@ -47,6 +47,7 @@ class ReviseManuscriptTask(BaseTask):
     assert save_btn.text == "SAVE", \
       '{0} is different from {1}'.format(save_btn.text, "SAVE")
     self.validate_primary_big_green_button_style(save_btn)
+    return None
 
   def validate_empty_response(self):
     """
@@ -59,6 +60,7 @@ class ReviseManuscriptTask(BaseTask):
     msg1, msg2 = self._gets(self._error_messages)
     assert msg1.text == 'Please fix all errors', msg1.text
     assert msg2.text == 'Please provide a response or attach a file', msg2.text
+    return None
 
   def response_to_reviewers(self, data={}):
     """
@@ -67,34 +69,17 @@ class ReviseManuscriptTask(BaseTask):
     """
     if data and 'attach' in data and data['attach']:
       doc2upload = random.choice(docs)
-      fn1 = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
-      doc2upload = random.choice(docs)
-      fn2 = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
-      fn = [fn1, fn2]
-      logging.info('Sending documents: {0}'.format(str(fn)))
+      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
+      logging.info('Sending documents: {0}'.format(fn))
       time.sleep(1)
-      #self._driver.find_element_by_tag_name('input').send_keys(fn1)
-      self._driver.find_element_by_tag_name('input').send_keys(str(fn))
+      # Testing uploading only one file due to bug APERTA-6672
+      self._driver.find_element_by_tag_name('input').send_keys(fn)
       self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
       self._get(self._upload_btn).click()
       # Give time to upload.
       time.sleep(10)
-      import pdb; pdb.set_trace()
-      """
-      for attach in range(data['attach']):
-        doc2upload = random.choice(docs)
-        fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
-        logging.info('Sending document: {0}'.format(fn))
-        time.sleep(1)
-        self._driver.find_element_by_tag_name('input').send_keys(fn)
-        self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
-        self._get(self._upload_btn).click()
-        # Give time to upload.
-        time.sleep(10)
-      """
-        #import pdb; pdb.set_trace()
     if data and 'text' not in data:
       data['text'] = generate_paragraph()[2] or 'text'
     self._get(self._response_field).send_keys(data['text'])
     self._get(self._save_btn).click()
-    return self
+    return None

@@ -39,10 +39,8 @@ Tahi::Application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
-  # TODO: Turn this back on
-  # Turning off for now while we test, since SSL should terminate on the load balancer - EGH
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = false
+  config.force_ssl = ENV['DISABLE_FORCE_SSL'].blank?
 
   # Set to :debug to see everything in the log.
   config.log_level = :info

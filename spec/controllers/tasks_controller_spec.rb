@@ -2,17 +2,19 @@ require 'rails_helper'
 
 describe TasksController, redis: true do
   let(:user) { FactoryGirl.create :user }
+  let(:journal) do
+    FactoryGirl.create(:journal).tap do |journal|
+      journal.roles.create!(name: Role::CREATOR_ROLE)
+      journal.roles.create!(name: Role::TASK_PARTICIPANT_ROLE)
+    end
+  end
   let!(:paper) do
     FactoryGirl.create(
       :paper,
-      :with_integration_journal,
       :with_tasks,
-      creator: user
+      creator: user,
+      journal: journal
     )
-  end
-
-  before do
-    sign_in user
   end
 
   describe "#index" do

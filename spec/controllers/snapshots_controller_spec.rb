@@ -3,18 +3,18 @@ require 'rails_helper'
 describe SnapshotsController do
   let(:owner) { FactoryGirl.create(:user) }
   let(:other_user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+  let(:journal) do
+    FactoryGirl.create(:journal).tap do |journal|
+      journal.roles.create!(name: Role::TASK_PARTICIPANT_ROLE)
+    end
+  end
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:task) do
     FactoryGirl.create(:ethics_task, paper: paper, participants: [owner])
   end
   let(:preview) { SnapshotService.new(paper).preview(task) }
 
   describe '#index' do
-    before do
-      SnapshotService.new(paper).snapshot!(task)
-      sign_in owner
-    end
-
     subject(:do_request) do
       get :index,
           format: 'json',
@@ -23,48 +23,35 @@ describe SnapshotsController do
 
     it_behaves_like 'an unauthenticated json request'
 
-    it "returns the task's snapshots" do
-      do_request
-      expect(res_body['snapshots'].count).to eq(2)
-      ids = res_body['snapshots'].map { |snapshot| snapshot['id'] }
-      expect(ids).to include(task.snapshots[0].id)
-    end
-  end
+    context 'when the user has access' do
+      before do
+        stub_sign_in owner
+        allow(owner).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+        SnapshotService.new(paper).snapshot!(task)
+      end
 
-  context 'when the user has access' do
-    before do
-      SnapshotService.new(paper).snapshot!(task)
-    end
+      it "returns the task's snapshots" do
+        do_request
+        expect(res_body['snapshots'].count).to eq(2)
+        ids = res_body['snapshots'].map { |snapshot| snapshot['id'] }
+        expect(ids).to include(task.snapshots[0].id)
+      end
 
-    subject(:do_request) do
-      get :index,
-          format: 'json',
-          task_id: task.to_param
-    end
-
-    it 'returns 200' do
-      sign_in owner
-      do_request
-
-      expect(response.status).to eq(200)
-    end
-  end
-
-  context 'when the user does not have access' do
-    before do
-      SnapshotService.new(paper).snapshot!(task)
+      it { is_expected.to responds_with(200) }
     end
 
-    subject(:do_request) do
-      get :index,
-          format: 'json',
-          task_id: task.to_param
-    end
-    it 'returns a 403 when the user does not have access' do
-      sign_in other_user # other_user does not have permission to view the task
-      do_request
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in owner
+        allow(owner).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+        SnapshotService.new(paper).snapshot!(task)
+      end
 
-      expect(response.status).to eq(403)
+      it { is_expected.to responds_with(403) }
     end
   end
 end

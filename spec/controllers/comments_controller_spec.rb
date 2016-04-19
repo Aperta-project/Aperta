@@ -25,8 +25,6 @@ describe CommentsController do
     )
   end
 
-  before { sign_in user }
-
   describe "#index" do
     let!(:comment1) { FactoryGirl.create(:comment, task: task) }
     let!(:comment2) { FactoryGirl.create(:comment, task: task) }
@@ -72,13 +70,6 @@ describe CommentsController do
       xhr :post, :create, format: :json,
         comment: {commenter_id: user.id,
                   body: "My comment",
-                  task_id: task.id}
-    end
-
-    subject(:do_request_as_journal_admin) do
-      xhr :post, :create, format: :json,
-        comment: {commenter_id: journal_admin.id,
-                  body: "My comment RULES",
                   task_id: task.id}
     end
 
@@ -146,6 +137,13 @@ describe CommentsController do
       end
 
       context "the user is a journal admin" do
+        subject(:do_request) do
+          xhr :post, :create, format: :json,
+            comment: {commenter_id: journal_admin.id,
+                      body: "My comment RULES",
+                      task_id: task.id}
+        end
+
         let(:task) do
           FactoryGirl.create(
             :task,
@@ -156,23 +154,29 @@ describe CommentsController do
         end
 
         before do
-          sign_in journal_admin
-          allow_any_instance_of(User).to \
-            receive(:can?).with(:administer, journal).and_return true
+          stub_sign_in journal_admin
+          allow(journal_admin).to receive(:can?)
+            .with(:administer, journal)
+            .and_return true
+          allow(journal_admin).to receive(:can?)
+            .with(:view, task)
+            .and_return true
         end
 
         it "does not add the journal admin as a participant" do
           expect(journal_admin.tasks).to_not include(task)
-          do_request_as_journal_admin
+          do_request
           expect(journal_admin.reload.tasks).to_not include(task)
         end
 
         it "increments the comment count" do
-          expect { do_request_as_journal_admin }.to change { Comment.count }.by 1
+          expect { do_request }.to change { Comment.count }.by 1
         end
 
-        it "does not adds an email to the sidekiq queue" do
-          expect { do_request_as_journal_admin }.not_to change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+        it "does not add an email to the sidekiq queue" do
+          expect do
+            do_request
+          end.not_to change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
         end
       end
     end

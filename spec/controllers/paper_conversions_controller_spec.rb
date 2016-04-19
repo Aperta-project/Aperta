@@ -7,14 +7,12 @@ describe PaperConversionsController, type: :controller do
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
   let(:user) { FactoryGirl.create :user }
 
-  before { sign_in user }
-
   describe 'GET export' do
     subject(:do_request) do
       get :export, id: paper.to_param, export_format: 'docx', format: :json
     end
 
-    it_behaves_like "an unauthenticated json request"
+    it_behaves_like 'an unauthenticated json request'
 
     context 'as a user with access to a paper' do
       before do
@@ -80,6 +78,7 @@ describe PaperConversionsController, type: :controller do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
@@ -98,7 +97,7 @@ describe PaperConversionsController, type: :controller do
       )
     end
 
-    it_behaves_like "an unauthenticated json request"
+    it_behaves_like 'an unauthenticated json request'
 
     context "when the user has access" do
       let(:docx_url) { 'http://example.com/source.docx' }
@@ -131,6 +130,7 @@ describe PaperConversionsController, type: :controller do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false

@@ -13,8 +13,6 @@ describe ParticipationsController do
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: journal) do |role|
       role.ensure_permission_exists(:view_participants, applies_to: Task)
     end
-
-    sign_in user
   end
 
   describe "#index" do
@@ -253,7 +251,7 @@ describe ParticipationsController do
       )
     end
 
-    it_behaves_like "an unauthenticated json request"    
+    it_behaves_like "an unauthenticated json request"
 
     context "the user is authorized" do
       before do

@@ -16,9 +16,12 @@ describe Admin::JournalUsersController, redis: true do
            admin_journal: { query: 'Alice', journal_id: journal.id }
     end
 
+
+    it_behaves_like "an unauthenticated json request"
+
     context 'when the user has access' do
       before do
-        sign_in journal_admin
+        stub_sign_in journal_admin
       end
 
       it "renders status 2xx and the user is a journal admin" do
@@ -29,10 +32,8 @@ describe Admin::JournalUsersController, redis: true do
 
     context "when the user is unauthorized" do
       before do
-        sign_in user
+        stub_sign_in user
       end
-
-      it_behaves_like "an unauthenticated json request"
 
       it "renders status 403" do
         do_request
@@ -51,9 +52,11 @@ describe Admin::JournalUsersController, redis: true do
                                   username: 'asmith' }
     end
 
+    it_behaves_like "an unauthenticated json request"
+
     context "when the user has access" do
       before do
-        sign_in journal_admin
+        stub_sign_in journal_admin
       end
 
       it "renders status 2xx and the user is a journal admin" do
@@ -64,10 +67,8 @@ describe Admin::JournalUsersController, redis: true do
 
     context "when the user does not have access" do
       before do
-        sign_in user
+        stub_sign_in user
       end
-
-      it_behaves_like "an unauthenticated json request"
 
       it "renders status 403" do
         do_request

@@ -6,7 +6,8 @@ class UserMentions
   end
 
   def people_mentioned
-    @people_mentioned ||= User.where(username: mentions_extracted_from_body)
+    @people_mentioned ||=
+      User.where('lower(username) IN (?)', mentions_extracted_from_body)
   end
 
   def mentions_extracted_from_body

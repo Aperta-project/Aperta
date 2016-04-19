@@ -118,10 +118,8 @@ test('Changing the title on an AdHoc Task', function(assert) {
   click('.large-edit .button--green:contains("Save")');
 
   andThen(function() {
-    assert.ok(
-      find('h1.inline-edit:contains("Shazam!")').length,
-      'title is changed'
-    );
+    assert.elementFound('h1.inline-edit:contains("Shazam!")',
+                        'title is changed');
   });
 });
 
@@ -135,10 +133,8 @@ test('AdHoc Task text block', function(assert) {
   visit(paperTaskURL(paper, task));
   click('.adhoc-content-toolbar .fa-plus');
   click('.adhoc-content-toolbar .adhoc-toolbar-item--text').then(function() {
-    assert.ok(
-      find('.inline-edit-body-part').length,
-      'New text body part is created'
-    );
+    assert.elementFound('.inline-edit-body-part',
+                        'New text body part is created');
 
     Ember.$('.inline-edit-form div[contenteditable]')
          .html('New contenteditable, yahoo!')
@@ -173,10 +169,8 @@ test('AdHoc Task list block', function(assert) {
 
   click('.adhoc-content-toolbar .fa-plus');
   click('.adhoc-content-toolbar .adhoc-toolbar-item--list').then(function() {
-     assert.ok(
-       find('.inline-edit-body-part').length,
-       'New list body part is created'
-     );
+    assert.elementFound('.inline-edit-body-part',
+                        'New list body part is created');
 
     Ember.$('.inline-edit-form label[contenteditable]')
          .html('Here is a checkbox list item')
@@ -187,10 +181,8 @@ test('AdHoc Task list block', function(assert) {
 
   andThen(function() {
     assert.textPresent('.inline-edit', 'checkbox list item');
-    assert.ok(
-      find('.inline-edit input[type=checkbox]').length,
-      'checkbox item is visble'
-    );
+    assert.elementFound('.inline-edit input[type=checkbox]',
+                        'checkbox item is visble');
 
     click('.inline-edit-body-part .fa-trash');
   });
@@ -243,15 +235,10 @@ test('AdHoc Task email block', function(assert) {
   });
 
   andThen(function() {
-    assert.ok(
-      find('.bodypart-last-sent').length,
-      'The sent at time should appear'
-    );
-
-    assert.ok(
-      find('.bodypart-email-sent-overlay').length,
-      'The sent confirmation should appear'
-    );
+    assert.elementFound('.bodypart-last-sent',
+                        'The sent at time should appear');
+    assert.elementFound('.bodypart-email-sent-overlay',
+                        'The sent confirmation should appear');
 
     assert.ok(_.findWhere(server.requests, {
       method: 'PUT',

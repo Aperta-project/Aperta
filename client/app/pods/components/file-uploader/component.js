@@ -18,6 +18,9 @@
 //      processingDone
 
 import Ember from 'ember';
+import checkType from 'tahi/lib/file-upload/check-filetypes'
+
+const { tryInvoke } = Ember;
 
 export default Ember.TextField.extend({
   type: 'file',
@@ -32,26 +35,12 @@ export default Ember.TextField.extend({
   railsMethod: 'POST',
 
   acceptedFileTypes: Ember.computed('accept', function(){
-    let types = this.get('accept').replace(/\./g, '').replace(/,/g, '|');
-    return new RegExp("(" + types + ")$", 'i');
+    return filetypeRegex(this.get('accept'));
   }),
 
-  checkFileType: function(e, data) {
-    var errorMessage, fileName;
-    if (this.get('accept')) {
-      fileName = data.originalFiles[0]['name'];
-      if (fileName.length && !this.get('acceptedFileTypes').test(fileName)) {
-        errorMessage = "Sorry! '" + data.originalFiles[0]['name'] + "' is not of an accepted file type";
-        this.set('error', errorMessage);
-        this.sendAction('error', errorMessage);
-        return e.preventDefault();
-      }
-    }
-  },
   setupUploader: (function() {
-    var params, that, uploader;
-    uploader = this.$();
-    params = this.getProperties('dataType', 'method', 'acceptFileTypes');
+    let uploader = this.$();
+    let params = this.getProperties('dataType', 'method', 'acceptFileTypes');
     params.dataType = 'xml';
 
     // since we're not overriding the uploader's add method, we need to prevent
@@ -61,17 +50,16 @@ export default Ember.TextField.extend({
     params.previewMaxWidth = 300;
 
     // No matter how dumb this looks, it is necessary.
-    that = this;
+    let that = this;
 
     // callback executes after successful upload to s3
     params.success = function(fileData) {
-      var filename, location, requestMethod, resourceUrl;
-      filename = this.files[0].name;
+      let filename = this.files[0].name;
 
       // fileData is xml returned from s3
-      location = $(fileData).find('Location').text().replace(/%2F/g, "/");
-      resourceUrl = that.get('url');
-      requestMethod = that.get('railsMethod');
+      let location = $(fileData).find('Location').text().replace(/%2F/g, "/");
+      let resourceUrl = that.get('url');
+      let requestMethod = that.get('railsMethod');
 
       // I can't really tell what 'case' this is. Clearly it's when a
       // resourceUrl is not passed to the controller, which seems to mean
@@ -100,13 +88,19 @@ export default Ember.TextField.extend({
 
     // called when file selected from dialog window
     uploader.on('fileuploadadd', (e, uploadData) => {
-      var file, self;
-      if (this.get('disabled')) {
+      if (this.get('disabled')) { return; }
+
+      let file = uploadData.files[0];
+      let fileName = file.name;
+      let acceptedFileTypes = this.get('accept');
+      let {error, msg} = checkType(fileName, acceptedFileTypes);
+
+      if (error) {
+        this.sendAction('addingFileFailed', msg, {fileName, acceptedFileTypes});
         return;
       }
-      Ember.run.bind(this, this.checkFileType);
-      file = uploadData.files[0];
-      self = this;
+
+      let self = this;
       return $.ajax({  // make get request to setup s3 keys for actual upload
         url: '/api/s3/request_policy',
         type: 'GET',

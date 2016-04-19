@@ -59,6 +59,7 @@ class InviteReviewersCard(BaseCard):
 
   def invite_reviewer(self, reviewer):
     """
+    Invites the reviewer that is passed as parameter.
     :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :return void function
@@ -72,8 +73,8 @@ class InviteReviewersCard(BaseCard):
 
   def validate_invite_reviewer(self, reviewer, title, creator, manu_id):
     """
-    This method invites the reviewer that is passed as parameter, verifying the composed email. It
-      then
+    Invites the reviewer that is passed as parameter, verifying the composed email. Makes
+      function and style validations.
     :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode

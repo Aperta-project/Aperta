@@ -41,17 +41,7 @@ class ReviseManuscriptCard(BaseCard):
     response_field = self._get(self._response_field)
     assert response_field.get_attribute('placeholder') == ("Please detail the changes "
       "you've made to your submission here")
-
     save_btn = self._get(self._save_btn)
     save_btn.text == "SAVE"
     self.validate_primary_big_green_button_style(save_btn)
-
-   #POM Actions
-  def response_to_reviewers(self):
-    """
-    Paceholder function
-    Send text
-    """
-    self._response_field.send_keys()
-    self._save_btn.click()
     return self

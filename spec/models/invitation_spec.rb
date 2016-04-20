@@ -35,7 +35,6 @@ describe Invitation do
         expect(invitation.decision.revision_number).to eq latest_revision_number
       end
     end
-
   end
 
   describe '#destroy' do
@@ -102,7 +101,7 @@ describe Invitation do
   end
 
   describe "#recipient_name" do
-    let(:invitee) { FactoryGirl.build(:user, first_name: "Ben", last_name: "Howard")}
+    let(:invitee) { FactoryGirl.build(:user, first_name: "Ben", last_name: "Howard") }
 
     before do
       invitation.invitee = invitee
@@ -119,6 +118,43 @@ describe Invitation do
       it "returns the email that the invitation is for" do
         invitation.invitee = nil
         expect(invitation.recipient_name).to eq("ben.howard@example.com")
+      end
+    end
+  end
+
+  describe 'Invitation.find_uninvited_users_for_paper' do
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:task) { FactoryGirl.create :invitable_task, paper: paper }
+    let(:no_invite_user) { FactoryGirl.create(:user) }
+    let(:pending_invite_user) { FactoryGirl.create(:user) }
+    let(:accepted_invite_user) { FactoryGirl.create(:user) }
+    let(:rejected_invite_user) { FactoryGirl.create(:user) }
+    let(:all_users) do
+      [no_invite_user,
+       pending_invite_user,
+       accepted_invite_user,
+       rejected_invite_user
+      ]
+    end
+    context 'Users with invites in various states' do
+      before do
+        FactoryGirl.create :invitation, :invited, task: task, invitee: pending_invite_user
+        FactoryGirl.create :invitation, :accepted, task: task, invitee: accepted_invite_user
+        FactoryGirl.create :invitation, :rejected, task: task, invitee: rejected_invite_user
+      end
+
+      let(:result) { Invitation.find_uninvited_users_for_paper(all_users, paper) }
+      it "doesn't filter out the user without any invite" do
+        expect(result).to contain_exactly(no_invite_user)
+      end
+      it "filters out the user with a pending invite" do
+        expect(result).to_not include(pending_invite_user)
+      end
+      it "filters out the user with an accepted invite" do
+        expect(result).to_not include(accepted_invite_user)
+      end
+      it "filters out the user with a rejected invite" do
+        expect(result).to_not include(rejected_invite_user)
       end
     end
   end

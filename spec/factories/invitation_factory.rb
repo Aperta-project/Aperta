@@ -19,5 +19,9 @@ FactoryGirl.define do
     trait :accepted do
       state "accepted"
     end
+
+    trait :rejected do
+      state "rejected"
+    end
   end
 end

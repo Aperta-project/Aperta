@@ -3,6 +3,7 @@ module TahiDevise
 
     def cas
       ned = auth[:extra]
+      ned[:emailAddress] = ned[:emailAddress].strip.downcase
       user =
         if credential.present?
           credential.user

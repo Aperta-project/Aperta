@@ -24,16 +24,14 @@ __author__ = 'sbassi@plos.org'
 
 staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
                super_admin_login, handling_editor_login, cover_editor_login)
-
-staff_users = (cover_editor_login, )
-
 users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
 
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
   """
-  test_revise_manuscript: Test related with the followinf Use Case: We need to provide a
-  more obvious place for the author to give us their response to reviewers.
+  test_revise_manuscript: Test related with the following Use Case: We need to provide a
+  more obvious place for the author to give us their response to reviewers. Different ways
+  to response to reviewers are tested.
   AC out of: APERTA-6419
      - Upload files to Response to Reviewers (NOTE: Testint only one file due to APERTA-6672)
      - Fill a response in a text area in Response to Reviewers

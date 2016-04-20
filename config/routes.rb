@@ -142,6 +142,11 @@ Tahi::Application.routes.draw do
       resources :questions, only: [:index]
       resources :snapshots, only: [:index]
       put :send_message, on: :member
+      namespace :eligible_users, module: nil do
+        get 'admins', to: 'task_eligible_users#admins'
+        get 'academic_editors', to: 'task_eligible_users#academic_editors'
+        get 'uninvited_users', to: 'task_eligible_users#uninvited_users'
+      end
     end
     resources :task_templates
     resources :users, only: [:show, :index] do

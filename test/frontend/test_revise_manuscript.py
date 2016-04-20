@@ -8,7 +8,8 @@ from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
     super_admin_login, prod_staff_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login
+    creator_login3, creator_login4, creator_login5, reviewer_login, \
+    cover_editor_login, handling_editor_login
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -22,7 +23,7 @@ Automated test case for: fill response to reviweres and attach a file in Revise 
 __author__ = 'sbassi@plos.org'
 
 staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
-               super_admin_login)
+               super_admin_login, handling_editor_login, cover_editor_login)
 users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
 
 @MultiBrowserFixture
@@ -77,6 +78,9 @@ class ReviseManuscriptTest(CommonTest):
     staff_user = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
+    if staff_user in (handling_editor_login, cover_editor_login):
+      # Set up a handling editor, academic editor and cover editor for this paper
+      self.set_editors_in_db(paper_id)
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())

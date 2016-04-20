@@ -9,8 +9,8 @@ import os
 import random
 import time
 
-
 from Base.FrontEndTest import FrontEndTest
+from Base.PostgreSQL import PgSQL
 from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2, creator_login3, \
     creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
     internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login, \
@@ -23,7 +23,7 @@ from Pages.dashboard import DashboardPage
 
 class CommonTest(FrontEndTest):
   """
-  Model an aperta page
+  Common methods for all tests
   """
 
   def login(self, email='', password=login_valid_pw):
@@ -44,7 +44,7 @@ class CommonTest(FrontEndTest):
               )
     if not email:
       email = random.choice(logins)
-    """Login into Aperta"""
+    # Login into Aperta
     logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(email)
@@ -166,3 +166,36 @@ class CommonTest(FrontEndTest):
     dashboard = self.login(email=user)
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
+
+  def set_editors_in_db(self, paper_id):
+    """
+    Set up a handling editor, academic editor and cover editor for a given paper
+    :paper_id: Integer with the paper id
+    Returns None
+    """
+
+    # Set up a handling editor, academic editor and cover editor for this paper
+    wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = \'PLOS Wombat\';')[0][0]
+    handling_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                                 'name = \'Handling Editor\';',
+                                                 (wombat_journal_id,))[0][0]
+    cover_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                              'name = \'Cover Editor\';',
+                                              (wombat_journal_id,))[0][0]
+    academic_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                                 'name = \'Academic Editor\';',
+                                                 (wombat_journal_id,))[0][0]
+
+    handedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'ahandedit\';')[0][0]
+    covedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'acoveredit\';')[0][0]
+    acadedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
+
+    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                   'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
+                   (handedit_user_id, handling_editor_role_for_env, paper_id))
+    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                   'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
+                   (covedit_user_id, cover_editor_role_for_env, paper_id))
+    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                   'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
+                   (acadedit_user_id, academic_editor_role_for_env, paper_id))

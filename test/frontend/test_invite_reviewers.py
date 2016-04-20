@@ -84,33 +84,8 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
-
     # Set up a handling editor, academic editor and cover editor for this paper
-    wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = \'PLOS Wombat\';')[0][0]
-    handling_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                                 'name = \'Handling Editor\';',
-                                                 (wombat_journal_id,))[0][0]
-    cover_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                              'name = \'Cover Editor\';',
-                                              (wombat_journal_id,))[0][0]
-    academic_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                                 'name = \'Academic Editor\';',
-                                                 (wombat_journal_id,))[0][0]
-
-    handedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'ahandedit\';')[0][0]
-    covedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'acoveredit\';')[0][0]
-    acadedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
-
-    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                   'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
-                   (handedit_user_id, handling_editor_role_for_env, paper_id))
-    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                   'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
-                   (covedit_user_id, cover_editor_role_for_env, paper_id))
-    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                   'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
-                   (acadedit_user_id, academic_editor_role_for_env, paper_id))
-
+    self.set_editors_in_db(paper_id)
     # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)

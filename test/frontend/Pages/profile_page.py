@@ -27,7 +27,8 @@ class ProfilePage(AuthenticatedPage):
     self._profile_email_title = (By.XPATH, './/div[@id="profile-email"]/h1')
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
     self._profile_affiliation_title = (By.XPATH, './/div["col-md-10"]/div[4]/h1')
-    self._affiliation_btn = (By.CSS_SELECTOR, 'a.button--grey')
+    self._profile_link = (By.CSS_SELECTOR, 'div.profile-link a')
+    self._affiliation_btn = (By.CSS_SELECTOR, 'a.button--green')
     self._reset_btn = (By.CSS_SELECTOR, 'a.reset-password-link')
     self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
@@ -100,7 +101,7 @@ class ProfilePage(AuthenticatedPage):
     assert 'Affiliations:' in profile_at.text
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
-    self.validate_secondary_small_grey_button_style(affiliation_btn)
+    self.validate_secondary_big_green_button_style(affiliation_btn)
     avatar = self._get(self._avatar)
     self.validate_large_avatar_style(avatar)
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
@@ -108,6 +109,14 @@ class ProfilePage(AuthenticatedPage):
     avatar_hover = self._get(self._avatar_hover)
     assert avatar_hover.text == 'UPLOAD NEW'
     self.validate_large_avatar_hover_style(avatar_hover)
+    profile_link = self._get(self._profile_link)
+    assert profile_link.get_attribute('target') == '_blank'
+    assert profile_link.get_attribute('href') == \
+      'https://community.plos.org/account/edit-profile'
+    self.validate_profile_link_style(profile_link)
+    assert 'View or edit your full profile' in profile_link.text
+    assert application_typeface in profile_link.value_of_css_property('font-family'), \
+      title.value_of_css_property('font-family')
 
   def validate_invalid_add_new_affiliation(self):
     """

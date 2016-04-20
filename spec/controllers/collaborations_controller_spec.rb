@@ -19,11 +19,12 @@ describe CollaborationsController do
       { user_id: collaborator.id, paper_id: paper.id }
     end
 
-    before { sign_in user }
+    it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_collaborators, paper)
           .and_return true
       end
@@ -68,12 +69,13 @@ describe CollaborationsController do
 
     context 'when the user does not have access' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_collaborators, paper)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -81,13 +83,15 @@ describe CollaborationsController do
     subject(:do_request) do
       delete :destroy, format: :json, id: collaboration.id
     end
+
     let!(:collaboration) { paper.add_collaboration(collaborator) }
 
-    before { sign_in user }
+    it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_collaborators, paper)
           .and_return true
       end
@@ -129,12 +133,13 @@ describe CollaborationsController do
 
     context 'when the user does not have access' do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_collaborators, paper)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 end

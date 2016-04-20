@@ -1,69 +1,89 @@
 require 'rails_helper'
 
 describe QuestionAttachmentsController do
-  let(:user) { create :user, :site_admin }
-
-  before do
-    sign_in user
+  let(:user) { FactoryGirl.build_stubbed :user }
+  let!(:question_attachment) do
+    FactoryGirl.create(:question_attachment, nested_question_answer: answer)
   end
+  let(:answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
+  let(:task) { FactoryGirl.create(:task) }
 
   describe "#show" do
-    let!(:question_attachment) { FactoryGirl.create(:question_attachment) }
     subject(:do_request) do
-      get :show, format: :json, id: question_attachment.id
+      get :show, format: :json, id: question_attachment.to_param
     end
 
-    before do
-      allow_any_instance_of(User).to receive(:can?).and_return(true)
-    end
+    it_behaves_like 'an unauthenticated json request'
 
-    it "succeeds" do
-      do_request
-      expect(response.status).to be(200)
-    end
-
-    it 'returns the question attachment' do
-      do_request
-      expect(res_body['question_attachment']['id']).to be(question_attachment.id)
-    end
-
-    context 'without permission' do
+    context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, question_attachment.nested_question_answer.task)
+          .and_return(true)
       end
 
-      it 'returns a 403' do
+      it "succeeds" do
         do_request
-        expect(response.status).to eq(403)
+        expect(response.status).to be(200)
       end
+
+      it 'returns the question attachment' do
+        do_request
+        expect(res_body['question_attachment']['id']).to be(question_attachment.id)
+      end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, question_attachment.nested_question_answer.task)
+          .and_return(false)
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe '#destroy' do
-    let!(:question_attachment) { FactoryGirl.create(:question_attachment) }
-
-    it 'destroys the question' do
-      expect {
-        put :destroy, format: :json, id: question_attachment.id
-      }.to change { QuestionAttachment.count }.by(-1)
+    subject(:do_request) do
+      put :destroy, format: :json, id: question_attachment.id
     end
 
-    context 'without permission' do
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, question_attachment.nested_question_answer.task)
+          .and_return(true)
       end
 
-      it 'returns a 403' do
-        put :destroy, format: :json, id: question_attachment.id
-        expect(response.status).to eq(403)
+      it 'destroys the question' do
+        expect do
+          do_request
+        end.to change { QuestionAttachment.count }.by(-1)
       end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, question_attachment.nested_question_answer.task)
+          .and_return(false)
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe '#create' do
-    let!(:answer) { FactoryGirl.create(:nested_question_answer) }
+    let!(:answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
 
-    def do_request(params = {})
+    subject(:do_request) do
       post :create, format: :json, question_attachment: {
         nested_question_answer_id: answer.id,
         caption: 'This is a great caption!',
@@ -71,85 +91,100 @@ describe QuestionAttachmentsController do
       }
     end
 
-    it 'creates a new question attachment' do
-      expect { do_request }.to change { answer.attachments.count }.by(1)
+    it_behaves_like 'an unauthenticated json request'
 
-      attachment = answer.attachments.last
-      expect(attachment.caption).to eq('This is a great caption!')
-    end
-
-    it 'processes the attachment in the background' do
-      do_request
-      question_attachment = answer.attachments.last
-      expect(DownloadQuestionAttachmentWorker).to have_queued_job(
-        question_attachment.id,
-        'http://some.cat.image.gif'
-      )
-    end
-
-    it 'returns json only including question_attachment id' do
-      do_request
-      question_attachment = answer.attachments.last
-      expect(JSON.parse(response.body)).to eq({
-        'question-attachment': { id: question_attachment.id }
-      }.as_json)
-    end
-
-    context 'without permission' do
+    context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, answer.task)
+          .and_return(true)
       end
 
-      it 'returns a 403' do
-        do_request
-        expect(response.status).to eq(403)
+      it 'creates a new question attachment' do
+        expect { do_request }.to change { answer.attachments.count }.by(1)
+        attachment = answer.attachments.last
+        expect(attachment.caption).to eq('This is a great caption!')
       end
+
+      it 'processes the attachment in the background' do
+        do_request
+        question_attachment = answer.attachments.last
+        expect(DownloadQuestionAttachmentWorker).to have_queued_job(
+          question_attachment.id,
+          'http://some.cat.image.gif'
+        )
+      end
+
+      it 'returns json only including question_attachment id' do
+        do_request
+        question_attachment = answer.attachments.last
+        expect(JSON.parse(response.body)).to eq({
+          'question-attachment': { id: question_attachment.id }
+        }.as_json)
+      end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, answer.task)
+          .and_return(false)
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe '#update' do
-    let!(:answer) { FactoryGirl.create(:nested_question_answer) }
-    let!(:question_attachment) do
-      attrs = { nested_question_answer: answer }
-      FactoryGirl.create :question_attachment, attrs
-    end
-
-    def do_request(params = {})
+    subject(:do_request) do
       put :update, format: :json, question_attachment: {
         caption: 'This is a great caption!', src: 'http://some.cat.image.gif'
       }, id: question_attachment.id
     end
 
-    it 'updates a question attachment' do
-      expect { do_request }.to_not change { answer.attachments.count }
-      question_attachment.reload
-      expect(question_attachment.caption).to eq('This is a great caption!')
-    end
+    it_behaves_like 'an unauthenticated json request'
 
-    it 'processes the attachment in the background' do
-      do_request
-      expect(DownloadQuestionAttachmentWorker).to have_queued_job(
-        question_attachment.id,
-        'http://some.cat.image.gif'
-      )
-    end
-
-    it 'returns json only including question_attachment id' do
-      do_request
-      expect(JSON.parse(response.body)).to eq({
-        'question-attachment': { id: question_attachment.id }
-      }.as_json)
-    end
-
-    context 'without permission' do
+    context 'when the user has access' do
       before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, answer.task)
+          .and_return(true)
       end
 
-      it 'returns a 403' do
-        do_request
-        expect(response.status).to eq(403)
+      it 'updates a question attachment' do
+        expect { do_request }.to_not change { answer.attachments.count }
+        question_attachment.reload
+        expect(question_attachment.caption).to eq('This is a great caption!')
       end
+
+      it 'processes the attachment in the background' do
+        do_request
+        expect(DownloadQuestionAttachmentWorker).to have_queued_job(
+          question_attachment.id,
+          'http://some.cat.image.gif'
+        )
+      end
+
+      it 'returns json only including question_attachment id' do
+        do_request
+        expect(JSON.parse(response.body)).to eq({
+          'question-attachment': { id: question_attachment.id }
+        }.as_json)
+      end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, answer.task)
+          .and_return(false)
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 end

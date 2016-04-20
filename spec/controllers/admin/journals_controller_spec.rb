@@ -17,9 +17,11 @@ describe Admin::JournalsController, redis: true do
            admin_journal: { name: 'new journal name', description: 'new journal desc' }
     end
 
+    it_behaves_like "an unauthenticated json request"
+
     context 'when the user has access' do
       before do
-        sign_in site_admin
+        stub_sign_in site_admin
       end
 
       it 'creates a journal' do
@@ -36,9 +38,8 @@ describe Admin::JournalsController, redis: true do
       before { assign_journal_role(journal, journal_admin, :admin) }
 
       before do
-        sign_in journal_admin
+        stub_sign_in journal_admin
       end
-      it_behaves_like "an unauthenticated json request"
 
       it "renders status 403" do
         do_request
@@ -66,7 +67,7 @@ describe Admin::JournalsController, redis: true do
 
     context "when the user has access" do
       before do
-        sign_in journal_admin
+        stub_sign_in journal_admin
       end
 
       it "renders status 2xx and the journal is updated successfully" do
@@ -80,14 +81,14 @@ describe Admin::JournalsController, redis: true do
     context "uploading epub cover" do
       let(:url) { "http://someawesomeurl.com" }
       it "is successful for site_admin" do
-        sign_in site_admin
+        stub_sign_in site_admin
         expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
         put :upload_epub_cover, format: "json", id: journal.id, url: url
         expect(response).to be_success
       end
 
       it "is successful for journal_admin" do
-        sign_in journal_admin
+        stub_sign_in journal_admin
         expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
         put :upload_epub_cover, format: "json", id: journal.id, url: url
         expect(response).to be_success

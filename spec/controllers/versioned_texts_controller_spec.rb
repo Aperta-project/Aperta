@@ -10,10 +10,8 @@ describe VersionedTextsController do
   # body
   let(:versioned_text) { VersionedText.where(paper: paper).first! }
 
-  before { sign_in user }
-
   describe "GET 'show'" do
-    let(:do_request) { get :show, id: versioned_text.id, format: :json }
+    subject(:do_request) { get :show, id: versioned_text.id, format: :json }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -26,7 +24,7 @@ describe VersionedTextsController do
         do_request
       end
 
-      it { responds_with(200) }
+      it { is_expected.to responds_with(200) }
 
       it 'returns a version' do
         expected_keys = %w(
@@ -49,7 +47,7 @@ describe VersionedTextsController do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
 
   end

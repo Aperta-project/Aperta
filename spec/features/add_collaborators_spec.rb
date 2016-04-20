@@ -35,6 +35,6 @@ feature "Adding collaborators", js: true do
     expect(page).to have_content "Upload Manuscript"
 
     collaborators_overlay = edit_paper.show_contributors
-    expect(collaborators_overlay).to_not have_collaborators(user)
+    expect(collaborators_overlay).to have_no_collaborator(user)
   end
 end

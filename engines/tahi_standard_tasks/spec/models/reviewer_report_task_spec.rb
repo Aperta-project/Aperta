@@ -4,33 +4,6 @@ describe TahiStandardTasks::ReviewerReportTask do
   let(:task) { FactoryGirl.create(:reviewer_report_task) }
   let(:paper) { task.paper }
 
-  describe "#send_emails" do
-    let(:academic_editors) { [FactoryGirl.create(:user)] }
-
-    before do
-      # make sure we have editors for sending emails to
-      allow(paper).to receive(:academic_editors).and_return academic_editors
-    end
-
-    context "when the task transitions to completed" do
-      it "sends emails to the paper's editors" do
-        allow(TahiStandardTasks::ReviewerReportMailer).to receive_message_chain("delay.notify_academic_editor_email") { true }
-        task.completed = true
-        task.save!
-        expect(task.send_emails).to eq(paper.academic_editors)
-      end
-    end
-
-    context "when the task is updated but not completed" do
-      it "does not send emails" do
-        TahiStandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
-        task.completed = false # or any other update
-        task.save!
-        expect(task.send_emails).to eq(nil)
-      end
-    end
-  end
-
   describe "#body" do
     context "when it has a custom value" do
       it "returns that value" do

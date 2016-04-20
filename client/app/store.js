@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Store.extend({
   push(type, data, _partial) {
@@ -35,6 +36,29 @@ export default DS.Store.extend({
     });
     if (matchingTask) {
       return this.getById(matchingTask.type.modelName, id);
+    }
+  },
+
+  findOrPush(type, modelData) {
+    // remember that filteredUserData only has a subset of the
+    // fields we need to push a proper user in to the store,
+    // so we look up the full user in the availableUsers array
+    //
+    Ember.assert(modelData.id, 'Model Data must have an id');
+
+    let stringId = modelData.id.toString();
+    var foundModel = this.getById(type, stringId);
+    if (foundModel) {
+      return foundModel;
+    } else {
+      let typeKey = type.underscore();
+      let payload = {};
+      payload[typeKey] = modelData;
+
+      this.pushPayload(type, payload);
+      let newModel = this.getById(type, stringId);
+      Ember.assert(!!newModel, 'store.findOrPush must return a model of some kind');
+      return newModel;
     }
   },
 

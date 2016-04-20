@@ -156,9 +156,9 @@ describe TasksController, redis: true do
         end
       end
 
-      context "when the task is a ReviewerReportTask" do
+      context "when the task responds to send_emails" do
         let!(:task) do
-          TahiStandardTasks::ReviewerReportTask.create!(
+          TahiStandardTasks::RegisterDecisionTask.create!(
             title: "Reviewer Report",
             old_role: "reviewer",
             phase: paper.phases.first,
@@ -168,7 +168,7 @@ describe TasksController, redis: true do
         end
 
         it "calls the send_emails method" do
-          expect_any_instance_of(TahiStandardTasks::ReviewerReportTask).to receive(:send_emails)
+          expect_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:send_emails)
           xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: true } }
         end
       end

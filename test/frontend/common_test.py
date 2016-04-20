@@ -86,7 +86,6 @@ class CommonTest(FrontEndTest):
     cas_signin_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
 
-  @staticmethod
   def select_cas_user():
     """
     A method for selecting a single CAS user when needed to track which user was chosen
@@ -167,7 +166,8 @@ class CommonTest(FrontEndTest):
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
 
-  def set_editors_in_db(self, paper_id):
+  @staticmethod
+  def set_editors_in_db(paper_id):
     """
     Set up a handling editor, academic editor and cover editor for a given paper
     :paper_id: Integer with the paper id

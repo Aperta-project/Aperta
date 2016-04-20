@@ -24,6 +24,9 @@ __author__ = 'sbassi@plos.org'
 
 staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
                super_admin_login, handling_editor_login, cover_editor_login)
+
+staff_users = (cover_editor_login, )
+
 users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
 
 @MultiBrowserFixture

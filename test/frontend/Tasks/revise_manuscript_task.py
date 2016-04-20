@@ -20,7 +20,7 @@ class ReviseManuscriptTask(BaseTask):
   """
   Page Object Model for Revise Manuscript Task
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(ReviseManuscriptTask, self).__init__(driver)
 
     #Locators - Instance members
@@ -62,11 +62,12 @@ class ReviseManuscriptTask(BaseTask):
     assert msg2.text == 'Please provide a response or attach a file', msg2.text
     return None
 
-  def response_to_reviewers(self, data={}):
+  def response_to_reviewers(self, data=None):
     """
     Fill text area and/or attach files and save
     :data: Dictionary with data to complete this task.
     """
+    data = data or {}
     if data and 'attach' in data and data['attach']:
       doc2upload = random.choice(docs)
       fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))

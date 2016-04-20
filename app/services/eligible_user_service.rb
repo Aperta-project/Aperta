@@ -44,11 +44,17 @@ class EligibleUserService
       MESSAGE
     end
 
-    eligible_users = search(block.call, matching).to_a.uniq
-    users_already_assigned = User.all
+    users_already_assigned_ids = User.all
       .joins(:assignments)
       .where(assignments: { role: role, assigned_to: paper })
-    eligible_users - users_already_assigned
+      .select(:id)
+      .pluck(:id)
+
+    # Trying to call .distinct on the result of
+    # a search() blows up with a PG error
+    search(block.call, matching)
+      .where.not(id: users_already_assigned_ids)
+      .to_a.uniq
   end
 
   private

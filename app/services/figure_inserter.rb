@@ -63,8 +63,13 @@ class FigureInserter
   # this function
 
   def find_caption_node(figure_id)
+    return unless figure_id.is_a? Numeric
     possible_matches = [
       "Figure #{figure_id}.",
+      "Figure #{figure_id}:",
+      "Figure #{figure_id}-", # hyphen
+      "Figure #{figure_id}—", # n-dash
+      "Figure #{figure_id}–", # m-dash
       "Fig #{figure_id}.",
       "Fig. #{figure_id}."
     ]

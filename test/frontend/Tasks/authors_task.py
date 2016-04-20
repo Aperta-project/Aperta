@@ -549,7 +549,10 @@ class AuthorsTask(BaseTask):
     edit_btn = self._get(self._edit_author)
     edit_btn.click()
     time.sleep(1)
-    self._get(self._govt_employee_radio_no).click()
+    if 'government' in author_data and author_data['government']:
+      self._get(self._govt_employee_radio_yes).click()
+    else:
+      self._get(self._govt_employee_radio_no).click()
     self._get(self._authors_ack_agree2name).click()
     self._get(self._authors_ack_auth_crit).click()
     self._get(self._authors_ack_agree2submit).click()
@@ -562,6 +565,7 @@ class AuthorsTask(BaseTask):
       institution_input = institution_div.find_element_by_tag_name('input')
       institution_input.clear()
       institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+      # Time to look for institutions to fill the drop down options
       time.sleep(5)
     title_input.clear()
     title_input.send_keys(author_data['title'] + Keys.ENTER)

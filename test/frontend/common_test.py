@@ -44,7 +44,7 @@ class CommonTest(FrontEndTest):
               )
     if not email:
       email = random.choice(logins)
-    # Login into Aperta
+    # Login to Aperta
     logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(email)
@@ -76,7 +76,7 @@ class CommonTest(FrontEndTest):
               )
     if not email:
       email = random.choice(logins)
-    """Login into Aperta"""
+    # Login to Aperta
     logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.login_cas()
@@ -86,6 +86,7 @@ class CommonTest(FrontEndTest):
     cas_signin_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
 
+  @staticmethod
   def select_cas_user():
     """
     A method for selecting a single CAS user when needed to track which user was chosen
@@ -170,10 +171,10 @@ class CommonTest(FrontEndTest):
   def set_editors_in_db(paper_id):
     """
     Set up a handling editor, academic editor and cover editor for a given paper
+    This is a temporary solution until these assignments can be done using the UI
     :paper_id: Integer with the paper id
     Returns None
     """
-
     # Set up a handling editor, academic editor and cover editor for this paper
     wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = \'PLOS Wombat\';')[0][0]
     handling_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '

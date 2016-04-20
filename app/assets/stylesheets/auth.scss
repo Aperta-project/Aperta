@@ -27,20 +27,20 @@ body, h1, input {
 
 
 html.bg-1 { background-image: url(image-path('auth/bg-1.jpg'));
-  .ccby::before { content: "Image credit: Vadim Kurland on Flickr under a "; }
+  #login-ccby::before { content: "Image credit: Vadim Kurland on Flickr under a "; }
 }
 html.bg-2 { background-image: url(image-path('auth/bg-2.jpg'));
-  .ccby::before { content: "Image credit: Sid Mosdell on Flickr under a "; }
+  #login-ccby::before { content: "Image credit: Sid Mosdell on Flickr under a "; }
 }
 
-.attribution {
+#login-attribution {
   display: block;
   position: absolute;
   bottom: 5px;
   right: 10px;
   color: white;
 }
-.ccby a {
+#login-attribution a {
   color: white;
   text-decoration: underline;
 }

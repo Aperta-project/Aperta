@@ -76,9 +76,6 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Financial Disclosure')
     paper_viewer.complete_task('Additional Information')
     time.sleep(3)
-    # refresh !!
-    paper_viewer.refresh()
-    time.sleep(3)
 
     # make submission
     paper_viewer.click_submit_btn()

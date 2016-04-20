@@ -134,7 +134,9 @@ affiliation = {'institution': 'Universidad Del Este',
                'start': '12/01/2014',
                'end': '08/11/2015',
                'email': 'test@test.org',
-               'department': 'Molecular Biology'}
+               'department': 'Molecular Biology',
+               'initials': 'JMD',
+               'government': False,}
 
 # Author for Author card
 author = {'first': 'Jane',

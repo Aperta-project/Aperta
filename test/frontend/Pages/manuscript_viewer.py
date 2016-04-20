@@ -20,6 +20,7 @@ from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
+from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -370,8 +371,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        if task.text == task_name \
-            and 'active' \
+        if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           task.click()
           time.sleep(.5)
@@ -409,8 +409,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
         base_task.click_completion_button()
       task.click()
       time.sleep(1)
+    elif task_name == 'Revise Manuscript':
+      revise_manuscript = ReviseManuscriptTask(self._driver)
+      revise_manuscript.validate_styles()
+      revise_manuscript.validate_empty_response()
+      revise_manuscript.response_to_reviewers(data)
+      # complete_billing task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+        task.click()
+      time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
-                       'Revise Manuscript', 'Financial Disclosure'):
+                       'Financial Disclosure'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
@@ -429,6 +439,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(affiliation)
       task.click()
       time.sleep(1)
+    elif 'Review by ' in task_name:
+      logging.info('Completing {0}'.format(task_name))
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+      task.click()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

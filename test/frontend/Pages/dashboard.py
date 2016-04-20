@@ -105,6 +105,7 @@ class DashboardPage(AuthenticatedPage):
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
+    self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -123,7 +124,7 @@ class DashboardPage(AuthenticatedPage):
 
   def accept_all_invitations(self):
     """Accepts all invitations"""
-    all_buttons = self._gets(self._view_invitations)
+    all_buttons = self._gets(self._yes_no_button)
     count = 0
     for button in all_buttons:
       count += 1
@@ -693,8 +694,8 @@ class DashboardPage(AuthenticatedPage):
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
     upload_btn = self._get(self._upload_btn)
     doc2upload = random.choice(docs)
-    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+    logging.info('Sending document: {0}'.format(fn))
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)
     else:

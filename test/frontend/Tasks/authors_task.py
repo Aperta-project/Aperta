@@ -548,6 +548,15 @@ class AuthorsTask(BaseTask):
     self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
     edit_btn.click()
+    time.sleep(1)
+    if 'government' in author_data and author_data['government']:
+      self._get(self._govt_employee_radio_yes).click()
+    else:
+      self._get(self._govt_employee_radio_no).click()
+    self._get(self._authors_ack_agree2name).click()
+    self._get(self._authors_ack_auth_crit).click()
+    self._get(self._authors_ack_agree2submit).click()
+
     title_input = self._get(self._title_input)
     department_input = self._get(self._department_input)
     institutions = self._gets(self._institution_div)
@@ -556,6 +565,8 @@ class AuthorsTask(BaseTask):
       institution_input = institution_div.find_element_by_tag_name('input')
       institution_input.clear()
       institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+      # Time to look for institutions to fill the drop down options
+      time.sleep(5)
     title_input.clear()
     title_input.send_keys(author_data['title'] + Keys.ENTER)
     department_input.clear()
@@ -567,15 +578,9 @@ class AuthorsTask(BaseTask):
     author_contribution_chck = self._get(self._designed_chkbx)
     if not author_contribution_chck.is_selected():
       author_contribution_chck.click()
-
     # Need to complete the remaining required elements to successfully complete this card.
     author_inits_input = self._get(self._author_inits_input)
-    author_inits_input.send_keys('AA')
-    self._get(self._govt_employee_radio_no).click()
-    self._get(self._authors_ack_agree2name).click()
-    self._get(self._authors_ack_auth_crit).click()
-    self._get(self._authors_ack_agree2submit).click()
-
+    author_inits_input.send_keys(author_data['initials'])
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
     completed = self.completed_state()

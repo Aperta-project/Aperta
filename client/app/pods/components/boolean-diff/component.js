@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  viewingBool: undefined,
-  comparisonBool: undefined,
+  viewingBool: null,
+  comparisonBool: null,
 
   boolText(bool) {
     return bool ? 'Yes' : 'No';

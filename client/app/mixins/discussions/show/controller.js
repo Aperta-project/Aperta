@@ -28,13 +28,14 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
           .destroyRecord();
     },
 
-    addParticipantByUserId(userId) {
-      this.store.find('user', userId).then((user) => {
-        this.store.createRecord('discussion-participant', {
-          discussionTopic: this.get('model'),
-          user: user,
-        }).save();
-      });
+    saveNewParticipant(newParticipant, availableParticipants) {
+      let participant = availableParticipants.findBy('id', newParticipant.id);
+      let user = this.store.findOrPush('user', participant);
+
+      this.store.createRecord('discussion-participant', {
+        discussionTopic: this.get('model'),
+        user: user,
+      }).save();
     }
   }
 });

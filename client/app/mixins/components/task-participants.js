@@ -23,13 +23,13 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    saveNewParticipant(newParticipantId) {
-      this.getStore().find('user', newParticipantId).then((user) => {
-        if (this.get('participants').contains(user)) { return; }
+    saveNewParticipant(newParticipant, availableParticipants) {
+      let participant = availableParticipants.findBy('id', newParticipant.id);
+      let user = this.getStore().findOrPush('user', participant);
 
-        this.createNewParticipation(user, this.get('task'))
-            .save();
-      });
+      if (this.get('participants').contains(user)) { return; }
+
+      this.createNewParticipation(user, this.get('task')).save();
     },
 
     removeParticipant(participantId) {

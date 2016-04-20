@@ -86,16 +86,6 @@ module TahiStandardTasks
       paper.decisions.where(id: previous_decision_ids)
     end
 
-    def send_emails
-      return unless on_card_completion?
-      paper.academic_editors.each do |editor|
-        ReviewerReportMailer.delay.notify_academic_editor_email(
-          task_id: id,
-          recipient_id: editor.id
-        )
-      end
-    end
-
     def submitted?
       !!body["submitted"]
     end

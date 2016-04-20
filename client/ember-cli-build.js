@@ -19,11 +19,7 @@ module.exports = function(defaults) {
       includePolyfill: true,
     }
   };
-  if (ENV.environment === 'production') {
-    args.fingerprint = {
-      prepend: '/client/'
-    };
-  }
+
   var app = new EmberApp(defaults, args);
 
   app.import(app.bowerDirectory + '/underscore/underscore.js');

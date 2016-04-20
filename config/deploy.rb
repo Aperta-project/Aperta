@@ -24,3 +24,14 @@ end
 
 # ember-cli-rails compiles assets, but does not put them anywhere.
 after 'deploy:compile_assets', 'deploy:copy_ember_assets'
+
+after 'deploy:migrate', 'deploy:safe_seeds' do
+  on primary fetch(:migration_role) do
+    within release_path do
+      with rails_env: fetch(:rails_env) do
+        execute :rake, 'nested-questions:seed'
+        execute :rake, 'roles-and-permissions:seed'
+      end
+    end
+  end
+end

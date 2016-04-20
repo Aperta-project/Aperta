@@ -6,55 +6,82 @@ const { computed } = Ember;
 const { setDiff } = computed;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
+  allUsers: null,
+  selectedCollaborator: null,
+  paper: null,
+  initialCollaborations: null,
+  collaborations: null,
+
+  addedCollaborations: setDiff('collaborations', 'initialCollaborations'),
+  removedCollaborations: setDiff('initialCollaborations', 'collaborations'),
+
+  collaborators: computed('collaborations.[]', function() {
+    return this.get('collaborations').mapBy('user');
+  }),
+
+  foundCollaborators: null,
+
+  select2RemoteSource: Ember.computed(function(){
+    let collaborators = this.get('collaborators');
+
+    let paperId = this.get('paper.id');
+    let url = `/api/filtered_users/users/${paperId}`;
+
+    let existingCollaborator = (user) => {
+      return !!collaborators.findBy('id', user.id.toString());
+    };
+
+    return {
+      url: url,
+      dataType: 'json',
+      quietMillis: 500,
+      data: function(term) {
+        return { query: term };
+      },
+      results: (data) => {
+        // data.filtered_users contains more fields than we're using
+        // directly below, and we'll need those fields later.  we're
+        // storing them off for that purpose.
+        this.set('foundCollaborators', data.filtered_users); 
+        const selectableUsers = data.filtered_users.map(function(user){
+          return {
+            id: user.id,
+            text: user.full_name
+          };
+        }).reject(existingCollaborator);
+
+        return { results: selectableUsers };
+      }
+    };
+  }),
+
   init() {
     this._super(...arguments);
     this.set('store', getOwner(this).lookup('store:main'));
 
     const collaborations = this.get('paper.collaborations') || [];
     this.setProperties({
-      allUsers: this.get('store').find('user'),
       collaborations: collaborations,
       initialCollaborations: collaborations.slice()
     });
   },
 
-  availableCollaborators: computed.setDiff('allUsers', 'collaborators'),
-
-  formattedCollaborators: computed('availableCollaborators.[]', function() {
-    return this.get('availableCollaborators').map(function(collab) {
-      return {
-        id: collab.get('id'),
-        text: collab.get('fullName')
-      };
-    });
-  }),
-
-  addedCollaborations: setDiff('collaborations', 'initialCollaborations'),
-  removedCollaborations: setDiff('initialCollaborations', 'collaborations'),
-  allUsers: null,
-  selectedCollaborator: null,
-  paper: null,
-  initialCollaborations: null,
-
-  collaborations: null,
-  collaborators: computed('collaborations.[]', function() {
-    return this.get('collaborations').mapBy('user');
-  }),
-
   actions: {
-    addNewCollaborator(formattedOption) {
+    addNewCollaborator(newCollaboratorData) {
       const paper = this.get('paper');
-      const newCollaborator = this.get('availableCollaborators')
-                                  .findBy('id', formattedOption.id);
+      const store = this.get('store');
+
+      let collaborator = this.get('foundCollaborators').findBy('id', newCollaboratorData.id);
+      let newCollaborator = store.findOrPush('user', collaborator);
 
       // if this collaborator's record was previously removed from the paper
       // make sure we use THAT one and not a new record.
 
-      const existingRecord = this.store.all('collaboration').find(function(c) {
+      const existingRecord = store.all('collaboration').find(function(c) {
         return c.get('oldPaper') === paper && c.get('user') === newCollaborator;
       });
 
-      const newCollaboration = existingRecord || this.store.createRecord(
+      const newCollaboration = existingRecord || store.createRecord(
         'collaboration',
         {
           paper: paper,

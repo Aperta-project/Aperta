@@ -9,10 +9,9 @@ export default TaskComponent.extend(Select2Assignees, {
 
   actions: {
     assignAdmin(select2User) {
-      this.store.find('user', select2User.id).then(user => {
-        this.set('task.admin', user);
-        this.send('save');
-      });
+      let user = this.store.findOrPush('user', select2User);
+      this.set('task.admin', user);
+      this.send('save');
     }
   }
 });

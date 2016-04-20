@@ -156,6 +156,20 @@ describe Invitation do
       it "filters out the user with a rejected invite" do
         expect(result).to_not include(rejected_invite_user)
       end
+
+      context "When invites belong to a previous decision" do
+        before do
+          paper.decisions.create!
+        end
+        it "doesn't filter users based on the old invites" do
+          expect(result).to contain_exactly(
+            no_invite_user,
+            pending_invite_user,
+            rejected_invite_user,
+            accepted_invite_user
+          )
+        end
+      end
     end
   end
 end

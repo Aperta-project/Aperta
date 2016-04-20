@@ -32,8 +32,8 @@ describe FilteredUsersController do
       it { is_expected.to responds_with(200) }
 
       it 'returns any user who matches the query' do
-        expect(res_body['filtered_users'].count).to eq(1)
-        expect(res_body['filtered_users'][0]['username']).to eq('UserName')
+        expect(res_body['users'].count).to eq(1)
+        expect(res_body['users'][0]['username']).to eq('UserName')
       end
     end
   end

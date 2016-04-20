@@ -25,9 +25,7 @@ namespace :deploy do
     on release_roles(fetch(:assets_roles)) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :rsync, '-a', 'tmp/ember-cli/apps/client/', 'public/'
-          # The index page is served by rails
-          execute :rm, 'public/index.html'
+          execute :rsync, '-a', 'tmp/ember-cli/apps/client/assets/*', 'public/assets/'
         end
       end
     end

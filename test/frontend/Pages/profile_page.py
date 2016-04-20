@@ -110,6 +110,9 @@ class ProfilePage(AuthenticatedPage):
     assert avatar_hover.text == 'UPLOAD NEW'
     self.validate_large_avatar_hover_style(avatar_hover)
     profile_link = self._get(self._profile_link)
+    assert profile_link.get_attribute('target') == '_blank'
+    assert profile_link.get_attribute('href') == \
+      'https://community.plos.org/account/edit-profile'
     self.validate_profile_link_style(profile_link)
     assert 'View or edit your full profile' in profile_link.text
     assert application_typeface in profile_link.value_of_css_property('font-family'), \

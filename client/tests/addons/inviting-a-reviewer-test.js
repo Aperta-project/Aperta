@@ -31,7 +31,7 @@ module("Integration: Inviting an reviewer", {
       status: 200,
       contentType: "application/json",
       responseText: {
-        filtered_users: [{ id: 1, full_name: "Aaron", email: inviteeEmail }]
+        users: [{ id: 1, full_name: "Aaron", email: inviteeEmail }]
       }
     });
 

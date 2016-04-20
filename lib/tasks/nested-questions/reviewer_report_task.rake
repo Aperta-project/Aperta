@@ -23,17 +23,17 @@ namespace 'nested-questions:seed' do
     questions << {
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
-      ident: "reviewer_report--support_conclusions",
+      ident: "reviewer_report--plos_biology_suitable",
       value_type: "boolean",
-      text: "Is the manuscript technically sound, and do the data support the conclusions?",
+      text: "Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments for authors.",
       position: 3,
       children: [
         {
           owner_id: nil,
           owner_type: TahiStandardTasks::ReviewerReportTask.name,
-          ident: "reviewer_report--support_conclusions--explanation",
+          ident: "reviewer_report--plos_biology_suitable--comment",
           value_type: "text",
-          text: "Explanation",
+          text: "Comment",
           position: 1
         }
       ]

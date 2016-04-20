@@ -34,7 +34,7 @@ class ReviewerReportTask < PaperTask
   def fill_in_report(values={})
     values = values.with_indifferent_access.reverse_merge(
       "reviewer_report--competing_interests" => "default competing interests content",
-      "reviewer_report--support_conclusions--explanation" => "default support_conclusions.explanation content",
+      "reviewer_report--plos_biology_suitable--comment" => "default biology_suitable.comment content",
       "reviewer_report--statistical_analysis--explanation" => "default statistical_analysis.explanation content",
       "reviewer_report--standards--explanation" => "default standards.explanation content",
       "reviewer_report--additional_comments" => "default additional_comments content",
@@ -61,4 +61,3 @@ class ReviewerReportTask < PaperTask
     visit "/papers/#{paper.id}/tasks/#{reviewer_report_task.id}"
   end
 end
-

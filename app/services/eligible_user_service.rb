@@ -27,7 +27,8 @@ class EligibleUserService
     @eligible_user_blocks = {
       role.journal.academic_editor_role => -> { User.all },
       role.journal.cover_editor_role => -> { internal_editors },
-      role.journal.handling_editor_role => -> { internal_editors }
+      role.journal.handling_editor_role => -> { internal_editors },
+      role.journal.staff_admin_role => -> { staff_admins }
     }
   end
 
@@ -54,6 +55,10 @@ class EligibleUserService
 
   def internal_editors
     role.journal.internal_editor_role.users
+  end
+
+  def staff_admins
+    role.journal.staff_admin_role.users
   end
 
   def search(user_relation, matching)

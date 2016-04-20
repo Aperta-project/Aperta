@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="bg-<%= (rand() * 3).to_i + 1 %>">
+<html class="bg-<%= (rand() * 2).to_i + 1 %>">
   <head>
     <title>
       <%= app_name %>
@@ -19,6 +19,9 @@
   <body class="sessions">
     <div id="tahi-container" class="<%= yield(:tahi_container_class) %>">
       <%= yield %>
+    </div>
+    <div id="login-attribution">
+      <span id="login-ccby"><a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> license</span>
     </div>
   </body>
 </html>

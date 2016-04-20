@@ -24,6 +24,18 @@
   <h1>Welcome to <%= app_name %></h1>
   <p>Submit &amp; manage manuscripts.</p>
 
+  <div class="available-journals-message">
+    <p>
+      Aperta&nbsp;accepts&nbsp;new&nbsp;submissions&nbsp;to&nbsp;<strong>PLOS&nbsp;Biology</strong>&nbsp;for&nbsp;now.
+      It&nbsp;will&nbsp;be&nbsp;rolled&nbsp;out&nbsp;to&nbsp;all&nbsp;PLOS&nbsp;titles&nbsp;in&nbsp;the&nbsp;coming&nbsp;months.<br />
+      Microsoft Word files only (LaTeX coming soon!)<br />
+      <a href="http://journals.plos.org/plosbiology/s/submit-now">More information</a> about submitting to PLOS Biology.
+    </p>
+    <p>
+      To submit to one of our other journals, start <a href="https://www.plos.org/which-journal-is-right-for-me">here</a>.
+    </p>
+  </div>
+
   <% if flash.present? %>
     <% if notice %>
       <p class="auth-flash auth-flash--notice"><%= notice %> <span onclick="this.parentElement.remove()">&times;</span></p>
@@ -32,6 +44,8 @@
       <p class="auth-flash auth-flash--alert"><%= alert %> <span onclick="this.parentElement.remove()">&times;</span></p>
     <% end %>
   <% end %>
+
+  <div>
 
   <% if Rails.configuration.password_auth_enabled %>
     <div class="auth-left auth-group">
@@ -71,4 +85,6 @@
       <%= render "devise/shared/links" %>
     </div>
   <% end %>
+
+  </div>
 </div>

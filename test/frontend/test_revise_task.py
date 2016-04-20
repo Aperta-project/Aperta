@@ -1,35 +1,32 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import random
-import time
-
-from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login, \
-    cover_editor_login, handling_editor_login
-from frontend.common_test import CommonTest
-from Cards.invite_reviewer_card import InviteReviewersCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from selenium.webdriver.common.by import By
-
 """
 This test case validates the Revise Manuscript task
 Automated test case for: fill response to reviweres and attach a file in Revise Manuscript task
 """
+import logging
+import random
+import time
+
+from Base.Decorators import MultiBrowserFixture
+from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
+    super_admin_login, prod_staff_login, creator_login1, creator_login2, \
+    creator_login3, creator_login4, creator_login5, cover_editor_login, handling_editor_login
+from frontend.common_test import CommonTest
+from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
+
 __author__ = 'sbassi@plos.org'
 
 staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
                super_admin_login, handling_editor_login, cover_editor_login)
 users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
 
+
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
   """
-  test_revise_manuscript: Test related with the following Use Case: We need to provide a
+  Test related with the following Use Case: We need to provide a
   more obvious place for the author to give us their response to reviewers. Different ways
   to response to reviewers are tested.
   AC out of: APERTA-6419
@@ -38,15 +35,15 @@ class ReviseManuscriptTest(CommonTest):
   """
   def test_response_to_reviewers(self):
     """
-    This test walks through the path to create and article, take a decission about the
-    manuscript and the author will use the response to reviewers card
+    test_revise_manuscript: Functional test of revise task. This test walks through the path to
+    create an article, make a decision about the manuscript and the author will use the revise task
+    card.
     """
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
-    dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     paper_type = 'Research'
@@ -56,10 +53,11 @@ class ReviseManuscriptTest(CommonTest):
                         type_=paper_type,
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
+    dashboard_page.set_timeout(120)
     paper_viewer.validate_ihat_conversions_success()
+    dashboard_page.restore_timeout()
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
@@ -100,7 +98,6 @@ class ReviseManuscriptTest(CommonTest):
     data = {'attach': 2}
     paper_viewer.complete_task('Revise Manuscript', data=data)
     return self
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

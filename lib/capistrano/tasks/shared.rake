@@ -38,10 +38,7 @@ end
    service: :web_service_name },
  { namespace: :sidekiq,
    role: :worker,
-   service: :worker_service_name },
- { namespace: :nginx,
-   role: :web,
-   service: :nginx }].each do |config|
+   service: :worker_service_name }].each do |config|
   namespace config[:namespace] do
     desc "Restart #{config[:service]} instance for this application"
     task :restart do
@@ -52,7 +49,7 @@ end
     desc "Start #{config[:namespace]} instance for this application"
     task :start do
       on roles(config[:role]) do
-        sudo "service #{config[:service]} start || true"
+        sudo "service #{fetch(config[:service])} start || true"
       end
     end
     desc "Show status of #{config[:namespace]} for this application"
@@ -70,6 +67,33 @@ end
   end
 end
 
+namespace :nginx do
+  desc "Restart nginx instance for this application"
+  task :restart do
+    on roles(:web) do
+      sudo 'service', 'nginx', 'restart'
+    end
+  end
+  desc "Start nginx instance for this application"
+  task :start do
+    on roles(:web) do
+      sudo "service nginx start || true"
+    end
+  end
+  desc "Show status of nginx for this application"
+  task :status do
+    on roles(:web) do
+      sudo 'service', 'nginx', 'status'
+    end
+  end
+  desc "Stop nginx instance for this application"
+  task :stop do
+    on roles(:web) do
+      sudo 'service', 'nginx', 'stop'
+    end
+  end
+end
+
 # Hack to fake a puma.rb config, which we do not have on a worker
 before 'deploy:check:linked_files', :remove_junk do
   on roles(:db, :worker) do
@@ -78,5 +102,6 @@ before 'deploy:check:linked_files', :remove_junk do
 end
 
 after 'deploy:finished', 'puma:restart'
+
 after 'deploy:finished', 'sidekiq:restart'
 after 'deploy:finished', 'nginx:start'

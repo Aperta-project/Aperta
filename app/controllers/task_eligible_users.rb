@@ -38,9 +38,8 @@ class TaskEligibleUsersController < ApplicationController
   def uninvited_users
     requires_user_can(:edit, task)
     users = User.fuzzy_search params[:query]
-    paper = Paper.find(params[:paper_id])
     respond_with(
-      find_uninvited_users(users, paper),
+      find_uninvited_users(users, task.paper),
       each_serializer: SelectableUserSerializer,
       root: :users
     )
@@ -48,6 +47,9 @@ class TaskEligibleUsersController < ApplicationController
 
   private
 
+  # NOTE: Invitation.find_uninvited_users will remove users who have
+  # any kind of invitation for the paper, not just an invite for the
+  # relevant role that the user is currently searching for
   def find_uninvited_users(users, paper)
     Invitation.find_uninvited_users_for_paper(users, paper)
   end

@@ -25,7 +25,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
       ident: "reviewer_report--plos_biology_suitable",
       value_type: "boolean",
-      text: "Is this manuscript suitable in principle for PLOS Biology? Comments for authors.",
+      text: "Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments for authors.",
       position: 3,
       children: [
         {

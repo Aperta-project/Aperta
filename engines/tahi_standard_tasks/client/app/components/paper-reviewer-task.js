@@ -1,11 +1,12 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
 
 const { computed } = Ember;
 
 export default TaskComponent.extend({
-  autoSuggestSourceUrl: computed('task.paper.id', function() {
-    return '/api/filtered_users/uninvited_users/' + this.get('task.paper.id');
+  autoSuggestSourceUrl: computed('task.id', function() {
+    return eligibleUsersPath(this.get('task.id'), 'uninvited_users');
   }),
 
   selectedReviewer: null,
@@ -44,7 +45,7 @@ export default TaskComponent.extend({
   },
 
   parseUserSearchResponse(response) {
-    return response.filtered_users;
+    return response.users;
   },
 
   displayUserSelected(user) {

@@ -1,9 +1,15 @@
-// Figure snapshot component
-
 import Ember from 'ember';
 import {
   namedComputedProperty
 } from 'tahi/mixins/components/snapshot-named-computed-property';
+
+var FigureSnapshot = Ember.Object.extend({
+  snapshot: null,
+  file: namedComputedProperty('snapshot', 'file'),
+  title: namedComputedProperty('snapshot', 'title'),
+  strikingImage: namedComputedProperty('snapshot', 'striking_image'),
+  fileHash: namedComputedProperty('snapshot', 'file_hash')
+});
 
 export default Ember.Component.extend({
   snapshot1: null,
@@ -26,12 +32,4 @@ export default Ember.Component.extend({
       return this.get('figure1.fileHash') !== this.get('figure2.fileHash');
     }
   )
-});
-
-var FigureSnapshot = Ember.Object.extend({
-  snapshot: null,
-  file: namedComputedProperty('snapshot', 'file'),
-  title: namedComputedProperty('snapshot', 'title'),
-  strikingImage: namedComputedProperty('snapshot', 'striking_image'),
-  fileHash: namedComputedProperty('snapshot', 'file_hash')
 });

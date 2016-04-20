@@ -30,10 +30,6 @@ describe PapersController do
   let(:journal) { FactoryGirl.build_stubbed(:journal) }
   let(:paper) { FactoryGirl.build(:paper) }
 
-  before do
-    sign_in user
-  end
-
   describe 'GET index' do
     subject(:do_request) { get :index, format: :json }
     let(:papers) { [active_paper, inactive_paper] }
@@ -51,7 +47,7 @@ describe PapersController do
         )
       end
 
-      it { responds_with 200 }
+      it { is_expected.to responds_with 200 }
 
       it 'returns papers the user has access to' do
         expect(user).to receive(:filter_authorized).with(
@@ -95,9 +91,10 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
-          .and_return true
+          .and_return false
         do_request
       end
 
@@ -222,6 +219,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:edit, paper)
           .and_return false
@@ -277,9 +275,10 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
-          .and_return true
+          .and_return false
         do_request
       end
 
@@ -323,6 +322,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
@@ -374,8 +374,9 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
-          .with(:view, paper)
+          .with(:manage_workflow, paper)
           .and_return false
         do_request
       end
@@ -422,6 +423,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
@@ -463,6 +465,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
@@ -515,6 +518,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:edit, paper)
           .and_return false
@@ -615,6 +619,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
@@ -674,6 +679,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return false
@@ -740,6 +746,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:submit, paper)
           .and_return false
@@ -791,6 +798,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:reactivate, paper)
           .and_return false
@@ -843,6 +851,7 @@ describe PapersController do
 
     context "when the user does not have access" do
       before do
+        stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:withdraw, paper)
           .and_return false

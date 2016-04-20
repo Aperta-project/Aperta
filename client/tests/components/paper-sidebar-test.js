@@ -5,7 +5,7 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('paper-sidebar', 'PaperSidebarComponent', {
+moduleForComponent('paper-sidebar', 'Integration | Component | paper sidebar', {
   needs: ['component:sticky-headers', 'service:event-bus']
 });
 

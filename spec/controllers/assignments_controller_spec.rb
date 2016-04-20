@@ -31,7 +31,7 @@ describe AssignmentsController, type: :controller do
           .and_return paper_assignments
       end
 
-      it { responds_with(200) }
+      it { is_expected.to responds_with(200) }
 
       it 'returns users who are eligible to be assigned to the provided role' do
         do_request
@@ -44,12 +44,14 @@ describe AssignmentsController, type: :controller do
 
     context 'when the user does not have access' do
       before do
+        stub_sign_in user
+
         allow(user).to receive(:can?)
           .with(:assign_roles, paper)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -68,10 +70,6 @@ describe AssignmentsController, type: :controller do
     let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
 
-    before do
-      sign_in user
-    end
-
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
@@ -87,7 +85,7 @@ describe AssignmentsController, type: :controller do
           .and_return true
       end
 
-      it { responds_with(200) }
+      it { is_expected.to responds_with(200) }
 
       it 'assigns the user to the role' do
         expect do
@@ -153,6 +151,7 @@ describe AssignmentsController, type: :controller do
 
     context 'when the user does not have access' do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:assign_roles, paper)
           .and_return false
@@ -181,10 +180,6 @@ describe AssignmentsController, type: :controller do
     end
     let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
-
-    before do
-      sign_in user
-    end
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -232,6 +227,7 @@ describe AssignmentsController, type: :controller do
 
     context 'when the user does not have access' do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:assign_roles, paper)
           .and_return false

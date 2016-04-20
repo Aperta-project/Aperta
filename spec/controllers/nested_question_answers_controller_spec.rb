@@ -1,17 +1,13 @@
 require 'rails_helper'
 
 describe NestedQuestionAnswersController do
-  let(:user) { create :user, :site_admin }
+  let(:user) { FactoryGirl.create :user }
   let(:nested_question) { FactoryGirl.create(:nested_question) }
-
-  before do
-    sign_in user
-  end
 
   describe "#create" do
     let!(:owner) { nested_question.owner }
 
-    def do_request(params: {})
+    subject(:do_request) do
       post_params = {
         format: 'json',
         nested_question_id: nested_question.to_param,
@@ -20,7 +16,7 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "123" }
-        }.merge(params)
+        }
       }
       post(:create, post_params)
     end
@@ -29,7 +25,8 @@ describe NestedQuestionAnswersController do
 
     context "when the user does has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return true
       end
@@ -54,19 +51,20 @@ describe NestedQuestionAnswersController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe "#create with an existing answer for the owner" do
     let(:owner) { nested_question.owner }
 
-    def do_request(params: {})
+    subject(:do_request) do
       post_params = {
         format: 'json',
         nested_question_id: nested_question.to_param,
@@ -75,14 +73,15 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "123" }
-        }.merge(params)
+        }
       }
       post(:create, post_params)
     end
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return true
       end
@@ -104,12 +103,13 @@ describe NestedQuestionAnswersController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -118,7 +118,7 @@ describe NestedQuestionAnswersController do
     let(:nested_question) { FactoryGirl.create(:nested_question) }
     let(:owner) { nested_question.owner }
 
-    def do_request(params:{})
+    subject(:do_request) do
       put_params = {
         format: 'json',
         id: nested_question_answer.to_param,
@@ -128,7 +128,7 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "234" }
-        }.merge(params)
+        }
       }
       put(:update, put_params)
     end
@@ -137,7 +137,8 @@ describe NestedQuestionAnswersController do
 
     context "when the user does has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return true
       end
@@ -160,12 +161,13 @@ describe NestedQuestionAnswersController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -174,7 +176,7 @@ describe NestedQuestionAnswersController do
     let(:nested_question) { FactoryGirl.create(:nested_question) }
     let(:owner) { nested_question.owner }
 
-    def do_request(params:{})
+    subject(:do_request) do
       delete_params = {
         format: 'json',
         id: nested_question_answer.to_param,
@@ -184,7 +186,7 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "234" }
-        }.merge(params)
+        }
       }
       delete(:destroy, delete_params)
     end
@@ -193,7 +195,8 @@ describe NestedQuestionAnswersController do
 
     context "when the user does has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return true
       end
@@ -216,12 +219,13 @@ describe NestedQuestionAnswersController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, owner)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 end

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
 
-moduleForComponent('attachment-manager', 'Component: attachment-manager', {
+moduleForComponent('attachment-manager', 'Integration | Component | attachment manager', {
   unit: true
 });
 

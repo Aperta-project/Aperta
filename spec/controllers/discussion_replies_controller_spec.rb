@@ -10,19 +10,23 @@ describe DiscussionRepliesController do
 
   let(:json) { res_body }
 
-  before { sign_in user }
-
   describe 'GET show' do
+    subject(:do_request) do
+      xhr :get, :show, format: :json, id: reply.id
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, topic_a)
           .and_return true
       end
 
       it "includes the discussion topic reply" do
-        xhr :get, :show, format: :json, id: reply.id
-
+        do_request
         discussion_reply = json["discussion_reply"]
         expect(discussion_reply['id']).to eq(reply.id)
       end
@@ -30,18 +34,20 @@ describe DiscussionRepliesController do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, topic_a)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe 'POST create' do
-    render_views
-
+    subject(:do_request) do
+      xhr :post, :create, creation_params.merge(format: 'json')
+    end
     let(:body) { "You won't believe it!" }
     let(:creation_params) do
       {
@@ -52,16 +58,19 @@ describe DiscussionRepliesController do
       }
     end
 
+    it_behaves_like "an unauthenticated json request"
+
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:reply, topic_a)
           .and_return true
       end
 
       it "creates a reply" do
         expect do
-          xhr :post, :create, format: :json, **creation_params
+          do_request
         end.to change { DiscussionReply.count }.by(1)
 
         reply = json["discussion_reply"]
@@ -71,15 +80,16 @@ describe DiscussionRepliesController do
     end
 
     context "when the user does not have access" do
+      subject(:do_request) { post :create, creation_params }
+
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:reply, topic_a)
           .and_return false
       end
 
-      let!(:do_request) { post :create, creation_params }
-
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 

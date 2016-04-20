@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('card-preview', 'CardPreviewComponent', {
+moduleForComponent('card-preview', 'Integration | Component | card preview', {
   integration: true,
 
   beforeEach() {

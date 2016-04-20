@@ -8,8 +8,6 @@ shared_examples_for "when the user is not signed in" do
 end
 
 shared_examples_for "an unauthenticated json request" do
-  before { sign_out :user }
-
   it "returns 401" do
     do_request
     expect(response.status).to eq(401)

@@ -36,4 +36,13 @@ describe UserMentions do
 
     expect(people_mentioned.count).to eq(0)
   end
+
+  it 'matches when username is mixed case' do
+    user_a.update_attributes username: 'TestUserCase'
+    body = "A mention of @#{user_a.username}"
+    people_mentioned = UserMentions.new(body, poster).people_mentioned
+
+    expect(people_mentioned.count).to eq(1)
+    expect(people_mentioned).to include(user_a)
+  end
 end

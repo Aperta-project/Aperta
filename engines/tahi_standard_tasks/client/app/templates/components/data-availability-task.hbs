@@ -1,6 +1,13 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
+  <p>
+ PLOS journals require authors to make all data underlying the findings described in their manuscript fully available, without restriction and from the time of publication, with only rare exceptions to address legal and ethical concerns (see the PLOS Data Policy and FAQ for further details). When submitting a manuscript, authors must provide a Data Availability Statement that describes where the data underlying their manuscript can be found.
+  </p>
+  <p>
+  Your answers to the following constitute your statement about data availability and will be included with the article in the event of publication. Please note that simply stating ‘data available on request from the author’ is not acceptable. If, however, your data are only available upon request from the author(s), you must answer “No” to the first question below, and explain your exceptional situation in the text box provided.
+  </p>
+
   <ol class="question-list">
     <li class="question">
       {{nested-question-radio
@@ -12,23 +19,22 @@
 
     <li class="question">
       <div class="question-text">
-        {{dataLocationQuestion.text}}
         Your answers should be entered into the box below and will be published in the form you provide them, if your manuscript is accepted. If you are copying our sample text below, please ensure you replace any instances of XXX with the appropriate details.</div>
       <ul class="question-help">
         <li class="item">
           If your data are all contained within the paper and/or Supporting Information files, please state this in your answer below. For example, "All relevant data are within the paper and its Supporting Information files."
         </li>
 
-        <li class="item">
+        <li class="item left-indent">
           If your data are held or will be held in a public repository, include URLs, accession numbers or DOIs. For example, "All XXX files are available from the XXX database (accession number(s) XXX, XXX)." If this information will only be available after acceptance, please indicate this by ticking the box below.
         </li>
 
-        <li class="item">
+        <li class="item left-indent">
            If neither of these applies but you are able to provide details of access elsewhere, with or without limitations, please do so in the box below. For example:
            <br />
           "Data are available from the XXX Institutional Data Access / Ethics Committee for researchers who meet the criteria for access to confidential data."
         </li>
-        <li class="item">
+        <li class="item left-indent">
           "Data are from the XXX study whose authors may be contacted at XXX."
         </li>
       </ul>
@@ -39,6 +45,19 @@
             displayQuestionText=false
             disabled=isNotEditable}}
       </div>
+    </li>
+    <li class="question">
+      <div class="question-text">
+        Additional Data Availability information
+      </div>
+    {{nested-question-check ident="data_availability--additional_information_doi"
+                            owner=task
+                            disabled=isNotEditable
+    }}
+    {{nested-question-check ident="data_availability--additional_information_other"
+                            owner=task
+                            disabled=isNotEditable
+    }}
     </li>
   </ol>
 </div>

@@ -24,7 +24,7 @@ describe PaperRoleEligibleUsersController do
 
     context 'when the user has access' do
       before do
-        stub_sign_in(user)
+        stub_sign_in user
 
         allow(user).to receive(:can?)
           .with(:view_user_role_eligibility_on_paper, paper)
@@ -35,7 +35,7 @@ describe PaperRoleEligibleUsersController do
           .and_return eligible_users
       end
 
-      it { responds_with(200) }
+      it { is_expected.to responds_with(200) }
 
       it 'returns users who are eligible to be assigned to the provided role' do
         do_request
@@ -47,12 +47,13 @@ describe PaperRoleEligibleUsersController do
 
     context 'when the user does not have access' do
       before do
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view_user_role_eligibility_on_paper, paper)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 end

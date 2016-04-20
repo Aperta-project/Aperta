@@ -2,17 +2,19 @@ require 'rails_helper'
 
 describe TasksController, redis: true do
   let(:user) { FactoryGirl.create :user }
+  let(:journal) do
+    FactoryGirl.create(:journal).tap do |journal|
+      journal.roles.create!(name: Role::CREATOR_ROLE)
+      journal.roles.create!(name: Role::TASK_PARTICIPANT_ROLE)
+    end
+  end
   let!(:paper) do
     FactoryGirl.create(
       :paper,
-      :with_integration_journal,
       :with_tasks,
-      creator: user
+      creator: user,
+      journal: journal
     )
-  end
-
-  before do
-    sign_in user
   end
 
   describe "#index" do
@@ -56,12 +58,13 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -82,7 +85,8 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return true
       end
@@ -94,12 +98,13 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -121,7 +126,8 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -225,30 +231,27 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
   describe "GET 'show'" do
     let(:task) { FactoryGirl.create(:task) }
-    subject(:do_request) { get :show, { id: task.id, format: format } }
+    subject(:do_request) { get :show, { id: task.id, format: :json } }
     let(:format) { :json }
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
-      end
-
-      context "html requests" do
-        let(:format) { nil }
-        it_behaves_like "when the user is not signed in"
       end
 
       context "json requests" do
@@ -262,12 +265,13 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -287,7 +291,8 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -314,12 +319,13 @@ describe TasksController, redis: true do
 
     context "when the user does not have access" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { is_expected.to responds_with(403) }
     end
   end
 end

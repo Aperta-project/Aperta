@@ -792,6 +792,20 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   @staticmethod
+  def validate_profile_link_style(link):
+    """
+    Links valid in profile page
+    :param link: link to validate
+    """
+    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert link.value_of_css_property('background-color') == 'transparent', \
+        link.value_of_css_property('background-color')
+    assert link.value_of_css_property('color') == tahi_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('font-weight') == '700', link.value_of_css_property('font-weight')
+
+  @staticmethod
   def validate_default_link_hover_style(link):
     """
     Ensure consistency in rendering link hover across the application

@@ -8,7 +8,7 @@ from frontend.common_test import CommonTest
 from frontend.Pages.profile_page import ProfilePage
 
 """
-This test case validates the Aperta workflow page
+This test case validates the Aperta profile page
 """
 
 __author__ = 'sbassi@plos.org'

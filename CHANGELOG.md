@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Mentions in discussions are now case-insensitive
 ### Deprecated
 ### Removed
+- Sending of email to Academic Editor for completed review
 ### Fixed
 ### Security
 

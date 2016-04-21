@@ -65,10 +65,7 @@ Tahi::Application.routes.draw do
     resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
-        get 'admins/:paper_id', to: 'filtered_users#admins'
-        get 'editors/:paper_id', to: 'filtered_users#editors'
         get 'users/:paper_id', to: 'filtered_users#users'
-        get 'uninvited_users/:paper_id', to: 'filtered_users#uninvited_users'
       end
     end
     resources :formats, only: [:index]

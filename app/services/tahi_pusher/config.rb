@@ -4,29 +4,22 @@ module TahiPusher
 
     # injected into ember layout (ember.html.erb)
     # then loaded into ember client (pusher-override.coffee)
-    def self.as_json(options={})
+    def self.as_json(_ = {})
       {
-        auth_endpoint_path: auth_endpoint,
         enabled: true,
+        auth_endpoint_path:
+          Rails.application.routes.url_helpers.auth_event_stream_path,
         key: Pusher.key,
-        channels: default_channels
+        channels: [SYSTEM_CHANNEL]
       }.merge(socket_options)
     end
-
-    def self.auth_endpoint
-      Rails.application.routes.url_helpers.auth_event_stream_path
-    end
-
-    def self.default_channels
-      [SYSTEM_CHANNEL]
-    end
-
-
 
     def self.socket_options
       if defined?(PusherFake)
         PusherFake.configuration.socket_options
       elsif ENV.key?('PUSHER_SOCKET_URL')
+        # I believe this works because pusher has a standard host & port to use
+        # and does not require setting.
         {}
       else
         {

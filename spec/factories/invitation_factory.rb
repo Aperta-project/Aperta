@@ -10,6 +10,7 @@ FactoryGirl.define do
 
     after(:build) do |invitation, evaluator|
       invitation.email = evaluator.invitee.email if evaluator.invitee
+      invitation.body = "I invite you to..."
     end
 
     trait :invited do

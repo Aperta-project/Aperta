@@ -55,7 +55,6 @@ gem 'sort_alphabetical'
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'
-gem 'uglifier'
 gem 'unf'
 gem 'rsec'
 
@@ -71,6 +70,8 @@ gem 'yaml_db',
 gem 'has_secure_token'
 
 group :staging, :production do
+  # The dotenv binary is used to load our environment in staging & production
+  gem 'dotenv', require: false
   gem 'heroku-deflater'
   gem 'rails_12factor'
 end
@@ -93,13 +94,16 @@ end
 
 group :development do
   gem 'bullet'
+  gem 'capistrano-chruby'
+  gem 'capistrano-rails'
   gem 'foreman', require: false
+  gem 'hipchat'
   gem 'overcommit'
   gem 'rubocop'
 end
 
 group :staging do
-  gem 'mail_safe'
+  gem 'mail_safe', require: false
 end
 
 group :test do

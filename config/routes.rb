@@ -192,5 +192,5 @@ Tahi::Application.routes.draw do
   get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
                                                      as: :resource_proxy
   root to: 'ember_cli/ember#index'
-  mount_ember_app :tahi, to: '/'
+  mount_ember_app :client, to: '/'
 end

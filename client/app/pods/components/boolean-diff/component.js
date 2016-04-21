@@ -16,9 +16,5 @@ export default Ember.Component.extend({
     return this.boolText(this.get('comparisonBool'));
   }),
 
-  comparisonBoolDefined:
-    Ember.computed('comparisonBool', function() {
-      return (this.get('comparisonBool') === true ||
-              this.get('comparisonBool') === false);
-  })
+  comparisonBoolDefined: Ember.computed.notEmpty('comparisonBool')
 });

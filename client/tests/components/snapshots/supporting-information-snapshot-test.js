@@ -3,7 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 import registerDiffAssertions from 'tahi/tests/helpers/diff-assertions';
 
 moduleForComponent('supporting-information-snapshot',
-                   'Integration: supporting-information-snapshot-component',
+                   'Integration | Component | supporting information snapshot',
                    {integration: true,
                     beforeEach: function() {
                       registerDiffAssertions();

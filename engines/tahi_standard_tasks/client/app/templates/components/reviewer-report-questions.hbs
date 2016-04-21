@@ -15,15 +15,15 @@
   </li>
 
   <li class="question">
-      {{#nested-question-radio ident="reviewer_report--support_conclusions"
+      {{#nested-question-radio ident="reviewer_report--plos_biology_suitable"
                         owner=model
                         decision=decision
-                        helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
+                        helpText="<strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication' target='_blank'>referee</a> guidelines and comment on:</strong> <li>The novelty and significance of the work; <em>PLOS Biology</em> articles present significant advances in their field;</li> <li>The technical merit of the work, the quality of the data and depth of analysis; </li> <em>PLOS Biology</em> is committed to rigorous experimental and analytical design, and transparent reporting. <li>Please indicate if you feel the conclusions are well-supported with strong and well-controlled evidence. If not, but the manuscript can be revised to provide the required level of support, please indicate which of your proposed revisions would be essential to support the conclusions.</li><br> <li>If the manuscript does not meet the standards of <em>PLOS Biology</em>, we are interested in your opinion about its suitability for <em>PLOS ONE</em>. <em>PLOS ONE</em> articles are selected solely on evaluating whether the study was planned, performed and reported to high scientific and ethical standards, regardless of scope or impact of the work. <em>PLOS Biology</em> is committed to facilitate the transfer of suitable manuscripts to <em>PLOS ONE</em> to reduce redundant review cycles, and we appreciate your support. </li>"
                         wrapperClass="yes-no-with-comments"
                         readOnly=readOnly as |radio|}}
 
         {{#if radio.yieldingForAdditionalData}}
-          {{nested-question-textarea ident="reviewer_report--support_conclusions--explanation"
+          {{nested-question-textarea ident="reviewer_report--plos_biology_suitable--comment"
               owner=model
               decision=decision
               displayQuestionText=false

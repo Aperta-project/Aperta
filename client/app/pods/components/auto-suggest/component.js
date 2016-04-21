@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 /* Template:
- * {{#auto-suggest endpoint="/api/users"
+ * {{#auto-suggest endpoint="/api/filtered_users"
  *                 inputId="HTML input element id goes here"
  *                 inputName="HTML input element names goes here"
  *                 queryParameter="email"
@@ -43,7 +43,7 @@ export default Ember.Component.extend({
 
   /**
    *  Query tacked on end of endpoint
-   *  /api/users?email=
+   *  /api/filtered_users?email=
    *
    *  @property queryParameter
    *  @type String

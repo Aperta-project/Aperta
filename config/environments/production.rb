@@ -23,7 +23,7 @@ Tahi::Application.configure do
   config.serve_static_files = false
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -40,7 +40,7 @@ Tahi::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ENV['DISABLE_FORCE_SSL'].blank?
 
   # Set to :debug to see everything in the log.
   config.log_level = :info
@@ -91,9 +91,10 @@ Tahi::Application.configure do
     address: 'smtp.sendgrid.net',
     port: '587',
     authentication: :plain,
+    # Assume that foo.bar is the domain of www.foo.bar
+    domain: config.action_mailer.default_url_options[:host].split('.')[-2..-1].join('.'),
     user_name: ENV.fetch('SENDGRID_USERNAME'),
     password: ENV.fetch('SENDGRID_PASSWORD'),
-    domain: 'heroku.com',
     enable_starttls_auto: true
   }
 end

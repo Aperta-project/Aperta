@@ -5,9 +5,10 @@
 <div class="call-to-action">
   {{select-2-single class="collaborator-select"
                     name="collaborators"
+                    minimumInputLength=3
                     placeholder="Add collaborator"
                     selectionSelected="addNewCollaborator"
-                    source=formattedCollaborators
+                    remoteSource=select2RemoteSource
                     value=""}}
 
   <div class="overlay-action-buttons">
@@ -20,8 +21,7 @@
   {{#each collaborators as |collaborator|}}
     <li class="collaborator">
       <span class="avatar">{{user-thumbnail user=collaborator}}</span>
-      <span class="name">{{collaborator.fullName}}</span>
-      <span class="email">{{collaborator.email}}
+      <span class="name">{{collaborator.fullName}}
         <span class="delete-button fa fa-trash" {{action "removeCollaborator" collaborator}}>
         </span>
       </span>

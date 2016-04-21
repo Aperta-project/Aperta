@@ -1,9 +1,9 @@
-class AddCollaboratorsOverlay < PageFragment
+class AddCollaboratorsOverlay < CardOverlay
   text_assertions :collaborator, ".collaborator .name"
 
   def add_collaborators(*users)
     users.map(&:full_name).each do |name|
-      select2 name, css: '.collaborator-select'
+      select2 name, css: '.collaborator-select', search: true
     end
   end
 
@@ -18,9 +18,8 @@ class AddCollaboratorsOverlay < PageFragment
   end
 
   def remove_collaborators(*collaborators)
-    collaborators.map(&:email).each do |email|
-      node = first('.collaborator .email', text: email)
-      node.hover
+    collaborators.map(&:full_name).each do |name|
+      node = first('.collaborator .name', text: name)
       node.first('.delete-button').click
     end
   end

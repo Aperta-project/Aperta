@@ -8,7 +8,7 @@ class FeedbackMailer < ActionMailer::Base
 
     mail(
       from: user.email,
-      to: Rails.configuration.admin_email,
+      to: Rails.configuration.x.admin_email,
       subject: prefixed("#{app_name} Feedback"))
   end
 end

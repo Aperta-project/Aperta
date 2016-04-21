@@ -3,11 +3,12 @@ module TahiDevise
 
     def cas
       ned = auth[:extra]
+      downcased_email = ned[:emailAddress].strip.downcase
       user =
         if credential.present?
           credential.user
         else
-          User.find_or_create_by(email: ned[:emailAddress]).tap do |user|
+          User.find_or_create_by(email: downcased_email).tap do |user|
             user.credentials.build(uid: auth[:uid], provider: :cas)
           end
         end
@@ -15,7 +16,7 @@ module TahiDevise
       # update user profile with latest attributes from NED
       user.first_name = ned[:firstName]
       user.last_name = ned[:lastName]
-      user.email = ned[:emailAddress]
+      user.email = downcased_email
       user.username = ned[:displayName]
       user.auto_generate_password
       user.save!

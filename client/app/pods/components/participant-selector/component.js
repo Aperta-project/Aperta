@@ -62,6 +62,9 @@ ParticipantSelectorComponent = Ember.Component.extend({
     }
   },
 
+  //used to translate our participant into a full user later
+  foundParticipants: null,
+
   remoteSource: (function() {
     return {
       url: "/api/filtered_users/users/" + (this.get('paperId')) + "/",
@@ -74,6 +77,7 @@ ParticipantSelectorComponent = Ember.Component.extend({
       },
       results: (function(_this) {
         return function(data) {
+          _this.set('foundParticipants', data.filtered_users);
           data.filtered_users.sort(_this.sortByCollaboration);
           return {
             results: data.filtered_users
@@ -85,7 +89,7 @@ ParticipantSelectorComponent = Ember.Component.extend({
 
   actions: {
     addParticipant: function(newParticipant) {
-      return this.attrs.onSelect(newParticipant.id);
+      return this.attrs.onSelect(newParticipant, this.get('foundParticipants'));
     },
     removeParticipant: function(participant) {
       return this.attrs.onRemove(participant.id);

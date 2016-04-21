@@ -60,10 +60,10 @@ module('Integration: Reviewer Report', {
         ident: 'reviewer_report--competing_interests'
       }),
       Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--support_conclusions'
+        ident: 'reviewer_report--plos_biology_suitable'
       }),
       Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--support_conclusions--explanation'
+        ident: 'reviewer_report--plos_biology_suitable--comment'
       }),
       Factory.createRecord('NestedQuestion', {
         ident: 'reviewer_report--statistical_analysis'
@@ -157,9 +157,9 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
 
     assert.notOk(find('textarea[name=reviewer_report--competing_interests]').length, 'User cannot provide their competing interests statement');
 
-    assert.notOk(find('input[name*=reviewer_report--support_conclusions][type=radio][value=true]').length, 'User cannot provide yes response to technical competence');
-    assert.notOk(find('input[name*=reviewer_report--support_conclusions][type=radio][value=false]').length, 'User cannot provide no response to technical competence');
-    assert.notOk(find('textarea[name=reviewer_report--support_conclusions--explanation]').length, 'User cannot provide their review of technical competenence');
+    assert.notOk(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=true]').length, 'User cannot provide yes response to biology suitability');
+    assert.notOk(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=false]').length, 'User cannot provide no response to biology suitability');
+    assert.notOk(find('textarea[name=reviewer_report--plos_biology_suitable--comment]').length, 'User cannot provide their review of biology suitability');
 
     assert.notOk(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=true]').length, 'User cannot provide respond yes to statistical analysis');
     assert.notOk(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=false]').length, 'User cannot provide response no to statistical analysis');
@@ -189,9 +189,9 @@ test('Edit mode: Providing reviewer feedback', function(assert) {
 
     assert.ok(find('textarea[name=reviewer_report--competing_interests]').length == 1, 'User can provide their competing interests statement');
 
-    assert.ok(find('input[name*=reviewer_report--support_conclusions][type=radio][value=true]').length == 1, 'User can respond yes to technical competence');
-    assert.ok(find('input[name*=reviewer_report--support_conclusions][type=radio][value=false]').length == 1, 'User can respond no to technical competence');
-    assert.ok(find('textarea[name=reviewer_report--support_conclusions--explanation]').length == 1, 'User can provide their review of technical competenence');
+    assert.ok(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=true]').length == 1, 'User can respond yes to biology suitability');
+    assert.ok(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=false]').length == 1, 'User can respond no to biology suitability');
+    assert.ok(find('textarea[name=reviewer_report--plos_biology_suitable--comment]').length == 1, 'User can provide their review of biology suitability');
 
     assert.ok(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=true]').length == 1, 'User can provide respond yes to statistical analysis');
     assert.ok(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=false]').length == 1, 'User can provide response no to statistical analysis');

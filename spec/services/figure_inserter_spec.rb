@@ -9,6 +9,13 @@ describe FigureInserter do
       <p>Also doesn't matter</p>
     HTML
   end
+  let(:alternate_html) do
+    <<-HTML
+      <p>Doesn't matter</p>
+      <p id="only-for-testing">Figure 1: This is the caption</p>
+      <p>Also doesn't matter</p>
+    HTML
+  end
   let(:figure_inserter) { FigureInserter.new(raw_html, []) }
 
   describe "#call" do
@@ -36,6 +43,23 @@ describe FigureInserter do
                data-figure-rank="#{figure.rank}"
                src="#{figure.detail_src}">
           <p id="only-for-testing">Figure 1. This is the caption</p>
+          <p>Also doesn't matter</p>
+        HTML
+        expect(parse html).to be_equivalent_to(expected_tree)
+      end
+
+      it 'returns a document which has an img inserted before the caption allowing :' do
+        figure_inserter = FigureInserter.new(alternate_html, [figure])
+        allow(figure).to receive(:detail_src).and_return('/an/image.png')
+        html = figure_inserter.call
+        expect(html).to be_an_instance_of(String)
+        expected_tree = parse <<-HTML
+          <p>Doesn't matter</p>
+          <img class="paper-body-figure"
+               data-figure-id="#{figure.id}"
+               data-figure-rank="#{figure.rank}"
+               src="#{figure.detail_src}">
+          <p id="only-for-testing">Figure 1: This is the caption</p>
           <p>Also doesn't matter</p>
         HTML
         expect(parse html).to be_equivalent_to(expected_tree)

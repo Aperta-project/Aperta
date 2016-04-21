@@ -68,9 +68,9 @@ namespace :data do
             {
               type: TahiStandardTasks::ReviewerReportTask.name,
               from: "support_conclusions",
-              to: "reviewer_report--support_conclusions",
+              to: "reviewer_report--plos_biology_suitable",
               children: [
-                { from: "explanation", to: "reviewer_report--support_conclusions--explanation" },
+                { from: "explanation", to: "reviewer_report--plos_biology_suitable--comment" },
               ]
             },
             {

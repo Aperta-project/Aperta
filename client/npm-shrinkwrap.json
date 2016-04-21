@@ -2,6 +2,11 @@
   "name": "tahi",
   "version": "0.0.0",
   "dependencies": {
+    "bower": {
+      "version": "1.7.9",
+      "from": "bower@>=1.7.7 <2.0.0",
+      "resolved": "https://registry.npmjs.org/bower/-/bower-1.7.9.tgz"
+    },
     "broccoli-asset-rev": {
       "version": "2.4.2",
       "from": "https://registry.npmjs.org/broccoli-asset-rev/-/broccoli-asset-rev-2.4.2.tgz",

@@ -60,7 +60,7 @@ to prevent `.env` file loading.
 - Clone the [tahi-slanger](https://github.com/Tahi-project/tahi-slanger) github
   repository and follow the installation instructions
 
-- Make sure `EVENT_STREAM_KEY` and `EVENT_STREAM_SECRET` are set in your environment.
+- Make sure `PUSHER_URL` is set in your environment.
 
 When you run `foreman start`, slanger will start up as the event stream server.
 

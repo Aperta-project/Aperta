@@ -85,23 +85,6 @@
     "DEFAULT_MAILER_URL": {
       "required": true
     },
-    "EVENT_STREAM_API_HOST": {
-      "required": true
-    },
-    "EVENT_STREAM_API_PORT": {
-      "required": true
-    },
-    "EVENT_STREAM_APP_ID": {
-      "description": "A unique app id for connecting to slanger.  Prevents overlap between review apps.",
-      "required": true,
-      "generator": "secret"
-    },
-    "EVENT_STREAM_KEY": {
-      "required": true
-    },
-    "EVENT_STREAM_SECRET": {
-      "required": true
-    },
     "EVENT_STREAM_WS_HOST": {
       "required": true
     },
@@ -164,6 +147,9 @@
     },
     "PASSWORD_AUTH_ENABLED": "true",
     "PUMA_WORKERS": "1",
+    "PUSHER_URL": {
+      "required": true
+    },
     "PUSHER_VERBOSE_LOGGING": {
       "required": true
     },

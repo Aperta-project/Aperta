@@ -31,6 +31,9 @@ describe TaskEligibleUsersController do
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
+        allow(user).to receive(:can?)
+          .with(:search_academic_editors, task)
+          .and_return true
 
         allow(EligibleUserService).to receive(:eligible_users_for)
           .with(paper: paper, role: journal.academic_editor_role, matching: 'Kangaroo')
@@ -47,15 +50,35 @@ describe TaskEligibleUsersController do
     end
 
     context 'when the user does not have access' do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, task)
-          .and_return false
-        do_request
+      context 'the user can edit the task but does not have permission to search' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return true
+          allow(user).to receive(:can?)
+            .with(:search_academic_editors, task)
+            .and_return false
+
+          do_request
+        end
+        it { is_expected.to responds_with(403) }
+      end
+      context 'the user has permission to search but cannot edit the task' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return false
+          allow(user).to receive(:can?)
+            .with(:search_academic_editors, task)
+            .and_return true
+
+          do_request
+        end
+        it { is_expected.to responds_with(403) }
       end
 
-      it { is_expected.to responds_with(403) }
     end
   end
 
@@ -85,6 +108,9 @@ describe TaskEligibleUsersController do
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
+        allow(user).to receive(:can?)
+          .with(:search_admins, task)
+          .and_return true
 
         allow(EligibleUserService).to receive(:eligible_users_for)
           .with(paper: paper, role: journal.staff_admin_role, matching: 'Kangaroo')
@@ -101,15 +127,34 @@ describe TaskEligibleUsersController do
     end
 
     context 'when the user does not have access' do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, task)
-          .and_return false
-        do_request
-      end
+      context 'the user can edit the task but does not have permission to search' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return true
+          allow(user).to receive(:can?)
+            .with(:search_admins, task)
+            .and_return false
 
-      it { is_expected.to responds_with(403) }
+          do_request
+        end
+        it { is_expected.to responds_with(403) }
+      end
+      context 'the user has permission to search but cannot edit the task' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return false
+          allow(user).to receive(:can?)
+            .with(:search_admins, task)
+            .and_return true
+
+          do_request
+        end
+        it { is_expected.to responds_with(403) }
+      end
     end
   end
   describe "#reviewers" do
@@ -134,6 +179,9 @@ describe TaskEligibleUsersController do
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
+        allow(user).to receive(:can?)
+          .with(:search_reviewers, task)
+          .and_return true
         allow(User).to receive(:fuzzy_search)
           .with('Kangaroo')
           .and_return eligible_users
@@ -150,15 +198,34 @@ describe TaskEligibleUsersController do
     end
 
     context 'when the user does not have access' do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, task)
-          .and_return false
-        do_request
-      end
+      context 'the user can edit the task but does not have permission to search' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return true
+          allow(user).to receive(:can?)
+            .with(:search_reviewers, task)
+            .and_return false
 
-      it { is_expected.to responds_with(403) }
+          do_request
+        end
+        it { is_expected.to responds_with(403) }
+      end
+      context 'the user has permission to search but cannot edit the task' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return false
+          allow(user).to receive(:can?)
+            .with(:search_reviewers, task)
+            .and_return true
+
+          do_request
+        end
+        it { is_expected.to responds_with(403) }
+      end
     end
   end
 end

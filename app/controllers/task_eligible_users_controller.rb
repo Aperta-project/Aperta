@@ -9,6 +9,7 @@ class TaskEligibleUsersController < ApplicationController
 
   def academic_editors
     requires_user_can(:edit, task)
+    requires_user_can(:search_academic_editors, task)
     eligible_users = EligibleUserService.eligible_users_for(
       paper: task.paper,
       role: task.paper.journal.academic_editor_role,
@@ -23,6 +24,7 @@ class TaskEligibleUsersController < ApplicationController
 
   def admins
     requires_user_can(:edit, task)
+    requires_user_can(:search_admins, task)
     eligible_users = EligibleUserService.eligible_users_for(
       paper: task.paper,
       role: task.paper.journal.staff_admin_role,
@@ -37,6 +39,7 @@ class TaskEligibleUsersController < ApplicationController
 
   def reviewers
     requires_user_can(:edit, task)
+    requires_user_can(:search_reviewers, task)
     users = User.fuzzy_search params[:query]
     respond_with(
       find_uninvited_users(users, task.paper),

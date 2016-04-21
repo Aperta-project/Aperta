@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PlosBioTechCheck::InitialTechCheckController do
+describe PlosBioTechCheck::FinalTechCheckController do
   routes { PlosBioTechCheck::Engine.routes }
   let(:admin) { create :user, :site_admin, first_name: "Admin" }
   let(:paper) do
@@ -11,10 +11,10 @@ describe PlosBioTechCheck::InitialTechCheckController do
       creator: admin
     )
   end
-  let(:task) { create :initial_tech_check_task, paper: paper }
+  let(:task) { create :final_tech_check_task, paper: paper }
 
   before do
-    task.body["initialTechCheckBody"] = "words"
+    task.body["finalTechCheckBody"] = "words"
     sign_in admin
   end
 

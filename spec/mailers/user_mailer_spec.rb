@@ -167,40 +167,6 @@ describe UserMailer, redis: true do
     end
   end
 
-  describe '#notify_academic_editor_of_paper_resubmission' do
-    let(:author) { FactoryGirl.create(:user) }
-    let(:editor) { FactoryGirl.create(:user) }
-    let(:paper) do
-      FactoryGirl.create(:paper, :submitted, :with_integration_journal, creator: author)
-    end
-    let(:email) do
-      UserMailer.notify_academic_editor_of_paper_resubmission(
-        paper.id,
-        editor.id
-      )
-    end
-
-    before do
-      assign_academic_editor_role(paper, editor)
-    end
-
-    it "send email to the paper's editor" do
-      expect(email.to).to eq [editor.email]
-    end
-
-    it "specify subject line" do
-      expect(email.subject).to eq "The manuscript, \"#{paper.display_title}\" has been resubmitted"
-    end
-
-    it "tells the editor paper has been (re)submitted" do
-      expect(email.body).to include "Hello #{editor.first_name}"
-      expect(email.body).to include "A new version has been submitted"
-      expect(email.body).to include paper.title
-      expect(email.body).to include client_paper_url(paper)
-      expect(email.body).to include paper.journal.name
-    end
-  end
-
   describe '#notify_admin_of_paper_submission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:admin) { FactoryGirl.create(:user) }

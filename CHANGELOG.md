@@ -2,16 +2,16 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## [1.4.4] - 2016-04-05
 ### Added
 - Added a loading state for manuscript conversion
+- Authors card supports diffing
 ### Changed
 - Mentions in discussions are now case-insensitive
-### Deprecated
 ### Removed
 - Sending of email to Academic Editor for completed review
 ### Fixed
-### Security
+- Problem with discussion reply attribution not showing up
 
 ## [1.4.3] - 2016-04-05
 ### Added

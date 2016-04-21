@@ -24,7 +24,7 @@ module TahiPusher
 
 
     def self.socket_options
-      if Rails.env.test?
+      if defined?(PusherFake)
         PusherFake.configuration.socket_options
       elsif ENV.key?('PUSHER_SOCKET_URL')
         {}

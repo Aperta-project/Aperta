@@ -277,6 +277,12 @@ E.G.
 heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020
 ```
 
+# Deploying Aperta
+
+Please see the
+[Release Information page on confluence](https://developer.plos.org/confluence/display/TAHI/Release+Information)
+for information on how to deploy aperta
+
 # Documentation
 
 To generate documentation, run the following command from the application root:

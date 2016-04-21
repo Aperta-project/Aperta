@@ -26,10 +26,6 @@ module TahiPusher
       ENV["PUSHER_ENABLED"] != "false"
     end
 
-    def self.verbose_logging?
-      # detailed rails server logs will be recorded for pusher communication
-      ENV["PUSHER_VERBOSE_LOGGING"] == "true"
-    end
 
     def self.socket_options
       if Rails.env.test?

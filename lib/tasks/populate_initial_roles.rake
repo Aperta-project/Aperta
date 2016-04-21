@@ -7,8 +7,11 @@ namespace :data do
       if args[:csv_url].present?
         CSV.parse(open(args[:csv_url]), row_sep: :auto, headers: :first_row) do |csv|
           if csv["Email"] && csv["Role"]
+            csv["Email"] = csv["Email"].strip.downcase
             user = User.find_or_create_by(email: csv['Email'])
             user.username = csv["Email"].split('@').first.delete('.')
+            user.first_name = csv["Name"].split.first if csv["Name"].split.count == 2
+            user.last_name = csv["Name"].split.last if csv["Name"].split.count == 2
             user.auto_generate_password
             user.save
             roles = csv["Role"].split(',')

@@ -62,26 +62,32 @@ describe TahiDevise::OmniauthCallbacksController do
 
     context "an existing cas user logs into plos", vcr: { cassette_name: 'ned' } do
 
-      let(:user) { FactoryGirl.create(:user, :cas, password: "abcd1234", password_confirmation: "abcd1234") }
+      let(:user) { FactoryGirl.create(:user, :cas, email: 'email@example.com', password: "abcd1234", password_confirmation: "abcd1234") }
       let(:credential) { user.credentials.first }
 
-      before(:each) do
+      it "will not autogenerate a password" do
         allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return(auth_hash)
         allow_any_instance_of(User).to receive(:password_required?).and_return(false)
-      end
-
-      it "will not autogenerate a password" do
         prev_password = user.encrypted_password
         get :cas
         expect(user.reload.encrypted_password).to eq(prev_password)
       end
 
       it "will redirect to dashboard" do
+        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return(auth_hash)
+        allow_any_instance_of(User).to receive(:password_required?).and_return(false)
         get :cas
         expect(response).to redirect_to root_path
       end
+
+      it "will find a credentialless user even when NED sends mixed case emails" do
+        auth_hash = { provider: :cas, uid: cas_id, extra: { firstName: "Bill", lastName: "Jones", emailAddress: "eMail@example.com", displayName: "bjones" } }
+        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return(auth_hash)
+        user.credentials.destroy_all
+        get :cas
+        expect(response).to redirect_to root_path
+        expect(user.credentials.count).to eq(1)
+      end
     end
-
   end
-
 end

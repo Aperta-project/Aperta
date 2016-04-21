@@ -8,5 +8,10 @@ if TahiPusher::Config.enabled?
     Pusher.host = ENV.fetch("EVENT_STREAM_API_HOST")
     Pusher.port = ENV.fetch("EVENT_STREAM_API_PORT").to_i
   end
+
+  if ConfigHelper.read_boolean_env('DISABLE_PUSHER_SSL_VERIFICATION')
+    Pusher.default_client.sync_http_client.ssl_config.verify_mode =
+      OpenSSL::SSL::VERIFY_NONE
+  end
   Pusher.logger = Rails.logger
 end

@@ -6,8 +6,8 @@ module TahiPusher
     # then loaded into ember client (pusher-override.coffee)
     def self.as_json(options={})
       {
-        enabled: enabled?,
         auth_endpoint_path: auth_endpoint,
+        enabled: true,
         key: Pusher.key,
         channels: default_channels
       }.merge(socket_options)
@@ -21,10 +21,6 @@ module TahiPusher
       [SYSTEM_CHANNEL]
     end
 
-    def self.enabled?
-      # assume enabled even if environment variable is not set
-      ENV["PUSHER_ENABLED"] != "false"
-    end
 
 
     def self.socket_options

@@ -47,15 +47,11 @@ describe JournalFactory do
       )
     end
 
-    it 'creates a new journal' do
+    it 'creates a new journal with the given params' do
       expect do
-        JournalFactory.create(name: 'Journal of the Stars')
+        journal = JournalFactory.create(name: 'Journal of the Stars')
+        expect(journal.name).to eq('Journal of the Stars')
       end.to change(Journal, :count).by(1)
-    end
-
-    it 'uses the given params to create the new journal' do
-      journal = JournalFactory.create(name: 'Journal of the Stars')
-      expect(journal.name).to eq('Journal of the Stars')
     end
 
     context 'creating the default roles and permission for the journal' do

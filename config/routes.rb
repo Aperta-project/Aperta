@@ -145,7 +145,7 @@ Tahi::Application.routes.draw do
       namespace :eligible_users, module: nil do
         get 'admins', to: 'task_eligible_users#admins'
         get 'academic_editors', to: 'task_eligible_users#academic_editors'
-        get 'uninvited_users', to: 'task_eligible_users#uninvited_users'
+        get 'reviewers', to: 'task_eligible_users#reviewers'
       end
     end
     resources :task_templates

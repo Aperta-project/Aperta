@@ -112,11 +112,11 @@ describe TaskEligibleUsersController do
       it { is_expected.to responds_with(403) }
     end
   end
-  describe "#uninvited_users" do
+  describe "#reviewers" do
     let(:journal) { FactoryGirl.create(:journal) }
     subject(:do_request) do
       get(
-        :uninvited_users,
+        :reviewers,
         format: 'json',
         task_id: task.to_param,
         query: 'Kangaroo'

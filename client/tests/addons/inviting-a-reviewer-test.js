@@ -37,7 +37,7 @@ module("Integration: Inviting a reviewer", {
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
     $.mockjax({
-      url: /api\/tasks\/\d+\/eligible_users\/uninvited_users/,
+      url: /api\/tasks\/\d+\/eligible_users\/reviewers/,
       type: 'GET',
       status: 200,
       contentType: "application/json",

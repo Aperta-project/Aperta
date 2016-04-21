@@ -6,7 +6,7 @@ const { computed } = Ember;
 
 export default TaskComponent.extend({
   autoSuggestSourceUrl: computed('task.id', function() {
-    return eligibleUsersPath(this.get('task.id'), 'uninvited_users');
+    return eligibleUsersPath(this.get('task.id'), 'reviewers');
   }),
 
   selectedReviewer: null,

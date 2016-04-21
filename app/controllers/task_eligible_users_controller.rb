@@ -35,7 +35,7 @@ class TaskEligibleUsersController < ApplicationController
     )
   end
 
-  def uninvited_users
+  def reviewers
     requires_user_can(:edit, task)
     users = User.fuzzy_search params[:query]
     respond_with(

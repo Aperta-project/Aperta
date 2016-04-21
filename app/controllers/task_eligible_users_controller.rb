@@ -16,7 +16,7 @@ class TaskEligibleUsersController < ApplicationController
     )
     respond_with(
       find_uninvited_users(eligible_users, task.paper),
-      each_serializer: SelectableUserSerializer,
+      each_serializer: SensitiveInformationUserSerializer,
       root: :users
     )
   end
@@ -30,7 +30,7 @@ class TaskEligibleUsersController < ApplicationController
     )
     respond_with(
       find_uninvited_users(eligible_users, task.paper),
-      each_serializer: SelectableUserSerializer,
+      each_serializer: SensitiveInformationUserSerializer,
       root: :users
     )
   end
@@ -40,7 +40,7 @@ class TaskEligibleUsersController < ApplicationController
     users = User.fuzzy_search params[:query]
     respond_with(
       find_uninvited_users(users, task.paper),
-      each_serializer: SelectableUserSerializer,
+      each_serializer: SensitiveInformationUserSerializer,
       root: :users
     )
   end

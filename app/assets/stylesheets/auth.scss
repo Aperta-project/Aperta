@@ -106,12 +106,19 @@ a {
 }
 
 .auth-container {
-  @include flex(0 1 auto);
   padding: 0 60px 35px 60px;
   background: rgba(255,255,255, 0.95);
-  @include display(flex);
-  @include flex-flow(row wrap);
-  @include justify-content(center);
+
+  .methods {
+    @include flex(0 1 auto);
+    @include display(flex);
+    @include flex-flow(row wrap);
+    @include justify-content(center);
+  }
+
+  .logo {
+    text-align: center;
+  }
 
   h1 {
     @include flex(0 0 100%);

@@ -64,15 +64,12 @@ class FigureInserter
 
   def find_caption_node(figure_id)
     return unless figure_id.is_a? Numeric
-    possible_matches = [
-      "Figure #{figure_id}.",
-      "Figure #{figure_id}:",
-      "Figure #{figure_id}-", # hyphen
-      "Figure #{figure_id}—", # n-dash
-      "Figure #{figure_id}–", # m-dash
-      "Fig #{figure_id}.",
-      "Fig. #{figure_id}."
-    ]
+    figure_names = ["Figure #{figure_id}",
+                    "Fig #{figure_id}",
+                    "Fig. #{figure_id}"]
+    delimiters = %w(. : - - –) # period, colon, hyphen, n-dash, m-dash
+    possible_matches = figure_names.product(delimiters).map(&:join)
+
     selectors = possible_matches.flat_map do |match_test|
       ["p[text()^='#{match_test}']",
        "p [text()^='#{match_test}']"]

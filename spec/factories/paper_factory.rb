@@ -3,6 +3,7 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     journal
+    doi { DoiService.new(journal: journal).next_doi if journal }
 
     trait :with_integration_journal do
       association :journal, factory: :journal_with_roles_and_permissions

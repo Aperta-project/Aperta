@@ -11,7 +11,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :description,
              :doi_publisher_prefix,
              :doi_journal_prefix,
-             :last_doi_issued,
+             :first_doi_number,
              :paper_count,
              :created_at
   has_many :manuscript_manager_templates, embed: :ids, include: true

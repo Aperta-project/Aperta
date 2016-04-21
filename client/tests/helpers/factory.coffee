@@ -247,7 +247,7 @@ FactoryAttributes.Journal =
   manuscript_css: null
   doi_publisher_prefix: null
   doi_journal_prefix: null
-  last_doi_issued: null
+  first_doi_number: null
 
 FactoryAttributes.AdminJournal =
   _rootKey: 'admin_journal'
@@ -261,7 +261,7 @@ FactoryAttributes.AdminJournal =
   manuscript_css: null
   doi_publisher_prefix: null
   doi_journal_prefix: null
-  last_doi_issued: null
+  first_doi_number: null
 
 FactoryAttributes.OldRole =
   _rootKey: 'old_role'

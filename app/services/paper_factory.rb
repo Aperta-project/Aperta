@@ -16,6 +16,7 @@ class PaperFactory
   end
 
   def create
+    paper.doi = DoiService.new(journal: paper.journal).next_doi if paper.journal
     Paper.transaction do
       return unless paper.valid?
         if template

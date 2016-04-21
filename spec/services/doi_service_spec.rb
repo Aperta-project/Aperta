@@ -3,7 +3,7 @@ require 'rails_helper'
 describe DoiService do
 
   let(:journal_doi) do
-    [journal[:doi_publisher_prefix], journal[:doi_journal_prefix]].join('/') + "." + journal[:last_doi_issued]
+    [journal[:doi_publisher_prefix], journal[:doi_journal_prefix]].join('/') + "." + journal[:first_doi_number]
   end
 
   describe ".valid?" do
@@ -44,13 +44,6 @@ describe DoiService do
   end
 
   describe "initialization" do
-    context "with a journal" do
-      let(:journal) { create :journal, :with_doi }
-      it "assigns a journal as @journal" do
-        expect(described_class.new(journal: journal).journal).to eq journal
-      end
-    end
-
     context "with nil argument passed as a journal" do
       it "raises an exception" do
         expect {
@@ -58,87 +51,90 @@ describe DoiService do
         }.to raise_error ArgumentError, "Journal is required"
       end
     end
-
   end
 
-  describe "method delegation" do
-    context "with a journal" do
-      let!(:journal) { Journal.new }
-
-      def ensure_delegated method
-        expect(journal.respond_to? method).to eq true
-        mock_journal = instance_double(Journal, method => 123)
-        expect(mock_journal).to receive(method)
-        expect(
-          described_class.new(journal: mock_journal).public_send method
-        ).to eq 123
-      end
-
-      describe "last_doi_issued" do
-        it "delegates to journal" do
-          ensure_delegated :last_doi_issued
-        end
-
-        describe "doi_publisher_prefix" do
-          it "delegates to journal" do
-            ensure_delegated :doi_publisher_prefix
-          end
-        end
-
-        describe "doi_journal_prefix" do
-          it "delegates to journal" do
-            ensure_delegated :doi_journal_prefix
-          end
-        end
-      end
-    end
-  end
-
-  describe "#to_s" do
-    context "with a publisher_prefix/journal_prefix.next_doi_id" do
+  describe "#first_doi" do
+    context "with a publisher_prefix/journal_prefix.first_doi_number" do
       let(:journal) { create :journal }
 
       it "returns a properly-formatted doi string" do
-        expect(described_class.new(journal: journal).to_s).to eq journal_doi
+        expect(described_class.new(journal: journal).first_doi).to eq journal_doi
       end
     end
   end
 
-  describe "#next_doi!" do
-    let(:journal) { create :journal, :with_doi }
+  describe "#last_doi" do
+    let(:journal) do
+      create :journal,
+             doi_publisher_prefix: "10.1371",
+             doi_journal_prefix: "pwom"
+    end
     let(:doi_service) { DoiService.new(journal: journal) }
 
-    it "assigns the next available doi to the journal" do
-      last_doi_issued = journal.last_doi_issued
-      expect {
-        doi_service.next_doi!
-      }.to change(journal, :last_doi_issued)
-        .from(last_doi_issued)
-        .to(last_doi_issued.succ)
-    end
+    context "there are papers with the journal" do
+      let!(:first_paper) do
+        create(:paper, journal: journal, doi: "10.1371/pwom.1")
+      end
+      let!(:last_paper) do
+        create(:paper, journal: journal, doi: "10.1371/pwom.2")
+      end
+      let!(:other_journals_paper) do
+        create(:paper, journal: journal, doi: "10.1371/pzzz.3")
+      end
 
-    context "when assignment is successful" do
-      it "returns true" do
-        expect(doi_service.next_doi!).to eq journal_doi
+      it "returns the highest doi with the journal's base doi" do
+        expect(last_paper.doi).to be_present
+        expect(doi_service.last_doi).to eq last_paper.doi
       end
     end
 
-    context "when doi assignment fails" do
-      context "when the publisher prefix is not set" do
-        it "returns nil" do
-          journal.update_attributes(doi_publisher_prefix: nil)
-          expect(doi_service.next_doi!).to eq nil
-        end
+    context "there are no papers with the journal" do
+      let!(:other_journals_paper) do
+        create(:paper, journal: journal, doi: "10.1371/pzzz.3")
       end
 
-      context "when the journal prefix is not set" do
-        it "returns nil" do
-          journal.update_attributes(doi_journal_prefix: nil)
-          expect(doi_service.next_doi!).to eq nil
-        end
+      it "returns nil when it finds no papers" do
+        expect(doi_service.last_doi).to be_nil
       end
     end
-
   end
 
+  describe "#next_doi" do
+    let(:journal) do
+      create :journal,
+             doi_publisher_prefix: "10.1371",
+             doi_journal_prefix: "pwom",
+             first_doi_number: "000001"
+    end
+    let(:doi_service) { DoiService.new(journal: journal) }
+
+    context "there are papers with the journal" do
+      let!(:paper) do
+        create(:paper, journal: journal, doi: "10.1371/pwom.0001")
+      end
+
+      it "returns the next available doi" do
+        expect(doi_service.next_doi).to eq "10.1371/pwom.0002"
+      end
+    end
+
+    context "there are no papers with the journal's base doi" do
+      it "returns the first doi for the journal's doi pattern" do
+        expect(doi_service.last_doi).to be_nil
+        expect(doi_service.next_doi).to eq '10.1371/pwom.000001'
+      end
+    end
+
+    context "there is a paper with a maximal doi" do
+      let!(:paper) do
+        create(:paper, journal: journal, doi: "10.1371/pwom.9999")
+      end
+
+      it "fails" do
+        expect do
+          doi_service.next_doi
+        end.to raise_error DoiService::DoiLengthChanged
+      end
+    end
+  end
 end

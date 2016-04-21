@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PaperFactory do
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions, :with_doi) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")

@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     this._super(controller, model);
     controller.set(
       'doiStartNumberEditable',
-      Ember.isEmpty(model.get('lastDoiIssued'))
+      Ember.isEmpty(model.get('firstDoiNumber'))
     );
     this.fetchAdminJournalUsers(model.get('id'));
   },

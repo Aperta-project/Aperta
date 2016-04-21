@@ -29,27 +29,27 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   formattedDOI: Ember.computed(
-    'doiPublisherPrefix', 'doiJournalPrefix', 'lastDoiIssued', function() {
+    'doiPublisherPrefix', 'doiJournalPrefix', 'firstDoiNumber', function() {
       if (this.get('doiInvalid')) { return ''; }
 
       const publisher = this.get('doiPublisherPrefix');
       const journal = this.get('doiJournalPrefix');
-      const start = this.get('lastDoiIssued');
+      const start = this.get('firstDoiNumber');
       const dot = Ember.isEmpty(journal) ? '' : '.';
       return publisher + '/' + journal + dot + start;
     }
   ),
 
-  doiInvalid: Ember.computed('doiPublisherPrefix', 'lastDoiIssued', function() {
+  doiInvalid: Ember.computed('doiPublisherPrefix', 'firstDoiNumber', function() {
     const noPubPrefix = Ember.isEmpty(this.get('doiPublisherPrefix'));
-    const noLastDoi = Ember.isEmpty(this.get('lastDoiIssued'));
+    const noLastDoi = Ember.isEmpty(this.get('firstDoiNumber'));
     const invalid = this.get('doiStartNumberInvalid');
 
     return noPubPrefix || noLastDoi || invalid;
   }),
 
-  doiStartNumberInvalid: Ember.computed('lastDoiIssued', function() {
-    return !$.isNumeric(this.get('lastDoiIssued')) &&
+  doiStartNumberInvalid: Ember.computed('firstDoiNumber', function() {
+    return !$.isNumeric(this.get('firstDoiNumber')) &&
            !Ember.isEmpty(this.get('doiStartNumber'));
   }),
 

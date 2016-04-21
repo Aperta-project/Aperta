@@ -3,7 +3,11 @@ class ManualSeeds # Use this class to run seeds the old way
   def self.run
     Rake::Task['db:schema:load'].invoke
     # Create Journal
-    plos_journal = Journal.first_or_create!(name: 'PLOS Biology', logo: '', doi_publisher_prefix: "10.1371", doi_journal_prefix: "pbio", last_doi_issued: "0000001")
+    plos_journal = Journal.first_or_create! name: 'PLOS Biology',
+                                            logo: '',
+                                            doi_publisher_prefix: "10.1371",
+                                            doi_journal_prefix: "pbio",
+                                            first_doi_number: "0000001"
 
     Rake::Task['roles-and-permissions:seed'].invoke
     Rake::Task['data:update_journal_task_types'].invoke

@@ -10,39 +10,12 @@ feature "Paper DOI Generation", selenium: true, js: true do
       visit "/"
     end
 
-    context "on a journal without a doi prefix set" do
-      let(:journal) do
-        FactoryGirl.create(
-          :journal,
-          :with_roles_and_permissions,
-          doi_publisher_prefix: nil,
-          doi_journal_prefix: nil,
-          last_doi_issued: nil
-        )
-      end
-
-      let(:paper_type) {
-        journal.manuscript_manager_templates.pluck(:paper_type).first
-      }
-
-      let(:paper) {
-        FactoryGirl.create(:paper, journal: journal, paper_type: paper_type)
-      }
-
-      scenario "it doesn't contain any doi artifacts" do
-        visit "/papers/#{paper.id}"
-        within "#paper-container" do
-          expect(page).to_not have_text("Manuscript ID")
-        end
-      end
-    end
-
     context "on a journal with a doi prefix set" do
       let(:journal) {
         FactoryGirl.create :journal, :with_roles_and_permissions,
         doi_publisher_prefix: 'vicious',
         doi_journal_prefix: 'robots',
-        last_doi_issued: '8887'
+        first_doi_number: '8888'
       }
 
       let(:paper_type) {

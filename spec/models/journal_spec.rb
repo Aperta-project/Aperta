@@ -12,9 +12,6 @@ describe Journal do
     end
 
     it "still valid" do
-      expect(@journal.doi_publisher_prefix).to eq nil
-      expect(@journal.doi_journal_prefix).to eq nil
-      expect(@journal.last_doi_issued).to eq "0"
       expect(@journal.save!).to eq true
     end
   end
@@ -40,14 +37,14 @@ describe Journal do
 
   describe "DOI" do
     before do
-      @journal = build(:journal, :with_doi)
+      @journal = build(:journal)
       @journal.save!
     end
 
     it "can be created" do
       expect(@journal.doi_publisher_prefix).to be_truthy
-      expect(@journal.doi_journal_prefix).to   be_truthy
-      expect(@journal.last_doi_issued).to      be_truthy
+      expect(@journal.doi_journal_prefix).to be_truthy
+      expect(@journal.first_doi_number).to be_truthy
     end
 
     it "will not save invalid DOI publisher prefix" do

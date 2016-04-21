@@ -27,7 +27,8 @@ module("Integration: Inviting an editor", {
 
     inviteeEmail = window.currentUserData.user.email;
     $.mockjax({
-      url: /\/api\/filtered_users/,
+      url: /api\/tasks\/\d+\/eligible_users\/academic_editors/,
+      type: 'GET',
       status: 200,
       contentType: "application/json",
       responseText: {

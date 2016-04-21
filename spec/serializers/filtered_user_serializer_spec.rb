@@ -6,7 +6,7 @@ require 'rails_helper'
 #
 # https://relishapp.com/rspec/rspec-mocks/v/3-0/docs/verifying-doubles/dynamic-classes
 
-class FilteredUserSerializer 
+class FakeFilteredUserSerializer  < FilteredUserSerializer
   def current_user
     super
   end
@@ -22,7 +22,7 @@ describe FilteredUserSerializer do
 
   let(:serialized_data) do
     ActiveModel::ArraySerializer.new(users,
-      each_serializer: FilteredUserSerializer,
+      each_serializer: FakeFilteredUserSerializer,
       paper_id: paper.id).to_json
   end
 
@@ -38,7 +38,7 @@ describe FilteredUserSerializer do
     create :paper_role, :reviewer, user: reviewer, paper: paper
     create :paper_role, :collaborator, user: collaborator, paper: paper
 
-    allow_any_instance_of(FilteredUserSerializer).to receive(:current_user).and_return(user)
+    allow_any_instance_of(FakeFilteredUserSerializer).to receive(:current_user).and_return(user)
   end
 
   context "user is site admin" do

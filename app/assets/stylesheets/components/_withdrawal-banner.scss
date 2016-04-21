@@ -3,11 +3,11 @@
 
 .withdrawal-banner {
   position: relative;
-  top: 60px;
   height: 45px;
   color: white;
   line-height: 45px;
   text-align: center;
+  z-index: z('withdrawal-banner');
   background-color: $tahi-grey-dark;
 
   .button-secondary {

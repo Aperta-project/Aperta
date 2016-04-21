@@ -7,28 +7,31 @@
                     supportedDownloadFormats=supportedDownloadFormats
                     versionsVisible=versioningMode}}
 
-{{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
 {{#paper-submission-process showProcess=showSubmissionProcess
                             model=model
                             toggle=(action "toggleSubmissionProcess")}}
-  {{#split-pane id="paper-container"
-                handleClass="manuscript-handle"}}
-    {{#split-pane-element class="manuscript-pane"}}
-      <div class="manuscript-container">
-        {{flash-messages}}
-        {{paper-display paper=model}}
-      </div>
-    {{/split-pane-element}}
+  <div id="paper-container">
+    {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
-    {{#split-pane-element}}
-      {{paper-sidebar paper=model
-                      user=currentUser
-                      commentLooks=commentLooks
-                      showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
-                      toggleSubmissionProcess=(action "toggleSubmissionProcess")}}
-    {{/split-pane-element}}
-  {{/split-pane}}
+    {{#split-pane
+                  handleClass="manuscript-handle"}}
+      {{#split-pane-element class="manuscript-pane"}}
+        <div class="manuscript-container">
+          {{flash-messages}}
+          {{paper-display paper=model}}
+        </div>
+      {{/split-pane-element}}
+
+      {{#split-pane-element}}
+        {{paper-sidebar paper=model
+                        user=currentUser
+                        commentLooks=commentLooks
+                        showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
+                        toggleSubmissionProcess=(action "toggleSubmissionProcess")}}
+      {{/split-pane-element}}
+    {{/split-pane}}
+  </div>
 {{/paper-submission-process}}
 
 {{outlet}}

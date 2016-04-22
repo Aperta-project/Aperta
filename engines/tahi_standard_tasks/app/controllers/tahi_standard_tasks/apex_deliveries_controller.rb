@@ -5,10 +5,11 @@ module TahiStandardTasks
   #
   class ApexDeliveriesController < ::ApplicationController
     before_action :authenticate_user!
-    before_action :enforce_policy
+
     respond_to :json
 
     def create
+      requires_user_can(:send_to_apex, task.paper)
       ApexService.delay(retry: false)
         .make_delivery(apex_delivery_id: apex_delivery.id)
 
@@ -16,6 +17,7 @@ module TahiStandardTasks
     end
 
     def show
+      requires_user_can(:send_to_apex, apex_delivery.paper)
       render json: apex_delivery
     end
 
@@ -39,10 +41,6 @@ module TahiStandardTasks
             task: task,
             user: current_user)
         end
-    end
-
-    def enforce_policy
-      authorize_action!(resource: apex_delivery)
     end
   end
 end

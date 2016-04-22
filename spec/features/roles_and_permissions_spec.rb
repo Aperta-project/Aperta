@@ -1,321 +1,64 @@
 require 'rails_helper'
 
-feature 'author roles', js: true do
-  let!(:user) { FactoryGirl.create :user }
-  let!(:first_paper) { create :paper, :with_integration_journal, :with_creator, creator: user }
-  let!(:reviewer) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:dashboard) { DashboardPage.new }
+feature 'Task states permissions', js: true do
+  let(:submitted_paper) { FactoryGirl.create(:paper, :with_integration_journal, :submitted) }
+  let(:submitted_paper_author) { User.first }
+  let(:unsubmitted_paper) { FactoryGirl.create(:paper, :unsubmitted, journal: Journal.first) }
+  let(:unsubmitted_paper_author) { unsubmitted_paper.creator }
+  let(:staff_admin) { FactoryGirl.create(:user) }
+  let(:task) { FactoryGirl.create(:data_availability_task, paper: submitted_paper) }
+  let(:unsubmitted_paper_task) { FactoryGirl.create(:data_availability_task, paper: unsubmitted_paper) }
 
-  let!(:mmt) do
-    FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
-      phase = mmt.phase_templates.create!(name: "First Phase")
-      mmt.phase_templates.create!(name: "Phase With No Tasks")
-      # Add any tasks you want to add to the first phase below
-      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask, PlosBilling::BillingTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
-      journal.manuscript_manager_templates = [mmt]
-      journal.save!
-    end
+  before do
+    task.add_participant(submitted_paper_author)
+    task.update_column(:completed, true)
+    unsubmitted_paper_task.update_column(:completed, true)
+    assign_journal_role(Journal.first, staff_admin, :admin)
+    login_as(unsubmitted_paper_author, scope: :user)
+    visit '/'
   end
 
   context 'Creator Role' do
-    before do
-      login_as(user, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
+    context 'for submitted papers' do
+      scenario 'has an uneditable task in submitted state' do
+        login_as(submitted_paper_author, scope: :user)
+        Page.view_task_overlay(submitted_paper, task)
+        expect(page).not_to have_content('MAKE CHANGES TO THIS TASK')
+        first('.overlay-close-button').click
+      end
+
+      scenario 'cannot see other tasks he/she does not own' do
+        login_as(submitted_paper_author, scope: :user)
+        visit "/papers/#{unsubmitted_paper.id}"
+        expect(page).not_to have_content('Data Availability')
+      end
     end
-
-    scenario 'can see their tasks on a paper' do
-      expect(page).to have_content('Data Availability')
-      expect(page).to have_content('Billing')
-    end
-
-    scenario 'cannot see other tasks he/she does not own' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-  end
-end
-
-feature 'editor roles', js: true do
-  let!(:author) { FactoryGirl.create :user }
-  let!(:first_paper) { create :paper, :with_integration_journal, :with_creator, creator: author }
-  let!(:reviewer) { FactoryGirl.create :user }
-  let!(:academic_editor) { FactoryGirl.create :user }
-  let!(:handling_editor) { FactoryGirl.create :user }
-  let!(:internal_editor) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:dashboard) { DashboardPage.new }
-
-  let!(:mmt) do
-    FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
-      phase = mmt.phase_templates.create!(name: "First Phase")
-      mmt.phase_templates.create!(name: "Phase With No Tasks")
-      # Add any tasks you want to add to the first phase below
-      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask, PlosBilling::BillingTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
-      journal.manuscript_manager_templates = [mmt]
-      journal.save!
-    end
-  end
-
-  context 'Academic Editor Role' do
-    before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      assign_academic_editor_role(author_paper, academic_editor)
-      logout(:user)
-      login_as(academic_editor, scope: :user)
-      visit "/papers/#{author_paper.id}"
-    end
-
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
-    end
-
-    scenario 'cannot see the Billing Task' do
-      expect(page).to_not have_content('Billing')
-    end
-
-    scenario 'cannot see tasks on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-  end
-
-  context 'Handling Editor Role' do
-    before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      assign_handling_editor_role(author_paper, handling_editor)
-      logout(:user)
-      login_as(handling_editor, scope: :user)
-      visit '/'
-      visit "/papers/#{author_paper.id}"
-    end
-
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
-    end
-
-    scenario 'cannot see tasks on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-  end
-
-  context 'Internal Editor Role' do
-    before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      assign_internal_editor_role(author_paper, internal_editor)
-      logout(:user)
-      login_as(internal_editor, scope: :user)
-      visit '/'
-      visit "/papers/#{author_paper.id}"
-    end
-
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
-    end
-
-    scenario 'cannot see tasks on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-
-    scenario 'cannot see tasks they are not allowed to see' do
-      visit "/papers/#{author.assignments.where(assigned_to_type: 'Paper').last.assigned_to.id}"
-      expect(page).not_to have_content('Billing')
-    end
-  end
-end
-
-feature 'reviewer roles', js: true do
-  let!(:author) { FactoryGirl.create :user }
-  let!(:first_paper) { create :paper, :with_integration_journal, :with_creator }
-  let!(:reviewer) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:dashboard) { DashboardPage.new }
-
-  let!(:mmt) do
-    FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
-      phase = mmt.phase_templates.create!(name: "First Phase")
-      mmt.phase_templates.create!(name: "Phase With No Tasks")
-      # Add any tasks you want to add to the first phase below
-      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask, PlosBilling::BillingTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
-      journal.manuscript_manager_templates = [mmt]
-      journal.save!
-    end
-  end
-
-  context 'Reviewer Role' do
-    before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      assign_reviewer_role(author_paper, reviewer)
-      logout(:user)
-      login_as(reviewer, scope: :user)
-      visit '/'
-      visit "/papers/#{author_paper.id}"
-    end
-
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
-    end
-
-    scenario 'cannot see billing task on the paper' do
-      expect(page).not_to have_content('Billing')
-    end
-
-    scenario 'cannot see tasks on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-  end
-end
-
-feature 'staff roles', js: true do
-  let!(:author) { FactoryGirl.create :user }
-  let!(:first_paper) { create :paper, :with_integration_journal, :with_creator }
-  let!(:staff_admin) { FactoryGirl.create :user }
-  let!(:production_staff) { FactoryGirl.create :user }
-  let!(:publishing_services) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:dashboard) { DashboardPage.new }
-
-  let!(:mmt) do
-    FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
-      phase = mmt.phase_templates.create!(name: "First Phase")
-      mmt.phase_templates.create!(name: "Phase With No Tasks")
-      # Add any tasks you want to add to the first phase below
-      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask, PlosBilling::BillingTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
-      journal.manuscript_manager_templates = [mmt]
-      journal.save!
+    context 'for unsubmitted papers' do
+      scenario 'has an editable task in unsubmitted state' do
+        login_as(unsubmitted_paper_author, scope: :user)
+        Page.view_task_overlay(unsubmitted_paper, unsubmitted_paper_task)
+        expect(page).to have_content('MAKE CHANGES TO THIS TASK')
+      end
     end
   end
 
   context 'Staff Admin Role' do
     before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-      assign_journal_role(journal, staff_admin, :admin)
-      logout(:user)
       login_as(staff_admin, scope: :user)
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      visit "/papers/#{author_paper.id}"
+      visit "/"
     end
 
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
+    context 'for submitted papers' do
+      scenario 'has an editable task even in submitted state' do
+        Page.view_task_overlay(submitted_paper, task)
+        expect(page).to have_content('MAKE CHANGES TO THIS TASK')
+      end
     end
-
-    scenario 'can see tasks even on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-
-    # This should be re-enabled when those with billing task permissions
-    # are able to see the billing task
-    xscenario 'can see the billing task on the paper' do
-      expect(page).to have_content('Billing')
-    end
-  end
-
-  context 'Production Staff Role' do
-    before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-
-      assign_production_staff_role(journal, production_staff)
-      logout(:user)
-      login_as(production_staff, scope: :user)
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      visit "/papers/#{author_paper.id}"
-    end
-
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
-    end
-
-    scenario 'can see tasks even on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-
-    # This should be re-enabled when those with billing task permissions
-    # are able to see the billing task
-    xscenario 'can see the billing task on the paper' do
-      expect(page).to have_content('Billing')
-    end
-  end
-
-  context 'Publishing Services Role' do
-    before do
-      login_as(author, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-      dashboard.fill_in_new_manuscript_fields('A Great Paper Title', journal.name, journal.paper_types[0])
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
-      expect(page).to have_content('Data Availability')
-
-      assign_publishing_services_role(journal, publishing_services)
-      logout(:user)
-      login_as(publishing_services, scope: :user)
-      author_paper = author.assignments.where(assigned_to_type: 'Paper').last.assigned_to
-      visit "/papers/#{author_paper.id}"
-    end
-
-    scenario 'can see tasks on the paper' do
-      expect(page).to have_content('Data Availability')
-    end
-
-    scenario 'can see tasks even on other papers' do
-      visit "/papers/#{first_paper.id}"
-      expect(page).not_to have_content('Data Availability')
-    end
-
-    # This should be re-enabled when those with billing task permissions
-    # are able to see the billing task
-    xscenario 'can see the billing task on the paper' do
-      expect(page).to have_content('Billing')
+    context 'for unsubmitted papers' do
+      scenario 'has an editable task in unsubmitted state' do
+        Page.view_task_overlay(unsubmitted_paper, unsubmitted_paper_task)
+        expect(page).to have_content('MAKE CHANGES TO THIS TASK')
+      end
     end
   end
 end

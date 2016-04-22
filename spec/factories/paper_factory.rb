@@ -16,13 +16,15 @@ FactoryGirl.define do
             role: paper.journal.creator_role,
             assigned_to: paper
           ).first_or_create!
+        else
+          paper.update!(creator: FactoryGirl.create(:user))
         end
 
         paper.save!
         paper.body = "I am the very model of a modern journal article"
       end
 
-      creator factory: :user
+      # creator factory: :user
     end
 
     sequence :title do |n|
@@ -65,8 +67,11 @@ FactoryGirl.define do
     end
 
     trait(:unsubmitted) do
-      publishing_state "unsubmitted"
-      editable = true
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.update_column(:publishing_state, 'unsubmitted')
+        paper.update_column(:editable, true)
+      end
     end
 
     trait(:with_tasks) do

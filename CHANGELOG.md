@@ -12,6 +12,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Sending of email to Academic Editor for completed review
 ### Fixed
 - Problem with discussion reply attribution not showing up
+- Staff members should now be able to send manuscripts to apex
 
 ## [1.4.3] - 2016-04-05
 ### Added

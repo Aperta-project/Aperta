@@ -2,6 +2,42 @@
   <div class="outline {{if fileIcon 'tall'}} {{if showSpinner 'tall'}}">
     <div class="left-column">
       <div class="thumbnail-preview">
+
+<div id='viewer'></div>
+
+<script type='text/javascript'>
+// when the DOM loads
+$(function() {
+    function loadMethylTransferase() {
+        // asynchronously load the PDB file for the dengue methyl transferase
+        // from the server and display it in the viewer.
+        pv.io.fetchPdb('{{attachment.src}}', function (structure) {
+            // display the protein as cartoon, coloring the secondary structure
+            // elements in a rainbow gradient.
+            viewer.cartoon('protein', structure, {color: color.ssSuccession()});
+            // there are two ligands in the structure, the co-factor S-adenosyl
+            // homocysteine and the inhibitor ribavirin-5' triphosphate. They have
+            // the three-letter codes SAH and RVP, respectively. Let's display them
+            // with balls and sticks.
+            var ligands = structure.select({rnames: ['SAH', 'RVP']});
+            viewer.ballsAndSticks('ligands', ligands);
+            viewer.centerOn(structure);
+        });
+    }
+    //pv.pathPDBFolder(folder='/resource');
+    // override the default options with something less restrictive.
+    var options = {
+      width: 600,
+      height: 600,
+      antialias: true,
+      quality : 'medium'
+    };
+    // insert the viewer under the Dom element with id 'gl'.
+    var viewer = pv.Viewer($('#viewer').get(0), options);
+    loadMethylTransferase();
+});
+</script>
+
         {{#if fileIcon}}
           <span class="fa fa-file-image-o fa-5x file-thumbnail"></span>
         {{/if}}

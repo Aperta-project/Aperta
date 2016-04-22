@@ -122,6 +122,9 @@ class InviteReviewersCardTest(CommonTest):
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
     if invite_response == 'Accept':
+      wombat_journal_id = PgSQL().query('SELECT id '
+                                        'FROM journals '
+                                        'WHERE name = \'PLOS Wombat\';')[0][0]
       reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'areviewer\';')[0][0]
       reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
                                             'name = \'Reviewer\';',

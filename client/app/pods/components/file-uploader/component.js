@@ -80,6 +80,7 @@ export default Ember.TextField.extend({
       let file = uploadData.files[0];
       let fileName = file.name;
       let acceptedFileTypes = this.get('accept');
+      let {error, msg} = {};
 
       if (acceptedFileTypes) {
         let {acceptedFileType, error, msg} = checkType(fileName, acceptedFileTypes);

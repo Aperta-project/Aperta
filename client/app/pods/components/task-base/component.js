@@ -27,12 +27,14 @@ export default Component.extend(ValidationErrorsMixin, {
 
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
+  isOnlyEditableIfPaperEditable: alias('task.isOnlyEditableIfPaperEditable'),
 
   isEditableDueToPermissions: alias('editAbility.can'),
   isEditableDueToPaperState: computed(
-    'task.paper.editable', 'isSubmissionTask',
+    'task.paper.editable', 'isOnlyEditableIfPaperEditable',
     function() {
-      return !this.get('isSubmissionTask') || this.get('task.paper.editable');
+      return !this.get('isOnlyEditableIfPaperEditable') ||
+             this.get('task.paper.editable');
     }),
   isEditableDueToTaskState: not('task.completed'),
 

@@ -12,6 +12,7 @@ class TaskFactory
     @task_klass = task_klass
     options = default_options.merge(options)
     @task = task_klass.new(options)
+    set_required_permissions
   end
 
   def save
@@ -26,5 +27,10 @@ class TaskFactory
       title: task_klass::DEFAULT_TITLE,
       old_role: task_klass::DEFAULT_ROLE
     }
+  end
+
+  def set_required_permissions
+    return if @task.required_permissions.present?
+    @task.required_permissions = @task.journal_task_type.required_permissions
   end
 end

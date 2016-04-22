@@ -4,6 +4,8 @@ module PlosBioTechCheck
     DEFAULT_TITLE = 'Revision Tech Check'
     DEFAULT_ROLE = 'editor'
 
+    before_create :initialize_body
+
     def active_model_serializer
       RevisionTechCheckTaskSerializer
     end
@@ -34,5 +36,10 @@ module PlosBioTechCheck
       NestedQuestion.where(owner_id:nil, owner_type:name).all
     end
 
+    private
+
+    def initialize_body
+      self.body = {}
+    end
   end
 end

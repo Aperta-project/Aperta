@@ -32,7 +32,7 @@ describe TaskEligibleUsersController do
           .with(:edit, task)
           .and_return true
         allow(user).to receive(:can?)
-          .with(:search_academic_editors, task)
+          .with(:search_academic_editors, task.paper)
           .and_return true
 
         allow(EligibleUserService).to receive(:eligible_users_for)
@@ -57,7 +57,7 @@ describe TaskEligibleUsersController do
             .with(:edit, task)
             .and_return true
           allow(user).to receive(:can?)
-            .with(:search_academic_editors, task)
+            .with(:search_academic_editors, task.paper)
             .and_return false
 
           do_request
@@ -71,7 +71,7 @@ describe TaskEligibleUsersController do
             .with(:edit, task)
             .and_return false
           allow(user).to receive(:can?)
-            .with(:search_academic_editors, task)
+            .with(:search_academic_editors, task.paper)
             .and_return true
 
           do_request
@@ -109,7 +109,7 @@ describe TaskEligibleUsersController do
           .with(:edit, task)
           .and_return true
         allow(user).to receive(:can?)
-          .with(:search_admins, task)
+          .with(:search_admins, task.paper)
           .and_return true
 
         allow(EligibleUserService).to receive(:eligible_users_for)
@@ -134,7 +134,7 @@ describe TaskEligibleUsersController do
             .with(:edit, task)
             .and_return true
           allow(user).to receive(:can?)
-            .with(:search_admins, task)
+            .with(:search_admins, task.paper)
             .and_return false
 
           do_request
@@ -148,7 +148,7 @@ describe TaskEligibleUsersController do
             .with(:edit, task)
             .and_return false
           allow(user).to receive(:can?)
-            .with(:search_admins, task)
+            .with(:search_admins, task.paper)
             .and_return true
 
           do_request
@@ -180,7 +180,7 @@ describe TaskEligibleUsersController do
           .with(:edit, task)
           .and_return true
         allow(user).to receive(:can?)
-          .with(:search_reviewers, task)
+          .with(:search_reviewers, task.paper)
           .and_return true
         allow(User).to receive(:fuzzy_search)
           .with('Kangaroo')
@@ -205,7 +205,7 @@ describe TaskEligibleUsersController do
             .with(:edit, task)
             .and_return true
           allow(user).to receive(:can?)
-            .with(:search_reviewers, task)
+            .with(:search_reviewers, task.paper)
             .and_return false
 
           do_request
@@ -219,7 +219,7 @@ describe TaskEligibleUsersController do
             .with(:edit, task)
             .and_return false
           allow(user).to receive(:can?)
-            .with(:search_reviewers, task)
+            .with(:search_reviewers, task.paper)
             .and_return true
 
           do_request

@@ -293,6 +293,24 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'assign_roles')
             )
           end
+
+          it ':search_academic_editors' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_academic_editors')
+            )
+          end
+
+          it ':search_admins' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_admins')
+            )
+          end
+
+          it ':search_reviewers' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -317,24 +335,6 @@ describe JournalFactory do
           it ':manage_invitations' do
             expect(journal.cover_editor_role.permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
-            )
-          end
-
-          it ':search_academic_editors' do
-            expect(journal.cover_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_academic_editors')
-            )
-          end
-
-          it ':search_admins' do
-            expect(journal.cover_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_admins')
-            )
-          end
-
-          it ':search_reviewers' do
-            expect(journal.cover_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_reviewers')
             )
           end
         end
@@ -464,6 +464,24 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'submit')
             )
           end
+
+          it ':search_academic_editors' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_academic_editors')
+            )
+          end
+
+          it ':search_admins' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_admins')
+            )
+          end
+
+          it ':search_reviewers' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -500,24 +518,6 @@ describe JournalFactory do
           it ':manage_invitations' do
             expect(journal.handling_editor_role.permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
-            )
-          end
-
-          it ':search_academic_editors' do
-            expect(journal.handling_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_academic_editors')
-            )
-          end
-
-          it ':search_admins' do
-            expect(journal.handling_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_admins')
-            )
-          end
-
-          it ':search_reviewers' do
-            expect(journal.handling_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_reviewers')
             )
           end
         end
@@ -629,6 +629,24 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
+
+          it ':search_academic_editors' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_academic_editors')
+            )
+          end
+
+          it ':search_admins' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_admins')
+            )
+          end
+
+          it ':search_reviewers' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -665,23 +683,6 @@ describe JournalFactory do
           it ':manage_invitations' do
             expect(journal.internal_editor_role.permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
-            )
-          end
-          it ':search_academic_editors' do
-            expect(journal.internal_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_academic_editors')
-            )
-          end
-
-          it ':search_admins' do
-            expect(journal.internal_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_admins')
-            )
-          end
-
-          it ':search_reviewers' do
-            expect(journal.internal_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_reviewers')
             )
           end
         end
@@ -794,6 +795,24 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
+
+          it ':search_academic_editors' do
+            expect(journal.production_staff_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_academic_editors')
+            )
+          end
+
+          it ':search_admins' do
+            expect(journal.production_staff_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_admins')
+            )
+          end
+
+          it ':search_reviewers' do
+            expect(journal.production_staff_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -830,24 +849,6 @@ describe JournalFactory do
           it ':manage_invitations' do
             expect(journal.production_staff_role.permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
-            )
-          end
-
-          it ':search_academic_editors' do
-            expect(journal.production_staff_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_academic_editors')
-            )
-          end
-
-          it ':search_admins' do
-            expect(journal.production_staff_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_admins')
-            )
-          end
-
-          it ':search_reviewers' do
-            expect(journal.production_staff_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_reviewers')
             )
           end
         end
@@ -960,6 +961,24 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
+
+          it ':search_academic_editors' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_academic_editors')
+            )
+          end
+
+          it ':search_admins' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_admins')
+            )
+          end
+
+          it ':search_reviewers' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -996,23 +1015,6 @@ describe JournalFactory do
           it ':manage_invitations' do
             expect(journal.publishing_services_role.permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
-            )
-          end
-          it ':search_academic_editors' do
-            expect(journal.publishing_services_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_academic_editors')
-            )
-          end
-
-          it ':search_admins' do
-            expect(journal.publishing_services_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_admins')
-            )
-          end
-
-          it ':search_reviewers' do
-            expect(journal.publishing_services_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_reviewers')
             )
           end
         end
@@ -1178,6 +1180,24 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
+
+          it ':search_academic_editors' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_academic_editors')
+            )
+          end
+
+          it ':search_admins' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_admins')
+            )
+          end
+
+          it ':search_reviewers' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
         end
 
         context 'has DiscussionTopic permission to' do
@@ -1234,24 +1254,6 @@ describe JournalFactory do
           it ':add_email_participants' do
             expect(journal.staff_admin_role.permissions).to include(
               permissions_on_task.find_by(action: 'add_email_participants')
-            )
-          end
-
-          it ':search_academic_editors' do
-            expect(journal.staff_admin_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_academic_editors')
-            )
-          end
-
-          it ':search_admins' do
-            expect(journal.staff_admin_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_admins')
-            )
-          end
-
-          it ':search_reviewers' do
-            expect(journal.staff_admin_role.permissions).to include(
-              permissions_on_task.find_by(action: 'search_reviewers')
             )
           end
         end

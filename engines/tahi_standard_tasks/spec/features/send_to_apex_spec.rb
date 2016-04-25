@@ -3,7 +3,6 @@ require 'rails_helper'
 feature 'Send to Apex task', js: true, selenium: true do
   include SidekiqHelperMethods
 
-  let!(:user) { FactoryGirl.create(:user) }
   let!(:paper) do
     FactoryGirl.create(:paper_ready_for_export, :with_integration_journal)
   end
@@ -14,7 +13,7 @@ feature 'Send to Apex task', js: true, selenium: true do
       phase: paper.phases.first
     )
   end
-  let(:academic_editor) { FactoryGirl.create(:user) }
+  let(:internal_editor) { FactoryGirl.create(:user) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
   let!(:server) { FakeFtp::Server.new(21212, 21213) }
@@ -25,10 +24,9 @@ feature 'Send to Apex task', js: true, selenium: true do
     end
     server.start
 
-    paper.add_academic_editor(academic_editor)
-    task.add_participant(user)
+    assign_internal_editor_role paper, internal_editor
 
-    login_as(user, scope: :user)
+    login_as(internal_editor, scope: :user)
     visit '/'
   end
 

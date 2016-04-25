@@ -6,9 +6,9 @@ feature "Invite Reviewer", js: true do
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
   let(:editor) { create :user }
-  let!(:reviewer1) { create :user }
-  let!(:reviewer2) { create :user }
-  let!(:reviewer3) { create :user }
+  let!(:reviewer1) { create :user, first_name: 'Henry' }
+  let!(:reviewer2) { create :user, first_name: 'Henroff' }
+  let!(:reviewer3) { create :user, first_name: 'Henrietta' }
 
   before do
     assign_journal_role journal, editor, :editor
@@ -23,6 +23,14 @@ feature "Invite Reviewer", js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.paper_reviewers = [reviewer1]
     expect(overlay).to have_reviewers reviewer1.full_name
+
+    # Already invited users don't show up again the search
+    overlay.fill_in 'Reviewer', with: 'Hen'
+    expect(page).to have_no_css('.auto-suggest-item', text: reviewer1.full_name)
+
+    # But, users who have not been invited should still be suggested
+    expect(page).to have_css('.auto-suggest-item', text: reviewer2.full_name)
+    expect(page).to have_css('.auto-suggest-item', text: reviewer3.full_name)
   end
 
   scenario "displays invitations from the latest round of revisions" do

@@ -949,26 +949,6 @@ describe Paper do
     end
   end
 
-  describe "#authors_list" do
-    let!(:author1) { FactoryGirl.create :author, paper: paper }
-    let!(:author2) { FactoryGirl.create :author, paper: paper }
-
-    before do
-      author1.position = 1
-      author2.position = 2
-      author1.save
-      author2.save
-    end
-
-    it "returns authors' last name, first name and affiliation name in an ordered list" do
-      expect(paper.authors_list).to eq "1. #{author1.last_name}, #{author1.first_name} from #{author1.affiliation}\n2. #{author2.last_name}, #{author2.first_name} from #{author2.affiliation}"
-    end
-
-    it "only includes `from $affiliation` when author has an affiliation" do
-      author2.update_attributes(affiliation: nil)
-      expect(paper.authors_list).to eq "1. #{author1.last_name}, #{author1.first_name} from #{author1.affiliation}\n2. #{author2.last_name}, #{author2.first_name}"
-    end
-  end
 
   describe "#latest_version" do
     before do

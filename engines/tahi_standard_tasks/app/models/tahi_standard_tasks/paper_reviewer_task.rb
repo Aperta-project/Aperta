@@ -1,6 +1,7 @@
 # coding: utf-8
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
+    include AuthorsList
     DEFAULT_TITLE = 'Invite Reviewers'
     DEFAULT_ROLE = 'editor'
 
@@ -95,7 +96,7 @@ module TahiStandardTasks
       { manuscript_title: paper.display_title(sanitized: false),
         journal_name: paper.journal.name,
         abstract: abstract,
-        authors:  paper.authors_list
+        authors:  authors_list
       }
     end
 

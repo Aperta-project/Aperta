@@ -2,6 +2,7 @@ module TahiStandardTasks
   class PaperEditorTask < Task
     include ClientRouteHelper
     include Rails.application.routes.url_helpers
+    include AuthorsList
     DEFAULT_TITLE = 'Invite Academic Editor'
     DEFAULT_ROLE = 'admin'
 
@@ -90,7 +91,7 @@ module TahiStandardTasks
         manuscript_title: paper.display_title(sanitized: false),
         journal_name: paper.journal.name,
         author_name: paper.creator.full_name,
-        authors: paper.authors_list,
+        authors: authors_list,
         abstract: abstract,
         dashboard_url: client_dashboard_url
       }

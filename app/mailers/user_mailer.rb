@@ -66,7 +66,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @commentee.try(:email),
-      subject: "You've been mentioned on the manuscript, #{app_name}")
+      subject: "You've been mentioned on the manuscript, \"#{@paper.display_title}\"")
   end
 
   def notify_creator_of_paper_submission(paper_id)
@@ -76,7 +76,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @author.try(:email),
-      subject: "Thank you for submitting your manuscript to PLOS #{app_name}")
+      subject: "Thank you for submitting your manuscript to #{@journal.name}")
   end
 
   def notify_admin_of_paper_submission(paper_id, user_id)

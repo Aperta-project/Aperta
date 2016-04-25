@@ -128,7 +128,7 @@ describe UserMailer, redis: true do
     it_behaves_like "recipient without email address"
 
     it 'has correct subject line' do
-      expect(email.subject).to eq "You've been mentioned on the manuscript, #{app_name}"
+      expect(email.subject).to eq "You've been mentioned on the manuscript, \"#{task.paper.display_title}\""
     end
 
     it 'sends the email to the mentioned user' do
@@ -152,7 +152,7 @@ describe UserMailer, redis: true do
     let(:email) { UserMailer.notify_creator_of_paper_submission(paper.id) }
 
     it 'has correct subject line' do
-      expect(email.subject).to eq "Thank you for submitting your manuscript to PLOS #{app_name}"
+      expect(email.subject).to eq "Thank you for submitting your manuscript to #{paper.journal.name}"
     end
 
     it "sends the email to the paper's creator" do
@@ -160,7 +160,7 @@ describe UserMailer, redis: true do
     end
 
     it "emails the creator user they have been mentioned" do
-      expect(email.subject).to eq "Thank you for submitting your manuscript to PLOS #{app_name}"
+      expect(email.subject).to eq "Thank you for submitting your manuscript to #{paper.journal.name}"
       expect(email.body).to include "Thank you for submitting your manuscript"
       expect(email.body).to include paper.title
       expect(email.body).to include paper.journal.name

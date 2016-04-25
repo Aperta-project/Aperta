@@ -94,6 +94,13 @@ FactoryGirl.define do
     old_role 'admin'
   end
 
+  factory :final_tech_check_task, class: 'PlosBioTechCheck::FinalTechCheckTask' do
+    phase
+    paper
+    title 'Final Tech Check'
+    old_role 'admin'
+  end
+
   factory :revision_tech_check_task, class: 'PlosBioTechCheck::RevisionTechCheckTask' do
     phase
     paper

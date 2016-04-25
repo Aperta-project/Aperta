@@ -3,7 +3,7 @@
 <div class="task-main-content">
   {{#if taskStateToggleable}}
     <p>You may upload a manuscript at any time.</p>
-    <span class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
+    <span id="upload-manuscript" class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
       Select and upload a document
       {{file-uploader id="upload-files"
                       railsMethod="PUT"

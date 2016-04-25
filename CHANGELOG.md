@@ -7,7 +7,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 ### Deprecated
 ### Removed
+- Sending of email to Academic Editor on paper resubmission
 ### Fixed
+- Ensure that cards created after paper creation have the correct permissions
 ### Security
 
 ## [1.4.4] - 2016-04-05

@@ -56,16 +56,6 @@ class UserMailer < ActionMailer::Base
       subject: "You've been assigned as an editor for the manuscript, \"#{@paper.display_title}\"")
   end
 
-  def notify_academic_editor_of_paper_resubmission(paper_id, editor_id)
-    @paper = Paper.find(paper_id)
-    @editor = User.find(editor_id)
-    @author = @paper.creator
-
-    mail(
-      to: @editor.email,
-      subject: "The manuscript, \"#{@paper.display_title}\" has been resubmitted")
-  end
-
   def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
     @commenter = @comment.commenter
@@ -76,7 +66,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @commentee.try(:email),
-      subject: "You've been mentioned on the manuscript, #{app_name}")
+      subject: "You've been mentioned on the manuscript, \"#{@paper.display_title}\"")
   end
 
   def notify_creator_of_paper_submission(paper_id)
@@ -86,7 +76,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @author.try(:email),
-      subject: "Thank you for submitting your manuscript to PLOS #{app_name}")
+      subject: "Thank you for submitting your manuscript to #{@journal.name}")
   end
 
   def notify_admin_of_paper_submission(paper_id, user_id)

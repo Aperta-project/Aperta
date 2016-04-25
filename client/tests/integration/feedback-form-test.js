@@ -39,9 +39,9 @@ test('clicking the feedback button sends feedback', function(assert) {
   Ember.run(function(){
     Factory.createPermission('User', 1, ['view_profile']);
 
-    visit('/profile');
-    click('#profile-dropdown-menu');
-    click('a:contains(Give Feedback on)');
+    visit('/');
+    click('#nav-give-feedback');
+    click('a:contains(Feedback)');
     fillIn('.overlay textarea', 'My feedback');
     click('.overlay-footer-content .button-primary');
 

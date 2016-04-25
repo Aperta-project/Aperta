@@ -9,6 +9,8 @@ feature 'Changes For Author', js: true do
   let(:manuscript_page) { dashboard.view_submitted_paper paper }
 
   before do
+    paper.minor_check!
+
     task.add_participant(author)
 
     SignInPage.visit.sign_in author
@@ -20,5 +22,4 @@ feature 'Changes For Author', js: true do
     t = manuscript_page.view_task task.title
     t.find("button#submit-tech-fix").click
   end
-
 end

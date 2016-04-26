@@ -40,40 +40,50 @@ describe SalesforceServices do
 
     context "when the paper's billing payment method exists, but is not PFA" do
       before do
+        allow(SalesforceServices::PaperSync).to receive(:sync!)
         allow(paper).to receive(:answer_for)
           .with('plos_billing--payment_method')
           .and_return instance_double(NestedQuestionAnswer, value: 'not-pfa')
       end
 
-      it 'does not sync the paper nor the billing information' do
-        expect(SalesforceServices::PaperSync).to_not receive(:sync!)
+      it 'syncs the paper, but not the billing information' do
+        expect(SalesforceServices::PaperSync).to receive(:sync!)
         expect(SalesforceServices::BillingSync).to_not receive(:sync!)
         sync_paper!
       end
 
-      it 'logs the sync was skipped' do
+      it 'logs the billing sync was skipped' do
         expect(logger).to receive(:info)
-          .with("Salesforce: Paper #{paper.id} is not PFA, skipping sync.")
+          .with("Salesforce: Paper #{paper.id} sync'd successfully")
+          .ordered
+        expect(logger).to receive(:info)
+          .with("Salesforce: Paper #{paper.id} is not PFA, skipping billing sync.")
+          .ordered
         sync_paper!
       end
     end
 
     context 'when the paper is without a billing payment method' do
       before do
+        allow(SalesforceServices::PaperSync).to receive(:sync!)
         allow(paper).to receive(:answer_for)
           .with('plos_billing--payment_method')
           .and_return nil
       end
 
-      it 'does not sync the paper nor the billing information' do
-        expect(SalesforceServices::PaperSync).to_not receive(:sync!)
+      it 'syncs the paper, but not the billing information' do
+        expect(SalesforceServices::PaperSync).to receive(:sync!)
         expect(SalesforceServices::BillingSync).to_not receive(:sync!)
         sync_paper!
       end
 
       it 'logs the sync was skipped' do
         expect(logger).to receive(:info)
-          .with("Salesforce: Paper #{paper.id} is not PFA, skipping sync.")
+          .with("Salesforce: Paper #{paper.id} sync'd successfully")
+          .ordered
+        expect(logger).to receive(:info)
+          .with("Salesforce: Paper #{paper.id} is not PFA, skipping billing sync.")
+          .ordered
         sync_paper!
       end
     end

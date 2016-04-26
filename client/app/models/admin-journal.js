@@ -15,7 +15,7 @@ export default DS.Model.extend({
   epubCoverFileName: DS.attr('string'),
   epubCoverUrl: DS.attr('string'),
   epubCss: DS.attr('string'),
-  lastDoiIssued: DS.attr('number'),
+  firstDoiNumber: DS.attr('string'),
   logoUrl: DS.attr('string'),
   manuscriptCss: DS.attr('string'),
   name: DS.attr('string'),

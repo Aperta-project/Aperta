@@ -67,7 +67,7 @@ test('saving doi info will send a put request to the admin journal controller', 
     click('.admin-doi-settings-edit-button');
     fillIn('.admin-doi-setting-section .doi_publisher_prefix', 'PPREFIX');
     fillIn('.admin-doi-setting-section .doi_journal_prefix', 'JPREFIX');
-    fillIn('.admin-doi-setting-section .last_doi_issued', '10000');
+    fillIn('.admin-doi-setting-section .first_doi_number', '00001');
     click('.admin-doi-setting-section button');
   });
 
@@ -95,7 +95,7 @@ test('saving invalid doi info will display an error', function(assert) {
     click('.admin-doi-settings-edit-button');
     fillIn('.admin-doi-setting-section .doi_publisher_prefix', 'PPREFIX');
     fillIn('.admin-doi-setting-section .doi_journal_prefix', 'a/b');
-    fillIn('.admin-doi-setting-section .last_doi_issued', '10000');
+    fillIn('.admin-doi-setting-section .first_doi_number', '00001');
     return click('.admin-doi-setting-section button');
   });
 

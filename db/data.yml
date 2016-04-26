@@ -3534,7 +3534,7 @@ journals:
   - description
   - doi_publisher_prefix
   - doi_journal_prefix
-  - last_doi_issued
+  - first_doi_number
   records: 
   - - '1'
     - PLOS Yeti
@@ -3549,7 +3549,7 @@ journals:
       for publication.
     - yetipub
     - yetijour
-    - '1000002'
+    - '0000001'
 
 ---
 manuscript_manager_templates:

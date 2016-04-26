@@ -1,13 +1,11 @@
 FactoryGirl.define do
   factory :journal do
+    doi_journal_prefix
+    doi_publisher_prefix
+    first_doi_number "10001"
+
     sequence :name do |n|
       "Journal #{n}"
-    end
-
-    trait :with_doi do
-      doi_journal_prefix
-      doi_publisher_prefix
-      last_doi_issued "10000"
     end
 
     trait(:with_paper) do

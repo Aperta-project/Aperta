@@ -73,7 +73,7 @@ class Admin::JournalsController < ApplicationController
     params.require(:admin_journal).permit(
       :description, :doi_journal_prefix,
       :doi_publisher_prefix, :epub_cover,
-      :epub_css, :last_doi_issued,
+      :epub_css, :first_doi_number,
       :manuscript_css, :name,
       :pdf_css
     )

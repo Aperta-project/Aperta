@@ -108,7 +108,6 @@ describe SalesforceServices::ObjectTranslations do
     let(:journal) do
       FactoryGirl.create(
         :journal,
-        :with_doi,
         name: 'journal name'
       )
     end

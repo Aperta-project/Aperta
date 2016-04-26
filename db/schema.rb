@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413002420) do
+ActiveRecord::Schema.define(version: 20160426015547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,7 +266,7 @@ ActiveRecord::Schema.define(version: 20160413002420) do
     t.text     "description"
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued",      default: "0"
+    t.string   "first_doi_number",     default: "0000001"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
@@ -373,7 +373,7 @@ ActiveRecord::Schema.define(version: 20160413002420) do
     t.datetime "published_at"
     t.integer  "striking_image_id"
     t.boolean  "editable",                             default: true
-    t.text     "doi"
+    t.text     "doi",                                      null: false
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"

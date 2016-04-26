@@ -49,6 +49,7 @@ class Paper < ActiveRecord::Base
 
   serialize :withdrawals, ArrayHashSerializer
 
+  validates :doi, presence: true, uniqueness: true
   validates :paper_type, presence: true
   validates :journal, presence: true
   validates :title, presence: true
@@ -71,7 +72,6 @@ class Paper < ActiveRecord::Base
     doi.split('/').last if doi
   end
 
-  after_create :assign_doi!
   after_create :create_versioned_texts
   after_commit :state_transition_notifications
 
@@ -489,10 +489,6 @@ class Paper < ActiveRecord::Base
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
     latest_version.update!(submitting_user: submitting_user)
     latest_version.touch
-  end
-
-  def assign_doi!
-    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
   end
 
   def create_versioned_texts

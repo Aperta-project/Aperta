@@ -122,20 +122,20 @@
         <div class="admin-doi-settings-title">Article</div>
         {{#if doiEditState}}
           {{input type="text"
-                  class="last_doi_issued"
-                  value=lastDoiIssued
+                  class="first_doi_number"
+                  value=firstDoiNumber
                   placeholder="Article Starting Number"}}
           {{#if doiStartNumberInvalid}}
             <div class="error-message">The Article Start Number must be an integer</div>
           {{/if}}
         {{else}}
-          <span class="article">{{lastDoiIssued}}</span>
+          <span class="article">{{firstDoiNumber}}</span>
         {{/if}}
       </label>
     {{else}}
       <div class="col-md-3">
         <div class="admin-doi-settings-title">Article</div>
-        <span class="article">{{lastDoiIssued}}</span>
+        <span class="article">{{firstDoiNumber}}</span>
       </div>
     {{/if}}
 

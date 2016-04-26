@@ -13,6 +13,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
+- Ensure new papers receive a properly incremented DOI
 
 ### Security
 

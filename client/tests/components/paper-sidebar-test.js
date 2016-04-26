@@ -4,49 +4,44 @@ import {
 } from 'ember-qunit';
 
 import Ember from 'ember';
+import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
+import hbs from 'htmlbars-inline-precompile';
+import FakeCanService from '../helpers/fake-can-service';
+import customAssertions from '../helpers/custom-assertions';
 
 moduleForComponent('paper-sidebar', 'Integration | Component | paper sidebar', {
-  needs: ['component:sticky-headers', 'service:event-bus']
+  integration: true,
+
+  beforeEach() {
+    initTruthHelpers();
+    customAssertions();
+  }
 });
 
-test('Returns submitted message when paper is submitted', function(assert) {
-  assert.expect(2);
+test('Shows the submit button when the paper is ready to submit and the user is authorized to submit', function(assert) {
 
-  let component = this.subject();
-  let paper = Ember.Object.create();
-  component.set('paper', paper);
-  this.render();
-  // Assert initial content of the component
-  let initialContent = $.trim(this.$().text());
-  assert.equal(initialContent, '');
+  let template = hbs`{{paper-sidebar paper=paper}}`;
 
-  Ember.run(function() {
-    //note NOT gradual engagment,
-    //this is more thoroughly tested in a feature
-    //spec: spec/features/gradual_engagement.rb
-    paper.set('publishingState', 'submitted');
-  });
+  this.container.register('service:can', FakeCanService);
+  let fake = this.container.lookup('service:can');
 
-  let finalContent = $.trim(this.$().text());
-  assert.equal(finalContent, 'This paper has been submitted.');
-});
+  this.set('stubAction', function() {});
+  let paper = Ember.Object.create({isReadyForSubmission: true});
+  this.set('paper', paper);
 
-test('Shows submit if all task completed and submittable', function(assert) {
-  assert.expect(1);
+  fake.allowPermission('submit', paper);
+  this.render(template);
+  assert.elementFound(
+    '#sidebar-submit-paper',
+    'the submit button should be visible when the user is authorized'
+  );
 
-  let fakeSubmittableTask = Ember.Object.create({
-    isSubmissionTask: false,
-    participations: []
-  });
+  fake.rejectPermission('submit');
+  this.$().empty();
+  this.render(template);
+  assert.elementNotFound(
+    '#sidebar-submit-paper',
+    'the submit button should NOT be visible when the user is unauthorized'
+  );
 
-  let fakeSubmittablePaper = Ember.Object.create({
-    publishingState: 'unsubmitted',
-    tasks: [fakeSubmittableTask]
-  });
-
-  this.subject({paper: fakeSubmittablePaper});
-  this.render();
-
-  let buttonText = $.trim(this.$().find('button').text());
-  assert.equal(buttonText, 'Submit');
 });

@@ -667,6 +667,7 @@ DEPENDENCIES
   capybara-screenshot
   capybara-select2
   carrierwave
+  climate_control
   codeclimate-test-reporter
   database_cleaner
   databasedotcom

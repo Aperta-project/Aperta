@@ -110,6 +110,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-select2'
   gem 'capybara-screenshot'
+  gem 'climate_control'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'email_spec'

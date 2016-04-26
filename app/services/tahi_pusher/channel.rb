@@ -59,7 +59,9 @@ module TahiPusher
     end
 
     def with_logging(message)
-      Pusher.logger.info("** [Pusher] #{message}") if TahiPusher::Config.verbose_logging?
+      if Rails.application.config.x.pusher_verbose_logging
+        Pusher.logger.info("** [Pusher] #{message}")
+      end
       yield
     rescue Pusher::HTTPError => e
       Pusher.logger.error("** [Pusher] #{e.message}")

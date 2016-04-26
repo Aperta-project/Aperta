@@ -10,7 +10,8 @@ module Tahi
         [
           journal.academic_editor_role,
           journal.cover_editor_role,
-          journal.handling_editor_role
+          journal.handling_editor_role,
+          journal.reviewer_role
         ]
       end
 

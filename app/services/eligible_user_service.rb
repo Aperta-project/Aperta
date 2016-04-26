@@ -28,7 +28,8 @@ class EligibleUserService
       role.journal.academic_editor_role => -> { User.all },
       role.journal.cover_editor_role => -> { internal_editors },
       role.journal.handling_editor_role => -> { internal_editors },
-      role.journal.staff_admin_role => -> { staff_admins }
+      role.journal.staff_admin_role => -> { staff_admins },
+      role.journal.reviewer_role => -> { User.all }
     }
   end
 

@@ -23,72 +23,72 @@ class JournalFactory
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/LineLength
   def ensure_default_roles_and_permissions_exist
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Creator(s) only get access to the submission task types
       task_klasses = Task.submission_task_types
       task_klasses << PlosBioTechCheck::ChangesForAuthorTask
       task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
-        role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
       end
     end
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
 
       # Collaborators can view and edit any metadata card except billing
       task_klasses = Task.submission_task_types
       task_klasses -= [PlosBilling::BillingTask]
       task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
-        role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
       end
     end
 
     Role.ensure_exists(Role::COVER_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
-      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
-      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
+      role.ensure_permission_exists(:search_admins, applies_to: Paper)
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
+      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
       # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper)
 
       # Reviewer(s) get access to all submission tasks, except a few
       task_klasses = Task.submission_task_types
@@ -98,208 +98,208 @@ class JournalFactory
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
       task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:view, applies_to: klass.name)
+        role.ensure_permission_exists(:view_participants, applies_to: klass.name)
       end
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
-      role.ensure_permission_exists(:administer, applies_to: Journal, states: ['*'])
-      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
+      role.ensure_permission_exists(:administer, applies_to: Journal)
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
 
       # Paper
-      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
-      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
+      role.ensure_permission_exists(:search_admins, applies_to: Paper)
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task)
+      role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
+      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
 
       # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
       # Journals
-      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
 
       # Paper
-      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
-      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
+      role.ensure_permission_exists(:search_admins, applies_to: Paper)
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task)
+      role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
+      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
 
       # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
-      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
-      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
+      role.ensure_permission_exists(:search_admins, applies_to: Paper)
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
+      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
 
       # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
-      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
-      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES);
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
-      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
+      role.ensure_permission_exists(:search_admins, applies_to: Paper)
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task)
+      role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
+      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
 
       # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
-      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
-      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
-      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
+      role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
+      role.ensure_permission_exists(:search_admins, applies_to: Paper)
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task)
+      role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
+      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
 
       # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:manage_participant, applies_to: Task)
     end
 
     Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,
                        journal: @journal,
                        participates_in: [Paper],
                        delete_stray_permissions: true) do |role|
-      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper)
 
       task_klasses = Task.submission_task_types
 
@@ -310,15 +310,15 @@ class JournalFactory
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
       task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:view, applies_to: klass)
       end
 
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask)
     end
 
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)

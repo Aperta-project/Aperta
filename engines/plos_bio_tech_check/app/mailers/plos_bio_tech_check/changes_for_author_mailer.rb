@@ -14,7 +14,7 @@ module PlosBioTechCheck
       @journal = @paper.journal
 
       mail(to: @author.email,
-           subject: "Changes needed on your Manuscript in #{app_name}")
+           subject: "Changes needed on your Manuscript in #{@journal.name}")
     end
 
     def notify_paper_tech_fixed admin_id:, paper_id:

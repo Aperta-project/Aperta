@@ -10,9 +10,6 @@ export default Ember.Component.extend({
    *  @required
   **/
   outAnimationComplete: null,
-  authorsTask: Ember.computed(function() {
-    return this.get('model.title') === 'Authors';
-  }),
 
   init() {
     this._super(...arguments);

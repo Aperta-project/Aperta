@@ -42,8 +42,6 @@ export default Ember.Controller.extend({
 
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
 
-  specifiedAppName: window.appName,
-
   init: function() {
     var that = this;
     this.store.find('journal').then( (journals)=> {

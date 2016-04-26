@@ -28,4 +28,19 @@
   .snapshot-question-attachment {
     margin-bottom: 16px;
   }
+
+  .added {
+    background-color: rgba($tahi-green-light, .5);
+    padding: 5px 10px;
+  }
+
+  .removed {
+    opacity: .8;
+    background-color: rgba($tahi-red-light, .5);
+    padding: 5px 10px;
+    text-decoration: line-through;
+    .added {
+      display: none;
+    }
+  }
 }

@@ -77,10 +77,10 @@ ParticipantSelectorComponent = Ember.Component.extend({
       },
       results: (function(_this) {
         return function(data) {
-          _this.set('foundParticipants', data.filtered_users);
-          data.filtered_users.sort(_this.sortByCollaboration);
+          _this.set('foundParticipants', data.users);
+          data.users.sort(_this.sortByCollaboration);
           return {
-            results: data.filtered_users
+            results: data.users
           };
         };
       })(this)

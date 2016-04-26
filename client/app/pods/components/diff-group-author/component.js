@@ -1,55 +1,42 @@
 import Ember from 'ember';
-import { getNamedComputedProperty, fromProperty, fromQuestion } from 'tahi/mixins/components/snapshot-named-computed-property';
+import {
+  namedComputedProperty,
+  diffableTextForQuestion
+} from 'tahi/mixins/components/snapshot-named-computed-property';
 
 const { computed } = Ember;
 
-const getName = function(properties) {
-  if (!properties) {
-    return ' ';
-  }
-  return fromProperty(properties, 'contact_first_name') + ' ' +
-         fromProperty(properties, 'contact_middle_name') + ' ' +
-         fromProperty(properties, 'contact_last_name');
-};
-
 const DiffableAuthor = Ember.Object.extend({
   author: null, // this gets passed in
+  position: namedComputedProperty('author', 'position'),
+  name: namedComputedProperty('author', 'name'),
+  contactFirstName: namedComputedProperty('author', 'contact_first_name'),
+  contactMiddleName: namedComputedProperty('author', 'contact_middle_name'),
+  contactLastName: namedComputedProperty('author', 'contact_last_name'),
 
-  groupName: computed('author', function() {
-    return fromProperty(this.get('author'), 'position') + '. ' +
-      fromProperty(this.get('author'), 'name');
-  }),
+  email: namedComputedProperty('author', 'contact_email'),
+  initials: namedComputedProperty('author', 'initial'),
 
-  contactName: Ember.computed('author', function() {
-    return getName(this.get('author'));
-  }),
-  email: getNamedComputedProperty('author', 'contact_email'),
-  initials: getNamedComputedProperty('author', 'initial'),
-  contributions: computed('author', function() {
-    return this.getContributions(this.get('author'));
-  }),
+  government: diffableTextForQuestion(
+    'author',
+    'group-author--government-employee'),
 
-  government: fromQuestion('author', 'group-author--government-employee'),
+  contributions: computed('author.children.[]', function() {
+    var contributions = _.findWhere(
+      this.get('author').children,
+      {name: 'group-author--contributions'}
+    ) || [];
 
-  getContributions: function(properties) {
-    var response = ' ';
-    if (!properties) {
-      return response;
-    }
-
-    var contributions = properties.findBy('name', 'group-author--contributions');
-    if (contributions) {
-      _.each(contributions.children, function(contribution) {
-        if (contribution.value.answer) {
-          response += contribution.value.title + ', ';
-        }
-      });
-      if (response.endsWith(', ')) {
-        response = response.substring(0, response.length - 2);
+    var selectedNames = _.compact(_.map(
+      contributions.children,
+      function(contribution) {
+        if (!contribution.value.answer) { return null; }
+        return contribution.value.title;
       }
-    }
-    return response;
-  }
+    ));
+
+    return selectedNames.join(', ');
+  })
 });
 
 export default Ember.Component.extend({
@@ -58,13 +45,12 @@ export default Ember.Component.extend({
 
   viewing: computed('viewingAuthor', function() {
     return DiffableAuthor.create(
-      { author: this.get('viewingAuthor.children') } );
+      { author: this.get('viewingAuthor') } );
   }),
 
   comparing: computed('comparingAuthor', function() {
+    if (!this.get('comparingAuthor')) { return {}; }
     return DiffableAuthor.create(
-      { author: this.get('comparingAuthor.children') } );
-  }),
-
+      { author: this.get('comparingAuthor') } );
+  })
 });
-

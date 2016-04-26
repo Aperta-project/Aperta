@@ -647,6 +647,12 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'search_reviewers')
             )
           end
+
+          it ':send_to_apex' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -813,6 +819,12 @@ describe JournalFactory do
               permissions_on_paper.find_by(action: 'search_reviewers')
             )
           end
+
+          it ':send_to_apex' do
+            expect(journal.production_staff_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
+            )
+          end
         end
 
         context 'has Task permission to' do
@@ -977,6 +989,12 @@ describe JournalFactory do
           it ':search_reviewers' do
             expect(journal.publishing_services_role.permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
+
+          it ':send_to_apex' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
             )
           end
         end
@@ -1196,6 +1214,12 @@ describe JournalFactory do
           it ':search_reviewers' do
             expect(journal.staff_admin_role.permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
+
+          it ':send_to_apex' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
             )
           end
         end

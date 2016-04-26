@@ -18,7 +18,7 @@
         </div>
       {{/if}}
 
-      {{#if readyToSubmit}}
+      {{#if (and readyToSubmit (can 'submit' paper))}}
         <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>
 
         <button id="sidebar-submit-paper" {{action "submitPaper"}}

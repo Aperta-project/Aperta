@@ -9,9 +9,10 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, staff_admin_login, internal_editor_login, handling_editor_login, \
     cover_editor_login, prod_staff_login, pub_svcs_login, super_admin_login, \
-    reviewer_login
+    reviewer_login, academic_editor_login
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
+from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -74,6 +75,8 @@ class InviteAECardTest(CommonTest):
     # reverts to the temporary title specified on the CNS overlay (5s is too short)
     # APERTA-6514
     time.sleep(10)
+    # XXXXXXXXXXXXXXXXXXXX TEMPORARY FIX: REFRESH
+    manuscript_page.refresh()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -93,6 +96,14 @@ class InviteAECardTest(CommonTest):
     #   otherwise failures
     time.sleep(10)
     #add card invite AE with add new card
+    #Check if card is there
+    if not workflow_page.is_card('Invite Academic Editor'):
+      # Add card
+      pass
+    # click on invite academic editor
+    workflow_page.click_invite_ae_card()
+    invite_ae_card = InviteAECard(self.getDriver())
+    invite_ae_card.invite_ae(academic_editor_login)
     import pdb; pdb.set_trace()
 
 

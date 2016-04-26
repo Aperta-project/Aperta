@@ -58,14 +58,14 @@ class WorkflowPage(AuthenticatedPage):
     self._final_tech_check_card = (By.XPATH, "//a/div[contains(., 'Final Tech Check')]")
     self._initial_decision_card = (By.XPATH, "//a/div[contains(., 'Initial Decision')]")
     self._initial_tech_check_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
-    self._invite_academic_editors_card = (By.XPATH,
-                                          "//a/div[contains(., 'Invite Academic Editor')]")
+    self._invite_ae_card = (By.XPATH, "//a/div[contains(., 'Invite Academic Editor')]")
     self._invite_reviewers_card = (By.XPATH, "//a/div[contains(., 'Invite Reviewers')]")
     self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
     self._register_decision_card = (By.XPATH, "//a/div[contains(., 'Register Decision')]")
     self._reviewer_report_card = (By.XPATH, "//a/div[contains(., 'Reviewer Report')]")
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
+    self._cards = (By.CSS_SELECTOR, 'div.card')
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
@@ -87,6 +87,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_invite_editor_card(self):
     """Click Invite Academic Editor Card"""
     self._get(self._invite_editor_card).click()
+
+  def click_invite_ae_card(self):
+    """Click Invite Academic Editor Card"""
+    self._get(self._invite_ae_card).click()
 
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""
@@ -115,6 +119,20 @@ class WorkflowPage(AuthenticatedPage):
     """Click on the add new card button on workflow"""
     self._get(self._add_new_card_button).click()
     return self
+
+  def is_card(self, card_name):
+    """
+    Check if a card is present in the workflow
+    :param card_name: String with the name of the card
+    :returns: Bool
+    """
+    all_cards = self._gets(self._cards)
+    card_titles = [card.text for card in all_cards]
+    if card_name in card_titles:
+      return True
+    else:
+      return False
+
 
   def check_overlay(self):
     """

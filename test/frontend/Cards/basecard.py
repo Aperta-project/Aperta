@@ -56,7 +56,6 @@ class BaseCard(AuthenticatedPage):
     else:
       raise ValueError('Completed button in unexpected state {0}'.format(btn_label))
 
-
   def click_completed_checkbox(self):
     """Click completed checkbox"""
     self._get(self._completed_check).click()

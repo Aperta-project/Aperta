@@ -83,6 +83,14 @@ module Authorizations
       :publishing_state
     end
 
+    # +permission_state_join+ allows for a model to delegate their state
+    # by implementing a `delegate_state_to` method on the class that
+    # returns the name of the association to delegate to as a symbol.
+    #
+    # For example, having the following method in a model will delegate permission state to Paper:
+    #  def self.delegate_state_to
+    #    :paper
+    #  end
     def permission_state_join
       @klass.try(:delegate_state_to)
     end

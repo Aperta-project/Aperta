@@ -18,6 +18,8 @@ module Authorizations
     #            be queried against
     # * state_column - the name of the state column on +klass+ to check
     #            +permissible_states+ against
+    # * state_join - the name of the association to delegate to as a symbol
+    #
     def initialize(klass:, target:, assignments:, permissible_states:, state_column:, state_join: nil)
       @klass = klass
       @target = target

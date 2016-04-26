@@ -38,6 +38,46 @@ describe Journal do
     end
   end
 
+  describe '#last_doi_issued' do
+    subject(:journal) { FactoryGirl.build(:journal) }
+    context 'and the journal is a new record' do
+      before do
+        expect(journal.new_record?).to be(true)
+      end
+
+      it 'allows last_doi_issued to be set' do
+        expect do
+          journal.last_doi_issued = '12345'
+          journal.save!
+          journal.reload
+        end.to change { journal.last_doi_issued }.to eq('12345')
+      end
+    end
+
+    context 'and the journal is not a new record' do
+      before { journal.save! }
+
+      it 'does not allow last_doi_issued to be set' do
+        expect do
+          journal.update!(last_doi_issued: '98765')
+          journal.reload
+        end.to_not change { journal.last_doi_issued }
+      end
+    end
+  end
+
+  describe "#next_doi_number!" do
+    let(:journal) { FactoryGirl.create(:journal) }
+
+    it "increments last_doi_issued and returns that value" do
+      next_doi = nil
+      expect do
+        next_doi = journal.next_doi_number!
+      end.to change { journal.last_doi_issued.to_i }.by 1
+      expect(next_doi).to eq journal.last_doi_issued
+    end
+  end
+
   describe "DOI" do
     before do
       @journal = build(:journal, :with_doi)

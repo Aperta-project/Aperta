@@ -226,12 +226,27 @@ describe User do
   end
 
   describe "#create" do
-    let(:user) { User.create! attributes_for(:user) }
-    let!(:user_role) { Role.where(name: 'User').first_or_create! }
+    describe "roles" do
+      let(:user) { User.create! attributes_for(:user) }
+      let!(:user_role) { Role.where(name: 'User').first_or_create! }
 
-    it "should create a user record with the User role assigned" do
-      expect(user_role).to be_present
-      expect(user).to have_role_name 'User'
+      it "should create a user record with the User role assigned" do
+        expect(user_role).to be_present
+        expect(user).to have_role_name 'User'
+      end
+    end
+
+    describe "invitations" do
+      let!(:orphan_invite) { FactoryGirl.create(:invitation, invitee: nil, email: "steve@example.com") }
+      let!(:other_invite) { FactoryGirl.create(:invitation, invitee: nil) }
+
+      it "assigns invitations to the user" do
+        user_attrs = attributes_for(:user)
+        user_attrs[:email] = 'steve@example.com'
+        user = User.create!(user_attrs)
+        expect(orphan_invite.reload.invitee_id).to be(user.id)
+        expect(other_invite.reload.invitee).to be_nil
+      end
     end
   end
 end

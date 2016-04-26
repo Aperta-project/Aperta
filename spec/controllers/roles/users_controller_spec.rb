@@ -16,12 +16,13 @@ describe OldRoles::UsersController do
   describe "GET 'index'" do
     it "lists all of the users that belong to that old_role in the journal" do
       get :index, old_role_id: old_role.id
-      expected_response = {"id" => admin.id,
-                           "full_name" => admin.full_name,
-                           "first_name" => admin.first_name,
-                           "avatar_url" => admin.avatar.url,
-                           "username" => admin.username,
-                           "email" => admin.email}
+      expected_response = {
+        "id" => admin.id,
+        "full_name" => admin.full_name,
+        "first_name" => admin.first_name,
+        "avatar_url" => admin.avatar.url,
+        "username" => admin.username
+      }
 
       expect(res_body["users"]).to include(expected_response)
     end

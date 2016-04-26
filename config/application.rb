@@ -9,6 +9,8 @@ Bundler.require(:default, Rails.env)
 
 module Tahi
   class Application < Rails::Application
+    require 'config_helper'
+
     config.eager_load = true
 
     # use bin/rake tahi_standard_tasks:install:migrations
@@ -40,6 +42,9 @@ module Tahi
       config.basic_auth_user = ENV.fetch('BASIC_HTTP_USERNAME')
       config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
     end
+
+    config.x.pusher_verbose_logging =
+      ConfigHelper.read_boolean_env('PUSHER_VERBOSE_LOGGING')
 
     config.omniauth_providers = []
   end

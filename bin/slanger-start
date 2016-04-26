@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require "bundler"
 require "dotenv"
+require 'uri'
 
 SLANGER_DIR = "../tahi-slanger"
 
@@ -11,11 +12,8 @@ def validate_slanger!
 end
 
 def validate_event_stream_config!
-  ["EVENT_STREAM_KEY", "EVENT_STREAM_SECRET"].each do |required|
-    if ENV[required].nil?
-      raise "#{required} was not set in your .env.#{ENV['RAILS_ENV']} and is required to start slanger."
-    end
-  end
+  return unless ENV['PUSHER_URL'].nil?
+  fail "PUSHER_URL was not set in your .env.#{ENV['RAILS_ENV']} and is required to start slanger."
 end
 
 def rails_env
@@ -27,7 +25,8 @@ Bundler.with_clean_env do
   validate_slanger!
   validate_event_stream_config!
   verbose = "-v" if rails_env == "development"
+  url = URI.parse(ENV['PUSHER_URL'])
   Dir.chdir(SLANGER_DIR) do
-    exec("bin/slanger --app_key #{ENV.fetch('EVENT_STREAM_KEY')} --secret #{ENV.fetch('EVENT_STREAM_SECRET')} #{verbose} -w #{ENV.fetch('EVENT_STREAM_WS_HOST')}:#{ENV.fetch('EVENT_STREAM_WS_PORT')}")
+    exec("bin/slanger --app_key #{url.user} --secret #{url.password} #{verbose} -w #{ENV.fetch('EVENT_STREAM_WS_HOST')}:#{ENV.fetch('EVENT_STREAM_WS_PORT')}")
   end
 end

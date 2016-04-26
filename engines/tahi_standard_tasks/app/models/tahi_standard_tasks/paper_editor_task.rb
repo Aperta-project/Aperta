@@ -12,6 +12,8 @@ module TahiStandardTasks
     end
 
     def invitation_invited(invitation)
+      invitation.body = add_invitation_link(invitation)
+      invitation.save!
       PaperEditorMailer.delay.notify_invited invitation_id: invitation.id
     end
 
@@ -30,19 +32,25 @@ module TahiStandardTasks
     def invitation_template
       LetterTemplate.new(
         salutation: "Dear Dr. [EDITOR NAME],",
-        body: invitation_template_body
+        body: invitation_body
       )
     end
 
-    private
+    def add_invitation_link(invitation)
+      old_invitation_url = client_dashboard_url
+      new_invitation_url = client_dashboard_url(
+        invitation_code: invitation.code)
+      invitation.body.gsub old_invitation_url, new_invitation_url
+    end
 
+    private
 
     # This method is a bunch of english text. It should be moved to
     # its own file, but we're not sure where. It's here, instead of a
     # mailer template, because users can edit the text before it gets
     # sent out.
     # rubocop:disable Metrics/LineLength, Metrics/MethodLength
-    def invitation_template_body
+    def invitation_body
       template = <<-TEXT.strip_heredoc
         I am writing to seek your advice as the academic editor on a manuscript entitled '%{manuscript_title}'. The corresponding author is %{author_name}, and the manuscript is under consideration at %{journal_name}.
 

@@ -1,13 +1,14 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
 
 const { computed } = Ember;
 
 export default TaskComponent.extend({
   restless: Ember.inject.service('restless'),
 
-  autoSuggestSourceUrl: computed('task.paper.id', function(){
-    return '/api/filtered_users/editors/' + (this.get('task.paper.id')) + '/';
+  autoSuggestSourceUrl: computed('task.id', function(){
+    return eligibleUsersPath(this.get('task.id'), 'academic_editors');
   }),
 
   selectedUser: null,
@@ -39,7 +40,7 @@ export default TaskComponent.extend({
   },
 
   parseUserSearchResponse(response) {
-    return response.filtered_users;
+    return response.users;
   },
 
   displayUserSelected(user) {

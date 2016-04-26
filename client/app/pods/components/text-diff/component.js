@@ -22,7 +22,7 @@ export default Ember.Component.extend({
 
   diff() {
     return JsDiff.diffSentences(
-      this.get('comparisonText'),
-      this.get('viewingText') || this.get('default'));
+      String(this.get('comparisonText')),
+      String(this.get('viewingText') || this.get('default')));
   }
 });

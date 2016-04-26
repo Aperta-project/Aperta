@@ -81,20 +81,6 @@ module('Integration: Super AdHoc Card', {
       }, JSON.stringify({nested_question_answers: []})
     ]);
 
-    const collabsURL = '/api/filtered_users/collaborators/' + currentPaper.id;
-    server.respondWith('GET', collabsURL , [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify(collaborators)
-    ]);
-
-    let nonPartURL = /\/api\/filtered_users\/non_participants\/\d+\/\w+/;
-    server.respondWith('GET', nonPartURL, [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify([])
-    ]);
-
     server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
 
     $.mockjax({

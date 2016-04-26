@@ -7,7 +7,7 @@ import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
 let App, paper, phase, task, inviteeEmail;
 
-module("Integration: Inviting an reviewer", {
+module("Integration: Inviting a reviewer", {
   afterEach() {
     Ember.run(function() { TestHelper.teardown(); });
     Ember.run(App, "destroy");
@@ -17,6 +17,17 @@ module("Integration: Inviting an reviewer", {
     App = startApp();
     TestHelper.setup(App);
 
+    phase = FactoryGuy.make("phase");
+    task  = FactoryGuy.make("paper-reviewer-task", { phase: phase, letter: '"A letter"' });
+    paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
+    inviteeEmail = window.currentUserData.user.email;
+
+    TestHelper.handleFind(paper);
+    TestHelper.handleFindAll("discussion-topic", 1);
+
+    Factory.createPermission('Paper', 1, ['manage_workflow']);
+    Factory.createPermission('PaperReviewerTask', task.id, ['edit']);
+
     $.mockjax({url: "/api/admin/journals/authorization", status: 204});
     $.mockjax({url: "/api/formats", status: 200, responseText: {
       import_formats: [],
@@ -25,24 +36,16 @@ module("Integration: Inviting an reviewer", {
     $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 200, responseText: {}});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
-    inviteeEmail = window.currentUserData.user.email;
     $.mockjax({
-      url: /\/api\/filtered_users/,
+      url: /api\/tasks\/\d+\/eligible_users\/reviewers/,
+      type: 'GET',
       status: 200,
       contentType: "application/json",
       responseText: {
-        filtered_users: [{ id: 1, full_name: "Aaron", email: inviteeEmail }]
+        users: [{ id: 1, full_name: "Aaron", email: inviteeEmail }]
       }
     });
 
-    phase = FactoryGuy.make("phase");
-    task  = FactoryGuy.make("paper-reviewer-task", { phase: phase, letter: '"A letter"' });
-    paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
-    TestHelper.handleFind(paper);
-    TestHelper.handleFindAll("discussion-topic", 1);
-
-    Factory.createPermission('Paper', 1, ['manage_workflow']);
-    Factory.createPermission('PaperReviewerTask', task.id, ['edit']);
   }
 });
 

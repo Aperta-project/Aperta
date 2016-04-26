@@ -37,7 +37,6 @@ export default Component.extend(ValidationErrorsMixin, {
     'isEditableDueToTaskState'),
   isNotEditable: not('isEditable'),
 
-  taskCompleted: alias('task.completed'),
   taskStateToggleable: alias('isEditableDueToPermissions'),
 
   save() {

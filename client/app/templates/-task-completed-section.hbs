@@ -1,6 +1,6 @@
 {{#if taskStateToggleable}}
   <span class="task-completed-section" {{action "toggleTaskCompletion"}}>
-    {{#if taskCompleted}}
+    {{#if task.completed}}
       <button class="task-completed task-is-completed button-secondary button--grey"
               name="task_completed">
         Make changes to this task

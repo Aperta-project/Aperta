@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe '#delegate_state_to' do
+describe "Permission states can be delegated to a model's association" do
   include AuthorizationSpecHelper
 
   before(:all) do
-    Authorizations.reset_configuration
+    clear_roles_and_permissions
   end
 
   after do

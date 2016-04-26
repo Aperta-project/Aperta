@@ -9,6 +9,7 @@ describe Tahi::AssignTeam::AssignTeamTask do
     let(:academic_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:cover_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:handling_editor_role) { FactoryGirl.build_stubbed(:role) }
+    let(:reviewer_role) { FactoryGirl.build_stubbed(:role) }
 
     before do
       allow(task.journal).to receive(:academic_editor_role)
@@ -19,6 +20,9 @@ describe Tahi::AssignTeam::AssignTeamTask do
 
       allow(task.journal).to receive(:handling_editor_role)
         .and_return handling_editor_role
+
+      allow(task.journal).to receive(:reviewer_role)
+        .and_return reviewer_role
     end
 
     it 'returns roles that can be assigned thru this task' do
@@ -38,12 +42,18 @@ describe Tahi::AssignTeam::AssignTeamTask do
       expect(task.assignable_roles).to include \
         task.journal.handling_editor_role
     end
+
+    it "includes the journal's reviewer_role" do
+      expect(task.assignable_roles).to include \
+        task.journal.reviewer_role
+    end
   end
 
   describe '#assignments' do
     let(:academic_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:cover_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:handling_editor_role) { FactoryGirl.build_stubbed(:role) }
+    let(:reviewer_role) { FactoryGirl.build_stubbed(:role) }
     let(:unsupported_role) { FactoryGirl.build_stubbed(:role) }
     let(:user) { FactoryGirl.build_stubbed(:user) }
 
@@ -71,6 +81,14 @@ describe Tahi::AssignTeam::AssignTeamTask do
         user: user
       )
     end
+    let!(:reviewer_assignment) do
+      FactoryGirl.create(
+        :assignment,
+        assigned_to: task.paper,
+        role: reviewer_role,
+        user: user
+      )
+    end
     let!(:not_expected_assignment) do
       FactoryGirl.create(
         :assignment,
@@ -89,13 +107,17 @@ describe Tahi::AssignTeam::AssignTeamTask do
 
       allow(task.journal).to receive(:handling_editor_role)
         .and_return handling_editor_role
+
+      allow(task.journal).to receive(:reviewer_role)
+        .and_return reviewer_role
     end
 
     it "returns assignments for this task's paper based on assignable_roles" do
       expect(task.assignments).to contain_exactly(
         academic_editor_assignment,
         cover_editor_assignment,
-        handling_editor_assignment
+        handling_editor_assignment,
+        reviewer_assignment
       )
     end
 

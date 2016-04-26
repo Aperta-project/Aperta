@@ -4,6 +4,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Reviewers can be removed using the Assign Team card
+
 ### Changed
 ### Deprecated
 ### Removed

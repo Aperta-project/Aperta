@@ -1,58 +1,46 @@
 import Ember from 'ember';
-import { getNamedComputedProperty, fromProperty, fromQuestion } from 'tahi/mixins/components/snapshot-named-computed-property';
+import {
+  namedComputedProperty,
+  diffableTextForQuestion
+} from 'tahi/mixins/components/snapshot-named-computed-property';
 
 const { computed } = Ember;
 
-const getName = function(properties) {
-  if (!properties) {
-    return ' ';
-  }
-  return fromProperty(properties, 'position') + '. ' +
-         fromProperty(properties, 'first_name') + ' ' +
-         fromProperty(properties, 'middle_initial') + ' ' +
-         fromProperty(properties, 'last_name');
-};
-
 const DiffableAuthor = Ember.Object.extend({
   author: null, // this gets passed in
-  authorName: Ember.computed('author', function() {
-    return getName(this.get('author'));
-  }),
-  title: getNamedComputedProperty('author', 'title'),
-  email: getNamedComputedProperty('author', 'email'),
-  department: getNamedComputedProperty('author', 'department'),
-  affiliation: getNamedComputedProperty('author', 'affiliation'),
-  secondaryAffiliation: getNamedComputedProperty('author',
+  firstName: namedComputedProperty('author', 'first_name'),
+  middleName: namedComputedProperty('author', 'middle_initial'),
+  lastName: namedComputedProperty('author', 'last_name'),
+  position: namedComputedProperty('author', 'position'),
+  title: namedComputedProperty('author', 'title'),
+  email: namedComputedProperty('author', 'email'),
+  department: namedComputedProperty('author', 'department'),
+  affiliation: namedComputedProperty('author', 'affiliation'),
+  secondaryAffiliation: namedComputedProperty('author',
                                                  'secondary-affiliation'),
-  contributions: computed('author', function() {
-    return this.getContributions(this.get('author'));
-  }),
 
-  corresponding: fromQuestion('author',
+  corresponding: diffableTextForQuestion('author',
                               'author--published_as_corresponding_author'),
-  deceased: fromQuestion('author', 'author--deceased'),
+  deceased: diffableTextForQuestion('author', 'author--deceased'),
 
-  government: fromQuestion('author', 'author--government-employee'),
+  government: diffableTextForQuestion('author', 'author--government-employee'),
 
-  getContributions: function(properties) {
-    var response = ' ';
-    if (!properties) {
-      return response;
-    }
+  contributions: computed('author.children.[]', function() {
+    var contributions = _.findWhere(
+      this.get('author').children,
+      {name: 'author--contributions'}
+    ) || [];
 
-    var contributions = properties.findBy('name', 'author--contributions');
-    if (contributions) {
-      _.each(contributions.children, function(contribution) {
-        if (contribution.value.answer) {
-          response += contribution.value.title + ', ';
-        }
-      });
-      if (response.endsWith(', ')) {
-        response = response.substring(0, response.length - 2);
+    var selectedNames = _.compact(_.map(
+      contributions.children,
+      function(contribution) {
+        if (!contribution.value.answer) { return null; }
+        return contribution.value.title;
       }
-    }
-    return response;
-  }
+    ));
+
+    return selectedNames.join(', ');
+  })
 });
 
 export default Ember.Component.extend({
@@ -61,12 +49,12 @@ export default Ember.Component.extend({
 
   viewing: computed('viewingAuthor', function() {
     return DiffableAuthor.create(
-      { author: this.get('viewingAuthor.children') } );
+      { author: this.get('viewingAuthor') } );
   }),
 
   comparing: computed('comparingAuthor', function() {
+    if (!this.get('comparingAuthor')) { return {}; }
     return DiffableAuthor.create(
-      { author: this.get('comparingAuthor.children') } );
-  }),
+      { author: this.get('comparingAuthor') } );
+  })
 });
-

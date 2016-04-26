@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   viewingBool: null,
-  comparisonBool: undefined,
+  comparisonBool: null,
 
   boolText(bool) {
     return bool ? 'Yes' : 'No';
@@ -16,8 +16,5 @@ export default Ember.Component.extend({
     return this.boolText(this.get('comparisonBool'));
   }),
 
-  comparisonBoolDefined:
-    Ember.computed('comparisonBool', function() {
-      return this.get('comparisonBool') !== undefined;
-  })
+  comparisonBoolDefined: Ember.computed.notEmpty('comparisonBool')
 });

@@ -33,14 +33,18 @@ describe Snapshot::FigureTaskSerializer do
     it "serializes the figures for the task's paper" do
       expect(serializer.as_json[:children]).to include(
         { name: "figure", type: "properties", children: [
+          { name: "id", type: "integer", value: figure_1.id },
           { name: "file", type: "text", value: "yeti.jpg" },
+          { name: "file_hash", type: "text", value: nil },
           { name: "title", type: "text", value: "figure 1 title" },
-          { name: "caption", type: "text", value: "figure 1 caption" }
+          { name: "striking_image", type: "boolean", value: false }
         ]},
         { name: "figure", type: "properties", children: [
+          { name: "id", type: "integer", value: figure_2.id },
           { name: "file", type: "text", value: "yeti.tiff" },
+          { name: "file_hash", type: "text", value: nil },
           { name: "title", type: "text", value: "figure 2 title" },
-          { name: "caption", type: "text", value: "figure 2 caption" }
+          { name: "striking_image", type: "boolean", value: false }
         ]}
       )
     end

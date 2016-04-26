@@ -13131,10 +13131,10 @@ snapshots:
     - '0'
     - '{"name":"figure-task","type":"properties","children":[{"name":"figures--complies","type":"question","value":{"id":28,"title":"Yes
       - I confirm our figures comply with the guidelines.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":178},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"139.jpg"},{"name":"title","type":"text","value":"Figure
-      1"},{"name":"caption","type":"text","value":null}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
-      2"},{"name":"caption","type":"text","value":null}]}]}'
+      1"},{"name":"caption","type":"text","value":null},{"name":"id","value":120,"type":"integer"}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
+      2"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 18:55:57.400639'
-    - '2016-04-12 18:55:57.400639'
+    - '2016-04-20 19:57:10.182141'
   - - '35'
     - Task
     - '177'
@@ -13327,10 +13327,10 @@ snapshots:
     - '0'
     - '{"name":"figure-task","type":"properties","children":[{"name":"figures--complies","type":"question","value":{"id":28,"title":"Yes
       - I confirm our figures comply with the guidelines.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":178},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"139.jpg"},{"name":"title","type":"text","value":"Figure
-      2"},{"name":"caption","type":"text","value":null}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
-      1"},{"name":"caption","type":"text","value":null}]}]}'
+      2"},{"name":"caption","type":"text","value":null},{"name":"id","value":120,"type":"integer"}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
+      1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:00:20.271983'
-    - '2016-04-12 19:00:20.271983'
+    - '2016-04-20 19:57:11.86435'
   - - '45'
     - Task
     - '177'
@@ -13522,10 +13522,10 @@ snapshots:
     - '0'
     - '{"name":"figure-task","type":"properties","children":[{"name":"figures--complies","type":"question","value":{"id":28,"title":"Yes
       - I confirm our figures comply with the guidelines.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":178},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"139.jpg"},{"name":"title","type":"text","value":"Figure
-      2"},{"name":"caption","type":"text","value":null}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
-      1"},{"name":"caption","type":"text","value":null}]}]}'
+      2"},{"name":"caption","type":"text","value":null},{"name":"id","value":120,"type":"integer"}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
+      1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:02:46.806287'
-    - '2016-04-12 19:02:46.806287'
+    - '2016-04-20 19:57:13.478481'
   - - '55'
     - Task
     - '177'
@@ -13718,10 +13718,10 @@ snapshots:
     - '0'
     - '{"name":"figure-task","type":"properties","children":[{"name":"figures--complies","type":"question","value":{"id":28,"title":"Yes
       - I confirm our figures comply with the guidelines.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":178},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"139.jpg"},{"name":"title","type":"text","value":"Figure
-      2"},{"name":"caption","type":"text","value":null}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
-      1"},{"name":"caption","type":"text","value":null}]}]}'
+      2"},{"name":"caption","type":"text","value":null},{"name":"id","value":120,"type":"integer"}]},{"name":"figure","type":"properties","children":[{"name":"file","type":"text","value":"140.jpg"},{"name":"title","type":"text","value":"Figure
+      1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:05:54.230517'
-    - '2016-04-12 19:05:54.230517'
+    - '2016-04-20 19:57:15.088468'
   - - '65'
     - Task
     - '177'

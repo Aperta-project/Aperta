@@ -17,7 +17,6 @@ module Tahi
 
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/workers)
-    config.autoload_paths += %W(#{config.root}/app/concerns)
     config.autoload_paths += %W(#{config.root}/app/subscribers)
 
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)

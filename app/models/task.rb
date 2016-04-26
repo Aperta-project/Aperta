@@ -128,6 +128,10 @@ class Task < ActiveRecord::Base
       end
     end
 
+    def delegate_state_to
+      :paper
+    end
+
     def all_task_types
       Task.descendants + [Task]
     end

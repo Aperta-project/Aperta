@@ -1,4 +1,4 @@
 {{user-thumbnail user=comment.commenter}}
 <span class="comment-name">{{comment.commenter.fullName}}</span>
 <span class="comment-date">posted {{format-date comment.createdAt}}</span>
-<div class="comment-body">{{url-to-href text=comment.body}}</div>
+<div class="comment-body">{{url-to-href text=(break-to-tag comment.body)}}</div>

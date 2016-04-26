@@ -1,8 +1,14 @@
 <div class="snapshot-text wrap">
-  <b>Group Author Name:</b> {{text-diff viewingText=viewing.groupName comparisonText=comparing.groupName}}<br/>
+  <b>Group Author Name:</b>
+  {{text-diff viewingText=viewing.position comparisonText=comparing.position}}.
+  {{text-diff viewingText=viewing.name comparisonText=comparing.name}}<br/>
   <b>Group Author Initials:</b> {{text-diff viewingText=viewing.initials comparisonText=comparing.initials}}<br/>
-  <b>Contact Name:</b> {{text-diff viewingText=viewing.contactName comparisonText=comparing.contactName}}<br/>
+  <b>Contact Name:</b>
+  {{text-diff viewingText=viewing.contactFirstName comparisonText=comparing.contactFirstName}}
+  {{text-diff viewingText=viewing.contactMiddleName comparisonText=comparing.contactMiddleName}}
+  {{text-diff viewingText=viewing.contactLastName comparisonText=comparing.contactLastName}}
+  <br/>
   <b>Email:</b> {{text-diff viewingText=viewing.email comparisonText=comparing.email}}<br/>
   <b>Contributions:</b> {{text-diff viewingText=viewing.contributions comparisonText=comparing.contributions}}<br />
-  {{text-diff viewingText=viewing.government comparisonText=comparing.government}}<br />
+  {{nested-snapshot snapshot1=viewing.government snapshot2=comparing.government}}<br />
 </div>

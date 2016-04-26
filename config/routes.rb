@@ -65,10 +65,7 @@ Tahi::Application.routes.draw do
     resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
-        get 'admins/:paper_id', to: 'filtered_users#admins'
-        get 'editors/:paper_id', to: 'filtered_users#editors'
         get 'users/:paper_id', to: 'filtered_users#users'
-        get 'uninvited_users/:paper_id', to: 'filtered_users#uninvited_users'
       end
     end
     resources :formats, only: [:index]
@@ -142,6 +139,11 @@ Tahi::Application.routes.draw do
       resources :questions, only: [:index]
       resources :snapshots, only: [:index]
       put :send_message, on: :member
+      namespace :eligible_users, module: nil do
+        get 'admins', to: 'task_eligible_users#admins'
+        get 'academic_editors', to: 'task_eligible_users#academic_editors'
+        get 'reviewers', to: 'task_eligible_users#reviewers'
+      end
     end
     resources :task_templates
     resources :users, only: [:show, :index] do

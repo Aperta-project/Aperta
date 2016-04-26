@@ -6,13 +6,15 @@ export default Ember.Component.extend({
   snapshot2: null,
 
   questionsViewing: Ember.computed('snapshot1', function() {
-    return this.get('snapshot1.contents.children').filterBy(
-      'type', 'question');
+    if (this.get('snapshot1')) {
+      return this.get('snapshot1.children').filterBy('type', 'question');
+    }
   }),
 
   questionsComparing: Ember.computed('snapshot2', function() {
-    return this.get('snapshot2.contents.children').filterBy(
-      'type', 'questions');
+    if (this.get('snapshot2')) {
+      return this.get('snapshot2.children').filterBy('type', 'question');
+    }
   }),
 
   questions: Ember.computed('questionsViewing', 'questionsComparing',
@@ -22,15 +24,19 @@ export default Ember.Component.extend({
   }),
 
   authors: Ember.computed('snapshot1', 'snapshot2', function() {
-    var snapshots = new SnapshotsById('author');
-    snapshots.addSnapshots(this.get('snapshot1.contents.children'));
-    snapshots.addSnapshots(this.get('snapshot2.contents.children'));
-    var authors = snapshots.toArray();
+    var authorSnapshots = new SnapshotsById('author');
+    var groupSnapshots = new SnapshotsById('group-author');
 
-    snapshots = new SnapshotsById('group-author');
-    snapshots.addSnapshots(this.get('snapshot1.contents.children'));
-    snapshots.addSnapshots(this.get('snapshot2.contents.children'));
-    var groupAuthors = snapshots.toArray();
+    authorSnapshots.addSnapshots(this.get('snapshot1.children'));
+    groupSnapshots.addSnapshots(this.get('snapshot1.children'));
+
+    if (this.get('snapshot2.children')) {
+      authorSnapshots.addSnapshots(this.get('snapshot2.children'));
+      groupSnapshots.addSnapshots(this.get('snapshot2.children'));
+    }
+
+    var authors = authorSnapshots.toArray();
+    var groupAuthors = groupSnapshots.toArray();
 
     var allAuthors = authors.concat(groupAuthors);
     return _.sortBy(allAuthors, function(author) {
@@ -39,7 +45,7 @@ export default Ember.Component.extend({
           return item.name === 'position';
         }).value;
       }
-      return Number.MAX_SAVE_INTEGER; //Sort removed authors to the bottom
+      return Number.MAX_SAFE_INTEGER; // Sort removed authors to the bottom
     });
   })
 });

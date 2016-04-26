@@ -41,7 +41,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def self.find_uninvited_users_for_paper(possible_users, paper)
-    invited_users = Invitation.where(
+    invited_users = where(
       decision_id: paper.decisions.latest.id,
       state: ["invited", "accepted", "rejected"]
     ).includes(:invitee).map(&:invitee)

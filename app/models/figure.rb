@@ -26,6 +26,16 @@ class Figure < ActiveRecord::Base
     self[:attachment]
   end
 
+  # This is a hash used for recognizing changes in file contents; if
+  # the file doens't exist, or if we can't connect to amazon, minimal
+  # harm comes from returning nil instead. The error thrown is,
+  # unfortunately, not wrapped by carrierwave.
+  def file_hash
+    attachment.file.attributes[:etag]
+  rescue
+    nil
+  end
+
   def alt
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end

@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
       },
       results(data) {
         return {
-          results: data.filtered_users
+          results: data.users
         };
       }
     };

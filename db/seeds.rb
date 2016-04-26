@@ -27,7 +27,6 @@ end
 if Rails.env.production?
   # don't run seeds in production
 else
-  ENV['PUSHER_ENABLED'] = 'false'
   Rake::Task['db:data:load'].invoke
   puts "Tahi Seeds have been loaded successfully"
 end

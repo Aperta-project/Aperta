@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  after_create :add_user_role
+  after_create :add_user_role, :associate_invites
 
   if Rails.configuration.password_auth_enabled
     devise(
@@ -84,6 +84,12 @@ class User < ActiveRecord::Base
       :trackable, :omniauthable,
       omniauth_providers: Rails.configuration.omniauth_providers
     )
+  end
+
+  # Take a look at the InvitationCodes concern for other paths by which
+  # a user is associated to an invitation
+  def associate_invites
+    Invitation.where(invitee: nil, email: email).update_all(invitee_id: id)
   end
 
   def created_papers_for_journal(journal)

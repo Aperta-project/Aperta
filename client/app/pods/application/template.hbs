@@ -13,8 +13,6 @@
       Your Manuscripts
     {{/link-to}}
 
-    <a href="http://journals.plos.org/plosbiology/s/aperta-help" class="main-nav-item" id="nav-help" target="_blank">Help</a>
-
     {{#if isLoggedIn}}
       {{#if canViewAdminLinks}}
         {{link-to "Admin" "admin" class="main-nav-item" id="nav-admin"}}
@@ -24,6 +22,10 @@
         {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item" id="nav-paper-tracker"}}
       {{/if}}
 
+      <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback" class="main-nav-item">Feedback</a>
+
+      <a href="http://journals.plos.org/plosbiology/s/aperta-help" class="main-nav-item" id="nav-help" target="_blank">Help</a>
+
       <span id="profile-dropdown-menu" class="main-nav-item main-nav-item--last" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <img src={{currentUser.avatarUrl}} class="user-thumbnail">
         <span class="profile-dropdown-menu-text">{{currentUser.fullName}}</span>
@@ -32,7 +34,6 @@
       <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">
         <li>{{link-to "Profile" "profile" id="nav-profile"}}</li>
         <li><a href="/users/sign_out" id="nav-signout">Sign Out</a></li>
-        <li><a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Give Feedback on {{specifiedAppName}}</a></li>
       </ul>
     {{/if}}
   </div>

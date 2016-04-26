@@ -4,16 +4,30 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
-- Added a loading state for manuscript conversion
 ### Changed
-- Mentions in discussions are now case-insensitive
 ### Deprecated
 ### Removed
-- Sending of email to Academic Editor for completed review
 - Sending of email to Academic Editor on paper resubmission
+
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
+
 ### Security
+
+## [1.4.4] - 2016-04-05
+### Added
+- Added a loading state for manuscript conversion
+- Authors card supports diffing
+
+### Changed
+- Mentions in discussions are now case-insensitive
+
+### Removed
+- Sending of email to Academic Editor for completed review
+
+### Fixed
+- Problem with discussion reply attribution not showing up
+- Staff members should now be able to send manuscripts to apex
 
 ## [1.4.3] - 2016-04-05
 ### Added

@@ -22,6 +22,9 @@ module InvitationCodes
     end
   end
 
+  # User#associate_invites will have caught most of the invite use cases. This is
+  # for the times where a user has their account associated with one email but has been
+  # invited by another.
   def associate_current_user_with_invitation_code_from_session
     invitation_code = session["invitation_code"]
     return unless invitation_code.present? && current_user

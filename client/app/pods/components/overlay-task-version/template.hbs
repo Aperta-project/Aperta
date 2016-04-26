@@ -36,15 +36,9 @@
             <h2>{{model.title}}</h2>
 
             {{#util/promise-loader promise=selectedSnapshots as |snapshots|}}
-              {{#if authorsTask}}
-                {{author-task-snapshot
-                    snapshot1=snapshots.v1
-                    snapshot2=snapshots.v2}}
-              {{else}}
                 {{nested-snapshot
                   snapshot1=snapshots.v1.contents
                   snapshot2=snapshots.v2.contents}}
-              {{/if}}
             {{else}}
               {{progress-spinner visible=true size="large" center=true}}
             {{/util/promise-loader}}

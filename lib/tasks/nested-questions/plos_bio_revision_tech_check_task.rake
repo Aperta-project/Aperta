@@ -13,6 +13,69 @@ namespace 'nested-questions:seed' do
     questions << {
       owner_id: nil,
       owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--data_availability_confidential",
+      value_type: "boolean",
+      text: "In the Data Availability card, if the answer to Q1 is 'No' or if the answer to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX' or 'Data are available from the XXX Institutional Data Access/ Ethics Committee for researchers who meet the criteria for access to confidential data', start a 'MetaData' discussion and ping the handling editor.",
+      position: 2
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--data_availability_blank",
+      value_type: "boolean",
+      text: "In the Data Availability card, if the authors have not selected one of the reasons listed in Q2 and pasted it into the text box, please request that they complete this section.",
+      position: 3
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--data_availability_dryad",
+      value_type: "boolean",
+      text: "In the Data Availability card, if the authors have mentioned data submitted to Dryad, check that the author has provided the Dryad reviewer URL and if not, request it from them. ",
+      position: 4
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--authors_match",
+      value_type: "boolean",
+      text: "Compare the author list between the manuscript file and the Authors card. If the author list does not match, request the authors to update whichever section is missing information. Ignore omissions of middle initials.",
+      position: 5
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--author_removed",
+      value_type: "boolean",
+      text: "If the author list has changed (author(s) being added or removed), flag it to the editor/initiate our COPE process if an author was removed.",
+      position: 7
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--competing_interests",
+      value_type: "boolean",
+      text: "If any competing interests are listed, please add a manuscript note. ex: 'Initials Date: Note to Editor - COI statement present, please see COI field.'",
+      position: 8
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--collection",
+      value_type: "boolean",
+      text: "If the authors mention submitting their paper to a collection in the cover letter or Additional Information card, alert Jenni Horsley by pinging her through the discussion of the ITC card.",
+      position: 11
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
       ident: "plos_bio_revision_tech_check--human_subjects",
       value_type: "boolean",
       text: "Check the ethics statement - does it mention Human Participants? If so, flag this with the editor in the discussion below.",
@@ -114,8 +177,44 @@ namespace 'nested-questions:seed' do
       owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
       ident: "plos_bio_revision_tech_check--ethics_statement",
       value_type: "boolean",
-      text: "If an Ethics Statement is present, make a note in the discussion below.",
+      text: "Make sure the ethics statement looks complete. If the authors have responded Yes to any question, but have not provided approval information, please request this from them.",
       position: 13
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--figures_viewable",
+      value_type: "boolean",
+      text: "Make sure you can view and download all files uploaded to your Figures card. Check against figure citations in the manuscript to ensure there are no missing figures.",
+      position: 12
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--embedded_captions",
+      value_type: "boolean",
+      text: "If main figures or supporting information captions are only available in the file itself (and not in the manuscript), request that the author remove the captions from the file and instead place them in the manuscript file.",
+      position: 13
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--captions_missing",
+      value_type: "boolean",
+      text: "If main figures or supporting information captions are missing entirely, ask the author to provide them in the manuscript file.",
+      position: 14
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
+      ident: "plos_bio_revision_tech_check--figures_missing",
+      value_type: "boolean",
+      text: "If any files or figures are cited in the manuscript but not included in the Figures or Supporting Information cards, ask the author to provide the missing information. (Search Fig, Table, Text, Movie and check that they are in the file inventory).",
+      position: 15
     }
 
     NestedQuestion.where(

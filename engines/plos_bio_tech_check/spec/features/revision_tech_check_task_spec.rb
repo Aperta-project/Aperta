@@ -45,7 +45,13 @@ feature 'Revision Tech Check', js: true do
     overlay.display_letter
     overlay.click_autogenerate_email_button
     textarea = overlay.letter
-    expect(textarea.value).to include "Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References"
+    expect(textarea.value).to include(
+      'Data',
+      'Availability',
+      'Financial',
+      'Competing',
+      'Figure',
+      'Ethics')
 
     question_elements = all(".question-checkbox")
     first_question = question_elements.first
@@ -64,7 +70,13 @@ feature 'Revision Tech Check', js: true do
     overlay.display_letter
     overlay.click_autogenerate_email_button
     textarea = overlay.letter
-    expect(textarea.value).to include "Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References"
+    expect(textarea.value).to include(
+      'Data',
+      'Availability',
+      'Financial',
+      'Competing',
+      'Figure',
+      'Ethics')
 
     question_elements = all(".question-checkbox")
     first_question = question_elements.first

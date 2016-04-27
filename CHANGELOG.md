@@ -29,7 +29,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
-- Prevent duplication errors in generating new DOIs.
+- Prevent duplication errors in generating new DOIs
+- Prevent errors while adding discussion participants
 
 ### Security
 

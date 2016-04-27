@@ -15,7 +15,7 @@ export default Ember.Component.extend({
   tasks: alias('paper.tasks'),
 
   currentUserTasks: filterBy('paper.tasks', 'assignedToMe'),
-  assignedTasks: setDiff('currentUserTasks', 'submissionTasks'),
+  assignedTasks: setDiff('currentUserTasks', 'paper.submissionTasks'),
   sortedAssignedTasks: sort('assignedTasks', 'taskSorting'),
 
   actions: {

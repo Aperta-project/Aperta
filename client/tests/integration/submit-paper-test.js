@@ -8,6 +8,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 var app, currentPaper, fakeUser, server;
 
+
 app = null;
 server = null;
 fakeUser = null;
@@ -22,12 +23,11 @@ module('Integration: Submitting Paper', {
     return Ember.run(app, app.destroy);
   },
   beforeEach: function() {
-    var dashboardResponse, paperPayload, paperResponse, records;
     app = startApp();
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
     TestHelper.handleFindAll('discussion-topic', 1);
-    records = paperWithTask('Task', {
+    let records = paperWithTask('Task', {
       id: 1,
       title: "Metadata",
       isMetadataTask: true,
@@ -35,23 +35,15 @@ module('Integration: Submitting Paper', {
       completed: true
     });
     currentPaper = records[0];
-    paperPayload = Factory.createPayload('paper');
+    let paperPayload = Factory.createPayload('paper');
     paperPayload.addRecords(records.concat([fakeUser]));
-    paperResponse = paperPayload.toJSON();
+    let paperResponse = paperPayload.toJSON();
     server.respondWith('GET', "/api/papers/" + currentPaper.id, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(paperResponse)
     ]);
-    dashboardResponse = {
-      dashboards: [
-        {
-          id: 1,
-          total_paper_count: 0,
-          total_page_count: 0
-        }
-      ]
-    };
+
     server.respondWith('PUT', "/api/papers/" + currentPaper.id, [
       204, {
         "Content-Type": "application/html"
@@ -70,11 +62,7 @@ module('Integration: Submitting Paper', {
       JSON.stringify({journals:[]})
     ]);
 
-    return server.respondWith('GET', '/api/dashboards', [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify(dashboardResponse)
-    ]);
+    Factory.createPermission('Paper', currentPaper.id, ['submit']);
   }
 });
 

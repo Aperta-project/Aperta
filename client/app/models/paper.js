@@ -4,8 +4,6 @@ import Ember from 'ember';
 const { computed } = Ember;
 const { attr, belongsTo, hasMany } = DS;
 
-// initially_submitted is currently submittable on the server side,
-// but it may be erroneous.
 const PAPER_SUBMITTABLE_STATES = [
   'unsubmitted',
   'in_revision',

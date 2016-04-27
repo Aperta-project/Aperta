@@ -19,17 +19,14 @@ moduleForComponent('paper-sidebar', 'Integration | Component | paper sidebar', {
 });
 
 test('Shows the submit button when the paper is ready to submit and the user is authorized to submit', function(assert) {
-
-  let template = hbs`{{paper-sidebar paper=paper}}`;
-
-  this.container.register('service:can', FakeCanService);
-  let fake = this.container.lookup('service:can');
-
-  this.set('stubAction', function() {});
   let paper = Ember.Object.create({isReadyForSubmission: true});
   this.set('paper', paper);
 
+  this.container.register('service:can', FakeCanService);
+  let fake = this.container.lookup('service:can');
   fake.allowPermission('submit', paper);
+
+  let template = hbs`{{paper-sidebar paper=paper}}`;
   this.render(template);
   assert.elementFound(
     '#sidebar-submit-paper',
@@ -37,7 +34,7 @@ test('Shows the submit button when the paper is ready to submit and the user is 
   );
 
   fake.rejectPermission('submit');
-  this.$().empty();
+  this.$().empty(); // this.render() only appends to the test container
   this.render(template);
   assert.elementNotFound(
     '#sidebar-submit-paper',

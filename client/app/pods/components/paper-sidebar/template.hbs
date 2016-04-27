@@ -7,7 +7,7 @@
     {{/if}}
 
     <div id="submission-state-information">
-      {{#if getsGradualEngagementToggle}}
+      {{#if paper.isPendingGradualEngagementSubmission}}
         <div id="submission-process-toggle-box">
           <i id="submission-process-toggle"
              title="Submission Process"
@@ -18,7 +18,7 @@
         </div>
       {{/if}}
 
-      {{#if (and readyToSubmit (can 'submit' paper))}}
+      {{#if (and paper.isReadyForSubmission (can 'submit' paper))}}
         <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>
 
         <button id="sidebar-submit-paper" {{action "submitPaper"}}
@@ -27,7 +27,7 @@
         </button>
       {{/if}}
 
-      {{#if preSubmission}}
+      {{#if paper.isPreSubmission}}
         {{#if paper.gradualEngagement}}
           {{partial "submission/sidebar-gradual-engagement-presubmission"}}
         {{else}}
@@ -35,7 +35,7 @@
         {{/if}}
       {{/if}}
 
-      {{#if isSubmitted}}
+      {{#if paper.isSubmitted}}
         This paper has been submitted.
       {{/if}}
     </div>
@@ -56,9 +56,9 @@
     </div>
   {{/if}}
 
-  {{#if submissionTasks}}
+  {{#if paper.submissionTasks}}
     <div id="paper-submission-tasks">
-      {{#each sortedSubmissionTasks as |task|}}
+      {{#each paper.sortedSubmissionTasks as |task|}}
         {{#task-disclosure title=task.title completed=task.completed class=(task-component-name task.type)}}
           {{#task-load task=task}}
             {{component (task-component-name task.type) task=task}}

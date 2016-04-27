@@ -41,7 +41,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def self.find_uninvited_users_for_paper(possible_users, paper)
-    invited_users = Invitation.where(
+    invited_users = where(
       decision_id: paper.decisions.latest.id,
       state: ["invited", "accepted", "rejected"]
     ).includes(:invitee).map(&:invitee)
@@ -64,9 +64,10 @@ class Invitation < ActiveRecord::Base
   end
 
   def add_authors_to_information(invitation)
-    return unless paper.authors_list.present?
+    authors_list = TahiStandardTasks::AuthorsList.authors_list(paper)
+    return unless authors_list.present?
     invitation.update! information:
-      "Here are the authors on the paper:\n\n#{paper.authors_list}"
+      "Here are the authors on the paper:\n\n#{authors_list}"
   end
 
   def notify_invitation_invited

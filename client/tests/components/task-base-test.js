@@ -15,7 +15,7 @@ moduleForComponent('task-base', 'Unit: components/task-base', {
     });
 
     this.task = Ember.Object.create({
-      isSubmissionTask: true,
+      isOnlyEditableIfPaperEditable: true,
       paper: this.paper
     });
 
@@ -37,10 +37,9 @@ test('#isEditable: false the user does not have permission', function(assert) {
   });
 });
 
-
 test('#isEditable: true when the task is not a metadata task', function(assert) {
   Ember.run(()=> {
-    this.task.set('isSubmissionTask', false);
+    this.task.set('isOnlyEditableIfPaperEditable', false);
     assert.equal(this.subject().get('isEditable'), true);
   });
 });
@@ -52,10 +51,8 @@ test('#isEditable: true when paper is editable and task is a metadata task', fun
   });
 });
 
-test('#isEditable: false when the paper is not editable and the task is a metadata task', function(assert) {
-  Ember.run(()=> {
+test('#isEditable: false when the paper is not editable and the task is a metadata task',  function(assert) {
     this.paper.set('editable', false);
-    this.task.set('isSubmissionTask', true);
+    this.task.set('isOnlyEditableIfPaperEditable', true);
     assert.equal(this.subject().get('isEditable'), false);
-  });
 });

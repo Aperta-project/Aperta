@@ -67,6 +67,9 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -117,6 +120,10 @@ class JournalFactory
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -127,6 +134,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -152,6 +160,10 @@ class JournalFactory
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -160,6 +172,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -179,6 +192,9 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -187,6 +203,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -209,6 +226,10 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -219,6 +240,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -240,6 +262,10 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:assign_roles, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:send_to_apex, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_academic_editors, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_admins, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:search_reviewers, applies_to: Paper, states: ['*'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -251,6 +277,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:add_email_participants, applies_to: Task, states: ['*'])
+
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])

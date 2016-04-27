@@ -4,6 +4,8 @@ module PlosBioTechCheck
     DEFAULT_TITLE = 'Final Tech Check'
     DEFAULT_ROLE = 'editor'
 
+    before_create :initialize_body
+
     def active_model_serializer
       FinalTechCheckTaskSerializer
     end
@@ -32,6 +34,12 @@ module PlosBioTechCheck
 
     def self.nested_questions
       NestedQuestion.where(owner_id:nil, owner_type:name).all
+    end
+
+    private
+
+    def initialize_body
+      self.body = {}
     end
   end
 end

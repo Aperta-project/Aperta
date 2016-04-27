@@ -5,19 +5,17 @@
 // must pair our snapshots up by *id*, not by position. This is a helper class
 // to make that pairing fast and easy.
 //
-// See supporting-information-file-snapshot/component.js to see it in action.
+// See supporting-information-task-snapshot/component.js to see it in action.
 //
 export default class SnapshotsById {
-  constructor(taskName) {
-    this.taskName = taskName;
+  constructor(itemName) {
+    this.itemName = itemName;
     this.currentSnapshot = 0;
     this.pairedSnapshots = {};
   }
 
   snapshotId(snapshot){
-    return _.find(snapshot.children, function(child){
-      return child.name === 'id';
-    }).value;
+    return _.findWhere(snapshot.children, {name: 'id'}).value;
   }
 
   setPairedSnapshot(id, value, snapshotNumber) {
@@ -26,8 +24,14 @@ export default class SnapshotsById {
   }
 
   addSnapshots(taskSnapshot) {
+    if (!taskSnapshot){return;}
+
+    _.each(this.pairedSnapshots, (list) => {
+      list[this.currentSnapshot] = {};
+    });
+
     taskSnapshot.forEach((childSnapshot) => {
-      if (childSnapshot.name !== this.taskName) { return; }
+      if (childSnapshot.name !== this.itemName) { return; }
       let id = this.snapshotId(childSnapshot);
       this.setPairedSnapshot(id, childSnapshot, this.currentSnapshot);
     });
@@ -37,4 +41,4 @@ export default class SnapshotsById {
   toArray() {
     return _.values(this.pairedSnapshots);
   }
-};
+}

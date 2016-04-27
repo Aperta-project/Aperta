@@ -40,8 +40,12 @@ class Paper < ActiveRecord::Base
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
 
-  has_many :authors, through: :author_list_items, source_type: "Author"
+  has_many :authors,
+           -> { order 'author_list_items.position ASC' },
+           through: :author_list_items,
+           source_type: "Author"
   has_many :group_authors,
+           -> { order 'author_list_items.position ASC' },
            through: :author_list_items,
            source_type: "GroupAuthor",
            source: :author
@@ -427,12 +431,6 @@ class Paper < ActiveRecord::Base
     define_method relation.to_sym do
       old_assigned_users.merge(PaperRole.send(relation))
     end
-  end
-
-  def authors_list
-    authors.map.with_index { |author, index|
-      "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.affiliation}"
-    }.join("\n")
   end
 
   # Return the latest version of this paper.

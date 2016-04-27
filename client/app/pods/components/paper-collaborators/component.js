@@ -39,11 +39,11 @@ export default Ember.Component.extend(EscapeListenerMixin, {
         return { query: term };
       },
       results: (data) => {
-        // data.filtered_users contains more fields than we're using
+        // data.users contains more fields than we're using
         // directly below, and we'll need those fields later.  we're
         // storing them off for that purpose.
-        this.set('foundCollaborators', data.filtered_users); 
-        const selectableUsers = data.filtered_users.map(function(user){
+        this.set('foundCollaborators', data.users); 
+        const selectableUsers = data.users.map(function(user){
           return {
             id: user.id,
             text: user.full_name

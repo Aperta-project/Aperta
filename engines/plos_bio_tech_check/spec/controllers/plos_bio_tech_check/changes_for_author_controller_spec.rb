@@ -38,6 +38,7 @@ describe PlosBioTechCheck::ChangesForAuthorController do
 
       context "Paper in minor_revision state" do
         it "return JSON updated response" do
+          paper.minor_check!
           expect(itc_task.body["round"]).to eq 1
 
           post :submit_tech_check, id: task.id
@@ -50,6 +51,7 @@ describe PlosBioTechCheck::ChangesForAuthorController do
     context "without an existing ITC card" do
       context "Paper in minor_revision state" do
         it "return JSON updated response" do
+          paper.minor_check!
           post :submit_tech_check, id: task.id
           expect(response.status).to eq 200
         end

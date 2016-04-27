@@ -12,7 +12,7 @@ unless ENV['HIPCHAT_AUTH_TOKEN'].nil?
 end
 set :linked_dirs, %w(log tmp/pids tmp/cache tmp/sockets vendor/bundle)
 set :linked_files, %w(env puma.rb)
-set :repo_url, 'git@github.com:tahi-project/tahi.git'
+set :repo_url, 'git@github.com:Tahi-project/tahi.git'
 set :web_service_name, 'tahi-web' # used by puma:{start,stop,restart}
 set :worker_service_name, 'tahi-worker' # used by sidekiq:{start,stop,restart}
 

@@ -27,7 +27,9 @@ class EligibleUserService
     @eligible_user_blocks = {
       role.journal.academic_editor_role => -> { User.all },
       role.journal.cover_editor_role => -> { internal_editors },
-      role.journal.handling_editor_role => -> { internal_editors }
+      role.journal.handling_editor_role => -> { internal_editors },
+      role.journal.staff_admin_role => -> { staff_admins },
+      role.journal.reviewer_role => -> { User.all }
     }
   end
 
@@ -43,17 +45,27 @@ class EligibleUserService
       MESSAGE
     end
 
-    eligible_users = search(block.call, matching).to_a.uniq
-    users_already_assigned = User.all
+    users_already_assigned_ids = User.all
       .joins(:assignments)
       .where(assignments: { role: role, assigned_to: paper })
-    eligible_users - users_already_assigned
+      .select(:id)
+      .pluck(:id)
+
+    # Trying to call .distinct on the result of
+    # a search() blows up with a PG error
+    search(block.call, matching)
+      .where.not(id: users_already_assigned_ids)
+      .to_a.uniq
   end
 
   private
 
   def internal_editors
     role.journal.internal_editor_role.users
+  end
+
+  def staff_admins
+    role.journal.staff_admin_role.users
   end
 
   def search(user_relation, matching)

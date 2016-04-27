@@ -3,5 +3,6 @@ import Task from 'tahi/models/task';
 
 export default Task.extend({
   qualifiedType: "PlosBioTechCheck::ChangesForAuthorTask",
-  paper: DS.belongsTo('paper')
+  paper: DS.belongsTo('paper'),
+  isOnlyEditableIfPaperEditable: true
 });

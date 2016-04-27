@@ -18,11 +18,23 @@
 </script>
 
 <div class="auth-container">
-  <div class='row'>
+  <div class='logo'>
     <img class='plos auth-logo' src='/images/plos_logo.png' />
   </div>
   <h1>Welcome to <%= app_name %></h1>
   <p>Submit &amp; manage manuscripts.</p>
+
+  <div class="available-journals-message">
+    <p>
+      Aperta&nbsp;accepts&nbsp;new&nbsp;submissions&nbsp;to&nbsp;<strong>PLOS&nbsp;Biology</strong>&nbsp;for&nbsp;now.
+      It&nbsp;will&nbsp;be&nbsp;rolled&nbsp;out&nbsp;to&nbsp;all&nbsp;PLOS&nbsp;titles&nbsp;in&nbsp;the&nbsp;coming&nbsp;months.<br />
+      Microsoft Word files only (LaTeX coming soon!)<br />
+      <a href="http://journals.plos.org/plosbiology/s/submit-now">More information</a> about submitting to PLOS Biology.
+    </p>
+    <p>
+      To submit to one of our other journals, start <a href="https://www.plos.org/which-journal-is-right-for-me">here</a>.
+    </p>
+  </div>
 
   <% if flash.present? %>
     <% if notice %>
@@ -33,42 +45,46 @@
     <% end %>
   <% end %>
 
-  <% if Rails.configuration.password_auth_enabled %>
-    <div class="auth-left auth-group">
-      <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-        <div class="auth-field auth-field--text-input">
-          <%= f.text_field :login, :autofocus => true, placeholder: "Login" %>
-        </div>
+  <div class="methods">
 
-        <div class="auth-field auth-field--text-input">
-          <%= f.password_field :password, placeholder: "Password" %>
-          <br>
+    <% if Rails.configuration.password_auth_enabled %>
+      <div class="auth-left auth-group">
+        <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+          <div class="auth-field auth-field--text-input">
+            <%= f.text_field :login, :autofocus => true, placeholder: "Login" %>
+          </div>
 
-          <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-            <%= link_to "Forgot your password?", new_password_path(resource_name) %><br>
+          <div class="auth-field auth-field--text-input">
+            <%= f.password_field :password, placeholder: "Password" %>
+            <br>
+
+            <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+              <%= link_to "Forgot your password?", new_password_path(resource_name) %><br>
+            <% end -%>
+          </div>
+
+          <% if devise_mapping.rememberable? -%>
+            <label class="auth-remember-me">
+              <%= f.check_box :remember_me %>
+              Remember me
+            </label>
           <% end -%>
-        </div>
 
-        <% if devise_mapping.rememberable? -%>
-          <label class="auth-remember-me">
-            <%= f.check_box :remember_me %>
-            Remember me
-          </label>
-        <% end -%>
+          <%= f.submit "Sign in", class: "button-primary button--green auth-signin" %>
+          &nbsp; &nbsp;
+          <%- if devise_mapping.registerable? && controller_name != "registrations" %>
+            <%= link_to "Sign up", new_registration_path(resource_name), class: "auth-signup" %><br>
+          <% end -%>
+          <br>
+        <% end %>
+      </div>
+    <% end %>
 
-        <%= f.submit "Sign in", class: "button-primary button--green auth-signin" %>
-        &nbsp; &nbsp;
-        <%- if devise_mapping.registerable? && controller_name != "registrations" %>
-          <%= link_to "Sign up", new_registration_path(resource_name), class: "auth-signup" %><br>
-        <% end -%>
-        <br>
-      <% end %>
-    </div>
-  <% end %>
+    <% if Rails.configuration.omniauth_providers.present? %>
+      <div class="auth-right auth-group">
+        <%= render "devise/shared/links" %>
+      </div>
+    <% end %>
 
-  <% if Rails.configuration.omniauth_providers.present? %>
-    <div class="auth-right auth-group">
-      <%= render "devise/shared/links" %>
-    </div>
-  <% end %>
+  </div>
 </div>

@@ -4,15 +4,15 @@ import startApp from '../helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import { paperWithTask } from '../helpers/setups';
 import Factory from '../helpers/factory';
+
+import FactoryGuy from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
-var app, currentPaper, fakeUser, server;
-
+var app, paper, server;
 
 app = null;
 server = null;
-fakeUser = null;
-currentPaper = null;
+paper = null;
 
 module('Integration: Submitting Paper', {
   afterEach: function() {
@@ -20,60 +20,48 @@ module('Integration: Submitting Paper', {
     Ember.run(function() {
       return TestHelper.teardown();
     });
-    return Ember.run(app, app.destroy);
+    Ember.run(app, app.destroy);
+    $.mockjax.clear();
   },
   beforeEach: function() {
     app = startApp();
+    TestHelper.setup();
     server = setupMockServer();
-    fakeUser = window.currentUserData.user;
-    TestHelper.handleFindAll('discussion-topic', 1);
-    let records = paperWithTask('Task', {
-      id: 1,
-      title: "Metadata",
-      isMetadataTask: true,
+
+    let journal = FactoryGuy.make('journal');
+    let phase = FactoryGuy.make('phase');
+    let task  = FactoryGuy.make('task', {
+      phase: phase,
+      isMetaDataTask: true,
       isSubmissionTask: true,
       completed: true
     });
-    currentPaper = records[0];
-    let paperPayload = Factory.createPayload('paper');
-    paperPayload.addRecords(records.concat([fakeUser]));
-    let paperResponse = paperPayload.toJSON();
-    server.respondWith('GET', "/api/papers/" + currentPaper.id, [
-      200, {
-        "Content-Type": "application/json"
-      }, JSON.stringify(paperResponse)
-    ]);
+    paper = FactoryGuy.make('paper', { journal: journal, phases: [phase], tasks: [task] });
 
-    server.respondWith('PUT', "/api/papers/" + currentPaper.id, [
-      204, {
-        "Content-Type": "application/html"
-      }, ""
-    ]);
-    server.respondWith('PUT', "/api/papers/" + currentPaper.id + "/submit", [
-      200, {
-        "Content-Type": "application/json"
-      }, JSON.stringify({
-        papers: []
-      })
-    ]);
+    TestHelper.handleFind(paper);
 
-    server.respondWith('GET', '/api/journals', [
-      200, { 'Content-Type': 'application/json' },
-      JSON.stringify({journals:[]})
-    ]);
+    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.handleFindAll('journal', 0);
 
-    Factory.createPermission('Paper', currentPaper.id, ['submit']);
+    Factory.createPermission('Paper', paper.id, ['submit']);
+    $.mockjax({url: `/api/papers/${paper.id}`, type: 'put', status: 204 });
+    $.mockjax({
+      url: `/api/papers/${paper.id}/submit`,
+      type: 'put',
+      status: 200,
+      responseText: {papers: []}
+    });
   }
 });
 
-test("User can submit a paper", function(assert) {
-  visit("/papers/" + currentPaper.id);
+test('User can submit a paper', function(assert) {
+  visit('/papers/' + paper.id);
   click(".edit-paper button:contains('Submit')");
-  click("button.button-submit-paper");
+  click('button.button-submit-paper');
   return andThen(function() {
-    return assert.ok(_.findWhere(server.requests, {
-      method: "PUT",
-      url: "/api/papers/" + currentPaper.id + "/submit"
-    }), "It posts to the server");
+    return assert.ok(_.findWhere($.mockjax.mockedAjaxCalls(), {
+      type: 'PUT',
+      url: '/api/papers/' + paper.id + '/submit'
+    }), 'It posts to the server');
   });
 });

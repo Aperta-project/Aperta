@@ -6,7 +6,10 @@ export default DS.ActiveModelAdapter.extend({
   headers: function() {
     return {
       namespace: 'api',
-      'PUSHER_SOCKET_ID': getOwner(this).lookup('pusher:main').get('socketId')
+      // Weird capitalization and hyphens are intentional since this is is an
+      // HTTP header name. Whatever you do, DO NOT add underscores to the header
+      // name because nginx will start to ignore it.
+      'Pusher-Socket-ID': getOwner(this).lookup('pusher:main').get('socketId')
     };
   }.property().volatile(),
 

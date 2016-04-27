@@ -6653,8 +6653,9 @@ nested_questions:
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
-    - If Financial Disclosure Statement is not complete (they've written N/A or something
-      similar), message author.
+    - Check that the Financial Disclosure card has been filled out correctly. Ensure
+      the authors have provided a description of the roles of the funder, if they
+      responded Yes to our standard statement.
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
@@ -6666,8 +6667,10 @@ nested_questions:
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '159'
-    - If the Financial Disclosure Statement includes any companies from the Tobacco
-      Industry, make a note in the discussion below.
+    - "If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, start a 'MetaData' discussion and ping the handling editor. See <a
+      href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
+      list</a>."
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
@@ -6730,7 +6733,9 @@ nested_questions:
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
-    - If an Ethics Statement is present, make a note in the discussion below.
+    - Make sure the ethics statement looks complete. If the authors have responded
+      Yes to any question, but have not provided approval information, please request
+      this from them.
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
@@ -7425,6 +7430,22 @@ nested_questions:
     - '2016-03-22 15:09:05.665082'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+  - - '240'
+    - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
+      to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
+      or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
+      for researchers who meet the criteria for access to confidential data', start
+      a 'MetaData' discussion and ping the handling editor.
+    - boolean
+    - plos_bio_revision_tech_check--data_availability_confidential
+    - 
+    - '329'
+    - '330'
+    - '2'
+    - '2016-03-22 15:09:05.665082'
+    - '2016-03-22 15:09:05.665082'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
   - - '220'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
@@ -7438,6 +7459,20 @@ nested_questions:
     - '2016-03-22 15:09:05.675633'
     - '2016-03-22 15:09:05.675633'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '241'
+    - In the Data Availability card, if the authors have not selected one of the reasons
+      listed in Q2 and pasted it into the text box, please request that they complete
+      this section.
+    - boolean
+    - plos_bio_revision_tech_check--data_availability_blank
+    - 
+    - '331'
+    - '332'
+    - '3'
+    - '2016-03-22 15:09:05.675633'
+    - '2016-03-22 15:09:05.675633'
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '221'
     - 'In the Data Availability card, if the authors have mentioned data submitted
@@ -7453,6 +7488,20 @@ nested_questions:
     - '2016-03-22 15:09:05.684371'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+  - - '242'
+    - 'In the Data Availability card, if the authors have mentioned data submitted
+      to Dryad, check that the author has provided the Dryad reviewer URL and if not,
+      request it from them.'
+    - boolean
+    - plos_bio_revision_tech_check--data_availability_dryad
+    - 
+    - '333'
+    - '334'
+    - '4'
+    - '2016-03-22 15:09:05.684371'
+    - '2016-03-22 15:09:05.684371'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
   - - '222'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
@@ -7466,6 +7515,20 @@ nested_questions:
     - '2016-03-22 15:09:05.693357'
     - '2016-03-22 15:09:05.693357'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '243'
+    - Compare the author list between the manuscript file and the Authors card. If
+      the author list does not match, request the authors to update whichever section
+      is missing information. Ignore omissions of middle initials.
+    - boolean
+    - plos_bio_revision_tech_check--authors_match
+    - 
+    - '335'
+    - '336'
+    - '5'
+    - '2016-03-22 15:09:05.693357'
+    - '2016-03-22 15:09:05.693357'
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '223'
     - If we don't have unique email addresses for all authors, send it back.
@@ -7493,6 +7556,20 @@ nested_questions:
     - '2016-03-22 15:09:05.712588'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+  - - '244'
+    - If the author list has changed between initial and full submission, pass it
+      through if an author was added and flag it to the editor/initiate our COPE process
+      if an author was removed.
+    - boolean
+    - plos_bio_revision_tech_check--author_removed
+    - 
+    - '339'
+    - '340'
+    - '7'
+    - '2016-03-22 15:09:05.712588'
+    - '2016-03-22 15:09:05.712588'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
   - - '225'
     - Check that the Competing Interest card has been filled out correctly. If the
       authors have selected Yes and not provided an explanation, send it back.
@@ -7505,6 +7582,19 @@ nested_questions:
     - '2016-03-22 15:09:05.726444'
     - '2016-03-22 15:09:05.726444'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '245'
+    - 'If any competing interests are listed, please add a manuscript note.
+      ex: "Initials Date: Note to Editor - COI statement present, please see COI field."'
+    - boolean
+    - plos_bio_revision_tech_check--competing_interests
+    - 
+    - '341'
+    - '342'
+    - '8'
+    - '2016-03-22 15:09:05.726444'
+    - '2016-03-22 15:09:05.726444'
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '226'
     - If the authors mention submitting their paper to a collection in the cover letter
@@ -7520,6 +7610,20 @@ nested_questions:
     - '2016-03-22 15:09:05.752494'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+  - - '246'
+    - If the authors mention submitting their paper to a collection in the cover letter 
+      or Additional Information card, alert Jenni Horsley by pinging her through the 
+      discussion of the RTC card.
+    - boolean
+    - plos_bio_revision_tech_check--collection
+    - 
+    - '343'
+    - '344'
+    - '11'
+    - '2016-03-22 15:09:05.752494'
+    - '2016-03-22 15:09:05.752494'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
   - - '227'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
@@ -7533,6 +7637,20 @@ nested_questions:
     - '2016-03-22 15:09:05.765773'
     - '2016-03-22 15:09:05.765773'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '247'
+    - Make sure you can view and download all files uploaded to your Figures card.
+      Check against figure citations in the manuscript to ensure there are no missing
+      figures.
+    - boolean
+    - plos_bio_revision_tech_check--figures_viewable
+    - 
+    - '345'
+    - '346'
+    - '12'
+    - '2016-03-22 15:09:05.765773'
+    - '2016-03-22 15:09:05.765773'
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '228'
     - If main figures or supporting information captions are only available in the
@@ -7565,7 +7683,7 @@ nested_questions:
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
-      file inventory.
+      file inventory).
     - boolean
     - plos_bio_initial_tech_check--figures_missing
     - 
@@ -7575,6 +7693,63 @@ nested_questions:
     - '2016-03-22 15:09:05.801946'
     - '2016-03-22 15:09:05.801946'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '248'
+    - If main figures or supporting information captions are only available in the
+      file itself (and not in the manuscript), request that the author remove the
+      captions from the file and instead place them in the manuscript file.
+    - boolean
+    - plos_bio_revision_tech_check--embedded_captions
+    - 
+    - '347'
+    - '348'
+    - '13'
+    - '2016-03-22 15:09:05.77707'
+    - '2016-03-22 15:09:05.77707'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '249'
+    - If main figures or supporting information captions are missing entirely, ask
+      the author to provide them in the manuscript file.
+    - boolean
+    - plos_bio_revision_tech_check--captions_missing
+    - 
+    - '349'
+    - '350'
+    - '14'
+    - '2016-03-22 15:09:05.788747'
+    - '2016-03-22 15:09:05.788747'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '250'
+    - If any files or figures are cited in the manuscript but not included in the
+      Figures or Supporting Information cards, ask the author to provide the missing
+      information. (Search Fig, Table, Text, Movie and check that they are in the
+      file inventory).
+    - boolean
+    - plos_bio_revision_tech_check--figures_missing
+    - 
+    - '351'
+    - '352'
+    - '15'
+    - '2016-03-22 15:09:05.801946'
+    - '2016-03-22 15:09:05.801946'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '251'
+    - For any resubmissions that have previously gone through review, ensure
+      the authors have responded to the reviewer comments in the Revision
+      Details box of the Revise Manuscript card.If this information is not
+      present, request it from author.
+    - boolean
+    - plos_bio_revision_tech_check--response_to_reviewers
+    - 
+    - '351'
+    - '352'
+    - '15'
+    - '2016-03-22 15:09:05.801946'
+    - '2016-03-22 15:09:05.801946'
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '231'
     - For any resubmissions after an Open Reject decision, ensure the authors have

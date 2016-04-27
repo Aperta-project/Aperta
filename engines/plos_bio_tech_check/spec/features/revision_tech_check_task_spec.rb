@@ -17,6 +17,7 @@ feature 'Revision Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
+    wait_for_ajax
     overlay.expect_author_changes_saved
     overlay.mark_as_complete
     overlay.expect_task_to_be_completed
@@ -29,6 +30,7 @@ feature 'Revision Tech Check', js: true do
     login_as(author, scope: :user)
     overlay = Page.view_task_overlay(paper, change_author_task)
     overlay.expect_to_see_change_list
+    wait_for_ajax
     overlay.click_changes_have_been_made
     overlay.dismiss
 
@@ -45,7 +47,13 @@ feature 'Revision Tech Check', js: true do
     overlay.display_letter
     overlay.click_autogenerate_email_button
     textarea = overlay.letter
-    expect(textarea.value).to include "Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References"
+    expect(textarea.value).to include(
+      'Data',
+      'Availability',
+      'Financial',
+      'Competing',
+      'Figure',
+      'Ethics')
 
     question_elements = all(".question-checkbox")
     first_question = question_elements.first
@@ -64,7 +72,13 @@ feature 'Revision Tech Check', js: true do
     overlay.display_letter
     overlay.click_autogenerate_email_button
     textarea = overlay.letter
-    expect(textarea.value).to include "Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References"
+    expect(textarea.value).to include(
+      'Data',
+      'Availability',
+      'Financial',
+      'Competing',
+      'Figure',
+      'Ethics')
 
     question_elements = all(".question-checkbox")
     first_question = question_elements.first

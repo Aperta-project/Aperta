@@ -13,7 +13,7 @@ module Typesetter
       if tasks.length > 1
         fail Typesetter::MetadataError.multiple_tasks(tasks)
       elsif tasks.length == 0
-        fail Typesetter::MetadataError.no_task(task_type)
+        return
       end
       tasks.first
     end

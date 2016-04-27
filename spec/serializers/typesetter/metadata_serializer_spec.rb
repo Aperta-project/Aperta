@@ -22,6 +22,7 @@ describe Typesetter::MetadataSerializer do
       FactoryGirl.create(:publishing_related_questions_task, paper: paper)
     ]
   end
+  let(:accepted_decision) { FactoryGirl.create(:decision) }
 
   let(:paper_task) do
     ->(task_type) { paper.tasks.find_by_type(task_type) }
@@ -36,6 +37,7 @@ describe Typesetter::MetadataSerializer do
 
   before do
     paper.phases.first.tasks.push(*metadata_tasks)
+    allow(paper.decisions).to receive(:latest).and_return(accepted_decision)
   end
 
   it 'has short_title' do
@@ -219,5 +221,17 @@ describe Typesetter::MetadataSerializer do
       serializer: Typesetter::SupportingInformationFileSerializer,
       json_key: :supporting_information_files
     )
+  end
+
+  context 'paper decision' do
+    it 'works when the paper was accepted' do
+      expect(output).to_not be_empty
+    end
+
+    it 'errors when the paper has not been accepted' do
+      paper.decisions.latest.verdict = 'minor_revision'
+      serializer = Typesetter::MetadataSerializer.new(paper)
+      expect { serializer.serializable_hash }.to raise_error(StandardError)
+    end
   end
 end

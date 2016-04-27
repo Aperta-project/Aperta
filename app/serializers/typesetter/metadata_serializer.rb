@@ -2,6 +2,7 @@ module Typesetter
   # Serializes a paper's metadata for the typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
+    alias_method :original_serializable_hash, :serializable_hash
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions
     attribute :first_submitted_at, key: :received_date
@@ -56,5 +57,13 @@ module Typesetter
     def data_availability
       task('TahiStandardTasks::DataAvailabilityTask')
     end
+
+    def validate_and_serialize
+      fail Typesetter::MetadataError.not_accepted unless
+        object.decisions.latest.verdict == 'accept'
+      original_serializable_hash
+    end
+
+    alias_method :serializable_hash, :validate_and_serialize
   end
 end

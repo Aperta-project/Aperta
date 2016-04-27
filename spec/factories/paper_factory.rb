@@ -284,6 +284,8 @@ FactoryGirl.define do
         version = paper.latest_version
         version.source = File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
         version.save!
+        accept_decision = FactoryGirl.create(:decision)
+        paper.decisions = [accept_decision]
         paper.save!
 
         paper.reload

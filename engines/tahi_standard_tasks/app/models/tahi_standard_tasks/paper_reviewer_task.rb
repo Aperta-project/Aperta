@@ -95,7 +95,7 @@ module TahiStandardTasks
       { manuscript_title: paper.display_title(sanitized: false),
         journal_name: paper.journal.name,
         abstract: abstract,
-        authors:  paper.authors_list
+        authors:  AuthorsList.authors_list(paper)
       }
     end
 

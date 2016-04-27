@@ -87,7 +87,8 @@ describe TahiStandardTasks::PaperEditorTask do
       end
 
       it 'includes the authors list' do
-        expect(invitation_template.body).to include paper.authors_list
+        expect(invitation_template.body)
+          .to include(TahiStandardTasks::AuthorsList.authors_list(paper))
       end
 
       it 'includes the paper abstract' do

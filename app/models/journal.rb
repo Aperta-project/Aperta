@@ -92,6 +92,22 @@ class Journal < ActiveRecord::Base
     PaperRole::ALL_ROLES | old_roles.map(&:name)
   end
 
+  # Try to block other services from directly updating last_doi_issued to avoid
+  # issues where last_doi_issued gets out-of-sync.
+  # instead those services should call #next_doi_number!
+  def last_doi_issued=(*args)
+    return unless new_record?
+    super(*args)
+  end
+
+  def next_doi_number!
+    with_lock do
+      last_doi_issued.succ.tap do |next_number|
+        update_column :last_doi_issued, next_number
+      end
+    end
+  end
+
   private
 
   def has_valid_doi_information?

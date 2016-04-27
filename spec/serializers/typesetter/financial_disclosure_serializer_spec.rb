@@ -26,12 +26,19 @@ describe Typesetter::FinancialDisclosureSerializer do
   it 'has competing interests fields' do
     expect(output.keys).to contain_exactly(
       :author_received_funding,
+      :funding_statement,
       :funders)
   end
 
   describe 'author_recieved_funding' do
     it 'marks whether the author received funding' do
       expect(output[:author_received_funding]).to eq(author_received_funding)
+    end
+  end
+
+  describe 'funding_statement' do
+    it 'includes the funding statement from the task' do
+      expect(output[:funding_statement]).to eq(task.funding_statement)
     end
   end
 

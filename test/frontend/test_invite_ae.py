@@ -74,9 +74,6 @@ class InviteAECardTest(CommonTest):
     # What I notice is that if we submit before iHat is done updating, the paper title
     # reverts to the temporary title specified on the CNS overlay (5s is too short)
     # APERTA-6514
-    time.sleep(10)
-    # XXXXXXXXXXXXXXXXXXXX TEMPORARY FIX: REFRESH
-    manuscript_page.refresh()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -90,7 +87,6 @@ class InviteAECardTest(CommonTest):
     dashboard_page = self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
-    # go to card
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
@@ -99,79 +95,21 @@ class InviteAECardTest(CommonTest):
     #Check if card is there
     if not workflow_page.is_card('Invite Academic Editor'):
       # Add card
+
       pass
     # click on invite academic editor
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
     invite_ae_card.invite_ae(academic_editor_login)
-    import pdb; pdb.set_trace()
-
-
-
-    # Set up a handling editor, academic editor and cover editor for this paper
-    self.set_editors_in_db(paper_id)
-    # login as editorial user
-    editorial_user = random.choice(editorial_users)
-    logging.info(editorial_user)
-    dashboard_page = self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
-    # go to card
-    workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
-    workflow_page.click_card('invite_reviewers')
-    time.sleep(3)
-    invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_card_elements_styles()
-    manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
-    # The title we pass in here must be a unicode object if there is utf-8 data present
-    invite_reviewers.validate_invite_reviewer(reviewer_login,
-                                              manuscript_title,
-                                              creator_user,
-                                              paper_id)
-    invite_reviewers.click_close_button()
-    time.sleep(.5)
-    workflow_page.logout()
-
-    # login as reviewer respond to invite
-    self.cas_login(email=reviewer_login['email'])
     time.sleep(2)
-    dashboard_page.click_view_invites_button()
-    invite_response = dashboard_page.accept_or_reject_invitation(manuscript_title)
-    logging.info('Invitees response to review request was {0}'.format(invite_response))
-    # If accepted, validate new assignment in db
-    if invite_response == 'Accept':
-      reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'areviewer\';')[0][0]
-      reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                            'name = \'Reviewer\';',
-                                            (wombat_journal_id,))[0][0]
-      test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
-                                    'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
-                                    (reviewer_user_id, paper_id))[0][0]
-      assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
-                                                     'value: {1}'.format(test_for_role,
-                                                                         reviewer_role_for_env)
     workflow_page.logout()
+    dashboard_page = self.cas_login(email=academic_editor_login['email'])
+    # accept invitations
+    dashboard_page.click_view_invites_button()
+    dashboard_page.accept_all_invitations()
+    time.sleep(1)
+    assert self.check_article_access(paper_url)
 
-    # log back in as editorial user and validate status display on card
-    logging.info(editorial_user)
-    self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
-    # go to card
-    workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
-    workflow_page.click_card('invite_reviewers')
-    time.sleep(3)
-    invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_reviewer_response(reviewer_login, invite_response)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -258,6 +258,13 @@ class WorkflowPage(AuthenticatedPage):
     self._get(self._add_button_overlay).click()
     time.sleep(2)
 
+  def add_card(self, card_text):
+    """ """
+    # press add new card
+
+    # select item
+
+
   def complete_card(self, card_name):
     """
     On a given card, check complete and then close

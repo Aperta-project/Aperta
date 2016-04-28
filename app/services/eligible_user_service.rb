@@ -47,33 +47,19 @@ class EligibleUserService
       MESSAGE
     end
 
-    users_already_assigned_ids = User.all
+    matching_users = search(block.call, matching)
+    get_not_already_assigned_users(matching_users)
+  end
+
+  private
+
+  def already_assigned_user_ids
+    User.all
       .joins(:assignments)
       .where(assignments: { role: role, assigned_to: paper })
       .select(:id)
       .pluck(:id)
-
-    matching_users = search(block.call, matching)
-
-    if matching_users.is_a?(Array)
-      matching_not_assigned_users = matching_users.map do |users_collection|
-        unless users_collection.nil?
-          users_collection.where.not(id: users_already_assigned_ids).to_a
-        end
-      end
-      matching_not_assigned_users.reject(&:nil?).flatten.uniq
-    else
-      matching_users.where.not(id: users_already_assigned_ids).to_a.uniq
-    end
-
-    # Trying to call .distinct on the result of
-    # a search() blows up with a PG error
-
-    # temp.where.not(id: users_already_assigned_ids)
-    # temp.to_a.uniq
   end
-
-  private
 
   def internal_and_freelance_editors
     [
@@ -81,16 +67,6 @@ class EligibleUserService
       role.journal.freelance_editor_role.try(:users)
     ]
   end
-
-  # def freelance_editors
-  #   freelance_editor_role.try(:users)
-  #   # freelance_editor_role = role.journal.freelance_editor_role
-  #   # freelance_editor_role.present? ? freelance_editor_role.users : {}
-  # end
-  #
-  # def internal_editors
-  #   role.journal.internal_editor_role.users
-  # end
 
   def staff_admins
     role.journal.staff_admin_role.users
@@ -104,5 +80,17 @@ class EligibleUserService
     else
       user_relation.fuzzy_search(matching)
     end
+  end
+
+  def get_not_already_assigned_users(matching_users)
+    if matching_users.is_a?(Array)
+      not_yet_assigned = matching_users.reject(&:nil?).map do |users|
+        users.where.not(id: already_assigned_user_ids)
+      end.flatten
+    else
+      not_yet_assigned = matching_users.where.not(id: already_assigned_user_ids)
+    end
+
+    not_yet_assigned.to_a.uniq
   end
 end

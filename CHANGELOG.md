@@ -30,6 +30,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.4.5] - 2016-04-27
 ### Added
 - Reviewers can be removed using the Assign Team card
+- Freelance editors can be assigned as Cover Editor and/or Handling Editor
 
 ### Changed
 ### Deprecated

@@ -626,16 +626,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -799,16 +798,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -980,16 +978,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -1213,16 +1210,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 

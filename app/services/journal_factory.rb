@@ -113,7 +113,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
@@ -153,7 +153,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
@@ -220,7 +220,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES);
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
@@ -255,6 +255,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -275,7 +276,6 @@ class JournalFactory
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:add_email_participants, applies_to: Task)
 
 

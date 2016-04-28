@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413002420) do
+ActiveRecord::Schema.define(version: 20160428184601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -512,6 +512,7 @@ ActiveRecord::Schema.define(version: 20160413002420) do
     t.integer  "new_withdrawn",               default: 0, null: false
     t.integer  "new_initial_submissions",     default: 0, null: false
     t.integer  "in_process_balance",          default: 0, null: false
+    t.integer  "unsubmitted",                 default: 0, null: false
   end
 
   create_table "snapshots", force: :cascade do |t|

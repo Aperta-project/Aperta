@@ -1,5 +1,4 @@
 <div class="container">
-  <hr>
   <div class="paper-info">
     <div class="paper-abstract">
       <h3>How many papers are in the system today?</h3>
@@ -20,7 +19,10 @@
         Checking: <%= @simple_report.checking %><br>
         In revision: <%= @simple_report.in_revision %><br>
       </p>
+      <hr>
+      <p>
+        Draft: <%= @simple_report.unsubmitted %>
+      </p>
     </div>
   </div>
-  <hr>
 </div>

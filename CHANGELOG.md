@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
 - Prevent duplication errors in generating new DOIs.
+- Ensure the entire manuscript displays if it is re-uploaded with extant figures
 
 ### Security
 

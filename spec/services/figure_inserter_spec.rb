@@ -252,4 +252,28 @@ describe FigureInserter do
       expect(node).to be_present
     end
   end
+
+  describe '#remove_figures' do
+    let(:raw_html) do
+      <<-HTML
+        <p id="the-beginning"></p>
+        <img src="whatever">
+        <p id="the-end"></p>
+      HTML
+    end
+    let(:expected_html) do
+      parse <<-HTML
+        <p id="the-beginning"></p>
+
+        <p id="the-end"></p>
+      HTML
+    end
+    let(:raw_html_doc) { parse raw_html }
+    let(:figure_inserter) { FigureInserter.new(raw_html, []) }
+    it 'strips imgs from the text' do
+      figure_inserter.send(:remove_figures)
+      no_figure_html = figure_inserter.instance_variable_get(:@html_tree)
+      expect(no_figure_html).to be_equivalent_to(expected_html)
+    end
+  end
 end

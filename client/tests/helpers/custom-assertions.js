@@ -36,4 +36,10 @@ export default function() {
     return this.push(matches === 1, `'${selector}' not found`, `found '${selector}'`, message || `should find element at ${selector}`);
   };
 
+  QUnit.assert.elementNotFound = function(selector, message) {
+    const matches = $(selector).length;
+
+    return this.push(matches === 0, `'${selector}' found`, `found no '${selector}'`, message || `should not find element at ${selector}`);
+  };
+
 }

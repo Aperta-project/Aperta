@@ -103,7 +103,6 @@ class Paper < ActiveRecord::Base
 
     event(:submit) do
       transitions from: [:unsubmitted,
-                         :initially_submitted,
                          :in_revision,
                          :invited_for_full_submission],
                   to: :submitted,

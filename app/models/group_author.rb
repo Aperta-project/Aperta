@@ -4,7 +4,7 @@ class GroupAuthor < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
 
-  CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
+  CONTRIBUTIONS_QUESTION_IDENT = "group-author--contributions"
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 

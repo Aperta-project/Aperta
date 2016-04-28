@@ -3,8 +3,6 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     journal
-    publishing_state "unsubmitted"
-    editable true
 
     trait :with_integration_journal do
       association :journal, factory: :journal_with_roles_and_permissions
@@ -16,13 +14,7 @@ FactoryGirl.define do
           paper.journal.creator_role || paper.journal.create_creator_role!
         end
 
-        creator = paper.creator
-        if creator
-          Assignment.where(
-            role: paper.journal.creator_role,
-            assigned_to: paper
-          ).first_or_create!
-        else
+        unless paper.creator
           paper.update!(creator: FactoryGirl.create(:user))
         end
 
@@ -60,7 +52,6 @@ FactoryGirl.define do
 
     trait(:initially_submitted) do
       publishing_state 'initially_submitted'
-      editable false
     end
 
     trait(:submitted) do

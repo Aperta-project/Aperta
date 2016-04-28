@@ -9,41 +9,49 @@ module Tahi
       @name = name.camelcase
       @task_title = camel_space(name).gsub(/\s*Task$/, "")
       @engine_path = find_engine_path(engine)
-      filename = name.underscore
+      @filename = name.underscore
 
-      template_many(
-        'model.rb',
-        app_path('models', "#{filename}.rb"),
-
-        'serializer.rb',
-        app_path('serializers', engine, "#{filename}_serializer.rb"),
-
-        'model_spec.rb',
-        spec_path('models', engine, "#{filename}_spec.rb"),
-
-        'serializer_spec.rb',
-        spec_path('serializers', engine, "#{filename}_serializer_spec.rb")
-      )
-
-      rake 'data:update_journal_task_types'
-
+      template_backend_model
       template_client_component
     end
 
     private
 
+    def template_backend_model
+      template_many(
+        'model.rb',
+        app_path('models', engine, "#{@filename}.rb"),
+
+        'serializer.rb',
+        app_path('serializers', engine, "#{@filename}_serializer.rb"),
+
+        'model_spec.rb',
+        spec_path('models', engine, "#{@filename}_spec.rb"),
+
+        'serializer_spec.rb',
+        spec_path('serializers', engine, "#{@filename}_serializer_spec.rb")
+      )
+
+      rake 'data:update_journal_task_types'
+    end
+
     def template_client_component
+      engine = "#{@engine_path} #{@engine.camelize} #{@engine.underscore}"
+      ember_do "generate tahi-task #{name.underscore} #{engine}"
+    end
+
+    def ember_do(command)
       inside 'client' do
-        run "ember generate tahi-task #{name.underscore} #{@engine_path}"
+        run "./node_modules/.bin/ember #{command}"
       end
     end
 
     def app_path(*args)
-      File.join 'app', @engine_path, *args
+      File.join @engine_path, './app', *args
     end
 
     def spec_path(*args)
-      File.join 'spec', @engine_path, *args
+      File.join @engine_path, './spec', *args
     end
 
     def template_many(*args)

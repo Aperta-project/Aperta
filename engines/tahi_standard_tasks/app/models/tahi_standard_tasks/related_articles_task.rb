@@ -1,9 +1,10 @@
-module <%= @engine.camelcase %>
-  # The model class for the <%= @task_title %> task, which is
-  # used by SOMEONE for SOMETHING. FILL ME OUT PLEASE.
-  class <%= name %> < Task
-    DEFAULT_TITLE = '<%= @task_title %>'
-    DEFAULT_ROLE = 'author'
+module TahiStandardTasks
+  # The Related Articles task is used by editors to connect articles
+  # which either refer to one another after publishing, or should be
+  # published simultaneously.
+  class RelatedArticlesTask < Task
+    DEFAULT_TITLE = 'Related Articles'
+    DEFAULT_ROLE = 'editor'
 
     # You should include MetadataTask if the task is required for
     # submission and should be visible to reviewers
@@ -16,7 +17,7 @@ module <%= @engine.camelcase %>
     # include SubmissionTask
 
     def active_model_serializer
-      <%= @engine.camelcase %>::<%= name %>Serializer
+      TahiStandardTasks::RelatedArticlesTaskSerializer
     end
   end
 end

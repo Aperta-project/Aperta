@@ -1,7 +1,8 @@
 require "rails_helper"
 
-describe <%= @engine.camelcase %>::<%= @name.camelcase %>Serializer, serializer_test: true do
-  let(:object_for_serializer) { FactoryGirl.create :<%= @name.underscore %> }
+describe TahiStandardTasks::RelatedArticlesTaskSerializer,
+         serializer_test: true do
+  let(:object_for_serializer) { FactoryGirl.create :related_articles_task }
 
   it "serializes successfully" do
     expect(deserialized_content).to be_kind_of Hash

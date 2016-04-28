@@ -2,16 +2,16 @@ import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 
-moduleForComponent('<%= dasherizedModuleName %>',
-                   'Integration | Component | <%= humanizedModuleName %>'); //
+moduleForComponent('related-articles-task',
+                   'Integration | Component | related_articles_task'); //
 
-var template = hbs`{{<%= dasherizedModuleName %> task=task}}`;
+var template = hbs`{{related-articles-task task=task}}`;
 
 var task = function (){
   return {
     id: 2,
-    title: '<%= dasherizedModuleName %>',
-    type: '<%= dasherizedModuleName %>',
+    title: 'related-articles-task',
+    type: 'related-articles-task',
     completed: false,
     body: '',
     position: 4,

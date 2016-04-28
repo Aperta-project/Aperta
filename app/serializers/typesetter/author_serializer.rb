@@ -4,7 +4,8 @@ module Typesetter
   class AuthorSerializer < Typesetter::TaskAnswerSerializer
     attributes :first_name, :last_name, :middle_initial, :email, :department,
                :title, :corresponding, :deceased, :affiliation,
-               :secondary_affiliation, :contributions
+               :secondary_affiliation, :contributions, :government_employee,
+               :position
 
     private
 
@@ -14,6 +15,10 @@ module Typesetter
 
     def corresponding
       object.answer_for('author--published_as_corresponding_author').try(:value)
+    end
+
+    def government_employee
+      object.answer_for('author--government-employee').try(:value)
     end
 
     def contributions

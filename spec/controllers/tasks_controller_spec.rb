@@ -184,7 +184,7 @@ describe TasksController, redis: true do
         end
 
         before do
-          allow_any_instance_of(User).to receive(:can?)
+          allow(user).to receive(:can?)
             .with(:edit, task)
             .and_return false
         end

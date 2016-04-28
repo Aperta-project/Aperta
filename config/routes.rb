@@ -122,12 +122,13 @@ Tahi::Application.routes.draw do
     resources :permissions, only: [:show]
     resources :question_attachments, only: [:create, :update, :show, :destroy]
     resources :questions, only: [:create, :update]
-
     resources :nested_questions, only: [:index] do
       resources :answers, only: [:create, :update, :destroy], controller: 'nested_question_answers'
     end
 
     resources :old_roles, only: [:show, :create, :update, :destroy]
+
+    resources :related_articles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers

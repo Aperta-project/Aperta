@@ -543,6 +543,10 @@ describe Paper do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
+      let(:unsubmitted_paper) do
+        FactoryGirl.create(:paper, :unsubmitted, journal: journal)
+      end
+
       before do
         paper.withdraw!
       end
@@ -561,7 +565,7 @@ describe Paper do
       end
 
       it "marks the paper with the previous editable state for unsubmitted papers" do
-        paper = FactoryGirl.create(:paper, :with_integration_journal, :unsubmitted)
+        paper = unsubmitted_paper
         expect(paper).to be_editable
         paper.withdraw!
         expect(paper).to_not be_editable

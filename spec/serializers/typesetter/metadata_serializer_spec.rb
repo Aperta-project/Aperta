@@ -205,9 +205,9 @@ describe Typesetter::MetadataSerializer do
   context 'authors' do
     include_examples(
       'serializes :has_many property',
-      property: :authors,
+      property: :author_list_items,
       factory: :author,
-      serializer: Typesetter::AuthorSerializer,
+      serializer: Typesetter::AuthorsSerializer,
       json_key: :authors
     )
   end

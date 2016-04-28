@@ -116,7 +116,9 @@ describe Typesetter::AuthorSerializer do
       :deceased,
       :affiliation,
       :secondary_affiliation,
-      :contributions
+      :contributions,
+      :government_employee,
+      :position
     )
   end
 

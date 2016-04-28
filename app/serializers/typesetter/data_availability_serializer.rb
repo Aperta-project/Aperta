@@ -4,6 +4,10 @@ module Typesetter
   class DataAvailabilitySerializer < Typesetter::TaskAnswerSerializer
     attributes :data_fully_available, :data_location_statement
 
+    def attributes
+      super if object
+    end
+
     def data_fully_available
       object.answer_for('data_availability--data_fully_available').try(:value)
     end

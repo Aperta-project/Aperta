@@ -50,7 +50,7 @@ class Paper < ActiveRecord::Base
            through: :author_list_items,
            source_type: "GroupAuthor",
            source: :author
-  has_many :author_list_items, dependent: :destroy
+  has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
 
   serialize :withdrawals, ArrayHashSerializer
 

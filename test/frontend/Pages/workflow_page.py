@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.initial_decision_card import InitialDecisionCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard
@@ -66,6 +67,8 @@ class WorkflowPage(AuthenticatedPage):
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
     self._cards = (By.CSS_SELECTOR, 'div.card')
+    self._card_types = (By.CSS_SELECTOR, 'div.row label')
+    self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
@@ -258,12 +261,24 @@ class WorkflowPage(AuthenticatedPage):
     self._get(self._add_button_overlay).click()
     time.sleep(2)
 
-  def add_card(self, card_text):
-    """ """
-    # press add new card
-
-    # select item
-
+  def add_card(self, card_title):
+    """
+    Add a card
+    :card_title: Title of the card.
+    Return None
+    """
+    self.click_add_new_card()
+    card_types = self._gets(self._card_types)
+    for card in card_types:
+      if card.text == card_title:
+        card.click()
+        break
+    else:
+      raise ElementDoesNotExistAssertionError('No such a card')
+    div_buttons = self._get(self._div_buttons)
+    div_buttons.find_element_by_class_name('button-primary').click()
+    time.sleep(2)
+    return None
 
   def complete_card(self, card_name):
     """

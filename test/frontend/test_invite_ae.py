@@ -94,9 +94,7 @@ class InviteAECardTest(CommonTest):
     #add card invite AE with add new card
     #Check if card is there
     if not workflow_page.is_card('Invite Academic Editor'):
-      # Add card
-
-      pass
+      workflow_page.add_card('Invite Academic Editor')
     # click on invite academic editor
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())

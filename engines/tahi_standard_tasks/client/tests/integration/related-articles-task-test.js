@@ -3,7 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 
 moduleForComponent('related-articles-task',
-                   'Integration | Component | related_articles_task'); //
+                   'Integration | Component | related articles task'); //
 
 var template = hbs`{{related-articles-task task=task}}`;
 

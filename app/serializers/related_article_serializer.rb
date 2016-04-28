@@ -1,7 +1,8 @@
 # Serializes related articles, which represent links between
 # this manuscript and others, published or not.
 class RelatedArticleSerializer < ActiveModel::Serializer
-  attributes :paper_id,
+  attributes :id,
+             :paper_id,
              :linked_doi,
              :linked_title,
              :additional_info,

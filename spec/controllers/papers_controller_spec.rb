@@ -462,12 +462,39 @@ describe PapersController do
         expect(snapshot_ids).to contain_exactly(snapshot_1.id, snapshot_2.id)
       end
     end
+  end
+
+  describe 'GET related_articles' do
+    subject(:do_request) do
+      get :related_articles, id: paper.id, format: :json
+    end
+    let!(:paper) { FactoryGirl.create(:paper) }
+    let!(:related_article) { FactoryGirl.create(:related_article, paper: paper) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:edit_related_articles, paper)
+          .and_return true
+        do_request
+      end
+
+      it { is_expected.to responds_with(200) }
+
+      it "responds with the paper's related_articles" do
+        expect(res_body['related_articles'].length).to eq(1)
+        expect(res_body['related_articles'][0]['id']).to eq(related_article.id)
+      end
+    end
 
     context "when the user does not have access" do
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)
-          .with(:view, paper)
+          .with(:edit_related_articles, paper)
           .and_return false
         do_request
       end

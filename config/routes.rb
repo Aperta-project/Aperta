@@ -108,6 +108,7 @@ Tahi::Application.routes.draw do
         get :versioned_texts
         get :export, to: 'paper_conversions#export'
         get :snapshots
+        get :related_articles
         put :submit
         put :withdraw
         put :reactivate

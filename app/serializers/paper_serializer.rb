@@ -30,8 +30,8 @@ class PaperSerializer < LitePaperSerializer
       discussion_topics: paper_discussion_topics_path(object),
       decisions: paper_decisions_path(object),
       snapshots: snapshots_paper_path(object),
+      related_articles: related_articles_paper_path(object),
       paper_task_types: paper_task_types_path(object)
-
     }
   end
 end

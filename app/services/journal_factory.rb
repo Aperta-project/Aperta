@@ -320,5 +320,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
+
+    Role.ensure_exists(Role::FREELANCE_EDITOR, journal: @journal)
   end
 end

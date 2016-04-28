@@ -39,6 +39,7 @@ class Paper < ActiveRecord::Base
   has_many :nested_question_answers
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
+  has_many :related_articles, dependent: :destroy
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },

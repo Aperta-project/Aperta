@@ -160,9 +160,25 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
           journal: journal
         )
       end
+      let(:jane) { FactoryGirl.create(:user, first_name: 'Jane') }
+      let(:freelance_role) do
+        FactoryGirl.create(
+          :role,
+          name: Role::FREELANCE_EDITOR_ROLE,
+          journal: journal
+        )
+      end
+
+      before do
+        jane.assignments.create(role: freelance_role, assigned_to: journal)
+      end
 
       it "returns the users who have the journal's internal_editor_role" do
-        expect(service.eligible_users).to contain_exactly(bob, fay)
+        expect(service.eligible_users).to include(bob, fay)
+      end
+
+      it "returns the users who have the journal's freelance_editor_role" do
+        expect(service.eligible_users).to include(jane)
       end
 
       it "doesn't include users already assigned as handling_editor_role" do
@@ -173,6 +189,7 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
       it 'supports fuzzy matching on the user' do
         expect(service.eligible_users(matching: 'Bob')).to contain_exactly(bob)
         expect(service.eligible_users(matching: 'Fay')).to contain_exactly(fay)
+        expect(service.eligible_users(matching: 'Jane')).to contain_exactly(jane)
       end
     end
 

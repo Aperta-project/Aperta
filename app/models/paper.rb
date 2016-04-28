@@ -195,6 +195,8 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # All known paper states
+  STATES = aasm.states.map(&:name)
   # States which should generally be editable by the creator
   EDITABLE_STATES = [:unsubmitted, :in_revision, :invited_for_full_submission,
                      :checking]

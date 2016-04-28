@@ -52,6 +52,8 @@ class Journal < ActiveRecord::Base
           class_name: 'Role'
   has_one :reviewer_role, -> { where(name: Role::REVIEWER_ROLE) },
           class_name: 'Role'
+  has_one :reviewer_report_owner_role, -> { where(name: Role::REVIEWER_REPORT_OWNER_ROLE) },
+          class_name: 'Role'
   has_one :staff_admin_role, -> { where(name: Role::STAFF_ADMIN_ROLE) },
           class_name: 'Role'
   has_one :task_participant_role, -> { where(name: Role::TASK_PARTICIPANT_ROLE) },

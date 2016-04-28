@@ -1174,6 +1174,21 @@ describe JournalFactory do
         end
       end
 
+      context 'Reviewer Report Owner' do
+        describe 'has Task permission to' do
+          it 'can :edit assigned ReviewerReportTasks' do
+            permission = Permission.includes(:states).find_by(
+              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              action: :edit
+            )
+            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+            expect(journal.reviewer_report_owner_role.permissions).to include(
+              permission
+            )
+          end
+        end
+      end
+
       context 'Staff Admin' do
         let(:permissions) { journal.staff_admin_role.permissions }
 

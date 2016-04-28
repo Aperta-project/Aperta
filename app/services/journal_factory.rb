@@ -103,6 +103,16 @@ class JournalFactory
       end
     end
 
+    # This role exists to give a reviewer the ability to edit their reviewer
+    # report.
+    Role.ensure_exists(Role::REVIEWER_REPORT_OWNER_ROLE, journal: @journal, participates_in: [Task]) do |role|
+      role.ensure_permission_exists(
+        :edit,
+        applies_to: TahiStandardTasks::ReviewerReportTask,
+        states: Paper::REVIEWABLE_STATES
+      )
+    end
+
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal)

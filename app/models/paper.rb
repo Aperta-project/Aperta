@@ -201,6 +201,10 @@ class Paper < ActiveRecord::Base
   # States which should generally NOT be editable by the creator
   UNEDITABLE_STATES = [:initially_submitted, :submitted, :accepted, :rejected,
                        :published, :withdrawn]
+  # States that represent the creator has submitted their paper
+  SUBMITTED_STATES = [:initially_submitted, :submitted]
+  # States that represent when a paper can be reviewed by a Reviewer
+  REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
 
   def users_with_role(role)
     User.joins(:assignments).where(

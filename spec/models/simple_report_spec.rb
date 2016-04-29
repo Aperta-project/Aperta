@@ -60,7 +60,7 @@ describe SimpleReport do
 
       it "returns the current balance in process balance, minus initially_submitted" do
         user = FactoryGirl.create :user
-        paper = FactoryGirl.create :paper, :initially_submitted
+        paper = FactoryGirl.create :paper, :unsubmitted
         paper.submit! user
         FactoryGirl.create :paper, :initially_submitted
         expect(only_report.previous_in_process_balance).to eq(1)

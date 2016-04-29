@@ -3,24 +3,24 @@ require 'rails_helper'
 describe TahiStandardTasks::ApexDeliveriesController do
   routes { TahiStandardTasks::Engine.routes }
 
-  let(:author) { FactoryGirl.create :user }
-  let(:internal_editor) do
-    FactoryGirl.create(:user).tap { |u| assign_internal_editor_role paper, u }
-  end
-  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
-  let(:paper) { FactoryGirl.create :paper, journal: journal, creator: author }
+  let(:user) { FactoryGirl.create :user }
+  let(:journal) { FactoryGirl.create :journal }
+  let(:paper) { FactoryGirl.create :paper, journal: journal }
   let(:task) { FactoryGirl.create :send_to_apex_task, paper: paper }
 
   subject(:do_request) do
     post :create, format: :json, apex_delivery: { task_id: task.to_param }
   end
 
-  context "the current user is an internal editor" do
+  context "the current user can send to apex" do
     before do
-      sign_in internal_editor
+      stub_sign_in user
+      allow(user).to receive(:can?)
+        .with(:send_to_apex, paper)
+        .and_return true
     end
 
-    it "allows an internal editor to send to apex" do
+    it "creates an apex delivery" do
       expect do
         do_request
         expect(response).to have_http_status(200)
@@ -28,12 +28,15 @@ describe TahiStandardTasks::ApexDeliveriesController do
     end
   end
 
-  context "the current user is an internal editor" do
+  context "the current user can't send to apex" do
     before do
-      sign_in author
+      stub_sign_in user
+      allow(user).to receive(:can?)
+        .with(:send_to_apex, paper)
+        .and_return false
     end
 
-    it "does't allow non-staff members to send to apex" do
+    it "fails and returns a 403" do
       expect do
         do_request
         expect(response).to have_http_status(403)

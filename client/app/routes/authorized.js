@@ -13,6 +13,9 @@ export default Ember.Route.extend({
 
   actions: {
     error(response, transition) {
+      if (!response) {
+        this.handleUnauthorizedRequest(transition);
+      }
       switch (response.status) {
         case 403:
           this.handleUnauthorizedRequest(transition);

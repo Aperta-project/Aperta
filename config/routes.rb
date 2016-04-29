@@ -53,7 +53,7 @@ Tahi::Application.routes.draw do
     resources :comment_looks, only: [:index, :show, :destroy]
     resources :decisions, only: [:create, :update, :show]
     resources :discussion_topics, only: [:index, :show, :create, :update]
-    resources :discussion_participants, only: [:create, :destroy]
+    resources :discussion_participants, only: [:create, :destroy, :show]
     resources :discussion_replies, only: [:show, :create, :update]
     resources :errors, only: :create
     resources :feedback, only: :create

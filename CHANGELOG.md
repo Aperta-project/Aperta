@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Prevent errors while adding discussion participants
+### Security
+
 ## [1.4.6] - 2016-04-29
 ### Added
 -
@@ -30,7 +39,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
 - Prevent duplication errors in generating new DOIs
-- Prevent errors while adding discussion participants
 
 ### Security
 

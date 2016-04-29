@@ -20,7 +20,8 @@ class Figure < Attachment
   end
 
   def src
-    non_expiring_proxy_url if done?
+    attachment.url
+    #non_expiring_proxy_url if done?
   end
 
   def detail_src(**opts)

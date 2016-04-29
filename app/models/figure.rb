@@ -14,11 +14,28 @@ class Figure < Attachment
   delegate :insert_figures!, to: :paper
 
   def self.acceptable_content_type?(content_type)
-    !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
+    !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f|pdb)|application\/postscript)$/i)
   end
 
   def alt
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
+  end
+
+  def src
+    attachment.url
+    #non_expiring_proxy_url if done?
+  end
+
+  def detail_src(**opts)
+    non_expiring_proxy_url(version: :detail, **opts) if done?
+  end
+
+  def preview_src
+    non_expiring_proxy_url(version: :preview) if done?
+  end
+
+  def access_details
+    { filename: filename, alt: alt, id: id, src: src }
   end
 
   def rank

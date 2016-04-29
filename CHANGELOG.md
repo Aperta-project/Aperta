@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [1.4.6] - 2016-04-29
+### Added
+-
+
+### Changed
+-
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+- Ensure the entire manuscript displays if it is re-uploaded with extant figures
+
 ## [1.4.5] - 2016-04-27
 ### Added
 - Reviewers can be removed using the Assign Team card
@@ -14,7 +30,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
 - Prevent duplication errors in generating new DOIs.
-- Ensure the entire manuscript displays if it is re-uploaded with extant figures
 
 ### Security
 

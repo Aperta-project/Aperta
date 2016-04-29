@@ -14,7 +14,7 @@ class InviteAECard(BaseCard):
   """
   Page Object Model for Invite AE Card
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(InviteAECard, self).__init__(driver)
 
     #Locators - Instance members

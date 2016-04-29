@@ -93,7 +93,7 @@ class InviteAECardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
-    invite_ae_card.check_style()
+    invite_ae_card.check_style(academic_editor_login)
     invite_ae_card.invite_ae(academic_editor_login)
     time.sleep(2)
     workflow_page.logout()

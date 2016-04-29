@@ -23,8 +23,8 @@ class InviteAECard(BaseCard):
     self._ae_input = (By.ID, 'invitation-recipient')
     self._card_title = (By.TAG_NAME, 'h1')
     self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
-    self._invite_box = (By.TAG_NAME, 'input')
-    self._compose_invite_button = 'compose-invite-button'
+    self._invite_box = (By.ID, 'invitation-recipient')
+    self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')
 
 
    #POM Actions
@@ -45,19 +45,31 @@ class InviteAECard(BaseCard):
     self.click_completion_button()
     self.click_close_button()
 
-  def check_style(self):
-    """ Style check """
+  def check_style(self, user):
+    """
+    Style check for the card
+    :user: User to send the invitation
+    """
+    self.validate_common_elements_styles()
     card_title = self._get(self._card_title)
     assert card_title.text == 'Invite Academic Editor'
     self.validate_application_title_style(card_title)
     invite_text = self._get(self._invite_text)
     assert invite_text.text == 'Academic Editor'
     self.validate_label_style(invite_text)
-    #self.validate_application_h4_style(invite_text)
     ae_input = self._get(self._invite_box)
     assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
         ae_input.get_attribute('placeholder')
     # Button
     btn = self._get(self._compose_invite_button)
-    self.validate_green_on_green_button_style(btn)
+    assert btn.text == 'COMPOSE INVITE'
+    # Check disabled button
+    # Style validation on disabled button is commented out due to APERTA-6768
+    # self.validate_primary_big_disabled_button_style(btn)
+    # Enable button to check style
+    ae_input.send_keys(user['email'] + Keys.ENTER)
+    ae_input.send_keys(Keys.ENTER)
+    time.sleep(.5)
+    self.validate_primary_big_green_button_style(btn)
+    ae_input.clear()
     return None

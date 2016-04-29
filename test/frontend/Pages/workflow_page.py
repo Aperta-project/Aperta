@@ -265,7 +265,7 @@ class WorkflowPage(AuthenticatedPage):
     """
     Add a card
     :card_title: Title of the card.
-    Return None
+    :return: None
     """
     self.click_add_new_card()
     card_types = self._gets(self._card_types)

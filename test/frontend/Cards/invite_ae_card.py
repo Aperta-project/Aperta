@@ -21,13 +21,17 @@ class InviteAECard(BaseCard):
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
     self._ae_input = (By.ID, 'invitation-recipient')
+    self._card_title = (By.TAG_NAME, 'h1')
+    self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
+    self._invite_box = (By.TAG_NAME, 'input')
+    self._compose_invite_button = 'compose-invite-button'
 
 
    #POM Actions
   def invite_ae(self, user):
     """
     This method invites the user that is passed as parameter
-    :decision: User to send the invitation
+    :user: User to send the invitation
     """
     time.sleep(.5)
     self._get(self._ae_input).send_keys(user['email'] + Keys.ENTER)
@@ -40,3 +44,20 @@ class InviteAECard(BaseCard):
     time.sleep(.5)
     self.click_completion_button()
     self.click_close_button()
+
+  def check_style(self):
+    """ Style check """
+    card_title = self._get(self._card_title)
+    assert card_title.text == 'Invite Academic Editor'
+    self.validate_application_title_style(card_title)
+    invite_text = self._get(self._invite_text)
+    assert invite_text.text == 'Academic Editor'
+    self.validate_label_style(invite_text)
+    #self.validate_application_h4_style(invite_text)
+    ae_input = self._get(self._invite_box)
+    assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
+        ae_input.get_attribute('placeholder')
+    # Button
+    btn = self._get(self._compose_invite_button)
+    self.validate_green_on_green_button_style(btn)
+    return None

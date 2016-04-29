@@ -683,6 +683,19 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
 
   @staticmethod
+  def validate_label_style(label):
+    """
+    Ensure consistency in rendering label style in cards
+    :param title: title to validate
+    """
+    assert application_typeface in label.value_of_css_property('font-family'), \
+        label.value_of_css_property('font-family')
+    assert label.value_of_css_property('font-size') == '18px', label.value_of_css_property('font-size')
+    assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
+    assert label.value_of_css_property('line-height') == '25.7167px', label.value_of_css_property('line-height')
+    assert label.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', label.value_of_css_property('color')
+
+  @staticmethod
   def validate_manuscript_h4_style(title):
     """
     Ensure consistency in rendering page and overlay h4 section headings within the manuscript

@@ -66,14 +66,9 @@ class InviteAECardTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success()
-    # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Giving just a little extra time here so the title on the paper gets updated
-    # What I notice is that if we submit before iHat is done updating, the paper title
-    # reverts to the temporary title specified on the CNS overlay (5s is too short)
-    # APERTA-6514
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -89,7 +84,7 @@ class InviteAECardTest(CommonTest):
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
+    # otherwise failures
     time.sleep(10)
     #add card invite AE with add new card
     #Check if card is there
@@ -98,6 +93,7 @@ class InviteAECardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
+    invite_ae_card.check_style()
     invite_ae_card.invite_ae(academic_editor_login)
     time.sleep(2)
     workflow_page.logout()

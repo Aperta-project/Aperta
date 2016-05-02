@@ -21,11 +21,6 @@ class InviteAECard(BaseCard):
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
     self._ae_input = (By.ID, 'invitation-recipient')
-    self._card_title = (By.TAG_NAME, 'h1')
-    self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
-    self._invite_box = (By.ID, 'invitation-recipient')
-    self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')
-
 
    #POM Actions
   def invite_ae(self, user):
@@ -38,7 +33,6 @@ class InviteAECard(BaseCard):
     self._get(self._ae_input).send_keys(Keys.ENTER)
     time.sleep(2)
     self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
-    time.sleep(2)
     self._get(self._send_invitation_button).click()
     #give some time to allow complete to check automatically,
     time.sleep(.5)
@@ -56,7 +50,7 @@ class InviteAECard(BaseCard):
     self.validate_application_title_style(card_title)
     invite_text = self._get(self._invite_text)
     assert invite_text.text == 'Academic Editor'
-    self.validate_label_style(invite_text)
+    self.validate_input_field_label_style(invite_text)
     ae_input = self._get(self._invite_box)
     assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
         ae_input.get_attribute('placeholder')

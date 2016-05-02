@@ -274,7 +274,7 @@ class WorkflowPage(AuthenticatedPage):
         card.click()
         break
     else:
-      raise ElementDoesNotExistAssertionError('No such a card')
+      raise ElementDoesNotExistAssertionError('No such card')
     div_buttons = self._get(self._div_buttons)
     div_buttons.find_element_by_class_name('button-primary').click()
     time.sleep(2)

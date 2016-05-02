@@ -62,10 +62,12 @@ class EligibleUserService
   end
 
   def internal_and_freelance_editors
-    [
-      role.journal.internal_editor_role.users,
-      role.journal.freelance_editor_role.try(:users)
+    editor_roles = [
+      role.journal.freelance_editor_role,
+      role.journal.internal_editor_role
     ]
+
+    User.joins(assignments: :role).where(assignments: { role:  editor_roles })
   end
 
   def staff_admins
@@ -74,23 +76,10 @@ class EligibleUserService
 
   def search(user_relation, matching)
     return user_relation unless matching
-
-    if user_relation.is_a?(Array)
-      user_relation.map { |u| u.fuzzy_search(matching) unless u.nil? }
-    else
-      user_relation.fuzzy_search(matching)
-    end
+    user_relation.fuzzy_search(matching)
   end
 
   def get_not_already_assigned_users(matching_users)
-    if matching_users.is_a?(Array)
-      not_yet_assigned = matching_users.reject(&:nil?).map do |users|
-        users.where.not(id: already_assigned_user_ids)
-      end.flatten
-    else
-      not_yet_assigned = matching_users.where.not(id: already_assigned_user_ids)
-    end
-
-    not_yet_assigned.to_a.uniq
+    matching_users.where.not(id: already_assigned_user_ids).to_a.uniq
   end
 end

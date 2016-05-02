@@ -173,12 +173,8 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
         jane.assignments.create(role: freelance_role, assigned_to: journal)
       end
 
-      it "returns the users who have the journal's internal_editor_role" do
-        expect(service.eligible_users).to include(bob, fay)
-      end
-
-      it "returns the users who have the journal's freelance_editor_role" do
-        expect(service.eligible_users).to include(jane)
+      it "returns the users who have the journal's internal_editor_role or freelance_editor_role" do
+        expect(service.eligible_users).to contain_exactly(bob, fay, jane)
       end
 
       it "doesn't include users already assigned as handling_editor_role" do

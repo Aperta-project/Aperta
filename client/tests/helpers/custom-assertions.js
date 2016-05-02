@@ -77,4 +77,10 @@ export default function() {
       message + '(wrong value found)' ||
         `should find ${value} in input at ${selector}`);
   };
+
+  QUnit.assert.elementsFound = function(selector, count, message) {
+    const matches = $(selector).length;
+
+    return this.push(matches === count, matches, count, message || `should find ${count} elements for ${selector}`);
+  };
 }

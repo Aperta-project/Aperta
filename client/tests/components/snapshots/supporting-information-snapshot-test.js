@@ -106,3 +106,17 @@ test('Diffs the filename when the file has changed', function(assert) {
   this.render(template);
   assert.diffPresent('theFile.jpg', 'theFile.jpg');
 });
+
+test('Does not diff the filename when the file has only one version', function(assert) {
+  let secondSnaps = snapshot();
+  secondSnaps.children[2].value = null;
+  secondSnaps.children[6].value = null;
+
+  this.set('oldSnapshot', secondSnaps);
+  this.set('newSnapshot', snapshot());
+
+  this.render(template);
+
+  assert.equal(this.$('.added').length, 0, 'Has no added diff spans');
+  assert.equal(this.$('.removed').length, 0, 'Has removed diff spans');
+});

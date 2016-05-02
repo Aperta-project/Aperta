@@ -83,7 +83,6 @@ test('Diffs the filename when the file has changed', function(assert) {
   assert.diffPresent('theFile.jpg', 'theFile.jpg');
 });
 
-
 test('Does not diff the filename when the file has only one version', function(assert) {
   let secondSnaps = snapshot();
   secondSnaps.children[2].value = null;

@@ -36,8 +36,8 @@ export default Ember.Component.extend({
     'siFile1.fileHash',
     'siFile2.fileHash',
     function() {
-      var hash1 = this.get('figure1.fileHash');
-      var hash2 = this.get('figure2.fileHash');
+      var hash1 = this.get('siFile1.fileHash');
+      var hash2 = this.get('siFile2.fileHash');
       if (!hash1 || !hash2) {
           return false;
       } else {

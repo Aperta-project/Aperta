@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Typesetter::AuthorSerializer do
+describe Typesetter::IndividualAuthorSerializer do
   subject(:serializer) { described_class.new(author) }
 
   let(:first_name) { 'first name' }
@@ -117,8 +117,7 @@ describe Typesetter::AuthorSerializer do
       :affiliation,
       :secondary_affiliation,
       :contributions,
-      :government_employee,
-      :position
+      :government_employee
     )
   end
 

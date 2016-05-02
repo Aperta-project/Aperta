@@ -4,8 +4,7 @@ module Typesetter
   class IndividualAuthorSerializer < Typesetter::TaskAnswerSerializer
     attributes :first_name, :last_name, :middle_initial, :email, :department,
                :title, :corresponding, :deceased, :affiliation,
-               :secondary_affiliation, :contributions, :government_employee,
-               :position
+               :secondary_affiliation, :contributions, :government_employee
 
     private
 

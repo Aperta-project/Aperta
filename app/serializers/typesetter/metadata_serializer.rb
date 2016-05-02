@@ -2,7 +2,7 @@ module Typesetter
   # Serializes a paper's metadata for the typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
-    #alias_method :original_serializable_hash, :serializable_hash
+    alias_method :original_serializable_hash, :serializable_hash
 
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions
@@ -70,6 +70,6 @@ module Typesetter
       original_serializable_hash
     end
 
-    #alias_method :serializable_hash, :validate_and_serialize
+    alias_method :serializable_hash, :validate_and_serialize
   end
 end

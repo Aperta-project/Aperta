@@ -126,6 +126,48 @@ ActiveRecord::Schema.define(version: 20160518202655) do
 
   add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
 
+  create_table "billing_logs", force: :cascade do |t|
+    t.string   "guid"
+    t.integer  "documentid",                     null: false
+    t.string   "title"
+    t.string   "firstname"
+    t.string   "middlename"
+    t.string   "lastname"
+    t.string   "institute"
+    t.string   "department"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "city"
+    t.string   "state"
+    t.integer  "zip"
+    t.string   "country"
+    t.integer  "phone1"
+    t.integer  "phone2"
+    t.integer  "fax"
+    t.string   "email"
+    t.integer  "journal_id",                     null: false
+    t.string   "pubdnumber"
+    t.string   "doi"
+    t.string   "dtitle"
+    t.string   "fundRef"
+    t.string   "collectionID"
+    t.string   "collection"
+    t.date     "original_submission_start_date"
+    t.string   "direct_bill_response"
+    t.date     "date_first_entered_production"
+    t.string   "gpi_response"
+    t.date     "final_dispo_accept"
+    t.string   "category"
+    t.string   "s3_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "billing_logs", ["documentid"], name: "index_billing_logs_on_documentid", using: :btree
+  add_index "billing_logs", ["guid"], name: "index_billing_logs_on_guid", using: :btree
+  add_index "billing_logs", ["journal_id"], name: "index_billing_logs_on_journal_id", using: :btree
+
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "comment_id"

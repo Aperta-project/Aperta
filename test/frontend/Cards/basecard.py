@@ -39,7 +39,6 @@ class BaseCard(AuthenticatedPage):
     # Versioning locators - only applicable to metadata cards
     self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
-    self._card_title = (By.TAG_NAME, 'h1')
     self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
     self._invite_box = (By.ID, 'invitation-recipient')
     self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')

@@ -45,7 +45,7 @@ class InviteAECard(BaseCard):
     :user: User to send the invitation
     """
     self.validate_common_elements_styles()
-    card_title = self._get(self._card_title)
+    card_title = self._get(self._card_heading)
     assert card_title.text == 'Invite Academic Editor'
     self.validate_application_title_style(card_title)
     invite_text = self._get(self._invite_text)

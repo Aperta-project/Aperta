@@ -11,7 +11,7 @@ class RelatedArticle < ActiveRecord::Base
   #
   # linked_doi: the DOI of the related article
   #
-  # linked_tite: the title of the related article
+  # linked_title: the title of the related article
   #
   # additional_info: a free text field
   #

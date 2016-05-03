@@ -6,10 +6,19 @@ import FakeCanService from '../helpers/fake-can-service';
 
 moduleForComponent(
   '<%= dasherizedModuleName %>',
-  'Integration | Component | Tasks | <%= humanizedModuleName %>',
-  {integration: true});
+  'Integration | Component | Tasks | <%= humanizedModuleName %>', {
+  integration: true
+});
 
-var task = function (){
+
+test('A very important failing test', function(assert){
+  var task = newTask();
+  setupEditableTask(this, task);
+  assert(false);
+});
+
+
+var newTask = function (){
   return {
     id: 2,
     title: '<%= dasherizedModuleName %>',
@@ -23,7 +32,8 @@ var task = function (){
 
 var template = hbs`{{<%= dasherizedModuleName %> task=task can=can}}`;
 
-var setupEditableTask = function(context) {
+var setupEditableTask = function(context, task) {
+  task = task || newTask();
   var can = FakeCanService.create();
   can.allowPermission('edit', task);
   context.setProperties({
@@ -32,8 +42,3 @@ var setupEditableTask = function(context) {
   });
   context.render(template);
 };
-
-test('a very important test', function(assert){
-  setupEditableTask(this);
-  assert(false);
-});

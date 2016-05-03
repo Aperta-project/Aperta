@@ -36,7 +36,7 @@ export default function() {
     return this.push(
       matches === 1,
       `one '${selector}' not found`,
-      `found one '${selector}'`,
+      `found ${matches} '${selector}'s`,
       message || `should find single element at ${selector}`);
   };
 

@@ -55,8 +55,7 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames((zip_file_path))).to include(
         'test.0001.docx')
@@ -67,8 +66,7 @@ describe ApexPackager do
     end
 
     it 'contains the correct metadata' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       contents = Zip::File.open(zip_file_path).read('metadata.json')
       expect(contents).to eq('json')
@@ -76,7 +74,7 @@ describe ApexPackager do
 
     it 'creates a valid manifest' do
       packager = ApexPackager.new(paper, archive_filename: archive_filename)
-      packager.zip
+      packager.zip_file
       manifest = JSON.parse(packager.manifest.to_json)
       expected_manifest = {
         "archive_filename" => archive_filename,
@@ -141,8 +139,7 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames((zip_file_path))).to include('yeti.jpg')
       contents = Zip::File.open(zip_file_path).read('yeti.jpg')
@@ -150,8 +147,7 @@ describe ApexPackager do
     end
 
     it 'does not add a striking image when none is present' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames((zip_file_path))).to_not include('Strikingimage.jpg')
     end
@@ -212,8 +208,7 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames((zip_file_path))).to include('about_turtles.docx')
       contents = Zip::File.open(zip_file_path).read('about_turtles.docx')
@@ -223,8 +218,7 @@ describe ApexPackager do
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames((zip_file_path))).to_not include(
         supporting_information_file.filename)
@@ -287,15 +281,13 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
     end
 
     it 'separates figures and striking images' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_file_path = ApexPackager.create_zip(paper).path
 
       expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
       expect(zip_filenames(zip_file_path)).to include('yeti2.jpg')

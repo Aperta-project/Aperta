@@ -21,7 +21,7 @@ module TahiStandardTasks
     def make_delivery!
       apex_delivery.delivery_in_progress!
 
-      file = ApexPackager.create(@paper).zip_file
+      file = ApexPackager.create_zip(@paper)
 
       FtpUploaderService.new(
         filepath: file.path,

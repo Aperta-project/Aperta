@@ -1,29 +1,27 @@
 # This class creates a temporary ZIP file for FTP to Apex
 class ApexPackager
-  attr_reader :zip_file
-
   class ApexPackagerError < StandardError
   end
 
-  def self.create(paper)
+  def self.create_zip(paper)
     packager = new(paper)
-    packager.zip
-    packager
+    packager.zip_file
   end
 
   def initialize(paper, archive_filename: nil)
     @paper = paper
-    @zip_file = Tempfile.new('zip')
     @archive_filename = archive_filename
   end
 
-  def zip
-    Zip::OutputStream.open(@zip_file) do |package|
-      add_figures(package)
-      add_striking_image(package)
-      add_supporting_information(package)
-      add_metadata(package)
-      add_manuscript(package)
+  def zip_file
+    @zip_file ||= Tempfile.new('zip').tap do |f|
+      Zip::OutputStream.open(f) do |package|
+        add_figures(package)
+        add_striking_image(package)
+        add_supporting_information(package)
+        add_metadata(package)
+        add_manuscript(package)
+      end
     end
   end
 

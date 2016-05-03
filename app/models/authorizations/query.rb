@@ -249,7 +249,16 @@ module Authorizations
 
       def add_objects(objects, with_permissions:)
         objects.each do |object|
-          @object_permission_map[object].merge!(with_permissions)
+          object_hsh = (@object_permission_map[object] ||= {})
+
+          with_permissions.each_pair do |action, hsh|
+            action_hsh = object_hsh[action] ||= { states: [] }
+
+            # permission states may come thru multiple role assignments
+            # so we want to merge them together rather than overwrite
+            # what may have previously come thru
+            action_hsh[:states].concat(hsh[:states]).uniq!
+          end
         end
       end
 

@@ -18,8 +18,14 @@ class RoleSpecHelper
     self
   end
 
-  def has_permission(action:, applies_to:)
-    @role.permissions |= [Permission.find_by_action_and_applies_to!(action, applies_to)]
+  def has_permission(action:, applies_to:, states: ['*'])
+    permission = Permission.joins(:states)
+      .find_by!(
+        action: action,
+        applies_to: applies_to,
+        permission_states: { name: states }
+      )
+    @role.permissions |= [permission]
     @role
   end
 end

@@ -98,7 +98,7 @@ class InviteAECardTest(CommonTest):
                            encoding='utf-8',
                            errors='strict')
                            # The title we pass in here must be a unicode object if there is utf-8 data present
-    invite_ae_card.validate_invite_reviewer(academic_editor_login,
+    invite_ae_card.validate_invite_ae(academic_editor_login,
                                           manuscript_title,
                                           creator_user,
                                           paper_id)

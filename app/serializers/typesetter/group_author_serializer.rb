@@ -2,11 +2,15 @@ module Typesetter
   # Serializes author for the typesetter.
   # Expects an author as its object to serialize.
   class GroupAuthorSerializer < Typesetter::TaskAnswerSerializer
-    attributes :name,
+    attributes :type, :name,
                :contact_first_name, :contact_last_name, :contact_middle_name,
                :contact_email, :contributions
 
     private
+
+    def type
+      "group_author"
+    end
 
     def government_employee
       object.answer_for('group-author--government-employee').try(:value)

@@ -2,18 +2,31 @@ module Typesetter
   # Serializes author for the typesetter.
   # Expects an author as its object to serialize.
   class IndividualAuthorSerializer < Typesetter::TaskAnswerSerializer
-    attributes :first_name, :last_name, :middle_initial, :email, :department,
-               :title, :corresponding, :deceased, :affiliation,
+    attributes :type, :first_name, :last_name, :middle_initial, :email,
+               :department, :title, :corresponding, :deceased, :affiliation,
                :secondary_affiliation, :contributions, :government_employee
 
     private
+
+    def type
+      "author"
+    end
 
     def deceased
       object.answer_for('author--deceased').try(:value)
     end
 
     def corresponding
-      object.answer_for('author--published_as_corresponding_author').try(:value)
+      if paper_has_corresponding_author?
+        object.answer_for('author--published_as_corresponding_author') \
+          .try(:value)
+      else
+        object.email == object.paper.creator.email
+      end
+    end
+
+    def paper_has_corresponding_author?
+      object.paper.authors.select(corresponding?: true).any?
     end
 
     def government_employee

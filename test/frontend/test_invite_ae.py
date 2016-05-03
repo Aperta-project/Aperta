@@ -77,7 +77,7 @@ class InviteAECardTest(CommonTest):
     # logout and enter as editor
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
-    logging.info(editorial_user)
+    logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
@@ -93,7 +93,6 @@ class InviteAECardTest(CommonTest):
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
     invite_ae_card.check_style(academic_editor_login)
-    #invite_ae_card.invite_ae(academic_editor_login)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
@@ -103,12 +102,12 @@ class InviteAECardTest(CommonTest):
                                           manuscript_title,
                                           creator_user,
                                           paper_id)
-    ##invite_ae_card.click_close_button()
     time.sleep(.5)
     workflow_page.logout()
     dashboard_page = self.cas_login(email=academic_editor_login['email'])
     time.sleep(2)
     dashboard_page.click_view_invites_button()
+    # AE accepts or reject invite
     invite_response = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db

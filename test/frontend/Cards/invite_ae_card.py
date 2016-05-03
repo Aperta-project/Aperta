@@ -49,7 +49,6 @@ class InviteAECard(BaseCard):
     :user: User to send the invitation
     """
     time.sleep(.5)
-    import pdb; pdb.set_trace()
     self._get(self._ae_input).send_keys(user['email'] + Keys.ENTER)
     self._get(self._ae_input).send_keys(Keys.ENTER)
     time.sleep(2)

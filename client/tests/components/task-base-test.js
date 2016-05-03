@@ -44,15 +44,3 @@ test('#isEditable: true when the task is not a metadata task', function(assert) 
   });
 });
 
-test('#isEditable: true when paper is editable and task is a metadata task', function(assert) {
-  Ember.run(()=> {
-    this.paper.set('editable', true);
-    assert.equal(this.subject().get('isEditable'), true);
-  });
-});
-
-test('#isEditable: false when the paper is not editable and the task is a metadata task',  function(assert) {
-    this.paper.set('editable', false);
-    this.task.set('isOnlyEditableIfPaperEditable', true);
-    assert.equal(this.subject().get('isEditable'), false);
-});

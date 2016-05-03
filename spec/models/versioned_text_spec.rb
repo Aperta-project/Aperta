@@ -91,20 +91,4 @@ describe VersionedText do
       versioned_text.update!(original_text: 'new original text')
     end
   end
-
-  it "should prevent writes on an old version" do
-    old_version = paper.latest_version
-    paper.latest_version.new_minor_version!
-    expect { old_version.update!(text: "foo") }.to raise_exception(ActiveRecord::ReadOnlyRecord)
-  end
-
-  it "should prevent writes if paper is not editable" do
-    paper.update!(editable: false)
-    expect { paper.latest_version.update!(text: "foo") }.to raise_exception(ActiveRecord::ReadOnlyRecord)
-  end
-
-  it "should prevent writes if version is not a draft" do
-    paper.latest_version.update!(submitting_user_id: 1)
-    expect { paper.latest_version.update!(text: "foo") }.to raise_exception(ActiveRecord::ReadOnlyRecord)
-  end
 end

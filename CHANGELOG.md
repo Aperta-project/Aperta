@@ -31,6 +31,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Reviewers can be removed using the Assign Team card
 - Freelance editors can be assigned as Cover Editor and/or Handling Editor
+- Staff Admins can edit tasks even in paper states where the task is normally
+  uneditable by authors
 
 ### Changed
 ### Deprecated
@@ -40,6 +42,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
 - Prevent duplication errors in generating new DOIs
+- Ensure that Supporting Information no editable when the paper is editable
 
 ### Security
 

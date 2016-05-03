@@ -18,6 +18,7 @@ class Role < ActiveRecord::Base
   STAFF_ADMIN_ROLE = 'Staff Admin'
   TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'
+  REVIEWER_REPORT_OWNER_ROLE = "Reviewer Report Owner"
 
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
     case old_role

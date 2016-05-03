@@ -31,6 +31,12 @@ class ReviewerReportTaskCreator
         assigned_to: task
       ).first_or_create!
 
+      Assignment.where(
+        user: assignee,
+        role: paper.journal.reviewer_report_owner_role,
+        assigned_to: task
+      ).first_or_create!
+
       ParticipationFactory.create(task: task, assignee: assignee, notify: false)
       TahiStandardTasks::ReviewerMailer
         .delay.welcome_reviewer(assignee_id: assignee.id,
@@ -45,13 +51,14 @@ class ReviewerReportTaskCreator
       TahiStandardTasks::ReviewerReportTask.joins(assignments: :role).where(
         paper_id: paper.id,
         assignments: {
-          role_id: paper.journal.task_participant_role, user_id: assignee.id
+          role_id: paper.journal.reviewer_report_owner_role,
+          user_id: assignee.id
         }
       ).first
     end
   end
 
-  # multiple `assignee` can exist on `paper` as a reviewer
+  # Multiple assignees can exist on `paper` as a reviewer
   def assign_paper_role!
     Assignment.where(
       user: assignee,

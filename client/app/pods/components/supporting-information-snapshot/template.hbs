@@ -3,7 +3,7 @@
 </div>
 {{#if fileHashChanged}}
   {{! If the file contents changed, still show a diff on the file name }}
-  <span class="removed">{{siFile1.file}}</span><span class="added">{{siFile2.file}}</span>
+  <span class="removed">{{siFile2.file}}</span><span class="added">{{siFile1.file}}</span>
 {{else}}
   {{text-diff viewingText=siFile1.file comparisonText=siFile2.file}}
 {{/if}}

@@ -5,7 +5,11 @@ export default Ember.Component.extend({
   editable: true,       // Pass me in, please
 
   classNames: ['related-article'],
-  classNameBindings: ['editable', 'editState:editing'],
+  classNameBindings: ['editable', 'editState:editing', 'idClass'],
+
+  idClass: Ember.computed('relatedArticle.id', function() {
+    return 'related-article-' + this.get('relatedArticle.id');
+  }),
 
   editState: Ember.computed('relatedArticle.isNew', function() {
     return this.get('relatedArticle.isNew');

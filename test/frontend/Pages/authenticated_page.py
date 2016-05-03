@@ -415,6 +415,8 @@ class AuthenticatedPage(PlosPage):
     elif cardname.lower() == 'initial_decision':
       card_title = self._get(self._initial_decision_card)
     elif cardname.lower() == 'invite_academic_editor':
+      self._invite_academic_editors_card = (By.XPATH,
+          "//a/div[contains(., 'Invite Academic Editor')]")
       card_title = self._get(self._invite_academic_editors_card)
     elif cardname.lower() == 'invite_reviewers':
       card_title = self._get(self._invite_reviewers_card)

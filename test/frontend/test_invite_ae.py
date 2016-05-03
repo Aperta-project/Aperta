@@ -95,7 +95,6 @@ class InviteAECardTest(CommonTest):
     invite_ae_card = InviteAECard(self.getDriver())
     invite_ae_card.check_style(academic_editor_login)
     #invite_ae_card.invite_ae(academic_editor_login)
-
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
@@ -114,20 +113,21 @@ class InviteAECardTest(CommonTest):
     invite_response = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
-    invite_response = 'Accept'
     if invite_response == 'Accept':
-      ##wombat_journal_id
-      wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = \'PLOS Wombat\';')[0][0]
-      reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
-      reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+      wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE '
+                                        'name = \'PLOS Wombat\';')[0][0]
+      ae_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
+      ##
+      print ae_user_id
+      ae_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
                                             'name = \'Academic Editor\';',
                                             (wombat_journal_id,))[0][0]
       test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
                                     'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
-                                    (reviewer_user_id, paper_id))[0][0]
-      assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
+                                    (ae_user_id, paper_id))[0][0]
+      assert test_for_role == ae_role_for_env, 'assigned role, {0}, is not the expected ' \
                                                      'value: {1}'.format(test_for_role,
-                                                                         reviewer_role_for_env)
+                                                                         ae_role_for_env)
     workflow_page.logout()
 
     # log back in as editorial user and validate status display on card
@@ -140,23 +140,10 @@ class InviteAECardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
     time.sleep(10)
-
-    ##workflow_page.click_card('invite_reviewers')
-    ##time.sleep(3)
-    ##invite_reviewers = InviteReviewersCard(self.getDriver())
-    ##invite_reviewers.validate_reviewer_response(reviewer_login, invite_response)
-
-
-
-
-
-
-
-    # accept invitations
-    dashboard_page.click_view_invites_button()
-    dashboard_page.accept_all_invitations()
-    time.sleep(1)
-    assert self.check_article_access(paper_url)
+    workflow_page.click_card('invite_academic_editor')
+    time.sleep(3)
+    invite_ae = InviteAECard(self.getDriver())
+    invite_ae.validate_ae_response(academic_editor_login, invite_response)
 
 
 if __name__ == '__main__':

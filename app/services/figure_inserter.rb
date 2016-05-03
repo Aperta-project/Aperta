@@ -10,12 +10,16 @@ class FigureInserter
   end
 
   def call
-    return @raw_text unless @figures.present?
+    remove_figures
     sorted_figures.each { |figure| insert_figure figure }
     @html_tree.to_html
   end
 
   private
+
+  def remove_figures
+    @html_tree.search('.//img').remove
+  end
 
   def sorted_figures
     @figures.sort_by { |fig| fig.rank || 0 }

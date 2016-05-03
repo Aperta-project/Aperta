@@ -26,10 +26,12 @@ class EligibleUserService
 
     @eligible_user_blocks = {
       role.journal.academic_editor_role => -> { User.all },
-      role.journal.cover_editor_role => -> { internal_editors },
-      role.journal.handling_editor_role => -> { internal_editors },
-      role.journal.staff_admin_role => -> { staff_admins },
-      role.journal.reviewer_role => -> { User.all }
+      role.journal.cover_editor_role => -> { internal_and_freelance_editors },
+      role.journal.handling_editor_role => lambda do
+        internal_and_freelance_editors
+      end,
+      role.journal.reviewer_role => -> { User.all },
+      role.journal.staff_admin_role => -> { staff_admins }
     }
   end
 
@@ -45,23 +47,27 @@ class EligibleUserService
       MESSAGE
     end
 
-    users_already_assigned_ids = User.all
-      .joins(:assignments)
-      .where(assignments: { role: role, assigned_to: paper })
-      .select(:id)
-      .pluck(:id)
-
-    # Trying to call .distinct on the result of
-    # a search() blows up with a PG error
-    search(block.call, matching)
-      .where.not(id: users_already_assigned_ids)
-      .to_a.uniq
+    matching_users = search(block.call, matching)
+    get_not_already_assigned_users(matching_users)
   end
 
   private
 
-  def internal_editors
-    role.journal.internal_editor_role.users
+  def already_assigned_user_ids
+    User.all
+      .joins(:assignments)
+      .where(assignments: { role: role, assigned_to: paper })
+      .select(:id)
+      .pluck(:id)
+  end
+
+  def internal_and_freelance_editors
+    editor_roles = [
+      role.journal.freelance_editor_role,
+      role.journal.internal_editor_role
+    ]
+
+    User.joins(assignments: :role).where(assignments: { role:  editor_roles })
   end
 
   def staff_admins
@@ -71,5 +77,9 @@ class EligibleUserService
   def search(user_relation, matching)
     return user_relation unless matching
     user_relation.fuzzy_search(matching)
+  end
+
+  def get_not_already_assigned_users(matching_users)
+    matching_users.where.not(id: already_assigned_user_ids).to_a.uniq
   end
 end

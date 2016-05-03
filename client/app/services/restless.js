@@ -22,7 +22,7 @@ export default Ember.Service.extend({
         success: resolve,
         error: reject,
         headers: {
-          'PUSHER_SOCKET_ID': socketId
+          'Pusher-Socket-ID': socketId
         },
         dataType: 'json'
       });

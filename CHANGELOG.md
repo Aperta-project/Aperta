@@ -4,7 +4,33 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Prevent errors while adding discussion participants
+### Security
+
+## [1.4.6] - 2016-04-29
+### Added
+-
+
+### Changed
+-
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+- Ensure the entire manuscript displays if it is re-uploaded with extant figures
+
+## [1.4.5] - 2016-04-27
+### Added
 - Reviewers can be removed using the Assign Team card
+- Freelance editors can be assigned as Cover Editor and/or Handling Editor
 
 ### Changed
 ### Deprecated
@@ -13,7 +39,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
-- Prevent duplication errors in generating new DOIs.
+- Prevent duplication errors in generating new DOIs
 
 ### Security
 

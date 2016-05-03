@@ -129,7 +129,7 @@ class InviteReviewersCard(BaseCard):
   def validate_reviewer_response(self, reviewer, response):
     """
     This method invites the reviewer that is passed as parameter, verifying the composed email. It
-      then
+      then checks the table of invited reviewers
     :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :param response: The reviewers response to the invitation

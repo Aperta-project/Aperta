@@ -17,7 +17,7 @@ from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 """
-This behavioral test case validates Paper submission and invite reviewer
+This behavioral test case validates Paper submission and invite Academic Editor (AE)
 This test requires the following data:
 The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
     frontend/assets/docs/
@@ -37,7 +37,6 @@ editorial_users = [internal_editor_login,
                    prod_staff_login,
                    pub_svcs_login,
                    ]
-
 
 @MultiBrowserFixture
 class InviteAECardTest(CommonTest):
@@ -117,8 +116,6 @@ class InviteAECardTest(CommonTest):
       wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE '
                                         'name = \'PLOS Wombat\';')[0][0]
       ae_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
-      ##
-      print ae_user_id
       ae_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
                                             'name = \'Academic Editor\';',
                                             (wombat_journal_id,))[0][0]

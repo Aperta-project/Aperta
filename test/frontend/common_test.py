@@ -170,9 +170,9 @@ class CommonTest(FrontEndTest):
 
   def check_article_access(self, paper_url):
     """
-    Check if current user has access to given article
-    :paper_url: String with the paper url
-    Returns boolean
+    Check if current logged user has access to given article
+    :paper_url: String with the paper url. Eg: http://aperta.tech/papers/22
+    Returns True if the user has access and False when not
     """
     self._driver.get(paper_url)
     ms_page = ManuscriptViewerPage(self.getDriver())

@@ -60,11 +60,11 @@ class InviteAECard(BaseCard):
     self.click_completion_button()
     self.click_close_button()
 
-  def validate_invite_reviewer(self, reviewer, title, creator, manu_id):
+  def validate_invite_ae(self, ae, title, creator, manu_id):
     """
-    Invites the reviewer that is passed as parameter, verifying the composed email. Makes
+    Invites the Academic Editor (AE) that is passed as parameter, verifying the composed email. Makes
       function and style validations.
-    :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
+    :param reviewer: user to invite as AE specified as email, or, if in system, name,
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
@@ -72,12 +72,12 @@ class InviteAECard(BaseCard):
     :return void function
     """
     time.sleep(.5)
-    self._get(self._recipient_field).send_keys(reviewer['email'] + Keys.ENTER)
+    self._get(self._recipient_field).send_keys(ae['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
     time.sleep(2)
     invite_heading = self._get(self._edit_invite_heading).text
-    # Since the reviewer is potentially off system, we can only validate email
-    assert reviewer['email'] in invite_heading, invite_heading
+    # Since the AE is potentially off system, we can only validate email
+    assert ae['email'] in invite_heading, invite_heading
     invite_text = self._get(self._edit_invite_textarea).text
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
@@ -94,7 +94,6 @@ class InviteAECard(BaseCard):
     if abstract is not None:
       # strip html, and remove whitespace
       # NOTA BENE: BeautifulSoup4 inherently handles str to unicode conversion
-      ##abstract = InviteReviewersCard.get_text(self, abstract).strip() XXXXX
       abstract = self.get_text(abstract).strip()
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one
@@ -112,27 +111,26 @@ class InviteAECard(BaseCard):
     invitee = self._get(self._invitee_listing)
     invitee.find_element(*self._invitee_avatar)
     pagefullname = invitee.find_element(*self._invitee_full_name)
-    assert reviewer['name'] in pagefullname.text
+    assert ae['name'] in pagefullname.text
     invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
     assert 'Invited' in status.text
     invitee.find_element(*self._invitee_revoke)
 
-  def validate_ae_response(self, reviewer, response):
+  def validate_ae_response(self, ae, response):
     """
-    This method invites the reviewer that is passed as parameter, verifying the composed email. It
-      then
+    This method invites the Academic Editor (AE) that is passed as parameter, verifying
+      the composed email. It then checks the table of invited AE.
     :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :param response: The reviewers response to the invitation
     :return void function
     """
     time.sleep(.5)
-    import pdb; pdb.set_trace()
     invitee = self._get(self._invitee_listing)
     invitee.find_element(*self._invitee_avatar)
     pagefullname = invitee.find_element(*self._invitee_full_name)
-    assert reviewer['name'] in pagefullname.text
+    assert ae['name'] in pagefullname.text
     invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
     if response == 'Accept':

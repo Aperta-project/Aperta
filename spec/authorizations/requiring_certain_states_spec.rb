@@ -35,11 +35,19 @@ DESC
   end
 
   role :with_access_to_edit do
-    has_permission action: 'edit', applies_to: Authorizations::FakePaper.name
+    has_permission(
+      action: 'edit',
+      applies_to: Authorizations::FakePaper.name,
+      states: %w(unsubmitted in_revision)
+    )
   end
 
   role :with_access_to_edit_task do
-    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name
+    has_permission(
+      action: 'edit',
+      applies_to: Authorizations::FakeTask.name,
+      states: %w(unsubmitted in_revision)
+    )
   end
 
   context <<-DESC do

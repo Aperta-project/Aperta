@@ -20,7 +20,7 @@ describe "Permission states can be delegated to a model's association" do
   end
 
   role :for_viewing do
-    has_permission action: 'edit', applies_to: Task.name
+    has_permission action: 'edit', applies_to: Task.name, states: Paper::EDITABLE_STATES
   end
 
   context <<-DESC do

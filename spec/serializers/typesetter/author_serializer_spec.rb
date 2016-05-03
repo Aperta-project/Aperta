@@ -28,12 +28,12 @@ describe Typesetter::IndividualAuthorSerializer do
 
   let!(:contributes_question) do
     NestedQuestion.find_by(ident: "author--contributions") ||
-    FactoryGirl.create(
-      :nested_question,
-      owner_id: nil,
-      owner_type: 'Author',
-      ident: 'author--contributions'
-    )
+      FactoryGirl.create(
+        :nested_question,
+        owner_id: nil,
+        owner_type: 'Author',
+        ident: 'author--contributions'
+      )
   end
 
   let!(:question1) do
@@ -88,7 +88,7 @@ describe Typesetter::IndividualAuthorSerializer do
       :nested_question_answer,
       nested_question: corresponding_question,
       owner: author,
-      value: true,
+      value: false,
       value_type: 'boolean'
     )
   end
@@ -117,7 +117,8 @@ describe Typesetter::IndividualAuthorSerializer do
       :affiliation,
       :secondary_affiliation,
       :contributions,
-      :government_employee
+      :government_employee,
+      :type
     )
   end
 
@@ -172,6 +173,17 @@ describe Typesetter::IndividualAuthorSerializer do
   describe 'corresponding' do
     it "is the author's corresponding preference" do
       expect(output[:corresponding]).to eq(corresponding_answer.value)
+    end
+
+    context 'when the author is the creator' do
+      before do
+        allow(author.paper).to receive(:creator).and_return(author)
+        allow(author.paper).to receive(:authors).and_return([author])
+      end
+
+      it "uses the creator when the paper has no corresponding author checked" do
+        expect(output[:corresponding]).to eq(true)
+      end
     end
   end
 

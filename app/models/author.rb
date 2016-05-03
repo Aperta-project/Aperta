@@ -45,7 +45,7 @@ class Author < ActiveRecord::Base
   end
 
   def corresponding?
-    answer_for(CORRESPONDING_QUESTION_IDENT)
+    answer_for(CORRESPONDING_QUESTION_IDENT).value
   end
 
   def self.contributions_question

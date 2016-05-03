@@ -26,7 +26,7 @@ module Typesetter
     end
 
     def paper_has_corresponding_author?
-      object.paper.authors.select(corresponding?: true).any?
+      object.paper.authors.select { |a| a.corresponding? == true }.any?
     end
 
     def government_employee

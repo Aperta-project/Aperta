@@ -1,7 +1,13 @@
 <div class="container">
-  <hr>
   <div class="paper-info">
     <div class="paper-abstract">
+      <% if @simple_report.in_process_balance != @simple_report.currently_sitting_sum %>
+        <h3 class="warning">
+          Warning: today's balance does not match workflow balances
+        </h3>
+        <hr>
+      <% end %>
+
       <h3>How many papers are in the system today?</h3>
 
       <p>
@@ -20,7 +26,10 @@
         Checking: <%= @simple_report.checking %><br>
         In revision: <%= @simple_report.in_revision %><br>
       </p>
+      <hr>
+      <p>
+        Draft: <%= @simple_report.unsubmitted %>
+      </p>
     </div>
   </div>
-  <hr>
 </div>

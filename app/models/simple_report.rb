@@ -6,7 +6,7 @@ class SimpleReport < ActiveRecord::Base
   class << self
     def build_new_report
       simple_report = new
-      attributes = simple_report.instance_eval { status_counts }
+      attributes = simple_report.instance_eval { build_status_counts }
       simple_report.assign_attributes(attributes)
       simple_report
     end
@@ -26,26 +26,36 @@ class SimpleReport < ActiveRecord::Base
   end
 
   def previous_in_process_balance
-    return initial_in_process_balance unless last_report
-    last_report.in_process_balance
+    return 0 unless last_report
+    last_report.currently_sitting_sum
+  end
+
+  def currently_sitting_sum
+    initially_submitted +
+      invited_for_full_submission +
+      fully_submitted +
+      checking +
+      in_revision
   end
 
   private
 
-  def status_counts
-    @status_counts ||= begin
-      counts = Hash[status_queries.map { |k, v| [k, v.count] }]
+  # build_* methods are used to build the report for new records only.
+  def build_status_counts
+    @build_status_counts ||= begin
+      counts = Hash[build_status_queries.map { |k, v| [k, v.count] }]
       counts[:in_process_balance] = calc_in_process_balance(counts)
       counts
     end
   end
 
   # A collection of the queries used to build a new SimpleReport. The
-  # QueryParser was used intentially to have a shared reporting language with
+  # QueryParser was used intentionally to have a shared reporting language with
   # users familiar with the paper tracker.
-  def status_queries
-    @status_queries ||= begin
+  def build_status_queries
+    @build_status_queries ||= begin
       queries = Hash[{
+        unsubmitted: "STATUS IS unsubmitted",
         initially_submitted: "STATUS IS initially submitted",
         invited_for_full_submission: "STATUS IS invited for full submission",
         fully_submitted: "STATUS IS submitted",
@@ -56,32 +66,20 @@ class SimpleReport < ActiveRecord::Base
         rejected: "STATUS IS rejected"
       }.map { |k, v| [k, QueryParser.new.build(v)] }]
 
-      queries[:new_initial_submissions] =
-        Paper.where("first_submitted_at >= ?", previous_report_date)
-
-      %w(accepted rejected withdrawn).each do |state|
-        queries["new_#{state}".to_sym] =
-          queries[state.to_sym]
-          .where("state_updated_at >= ?", previous_report_date)
-      end
-
+      build_new_exiting_queries(queries)
       queries
     end
   end
 
-  def initial_in_process_balance
-    total_in_process - status_queries[:new_initial_submissions].count
-  end
+  def build_new_exiting_queries(queries)
+    queries[:new_initial_submissions] =
+      Paper.where("first_submitted_at >= ?", previous_report_date)
 
-  def total_in_process
-    [
-      :initially_submitted,
-      :invited_for_full_submission,
-      :fully_submitted,
-      :checking,
-      :in_revision
-    ].reduce(0) do |memo, state|
-      memo + status_queries[state].count
+    exiting_states.each do |state|
+      queries["new_#{state}".to_sym] =
+        queries[state.to_sym]
+          .where("state_updated_at >= ?", previous_report_date)
+          .where.not(submitted_at: nil)
     end
   end
 
@@ -94,5 +92,9 @@ class SimpleReport < ActiveRecord::Base
     previous_in_process_balance +
       counts[:new_initial_submissions] -
       calc_new_exiting_count(counts)
+  end
+
+  def exiting_states
+    %w(accepted rejected withdrawn)
   end
 end

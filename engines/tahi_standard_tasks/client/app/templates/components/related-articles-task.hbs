@@ -1,6 +1,13 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  Welcome to related_articles_task.
-  You can do anything with related_articles_task!
+
+  {{#each relatedArticles as |article|}}
+    {{related-article relatedArticle=article}}
+  {{/each}}
+
+  <button class="button button-primary button--green related-article-task-add"
+          {{action "newArticle"}}>
+    Add new article
+  </button>
 </div>

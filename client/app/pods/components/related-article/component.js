@@ -1,9 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['related-article'],
   relatedArticle: null, // Pass me in, please
-  editState: false,
+  editable: true,       // Pass me in, please
+
+  classNames: ['related-article'],
+  classNameBindings: ['editable'],
+
+  editState: Ember.computed.alias('relatedArticle.isNew'),
 
   actions: {
     edit: function() {

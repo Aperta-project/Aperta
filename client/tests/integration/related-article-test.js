@@ -2,34 +2,17 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 
+
 moduleForComponent('related-article',
                    'Integration | Component | related article',
                    {integration: true});
-
-var relatedArticle = {
-  id: 3,
-  linkedDOI: 'journal.pcbi.1004816',
-  linkedTitle: 'The best linked article in texas',
-  additionalInfo: 'This information is additional',
-  sendManuscriptsTogether: true,
-  sendLinkToApex: true
-};
-
-var template = hbs`{{related-article
-                       relatedArticle=relatedArticle
-                       editState=editable}}`;
-
-function setup(context, editable) {
-  context.set('relatedArticle', relatedArticle);
-  context.set('editable', editable);
-  context.render(template);
-}
 
 
 // When not editable:
 
 test('Shows all data when not editable', function(assert){
-  setup(this);
+  var relatedArticle = newRelatedArticle();
+  setup(this, relatedArticle);
 
   assert.textPresent(
     '.related-article-doi',
@@ -48,8 +31,9 @@ test('Shows all data when not editable', function(assert){
 });
 
 test('Hides send together text if attribute is false', function(assert){
+  var relatedArticle = newRelatedArticle();
   relatedArticle.sendManuscriptsTogether = false;
-  setup(this);
+  setup(this, relatedArticle);
 
   assert.elementNotFound(
     '.related-article-publish-together',
@@ -57,8 +41,9 @@ test('Hides send together text if attribute is false', function(assert){
 });
 
 test('Shows send together text when attribute is true', function(assert){
+  var relatedArticle = newRelatedArticle();
   relatedArticle.sendManuscriptsTogether = true;
-  setup(this);
+  setup(this, relatedArticle);
 
   assert.elementFound(
     '.related-article-publish-together',
@@ -66,8 +51,9 @@ test('Shows send together text when attribute is true', function(assert){
 });
 
 test('Hides send to apex text if attribute is false', function(assert){
+  var relatedArticle = newRelatedArticle();
   relatedArticle.sendLinkToApex = false;
-  setup(this);
+  setup(this, relatedArticle);
 
   assert.elementNotFound(
     '.related-article-send-to-apex',
@@ -75,8 +61,9 @@ test('Hides send to apex text if attribute is false', function(assert){
 });
 
 test('Shows send to apex text if attribute is false', function(assert){
+  var relatedArticle = newRelatedArticle();
   relatedArticle.sendLinkToApex = true;
-  setup(this);
+  setup(this, relatedArticle);
 
   assert.elementFound(
     '.related-article-send-to-apex',
@@ -108,10 +95,12 @@ test('Can be edited', function(assert) {
 
 test('Can be deleted', function(assert) {
   assert.expect(2);
+
+  var relatedArticle = newRelatedArticle();
   relatedArticle.destroyRecord = function() {
     assert.ok(true, 'Calls destroy');
   };
-  setup(this);
+  setup(this, relatedArticle);
 
   this.$('.related-article').hover();
 
@@ -122,10 +111,12 @@ test('Can be deleted', function(assert) {
   this.$('.related-article-delete').click();
 });
 
+
 // When editable:
 
 test('Shows inputs, filled in, when editing', function(assert){
-  setup(this, true);
+  var relatedArticle = newRelatedArticle();
+  setup(this, relatedArticle, true);
 
   assert.inputPresent(
     '.related-article-title-input',
@@ -154,22 +145,60 @@ test('Shows inputs, filled in, when editing', function(assert){
 
 test('Save saves new values', function(assert){
   assert.expect(2);
+
+  var relatedArticle = newRelatedArticle();
   relatedArticle.save = function() {
     assert.ok(true, 'Calls save');
   };
+  setup(this, relatedArticle, true);
 
-  setup(this, true);
   assert.elementFound('.related-article-save', 'save button is present');
   this.$('.related-article-save').click();
 });
 
 test('Cancel resets all values', function(assert){
   assert.expect(2);
+
+  var relatedArticle = newRelatedArticle();
   relatedArticle.rollback = function() {
     assert.ok(true, 'Calls rollback');
   };
+  setup(this, relatedArticle, true);
 
-  setup(this, true);
   assert.elementFound('.related-article-cancel', 'cancel button is present');
   this.$('.related-article-cancel').click();
 });
+
+test('starts in the edit state if the record is new', function(assert) {
+  var relatedArticle = newRelatedArticle();
+  relatedArticle.isNew = true;
+  setup(this, relatedArticle, true);
+
+  assert.elementFound(
+    '.related-article-title-input',
+    'The title is editable'
+  );
+});
+
+
+var newRelatedArticle = function() {
+  return {
+    id: 3,
+    linkedDOI: 'journal.pcbi.1004816',
+    linkedTitle: 'The best linked article in texas',
+    additionalInfo: 'This information is additional',
+    sendManuscriptsTogether: true,
+    sendLinkToApex: true
+  };
+};
+
+var template = hbs`{{related-article
+                       relatedArticle=relatedArticle
+                       editState=editable}}`;
+
+function setup(context, relatedArticle, editable) {
+  relatedArticle = relatedArticle || newRelatedArticle();
+  context.set('relatedArticle', relatedArticle);
+  context.set('editable', editable);
+  context.render(template);
+}

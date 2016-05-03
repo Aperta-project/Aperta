@@ -11,9 +11,10 @@ class ApexPackager
     packager
   end
 
-  def initialize(paper)
+  def initialize(paper, archive_filename: nil)
     @paper = paper
     @zip_file = Tempfile.new('zip')
+    @archive_filename = archive_filename
   end
 
   def zip
@@ -26,26 +27,36 @@ class ApexPackager
     end
   end
 
+  def manifest
+    @manifest ||= ApexManifest.new(archive_filename: @archive_filename)
+  end
+
   private
 
   def add_manuscript(package)
+    add_file_to_package package,
+                        manuscript_filename,
+                        open(@paper.latest_version.source_url, &:read)
+  end
+
+  def manuscript_filename
     extension = @paper.latest_version.source.path.split('.').last
-    package.put_next_entry("#{@paper.manuscript_id}.#{extension}")
-    package.write(open(@paper.latest_version.source_url, &:read))
+    "#{@paper.manuscript_id}.#{extension}"
   end
 
   def add_striking_image(package)
     return unless @paper.striking_image
-
-    package.put_next_entry(attachment_apex_filename(@paper.striking_image))
-    package.write(@paper.striking_image.attachment.read)
+    add_file_to_package package,
+                        attachment_apex_filename(@paper.striking_image),
+                        @paper.striking_image.attachment.read
   end
 
   def add_figures(package)
     @paper.figures.each do |figure|
       next if @paper.striking_image == figure
-      package.put_next_entry(attachment_apex_filename(figure))
-      package.write(figure.attachment.read)
+      add_file_to_package package,
+                          attachment_apex_filename(figure),
+                          figure.attachment.read
     end
   end
 
@@ -59,18 +70,28 @@ class ApexPackager
   def add_supporting_information(package)
     @paper.supporting_information_files.each do |file|
       next unless file.publishable?
-      package.put_next_entry(file.filename)
-      package.write(file.attachment.read)
+      add_file_to_package package,
+                          file.filename,
+                          file.attachment.read
     end
   end
 
   def add_metadata(package)
+    filename = 'metadata.json'
     metadata = Typesetter::MetadataSerializer.new(@paper).to_json
     temp_file = Tempfile.new('metadata')
     temp_file.write(metadata)
     temp_file.rewind
-    package.put_next_entry('metadata.json')
-    package.write(temp_file.read)
+    add_file_to_package package,
+                        filename,
+                        temp_file.read
     temp_file.close
+    manifest.metadata_filename = filename
+  end
+
+  def add_file_to_package(package, filename, file_contents)
+    package.put_next_entry(filename)
+    package.write(file_contents)
+    manifest.add_file(filename)
   end
 end

@@ -9,6 +9,8 @@ describe ApexPackager do
                        minor_version: 1)
   end
   let!(:source) { double(File) }
+  let(:zip_file) { Tempfile.new('zip') }
+  let(:archive_filename) { 'test.0001.zip' }
 
   def zip_filenames(package)
     filenames = []
@@ -71,6 +73,44 @@ describe ApexPackager do
       contents = Zip::File.open(zip_file_path).read('metadata.json')
       expect(contents).to eq('json')
     end
+
+    it 'creates a valid manifest' do
+      packager = ApexPackager.new(paper, archive_filename: archive_filename)
+      packager.zip
+      manifest = JSON.parse(packager.manifest.to_json)
+      expected_manifest = {
+        "archive_filename" => archive_filename,
+        "metadata_filename" => "metadata.json",
+        "files" => ["metadata.json", "test.0001.docx"]
+      }
+      expect(manifest).to eq expected_manifest
+    end
+
+    describe "add_metadata" do
+      it "adds a manuscript file to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_metadata, package)
+        end
+        metadata_filename =
+          packager.manifest.instance_variable_get(:@metadata_filename)
+        expect(metadata_filename).to eq "metadata.json"
+        files = packager.send(:manifest).instance_variable_get(:@file_list)
+        expect(files).to eq ["metadata.json"]
+      end
+    end
+
+    describe "add_manuscript" do
+      it "adds a manuscript file to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_manuscript, package)
+        end
+        manuscript_filename = packager.send(:manuscript_filename)
+        file_list = packager.manifest.instance_variable_get(:@file_list)
+        expect(file_list).to eq [manuscript_filename]
+      end
+    end
   end
 
   context 'a paper with figures' do
@@ -114,6 +154,17 @@ describe ApexPackager do
       zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to_not include('Strikingimage.jpg')
+    end
+
+    describe "add_figures" do
+      it "adds figure files to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_figures, package)
+        end
+        file_list = packager.manifest.instance_variable_get(:@file_list)
+        expect(file_list).to eq ["yeti.jpg"]
+      end
     end
   end
 
@@ -178,6 +229,18 @@ describe ApexPackager do
       expect(zip_filenames((zip_file_path))).to_not include(
         supporting_information_file.filename)
     end
+
+    describe "add_supporting_information" do
+      it "adds a SI file to the package" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_supporting_information, package)
+        end
+        si_filename = "about_turtles.docx"
+        file_list = packager.manifest.instance_variable_get(:@file_list)
+        expect(file_list).to eq [si_filename]
+      end
+    end
   end
 
   context 'a paper with a striking image' do
@@ -237,6 +300,19 @@ describe ApexPackager do
       expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
       expect(zip_filenames(zip_file_path)).to include('yeti2.jpg')
       expect(zip_filenames(zip_file_path)).to_not include('yeti.jpg')
+    end
+
+    describe "add_stricking_image" do
+      it "adds a stricking image to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_striking_image, package)
+        end
+        striking_image_filename =
+          packager.send(:attachment_apex_filename, paper.striking_image)
+        file_list = packager.manifest.instance_variable_get(:@file_list)
+        expect(file_list).to eq [striking_image_filename]
+      end
     end
   end
 end

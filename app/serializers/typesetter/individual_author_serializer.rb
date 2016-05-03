@@ -18,8 +18,7 @@ module Typesetter
 
     def corresponding
       if paper_has_corresponding_author?
-        object.answer_for('author--published_as_corresponding_author') \
-          .try(:value)
+        object.corresponding? == true
       else
         object.email == object.paper.creator.email
       end

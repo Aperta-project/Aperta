@@ -40,6 +40,38 @@ describe Typesetter::MetadataSerializer do
     allow(paper.decisions).to receive(:latest).and_return(accepted_decision)
   end
 
+  it 'serializes authors in order' do
+    paper = FactoryGirl.create(:paper_ready_for_export, :with_integration_journal)
+    author = FactoryGirl.create(:author, paper: paper)
+    author2 = FactoryGirl.create(:author, paper: paper)
+    paper.authors = [author, author2]
+    group_author = FactoryGirl.create(:group_author, paper: paper)
+    paper.group_authors = [group_author]
+    first_author = AuthorListItem.new(
+      position: 1,
+      author_id: group_author.id,
+      author_type: "GroupAuthor",
+      paper_id: paper.id)
+    first_author.save!
+    second_author = AuthorListItem.new(
+      position: 2,
+      author_id: author.id,
+      author_type: "Author",
+      paper_id: paper.id)
+    second_author.save!
+    third_author = AuthorListItem.new(
+      position: 3,
+      author_id: author2.id,
+      author_type: "Author",
+      paper_id: paper.id)
+    third_author.save!
+    output = Typesetter::MetadataSerializer.new(paper).serializable_hash
+
+    expect(output[:authors][0][:author][:name]).to eq(group_author.name)
+    expect(output[:authors][1][:author][:first_name]).to eq(author.first_name)
+    expect(output[:authors][2][:author][:first_name]).to eq(author2.first_name)
+  end
+
   it 'has short_title' do
     expect(output[:short_title]).to eq('my paper short')
   end
@@ -114,24 +146,34 @@ describe Typesetter::MetadataSerializer do
     opts[:serializer] || fail(ArgumentError, 'Must pass in a :serializer')
     opts[:json_key] || fail(ArgumentError, 'Must pass in a :json_key')
 
-    let(:task) do
-      FactoryGirl.create(opts[:factory], phase: paper.phases.first)
-    end
-    let(:fake_serialized_data) { 'Fake serialized data' }
-    let(:fake_instance_double) do
-      instance_double(
-        "#{opts[:serializer]}",
-        serializable_hash: fake_serialized_data
-      )
+    context 'with the task' do
+      let(:task) do
+        FactoryGirl.create(opts[:factory], phase: paper.phases.first)
+      end
+      let(:fake_serialized_data) { 'Fake serialized data' }
+      let(:fake_instance_double) do
+        instance_double(
+          "#{opts[:serializer]}",
+          serializable_hash: fake_serialized_data
+        )
+      end
+
+      before do
+        expect(opts[:serializer]).to receive(:new).and_return fake_instance_double
+      end
+
+      it "serializes the #{opts[:json_key]} using the #{opts[:serializer]}" do
+        actual_output = output[opts[:json_key]]
+        expect(actual_output).to eq(fake_serialized_data)
+      end
     end
 
-    before do
-      expect(opts[:serializer]).to receive(:new).and_return fake_instance_double
-    end
+    context 'without the task' do
+      let(:task) { nil }
 
-    it "serializes the #{opts[:json_key]} using the #{opts[:serializer]}" do
-      actual_output = output[opts[:json_key]]
-      expect(actual_output).to eq(fake_serialized_data)
+      it 'does not require the task' do
+        expect(opts[:serializer]).to_not receive(:new)
+      end
     end
   end
 

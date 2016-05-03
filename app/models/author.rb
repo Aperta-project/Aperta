@@ -45,6 +45,7 @@ class Author < ActiveRecord::Base
   end
 
   def corresponding?
+    return false unless answer_for(CORRESPONDING_QUESTION_IDENT)
     answer_for(CORRESPONDING_QUESTION_IDENT).value
   end
 

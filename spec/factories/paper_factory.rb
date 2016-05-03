@@ -189,6 +189,7 @@ FactoryGirl.define do
         authors_task = FactoryGirl.create(:authors_task, paper: paper)
         author = FactoryGirl.create(:author, paper: paper)
         paper.authors = [author]
+        paper.creator = FactoryGirl.create(:user)
         NestedQuestionableFactory.create(
           author,
           questions: [

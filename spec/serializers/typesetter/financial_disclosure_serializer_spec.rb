@@ -30,6 +30,13 @@ describe Typesetter::FinancialDisclosureSerializer do
       :funders)
   end
 
+  it 'works without values' do
+    allow(task).to receive(:answer_for).and_return(nil)
+    output = serializer.serializable_hash
+
+    expect(output[:author_received_funding]).to eq(nil)
+  end
+
   describe 'author_recieved_funding' do
     it 'marks whether the author received funding' do
       expect(output[:author_received_funding]).to eq(author_received_funding)

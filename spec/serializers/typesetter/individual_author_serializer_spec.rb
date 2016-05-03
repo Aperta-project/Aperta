@@ -122,6 +122,10 @@ describe Typesetter::IndividualAuthorSerializer do
     )
   end
 
+  before do
+    allow(author.paper).to receive(:creator).and_return(FactoryGirl.create(:user))
+  end
+
   describe 'contributions' do
     it 'includes question text when the answer is true' do
       expect(output[:contributions]).to include(question1.text)

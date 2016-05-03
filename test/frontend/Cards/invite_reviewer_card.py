@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import logging
 import re
-import string
 import time
 
 from selenium.webdriver.common.by import By
@@ -70,7 +69,6 @@ class InviteReviewersCard(BaseCard):
     self._get(self._edit_invite_text_send_invite_button).click()
     time.sleep(1)
 
-
   def validate_invite_reviewer(self, reviewer, title, creator, manu_id):
     """
     Invites the reviewer that is passed as parameter, verifying the composed email. Makes
@@ -105,7 +103,7 @@ class InviteReviewersCard(BaseCard):
     if abstract is not None:
       # strip html, and remove whitespace
       # NOTA BENE: BeautifulSoup4 inherently handles str to unicode conversion
-      abstract = InviteReviewersCard.get_text(self, abstract).strip()
+      abstract = self.get_text(abstract).strip()
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one
       #  Painful lesson

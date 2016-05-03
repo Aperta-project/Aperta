@@ -40,6 +40,14 @@ export default Ember.Component.extend({
     });
   }),
 
+  renderEngagementBanner: Ember.computed(
+    'paper.{gradualEngagement,isWithdrawn}',
+    function() {
+      return this.get('paper.gradualEngagement') &&
+        !this.get('paper.isWithdrawn');
+    }
+  ),
+
   actions: {
     toggle() {
       this.attrs.toggle();

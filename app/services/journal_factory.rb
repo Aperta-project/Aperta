@@ -70,6 +70,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
+      role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -134,6 +135,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
+      role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -174,6 +176,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
+      role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -205,6 +208,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
+      role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -240,6 +244,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
+      role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -277,6 +282,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
+      role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -287,7 +293,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)

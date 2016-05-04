@@ -14,34 +14,35 @@ module('Unit: Task Model', {
   }
 });
 
- test("findQuestion finds and returns the first nestedQuestion when the given path matches its ident exactly", function(assert) {
-   let store = getStore();
-   let task, nestedQuestion;
-   Ember.run(() => {
-     task = store.createRecord('task');
-     nestedQuestion = store.createRecord('nested-question', {
-       ident: "foobar",
-       task: task
-     });
-     task.get('nestedQuestions').addObject(nestedQuestion);
-     return task;
-   });
-   assert.equal(task.findQuestion('foobar'), nestedQuestion);
- });
+test("findQuestion finds and returns the first nestedQuestion when the given path matches its ident exactly", function(assert) {
+  let store = getStore();
+  let task, nestedQuestion;
+  Ember.run(() => {
+    task = store.createRecord('task');
+    nestedQuestion = store.createRecord('nested-question', {
+      ident: "foobar",
+      task: task
+    });
+    task.get('nestedQuestions').addObject(nestedQuestion);
+    return task;
+  });
+  assert.equal(task.findQuestion('foobar'), nestedQuestion);
+});
 
- test("findQuestion returns null when it doesn't have a nestedQuestion whose ident that matches the given path", function(assert) {
-   let store = getStore();
-   let task, nestedQuestion;
-   Ember.run(() => {
-     task = store.createRecord('task');
-     nestedQuestion = store.createRecord('nested-question', {
-       ident: "foobar",
-       task: task
-     });
-     task.get('nestedQuestions').addObject(nestedQuestion);
-     return task;
-   });
-   assert.equal(task.findQuestion('bazbaz'), null);
+
+test("findQuestion returns null when it doesn't have a nestedQuestion whose ident that matches the given path", function(assert) {
+  let store = getStore();
+  let task, nestedQuestion;
+  Ember.run(() => {
+    task = store.createRecord('task');
+    nestedQuestion = store.createRecord('nested-question', {
+      ident: "foobar",
+      task: task
+    });
+    task.get('nestedQuestions').addObject(nestedQuestion);
+    return task;
+  });
+  assert.equal(task.findQuestion('bazbaz'), null);
 });
 
 test("permissionState delegates permission state to paper", function(assert) {
@@ -58,4 +59,3 @@ test("permissionState delegates permission state to paper", function(assert) {
   });
   assert.equal(task.get('permissionState'), 'submitted');
 });
-

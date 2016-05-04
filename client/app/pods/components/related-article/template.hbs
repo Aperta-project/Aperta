@@ -1,0 +1,91 @@
+{{#if editState}}
+  <div class="inset-form-control">
+    <div class="inset-form-control-text">
+      <label>Title</label>
+    </div>
+    {{input
+        type="text"
+        value=relatedArticle.linkedTitle
+        class="related-article-title-input inset-form-control-input"
+        disabled=isNotEditable
+        placeholder="Submission Title"}}
+  </div>
+
+  <div class="inset-form-control">
+    <div class="inset-form-control-text">
+      <label>DOI</label>
+    </div>
+    {{input
+        type="text"
+        value=relatedArticle.linkedDOI
+        class="related-article-doi-input inset-form-control-input"
+        disabled=isNotEditable
+        placeholder="0000000/journal.pbio.0000000"}}
+  </div>
+
+  <div class="inset-form-control">
+    <div class="inset-form-control-text">
+      <label>Additional info</label>
+    </div>
+    {{input
+        type="text"
+        value=relatedArticle.additionalInfo
+        class="related-article-additional-info-input inset-form-control-input"
+        disabled=isNotEditable
+        placeholder="Add a link or other helpful info here"}}
+  </div>
+
+  <div class="related-article-publish-together-input">
+    {{input
+    type="checkbox"
+    checked=relatedArticle.sendManuscriptsTogether}}
+    This related article should be sent together with the article to production.
+  </div>
+
+  <div class="related-article-send-to-apex-input">
+    {{input
+    type="checkbox"
+    checked=relatedArticle.sendLinkToApex}}
+      Include this related article as metadata and send to APEX.
+  </div>
+
+  <div class="related-article-buttons">
+    <a class="button-link button--green related-article-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
+    <button class="button-secondary button--green knockout related-article-save" {{action "save"}}>save</button>
+  </div>
+
+{{else}}
+
+  <div class="related-article-editing-actions">
+    <span class="fa fa-pencil related-article-edit" {{action "edit"}}></span>
+
+    <span class="fa fa-trash related-article-delete" {{action "delete"}}></span>
+  </div>
+
+  <div class="related-article-title">
+    Title: {{relatedArticle.linkedTitle}}
+  </div>
+
+  <div class="related-article-doi">
+    DOI: {{relatedArticle.linkedDOI}}
+  </div>
+
+  <div class="related-article-additional-info">
+    {{relatedArticle.additionalInfo}}
+  </div>
+
+  <ul>
+    {{#if relatedArticle.sendManuscriptsTogether}}
+      <li class="related-article-publish-together">
+        This related article should be sent together with the article to production.
+      </li>
+    {{/if}}
+
+    {{#if relatedArticle.sendLinkToApex}}
+      <li class="related-article-send-to-apex">
+        Include this related article as metadata and send to APEX.
+      </li>
+    {{/if}}
+  </ul>
+
+{{/if}}

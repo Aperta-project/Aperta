@@ -4,6 +4,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Related Articles task
+- Templates for devs creating new tasks
 ### Changed
 ### Deprecated
 ### Removed

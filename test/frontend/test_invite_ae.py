@@ -1,5 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This behavioral test case validates Paper submission and invite Academic Editor (AE)
+This test requires the following data:
+The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
+    frontend/assets/docs/
+"""
 import logging
 import random
 import time
@@ -7,21 +13,13 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, handling_editor_login, \
-    cover_editor_login, prod_staff_login, pub_svcs_login, super_admin_login, \
-    reviewer_login, academic_editor_login
+    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
+    super_admin_login, academic_editor_login
 from frontend.common_test import CommonTest
-from Cards.invite_reviewer_card import InviteReviewersCard
 from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
-"""
-This behavioral test case validates Paper submission and invite Academic Editor (AE)
-This test requires the following data:
-The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
-    frontend/assets/docs/
-"""
 __author__ = 'sbassi@plos.org'
 
 users = [creator_login1,
@@ -44,11 +42,11 @@ class InviteAECardTest(CommonTest):
   Validate the elements, styles, functions of the Invite AE card
   """
 
-  def test_invite_reviewers_actions(self):
+  def test_invite_ae_actions(self):
     """
-    test_invite_reviewers_card: Validates the elements, styles, roles and functions of invite
-      reviewers from new document creation through inviting reviewer, validation of the invite on
-      the invitees dashboard, acceptance and rejections
+    test_invite_ae: Validates the elements, styles, roles and functions of invite academic editors
+    from new document creation through inviting ae, validation of the invite on the invitees
+    dashboard, acceptance and rejections
     :return: void function
     """
     # Users logs in and make a submission
@@ -85,8 +83,8 @@ class InviteAECardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(10)
-    #add card invite AE with add new card
-    #Check if card is there
+    # add card invite AE with add new card
+    # Check if card is there
     if not workflow_page.is_card('Invite Academic Editor'):
       workflow_page.add_card('Invite Academic Editor')
     # click on invite academic editor
@@ -97,7 +95,7 @@ class InviteAECardTest(CommonTest):
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
                            errors='strict')
-                           # The title we pass in here must be a unicode object if there is utf-8 data present
+    # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_ae_card.validate_invite_ae(academic_editor_login,
                                           manuscript_title,
                                           creator_user,
@@ -140,7 +138,6 @@ class InviteAECardTest(CommonTest):
     time.sleep(3)
     invite_ae = InviteAECard(self.getDriver())
     invite_ae.validate_ae_response(academic_editor_login, invite_response)
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

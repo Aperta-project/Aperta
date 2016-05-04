@@ -44,9 +44,9 @@ class InviteAECardTest(CommonTest):
 
   def test_invite_ae_actions(self):
     """
-    test_invite_aes_card: Validates the elements, styles, roles and functions of invite
-      reviewers from new document creation through inviting reviewer, validation of the invite on
-      the invitees dashboard, acceptance and rejections
+    test_invite_ae: Validates the elements, styles, roles and functions of invite academic editors
+    from new document creation through inviting ae, validation of the invite on the invitees
+    dashboard, acceptance and rejections
     :return: void function
     """
     # Users logs in and make a submission

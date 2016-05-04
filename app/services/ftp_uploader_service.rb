@@ -27,6 +27,10 @@ class FtpUploaderService
       enter_packages_directory
       tmp_file = upload_to_temporary_file
       if @ftp.last_response_code == TRANSFER_COMPLETE
+        begin
+          @ftp.delete @final_filename
+        rescue Exception
+        end
         @ftp.rename(tmp_file, @final_filename)
         Rails.logger.info "Transfer successful for #{@final_filename}"
         return true

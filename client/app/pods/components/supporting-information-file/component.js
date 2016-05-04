@@ -62,8 +62,10 @@ export default Component.extend({
       this.set('uiState', 'view');
     },
 
-    enterEditState() {
-      this.set('uiState', 'edit');
+    enterEditStateIfEditable() {
+      if(this.get('isEditable')) {
+        this.set('uiState', 'edit');
+      }
     },
 
     validateTitle() {

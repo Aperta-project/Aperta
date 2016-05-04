@@ -1,6 +1,7 @@
 .split-pane {
   @include display(flex);
   background: #fff;
+  height: 100%;
 }
 
 .split-pane-element {

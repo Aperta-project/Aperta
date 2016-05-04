@@ -60,7 +60,7 @@ test('Hides send to apex text if attribute is false', function(assert){
     'send to apex bullet is not present');
 });
 
-test('Shows send to apex text if attribute is false', function(assert){
+test('Shows send to apex text if attribute is true', function(assert){
   var relatedArticle = newRelatedArticle();
   relatedArticle.sendLinkToApex = true;
   setup(this, relatedArticle);

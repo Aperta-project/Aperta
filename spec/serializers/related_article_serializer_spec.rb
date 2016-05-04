@@ -9,7 +9,8 @@ describe RelatedArticleSerializer do
     it "serializes the related_article's properties" do
       expect(serializer.as_json).to include(:related_article)
       expect(serializer.as_json[:related_article])
-        .to include(
+        .to eq(
+          id: article.id,
           additional_info: article.additional_info,
           linked_doi: article.linked_doi,
           linked_title: article.linked_title,

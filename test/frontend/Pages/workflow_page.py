@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.initial_decision_card import InitialDecisionCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard
@@ -58,14 +59,16 @@ class WorkflowPage(AuthenticatedPage):
     self._final_tech_check_card = (By.XPATH, "//a/div[contains(., 'Final Tech Check')]")
     self._initial_decision_card = (By.XPATH, "//a/div[contains(., 'Initial Decision')]")
     self._initial_tech_check_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
-    self._invite_academic_editors_card = (By.XPATH,
-                                          "//a/div[contains(., 'Invite Academic Editor')]")
+    self._invite_ae_card = (By.XPATH, "//a/div[contains(., 'Invite Academic Editor')]")
     self._invite_reviewers_card = (By.XPATH, "//a/div[contains(., 'Invite Reviewers')]")
     self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
     self._register_decision_card = (By.XPATH, "//a/div[contains(., 'Register Decision')]")
     self._reviewer_report_card = (By.XPATH, "//a/div[contains(., 'Reviewer Report')]")
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
+    self._cards = (By.CSS_SELECTOR, 'div.card')
+    self._card_types = (By.CSS_SELECTOR, 'div.row label')
+    self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
@@ -87,6 +90,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_invite_editor_card(self):
     """Click Invite Academic Editor Card"""
     self._get(self._invite_editor_card).click()
+
+  def click_invite_ae_card(self):
+    """Click Invite Academic Editor Card"""
+    self._get(self._invite_ae_card).click()
 
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""
@@ -115,6 +122,20 @@ class WorkflowPage(AuthenticatedPage):
     """Click on the add new card button on workflow"""
     self._get(self._add_new_card_button).click()
     return self
+
+  def is_card(self, card_name):
+    """
+    Check if a card is present in the workflow
+    :param card_name: String with the name of the card
+    :returns: Bool
+    """
+    all_cards = self._gets(self._cards)
+    card_titles = [card.text for card in all_cards]
+    if card_name in card_titles:
+      return True
+    else:
+      return False
+
 
   def check_overlay(self):
     """
@@ -239,6 +260,25 @@ class WorkflowPage(AuthenticatedPage):
     staff_cards[7].click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)
+
+  def add_card(self, card_title):
+    """
+    Add a card
+    :card_title: Title of the card.
+    :return: None
+    """
+    self.click_add_new_card()
+    card_types = self._gets(self._card_types)
+    for card in card_types:
+      if card.text == card_title:
+        card.click()
+        break
+    else:
+      raise ElementDoesNotExistAssertionError('No such card')
+    div_buttons = self._get(self._div_buttons)
+    div_buttons.find_element_by_class_name('button-primary').click()
+    time.sleep(2)
+    return None
 
   def complete_card(self, card_name):
     """

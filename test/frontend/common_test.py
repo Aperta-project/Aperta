@@ -19,6 +19,7 @@ from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2,
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.dashboard import DashboardPage
+from Pages.manuscript_viewer import ManuscriptViewerPage
 
 
 class CommonTest(FrontEndTest):
@@ -166,6 +167,24 @@ class CommonTest(FrontEndTest):
     dashboard = self.login(email=user)
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False
+
+  def check_article_access(self, paper_url):
+    """
+    Check if current logged user has access to given article
+    :paper_url: String with the paper url. Eg: http://aperta.tech/papers/22
+    Returns True if the user has access and False when not
+    """
+    self._driver.get(paper_url)
+    ms_page = ManuscriptViewerPage(self.getDriver())
+    # change timeout
+    ms_page.set_timeout(10)
+    try:
+      ms_page._get(ms_page._paper_title)
+      ms_page.restore_timeout()
+      return True
+    except TimeoutException:
+      ms_page.restore_timeout()
+      return False
 
   @staticmethod
   def set_editors_in_db(paper_id):

@@ -39,6 +39,9 @@ class BaseCard(AuthenticatedPage):
     # Versioning locators - only applicable to metadata cards
     self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
+    self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
+    self._invite_box = (By.ID, 'invitation-recipient')
+    self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')
 
   # Common actions for all cards
   def click_completion_button(self):
@@ -55,7 +58,6 @@ class BaseCard(AuthenticatedPage):
       return True
     else:
       raise ValueError('Completed button in unexpected state {0}'.format(btn_label))
-
 
   def click_completed_checkbox(self):
     """Click completed checkbox"""

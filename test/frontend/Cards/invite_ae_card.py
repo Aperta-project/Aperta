@@ -42,7 +42,7 @@ class InviteAECard(BaseCard):
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
 
-   #POM Actions
+  # POM Actions
   def invite_ae(self, user):
     """
     This method invites the user that is passed as parameter
@@ -63,7 +63,7 @@ class InviteAECard(BaseCard):
     """
     Invites the Academic Editor (AE) that is passed as parameter, verifying the composed email. Makes
       function and style validations.
-    :param reviewer: user to invite as AE specified as email, or, if in system, name,
+    :param ae: user to invite as AE specified as email, or, if in system, name,
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
@@ -84,7 +84,7 @@ class InviteAECard(BaseCard):
     # and need to scrub latin-1 non-breaking spaces
     title = re.sub(u'\xa0', u' ', title)
     assert title in invite_text, \
-        title + '\nNot found in \n' +invite_text
+        title + '\nNot found in \n' + invite_text
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
@@ -120,7 +120,7 @@ class InviteAECard(BaseCard):
     """
     This method invites the Academic Editor (AE) that is passed as parameter, verifying
       the composed email. It then checks the table of invited AE.
-    :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
+    :param ae: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :param response: The reviewers response to the invitation
     :return void function

@@ -202,8 +202,6 @@ class PapersController < ApplicationController
   end
 
   def paper
-    @paper ||= begin
-      Paper.find(params[:id]) if params[:id].present?
-    end
+    @paper ||= Paper.find(params[:id])
   end
 end

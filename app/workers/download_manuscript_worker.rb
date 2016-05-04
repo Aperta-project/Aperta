@@ -8,6 +8,7 @@ class DownloadManuscriptWorker
   include Sidekiq::Worker
 
   UrlHelpers = Rails.application.routes.url_helpers
+
   def self.download_manuscript(paper, s3_url, user)
     if s3_url.present?
       url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
@@ -21,7 +22,7 @@ class DownloadManuscriptWorker
         paper_id: paper.id,
         user_id: user.id
       )
-      paper.update!(processing: true)
+      paper.update_attribute(:processing, true)
     end
   end
 

@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   comparisonText: null,
 
   // This is the default if nothing else is set
-  default: null,
+  default: '',
 
   hasComparisonText: Ember.computed.notEmpty('comparisonText'),
 

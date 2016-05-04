@@ -7,28 +7,39 @@ export default Ember.Component.extend({
   classNames: ['snapshot'],
   classNameBindings: ['levelClassName'],
 
+  // If no snapshot1 then are just being passed snapsho2, which has
+  // been deleted.
+  hasSnapshot1: Ember.computed.notEmpty('snapshot1'),
+
+  primarySnapshot: Ember.computed('snapshot1', 'snapshot2', function(){
+    if (this.get('hasSnapshot1')) {
+      return this.get('snapshot1');
+    } else {
+      return this.get('snapshot2');
+    }
+  }),
   generalCase: Ember.computed.not('specialCase'),
   specialCase: Ember.computed.or(
     'authorsTask', 'figure', 'supportingInfo', 'funder'),
 
-  authorsTask: Ember.computed.equal('snapshot1.name', 'authors-task'),
-  boolean: Ember.computed.equal('snapshot1.type', 'boolean'),
+  authorsTask: Ember.computed.equal('primarySnapshot.name', 'authors-task'),
+  boolean: Ember.computed.equal('primarySnapshot.type', 'boolean'),
   booleanQuestion: Ember.computed.equal(
-    'snapshot1.value.answer_type',
+    'primarySnapshot.value.answer_type',
     'boolean'),
-  figure: Ember.computed.equal('snapshot1.name', 'figure-task'),
-  funder: Ember.computed.equal('snapshot1.name', 'funder'),
-  id: Ember.computed.equal('snapshot1.name', 'id'),
-  integer: Ember.computed.equal('snapshot1.type', 'integer'),
-  question: Ember.computed.equal('snapshot1.type', 'question'),
+  figure: Ember.computed.equal('primarySnapshot.name', 'figure-task'),
+  funder: Ember.computed.equal('primarySnapshot.name', 'funder'),
+  id: Ember.computed.equal('primarySnapshot.name', 'id'),
+  integer: Ember.computed.equal('primarySnapshot.type', 'integer'),
+  question: Ember.computed.equal('primarySnapshot.type', 'question'),
   supportingInfo: Ember.computed.equal(
-    'snapshot1.name',
+    'primarySnapshot.name',
     'supporting-information-task'),
-  text: Ember.computed.equal('snapshot1.type', 'text'),
+  text: Ember.computed.equal('primarySnapshot.type', 'text'),
   text_or_integer: Ember.computed.or('integer', 'text'),
   userEnteredValue: Ember.computed.not('id'),
 
-  raw: Ember.computed('snapshot1.type', function(){
+  raw: Ember.computed('primarySnapshot.type', function(){
     return this.get('text_or_integer') && this.get('userEnteredValue');
   }),
 
@@ -37,7 +48,7 @@ export default Ember.Component.extend({
     'snapshot2.children',
     function(){
       return _.zip(
-        this.get('snapshot1.children'),
+        this.get('snapshot1.children') || [],
         this.get('snapshot2.children') || []);
     }
   ),

@@ -1,7 +1,7 @@
 {{#if generalCase}}
   {{#if raw}}
     <div class="snapshot-text">
-      <span class="snapshot-label">{{humanize snapshot1.name}}:&nbsp;&nbsp;</span>
+      <span class="snapshot-label">{{humanize primarySnapshot.name}}:&nbsp;&nbsp;</span>
       {{text-diff viewingText=snapshot1.value comparisonText=snapshot2.value}}
     </div>
   {{/if}}
@@ -42,16 +42,14 @@
     </li>
   {{/if}}
 
-  {{#if snapshot1.children}}
-    <ol class="snapshot-children">
-      {{#each children as |child|}}
-        {{nested-snapshot
-          snapshot1=child.[0]
-          snapshot2=child.[1]
-          nested-level=incrementedNestedLevel}}
-      {{/each}}
-    </ol>
-  {{/if}}
+  <ol class="snapshot-children">
+    {{#each children as |child|}}
+      {{nested-snapshot
+        snapshot1=child.[0]
+        snapshot2=child.[1]
+        nested-level=incrementedNestedLevel}}
+    {{/each}}
+  </ol>
 
 {{else}}
 

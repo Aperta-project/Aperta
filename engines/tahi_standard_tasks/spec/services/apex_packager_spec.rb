@@ -75,7 +75,7 @@ describe ApexPackager do
     it 'creates a valid manifest' do
       packager = ApexPackager.new(paper, archive_filename: archive_filename)
       packager.zip_file
-      manifest = JSON.parse(packager.manifest.to_json)
+      manifest = JSON.parse(packager.send(:manifest).to_json)
       expected_manifest = {
         "archive_filename" => archive_filename,
         "metadata_filename" => "metadata.json",
@@ -91,7 +91,7 @@ describe ApexPackager do
           packager.send(:add_metadata, package)
         end
         metadata_filename =
-          packager.manifest.instance_variable_get(:@metadata_filename)
+          packager.send(:manifest).instance_variable_get(:@metadata_filename)
         expect(metadata_filename).to eq "metadata.json"
         files = packager.send(:manifest).instance_variable_get(:@file_list)
         expect(files).to eq ["metadata.json"]
@@ -105,8 +105,18 @@ describe ApexPackager do
           packager.send(:add_manuscript, package)
         end
         manuscript_filename = packager.send(:manuscript_filename)
-        file_list = packager.manifest.instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
         expect(file_list).to eq [manuscript_filename]
+      end
+    end
+
+    describe "manifest_file" do
+      it "returns a manifest file handle" do
+        packager = ApexPackager.new(paper, archive_filename: archive_filename)
+        manifest = packager.manifest_file
+        json = JSON.parse manifest.read
+        expected_keys = %w(archive_filename metadata_filename files)
+        expect(json).to include *expected_keys
       end
     end
   end
@@ -158,7 +168,7 @@ describe ApexPackager do
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_figures, package)
         end
-        file_list = packager.manifest.instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
         expect(file_list).to eq ["yeti.jpg"]
       end
     end
@@ -231,7 +241,7 @@ describe ApexPackager do
           packager.send(:add_supporting_information, package)
         end
         si_filename = "about_turtles.docx"
-        file_list = packager.manifest.instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
         expect(file_list).to eq [si_filename]
       end
     end
@@ -302,7 +312,7 @@ describe ApexPackager do
         end
         striking_image_filename =
           packager.send(:attachment_apex_filename, paper.striking_image)
-        file_list = packager.manifest.instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
         expect(file_list).to eq [striking_image_filename]
       end
     end

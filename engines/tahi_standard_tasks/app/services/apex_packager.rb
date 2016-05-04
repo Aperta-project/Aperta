@@ -25,11 +25,16 @@ class ApexPackager
     end
   end
 
-  def manifest
-    @manifest ||= ApexManifest.new(archive_filename: @archive_filename)
+  def manifest_file
+    zip_file
+    manifest.file
   end
 
   private
+
+  def manifest
+    @manifest ||= ApexManifest.new(archive_filename: @archive_filename)
+  end
 
   def add_manuscript(package)
     add_file_to_package package,

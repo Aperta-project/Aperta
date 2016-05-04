@@ -43,7 +43,7 @@ class PapersController < ApplicationController
       raise ActiveRecord::RecordInvalid, paper
     end
 
-    s3_url = params.fetch(:paper, {})[:s3_url]
+    s3_url = params.dig(:paper, :s3_url)
     if s3_url
       DownloadManuscriptWorker.download_manuscript(paper, s3_url, current_user)
     end

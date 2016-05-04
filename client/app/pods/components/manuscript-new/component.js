@@ -47,8 +47,11 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       paper.set('s3Url', s3Url);
       paper.save().then((paper) => {
         this.attrs.complete(paper);
+      } , (response) => {
+        this.get('flash').displayErrorMessagesFromResponse(response);
+      }).finally(() => {
         this.set('isSaving', false);
-      })
+      });
     },
 
     uploadFailed(reason){

@@ -6,8 +6,8 @@ require_dependency 'tahi_epub'
 # transformation into HTML.
 class DownloadManuscriptWorker
   include Sidekiq::Worker
-  extend Rails.application.routes.url_helpers
 
+  UrlHelpers = Rails.application.routes.url_helpers
   def self.download_manuscript(paper, s3_url, user)
     if s3_url.present?
       url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
@@ -17,7 +17,7 @@ class DownloadManuscriptWorker
       perform_async(
         paper.id,
         s3_url,
-        ihat_jobs_url(url_opts),
+        UrlHelpers.ihat_jobs_url(url_opts),
         paper_id: paper.id,
         user_id: user.id
       )

@@ -498,49 +498,6 @@ describe PapersController do
     end
   end
 
-  describe 'PUT upload' do
-    subject(:do_request) do
-      put :upload, id: paper.id, url: url, format: :json
-    end
-    let(:url) { "http://theurl.com" }
-    let(:paper) { FactoryGirl.create(:paper) }
-
-    it_behaves_like "an unauthenticated json request"
-
-    context "when the user has access" do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, paper)
-          .and_return true
-        allow(DownloadManuscriptWorker).to receive(:download_manuscript)
-      end
-
-      it "initiates manuscript download" do
-        expect(DownloadManuscriptWorker).to receive(:download_manuscript)
-          .with(paper, url, user)
-        do_request
-      end
-
-      it "responds with 200" do
-        do_request
-        expect(response).to responds_with(200)
-        expect(response.body).to be_present
-      end
-    end
-
-    context "when the user does not have access" do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, paper)
-          .and_return false
-        do_request
-      end
-
-      it { is_expected.to responds_with(403) }
-    end
-  end
 
   describe "GET download" do
     subject(:do_request) do

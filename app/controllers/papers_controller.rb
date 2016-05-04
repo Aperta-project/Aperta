@@ -98,13 +98,6 @@ class PapersController < ApplicationController
 
   ## CONVERSION
 
-  # Upload a word file for the latest version.
-  def upload
-    requires_user_can(:edit, paper)
-    DownloadManuscriptWorker.download_manuscript(paper, params[:url], current_user)
-    render json: paper, status: :ok
-  end
-
   def download
     requires_user_can(:view, paper)
     respond_to do |format|

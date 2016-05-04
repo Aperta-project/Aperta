@@ -2,6 +2,7 @@
 class BillingLog < ActiveRecord::Base
   belongs_to :paper, class_name: 'Paper', foreign_key: 'documentid'
   belongs_to :journal
+  validates :paper, :journal, presence: true
 
   def paper_to_billing_log_hash
       {

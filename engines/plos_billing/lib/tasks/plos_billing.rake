@@ -30,7 +30,7 @@ namespace :plos_billing do
   task :upload_log_file_to_s3, [:paper_id] => :environment do |t, args|
     if args[:paper_id]
       paper = Paper.find args[:paper_id]
-      bm    = PlosServices::BillingLogManager.new paper: paper
+      bm    = BillingLog.new paper: paper, journal: paper.journal
       bm.to_s3 && puts("Uploaded #{bm.filename}")
     else
       puts "Missing paper_id. Please see usage instructions in #{__FILE__}"

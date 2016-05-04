@@ -1,4 +1,5 @@
 # require 'spec_helper' in your specs when you don't want to load dependencies
+require 'rspec/instafail'
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
@@ -8,6 +9,9 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  config.color = true
   config.filter_run focus: true
+  config.formatter = 'RSpec::Instafail'
+  config.pattern = 'engines/*/spec/**/*_spec.rb,spec/**/*_spec.rb'
   config.run_all_when_everything_filtered = true
 end

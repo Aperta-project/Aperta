@@ -22,7 +22,9 @@ module TahiStandardTasks
 
     def make_delivery!
       while_notifying_delivery do
-        packager = ApexPackager.new(@paper, archive_filename: package_filename)
+        packager = ApexPackager.new @paper,
+                                    archive_filename: package_filename,
+                                    apex_delivery_id: apex_delivery.id
         upload_file(packager.zip_file, package_filename)
         upload_file(packager.manifest_file, manifest_filename)
       end

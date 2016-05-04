@@ -3,11 +3,13 @@ require 'rails_helper'
 describe ApexManifest do
   let(:archive_filename) { "pbio.1012345.zip" }
   let(:metadata_filename) { "metadata.json" }
+  let(:apex_delivery_id) { 1 }
   let(:file_1) { "img_1.jpg" }
   let(:file_2) { "document.docx" }
   let(:manifest) do
     ApexManifest.new archive_filename: archive_filename,
-                     metadata_filename: metadata_filename
+                     metadata_filename: metadata_filename,
+                     apex_delivery_id: apex_delivery_id
   end
 
   describe "#add_file" do
@@ -33,6 +35,7 @@ describe ApexManifest do
       expected_hash = {
         "archive_filename" => archive_filename,
         "metadata_filename" => metadata_filename,
+        "apex_delivery_id" => apex_delivery_id,
         "files" => [file_1, file_2]
       }
       expect(manifest_hash).to match expected_hash

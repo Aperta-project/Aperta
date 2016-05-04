@@ -4,10 +4,13 @@ class ApexManifest
 
   attr_writer :archive_filename, :metadata_filename
 
-  def initialize(archive_filename: nil, metadata_filename: nil)
+  def initialize(archive_filename: nil,
+                 metadata_filename: nil,
+                 apex_delivery_id: nil)
     @file_list = []
     @archive_filename = archive_filename
     @metadata_filename = metadata_filename
+    @apex_delivery_id = apex_delivery_id
   end
 
   def add_file(filename)
@@ -15,11 +18,15 @@ class ApexManifest
   end
 
   def to_json
-    {
+    manifest = {
       archive_filename: @archive_filename,
       metadata_filename: @metadata_filename,
       files: @file_list
-    }.to_json
+    }
+    if @apex_delivery_id.present?
+      manifest[:apex_delivery_id] = @apex_delivery_id
+    end
+    manifest.to_json
   end
 
   def file

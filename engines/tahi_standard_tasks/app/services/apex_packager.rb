@@ -8,9 +8,10 @@ class ApexPackager
     packager.zip_file
   end
 
-  def initialize(paper, archive_filename: nil)
+  def initialize(paper, archive_filename: nil, apex_delivery_id: nil)
     @paper = paper
     @archive_filename = archive_filename
+    @apex_delivery_id = apex_delivery_id
   end
 
   def zip_file
@@ -33,7 +34,8 @@ class ApexPackager
   private
 
   def manifest
-    @manifest ||= ApexManifest.new(archive_filename: @archive_filename)
+    @manifest ||= ApexManifest.new archive_filename: @archive_filename,
+                                   apex_delivery_id: @apex_delivery_id
   end
 
   def add_manuscript(package)

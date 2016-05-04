@@ -43,6 +43,11 @@ class PapersController < ApplicationController
       raise ActiveRecord::RecordInvalid, paper
     end
 
+    s3_url = params.fetch(:paper, {})[:s3_url]
+    if s3_url
+      DownloadManuscriptWorker.download_manuscript(paper, s3_url, current_user)
+    end
+
     paper.update(update_paper_params)
     Activity.paper_edited!(paper, user: current_user)
 
@@ -96,17 +101,7 @@ class PapersController < ApplicationController
   # Upload a word file for the latest version.
   def upload
     requires_user_can(:edit, paper)
-    url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
-                 port: ENV['IHAT_CALLBACK_PORT'] }
-               .reject { |_, v| v.nil? }
-    DownloadManuscriptWorker.perform_async(
-      paper.id,
-      params[:url],
-      ihat_jobs_url(url_opts),
-      paper_id: paper.id,
-      user_id: current_user.id
-    )
-    paper.update!(processing: true)
+    DownloadManuscriptWorker.download_manuscript(paper, params[:url], current_user)
     render json: paper, status: :ok
   end
 
@@ -215,9 +210,7 @@ class PapersController < ApplicationController
 
   def paper
     @paper ||= begin
-      if params[:id].present?
-        Paper.find(params[:id])
-      end
+      Paper.find(params[:id]) if params[:id].present?
     end
   end
 end

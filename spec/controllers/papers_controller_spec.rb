@@ -1,31 +1,6 @@
 require 'rails_helper'
 
 describe PapersController do
-  let(:permitted_params) do
-    [
-      :short_title,
-      :title,
-      :abstract,
-      :body,
-      :paper_type,
-      :decision,
-      :decision_letter,
-      :journal_id, {
-        authors: [
-          :first_name,
-          :last_name,
-          :affiliation,
-          :email
-        ],
-        reviewer_ids: [],
-        phase_ids: [],
-        figure_ids: [],
-        assignee_ids: [],
-        editor_ids: []
-      }
-    ]
-  end
-
   let(:user) { FactoryGirl.create(:user) }
   let(:journal) { FactoryGirl.build_stubbed(:journal) }
   let(:paper) { FactoryGirl.build(:paper) }
@@ -196,6 +171,26 @@ describe PapersController do
       it 'creates an Activity' do
         expect(Activity).to receive(:paper_edited!).with(paper, user: user)
         do_request
+      end
+
+      it 'does not call the DownloadManuscriptWorker' do
+        expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+        do_request
+      end
+
+      context 'when a new s3 url is present in the paper params' do
+        subject(:do_request) do
+          put(
+            :update,
+            id: paper.to_param,
+            format: :json,
+            paper: { s3_url: "someURL" }
+          )
+        end
+        it 'calls DownloadManuscriptWorker' do
+          expect(DownloadManuscriptWorker).to receive(:download_manuscript).with(paper, "someURL", user)
+          do_request
+        end
       end
     end
 
@@ -518,17 +513,12 @@ describe PapersController do
         allow(user).to receive(:can?)
           .with(:edit, paper)
           .and_return true
+        allow(DownloadManuscriptWorker).to receive(:download_manuscript)
       end
 
       it "initiates manuscript download" do
-        expect(DownloadManuscriptWorker).to receive(:perform_async)
-          .with(
-            paper.id,
-            url,
-            'http://test.host/api/ihat/jobs',
-            paper_id: paper.id,
-            user_id: user.id
-          )
+        expect(DownloadManuscriptWorker).to receive(:download_manuscript)
+          .with(paper, url, user)
         do_request
       end
 
@@ -536,10 +526,6 @@ describe PapersController do
         do_request
         expect(response).to responds_with(200)
         expect(response.body).to be_present
-      end
-
-      it "sets the paper status to processing" do
-        expect { do_request }.to change { paper.reload.processing }.from(false).to(true)
       end
     end
 

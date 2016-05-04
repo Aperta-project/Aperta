@@ -1,4 +1,4 @@
-module <%= @plugin_module %>
-  class <%= class_name %>TaskSerializer < ::TaskSerializer
+module <%= @engine.camelcase %>
+  class <%= name.camelcase %>Serializer < ::TaskSerializer
   end
 end

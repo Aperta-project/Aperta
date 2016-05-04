@@ -128,6 +128,10 @@ class Task < ActiveRecord::Base
       end
     end
 
+    def delegate_state_to
+      :paper
+    end
+
     def all_task_types
       Task.descendants + [Task]
     end
@@ -188,10 +192,6 @@ class Task < ActiveRecord::Base
 
   def update_responder
     UpdateResponders::Task
-  end
-
-  def allow_update?
-    true
   end
 
   # Implement this method for Cards that inherit from Task

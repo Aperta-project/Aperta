@@ -28,6 +28,7 @@ export default DS.Model.extend({
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
   phases: hasMany('phase', { async: true }),
+  relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false

@@ -1,54 +1,62 @@
 module Tahi
-
-  # These plugins are excluded from the 'tahi-' prefix requirement,
-  # and will be removed from the array as they are updated.
-  LEGACY_PLUGINS = [
-    'tahi_standard_tasks',
-    'authors',
-    'plos_billing',
-    'plos_bio_tech_check'
-  ]
-
   class TaskGenerator < Rails::Generators::NamedBase
     source_root File.expand_path('../templates', __FILE__)
 
-    argument :plugin, type: :string, required: true
+    argument :name, type: :string, required: true
+    argument :engine, type: :string, default: "tahi_standard_tasks"
 
     def generate
-      name_check plugin
+      @name = name.camelcase
+      @task_title = camel_space(name).gsub(/\s*Task$/, "")
+      @engine_path = find_engine_path(engine)
+      @filename = name.underscore
 
-      @task_name     = camel_space(class_name) + " Task"
-      @plugin_short  = plugin.gsub(/^tahi-/, '')
-
-      engine_path = find_engine_path(plugin)
-
-      if @legacy
-        @plugin_module = plugin.camelize
-        template 'model.rb',      File.join(engine_path, 'app', 'models',      plugin, "#{name}_task.rb")
-        template 'serializer.rb', File.join(engine_path, 'app', 'serializers', plugin, "#{name}_task_serializer.rb")
-        template 'policy.rb',     File.join(engine_path, 'app', 'policies',    plugin, "#{name}_tasks_policy.rb")
-      else
-        @plugin_module = "Tahi::" + @plugin_short.camelize
-        template 'model.rb',      File.join(engine_path, 'app', 'models',     'tahi', @plugin_short, "#{name}_task.rb")
-        template 'serializer.rb', File.join(engine_path, 'app', 'serializers','tahi', @plugin_short, "#{name}_task_serializer.rb")
-        template 'policy.rb',     File.join(engine_path, 'app', 'policies',   'tahi', @plugin_short, "#{name}_tasks_policy.rb")
-      end
-
-      inside 'client' do
-        run "ember generate tahi-task #{name} #{engine_path}"
-      end
-
-      rake 'data:update_journal_task_types'
+      template_backend_model
+      template_client_component
     end
 
     private
 
-    def name_check(plugin)
-      if LEGACY_PLUGINS.include? plugin
-        @legacy = true
-        print_wrapped 'DEPRECATION WARNING: This legacy plugin name may not be supported in the future. Skipping prefix check..'
-      elsif !plugin.match /^tahi-/
-        die "Plugins must be prefixed with 'tahi-'."
+    def template_backend_model
+      template_many(
+        'model.rb',
+        app_path('models', engine, "#{@filename}.rb"),
+
+        'serializer.rb',
+        app_path('serializers', engine, "#{@filename}_serializer.rb"),
+
+        'model_spec.rb',
+        spec_path('models', engine, "#{@filename}_spec.rb"),
+
+        'serializer_spec.rb',
+        spec_path('serializers', engine, "#{@filename}_serializer_spec.rb")
+      )
+
+      rake 'data:update_journal_task_types'
+    end
+
+    def template_client_component
+      engine = "#{@engine_path} #{@engine.camelize} #{@engine.underscore}"
+      ember_do "generate tahi-task #{name.underscore} #{engine}"
+    end
+
+    def ember_do(command)
+      inside 'client' do
+        run "./node_modules/.bin/ember #{command}"
+      end
+    end
+
+    def app_path(*args)
+      File.join @engine_path, './app', *args
+    end
+
+    def spec_path(*args)
+      File.join @engine_path, './spec', *args
+    end
+
+    def template_many(*args)
+      args.each_slice(2) do |slice|
+        template slice[0], slice[1]
       end
     end
 
@@ -62,7 +70,8 @@ module Tahi
       source = Bundler.definition.send(:sources).path_sources.detect do |s|
         s.name == gem_name
       end
-      if !source
+
+      unless source
         die "Could not find local gem '#{gem_name}' in current bundle. Please"\
             " ensure that it is a gem with a :path source."
       end
@@ -74,5 +83,4 @@ module Tahi
       exit 1
     end
   end
-
 end

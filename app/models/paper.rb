@@ -39,6 +39,7 @@ class Paper < ActiveRecord::Base
   has_many :nested_question_answers
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
+  has_many :related_articles, dependent: :destroy
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -195,12 +196,18 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # All known paper states
+  STATES = aasm.states.map(&:name)
   # States which should generally be editable by the creator
   EDITABLE_STATES = [:unsubmitted, :in_revision, :invited_for_full_submission,
                      :checking]
   # States which should generally NOT be editable by the creator
   UNEDITABLE_STATES = [:initially_submitted, :submitted, :accepted, :rejected,
                        :published, :withdrawn]
+  # States that represent the creator has submitted their paper
+  SUBMITTED_STATES = [:initially_submitted, :submitted]
+  # States that represent when a paper can be reviewed by a Reviewer
+  REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
 
   def users_with_role(role)
     User.joins(:assignments).where(

@@ -84,7 +84,7 @@ module TahiHelperMethods
     elsif role_or_type == :editor
       Assignment.where(
         user: user,
-        role: journal.handling_editor_role,
+        role: journal.internal_editor_role,
         assigned_to: journal
       ).first_or_create!
     end

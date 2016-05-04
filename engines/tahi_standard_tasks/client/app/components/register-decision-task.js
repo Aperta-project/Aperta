@@ -7,6 +7,9 @@ const { computed } = Ember;
 export default TaskComponent.extend(ValidationErrorsMixin, {
   restless: Ember.inject.service('restless'),
   paperState: computed.alias('task.paper.publishingState'),
+  submitted: computed.equal('paperState', 'submitted'), 
+  uncompleted: computed.equal('task.completed', false),
+  isNotEditable: false, // This task has custom editability behavior
   nonPublishable: computed.not('publishable'),
   nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');
@@ -23,10 +26,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       this.get('latestDecision.verdict') === 'reject';
   }),
 
-  publishable: computed('paperState', 'task.completed', function() {
-    return this.get('paperState') === 'submitted' &&
-      this.get('task.completed') === false;
-  }),
+  publishable: computed.and('submitted', 'uncompleted'),
 
   applyTemplateReplacements(str) {
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));

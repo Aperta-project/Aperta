@@ -1,0 +1,41 @@
+.related-article {
+  position: relative;
+  margin: 10px 0;
+  background-color: $tahi-grey-xlight;
+  padding: 20px;
+  line-height: 1.5;
+
+  &:hover, &.editing {
+    background-color: $tahi-grey-light;
+  }
+
+  .related-article-editing-actions {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    span {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+  }
+
+  &.editable:hover .related-article-editing-actions {
+    display: block;
+  }
+
+  .related-article-buttons {
+    text-align: right;
+  }
+
+  .related-article-title {
+    font-weight: bold;
+  }
+
+  ul {
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style-position: inside;
+  }
+}

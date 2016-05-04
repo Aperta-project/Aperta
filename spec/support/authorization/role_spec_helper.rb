@@ -18,8 +18,30 @@ class RoleSpecHelper
     self
   end
 
-  def has_permission(action:, applies_to:)
-    @role.permissions |= [Permission.find_by_action_and_applies_to!(action, applies_to)]
+  def has_permission(action:, applies_to:, states: ['*'])
+    permissions = Permission.includes(:states).where(
+      action: action,
+      applies_to: applies_to
+    ).select do |permission|
+      permission.states.map(&:name).map(&:to_s).sort == states.map(&:to_s).sort
+    end
+    if permissions.empty?
+      raise <<-MSG.strip_heredoc
+        Permission not found for action=#{action} applies_to=#{applies_to}
+        with the following states: #{states.inspect}
+
+        The calling spec may not be defining the permission. Make sure you
+        declare the permission for the action, applies_to, and all of the states
+        that you're intending to give a role. E.g.:
+
+          permission(
+            action: '#{action}',
+            applies_to: #{applies_to},
+            states: #{states.inspect}
+          )
+      MSG
+    end
+    @role.permissions |= permissions
     @role
   end
 end

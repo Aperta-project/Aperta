@@ -40,6 +40,11 @@ describe JournalFactory do
         permission_states: { id: PermissionState.wildcard }
       )
     end
+    let(:permissions_with_editable_paper_states) do
+      Permission.joins(:states).where(
+        permission_states: { name: Paper::EDITABLE_STATES }
+      )
+    end
     let(:permissions_on_discussion_topic) do
       Permission.joins(:states).where(
         applies_to: 'DiscussionTopic',
@@ -128,14 +133,20 @@ describe JournalFactory do
             accessible_task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                Permission.joins(:states).where(
+                  action: 'edit',
+                  applies_to: klass.name,
+                  permission_states: { name: Paper::EDITABLE_STATES }).first
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
               expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                Permission.joins(:states).where(
+                  action: 'edit',
+                  applies_to: klass.name,
+                  permission_states: { name: Paper::EDITABLE_STATES }).first
               )
             end
           end
@@ -203,14 +214,20 @@ describe JournalFactory do
             accessible_task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                permissions_with_editable_paper_states.where(
+                  action: 'edit',
+                  applies_to: klass.name
+                ).first
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
               expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                permissions_with_editable_paper_states.where(
+                  action: 'edit',
+                  applies_to: klass.name
+                ).first
               )
             end
           end
@@ -329,7 +346,10 @@ describe JournalFactory do
 
           it ':edit' do
             expect(permissions).to include(
-              permissions_on_task.find_by(action: 'edit')
+              permissions_with_editable_paper_states.where(
+                action: 'edit',
+                applies_to: 'Task'
+              ).first
             )
           end
 
@@ -396,6 +416,9 @@ describe JournalFactory do
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses
           end
+          let(:editable_state_ids) do
+            PermissionState.where(name: Paper::EDITABLE_STATES).pluck(:id)
+          end
 
           it 'can :view all accessible_task_klasses' do
             accessible_task_klasses.each do |klass|
@@ -413,10 +436,10 @@ describe JournalFactory do
 
           it 'is able to view and edit the ReviewerRecommendationsTask' do
             expect(permissions).to include(
-              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
             expect(permissions).to include(
-              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
           end
         end
@@ -440,7 +463,8 @@ describe JournalFactory do
 
           it ':edit' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'edit')
+              permissions_on_paper_with_editable_paper_states
+                .find_by(action: 'edit')
             )
           end
 
@@ -504,7 +528,10 @@ describe JournalFactory do
 
           it ':edit' do
             expect(permissions).to include(
-              permissions_on_task.find_by(action: 'edit')
+              permissions_with_editable_paper_states.find_by(
+                applies_to: 'Task',
+                action: 'edit'
+              )
             )
           end
 
@@ -599,16 +626,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -772,16 +798,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -851,7 +876,11 @@ describe JournalFactory do
 
           it ':edit' do
             expect(permissions).to include(
-              permissions_on_task.find_by(action: 'edit')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'Task',
+                permission_states: { id: PermissionState.wildcard }
+              ).first
             )
           end
 
@@ -910,7 +939,10 @@ describe JournalFactory do
           it ':view and :edit' do
             expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'PlosBilling::BillingTask',
+                permission_states: { id: PermissionState.wildcard }).first
             )
           end
         end
@@ -946,16 +978,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -1085,7 +1116,11 @@ describe JournalFactory do
           it ':view and :edit' do
             expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'PlosBilling::BillingTask',
+                permission_states: { id: PermissionState.wildcard }
+              ).first
             )
           end
         end
@@ -1139,6 +1174,21 @@ describe JournalFactory do
         end
       end
 
+      context 'Reviewer Report Owner' do
+        describe 'has Task permission to' do
+          it 'can :edit assigned ReviewerReportTasks' do
+            permission = Permission.includes(:states).find_by(
+              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              action: :edit
+            )
+            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+            expect(journal.reviewer_report_owner_role.permissions).to include(
+              permission
+            )
+          end
+        end
+      end
+
       context 'Staff Admin' do
         let(:permissions) { journal.staff_admin_role.permissions }
 
@@ -1175,16 +1225,15 @@ describe JournalFactory do
             )
           end
 
-          it ':manage_collaborators' do
+          it ':edit_authors' do
             expect(permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
+          it ':manage_collaborators' do
             expect(permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -1335,7 +1384,11 @@ describe JournalFactory do
           it ':view and :edit' do
             expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'PlosBilling::BillingTask',
+                permission_states: { id: PermissionState.wildcard }
+              ).first
             )
           end
         end

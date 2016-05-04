@@ -10,19 +10,17 @@ FactoryGirl.define do
 
     trait :with_creator do
       after(:create) do |paper|
-        creator = paper.creator
-        if creator
-          Assignment.where(
-            role: paper.journal.creator_role,
-            assigned_to: paper
-          ).first_or_create!
+        if paper.journal
+          paper.journal.creator_role || paper.journal.create_creator_role!
+        end
+
+        unless paper.creator
+          paper.update!(creator: FactoryGirl.create(:user))
         end
 
         paper.save!
         paper.body = "I am the very model of a modern journal article"
       end
-
-      creator factory: :user
     end
 
     sequence :title do |n|
@@ -39,6 +37,14 @@ FactoryGirl.define do
       active false
     end
 
+    trait(:checking) do
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.submit! paper.creator
+        paper.minor_check! paper.creator
+      end
+    end
+
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
       publishing_state "submitted"
@@ -46,7 +52,6 @@ FactoryGirl.define do
 
     trait(:initially_submitted) do
       publishing_state 'initially_submitted'
-      editable = false
     end
 
     trait(:submitted) do
@@ -57,8 +62,10 @@ FactoryGirl.define do
     end
 
     trait(:unsubmitted) do
-      publishing_state "unsubmitted"
-      editable = true
+      after(:create) do |paper|
+        paper.update_column(:publishing_state, 'unsubmitted')
+        paper.update_column(:editable, true)
+      end
     end
 
     trait(:with_tasks) do

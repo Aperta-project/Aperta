@@ -18,7 +18,8 @@ moduleForModel('figure', 'Unit | Model | figure', {
     'model:versioned-text',
     'model:snapshot',
     'model:task',
-    'model:paper-task-type'
+    'model:paper-task-type',
+    'model:related-article'
   ]
 });
 
@@ -51,4 +52,3 @@ test('makes its paper reload when it is saved', function(assert) {
     });
   });
 });
-

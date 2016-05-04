@@ -30,7 +30,8 @@ module PlosBioTechCheck
     end
 
     def ensure_paper_editable!
-      task.paper.minor_check! unless task.paper.checking?
+      return if task.paper.unsubmitted? || task.paper.checking?
+      task.paper.minor_check!
     end
   end
 end

@@ -41,6 +41,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
         sentinel: proc { paper_src }
       )
 
+      visit "/papers/#{Paper.last.id}"
       expect(PaperPage.new).to_not be_loading_paper
     end
   end

@@ -63,6 +63,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
     self._add_collaborators_modal_support_text = (By.CLASS_NAME, 'overlay-supporting-text')
     self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
+    self._add_collaborators_modal_input = (By.CLASS_NAME, 'select2-input')
     self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
 
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
@@ -157,6 +158,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     version_btn = self._get(self._tb_versions_link)
     version_btn.click()
+    # allow time for components to attach to DOM
+    time.sleep(1)
     bar_items = self._gets(self._bar_items)
     version_number = bar_items[1].text.split('\n')[1].split()[0]
     self._get(self._tb_versions_closer).click()
@@ -593,6 +596,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(2)
     select_div = self._get(self._add_collaborators_modal_select)
     select_div.find_element_by_tag_name('a').click()
+    select_input = self._get(self._add_collaborators_modal_input)
+    select_input.send_keys(user['name'][0:4])
+    # Need time for list to populate dynamically
+    time.sleep(2)
     select_items = (By.CSS_SELECTOR, 'ul.select2-results')
     items = self._get(select_items)
     for item in items.find_elements_by_tag_name('li'):

@@ -170,8 +170,9 @@ class AuthenticatedPage(PlosPage):
     ptracker = elevated + [internal_editor_login, prod_staff_login, pub_svcs_login]
     self._get(self._nav_title)
     self._get(self._nav_profile_img)
-    assert 'Aperta' in self._get(self._nav_aperta_dashboard_link).text, \
-      self._get(self._nav_aperta_dashboard_link).text
+    # APERTA-6761
+    # assert 'Aperta' in self._get(self._nav_aperta_dashboard_link).text, \
+    #   self._get(self._nav_aperta_dashboard_link).text
     assert 'Your Manuscripts' == self._get(self._nav_your_manuscripts_link).text, \
       self._get(self._nav_your_manuscripts_link).text
     help_link = self._get(self._nav_help_link)
@@ -369,7 +370,8 @@ class AuthenticatedPage(PlosPage):
 
     :return: True or False, if cardname is unknown.
     """
-    self.set_timeout(1)
+    # Must give cards time to load/attach to DOM
+    self.set_timeout(15)
     # 'Author-type' cards
     if cardname.lower() == 'addl_info':
       card_title = self._get(self._addl_info_card)

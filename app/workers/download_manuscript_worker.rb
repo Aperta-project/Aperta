@@ -9,6 +9,8 @@ class DownloadManuscriptWorker
 
   UrlHelpers = Rails.application.routes.url_helpers
 
+  # +download_manuscript+ schedules a background job to download the paper's
+  # manuscript at the provided url, on behalf of the given user.
   def self.download_manuscript(paper, url, user)
     if url.present?
       url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
@@ -26,6 +28,9 @@ class DownloadManuscriptWorker
     end
   end
 
+  # +perform+ should not be called directly, but by the background job
+  # processor. Use the DownloadManuscriptWorker.download_manuscript
+  # instead when calling from application code.
   def perform(paper_id, download_url, callback_url, metadata)
     paper = Paper.find(paper_id)
     download_manuscript(paper, download_url)

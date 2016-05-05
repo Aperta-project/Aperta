@@ -70,7 +70,8 @@ class FtpUploaderService
   end
 
   def upload_to_temporary_file
-    "temp_#{@final_filename}".tap do |temp_name|
+    upload_time = Time.zone.now.strftime "%Y-%m-%d-%H%M%S"
+    "temp_#{upload_time}_#{@final_filename}".tap do |temp_name|
       @ftp.putbinaryfile(File.new(@filepath), temp_name, 1000)
     end
   end

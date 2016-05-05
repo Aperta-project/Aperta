@@ -79,7 +79,7 @@ export default function() {
   };
 
   QUnit.assert.elementsFound = function(selector, count, message) {
-    const matches = $(selector).length;
+    const matches = Ember.$(selector).length;
 
     return this.push(matches === count, matches, count, message || `should find ${count} elements for ${selector}`);
   };

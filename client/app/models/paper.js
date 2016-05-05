@@ -65,7 +65,7 @@ export default DS.Model.extend({
   title: attr('string'),
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
-  s3Url: attr('string'),
+  url: attr('string'),
 
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
   allAuthorsSortingAsc: ['position:asc'],

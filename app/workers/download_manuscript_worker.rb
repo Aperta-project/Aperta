@@ -9,15 +9,15 @@ class DownloadManuscriptWorker
 
   UrlHelpers = Rails.application.routes.url_helpers
 
-  def self.download_manuscript(paper, s3_url, user)
-    if s3_url.present?
+  def self.download_manuscript(paper, url, user)
+    if url.present?
       url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
                    port: ENV['IHAT_CALLBACK_PORT'] }
                  .reject { |_, v| v.nil? }
 
       perform_async(
         paper.id,
-        s3_url,
+        url,
         UrlHelpers.ihat_jobs_url(url_opts),
         paper_id: paper.id,
         user_id: user.id

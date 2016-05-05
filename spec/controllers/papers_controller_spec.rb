@@ -184,7 +184,7 @@ describe PapersController do
             :update,
             id: paper.to_param,
             format: :json,
-            paper: { s3_url: "someURL" }
+            paper: { url: "someURL" }
           )
         end
         it 'calls DownloadManuscriptWorker' do

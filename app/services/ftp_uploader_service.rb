@@ -29,7 +29,7 @@ class FtpUploaderService
       if @ftp.last_response_code == TRANSFER_COMPLETE
         begin
           @ftp.delete @final_filename
-        rescue Exception
+        rescue Net::FTPPermError
         end
         @ftp.rename(tmp_file, @final_filename)
         Rails.logger.info "Transfer successful for #{@final_filename}"

@@ -29,9 +29,14 @@ class LoginPage(AuthenticatedPage):
     self._system_logo = (By.CLASS_NAME, 'auth-logo')
     self._welcome_message = (By.TAG_NAME, 'h1')
     self._welcome_paragraph = (By.TAG_NAME, 'p')
+    self._avail_journals_msg = (By.CLASS_NAME, 'available-journals-message')
+    self._avail_journals_list = (By.CSS_SELECTOR, 'div.available-journals-message > p > strong')
+    self._avail_journals_more_info_link = (By.CSS_SELECTOR,
+                                           'div.available-journals-message > p > a')
+    self._avail_journals_em_link = (By.CSS_SELECTOR, 'div.available-journals-message > p + p > a')
     self._login_textbox = (By.CSS_SELECTOR, '#user_login')
     self._password_textbox = (By.CSS_SELECTOR, '#user_password')
-    self._forgot_pw_link = (By.CSS_SELECTOR, 'br + a')
+    self._forgot_pw_link = (By.CSS_SELECTOR, 'div.auth-field--text-input br + a')
     self._remember_me_cb = (By.CSS_SELECTOR, 'input[type="checkbox"]')
     self._remember_me_label = (By.CSS_SELECTOR, 'label.auth-remember-me')
     self._signin_button = (By.CSS_SELECTOR,
@@ -70,6 +75,23 @@ class LoginPage(AuthenticatedPage):
     assert 'Welcome to Aperta' in welcome_msg.text, welcome_msg.text
     welcome_p = self._get(self._welcome_paragraph)
     assert welcome_p.text == 'Submit & manage manuscripts.', welcome_p.text
+    avail_jrnls_msg = self._get(self._avail_journals_msg)
+    assert avail_jrnls_msg.text == 'Aperta accepts new submissions to PLOS Biology for now. It ' \
+                                   'will be rolled out to all PLOS titles in the coming months.\n' \
+                                   'Microsoft Word files only (LaTeX coming soon!)\n' \
+                                   'More information about submitting to PLOS Biology.\n' \
+                                   'To submit to one of our other journals, start here.', \
+                                   avail_jrnls_msg.text
+    avail_jrnls_list = self._get(self._avail_journals_list)
+    assert avail_jrnls_list.text == 'PLOS Biology', avail_jrnls_list.text
+    avail_jrnls_info_link = self._get(self._avail_journals_more_info_link)
+    assert avail_jrnls_info_link.get_attribute('href') == \
+        'http://journals.plos.org/plosbiology/s/submit-now'
+    assert avail_jrnls_info_link.text == 'More information', avail_jrnls_info_link.text
+    avail_jrnls_em_link = self._get(self._avail_journals_em_link)
+    assert avail_jrnls_em_link.get_attribute('href') == \
+        'https://www.plos.org/which-journal-is-right-for-me'
+    assert avail_jrnls_em_link.text == 'here', avail_jrnls_em_link.text
     # APERTA-6107 Filed for the following
     # self.validate_application_title_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?

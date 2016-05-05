@@ -44,7 +44,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     uploadFinished(s3Url){
       let paper = this.get('paper')
-      paper.set('s3Url', s3Url);
+      paper.set('url', s3Url);
       paper.save().then((paper) => {
         this.attrs.complete(paper);
       } , (response) => {

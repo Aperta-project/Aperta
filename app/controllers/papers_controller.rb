@@ -31,9 +31,14 @@ class PapersController < ApplicationController
   # The create action does not require a permission, it's available to any
   # signed in user.
   def create
-    @paper = PaperFactory.create(paper_params, current_user)
-    Activity.paper_created!(@paper, user: current_user) if @paper.valid?
-    respond_with @paper
+    paper = PaperFactory.create(paper_params, current_user)
+    Activity.paper_created!(paper, user: current_user) if paper.valid?
+
+    url = params.dig(:paper, :url)
+    if url
+      DownloadManuscriptWorker.download_manuscript(paper, url, current_user)
+    end
+    respond_with paper
   end
 
   def update
@@ -41,11 +46,6 @@ class PapersController < ApplicationController
     unless paper.editable?
       paper.errors.add(:editable, "This paper is currently locked for review.")
       raise ActiveRecord::RecordInvalid, paper
-    end
-
-    url = params.dig(:paper, :url)
-    if url
-      DownloadManuscriptWorker.download_manuscript(paper, url, current_user)
     end
 
     paper.update(update_paper_params)

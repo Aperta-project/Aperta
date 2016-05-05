@@ -1468,7 +1468,7 @@ http_interactions:
   recorded_at: Wed, 01 Apr 2015 19:37:08 GMT
 - request:
     method: get
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/paper/1/manuscript/source.docx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJSHIMOFVZTWTJB5A/20150401/us-west-1/s3/aws4_request&X-Amz-Date=20150401T193708Z&X-Amz-Expires=600&X-Amz-Signature=442c3f70718b9503ffd3334bf1dbe9179e7d77724795bdaf5459147032769816&X-Amz-SignedHeaders=host
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_equations.docx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ur-id/20160505/us-west-1/s3/aws4_request&X-Amz-Date=20160505T211627Z&X-Amz-Expires=600&X-Amz-Signature=9c950fd177c1e96932307f9766d3b328ae710841f3e0fd03a78e9d106711d3fa&X-Amz-SignedHeaders=host
     body:
       encoding: US-ASCII
       string: ''
@@ -4900,4 +4900,121 @@ http_interactions:
         TgIAAAA=
     http_version: 
   recorded_at: Wed, 01 Apr 2015 19:37:09 GMT
+- request:
+    method: post
+    uri: http://ihat.example.com/jobs
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        LS0tLS0tLS0tLS0tLVJ1YnlNdWx0aXBhcnRQb3N0DQpDb250ZW50LURpc3Bv
+        c2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImV4cG9ydF9mb3JtYXQiDQoNCmRv
+        Y3gNCi0tLS0tLS0tLS0tLS1SdWJ5TXVsdGlwYXJ0UG9zdA0KQ29udGVudC1E
+        aXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJlcHViIjsgZmlsZW5hbWU9
+        ImxvY2FsLnBhdGgiDQpDb250ZW50LUxlbmd0aDogMjc4MA0KQ29udGVudC1U
+        eXBlOiBhcHBsaWNhdGlvbi9lcHViK3ppcA0KQ29udGVudC1UcmFuc2Zlci1F
+        bmNvZGluZzogYmluYXJ5DQoNClBLAwQUAAAAAADpbnFFb2GrLBQAAAAUAAAA
+        CAAAAG1pbWV0eXBlYXBwbGljYXRpb24vZXB1Yit6aXBQSwMEFAAAAAgA6W5x
+        RVNq8uCsAAAA/AAAABYAAABNRVRBLUlORi9jb250YWluZXIueG1sXY7BCsIw
+        EETv/YqwV6nRm4SmgqBXBfUD1nSrwXQ3NKno31tFRDwOvJk31fLeBXWjPnlh
+        C/PpDBSxk8bz2cLxsCkXsKyLygln9Ez9Hzu2OVkYejaCySfD2FEy2RmJxI24
+        oSPO5o2Z7wjUhVJVL5JbHyi90k9W7RBCGTFfLGzXq91eR3RXPNNUYguqo8Zj
+        mR+RLGCMwTvM4yEtdIqp/KCT0Qj6rdE/nkp/P9TFE1BLAwQUAAAACADpbnFF
+        G3laj+IAAAAtAQAAFAAAAE9FQlBTLy4vY29udGVudC5odG1sLY/BTsMwDIbv
+        fQor9zbLEGhFSXeBiSOC8QClcZtoWVIlLm3fnpTik2V/+n5bnpe7gx+MyQav
+        mKgODNB3QVs/KPZ1vZQndm4KaShjGfVJMUM0PnM+z3M1P1QhDlzUdc2XjWEb
+        i61uCsglyZLD5oqJ4L0dMUIJonzU9UEcJd+XGZTO+htEdIolWh0mg0gMaB1R
+        McKFeJcSAxOxVyy3XGPfTo6qbdwUheR7pPwOev1PNqK5YEtTRPjALgzeUv4Q
+        +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
+        gg9ntCohgHGglJzOtoIfVY4+l/LCyt1KFr1T06xdIwZaxUwT5l99SgaFkYc3
+        r9C3N+ngHeFFbtAMgyHtSjZplh33bH185785oveA0icxC3nfhhnl5nRLPkTr
+        VhhSi/abzEc/UEsBAjQDFAAAAAAA6W5xRW9hqywUAAAAFAAAAAgAAAAAAAAA
+        AQAAAKSBAAAAAG1pbWV0eXBlUEsBAjQDFAAAAAgA6W5xRVNq8uCsAAAA/AAA
+        ABYAAAAAAAAAAQAAAKSBOgAAAE1FVEEtSU5GL2NvbnRhaW5lci54bWxQSwEC
+        NAMUAAAACADpbnFFG3laj+IAAAAtAQAAFAAAAAAAAAABAAAApIEaAQAAT0VC
+        UFMvLi9jb250ZW50Lmh0bWxQSwECNAMUAAAACADpbnFFQ2djXz4BAAACAgAA
+        IwAAAAAAAAABAAAApIEuAgAAT0VCUFMvLi9wdWJsaXNoaW5nX2luZm9ybWF0
+        aW9uLmh0bWxQSwECNAMUAAAACADpbnFFAAAAAAIAAAAAAAAAFQAAAAAAAAAB
+        AAAApIGtAwAAT0VCUFMvY3NzL2RlZmF1bHQuY3NzUEsBAjQDFAAAAAgA6W5x
+        RYI6TJHTAAAAXgEAAA4AAAAAAAAAAQAAAKSB4gMAAE9FQlBTL25hdi5odG1s
+        UEsBAjQDFAAAAAgA6W5xRXDAUsU4AgAAYwUAABEAAAAAAAAAAQAAAKSB4QQA
+        AE9FQlBTL3BhY2thZ2Uub3BmUEsBAjQDFAAAAAgA6W5xRd2ktxVNAQAAfwIA
+        AA0AAAAAAAAAAQAAAKSBSAcAAE9FQlBTL3RvYy5uY3hQSwUGAAAAAAgACAAG
+        AgAAwAgAAAAADQotLS0tLS0tLS0tLS0tUnVieU11bHRpcGFydFBvc3QtLQ0K
+        DQo=
+    headers:
+      User-Agent:
+      - Faraday v0.9.0
+      Content-Type:
+      - multipart/form-data; boundary=-----------RubyMultipartPost
+      Content-Length:
+      - '3107'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - '"04abf9600e83bbc5b3767baf42461f38"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 29f8673b-160f-46ae-b5ad-123c1be2d1bd
+      X-Runtime:
+      - '1.038267'
+      Connection:
+      - close
+      Server:
+      - thin 1.6.2 codename Doc Brown
+    body:
+      encoding: UTF-8
+      string: '{"job":{"id":"d5ee706f-a473-46ed-9777-3b7cd2905d08", "state": "pending", "options": {}}}'
+    http_version: 
+  recorded_at: Mon, 17 Nov 2014 21:55:20 GMT
 recorded_with: VCR 2.9.3

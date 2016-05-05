@@ -15,6 +15,7 @@ class Task < ActiveRecord::Base
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
   scope :of_type, -> (task_type) { where(type: task_type) }
+  scope :snapshot_tasks, -> { where(type: snapshot_types) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {
@@ -143,6 +144,11 @@ class Task < ActiveRecord::Base
 
     def submission_task_types
       all_task_types.select { |klass| klass <=> SubmissionTask }
+    end
+
+    def snapshot_types
+      reviewer_task = "TahiStandardTasks::ReviewerRecommendationsTask"
+      metadata_types.to_a << reviewer_task
     end
 
     def safe_constantize(str)

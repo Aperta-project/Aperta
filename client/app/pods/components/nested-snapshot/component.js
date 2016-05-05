@@ -7,16 +7,8 @@ export default Ember.Component.extend({
   classNames: ['snapshot'],
   classNameBindings: ['levelClassName'],
 
-  // If no snapshot1 then are just being passed snapsho2, which has
-  // been deleted.
-  hasSnapshot1: Ember.computed.notEmpty('snapshot1'),
-
   primarySnapshot: Ember.computed('snapshot1', 'snapshot2', function(){
-    if (this.get('hasSnapshot1')) {
-      return this.get('snapshot1');
-    } else {
-      return this.get('snapshot2');
-    }
+    return (this.get('snapshot1') || this.get('snapshot2'));
   }),
   generalCase: Ember.computed.not('specialCase'),
   specialCase: Ember.computed.or(
@@ -36,11 +28,11 @@ export default Ember.Component.extend({
     'primarySnapshot.name',
     'supporting-information-task'),
   text: Ember.computed.equal('primarySnapshot.type', 'text'),
-  text_or_integer: Ember.computed.or('integer', 'text'),
+  textOrInteger: Ember.computed.or('integer', 'text'),
   userEnteredValue: Ember.computed.not('id'),
 
   raw: Ember.computed('primarySnapshot.type', function(){
-    return this.get('text_or_integer') && this.get('userEnteredValue');
+    return this.get('textOrInteger') && this.get('userEnteredValue');
   }),
 
   children: Ember.computed(

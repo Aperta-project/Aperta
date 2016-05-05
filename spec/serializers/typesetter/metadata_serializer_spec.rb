@@ -171,8 +171,8 @@ describe Typesetter::MetadataSerializer do
     context 'without the task' do
       let(:task) { nil }
 
-      it 'does not require the task' do
-        expect(opts[:serializer]).to_not receive(:new)
+      it 'has the task in the output with a nil value' do
+        expect(output.fetch(opts[:json_key])).to be_kind_of(Hash)
       end
     end
   end

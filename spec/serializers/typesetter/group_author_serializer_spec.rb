@@ -80,6 +80,7 @@ describe Typesetter::GroupAuthorSerializer do
       :contact_email,
       :name,
       :contributions,
+      :government_employee,
       :type
     )
   end

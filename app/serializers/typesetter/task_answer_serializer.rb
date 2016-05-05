@@ -2,10 +2,6 @@ module Typesetter
   # Base class for serializers that need to interact
   # with nested question answers.
   class TaskAnswerSerializer < ActiveModel::Serializer
-    def attributes
-      super if object
-    end
-
     private
 
     def tasks_by_type(task_type)

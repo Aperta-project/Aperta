@@ -4,7 +4,7 @@ module Typesetter
   class GroupAuthorSerializer < Typesetter::TaskAnswerSerializer
     attributes :type, :name,
                :contact_first_name, :contact_last_name, :contact_middle_name,
-               :contact_email, :contributions
+               :contact_email, :contributions, :government_employee
 
     private
 

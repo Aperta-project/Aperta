@@ -4,6 +4,18 @@ import Ember from 'ember';
 const { computed } = Ember;
 const { attr, belongsTo, hasMany } = DS;
 
+const PAPER_SUBMITTABLE_STATES = [
+  'unsubmitted',
+  'in_revision',
+  'invited_for_full_submission'
+];
+
+const PAPER_GRADUAL_ENGAGEMENT_STATES = [
+  'unsubmitted',
+  'initially_submitted', // different than submittable states
+  'invited_for_full_submission'
+];
+
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
@@ -16,6 +28,7 @@ export default DS.Model.extend({
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
   phases: hasMany('phase', { async: true }),
+  relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
@@ -40,7 +53,7 @@ export default DS.Model.extend({
   manuscript_id: attr('string'),
   oldRoles: attr(),
   paperType: attr('string'),
-  permissionState: Ember.computed.alias('publishingState'),
+  permissionState: computed.alias('publishingState'),
   processing: attr('boolean'),
   publishingState: attr('string'),
   relatedAtDate: attr('date'),
@@ -53,13 +66,16 @@ export default DS.Model.extend({
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
 
-  allAuthorsUnsorted: Ember.computed.union('authors', 'groupAuthors'),
+  allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
   allAuthorsSortingAsc: ['position:asc'],
-  allAuthors: Ember.computed.sort('allAuthorsUnsorted', 'allAuthorsSortingAsc'),
+  allAuthors: computed.sort('allAuthorsUnsorted', 'allAuthorsSortingAsc'),
 
   taskSorting: ['phase.position', 'position'],
-  metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),
-  sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),
+  metadataTasks: computed.filterBy('tasks', 'isMetadataTask', true),
+  sortedMetadataTasks: computed.sort('metadataTasks', 'taskSorting'),
+
+  submissionTasks: computed.filterBy('tasks', 'isSubmissionTask', true),
+  sortedSubmissionTasks: computed.sort('submissionTasks', 'taskSorting'),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');
@@ -93,14 +109,55 @@ export default DS.Model.extend({
       });
   },
 
+  // Submission-related stuff
+  allSubmissionTasksCompleted: computed(
+    'submissionTasks.@each.completed',
+    function() {
+      return this.get('submissionTasks').isEvery('completed', true);
+    }
+  ),
+  isInSubmittableState: computed(
+    'publishingState',
+    function() {
+      return PAPER_SUBMITTABLE_STATES.contains(this.get('publishingState'));
+    }
+  ),
+
+  isReadyForSubmission: computed(
+    'isInSubmittableState',
+    'allSubmissionTasksCompleted',
+    function() {
+      return this.get('isInSubmittableState') && this.get('allSubmissionTasksCompleted');
+    }
+  ),
+
+  isPreSubmission: computed(
+    'isInSubmittableState',
+    'allSubmissionTasksCompleted',
+    function() {
+      return this.get('isInSubmittableState') && !this.get('allSubmissionTasksCompleted');
+    }
+  ),
+
+  isPendingGradualEngagementSubmission: computed(
+    'publishingState',
+    'gradualEngagement',
+    function() {
+      return PAPER_GRADUAL_ENGAGEMENT_STATES.contains(this.get('publishingState')) &&
+         this.get('gradualEngagement');
+    }
+  ),
+
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
   invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
   isInitiallySubmitted: computed.equal('publishingState', 'initially_submitted'),
   isInRevision: computed.equal('publishingState', 'in_revision'),
+  isWithdrawn: computed.equal('publishingState', 'withdrawn'),
 
   isInitialSubmission: computed.and('gradualEngagement', 'isUnsubmitted'),
   isFullSubmission: computed.and('gradualEngagement', 'invitedForFullSubmission'),
+
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {

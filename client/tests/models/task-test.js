@@ -1,21 +1,22 @@
 import Ember from 'ember';
-import { test, moduleForModel } from 'ember-qunit';
-moduleForModel('task', 'Unit: Task Model', {
-  needs: ['model:author', 'model:user', 'model:figure', 'model:table', 'model:bibitem',
-    'model:journal', 'model:discussion-topic', 'model:versioned-text',
-    'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
-    'model:question-attachment', 'model:comment-look',
-    'model:phase', 'model:task', 'model:comment', 'model:participation',
-    'model:card-thumbnail', 'model:nested-question-owner',
-    'model:nested-question', 'model:nested-question-answer', 'model:collaboration',
-    'model:supporting-information-file', 'model:paper', 'model:snapshot',
-    'model:paper-task-type', 'model:group-author']
+import { module } from 'qunit';
+import { test } from 'ember-qunit';
+import startApp from '../helpers/start-app';
+import registerStoreHelpers from '../helpers/store-helpers';
+
+var app = null;
+module('Unit: Task Model', {
+  beforeEach: function() {
+    app = startApp();
+  },
+  afterEach: function() {
+    Ember.run(app, app.destroy);
+  }
 });
 
 test("findQuestion finds and returns the first nestedQuestion when the given path matches its ident exactly", function(assert) {
-  let store = this.store(),
-    task, nestedQuestion;
-
+  let store = getStore();
+  let task, nestedQuestion;
   Ember.run(() => {
     task = store.createRecord('task');
     nestedQuestion = store.createRecord('nested-question', {
@@ -25,14 +26,13 @@ test("findQuestion finds and returns the first nestedQuestion when the given pat
     task.get('nestedQuestions').addObject(nestedQuestion);
     return task;
   });
-
   assert.equal(task.findQuestion('foobar'), nestedQuestion);
 });
 
-test("findQuestion returns null when it doesn't have a nestedQuestion whose ident that matches the given path", function(assert) {
-  let store = this.store(),
-    task, nestedQuestion;
 
+test("findQuestion returns null when it doesn't have a nestedQuestion whose ident that matches the given path", function(assert) {
+  let store = getStore();
+  let task, nestedQuestion;
   Ember.run(() => {
     task = store.createRecord('task');
     nestedQuestion = store.createRecord('nested-question', {
@@ -42,6 +42,20 @@ test("findQuestion returns null when it doesn't have a nestedQuestion whose iden
     task.get('nestedQuestions').addObject(nestedQuestion);
     return task;
   });
-
   assert.equal(task.findQuestion('bazbaz'), null);
+});
+
+test("permissionState delegates permission state to paper", function(assert) {
+  registerStoreHelpers();
+  let store = getStore();
+  let paper, task;
+  Ember.run(() => {
+    paper = store.createRecord('paper', {
+      permissionState: 'submitted'
+    });
+    task = store.createRecord('task', {
+      paper: paper
+    });
+  });
+  assert.equal(task.get('permissionState'), 'submitted');
 });

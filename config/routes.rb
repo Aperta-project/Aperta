@@ -53,7 +53,7 @@ Tahi::Application.routes.draw do
     resources :comment_looks, only: [:index, :show, :destroy]
     resources :decisions, only: [:create, :update, :show]
     resources :discussion_topics, only: [:index, :show, :create, :update]
-    resources :discussion_participants, only: [:create, :destroy]
+    resources :discussion_participants, only: [:create, :destroy, :show]
     resources :discussion_replies, only: [:show, :create, :update]
     resources :errors, only: :create
     resources :feedback, only: :create
@@ -108,6 +108,7 @@ Tahi::Application.routes.draw do
         get :versioned_texts
         get :export, to: 'paper_conversions#export'
         get :snapshots
+        get :related_articles
         put :submit
         put :withdraw
         put :reactivate
@@ -122,12 +123,13 @@ Tahi::Application.routes.draw do
     resources :permissions, only: [:show]
     resources :question_attachments, only: [:create, :update, :show, :destroy]
     resources :questions, only: [:create, :update]
-
     resources :nested_questions, only: [:index] do
       resources :answers, only: [:create, :update, :destroy], controller: 'nested_question_answers'
     end
 
     resources :old_roles, only: [:show, :create, :update, :destroy]
+
+    resources :related_articles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers

@@ -45,29 +45,32 @@ describe 'SeedHelpers' do
 
     it 'removes stray permissions from the role' do
       Role.ensure_exists('role', journal: journal) do |role|
-        role.ensure_permission_exists(:edit, applies_to: Task)
-        role.ensure_permission_exists(:view, applies_to: Task)
+        role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+        role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       end
       expect(Role.where(name: 'role').first.reload.permissions
               .map(&:action)).to contain_exactly('view', 'edit')
 
       Role.ensure_exists('role', journal: journal) do |role|
-        role.ensure_permission_exists(:view, applies_to: Task)
+        role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       end
-      expect(Role.where(name: 'role').first.permissions.map(&:action))
+      expect(Role.where(name: 'role').first.reload.permissions.map(&:action))
         .to match(%w(view))
 
       # The permission should still exist though
-      expect(Permission.where(action: 'edit', applies_to: Task)).to exist
+      expect(Permission.joins(:states)
+                       .where(action: 'edit',
+                              applies_to: Task,
+                              permission_states: { id: PermissionState.wildcard })).to exist
     end
   end
 
   describe 'Role#ensure_exists_permission' do
     it 'calls Permission::ensure_exists with proper arguments' do
       expect_any_instance_of(Role).to \
-        receive(:ensure_permission_exists).with(:view, applies_to: Task)
+        receive(:ensure_permission_exists).with(:view, applies_to: Task, states: ['*'])
       Role.ensure_exists('role') do |role|
-        role.ensure_permission_exists(:view, applies_to: Task)
+        role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       end
     end
   end

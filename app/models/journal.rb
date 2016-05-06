@@ -40,6 +40,8 @@ class Journal < ActiveRecord::Base
           class_name: 'Role'
   has_one :discussion_participant_role, -> { where(name: Role::DISCUSSION_PARTICIPANT) },
           class_name: 'Role'
+  has_one :freelance_editor_role, -> { where(name: Role::FREELANCE_EDITOR_ROLE) },
+          class_name: 'Role'
   has_one :internal_editor_role, -> { where(name: Role::INTERNAL_EDITOR_ROLE) },
           class_name: 'Role'
   has_one :handling_editor_role, -> { where(name: Role::HANDLING_EDITOR_ROLE) },
@@ -49,6 +51,8 @@ class Journal < ActiveRecord::Base
   has_one :publishing_services_role, -> { where(name: Role::PUBLISHING_SERVICES_ROLE) },
           class_name: 'Role'
   has_one :reviewer_role, -> { where(name: Role::REVIEWER_ROLE) },
+          class_name: 'Role'
+  has_one :reviewer_report_owner_role, -> { where(name: Role::REVIEWER_REPORT_OWNER_ROLE) },
           class_name: 'Role'
   has_one :staff_admin_role, -> { where(name: Role::STAFF_ADMIN_ROLE) },
           class_name: 'Role'

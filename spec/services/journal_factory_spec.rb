@@ -40,6 +40,11 @@ describe JournalFactory do
         permission_states: { id: PermissionState.wildcard }
       )
     end
+    let(:permissions_with_editable_paper_states) do
+      Permission.joins(:states).where(
+        permission_states: { name: Paper::EDITABLE_STATES }
+      )
+    end
     let(:permissions_on_discussion_topic) do
       Permission.joins(:states).where(
         applies_to: 'DiscussionTopic',
@@ -57,14 +62,15 @@ describe JournalFactory do
     context 'creating the default roles and permission for the journal' do
       before(:all) do
         clear_roles_and_permissions
-        JournalFactory.create(name: 'Genetics Journal')
+        @journal = JournalFactory.create(name: 'Genetics Journal')
       end
 
       after(:all) do
         clear_roles_and_permissions
+        @journal.destroy!
       end
 
-      let!(:journal) { Journal.first! }
+      let!(:journal) { @journal }
       let(:view_paper_permission) do
         Permission.where(action: 'view', applies_to: 'Paper').first
       end
@@ -74,34 +80,36 @@ describe JournalFactory do
       end
 
       context 'Creator role' do
+        let(:permissions) { journal.creator_role.permissions }
+
         context 'has Paper permission to' do
           it ':view' do
-            expect(journal.creator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.creator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'edit')
             )
           end
 
           it ':edit_authors' do
-            expect(journal.creator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_editable_paper_states
                 .find_by(action: 'edit_authors')
             )
           end
 
           it ':submit' do
-            expect(journal.creator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':withdraw' do
-            expect(journal.creator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
@@ -117,30 +125,36 @@ describe JournalFactory do
 
           it 'can :view and :edit all Tasks except ProductionMetadataTask' do
             accessible_task_klasses.each do |klass|
-              expect(journal.creator_role.permissions).to include(
+              expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                Permission.joins(:states).where(
+                  action: 'edit',
+                  applies_to: klass.name,
+                  permission_states: { name: Paper::EDITABLE_STATES }).first
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
-              expect(journal.creator_role.permissions).to_not include(
+              expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                Permission.joins(:states).where(
+                  action: 'edit',
+                  applies_to: klass.name,
+                  permission_states: { name: Paper::EDITABLE_STATES }).first
               )
             end
           end
 
           it 'can view/add/remove participants on all Tasks except ProductionMetadataTask' do
             accessible_task_klasses.each do |klass|
-              expect(journal.creator_role.permissions).to include(
+              expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
-              expect(journal.creator_role.permissions).to_not include(
+              expect(permissions).to_not include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
@@ -154,15 +168,17 @@ describe JournalFactory do
       end
 
       context 'Collaborator role' do
+        let(:permissions) { journal.collaborator_role.permissions }
+
         context 'has Paper permission to' do
           it ':view' do
-            expect(journal.collaborator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':submit' do
-            expect(journal.collaborator_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
@@ -184,30 +200,36 @@ describe JournalFactory do
 
           it 'can :view and :edit all accessible_task_klasses' do
             accessible_task_klasses.each do |klass|
-              expect(journal.collaborator_role.permissions).to include(
+              expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                permissions_with_editable_paper_states.where(
+                  action: 'edit',
+                  applies_to: klass.name
+                ).first
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
-              expect(journal.collaborator_role.permissions).to_not include(
+              expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.find_by(action: :edit, applies_to: klass.name)
+                permissions_with_editable_paper_states.where(
+                  action: 'edit',
+                  applies_to: klass.name
+                ).first
               )
             end
           end
 
           it 'can view/manage participants on all accessible_task_klasses' do
             accessible_task_klasses.each do |klass|
-              expect(journal.collaborator_role.permissions).to include(
+              expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
-              expect(journal.collaborator_role.permissions).to_not include(
+              expect(permissions).to_not include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
@@ -217,59 +239,61 @@ describe JournalFactory do
       end
 
       context 'Cover Editor role' do
+        let(:permissions) { journal.cover_editor_role.permissions }
+
         context 'has Paper permission to' do
           it ':view' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'edit')
             )
           end
 
           it ':edit_authors' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_editable_paper_states
                 .find_by(action: 'edit_authors')
             )
           end
 
           it ':manage_workflow' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_workflow')
             )
           end
 
           it ':manage_collaborators' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
           it ':register_decision' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_submitted_state
                 .find_by(action: 'register_decision')
             )
           end
 
           it ':start_discussion' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'start_discussion')
             )
           end
 
           it ':submit' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':view_user_role_eligibility_on_paper' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(
                 action: 'view_user_role_eligibility_on_paper'
               )
@@ -277,25 +301,25 @@ describe JournalFactory do
           end
 
           it ':assign_roles' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'assign_roles')
             )
           end
 
           it ':search_academic_editors' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_academic_editors')
             )
           end
 
           it ':search_admins' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_admins')
             )
           end
 
           it ':search_reviewers' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
             )
           end
@@ -303,25 +327,28 @@ describe JournalFactory do
 
         context 'has Task permission to' do
           it ':view' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.cover_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'edit')
+            expect(permissions).to include(
+              permissions_with_editable_paper_states.where(
+                action: 'edit',
+                applies_to: 'Task'
+              ).first
             )
           end
 
           it ':manage_participant' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_participant')
             )
           end
 
           it ':manage_invitations' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
@@ -329,25 +356,25 @@ describe JournalFactory do
 
         context 'has DiscussionTopic permission to' do
           it ':view' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.cover_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
@@ -355,7 +382,7 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it 'cannot :view or :edit' do
-            expect(journal.cover_editor_role.permissions).not_to include(
+            expect(permissions).not_to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
               Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
@@ -364,6 +391,8 @@ describe JournalFactory do
       end
 
       context 'Academic Editor' do
+        let(:permissions) { journal.academic_editor_role.permissions }
+
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
             accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::ReviewerReportTask]
@@ -375,98 +404,104 @@ describe JournalFactory do
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses
           end
+          let(:editable_state_ids) do
+            PermissionState.where(name: Paper::EDITABLE_STATES).pluck(:id)
+          end
 
           it 'can :view all accessible_task_klasses' do
             accessible_task_klasses.each do |klass|
-              expect(journal.academic_editor_role.permissions).to include(
+              expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
-              expect(journal.academic_editor_role.permissions).to_not include(
+              expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
             end
           end
 
           it 'is able to view and edit the ReviewerRecommendationsTask' do
-            expect(journal.academic_editor_role.permissions).to include(
-              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+            expect(permissions).to include(
+              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
-            expect(journal.academic_editor_role.permissions).to include(
-              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').first
+            expect(permissions).to include(
+              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
           end
         end
       end
 
       context 'Handling Editor' do
+        let(:permissions) { journal.handling_editor_role.permissions }
+
         context 'has Paper permission to' do
           it ':manage_workflow' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_workflow')
             )
           end
 
           it ':view' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.handling_editor_role.permissions).to include(
-              permissions_on_paper.find_by(action: 'edit')
+            expect(permissions).to include(
+              permissions_on_paper_with_editable_paper_states
+                .find_by(action: 'edit')
             )
           end
 
           it ':manage_collaborators' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
           it ':edit_authors' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_editable_paper_states
                 .find_by(action: 'edit_authors')
             )
           end
 
           it ':register_decision' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_submitted_state
                 .find_by(action: 'register_decision')
             )
           end
 
           it ':start_discussion' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'start_discussion')
             )
           end
 
           it ':submit' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':search_academic_editors' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_academic_editors')
             )
           end
 
           it ':search_admins' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_admins')
             )
           end
 
           it ':search_reviewers' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
             )
           end
@@ -474,37 +509,40 @@ describe JournalFactory do
 
         context 'has Task permission to' do
           it ':view' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.handling_editor_role.permissions).to include(
-              permissions_on_task.find_by(action: 'edit')
+            expect(permissions).to include(
+              permissions_with_editable_paper_states.find_by(
+                applies_to: 'Task',
+                action: 'edit'
+              )
             )
           end
 
           it ':view_participants' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view_participants')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_participant')
             )
           end
 
           it ':add_email_participants' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'add_email_participants')
             )
           end
 
           it ':manage_invitations' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
@@ -512,25 +550,25 @@ describe JournalFactory do
 
         context 'has DiscussionTopic permission to' do
           it ':view' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.handling_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
@@ -538,7 +576,7 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it 'cannot :view or :edit' do
-            expect(journal.handling_editor_role.permissions).not_to include(
+            expect(permissions).not_to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
               Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
@@ -547,9 +585,11 @@ describe JournalFactory do
       end
 
       context 'Internal Editor' do
+        let(:permissions) { journal.internal_editor_role.permissions }
+
         context 'has Journal permission to' do
           it ':view_paper_tracker' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_journal.find_by(action: 'view_paper_tracker')
             )
           end
@@ -557,33 +597,32 @@ describe JournalFactory do
 
         context 'has Paper permission to' do
           it ':manage_workflow' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_workflow')
             )
           end
 
           it ':view' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'edit')
             )
           end
 
-          it ':manage_collaborators' do
-            expect(journal.internal_editor_role.permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+          it ':edit_authors' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
-            expect(journal.internal_editor_role.permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+          it ':manage_collaborators' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -594,82 +633,88 @@ describe JournalFactory do
             )
           end
           it ':register_decision' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_submitted_state
                 .find_by(action: 'register_decision')
             )
           end
 
           it ':start_discussion' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'start_discussion')
             )
           end
 
           it ':submit' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':withdraw' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
 
           it ':search_academic_editors' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_academic_editors')
             )
           end
 
           it ':search_admins' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_admins')
             )
           end
 
           it ':search_reviewers' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
+
+          it ':send_to_apex' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
             )
           end
         end
 
         context 'has Task permission to' do
           it ':view' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'edit')
             )
           end
 
           it ':view_participants' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view_participants')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_participant')
             )
           end
 
           it ':add_email_participants' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'add_email_participants')
             )
           end
 
           it ':manage_invitations' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
@@ -677,25 +722,25 @@ describe JournalFactory do
 
         context 'has DiscussionTopic permission to' do
           it ':view' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
@@ -703,7 +748,7 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it 'cannot :view or :edit' do
-            expect(journal.internal_editor_role.permissions).not_to include(
+            expect(permissions).not_to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
               Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
@@ -712,9 +757,11 @@ describe JournalFactory do
       end
 
       context 'Production Staff' do
+        let(:permissions) { journal.production_staff_role.permissions }
+
         context 'has Journal permission to' do
           it ':view_paper_tracker' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_journal.find_by(action: 'view_paper_tracker')
             )
           end
@@ -722,33 +769,32 @@ describe JournalFactory do
 
         context 'has Paper permission to' do
           it ':manage_workflow' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_workflow')
             )
           end
 
           it ':view' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'edit')
             )
           end
 
-          it ':manage_collaborators' do
-            expect(journal.production_staff_role.permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+          it ':edit_authors' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
-            expect(journal.production_staff_role.permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+          it ':manage_collaborators' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -760,82 +806,92 @@ describe JournalFactory do
           end
 
           it ':register_decision' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_submitted_state
                 .find_by(action: 'register_decision')
             )
           end
 
           it ':start_discussion' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'start_discussion')
             )
           end
 
           it ':submit' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':withdraw' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
 
           it ':search_academic_editors' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_academic_editors')
             )
           end
 
           it ':search_admins' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_admins')
             )
           end
 
           it ':search_reviewers' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
+
+          it ':send_to_apex' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
             )
           end
         end
 
         context 'has Task permission to' do
           it ':view' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.production_staff_role.permissions).to include(
-              permissions_on_task.find_by(action: 'edit')
+            expect(permissions).to include(
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'Task',
+                permission_states: { id: PermissionState.wildcard }
+              ).first
             )
           end
 
           it ':view_participants' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view_participants')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_participant')
             )
           end
 
           it ':add_email_participants' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'add_email_participants')
             )
           end
 
           it ':manage_invitations' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
@@ -843,25 +899,25 @@ describe JournalFactory do
 
         context 'has DiscussionTopic permission to' do
           it ':view' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
@@ -869,18 +925,23 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it ':view and :edit' do
-            expect(journal.production_staff_role.permissions).to include(
+            expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'PlosBilling::BillingTask',
+                permission_states: { id: PermissionState.wildcard }).first
             )
           end
         end
       end
 
       context 'Publishing Services' do
+        let(:permissions) { journal.publishing_services_role.permissions }
+
         context 'has Journal permission to' do
           it ':view_paper_tracker' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_journal.find_by(action: 'view_paper_tracker')
             )
           end
@@ -888,33 +949,32 @@ describe JournalFactory do
 
         context 'has Paper permission to' do
           it ':manage_workflow' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_workflow')
             )
           end
 
           it ':view' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'edit')
             )
           end
 
-          it ':manage_collaborators' do
-            expect(journal.publishing_services_role.permissions).to include(
-              permissions_on_paper.find_by(action: 'manage_collaborators')
+          it ':edit_authors' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'edit_authors')
             )
           end
 
-          it ':edit_authors' do
-            expect(journal.publishing_services_role.permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
+          it ':manage_collaborators' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
@@ -926,82 +986,88 @@ describe JournalFactory do
           end
 
           it ':register_decision' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_submitted_state
                 .find_by(action: 'register_decision')
             )
           end
 
           it ':start_discussion' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'start_discussion')
             )
           end
 
           it ':submit' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':withdraw' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
 
           it ':search_academic_editors' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_academic_editors')
             )
           end
 
           it ':search_admins' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_admins')
             )
           end
 
           it ':search_reviewers' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
+
+          it ':send_to_apex' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
             )
           end
         end
 
         context 'has Task permission to' do
           it ':view' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'edit')
             )
           end
 
           it ':view_participants' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view_participants')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_participant')
             )
           end
 
           it ':add_email_participants' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'add_email_participants')
             )
           end
 
           it ':manage_invitations' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
@@ -1009,26 +1075,26 @@ describe JournalFactory do
 
         context 'has DiscussionTopic permission to' do
           it ':view' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic
                 .find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
@@ -1036,18 +1102,24 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it ':view and :edit' do
-            expect(journal.publishing_services_role.permissions).to include(
+            expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'PlosBilling::BillingTask',
+                permission_states: { id: PermissionState.wildcard }
+              ).first
             )
           end
         end
       end
 
       context 'Reviewer' do
+        let(:permissions) { journal.reviewer_role.permissions }
+
         describe 'has Paper permission to' do
           it 'can :view associated Paper' do
-            expect(journal.reviewer_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: :view)
             )
           end
@@ -1070,36 +1142,53 @@ describe JournalFactory do
 
           it 'can :view and :view_participants on accessible task klasses' do
             accessible_task_klasses.each do |klass|
-              permissions = Permission.where(applies_to: klass.name)
-              expect(journal.reviewer_role.permissions).to include(
-                permissions.find_by(action: :view),
-                permissions.find_by(action: :view_participants)
+              klass_permissions = Permission.where(applies_to: klass.name)
+              expect(permissions).to include(
+                klass_permissions.find_by(action: :view),
+                klass_permissions.find_by(action: :view_participants)
               )
             end
           end
 
           it 'cannot :view or :view_participants on inaccessible task klasses' do
             all_inaccessible_task_klasses.each do |klass|
-              permissions = Permission.where(applies_to: klass.name)
-              expect(journal.reviewer_role.permissions).to_not include(
-                permissions.find_by(action: :view),
-                permissions.find_by(action: :view_participants)
+              klass_permissions = Permission.where(applies_to: klass.name)
+              expect(permissions).to_not include(
+                klass_permissions.find_by(action: :view),
+                klass_permissions.find_by(action: :view_participants)
               )
             end
           end
         end
       end
 
+      context 'Reviewer Report Owner' do
+        describe 'has Task permission to' do
+          it 'can :edit assigned ReviewerReportTasks' do
+            permission = Permission.includes(:states).find_by(
+              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              action: :edit
+            )
+            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+            expect(journal.reviewer_report_owner_role.permissions).to include(
+              permission
+            )
+          end
+        end
+      end
+
       context 'Staff Admin' do
+        let(:permissions) { journal.staff_admin_role.permissions }
+
         context 'has Journal permission to' do
           it ':administer' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_journal.find_by(action: 'administer')
             )
           end
 
           it ':view_paper_tracker' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_journal.find_by(action: 'view_paper_tracker')
             )
           end
@@ -1107,102 +1196,107 @@ describe JournalFactory do
 
         context 'has Paper permission to' do
           it ':manage_workflow' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_workflow')
             )
           end
 
           it ':view' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'edit')
             )
           end
 
+          it ':edit_authors' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'edit_authors')
+            )
+          end
+
           it ':manage_collaborators' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'manage_collaborators')
             )
           end
 
-          it ':edit_authors' do
-            expect(journal.staff_admin_role.permissions).to include(
-              permissions_on_paper_with_editable_paper_states
-                .find_by(action: 'edit_authors')
-            )
-          end
-
           it ':reactivate' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_withdrawn_state
                 .find_by(action: 'reactivate')
             )
           end
 
           it ':register_decision' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper_with_submitted_state
                 .find_by(action: 'register_decision')
             )
           end
 
           it ':start_discussion' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'start_discussion')
             )
           end
 
           it ':submit' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'submit')
             )
           end
 
           it ':withdraw' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'withdraw')
             )
           end
 
           it ':search_academic_editors' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_academic_editors')
             )
           end
 
           it ':search_admins' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_admins')
             )
           end
 
           it ':search_reviewers' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_paper.find_by(action: 'search_reviewers')
+            )
+          end
+
+          it ':send_to_apex' do
+            expect(permissions).to include(
+              permissions_on_paper.find_by(action: 'send_to_apex')
             )
           end
         end
 
         context 'has DiscussionTopic permission to' do
           it ':view' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
             )
           end
@@ -1210,37 +1304,37 @@ describe JournalFactory do
 
         context 'has Task permission to' do
           it ':view' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'edit')
             )
           end
 
           it ':view_participants' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'view_participants')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_participant')
             )
           end
 
           it ':manage_invitations' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
 
           it ':add_email_participants' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions_on_task.find_by(action: 'add_email_participants')
             )
           end
@@ -1250,25 +1344,25 @@ describe JournalFactory do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               permissions.find_by(action: 'reply')
             )
           end
@@ -1276,9 +1370,13 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it ':view and :edit' do
-            expect(journal.staff_admin_role.permissions).to include(
+            expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.joins(:states).where(
+                action: 'edit',
+                applies_to: 'PlosBilling::BillingTask',
+                permission_states: { id: PermissionState.wildcard }
+              ).first
             )
           end
         end

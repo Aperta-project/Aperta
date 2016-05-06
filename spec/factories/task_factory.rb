@@ -80,6 +80,13 @@ FactoryGirl.define do
     old_role "author"
   end
 
+  factory :related_articles_task, class: 'TahiStandardTasks::RelatedArticlesTask' do
+    phase
+    paper
+    title "Related Articles"
+    old_role "editor"
+  end
+
   factory :taxon_task, class: 'TahiStandardTasks::TaxonTask' do
     phase
     paper

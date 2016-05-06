@@ -5,21 +5,29 @@ module.exports = {
 
   anonymousOptions: [
     'task-name',
-    'plugin-path'
+    'plugin-path',
+    'classified-engine-name',
+    'underscored-engine-name'
   ],
 
   locals: function(options) {
     var relativePath = path.relative(this.project.root, options.args[2]);
     return {
-      tahiPluginPath: relativePath
+      enginePath: relativePath,
+      classifiedEngineName: options.args[3],
+      underscoredEngineName: options.args[4],
+      humanizedModuleName: options.args[1].replace(/\-/g, " ")
     };
   },
 
 
   fileMapTokens: function(_) {
     return {
-      __tahipluginpath__: function(options) {
-        return options.locals.tahiPluginPath;
+      __enginepath__: function(options) {
+        return options.locals.enginePath;
+      },
+      __engine__: function(options) {
+        return options.locals.underscoredEngineName;
       }
     };
   }

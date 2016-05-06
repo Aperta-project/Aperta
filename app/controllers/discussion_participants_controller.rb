@@ -14,6 +14,11 @@ class DiscussionParticipantsController < ApplicationController
     respond_with discussion_participant
   end
 
+  def show
+    requires_user_can :view, discussion_topic
+    respond_with discussion_participant
+  end
+
   private
 
   def creation_params

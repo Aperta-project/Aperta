@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-feature 'journal admin old_role', js: true do
+feature 'journal admin role', js: true do
   let(:user) { create :user }
   let!(:journal) { create :journal, :with_roles_and_permissions }
   let!(:another_journal) { create :journal, :with_roles_and_permissions }
 
   let(:dashboard) { DashboardPage.new }
 
-  context 'non-admin user with journal admin old_role' do
+  context 'non-admin user with journal admin assignment' do
     before do
       assign_journal_role(journal, user, :admin)
       login_as(user, scope: :user)
@@ -25,7 +25,7 @@ feature 'journal admin old_role', js: true do
     end
   end
 
-  context 'non-admin user without journal admin old_role' do
+  context 'non-admin user without journal admin role' do
     before do
       login_as(user, scope: :user)
       visit "/"

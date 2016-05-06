@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413002420) do
+ActiveRecord::Schema.define(version: 20160428184601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -483,6 +483,19 @@ ActiveRecord::Schema.define(version: 20160413002420) do
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
   add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
 
+  create_table "related_articles", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "linked_doi"
+    t.string   "linked_title"
+    t.string   "additional_info"
+    t.boolean  "send_manuscripts_together"
+    t.text     "send_link_to_apex"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
     t.integer  "journal_id"
@@ -512,6 +525,7 @@ ActiveRecord::Schema.define(version: 20160413002420) do
     t.integer  "new_withdrawn",               default: 0, null: false
     t.integer  "new_initial_submissions",     default: 0, null: false
     t.integer  "in_process_balance",          default: 0, null: false
+    t.integer  "unsubmitted",                 default: 0, null: false
   end
 
   create_table "snapshots", force: :cascade do |t|

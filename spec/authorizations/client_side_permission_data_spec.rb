@@ -54,24 +54,26 @@ DESC
 
     permission action: 'view', applies_to: Authorizations::FakeTask.name
     permission action: 'edit', applies_to: Authorizations::FakeTask.name
+    permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(unsubmitted)
     permission action: 'discuss', applies_to: Authorizations::FakeTask.name
   end
 
   role :editor do
     has_permission action: 'read', applies_to: Authorizations::FakePaper.name
-    has_permission action: 'write', applies_to: Authorizations::FakePaper.name
+    has_permission action: 'write', applies_to: Authorizations::FakePaper.name, states: %w(in_progress)
     has_permission action: 'view', applies_to: Authorizations::FakePaper.name
-    has_permission action: 'talk', applies_to: Authorizations::FakePaper.name
+    has_permission action: 'talk', applies_to: Authorizations::FakePaper.name, states: %w(in_progress in_review)
   end
 
   role :with_view_access_to_task do
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
     has_permission action: 'discuss', applies_to: Authorizations::FakeTask.name
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(unsubmitted)
   end
 
   role :with_edit_access_to_task do
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
-    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(*)
   end
 
   before do
@@ -130,7 +132,10 @@ DESC
         assign_user user, to: task, with_role: role_with_edit_access_to_task
       end
 
-      it 'returns the permissions for all permissible assignments' do
+      it <<-DESC do
+        returns the permissions for all permissible assignments including
+        combining the states for each role
+      DESC
         results = user.filter_authorized(:view, Authorizations::FakeTask.all)
         expect(results.serializable.map(&:as_json)).to eq([
           {
@@ -147,7 +152,7 @@ DESC
                 states: %w(*)
               },
               edit: {
-                states: %w(*)
+                states: %w(unsubmitted *)
               }
             }
           }

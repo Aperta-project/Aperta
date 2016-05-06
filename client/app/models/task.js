@@ -38,6 +38,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
     'isMetadataTask',
     'isSubmissionTask'
   ),
+  permissionState: Ember.computed.alias('paper.permissionState'),
   position: DS.attr('number'),
   qualifiedType: DS.attr('string'),
   title: DS.attr('string'),

@@ -99,4 +99,38 @@ describe DiscussionParticipantsController do
     end
   end
 
+  describe 'GET show' do
+    subject(:do_request) do
+      xhr :get, :show, format: :json, id: participation.to_param
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user has access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, topic_a)
+          .and_return true
+      end
+
+      it "responds with a participation" do
+        do_request
+        expect(response).to be_success
+        participant = json["discussion_participant"]
+        expect(participant["id"]).to eq participation.id
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, topic_a)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
 end

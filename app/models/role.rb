@@ -9,6 +9,7 @@ class Role < ActiveRecord::Base
   COVER_EDITOR_ROLE = 'Cover Editor'
   CREATOR_ROLE = 'Creator'
   DISCUSSION_PARTICIPANT = 'Discussion Participant'
+  FREELANCE_EDITOR_ROLE = 'Freelance Editor'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
   PRODUCTION_STAFF_ROLE = 'Production Staff'
@@ -17,6 +18,7 @@ class Role < ActiveRecord::Base
   STAFF_ADMIN_ROLE = 'Staff Admin'
   TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'
+  REVIEWER_REPORT_OWNER_ROLE = "Reviewer Report Owner"
 
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
     case old_role

@@ -7,14 +7,15 @@ describe ManuscriptManagersPolicy do
 
   before(:all) do
     clear_roles_and_permissions
-    JournalFactory.create(name: 'Genetics Journal')
+    @journal = JournalFactory.create(name: 'Genetics Journal')
   end
 
   after(:all) do
     clear_roles_and_permissions
+    @journal.destroy!
   end
 
-  let(:journal) { Journal.first! }
+  let(:journal) { @journal }
 
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }

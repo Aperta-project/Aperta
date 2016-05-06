@@ -11,7 +11,7 @@ describe ParticipationsController do
 
   before do
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: journal) do |role|
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
     end
   end
 

@@ -103,11 +103,11 @@ prod_staff_login = {'user': 'aprodstaff',
 # psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
 # Staging data
-psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-83-5-30.compute-1.amazonaws.com')
-psql_port = getenv('APERTA_PSQL_PORT', '6262')
-psql_uname = getenv('APERTA_PSQL_USER', 'u2kgbfse1i57n')
-psql_pw = getenv('APERTA_PSQL_PW', 'p76is3gn1m2f557s4crfgb7l6qi')
-psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
+# psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-83-5-30.compute-1.amazonaws.com')
+# psql_port = getenv('APERTA_PSQL_PORT', '6262')
+# psql_uname = getenv('APERTA_PSQL_USER', 'u2kgbfse1i57n')
+# psql_pw = getenv('APERTA_PSQL_PW', 'p76is3gn1m2f557s4crfgb7l6qi')
+# psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
 # Release Candidate data
 # psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-204-30-115.compute-1.amazonaws.com')
 # psql_port = getenv('APERTA_PSQL_PORT', '5432')
@@ -115,11 +115,11 @@ psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
 # psql_pw = getenv('APERTA_PSQL_PW', 'bS0R1f6NY3-BrB70A49jOAzuTJ')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1n1umf877c2e3')
 # SFO Staging
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
-# psql_port = getenv('APERTA_PSQL_PORT', '5432')
-# psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
-# psql_pw = getenv('APERTA_PSQL_PW', '\'Saurischia cogredient bonduc\'')
-# psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
+psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
+psql_port = getenv('APERTA_PSQL_PORT', '5432')
+psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
+psql_pw = getenv('APERTA_PSQL_PW', '\'Saurischia cogredient bonduc\'')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'

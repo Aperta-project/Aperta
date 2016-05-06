@@ -126,13 +126,15 @@ class PaperTrackerPage(AuthenticatedPage):
           break
     try:
       if sort_by == 'publishing_state':
-        state_order = {'initially_submitted': 0,
-                       'in_revision': 1,
-                       'invited_for_full_submission': 2,
-                       'rejected': 3,
-                       'submitted': 4,
-                       'unsubmitted': 5,
-                       'withdrawn': 6,
+        state_order = {'accepted': 0,
+                       'checking': 1,
+                       'initially_submitted': 2,
+                       'in_revision': 3,
+                       'invited_for_full_submission': 4,
+                       'rejected': 5,
+                       'submitted': 6,
+                       'unsubmitted': 7,
+                       'withdrawn': 8,
                        }
         papers = sorted(papers, key=lambda val: state_order[val[5]], reverse=reverse)
       else:
@@ -464,11 +466,11 @@ class PaperTrackerPage(AuthenticatedPage):
         for he in db_hes:
           name.append(he[0] + ' ' + he[1])
         db_hes = name
-        handedits.sort()
+        page_hes_by_role.sort()
         db_hes.sort()
-        assert handedits == db_hes, (handedits, db_hes)
+        assert page_hes_by_role == db_hes, (page_hes_by_role, db_hes)
 
-      covredits = self._get(self._paper_tracker_table_tbody_he)
+      covredits = self._get(self._paper_tracker_table_tbody_ce)
       page_ces_by_role = covredits.text.split('\n')
       for covreditor in page_ces_by_role:
         db_ces = PgSQL().query('SELECT users.first_name, users.last_name '
@@ -484,9 +486,9 @@ class PaperTrackerPage(AuthenticatedPage):
         for ce in db_ces:
           name.append(ce[0] + ' ' + ce[1])
         db_ces = name
-        covredits.sort()
+        page_ces_by_role.sort()
         db_ces.sort()
-        assert covredits == db_ces, (covredits, db_ces)
+        assert page_ces_by_role == db_ces, (page_ces_by_role, db_ces)
 
       # Validating Sorting functions
       # Note that because cover editor and handling editor are not in the papers array, we can

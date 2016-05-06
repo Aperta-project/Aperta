@@ -26,7 +26,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
 
@@ -43,7 +42,6 @@ class JournalFactory
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:submit, applies_to: Paper, states: ['*'])
 
       # Collaborators can view and edit any metadata card except billing

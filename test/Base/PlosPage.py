@@ -103,6 +103,11 @@ class PlosPage(object):
       raise ElementDoesNotExistAssertionError(locator)
 
   def _check_for_invisible_element(self, locator):
+    """
+    Checks for the existence of an invisible element returning the element if it exists
+    :param locator: the page element to check on
+    :return: webdriver element or exception
+    """
     try:
       return self._wait.until(expected_conditions.invisibility_of_element_located(locator))
     except TimeoutException:
@@ -111,16 +116,26 @@ class PlosPage(object):
       raise ElementDoesNotExistAssertionError(locator)
 
   def _check_for_invisible_element_boolean(self, locator):
+    """
+    Checks for the existence of an invisible element returning a boolean
+    :param locator: the page element to check on
+    :return: True if found, else False
+    """
     self.set_timeout(2)
     try:
       self._wait.until(expected_conditions.invisibility_of_element_located(locator))
       return True
-    except:
+    except ElementDoesNotExistAssertionError:
       return False
     finally:
       self.restore_timeout()
 
   def _check_for_absence_of_element(self, locator):
+    """
+    Checks that an element doesn't exist
+    :param locator: the page element to check on
+    :return: True or Error
+    """
     self.set_timeout(1)
     try:
       return self._wait.until_not(expected_conditions.visibility_of_element_located(locator))
@@ -206,17 +221,32 @@ class PlosPage(object):
     return url
 
   def is_element_present(self, locator):
+    """
+    Checks for the presence of an element
+    :param locator: the object to check on
+    :return: boolean
+    """
     try:
       self._driver.find_element(By.ID, locator)
       return True
     except NoSuchElementException:
-      print '\t[WebDriver] Element %s does not exist.' % str(locator)
+      print '\t[WebDriver] Element {0} does not exist.'.format(locator)
       return False
 
   def wait_for_animation(self, selector):
+    """
+    A method for stalling during an animation event
+    :param selector: the object to check on
+    :return: void function
+    """
     while self.is_element_animated(selector):
       sleep(.5)
 
   def is_element_animated(self, selector):
+    """
+    A javascript element to test for whether an object is animated
+    :param selector:  the object to check on
+    :return: boolean
+    """
     return self._driver.execute_script(
         'return jQuery({0}).is(":animated");'.format(json.dumps(selector)))

@@ -1467,14 +1467,15 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('font-weight')
     assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
         field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '18px', \
+    assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
-    assert field.value_of_css_property('padding-top') == '5px', \
-        field.value_of_css_property('padding-top')
-    assert field.value_of_css_property('padding-bottom') == '7px', \
-        field.value_of_css_property('padding-bottom')
-    assert field.value_of_css_property('padding-left') == '10px', \
-        field.value_of_css_property('padding-left')
+    # Remove padding since it is not in the styleguide
+    #assert field.value_of_css_property('padding-top') == '5px', \
+    #    field.value_of_css_property('padding-top')
+    #assert field.value_of_css_property('padding-bottom') == '7px', \
+    #    field.value_of_css_property('padding-bottom')
+    #assert field.value_of_css_property('padding-left') == '10px', \
+    #    field.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_single_select_dropdown_style(field):

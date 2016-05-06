@@ -16,7 +16,7 @@ from Base.Resources import creator_login1, creator_login2, creator_login3, creat
     creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
     super_admin_login, academic_editor_login
 from frontend.common_test import CommonTest
-from Cards.invite_ae_card import InviteAECard
+from Cards.production_metadata_card import ProductionMedataCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -37,12 +37,12 @@ editorial_users = [internal_editor_login,
                    ]
 
 @MultiBrowserFixture
-class InviteAECardTest(CommonTest):
+class ProductionMetadataCardTest(CommonTest):
   """
   Validate the elements, styles, functions of the Invite AE card
   """
 
-  def test_invite_ae_actions(self):
+  def test_production_metadata_card(self):
     """
     test_invite_ae: Validates the elements, styles, roles and functions of invite academic editors
     from new document creation through inviting ae, validation of the invite on the invitees
@@ -85,17 +85,18 @@ class InviteAECardTest(CommonTest):
     time.sleep(10)
     # add card invite AE with add new card
     # Check if card is there
-    if not workflow_page.is_card('Invite Academic Editor'):
-      workflow_page.add_card('Invite Academic Editor')
+    if not workflow_page.is_card('Production Metadata'):
+      workflow_page.add_card('Production Metadata')
     # click on invite academic editor
-    workflow_page.click_invite_ae_card()
-    invite_ae_card = InviteAECard(self.getDriver())
-    invite_ae_card.check_style(academic_editor_login)
+    workflow_page.click_production_metadata_card()
+    product_metadata_card = ProductionMedataCard(self.getDriver())
+    product_metadata_card.check_style(academic_editor_login)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
                            errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
+    kkkk
     invite_ae_card.validate_invite_ae(academic_editor_login,
                                           manuscript_title,
                                           creator_user,

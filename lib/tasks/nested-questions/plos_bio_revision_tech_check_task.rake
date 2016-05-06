@@ -222,7 +222,7 @@ namespace 'nested-questions:seed' do
       owner_type: PlosBioTechCheck::RevisionTechCheckTask.name,
       ident: "plos_bio_revision_tech_check--response_to_reviewers",
       value_type: "boolean",
-      text: "For any resubmissions that have previously gone through review, ensure the authors have responded to the reviewer comments in the Revision Details box of the Revise Manuscript card.If this information is not present, request it from author.",
+      text: "For any resubmissions that have previously gone through review, ensure the authors have responded to the reviewer comments in the Revision Details box of the Revise Manuscript card. If this information is not present, request it from author.",
       position: 15
     }
 

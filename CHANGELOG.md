@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [1.4.7] - 2016-05-06
+
+### Changed
+- Removed ability of the author/collaborator to manage collaborators
+
 ## [1.4.6] - 2016-04-29
 ### Added
 -

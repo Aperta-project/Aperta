@@ -8,6 +8,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Templates for devs creating new tasks
 - Diffing of Reviewer Candidates
 ### Changed
+- Update RTC and FTC text.
+
 ### Deprecated
 ### Removed
 ### Fixed

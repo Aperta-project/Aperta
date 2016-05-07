@@ -25,11 +25,15 @@ class ProductionMedataCard(BaseCard):
     self._production_notes = (By.NAME, 'production_metadata--production_notes')
     self._special_handling_instructions = (By.NAME,
         'production_metadata--special_handling_instructions')
+    self._publication_date = (By.CLASS_NAME, 'datepicker')
+    self._provenance_div = (By.CSS_SELECTOR, 'div.provenance')
+
     self._affiliation_div = (By.CLASS_NAME, 'did-you-mean')
     self._affiliation_change = (By.CLASS_NAME, 'did-you-mean-change')
     self._how_to_pay = (By.XPATH, ".//li[contains(@class, 'question')]/div/div")
-    self._publication_date = (By.CLASS_NAME, 'datepicker')
-    self._provenance_div = (By.CSS_SELECTOR, 'div.provenance')
+    self._volume_number_field = (By.CLASS_NAME, 'volume-number')
+    self._issue_number_field = (By.CLASS_NAME, 'issue-number')
+
 
   def check_style(self, user):
     """
@@ -40,19 +44,6 @@ class ProductionMedataCard(BaseCard):
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Production Metadata'
     self.validate_application_title_style(card_title)
-    #invite_text = self._get(self._invite_text)
-    #assert invite_text.text == 'Academic Editor'
-    #self.validate_input_field_label_style(invite_text)
-    #ae_input = self._get(self._invite_box)
-    #assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
-    #    ae_input.get_attribute('placeholder')
-    # Button
-    #btn = self._get(self._compose_invite_button)
-    #assert btn.text == 'COMPOSE INVITE'
-    # Check disabled button
-    # Style validation on disabled button is commented out due to APERTA-6768
-    # self.validate_primary_big_disabled_button_style(btn)
-    # Enable button to check style
     publication_data = self._get(self._publication_date)
     assert publication_data.get_attribute('placeholder') == 'Select Date...'
     self.validate_input_field_style(publication_data)
@@ -68,30 +59,71 @@ class ProductionMedataCard(BaseCard):
     assert issue_number.get_attribute('placeholder') == 'e.g. 33', \
         issue_number.get_attribute('placeholder')
     self.validate_input_field_style(issue_number)
-    #import pdb; pdb.set_trace()
     provenance = self._get(self._provenance)
-    #assert provenance_number.get_attribute('type') == 'number'
+    # Check "there is no placeholder text for Provenance"
+    assert not provenance.get_attribute('placeholder')
     self.validate_input_field_style(provenance)
     production_notes = self._get(self._production_notes)
     assert production_notes.get_attribute('placeholder') == 'Add production notes here.', \
         production_notes.get_attribute('placeholder')
     self.validate_input_field_style(production_notes)
-    special_handling_instructions = self._get(self.self._special_handling_instructions)
+    special_handling_instructions = self._get(self._special_handling_instructions)
     special_handling_instructions.get_attribute('placeholder') == \
         'Add special handling instructions here.'
-
     prov_div = self._get(self._provenance_div)
     prov = prov_div.find_element_by_tag_name('span')
-    assert prov.text == 'provenance', prov.text
+    assert prov.text == 'Provenance', prov.text
     self.validate_input_field_label_style(prov)
-    kkk
-
-    ae_input.send_keys(user['email'] + Keys.ENTER)
-    ae_input.send_keys(Keys.ENTER)
-    time.sleep(.5)
-    self.validate_primary_big_green_button_style(btn)
-    ae_input.clear()
+    # test submiting without required fields to check for errors
+    # press I am done with this task
+    done_btn = self._get(self._completion_button)
+    done_btn.click()
+    time.sleep(1)
+    volume_field = self._get(self._volume_number_field)
+    assert 'Must be a whole number' in volume_field.text
+    issue_field = self._get(self._issue_number_field)
+    assert 'Must be a whole number' in issue_field.text
+    self.validate_error_field_style(volume_field)
+    self.validate_error_msg_field_style(volume_field)
+    self.validate_error_field_style(issue_field)
+    self.validate_error_msg_field_style(issue_field)
     return None
+
+  def check_function(self, user):
+    """
+    Style check for the card
+    :user: User to send the invitation
+    """
+    publication_data = self._get(self._publication_date)
+    assert publication_data.get_attribute('placeholder') == 'Select Date...'
+    self.validate_input_field_style(publication_data)
+    volume_number = self._get(self._volume_number)
+    assert volume_number.get_attribute('type') == 'number', \
+        volume_number.get_attribute('type')
+    assert volume_number.get_attribute('placeholder') == 'e.g. 3', \
+        volume_number.get_attribute('placeholder')
+    self.validate_input_field_style(volume_number)
+    issue_number = self._get(self._issue_number)
+    assert issue_number.get_attribute('type') == 'number', \
+        issue_number.get_attribute('type')
+    assert issue_number.get_attribute('placeholder') == 'e.g. 33', \
+        issue_number.get_attribute('placeholder')
+    self.validate_input_field_style(issue_number)
+    provenance = self._get(self._provenance)
+    # Check "there is no placeholder text for Provenance"
+    assert not provenance.get_attribute('placeholder')
+    self.validate_input_field_style(provenance)
+    production_notes = self._get(self._production_notes)
+    assert production_notes.get_attribute('placeholder') == 'Add production notes here.', \
+        production_notes.get_attribute('placeholder')
+    self.validate_input_field_style(production_notes)
+    special_handling_instructions = self._get(self._special_handling_instructions)
+    special_handling_instructions.get_attribute('placeholder') == \
+        'Add special handling instructions here.'
+    prov_div = self._get(self._provenance_div)
+    prov = prov_div.find_element_by_tag_name('span')
+    assert prov.text == 'Provenance', prov.text
+
 
    #POM Actions
   def click_task_completed_checkbox(self):

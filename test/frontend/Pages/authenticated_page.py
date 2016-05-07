@@ -1670,6 +1670,26 @@ class AuthenticatedPage(PlosPage):
     assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
     assert msg.value_of_css_property('display') == 'inline-block', msg.value_of_css_property('display')
 
+  @staticmethod
+  def validate_error_field_style(field):
+    """
+    Ensure consistency in rendering warning alerts across the application
+    :field: field to validate
+    """
+    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
+    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
+    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
+    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
+
+  @staticmethod
+  def validate_error_msg_field_style(field):
+    """
+    Ensure consistency in rendering warning alerts across the application
+    :field: field to validate
+    """
+    assert field.value_of_css_property('color')  == 'rgba(187, 0, 0, 1)'
+    assert field.value_of_css_property('font-size') == '14px'
+
   # Avatar Styles =============================
   @staticmethod
   def validate_large_avatar_style(avatar):

@@ -91,11 +91,22 @@ class ProductionMetadataCardTest(CommonTest):
     workflow_page.click_production_metadata_card()
     product_metadata_card = ProductionMedataCard(self.getDriver())
     product_metadata_card.check_style(academic_editor_login)
+    # test content should save if I close
+    # send data
+    product_metadata_card.check_function(academic_editor_login)
+
+
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
                            errors='strict')
-    # The title we pass in here must be a unicode object if there is utf-8 data present
+
+    # test content should save if I close
+    # send data
+
+
+
+
     kkkk
     invite_ae_card.validate_invite_ae(academic_editor_login,
                                           manuscript_title,

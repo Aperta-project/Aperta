@@ -17,7 +17,7 @@ class ApexManifest
     @file_list << filename
   end
 
-  def to_json
+  def as_json(_ = nil)
     manifest = {
       archive_filename: @archive_filename,
       metadata_filename: @metadata_filename,
@@ -26,7 +26,7 @@ class ApexManifest
     if @apex_delivery_id.present?
       manifest[:apex_delivery_id] = @apex_delivery_id
     end
-    manifest.to_json
+    manifest
   end
 
   def file

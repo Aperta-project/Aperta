@@ -21,7 +21,7 @@ describe ApexManifest do
     end
   end
 
-  describe "#to_json" do
+  describe "#as_json" do
     let(:manifest_with_files) do
       manifest.tap do |m|
         m.add_file file_1
@@ -29,14 +29,13 @@ describe ApexManifest do
       end
     end
 
-    it "returns the manifest in JSON format" do
-      json = manifest_with_files.to_json
-      manifest_hash = JSON.parse json
+    it "returns the manifest as a hash" do
+      manifest_hash = manifest_with_files.as_json
       expected_hash = {
-        "archive_filename" => archive_filename,
-        "metadata_filename" => metadata_filename,
-        "apex_delivery_id" => apex_delivery_id,
-        "files" => [file_1, file_2]
+        archive_filename: archive_filename,
+        metadata_filename: metadata_filename,
+        apex_delivery_id: apex_delivery_id,
+        files: [file_1, file_2]
       }
       expect(manifest_hash).to match expected_hash
     end

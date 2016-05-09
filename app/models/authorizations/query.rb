@@ -83,6 +83,18 @@ module Authorizations
       :publishing_state
     end
 
+    # +permission_state_join+ allows for a model to delegate their state
+    # by implementing a `delegate_state_to` method on the class that
+    # returns the name of the association to delegate to as a symbol.
+    #
+    # For example, having the following method in a model will delegate permission state to Paper:
+    #  def self.delegate_state_to
+    #    :paper
+    #  end
+    def permission_state_join
+      @klass.try(:delegate_state_to)
+    end
+
     def allowed?(object, states)
       states.include?(WILDCARD_STATE) ||
         !object.respond_to?(permission_state_column) ||
@@ -197,6 +209,7 @@ module Authorizations
             klass: @klass,
             target: @target,
             assignments: assignments,
+            state_join: permission_state_join,
             permissible_states: permissible_states,
             state_column: permission_state_column
           ).query
@@ -218,6 +231,7 @@ module Authorizations
               assigned_to_klass: assigned_to_klass,
               assignments: assignments,
               permissible_states: permissible_states,
+              state_join: permission_state_join,
               state_column: permission_state_column
             ).query
             result_set.add_objects(authorized_objects, with_permissions: all_permissions)
@@ -235,7 +249,13 @@ module Authorizations
 
       def add_objects(objects, with_permissions:)
         objects.each do |object|
-          @object_permission_map[object].merge!(with_permissions)
+          # Permission states may come thru multiple role assignments
+          # so combine them together rather than overwrite. Otherwise
+          # only the last set of permission sets seen will be kept in
+          # this ResultSet
+          @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
+            { states: (v1[:states] + v2[:states]).uniq }
+          end
         end
       end
 

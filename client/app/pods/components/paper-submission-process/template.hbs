@@ -1,2 +1,4 @@
-{{partial "submission/submission-process"}}
+{{#if renderEngagementBanner}}
+  {{partial "submission/submission-process"}}
+{{/if}}
 {{yield}}

@@ -21,12 +21,6 @@ class VersionedText < ActiveRecord::Base
 
   validates :paper, :major_version, :minor_version, presence: true
 
-  before_update do
-    fail ActiveRecord::ReadOnlyRecord unless
-      (paper.latest_version == self) && paper.editable? && submitting_user_id_was.blank?
-    # use submitting_user_id_was above because it should be writable when submitting
-  end
-
   # Make a copy of the text and give it a new MAJOR version.
   def new_major_version!
     new_version!(major_version + 1, 0)

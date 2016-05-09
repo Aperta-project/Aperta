@@ -6,6 +6,61 @@ describe Paper do
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:user) { FactoryGirl.create :user }
 
+  describe 'constants' do
+    describe 'STATES' do
+      it 'includes all possible states' do
+        expect(Paper::STATES).to contain_exactly(
+          :unsubmitted,
+          :initially_submitted,
+          :invited_for_full_submission,
+          :submitted,
+          :checking,
+          :in_revision,
+          :accepted,
+          :rejected,
+          :published,
+          :withdrawn
+        )
+      end
+    end
+
+    describe 'EDITABLE_STATES' do
+      it 'defines the paper states for when a paper is editable' do
+        expect(Paper::EDITABLE_STATES).to contain_exactly(
+          :unsubmitted,
+          :in_revision,
+          :invited_for_full_submission,
+          :checking
+        )
+      end
+    end
+
+    describe 'UNEDITABLE_STATES' do
+      it 'defines the paper states for when a paper is not editable' do
+        uneditable_states = Paper::STATES - Paper::EDITABLE_STATES
+        expect(Paper::UNEDITABLE_STATES).to contain_exactly(*uneditable_states)
+      end
+    end
+
+    describe 'SUBMITTED_STATES' do
+      it 'defines the paper states for when a paper is considered submitted' do
+        expect(Paper::SUBMITTED_STATES).to contain_exactly(
+          :submitted,
+          :initially_submitted
+        )
+      end
+    end
+
+    describe 'REVIEWABLE_STATES' do
+      it 'defines the paper states for when a paper is reviewable' do
+        reviewable_states = Paper::EDITABLE_STATES + Paper::SUBMITTED_STATES
+        expect(Paper::REVIEWABLE_STATES).to contain_exactly(
+          *reviewable_states
+        )
+      end
+    end
+  end
+
   describe 'validations' do
     let(:paper) { FactoryGirl.build :paper }
 
@@ -543,6 +598,10 @@ describe Paper do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
+      let(:unsubmitted_paper) do
+        FactoryGirl.create(:paper, :unsubmitted, journal: journal)
+      end
+
       before do
         paper.withdraw!
       end
@@ -561,7 +620,7 @@ describe Paper do
       end
 
       it "marks the paper with the previous editable state for unsubmitted papers" do
-        paper = FactoryGirl.create(:paper, :unsubmitted)
+        paper = unsubmitted_paper
         expect(paper).to be_editable
         paper.withdraw!
         expect(paper).to_not be_editable

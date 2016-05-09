@@ -69,11 +69,11 @@
   </div>
 
 {{else}}
-  <div class="si-file-viewing" {{action "enterEditState" on="doubleClick"}}>
+  <div class="si-file-viewing" {{action "enterEditStateIfEditable" on="doubleClick"}}>
 
     {{#if isEditable}}
       <div class="si-file-control-icons">
-        <i class="fa fa-pencil si-file-edit-icon" {{action "enterEditState" on="click"}}></i>
+        <i class="fa fa-pencil si-file-edit-icon" {{action "enterEditStateIfEditable" on="click"}}></i>
         <i class="fa fa-trash si-file-delete-icon" {{action "enterDeleteState" on="click"}}></i>
       </div>
     {{/if}}

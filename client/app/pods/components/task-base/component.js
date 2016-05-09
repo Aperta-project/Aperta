@@ -30,21 +30,14 @@ export default Component.extend(ValidationErrorsMixin, {
   isOnlyEditableIfPaperEditable: alias('task.isOnlyEditableIfPaperEditable'),
 
   isEditableDueToPermissions: alias('editAbility.can'),
-  isEditableDueToPaperState: computed(
-    'task.paper.editable', 'isOnlyEditableIfPaperEditable',
-    function() {
-      return !this.get('isOnlyEditableIfPaperEditable') ||
-             this.get('task.paper.editable');
-    }),
   isEditableDueToTaskState: not('task.completed'),
 
   isEditable: and(
-    'isEditableDueToPaperState',
     'isEditableDueToPermissions',
     'isEditableDueToTaskState'),
   isNotEditable: not('isEditable'),
 
-  taskStateToggleable: and('isEditableDueToPermissions', 'isEditableDueToPaperState'),
+  taskStateToggleable: alias('isEditableDueToPermissions'),
 
   save() {
     this.set('validationErrors.completed', '');

@@ -5,7 +5,7 @@ class TechCheckOverlay < CardOverlay
     click_send_changes_button
   end
 
-  def expect_author_chages_saved
+  def expect_author_changes_saved
     expect(page).to have_content('Author Changes Letter has been Saved')
   end
 

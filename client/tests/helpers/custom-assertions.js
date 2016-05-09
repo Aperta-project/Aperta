@@ -3,7 +3,7 @@ import QUnit from 'qunit';
 
 export default function() {
   QUnit.assert.textPresent = function(selector, text, message) {
-    let elementText  = Ember.$.trim(find(selector).text());
+    let elementText  = Ember.$.trim(Ember.$(selector).text());
     let result       = elementText.indexOf(text) !== -1;
     let finalMessage;
 
@@ -17,7 +17,7 @@ export default function() {
   };
 
   QUnit.assert.textNotPresent = function(selector, text, message) {
-    let elementText  = Ember.$.trim(find(selector).text());
+    let elementText  = Ember.$.trim(Ember.$(selector).text());
     let result       = elementText.indexOf(text) === -1;
     let finalMessage;
 
@@ -33,13 +33,48 @@ export default function() {
   QUnit.assert.elementFound = function(selector, message) {
     const matches = $(selector).length;
 
-    return this.push(matches === 1, `'${selector}' not found`, `found '${selector}'`, message || `should find element at ${selector}`);
+    return this.push(
+      matches === 1,
+      `one '${selector}' not found`,
+      `found ${matches} '${selector}'s`,
+      message || `should find single element at ${selector}`);
   };
 
   QUnit.assert.elementNotFound = function(selector, message) {
-    const matches = $(selector).length;
-
-    return this.push(matches === 0, `'${selector}' found`, `found no '${selector}'`, message || `should not find element at ${selector}`);
+    const matches = Ember.$('#ember-testing ' + selector).length;
+    return this.push(
+      matches === 0,
+      `'${selector}' found`,
+      `'${selector}' not found`,
+      message || `should find no element at ${selector}`);
   };
 
+  QUnit.assert.inputPresent = function(selector, value, message) {
+    selector = selector + ':input';
+    var input = Ember.$(selector);
+
+    this.elementFound(selector, message);
+
+    return this.push(
+      input.val() === value,
+      input.val(),
+      value,
+      message + '(wrong value found)' ||
+        `should find ${value} in input at ${selector}`);
+
+  };
+
+  QUnit.assert.checkboxPresent = function(selector, value, message) {
+    selector = selector + ':checkbox';
+    var input = Ember.$(selector);
+
+    this.elementFound(selector, message);
+
+    return this.push(
+      input.is(':checked') === value,
+      input.is(':checked'),
+      value,
+      message + '(wrong value found)' ||
+        `should find ${value} in input at ${selector}`);
+  };
 }

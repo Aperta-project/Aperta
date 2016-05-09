@@ -17,7 +17,7 @@ feature 'Revision Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
-    overlay.expect_author_chages_saved
+    overlay.expect_author_changes_saved
     overlay.mark_as_complete
     overlay.expect_task_to_be_completed
     overlay.dismiss
@@ -32,7 +32,7 @@ feature 'Revision Tech Check', js: true do
     overlay.click_changes_have_been_made
     overlay.dismiss
 
-    # creator cannot access iniital tech task
+    # creator cannot access revision tech check task
     visit "/papers/#{paper.id}/tasks/#{task.id}"
     wait_for_ajax
     expect(page).to have_content("You don't have access to that content")

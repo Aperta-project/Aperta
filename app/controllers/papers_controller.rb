@@ -84,6 +84,13 @@ class PapersController < ApplicationController
                  root: 'snapshots'
   end
 
+  def related_articles
+    requires_user_can(:edit_related_articles, paper)
+    respond_with paper.related_articles,
+                 each_serializer: RelatedArticleSerializer,
+                 root: 'related_articles'
+  end
+
   ## CONVERSION
 
   # Upload a word file for the latest version.

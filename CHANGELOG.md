@@ -4,12 +4,19 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Related Articles task
+- Templates for devs creating new tasks
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
 - Prevent errors while adding discussion participants
 ### Security
+
+## [1.4.7] - 2016-05-06
+
+### Changed
+- Removed ability of the author/collaborator to manage collaborators
 
 ## [1.4.6] - 2016-04-29
 ### Added
@@ -31,6 +38,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Reviewers can be removed using the Assign Team card
 - Freelance editors can be assigned as Cover Editor and/or Handling Editor
+- Staff Admins can edit tasks even in paper states where the task is normally
+  uneditable by authors
 
 ### Changed
 ### Deprecated
@@ -40,6 +49,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Ensure that cards created after paper creation have the correct permissions
 - Prevent duplication errors in generating new DOIs
+- Ensure that Supporting Information no editable when the paper is editable
 
 ### Security
 

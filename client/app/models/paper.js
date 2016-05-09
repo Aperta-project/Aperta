@@ -28,6 +28,7 @@ export default DS.Model.extend({
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
   phases: hasMany('phase', { async: true }),
+  relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
@@ -147,13 +148,12 @@ export default DS.Model.extend({
     }
   ),
 
-
-
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
   invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
   isInitiallySubmitted: computed.equal('publishingState', 'initially_submitted'),
   isInRevision: computed.equal('publishingState', 'in_revision'),
+  isWithdrawn: computed.equal('publishingState', 'withdrawn'),
 
   isInitialSubmission: computed.and('gradualEngagement', 'isUnsubmitted'),
   isFullSubmission: computed.and('gradualEngagement', 'invitedForFullSubmission'),

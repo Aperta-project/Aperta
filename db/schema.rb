@@ -483,6 +483,19 @@ ActiveRecord::Schema.define(version: 20160428184601) do
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
   add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
 
+  create_table "related_articles", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "linked_doi"
+    t.string   "linked_title"
+    t.string   "additional_info"
+    t.boolean  "send_manuscripts_together"
+    t.text     "send_link_to_apex"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
     t.integer  "journal_id"

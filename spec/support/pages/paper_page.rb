@@ -120,7 +120,7 @@ class PaperPage < Page
   end
 
   def paper_loading_spinner
-    find('.progress-spinner-message')
+    all('.progress-spinner-message')
   end
 
   def loading_paper?

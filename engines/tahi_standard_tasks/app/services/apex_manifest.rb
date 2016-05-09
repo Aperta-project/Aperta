@@ -37,7 +37,8 @@ class ApexManifest
   end
 
   def fail_if_invalid
-    fail InvalidManifest unless archive_filename.present?
-    fail InvalidManifest unless metadata_filename.present?
+    [:archive_filename, :metadata_filename].each do |attr|
+      fail InvalidManifest, "Missing #{attr}" unless send(attr).present?
+    end
   end
 end

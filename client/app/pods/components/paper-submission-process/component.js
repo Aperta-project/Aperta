@@ -11,6 +11,8 @@ export default Ember.Component.extend({
   classNameBindings: [':paper-submission-process', 'showProcess'],
   showProcess: false,
 
+  paper: null,
+
   _toggle: Ember.observer('showProcess', function() {
     const banner = this.$('#submission-process');
     const paper  = this.$('#paper-container');

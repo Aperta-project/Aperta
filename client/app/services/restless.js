@@ -12,7 +12,11 @@ export default Ember.Service.extend({
   },
 
   ajaxPromise(method, path, data) {
-    let socketId = getOwner(this).lookup('pusher:main').get('socketId');
+    let pusher = getOwner(this).lookup('pusher:main');
+    let socketId = null;
+    if (pusher) {
+      socketId = getOwner(this).lookup('pusher:main').get('socketId');
+    }
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       return Ember.$.ajax({

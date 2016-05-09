@@ -123,15 +123,35 @@ describe PapersController do
         do_request
       end
 
+      it 'does not call the DownloadManuscriptWorker' do
+        expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+        do_request
+      end
+
+      context 'when a url is present in the paper params' do
+        before do
+          paper_params['url'] = 'someURL'
+        end
+
+        it 'calls DownloadManuscriptWorker' do
+          expect(DownloadManuscriptWorker).to receive(:download_manuscript).with(paper, "someURL", user)
+          do_request
+        end
+      end
+
       context 'when the paper is invalid' do
         before do
           paper.title = nil
-          expect(paper.valid?).to be(false)
-          allow(PaperFactory).to receive(:create).and_return paper
+          expect(paper).to be_invalid
         end
 
-        it "renders the errors for the paper when it can't be saved" do
-          post :create, paper: { journal_id: journal.id }, format: :json
+        it "doesn't call DownloadManuscriptWorker" do
+          expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+          do_request
+        end
+
+        it "returns a 422" do
+          do_request
           expect(response.status).to eq(422)
         end
       end
@@ -173,25 +193,6 @@ describe PapersController do
         do_request
       end
 
-      it 'does not call the DownloadManuscriptWorker' do
-        expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
-        do_request
-      end
-
-      context 'when a new s3 url is present in the paper params' do
-        subject(:do_request) do
-          put(
-            :update,
-            id: paper.to_param,
-            format: :json,
-            paper: { url: "someURL" }
-          )
-        end
-        it 'calls DownloadManuscriptWorker' do
-          expect(DownloadManuscriptWorker).to receive(:download_manuscript).with(paper, "someURL", user)
-          do_request
-        end
-      end
     end
 
     context "when the user has access and the paper is NOT editable" do

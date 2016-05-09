@@ -41,7 +41,8 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
       dashboard.upload_file(
         element_id: 'upload-files',
         file_name: 'about_equations.docx',
-        sentinel: proc { paper_src }
+        sentinel: proc { paper_src },
+        process_before_upload: true
       )
 
       FakeIhatService.complete_paper_processing!(

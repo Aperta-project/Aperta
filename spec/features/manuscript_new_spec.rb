@@ -10,13 +10,15 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let(:dashboard) { DashboardPage.new }
 
   scenario 'failure' do
-    login_as(user, scope: :user)
-    visit '/'
-    find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+    with_aws_cassette('manuscript-new') do
+      login_as(user, scope: :user)
+      visit '/'
+      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
 
-    attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
+      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_equations.docx'), visible: false
 
-    expect(page).to have_content('Paper type can\'t be blank')
+      expect(page).to have_content('Paper type can\'t be blank')
+    end
   end
 
   def paper_src

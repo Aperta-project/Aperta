@@ -32,11 +32,13 @@ class PapersController < ApplicationController
   # signed in user.
   def create
     paper = PaperFactory.create(paper_params, current_user)
-    Activity.paper_created!(paper, user: current_user) if paper.valid?
+    if paper.valid?
+      Activity.paper_created!(paper, user: current_user) if paper.valid?
 
-    url = params.dig(:paper, :url)
-    if url
-      DownloadManuscriptWorker.download_manuscript(paper, url, current_user)
+      url = params.dig(:paper, :url)
+      if url
+        DownloadManuscriptWorker.download_manuscript(paper, url, current_user)
+      end
     end
     respond_with paper
   end

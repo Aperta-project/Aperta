@@ -20,16 +20,17 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   end
 
   def paper_src
-      paper = Paper.find_by(title: 'Paper Title')
-      if paper
-        paper.latest_version[:source]
-      end
+    paper = Paper.find_by(title: 'Paper Title')
+    if paper
+      paper.latest_version[:source]
+    end
   end
 
   scenario 'success' do
     with_aws_cassette('manuscript-new') do
       login_as(user, scope: :user)
       visit '/'
+
       find('.button-primary', text: 'CREATE NEW SUBMISSION').click
 
       dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
@@ -41,7 +42,13 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
         sentinel: proc { paper_src }
       )
 
+      FakeIhatService.complete_paper_processing!(
+        paper_id: Paper.last.id,
+        user_id: user.id
+      )
+
       visit "/papers/#{Paper.last.id}"
+
       expect(PaperPage.new).to_not be_loading_paper
     end
   end

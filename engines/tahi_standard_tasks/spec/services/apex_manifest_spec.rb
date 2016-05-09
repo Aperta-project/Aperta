@@ -15,7 +15,7 @@ describe ApexManifest do
   describe "#add_file" do
     it "adds a file to the manifest's @file_list" do
       expect { manifest.add_file file_1 }
-        .to change { manifest.instance_variable_get :@file_list }
+        .to change { manifest.file_list }
         .from([]).to([file_1])
     end
   end

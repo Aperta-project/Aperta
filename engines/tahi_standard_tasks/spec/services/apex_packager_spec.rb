@@ -91,9 +91,9 @@ describe ApexPackager do
           packager.send(:add_metadata, package)
         end
         metadata_filename =
-          packager.send(:manifest).instance_variable_get(:@metadata_filename)
+          packager.send(:manifest).metadata_filename
         expect(metadata_filename).to eq "metadata.json"
-        files = packager.send(:manifest).instance_variable_get(:@file_list)
+        files = packager.send(:manifest).file_list
         expect(files).to eq ["metadata.json"]
       end
     end
@@ -105,7 +105,7 @@ describe ApexPackager do
           packager.send(:add_manuscript, package)
         end
         manuscript_filename = packager.send(:manuscript_filename)
-        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).file_list
         expect(file_list).to eq [manuscript_filename]
       end
     end
@@ -168,7 +168,7 @@ describe ApexPackager do
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_figures, package)
         end
-        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).file_list
         expect(file_list).to eq ["yeti.jpg"]
       end
     end
@@ -241,7 +241,7 @@ describe ApexPackager do
           packager.send(:add_supporting_information, package)
         end
         si_filename = "about_turtles.docx"
-        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).file_list
         expect(file_list).to eq [si_filename]
       end
     end
@@ -312,7 +312,7 @@ describe ApexPackager do
         end
         striking_image_filename =
           packager.send(:attachment_apex_filename, paper.striking_image)
-        file_list = packager.send(:manifest).instance_variable_get(:@file_list)
+        file_list = packager.send(:manifest).file_list
         expect(file_list).to eq [striking_image_filename]
       end
     end

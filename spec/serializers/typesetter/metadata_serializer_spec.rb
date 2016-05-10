@@ -3,7 +3,13 @@ require 'rails_helper'
 describe Typesetter::MetadataSerializer do
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
-  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_academic_editor_role,
+      :with_creator_role
+    )
+  end
   let(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
@@ -41,7 +47,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   it 'serializes authors in order' do
-    paper = FactoryGirl.create(:paper_ready_for_export, :with_integration_journal)
+    paper = FactoryGirl.create(:paper_ready_for_export, journal: journal)
     author = FactoryGirl.create(:author, paper: paper)
     author2 = FactoryGirl.create(:author, paper: paper)
     paper.authors = [author, author2]

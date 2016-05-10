@@ -13,6 +13,11 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Prevent errors while adding discussion participants
 ### Security
 
+## [1.4.7] - 2016-05-06
+
+### Changed
+- Removed ability of the author/collaborator to manage collaborators
+
 ## [1.4.6] - 2016-04-29
 ### Added
 -

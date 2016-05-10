@@ -6,7 +6,7 @@ class AffiliationsController < ApplicationController
     if not query
       institutions = []
     else
-      institutions = Institutions.instance.matching_institutions(query)[0..10]
+      institutions = Institutions.instance.matching_institutions(query)
     end
     render json: institutions, root: :institutions
   end

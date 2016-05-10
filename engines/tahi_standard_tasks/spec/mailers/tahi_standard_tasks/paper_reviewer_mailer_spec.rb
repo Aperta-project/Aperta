@@ -11,7 +11,6 @@ shared_examples_for 'an invitation notification email' do |email_identifier_word
     expect(email.to.first).to eq invitation.email
   end
 
-  specify { expect(email.body).to match(/#{task.paper.display_title(sanitized: false)}/) }
   specify { expect(email.body).to match(/#{email_identifier_word}/) }
 end
 
@@ -62,6 +61,11 @@ describe TahiStandardTasks::PaperReviewerMailer do
     end
 
     it_behaves_like 'an invitation notification email', email_identifier_word: 'rescinded'
+
+    specify do
+      title = task.paper.display_title(sanitized: false)
+      expect(email.body).to match(/#{title}/)
+    end
 
     describe "email content and formatting" do
       it "has correct subject line" do

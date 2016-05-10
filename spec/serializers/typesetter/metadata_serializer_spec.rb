@@ -249,7 +249,7 @@ describe Typesetter::MetadataSerializer do
       'serializes :has_many property',
       property: :author_list_items,
       factory: :author,
-      serializer: Typesetter::AuthorsSerializer,
+      serializer: Typesetter::AuthorListItemSerializer,
       json_key: :authors
     )
   end

@@ -1,7 +1,7 @@
 module Typesetter
   # Serializes author for the typesetter.
   # Expects an author as its object to serialize.
-  class IndividualAuthorSerializer < Typesetter::TaskAnswerSerializer
+  class AuthorSerializer < Typesetter::TaskAnswerSerializer
     attributes :type, :first_name, :last_name, :middle_initial, :email,
                :department, :title, :corresponding, :deceased, :affiliation,
                :secondary_affiliation, :contributions, :government_employee

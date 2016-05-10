@@ -18,7 +18,7 @@ module Typesetter
     has_one :data_availability,
             serializer: Typesetter::DataAvailabilitySerializer
     has_many :author_list_items,
-             serializer: Typesetter::AuthorsSerializer,
+             serializer: Typesetter::AuthorListItemSerializer,
              key: :authors
     has_many :academic_editors, serializer: Typesetter::EditorSerializer
     has_many :supporting_information_files,

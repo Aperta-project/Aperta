@@ -5,7 +5,11 @@ export default Ember.Component.extend({
   comparisonBool: null,
 
   boolText(bool) {
-    return bool ? 'Yes' : 'No';
+    if(_.isUndefined(bool) || _.isNull(bool)) {
+      return bool;
+    } else {
+      return bool ? 'Yes' : 'No';
+    }
   },
 
   viewingBoolText: Ember.computed('viewingBool', function() {

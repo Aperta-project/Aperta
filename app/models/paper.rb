@@ -245,6 +245,15 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # Returns the corresponding author emails. When there are no authors
+  # marked as corresponding then it defaults to the creator's email address.
+  def corresponding_author_emails
+    corresponding_authors = authors.select { |au| au.corresponding? }
+    emails = corresponding_authors.map { |author| author.email }.compact
+    emails = [creator.try(:email)] if emails.empty?
+    emails.compact
+  end
+
   # Public: Find `Role`s for the given user on this paper.
   #
   # Examples

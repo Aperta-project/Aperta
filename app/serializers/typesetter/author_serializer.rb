@@ -17,15 +17,7 @@ module Typesetter
     end
 
     def corresponding
-      if paper_has_corresponding_author?
-        object.corresponding? == true
-      else
-        object.email == object.paper.creator.email
-      end
-    end
-
-    def paper_has_corresponding_author?
-      object.paper.authors.select { |a| a.corresponding? == true }.any?
+      object.paper.corresponding_author_emails.include?(object.email)
     end
 
     def government_employee

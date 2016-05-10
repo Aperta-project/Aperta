@@ -12,9 +12,11 @@ describe Typesetter::AuthorSerializer do
   let(:affiliation) { 'PLOS' }
   let(:secondary_affiliation) { 'SECONDARY AFFILIATION' }
 
+  let(:paper) { FactoryGirl.create(:paper) }
   let!(:author) do
     FactoryGirl.create(
       :author,
+      paper: paper,
       first_name: first_name,
       last_name: last_name,
       middle_initial: middle_initial,
@@ -81,15 +83,6 @@ describe Typesetter::AuthorSerializer do
       owner: author,
       value: 'Performed some other duty',
       value_type: 'text'
-    )
-  end
-  let!(:corresponding_answer) do
-    FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: corresponding_question,
-      owner: author,
-      value: false,
-      value_type: 'boolean'
     )
   end
   let!(:deceased_answer) do
@@ -175,18 +168,31 @@ describe Typesetter::AuthorSerializer do
   end
 
   describe 'corresponding' do
-    it "is the author's corresponding preference" do
-      expect(output[:corresponding]).to eq(corresponding_answer.value)
-    end
+    context <<-DESC.strip_heredoc do
+      when the author's email is in the paper's corresponding_author_emails
+    DESC
 
-    context 'when the author is the creator' do
       before do
-        allow(author.paper).to receive(:creator).and_return(author)
-        allow(author.paper).to receive(:authors).and_return([author])
+        allow(paper).to receive(:corresponding_author_emails)
+          .and_return [author.email]
       end
 
-      it "uses the creator when the paper has no corresponding author checked" do
+      it 'is true'do
         expect(output[:corresponding]).to eq(true)
+      end
+    end
+
+    context <<-DESC.strip_heredoc do
+      when the author's email is not in the paper's corresponding_author_emails
+    DESC
+
+      before do
+        allow(paper).to receive(:corresponding_author_emails)
+          .and_return ['some-other-email@example.com']
+      end
+
+      it 'is false'do
+        expect(output[:corresponding]).to eq(false)
       end
     end
   end

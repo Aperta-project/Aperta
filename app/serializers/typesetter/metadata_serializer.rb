@@ -33,20 +33,15 @@ module Typesetter
     end
 
     def publication_date
-      return unless production_metadata
-      pub_date = production_metadata.publication_date
-      return unless pub_date
-      Date.strptime(pub_date, '%m/%d/%Y')
+      production_metadata.try(:publication_date).try(:to_date)
     end
 
     def provenance
-      return unless production_metadata
-      production_metadata.provenance || ''
+      production_metadata.try(:provenance) || ''
     end
 
     def special_handling_instructions
-      return unless production_metadata
-      production_metadata.special_handling_instructions || ''
+      production_metadata.try(:special_handling_instructions) || ''
     end
 
     def supporting_information_files

@@ -30,12 +30,12 @@ test("displays diff when value changed", function(assert) {
   assert.diffPresent('No', 'Yes');
 });
 
-test("displays no diff when comparing boolean is null", function(assert) {
+test("displays boolean added when comparing boolean is null", function(assert) {
   this.set('booleanToView', true);
   this.set('booleanToCompare', null);
 
   this.render(template);
-  assert.equal(this.$('.added').length, 0, 'Has no added diff spans');
+  assert.equal(this.$('.added').length, 1, 'Has no added diff spans');
   assert.equal(this.$('.removed').length, 0, 'Has removed diff spans');
 });
 
@@ -55,4 +55,13 @@ test("displays boolean removed when original viewing boolean is undefined", func
   this.render(template);
   assert.equal(this.$('.added').length, 0, 'Has no added diff spans');
   assert.equal(this.$('.removed').length, 1, 'Has removed diff spans');
+});
+
+test("displays boolean added when comparing boolean is undefined", function(assert) {
+  this.set('booleanToView', true);
+  this.set('booleanToCompare', undefined);
+
+  this.render(template);
+  assert.equal(this.$('.added').length, 1, 'Has no added diff spans');
+  assert.equal(this.$('.removed').length, 0, 'Has removed diff spans');
 });

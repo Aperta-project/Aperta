@@ -6,6 +6,9 @@ export default Ember.Component.extend({
 
   boolText(bool) {
     if(_.isUndefined(bool) || _.isNull(bool)) {
+      // return value null or undefined value so that it can be sent through
+      // to text-diff which will do the comparison correctly to determin
+      // if value added or removed
       return bool;
     } else {
       return bool ? 'Yes' : 'No';
@@ -18,7 +21,5 @@ export default Ember.Component.extend({
 
   comparisonBoolText: Ember.computed('comparisonBool', function() {
     return this.boolText(this.get('comparisonBool'));
-  }),
-
-  comparisonBoolDefined: Ember.computed.notEmpty('comparisonBool')
+  })
 });

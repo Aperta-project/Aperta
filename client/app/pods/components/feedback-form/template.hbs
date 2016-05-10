@@ -9,33 +9,39 @@
 
   {{textarea class="form-control feedback-overlay-remarks"
              name="remarks"
-             value=model.remarks
+             value=feedback.remarks
              placeholder="Please tell us about your experience"
              autofocus="autofocus"}}
   <div class="call-to-action">
-    <div class="button-secondary button--green feeback-overlay-screenshot-uploader fileinput-button">
-      Attach Files
-      {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.pages"
-                      start="uploadStarted"
-                      done="uploadFinished"
-                      multiple="true"
-                      filePrefix="feedback_attachment"}}
-    </div>
+    {{#if allowUploads}}
+      <div class="button-secondary button--green feeback-overlay-screenshot-uploader fileinput-button">
+        Attach Files
+        {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.pages"
+                        start="uploadStarted"
+                        done="uploadFinished"
+                        multiple="true"
+                        filePrefix="feedback_attachment"}}
+      </div>
+    {{/if}}
 
     <div class="overlay-footer-content feedback-overlay-footer-content">
       <div class="overlay-action-buttons">
-        <button class="button-link button--green" {{action "close"}}>cancel</button>
+        {{#if close}}
+          <button class="button-link button--green" {{action close}}>cancel</button>
+        {{/if}}
         <button class="button-primary button--green {{if isUploading "button--disabled"}}" {{action "submit"}}>Send Feedback</button>
       </div>
     </div>
-    <ul class="feedback-overlay-screenshots">
-      {{#each model.screenshots as |screenshot|}}
-        <li class="animation-fade-in">
-          <span class="fa fa-trash feedback-overlay-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
-          <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
-        </li>
-      {{/each}}
-    </ul>
+    {{#if showScreenshots}}
+      <ul class="feedback-overlay-screenshots">
+        {{#each feedback.screenshots as |screenshot|}}
+          <li class="animation-fade-in">
+            <span class="fa fa-trash feedback-overlay-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
+            <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
   </div>
 
   {{#if isUploading}}

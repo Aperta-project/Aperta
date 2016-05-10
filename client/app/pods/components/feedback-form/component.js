@@ -6,11 +6,13 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   feedbackSubmitted: false,
   isUploading: false,
   classNames: ['feedback-form'],
+  close: null, //passed-in action
+  feedback: null,
 
   init() {
     this._super(...arguments);
     this.set('store', getOwner(this).lookup('store:main'));
-    this.set('model', this.get('store').createRecord('feedback', {
+    this.set('feedback', this.get('store').createRecord('feedback', {
       screenshots: []
     }));
   },
@@ -19,15 +21,15 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     submit() {
       if(this.get('isUploading')) { return; }
 
-      this.set('model.referrer', window.location);
-      this.get('model').save().then(()=> {
+      this.set('feedback.referrer', window.location);
+      this.get('feedback').save().then(()=> {
         this.set('feedbackSubmitted', true);
       });
     },
 
     uploadFinished(data, filename) {
       this.set('isUploading', false);
-      this.get('model.screenshots').pushObject({
+      this.get('feedback.screenshots').pushObject({
         url: data,
         filename: filename
       });
@@ -38,11 +40,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     removeScreenshot(screenshot) {
-      this.get('model.screenshots').removeObject(screenshot);
-    },
-
-    close() {
-      this.attrs.close();
+      this.get('feedback.screenshots').removeObject(screenshot);
     }
+
   }
 });

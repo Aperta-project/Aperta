@@ -3,7 +3,7 @@ module Typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
     include ActiveModel::Validations
-    validates :verdict_was_accepted?, presence: true
+    validates :paper_is_accepted?, presence: true
 
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions
@@ -23,10 +23,6 @@ module Typesetter
     has_many :academic_editors, serializer: Typesetter::EditorSerializer
     has_many :supporting_information_files,
              serializer: Typesetter::SupportingInformationFileSerializer
-
-    def verdict_was_accepted?
-      object.decisions.latest.verdict == 'accept'
-    end
 
     def journal_title
       object.journal.name
@@ -67,6 +63,12 @@ module Typesetter
     def serializable_hash
       fail Typesetter::MetadataError.not_accepted unless valid?
       super
+    end
+
+    private
+
+    def paper_is_accepted?
+      object.accepted?
     end
   end
 end

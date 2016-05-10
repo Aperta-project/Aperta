@@ -45,6 +45,10 @@ FactoryGirl.define do
       end
     end
 
+    trait(:accepted) do
+      publishing_state "accepted"
+    end
+
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
       publishing_state "submitted"

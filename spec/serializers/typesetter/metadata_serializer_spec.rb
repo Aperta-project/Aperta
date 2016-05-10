@@ -13,6 +13,7 @@ describe Typesetter::MetadataSerializer do
   let(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
+      :accepted,
       :with_academic_editor_user,
       :with_short_title,
       journal: journal,
@@ -28,7 +29,6 @@ describe Typesetter::MetadataSerializer do
       FactoryGirl.create(:publishing_related_questions_task, paper: paper)
     ]
   end
-  let(:accepted_decision) { FactoryGirl.create(:decision) }
 
   let(:paper_task) do
     ->(task_type) { paper.tasks.find_by_type(task_type) }
@@ -43,11 +43,14 @@ describe Typesetter::MetadataSerializer do
 
   before do
     paper.phases.first.tasks.push(*metadata_tasks)
-    allow(paper.decisions).to receive(:latest).and_return(accepted_decision)
   end
 
   it 'serializes authors in order' do
-    paper = FactoryGirl.create(:paper_ready_for_export, journal: journal)
+    paper = FactoryGirl.create(
+      :paper_ready_for_export,
+      :accepted,
+      journal: journal
+    )
     author = FactoryGirl.create(:author, paper: paper)
     author2 = FactoryGirl.create(:author, paper: paper)
     paper.authors = [author, author2]
@@ -271,15 +274,22 @@ describe Typesetter::MetadataSerializer do
     )
   end
 
-  context 'paper decision' do
-    it 'works when the paper was accepted' do
+  context 'and the paper is accepted' do
+    before { paper.publishing_state = 'accepted' }
+
+    it 'serializes without error' do
       expect(output).to_not be_empty
     end
+  end
 
-    it 'errors when the paper has not been accepted' do
-      paper.decisions.latest.verdict = 'minor_revision'
-      serializer = Typesetter::MetadataSerializer.new(paper)
-      expect { serializer.serializable_hash }.to raise_error(StandardError)
+  context 'and the paper is not accepted' do
+    before { paper.publishing_state = 'unsubmitted' }
+
+    it 'raise an error' do
+      expect { output }.to raise_error(
+        Typesetter::MetadataError,
+        /Paper has not been accepted/
+      )
     end
   end
 end

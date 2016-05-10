@@ -11,7 +11,6 @@ class Snapshot::ReviewerRecommendationSerializer < Snapshot::BaseSerializer
       snapshot_property("department", "text", model.department),
       snapshot_property("title", "text", model.title),
       snapshot_property("affiliation", "text", model.affiliation),
-      snapshot_property("ringgold_id", "text", model.ringgold_id)
     ]
   end
 end

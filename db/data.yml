@@ -14392,7 +14392,63 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
-
+  - - '71'
+    - Task
+    - '182'
+    - '12'
+    - '0'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. ","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Rob"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"robert.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Review"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"ruth.reviewer@science.org"},{"name":"department","type":"text","value":"Physics"},{"name":"title","type":"text","value":"Head Prof"},{"name":"affiliation","type":"text","value":"ABC University"}]}]}'
+    - '2016-04-12 18:55:57.423837'
+    - '2016-04-12 18:55:57.423837'
+  - - '72'
+    - Task
+    - '182'
+    - '12'
+    - '1'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-04-12 19:00:20.284162'
+    - '2016-04-12 19:00:20.284162'
+  - - '73'
+    - Task
+    - '182'
+    - '12'
+    - '2'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-04-12 19:02:46.817923'
+    - '2016-04-12 19:02:46.817923'
+  - - '74'
+    - Task
+    - '182'
+    - '12'
+    - '3'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":11},{"name":"first_name","type":"text","value":"Nancy"},{"name":"last_name","type":"text","value":"McReviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"nancy@science.org"},{"name":"department","type":"text","value":"Chemistry"},{"name":"title","type":"text","value":"Jr Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-04-12 19:05:54.288597'
+    - '2016-04-12 19:05:54.288597'
 ---
 supporting_information_files:
   columns:

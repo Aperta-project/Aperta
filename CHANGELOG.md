@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Related Articles task
 - Templates for devs creating new tasks
+- Diffing of Reviewer Candidates
 ### Changed
 ### Deprecated
 ### Removed

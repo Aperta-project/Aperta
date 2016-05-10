@@ -2,16 +2,16 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## [1.4.8] - 2016-05-12
+
 ### Added
 - Related Articles task
 - Templates for devs creating new tasks
-### Changed
-### Deprecated
 ### Removed
+- Abstract from reviewer invite email footer
 ### Fixed
 - Prevent errors while adding discussion participants
-### Security
+- Properly switch between inviting by user and inviting by email
 
 ## [1.4.7] - 2016-05-06
 

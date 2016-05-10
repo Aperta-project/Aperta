@@ -5,6 +5,7 @@ import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 export default Ember.Component.extend(EscapeListenerMixin, {
   feedbackSubmitted: false,
   isUploading: false,
+  classNames: ['feedback-form'],
 
   init() {
     this._super(...arguments);

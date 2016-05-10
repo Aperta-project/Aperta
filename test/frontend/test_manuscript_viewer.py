@@ -217,7 +217,8 @@ class ViewPaperTest(CommonTest):
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Add a collaborator (for AC4)
-    manuscript_page.add_collaborators(creator_login4)
+    # APERTA-6840 - we disabled add collaborators temporarily
+    # manuscript_page.add_collaborators(creator_login4)
     paper_id = manuscript_page.get_current_url().split('/')[-1]
     # Complete IMG card to force display of submission status project
     time.sleep(1)
@@ -231,22 +232,23 @@ class ViewPaperTest(CommonTest):
     assert "Your manuscript is ready for Initial Submission." in \
         manuscript_page.get_submission_status_info_text(),\
         manuscript_page.get_submission_status_info_text()
-    manuscript_page.logout()
+    # APERTA-6840 - we disabled add collaborators temporarily
+    # manuscript_page.logout()
 
-    # Logging in as collaborator
-    dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
-    dashboard_page.go_to_manuscript(paper_id)
-    time.sleep(1)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.set_timeout(.5)
-    # AC4 Green info box does not appear for collaborators
-    try:
-      manuscript_page.get_infobox()
-    except ElementDoesNotExistAssertionError:
-      assert True
-    else:
-      assert False, "Infobox still open. AC4 fails"
-    manuscript_page.restore_timeout()
+
+    # dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
+    # dashboard_page.go_to_manuscript(paper_id)
+    # time.sleep(1)
+    # manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # manuscript_page.set_timeout(.5)
+    # # AC4 Green info box does not appear for collaborators
+    # try:
+    #   manuscript_page.get_infobox()
+    # except ElementDoesNotExistAssertionError:
+    #   assert True
+    # else:
+    #   assert False, "Infobox still open. AC4 fails"
+    # manuscript_page.restore_timeout()
     # Submit
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()

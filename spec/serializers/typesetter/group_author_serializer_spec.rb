@@ -115,9 +115,35 @@ describe Typesetter::GroupAuthorSerializer do
     end
   end
 
-  describe 'email' do
+  describe 'contact_email' do
     it "is the contact's email" do
       expect(output[:contact_email]).to eq(contact_email)
     end
   end
+
+  describe 'government_employee' do
+    before do
+      allow(group_author).to receive(:answer_for)
+        .with(::GroupAuthor::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
+        .and_return instance_double(NestedQuestionAnswer, value: true)
+    end
+
+    it 'includes whether or not the author is a government employee' do
+      expect(output[:government_employee]).to be true
+    end
+  end
+
+  describe 'name' do
+    before { group_author.name = 'bob' }
+    it 'includes whether or not the author is a government employee' do
+      expect(output[:name]).to eq('bob')
+    end
+  end
+
+  describe 'type' do
+    it 'has a type of group_author' do
+      expect(output[:type]).to eq 'group_author'
+    end
+  end
+
 end

@@ -30,10 +30,6 @@ describe Typesetter::MetadataSerializer do
     ]
   end
 
-  let(:paper_task) do
-    ->(task_type) { paper.tasks.find_by_type(task_type) }
-  end
-
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|
@@ -124,7 +120,9 @@ describe Typesetter::MetadataSerializer do
 
   describe 'publication_date' do
     let(:our_task) do
-      paper_task.call('TahiStandardTasks::ProductionMetadataTask')
+      paper.tasks.find_by(
+        type: 'TahiStandardTasks::ProductionMetadataTask'
+      ).first!
     end
 
     context "with valid date" do

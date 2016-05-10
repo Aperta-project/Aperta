@@ -147,7 +147,7 @@ class Task < ActiveRecord::Base
     end
 
     def snapshot_types
-      reviewer_task = "TahiStandardTasks::ReviewerRecommendationsTask"
+      reviewer_task = 'TahiStandardTasks::ReviewerRecommendationsTask'
       metadata_types.to_a << reviewer_task
     end
 

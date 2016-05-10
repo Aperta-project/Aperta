@@ -202,6 +202,18 @@ describe Task do
     end
   end
 
+  describe 'Task.snapshot_types' do
+    it 'includes all metadata task types' do
+      Task.metadata_task_types.map(&:name).each do |task_name|
+        expect(Task.snapshot_types).to include(task_name)
+      end
+    end
+
+    it 'includes ReviewerRecommendationsTask' do
+      expect(Task.snapshot_types).to include('TahiStandardTasks::ReviewerRecommendationsTask')
+    end
+  end
+
   describe "#can_change?: associations can use this method to update based on task" do
     let(:task) {
       Task.create! title: "Paper Admin",

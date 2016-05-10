@@ -22,7 +22,8 @@ export default Ember.Service.extend({
       return Ember.$.ajax({
         url: path,
         type: method,
-        data: data,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
         success: resolve,
         error: reject,
         headers: {

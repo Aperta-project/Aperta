@@ -9,7 +9,7 @@
 
   {{textarea class="form-control feedback-overlay-remarks"
              name="remarks"
-             value=feedback.remarks
+             value=remarks
              placeholder="Please tell us about your experience"
              autofocus="autofocus"}}
   <div class="call-to-action">
@@ -32,9 +32,9 @@
         <button class="button-primary button--green {{if isUploading "button--disabled"}}" {{action "submit"}}>Send Feedback</button>
       </div>
     </div>
-    {{#if showScreenshots}}
+    {{#if allowUploads}}
       <ul class="feedback-overlay-screenshots">
-        {{#each feedback.screenshots as |screenshot|}}
+        {{#each screenshots as |screenshot|}}
           <li class="animation-fade-in">
             <span class="fa fa-trash feedback-overlay-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
             <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>

@@ -6,16 +6,6 @@ require File.dirname(__FILE__) + '/../../lib/tahi_env'
 describe TahiEnv do
   subject(:env) { TahiEnv.new.tap(&:validate) }
 
-  let(:valid_env) do
-    {
-      FTP_HOST: 'ftp://foo.bar',
-      FTP_USER: 'the-oracle',
-      FTP_PASSWORD: 'tiny-green-characters',
-      FTP_PORT: '21',
-      FTP_DIRECTORY: 'where/the/wild/things/are'
-    }
-  end
-
   shared_examples_for 'required env var' do |var:|
     describe "Required env var: #{var}" do
       it 'is required to be set' do
@@ -54,11 +44,32 @@ describe TahiEnv do
     end
   end
 
-  include_examples 'required env var', var: 'FTP_DIRECTORY'
+  let(:valid_env) do
+    {
+      FTP_HOST: 'ftp://foo.bar',
+      FTP_USER: 'the-oracle',
+      FTP_PASSWORD: 'tiny-green-characters',
+      FTP_PORT: '21',
+      FTP_DIR: 'where/the/wild/things/are',
+      S3_URL: 'http://tahi-test.amazonaws.com',
+      S3_BUCKET: 'tahi',
+      AWS_ACCESS_KEY_ID: 'DNCDCC55F',
+      AWS_SECRET_ACCESS_KEY: '98Abc754',
+      AWS_REGION: 'us-west'
+    }
+  end
+
+  include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'
   include_examples 'required env var', var: 'FTP_PASSWORD'
   include_examples 'required env var', var: 'FTP_PORT'
   include_examples 'required env var', var: 'FTP_USER'
+
+  include_examples 'required env var', var: 'S3_URL'
+  include_examples 'required env var', var: 'S3_BUCKET'
+  include_examples 'required env var', var: 'AWS_ACCESS_KEY_ID'
+  include_examples 'required env var', var: 'AWS_SECRET_ACCESS_KEY'
+  include_examples 'required env var', var: 'AWS_REGION'
 
   include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
   include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'

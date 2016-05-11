@@ -31,7 +31,13 @@ class TahiEnv
   required :FTP_USER
   required :FTP_PASSWORD
   required :FTP_PORT
-  required :FTP_DIRECTORY
+  required :FTP_DIR
+
+  required :S3_URL
+  required :S3_BUCKET
+  required :AWS_ACCESS_KEY_ID
+  required :AWS_SECRET_ACCESS_KEY
+  required :AWS_REGION
 
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT

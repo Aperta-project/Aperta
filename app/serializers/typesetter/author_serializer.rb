@@ -21,7 +21,8 @@ module Typesetter
     end
 
     def government_employee
-      object.answer_for('author--government-employee').try(:value)
+      object.answer_for(::Author::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
+        .try(:value)
     end
 
     def contributions

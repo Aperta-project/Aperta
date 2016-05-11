@@ -4,6 +4,7 @@ class Author < ActiveRecord::Base
 
   CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
   CORRESPONDING_QUESTION_IDENT = "author--published_as_corresponding_author"
+  GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "author--government-employee"
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 

@@ -4,6 +4,7 @@ describe Typesetter::BillingLogSerializer do
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
   let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
+  let(:other_paper) { create(:paper) }
   let(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
@@ -14,34 +15,23 @@ describe Typesetter::BillingLogSerializer do
       short_title: 'my paper short'
     )
   end
-  let(:metadata_tasks) do
-    [
-      FactoryGirl.create(:authors_task, paper: paper),
-      FactoryGirl.create(:competing_interests_task, paper: paper),
-      FactoryGirl.create(:data_availability_task, paper: paper),
-      FactoryGirl.create(:financial_disclosure_task, paper: paper),
-      FactoryGirl.create(:production_metadata_task, paper: paper),
-      FactoryGirl.create(:publishing_related_questions_task, paper: paper),
-      FactoryGirl.create(:billing_task, paper: paper)
-    ]
+
+  let(:billing_task) do
+    FactoryGirl.create(:billing_task, :with_nested_question_answers, paper: paper)
   end
 
-  let(:paper_task) do
-    ->(task_type) { paper.tasks.find_by_type(task_type) }
+  let(:financial_disclosure_task) do
+    FactoryGirl.create(:financial_disclosure_task, paper: paper)
   end
-  # describe 'publication_date' do
-  #   let(:our_task) do
-  #     paper_task.call('TahiStandardTasks::ProductionMetadataTask')
-  #   end
-  let(:our_question) do
-    # expects `our_task` to be defined within a `describe` block
-    lambda do |question_ident|
-      our_task.nested_questions.find_by_ident(question_ident)
-    end
+
+  let(:final_tech_check_task) do
+    FactoryGirl.create(:final_tech_check_task, paper: paper)
   end
 
   before do
-    paper.phases.first.tasks.push(*metadata_tasks)
+    paper.phases.first.tasks.push(*[billing_task,
+                                    financial_disclosure_task,
+                                    final_tech_check_task])
   end
 
   describe 'doi' do
@@ -59,165 +49,125 @@ describe Typesetter::BillingLogSerializer do
     end
   end
 
-  it 'has manuscript_id' do
-    allow(paper).to receive(:manuscript_id).and_return '1234'
-    expect(output[:manuscript_id]).to eq('1234')
-  end
-
-  it 'has paper_type' do
-    paper.paper_type = 'Pandas'
-    expect(output[:paper_type]).to eq('Pandas')
+  it 'has documentid which is the manuscript id' do
+    expect(output[:documentid]).to eq(paper.id)
   end
 
   it 'has first_submitted_at' do
-    now = Time.zone.now
-    paper.update_attribute(:first_submitted_at, now)
-    expect(output[:received_date]).to eq(now)
+    paper.initial_submit!
+    expect(output[:original_submission_start_date]).to eq(paper.first_submitted_at)
   end
 
-  it 'has accepted_at' do
-    now = Time.zone.now
-    paper.update_attribute(:accepted_at, now)
-    expect(output[:accepted_date]).to eq(now)
+  it 'has date_first_entered_production which is date paper was accepted' do
+    expect(output[:date_first_entered_production]).to eq(paper.accepted_at)
   end
 
-  it 'has title' do
-    paper.title = 'here is the title'
-    expect(output[:paper_title]).to eq('here is the title')
+  it 'has dtitle which is the paper title' do
+    expect(output[:dtitle]).to eq(paper.title)
   end
 
   it 'has journal_id' do
-    paper.journal_id = '1234'
-    expect(output[:journal_id]).to eq('1234')
+    expect(output[:journal_id]).to eq(paper.journal.id)
   end
 
-  it 'has firstname' do
-    paper.firstname = 'Foo'
-    expect(output[:firstname]).to eq('Foo')
+  context 'pulls from corresponding billing task that' do
+    it 'has the first name' do
+      expect(output[:firstname]).to eq(billing_task.answer_for('plos_billing--first_name').value)
+    end
+
+    it 'has middlename if the field exists' do
+      # This spec will fail if middle_name becomes a field on the billing task
+      # At that point the serializer should be updated
+      if billing_task.answer_for('plos_billing--middle_name').present?
+        expect(output[:middlename]).to eq(billing_task.answer_for('plos_billing--middle_name').value)
+      end
+    end
+
+    it 'has lastname' do
+      expect(output[:lastname]).to eq(billing_task.answer_for('plos_billing--last_name').value)
+    end
+
+    it 'has title' do
+      expect(output[:title]).to eq(billing_task.answer_for('plos_billing--title').value)
+    end
+
+    it 'has institute' do
+      expect(output[:institute]).to eq(billing_task.answer_for('plos_billing--affiliation1').value)
+    end
+
+    it 'has department' do
+      expect(output[:department]).to eq(billing_task.answer_for('plos_billing--department').value)
+    end
+
+    it 'has address1' do
+      expect(output[:address1]).to eq(billing_task.answer_for('plos_billing--address1').value)
+    end
+
+    it 'has address2' do
+      expect(output[:address2]).to eq(billing_task.answer_for('plos_billing--address2').value)
+    end
+
+    it 'has city' do
+      expect(output[:city]).to eq(billing_task.answer_for('plos_billing--city').value)
+    end
+
+    it 'has state' do
+      expect(output[:state]).to eq(billing_task.answer_for('plos_billing--state').value)
+    end
+
+    it 'has zip' do
+      expect(output[:zip]).to eq(billing_task.answer_for('plos_billing--postal_code').value)
+    end
+
+    it 'has country' do
+      expect(output[:country]).to eq(billing_task.answer_for('plos_billing--country').value)
+    end
+
+    it 'has phone1' do
+      expect(output[:phone1]).to eq(billing_task.answer_for('plos_billing--phone_number').value)
+    end
+
+    it 'has email' do
+      expect(output[:email]).to eq(billing_task.answer_for('plos_billing--email').value)
+    end
+
+    it 'has a direct_bill_response when the payment method is institutional' do
+      question = NestedQuestion.find_by(ident: 'plos_billing--payment_method')
+      question.nested_question_answers.first.update_column(:value, 'institutional')
+      expect(output[:direct_bill_response]).to eq(billing_task.answer_for('plos_billing--ringgold_institution').value)
+    end
+
+    it 'does not have a direct_bill_response when the payment method is not institutional' do
+      expect(output[:direct_bill_response]).to be_nil
+    end
+
+    it 'has a gpi_response when the payment method is gpi' do
+      question = NestedQuestion.find_by(ident: 'plos_billing--payment_method')
+      question.nested_question_answers.first.update_column(:value, 'gpi')
+      expect(output[:gpi_response]).to eq(billing_task.answer_for('plos_billing--gpi_country').value)
+    end
+
+    it 'does not have a gpi_response when the payment method is not gpi' do
+      expect(output[:gpi_response]).to be_nil
+    end
   end
 
-  it 'has middlename' do
-    paper.middlename = 'Biz'
-    expect(output[:middlename]).to eq('Biz')
-  end
-
-  it 'has lastname' do
-    paper.lastname = 'Buz'
-    expect(output[:lastname]).to eq('Buz')
-  end
-
-  it 'has institute' do
-    paper.institute = 'Sample Institute'
-    expect(output[:institute]).to eq('Sample Institute')
-  end
-
-  it 'has department' do
-    paper.department = 'Sample Department'
-    expect(output[:department]).to eq('Sample Department')
-  end
-
-  it 'has address1' do
-    paper.address1 = '42 Wallaby Way, Sydney'
-    expect(output[:address1]).to eq('42 Wallaby Way, Sydney')
-  end
-
-  it 'has address2' do
-    paper.address2 = '742 Evergreen Terrace'
-    expect(output[:address2]).to eq('742 Evergreen Terrace')
-  end
-
-  it 'has address3' do
-    paper.address3 = '1600 Pennsylvania Ave NW'
-    expect(output[:address3]).to eq('1600 Pennsylvania Ave NW')
-  end
-
-  it 'has city' do
-    paper.city = 'Sacramento'
-    expect(output[:city]).to eq('Sacramento')
-  end
-
-  it 'has state' do
-    paper.state = 'California'
-    expect(output[:state]).to eq('California')
-  end
-
-  it 'has zip' do
-    paper.zip = '54321'
-    expect(output[:zip]).to eq('54321')
-  end
-
-  it 'has country' do
-    paper.country = 'United States'
-    expect(output[:country]).to eq('United States')
-  end
-
-  it 'has phone1' do
-    paper.phone1 = '3214567'
-    expect(output[:phone1]).to eq('3214567')
-  end
-
-  it 'has phone2' do
-    paper.phone2 = '4561234'
-    expect(output[:phone2]).to eq('4561234')
-  end
-
-  it 'has fax' do
-    paper.fax = '7894321'
-    expect(output[:fax]).to eq('7894321')
-  end
-
-  it 'has email' do
-    paper.email = 'user@domain.com'
-    expect(output[:email]).to eq('user@domain.com')
-  end
-
-  it 'has pubdnumber' do
-    paper.pubdnumber = 'This is a sample pubdnumber'
-    expect(output[:pubdnumber]).to eq('This is a sample pubdnumber')
-  end
-
-  it 'has dtitle' do
-    paper.dtitle = 'This is a sample dtitle'
-    expect(output[:dtitle]).to eq('This is a sample dtitle')
+  it 'has pubdnumber which is the same as manuscript id' do
+    expect(output[:pubdnumber]).to eq(paper.id)
   end
 
   it 'has fundRef' do
-    paper.fundRef = 'This is a sample fundRef'
-    expect(output[:fundRef]).to eq('This is a sample fundRef')
+    expect(output[:fundRef]).to eq(financial_disclosure_task)
   end
 
-  it 'has collectionID' do
-    paper.collectionID = '54321'
-    expect(output[:collectionID]).to eq('54321')
-  end
-
-  it 'has collection' do
-    paper.collection = 'This is a sample collection'
-    expect(output[:collection]).to eq('This is a sample collection')
-  end
-
-  it 'has direct_bill_response' do
-    paper.direct_bill_response = 'This is a sample direct_bill_response'
-    expect(output[:direct_bill_response]).to eq('This is a sample direct_bill_response')
-  end
-
-  it 'has gpi_response' do
-    paper.gpi_response = 'This is a sample gpi_response'
-    expect(output[:gpi_response]).to eq('This is a sample gpi_response')
-  end
-
-  it 'has final_dispo_accept' do
-    paper.final_dispo_accept = 'This is a sample final_dispo_accept'
-    expect(output[:final_dispo_accept]).to eq('This is a sample final_dispo_accept')
+  it 'has final_dispo_accept which is date FTC was completed' do
+    final_tech_check_task.completed = true
+    final_tech_check_task.save
+    expect(output[:final_dispo_accept]).to eq(final_tech_check_task.completed_at)
   end
 
   it 'has category' do
-    paper.category = 'This is a sample category'
-    expect(output[:category]).to eq('This is a sample category')
-  end
-
-  it 'has s3_url' do
-    paper.s3_url = 'https://s3-eu-west-1.amazonaws.com/foo/bar'
-    expect(output[:s3_url]).to eq('https://s3-eu-west-1.amazonaws.com/foo/bar')
+    paper.update_column(:paper_type, 'Some Research')
+    expect(output[:category]).to eq('Some Research')
   end
 end

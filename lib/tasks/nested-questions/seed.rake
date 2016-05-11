@@ -22,5 +22,4 @@ namespace 'nested-questions' do
     'nested-questions:seed:plos-bio-revision-tech-check-task',
     'nested-questions:seed:plos-bio-final-tech-check-task'
   ]
-
 end

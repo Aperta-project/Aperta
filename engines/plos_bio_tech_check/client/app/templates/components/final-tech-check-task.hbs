@@ -1,8 +1,11 @@
+
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
   <ul class="list-unstyled">
     <li class="item">
+      <h3>Submission tasks</h3>
+      <h4>Ethics Statement</h4>
       {{nested-question-check
               ident="plos_bio_final_tech_check--open_rejects"
               owner=task}}
@@ -37,6 +40,7 @@
               owner=task}}
     </li>
     <li class="item">
+      <h4>Financial Disclosure Statement</h4>
       {{nested-question-check
               ident="plos_bio_final_tech_check--financial_disclosure"
               owner=task
@@ -49,6 +53,7 @@
               additionalData="This section should describe sources of funding that have supported the work. Please include relevant grant numbers and the URL of any funder's Web site."}}
     </li>
     <li class="item">
+      <h3>Figures and Supporting Information</h3>
       {{nested-question-check
               ident="plos_bio_final_tech_check--figures_legible"
               owner=task
@@ -112,3 +117,4 @@
     </button>
   {{/if}}
 </div>
+

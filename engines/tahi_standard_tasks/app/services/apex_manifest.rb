@@ -5,8 +5,8 @@ class ApexManifest
   attr_accessor :archive_filename, :metadata_filename, :apex_delivery_id
   attr_reader :file_list
 
-  def initialize(archive_filename: nil,
-                 metadata_filename: nil,
+  def initialize(archive_filename:,
+                 metadata_filename:,
                  apex_delivery_id: nil)
     @file_list = []
     @archive_filename = archive_filename

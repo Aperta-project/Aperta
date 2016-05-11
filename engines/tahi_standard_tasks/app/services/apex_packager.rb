@@ -3,6 +3,8 @@ class ApexPackager
   class ApexPackagerError < StandardError
   end
 
+  METADATA_FILENAME = 'metadata.json'
+
   def self.create_zip(paper)
     packager = new(paper)
     packager.zip_file
@@ -35,6 +37,7 @@ class ApexPackager
 
   def manifest
     @manifest ||= ApexManifest.new archive_filename: @archive_filename,
+                                   metadata_filename: METADATA_FILENAME,
                                    apex_delivery_id: @apex_delivery_id
   end
 
@@ -82,16 +85,14 @@ class ApexPackager
   end
 
   def add_metadata(package)
-    filename = 'metadata.json'
     metadata = Typesetter::MetadataSerializer.new(@paper).to_json
     temp_file = Tempfile.new('metadata')
     temp_file.write(metadata)
     temp_file.rewind
     add_file_to_package package,
-                        filename,
+                        METADATA_FILENAME,
                         temp_file.read
     temp_file.close
-    manifest.metadata_filename = filename
   end
 
   def add_file_to_package(package, filename, file_contents)

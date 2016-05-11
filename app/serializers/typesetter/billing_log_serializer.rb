@@ -9,7 +9,7 @@ module Typesetter
                :city, :state, :zip, :country, :phone1, :phone2, :fax,
                :email, :pubdnumber, :dtitle, :fundRef,
                :collectionID, :collection, :direct_bill_response, :gpi_response,
-               :final_dispo_accept, :category, :s3_url
+               :final_dispo_accept, :category
     attribute :id, key: :documentid
     attribute :first_submitted_at, key: :original_submission_start_date
     attribute :accepted_at, key: :date_first_entered_production
@@ -18,84 +18,113 @@ module Typesetter
       1
     end
 
+    def title
+      billing_answer_for('plos_billing--title')
+    end
+
     def firstname
-      #billing_answer_for('plos_billing--first_name')
+      billing_answer_for('plos_billing--first_name')
     end
 
     def middlename
+      # No middle name field on billing task
     end
 
     def lastname
-      object.creator.last_name
+      billing_answer_for('plos_billing--last_name')
     end
 
     def institute
+      billing_answer_for('plos_billing--affiliation1')
     end
 
     def department
+      billing_answer_for('plos_billing--department')
     end
 
     def address1
+      billing_answer_for('plos_billing--address1')
     end
 
     def address2
+      billing_answer_for('plos_billing--address2')
     end
 
     def address3
+      # No address3 on billing task
     end
 
     def city
+      billing_answer_for('plos_billing--city')
     end
 
     def state
+      billing_answer_for('plos_billing--state')
     end
 
     def zip
+      billing_answer_for('plos_billing--postal_code')
     end
 
     def country
+      billing_answer_for('plos_billing--country')
     end
 
     def phone1
+      billing_answer_for('plos_billing--phone_number')
     end
 
     def phone2
+      # No phone2 on billing task
     end
 
     def fax
+      # Who uses fax nowadays
     end
 
     def email
+      billing_answer_for('plos_billing--email')
     end
 
     def pubdnumber
+      # Same as manuscript id for now
+      object.id
     end
 
     def dtitle
+      object.title
     end
 
     def fundRef
+      # TODO: fill this out
+      financial_disclosure_task
     end
 
     def collectionID
+      # To reference a Collection
     end
 
     def collection
+      # Collection name
     end
 
     def direct_bill_response
+      return unless billing_answer_for(
+        'plos_billing--payment_method') == 'institutional'
+      billing_answer_for('plos_billing--ringgold_institution')
     end
 
     def gpi_response
+      return unless billing_answer_for('plos_billing--payment_method') == 'gpi'
+      billing_answer_for('plos_billing--gpi_country')
     end
 
     def final_dispo_accept
+      final_tech_check_task.completed_at
     end
 
     def category
-    end
-
-    def s3_url
+      object.paper_type
     end
 
     private
@@ -107,6 +136,14 @@ module Typesetter
     def billing_answer_for(ident)
       answer = task('PlosBilling::BillingTask').answer_for(ident)
       answer.value if answer
+    end
+
+    def financial_disclosure_task
+      task('TahiStandardTasks::FinancialDisclosureTask')
+    end
+
+    def final_tech_check_task
+      task('PlosBioTechCheck::FinalTechCheckTask')
     end
   end
 end

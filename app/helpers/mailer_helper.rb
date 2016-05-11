@@ -1,7 +1,7 @@
 module MailerHelper
 
   def app_name
-    ENV["APP_NAME"] || 'Aperta'
+    ENV["APP_NAME"]
   end
 
   def prefixed(subject)

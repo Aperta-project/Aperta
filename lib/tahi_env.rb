@@ -27,6 +27,8 @@ class TahiEnv
     super
   end
 
+  required :APP_NAME
+
   required :FTP_HOST
   required :FTP_USER
   required :FTP_PASSWORD

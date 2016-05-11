@@ -46,6 +46,7 @@ describe TahiEnv do
 
   let(:valid_env) do
     {
+      APP_NAME: 'Aperta',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
       FTP_PASSWORD: 'tiny-green-characters',
@@ -58,6 +59,8 @@ describe TahiEnv do
       AWS_REGION: 'us-west'
     }
   end
+
+  include_examples 'required env var', var: 'APP_NAME'
 
   include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'

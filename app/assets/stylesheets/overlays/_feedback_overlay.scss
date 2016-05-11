@@ -1,4 +1,4 @@
-.feedback-overlay-thanks {
+.feedback-form-thanks {
   font-size: 2.0rem;
   text-align: center;
 
@@ -9,11 +9,11 @@
   }
 }
 
-.feedback-overlay-remarks.form-control {
+.feedback-form-remarks.form-control {
   height: 20rem;
 }
 
-.feedback-overlay-screenshots {
+.feedback-form-screenshots {
   list-style-type: none;
   padding-left: 0;
   width: 60%;
@@ -28,7 +28,7 @@
   li:last-of-type { margin-bottom: 2rem; }
 }
 
-.feedback-overlay-remove-screenshot {
+.feedback-form-remove-screenshot {
   margin-right: 0.5rem;
   color: #d4d4d4;
   cursor: pointer;
@@ -42,16 +42,15 @@
   color: transparent;
 }
 
-.feedback-overlay-footer-content.overlay-footer-content {
+.feedback-form-footer-content.overlay-footer-content {
   padding: 0;
   float: right;
   margin-top: 0;
 
-  .button-primary { width: 16%; }
   .button-link    { margin-right: 1rem; }
 }
 
-.feedback-overlay-uploading {
+.feedback-form-uploading {
   height: 18px;
   line-height: 18px;
 

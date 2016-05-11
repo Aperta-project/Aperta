@@ -5,4 +5,18 @@
   .feedback-form__from {
     margin-bottom: 10px;
   }
+  .button-primary {
+    background-color: $tahi-green;
+  }
 }
+
+.paper-submit-overlay .feedback-form {
+  margin-top: 50px;
+  text-align: left;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}
+

@@ -28,7 +28,7 @@ test('callers can disable uploads', function(assert) {
   let template = hbs`{{feedback-form allowUploads=false}}`;
   this.render(template);
   assert.elementNotFound('.fileinput-button', 'hides the upload button');
-  assert.elementNotFound('.feedback-overlay-screenshots',
+  assert.elementNotFound('.feedback-form-screenshots',
                          'hides the screenshot list entirely');
 
 });
@@ -60,5 +60,5 @@ test('it calls the feedback service on submit', function(assert) {
                        [window.location.toString(), null, sinon.match.array],
                        'it was called correctly');
 
-  assert.elementFound('.feedback-overlay-thanks', "Shows the thankyou");
+  assert.elementFound('.feedback-form-thanks', "Shows the thankyou");
 });

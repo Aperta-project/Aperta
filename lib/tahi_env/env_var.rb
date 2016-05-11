@@ -18,10 +18,10 @@ class TahiEnv
     end
 
     def value
-      boolean? ? converted_boolean_value : env_setting_value
+      boolean? ? converted_boolean_value : raw_value_from_env
     end
 
-    def env_setting_value
+    def raw_value_from_env
       ENV[@env_var]
     end
 
@@ -30,7 +30,7 @@ class TahiEnv
     end
 
     def converted_boolean_value
-      ['true', '1'].include?(env_setting_value) ? true : false
+      ['true', '1'].include?(raw_value_from_env) ? true : false
     end
   end
 end

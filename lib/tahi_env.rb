@@ -56,9 +56,22 @@ class TahiEnv
   required :AWS_SECRET_ACCESS_KEY
   required :AWS_REGION
 
+  required :BUGSNAG_API_KEY
+  optional :BUGSNAG_JAVASCRIPT_API_KEY
+
+  required :EVENT_STREAM_WS_HOST
+  required :EVENT_STREAM_WS_PORT
+
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT
+
+  optional :HIPCHAT_AUTH_TOKEN
+  optional :MAX_ABSTRACT_LENGTH
+  optional :PING_URL
+  optional :PUSHER_SOCKET_URL
   optional :REPORTING_EMAIL
+  optional :SEGMENT_IO_WRITE_KEY
 
   optional :CAS_ENABLED, :boolean, false
+  optional :CAS_SIGNUP_URL
 end

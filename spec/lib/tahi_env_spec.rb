@@ -45,7 +45,7 @@ describe TahiEnv do
 
   shared_examples_for 'optional env var' do |var:|
     describe "Optional env var: #{var}" do
-      it 'is does not need to b set' do
+      it 'is does not need to be set' do
         ClimateControl.modify valid_env.merge("#{var}": nil) do
           expect(env.valid?).to be true
         end
@@ -130,7 +130,10 @@ describe TahiEnv do
       S3_BUCKET: 'tahi',
       AWS_ACCESS_KEY_ID: 'DNCDCC55F',
       AWS_SECRET_ACCESS_KEY: '98Abc754',
-      AWS_REGION: 'us-west'
+      AWS_REGION: 'us-west',
+      EVENT_STREAM_WS_HOST: 'slanger-staging.tahi-project.org',
+      EVENT_STREAM_WS_PORT: '8080',
+      BUGSNAG_API_KEY: 'rails_api_key'
     }
   end
 
@@ -149,9 +152,23 @@ describe TahiEnv do
   include_examples 'required env var', var: 'AWS_SECRET_ACCESS_KEY'
   include_examples 'required env var', var: 'AWS_REGION'
 
+  include_examples 'required env var', var: 'BUGSNAG_API_KEY'
+  include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
+
+  include_examples 'required env var', var: 'EVENT_STREAM_WS_HOST'
+  include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
+
   include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
   include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
+
+  include_examples 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
+  include_examples 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
+  include_examples 'optional env var', var: 'PING_URL'
+  include_examples 'optional env var', var: 'PUSHER_SOCKET_URL'
   include_examples 'optional env var', var: 'REPORTING_EMAIL'
+  include_examples 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
+
+  include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
 
   include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
 end

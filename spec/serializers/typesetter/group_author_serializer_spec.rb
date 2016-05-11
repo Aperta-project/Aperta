@@ -135,7 +135,7 @@ describe Typesetter::GroupAuthorSerializer do
 
   describe 'name' do
     before { group_author.name = 'bob' }
-    it 'includes whether or not the author is a government employee' do
+    it 'includes the name of the author' do
       expect(output[:name]).to eq('bob')
     end
   end

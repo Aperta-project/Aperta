@@ -47,6 +47,7 @@ describe TahiEnv do
   let(:valid_env) do
     {
       APP_NAME: 'Aperta',
+      ADMIN_EMAIL: 'aperta@example.com',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
       FTP_PASSWORD: 'tiny-green-characters',
@@ -61,6 +62,7 @@ describe TahiEnv do
   end
 
   include_examples 'required env var', var: 'APP_NAME'
+  include_examples 'required env var', var: 'ADMIN_EMAIL'
 
   include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'
@@ -76,4 +78,5 @@ describe TahiEnv do
 
   include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
   include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
+  include_examples 'optional env var', var: 'REPORTING_EMAIL'
 end

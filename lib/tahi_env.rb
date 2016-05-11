@@ -28,6 +28,7 @@ class TahiEnv
   end
 
   required :APP_NAME
+  required :ADMIN_EMAIL
 
   required :FTP_HOST
   required :FTP_USER
@@ -43,4 +44,5 @@ class TahiEnv
 
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT
+  optional :REPORTING_EMAIL
 end

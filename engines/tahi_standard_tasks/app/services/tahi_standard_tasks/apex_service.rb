@@ -42,13 +42,18 @@ module TahiStandardTasks
     end
 
     def package_filename
-      fail ApexServiceError unless @paper.manuscript_id.present?
+      fail_unless_manuscript_id
       "#{@paper.manuscript_id}.zip"
     end
 
     def manifest_filename
-      fail ApexServiceError unless @paper.manuscript_id.present?
+      fail_unless_manuscript_id
       "#{@paper.manuscript_id}.man.json"
+    end
+
+    def fail_unless_manuscript_id
+      return if @paper.manuscript_id.present?
+      fail ApexServiceError, "Paper is missing manuscript_id"
     end
 
     def upload_file(filepath, filename)

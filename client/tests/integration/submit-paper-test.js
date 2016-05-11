@@ -58,10 +58,19 @@ test('User can submit a paper', function(assert) {
   visit('/papers/' + paper.id);
   click(".edit-paper button:contains('Submit')");
   click('button.button-submit-paper');
-  return andThen(function() {
-    return assert.ok(_.findWhere($.mockjax.mockedAjaxCalls(), {
+  andThen(function() {
+    assert.ok(_.findWhere($.mockjax.mockedAjaxCalls(), {
       type: 'PUT',
       url: '/api/papers/' + paper.id + '/submit'
     }), 'It posts to the server');
+  });
+});
+
+test('Shows the feedback form after submitting', function(assert) {
+  visit('/papers/' + paper.id);
+  click(".edit-paper button:contains('Submit')");
+  click('button.button-submit-paper');
+  andThen(function() {
+    assert.elementFound('.feedback-form', "The feedback form is present");
   });
 });

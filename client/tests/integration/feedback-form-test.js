@@ -5,7 +5,6 @@ import Factory from '../helpers/factory';
 
 let App = null;
 
-// TODO: merge this into the component test for feedback-form and delete
 module('Integration: Feedback Form', {
   afterEach: function() {
     Ember.run(App, 'destroy');

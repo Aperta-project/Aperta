@@ -29,7 +29,7 @@
         {{#if close}}
           <button class="button-link button--green" {{action close}}>cancel</button>
         {{/if}}
-        <button class="button-primary button--green {{if isUploading "button--disabled"}}" {{action "submit"}}>Send Feedback</button>
+        <button class="button-primary button--green feedback-form-submit {{if isUploading "button--disabled"}}" {{action "submit"}}>Send Feedback</button>
       </div>
     </div>
     {{#if allowUploads}}

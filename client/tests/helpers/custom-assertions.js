@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
+import sinon from 'sinon';
 
 export default function() {
   QUnit.assert.textPresent = function(selector, text, message) {
@@ -82,5 +83,14 @@ export default function() {
     const matches = Ember.$(selector).length;
 
     return this.push(matches === count, matches, count, message || `should find ${count} elements for ${selector}`);
+  };
+
+  QUnit.assert.spyCalledWith = function(spy, args, message) {
+    sinon.assert.calledWith(spy, ...args);
+    return this.push(
+      spy.calledWith(...args),
+      spy.lastCall.args,
+      args,
+      message || `should've been called with args ${args}`);
   };
 }

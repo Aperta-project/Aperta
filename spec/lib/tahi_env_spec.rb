@@ -26,6 +26,21 @@ describe TahiEnv do
         )
       end
     end
+
+    reader_method_name = "#{var.downcase}"
+    describe "TahiEnv.#{reader_method_name}" do
+      it "returns the value stored in the env var when set" do
+        ClimateControl.modify valid_env.merge("#{var}": 'ABC') do
+          expect(TahiEnv.send(reader_method_name)).to eq 'ABC'
+        end
+      end
+
+      it "returns nil when not set" do
+        ClimateControl.modify valid_env.merge("#{var}": nil) do
+          expect(TahiEnv.send(reader_method_name)).to be nil
+        end
+      end
+    end
   end
 
   shared_examples_for 'optional env var' do |var:|
@@ -40,6 +55,64 @@ describe TahiEnv do
         expect(TahiEnv.env_vars[var.to_s]).to eq(
           TahiEnv::OptionalEnvVar.new(var)
         )
+      end
+    end
+
+    reader_method_name = "#{var.downcase}"
+    describe "TahiEnv.#{reader_method_name}" do
+      it "returns the value stored in the env var when set" do
+        ClimateControl.modify valid_env.merge("#{var}": 'ABC') do
+          expect(TahiEnv.send(reader_method_name)).to eq 'ABC'
+        end
+      end
+
+      it "returns nil when not set" do
+        ClimateControl.modify valid_env.merge("#{var}": nil) do
+          expect(TahiEnv.send(reader_method_name)).to be nil
+        end
+      end
+    end
+  end
+
+  shared_examples_for 'optional boolean env var' do |var:, default_value:|
+    describe "Optional boolean env var: #{var}" do
+      it 'is does not need to b set' do
+        ClimateControl.modify valid_env.merge("#{var}": nil) do
+          expect(env.valid?).to be true
+        end
+      end
+
+      it 'shows up in the list of known about env vars' do
+        expect(TahiEnv.env_vars[var.to_s]).to eq(
+          TahiEnv::OptionalEnvVar.new(var)
+        )
+      end
+
+      query_method_name = "#{var.downcase}?"
+      describe "TahiEnv.#{query_method_name}" do
+        it "defaults to #{default_value} when not set" do
+          expect(TahiEnv.send(query_method_name)).to be default_value
+        end
+
+        it "returns true when set to 'true' or '1'" do
+          ClimateControl.modify valid_env.merge("#{var}": 'true') do
+            expect(TahiEnv.send(query_method_name)).to be true
+          end
+
+          ClimateControl.modify valid_env.merge("#{var}": '1') do
+            expect(TahiEnv.send(query_method_name)).to be true
+          end
+        end
+
+        it "returns false when set to 'false' or '0'" do
+          ClimateControl.modify valid_env.merge("#{var}": 'false') do
+            expect(TahiEnv.send(query_method_name)).to be false
+          end
+
+          ClimateControl.modify valid_env.merge("#{var}": '0') do
+            expect(TahiEnv.send(query_method_name)).to be false
+          end
+        end
       end
     end
   end
@@ -79,4 +152,6 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
   include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
   include_examples 'optional env var', var: 'REPORTING_EMAIL'
+
+  include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
 end

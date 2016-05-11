@@ -11,13 +11,21 @@ class TahiEnv
     @env_vars = @env_vars || {}
   end
 
-  def self.optional(env_var)
-    env_vars[env_var.to_s] = OptionalEnvVar.new(env_var.to_s)
+  def self.optional(env_var, type = nil, default_value = nil)
+    env_vars[env_var.to_s] = OptionalEnvVar.new(
+      env_var.to_s,
+      type,
+      default_value
+    )
   end
 
-  def self.required(env_var)
+  def self.required(env_var, type = nil, default_value = nil)
     validates env_var, presence: true
-    env_vars[env_var.to_s] = RequiredEnvVar.new(env_var.to_s)
+    env_vars[env_var.to_s] = RequiredEnvVar.new(
+      env_var.to_s,
+      type,
+      default_value
+    )
   end
 
   def self.validates(env_var, *args)
@@ -25,6 +33,12 @@ class TahiEnv
       ENV["#{env_var}"]
     end
     super
+  end
+
+  def self.method_missing(method, *args, &block)
+    env_var_name = "#{method.to_s.upcase.gsub(/\W/, '')}"
+    env_var = env_vars[env_var_name]
+    env_var.present? ? env_var.value : super
   end
 
   required :APP_NAME
@@ -45,4 +59,6 @@ class TahiEnv
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT
   optional :REPORTING_EMAIL
+
+  optional :CAS_ENABLED, :boolean, false
 end

@@ -97,6 +97,10 @@ describe Typesetter::AuthorSerializer do
 
   let(:output) { serializer.serializable_hash }
 
+  before do
+    allow(author).to receive(:answer_for).and_call_original
+  end
+
   it 'has author interests fields' do
     expect(output.keys).to contain_exactly(
       :first_name,
@@ -209,9 +213,27 @@ describe Typesetter::AuthorSerializer do
     end
   end
 
+  describe 'government_employee' do
+    before do
+      allow(author).to receive(:answer_for)
+        .with(::Author::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
+        .and_return instance_double(NestedQuestionAnswer, value: true)
+    end
+
+    it 'includes whether or not the author is a government employee' do
+      expect(output[:government_employee]).to be true
+    end
+  end
+
   describe 'secondary_affiliation' do
     it "is the author's secondary affiliation" do
       expect(output[:secondary_affiliation]).to eq(secondary_affiliation)
+    end
+  end
+
+  describe 'type' do
+    it 'has a type of author' do
+      expect(output[:type]).to eq 'author'
     end
   end
 end

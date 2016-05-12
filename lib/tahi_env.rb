@@ -104,4 +104,5 @@ class TahiEnv
 
   optional :ORCID_ENABLED, :boolean, default: false
   required :ORCID_API_HOST, if: :orcid_enabled?
+  required :ORCID_SITE_HOST, if: :orcid_enabled?
 end

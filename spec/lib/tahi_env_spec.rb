@@ -173,6 +173,7 @@ describe TahiEnv do
       EVENT_STREAM_WS_PORT: '8080',
       ORCID_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
+      ORCID_SITE_HOST: 'sandbox.orcid.com',
       RAILS_ENV: 'test'
     }
   end
@@ -215,4 +216,5 @@ describe TahiEnv do
 
   include_examples 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
   include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
+  include_examples 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
 end

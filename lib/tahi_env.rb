@@ -105,4 +105,9 @@ class TahiEnv
   optional :ORCID_ENABLED, :boolean, default: false
   required :ORCID_API_HOST, if: :orcid_enabled?
   required :ORCID_SITE_HOST, if: :orcid_enabled?
+
+  optional :PUMA_WORKERS
+  optional :MAX_THREADS
+  optional :PORT
+  optional :RACK_ENV
 end

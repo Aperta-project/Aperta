@@ -217,4 +217,9 @@ describe TahiEnv do
   include_examples 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
   include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
   include_examples 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
+
+  include_examples 'optional env var', var: 'PUMA_WORKERS'
+  include_examples 'optional env var', var: 'MAX_THREADS'
+  include_examples 'optional env var', var: 'PORT'
+  include_examples 'optional env var', var: 'RACK_ENV'
 end

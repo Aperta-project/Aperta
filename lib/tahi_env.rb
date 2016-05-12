@@ -75,6 +75,7 @@ class TahiEnv
   required :RAILS_SECRET_TOKEN
   required :DEFAULT_MAILER_URL
   optional :DISABLE_FORCE_SSL, :boolean, default: false
+  required :FROM_EMAIL
 
   # FTP
   required :FTP_HOST
@@ -83,16 +84,18 @@ class TahiEnv
   required :FTP_PORT
   required :FTP_DIR
 
-  # S3
+  # Amazon S3
   required :S3_URL
   required :S3_BUCKET
   required :AWS_ACCESS_KEY_ID
   required :AWS_SECRET_ACCESS_KEY
   required :AWS_REGION
 
+  # Bugsnag
   required :BUGSNAG_API_KEY
   optional :BUGSNAG_JAVASCRIPT_API_KEY
 
+  # Event Stream
   required :EVENT_STREAM_WS_HOST
   required :EVENT_STREAM_WS_PORT
 

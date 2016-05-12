@@ -165,6 +165,7 @@ describe TahiEnv do
       DATABASEDOTCOM_USERNAME: 'username',
       DEFAULT_MAILER_URL: 'http://mailer.tahi-project.org',
       DISABLE_PUSHER_SSL_VERIFICATION: 'false',
+      FROM_EMAIL: 'no-reply@tahi-project.org',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
       FTP_PASSWORD: 'tiny-green-characters',
@@ -201,22 +202,27 @@ describe TahiEnv do
   include_examples 'required env var', var: 'RAILS_ASSET_HOST'
   include_examples 'required env var', var: 'DEFAULT_MAILER_URL'
   include_examples 'optional boolean env var', var: 'DISABLE_FORCE_SSL', default_value: false
+  include_examples 'required env var', var: 'FROM_EMAIL'
 
+  # FTP
   include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'
   include_examples 'required env var', var: 'FTP_PASSWORD'
   include_examples 'required env var', var: 'FTP_PORT'
   include_examples 'required env var', var: 'FTP_USER'
 
+  # Amazon S3
   include_examples 'required env var', var: 'S3_URL'
   include_examples 'required env var', var: 'S3_BUCKET'
   include_examples 'required env var', var: 'AWS_ACCESS_KEY_ID'
   include_examples 'required env var', var: 'AWS_SECRET_ACCESS_KEY'
   include_examples 'required env var', var: 'AWS_REGION'
 
+  # Bugsnag
   include_examples 'required env var', var: 'BUGSNAG_API_KEY'
   include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
 
+  # Event Stream
   include_examples 'required env var', var: 'EVENT_STREAM_WS_HOST'
   include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
 

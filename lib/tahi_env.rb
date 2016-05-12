@@ -11,44 +11,59 @@ class TahiEnv
     @env_vars = @env_vars || {}
   end
 
+  def self.instance
+    @instance ||= TahiEnv.new
+  end
+
   def self.optional(env_var, type = nil, default: nil)
-    env_vars[env_var.to_s] = OptionalEnvVar.new(
-      env_var.to_s,
+    optional_env_var = OptionalEnvVar.new(
+      env_var,
       type,
       default: default
     )
+    register_env_var(optional_env_var)
   end
 
   def self.required(env_var, type = nil, **kwargs)
     default_value = kwargs[:default]
     if_method = kwargs[:if]
 
-    validation_args = { presence: true }
-
-    if if_method
-      validation_args[:if] = -> { self.class.send(if_method.to_s) }
-    end
-
-    validates env_var, **validation_args
-
-    env_vars[env_var.to_s] = RequiredEnvVar.new(
-      env_var.to_s,
+    required_env_var = RequiredEnvVar.new(
+      env_var,
       type,
       default: default_value
     )
+    register_env_var(required_env_var)
+
+    validation_args = { presence: true }
+    validation_args[:if] = if_method if if_method
+    validates env_var, **validation_args
   end
 
-  def self.validates(env_var, *args)
-    define_method(env_var) do
-      ENV["#{env_var}"]
+  def self.register_env_var(env_var)
+    env_vars[env_var.env_var] = env_var
+
+    # TahiEnv#APP_NAME
+    reader_method = env_var.env_var
+    define_method(reader_method) do
+      env_var.raw_value_from_env
     end
-    super
+
+    # TahiEnv#app_name
+    # TahiEnv#orcid_enabled?
+    reader_method = "#{env_var.env_var.downcase}"
+    reader_method << "?" if env_var.boolean?
+    define_method(reader_method) do
+      env_var.value
+    end
   end
 
-  def self.method_missing(method, *args, &block)
-    env_var_name = "#{method.to_s.upcase.gsub(/\W/, '')}"
-    env_var = env_vars[env_var_name]
-    env_var.present? ? env_var.value : super
+  def self.method_missing(method, *args, &blk)
+    if instance.respond_to?(method)
+      instance.send(method, *args, &blk)
+    else
+      super
+    end
   end
 
   required :APP_NAME

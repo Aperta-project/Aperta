@@ -175,6 +175,7 @@ describe TahiEnv do
       ORCID_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
       ORCID_SITE_HOST: 'sandbox.orcid.com',
+      PASSWORD_AUTH_ENABLED: 'true',
       PUSHER_URL: 'http://pusher.tahi-project.org',
       PUSHER_VERBOSE_LOGGING: 'false',
       RAILS_ENV: 'test',
@@ -184,6 +185,7 @@ describe TahiEnv do
 
   include_examples 'required env var', var: 'APP_NAME'
   include_examples 'required env var', var: 'ADMIN_EMAIL'
+  include_examples 'required env var', var: 'PASSWORD_AUTH_ENABLED'
   include_examples 'required env var', var: 'RAILS_ENV'
   include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
 

@@ -68,6 +68,7 @@ class TahiEnv
 
   required :APP_NAME
   required :ADMIN_EMAIL
+  required :PASSWORD_AUTH_ENABLED
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
 

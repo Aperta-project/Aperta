@@ -18,12 +18,18 @@ export default Ember.Service.extend({
       socketId = getOwner(this).lookup('pusher:main').get('socketId');
     }
 
+    let contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+    if (method !== 'GET') {
+      contentType = 'application/json';
+      data = JSON.stringify(data);
+    }
+
     return new Ember.RSVP.Promise(function(resolve, reject) {
       return Ember.$.ajax({
         url: path,
         type: method,
-        data: JSON.stringify(data),
-        contentType: 'application/json',
+        data: data,
+        contentType: contentType,
         success: resolve,
         error: reject,
         headers: {

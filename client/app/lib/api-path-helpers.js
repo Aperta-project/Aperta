@@ -3,5 +3,5 @@ export function eligibleUsersPath(taskId, userType) {
 }
 
 export function uploadManuscriptPath(taskId) {
-  return `/api/tasks/${taskId}/upload_manuscript`;
+  return `api/tasks/${taskId}/upload_manuscript`;
 }

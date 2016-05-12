@@ -1,0 +1,104 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+This behavioral test case validates paper withdrawal and the withdraw banner
+This test requires the following data:
+The test document tarball from http://bighector.plos.org/aperta/testing_assets.tar.gz extracted into
+    frontend/assets/
+"""
+import logging
+import random
+import time
+
+from selenium.webdriver.common.by import By
+
+from Base.Decorators import MultiBrowserFixture
+from Base.PostgreSQL import PgSQL
+from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5
+from frontend.common_test import CommonTest
+from Pages.authenticated_page import application_typeface
+from Pages.manuscript_viewer import ManuscriptViewerPage
+
+__author__ = 'jgray@plos.org'
+
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         ]
+
+
+@MultiBrowserFixture
+class WithdrawManuscriptTest(CommonTest):
+  """
+  Validate the elements, styles, functions of the Withdraw process
+  """
+
+  def test_withdraw_manuscript(self):
+    """
+    test_withdraw_ms: Validates the elements, styles, roles and functions of the withdraw
+    manuscript process and UI elements
+    :return: void function
+    """
+    # Users logs in and make a submission
+    creator_user = random.choice(users)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.set_timeout(60)
+    dashboard_page.click_create_new_submission_button()
+    journal = 'PLOS Wombat'
+    self.create_article(journal=journal,
+                        type_='NoCards',
+                        random_bit=True,
+                        )
+    dashboard_page.restore_timeout()
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(5)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success()
+    # Note: Request title to make sure the required page is loaded
+    paper_url = manuscript_page.get_current_url()
+    paper_id = paper_url.split('/')[-1].split('?')[0]
+    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    # Giving just a little extra time here so the title on the paper gets updated
+    # What I notice is that if we submit before iHat is done updating, the paper title
+    # reverts to the temporary title specified on the CNS overlay (5s is too short)
+    # APERTA-6514
+    time.sleep(10)
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    # Now we get the submit confirmation overlay
+    # Sadly, we take time to switch the overlay
+    time.sleep(2)
+    manuscript_page.close_modal()
+    time.sleep(1)
+    # Do some style and element validations
+    manuscript_page._check_more_btn(useremail=creator_user['email'])
+
+    manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
+                                                'FROM papers '
+                                                'WHERE id = %s;', (paper_id,))[0][0]
+    assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
+    manuscript_page.withdraw_manuscript()
+    manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
+                                                'FROM papers '
+                                                'WHERE id = %s;', (paper_id,))[0][0]
+    assert manuscript_publishing_state == 'withdrawn', manuscript_publishing_state
+    self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
+    withdraw_banner = manuscript_page._get(self._withdraw_banner)
+    # Wrapping the following in a try except due to a known issue: APERTA-6860
+    try:
+      assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) in \
+          withdraw_banner.text
+    except AssertionError:
+      logging.warning('Banner text is not correct: {0}'.format(withdraw_banner.text))
+    assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
+        withdraw_banner.value_of_css_property('background-color')
+    assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+        withdraw_banner.value_of_css_property('color')
+    assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
+        withdraw_banner.value_of_css_property('font-family')
+
+if __name__ == '__main__':
+  CommonTest._run_tests_randomly()

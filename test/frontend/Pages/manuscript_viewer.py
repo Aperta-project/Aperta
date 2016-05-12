@@ -39,6 +39,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
     self._submit_button = (By.ID, 'sidebar-submit-paper')
+    self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -54,7 +55,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
     self._tb_dl_epub_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
     self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
-    self._tb_more_link = (By.ID, 'more-dropdown-menu')
+    self._tb_more_link = (By.CSS_SELECTOR, 'div#more-dropdown-menu > div > span')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
     self._tb_workflow_link = (By.ID, 'go-to-workflow')
@@ -63,6 +64,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
     self._add_collaborators_modal_support_text = (By.CLASS_NAME, 'overlay-supporting-text')
     self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
+    self._add_collaborators_modal_input = (By.CLASS_NAME, 'select2-input')
     self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
 
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
@@ -72,6 +74,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._wm_exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
     self._wm_modal_title = (By.CSS_SELECTOR, 'h1')
     self._wm_modal_text = (By.CSS_SELECTOR, 'div.overlay-body div p')
+    self._wm_modal_textarea = (By.CSS_SELECTOR, 'div.paper-withdraw-wrapper > textarea')
     self._wm_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
     self._wm_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
     # Submit Confirmation and Submit Congratulations Overlays (full and initial submit versions)
@@ -157,6 +160,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     version_btn = self._get(self._tb_versions_link)
     version_btn.click()
+    # allow time for components to attach to DOM
+    time.sleep(1)
     bar_items = self._gets(self._bar_items)
     version_number = bar_items[1].text.split('\n')[1].split()[0]
     self._get(self._tb_versions_closer).click()
@@ -180,29 +185,30 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     collaborator_btn = self._get(self._tb_collaborators_link)
     collaborator_btn.click()
-    add_collaborators = self._get(self._tb_add_collaborators_label)
-    assert 'Add Collaborators' in add_collaborators.text
-    add_collaborators.click()
-    self._get(self._add_collaborators_modal)
-    add_collaborator_header = self._get(self._overlay_header_title)
-    assert "Who can collaborate on this manuscript?" == add_collaborator_header.text
-    # self.validate_modal_title_style(add_collaborator_header)
-    assert ("Select people to collaborate with on this paper. Collaborators can edit the "
-            "paper, will be notified about edits on the paper, and can participate in the "
-            "discussion about this paper." ==
-            self._get(self._add_collaborators_modal_support_text).text)
-    self._get(self._add_collaborators_modal_support_select)
-    cancel = self._get(self._overlay_action_button_cancel)
-    self.validate_default_link_style(cancel)
-    save = self._get(self._overlay_action_button_save)
-    self.validate_primary_big_green_button_style(save)
-    close_icon_overlay = self._get(self._overlay_header_close)
-    # TODO: Change following line after bug #102078080 is solved
-    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
-    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    close_icon_overlay.click()
-    time.sleep(1)
+    # APERTA-6840 - we disabled add collaborators temporarily
+    # add_collaborators = self._get(self._tb_add_collaborators_label)
+    # assert 'Add Collaborators' in add_collaborators.text
+    # add_collaborators.click()
+    # self._get(self._add_collaborators_modal)
+    # add_collaborator_header = self._get(self._overlay_header_title)
+    # assert "Who can collaborate on this manuscript?" == add_collaborator_header.text
+    # # self.validate_modal_title_style(add_collaborator_header)
+    # assert ("Select people to collaborate with on this paper. Collaborators can edit the "
+    #         "paper, will be notified about edits on the paper, and can participate in the "
+    #         "discussion about this paper." ==
+    #         self._get(self._add_collaborators_modal_support_text).text)
+    # self._get(self._add_collaborators_modal_support_select)
+    # cancel = self._get(self._overlay_action_button_cancel)
+    # self.validate_default_link_style(cancel)
+    # save = self._get(self._overlay_action_button_save)
+    # self.validate_primary_big_green_button_style(save)
+    # close_icon_overlay = self._get(self._overlay_header_close)
+    # # TODO: Change following line after bug #102078080 is solved
+    # assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
+    # assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    # assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # close_icon_overlay.click()
+    # time.sleep(1)
     collaborator_btn.click()
     time.sleep(1)
 
@@ -321,10 +327,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
               'Please provide your reason for withdrawing this manuscript.' in
               withdraw_modal_text.text)
+      self._get(self._wm_modal_textarea)
       yes_btn = self._get(self._wm_modal_yes)
-      assert 'YES, WITHDRAW' == yes_btn.text
+      assert 'YES, WITHDRAW' == yes_btn.text, yes_btn.text
       no_btn = self._get(self._wm_modal_no)
-      assert "NO, I'M STILL WORKING" == no_btn.text
+      assert "NO, I'M STILL WORKING" == no_btn.text, no_btn.text
       self.validate_link_big_grey_button_style(yes_btn)
       # TODO: Leave comment out until solved. Pivotal bug#103858114
       # self.validate_secondary_grey_small_button_modal_style(no_btn)
@@ -334,6 +341,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
       assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
       close_icon_overlay.click()
+
+  def withdraw_manuscript(self):
+    """
+    Executes a withdraw action for a given manuscript
+    :return: void function
+    """
+    more_btn = self._get(self._tb_more_link)
+    more_btn.click()
+    withdraw_link = self._get(self._tb_more_withdraw_link)
+    withdraw_link.click()
+    self._get(self._wm_modal_textarea).send_keys('I am so bored with all this...')
+    self._get(self._wm_modal_yes).click()
+    time.sleep(1)
+
 
   def validate_roles(self, user_buttons):
     """
@@ -593,6 +614,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(2)
     select_div = self._get(self._add_collaborators_modal_select)
     select_div.find_element_by_tag_name('a').click()
+    select_input = self._get(self._add_collaborators_modal_input)
+    select_input.send_keys(user['name'][0:4])
+    # Need time for list to populate dynamically
+    time.sleep(2)
     select_items = (By.CSS_SELECTOR, 'ul.select2-results')
     items = self._get(select_items)
     for item in items.find_elements_by_tag_name('li'):

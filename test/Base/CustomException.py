@@ -6,6 +6,10 @@ class ElementDoesNotExistAssertionError(AssertionError):
   Raises a failure on Element Does Not Exist when used as a test
   """
 
+class ElementExistsAssertionError(AssertionError):
+  """
+  Raises a failure on Element Exists when used as a test
+  """
 
 class ErrorAlertThrownException(StandardError):
   """

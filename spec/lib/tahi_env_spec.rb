@@ -158,6 +158,7 @@ describe TahiEnv do
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
       BUGSNAG_API_KEY: 'rails_api_key',
+      DISABLE_PUSHER_SSL_VERIFICATION: 'false',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
       FTP_PASSWORD: 'tiny-green-characters',
@@ -174,6 +175,8 @@ describe TahiEnv do
       ORCID_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
       ORCID_SITE_HOST: 'sandbox.orcid.com',
+      PUSHER_URL: 'http://pusher.tahi-project.org',
+      PUSHER_VERBOSE_LOGGING: 'false',
       RAILS_ENV: 'test',
       RAILS_SECRET_TOKEN: 'secret-token'
     }
@@ -225,10 +228,17 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
   include_examples 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
 
+  # Puma
   include_examples 'optional env var', var: 'PUMA_WORKERS'
   include_examples 'optional env var', var: 'MAX_THREADS'
   include_examples 'optional env var', var: 'PORT'
   include_examples 'optional env var', var: 'RACK_ENV'
 
+  # Pusher
+  include_examples 'required env var', var: 'PUSHER_URL'
+  include_examples 'required env var', var: 'DISABLE_PUSHER_SSL_VERIFICATION'
+  include_examples 'required env var', var: 'PUSHER_VERBOSE_LOGGING'
+
+  # Sidekiq
   include_examples 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
 end

@@ -112,10 +112,17 @@ class TahiEnv
   required :ORCID_API_HOST, if: :orcid_enabled?
   required :ORCID_SITE_HOST, if: :orcid_enabled?
 
+  # Puma
   optional :PUMA_WORKERS
   optional :MAX_THREADS
   optional :PORT
   optional :RACK_ENV
 
+  # Pusher
+  required :PUSHER_URL
+  required :DISABLE_PUSHER_SSL_VERIFICATION
+  required :PUSHER_VERBOSE_LOGGING
+
+  # Sidekiq
   optional :SIDEKIQ_CONCURRENCY
 end

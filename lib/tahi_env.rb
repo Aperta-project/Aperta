@@ -102,6 +102,8 @@ class TahiEnv
   optional :CAS_ENABLED, :boolean, default: false
   optional :CAS_SIGNUP_URL
 
+  optional :MAILSAFE_REPLACEMENT_ADDRESS
+
   optional :NEWRELIC_KEY
   optional :NEWRELIC_APP_NAME
 

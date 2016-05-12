@@ -214,6 +214,8 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
   include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
 
+  include_examples 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
+
   include_examples 'optional env var', var: 'NEWRELIC_KEY'
   include_examples 'optional env var', var: 'NEWRELIC_APP_NAME'
 

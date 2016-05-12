@@ -26,7 +26,7 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/moment/moment.js');
 
   // Pusher
-  app.import(app.bowerDirectory + '/pusher/dist/pusher.js');
+  app.import(app.bowerDirectory + '/pusher/dist/web/pusher.js');
   app.import(app.bowerDirectory + '/ember-pusher/ember-pusher.amd.js', {
     exports: {
       'ember-pusher/controller':    ['Controller'],

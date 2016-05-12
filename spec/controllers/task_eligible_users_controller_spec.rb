@@ -7,9 +7,7 @@ describe TaskEligibleUsersController do
 
   describe "#academic_editors" do
     let(:journal) do
-      FactoryGirl.create(:journal).tap do |journal|
-        journal.roles.create!(name: Role::ACADEMIC_EDITOR_ROLE)
-      end
+      FactoryGirl.create(:journal, :with_academic_editor_role)
     end
     subject(:do_request) do
       get(

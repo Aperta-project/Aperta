@@ -113,4 +113,6 @@ class TahiEnv
   optional :MAX_THREADS
   optional :PORT
   optional :RACK_ENV
+
+  optional :SIDEKIQ_CONCURRENCY
 end

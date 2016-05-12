@@ -225,4 +225,6 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'MAX_THREADS'
   include_examples 'optional env var', var: 'PORT'
   include_examples 'optional env var', var: 'RACK_ENV'
+
+  include_examples 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
 end

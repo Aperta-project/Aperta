@@ -1,5 +1,5 @@
 {{#if editState}}
-  {{input value=query.title action="saveTitle"}}
+  {{input value=query.title enter="saveTitle"}}
 {{else}}
   {{#link-to (query-params query=query.query)}} {{ query.title }} {{/link-to}}
   <i class="fa fa-pencil" {{action "startEditTitle"}}></i>

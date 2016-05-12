@@ -226,6 +226,12 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'REPORTING_EMAIL'
   include_examples 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
 
+  # Basic Auth
+  include_examples 'optional boolean env var', var: 'BASIC_AUTH_REQUIRED', default_value: false
+  include_examples 'dependent required env var', var: 'BASIC_HTTP_USERNAME', dependent_key: 'BASIC_AUTH_REQUIRED'
+  include_examples 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
+
+  # CAS
   include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
   include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
 

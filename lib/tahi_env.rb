@@ -107,17 +107,27 @@ class TahiEnv
   optional :REPORTING_EMAIL
   optional :SEGMENT_IO_WRITE_KEY
 
+  # Basic Auth
+  optional :BASIC_AUTH_REQUIRED, :boolean, default: false
+  required :BASIC_HTTP_USERNAME, if: :basic_auth_required?
+  required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
+
+  # CAS
   optional :CAS_ENABLED, :boolean, default: false
   optional :CAS_SIGNUP_URL
 
+  # Heroku
   optional :HEROKU_APP_NAME
   optional :HEROKU_PARENT_APP_NAME
 
+  # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 
+  # Newrelic
   optional :NEWRELIC_KEY
   optional :NEWRELIC_APP_NAME
 
+  # Orcid
   optional :ORCID_ENABLED, :boolean, default: false
   required :ORCID_API_HOST, if: :orcid_enabled?
   required :ORCID_SITE_HOST, if: :orcid_enabled?

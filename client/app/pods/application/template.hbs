@@ -43,8 +43,8 @@
 
 {{#overlay-fullscreen visible=showFeedbackOverlay
                       outAnimationComplete=(action "hideFeedbackOverlay")
+                      overlayClass="feedback-overlay"
                       as |overlay|}}
-    <h1 class="overlay-header-title"></h1>
     {{feedback-form close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 

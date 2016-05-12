@@ -1,6 +1,8 @@
 {{#if feedbackSubmitted}}
   <p class="feedback-form-thanks animation-fade-in">
-    <img class="animation-scale-in" src="/images/submit-image-success.png">
+    {{#if showSuccessCheckmark}}
+      <img class="animation-scale-in success-checkmark" src="/images/submit-image-success.png">
+    {{/if}}
     Thank you for your feedback!
   </p>
 {{else}}
@@ -14,7 +16,7 @@
              autofocus="autofocus"}}
   <div class="call-to-action">
     {{#if allowUploads}}
-      <div class="button-secondary button--green feeback-form-screenshot-uploader fileinput-button">
+      <div class="button-secondary button--green feedback-form-screenshot-uploader fileinput-button">
         Attach Files
         {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.pages"
                         start="uploadStarted"

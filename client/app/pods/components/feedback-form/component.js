@@ -9,6 +9,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   close: null, //passed-in action
   remarks: null,
   allowUploads: true,
+  showSuccessCheckmark: true,
+
   screenshots: Ember.computed(() => []),
 
   feedbackService: Ember.inject.service('feedback'),

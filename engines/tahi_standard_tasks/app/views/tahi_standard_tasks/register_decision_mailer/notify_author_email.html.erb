@@ -1,8 +1,5 @@
 <div class="container">
   <div class="greeting">
-    <h3 class="user-name">
-      Hello <%= @recipient.full_name %>,
-    </h3>
     <p class="message">
       A Decision has been Registered on your Manuscript <%= @paper.display_title(sanitized: false) %>.
     </p>
@@ -18,9 +15,5 @@
     <a class="button" href="<%= client_paper_url(@paper) %>" target="_blank">
       View Paper
     </a>
-    <p>
-    Sincerely,<br>
-    <%= @paper.journal.name %> Team
-    </p>
   </div>
 </div>

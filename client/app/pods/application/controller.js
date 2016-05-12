@@ -12,6 +12,11 @@ export default Ember.Controller.extend({
   journals: null,
   canViewPaperTracker: false,
 
+  init() {
+    this._super(...arguments);
+    Ember.assert('Application name is required for proper display', window.appName);
+  },
+
   setCanViewPaperTracker: function() {
     if (this.journals === null) {
       return false;
@@ -41,6 +46,8 @@ export default Ember.Controller.extend({
   }),
 
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
+
+  specifiedAppName: window.appName,
 
   init: function() {
     var that = this;

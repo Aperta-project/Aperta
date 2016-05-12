@@ -6,7 +6,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Related Articles task
 - Templates for devs creating new tasks
+- Diffing of Reviewer Candidates
 ### Changed
+- Update RTC and FTC text.
+
 ### Deprecated
 ### Removed
 ### Fixed

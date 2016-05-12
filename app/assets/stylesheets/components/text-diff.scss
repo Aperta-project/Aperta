@@ -5,6 +5,8 @@
 }
 
 .text-diff {
+  display: inline-block;
+
   .added {
     background-color: rgba($tahi-green-light, .5);
     padding: 1px;

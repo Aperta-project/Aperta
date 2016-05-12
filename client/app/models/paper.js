@@ -75,6 +75,9 @@ export default DS.Model.extend({
   metadataTasks: computed.filterBy('tasks', 'isMetadataTask', true),
   sortedMetadataTasks: computed.sort('metadataTasks', 'taskSorting'),
 
+  snapshotTasks: computed.filterBy('tasks', 'isSnapshotTask', true),
+  sortedSnapshotTasks: computed.sort('snapshotTasks', 'taskSorting'),
+
   submissionTasks: computed.filterBy('tasks', 'isSubmissionTask', true),
   sortedSubmissionTasks: computed.sort('submissionTasks', 'taskSorting'),
 

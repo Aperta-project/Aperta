@@ -29,16 +29,9 @@ class ApexManifest
   end
 
   def file
-    fail_if_invalid
     Tempfile.new('manifest').tap do |f|
       f.write to_json
       f.rewind
-    end
-  end
-
-  def fail_if_invalid
-    [:archive_filename, :metadata_filename].each do |attr|
-      fail InvalidManifest, "Missing #{attr}" unless send(attr).present?
     end
   end
 end

@@ -47,15 +47,5 @@ describe ApexManifest do
       contents = file.read
       expect(contents).to eq manifest.to_json
     end
-
-    it "fails if there is no archive_filename" do
-      manifest.archive_filename = nil
-      expect { manifest.file }.to raise_error(ApexManifest::InvalidManifest)
-    end
-
-    it "fails if there is no metadata_filename" do
-      manifest.metadata_filename = nil
-      expect { manifest.file }.to raise_error(ApexManifest::InvalidManifest)
-    end
   end
 end

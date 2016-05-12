@@ -31,19 +31,16 @@ module('Integration: Feedback Form', {
 });
 
 test('clicking the feedback button sends feedback', function(assert) {
-  Ember.run(function(){
+  visit('/');
+  click('#nav-give-feedback');
+  click('a:contains(Feedback)');
+  fillIn('.overlay textarea', 'My feedback');
+  click('.overlay-footer-content .button-primary');
 
-    visit('/');
-    click('#nav-give-feedback');
-    click('a:contains(Feedback)');
-    fillIn('.overlay textarea', 'My feedback');
-    click('.overlay-footer-content .button-primary');
-
-    andThen(function() {
-      assert.elementFound(
-        '.feedback-overlay-thanks',
-        'Thank you message visible'
-      );
-    });
+  andThen(function() {
+    assert.elementFound(
+      '.feedback-form-thanks',
+      'Thank you message visible'
+    );
   });
 });

@@ -102,6 +102,9 @@ class TahiEnv
   optional :CAS_ENABLED, :boolean, default: false
   optional :CAS_SIGNUP_URL
 
+  optional :NEWRELIC_KEY
+  optional :NEWRELIC_APP_NAME
+
   optional :ORCID_ENABLED, :boolean, default: false
   required :ORCID_API_HOST, if: :orcid_enabled?
   required :ORCID_SITE_HOST, if: :orcid_enabled?

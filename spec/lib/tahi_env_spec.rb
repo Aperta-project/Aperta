@@ -174,13 +174,15 @@ describe TahiEnv do
       ORCID_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
       ORCID_SITE_HOST: 'sandbox.orcid.com',
-      RAILS_ENV: 'test'
+      RAILS_ENV: 'test',
+      RAILS_SECRET_TOKEN: 'secret-token'
     }
   end
 
   include_examples 'required env var', var: 'APP_NAME'
   include_examples 'required env var', var: 'ADMIN_EMAIL'
   include_examples 'required env var', var: 'RAILS_ENV'
+  include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
 
   include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'

@@ -69,6 +69,7 @@ class TahiEnv
   required :APP_NAME
   required :ADMIN_EMAIL
   required :RAILS_ENV
+  required :RAILS_SECRET_TOKEN
 
   required :FTP_HOST
   required :FTP_USER

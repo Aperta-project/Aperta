@@ -221,11 +221,18 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
   include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
 
+  # Heroku
+  include_examples 'optional env var', var: 'HEROKU_APP_NAME'
+  include_examples 'optional env var', var: 'HEROKU_PARENT_APP_NAME'
+
+  # Mailsafe
   include_examples 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
 
+  # Newrelic
   include_examples 'optional env var', var: 'NEWRELIC_KEY'
   include_examples 'optional env var', var: 'NEWRELIC_APP_NAME'
 
+  # Orcid
   include_examples 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
   include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
   include_examples 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'

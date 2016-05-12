@@ -104,6 +104,9 @@ class TahiEnv
   optional :CAS_ENABLED, :boolean, default: false
   optional :CAS_SIGNUP_URL
 
+  optional :HEROKU_APP_NAME
+  optional :HEROKU_PARENT_APP_NAME
+
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 
   optional :NEWRELIC_KEY

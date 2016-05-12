@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This behavioral test case validates Paper submission and invite Academic Editor (AE)
+This test case validates style and function of  Production Metadata card
 This test requires the following data:
 The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
     frontend/assets/docs/
@@ -44,9 +44,9 @@ class ProductionMetadataCardTest(CommonTest):
 
   def test_production_metadata_card(self):
     """
-    test_invite_ae: Validates the elements, styles, roles and functions of invite academic editors
-    from new document creation through inviting ae, validation of the invite on the invitees
-    dashboard, acceptance and rejections
+    test_invite_ae: Validates the elements, styles, roles and functions of invite academic
+    editors from new document creation through inviting ae, validation of the invite on the
+    invitees dashboard, acceptance and rejections
     :return: void function
     """
     # Users logs in and make a submission
@@ -82,7 +82,7 @@ class ProductionMetadataCardTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
-    time.sleep(10)
+    time.sleep(4)
     # add card invite AE with add new card
     # Check if card is there
     if not workflow_page.is_card('Production Metadata'):
@@ -91,65 +91,22 @@ class ProductionMetadataCardTest(CommonTest):
     workflow_page.click_production_metadata_card()
     product_metadata_card = ProductionMedataCard(self.getDriver())
     product_metadata_card.check_style(academic_editor_login)
-    # test content should save if I close
-    # send data
-    product_metadata_card.check_function(academic_editor_login)
-
-
-    manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                           encoding='utf-8',
-                           errors='strict')
-
-    # test content should save if I close
-    # send data
-
-
-
-
-    kkkk
-    invite_ae_card.validate_invite_ae(academic_editor_login,
-                                          manuscript_title,
-                                          creator_user,
-                                          paper_id)
-    time.sleep(.5)
-    workflow_page.logout()
-    dashboard_page = self.cas_login(email=academic_editor_login['email'])
+    # test content, it should be saved
+    data = product_metadata_card.complete_card()
     time.sleep(2)
-    dashboard_page.click_view_invites_button()
-    # AE accepts or reject invite
-    invite_response = dashboard_page.accept_or_reject_invitation(manuscript_title)
-    logging.info('Invitees response to review request was {0}'.format(invite_response))
-    # If accepted, validate new assignment in db
-    if invite_response == 'Accept':
-      wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE '
-                                        'name = \'PLOS Wombat\';')[0][0]
-      ae_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
-      ae_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                            'name = \'Academic Editor\';',
-                                            (wombat_journal_id,))[0][0]
-      test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
-                                    'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
-                                    (ae_user_id, paper_id))[0][0]
-      assert test_for_role == ae_role_for_env, 'assigned role, {0}, is not the expected ' \
-                                                     'value: {1}'.format(test_for_role,
-                                                                         ae_role_for_env)
+    workflow_page.click_production_metadata_card()
+    # read card data in the DB and compare
+    task_id = PgSQL().query(
+        'SELECT id from tasks WHERE paper_id = %s and title = %s;',
+        (paper_id,'Production Metadata'))[0][0]
+    nested_queston = PgSQL().query(
+        'SELECT nested_question_id, value from nested_question_answers '
+        'WHERE owner_id = %s and owner_type=%s;', (task_id,'Task'))
+    answers = [x[1] for  x in nested_queston]
+    for item in data.values():
+      assert item in answers,  (item, answers)
     workflow_page.logout()
 
-    # log back in as editorial user and validate status display on card
-    logging.info(editorial_user)
-    self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
-    # go to card
-    workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
-    workflow_page.click_card('invite_academic_editor')
-    time.sleep(3)
-    invite_ae = InviteAECard(self.getDriver())
-    invite_ae.validate_ae_response(academic_editor_login, invite_response)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

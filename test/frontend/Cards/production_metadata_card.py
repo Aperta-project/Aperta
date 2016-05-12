@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import random
 import time
+import uuid
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -44,9 +46,10 @@ class ProductionMedataCard(BaseCard):
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Production Metadata'
     self.validate_application_title_style(card_title)
-    publication_data = self._get(self._publication_date)
-    assert publication_data.get_attribute('placeholder') == 'Select Date...'
-    self.validate_input_field_style(publication_data)
+    publication_date = self._get(self._publication_date)
+    assert publication_date.get_attribute('placeholder') == 'Select Date...', \
+      publication_date.get_attribute('placeholder')
+    self.validate_input_field_style(publication_date)
     volume_number = self._get(self._volume_number)
     assert volume_number.get_attribute('type') == 'number', \
         volume_number.get_attribute('type')
@@ -83,47 +86,49 @@ class ProductionMedataCard(BaseCard):
     assert 'Must be a whole number' in volume_field.text
     issue_field = self._get(self._issue_number_field)
     assert 'Must be a whole number' in issue_field.text
-    self.validate_error_field_style(volume_field)
-    self.validate_error_msg_field_style(volume_field)
-    self.validate_error_field_style(issue_field)
-    self.validate_error_msg_field_style(issue_field)
+    # Style validation commented out due lack of style guide for this
+    #self.validate_error_field_style(volume_field)
+    #self.validate_error_msg_field_style(volume_field)
+    #self.validate_error_field_style(issue_field)
+    #self.validate_error_msg_field_style(issue_field)
     return None
 
-  def check_function(self, user):
+  def complete_card(self, data={}):
     """
     Style check for the card
-    :user: User to send the invitation
+    :data: Dictionary with data to complete the card. If empty,
+      will generate random data.
+    :return: data used to complete the card
     """
-    publication_data = self._get(self._publication_date)
-    assert publication_data.get_attribute('placeholder') == 'Select Date...'
-    self.validate_input_field_style(publication_data)
+    # Input data, close, open and check if it is saved 05/04/2016
+    if not data:
+      date = time.strftime('%m/%d/%Y')
+      volume = str(random.randint(1,10))
+      issue = str(random.randint(1,10))
+      provenance = str(uuid.uuid4())
+      pn = str(uuid.uuid4())
+      shi = str(uuid.uuid4())
+      data = {'date': date,
+              'volume': volume,
+              'issue': issue,
+              'provenance': provenance,
+              'production_notes': pn,
+              'special_handling_instructions': shi,
+              }
+    publication_date = self._get(self._publication_date)
     volume_number = self._get(self._volume_number)
-    assert volume_number.get_attribute('type') == 'number', \
-        volume_number.get_attribute('type')
-    assert volume_number.get_attribute('placeholder') == 'e.g. 3', \
-        volume_number.get_attribute('placeholder')
-    self.validate_input_field_style(volume_number)
     issue_number = self._get(self._issue_number)
-    assert issue_number.get_attribute('type') == 'number', \
-        issue_number.get_attribute('type')
-    assert issue_number.get_attribute('placeholder') == 'e.g. 33', \
-        issue_number.get_attribute('placeholder')
-    self.validate_input_field_style(issue_number)
     provenance = self._get(self._provenance)
-    # Check "there is no placeholder text for Provenance"
-    assert not provenance.get_attribute('placeholder')
-    self.validate_input_field_style(provenance)
     production_notes = self._get(self._production_notes)
-    assert production_notes.get_attribute('placeholder') == 'Add production notes here.', \
-        production_notes.get_attribute('placeholder')
-    self.validate_input_field_style(production_notes)
     special_handling_instructions = self._get(self._special_handling_instructions)
-    special_handling_instructions.get_attribute('placeholder') == \
-        'Add special handling instructions here.'
-    prov_div = self._get(self._provenance_div)
-    prov = prov_div.find_element_by_tag_name('span')
-    assert prov.text == 'Provenance', prov.text
-
+    publication_date.send_keys(data['date'])
+    volume_number.send_keys(data['volume'])
+    issue_number.send_keys(data['issue'])
+    provenance.send_keys(data['provenance'])
+    production_notes.send_keys(data['production_notes'])
+    special_handling_instructions.send_keys(data['special_handling_instructions'])
+    self._get(self._bottom_close_button).click()
+    return data
 
    #POM Actions
   def click_task_completed_checkbox(self):

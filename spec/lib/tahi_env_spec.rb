@@ -162,7 +162,7 @@ describe TahiEnv do
 
   shared_examples_for 'optional boolean env var' do |var:, default_value:|
     describe "Optional boolean env var: #{var}" do
-      it 'is does not need to b set' do
+      it 'is does not need to be set' do
         ClimateControl.modify valid_env.merge("#{var}": nil) do
           expect(env.valid?).to be true
         end
@@ -208,7 +208,7 @@ describe TahiEnv do
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
       BUGSNAG_API_KEY: 'rails_api_key',
-      CAS_ENABLED: 'true',
+      CAS_ENABLED: 'false',
       DATABASEDOTCOM_CLIENT_ID: 'abc9876',
       DATABASEDOTCOM_CLIENT_SECRET: '765abfg',
       DATABASEDOTCOM_HOST: 'salesforce.tahi-project.org',
@@ -295,7 +295,17 @@ describe TahiEnv do
 
   # CAS
   include_examples 'required boolean env var', var: 'CAS_ENABLED'
-  include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
+  include_examples 'dependent required env var', var: 'CAS_SIGNUP_URL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_CALLBACK_URL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_CA_PATH', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_DISABLE_SSL_VERIFICATION', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_HOST', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_LOGIN_URL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_LOGOUT_URL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_PORT', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_SERVICE_VALIDATE_URL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_UID_FIELD', dependent_key: 'CAS_ENABLED'
 
   # Heroku
   include_examples 'optional env var', var: 'HEROKU_APP_NAME'

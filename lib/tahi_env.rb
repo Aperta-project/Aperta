@@ -119,7 +119,17 @@ class TahiEnv
 
   # CAS
   required :CAS_ENABLED, :boolean
-  optional :CAS_SIGNUP_URL
+  required :CAS_SIGNUP_URL, if: :cas_enabled?
+  required :CAS_CALLBACK_URL, if: :cas_enabled?
+  required :CAS_CA_PATH, if: :cas_enabled?
+  required :CAS_DISABLE_SSL_VERIFICATION, if: :cas_enabled?
+  required :CAS_HOST, if: :cas_enabled?
+  required :CAS_LOGIN_URL, if: :cas_enabled?
+  required :CAS_LOGOUT_URL, if: :cas_enabled?
+  required :CAS_PORT, if: :cas_enabled?
+  required :CAS_SERVICE_VALIDATE_URL, if: :cas_enabled?
+  required :CAS_SSL, if: :cas_enabled?
+  required :CAS_UID_FIELD, if: :cas_enabled?
 
   # Heroku
   optional :HEROKU_APP_NAME

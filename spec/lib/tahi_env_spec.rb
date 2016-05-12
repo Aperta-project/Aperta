@@ -10,7 +10,7 @@ describe TahiEnv do
     describe "Required env var: #{var}" do
       it 'is required to be set' do
         ClimateControl.modify valid_env.merge("#{var}": nil) do
-          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to set, but was not.")
+          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set, but was not.")
         end
       end
 
@@ -47,13 +47,13 @@ describe TahiEnv do
     describe "Dependent required env var: #{var}" do
       it 'is not required to be set when dependent key is false' do
         ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'false') do
-          expect(env.errors.full_messages).to_not include("Environment Variable: #{var} was expected to set, but was not.")
+          expect(env.errors.full_messages).to_not include("Environment Variable: #{var} was expected to be set, but was not.")
         end
       end
 
       it 'is required to be set when dependent key is true' do
         ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'true') do
-          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to set, but was not.")
+          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set, but was not.")
         end
       end
 
@@ -110,6 +110,56 @@ describe TahiEnv do
     end
   end
 
+  shared_examples_for 'required boolean env var' do |var:|
+    describe "Required boolean env var: #{var}" do
+      it 'shows up in the list of known about env vars' do
+        expect(TahiEnv.env_vars[var.to_s]).to eq(
+          TahiEnv::RequiredEnvVar.new(var)
+        )
+      end
+
+      query_method_name = "#{var.downcase}?"
+      describe "TahiEnv.#{query_method_name}" do
+        it "is required to be set" do
+          ClimateControl.modify valid_env.merge("#{var}": nil) do
+            expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a boolean, but was not set. Allowed boolean values are true (true, 1), or false (false, 0).")
+          end
+        end
+
+        it "is required to a boolean value" do
+          ClimateControl.modify valid_env.merge("#{var}": '') do
+            expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a boolean value, but was set to \"\". Allowed boolean values are true (true, 1), or false (false, 0).")
+          end
+
+          ClimateControl.modify valid_env.merge("#{var}": 'a string value') do
+            env.valid?
+            expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a boolean value, but was set to \"a string value\". Allowed boolean values are true (true, 1), or false (false, 0).")
+          end
+        end
+
+        it "returns true when set to 'true' or '1'" do
+          ClimateControl.modify valid_env.merge("#{var}": 'true') do
+            expect(TahiEnv.send(query_method_name)).to be true
+          end
+
+          ClimateControl.modify valid_env.merge("#{var}": '1') do
+            expect(TahiEnv.send(query_method_name)).to be true
+          end
+        end
+
+        it "returns false when set to 'false' or '0'" do
+          ClimateControl.modify valid_env.merge("#{var}": 'false') do
+            expect(TahiEnv.send(query_method_name)).to be false
+          end
+
+          ClimateControl.modify valid_env.merge("#{var}": '0') do
+            expect(TahiEnv.send(query_method_name)).to be false
+          end
+        end
+      end
+    end
+  end
+
   shared_examples_for 'optional boolean env var' do |var:, default_value:|
     describe "Optional boolean env var: #{var}" do
       it 'is does not need to b set' do
@@ -158,6 +208,7 @@ describe TahiEnv do
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
       BUGSNAG_API_KEY: 'rails_api_key',
+      CAS_ENABLED: 'true',
       DATABASEDOTCOM_CLIENT_ID: 'abc9876',
       DATABASEDOTCOM_CLIENT_SECRET: '765abfg',
       DATABASEDOTCOM_HOST: 'salesforce.tahi-project.org',
@@ -243,8 +294,8 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
 
   # CAS
+  include_examples 'required boolean env var', var: 'CAS_ENABLED'
   include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
-  include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
 
   # Heroku
   include_examples 'optional env var', var: 'HEROKU_APP_NAME'

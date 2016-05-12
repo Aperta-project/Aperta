@@ -9,7 +9,7 @@ class TahiEnv
           record.errors.add :base, message
         end
       else
-        message = options[:message] || "Environment Variable: #{attribute} was expected to set, but was not."
+        message = options[:message] || "Environment Variable: #{attribute} was expected to be set, but was not."
         record.errors.add :base, message
       end
     end

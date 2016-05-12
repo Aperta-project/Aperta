@@ -1,4 +1,5 @@
 require 'tahi_env/env_var'
+require 'tahi_env/boolean_validator'
 require 'tahi_env/presence_validator'
 
 class TahiEnv
@@ -35,7 +36,8 @@ class TahiEnv
     )
     register_env_var(required_env_var)
 
-    validation_args = { presence: true }
+    validation_args = required_env_var.boolean? ? { boolean: true } : { presence: true }
+
     validation_args[:if] = if_method if if_method
     validates env_var, **validation_args
   end
@@ -116,7 +118,7 @@ class TahiEnv
   required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
 
   # CAS
-  optional :CAS_ENABLED, :boolean, default: false
+  required :CAS_ENABLED, :boolean
   optional :CAS_SIGNUP_URL
 
   # Heroku

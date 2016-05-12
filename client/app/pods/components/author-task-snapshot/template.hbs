@@ -5,9 +5,8 @@
   <br />
 {{/each}}
 
-{{#each question in questions}}
+{{#each questions as |question|}}
   {{nested-snapshot
     snapshot1=question.[0]
     snapshot2=question.[1]}}
 {{/each}}
-

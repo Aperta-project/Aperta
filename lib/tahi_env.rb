@@ -143,6 +143,14 @@ class TahiEnv
   required :DISABLE_PUSHER_SSL_VERIFICATION
   required :PUSHER_VERBOSE_LOGGING
 
+  # Salesforce
+  optional :SALESFORCE_ENABLED, :boolean, default: true
+  required :DATABASEDOTCOM_HOST, if: :salesforce_enabled?
+  required :DATABASEDOTCOM_CLIENT_ID, if: :salesforce_enabled?
+  required :DATABASEDOTCOM_CLIENT_SECRET, if: :salesforce_enabled?
+  required :DATABASEDOTCOM_USERNAME, if: :salesforce_enabled?
+  required :DATABASEDOTCOM_PASSWORD, if: :salesforce_enabled?
+
   # Sendgrid
   required :SENDGRID_USERNAME
   required :SENDGRID_PASSWORD

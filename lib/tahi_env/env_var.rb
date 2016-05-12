@@ -18,7 +18,13 @@ class TahiEnv
     end
 
     def value
-      boolean? ? converted_boolean_value : raw_value_from_env
+      if raw_value_from_env.nil?
+        default_value
+      elsif boolean?
+        converted_boolean_value
+      else
+        raw_value_from_env
+      end
     end
 
     def raw_value_from_env

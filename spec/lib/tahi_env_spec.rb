@@ -158,6 +158,11 @@ describe TahiEnv do
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
       BUGSNAG_API_KEY: 'rails_api_key',
+      DATABASEDOTCOM_CLIENT_ID: 'abc9876',
+      DATABASEDOTCOM_CLIENT_SECRET: '765abfg',
+      DATABASEDOTCOM_HOST: 'salesforce.tahi-project.org',
+      DATABASEDOTCOM_PASSWORD: 'password',
+      DATABASEDOTCOM_USERNAME: 'username',
       DEFAULT_MAILER_URL: 'http://mailer.tahi-project.org',
       DISABLE_PUSHER_SSL_VERIFICATION: 'false',
       FTP_HOST: 'ftp://foo.bar',
@@ -261,6 +266,14 @@ describe TahiEnv do
   include_examples 'required env var', var: 'PUSHER_URL'
   include_examples 'required env var', var: 'DISABLE_PUSHER_SSL_VERIFICATION'
   include_examples 'required env var', var: 'PUSHER_VERBOSE_LOGGING'
+
+  # Salesforce
+  include_examples 'optional boolean env var', var: 'SALESFORCE_ENABLED', default_value: true
+  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_HOST', dependent_key: 'SALESFORCE_ENABLED'
+  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_ID', dependent_key: 'SALESFORCE_ENABLED'
+  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_SECRET', dependent_key: 'SALESFORCE_ENABLED'
+  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_USERNAME', dependent_key: 'SALESFORCE_ENABLED'
+  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_PASSWORD', dependent_key: 'SALESFORCE_ENABLED'
 
   # Sendgrid
   include_examples 'required env var', var: 'SENDGRID_USERNAME'

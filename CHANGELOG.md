@@ -7,6 +7,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Diffing of Reviewer Candidates
 ### Changed
 - Update RTC and FTC text.
+- Billing task institutions and countries synced with EM
+
 ### Deprecated
 ### Removed
 ### Fixed

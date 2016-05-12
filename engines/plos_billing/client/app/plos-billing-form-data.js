@@ -84,7 +84,7 @@ export default {
     { id: 'Chad', text: 'Chad' },
     { id: 'Colombia', text: 'Colombia' },
     { id: 'Comoros', text: 'Comoros' },
-    { id: 'Congo, Democratic Republic of the"', text: 'Congo, Democratic Republic of the' },
+    { id: 'Congo, Democratic Republic of the', text: 'Congo, Democratic Republic of the' },
     { id: 'Cook Islands', text: 'Cook Islands' },
     { id: 'Côte d\'Ivoire', text: 'Côte d\'Ivoire' },
     { id: 'Cuba', text: 'Cuba' },

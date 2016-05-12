@@ -43,6 +43,42 @@ describe TahiEnv do
     end
   end
 
+  shared_examples_for 'dependent required env var' do |var:, dependent_key:|
+    describe "Dependent required env var: #{var}" do
+      it 'is not required to be set when dependent key is false' do
+        ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'false') do
+          expect(env.errors.full_messages).to_not include("Environment Variable: #{var} was expected to set, but was not.")
+        end
+      end
+
+      it 'is required to be set when dependent key is true' do
+        ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'true') do
+          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to set, but was not.")
+        end
+      end
+
+      it 'is required to have a value when dependent key is true' do
+        ClimateControl.modify valid_env.merge("#{var}": '', "#{dependent_key}": 'true') do
+          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to have a value, but was set to nothing.")
+        end
+      end
+
+      # it 'shows up in the list of known about env vars when dependent key is true' do
+      #   allow(TahiEnv).to receive("#{dependent_key}").and_return(true)
+      #   expect(TahiEnv.env_vars[var.to_s]).to eq(
+      #     TahiEnv::RequiredEnvVar.new(var)
+      #   )
+      # end
+      #
+      # it 'shows up in the list of known about env vars when dependent key is false' do
+      #   allow(TahiEnv).to receive("#{dependent_key}").and_return(false)
+      #   expect(TahiEnv.env_vars[var.to_s]).to eq(
+      #     TahiEnv::OptionalEnvVar.new(var)
+      #   )
+      # end
+    end
+  end
+
   shared_examples_for 'optional env var' do |var:|
     describe "Optional env var: #{var}" do
       it 'is does not need to be set' do
@@ -121,11 +157,13 @@ describe TahiEnv do
     {
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
+      BUGSNAG_API_KEY: 'rails_api_key',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
       FTP_PASSWORD: 'tiny-green-characters',
       FTP_PORT: '21',
       FTP_DIR: 'where/the/wild/things/are',
+      IHAT_URL: 'http://ihat.tahi-project.com',
       S3_URL: 'http://tahi-test.amazonaws.com',
       S3_BUCKET: 'tahi',
       AWS_ACCESS_KEY_ID: 'DNCDCC55F',
@@ -133,12 +171,15 @@ describe TahiEnv do
       AWS_REGION: 'us-west',
       EVENT_STREAM_WS_HOST: 'slanger-staging.tahi-project.org',
       EVENT_STREAM_WS_PORT: '8080',
-      BUGSNAG_API_KEY: 'rails_api_key'
+      ORCID_ENABLED: 'true',
+      ORCID_API_HOST: 'api.sandbox.orcid.org',
+      RAILS_ENV: 'test'
     }
   end
 
   include_examples 'required env var', var: 'APP_NAME'
   include_examples 'required env var', var: 'ADMIN_EMAIL'
+  include_examples 'required env var', var: 'RAILS_ENV'
 
   include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'
@@ -160,6 +201,7 @@ describe TahiEnv do
 
   include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
   include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
+  include_examples 'required env var', var: 'IHAT_URL'
 
   include_examples 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
   include_examples 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
@@ -169,6 +211,8 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
 
   include_examples 'optional env var', var: 'CAS_SIGNUP_URL'
-
   include_examples 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
+
+  include_examples 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
+  include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
 end

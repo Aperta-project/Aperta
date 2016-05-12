@@ -11,20 +11,30 @@ class TahiEnv
     @env_vars = @env_vars || {}
   end
 
-  def self.optional(env_var, type = nil, default_value = nil)
+  def self.optional(env_var, type = nil, default: nil)
     env_vars[env_var.to_s] = OptionalEnvVar.new(
       env_var.to_s,
       type,
-      default_value
+      default: default
     )
   end
 
-  def self.required(env_var, type = nil, default_value = nil)
-    validates env_var, presence: true
+  def self.required(env_var, type = nil, **kwargs)
+    default_value = kwargs[:default]
+    if_method = kwargs[:if]
+
+    validation_args = { presence: true }
+
+    if if_method
+      validation_args[:if] = -> { self.class.send(if_method.to_s) }
+    end
+
+    validates env_var, **validation_args
+
     env_vars[env_var.to_s] = RequiredEnvVar.new(
       env_var.to_s,
       type,
-      default_value
+      default: default_value
     )
   end
 
@@ -43,6 +53,7 @@ class TahiEnv
 
   required :APP_NAME
   required :ADMIN_EMAIL
+  required :RAILS_ENV
 
   required :FTP_HOST
   required :FTP_USER
@@ -64,6 +75,7 @@ class TahiEnv
 
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT
+  required :IHAT_URL
 
   optional :HIPCHAT_AUTH_TOKEN
   optional :MAX_ABSTRACT_LENGTH
@@ -72,6 +84,9 @@ class TahiEnv
   optional :REPORTING_EMAIL
   optional :SEGMENT_IO_WRITE_KEY
 
-  optional :CAS_ENABLED, :boolean, false
+  optional :CAS_ENABLED, :boolean, default: false
   optional :CAS_SIGNUP_URL
+
+  optional :ORCID_ENABLED, :boolean, default: false
+  required :ORCID_API_HOST, if: :orcid_enabled?
 end

@@ -6,10 +6,10 @@ class TahiEnv
     attr_reader :type
     attr_reader :default_value
 
-    def initialize(env_var, type = nil, default_value = nil)
-      @env_var = env_var
+    def initialize(env_var, type = nil, default: nil)
+      @env_var = env_var.to_s
       @type = type
-      @default_value = default_value
+      @default_value = default
     end
 
     def ==(other)

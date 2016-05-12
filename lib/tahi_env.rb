@@ -133,6 +133,10 @@ class TahiEnv
   required :DISABLE_PUSHER_SSL_VERIFICATION
   required :PUSHER_VERBOSE_LOGGING
 
+  # Sendgrid
+  required :SENDGRID_USERNAME
+  required :SENDGRID_PASSWORD
+
   # Sidekiq
   optional :SIDEKIQ_CONCURRENCY
 end

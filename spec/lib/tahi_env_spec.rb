@@ -181,7 +181,9 @@ describe TahiEnv do
       PUSHER_VERBOSE_LOGGING: 'false',
       RAILS_ASSET_HOST: 'some-host',
       RAILS_ENV: 'test',
-      RAILS_SECRET_TOKEN: 'secret-token'
+      RAILS_SECRET_TOKEN: 'secret-token',
+      SENDGRID_USERNAME: 'username',
+      SENDGRID_PASSWORD: 'password'
     }
   end
 
@@ -253,6 +255,10 @@ describe TahiEnv do
   include_examples 'required env var', var: 'PUSHER_URL'
   include_examples 'required env var', var: 'DISABLE_PUSHER_SSL_VERIFICATION'
   include_examples 'required env var', var: 'PUSHER_VERBOSE_LOGGING'
+
+  # Sendgrid
+  include_examples 'required env var', var: 'SENDGRID_USERNAME'
+  include_examples 'required env var', var: 'SENDGRID_PASSWORD'
 
   # Sidekiq
   include_examples 'optional env var', var: 'SIDEKIQ_CONCURRENCY'

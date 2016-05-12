@@ -30,8 +30,13 @@ namespace :plos_billing do
   task :upload_log_file_to_s3, [:paper_id] => :environment do |t, args|
     if args[:paper_id]
       paper = Paper.find args[:paper_id]
-      bm    = BillingLog.new paper: paper, journal: paper.journal
-      bm.to_s3 && puts("Uploaded #{bm.filename}")
+      bl =
+        BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
+      if bl.save_and_send_to_s3
+        puts("Uploaded #{bl.filename} \n #{bl.s3_url}")
+      else
+        puts("Error in saving file for paper id: #{args[:paper_id]}")
+      end
     else
       puts "Missing paper_id. Please see usage instructions in #{__FILE__}"
     end

@@ -39,9 +39,6 @@ describe Typesetter::BillingLogSerializer do
       paper_task.call('PlosBilling::BillingTask')
     end
 
-    before do
-    end
-
     it 'has doi' do
       paper.doi = '1234'
       output = serializer.serializable_hash

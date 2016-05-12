@@ -66,18 +66,24 @@ class TahiEnv
     end
   end
 
+  # App
   required :APP_NAME
   required :ADMIN_EMAIL
   required :PASSWORD_AUTH_ENABLED
+  required :RAILS_ASSET_HOST
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
+  required :DEFAULT_MAILER_URL
+  optional :DISABLE_FORCE_SSL, :boolean, default: false
 
+  # FTP
   required :FTP_HOST
   required :FTP_USER
   required :FTP_PASSWORD
   required :FTP_PORT
   required :FTP_DIR
 
+  # S3
   required :S3_URL
   required :S3_BUCKET
   required :AWS_ACCESS_KEY_ID

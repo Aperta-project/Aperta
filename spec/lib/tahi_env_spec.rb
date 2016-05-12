@@ -158,6 +158,7 @@ describe TahiEnv do
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
       BUGSNAG_API_KEY: 'rails_api_key',
+      DEFAULT_MAILER_URL: 'http://mailer.tahi-project.org',
       DISABLE_PUSHER_SSL_VERIFICATION: 'false',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
@@ -178,16 +179,21 @@ describe TahiEnv do
       PASSWORD_AUTH_ENABLED: 'true',
       PUSHER_URL: 'http://pusher.tahi-project.org',
       PUSHER_VERBOSE_LOGGING: 'false',
+      RAILS_ASSET_HOST: 'some-host',
       RAILS_ENV: 'test',
       RAILS_SECRET_TOKEN: 'secret-token'
     }
   end
 
+  # App
   include_examples 'required env var', var: 'APP_NAME'
   include_examples 'required env var', var: 'ADMIN_EMAIL'
   include_examples 'required env var', var: 'PASSWORD_AUTH_ENABLED'
   include_examples 'required env var', var: 'RAILS_ENV'
   include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
+  include_examples 'required env var', var: 'RAILS_ASSET_HOST'
+  include_examples 'required env var', var: 'DEFAULT_MAILER_URL'
+  include_examples 'optional boolean env var', var: 'DISABLE_FORCE_SSL', default_value: false
 
   include_examples 'required env var', var: 'FTP_DIR'
   include_examples 'required env var', var: 'FTP_HOST'

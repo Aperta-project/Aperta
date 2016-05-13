@@ -41,7 +41,6 @@ class ProductionMetadataCardTest(CommonTest):
   """
   Validate the elements, styles, functions of the Production Metadata card
   """
-
   def test_production_metadata_card(self):
     """
     test_invite_ae: Validates the elements, styles, roles and functions of invite academic

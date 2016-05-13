@@ -6,10 +6,8 @@ import uuid
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
 
 from frontend.Cards.basecard import BaseCard
-#from Base.Resources import author
 
 __author__ = 'sbassi@plos.org'
 
@@ -35,7 +33,6 @@ class ProductionMedataCard(BaseCard):
     self._how_to_pay = (By.XPATH, ".//li[contains(@class, 'question')]/div/div")
     self._volume_number_field = (By.CLASS_NAME, 'volume-number')
     self._issue_number_field = (By.CLASS_NAME, 'issue-number')
-
 
   def check_style(self, user):
     """

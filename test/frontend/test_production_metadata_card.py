@@ -105,6 +105,5 @@ class ProductionMetadataCardTest(CommonTest):
       assert item in answers,  (item, answers)
     workflow_page.logout()
 
-
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

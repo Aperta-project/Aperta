@@ -218,14 +218,31 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
-    pdf_link = self._get(self._tb_dl_pdf_link)
-    assert 'download.pdf' in pdf_link.get_attribute('href')
-    epub_link = self._get(self._tb_dl_epub_link)
-    assert 'download.epub' in epub_link.get_attribute('href')
+    word_link = self._get(self._tb_dl_docx_link)
+    assert 'word' in word_link.text, word_link.text
     assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
+    epub_link = self._get(self._tb_dl_epub_link)
+    assert 'epub' in epub_link.text, epub_link.text
+    assert 'download.epub' in epub_link.get_attribute('href')
+    pdf_link = self._get(self._tb_dl_pdf_link)
+    assert 'pdf' in pdf_link.text, pdf_link.text
+    assert 'download.pdf' in pdf_link.get_attribute('href')
     time.sleep(1)
     downloads_link.click()
     time.sleep(1)
+
+  def validate_download_btn_actions(self):
+    downloads_link = self._get(self._tb_downloads_link)
+    downloads_link.click()
+    word_link = self._get(self._tb_dl_docx_link)
+    word_link.click()
+    time.sleep(15)
+    epub_link = self._get(self._tb_dl_epub_link)
+    epub_link.click()
+    time.sleep(15)
+    pdf_link = self._get(self._tb_dl_pdf_link)
+    pdf_link.click()
+    time.sleep(15)
 
   def _check_recent_activity(self):
     """

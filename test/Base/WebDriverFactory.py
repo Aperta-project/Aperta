@@ -3,6 +3,7 @@
 
 __author__ = 'jkrzemien@plos.org'
 
+import Config
 import json
 from datetime import datetime
 from time import time
@@ -17,7 +18,7 @@ from browsermobproxy import Server
 from appium import webdriver as appiumDriver
 from WebDriverListener import WebDriverListener
 
-import Config
+from Resources import docs
 
 
 class WebDriverFactory(object):
@@ -96,19 +97,29 @@ class WebDriverFactory(object):
 
     # Set up a default Firefox profile, if not specified
     if not profile:
-      profile = webdriver.FirefoxProfile()
+      profile = webdriver.firefox.firefox_profile.FirefoxProfile()
+      profile.set_preference('browser.download.dir', '/tmp')
       profile.set_preference('browser.download.folderList', 2)
       profile.set_preference('browser.download.manager.showWhenStarting', False)
-      profile.set_preference('browser.download.dir', '/tmp')
       profile.set_preference("browser.download.manager.useWindow", False)
-      profile.set_preference('browser.helperApps.neverAsk.saveToDisk',"application/pdf")
+      profile.set_preference('browser.download.panel.shown', False)
+      profile.set_preference('browser.feeds.showFirstRunUI', False)
+      profile.set_preference('browser.helperApps.neverAsk.openFile', docs)
+      profile.set_preference('browser.startup.homepage_override.mstone', 'ignore')
+      profile.set_preference('startup.homepage_welcome_url', 'about:blank')
+      profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+      profile.set_preference('browser.helperApps.neverAsk.saveToDisk',
+                             ("application/pdf",
+                              "application/epub+zip",
+                              "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
       #profile.set_preference("browser.helperApps.alwaysAsk.force", False)
 
 
     # Set up BrowserMob proxy, if enabled
     if Config.browsermob_proxy_enabled:
       self.proxy = self.__setup_browsermob_proxy();
-      profile.set_proxy(self.proxy.selenium_proxy())
+      profile.set.proxy(self.proxy.selenium_proxy())
       self.proxy.new_har(name)
 
     # Create and return a Web Driver instance

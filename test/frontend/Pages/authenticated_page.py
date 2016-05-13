@@ -76,7 +76,7 @@ class AuthenticatedPage(PlosPage):
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar.toot div.bar-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
-    self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
+    self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.overlay-header-title')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
     self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')
     # Discussion related items

@@ -94,7 +94,7 @@ class ProductionMetadataCardTest(CommonTest):
     data = product_metadata_card.complete_card()
     time.sleep(2)
     workflow_page.click_production_metadata_card()
-    # read card data in the DB and compare
+    # read card data from the DB and compare
     task_id = PgSQL().query(
         'SELECT id from tasks WHERE paper_id = %s and title = %s;',
         (paper_id,'Production Metadata'))[0][0]

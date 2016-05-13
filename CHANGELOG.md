@@ -6,13 +6,21 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Related Articles task
 - Templates for devs creating new tasks
+- Diffing of Reviewer Candidates
 ### Changed
+- Update RTC and FTC text.
+
 ### Deprecated
 ### Removed
 ### Fixed
 - Prevent errors while adding discussion participants
 - Ensure previous Apex deliveries are removed before new ones are sent
 ### Security
+
+## [1.4.7] - 2016-05-06
+
+### Changed
+- Removed ability of the author/collaborator to manage collaborators
 
 ## [1.4.6] - 2016-04-29
 ### Added

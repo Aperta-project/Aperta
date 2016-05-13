@@ -49,7 +49,7 @@ export default TaskComponent.extend({
   },
 
   displayUserSelected(user) {
-    return user.full_name + ' [' + user.email + ']';
+    return user.full_name + ' <' + user.email + '>';
   },
 
   actions: {

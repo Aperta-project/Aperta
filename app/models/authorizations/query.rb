@@ -254,7 +254,7 @@ module Authorizations
           # only the last set of permission sets seen will be kept in
           # this ResultSet
           @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
-            { states: (v1[:states] + v2[:states]).uniq }
+            { states: (v1[:states] + v2[:states]).uniq.sort }
           end
         end
       end

@@ -152,7 +152,7 @@ DESC
                 states: %w(*)
               },
               edit: {
-                states: %w(unsubmitted *)
+                states: %w(* unsubmitted)
               }
             }
           }

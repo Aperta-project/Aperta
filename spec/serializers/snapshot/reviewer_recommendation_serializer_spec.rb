@@ -32,8 +32,7 @@ describe Snapshot::ReviewerRecommendationSerializer do
         { name: "email", type: "text", value: "email@email.com" },
         { name: "department", type: "text", value: "Department of Department" },
         { name: "title", type: "text", value: "A Title" },
-        { name: "affiliation", type: "text", value: "yes" },
-        { name: "ringgold_id", type: "text", value: "no" }
+        { name: "affiliation", type: "text", value: "yes" }
       )
     end
   end

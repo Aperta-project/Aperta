@@ -1,0 +1,34 @@
+<div class='container-fluid row' id='lines'>
+  <div class='right'> <span class='line'></span> </div>
+  <div>               <span class='line'></span> </div>
+  <div class='left'>  <span class='line'></span> </div>
+</div>
+
+<div class='container-fluid row' id='balls'>
+  {{#each stages as |stage|}}
+    <div class="col-xs-4"> 
+      {{#if stage.complete}}
+        <span class='ball img-circle check'><i class='fa fa-check'></i></span>
+      {{else}}
+        <span class="ball img-circle">{{stage.number}}</span>
+      {{/if}}
+     </div>
+  {{/each}}
+</div>
+
+<div class='container-fluid row'>
+  <div class="col-xs-4">
+    <h5 class="{{if (gt completedStage 0) "bright"}}">Initial Submission</h5>
+    <p>Submit your article along with cover letter, supporting information, and figures.</p>
+  </div>
+
+  <div class="col-xs-4">
+    <h5 class="{{if (gt completedStage 1) "bright"}}">PLOS Initial Evaluation</h5>
+    <p>PLOS editors will evaluate your submission. If they decide to send your manuscript to peer reviewers, you might be invited to add some additional information.</p>
+  </div>
+
+  <div class="col-xs-4">
+    <h5 class="{{if (gt completedStage 2) "bright"}}">Preparation for Peer Review</h5>
+    <p>You will be asked for some additional information such as full author list and competing interests statements, to get your manuscript ready for peer review. </p>
+  </div>
+</div>

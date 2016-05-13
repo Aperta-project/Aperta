@@ -132,7 +132,7 @@ namespace 'nested-questions:seed' do
       owner_type: PlosBioTechCheck::InitialTechCheckTask.name,
       ident: "plos_bio_initial_tech_check--figures_missing",
       value_type: "boolean",
-      text: "If any files or figures are cited in the manuscript but not included in the Figures or Supporting Information cards, ask the author to provide the missing information. (Search Fig, Table, Text, Movie and check that they are in the file inventory.",
+      text: "If any files or figures are cited in the manuscript but not included in the Figures or Supporting Information cards, ask the author to provide the missing information. (Search Fig, Table, Text, Movie and check that they are in the file inventory).",
       position: 15
     }
 

@@ -14,6 +14,8 @@ class Task < ActiveRecord::Base
 
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
+  scope :of_type, -> (task_type) { where(type: task_type) }
+  scope :snapshot_tasks, -> { where(type: snapshot_types) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {
@@ -144,6 +146,11 @@ class Task < ActiveRecord::Base
       all_task_types.select { |klass| klass <=> SubmissionTask }
     end
 
+    def snapshot_types
+      reviewer_task = 'TahiStandardTasks::ReviewerRecommendationsTask'
+      metadata_types.to_a << reviewer_task
+    end
+
     def safe_constantize(str)
       fail StandardError, 'Attempted to constantize disallowed value' \
         unless Task.all_task_types.map(&:to_s).member?(str)
@@ -163,6 +170,11 @@ class Task < ActiveRecord::Base
   def submission_task?
     return false if Task.submission_types.blank?
     Task.submission_types.include?(self.class.name)
+  end
+
+  def snapshot_task?
+    return false if Task.snapshot_types.blank?
+    Task.snapshot_types.include?(self.class.name)
   end
 
   def array_attributes

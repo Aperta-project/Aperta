@@ -13,13 +13,13 @@
     </tr>
   </thead>
 
-  {{#each figure in figures}}
+  {{#each figures as |figure|}}
     {{figure-snapshot snapshot1=figure.[0] snapshot2=figure.[1]}}
   {{/each}}
 </table>
 
 <hr>
 
-{{#each notFigure in notFigures}}
-  {{nested-snapshot snapshot1=notFigure.[0] snapshot2=notFigures.[1]}}
+{{#each notFigures as |notFigure|}}
+  {{nested-snapshot snapshot1=notFigure.[0] snapshot2=notFigure.[1]}}
 {{/each}}

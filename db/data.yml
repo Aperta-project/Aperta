@@ -6179,7 +6179,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-04-20 14:32:03.046477'
+    - '2016-05-06 15:33:33.667191'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -6653,8 +6653,9 @@ nested_questions:
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
-    - If Financial Disclosure Statement is not complete (they've written N/A or something
-      similar), message author.
+    - Check that the Financial Disclosure card has been filled out correctly. Ensure
+      the authors have provided a description of the roles of the funder, if they
+      responded Yes to our standard statement.
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
@@ -6667,7 +6668,9 @@ nested_questions:
     - 
   - - '159'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
-      Industry, make a note in the discussion below.
+      Industry, start a 'MetaData' discussion and ping the handling editor. See <a
+      href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
+      list</a>.
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
@@ -6730,7 +6733,9 @@ nested_questions:
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
-    - If an Ethics Statement is present, make a note in the discussion below.
+    - Make sure the ethics statement looks complete. If the authors have responded
+      Yes to any question, but have not provided approval information, please request
+      this from them.
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
@@ -7565,7 +7570,7 @@ nested_questions:
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
-      file inventory.
+      file inventory).
     - boolean
     - plos_bio_initial_tech_check--figures_missing
     - 
@@ -7680,7 +7685,8 @@ nested_questions:
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '239'
-    - Is this manuscript suitable in principle for PLOS Biology? Comments for authors.
+    - Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments
+      for authors.
     - boolean
     - reviewer_report--plos_biology_suitable
     - 
@@ -7688,8 +7694,176 @@ nested_questions:
     - '366'
     - '3'
     - '2016-04-20 14:32:03.188263'
-    - '2016-04-20 14:32:03.194211'
+    - '2016-05-06 15:33:33.81934'
     - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '240'
+    - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
+      to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
+      or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
+      for researchers who meet the criteria for access to confidential data', start
+      a 'MetaData' discussion and ping the handling editor.
+    - boolean
+    - plos_bio_revision_tech_check--data_availability_confidential
+    - 
+    - '329'
+    - '330'
+    - '2'
+    - '2016-03-22 15:09:05.665082'
+    - '2016-03-22 15:09:05.665082'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '241'
+    - In the Data Availability card, if the authors have not selected one of the reasons
+      listed in Q2 and pasted it into the text box, please request that they complete
+      this section.
+    - boolean
+    - plos_bio_revision_tech_check--data_availability_blank
+    - 
+    - '331'
+    - '332'
+    - '3'
+    - '2016-03-22 15:09:05.675633'
+    - '2016-03-22 15:09:05.675633'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '242'
+    - In the Data Availability card, if the authors have mentioned data submitted
+      to Dryad, check that the author has provided the Dryad reviewer URL and if not,
+      request it from them.
+    - boolean
+    - plos_bio_revision_tech_check--data_availability_dryad
+    - 
+    - '333'
+    - '334'
+    - '4'
+    - '2016-03-22 15:09:05.684371'
+    - '2016-03-22 15:09:05.684371'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '243'
+    - Compare the author list between the manuscript file and the Authors card. If
+      the author list does not match, request the authors to update whichever section
+      is missing information. Ignore omissions of middle initials.
+    - boolean
+    - plos_bio_revision_tech_check--authors_match
+    - 
+    - '335'
+    - '336'
+    - '5'
+    - '2016-03-22 15:09:05.693357'
+    - '2016-03-22 15:09:05.693357'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '244'
+    - If the author list has changed (author(s) being added or removed), flag it to
+      the editor/initiate our COPE process if an author was removed.
+    - boolean
+    - plos_bio_revision_tech_check--author_removed
+    - 
+    - '339'
+    - '340'
+    - '7'
+    - '2016-03-22 15:09:05.712588'
+    - '2016-05-06 15:33:33.935546'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '245'
+    - 'If any competing interests are listed, please add a manuscript note. ex: ''Initials
+      Date: Note to Editor - COI statement present, please see COI field.'''
+    - boolean
+    - plos_bio_revision_tech_check--competing_interests
+    - 
+    - '341'
+    - '342'
+    - '8'
+    - '2016-03-22 15:09:05.726444'
+    - '2016-05-06 15:33:33.94426'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '246'
+    - If the authors mention submitting their paper to a collection in the cover letter
+      or Additional Information card, alert Jenni Horsley by pinging her through the
+      discussion of the ITC card.
+    - boolean
+    - plos_bio_revision_tech_check--collection
+    - 
+    - '343'
+    - '344'
+    - '11'
+    - '2016-03-22 15:09:05.752494'
+    - '2016-05-06 15:33:33.951722'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '247'
+    - Make sure you can view and download all files uploaded to your Figures card.
+      Check against figure citations in the manuscript to ensure there are no missing
+      figures.
+    - boolean
+    - plos_bio_revision_tech_check--figures_viewable
+    - 
+    - '345'
+    - '346'
+    - '12'
+    - '2016-03-22 15:09:05.765773'
+    - '2016-03-22 15:09:05.765773'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '248'
+    - If main figures or supporting information captions are only available in the
+      file itself (and not in the manuscript), request that the author remove the
+      captions from the file and instead place them in the manuscript file.
+    - boolean
+    - plos_bio_revision_tech_check--embedded_captions
+    - 
+    - '347'
+    - '348'
+    - '13'
+    - '2016-03-22 15:09:05.77707'
+    - '2016-03-22 15:09:05.77707'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '249'
+    - If main figures or supporting information captions are missing entirely, ask
+      the author to provide them in the manuscript file.
+    - boolean
+    - plos_bio_revision_tech_check--captions_missing
+    - 
+    - '349'
+    - '350'
+    - '14'
+    - '2016-03-22 15:09:05.788747'
+    - '2016-03-22 15:09:05.788747'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '250'
+    - If any files or figures are cited in the manuscript but not included in the
+      Figures or Supporting Information cards, ask the author to provide the missing
+      information. (Search Fig, Table, Text, Movie and check that they are in the
+      file inventory).
+    - boolean
+    - plos_bio_revision_tech_check--figures_missing
+    - 
+    - '351'
+    - '352'
+    - '15'
+    - '2016-03-22 15:09:05.801946'
+    - '2016-03-22 15:09:05.801946'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '251'
+    - For any resubmissions that have previously gone through review, ensure the authors
+      have responded to the reviewer comments in the Revision Details box of the Revise
+      Manuscript card. If this information is not present, request it from author.
+    - boolean
+    - plos_bio_revision_tech_check--response_to_reviewers
+    - 
+    - '351'
+    - '352'
+    - '15'
+    - '2016-03-22 15:09:05.801946'
+    - '2016-03-22 15:09:05.801946'
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
 
 ---
@@ -14392,7 +14566,63 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
-
+  - - '71'
+    - Task
+    - '182'
+    - '12'
+    - '0'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. ","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Rob"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"robert.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Review"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"ruth.reviewer@science.org"},{"name":"department","type":"text","value":"Physics"},{"name":"title","type":"text","value":"Head Prof"},{"name":"affiliation","type":"text","value":"ABC University"}]}]}'
+    - '2016-04-12 18:55:57.423837'
+    - '2016-04-12 18:55:57.423837'
+  - - '72'
+    - Task
+    - '182'
+    - '12'
+    - '1'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-04-12 19:00:20.284162'
+    - '2016-04-12 19:00:20.284162'
+  - - '73'
+    - Task
+    - '182'
+    - '12'
+    - '2'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-04-12 19:02:46.817923'
+    - '2016-04-12 19:02:46.817923'
+  - - '74'
+    - Task
+    - '182'
+    - '12'
+    - '3'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":11},{"name":"first_name","type":"text","value":"Nancy"},{"name":"last_name","type":"text","value":"McReviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"nancy@science.org"},{"name":"department","type":"text","value":"Chemistry"},{"name":"title","type":"text","value":"Jr Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-04-12 19:05:54.288597'
+    - '2016-04-12 19:05:54.288597'
 ---
 supporting_information_files:
   columns:

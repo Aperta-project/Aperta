@@ -1,7 +1,8 @@
 {{#if generalCase}}
   {{#if raw}}
     <div class="snapshot-text">
-      {{text-diff viewingText=snapshot1.value viewingText=snapshot2.value}}
+      <span class="snapshot-label">{{humanize primarySnapshot.name}}:&nbsp;&nbsp;</span>
+      {{text-diff viewingText=snapshot1.value comparisonText=snapshot2.value}}
     </div>
   {{/if}}
 
@@ -19,22 +20,20 @@
         {{text-diff viewingText=snapshot1.value.title comparisonText=snapshot2.value.title}}
       </div>
 
-      {{#if booleanQuestion}}
-        <div class="snapshot-question-answer">
-          <span class="snapshot-question-label">Response: </span>
+      <div class="snapshot-question-answer">
+        {{#if booleanQuestion}}
           {{boolean-diff viewingBool=snapshot1.value.answer comparisonBool=snapshot2.value.answer}}
-        </div>
-      {{else}}
-        <div class="snapshot-question-answer">
-            {{text-diff viewingText=snapshot1.value.answer comparisonText=snapshot2.value.answer}}
-        </div>
-      {{/if}}
+        {{else}}
+          {{text-diff viewingText=snapshot1.value.answer comparisonText=snapshot2.value.answer}}
+        {{/if}}
+      </div>
 
       {{#each snapshot1.value.attachments as |attachment| }}
         {{#if attachment}}
           {{attachment-snapshot snapshot=attachment}}
         {{/if}}
       {{/each}}
+
       {{#each snapshot2.value.attachments as |attachment| }}
         {{#if attachment}}
           {{attachment-snapshot snapshot=attachment}}
@@ -43,13 +42,14 @@
     </li>
   {{/if}}
 
-  {{#if snapshot1.children}}
-    <ol class="snapshot-children">
-      {{#each children as |child|}}
-        {{nested-snapshot snapshot1=child.[0] snapshot2=child.[1]}}
-      {{/each}}
-    </ol>
-  {{/if}}
+  <ol class="snapshot-children">
+    {{#each children as |child|}}
+      {{nested-snapshot
+        snapshot1=child.[0]
+        snapshot2=child.[1]
+        nested-level=incrementedNestedLevel}}
+    {{/each}}
+  </ol>
 
 {{else}}
 

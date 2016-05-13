@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+- Diffing of Reviewer Candidates
+### Changed
+- Update RTC and FTC text.
+### Deprecated
+### Removed
+### Fixed
+### Security
+
 ## [1.4.9] - 2016-06-13
 
 ### Fixed

@@ -56,10 +56,10 @@ module TahiStandardTasks
       fail ApexServiceError, "Paper is missing manuscript_id"
     end
 
-    def upload_file(filepath, filename)
+    def upload_file(file_io, final_filename)
       FtpUploaderService.new(
-        filepath: filepath,
-        filename: filename
+        file_io: file_io,
+        final_filename: final_filename
       ).upload
     end
   end

@@ -14,17 +14,26 @@ describe ApexPackager do
 
   def zip_filenames(package)
     filenames = []
-    Zip::File.open(package) do |zip|
-      filenames = zip.map(&:name)
+    Zip::InputStream.open(package) do |io|
+      while (entry = io.get_next_entry)
+        filenames << entry.name
+      end
     end
     filenames
   end
 
-  def zip_contains(zip_path, file_in_zip, expected_path)
-    expected_contents = File.open(expected_path, 'rb', &:read)
-    zip_contents = Zip::File.open(zip_path).read(file_in_zip)
+  def read_zip_entry(zip_io, file_name)
+    Zip::InputStream.open(zip_io) do |io|
+      while (entry = io.get_next_entry)
+        return io.read if (entry.name == file_name)
+      end
+    end
+    nil
+  end
 
-    expected_contents == zip_contents
+  def zip_contains(zip_io, file_in_zip, expected_path)
+    expected_contents = File.open(expected_path, 'rb', &:read)
+    expected_contents == read_zip_entry(zip_io, file_in_zip)
   end
 
   before do
@@ -55,20 +64,18 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      zip_file_path = ApexPackager.create_zip(paper).path
-
-      expect(zip_filenames((zip_file_path))).to include(
+      zip_io = ApexPackager.create_zip(paper)
+      expect(zip_filenames((zip_io))).to include(
         'test.0001.docx')
-      expect(zip_contains(zip_file_path,
+      expect(zip_contains(zip_io,
                           'test.0001.docx',
                           Rails.root.join(
                             'spec/fixtures/about_turtles.docx'))).to be(true)
     end
 
     it 'contains the correct metadata' do
-      zip_file_path = ApexPackager.create_zip(paper).path
-
-      contents = Zip::File.open(zip_file_path).read('metadata.json')
+      zip_io = ApexPackager.create_zip(paper)
+      contents = read_zip_entry(zip_io, 'metadata.json')
       expect(contents).to eq('json')
     end
 
@@ -149,17 +156,17 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      zip_file_path = ApexPackager.create_zip(paper).path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to include('yeti.jpg')
-      contents = Zip::File.open(zip_file_path).read('yeti.jpg')
+      expect(zip_filenames((zip_io))).to include('yeti.jpg')
+      contents = read_zip_entry(zip_io, 'yeti.jpg')
       expect(contents).to eq('a string')
     end
 
     it 'does not add a striking image when none is present' do
-      zip_file_path = ApexPackager.create_zip(paper).path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to_not include('Strikingimage.jpg')
+      expect(zip_filenames((zip_io))).to_not include('Strikingimage.jpg')
     end
 
     describe "add_figures" do
@@ -218,19 +225,19 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      zip_file_path = ApexPackager.create_zip(paper).path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to include('about_turtles.docx')
-      contents = Zip::File.open(zip_file_path).read('about_turtles.docx')
+      expect(zip_filenames((zip_io))).to include('about_turtles.docx')
+      contents = read_zip_entry(zip_io, 'about_turtles.docx')
       expect(contents).to eq('a string')
     end
 
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      zip_file_path = ApexPackager.create_zip(paper).path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to_not include(
+      expect(zip_filenames((zip_io))).to_not include(
         supporting_information_file.filename)
     end
 
@@ -291,17 +298,17 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      zip_file_path = ApexPackager.create_zip(paper).path
-
-      expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
+      zip_io = ApexPackager.create_zip(paper)
+      expect(zip_filenames(zip_io)).to include('Strikingimage.jpg')
     end
 
     it 'separates figures and striking images' do
-      zip_file_path = ApexPackager.create_zip(paper).path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
-      expect(zip_filenames(zip_file_path)).to include('yeti2.jpg')
-      expect(zip_filenames(zip_file_path)).to_not include('yeti.jpg')
+      filenames = zip_filenames(zip_io)
+      expect(filenames).to include('Strikingimage.jpg')
+      expect(filenames).to include('yeti2.jpg')
+      expect(filenames).to_not include('yeti.jpg')
     end
 
     describe "add_stricking_image" do

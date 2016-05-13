@@ -43,7 +43,7 @@ class ProductionMetadataCardTest(CommonTest):
   """
   def test_production_metadata_card(self):
     """
-    test_invite_ae: Validates the elements, styles, roles and functions of invite academic
+    test_production_metadata_card: Validates the elements, styles, roles and functions of invite academic
     editors from new document creation through inviting ae, validation of the invite on the
     invitees dashboard, acceptance and rejections
     :return: void function

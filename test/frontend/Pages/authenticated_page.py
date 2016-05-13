@@ -1471,13 +1471,6 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
-    # Remove padding since it is not in the styleguide
-    #assert field.value_of_css_property('padding-top') == '5px', \
-    #    field.value_of_css_property('padding-top')
-    #assert field.value_of_css_property('padding-bottom') == '7px', \
-    #    field.value_of_css_property('padding-bottom')
-    #assert field.value_of_css_property('padding-left') == '10px', \
-    #    field.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_single_select_dropdown_style(field):
@@ -1503,7 +1496,6 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('padding-left')
     assert field.value_of_css_property('padding-right') == '12px',\
         field.value_of_css_property('padding-left')
-
 
   @staticmethod
   def validate_multi_select_dropdown_style(field):
@@ -1678,10 +1670,18 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering warning alerts across the application
     :field: field to validate
     """
-    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
-    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
-    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
-    assert field.value_of_css_property('border-bottom-color') == 'rgba(187, 0, 0, 1)'
+    assert field.value_of_css_property('border-top-color') == 'rgba(206, 11, 37, 1)', \
+        field.value_of_css_property('border-top-color')
+    assert field.value_of_css_property('border-left-color') == 'rgba(206, 11, 37, 1)', \
+        field.value_of_css_property('border-left-color')
+    assert field.value_of_css_property('border-right-color') == 'rgba(206, 11, 37, 1)', \
+        field.value_of_css_property('border-right-color')
+    assert field.value_of_css_property('border-bottom-color') == 'rgba(206, 11, 37, 1)', \
+        field.value_of_css_property('border-bottom-color')
+    assert field.value_of_css_property('border-style') == 'solid', \
+        field.value_of_css_property('border-style')
+    assert field.value_of_css_property('border-radius') == '3px', \
+        field.value_of_css_property('border-radius')
 
   @staticmethod
   def validate_error_msg_field_style(field):
@@ -1689,8 +1689,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering warning alerts across the application
     :field: field to validate
     """
-    assert field.value_of_css_property('color')  == 'rgba(187, 0, 0, 1)'
-    assert field.value_of_css_property('font-size') == '14px'
+    import pdb; pdb.set_trace()
+    assert field.value_of_css_property('color')  == 'rgba(208, 2, 27, 1)', \
+        field.value_of_css_property('color')
+    assert field.value_of_css_property('font-size') == '14px', \
+        field.value_of_css_property('font-size')
+    assert field.value_of_css_property('line-height') == '20px', \
+        field.value_of_css_property('line-height')
 
   # Avatar Styles =============================
   @staticmethod

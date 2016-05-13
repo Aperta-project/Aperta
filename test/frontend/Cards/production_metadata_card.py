@@ -17,7 +17,7 @@ class ProductionMedataCard(BaseCard):
   """
   Page Object Model for Production Metadata Card
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(ProductionMedataCard, self).__init__(driver)
 
     #Locators - Instance members
@@ -41,6 +41,7 @@ class ProductionMedataCard(BaseCard):
     """
     Style check for the card
     :user: User to send the invitation
+    :return: None
     """
     self.validate_common_elements_styles()
     card_title = self._get(self._card_heading)
@@ -86,16 +87,16 @@ class ProductionMedataCard(BaseCard):
     assert 'Must be a whole number' in volume_field.text
     issue_field = self._get(self._issue_number_field)
     assert 'Must be a whole number' in issue_field.text
-    # Style validation commented out due lack of style guide for this
+    # Style validation commented out due to bug APERTA-6901
     #self.validate_error_field_style(volume_field)
     #self.validate_error_msg_field_style(volume_field)
     #self.validate_error_field_style(issue_field)
     #self.validate_error_msg_field_style(issue_field)
     return None
 
-  def complete_card(self, data={}):
+  def complete_card(self, data=None):
     """
-    Style check for the card
+    Complete the Production Metadata card using custom or random data
     :data: Dictionary with data to complete the card. If empty,
       will generate random data.
     :return: data used to complete the card
@@ -106,14 +107,14 @@ class ProductionMedataCard(BaseCard):
       volume = str(random.randint(1,10))
       issue = str(random.randint(1,10))
       provenance = str(uuid.uuid4())
-      pn = str(uuid.uuid4())
-      shi = str(uuid.uuid4())
+      production_notes = str(uuid.uuid4())
+      special_handling_instructions = str(uuid.uuid4())
       data = {'date': date,
               'volume': volume,
               'issue': issue,
               'provenance': provenance,
-              'production_notes': pn,
-              'special_handling_instructions': shi,
+              'production_notes': production_notes,
+              'special_handling_instructions': special_handling_instructions,
               }
     publication_date = self._get(self._publication_date)
     volume_number = self._get(self._volume_number)
@@ -131,74 +132,7 @@ class ProductionMedataCard(BaseCard):
     return data
 
    #POM Actions
-  def click_task_completed_checkbox(self):
-    """Click task completed checkbox"""
-    self._get(self._completed_check).click()
-    return self
-
-  def click_close_button_bottom(self):
-    """Click close button on bottom"""
-    self._get(self._bottom_close_button).click()
-    return self
-
   def validate_styles(self):
-    """Validate all styles for Authors Card"""
+    """Validate all styles for Production Metadata Card"""
     self.validate_common_elements_styles()
     return self
-
-  def add_billing_data(self, billing_data):
-    """Add billing data"""
-    completed = self._get(self._completed_check)
-    if completed.is_selected():
-      self._get(self._close_button).click()
-      return None
-    first = self._get(self._first_name)
-    first.clear()
-    first.send_keys(billing_data['first'] + Keys.ENTER)
-    last = self._get(self._last_name)
-    last.clear()
-    last.send_keys(billing_data['last'] + Keys.ENTER)
-    title = self._get(self._title)
-    title.clear()
-    title.send_keys(billing_data['title'] + Keys.ENTER)
-    department = self._get(self._department)
-    department.clear()
-    department.send_keys(billing_data['department'] + Keys.ENTER)
-    try:
-      aff = self._get(self._affiliation_div).find_element_by_tag_name('input')
-    except NoSuchElementException:
-      # click on
-      change_link = self._get(self._affiliation_change)
-      change_link.click()
-      aff = self._get(self._affiliation_div).find_element_by_tag_name('input')
-    aff.clear()
-    aff.send_keys(billing_data['affiliation'] + Keys.ENTER)
-    phone = self._get(self._phone)
-    phone.clear()
-    phone.send_keys(billing_data['phone'] + Keys.ENTER)
-    email = self._get(self._email)
-    email.clear()
-    email.send_keys(billing_data['email'] + Keys.ENTER)
-    city = self._get(self._city)
-    city.clear()
-    city.send_keys(billing_data['city'] + Keys.ENTER)
-    state = self._get(self._state)
-    state.clear()
-    state.send_keys(billing_data['state'] + Keys.ENTER)
-    country = self._get(self._country)
-    country.send_keys(billing_data['country'] + Keys.ENTER)
-    #country.click()
-    #country_input = country.find_element_by_tag_name('input')
-    #country.clear()
-    #import pdb; pdb.set_trace()
-    #country_input.send_keys(billing_data['country'] + Keys.ENTER)
-
-    q1 = self._get(self._question_1_dd)
-    q1.click()
-    q1.send_keys('PLOS Publication Fee Assistance Program (PFA)' + Keys.ENTER)
-    time.sleep(.5)
-    # retrieve the element again because there is a change in the status
-    completed = self._get(self._completed_check)
-    completed.click()
-    time.sleep(.5)
-    self._get(self._close_button).click()

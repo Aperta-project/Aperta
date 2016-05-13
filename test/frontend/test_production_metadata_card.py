@@ -39,7 +39,7 @@ editorial_users = [internal_editor_login,
 @MultiBrowserFixture
 class ProductionMetadataCardTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Invite AE card
+  Validate the elements, styles, functions of the Production Metadata card
   """
 
   def test_production_metadata_card(self):
@@ -83,7 +83,6 @@ class ProductionMetadataCardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(4)
-    # add card invite AE with add new card
     # Check if card is there
     if not workflow_page.is_card('Production Metadata'):
       workflow_page.add_card('Production Metadata')

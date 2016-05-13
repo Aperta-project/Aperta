@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 - Prevent errors while adding discussion participants
+- Ensure previous Apex deliveries are removed before new ones are sent
 ### Security
 
 ## [1.4.7] - 2016-05-06

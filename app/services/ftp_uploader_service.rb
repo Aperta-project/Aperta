@@ -27,6 +27,10 @@ class FtpUploaderService
       enter_packages_directory
       tmp_file = upload_to_temporary_file
       if @ftp.last_response_code == TRANSFER_COMPLETE
+        begin
+          @ftp.delete @final_filename
+        rescue Net::FTPPermError
+        end
         @ftp.rename(tmp_file, @final_filename)
         Rails.logger.info "Transfer successful for #{@final_filename}"
         return true
@@ -66,7 +70,8 @@ class FtpUploaderService
   end
 
   def upload_to_temporary_file
-    "temp_#{@final_filename}".tap do |temp_name|
+    upload_time = Time.zone.now.strftime "%Y-%m-%d-%H%M%S"
+    "temp_#{upload_time}_#{@final_filename}".tap do |temp_name|
       @ftp.putbinaryfile(File.new(@filepath), temp_name, 1000)
     end
   end

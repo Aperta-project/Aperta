@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [1.4.9] - 2016-06-13
+
+### Fixed
+-Fixed bug preventing changes for author card from being completed
+
 ## [1.4.8] - 2016-05-12
 
 ### Added

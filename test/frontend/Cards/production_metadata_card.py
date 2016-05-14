@@ -34,7 +34,7 @@ class ProductionMedataCard(BaseCard):
     self._volume_number_field = (By.CLASS_NAME, 'volume-number')
     self._issue_number_field = (By.CLASS_NAME, 'issue-number')
 
-  def check_style(self, user):
+  def check_style(self):
     """
     Style check for the card
     :user: User to send the invitation

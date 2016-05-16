@@ -4,6 +4,9 @@ require File.dirname(__FILE__) + '/tahi_env/env_var'
 require File.dirname(__FILE__) + '/tahi_env/boolean_validator'
 require File.dirname(__FILE__) + '/tahi_env/presence_validator'
 
+# TahiEnv is the class responsible for specifying which environment variables
+# the application expects to interact with. It is so the application can
+# validate it's environment during boot.
 class TahiEnv
   extend DslMethods
   include ActiveModel::Validations
@@ -18,6 +21,29 @@ class TahiEnv
   def self.validate!
     instance.validate!
   end
+
+  ########################################################################
+  #                 ENV VAR REGISTRATION - THINGS TO KNOW
+  ########################################################################
+  # Every ENV var registration you see below will generate reader methods.
+  #
+  #     required :APP_NAME
+  #
+  # will provide:
+  #
+  #     TahiEnv.APP_NAME # returns the raw env variable
+  #     TahiEnv.app_name # returns the coerced env variable value
+  #
+  # The second form above makes more sense when accesing booleans:
+  #
+  #     required :FOO_ENABLED, :boolean
+  #
+  # will provide:
+  #
+  #     TahiEnv.FOO_ENABLED  # returns the raw env variable
+  #     TahiEnv.foo_enabled? # returns the coerced env variable value
+  #
+  # Note in the second reader method generated there is an appended '?'.
 
   # App
   required :APP_NAME

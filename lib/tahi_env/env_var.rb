@@ -2,14 +2,21 @@ require File.dirname(__FILE__) + '/../tahi_env'
 
 class TahiEnv
   class EnvVar
-    attr_reader :key
-    attr_reader :type
-    attr_reader :default_value
+    def self.type=(type)
+      @type = type
+    end
 
-    def initialize(key, type = nil, default: nil)
+    def self.type
+      @type
+    end
+
+    attr_reader :key, :type, :default_value, :additional_details
+
+    def initialize(key, type = nil, default: nil, additional_details: nil)
       @key = key.to_s
       @type = type
       @default_value = default
+      @additional_details = additional_details
     end
 
     def ==(other)
@@ -34,6 +41,18 @@ class TahiEnv
     def boolean?
       @type == :boolean
     end
+
+    def to_s
+      msg = "Environment Variable: #{key} (#{type}"
+      msg << " #{additional_details}" if additional_details
+      msg << ")"
+    end
+
+    def type
+      self.class.type
+    end
+
+    private
 
     def converted_boolean_value
       ['true', '1'].include?(raw_value_from_env) ? true : false

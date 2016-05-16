@@ -15,8 +15,12 @@ class TahiEnv
   class InvalidEnvironment < Error ; end
   class MissingEnvVarRegistration < Error ; end
 
-  class RequiredEnvVar < EnvVar ; end
-  class OptionalEnvVar < EnvVar ; end
+  class RequiredEnvVar < EnvVar
+    self.type = :required
+  end
+  class OptionalEnvVar < EnvVar
+    self.type = :optional
+  end
 
   def self.validate!
     instance.validate!

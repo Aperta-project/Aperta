@@ -41,10 +41,12 @@ class TahiEnv
       default_value = options[:default]
       if_method = options[:if]
 
+      additional_details = "if #{if_method}" if if_method
       required_env_var = RequiredEnvVar.new(
         key,
         type,
-        default: default_value
+        default: default_value,
+        additional_details: additional_details
       )
       register_env_var(required_env_var)
 

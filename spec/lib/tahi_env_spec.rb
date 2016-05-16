@@ -244,13 +244,10 @@ describe TahiEnv do
   include_examples 'required env var', var: 'DEFAULT_MAILER_URL'
   include_examples 'optional boolean env var', var: 'DISABLE_FORCE_SSL', default_value: false
   include_examples 'required env var', var: 'FROM_EMAIL'
-
-  # FTP
-  include_examples 'required env var', var: 'FTP_DIR'
-  include_examples 'required env var', var: 'FTP_HOST'
-  include_examples 'required env var', var: 'FTP_PASSWORD'
-  include_examples 'required env var', var: 'FTP_PORT'
-  include_examples 'required env var', var: 'FTP_USER'
+  include_examples 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
+  include_examples 'optional env var', var: 'PING_URL'
+  include_examples 'optional env var', var: 'PUSHER_SOCKET_URL'
+  include_examples 'optional env var', var: 'REPORTING_EMAIL'
 
   # Amazon S3
   include_examples 'required env var', var: 'S3_URL'
@@ -259,29 +256,14 @@ describe TahiEnv do
   include_examples 'required env var', var: 'AWS_SECRET_ACCESS_KEY'
   include_examples 'required env var', var: 'AWS_REGION'
 
-  # Bugsnag
-  include_examples 'required env var', var: 'BUGSNAG_API_KEY'
-  include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
-
-  # Event Stream
-  include_examples 'required env var', var: 'EVENT_STREAM_WS_HOST'
-  include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
-
-  include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
-  include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
-  include_examples 'required env var', var: 'IHAT_URL'
-
-  include_examples 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
-  include_examples 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
-  include_examples 'optional env var', var: 'PING_URL'
-  include_examples 'optional env var', var: 'PUSHER_SOCKET_URL'
-  include_examples 'optional env var', var: 'REPORTING_EMAIL'
-  include_examples 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
-
   # Basic Auth
   include_examples 'optional boolean env var', var: 'BASIC_AUTH_REQUIRED', default_value: false
   include_examples 'dependent required env var', var: 'BASIC_HTTP_USERNAME', dependent_key: 'BASIC_AUTH_REQUIRED'
   include_examples 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
+
+  # Bugsnag
+  include_examples 'required env var', var: 'BUGSNAG_API_KEY'
+  include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
 
   # CAS
   include_examples 'required boolean env var', var: 'CAS_ENABLED'
@@ -300,9 +282,28 @@ describe TahiEnv do
   # EM / Editorial Manager
   include_examples 'optional env var', var: 'EM_DATABASE'
 
+  # Event Stream
+  include_examples 'required env var', var: 'EVENT_STREAM_WS_HOST'
+  include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
+
+  # FTP
+  include_examples 'required env var', var: 'FTP_DIR'
+  include_examples 'required env var', var: 'FTP_HOST'
+  include_examples 'required env var', var: 'FTP_PASSWORD'
+  include_examples 'required env var', var: 'FTP_PORT'
+  include_examples 'required env var', var: 'FTP_USER'
+
   # Heroku
   include_examples 'optional env var', var: 'HEROKU_APP_NAME'
   include_examples 'optional env var', var: 'HEROKU_PARENT_APP_NAME'
+
+  # Hipchat
+  include_examples 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
+
+  # iHat
+  include_examples 'required env var', var: 'IHAT_URL'
+  include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
+  include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
 
   # Mailsafe
   include_examples 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
@@ -329,7 +330,7 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'PORT'
   include_examples 'optional env var', var: 'RACK_ENV'
 
-  # Pusher
+  # Pusher / Slanger
   include_examples 'required env var', var: 'PUSHER_URL'
   include_examples 'required env var', var: 'DISABLE_PUSHER_SSL_VERIFICATION'
   include_examples 'required env var', var: 'PUSHER_VERBOSE_LOGGING'
@@ -341,6 +342,9 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_SECRET', dependent_key: 'SALESFORCE_ENABLED'
   include_examples 'dependent required env var', var: 'DATABASEDOTCOM_USERNAME', dependent_key: 'SALESFORCE_ENABLED'
   include_examples 'dependent required env var', var: 'DATABASEDOTCOM_PASSWORD', dependent_key: 'SALESFORCE_ENABLED'
+
+  # Segment IO
+  include_examples 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
 
   # Sendgrid
   include_examples 'required env var', var: 'SENDGRID_USERNAME'

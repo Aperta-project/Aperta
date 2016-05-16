@@ -223,6 +223,10 @@ describe TahiEnv do
       FTP_PORT: '21',
       FTP_DIR: 'where/the/wild/things/are',
       IHAT_URL: 'http://ihat.tahi-project.com',
+      NED_API_URL: 'http://ned.example.com',
+      NED_CAS_APP_ID: 'ned123',
+      NED_CAS_APP_PASSWORD: 'password',
+      USE_NED_INSTITUTIONS: 'false',
       S3_URL: 'http://tahi-test.amazonaws.com',
       S3_BUCKET: 'tahi',
       AWS_ACCESS_KEY_ID: 'DNCDCC55F',
@@ -316,6 +320,13 @@ describe TahiEnv do
 
   # Mailsafe
   include_examples 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
+
+  # NED
+  include_examples 'required env var', var: 'NED_API_URL'
+  include_examples 'required env var', var: 'NED_CAS_APP_ID'
+  include_examples 'required env var', var: 'NED_CAS_APP_PASSWORD'
+  include_examples 'optional boolean env var', var: 'NED_DISABLE_SSL_VERIFICATION', default_value: false
+  include_examples 'required boolean env var', var: 'USE_NED_INSTITUTIONS'
 
   # Newrelic
   include_examples 'optional env var', var: 'NEWRELIC_KEY'

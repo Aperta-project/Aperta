@@ -1,9 +1,13 @@
+require 'active_support/core_ext/string/strip'
 require 'tahi_env/env_var'
 require 'tahi_env/boolean_validator'
 require 'tahi_env/presence_validator'
 
 class TahiEnv
   include ActiveModel::Validations
+
+  class Error < ::StandardError ; end
+  class MissingEnvVarRegistration < Error ; end
 
   class RequiredEnvVar < EnvVar ; end
   class OptionalEnvVar < EnvVar ; end
@@ -64,7 +68,11 @@ class TahiEnv
     if instance.respond_to?(method)
       instance.send(method, *args, &blk)
     else
-      super
+      method = method.to_s
+      fail MissingEnvVarRegistration, <<-ERROR_MSG.strip_heredoc
+        undefined method #{method.inspect} for #{self}. Is the
+        #{method.upcase} env var registered in #{self}?
+      ERROR_MSG
     end
   end
 
@@ -140,6 +148,13 @@ class TahiEnv
 
   # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS
+
+  # NED
+  required :NED_API_URL
+  required :NED_CAS_APP_ID
+  required :NED_CAS_APP_PASSWORD
+  optional :NED_DISABLE_SSL_VERIFICATION, :boolean, default: false
+  required :USE_NED_INSTITUTIONS, :boolean
 
   # Newrelic
   optional :NEWRELIC_KEY

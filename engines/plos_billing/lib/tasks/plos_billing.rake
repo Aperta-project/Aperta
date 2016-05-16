@@ -41,4 +41,17 @@ namespace :plos_billing do
       puts "Missing paper_id. Please see usage instructions in #{__FILE__}"
     end
   end
+
+  desc "Generate a billing log file"
+  task :generate_billing_log, [:from_date] => :environment do |t, args|
+    last_run = BillingLog.last.updated_at if BillingLog.any?
+    args[:from_date] ||= last_run
+
+    BillingLogManager.new.save_and_send_to_s3
+    puts "Uploaded to #{BillingLog.last.s3_url}"
+    if args[:from_date]
+    else # Run for the first time
+      # puts "Missing paper_id. Please see usage instructions in #{__FILE__}"
+    end
+  end
 end

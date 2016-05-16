@@ -48,9 +48,4 @@ class BillingLog < ActiveRecord::Base
       JSON.parse(
         Typesetter::BillingLogSerializer.new(paper).to_json)['billing_log']
   end
-
-  def answer_for(ident)
-    answer = @paper.billing_task.answer_for(ident)
-    answer.value if answer
-  end
 end

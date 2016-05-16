@@ -1,9 +1,11 @@
 require 'active_support/core_ext/string/strip'
+require File.dirname(__FILE__) + '/tahi_env/dsl_methods'
 require File.dirname(__FILE__) + '/tahi_env/env_var'
 require File.dirname(__FILE__) + '/tahi_env/boolean_validator'
 require File.dirname(__FILE__) + '/tahi_env/presence_validator'
 
 class TahiEnv
+  extend DslMethods
   include ActiveModel::Validations
 
   class Error < ::StandardError ; end
@@ -15,70 +17,6 @@ class TahiEnv
 
   def self.validate!
     instance.validate!
-  end
-
-  def self.registered_env_vars
-    @registered_env_vars = @registered_env_vars || {}
-  end
-
-  def self.instance
-    @instance ||= TahiEnv.new
-  end
-
-  def self.optional(env_var, type = nil, default: nil)
-    optional_env_var = OptionalEnvVar.new(
-      env_var,
-      type,
-      default: default
-    )
-    register_env_var(optional_env_var)
-  end
-
-  def self.required(env_var, type = nil, **kwargs)
-    default_value = kwargs[:default]
-    if_method = kwargs[:if]
-
-    required_env_var = RequiredEnvVar.new(
-      env_var,
-      type,
-      default: default_value
-    )
-    register_env_var(required_env_var)
-
-    validation_args = required_env_var.boolean? ? { boolean: true } : { presence: true }
-
-    validation_args[:if] = if_method if if_method
-    validates env_var, **validation_args
-  end
-
-  def self.register_env_var(env_var)
-    registered_env_vars[env_var.key] = env_var
-
-    # TahiEnv#APP_NAME
-    reader_method_name = env_var.key
-    define_method(reader_method_name) do
-      env_var.raw_value_from_env
-    end
-
-    # TahiEnv#app_name
-    # TahiEnv#orcid_enabled?
-    reader_method_name = "#{env_var.key.downcase}"
-    reader_method_name << "?" if env_var.boolean?
-    define_method(reader_method_name) do
-      env_var.value
-    end
-  end
-
-  def self.method_missing(method, *args, &blk)
-    if instance.respond_to?(method)
-      instance.send(method, *args, &blk)
-    else
-      method = method.to_s
-      fail MissingEnvVarRegistration, <<-ERROR_MSG.strip_heredoc
-        undefined method #{method.inspect} for #{self}. Is the
-        #{method.upcase} env var registered in #{self}?
-      ERROR_MSG
-    end
   end
 
   # App

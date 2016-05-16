@@ -148,7 +148,7 @@ export default {
     { id: 'Niue', text: 'Niue' },
     { id: 'Pakistan', text: 'Pakistan' },
     { id: 'Palau', text: 'Palau' },
-    { id: 'Palestine, State of"', text: 'Palestine, State of' },
+    { id: 'Palestine, State of', text: 'Palestine, State of' },
     { id: 'Papua New Guinea', text: 'Papua New Guinea' },
     { id: 'Paraguay', text: 'Paraguay' },
     { id: 'Peru', text: 'Peru' },

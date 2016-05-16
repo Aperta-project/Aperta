@@ -62,20 +62,6 @@ describe TahiEnv do
           expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to have a value, but was set to nothing.")
         end
       end
-
-      # it 'shows up in the list of known about env vars when dependent key is true' do
-      #   allow(TahiEnv).to receive("#{dependent_key}").and_return(true)
-      #   expect(TahiEnv.env_vars[var.to_s]).to eq(
-      #     TahiEnv::RequiredEnvVar.new(var)
-      #   )
-      # end
-      #
-      # it 'shows up in the list of known about env vars when dependent key is false' do
-      #   allow(TahiEnv).to receive("#{dependent_key}").and_return(false)
-      #   expect(TahiEnv.env_vars[var.to_s]).to eq(
-      #     TahiEnv::OptionalEnvVar.new(var)
-      #   )
-      # end
     end
   end
 

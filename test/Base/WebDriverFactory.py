@@ -97,24 +97,22 @@ class WebDriverFactory(object):
 
     # Set up a default Firefox profile, if not specified
     if not profile:
-      profile = webdriver.firefox.firefox_profile.FirefoxProfile()
+      profile = webdriver.FirefoxProfile()
       profile.set_preference('browser.download.dir', '/tmp')
       profile.set_preference('browser.download.folderList', 2)
       profile.set_preference('browser.download.manager.showWhenStarting', False)
       profile.set_preference("browser.download.manager.useWindow", False)
       profile.set_preference('browser.download.panel.shown', False)
       profile.set_preference('browser.feeds.showFirstRunUI', False)
-      profile.set_preference('browser.helperApps.neverAsk.openFile', docs)
       profile.set_preference('browser.startup.homepage_override.mstone', 'ignore')
       profile.set_preference('startup.homepage_welcome_url', 'about:blank')
       profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
-      profile.set_preference('browser.helperApps.neverAsk.saveToDisk',
-                             ("application/pdf",
-                              "application/epub+zip",
-                              "application/msword",
-                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+      profile.set_preference(
+          'browser.helperApps.neverAsk.saveToDisk',
+          'application/msword, application/pdf, '
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document, '
+          'application/epub+zip')
       #profile.set_preference("browser.helperApps.alwaysAsk.force", False)
-
 
     # Set up BrowserMob proxy, if enabled
     if Config.browsermob_proxy_enabled:

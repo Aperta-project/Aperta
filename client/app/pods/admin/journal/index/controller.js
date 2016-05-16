@@ -28,9 +28,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     assignOldRoleToUser(oldRoleID, user) {
-      const oldRole = this.store.getById('oldRole', oldRoleID);
+      const oldRole = this.store.peekRecord('old-role', oldRoleID);
 
-      return this.store.createRecord('userRole', {
+      return this.store.createRecord('user-role', {
         user: user,
         oldRole: oldRole
       }).save();
@@ -58,7 +58,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         journal_id: this.get('model.id')
       };
 
-      this.store.find('AdminJournalUser', params).then((users)=> {
+      this.store.query('admin-journal-user', params).then((users)=> {
         this.set('adminJournalUsers', users);
         if(Ember.isEmpty(this.get('adminJournalUsers'))) {
           this.set('placeholderText', 'No matching users found');
@@ -74,9 +74,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     assignOldRole(oldRoleID, user) {
-      const userRole = this.store.createRecord('userRole', {
+      const userRole = this.store.createRecord('user-role', {
         user: user,
-        oldRole: this.store.getById('oldRole', oldRoleID)
+        oldRole: this.store.peekRecord('old-role', oldRoleID)
       });
 
       return userRole.save()['catch'](function() {
@@ -86,7 +86,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     removeOldRole(userRoleId) {
-      return this.store.getById('userRole', userRoleId).destroyRecord();
+      return this.store.peekRecord('user-role', userRoleId).destroyRecord();
     },
 
     showEditTaskTypesOverlay() {

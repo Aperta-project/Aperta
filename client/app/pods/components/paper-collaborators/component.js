@@ -77,7 +77,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       // if this collaborator's record was previously removed from the paper
       // make sure we use THAT one and not a new record.
 
-      const existingRecord = store.all('collaboration').find(function(c) {
+      const existingRecord = store.peekAll('collaboration').find(function(c) {
         return c.get('oldPaper') === paper && c.get('user') === newCollaborator;
       });
 

@@ -13,7 +13,7 @@ export default Ember.Component.extend(VEMixin, EscapeListenerMixin, {
     },
 
     rollbackUser() {
-      this.get('model').rollback();
+      this.get('model').rollbackAttributes();
       this.attrs.close();
     },
 

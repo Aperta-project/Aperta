@@ -29,7 +29,7 @@ export default AuthorizedRoute.extend({
       this.store.pushPayload('paper', data);
       let paperIds = data.papers.mapBy('id');
       return _.collect(paperIds, (id) => {
-        return this.store.find('paper', id);
+        return this.store.findRecord('paper', id);
       });
     }, (reason) => {
       if (reason.status === 403) {
@@ -46,9 +46,9 @@ export default AuthorizedRoute.extend({
   },
 
   setupController(controller, model) {
-    this.store.find('comment-look');
-    this.setControllerData(controller);
     this._super(controller, model);
+    this.store.findAll('comment-look');
+    this.setControllerData(controller);
   },
 
   metaData: null, // comes in payload, must be plucked for use in setupController

@@ -10,7 +10,7 @@ export default AuthorizedRoute.extend({
 
   setupController(controller, model) {
     this._super(...arguments);
-    controller.set('commentLooks', this.store.all('commentLook'));
+    controller.set('commentLooks', this.store.peekAll('comment-look'));
   },
 
   updateShowSubmissionProcess: Ember.on('deactivate', function() {

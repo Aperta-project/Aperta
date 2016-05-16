@@ -22,7 +22,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     cancelRecommendation() {
-      this.get('reviewerRecommendation').rollback();
+      this.get('reviewerRecommendation').rollbackAttributes();
       this.set('isEditing', false);
       this.clearAllValidationErrors();
     },

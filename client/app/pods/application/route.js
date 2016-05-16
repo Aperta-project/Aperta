@@ -90,7 +90,7 @@ export default Ember.Route.extend({
         return;
       }
 
-      this.store.fetchById(payload.type, payload.id);
+      this.store.findRecord(payload.type, payload.id, { reload: true });
     },
 
     updated(payload) {

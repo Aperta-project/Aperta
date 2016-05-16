@@ -14,6 +14,7 @@ export default Component.extend({
   store: service(),
 
   classNames: ['author-form', 'individual-author-form'],
+
   author: null,
   authorProxy: null,
   isNewAuthor: false,
@@ -94,7 +95,7 @@ export default Component.extend({
   }),
 
   resetAuthor() {
-    this.get('author').rollback();
+    this.get('author').rollbackAttributes();
   },
 
   saveAuthor() {

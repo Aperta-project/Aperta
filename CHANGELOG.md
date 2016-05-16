@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Related Articles task
 - Templates for devs creating new tasks
 - Diffing of Reviewer Candidates
+- Authors will see the feedback form whenever they submit a paper
 ### Changed
 - Update RTC and FTC text.
 

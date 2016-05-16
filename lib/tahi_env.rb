@@ -55,16 +55,16 @@ class TahiEnv
     registered_env_vars[env_var.key] = env_var
 
     # TahiEnv#APP_NAME
-    reader_method = env_var.key
-    define_method(reader_method) do
+    reader_method_name = env_var.key
+    define_method(reader_method_name) do
       env_var.raw_value_from_env
     end
 
     # TahiEnv#app_name
     # TahiEnv#orcid_enabled?
-    reader_method = "#{env_var.key.downcase}"
-    reader_method << "?" if env_var.boolean?
-    define_method(reader_method) do
+    reader_method_name = "#{env_var.key.downcase}"
+    reader_method_name << "?" if env_var.boolean?
+    define_method(reader_method_name) do
       env_var.value
     end
   end

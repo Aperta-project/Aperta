@@ -44,6 +44,16 @@ class BaseCard(AuthenticatedPage):
     self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')
 
   # Common actions for all cards
+  def click_task_completed_checkbox(self):
+    """Click task completed checkbox"""
+    self._get(self._completed_check).click()
+    return self
+
+  def click_close_button_bottom(self):
+    """Click close button on bottom"""
+    self._get(self._bottom_close_button).click()
+    return self
+
   def click_completion_button(self):
     """Click completed checkbox"""
     self._get(self._completion_button).click()

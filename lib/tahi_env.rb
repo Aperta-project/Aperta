@@ -89,15 +89,12 @@ class TahiEnv
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
   required :DEFAULT_MAILER_URL
-  optional :DISABLE_FORCE_SSL, :boolean, default: false
   required :FROM_EMAIL
-
-  # FTP
-  required :FTP_HOST
-  required :FTP_USER
-  required :FTP_PASSWORD
-  required :FTP_PORT
-  required :FTP_DIR
+  optional :DISABLE_FORCE_SSL, :boolean, default: false
+  optional :MAX_ABSTRACT_LENGTH
+  optional :PING_URL
+  optional :PUSHER_SOCKET_URL
+  optional :REPORTING_EMAIL
 
   # Amazon S3
   required :S3_URL
@@ -106,29 +103,14 @@ class TahiEnv
   required :AWS_SECRET_ACCESS_KEY
   required :AWS_REGION
 
-  # Bugsnag
-  required :BUGSNAG_API_KEY
-  optional :BUGSNAG_JAVASCRIPT_API_KEY
-
-  # Event Stream
-  required :EVENT_STREAM_WS_HOST
-  required :EVENT_STREAM_WS_PORT
-
-  optional :IHAT_CALLBACK_HOST
-  optional :IHAT_CALLBACK_PORT
-  required :IHAT_URL
-
-  optional :HIPCHAT_AUTH_TOKEN
-  optional :MAX_ABSTRACT_LENGTH
-  optional :PING_URL
-  optional :PUSHER_SOCKET_URL
-  optional :REPORTING_EMAIL
-  optional :SEGMENT_IO_WRITE_KEY
-
   # Basic Auth
   optional :BASIC_AUTH_REQUIRED, :boolean, default: false
   required :BASIC_HTTP_USERNAME, if: :basic_auth_required?
   required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
+
+  # Bugsnag
+  required :BUGSNAG_API_KEY
+  optional :BUGSNAG_JAVASCRIPT_API_KEY
 
   # CAS
   required :CAS_ENABLED, :boolean
@@ -147,9 +129,28 @@ class TahiEnv
   # EM / Editorial Manager
   optional :EM_DATABASE
 
+  # Event Stream
+  required :EVENT_STREAM_WS_HOST
+  required :EVENT_STREAM_WS_PORT
+
+  # FTP
+  required :FTP_HOST
+  required :FTP_USER
+  required :FTP_PASSWORD
+  required :FTP_PORT
+  required :FTP_DIR
+
+  # Hipchat
+  optional :HIPCHAT_AUTH_TOKEN
+
   # Heroku
   optional :HEROKU_APP_NAME
   optional :HEROKU_PARENT_APP_NAME
+
+  # iHat
+  required :IHAT_URL
+  optional :IHAT_CALLBACK_HOST
+  optional :IHAT_CALLBACK_PORT
 
   # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS
@@ -176,7 +177,7 @@ class TahiEnv
   optional :PORT
   optional :RACK_ENV
 
-  # Pusher
+  # Pusher / Slanger
   required :PUSHER_URL
   required :DISABLE_PUSHER_SSL_VERIFICATION
   required :PUSHER_VERBOSE_LOGGING
@@ -188,6 +189,9 @@ class TahiEnv
   required :DATABASEDOTCOM_CLIENT_SECRET, if: :salesforce_enabled?
   required :DATABASEDOTCOM_USERNAME, if: :salesforce_enabled?
   required :DATABASEDOTCOM_PASSWORD, if: :salesforce_enabled?
+
+  # Segment IO
+  optional :SEGMENT_IO_WRITE_KEY
 
   # Sendgrid
   required :SENDGRID_USERNAME

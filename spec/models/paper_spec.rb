@@ -874,6 +874,78 @@ describe Paper do
     end
   end
 
+  describe '#corresponding_author_emails' do
+    it 'returns an array of correspondence emails' do
+      expect(paper.corresponding_author_emails).to be_kind_of(Array)
+    end
+
+    context 'and there is not a creator or any authors' do
+      subject(:paper) { FactoryGirl.create(:paper) }
+
+      before do
+        # ensure we're starting with a blank slate
+        expect(paper.creator).to be nil
+        expect(paper.authors).to be_empty
+      end
+
+      it 'returns an empty array' do
+        expect(paper.corresponding_author_emails).to eq []
+      end
+    end
+
+    context 'and there is a creator' do
+      subject(:paper) do
+        FactoryGirl.create(:paper, :with_creator, journal: journal)
+      end
+      let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
+
+      before { expect(paper.creator).to be }
+
+      context 'and there are no authors' do
+        before { expect(paper.reload.authors).to be_empty }
+
+        it "includes the creator's email" do
+          expect(paper.corresponding_author_emails).to \
+            contain_exactly(paper.creator.email)
+        end
+      end
+
+      context 'and there are authors' do
+        let(:author_1) do
+          FactoryGirl.create(:author, email: 'a1@example.com')
+        end
+        let(:author_2) do
+          FactoryGirl.create(:author, email: 'a2@example.com')
+        end
+        let(:corresponding_author_1) do
+          FactoryGirl.create(:author, :corresponding, email: 'c1@example.com')
+        end
+        let(:corresponding_author_2) do
+          FactoryGirl.create(:author, :corresponding, email: 'c2@example.com')
+        end
+
+        before do
+          paper.authors = [author_1, author_2]
+          expect(paper.authors).to_not be_empty
+        end
+
+        it "includes the creator's email when no author is corresponding" do
+          expect(paper.corresponding_author_emails).to \
+            contain_exactly(paper.creator.email)
+        end
+
+        it "includes all corresponding author emails otherwise" do
+          paper.authors << corresponding_author_1
+          paper.authors << corresponding_author_2
+          expect(paper.corresponding_author_emails).to contain_exactly(
+            corresponding_author_1.email,
+            corresponding_author_2.email
+          )
+        end
+      end
+    end
+  end
+
   describe 'academic editors' do
     before do
       journal.academic_editor_role ||

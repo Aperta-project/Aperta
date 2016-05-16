@@ -2,19 +2,19 @@ require File.dirname(__FILE__) + '/../tahi_env'
 
 class TahiEnv
   class EnvVar
-    attr_reader :env_var
+    attr_reader :key
     attr_reader :type
     attr_reader :default_value
 
-    def initialize(env_var, type = nil, default: nil)
-      @env_var = env_var.to_s
+    def initialize(key, type = nil, default: nil)
+      @key = key.to_s
       @type = type
       @default_value = default
     end
 
     def ==(other)
       other.is_a?(self.class) &&
-        other.env_var == env_var
+        other.key == key
     end
 
     def value
@@ -28,7 +28,7 @@ class TahiEnv
     end
 
     def raw_value_from_env
-      ENV[@env_var]
+      ENV[@key]
     end
 
     def boolean?

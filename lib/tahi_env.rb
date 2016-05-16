@@ -17,8 +17,8 @@ class TahiEnv
     instance.validate!
   end
 
-  def self.env_vars
-    @env_vars = @env_vars || {}
+  def self.registered_env_vars
+    @registered_env_vars = @registered_env_vars || {}
   end
 
   def self.instance
@@ -52,17 +52,17 @@ class TahiEnv
   end
 
   def self.register_env_var(env_var)
-    env_vars[env_var.env_var] = env_var
+    registered_env_vars[env_var.key] = env_var
 
     # TahiEnv#APP_NAME
-    reader_method = env_var.env_var
+    reader_method = env_var.key
     define_method(reader_method) do
       env_var.raw_value_from_env
     end
 
     # TahiEnv#app_name
     # TahiEnv#orcid_enabled?
-    reader_method = "#{env_var.env_var.downcase}"
+    reader_method = "#{env_var.key.downcase}"
     reader_method << "?" if env_var.boolean?
     define_method(reader_method) do
       env_var.value

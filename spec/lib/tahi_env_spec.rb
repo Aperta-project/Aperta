@@ -21,7 +21,7 @@ describe TahiEnv do
       end
 
       it 'shows up in the list of known about env vars' do
-        expect(TahiEnv.env_vars[var.to_s]).to eq(
+        expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
           TahiEnv::RequiredEnvVar.new(var)
         )
       end
@@ -74,7 +74,7 @@ describe TahiEnv do
       end
 
       it 'shows up in the list of known about env vars' do
-        expect(TahiEnv.env_vars[var.to_s]).to eq(
+        expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
           TahiEnv::OptionalEnvVar.new(var)
         )
       end
@@ -99,7 +99,7 @@ describe TahiEnv do
   shared_examples_for 'required boolean env var' do |var:|
     describe "Required boolean env var: #{var}" do
       it 'shows up in the list of known about env vars' do
-        expect(TahiEnv.env_vars[var.to_s]).to eq(
+        expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
           TahiEnv::RequiredEnvVar.new(var)
         )
       end
@@ -155,7 +155,7 @@ describe TahiEnv do
       end
 
       it 'shows up in the list of known about env vars' do
-        expect(TahiEnv.env_vars[var.to_s]).to eq(
+        expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
           TahiEnv::OptionalEnvVar.new(var)
         )
       end

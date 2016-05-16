@@ -7,6 +7,9 @@ require "sprockets/railtie"
 
 Bundler.require(:default, Rails.env)
 
+require File.dirname(__FILE__) + '/../lib/tahi_env'
+TahiEnv.validate!
+
 module Tahi
   class Application < Rails::Application
     require 'config_helper'

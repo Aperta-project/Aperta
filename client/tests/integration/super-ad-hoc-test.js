@@ -5,12 +5,15 @@ import setupMockServer from '../helpers/mock-server';
 import { paperWithTask } from '../helpers/setups';
 import Factory from '../helpers/factory';
 import FactoryGuy from 'ember-data-factory-guy';
+import { make } from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
 let server = null;
 let fakeUser = null;
 let currentPaper = null;
+
+const { mockFind } = TestHelper;
 
 const paperTaskURL = function paperTaskURL(paper, task) {
   return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
@@ -92,11 +95,11 @@ module('Integration: Super AdHoc Card', {
 });
 
 test('Changing the title on an AdHoc Task', function(assert) {
-  const paper = FactoryGuy.make('paper');
-  const task = FactoryGuy.make('task', { paper: paper });
+  const paper = make('paper');
+  const task  = make('task', { paper: paper });
 
-  TestHelper.handleFind(paper);
-  TestHelper.handleFind(task);
+  mockFind('paper').returns({ model: paper });
+  mockFind('task').returns({ model: task });
 
   visit(paperTaskURL(paper, task));
   click('h1.inline-edit .fa-pencil');
@@ -110,11 +113,11 @@ test('Changing the title on an AdHoc Task', function(assert) {
 });
 
 test('AdHoc Task text block', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let task = FactoryGuy.make('task', { paper: paper, body: [] });
+  let paper = make('paper');
+  let task  = make('task', { paper: paper, body: [] });
 
-  TestHelper.handleFind(paper);
-  TestHelper.handleFind(task);
+  mockFind('paper').returns({ model: paper });
+  mockFind('task').returns({ model: task });
 
   visit(paperTaskURL(paper, task));
   click('.adhoc-content-toolbar .fa-plus');
@@ -145,11 +148,11 @@ test('AdHoc Task text block', function(assert) {
 });
 
 test('AdHoc Task list block', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let task = FactoryGuy.make('task', { paper: paper, body: [] });
+  const paper = make('paper');
+  const task  = make('task', { paper: paper, body: [] });
 
-  TestHelper.handleFind(paper);
-  TestHelper.handleFind(task);
+  mockFind('paper').returns({ model: paper });
+  mockFind('task').returns({ model: task });
 
   visit(paperTaskURL(paper, task));
 
@@ -184,11 +187,12 @@ test('AdHoc Task list block', function(assert) {
 });
 
 test('AdHoc Task email block', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let task = FactoryGuy.make('task', { paper: paper, body: [] });
+  const paper = make('paper');
+  const task  = make('task', { paper: paper, body: [] });
 
-  TestHelper.handleFind(paper);
-  TestHelper.handleFind(task);
+  mockFind('paper').returns({ model: paper });
+  mockFind('task').returns({ model: task });
+
    server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [
      204, {
        'Content-Type': 'application/json'

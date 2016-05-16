@@ -51,9 +51,9 @@ module('Integration: Paper Workflow page', {
     ]);
 
     server.respondWith('DELETE', '/api/tasks/1', [
-      200, {
+      204, {
         'Content-Type': 'application/json'
-      }, '{}'
+      }, ''
     ]);
 
     server.respondWith(
@@ -160,6 +160,6 @@ test('click delete confirmation overlay submit button', function(assert) {
       url: '/api/tasks/1'
     });
 
-    assert.equal(req.status, 200, 'It sends DELETE request to the server');
+    assert.equal(req.status, 204, 'It sends DELETE request to the server');
   });
 });

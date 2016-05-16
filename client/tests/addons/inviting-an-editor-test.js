@@ -40,7 +40,7 @@ module("Integration: Inviting an editor", {
     phase = FactoryGuy.make("phase");
     task  = FactoryGuy.make("paper-editor-task", { phase: phase, letter: '"A letter"' });
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
-    TestHelper.handleFind(paper);
+    TestHelper.mockFind('paper').returns({ model: paper });
     TestHelper.handleFindAll("discussion-topic", 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
@@ -51,7 +51,7 @@ module("Integration: Inviting an editor", {
 
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
-    TestHelper.handleFind(task);
+    TestHelper.mockFind('task').returns({ model: task });
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Editor')");
 
@@ -81,7 +81,7 @@ test("can rescind the invitation", function(assert) {
   Ember.run(function() {
     let invitation = FactoryGuy.make("invitation", {email: "foo@bar.com", state: "invited"});
     task.set("invitations", [invitation]);
-    TestHelper.handleFind(task);
+    TestHelper.mockFind('task').returns({model: task});
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Editor')");

@@ -22,7 +22,7 @@ module("Integration: Inviting a reviewer", {
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
     inviteeEmail = window.currentUserData.user.email;
 
-    TestHelper.handleFind(paper);
+    TestHelper.mockFind('paper').returns({model: paper});
     TestHelper.handleFindAll("discussion-topic", 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
@@ -33,7 +33,7 @@ module("Integration: Inviting a reviewer", {
       import_formats: [],
       export_formats: []
     }});
-    $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 200, responseText: {}});
+    $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 204, responseText: ''});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
     $.mockjax({url: /\/api\/invitations\/1\/rescind/, type: 'PUT', status: 200, responseText: {}});
 
@@ -52,7 +52,7 @@ module("Integration: Inviting a reviewer", {
 
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
-    TestHelper.handleFind(task);
+    TestHelper.mockFind('task').returns({model: task});
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
 
@@ -89,7 +89,7 @@ test("can rescind the invitation", function(assert) {
       state: 'invited'
     });
     decision.set('invitations', [invitation]);
-    TestHelper.handleFind(task);
+    TestHelper.mockFind('task').returns({model: task});
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Reviewers')");

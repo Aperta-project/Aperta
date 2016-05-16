@@ -43,7 +43,6 @@ class ApexPackager
 
   def add_figures(package)
     @paper.figures.each do |figure|
-      fail ApexPackagerError, 'Figures do not comply' unless figures_comply?
       next if @paper.striking_image == figure
       package.put_next_entry(attachment_apex_filename(figure))
       package.write(figure.attachment.read)
@@ -73,20 +72,5 @@ class ApexPackager
     package.put_next_entry('metadata.json')
     package.write(temp_file.read)
     temp_file.close
-  end
-
-  def figures_comply?
-    return unless figures_comply_answer
-    figures_comply_answer.value
-  end
-
-  def figures_task
-    @figures_task ||= @paper.tasks.find_by_type(
-      'TahiStandardTasks::FigureTask')
-  end
-
-  def figures_comply_answer
-    return unless figures_task
-    @figures_comply_answer ||= figures_task.answer_for('figures--complies')
   end
 end

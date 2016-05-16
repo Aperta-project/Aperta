@@ -35,6 +35,11 @@ module TahiStandardTasks
     def send_emails
     end
 
+    # These methods are a bunch of english text. They should be moved to
+    # their own file, but we're not sure where. They're here, instead of a
+    # mailer template, because users can edit the text before it gets
+    # sent out.
+    # rubocop:disable Metrics/LineLength
     def accept_letter
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
@@ -45,12 +50,11 @@ module TahiStandardTasks
 
         If you or your institution will be preparing press materials for this manuscript, you must inform our press team in advance. Your manuscript will remain under a strict press embargo until the publication date and time.
 
-        Please contact me if you have any other questions or concerns. Thank you for submitting your work to PLOS ONE.
+        Please contact me if you have any other questions or concerns. Thank you for submitting your work to %{journal_name}.
 
         With kind regards,
 
         [YOUR NAME]
-        Academic Editor
         %{journal_name}
       TEXT
 
@@ -83,7 +87,6 @@ module TahiStandardTasks
         Yours sincerely,
 
         [YOUR NAME]
-        Academic Editor
         %{journal_name}
       TEXT
 
@@ -115,7 +118,6 @@ module TahiStandardTasks
         Yours sincerely,
 
         [YOUR NAME]
-        Academic Editor
         %{journal_name}
       TEXT
 
@@ -143,12 +145,12 @@ module TahiStandardTasks
         Yours sincerely,
 
         [YOUR NAME]
-        Academic Editor
         %{journal_name}
       TEXT
 
       template % template_data
     end
+    # rubocop:enable Metrics/LineLength
 
     private
 

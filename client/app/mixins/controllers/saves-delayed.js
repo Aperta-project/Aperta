@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  needs: ['application'],
-  delayedSave: Ember.computed.alias('controllers.application.delayedSave'),
+  application: Ember.inject.controller(),
+  delayedSave: Ember.computed.alias('application.delayedSave'),
 
   saveDelayed() {
     this.set('delayedSave', true);

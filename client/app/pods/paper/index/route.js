@@ -2,8 +2,6 @@ import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
-  restless: Ember.inject.service('restless'),
-
   afterModel(model) {
     return model.get('tasks');
   },

@@ -7,7 +7,8 @@ export default DS.Model.extend({
     async: true
   }),
   source: DS.belongsTo('task', {
-    async: true
+    async: true,
+    polymorphic:  true
   }),
   // We have sourceId here to allow comparing sources without
   // *fetching* sources. *sigh* ember data.

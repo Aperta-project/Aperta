@@ -33,7 +33,7 @@ export default Ember.Service.extend({
 
   build(abilityString, resource, callback) {
 
-    let classname = resource.constructor.typeKey;
+    let classname = resource.constructor.modelName.camelize();
     classname = classname.charAt(0).toLowerCase() + classname.slice(1);
     const permissionId =  classname + '+' + resource.id;
     const ability = Ability.create({name:abilityString, resource: resource});

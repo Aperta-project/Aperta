@@ -64,13 +64,13 @@ export default Ember.Route.extend({
 
     error(response, transition) {
       const oldState   = transition.router.oldState;
-      const lastRoute  = oldState.handlerInfos.get('lastObject.name');
       const targetName = transition.targetName;
       const prefix     = 'Error in transition';
       let transitionMsg;
 
       if(oldState) {
-        transitionMsg = `${prefix} from ${lastRoute} to #{targetName}`;
+        let lastRoute  = oldState.handlerInfos.get('lastObject.name');
+        transitionMsg = `${prefix} from ${lastRoute} to ${targetName}`;
       } else {
         transitionMsg = `${prefix} into ${targetName}`;
       }

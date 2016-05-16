@@ -1,9 +1,9 @@
 class NedCountries
   class ConnectionError < StandardError; end
 
-  BASE_URL = ENV['NED_API_URL']
-  APP_ID = ENV['NED_CAS_APP_ID']
-  APP_PASSWORD = ENV['NED_CAS_APP_PASSWORD']
+  BASE_URL = TahiEnv.ned_api_url
+  APP_ID = TahiEnv.ned_cas_app_id
+  APP_PASSWORD = TahiEnv.ned_cas_app_password
 
   def self.enabled?
     BASE_URL.present?

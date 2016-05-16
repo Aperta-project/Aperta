@@ -5,11 +5,11 @@ class InstitutionsConnectionError < StandardError; end
 class Institutions
   include Singleton
 
-  USE_NED_INSTITUTIONS = ENV['USE_NED_INSTITUTIONS'] == 'true'
-  BASE_URL = ENV['NED_API_URL']
-  APP_ID = ENV['NED_CAS_APP_ID']
-  APP_PASSWORD = ENV['NED_CAS_APP_PASSWORD']
-  NED_DISABLE_SSL_VERIFICATION = ENV['NED_DISABLE_SSL_VERIFICATION'] == 'true'
+  USE_NED_INSTITUTIONS = TahiEnv.use_ned_institutions?
+  BASE_URL = TahiEnv.ned_api_url
+  APP_ID = TahiEnv.ned_cas_app_id
+  APP_PASSWORD = TahiEnv.ned_cas_app_password
+  NED_DISABLE_SSL_VERIFICATION = TahiEnv.ned_disable_ssl_verification?
   NED_SSL_VERIFY = !NED_DISABLE_SSL_VERIFICATION
 
   def matching_institutions(query)

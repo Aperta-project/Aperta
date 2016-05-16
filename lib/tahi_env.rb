@@ -1,16 +1,21 @@
 require 'active_support/core_ext/string/strip'
-require 'tahi_env/env_var'
-require 'tahi_env/boolean_validator'
-require 'tahi_env/presence_validator'
+require File.dirname(__FILE__) + '/tahi_env/env_var'
+require File.dirname(__FILE__) + '/tahi_env/boolean_validator'
+require File.dirname(__FILE__) + '/tahi_env/presence_validator'
 
 class TahiEnv
   include ActiveModel::Validations
 
   class Error < ::StandardError ; end
+  class InvalidEnvironment < Error ; end
   class MissingEnvVarRegistration < Error ; end
 
   class RequiredEnvVar < EnvVar ; end
   class OptionalEnvVar < EnvVar ; end
+
+  def self.validate!
+    instance.validate!
+  end
 
   def self.env_vars
     @env_vars = @env_vars || {}
@@ -190,4 +195,15 @@ class TahiEnv
 
   # Sidekiq
   optional :SIDEKIQ_CONCURRENCY
+
+  def validate!
+    unless valid?
+      error_message = "Environment validation failed:\n\n"
+      errors.full_messages.each do |error|
+        error_message << "* #{error}\n"
+      end
+      error_message << "\n"
+      fail InvalidEnvironment, error_message
+    end
+  end
 end

@@ -362,4 +362,30 @@ describe TahiEnv do
 
   # Sidekiq
   include_examples 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
+
+  describe '#validate!' do
+    it 'does not raise an error when the environment is valid' do
+      expect do
+        ClimateControl.modify valid_env do
+          expect { env.validate! }.to_not raise_error
+        end
+      end
+    end
+
+    it 'raises an error when the environment is not valid' do
+      invalid_env = valid_env.except(:APP_NAME, :ADMIN_EMAIL)
+      ClimateControl.modify invalid_env do
+        expect do
+          env.validate!
+        end.to raise_error(TahiEnv::InvalidEnvironment) do |error|
+          expect(error.message).to include(
+            'Environment Variable: APP_NAME was expected'
+          )
+          expect(error.message).to include(
+            'Environment Variable: ADMIN_EMAIL was expected'
+          )
+        end
+      end
+    end
+  end
 end

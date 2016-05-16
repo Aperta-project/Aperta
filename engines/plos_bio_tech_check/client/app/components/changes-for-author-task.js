@@ -26,9 +26,8 @@ export default TaskComponent.extend({
         const path = '/api/changes_for_author/' + taskId + '/submit_tech_check';
 
         this.get('restless').post(path).then(()=> {
-          this.set('task.completed', true);
-          this.send('save');
           this.get('flash').displayMessage('success', this.successText());
+          this.set('task.completed', true);
         });
       }
     }

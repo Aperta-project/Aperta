@@ -1,5 +1,3 @@
-require_dependency "plos_bio_tech_check/application_controller"
-
 module PlosBioTechCheck
   class ChangesForAuthorController < ApplicationController
     before_action :authenticate_user!
@@ -12,6 +10,9 @@ module PlosBioTechCheck
 
     def submit_tech_check
       task = Task.find(params[:id])
+      requires_user_can :edit, task
+      task.complete!
+
       paper = task.paper
 
       if paper.submit_minor_check! current_user

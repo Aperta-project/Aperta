@@ -33,7 +33,7 @@
   {{#if pendingInvitations}}
     <section class="dashboard-section">
       <h2 class="welcome-message">
-        You have <span class="invitation-count">{{pluralize pendingInvitations.length "invitation"}}</span>.
+        You have <span class="invitation-count">{{pendingInvitations.length}} {{pluralize-string count=pendingInvitations.length string="invitation"}}</span>.
       </h2>
       <button class="button-primary button--green" {{action "showInvitationsOverlay"}}>View invitations</button>
     </section>
@@ -44,9 +44,9 @@
       Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
         {{#if activePapers.length}}
-          You have {{pluralize totalActivePaperCount "active manuscript"}}.
+          You have {{totalActivePaperCount}} {{pluralize-string count=totalActivePaperCount string="active manuscript"}}.
         {{else}}
-          You have {{pluralize totalInactivePaperCount "inactive manuscript"}}.
+          You have {{totalInactivePaperCount}} {{pluralize-string count=totalInactivePaperCount string="inactive manuscript"}}.
         {{/if}}
       {{else}}
         You have no manuscripts.

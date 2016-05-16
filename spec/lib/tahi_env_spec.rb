@@ -307,6 +307,9 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_UID_FIELD', dependent_key: 'CAS_ENABLED'
 
+  # EM / Editorial Manager
+  include_examples 'optional env var', var: 'EM_DATABASE'
+
   # Heroku
   include_examples 'optional env var', var: 'HEROKU_APP_NAME'
   include_examples 'optional env var', var: 'HEROKU_PARENT_APP_NAME'

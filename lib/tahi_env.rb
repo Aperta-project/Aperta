@@ -131,6 +131,9 @@ class TahiEnv
   required :CAS_SSL, if: :cas_enabled?
   required :CAS_UID_FIELD, if: :cas_enabled?
 
+  # EM / Editorial Manager
+  optional :EM_DATABASE
+
   # Heroku
   optional :HEROKU_APP_NAME
   optional :HEROKU_PARENT_APP_NAME

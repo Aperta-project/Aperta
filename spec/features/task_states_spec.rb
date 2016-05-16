@@ -14,8 +14,6 @@ feature 'Task states permissions', js: true do
     task.update_column(:completed, true)
     unsubmitted_paper_task.update_column(:completed, true)
     assign_journal_role(Journal.first, staff_admin, :admin)
-    login_as(unsubmitted_paper_author, scope: :user)
-    visit '/'
   end
 
   context 'Creator Role' do

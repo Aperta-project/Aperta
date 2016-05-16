@@ -226,7 +226,6 @@ describe TahiEnv do
       PASSWORD_AUTH_ENABLED: 'true',
       PUSHER_URL: 'http://pusher.tahi-project.org',
       PUSHER_VERBOSE_LOGGING: 'false',
-      RAILS_ASSET_HOST: 'some-host',
       RAILS_ENV: 'test',
       RAILS_SECRET_TOKEN: 'secret-token',
       SENDGRID_USERNAME: 'username',
@@ -240,7 +239,7 @@ describe TahiEnv do
   include_examples 'required env var', var: 'PASSWORD_AUTH_ENABLED'
   include_examples 'required env var', var: 'RAILS_ENV'
   include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
-  include_examples 'required env var', var: 'RAILS_ASSET_HOST'
+  include_examples 'optional env var', var: 'RAILS_ASSET_HOST'
   include_examples 'required env var', var: 'DEFAULT_MAILER_URL'
   include_examples 'optional boolean env var', var: 'DISABLE_FORCE_SSL', default_value: false
   include_examples 'required env var', var: 'FROM_EMAIL'

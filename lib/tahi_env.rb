@@ -49,7 +49,7 @@ class TahiEnv
   required :APP_NAME
   required :ADMIN_EMAIL
   required :PASSWORD_AUTH_ENABLED
-  required :RAILS_ASSET_HOST
+  optional :RAILS_ASSET_HOST
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
   required :DEFAULT_MAILER_URL

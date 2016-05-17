@@ -85,7 +85,7 @@
     "DEFAULT_MAILER_URL": {
       "required": true
     },
-    "ENABLE_PUSHER_SSL_VERIFICATION": {
+    "PUSHER_SSL_VERIFY": {
       "required": true
     },
     "EVENT_STREAM_WS_HOST": {

@@ -19,7 +19,7 @@ describe TahiEnv do
       DATABASEDOTCOM_PASSWORD: 'password',
       DATABASEDOTCOM_USERNAME: 'username',
       DEFAULT_MAILER_URL: 'http://mailer.tahi-project.org',
-      ENABLE_PUSHER_SSL_VERIFICATION: 'true',
+      PUSHER_SSL_VERIFY: 'true',
       FROM_EMAIL: 'no-reply@tahi-project.org',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
@@ -147,7 +147,7 @@ describe TahiEnv do
 
   # Pusher / Slanger
   include_examples 'required env var', var: 'PUSHER_URL'
-  include_examples 'required boolean env var', var: 'ENABLE_PUSHER_SSL_VERIFICATION'
+  include_examples 'required boolean env var', var: 'PUSHER_SSL_VERIFY'
   include_examples 'required env var', var: 'PUSHER_VERBOSE_LOGGING'
 
   # Salesforce

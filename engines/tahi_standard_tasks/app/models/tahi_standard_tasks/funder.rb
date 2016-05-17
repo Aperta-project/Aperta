@@ -13,10 +13,10 @@ module TahiStandardTasks
 
     def funding_statement
       return "#{additional_comments}" if only_has_additional_comments?
-      s = "#{name} #{website} (grant number #{grant_number})"
-      s << ". #{additional_comments}" if additional_comments.present?
+      s = "#{name} #{website} (grant number #{grant_number})."
+      s << "#{additional_comments}." if additional_comments.present?
       if influence
-        s << ". #{influence_description}."
+        s << " #{influence_description}."
       else
         s << " The funder had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript."
       end

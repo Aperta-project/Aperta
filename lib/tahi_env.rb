@@ -125,7 +125,7 @@ class TahiEnv
   required :NED_API_URL
   required :NED_CAS_APP_ID
   required :NED_CAS_APP_PASSWORD
-  optional :NED_DISABLE_SSL_VERIFICATION, :boolean, default: false
+  optional :NED_SSL_VERIFY, :boolean, default: true
   required :USE_NED_INSTITUTIONS, :boolean
 
   # Newrelic

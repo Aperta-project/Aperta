@@ -121,7 +121,7 @@
     "NED_CAS_APP_PASSWORD": {
       "required": true
     },
-    "NED_DISABLE_SSL_VERIFICATION": {
+    "NED_SSL_VERIFY": {
       "required": true
     },
     "NEWRELIC_APP_NAME": {

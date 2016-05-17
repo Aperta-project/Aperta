@@ -127,7 +127,7 @@ describe TahiEnv do
   include_examples 'required env var', var: 'NED_API_URL'
   include_examples 'required env var', var: 'NED_CAS_APP_ID'
   include_examples 'required env var', var: 'NED_CAS_APP_PASSWORD'
-  include_examples 'optional boolean env var', var: 'NED_DISABLE_SSL_VERIFICATION', default_value: false
+  include_examples 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
   include_examples 'required boolean env var', var: 'USE_NED_INSTITUTIONS'
 
   # Newrelic

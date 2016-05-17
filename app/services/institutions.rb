@@ -9,8 +9,7 @@ class Institutions
   BASE_URL = TahiEnv.ned_api_url
   APP_ID = TahiEnv.ned_cas_app_id
   APP_PASSWORD = TahiEnv.ned_cas_app_password
-  NED_DISABLE_SSL_VERIFICATION = TahiEnv.ned_disable_ssl_verification?
-  NED_SSL_VERIFY = !NED_DISABLE_SSL_VERIFICATION
+  NED_SSL_VERIFY = TahiEnv.ned_ssl_verify?
 
   def matching_institutions(query)
     if USE_NED_INSTITUTIONS

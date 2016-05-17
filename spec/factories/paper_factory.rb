@@ -45,6 +45,10 @@ FactoryGirl.define do
       end
     end
 
+    trait(:accepted) do
+      publishing_state "accepted"
+    end
+
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
       publishing_state "submitted"
@@ -188,6 +192,8 @@ FactoryGirl.define do
         # Authors
         authors_task = FactoryGirl.create(:authors_task, paper: paper)
         author = FactoryGirl.create(:author, paper: paper)
+        paper.authors = [author]
+        paper.creator = FactoryGirl.create(:user)
         NestedQuestionableFactory.create(
           author,
           questions: [
@@ -284,6 +290,8 @@ FactoryGirl.define do
         version = paper.latest_version
         version.source = File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
         version.save!
+        accept_decision = FactoryGirl.create(:decision)
+        paper.decisions = [accept_decision]
         paper.save!
 
         paper.reload

@@ -56,19 +56,15 @@
     float: none;
     text-align: inherit;
   }
-}
 
-.button-submit-paper {
-  @extend .button;
-  color: $tahi-green;
-  &:hover { text-decoration: none; }
-
-  &.button--white  {
-    background-color: $tahi-white;
+  .button-primary {
+    color: $tahi-green;
+    background-color: #fff;
 
     &:focus, &:hover {
       color: #fff;
       background-color: $tahi-green-light;
+      text-decoration: none;
     }
   }
 }

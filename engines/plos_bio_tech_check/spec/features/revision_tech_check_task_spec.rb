@@ -21,7 +21,7 @@ feature 'Revision Tech Check', js: true do
     overlay.mark_as_complete
     overlay.expect_task_to_be_completed
     overlay.dismiss
-    Warden.test_reset!
+    logout
 
     change_author_task = PlosBioTechCheck::ChangesForAuthorTask.first
 
@@ -36,7 +36,6 @@ feature 'Revision Tech Check', js: true do
     visit "/papers/#{paper.id}/tasks/#{task.id}"
     wait_for_ajax
     expect(page).to have_content("You don't have access to that content")
-    Warden.test_reset!
   end
 
   scenario "list the unselected question items in the author changes letter" do

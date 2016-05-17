@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [{version}] - {release_date}
 ### Added
 - Diffing of Reviewer Candidates
+- Authors will see the feedback form whenever they submit a paper
 ### Changed
 - Update RTC and FTC text.
 ### Deprecated

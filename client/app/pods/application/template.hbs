@@ -43,9 +43,9 @@
 
 {{#overlay-fullscreen visible=showFeedbackOverlay
                       outAnimationComplete=(action "hideFeedbackOverlay")
-                      title="Please let us know your thoughts"
+                      overlayClass="feedback-overlay"
                       as |overlay|}}
-    {{feedback-x close=(action overlay.animateOut)}}
+    {{feedback-form close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
 <div id="overlay-drop-zone"></div>

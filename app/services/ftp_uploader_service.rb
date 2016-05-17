@@ -5,21 +5,23 @@ class FtpUploaderService
 
   def initialize(host: ENV['FTP_HOST'], passive_mode: true,
         user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'],
-        port: ENV['FTP_PORT'], filepath: nil, filename: nil,
+        port: ENV['FTP_PORT'], file_io: nil, final_filename: nil,
         directory: ENV['FTP_DIR'])
     @host = host
     @passive_mode = passive_mode
     @user = user
     @password = password
     @port = port || 21
-    @filepath = filepath
-    @final_filename = filename
+    @file_io = file_io
+    @final_filename = final_filename
     @directory = directory || 'packages'
   end
 
   def upload
-    fail FtpTransferError, 'Filepath is required' if @filepath.blank?
-    fail FtpTransferError, 'Final filename is required' if @final_filename.blank?
+    fail FtpTransferError, 'file_io is required' if @file_io.blank?
+    if @final_filename.blank?
+      fail FtpTransferError, 'final_filename is required'
+    end
 
     begin
       @ftp = Net::FTP.new
@@ -72,7 +74,7 @@ class FtpUploaderService
   def upload_to_temporary_file
     upload_time = Time.zone.now.strftime "%Y-%m-%d-%H%M%S"
     "temp_#{upload_time}_#{@final_filename}".tap do |temp_name|
-      @ftp.putbinaryfile(File.new(@filepath), temp_name, 1000)
+      @ftp.putbinaryfile(@file_io, temp_name, 1000)
     end
   end
 end

@@ -9,20 +9,31 @@ describe ApexPackager do
                        minor_version: 1)
   end
   let!(:source) { double(File) }
+  let(:zip_file) { Tempfile.new('zip') }
+  let(:archive_filename) { 'test.0001.zip' }
 
   def zip_filenames(package)
     filenames = []
-    Zip::File.open(package) do |zip|
-      filenames = zip.map(&:name)
+    Zip::InputStream.open(package) do |io|
+      while (entry = io.get_next_entry)
+        filenames << entry.name
+      end
     end
     filenames
   end
 
-  def zip_contains(zip_path, file_in_zip, expected_path)
-    expected_contents = File.open(expected_path, 'rb', &:read)
-    zip_contents = Zip::File.open(zip_path).read(file_in_zip)
+  def read_zip_entry(zip_io, file_name)
+    Zip::InputStream.open(zip_io) do |io|
+      while (entry = io.get_next_entry)
+        return io.read if (entry.name == file_name)
+      end
+    end
+    nil
+  end
 
-    expected_contents == zip_contents
+  def zip_contains(zip_io, file_in_zip, expected_path)
+    expected_contents = File.open(expected_path, 'rb', &:read)
+    expected_contents == read_zip_entry(zip_io, file_in_zip)
   end
 
   before do
@@ -53,23 +64,67 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
-
-      expect(zip_filenames((zip_file_path))).to include(
+      zip_io = ApexPackager.create_zip(paper)
+      expect(zip_filenames((zip_io))).to include(
         'test.0001.docx')
-      expect(zip_contains(zip_file_path,
+      expect(zip_contains(zip_io,
                           'test.0001.docx',
                           Rails.root.join(
                             'spec/fixtures/about_turtles.docx'))).to be(true)
     end
 
     it 'contains the correct metadata' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
-
-      contents = Zip::File.open(zip_file_path).read('metadata.json')
+      zip_io = ApexPackager.create_zip(paper)
+      contents = read_zip_entry(zip_io, 'metadata.json')
       expect(contents).to eq('json')
+    end
+
+    it 'creates a valid manifest' do
+      packager = ApexPackager.new(paper, archive_filename: archive_filename)
+      packager.zip_file
+      manifest = JSON.parse(packager.send(:manifest).to_json)
+      expected_manifest = {
+        "archive_filename" => archive_filename,
+        "metadata_filename" => "metadata.json",
+        "files" => ["metadata.json", "test.0001.docx"]
+      }
+      expect(manifest).to eq expected_manifest
+    end
+
+    describe "add_metadata" do
+      it "adds a manuscript file to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_metadata, package)
+        end
+        metadata_filename =
+          packager.send(:manifest).metadata_filename
+        expect(metadata_filename).to eq "metadata.json"
+        files = packager.send(:manifest).file_list
+        expect(files).to eq ["metadata.json"]
+      end
+    end
+
+    describe "add_manuscript" do
+      it "adds a manuscript file to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_manuscript, package)
+        end
+        manuscript_filename = packager.send(:manuscript_filename)
+        file_list = packager.send(:manifest).file_list
+        expect(file_list).to eq [manuscript_filename]
+      end
+    end
+
+    describe "manifest_file" do
+      it "returns a manifest file handle" do
+        packager = ApexPackager.new(paper, archive_filename: archive_filename)
+        manifest = packager.manifest_file
+        json = JSON.parse manifest.read
+        expected_keys = %w(archive_filename metadata_filename files)
+        expect(json).to include *expected_keys
+      end
     end
   end
 
@@ -101,19 +156,28 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to include('yeti.jpg')
-      contents = Zip::File.open(zip_file_path).read('yeti.jpg')
+      expect(zip_filenames((zip_io))).to include('yeti.jpg')
+      contents = read_zip_entry(zip_io, 'yeti.jpg')
       expect(contents).to eq('a string')
     end
 
     it 'does not add a striking image when none is present' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to_not include('Strikingimage.jpg')
+      expect(zip_filenames((zip_io))).to_not include('Strikingimage.jpg')
+    end
+
+    describe "add_figures" do
+      it "adds figure files to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_figures, package)
+        end
+        file_list = packager.send(:manifest).file_list
+        expect(file_list).to eq ["yeti.jpg"]
+      end
     end
   end
 
@@ -161,22 +225,32 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to include('about_turtles.docx')
-      contents = Zip::File.open(zip_file_path).read('about_turtles.docx')
+      expect(zip_filenames((zip_io))).to include('about_turtles.docx')
+      contents = read_zip_entry(zip_io, 'about_turtles.docx')
       expect(contents).to eq('a string')
     end
 
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames((zip_file_path))).to_not include(
+      expect(zip_filenames((zip_io))).to_not include(
         supporting_information_file.filename)
+    end
+
+    describe "add_supporting_information" do
+      it "adds a SI file to the package" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_supporting_information, package)
+        end
+        si_filename = "about_turtles.docx"
+        file_list = packager.send(:manifest).file_list
+        expect(file_list).to eq [si_filename]
+      end
     end
   end
 
@@ -224,19 +298,30 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
-
-      expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
+      zip_io = ApexPackager.create_zip(paper)
+      expect(zip_filenames(zip_io)).to include('Strikingimage.jpg')
     end
 
     it 'separates figures and striking images' do
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
+      zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
-      expect(zip_filenames(zip_file_path)).to include('yeti2.jpg')
-      expect(zip_filenames(zip_file_path)).to_not include('yeti.jpg')
+      filenames = zip_filenames(zip_io)
+      expect(filenames).to include('Strikingimage.jpg')
+      expect(filenames).to include('yeti2.jpg')
+      expect(filenames).to_not include('yeti.jpg')
+    end
+
+    describe "add_stricking_image" do
+      it "adds a stricking image to the manifest" do
+        packager = ApexPackager.new(paper)
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_striking_image, package)
+        end
+        striking_image_filename =
+          packager.send(:attachment_apex_filename, paper.striking_image)
+        file_list = packager.send(:manifest).file_list
+        expect(file_list).to eq [striking_image_filename]
+      end
     end
   end
 end

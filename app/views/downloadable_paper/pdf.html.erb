@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full">
+    </script>
+    <style>
+      <%= publishing_info_presenter.css %>
+      <%= paper.journal.pdf_css %>
+    </style>
+  </head>
+  <body>
+    <div id='publishing-information'>
+      <%= publishing_info_presenter.html.html_safe %>
+    </div>
+
+    <div id='paper-body' styles='page-break-before: always;'>
+      <h1><%= paper.display_title(sanitized: false) %></h1>
+      <%= paper_body %>
+    </div>
+
+    <%= render partial: 'supporting_information',
+               locals: { paper: paper,
+                         should_proxy_previews: should_proxy_previews } %>
+  </body>
+</html>

@@ -145,7 +145,7 @@ class TahiEnv
 
   # Pusher / Slanger
   required :PUSHER_URL
-  required :DISABLE_PUSHER_SSL_VERIFICATION
+  required :ENABLE_PUSHER_SSL_VERIFICATION, :boolean
   required :PUSHER_VERBOSE_LOGGING
 
   # Salesforce

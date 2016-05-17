@@ -169,7 +169,9 @@ describe TahiEnv do
       query_method_name = "#{var.downcase}?"
       describe "TahiEnv.#{query_method_name}" do
         it "defaults to #{default_value} when not set" do
-          expect(TahiEnv.send(query_method_name)).to be default_value
+          ClimateControl.modify valid_env.merge("#{var}": nil) do
+            expect(TahiEnv.send(query_method_name)).to be default_value
+          end
         end
 
         it "returns true when set to 'true' or '1'" do
@@ -368,7 +370,7 @@ describe TahiEnv do
     end
 
     it 'raises an error when the environment is not valid' do
-      invalid_env = valid_env.except(:APP_NAME, :ADMIN_EMAIL)
+      invalid_env = valid_env.merge(:APP_NAME => nil, :ADMIN_EMAIL => nil)
       ClimateControl.modify invalid_env do
         expect do
           env.validate!

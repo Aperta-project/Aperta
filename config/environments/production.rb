@@ -40,7 +40,7 @@ Tahi::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = !TahiEnv.disable_force_ssl?
+  config.force_ssl = TahiEnv.force_ssl?
 
   # Set to :debug to see everything in the log.
   config.log_level = :info

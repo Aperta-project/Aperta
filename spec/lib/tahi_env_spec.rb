@@ -59,7 +59,7 @@ describe TahiEnv do
   include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
   include_examples 'optional env var', var: 'RAILS_ASSET_HOST'
   include_examples 'required env var', var: 'DEFAULT_MAILER_URL'
-  include_examples 'optional boolean env var', var: 'DISABLE_FORCE_SSL', default_value: false
+  include_examples 'optional boolean env var', var: 'FORCE_SSL', default_value: true
   include_examples 'required env var', var: 'FROM_EMAIL'
   include_examples 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
   include_examples 'optional env var', var: 'PING_URL'

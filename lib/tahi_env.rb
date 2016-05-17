@@ -58,7 +58,7 @@ class TahiEnv
   required :RAILS_SECRET_TOKEN
   required :DEFAULT_MAILER_URL
   required :FROM_EMAIL
-  optional :DISABLE_FORCE_SSL, :boolean, default: false
+  optional :FORCE_SSL, :boolean, default: true
   optional :MAX_ABSTRACT_LENGTH
   optional :PING_URL
   optional :PUSHER_SOCKET_URL

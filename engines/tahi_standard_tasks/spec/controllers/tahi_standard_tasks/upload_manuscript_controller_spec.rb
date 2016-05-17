@@ -26,7 +26,7 @@ module TahiStandardTasks
 
         it "initiates manuscript download" do
           expect(DownloadManuscriptWorker).to receive(:download_manuscript)
-            .with(paper, url, user)
+            .with(paper, url, user, host: "test.host", port: 80, protocol: "http://")
           do_request
         end
 

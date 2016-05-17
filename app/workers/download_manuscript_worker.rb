@@ -11,11 +11,13 @@ class DownloadManuscriptWorker
 
   # +download_manuscript+ schedules a background job to download the paper's
   # manuscript at the provided url, on behalf of the given user.
-  def self.download_manuscript(paper, url, user)
+  def self.download_manuscript(paper, url, user, host: nil, port: nil, protocol: nil)
     if url.present?
-      url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
-                   port: ENV['IHAT_CALLBACK_PORT'] }
-                 .reject { |_, v| v.nil? }
+      url_opts = {
+        host: ENV['IHAT_CALLBACK_HOST'] || host,
+        port: ENV['IHAT_CALLBACK_PORT'] || port,
+        protocol: protocol
+      }.reject { |_, v| v.nil? }
 
       perform_async(
         paper.id,

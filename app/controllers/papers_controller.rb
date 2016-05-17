@@ -37,7 +37,14 @@ class PapersController < ApplicationController
 
       url = params.dig(:paper, :url)
       if url
-        DownloadManuscriptWorker.download_manuscript(paper, url, current_user)
+        DownloadManuscriptWorker.download_manuscript(
+          paper,
+          url,
+          current_user,
+          host: request.host,
+          protocol: request.protocol,
+          port: request.port
+        )
       end
     end
     respond_with paper

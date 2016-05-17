@@ -15,7 +15,10 @@ module TahiStandardTasks
       DownloadManuscriptWorker.download_manuscript(
         task.paper,
         params[:url],
-        current_user
+        current_user,
+        host: request.host,
+        port: request.port,
+        protocol: request.protocol
       )
 
       head 204

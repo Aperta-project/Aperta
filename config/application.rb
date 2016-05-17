@@ -12,8 +12,6 @@ TahiEnv.validate!
 
 module Tahi
   class Application < Rails::Application
-    require 'config_helper'
-
     config.eager_load = true
 
     # use bin/rake tahi_standard_tasks:install:migrations

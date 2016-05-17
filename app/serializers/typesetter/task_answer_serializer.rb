@@ -10,12 +10,15 @@ module Typesetter
 
     def task(task_type)
       tasks = tasks_by_type(task_type)
-      if tasks.length > 1
+      if tasks.length == 1
+        tasks.first
+      elsif tasks.length > 1
         fail Typesetter::MetadataError.multiple_tasks(tasks)
-      elsif tasks.length == 0
-        fail Typesetter::MetadataError.no_task(task_type)
+      else
+        # This branch isn't strictly necessary, but here to raise visibility
+        # that is an intentional decision.
+        nil
       end
-      tasks.first
     end
   end
 end

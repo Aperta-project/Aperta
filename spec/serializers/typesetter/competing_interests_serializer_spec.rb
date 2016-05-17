@@ -29,6 +29,13 @@ describe Typesetter::CompetingInterestsSerializer do
       :competing_interests_statement)
   end
 
+  it 'works without values' do
+    allow(task).to receive(:answer_for).and_return(nil)
+    output = serializer.serializable_hash
+
+    expect(output[:competing_interests]).to eq(nil)
+  end
+
   describe 'competing interests value' do
     it 'is the answer to the competing interests question' do
       expect(output[:competing_interests]).to eq(true)

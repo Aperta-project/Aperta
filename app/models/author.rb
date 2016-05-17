@@ -3,6 +3,8 @@ class Author < ActiveRecord::Base
   include NestedQuestionable
 
   CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
+  CORRESPONDING_QUESTION_IDENT = "author--published_as_corresponding_author"
+  GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "author--government-employee"
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
@@ -41,6 +43,11 @@ class Author < ActiveRecord::Base
 
   def task
     Task.find_by(paper_id: paper_id, type: TahiStandardTasks::AuthorsTask.name)
+  end
+
+  def corresponding?
+    return false unless answer_for(CORRESPONDING_QUESTION_IDENT)
+    answer_for(CORRESPONDING_QUESTION_IDENT).value
   end
 
   def self.contributions_question

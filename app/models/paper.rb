@@ -50,7 +50,7 @@ class Paper < ActiveRecord::Base
            through: :author_list_items,
            source_type: "GroupAuthor",
            source: :author
-  has_many :author_list_items, dependent: :destroy
+  has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
 
   serialize :withdrawals, ArrayHashSerializer
 
@@ -243,6 +243,15 @@ class Paper < ActiveRecord::Base
       latest_version.update(original_text: new_body)
       notify(action: "updated") unless changed?
     end
+  end
+
+  # Returns the corresponding author emails. When there are no authors
+  # marked as corresponding then it defaults to the creator's email address.
+  def corresponding_author_emails
+    corresponding_authors = authors.select { |au| au.corresponding? }
+    emails = corresponding_authors.map { |author| author.email }.compact
+    emails = [creator.try(:email)] if emails.empty?
+    emails.compact
   end
 
   # Public: Find `Role`s for the given user on this paper.

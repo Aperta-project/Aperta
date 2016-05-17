@@ -109,14 +109,6 @@ describe ApexPackager do
       expect(contents).to eq('a string')
     end
 
-    it 'raises an error when figures are present and do not comply' do
-      nested_question_answer.value = 'false'
-      nested_question_answer.save!
-
-      expect { ApexPackager.create(paper) }.to raise_error(
-        ApexPackager::ApexPackagerError)
-    end
-
     it 'does not add a striking image when none is present' do
       packager = ApexPackager.create(paper)
       zip_file_path = packager.zip_file.path

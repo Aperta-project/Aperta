@@ -29,6 +29,14 @@ describe Typesetter::DataAvailabilitySerializer do
       :data_location_statement)
   end
 
+  it 'works without values' do
+    allow(task).to receive(:answer_for).and_return(nil)
+    output = serializer.serializable_hash
+
+    expect(output[:data_fully_available]).to eq(nil)
+    expect(output[:data_location_statement]).to eq(nil)
+  end
+
   describe 'data fully available value' do
     it 'is the answer to the data fully available question' do
       expect(output[:data_fully_available]).to eq(true)

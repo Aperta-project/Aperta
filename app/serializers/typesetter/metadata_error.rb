@@ -20,6 +20,10 @@ module Typesetter
         new "Field #{field} is required."
       end
 
+      def not_accepted
+        new "Paper has not been accepted"
+      end
+
       def humanize_type(type_string)
         type_string.demodulize.titleize
       end

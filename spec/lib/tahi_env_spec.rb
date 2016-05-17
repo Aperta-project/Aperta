@@ -148,7 +148,7 @@ describe TahiEnv do
   # Pusher / Slanger
   include_examples 'required env var', var: 'PUSHER_URL'
   include_examples 'required boolean env var', var: 'PUSHER_SSL_VERIFY'
-  include_examples 'required env var', var: 'PUSHER_VERBOSE_LOGGING'
+  include_examples 'required boolean env var', var: 'PUSHER_VERBOSE_LOGGING'
 
   # Salesforce
   include_examples 'optional boolean env var', var: 'SALESFORCE_ENABLED', default_value: true

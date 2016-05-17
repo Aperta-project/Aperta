@@ -1,0 +1,19 @@
+<% if paper.supporting_information_files.any? %>
+  <h2 id='si_header'>Supporting Information</h2>
+
+  <% paper.supporting_information_files.each do |file| %>
+    <% if file.image? %>
+      <p>
+        <a href='<%= file.non_expiring_proxy_url(only_path: false) %>'>
+          <img
+              class='si_preview'
+              id="si_preview_<%= file.id %>"
+              src="<%= file.proxyable_url(version: :preview, is_proxied: should_proxy_previews, only_path: false) %>"
+          />
+        </a>
+      </p>
+    <% end %>
+
+    <p><a class='si_link' id='si_link_<%= file.id %>' href='<%= file.non_expiring_proxy_url(only_path: false) %>'><%= file.filename %></a></p>
+  <% end %>
+<% end %>

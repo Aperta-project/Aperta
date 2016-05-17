@@ -1,8 +1,17 @@
 require "rails_helper"
 
 describe AttachmentSerializer, serializer_test: true do
-  let(:attachment) { FactoryGirl.create :attachment, :with_task }
+  let(:attachment) do
+    FactoryGirl.create :attachment,
+                       :with_task,
+                       status: 'done',
+                       token: token
+  end
+  let(:token) { 'hfrrpwV1VHYb7x2T' }
   let(:object_for_serializer) { attachment }
+  let(:src) do
+    "/resource_proxy/attachments/" + token
+  end
 
   it "serializes successfully" do
     expect(deserialized_content).to be_kind_of Hash
@@ -17,7 +26,7 @@ describe AttachmentSerializer, serializer_test: true do
                                      title: attachment.title,
                                      caption: attachment.caption,
                                      kind: attachment.kind,
-                                     src: attachment.file.url,
+                                     src: src,
                                      status: attachment.status,
                                      filename: attachment.filename,
                                      task: { id: attachment.task.id, type: "Task" })))
@@ -33,8 +42,8 @@ describe AttachmentSerializer, serializer_test: true do
       expect(deserialized_content)
         .to match(hash_including(
                     attachment: hash_including(
-                      preview_src: %r{/preview_yeti.png},
-                      detail_src: %r{/detail_yeti.png})))
+                      preview_src: src + "/preview",
+                      detail_src: src + "/detail")))
     end
   end
 

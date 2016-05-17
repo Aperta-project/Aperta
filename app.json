@@ -43,7 +43,7 @@
     "BUNDLE_WITHOUT": {
       "required": true
     },
-    "CAS_DISABLE_SSL_VERIFICATION": {
+    "CAS_SSL_VERIFY": {
       "required": true
     },
     "CAS_ENABLED": {

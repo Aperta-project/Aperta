@@ -86,7 +86,7 @@ describe TahiEnv do
   include_examples 'required boolean env var', var: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_SIGNUP_URL', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_CALLBACK_URL', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_DISABLE_SSL_VERIFICATION', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required env var', var: 'CAS_SSL_VERIFY', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_HOST', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_LOGIN_URL', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_LOGOUT_URL', dependent_key: 'CAS_ENABLED'

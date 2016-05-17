@@ -5,7 +5,7 @@ module CasConfig
     if opts[:enabled]
       opts.merge!(
         'ssl'                      => ENV['CAS_SSL'].present?,
-        'disable_ssl_verification' => ENV['CAS_DISABLE_SSL_VERIFICATION'].present?,
+        'ssl_verify'               => TahiEnv.cas_ssl_verify?,
         'host'                     => ENV['CAS_HOST'],
         'port'                     => ENV['CAS_PORT'],
         'service_validate_url'     => ENV['CAS_SERVICE_VALIDATE_URL']

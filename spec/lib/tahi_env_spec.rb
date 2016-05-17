@@ -92,7 +92,7 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'CAS_LOGOUT_URL', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_PORT', dependent_key: 'CAS_ENABLED'
   include_examples 'dependent required env var', var: 'CAS_SERVICE_VALIDATE_URL', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
+  include_examples 'dependent required boolean env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
 
   # EM / Editorial Manager
   include_examples 'optional env var', var: 'EM_DATABASE'

@@ -90,7 +90,7 @@ class TahiEnv
   required :CAS_LOGOUT_URL, if: :cas_enabled?
   required :CAS_PORT, if: :cas_enabled?
   required :CAS_SERVICE_VALIDATE_URL, if: :cas_enabled?
-  required :CAS_SSL, if: :cas_enabled?
+  required :CAS_SSL, :boolean, if: :cas_enabled?
 
   # EM / Editorial Manager
   optional :EM_DATABASE

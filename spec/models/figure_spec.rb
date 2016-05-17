@@ -132,4 +132,12 @@ describe Figure, redis: true do
       end
     end
   end
+
+  describe '#attachment_exists?' do
+    context 'when the attachment is present' do
+      it 'returns true' do
+        expect(figure.attachment?).to eq true
+      end
+    end
+  end
 end

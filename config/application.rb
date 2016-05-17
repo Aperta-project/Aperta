@@ -46,8 +46,7 @@ module Tahi
       config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
     end
 
-    config.x.pusher_verbose_logging =
-      ConfigHelper.read_boolean_env('PUSHER_VERBOSE_LOGGING')
+    config.x.pusher_verbose_logging = TahiEnv.pusher_verbose_logging?
 
     config.omniauth_providers = []
   end

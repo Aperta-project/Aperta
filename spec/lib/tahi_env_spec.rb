@@ -62,6 +62,12 @@ describe TahiEnv do
           expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to have a value, but was set to nothing.")
         end
       end
+
+      it 'shows up in the list of known about env vars' do
+        expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
+          TahiEnv::RequiredEnvVar.new(var)
+        )
+      end
     end
   end
 

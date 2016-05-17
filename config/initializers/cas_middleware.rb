@@ -14,8 +14,6 @@ module CasConfig
       opts['callback_url'] = ENV['CAS_CALLBACK_URL'] if ENV['CAS_CALLBACK_URL'].present?
       opts['logout_url'] = ENV['CAS_LOGOUT_URL'] || '/cas/logout'
       opts['login_url'] = ENV['CAS_LOGIN_URL'] if ENV['CAS_LOGIN_URL'].present?
-      opts['uid_field'] = ENV['CAS_UID_FIELD'] if ENV['CAS_UID_FIELD'].present?
-      opts['ca_path'] = ENV['CAS_CA_PATH'] if ENV['CAS_CA_PATH'].present?
       opts['ssl'] = ENV['CAS_SSL'] || true
 
       if %w(host logout_url ssl).all? { |k| opts[k].present? }

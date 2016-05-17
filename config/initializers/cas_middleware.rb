@@ -1,30 +1,29 @@
 module CasConfig
   def self.load_configuration
-    # rubocop:disable Metrics/LineLength
     opts = { enabled: TahiEnv.cas_enabled? }.with_indifferent_access
+
     if opts[:enabled]
       opts.merge!(
-        'ssl'                      => ENV['CAS_SSL'].present?,
-        'ssl_verify'               => TahiEnv.cas_ssl_verify?,
-        'host'                     => ENV['CAS_HOST'],
-        'port'                     => ENV['CAS_PORT'],
-        'service_validate_url'     => ENV['CAS_SERVICE_VALIDATE_URL']
+        'ssl'                   => TahiEnv.cas_ssl?,
+        'ssl_verify'            => TahiEnv.cas_ssl_verify?,
+        'host'                  => TahiEnv.cas_host,
+        'port'                  => TahiEnv.cas_port,
+        'service_validate_url'  => TahiEnv.cas_service_validate_url,
+        'callback_url'          => TahiEnv.cas_callback_url,
+        'logout_url'            => TahiEnv.cas_logout_url,
+        'login_url'             => TahiEnv.cas_login_url,
+        'logout_full_url'       => logout_full_url
       )
-
-      opts['callback_url'] = ENV['CAS_CALLBACK_URL'] if ENV['CAS_CALLBACK_URL'].present?
-      opts['logout_url'] = ENV['CAS_LOGOUT_URL'] || '/cas/logout'
-      opts['login_url'] = ENV['CAS_LOGIN_URL'] if ENV['CAS_LOGIN_URL'].present?
-      opts['ssl'] = ENV['CAS_SSL'] || true
-
-      if %w(host logout_url ssl).all? { |k| opts[k].present? }
-        scheme = opts['ssl'] ? 'https://' : 'http://'
-        opts['logout_full_url'] = URI.join(scheme + opts['host'],
-                                           opts['logout_url']).to_s
-      end
     end
-    # rubocop:enable Metrics/LineLength
 
     opts
+  end
+
+  private
+
+  def self.logout_full_url
+    scheme = TahiEnv.cas_ssl? ? 'https://' : 'http://'
+    URI.join(scheme + TahiEnv.cas_host, TahiEnv.cas_logout_url).to_s
   end
 end
 

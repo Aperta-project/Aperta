@@ -8,6 +8,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Authors will see the feedback form whenever they submit a paper
 ### Changed
 - Update RTC and FTC text.
+- Billing task institutions and countries synced with EM
+
 ### Deprecated
 ### Removed
 ### Fixed

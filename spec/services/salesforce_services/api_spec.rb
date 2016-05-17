@@ -3,6 +3,12 @@ require 'rails_helper'
 describe SalesforceServices::API do
   let(:paper) { FactoryGirl.create(:paper) }
 
+  around do |example|
+    ClimateControl.modify SALESFORCE_ENABLED: 'true' do
+      example.run
+    end
+  end
+
   before do
     @api = SalesforceServices::API
 

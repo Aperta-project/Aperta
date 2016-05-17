@@ -84,7 +84,7 @@ class TahiEnv
   required :CAS_ENABLED, :boolean
   required :CAS_SIGNUP_URL, if: :cas_enabled?
   required :CAS_CALLBACK_URL, if: :cas_enabled?
-  required :CAS_SSL_VERIFY, if: :cas_enabled?
+  required :CAS_SSL_VERIFY, :boolean, if: :cas_enabled?
   required :CAS_HOST, if: :cas_enabled?
   required :CAS_LOGIN_URL, if: :cas_enabled?
   required :CAS_LOGOUT_URL, if: :cas_enabled?

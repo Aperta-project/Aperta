@@ -39,19 +39,19 @@ shared_examples_for 'dependent required env var' do |var:, dependent_key:|
   describe "Dependent required env var: #{var}" do
     it 'is not required to be set when dependent key is false' do
       ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'false') do
-        expect(env.errors.full_messages).to_not include("Environment Variable: #{var} was expected to be set, but was not.")
+        expect(env.errors.full_messages.join).to_not match("Environment Variable: #{var} was expected")
       end
     end
 
     it 'is required to be set when dependent key is true' do
       ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'true') do
-        expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set, but was not.")
+        expect(env.errors.full_messages.join).to match("Environment Variable: #{var} was expected")
       end
     end
 
     it 'is required to have a value when dependent key is true' do
       ClimateControl.modify valid_env.merge("#{var}": '', "#{dependent_key}": 'true') do
-        expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to have a value, but was set to nothing.")
+        expect(env.errors.full_messages.join).to match("Environment Variable: #{var} was expected")
       end
     end
 
@@ -59,6 +59,24 @@ shared_examples_for 'dependent required env var' do |var:, dependent_key:|
       expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
         TahiEnv::RequiredEnvVar.new(var)
       )
+    end
+  end
+end
+
+shared_examples_for 'dependent required boolean env var' do |var:, dependent_key:|
+  describe "Dependent required booelan env var: #{var}" do
+    include_examples 'dependent required env var', var: var, dependent_key: dependent_key
+
+    describe 'dependent_key is true' do
+      around do |example|
+        # Use merge! so valid_env is modified since we want to run all
+        # subsequent examples with the dependent_key set to a value
+        ClimateControl.modify valid_env.merge!("#{dependent_key}": 'true') do
+          example.run
+        end
+      end
+
+      include_examples 'required boolean env var', var: var
     end
   end
 end

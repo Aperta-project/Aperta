@@ -1,0 +1,54 @@
+{{#if feedbackSubmitted}}
+  <p class="feedback-form-thanks animation-fade-in">
+    {{#if showSuccessCheckmark}}
+      <img class="animation-scale-in success-checkmark" src="/images/submit-image-success.png">
+    {{/if}}
+    Thank you for your feedback!
+  </p>
+{{else}}
+  <h2> We are actively&nbsp;developing&nbsp;Aperta and value&nbsp;your&nbsp;feedback </h2>
+  <div class="feedback-form__from"><strong>From:</strong> {{currentUser.email}}</div>
+
+  {{textarea class="form-control feedback-form-remarks"
+             name="remarks"
+             value=remarks
+             placeholder="Please tell us about your experience"
+             autofocus="autofocus"}}
+  <div class="call-to-action">
+    {{#if allowUploads}}
+      <div class="button-secondary button--green feedback-form-screenshot-uploader fileinput-button">
+        Attach Files
+        {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.pages"
+                        start="uploadStarted"
+                        done="uploadFinished"
+                        multiple="true"
+                        filePrefix="feedback_attachment"}}
+      </div>
+    {{/if}}
+
+    <div class="overlay-footer-content feedback-form-footer-content">
+      <div class="overlay-action-buttons">
+        {{#if close}}
+          <button class="button-link button--green" {{action close}}>cancel</button>
+        {{/if}}
+        <button class="button button-primary feedback-form-submit {{if isUploading "button--disabled"}}" {{action "submit"}}>Send Feedback</button>
+      </div>
+    </div>
+    {{#if allowUploads}}
+      <ul class="feedback-form-screenshots">
+        {{#each screenshots as |screenshot|}}
+          <li class="animation-fade-in">
+            <span class="fa fa-trash feedback-form-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
+            <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </div>
+
+  {{#if isUploading}}
+    <div class="feedback-form-uploading">
+      {{progress-spinner visible=true size="mini"}} Uploading attachment
+    </div>
+  {{/if}}
+{{/if}}

@@ -1,10 +1,19 @@
 # Loads the configurations for CAS
 class CasConfig
-  def self.load_configuration
-    opts = { enabled: TahiEnv.cas_enabled? }.with_indifferent_access
+  def self.configuration
+    new.configuration
+  end
 
-    if opts[:enabled]
-      opts.merge!(
+  attr_reader :configuration
+
+  def initialize
+    @configuration = {
+      'enabled' => TahiEnv.cas_enabled?
+    }.with_indifferent_access
+
+    # rubocop:disable Style/GuardClause
+    if @configuration['enabled']
+      @configuration.merge!(
         'ssl'                   => TahiEnv.cas_ssl?,
         'ssl_verify'            => TahiEnv.cas_ssl_verify?,
         'host'                  => TahiEnv.cas_host,
@@ -16,11 +25,12 @@ class CasConfig
         'logout_full_url'       => logout_full_url
       )
     end
-
-    opts
+    # rubocop:enable Style/GuardClause
   end
 
-  def self.logout_full_url
+  private
+
+  def logout_full_url
     scheme = TahiEnv.cas_ssl? ? 'https://' : 'http://'
     URI.join(scheme + TahiEnv.cas_host, TahiEnv.cas_logout_url).to_s
   end

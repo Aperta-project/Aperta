@@ -1,5 +1,5 @@
 Tahi::Application.configure do
-  config.x.cas = CasConfig.load_configuration
+  config.x.cas = CasConfig.configuration
 
   if config.x.cas[:enabled]
     # enable for devise

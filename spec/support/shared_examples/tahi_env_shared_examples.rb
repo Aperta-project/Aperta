@@ -149,12 +149,24 @@ shared_examples_for 'required boolean env var' do |var:|
         end
       end
 
+      it 'returns true when set to truthy mix case' do
+        ClimateControl.modify valid_env.merge("#{var}": 'TrUe') do
+          expect(TahiEnv.send(query_method_name)).to be true
+        end
+      end
+
       it "returns false when set to 'false' or '0'" do
         ClimateControl.modify valid_env.merge("#{var}": 'false') do
           expect(TahiEnv.send(query_method_name)).to be false
         end
 
         ClimateControl.modify valid_env.merge("#{var}": '0') do
+          expect(TahiEnv.send(query_method_name)).to be false
+        end
+      end
+
+      it 'returns false when set to falsey mix case' do
+        ClimateControl.modify valid_env.merge("#{var}": 'FalSE') do
           expect(TahiEnv.send(query_method_name)).to be false
         end
       end

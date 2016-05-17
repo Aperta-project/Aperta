@@ -55,7 +55,7 @@ class TahiEnv
     private
 
     def converted_boolean_value
-      ['true', '1'].include?(raw_value_from_env) ? true : false
+      ['true', '1'].include?(raw_value_from_env.downcase) ? true : false
     end
   end
 end

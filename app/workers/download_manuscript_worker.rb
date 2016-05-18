@@ -7,22 +7,31 @@ require_dependency 'tahi_epub'
 class DownloadManuscriptWorker
   include Sidekiq::Worker
 
+
   UrlHelpers = Rails.application.routes.url_helpers
+  # +build_ihat_callback_url+ is a utility method for use in a controller
+  # context.  By default it builds the url using the request object's host and port,
+  # but it can be overriden by the `IHAT_CALLBACK_URL` environment variable
+  def self.build_ihat_callback_url(rack_request)
+    protocol, host, port = if ENV['IHAT_CALLBACK_URL']
+            uri = URI.parse(ENV['IHAT_CALLBACK_URL'])
+            [uri.scheme, uri.host, uri.port]
+          else
+            [rack_request.protocol, rack_request.host, rack_request.port]
+          end
+
+    UrlHelpers.ihat_jobs_url(protocol: protocol, host: host, port: port)
+  end
 
   # +download_manuscript+ schedules a background job to download the paper's
   # manuscript at the provided url, on behalf of the given user.
-  def self.download_manuscript(paper, url, user, host: nil, port: nil, protocol: nil)
+  # ihat will post to the given callback url when the job is finished
+  def self.download_manuscript(paper, url, user, callback_url)
     if url.present?
-      url_opts = {
-        host: ENV['IHAT_CALLBACK_HOST'] || host,
-        port: ENV['IHAT_CALLBACK_PORT'] || port,
-        protocol: protocol
-      }.reject { |_, v| v.nil? }
-
       perform_async(
         paper.id,
         url,
-        UrlHelpers.ihat_jobs_url(url_opts),
+        callback_url,
         paper_id: paper.id,
         user_id: user.id
       )

@@ -12,13 +12,12 @@ module TahiStandardTasks
     # paper-level.
     def upload_manuscript
       requires_user_can :edit, task
+
       DownloadManuscriptWorker.download_manuscript(
         task.paper,
         params[:url],
         current_user,
-        host: request.host,
-        port: request.port,
-        protocol: request.protocol
+        DownloadManuscriptWorker.build_ihat_callback_url(request)
       )
 
       head 204

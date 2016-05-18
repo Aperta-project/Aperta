@@ -41,9 +41,7 @@ class PapersController < ApplicationController
           paper,
           url,
           current_user,
-          host: request.host,
-          protocol: request.protocol,
-          port: request.port
+          DownloadManuscriptWorker.build_ihat_callback_url(request)
         )
       end
     end

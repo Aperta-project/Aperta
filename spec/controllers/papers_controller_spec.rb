@@ -134,7 +134,13 @@ describe PapersController do
         end
 
         it 'calls DownloadManuscriptWorker' do
-          expect(DownloadManuscriptWorker).to receive(:download_manuscript).with(paper, "someURL", user, host: "test.host", port: 80, protocol: "http://")
+          expect(DownloadManuscriptWorker).to receive(:download_manuscript)
+            .with(
+              paper,
+              "someURL",
+              user,
+              "http://test.host/api/ihat/jobs"
+            )
           do_request
         end
       end

@@ -40,10 +40,18 @@ describe Typesetter::FunderSerializer do
     expect(output.keys).to contain_exactly(
       :additional_comments,
       :name,
+      :funding_statement,
       :grant_number,
       :website,
       :influence,
       :influence_description)
+  end
+
+  describe 'funding_statement' do
+    it "returns a full funding statement" do
+      expect(output[:funding_statement]).to eq(
+        "#{output[:name]} #{output[:website]} (grant number #{output[:grant_number]}). #{output[:influence_description]}.")
+    end
   end
 
   describe 'name' do

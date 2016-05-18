@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class RegisterDecisionController < ApplicationController
+  class RegisterDecisionController < ::ApplicationController
     def decide
       task = Task.find(params[:id])
       requires_user_can :register_decision, task.paper

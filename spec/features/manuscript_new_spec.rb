@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Create a new Manuscript', js: true do
+feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 0 }
@@ -10,25 +10,49 @@ feature 'Create a new Manuscript', js: true do
   let(:dashboard) { DashboardPage.new }
 
   scenario 'failure' do
-    login_as(user, scope: :user)
-    visit '/'
-    find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+    with_aws_cassette('manuscript-new') do
+      login_as(user, scope: :user)
+      visit '/'
+      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
 
-    attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
+      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_equations.docx'), visible: false
 
-    expect(page).to have_content('Paper type can\'t be blank')
+      expect(page).to have_content('Paper type can\'t be blank')
+    end
+  end
+
+  def paper_src
+    paper = Paper.find_by(title: 'Paper Title')
+    if paper
+      paper.latest_version[:source]
+    end
   end
 
   scenario 'success' do
-    login_as(user, scope: :user)
-    visit '/'
-    find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+    with_aws_cassette('manuscript-new') do
+      login_as(user, scope: :user)
+      visit '/'
 
-    dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
-    expect(page).to have_css('.paper-new-valid-icon', count: 3)
+      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
 
-    attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_turtles.docx'), visible: false
+      dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
+      expect(page).to have_css('.paper-new-valid-icon', count: 3)
 
-    expect(page).to have_css('.manuscript')
+      dashboard.upload_file(
+        element_id: 'upload-files',
+        file_name: 'about_equations.docx',
+        sentinel: proc { paper_src },
+        process_before_upload: true
+      )
+
+      FakeIhatService.complete_paper_processing!(
+        paper_id: Paper.last.id,
+        user_id: user.id
+      )
+
+      visit "/papers/#{Paper.last.id}"
+
+      expect(PaperPage.new).to be_not_loading_paper
+    end
   end
 end

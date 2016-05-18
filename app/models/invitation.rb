@@ -22,10 +22,9 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite, {
-      after: [:generate_code, :associate_existing_user],
-      after_commit: :notify_invitation_invited
-    }) do
+    event(:invite,
+          after: :associate_existing_user,
+          after_commit: :notify_invitation_invited) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
     event(:accept, {
@@ -85,10 +84,6 @@ class Invitation < ActiveRecord::Base
 
   def associate_existing_user
     update(invitee: User.find_by(email: email))
-  end
-
-  def generate_code
-    self.code ||= SecureRandom.hex(10)
   end
 
   def invite_allowed?

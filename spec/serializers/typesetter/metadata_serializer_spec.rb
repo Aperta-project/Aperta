@@ -148,6 +148,40 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
+  describe 'related articles' do
+    let!(:unincluded_article) do
+      FactoryGirl.create(:related_article, linked_title: "Unsendable", paper: paper, send_link_to_apex: false)
+    end
+
+    context "the paper has no related articles to be sent to apex" do
+      it "has an empty related_articles array" do
+        expect(output[:related_articles]).to eq([])
+      end
+    end
+
+    context "the paper has a related article to be sent to apex" do
+      let!(:included_article) do
+        FactoryGirl.create(:related_article,
+                           linked_title: "Sendable",
+                           linked_doi: "some.doi",
+                           paper: paper,
+                           send_link_to_apex: true)
+      end
+
+      let(:related_articles) { output[:related_articles] }
+
+      let(:serialized_included_article) do
+        Typesetter::RelatedArticleSerializer
+          .new(included_article)
+          .serializable_hash
+      end
+
+      it "includes the linked_doi and linked_title where send_link_to_apex=true" do
+        expect(related_articles).to eql([serialized_included_article])
+      end
+    end
+  end
+
   shared_examples_for 'serializes :has_one paper task' do |opts|
     opts[:factory] || fail(ArgumentError, 'Must pass in a :factory')
     opts[:serializer] || fail(ArgumentError, 'Must pass in a :serializer')

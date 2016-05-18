@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Diffing of Reviewer Candidates
 - Authors will see the feedback form whenever they submit a paper
 - Add manifest to Apex export
+- Apex export will include title and DOI of applicable related articles
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM

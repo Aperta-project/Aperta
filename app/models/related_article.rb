@@ -15,10 +15,10 @@ class RelatedArticle < ActiveRecord::Base
   #
   # additional_info: a free text field
   #
-  # send_manuscripts_together: bool, true if this manuscript should eb
+  # send_manuscripts_together: bool, true if this manuscript should be
   # published at the same time as the related article
   #
-  # send_link_to_apex: bool, true if the relationship should eb sent
+  # send_link_to_apex: bool, true if the relationship should be sent
   # to Apex for publication
   #
 end

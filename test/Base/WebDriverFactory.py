@@ -5,6 +5,7 @@ __author__ = 'jkrzemien@plos.org'
 
 import Config
 import json
+import os
 from datetime import datetime
 from time import time
 from inspect import getfile
@@ -94,25 +95,24 @@ class WebDriverFactory(object):
 
     **Returns** a web driver instance of a Firefox browser
     """
-
+    mime_types = 'application/pdf, ' \
+                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document, ' \
+                 'application/epub+zip, ' \
+                 'application/msword, ' \
+                 'application/octet-stream, ' \
+                 'application/download, ' \
+                 'text/plain'
     # Set up a default Firefox profile, if not specified
     if not profile:
       profile = webdriver.FirefoxProfile()
       profile.set_preference('browser.download.dir', '/tmp')
       profile.set_preference('browser.download.folderList', 2)
       profile.set_preference('browser.download.manager.showWhenStarting', False)
-      profile.set_preference("browser.download.manager.useWindow", False)
-      profile.set_preference('browser.download.panel.shown', False)
-      profile.set_preference('browser.feeds.showFirstRunUI', False)
-      profile.set_preference('browser.startup.homepage_override.mstone', 'ignore')
-      profile.set_preference('startup.homepage_welcome_url', 'about:blank')
-      profile.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
-      profile.set_preference(
-          'browser.helperApps.neverAsk.saveToDisk',
-          'application/msword, application/pdf, '
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document, '
-          'application/epub+zip')
-      #profile.set_preference("browser.helperApps.alwaysAsk.force", False)
+      profile.set_preference('plugin.disable_full_page_plugin_for_types', mime_types)
+      profile.set_preference('pdfjs.disabled', True)
+      profile.set_preference('pdfjs.previousHandler.alwaysAskBeforeHandling', False)
+      profile.set_preference('pdfjs.previousHandler.preferredAction', 4)
+      profile.set_preference('browser.helperApps.neverAsk.saveToDisk', mime_types)
 
     # Set up BrowserMob proxy, if enabled
     if Config.browsermob_proxy_enabled:

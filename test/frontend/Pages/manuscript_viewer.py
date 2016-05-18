@@ -5,16 +5,19 @@ Page Object Model for the Paper Editor Page. Validates global and dynamic elemen
 NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 import logging
+import os
 import random
 import time
 from datetime import datetime
 
 from selenium.webdriver.common.by import By
+from epubcheck import EpubCheck
 
 from authenticated_page import AuthenticatedPage, application_typeface
 from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, \
     creator_login4, creator_login5, staff_admin_login, pub_svcs_login, internal_editor_login, \
     super_admin_login
+from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.additional_information_task import AITask
@@ -237,19 +240,104 @@ class ManuscriptViewerPage(AuthenticatedPage):
     word_link = self._get(self._tb_dl_docx_link)
     word_link.click()
     time.sleep(3)
+    os.chdir('/tmp')
+    files = filter(os.path.isfile, os.listdir('/tmp'))
+    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+    files.sort(key=lambda x: os.path.getmtime(x))
+    newest_file = files[-1]
+    logging.debug(newest_file)
+    while newest_file.split('.')[-1] == 'part':
+      time.sleep(5)
+      files = filter(os.path.isfile, os.listdir('/tmp'))
+      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      files.sort(key=lambda x: os.path.getmtime(x))
+      newest_file = files[-1]
+      logging.debug(newest_file.split('.')[-1])
+    logging.debug(newest_file)
+    # TODO: Implement some sort of checking for doc and docx files
+    # result = EpubCheck(newest_file)
+    # if result.valid:
+    #   logging.info('EPUB file: {0} is valid'.format(newest_file))
+    # else:
+    #   logging.error('EPUB file: {0} is not a valid EPUB file.'.format(newest_file))
+    #   logging.error('EPUB Validation messages: {0}'.format(result.messages))
+    os.remove(newest_file)
     epub_link = self._get(self._tb_dl_epub_link)
     epub_link.click()
     time.sleep(3)
+    os.chdir('/tmp')
+    files = filter(os.path.isfile, os.listdir('/tmp'))
+    files = [os.path.join('/tmp', f) for f in files] # add path to each file
+    files.sort(key=lambda x: os.path.getmtime(x))
+    newest_file = files[-1]
+    logging.debug(newest_file)
+    while newest_file.split('.')[-1] == 'part':
+      time.sleep(5)
+      files = filter(os.path.isfile, os.listdir('/tmp'))
+      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      files.sort(key=lambda x: os.path.getmtime(x))
+      newest_file = files[-1]
+      logging.debug(newest_file.split('.')[-1])
+    logging.debug(newest_file)
+    result = EpubCheck(newest_file)
+    if result.valid:
+      logging.info('EPUB file: {0} is valid'.format(newest_file))
+    else:
+      logging.error('EPUB file: {0} is not a valid EPUB file.'.format(newest_file))
+      logging.error('EPUB Validation messages: {0}'.format(result.messages))
+    os.remove(newest_file)
+    # Tiny delay between download types to keep clean
+    time.sleep(1)
     pdf_link = self._get(self._tb_dl_pdf_link)
     pdf_link.click()
-    time.sleep(3)
+    # This lengthy delay is here because the file must begin downloading before we can start
+    #   to see if the download completes
+    time.sleep(15)
+    os.chdir('/tmp')
+    files = filter(os.path.isfile, os.listdir('/tmp'))
+    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+    files.sort(key=lambda x: os.path.getmtime(x))
+    newest_file = files[-1]
+    logging.debug('Newest file is {0}'.format(newest_file.split('.')[-1]))
+    while newest_file.split('.')[-1] == 'part':
+      time.sleep(5)
+      files = filter(os.path.isfile, os.listdir('/tmp'))
+      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      files.sort(key=lambda x: os.path.getmtime(x))
+      newest_file = files[-1]
+      logging.debug(newest_file.split('.')[-1])
+    logging.debug(newest_file)
+    pdf_valid = PdfUtil.validate_pdf(newest_file)
+    if not pdf_valid:
+      logging.error('PDF file: {0} is invalid'.format(newest_file))
+      raise ('Invalid PDF generated for {0}'.format(newest_file))
+    os.remove(newest_file)
 
   def validate_download_pdf_actions(self):
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
     pdf_link = self._get(self._tb_dl_pdf_link)
     pdf_link.click()
-    time.sleep(15)
+    time.sleep(3)
+    os.chdir('/tmp')
+    files = filter(os.path.isfile, os.listdir('/tmp'))
+    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+    files.sort(key=lambda x: os.path.getmtime(x))
+    newest_file = files[-1]
+    logging.debug('Newest file type is {0}'.format(newest_file.split('.')[-1]))
+    while newest_file.split('.')[-1] == 'part':
+      time.sleep(5)
+      files = filter(os.path.isfile, os.listdir('/tmp'))
+      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      files.sort(key=lambda x: os.path.getmtime(x))
+      newest_file = files[-1]
+      logging.debug('Newest file type is {0}'.format(newest_file.split('.')[-1]))
+    logging.debug(newest_file)
+    pdf_valid = PdfUtil.validate_pdf(newest_file)
+    if not pdf_valid:
+      logging.error('PDF file: {0} is invalid'.format(newest_file))
+      raise('Invalid PDF generated for {0}'.format(newest_file))
+    os.remove(newest_file)
 
   def _check_recent_activity(self):
     """

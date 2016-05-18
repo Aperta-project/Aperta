@@ -1,31 +1,6 @@
 require 'rails_helper'
 
 describe PapersController do
-  let(:permitted_params) do
-    [
-      :short_title,
-      :title,
-      :abstract,
-      :body,
-      :paper_type,
-      :decision,
-      :decision_letter,
-      :journal_id, {
-        authors: [
-          :first_name,
-          :last_name,
-          :affiliation,
-          :email
-        ],
-        reviewer_ids: [],
-        phase_ids: [],
-        figure_ids: [],
-        assignee_ids: [],
-        editor_ids: []
-      }
-    ]
-  end
-
   let(:user) { FactoryGirl.create(:user) }
   let(:journal) { FactoryGirl.build_stubbed(:journal) }
   let(:paper) { FactoryGirl.build(:paper) }
@@ -148,15 +123,41 @@ describe PapersController do
         do_request
       end
 
+      it 'does not call the DownloadManuscriptWorker' do
+        expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+        do_request
+      end
+
+      context 'when a url is present in the paper params' do
+        before do
+          paper_params['url'] = 'someURL'
+        end
+
+        it 'calls DownloadManuscriptWorker' do
+          expect(DownloadManuscriptWorker).to receive(:download_manuscript)
+            .with(
+              paper,
+              "someURL",
+              user,
+              "http://test.host/api/ihat/jobs"
+            )
+          do_request
+        end
+      end
+
       context 'when the paper is invalid' do
         before do
           paper.title = nil
-          expect(paper.valid?).to be(false)
-          allow(PaperFactory).to receive(:create).and_return paper
+          expect(paper).to be_invalid
         end
 
-        it "renders the errors for the paper when it can't be saved" do
-          post :create, paper: { journal_id: journal.id }, format: :json
+        it "doesn't call DownloadManuscriptWorker" do
+          expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+          do_request
+        end
+
+        it "returns a 422" do
+          do_request
           expect(response.status).to eq(422)
         end
       end
@@ -197,6 +198,7 @@ describe PapersController do
         expect(Activity).to receive(:paper_edited!).with(paper, user: user)
         do_request
       end
+
     end
 
     context "when the user has access and the paper is NOT editable" do
@@ -503,58 +505,6 @@ describe PapersController do
     end
   end
 
-  describe 'PUT upload' do
-    subject(:do_request) do
-      put :upload, id: paper.id, url: url, format: :json
-    end
-    let(:url) { "http://theurl.com" }
-    let(:paper) { FactoryGirl.create(:paper) }
-
-    it_behaves_like "an unauthenticated json request"
-
-    context "when the user has access" do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, paper)
-          .and_return true
-      end
-
-      it "initiates manuscript download" do
-        expect(DownloadManuscriptWorker).to receive(:perform_async)
-          .with(
-            paper.id,
-            url,
-            'http://test.host/api/ihat/jobs',
-            paper_id: paper.id,
-            user_id: user.id
-          )
-        do_request
-      end
-
-      it "responds with 200" do
-        do_request
-        expect(response).to responds_with(200)
-        expect(response.body).to be_present
-      end
-
-      it "sets the paper status to processing" do
-        expect { do_request }.to change { paper.reload.processing }.from(false).to(true)
-      end
-    end
-
-    context "when the user does not have access" do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:edit, paper)
-          .and_return false
-        do_request
-      end
-
-      it { is_expected.to responds_with(403) }
-    end
-  end
 
   describe "GET download" do
     subject(:do_request) do

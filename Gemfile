@@ -48,6 +48,7 @@ gem 'rails', '~>4.2.4'
 gem 'render_anywhere', require: nil
 gem 'request_store'
 gem 'rest-client'
+gem 'ruby_dig'
 gem 'rubyzip', require: 'zip'
 gem 'sass-rails'
 gem 'sidekiq'

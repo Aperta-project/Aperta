@@ -113,7 +113,6 @@ Tahi::Application.routes.draw do
         put :withdraw
         put :reactivate
         put :toggle_editable
-        put :upload
       end
     end
     resources :paper_tracker_queries, only: [:index, :create, :update, :destroy]

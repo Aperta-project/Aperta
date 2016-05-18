@@ -22,7 +22,7 @@ class FigureInserter
   end
 
   def sorted_figures
-    @figures.sort_by { |fig| fig.rank || 0 }
+    @figures.select(&:attachment?).sort_by { |f| f.rank || 0 }
   end
 
   def insert_figure(figure)

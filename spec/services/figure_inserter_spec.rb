@@ -34,6 +34,7 @@ describe FigureInserter do
       it "returns a document which has an img inserted before the caption" do
         figure_inserter = FigureInserter.new(raw_html, [figure])
         allow(figure).to receive(:detail_src).and_return('/an/image.png')
+        allow(figure).to receive(:attachment?).and_return(true)
         html = figure_inserter.call
         expect(html).to be_an_instance_of(String)
         expected_tree = parse <<-HTML
@@ -51,6 +52,7 @@ describe FigureInserter do
       it 'returns a document which has an img inserted before the caption allowing :' do
         figure_inserter = FigureInserter.new(alternate_html, [figure])
         allow(figure).to receive(:detail_src).and_return('/an/image.png')
+        allow(figure).to receive(:attachment?).and_return(true)
         html = figure_inserter.call
         expect(html).to be_an_instance_of(String)
         expected_tree = parse <<-HTML
@@ -68,6 +70,7 @@ describe FigureInserter do
       it "appends the image to the end of the doc if there's no caption" do
         figure_inserter = FigureInserter.new(raw_html, [no_caption_figure])
         allow(no_caption_figure).to receive(:detail_src).and_return('/an/image.png')
+        allow(no_caption_figure).to receive(:attachment?).and_return(true)
         html = figure_inserter.call
         expect(html).to be_an_instance_of(String)
         expected_tree = parse <<-HTML
@@ -86,6 +89,7 @@ describe FigureInserter do
       it "appends the image to the end of the doc if it doesn't have a rank" do
         figure_inserter = FigureInserter.new(raw_html, [bad_rank_figure])
         allow(bad_rank_figure).to receive(:detail_src).and_return('/an/image.png')
+        allow(bad_rank_figure).to receive(:attachment?).and_return(true)
         html = figure_inserter.call
         expect(html).to be_an_instance_of(String)
         expected_tree = parse <<-HTML
@@ -107,6 +111,7 @@ describe FigureInserter do
         %w(1 2).map do |title|
           create(:figure, title: title).tap do |fig|
             allow(fig).to receive(:detail_src).and_return("/img/#{fig.title}")
+            allow(fig).to receive(:attachment?).and_return(true)
           end
         end
       end
@@ -274,6 +279,20 @@ describe FigureInserter do
       figure_inserter.send(:remove_figures)
       no_figure_html = figure_inserter.instance_variable_get(:@html_tree)
       expect(no_figure_html).to be_equivalent_to(expected_html)
+    end
+  end
+
+  describe '#sorted_figures' do
+    let(:figure_ready) { create :figure, title: "Ready" }
+    let(:figure_pending) { create :figure, title: "Pending" }
+
+    let(:figure_inserter) do
+      FigureInserter.new(raw_html, [figure_ready, figure_pending])
+    end
+
+    it 'only includes figures with attachment url' do
+      allow(figure_ready).to receive(:attachment?).and_return(true)
+      expect(figure_inserter.send(:sorted_figures).size).to eq(1)
     end
   end
 end

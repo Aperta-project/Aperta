@@ -31,13 +31,6 @@ describe DownloadablePaper do
   describe '#paper_body' do
     context 'when paper.body is empty' do
       it 'has empty message' do
-        expect(pdf_converter.send(:downloadable_templater))
-          .to be_an_instance_of(ActionView::Base)
-      end
-    end
-
-    context 'when paper.body is empty' do
-      it 'is an instance of ActionView' do
         allow(paper).to receive(:body).and_return('')
         expect(pdf_converter.paper_body)
           .to eq 'The manuscript is currently empty.'
@@ -53,26 +46,10 @@ describe DownloadablePaper do
     end
   end
 
-  describe '#downloadable_templater' do
-    it 'is an instance of ActionView' do
-      expect(pdf_converter.send(:downloadable_templater))
-        .to be_an_instance_of(ActionView::Base)
-    end
-  end
-
   describe '#document_type' do
     it 'returns first word of converter type' do
       expect(PDFConverter.new(paper, user).document_type).to eq :pdf
       expect(EpubConverter.new(paper, user).document_type).to eq :epub
-    end
-  end
-
-  describe '#needs_non_redirecting_preview_url?' do
-    it 'returns true for pdf, false for epub' do
-      expect(PDFConverter.new(paper, user).needs_non_redirecting_preview_url?)
-        .to be true
-      expect(EpubConverter.new(paper, user).needs_non_redirecting_preview_url?)
-        .to be false
     end
   end
 end

@@ -40,7 +40,7 @@ describe TahiStandardTasks::FinancialDisclosureTask do
           expect(funder1.funding_statement) .to include("001")
 
           expect(task.funding_statement)
-            .to eq(funder1.funding_statement + '.')
+            .to eq(funder1.funding_statement)
         end
       end
 
@@ -61,7 +61,6 @@ describe TahiStandardTasks::FinancialDisclosureTask do
           expected_statement = [
             funder1.funding_statement, funder2.funding_statement
           ].join(";\n")
-          expected_statement << '.'
 
           expect(task.funding_statement)
             .to eq(expected_statement)

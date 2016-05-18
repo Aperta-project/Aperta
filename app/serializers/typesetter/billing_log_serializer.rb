@@ -15,7 +15,7 @@ module Typesetter
     attribute :accepted_at, key: :date_first_entered_production
 
     def some_guid
-      1
+      PlosEditorialManager.find_or_create_guid_by_email(email: email)
     end
 
     def title

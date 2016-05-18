@@ -16,6 +16,11 @@ describe Typesetter::BillingLogSerializer do
     )
   end
 
+  let!(:fake_user_with_guid) do
+    # 'bob@example.com' is necessary due to nested_question_answer on the billing task
+    FactoryGirl.create(:user, email: 'bob@example.com', em_guid: 'PONE-1234')
+  end
+
   let(:billing_task) do
     FactoryGirl.create(:billing_task, :with_nested_question_answers, paper: paper)
   end
@@ -44,6 +49,10 @@ describe Typesetter::BillingLogSerializer do
       output = serializer.serializable_hash
       expect(output[:doi]).to eq('1234')
     end
+  end
+
+  it 'has a guid for a pre-existing billing user guid' do
+    expect(output[:guid]).to eq('PONE-1234')
   end
 
   it 'has documentid which is the manuscript id' do

@@ -18,7 +18,7 @@ namespace :typesetter do
   task :zip, [:paper_id, :output_filename] => :environment do |_, args|
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     paper = Paper.find(args.paper_id)
-    package = ApexPackager.create(paper)
-    FileUtils.cp(package.zip_file.path, args[:output_filename])
+    package = ApexPackager.create_zip(paper)
+    FileUtils.cp(package.path, args[:output_filename])
   end
 end

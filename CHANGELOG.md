@@ -4,17 +4,33 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
-- Related Articles task
-- Templates for devs creating new tasks
 - Diffing of Reviewer Candidates
+- Authors will see the feedback form whenever they submit a paper
+- Add manifest to Apex export
 ### Changed
 - Update RTC and FTC text.
+- Billing task institutions and countries synced with EM
 
 ### Deprecated
 ### Removed
 ### Fixed
-- Prevent errors while adding discussion participants
 ### Security
+
+## [1.4.9] - 2016-06-13
+
+### Fixed
+-Fixed bug preventing changes for author card from being completed
+
+## [1.4.8] - 2016-05-12
+
+### Added
+- Related Articles task
+- Templates for devs creating new tasks
+### Removed
+- Abstract from reviewer invite email footer
+### Fixed
+- Prevent errors while adding discussion participants
+- Properly switch between inviting by user and inviting by email
 
 ## [1.4.7] - 2016-05-06
 

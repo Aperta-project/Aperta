@@ -12,9 +12,11 @@ describe Typesetter::AuthorSerializer do
   let(:affiliation) { 'PLOS' }
   let(:secondary_affiliation) { 'SECONDARY AFFILIATION' }
 
+  let(:paper) { FactoryGirl.create(:paper) }
   let!(:author) do
     FactoryGirl.create(
       :author,
+      paper: paper,
       first_name: first_name,
       last_name: last_name,
       middle_initial: middle_initial,
@@ -28,12 +30,12 @@ describe Typesetter::AuthorSerializer do
 
   let!(:contributes_question) do
     NestedQuestion.find_by(ident: "author--contributions") ||
-    FactoryGirl.create(
-      :nested_question,
-      owner_id: nil,
-      owner_type: 'Author',
-      ident: 'author--contributions'
-    )
+      FactoryGirl.create(
+        :nested_question,
+        owner_id: nil,
+        owner_type: 'Author',
+        ident: 'author--contributions'
+      )
   end
 
   let!(:question1) do
@@ -83,15 +85,6 @@ describe Typesetter::AuthorSerializer do
       value_type: 'text'
     )
   end
-  let!(:corresponding_answer) do
-    FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: corresponding_question,
-      owner: author,
-      value: true,
-      value_type: 'boolean'
-    )
-  end
   let!(:deceased_answer) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -103,6 +96,10 @@ describe Typesetter::AuthorSerializer do
   end
 
   let(:output) { serializer.serializable_hash }
+
+  before do
+    allow(author).to receive(:answer_for).and_call_original
+  end
 
   it 'has author interests fields' do
     expect(output.keys).to contain_exactly(
@@ -116,8 +113,14 @@ describe Typesetter::AuthorSerializer do
       :deceased,
       :affiliation,
       :secondary_affiliation,
-      :contributions
+      :contributions,
+      :government_employee,
+      :type
     )
+  end
+
+  before do
+    allow(author.paper).to receive(:creator).and_return(FactoryGirl.create(:user))
   end
 
   describe 'contributions' do
@@ -169,8 +172,32 @@ describe Typesetter::AuthorSerializer do
   end
 
   describe 'corresponding' do
-    it "is the author's corresponding preference" do
-      expect(output[:corresponding]).to eq(corresponding_answer.value)
+    context <<-DESC.strip_heredoc do
+      when the author's email is in the paper's corresponding_author_emails
+    DESC
+
+      before do
+        allow(paper).to receive(:corresponding_author_emails)
+          .and_return [author.email]
+      end
+
+      it 'is true'do
+        expect(output[:corresponding]).to eq(true)
+      end
+    end
+
+    context <<-DESC.strip_heredoc do
+      when the author's email is not in the paper's corresponding_author_emails
+    DESC
+
+      before do
+        allow(paper).to receive(:corresponding_author_emails)
+          .and_return ['some-other-email@example.com']
+      end
+
+      it 'is false'do
+        expect(output[:corresponding]).to eq(false)
+      end
     end
   end
 
@@ -186,9 +213,27 @@ describe Typesetter::AuthorSerializer do
     end
   end
 
+  describe 'government_employee' do
+    before do
+      allow(author).to receive(:answer_for)
+        .with(::Author::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
+        .and_return instance_double(NestedQuestionAnswer, value: true)
+    end
+
+    it 'includes whether or not the author is a government employee' do
+      expect(output[:government_employee]).to be true
+    end
+  end
+
   describe 'secondary_affiliation' do
     it "is the author's secondary affiliation" do
       expect(output[:secondary_affiliation]).to eq(secondary_affiliation)
+    end
+  end
+
+  describe 'type' do
+    it 'has a type of author' do
+      expect(output[:type]).to eq 'author'
     end
   end
 end

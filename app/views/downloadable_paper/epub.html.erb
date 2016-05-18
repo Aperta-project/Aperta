@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" type="text/css" href="css/default.css">
+</head>
+<body>
+  <h1><%= paper.display_title(sanitized: false) %></h1>
+
+  <%= paper_body.force_encoding('UTF-8') %>
+
+  <%= render partial: 'supporting_information',
+    locals: {paper: paper, should_proxy_previews: should_proxy_previews} %>
+</body>
+</html>

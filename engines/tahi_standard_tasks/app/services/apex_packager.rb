@@ -1,52 +1,70 @@
 # This class creates a temporary ZIP file for FTP to Apex
 class ApexPackager
-  attr_reader :zip_file
-
   class ApexPackagerError < StandardError
   end
 
-  def self.create(paper)
+  METADATA_FILENAME = 'metadata.json'
+
+  def self.create_zip(paper)
     packager = new(paper)
-    packager.zip
-    packager
+    packager.zip_file
   end
 
-  def initialize(paper)
+  def initialize(paper, archive_filename: nil, apex_delivery_id: nil)
     @paper = paper
-    @zip_file = Tempfile.new('zip')
+    @archive_filename = archive_filename
+    @apex_delivery_id = apex_delivery_id
   end
 
-  def zip
-    Zip::OutputStream.open(@zip_file) do |package|
-      add_figures(package)
-      add_striking_image(package)
-      add_supporting_information(package)
-      add_metadata(package)
-      add_manuscript(package)
+  def zip_file
+    @zip_file ||= Tempfile.new('zip').tap do |f|
+      Zip::OutputStream.open(f) do |package|
+        add_figures(package)
+        add_striking_image(package)
+        add_supporting_information(package)
+        add_metadata(package)
+        add_manuscript(package)
+      end
     end
+  end
+
+  def manifest_file
+    zip_file
+    manifest.file
   end
 
   private
 
+  def manifest
+    @manifest ||= ApexManifest.new archive_filename: @archive_filename,
+                                   metadata_filename: METADATA_FILENAME,
+                                   apex_delivery_id: @apex_delivery_id
+  end
+
   def add_manuscript(package)
+    add_file_to_package package,
+                        manuscript_filename,
+                        open(@paper.latest_version.source_url, &:read)
+  end
+
+  def manuscript_filename
     extension = @paper.latest_version.source.path.split('.').last
-    package.put_next_entry("#{@paper.manuscript_id}.#{extension}")
-    package.write(open(@paper.latest_version.source_url, &:read))
+    "#{@paper.manuscript_id}.#{extension}"
   end
 
   def add_striking_image(package)
     return unless @paper.striking_image
-
-    package.put_next_entry(attachment_apex_filename(@paper.striking_image))
-    package.write(@paper.striking_image.attachment.read)
+    add_file_to_package package,
+                        attachment_apex_filename(@paper.striking_image),
+                        @paper.striking_image.attachment.read
   end
 
   def add_figures(package)
     @paper.figures.each do |figure|
-      fail ApexPackagerError, 'Figures do not comply' unless figures_comply?
       next if @paper.striking_image == figure
-      package.put_next_entry(attachment_apex_filename(figure))
-      package.write(figure.attachment.read)
+      add_file_to_package package,
+                          attachment_apex_filename(figure),
+                          figure.attachment.read
     end
   end
 
@@ -60,8 +78,9 @@ class ApexPackager
   def add_supporting_information(package)
     @paper.supporting_information_files.each do |file|
       next unless file.publishable?
-      package.put_next_entry(file.filename)
-      package.write(file.attachment.read)
+      add_file_to_package package,
+                          file.filename,
+                          file.attachment.read
     end
   end
 
@@ -70,23 +89,15 @@ class ApexPackager
     temp_file = Tempfile.new('metadata')
     temp_file.write(metadata)
     temp_file.rewind
-    package.put_next_entry('metadata.json')
-    package.write(temp_file.read)
+    add_file_to_package package,
+                        METADATA_FILENAME,
+                        temp_file.read
     temp_file.close
   end
 
-  def figures_comply?
-    return unless figures_comply_answer
-    figures_comply_answer.value
-  end
-
-  def figures_task
-    @figures_task ||= @paper.tasks.find_by_type(
-      'TahiStandardTasks::FigureTask')
-  end
-
-  def figures_comply_answer
-    return unless figures_task
-    @figures_comply_answer ||= figures_task.answer_for('figures--complies')
+  def add_file_to_package(package, filename, file_contents)
+    package.put_next_entry(filename)
+    package.write(file_contents)
+    manifest.add_file(filename)
   end
 end

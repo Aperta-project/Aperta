@@ -96,8 +96,7 @@ module Typesetter
     end
 
     def fundRef
-      # TODO: fill this out
-      financial_disclosure_task
+      financial_disclosure_task.funding_statement
     end
 
     def collectionID

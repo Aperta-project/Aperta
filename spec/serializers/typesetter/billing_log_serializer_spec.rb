@@ -163,7 +163,7 @@ describe Typesetter::BillingLogSerializer do
   end
 
   it 'has fundRef' do
-    expect(output[:fundRef]).to eq(financial_disclosure_task)
+    expect(output[:fundRef]).to eq(financial_disclosure_task.funding_statement)
   end
 
   it 'has final_dispo_accept which is date FTC was completed' do

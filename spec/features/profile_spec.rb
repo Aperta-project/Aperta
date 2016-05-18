@@ -3,11 +3,12 @@ require "rails_helper"
 feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: :none} do
   include AuthorizationSpecHelper
 
+  let(:user_role) { Role.where(name: Role::USER_ROLE).first_or_create! }
   let(:admin) { create :user, :site_admin }
   let(:profile_page) { ProfilePage.new }
 
   before do
-    assign_user admin, to: admin, with_role: Role.find_by(name: Role::USER_ROLE)
+    assign_user admin, to: admin, with_role: user_role
     login_as(admin, scope: :user)
     visit "/profile"
   end

@@ -17,6 +17,11 @@ export default function() {
     this.isRed(oldText);
   }
 
+  QUnit.assert.notDiffed = function(text) {
+    this.ok(!addedTextIncludes(text), `New text is not diffed`);
+    this.ok(!removedTextIncludes(text), `Old text is not diffed`);
+  }
+
   function addedTextIncludes(text) {
     return Ember.$('.added').text().includes(text);
   }

@@ -5,8 +5,12 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [{version}] - {release_date}
 ### Added
 - Diffing of Reviewer Candidates
+- Authors will see the feedback form whenever they submit a paper
+- Add manifest to Apex export
 ### Changed
 - Update RTC and FTC text.
+- Billing task institutions and countries synced with EM
+
 ### Deprecated
 ### Removed
 ### Fixed

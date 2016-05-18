@@ -26,26 +26,25 @@ class EpubConverter
   end
 
   def epub_html
-    downloadable_templater
-      .render(file: 'epub/manuscript.erb',
-              layout: 'epub/layout',
-              locals: {
-                paper: paper,
-                paper_body: paper_body,
-                title: title,
-                converter: self
-              })
+    render('epub',
+           layout: nil,
+           locals: { paper: @paper,
+                     paper_body: paper_body,
+                     title: title,
+                     should_proxy_previews: true
+                   })
   end
 
   def publishing_information_html
-    publishing_info_presenter = PublishingInformationPresenter.new(paper,
-                                                                   downloader)
-    downloadable_templater
-      .render(file: 'epub/publishing_information.erb',
-              layout: 'epub/layout',
-              locals: {
-                publishing_info_presenter: publishing_info_presenter
-              })
+    render('epub_publishing_information',
+           layout: nil,
+           locals: {
+             paper: @paper,
+             paper_body: paper_body,
+             publishing_info_presenter:
+               PublishingInformationPresenter.new(paper, downloader),
+             title: title
+           })
   end
 
   # Yeah these methods that start with _ should be private

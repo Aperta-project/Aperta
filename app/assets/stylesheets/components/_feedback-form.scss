@@ -1,0 +1,90 @@
+.feedback-form {
+  @include clearfix;
+  margin-bottom: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+  .feedback-form__from {
+    margin-bottom: 10px;
+  }
+  .button-primary {
+    background-color: $tahi-green;
+  }
+
+  .feedback-form-thanks {
+    font-size: 2.0rem;
+    text-align: center;
+
+    img {
+      display: block;
+      margin: 0 auto 1.5rem auto;
+      width: 8.0rem;
+    }
+  }
+
+  .feedback-form-remarks.form-control {
+    height: 20rem;
+  }
+
+  .feedback-form-screenshots {
+    list-style-type: none;
+    padding-left: 0;
+    width: 60%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+    li {
+      margin-bottom: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    li:last-of-type { margin-bottom: 2rem; }
+  }
+
+  .feedback-form-remove-screenshot {
+    margin-right: 0.5rem;
+    color: #d4d4d4;
+    cursor: pointer;
+
+    &:hover {
+      color: $tahi-green-dark;
+    }
+  }
+
+  .feedback-form-screenshot-uploader input {
+    color: transparent;
+  }
+
+  .feedback-form-footer-content.overlay-footer-content {
+    padding: 0;
+    float: right;
+    margin-top: 0;
+
+    .button-link    { margin-right: 1rem; }
+  }
+
+  .feedback-form-uploading {
+    height: 18px;
+    line-height: 18px;
+
+    .progress-spinner {
+      float: left;
+      margin-right: 6px;
+    }
+  }
+}
+
+.paper-submit-overlay .feedback-form {
+  margin-top: 50px;
+  text-align: left;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}
+
+.feedback-overlay .feedback-form {
+  margin-top: 70px;
+}

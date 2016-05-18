@@ -4,7 +4,11 @@ feature 'Send to Apex task', js: true do
   include SidekiqHelperMethods
 
   let!(:paper) do
-    FactoryGirl.create(:paper_ready_for_export, :with_integration_journal)
+    FactoryGirl.create(
+      :paper_ready_for_export,
+      :accepted,
+      :with_integration_journal
+    )
   end
   let!(:task) do
     FactoryGirl.create(

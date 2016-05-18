@@ -27,29 +27,20 @@ module('Integration: Feedback Form', {
       status: 201,
       responseText: {}
     });
-    $.mockjax({
-      url: '/api/countries',
-      status: 200,
-      responseText: { countries: [{ id: 1, text: 'Peru'}] }
-    });
   }
 });
 
 test('clicking the feedback button sends feedback', function(assert) {
-  Ember.run(function(){
-    Factory.createPermission('User', 1, ['view_profile']);
+  visit('/');
+  click('#nav-give-feedback');
+  click('a:contains(Feedback)');
+  fillIn('.overlay textarea', 'My feedback');
+  click('.overlay-footer-content .button-primary');
 
-    visit('/');
-    click('#nav-give-feedback');
-    click('a:contains(Feedback)');
-    fillIn('.overlay textarea', 'My feedback');
-    click('.overlay-footer-content .button-primary');
-
-    andThen(function() {
-      assert.elementFound(
-        '.feedback-overlay-thanks',
-        'Thank you message visible'
-      );
-    });
+  andThen(function() {
+    assert.elementFound(
+      '.feedback-form-thanks',
+      'Thank you message visible'
+    );
   });
 });

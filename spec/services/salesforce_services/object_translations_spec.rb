@@ -174,7 +174,9 @@ describe SalesforceServices::ObjectTranslations do
         expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
         expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
         expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
-        expect(data['PFA_Funding_Statement__c']).to    eq ("funder001 (grant number 000-2222-111).")
+        expect(data['PFA_Funding_Statement__c']).to    eq ('funder001 http://alderaan.gov (grant number 000-2222-111). ' +
+                                                            'The funder had no role in study design, data collection and analysis, ' +
+                                                            'decision to publish, or preparation of the manuscript.')
         # rubocop:enable Style/SingleSpaceBeforeFirstArg
       end
     end

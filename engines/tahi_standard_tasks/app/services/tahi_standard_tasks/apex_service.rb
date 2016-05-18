@@ -10,6 +10,8 @@ module TahiStandardTasks
       new(apex_delivery: apex_delivery).make_delivery!
     end
 
+    class ApexServiceError < StandardError; end
+
     attr_reader :apex_delivery
 
     def initialize(apex_delivery:)
@@ -19,20 +21,46 @@ module TahiStandardTasks
     end
 
     def make_delivery!
+      while_notifying_delivery do
+        packager = ApexPackager.new @paper,
+                                    archive_filename: package_filename,
+                                    apex_delivery_id: apex_delivery.id
+        upload_file(packager.zip_file, package_filename)
+        upload_file(packager.manifest_file, manifest_filename)
+      end
+    end
+
+    private
+
+    def while_notifying_delivery
       apex_delivery.delivery_in_progress!
-
-      file = ApexPackager.create(@paper).zip_file
-
-      FtpUploaderService.new(
-        filepath: file.path,
-        filename: "#{@paper.manuscript_id}.zip"
-      ).upload
-
+      yield
       apex_delivery.delivery_succeeded!
-
     rescue StandardError => e
       apex_delivery.delivery_failed!(e.message)
       raise
+    end
+
+    def package_filename
+      fail_unless_manuscript_id
+      "#{@paper.manuscript_id}.zip"
+    end
+
+    def manifest_filename
+      fail_unless_manuscript_id
+      "#{@paper.manuscript_id}.man.json"
+    end
+
+    def fail_unless_manuscript_id
+      return if @paper.manuscript_id.present?
+      fail ApexServiceError, "Paper is missing manuscript_id"
+    end
+
+    def upload_file(file_io, final_filename)
+      FtpUploaderService.new(
+        file_io: file_io,
+        final_filename: final_filename
+      ).upload
     end
   end
 end

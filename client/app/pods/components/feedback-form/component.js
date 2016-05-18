@@ -5,28 +5,32 @@ import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 export default Ember.Component.extend(EscapeListenerMixin, {
   feedbackSubmitted: false,
   isUploading: false,
+  classNames: ['feedback-form'],
+  close: null, //passed-in action
+  remarks: null,
+  allowUploads: true,
+  showSuccessCheckmark: true,
 
-  init() {
-    this._super(...arguments);
-    this.set('store', getOwner(this).lookup('store:main'));
-    this.set('model', this.get('store').createRecord('feedback', {
-      screenshots: []
-    }));
-  },
+  screenshots: Ember.computed(() => []),
+
+  feedbackService: Ember.inject.service('feedback'),
 
   actions: {
     submit() {
       if(this.get('isUploading')) { return; }
 
-      this.set('model.referrer', window.location);
-      this.get('model').save().then(()=> {
+      this.get('feedbackService').sendFeedback(
+        window.location.toString(),
+        this.get('remarks'),
+        this.get('screenshots')
+      ).then(()=> {
         this.set('feedbackSubmitted', true);
       });
     },
 
     uploadFinished(data, filename) {
       this.set('isUploading', false);
-      this.get('model.screenshots').pushObject({
+      this.get('screenshots').pushObject({
         url: data,
         filename: filename
       });
@@ -37,11 +41,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     removeScreenshot(screenshot) {
-      this.get('model.screenshots').removeObject(screenshot);
-    },
-
-    close() {
-      this.attrs.close();
+      this.get('screenshots').removeObject(screenshot);
     }
+
   }
 });

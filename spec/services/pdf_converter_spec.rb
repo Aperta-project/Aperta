@@ -84,13 +84,8 @@ describe PDFConverter do
 
       it 'replaces img src urls (which are normally proxied) with resolveable
         urls' do
-        # since pdfs maker apparently cant resolve proxy url for img.src
-        # this will completed in
-        # https://developer.plos.org/jira/browse/APERTA-5741
-
         figure = paper.figures.first
         paper.body = "<p>Figure 1.</p>"
-
         img = doc.css("img").first
         expect(img['src']).to have_s3_url figure.proxyable_url(version: :detail)
       end

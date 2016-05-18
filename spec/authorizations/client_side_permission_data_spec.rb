@@ -137,26 +137,16 @@ DESC
         combining the states for each role
       DESC
         results = user.filter_authorized(:view, Authorizations::FakeTask.all)
-        expect(results.serializable.map(&:as_json)).to eq([
-          {
-            id: 'fakeTask+1',
-            object: {
-              id: task.id,
-              type: Authorizations::FakeTask.name
-            },
-            permissions: {
-              discuss: {
-                states: %w(*)
-              },
-              view: {
-                states: %w(*)
-              },
-              edit: {
-                states: %w(* unsubmitted)
-              }
-            }
-          }
-        ].as_json)
+        permission_hash = results.serializable[0].as_json["permissions"]
+
+        expect(permission_hash["edit"]["states"])
+          .to contain_exactly("unsubmitted", "*")
+
+        expect(permission_hash["view"]["states"])
+          .to contain_exactly("*")
+
+        expect(permission_hash["discuss"]["states"])
+          .to contain_exactly("*")
       end
     end
   end

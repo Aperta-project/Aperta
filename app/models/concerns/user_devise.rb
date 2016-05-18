@@ -18,7 +18,7 @@ module UserDevise
       super.tap do |user|
         if session["devise.provider"]
           user.auto_generate_password
-          if bio = session["devise.provider"].to_hash.get("orcid", "info", "orcid_bio", "personal_details")
+          if bio = session["devise.provider"].to_hash.dig("orcid", "info", "orcid_bio", "personal_details")
             user.first_name = bio["given_names"] unless user.first_name.present?
             user.last_name  = bio["family_name"] unless user.last_name.present?
           end

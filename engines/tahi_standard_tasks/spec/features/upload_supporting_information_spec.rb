@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Upload Supporting Information", js: true, selenium: true do
+feature "Upload Supporting Information", js: true do
   let(:author) { create :user }
   let!(:paper) do
     FactoryGirl.create :paper_with_task,

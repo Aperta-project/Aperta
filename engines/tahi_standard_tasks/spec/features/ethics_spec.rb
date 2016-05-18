@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Ethics Task', js: true, selenium: true do
+feature 'Ethics Task', js: true do
   given(:author) { FactoryGirl.create :user }
   given!(:paper) do
     FactoryGirl.create :paper_with_task,

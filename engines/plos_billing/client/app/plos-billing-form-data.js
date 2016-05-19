@@ -46,7 +46,6 @@ export default {
     { id: 'University of Leeds', text: 'University of Leeds' },
     { id: 'University of Manchester', text: 'University of Manchester' },
     { id: 'University of Manitoba', text: 'University of Manitoba' },
-    { id: 'University of Ottawa', text: 'University of Ottawa' },
     { id: 'University of Potsdam', text: 'University of Potsdam' },
     { id: 'University of Reading', text: 'University of Reading' },
     { id: 'University of Sheffield', text: 'University of Sheffield' },

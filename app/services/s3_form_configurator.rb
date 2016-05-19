@@ -21,7 +21,7 @@ class S3FormConfigurator
   def s3_policy(s3_params)
     key_root_path = "#{s3_params[:upload_path].split('/').first}/"
     {
-      expiration: 30.minutes.from_now,
+      expiration: 1.day.from_now,
       conditions: [
         { bucket: s3_params[:bucket_name] },
         { acl: self.acl },

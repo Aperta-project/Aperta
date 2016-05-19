@@ -2,13 +2,9 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
-### Added
-### Changed
-### Deprecated
-### Removed
+## [1.4.11] - 2016-05-19
 ### Fixed
-### Security
+- Fixed errors during PDF generation
 
 ## [1.4.10] - 2016-05-18
 ### Added

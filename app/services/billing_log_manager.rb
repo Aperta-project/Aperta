@@ -18,7 +18,11 @@ class BillingLogManager
   end
 
   def paper_start_id
-    0
+    if @report_start_time
+      Paper.where('created_at > ?', @report_start_time).pluck(:id).first
+    else
+      0
+    end
   end
 
   def papers_to_process

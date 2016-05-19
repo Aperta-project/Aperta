@@ -119,12 +119,15 @@ class PaperPage < Page
     find('#paper-body').has_text?(text)
   end
 
-  def paper_loading_spinner
-    find('.progress-spinner-message')
+  def loading_paper?
+    has_css?('.progress-spinner-message')
   end
 
-  def loading_paper?
-    paper_loading_spinner.present?
+  # Use this method instead of negating `loading_paper?`
+  # expect(page).to_not be_loading_paper will only return `false` after
+  # the default capyabara wait expires, adding an extra 4 seconds to a passing test
+  def not_loading_paper?
+    has_no_css?('.progress-spinner-message')
   end
 
   def journal

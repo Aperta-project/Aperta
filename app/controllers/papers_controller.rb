@@ -31,9 +31,21 @@ class PapersController < ApplicationController
   # The create action does not require a permission, it's available to any
   # signed in user.
   def create
-    @paper = PaperFactory.create(paper_params, current_user)
-    Activity.paper_created!(@paper, user: current_user) if @paper.valid?
-    respond_with @paper
+    paper = PaperFactory.create(paper_params, current_user)
+    if paper.valid?
+      Activity.paper_created!(paper, user: current_user) if paper.valid?
+
+      url = params.dig(:paper, :url)
+      if url
+        DownloadManuscriptWorker.download_manuscript(
+          paper,
+          url,
+          current_user,
+          DownloadManuscriptWorker.build_ihat_callback_url(request)
+        )
+      end
+    end
+    respond_with paper
   end
 
   def update
@@ -92,23 +104,6 @@ class PapersController < ApplicationController
   end
 
   ## CONVERSION
-
-  # Upload a word file for the latest version.
-  def upload
-    requires_user_can(:edit, paper)
-    url_opts = { host: ENV['IHAT_CALLBACK_HOST'],
-                 port: ENV['IHAT_CALLBACK_PORT'] }
-               .reject { |_, v| v.nil? }
-    DownloadManuscriptWorker.perform_async(
-      paper.id,
-      params[:url],
-      ihat_jobs_url(url_opts),
-      paper_id: paper.id,
-      user_id: current_user.id
-    )
-    paper.update!(processing: true)
-    render json: paper, status: :ok
-  end
 
   def download
     requires_user_can(:view, paper)
@@ -214,10 +209,6 @@ class PapersController < ApplicationController
   end
 
   def paper
-    @paper ||= begin
-      if params[:id].present?
-        Paper.find(params[:id])
-      end
-    end
+    @paper ||= Paper.find(params[:id])
   end
 end

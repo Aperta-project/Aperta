@@ -1,5 +1,6 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
+import { uploadManuscriptPath } from 'tahi/lib/api-path-helpers';
 import Ember from 'ember';
 
 export default TaskComponent.extend(FileUploadMixin, {
@@ -10,8 +11,8 @@ export default TaskComponent.extend(FileUploadMixin, {
     return Ember.String.htmlSafe('width:' + this.get('progress') + '%');
   }),
 
-  manuscriptUploadUrl: Ember.computed('task.paper.id', function() {
-    return '/api/papers/' + this.get('task.paper.id') + '/upload';
+  manuscriptUploadUrl: Ember.computed('task.id', function() {
+    return uploadManuscriptPath(this.get('task.id'));
   }),
 
   actions: {

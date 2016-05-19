@@ -8,9 +8,17 @@ describe Paper::Submitted::EmailCreator do
     FactoryGirl.create(:paper, :with_integration_journal, :with_creator)
   end
 
-  it "sends an email to the creator of the paper" do
-    expect(mailer).to receive(:notify_creator_of_paper_submission).with(paper.id)
-    described_class.call("tahi:paper:submitted", { record: paper })
-  end
+  describe "when a paper is submitted" do
+    it "notifies the creator of a submission" do
+      expect(mailer).to receive(:notify_creator_of_paper_submission).with(paper.id)
+      described_class.call("tahi:paper:submitted", event_name: 'submit',
+                                                   record: paper)
+    end
 
+    it "notifies the creator of a minor revision submission" do
+      expect(mailer).to receive(:notify_creator_of_revision_submission).with(paper.id)
+      described_class.call("tahi:paper:submitted", event_name: 'submit_minor_revision',
+                                                   record: paper)
+    end
+  end
 end

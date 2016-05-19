@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="greeting">
+    <p class="message">
+      Thank you for submitting your manuscript,
+      <%= @paper.display_title(sanitized: false) %>, to <%= @journal.name %>.
+    </p>
+  </div>
+  <hr>
+  <div class="paper-info">
+    <div class="journal-info">
+      <% if @journal.logo_url %>
+        <img class="journal-logo" src="<%= @journal.logo_url %>">
+      <% else %>
+        <div class="journal-name">
+          <%= @journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <p>
+      Hello <%= @author.full_name %>,
+    </p>
+    <p class="message">
+      Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>",
+      to <%= @journal.name %>.
+      We have received your changes and if we need anything further our staff will be in touch
+      with next steps. If your manuscript meets the requirements for the next stage of the review
+      process, the editor will be notified and will take the manuscript forwards.
+    </p>
+    <p>
+      You will be able to check on the progress of your paper by logging in here:
+      <%= link_to client_dashboard_url, client_dashboard_url %>.
+    </p>
+  </div>
+  <hr>
+  <div class="footer">
+    Sincerely,
+    <%= @journal.name %> Team
+  </div>
+</div>

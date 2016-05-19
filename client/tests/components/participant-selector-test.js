@@ -1,5 +1,6 @@
 import {
   moduleForComponent,
+  moduleFor,
   test
 } from 'ember-qunit';
 
@@ -20,7 +21,6 @@ moduleForComponent('participant-selector', 'Integration | Component | participan
     this.setProperties({
       currentParticipants: [this.testUser]
     });
-
   }
 });
 
@@ -35,7 +35,7 @@ test('it renders currentParticipants', function(assert) {
   assert.equal(thumb.attr('alt'), 'Bruce Wayne', 'alt is set to user\'s full name');
   assert.equal(thumb.attr('src'), 'foo', 'src is set to the avatarUrl');
   assert.equal(thumb.attr('data-toggle'), 'tooltip', 'data-toggle is set when canManage is true');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne', 'title is set and then modified by jquery plugin');
+  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne', 'title is set and then modified by jquery');
 
 });
 
@@ -75,4 +75,21 @@ test('it doesn\'t add data-toggle when canManage is false', function(assert) {
 
   let thumb = $('.participant-selector .user-thumbnail-small');
   assert.equal(thumb.attr('data-toggle'), null, 'data-toggle is not set');
+});
+
+
+moduleFor('component:participant-selector', 'Unit | Component | participant selector');
+
+test('participantUrl defaults to the filtered users endpoint for the given paperId', function(assert) {
+  assert.equal(
+    this.subject({paperId: 10}).get('participantUrl'),
+    '/api/filtered_users/users/10'
+  );
+});
+
+test('participantUrl can be overwritten by passing in url', function(assert) {
+  assert.equal(
+    this.subject({url: 'foo'}).get('participantUrl'),
+    'foo'
+  );
 });

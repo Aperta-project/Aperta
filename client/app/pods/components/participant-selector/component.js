@@ -23,7 +23,6 @@ export default Ember.Component.extend({
     }
   }),
 
-
   setupTooltips: (function() {
     return Ember.run.schedule('afterRender', this, function() {
       this.$('.select2-search-choice img').tooltip({

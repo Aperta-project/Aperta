@@ -10,7 +10,8 @@ class BillingLogManager
     csv = CSV.new ""
     csv << billing_json(papers_to_process.first).keys
     papers_to_process.find_each(start: paper_start_id, batch_size: 500) do |paper|
-      BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
+      billing_log = BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
+      billing_log.save
       csv << billing_json(paper).values
     end
     csv

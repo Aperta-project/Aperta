@@ -34,8 +34,8 @@ namespace :plos_billing do
 
   desc "Generate a billing log file"
   task :generate_billing_log, [:from_date] => :environment do |t, args|
-    last_run = BillingLog.last.updated_at if BillingLog.any?
-    args[:from_date] ||= last_run
+    from_date = args[:from_date] || BillingLog.last.import_date if BillingLog.any?
+    BillingLogManager.new(from_date: from_date).save_and_send_to_s3
 
     BillingLogManager.new.save_and_send_to_s3
     puts "Uploaded to #{BillingLog.last.s3_url}"

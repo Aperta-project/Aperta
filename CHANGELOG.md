@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.10] - 2016-05-18
+### Added
 - Diffing of Reviewer Candidates
 - Authors will see the feedback form whenever they submit a paper
 - Add manifest to Apex export
@@ -12,12 +20,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM
 
-### Deprecated
-### Removed
-### Fixed
-### Security
-
-## [1.4.9] - 2016-06-13
+## [1.4.9] - 2016-05-13
 
 ### Fixed
 -Fixed bug preventing changes for author card from being completed

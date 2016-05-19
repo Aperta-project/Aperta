@@ -9,7 +9,7 @@ module Typesetter
                :city, :state, :zip, :country, :phone1, :phone2, :fax,
                :email, :pubdnumber, :dtitle, :fundRef,
                :collectionID, :collection, :direct_bill_response, :gpi_response,
-               :final_dispo_accept, :category
+               :final_dispo_accept, :category, :import_date
     attribute :id, key: :documentid
     attribute :first_submitted_at, key: :original_submission_start_date
     attribute :accepted_at, key: :date_first_entered_production
@@ -124,6 +124,10 @@ module Typesetter
 
     def category
       object.paper_type
+    end
+
+    def import_date
+      Time.current
     end
 
     private

@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20160518202655) do
     t.string   "gpi_response"
     t.date     "final_dispo_accept"
     t.string   "category"
+    t.date     "import_date"
     t.string   "s3_url"
     t.datetime "created_at"
     t.datetime "updated_at"

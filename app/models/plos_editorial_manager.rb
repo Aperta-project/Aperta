@@ -5,7 +5,7 @@ class PlosEditorialManager < ActiveRecord::Base
   def self.find_or_create_guid_by_email(email:)
     user = User.find_by(email: email)
     return user.em_guid if user.present? && user.em_guid.present?
-
+    return unless email
     @connection ||= establish_connection(ENV['EM_DATABASE_URL'])
     email = email.strip
     sql = "SELECT TOP (1) * FROM PEOPLE JOIN ADDRESS ON (PEOPLE.PEOPLEID = ADDRESS.PEOPLEID) WHERE ADDRESS.EMAIL LIKE '%#{email}%'"

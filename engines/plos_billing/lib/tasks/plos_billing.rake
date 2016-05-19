@@ -37,13 +37,8 @@ namespace :plos_billing do
   desc "Generate a billing log file with an optional from_date of YYYY-MM-DD"
   task :generate_billing_log, [:from_date] => :environment do |t, args|
     from_date = args[:from_date] || BillingLog.last.import_date if BillingLog.any?
+    from_date = Date.parse(args[:from_date]) if args[:from_date]
     BillingLogManager.new(from_date: from_date).save_and_send_to_s3
-
-    BillingLogManager.new.save_and_send_to_s3
     puts "Uploaded to #{BillingLog.last.s3_url}"
-    if args[:from_date]
-    else # Run for the first time
-      # puts "Missing paper_id. Please see usage instructions in #{__FILE__}"
-    end
   end
 end

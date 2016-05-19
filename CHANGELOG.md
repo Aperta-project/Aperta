@@ -4,6 +4,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Generates a multiple line billing log file csv based on accepted papers that integrates EM GUID and
+  information from various cards
 ### Changed
 ### Deprecated
 ### Removed

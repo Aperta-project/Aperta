@@ -169,7 +169,7 @@ describe Typesetter::BillingLogSerializer do
   it 'has final_dispo_accept which is date FTC was completed' do
     final_tech_check_task.completed = true
     final_tech_check_task.save
-    expect(output[:final_dispo_accept]).to eq(final_tech_check_task.completed_at)
+    expect(output[:final_dispo_accept].utc.to_s).to eq(final_tech_check_task.completed_at.utc.to_s)
   end
 
   it 'has category' do

@@ -32,7 +32,9 @@ namespace :plos_billing do
     end
   end
 
-  desc "Generate a billing log file"
+  # Usage:
+  #   rake 'plos_billing:generate_billing_log[2020-05-30]''
+  desc "Generate a billing log file with an optional from_date of YYYY-MM-DD"
   task :generate_billing_log, [:from_date] => :environment do |t, args|
     from_date = args[:from_date] || BillingLog.last.import_date if BillingLog.any?
     BillingLogManager.new(from_date: from_date).save_and_send_to_s3

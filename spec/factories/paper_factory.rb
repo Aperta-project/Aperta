@@ -80,7 +80,7 @@ FactoryGirl.define do
 
     trait(:with_short_title) do
       transient do
-        short_title ''
+        short_title 'some title'
       end
 
       after(:create) do |paper, evaluator|
@@ -90,7 +90,7 @@ FactoryGirl.define do
         nested_question = NestedQuestion.find_by(
           ident: 'publishing_related_questions--short_title')
         task.find_or_build_answer_for(nested_question: nested_question,
-                                      value: evaluator.short_title)
+                                      value: evaluator.short_title).save
       end
     end
 

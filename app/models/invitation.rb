@@ -11,6 +11,9 @@ class Invitation < ActiveRecord::Base
   after_destroy :invitation_rescinded
   before_create :assign_to_latest_decision
 
+  scope :where_email_matches,
+        ->(email) { where('email = ? OR email like ?', email, "%<#{email}>") }
+
   aasm column: :state do
     state :pending, initial: true
     state :invited do

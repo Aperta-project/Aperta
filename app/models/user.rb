@@ -90,7 +90,9 @@ class User < ActiveRecord::Base
   # Existing users have their invitations associated upon the creation of the
   # invitation. See invitation.rb
   def associate_invites
-    Invitation.where(invitee: nil, email: email).update_all(invitee_id: id)
+    Invitation.where_email_matches(email)
+      .where(invitee: nil)
+      .update_all(invitee_id: id)
   end
 
   def created_papers_for_journal(journal)

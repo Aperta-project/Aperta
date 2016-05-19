@@ -8,7 +8,9 @@ FactoryGirl.define do
     association(:decision, factory: :decision)
 
     after(:build) do |invitation, evaluator|
-      invitation.email = evaluator.invitee.email if evaluator.invitee
+      if evaluator.invitee && invitation.email.nil?
+        invitation.email = evaluator.invitee.email
+      end
       invitation.body = "You've been invited to"
     end
 

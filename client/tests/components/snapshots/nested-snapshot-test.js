@@ -80,7 +80,7 @@ test('diffs a boolean value', function(assert){
   assert.diffPresent('No', 'Yes');
 });
 
-test('diffs a question', function(assert){
+test('diffs a question answer', function(assert){
   let changededSnapshot = snapshot();
   changededSnapshot.children[0].value.answer = 'updated answer';
 
@@ -89,6 +89,39 @@ test('diffs a question', function(assert){
 
   this.render(template);
   assert.diffPresent('this is my answer', 'updated answer');
+});
+
+test('diffs a question title when changed', function(assert){
+  let changededSnapshot = snapshot();
+  changededSnapshot.children[0].value.title = 'New Question Text';
+
+  this.set('oldSnapshot', snapshot());
+  this.set('newSnapshot', changededSnapshot);
+
+  this.render(template);
+  assert.diffPresent('Question Text', 'New Question Text');
+});
+
+test('does not diff a question title for added records', function(assert){
+  let emptySnapshotChildren = snapshot();
+  emptySnapshotChildren.children = [];
+
+  this.set('oldSnapshot', emptySnapshotChildren);
+  this.set('newSnapshot', snapshot());
+
+  this.render(template);
+  assert.notDiffed('Question Text');
+});
+
+test('does not diff a question title for removed records', function(assert){
+  let emptySnapshotChildren = snapshot();
+  emptySnapshotChildren.children = [];
+
+  this.set('oldSnapshot', snapshot());
+  this.set('newSnapshot', emptySnapshotChildren);
+
+  this.render(template);
+  assert.notDiffed('Question Text');
 });
 
 test('diffs through children - same number in each snapshot', function(assert){

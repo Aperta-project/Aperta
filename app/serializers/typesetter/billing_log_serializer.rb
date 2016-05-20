@@ -2,8 +2,7 @@ module Typesetter
   # Serializes a paper's billing log information
   # Expects a paper as its object to serialize.
   class BillingLogSerializer < Typesetter::TaskAnswerSerializer
-    attribute :some_guid, key: :guid
-    attributes :title, :journal_id, :doi,
+    attributes :guid, :title, :journal_id, :doi,
                :firstname, :middlename, :lastname,
                :institute, :department, :address1, :address2, :address3,
                :city, :state, :zip, :country, :phone1, :phone2, :fax,
@@ -14,8 +13,8 @@ module Typesetter
     attribute :first_submitted_at, key: :original_submission_start_date
     attribute :accepted_at, key: :date_first_entered_production
 
-    def some_guid
-      PlosEditorialManager.find_or_create_guid_by_email(email: email)
+    def guid
+      EmPeople.find_or_create_guid_by_email(email: email)
     end
 
     def title

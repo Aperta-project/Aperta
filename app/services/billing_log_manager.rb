@@ -9,7 +9,7 @@ class BillingLogManager
   def create_csv
     csv = CSV.new ""
     csv << billing_json(papers_to_process.first).keys
-    papers_to_process.includes(:journal).find_each(start: paper_start_id, batch_size: 50) do |paper|
+    papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
       billing_log = BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
       billing_log.save
       csv << billing_json(paper).values
@@ -17,16 +17,14 @@ class BillingLogManager
     csv
   end
 
-  def paper_start_id
-    if @report_start_time
-      Paper.where('created_at > ?', @report_start_time).pluck(:id).first
-    else
-      0
-    end
-  end
-
   def papers_to_process
-    @papers ||= Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
+    @papers ||= begin
+      papers = Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
+      if @report_start_time
+        papers.where('tasks.completed_at > ?', @report_start_time)
+      else
+        papers
+      end
   end
 
   def billing_json(paper)

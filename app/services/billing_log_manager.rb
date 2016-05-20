@@ -7,13 +7,14 @@ class BillingLogManager
   end
 
   def papers_to_process
-    @papers ||=
+    @papers ||= begin
       papers = Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
       if @report_start_time
         papers.where('tasks.completed_at > ?', @report_start_time)
       else
         papers
       end
+    end
   end
 
   def billing_json(paper)

@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 ### Deprecated
 ### Removed
+- Removed University of Ottawa as an institutional account participant
 ### Fixed
 ### Security
 
@@ -25,6 +26,12 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Billing task institutions and countries synced with EM
 
 ## [1.4.9] - 2016-05-13
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.9] - 2016-06-13
 
 ### Fixed
 -Fixed bug preventing changes for author card from being completed

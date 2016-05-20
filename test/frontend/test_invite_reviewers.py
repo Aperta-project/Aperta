@@ -101,6 +101,7 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.validate_card_elements_styles()
+    logging.info('Paper id is: {0}.'.format(paper_id))
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                                encoding='utf-8',

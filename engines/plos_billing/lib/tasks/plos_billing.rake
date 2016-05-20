@@ -42,7 +42,13 @@ namespace :plos_billing do
       elsif BillingLog.any?
         BillingLog.last.import_date
       end
-    BillingLogManager.new(from_date: from_date).save_and_send_to_s3
-    puts "Uploaded to #{BillingLog.last.s3_url}"
+    billing_log = BillingLogManager.new(from_date: from_date)
+    if billing_log.papers_to_process.present?
+      billing_log.save_and_send_to_s3
+      puts "Uploaded to #{BillingLog.last.s3_url}"
+    else
+      puts "There are no accepted papers with a completed \
+      Final Tech Check task left to process"
+    end
   end
 end

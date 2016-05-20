@@ -26,7 +26,7 @@ class BillingLogManager
   end
 
   def papers_to_process
-    Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
+    @papers ||= Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
   end
 
   def billing_json(paper)

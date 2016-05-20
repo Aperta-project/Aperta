@@ -46,7 +46,7 @@ class ViewPaperTest(CommonTest):
     APERTA-3
   """
 
-  def rest_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     test_manuscript_viewer: Validate elements and styles for the manuscript viewer page
     APERTA-3: validate page elements and styles
@@ -134,7 +134,7 @@ class ViewPaperTest(CommonTest):
     dashboard_page.logout()
     return self
 
-  def rest_initial_submission_infobox(self):
+  def test_initial_submission_infobox(self):
     """
     test_manuscript_viewer: Validate elements and styles of the initial submission infobox
     Aperta-5515
@@ -278,7 +278,7 @@ class ViewPaperTest(CommonTest):
     # the following call should only succeed for sa_login
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # AC8: Message for full submission when is ready for submition
+    # AC8: Message for full submission when is ready for submission
     manuscript_page._get(manuscript_page._nav_aperta_dashboard_link)
     time.sleep(5)
     assert 'Your manuscript is ready for Full Submission.' in \
@@ -313,34 +313,6 @@ class ViewPaperTest(CommonTest):
       time.sleep(5)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.validate_download_btn_actions()
-
-  def rest_kill_memory(self):
-    """
-    test_manuscript_viewer: Validates the download functions, formats, UI elements and styles
-    :return void function
-    """
-    user = creator_login5
-    logging.info('Running test_paper_download')
-    logging.info('Logging in as {0}'.format(user))
-    dashboard_page = self.cas_login(email=user['email'])
-    # Checking if there is already a manuscript one can use
-    if dashboard_page.validate_manuscript_section_main_title(user)[0]:
-      self.select_preexisting_article(first=True)
-    else:
-      # create a new manuscript
-      dashboard_page.click_create_new_submission_button()
-      # We recently became slow drawing this overlay (20151006)
-      time.sleep(.5)
-      # Temporary changing timeout
-      dashboard_page.set_timeout(120)
-      self.create_article(journal='PLOS Wombat',
-                          type_='Images+InitialDecision',
-                          random_bit=True,
-                          )
-      # Time needed for iHat conversion. This is not quite enough time in all circumstances
-      time.sleep(5)
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.validate_download_pdf_actions()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

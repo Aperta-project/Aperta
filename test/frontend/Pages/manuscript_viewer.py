@@ -123,7 +123,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # While IDs are normally king, for this element, we don't hide the element, we just change
     # its class to "hide" it
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
-    self._submission_status_info = (By.ID, 'submission-state-information')
+    self._manuscript_viewer_status_area = (By.ID, 'submission-state-information')
+    self._submission_status_info = (By.CSS_SELECTOR, 'div.ready-to-submit')
     self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
@@ -222,13 +223,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
     word_link = self._get(self._tb_dl_docx_link)
-    assert 'word' in word_link.text, word_link.text
+    assert 'WORD' in word_link.text, word_link.text
     assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
     epub_link = self._get(self._tb_dl_epub_link)
-    assert 'epub' in epub_link.text, epub_link.text
+    assert 'EPUB' in epub_link.text, epub_link.text
     assert 'download.epub' in epub_link.get_attribute('href')
     pdf_link = self._get(self._tb_dl_pdf_link)
-    assert 'pdf' in pdf_link.text, pdf_link.text
+    assert 'PDF' in pdf_link.text, pdf_link.text
     assert 'download.pdf' in pdf_link.get_attribute('href')
     time.sleep(1)
     downloads_link.click()
@@ -240,6 +241,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     word_link = self._get(self._tb_dl_docx_link)
     word_link.click()
     time.sleep(3)
+    # Note that there is no validation of the doc or docx - we are not manipulating them at all
+    #   Just returning the last stored version - so not doing anything beyond validating download
+    #   completion.
     os.chdir('/tmp')
     files = filter(os.path.isfile, os.listdir('/tmp'))
     files = [os.path.join('/tmp', f) for f in files]  # add path to each file
@@ -254,13 +258,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       newest_file = files[-1]
       logging.debug(newest_file.split('.')[-1])
     logging.debug(newest_file)
-    # TODO: Implement some sort of checking for doc and docx files
-    # result = EpubCheck(newest_file)
-    # if result.valid:
-    #   logging.info('EPUB file: {0} is valid'.format(newest_file))
-    # else:
-    #   logging.error('EPUB file: {0} is not a valid EPUB file.'.format(newest_file))
-    #   logging.error('EPUB Validation messages: {0}'.format(result.messages))
     os.remove(newest_file)
     epub_link = self._get(self._tb_dl_epub_link)
     epub_link.click()
@@ -746,7 +743,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Extract the submission status text from the page
     """
-    return self._get(self._submission_status_info).text
+    return self._get(self._manuscript_viewer_status_area).text
 
   def wait_for_viewer_page_population(self):
     """

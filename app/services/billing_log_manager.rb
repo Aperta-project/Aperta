@@ -6,19 +6,8 @@ class BillingLogManager
     @report_start_time = from_date
   end
 
-  def create_csv
-    csv = CSV.new ""
-    csv << billing_json(papers_to_process.first).keys
-    papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
-      billing_log = BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
-      billing_log.save
-      csv << billing_json(paper).values
-    end
-    csv
-  end
-
   def papers_to_process
-    @papers ||= begin
+    @papers ||=
       papers = Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
       if @report_start_time
         papers.where('tasks.completed_at > ?', @report_start_time)
@@ -42,6 +31,7 @@ class BillingLogManager
   end
 
   def save_and_send_to_s3
+    return nil unless papers_to_process.present?
     s3 = CloudServices::S3Service.new.connection
 
     directory = s3.directories.new(
@@ -56,5 +46,18 @@ class BillingLogManager
     )
     # returns true if !errors
     s3_file.save && BillingLog.last.update_column(:s3_url, s3_file.url(1.week.from_now))
+  end
+
+  private
+
+  def create_csv
+    csv = CSV.new ""
+    csv << billing_json(papers_to_process.first).keys
+    papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
+      billing_log = BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
+      billing_log.save
+      csv << billing_json(paper).values
+    end
+    csv
   end
 end

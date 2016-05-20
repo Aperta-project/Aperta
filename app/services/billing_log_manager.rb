@@ -2,7 +2,7 @@ require 'csv'
 # This service is used to determine the papers that need to be processed
 # from a particular date. If no date is provided it defaults to last run
 class BillingLogManager
-  def initialize(from_date = nil)
+  def initialize(from_date: nil)
     @report_start_time = from_date
   end
 

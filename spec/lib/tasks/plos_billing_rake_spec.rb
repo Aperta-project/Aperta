@@ -50,4 +50,11 @@ describe "plos_billing namespace rake task" do
       run_rake_task
     end
   end
+
+  describe 'plos_billing:generate_billing_log' do
+    it "should run " do
+      Rake::Task['plos_billing:generate_billing_log'].reenable
+      Rake.application.invoke_task "plos_billing:generate_billing_log"
+    end
+  end
 end

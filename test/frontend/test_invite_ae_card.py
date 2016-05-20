@@ -42,7 +42,7 @@ class InviteAECardTest(CommonTest):
   Validate the elements, styles, functions of the Invite AE card
   """
 
-  def test_invite_ae_actions(self):
+  def test_invite_ae_card(self):
     """
     test_invite_ae: Validates the elements, styles, roles and functions of invite academic editors
     from new document creation through inviting ae, validation of the invite on the invitees

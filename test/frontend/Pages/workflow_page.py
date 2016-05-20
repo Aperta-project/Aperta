@@ -82,6 +82,10 @@ class WorkflowPage(AuthenticatedPage):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._initial_decision_card).click()
 
+  def click_production_metadata_card(self):
+    """Open the Initial Decision Card from the workflow page"""
+    self._get(self._production_metadata_card).click()
+
   def click_editor_assignment_button(self):
     """Click editor assignment button"""
     self._get(self._click_editor_assignment_button).click()

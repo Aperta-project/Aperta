@@ -39,7 +39,7 @@ users = [creator_login1,
 
 
 @MultiBrowserFixture
-class ViewPaperTest(CommonTest):
+class ManuscriptViewerTest(CommonTest):
   """
   This class implements:
     APERTA-5515
@@ -181,8 +181,8 @@ class ViewPaperTest(CommonTest):
 
     # AC5 Test for Message for initial submission
     assert "Please provide the following information to submit your manuscript for "\
-        "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
-        manuscript_page.get_submission_status_info_text()
+        "Initial Submission." in manuscript_page.get_submission_status_initial_submission_todo(),\
+        manuscript_page.get_submission_status_initial_submission_todo()
     # AC2 Test closing the infobox
     infobox.find_element_by_id('sp-close').click()
     time.sleep(3)
@@ -230,8 +230,8 @@ class ViewPaperTest(CommonTest):
     # NOTE: At this point browser renders the page with errors only on automation runs
     # AC 6
     assert "Your manuscript is ready for Initial Submission." in \
-        manuscript_page.get_submission_status_info_text(),\
-        manuscript_page.get_submission_status_info_text()
+        manuscript_page.get_submission_status_ready2submit_text(),\
+        manuscript_page.get_submission_status_ready2submit_text()
     # APERTA-6840 - we disabled add collaborators temporarily
     # manuscript_page.logout()
 
@@ -282,8 +282,8 @@ class ViewPaperTest(CommonTest):
     manuscript_page._get(manuscript_page._nav_aperta_dashboard_link)
     time.sleep(5)
     assert 'Your manuscript is ready for Full Submission.' in \
-        manuscript_page.get_submission_status_info_text(), \
-        manuscript_page.get_submission_status_info_text()
+        manuscript_page.get_submission_status_ready2submit_text(), \
+        manuscript_page.get_submission_status_ready2submit_text()
     return self
 
   def test_paper_download(self):

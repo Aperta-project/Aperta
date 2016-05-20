@@ -19,7 +19,9 @@ from PyPDF2.utils import PdfReadError
 
 
 class PdfUtil(object):
-
+  """
+  A wrapper for PyPDF2 that extends basic functions
+  """
   @staticmethod
   def validate_pdf(filename):
     """

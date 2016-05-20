@@ -236,6 +236,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(1)
 
   def validate_download_btn_actions(self):
+    """
+    Initiates all supported download types, validates complete download and for epub and pdf does
+      some structural and metadata tests of the output.
+    :return: void function
+    """
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
     word_link = self._get(self._tb_dl_docx_link)
@@ -311,6 +316,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     os.remove(newest_file)
 
   def validate_download_pdf_actions(self):
+    """
+    Initiates pdf download, validates complete download and does
+      some structural and metadata tests of the output.
+      Note that this is not actually called at present, but has been a useful function for
+      doing ad-hoc tests around pdf generation about which we have had much pain.
+    :return: void function
+    """
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
     pdf_link = self._get(self._tb_dl_pdf_link)

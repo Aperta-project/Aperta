@@ -1,0 +1,9 @@
+.paper-body-figure {
+  page-break-inside:avoid;
+  page-break-after:avoid;
+  width:auto;
+
+  // Max height of 825 was chosen to allow the image to fill most of the page
+  // while allowing a little room for the title/caption.
+  max-height:825px;
+}

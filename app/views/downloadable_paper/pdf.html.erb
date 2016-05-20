@@ -4,6 +4,9 @@
     <script type="text/javascript" async
             src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full">
     </script>
+
+    <link rel="stylesheet" media="all" href="<%= asset_url('pdf', host: root_url) %>" />
+
     <style>
       <%= publishing_info_presenter.css %>
       <%= paper.journal.pdf_css %>

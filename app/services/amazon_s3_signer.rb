@@ -5,7 +5,7 @@ class AmazonS3Signer
     @file_name = file_name
     @file_path = file_path
     @content_type = content_type
-    @expires = 30.minutes.from_now
+    @expires = 1.day.from_now
   end
 
   def params # rubocop:disable Metrics/MethodLength

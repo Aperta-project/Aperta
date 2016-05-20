@@ -124,7 +124,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # its class to "hide" it
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._manuscript_viewer_status_area = (By.ID, 'submission-state-information')
-    self._submission_status_info = (By.CSS_SELECTOR, 'div.ready-to-submit')
+    self._status_info_initial_submit_todo = (By.CSS_SELECTOR,
+                                             'div.gradual-engagement-presubmission-messaging')
+    self._status_info_ready_to_submit = (By.CSS_SELECTOR, 'div.ready-to-submit')
     self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
@@ -241,6 +243,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       some structural and metadata tests of the output.
     :return: void function
     """
+    original_dir = os.getcwd()
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
     word_link = self._get(self._tb_dl_docx_link)
@@ -314,6 +317,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.error('PDF file: {0} is invalid'.format(newest_file))
       raise ('Invalid PDF generated for {0}'.format(newest_file))
     os.remove(newest_file)
+    os.chdir(original_dir)
 
   def validate_download_pdf_actions(self):
     """
@@ -751,11 +755,17 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(1)
     self._get(self._add_collaborators_modal_save).click()
 
-  def get_submission_status_info_text(self):
+  def get_submission_status_initial_submission_todo(self):
+    """
+      Extract the submission status text from the page
+      """
+    return self._get(self._status_info_initial_submit_todo).text
+
+  def get_submission_status_ready2submit_text(self):
     """
     Extract the submission status text from the page
     """
-    return self._get(self._manuscript_viewer_status_area).text
+    return self._get(self._status_info_ready_to_submit).text
 
   def wait_for_viewer_page_population(self):
     """

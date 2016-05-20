@@ -36,8 +36,12 @@ namespace :plos_billing do
   #   rake 'plos_billing:generate_billing_log[2020-05-30]''
   desc "Generate a billing log file with an optional from_date of YYYY-MM-DD"
   task :generate_billing_log, [:from_date] => :environment do |t, args|
-    from_date = args[:from_date] || BillingLog.last.import_date if BillingLog.any?
-    from_date = Date.parse(args[:from_date]) if args[:from_date]
+    from_date =
+      if args[:from_date]
+        Date.parse(args[:from_date])
+      elsif BillingLog.any?
+        BillingLog.last.import_date
+      end
     BillingLogManager.new(from_date: from_date).save_and_send_to_s3
     puts "Uploaded to #{BillingLog.last.s3_url}"
   end

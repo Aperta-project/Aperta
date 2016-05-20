@@ -10,6 +10,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 ### Security
 
+## [1.4.11] - 2016-05-19
+### Fixed
+- Fixed errors during PDF generation
+
 ## [1.4.10] - 2016-05-18
 ### Added
 - Diffing of Reviewer Candidates

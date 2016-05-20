@@ -4,6 +4,8 @@ class BillingLog < ActiveRecord::Base
   belongs_to :journal
   validates :paper, :journal, presence: true
 
+  mount_uploader :csv_file, BillingLogUploader
+
   def populate_attributes
     return self if update_attributes(billing_json)
   end
@@ -15,21 +17,10 @@ class BillingLog < ActiveRecord::Base
     csv
   end
 
-  def save_and_send_to_s3
-    s3 = CloudServices::S3Service.new.connection
-
-    directory = s3.directories.new(
-      key:    Rails.application.config.s3_bucket,
-      public: false
-    )
-
-    s3_file = directory.files.create(
-      key:    "billing/#{filename}",
-      body:   to_csv.string,
-      public: true
-    )
-    # returns true if !errors
-    s3_file.save && save && update_column(:s3_url, s3_file.url(1.week.from_now))
+  def save_and_send_to_s3!
+    tmp_file = Tempfile.new('')
+    tmp_file.write(create_csv.string)
+    update!(csv_file: tmp_file)
   end
 
   def filename

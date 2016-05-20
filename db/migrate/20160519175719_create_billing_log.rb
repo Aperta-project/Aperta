@@ -35,7 +35,13 @@ class CreateBillingLog < ActiveRecord::Migration
       t.date       :final_dispo_accept
       t.string     :category
       t.date       :import_date
-      t.string     :s3_url
+      t.string     :csv_file
+      t.timestamps
+    end
+
+    create_table :billing_log_reports do |t|
+      t.string     :csv_file
+      t.date       :from_date
       t.timestamps
     end
   end

@@ -22,8 +22,8 @@ namespace :plos_billing do
       paper = Paper.find args[:paper_id]
       bl =
         BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
-      if bl.save_and_send_to_s3
-        puts("Uploaded #{bl.filename} \n #{bl.s3_url}")
+      if bl.save_and_send_to_s3!
+        puts("Uploaded #{bl.filename} \n #{bl.csv_file.url}")
       else
         puts("Error in saving file for paper id: #{args[:paper_id]}")
       end
@@ -36,19 +36,13 @@ namespace :plos_billing do
   #   rake 'plos_billing:generate_billing_log[2020-05-30]''
   desc "Generate a billing log file with an optional from_date of YYYY-MM-DD"
   task :generate_billing_log, [:from_date] => :environment do |t, args|
-    from_date =
-      if args[:from_date]
-        Date.parse(args[:from_date])
-      elsif BillingLog.any?
-        BillingLog.last.import_date
-      end
-    billing_log = BillingLogManager.new(from_date: from_date)
-    if billing_log.papers_to_process.present?
-      billing_log.save_and_send_to_s3
-      puts "Uploaded to #{BillingLog.last.s3_url}"
+    date = Date.parse(args[:from_date]) if args[:from_date].present?
+    report = BillingLogReport.create_report(from_date: date)
+    if report
+      puts "Uploaded to #{report.csv_file.url}"
     else
-      puts "There are no accepted papers with a completed \
-      Final Tech Check task left to process"
+      puts 'There were no accepted papers with a completed ' +
+      'Final Tech Check task left to process'
     end
   end
 end

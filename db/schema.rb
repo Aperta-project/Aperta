@@ -126,6 +126,13 @@ ActiveRecord::Schema.define(version: 20160519181308) do
 
   add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
 
+  create_table "billing_log_reports", force: :cascade do |t|
+    t.string   "csv_file"
+    t.date     "from_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "billing_logs", force: :cascade do |t|
     t.string   "guid"
     t.integer  "documentid",                     null: false
@@ -160,7 +167,7 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.date     "final_dispo_accept"
     t.string   "category"
     t.date     "import_date"
-    t.string   "s3_url"
+    t.string   "csv_file"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -378,9 +385,9 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "kind",                                  default: "custom", null: false
-    t.boolean  "can_administer_journal",                            default: false,    null: false
-    t.boolean  "can_view_assigned_manuscript_managers",             default: false,    null: false
-    t.boolean  "can_view_all_manuscript_managers",                  default: false,    null: false
+    t.boolean  "can_administer_journal",                default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
   end
 
   add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
@@ -408,28 +415,28 @@ ActiveRecord::Schema.define(version: 20160519181308) do
 
   create_table "papers", force: :cascade do |t|
     t.text     "abstract",                 default: ""
-    t.text     "title",                                                null: false
+    t.text     "title",                                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.integer  "journal_id",                                           null: false
+    t.integer  "journal_id",                               null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "striking_image_id"
-    t.boolean  "editable",                             default: true
+    t.boolean  "editable",                 default: true
     t.text     "doi"
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.jsonb    "withdrawals",                          default: [],                 array: true
-    t.boolean  "active",                               default: true
-    t.boolean  "gradual_engagement",                   default: false
+    t.jsonb    "withdrawals",              default: [],                 array: true
+    t.boolean  "active",                   default: true
+    t.boolean  "gradual_engagement",       default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
     t.string   "striking_image_type"
     t.datetime "state_updated_at"
-    t.boolean  "processing",                           default: false
+    t.boolean  "processing",               default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -509,7 +516,7 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.integer  "paper_id",               null: false
+    t.integer  "paper_id",   null: false
   end
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
@@ -592,7 +599,7 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status",      default: "processing"
-    t.boolean  "publishable",             default: true
+    t.boolean  "publishable", default: true
     t.string   "token"
     t.string   "label"
     t.string   "category"
@@ -665,7 +672,7 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.integer "journal_task_type_id"
     t.integer "phase_template_id"
     t.string  "title"
-    t.json    "template",                         default: [], null: false
+    t.json    "template",             default: [], null: false
     t.integer "position"
   end
 
@@ -675,14 +682,14 @@ ActiveRecord::Schema.define(version: 20160519181308) do
   create_table "tasks", force: :cascade do |t|
     t.string   "title",                         null: false
     t.string   "type",         default: "Task"
-    t.integer  "phase_id",                                            null: false
-    t.boolean  "completed",                          default: false,  null: false
+    t.integer  "phase_id",                      null: false
+    t.boolean  "completed",    default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_role",                      null: false
-    t.json     "body",                               default: [],     null: false
-    t.integer  "position",                           default: 0
-    t.integer  "paper_id",                                            null: false
+    t.json     "body",         default: [],     null: false
+    t.integer  "position",     default: 0
+    t.integer  "paper_id",                      null: false
     t.datetime "completed_at"
   end
 
@@ -709,7 +716,7 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,     null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -718,7 +725,7 @@ ActiveRecord::Schema.define(version: 20160519181308) do
     t.datetime "updated_at"
     t.string   "username"
     t.string   "avatar"
-    t.boolean  "site_admin",                         default: false
+    t.boolean  "site_admin",             default: false
     t.string   "em_guid"
   end
 

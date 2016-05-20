@@ -1,16 +1,12 @@
 require 'csv'
-# This service is used to determine the papers that need to be processed
-# from a particular date. If no date is provided it defaults to last run
-class BillingLogManager
-  def initialize(from_date: nil)
-    @report_start_time = from_date
-  end
-
+# If no date is provided it defaults to last run
+class BillingLogReport < ActiveRecord::Base
+  mount_uploader :csv_file, BillingLogUploader
   def papers_to_process
     @papers ||= begin
       papers = Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
-      if @report_start_time
-        papers.where('tasks.completed_at > ?', @report_start_time)
+      if from_date
+        papers.where('tasks.completed_at > ?', from_date)
       else
         papers
       end
@@ -31,22 +27,16 @@ class BillingLogManager
     "billing-log-#{current_time}.csv"
   end
 
-  def save_and_send_to_s3
+  def self.create_report(from_date: nil)
+    from_date ||= BillingLogReport.last.created_at if BillingLogReport.any?
+    BillingLogReport.new(from_date: from_date).save_and_send_to_s3!
+  end
+
+  def save_and_send_to_s3!
     return nil unless papers_to_process.present?
-    s3 = CloudServices::S3Service.new.connection
-
-    directory = s3.directories.new(
-      key:    Rails.application.config.s3_bucket,
-      public: false
-    )
-
-    s3_file = directory.files.create(
-      key:    "billing/#{filename}",
-      body:   create_csv.string,
-      public: true
-    )
-    # returns true if !errors
-    s3_file.save && BillingLog.last.update_column(:s3_url, s3_file.url(1.week.from_now))
+    tmp_file = Tempfile.new('')
+    tmp_file.write(create_csv.string)
+    update!(csv_file: tmp_file)
   end
 
   private

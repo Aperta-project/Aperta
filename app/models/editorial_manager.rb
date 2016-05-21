@@ -2,7 +2,7 @@
 # https://schneide.wordpress.com/2014/03/10/using-rails-with-a-legacy-database-schema/
 
 class EditorialManager < ActiveRecord::Base
-  establish_connection :editorial_manager
+  establish_connection ENV['EM_DATABASE_URL'].present? ? ENV['EM_DATABASE_URL'] : "editorial_manager_#{Rails.env}".to_sym
 end
 
 class EmPeople < EditorialManager

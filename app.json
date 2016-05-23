@@ -43,16 +43,19 @@
     "BUNDLE_WITHOUT": {
       "required": true
     },
-    "CAS_SSL_VERIFY": {
+    "CAS_ENABLED": {
       "required": true
     },
-    "CAS_ENABLED": {
+    "CAS_SSL_VERIFY": {
       "required": true
     },
     "CAS_HOST": {
       "required": true
     },
     "CAS_LOGIN_URL": {
+      "required": true
+    },
+    "CAS_LOGOUT_URL": {
       "required": true
     },
     "CAS_SIGNUP_URL": {
@@ -95,6 +98,21 @@
       "required": true
     },
     "FROM_EMAIL": {
+      "required": true
+    },
+    "FTP_ENABLED": {
+      "required": true
+    },
+    "FTP_HOST": {
+      "required": true
+    },
+    "FTP_PASSWORD": {
+      "required": true
+    },
+    "FTP_PORT": {
+      "required": true
+    },
+    "FTP_DIR": {
       "required": true
     },
     "HEROKU_APP_NAME": {
@@ -178,6 +196,9 @@
       "required": true
     },
     "SEGMENT_IO_WRITE_KEY": {
+      "required": true
+    },
+    "USE_NED_INSTITUTIONS": {
       "required": true
     }
   },

@@ -20,6 +20,7 @@ describe TahiEnv do
       DEFAULT_MAILER_URL: 'http://mailer.tahi-project.org',
       PUSHER_SSL_VERIFY: 'true',
       FROM_EMAIL: 'no-reply@tahi-project.org',
+      FTP_ENABLED: 'false',
       FTP_HOST: 'ftp://foo.bar',
       FTP_USER: 'the-oracle',
       FTP_PASSWORD: 'tiny-green-characters',
@@ -101,11 +102,12 @@ describe TahiEnv do
   include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
 
   # FTP
-  include_examples 'required env var', var: 'FTP_DIR'
-  include_examples 'required env var', var: 'FTP_HOST'
-  include_examples 'required env var', var: 'FTP_PASSWORD'
-  include_examples 'required env var', var: 'FTP_PORT'
-  include_examples 'required env var', var: 'FTP_USER'
+  include_examples 'required boolean env var', var: 'FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'FTP_DIR', dependent_key: 'FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'FTP_HOST', dependent_key: 'FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'FTP_PASSWORD', dependent_key: 'FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'FTP_PORT', dependent_key: 'FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'FTP_USER', dependent_key: 'FTP_ENABLED'
 
   # Heroku
   include_examples 'optional env var', var: 'HEROKU_APP_NAME'

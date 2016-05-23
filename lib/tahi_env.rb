@@ -96,11 +96,12 @@ class TahiEnv
   required :EVENT_STREAM_WS_PORT
 
   # FTP
-  required :FTP_HOST
-  required :FTP_USER
-  required :FTP_PASSWORD
-  required :FTP_PORT
-  required :FTP_DIR
+  required :FTP_ENABLED, :boolean
+  required :FTP_HOST, if: :ftp_enabled?
+  required :FTP_USER, if: :ftp_enabled?
+  required :FTP_PASSWORD, if: :ftp_enabled?
+  required :FTP_PORT, if: :ftp_enabled?
+  required :FTP_DIR, if: :ftp_enabled?
 
   # Hipchat
   optional :HIPCHAT_AUTH_TOKEN

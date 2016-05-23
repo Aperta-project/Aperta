@@ -30,6 +30,13 @@ namespace :deploy do
       end
     end
   end
+
+  after :normalize_assets, :gzip_assets do
+    on release_roles(fetch(:assets_roles)) do
+      assets_path = release_path.join('public', fetch(:assets_prefix))
+      execute :find, "#{assets_path}/ -type f -exec test ! -e {}.gz \\; -print0 | xargs -r -P8 -0 gzip --keep --best --quiet"
+    end
+  end
 end
 
 # Use service scripts to restart puma/sidekiq

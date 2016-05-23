@@ -14578,7 +14578,8 @@ snapshots:
       oppose this reviewer. ","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Rob"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"robert.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
       you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
       reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
-      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Review"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"ruth.reviewer@science.org"},{"name":"department","type":"text","value":"Physics"},{"name":"title","type":"text","value":"Head Prof"},{"name":"affiliation","type":"text","value":"ABC University"}]}]}'
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Review"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"ruth.reviewer@science.org"},{"name":"department","type":"text","value":"Physics"},{"name":"title","type":"text","value":"Head
+      Prof"},{"name":"affiliation","type":"text","value":"ABC University"}]}]}'
     - '2016-04-12 18:55:57.423837'
     - '2016-04-12 18:55:57.423837'
   - - '72'
@@ -14620,9 +14621,11 @@ snapshots:
       oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
       you recommending or opposing this reviewer? (required)","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
       reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
-      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":11},{"name":"first_name","type":"text","value":"Nancy"},{"name":"last_name","type":"text","value":"McReviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"nancy@science.org"},{"name":"department","type":"text","value":"Chemistry"},{"name":"title","type":"text","value":"Jr Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":11},{"name":"first_name","type":"text","value":"Nancy"},{"name":"last_name","type":"text","value":"McReviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"nancy@science.org"},{"name":"department","type":"text","value":"Chemistry"},{"name":"title","type":"text","value":"Jr
+      Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
+
 ---
 supporting_information_files:
   columns:
@@ -14649,7 +14652,7 @@ supporting_information_files:
     - '2015-10-30 19:52:32.793467'
     - done
     - true
-    - 
+    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
     - 
     - 
     - '22'
@@ -14662,7 +14665,7 @@ supporting_information_files:
     - '2015-11-02 14:13:19.701157'
     - done
     - true
-    - 
+    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
     - 
     - 
     - '43'
@@ -14675,7 +14678,7 @@ supporting_information_files:
     - '2015-11-02 15:09:03.10794'
     - done
     - true
-    - 
+    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
     - 
     - 
     - '64'

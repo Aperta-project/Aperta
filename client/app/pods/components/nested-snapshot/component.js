@@ -31,6 +31,10 @@ export default Ember.Component.extend({
   textOrInteger: Ember.computed.or('integer', 'text'),
   userEnteredValue: Ember.computed.not('id'),
 
+  hasQuestion1Title: Ember.computed.notEmpty('snapshot1.value.title'),
+  hasQuestion2Title: Ember.computed.notEmpty('snapshot2.value.title'),
+  diffQuestionTitles: Ember.computed.and('hasQuestion1Title', 'hasQuestion2Title'),
+
   raw: Ember.computed('primarySnapshot.type', function(){
     return this.get('textOrInteger') && this.get('userEnteredValue');
   }),

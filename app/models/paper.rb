@@ -19,6 +19,7 @@ class Paper < ActiveRecord::Base
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy
+  has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, dependent: :destroy
   has_many :users, -> { uniq }, through: :paper_roles

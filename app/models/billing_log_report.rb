@@ -29,7 +29,7 @@ class BillingLogReport < ActiveRecord::Base
 
   def self.create_report(from_date: nil)
     from_date ||= BillingLogReport.last.created_at if BillingLogReport.any?
-    BillingLogReport.new(from_date: from_date).save_and_send_to_s3!
+    BillingLogReport.new(from_date: from_date).tap(&:save_and_send_to_s3!)
   end
 
   def save_and_send_to_s3!

@@ -55,9 +55,9 @@ class ApplicationController < ActionController::Base
   end
 
   def cas_logout_url
-    return unless Rails.configuration.x.cas['logout_full_url'].present?
+    return unless TahiEnv.cas_logout_url
     query = { service: new_user_session_url }.to_query
-    URI.join(Rails.configuration.x.cas['logout_full_url'], "?#{query}").to_s
+    URI.join(TahiEnv.cas_logout_url, "?#{query}").to_s
   end
 
   def authenticate_with_basic_http

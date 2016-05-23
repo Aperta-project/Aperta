@@ -149,8 +149,8 @@ ActiveRecord::Schema.define(version: 20160523165434) do
     t.string   "state"
     t.integer  "zip"
     t.string   "country"
-    t.integer  "phone1"
-    t.integer  "phone2"
+    t.string   "phone1"
+    t.string   "phone2"
     t.integer  "fax"
     t.string   "email"
     t.integer  "journal_id",                     null: false

@@ -116,13 +116,6 @@ class PapersController < ApplicationController
         end
       end
 
-      format.epub do
-        epub = EpubConverter.new(paper, current_user)
-        send_data epub.epub_stream.string,
-                  filename: epub.fs_filename,
-                  disposition: 'attachment'
-      end
-
       format.pdf do
         pdf = PDFConverter.new(paper, current_user)
         send_data pdf.convert,

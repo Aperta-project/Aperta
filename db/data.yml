@@ -3547,8 +3547,6 @@ journals:
   - created_at
   - updated_at
   - logo
-  - epub_cover
-  - epub_css
   - pdf_css
   - manuscript_css
   - description
@@ -3561,10 +3559,8 @@ journals:
     - '2015-10-29 19:40:11.853622'
     - '2016-04-12 18:43:34.647157'
     - images/no-journal-image.gif
-    - developersdevelopersdevelopers.jpg
-    - 
-    - 
-    - 
+    -
+    -
     - If you are a developer, you are in the right place for fun, for science, and
       for publication.
     - yetipub

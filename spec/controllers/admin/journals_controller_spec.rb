@@ -60,7 +60,7 @@ describe Admin::JournalsController, redis: true do
       patch :update,
             format: 'json',
             id: journal.id,
-            admin_journal: { epub_cover: image_file }
+            admin_journal: {name: 'new journal name'}
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -75,23 +75,6 @@ describe Admin::JournalsController, redis: true do
           do_request
         end
         expect(response.status).to eq 204
-      end
-    end
-
-    context "uploading epub cover" do
-      let(:url) { "http://someawesomeurl.com" }
-      it "is successful for site_admin" do
-        stub_sign_in site_admin
-        expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
-        put :upload_epub_cover, format: "json", id: journal.id, url: url
-        expect(response).to be_success
-      end
-
-      it "is successful for journal_admin" do
-        stub_sign_in journal_admin
-        expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
-        put :upload_epub_cover, format: "json", id: journal.id, url: url
-        expect(response).to be_success
       end
     end
 

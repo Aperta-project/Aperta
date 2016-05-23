@@ -49,14 +49,6 @@ class Admin::JournalsController < ApplicationController
     end
   end
 
-  def upload_epub_cover
-    requires_user_can(:administer, journal)
-    journal_with_cover = DownloadEpubCover.call(journal, params[:url])
-    respond_with(journal_with_cover) do |format|
-      format.json { render json: journal_with_cover, serializer: AdminJournalSerializer, status: :ok }
-    end
-  end
-
   private
 
   def journal
@@ -72,8 +64,7 @@ class Admin::JournalsController < ApplicationController
   def journal_params
     params.require(:admin_journal).permit(
       :description, :doi_journal_prefix,
-      :doi_publisher_prefix, :epub_cover,
-      :epub_css, :last_doi_issued,
+      :doi_publisher_prefix, :last_doi_issued,
       :manuscript_css, :name,
       :pdf_css
     )

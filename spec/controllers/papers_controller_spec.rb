@@ -525,26 +525,6 @@ describe PapersController do
           .and_return true
       end
 
-      context 'requested format is ePub' do
-        let(:format) { :epub }
-        let(:epub_converter) do
-          instance_double(EpubConverter, fs_filename: 'za-file.eps')
-        end
-
-        it 'sends an ePub file back' do
-          expect(EpubConverter).to receive(:new).with(paper, user)
-            .and_return epub_converter
-          expect(epub_converter).to receive_message_chain('epub_stream.string')
-            .and_return 'my epub file contents'
-
-          do_request
-
-          expect(response.body).to eq('my epub file contents')
-          expect(response.headers['Content-Disposition']).to \
-            include('filename="za-file.eps"')
-        end
-      end
-
       context 'requested format is PDF' do
         let(:format) { :pdf }
         let(:pdf_converter) do

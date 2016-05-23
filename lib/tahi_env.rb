@@ -1,6 +1,9 @@
+require 'active_model'
 require 'active_support/core_ext/string/strip'
 require File.dirname(__FILE__) + '/tahi_env/dsl_methods'
 require File.dirname(__FILE__) + '/tahi_env/env_var'
+require File.dirname(__FILE__) + '/tahi_env/optional_env_var'
+require File.dirname(__FILE__) + '/tahi_env/required_env_var'
 require File.dirname(__FILE__) + '/tahi_env/boolean_validator'
 require File.dirname(__FILE__) + '/tahi_env/presence_validator'
 
@@ -14,13 +17,6 @@ class TahiEnv
   class Error < ::StandardError ; end
   class InvalidEnvironment < Error ; end
   class MissingEnvVarRegistration < Error ; end
-
-  class RequiredEnvVar < EnvVar
-    self.type = :required
-  end
-  class OptionalEnvVar < EnvVar
-    self.type = :optional
-  end
 
   def self.validate!
     instance.validate!

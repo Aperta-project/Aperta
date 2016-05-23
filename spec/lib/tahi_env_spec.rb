@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'climate_control'
-require 'active_model'
 require File.dirname(__FILE__) + '/../../lib/tahi_env'
 require File.dirname(__FILE__) + '/../support/shared_examples/tahi_env_shared_examples'
 

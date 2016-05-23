@@ -1,5 +1,4 @@
-# Adds BillingLogs table, used to track billing information for papers
-class CreateBillingLog < ActiveRecord::Migration
+class CreateBillingLogs < ActiveRecord::Migration
   def change
     create_table :billing_logs do |t|
       t.string     :guid, index: true
@@ -36,12 +35,6 @@ class CreateBillingLog < ActiveRecord::Migration
       t.string     :category
       t.date       :import_date
       t.string     :csv_file
-      t.timestamps
-    end
-
-    create_table :billing_log_reports do |t|
-      t.string     :csv_file
-      t.date       :from_date
       t.timestamps
     end
   end

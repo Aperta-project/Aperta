@@ -10,7 +10,7 @@ class BillingLog < ActiveRecord::Base
     return self if update_attributes(billing_json)
   end
 
-  def to_csv
+  def create_csv
     csv = CSV.new ""
     csv << billing_json.keys
     csv << billing_json.values

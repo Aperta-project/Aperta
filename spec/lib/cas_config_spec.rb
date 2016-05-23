@@ -35,7 +35,6 @@ describe 'CasConfig' do
       it { expect(config['callback_url']).to eq('http://sample.tahi-project.org/callback') }
       it { expect(config['logout_url']).to eq('/cas/logout') }
       it { expect(config['login_url']).to eq('/cas/login') }
-      it { expect(config['logout_full_url']).to eq('http://sample.tahi-project.org/cas/logout') }
     end
 
     it 'returns hash with only enabled key when cas disabled' do

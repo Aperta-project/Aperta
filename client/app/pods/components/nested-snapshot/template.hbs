@@ -17,7 +17,11 @@
   {{#if question}}
     <li class="snapshot-question">
       <div class="snapshot-question-question">
-        {{text-diff viewingText=snapshot1.value.title comparisonText=snapshot2.value.title}}
+        {{#if diffQuestionTitles}}
+          {{text-diff viewingText=snapshot1.value.title comparisonText=snapshot2.value.title}}
+        {{else}}
+          <span class="snapshot-label">{{primarySnapshot.value.title}}:&nbsp;&nbsp;</span>
+        {{/if}}
       </div>
 
       <div class="snapshot-question-answer">

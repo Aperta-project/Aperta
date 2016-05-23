@@ -55,23 +55,23 @@ class SupportingInformationFile < ActiveRecord::Base
   end
 
   def src
-    attachment.url
+    non_expiring_proxy_url if done?
   end
 
   def access_details
     { filename: filename, alt: alt, id: id, src: src }
   end
 
-  def detail_src
+  def detail_src(**opts)
     return unless image?
 
-    attachment.url(:detail)
+    non_expiring_proxy_url(version: :detail, **opts) if done?
   end
 
   def preview_src
     return unless image?
 
-    attachment.url(:preview)
+    non_expiring_proxy_url(version: :preview) if done?
   end
 
   def image?
@@ -87,6 +87,10 @@ class SupportingInformationFile < ActiveRecord::Base
   end
 
   private
+
+  def done?
+    status == 'done'
+  end
 
   def task_completed?
     supporting_information_task && supporting_information_task.completed?

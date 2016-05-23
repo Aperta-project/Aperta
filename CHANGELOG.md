@@ -4,6 +4,18 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.11] - 2016-05-19
+### Fixed
+- Fixed errors during PDF generation
+
+## [1.4.10] - 2016-05-18
+### Added
 - Diffing of Reviewer Candidates
 - Authors will see the feedback form whenever they submit a paper
 - Add manifest to Apex export
@@ -13,12 +25,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Billing task institutions and countries synced with EM
 - Show discussion participants' emails when selecting and on hover
 
-### Deprecated
-### Removed
-### Fixed
-### Security
-
-## [1.4.9] - 2016-06-13
+## [1.4.9] - 2016-05-13
 
 ### Fixed
 -Fixed bug preventing changes for author card from being completed

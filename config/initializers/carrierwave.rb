@@ -9,6 +9,7 @@ if ENV.has_key? 'AWS_ACCESS_KEY_ID'
     config.fog_directory  = Rails.application.config.s3_bucket
     config.fog_public     = false
     config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}
+    config.fog_authenticated_url_expiration = 1.week
   end
 else
   Rails.logger.warn "AWS_ACCESS_KEY_ID not found in ENV; CarrierWave is disabled."

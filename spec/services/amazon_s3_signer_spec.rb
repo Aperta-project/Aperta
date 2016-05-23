@@ -14,7 +14,7 @@ describe AmazonS3Signer do
         expect(params[:acl]).to eq('public-read')
         expect(params[:awsaccesskeyid]).to eq('ur-id')
         expect(params[:bucket]).to eq('tahi-test')
-        expect(params[:expires]).to eq(Time.current + 30.minutes)
+        expect(params[:expires]).to eq(Time.current + 1.day)
         expect(params[:key]).to eq('paper/figures123456789/test.png')
         expect(params[:success_action_status]).to eq('201')
         expect(params['Content-Type']).to eq('image/png')

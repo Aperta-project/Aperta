@@ -79,24 +79,18 @@ FactoryGirl.define do
     end
 
     trait(:with_short_title) do
-      # Paper#short title is stored in a NestedQuestionAnswer; so ya
-      # better build one.
       transient do
-        short_title ''
+        short_title 'some title'
       end
 
       after(:create) do |paper, evaluator|
         task = FactoryGirl.create(
           :publishing_related_questions_task,
           paper: paper)
-        question = NestedQuestion.find_by(
+        nested_question = NestedQuestion.find_by(
           ident: 'publishing_related_questions--short_title')
-        FactoryGirl.create(
-          :nested_question_answer,
-          paper: paper,
-          value: evaluator.short_title,
-          nested_question: question,
-          owner: task)
+        task.find_or_build_answer_for(nested_question: nested_question,
+                                      value: evaluator.short_title).save
       end
     end
 

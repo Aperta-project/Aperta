@@ -4,7 +4,13 @@
     <script type="text/javascript" async
             src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_SVG">
     </script>
+
     <style>
+      /*Embedding the style inline because the pdf is created in another process
+      and we want to avoid the request failing if authentication
+      changes, or the asset host is misconfigured.*/
+      <%= Sass.compile(File.read(File.join(Rails.root, 'app', 'assets', 'stylesheets', 'pdf.scss'))) %>
+
       <%= publishing_info_presenter.css %>
       <%= paper.journal.pdf_css %>
     </style>

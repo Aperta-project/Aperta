@@ -204,7 +204,7 @@ describe Paper do
       end
     end
 
-    describe 'short_title' do
+    describe '#short_title' do
       let(:title) { "Hi! I'm a title!" }
       let(:paper) do
         FactoryGirl.create(:paper,

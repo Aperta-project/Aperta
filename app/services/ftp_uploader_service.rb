@@ -66,8 +66,10 @@ class FtpUploaderService
   end
 
   def enter_packages_directory
-    remote_directories = @ftp.nlst
-    @ftp.mkdir(@directory) unless remote_directories.index(@directory)
+    @ftp.chdir(@directory)
+  rescue Net::FTPPermError
+    Rails.logger.info "Attempting to create ftp directory: #{@directory}"
+    @ftp.mkdir(@directory)
     @ftp.chdir(@directory)
   end
 

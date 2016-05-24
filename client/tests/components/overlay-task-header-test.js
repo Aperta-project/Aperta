@@ -32,22 +32,10 @@ moduleForComponent('overlay-task-header', 'Integration | Component | overlay tas
   }
 });
 
-test("displays author name", function(assert) {
-  assert.textPresent('li', 'Anna Author');
-});
-
-test("displays manuscript id", function(assert) {
-  assert.textPresent('li', 'test.10001');
-});
-
-test("displays article type", function(assert) {
-  assert.textPresent('li', 'Research');
-});
-
-test("displays manuscript status", function(assert) {
-  assert.textPresent('li', 'Submitted');
-});
-
-test("displays paper title", function(assert) {
-  assert.textPresent('span', 'Chemistry is Amazing');
+test('basic paper information is included in overlay header', function(assert) {
+  assert.textPresent('li', 'Anna Author', 'displays author name');
+  assert.textPresent('li', 'test.10001', 'displays manuscript id');
+  assert.textPresent('li', 'Research', 'displays article type');
+  assert.textPresent('li', 'Submitted', 'displays manuscript status');
+  assert.textPresent('span', 'Chemistry is Amazing', 'displays paper title');
 });

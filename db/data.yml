@@ -8048,7 +8048,6 @@ paper_roles:
 papers:
   columns:
   - id
-  - short_title
   - abstract
   - title
   - created_at
@@ -8075,7 +8074,6 @@ papers:
   records: 
   - - '1'
     - 
-    - 
     - "<b>Unstarted</b>: <i>No tasks filled out</i>"
     - '2015-10-29 20:16:37.363801'
     - '2015-11-02 14:30:18.434152'
@@ -8099,9 +8097,6 @@ papers:
     - 
     - false
   - - '2'
-    - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
-      rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
-      class="overlay-header-link ember-view"><i>All Tasks Filled Out</i></a></h2>'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
     - '2015-10-30 19:43:28.468043'
@@ -8126,7 +8121,6 @@ papers:
     - 
     - false
   - - '3'
-    - Ready to Submit
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
     - '2015-11-02 14:04:02.867243'
@@ -8151,7 +8145,6 @@ papers:
     - 
     - false
   - - '4'
-    - Editors Assigned
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
     - '2015-11-02 14:46:23.765287'
@@ -8176,7 +8169,6 @@ papers:
     - '2015-11-02 15:14:05.576249'
     - false
   - - '8'
-    - 
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
     - '2015-11-03 22:59:20.931417'
@@ -8201,7 +8193,6 @@ papers:
     - 
     - false
   - - '9'
-    - 
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
     - '2015-11-03 23:02:06.790805'
@@ -8226,7 +8217,6 @@ papers:
     - 
     - false
   - - '10'
-    - The great scientific paper of 2015
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
     - '2015-11-10 22:27:27.12482'
@@ -8251,7 +8241,6 @@ papers:
     - 
     - false
   - - '12'
-    - 
     - <p class="Body A">African forest elephants are being poached at accelerating
       rates, but we lack range-wide information on the repercussions. Analysis of
       the largest survey dataset ever assembled for forest elephants (80 foot-surveys;

@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'climate_control'
 
 describe 'CasConfig' do
-  describe '.configuration' do
-    subject(:config) { CasConfig.configuration }
+  describe '.omniauth_configuration' do
+    subject(:config) { CasConfig.omniauth_configuration }
 
     describe 'returns hash of arguments when enabled' do
       let(:valid_cas_env) do

@@ -1,5 +1,5 @@
 Tahi::Application.configure do
-  configuration = CasConfig.configuration
+  configuration = CasConfig.omniauth_configuration
   if configuration['enabled']
     Devise.omniauth(:cas, configuration)
     Rails.configuration.omniauth_providers << :cas

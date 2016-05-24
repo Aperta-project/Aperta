@@ -1,5 +1,7 @@
+# CasConfig is responsible for providing the configuration necessary to
+# do SSO via CAS
 module CasConfig
-  def self.configuration
+  def self.omniauth_configuration
     if TahiEnv.cas_enabled?
       {
         'enabled' => true,

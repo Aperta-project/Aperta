@@ -1,6 +1,6 @@
 namespace :app do
   namespace :env do
-    desc "Recreate all of the versions of figure attachments"
+    desc "List out all ENV vars registered in the app's tahi_env.rb"
     task :vars do
       require File.dirname(__FILE__) + '/../tahi_env'
       TahiEnv.registered_env_vars.each do |key, env_var|

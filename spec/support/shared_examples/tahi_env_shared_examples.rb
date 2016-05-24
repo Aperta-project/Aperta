@@ -21,13 +21,13 @@ shared_examples_for 'required env var' do |var:|
 
   reader_method_name = "#{var.downcase}"
   describe "TahiEnv.#{reader_method_name}" do
-    it "returns the value stored in the env var when set" do
+    it 'returns the value stored in the env var when set' do
       ClimateControl.modify valid_env.merge("#{var}": 'ABC') do
         expect(TahiEnv.send(reader_method_name)).to eq 'ABC'
       end
     end
 
-    it "returns nil when not set" do
+    it 'returns nil when not set' do
       ClimateControl.modify valid_env.merge("#{var}": nil) do
         expect(TahiEnv.send(reader_method_name)).to be nil
       end
@@ -83,7 +83,7 @@ end
 
 shared_examples_for 'optional env var' do |var:|
   describe "Optional env var: #{var}" do
-    it 'is does not need to be set' do
+    it 'does not need to be set in the environment' do
       ClimateControl.modify valid_env.merge("#{var}": nil) do
         expect(env.valid?).to be true
       end
@@ -98,13 +98,13 @@ shared_examples_for 'optional env var' do |var:|
 
   reader_method_name = "#{var.downcase}"
   describe "TahiEnv.#{reader_method_name}" do
-    it "returns the value stored in the env var when set" do
+    it 'returns the value stored in the env var when set' do
       ClimateControl.modify valid_env.merge("#{var}": 'ABC') do
         expect(TahiEnv.send(reader_method_name)).to eq 'ABC'
       end
     end
 
-    it "returns nil when not set" do
+    it 'returns nil when not set' do
       ClimateControl.modify valid_env.merge("#{var}": nil) do
         expect(TahiEnv.send(reader_method_name)).to be nil
       end
@@ -122,13 +122,13 @@ shared_examples_for 'required boolean env var' do |var:|
 
     query_method_name = "#{var.downcase}?"
     describe "TahiEnv.#{query_method_name}" do
-      it "is required to be set" do
+      it 'is required to be set' do
         ClimateControl.modify valid_env.merge("#{var}": nil) do
           expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a boolean, but was not set. Allowed boolean values are true (true, 1), or false (false, 0).")
         end
       end
 
-      it "is required to a boolean value" do
+      it 'is required to a boolean value' do
         ClimateControl.modify valid_env.merge("#{var}": '') do
           expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a boolean value, but was set to \"\". Allowed boolean values are true (true, 1), or false (false, 0).")
         end

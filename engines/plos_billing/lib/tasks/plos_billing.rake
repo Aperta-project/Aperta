@@ -4,14 +4,6 @@ namespace :plos_billing do
     SalesforceServices::API.delay.ensure_pfa_case(paper_id: paper.id) if paper.billing_card
   end
 
-  task :sync_em_guids => :environment do
-    User.where(em_guid: nil).find_each do |user|
-      guid = EditorialManager.find_or_create_guid_by_email(email: user.email)
-      puts "match for #{user.email} - #{guid}" if guid.present?
-      puts "no match for #{user.email}" if guid.nil?
-    end
-  end
-
   # Usage:
   #   rake plos_billing:upload_log_file_to_s3[33]
   #   where:

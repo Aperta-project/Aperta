@@ -1,5 +1,5 @@
 class PaperSerializer < LitePaperSerializer
-  attributes :id, :short_title, :title, :doi, :body,
+  attributes :id, :short_title, :title, :doi, :body, :creator_user,
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement
@@ -33,5 +33,9 @@ class PaperSerializer < LitePaperSerializer
       related_articles: related_articles_paper_path(object),
       paper_task_types: paper_task_types_path(object)
     }
+  end
+
+  def creator_user
+    UserSerializer.new(object.creator).as_json
   end
 end

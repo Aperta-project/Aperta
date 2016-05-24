@@ -49,10 +49,14 @@ describe TahiEnv::OptionalEnvVar do
   end
 
   describe '#value' do
-    it 'returns true the raw environment value when it has no type' do
+    it 'returns the value stored as-is in the ENV when it has no type' do
       env_var = TahiEnv::EnvVar.new(:FOO)
       ClimateControl.modify FOO: 'hey ya' do
         expect(env_var.value).to eq('hey ya')
+      end
+
+      ClimateControl.modify FOO: 'true' do
+        expect(env_var.value).to eq('true')
       end
     end
 

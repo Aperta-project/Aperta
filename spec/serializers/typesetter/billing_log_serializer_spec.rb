@@ -16,11 +16,6 @@ describe Typesetter::BillingLogSerializer do
     )
   end
 
-  let!(:fake_user_with_guid) do
-    # 'bob@example.com' is necessary due to nested_question_answer on the billing task
-    FactoryGirl.create(:user, email: 'bob@example.com', em_guid: 'PONE-1234')
-  end
-
   let(:billing_task) do
     FactoryGirl.create(:billing_task, :with_nested_question_answers, paper: paper)
   end
@@ -52,6 +47,7 @@ describe Typesetter::BillingLogSerializer do
   end
 
   it 'has a guid for a pre-existing billing user guid' do
+    FactoryGirl.create(:user, email: 'bob@example.com', em_guid: 'PONE-1234')
     expect(output[:guid]).to eq('PONE-1234')
   end
 

@@ -14,7 +14,7 @@ module Typesetter
     attribute :accepted_at, key: :date_first_entered_production
 
     def guid
-      EmPeople.find_or_create_guid_by_email(email: email)
+      EditorialManager.find_or_create_guid_by_email(email: email)
     end
 
     def title

@@ -5,6 +5,18 @@ class EditorialManager < ActiveRecord::Base
   if ENV['EM_DATABASE_URL'].present?
     establish_connection ENV['EM_DATABASE_URL']
   end
+
+  def self.find_or_create_guid_by_email(email:)
+    user = User.find_by(email: email)
+    return unless user
+    if user.em_guid
+      user.em_guid
+    elsif connected?
+      EmPeople.create_guid_by_email(email: email).tap do |guid|
+        user.update_attribute(:em_guid, guid) if guid
+      end
+    end
+  end
 end
 
 class EmPeople < EditorialManager
@@ -13,22 +25,11 @@ class EmPeople < EditorialManager
   self.table_name = 'people'
   self.primary_key = 'peopleid'
 
-  def self.find_or_create_guid_by_email(email:)
-    user = User.find_by(email: email)
-    return user.em_guid if user.present? && user.em_guid.present?
-    return unless email
+  def self.create_guid_by_email(email:)
     email.strip!
 
     person = EmPeople.joins(:addresses).where('address.email LIKE ?', email).first
-    if person.present?
-      guid = person.GUID
-      if user.present?
-        user.update_attribute(:em_guid, guid)
-        guid
-      else
-        guid
-      end
-    end
+    guid = person.GUID if person.present?
   end
 end
 

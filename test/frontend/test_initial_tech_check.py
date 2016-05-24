@@ -16,7 +16,7 @@ from Base.Resources import creator_login1, creator_login2, creator_login3, creat
     creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
     super_admin_login, academic_editor_login
 from frontend.common_test import CommonTest
-from Cards.production_metadata_card import ProductionMedataCard
+from Cards.initial_tech_check_card import ITCCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -63,8 +63,8 @@ class ITCCardTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success()
-    paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1]
+    paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
+    paper_id = paper_canonical_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -77,7 +77,7 @@ class ITCCardTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
+    paper_workflow_url = '{0}/workflow'.format(paper_canonical_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
@@ -88,10 +88,13 @@ class ITCCardTest(CommonTest):
     if not workflow_page.is_card('Initial Tech Check'):
       workflow_page.add_card('Initial Tech Check')
     # click on invite academic editor
-    workflow_page.click_ITC_card()
     ITC_card = ITCCard(self.getDriver())
-    ITC.check_style(academic_editor_login)
+    workflow_page.click_ITC_card()
+    ITC_card.validate_styles()
+    ITC_card.complete_card()
     # test content, it should be saved
+
+
     data = product_metadata_card.complete_card()
     time.sleep(2)
     workflow_page.click_production_metadata_card()

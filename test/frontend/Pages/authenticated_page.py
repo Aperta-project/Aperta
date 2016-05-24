@@ -750,6 +750,24 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('color') == color
 
   @staticmethod
+  def validate_field_title_style(title):
+    """
+    Ensure consistency in rendering field titles across the application
+    :param title: title to validate
+    :return: None
+    """
+    assert application_typeface in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '20px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('font-weight') == '400', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == 'rgba(135, 135, 135, 1)', \
+        title.value_of_css_property('color')
+
+  @staticmethod
   def validate_accordion_task_title(title):
     """
     Ensure consistency in rendering accordion headings across the application

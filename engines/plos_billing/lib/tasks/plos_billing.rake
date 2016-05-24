@@ -6,7 +6,7 @@ namespace :plos_billing do
 
   task :sync_em_guids => :environment do
     User.where(em_guid: nil).find_each do |user|
-      guid = EmPeople.find_or_create_guid_by_email(email: user.email)
+      guid = EditorialManager.find_or_create_guid_by_email(email: user.email)
       puts "match for #{user.email} - #{guid}" if guid.present?
       puts "no match for #{user.email}" if guid.nil?
     end

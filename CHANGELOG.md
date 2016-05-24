@@ -4,6 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Aperta validates its environment when booting and fails fast with human
+  readable error messages when not-valid. This is a non-user facing addition.
+
 ### Changed
 ### Deprecated
 ### Removed

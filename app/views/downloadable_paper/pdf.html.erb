@@ -5,9 +5,9 @@
             src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full">
     </script>
 
-    <link rel="stylesheet" media="all" href="<%= asset_url('pdf', host: root_url) %>" />
-
     <style>
+      <%= Sass.compile(File.read(File.join(Rails.root, 'app', 'assets', 'stylesheets', 'pdf.scss'))) %>
+
       <%= publishing_info_presenter.css %>
       <%= paper.journal.pdf_css %>
     </style>

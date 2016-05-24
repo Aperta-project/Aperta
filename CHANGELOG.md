@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 - Removed University of Ottawa as an institutional account participant
 ### Fixed
+- Fixed figures in PDFs spanning multiple pages
 ### Security
 
 ## [1.4.11] - 2016-05-19

@@ -1,0 +1,13 @@
+<span>
+  <ul>
+    <li>{{{paper.creatorUser.user.full_name}}}</li>
+    <li>{{{paper.manuscript_id}}}</li>
+    <li>{{{paper.paperType}}}</li>
+    <li>{{{humanize paper.publishingState}}}</li>
+  </ul>
+
+  {{#link-to "paper.index" paper.id class="task-overlay-paper-title"}}
+    {{{paper.displayTitle}}}
+  {{/link-to}}
+</span>
+<a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>

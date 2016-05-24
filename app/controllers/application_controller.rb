@@ -57,7 +57,13 @@ class ApplicationController < ActionController::Base
   def cas_logout_url
     return unless TahiEnv.cas_logout_url
     query = { service: new_user_session_url }.to_query
-    URI.join(TahiEnv.cas_logout_url, "?#{query}").to_s
+
+    logout_uri = URI.parse(TahiEnv.cas_logout_url)
+    if logout_uri.relative?
+      protocol = TahiEnv.cas_ssl? ? 'https://' : 'http://'
+      logout_uri = URI.join("#{protocol}#{TahiEnv.cas_host}", logout_uri)
+    end
+    URI.join(logout_uri, "?#{query}").to_s
   end
 
   def authenticate_with_basic_http

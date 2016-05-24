@@ -17,22 +17,47 @@ describe ApplicationController do
       end
     end
 
-    let(:cas_logout_url) { 'http://cas.example.com/user/logout' }
+    let(:cas_host){ 'cas-aperta-integration.plos.org' }
+    let(:cas_logout_url) { 'http://example.com/cas/logout' }
+    let(:cas_ssl){ 'true' }
+    let(:cas_env_vars) do
+      {
+        CAS_HOST: cas_host,
+        CAS_SSL: cas_ssl,
+        CAS_LOGOUT_URL: cas_logout_url
+      }
+    end
+
     let(:user) { FactoryGirl.build(:user) }
 
     before do
-      routes.draw { delete "destroy" => "anonymous#destroy" }
+      routes.draw { delete 'destroy' => 'anonymous#destroy' }
       stub_sign_in user
     end
 
-    it "redirects the user to CAS LOGOUT URL with a new session query param" do
-      ClimateControl.modify CAS_LOGOUT_URL: cas_logout_url do
+    it 'redirects the user to CAS_LOGOUT_URL with a new session query param' do
+      ClimateControl.modify(cas_env_vars) do
         delete :destroy
         expect(response.redirection?).to be(true)
 
         query = { service: new_user_session_url }.to_query
-        redirect_url = URI.join(cas_logout_url, "?#{query}").to_s
+        redirect_url = URI.join('http://example.com/cas/logout', "?#{query}").to_s
         expect(response.location).to eq(redirect_url)
+      end
+    end
+
+    context 'and the CAS_LOGOUT_URL is a relative path' do
+      let(:cas_logout_url) { '/cas/logout' }
+
+      it 'redirects the user to a constructed URL based on other CAS env variables' do
+        ClimateControl.modify(cas_env_vars) do
+          delete :destroy
+          expect(response.redirection?).to be(true)
+
+          query = { service: new_user_session_url }.to_query
+          redirect_url = URI.join("https://#{cas_host}/#{cas_logout_url}", "?#{query}").to_s
+          expect(response.location).to eq(redirect_url)
+        end
       end
     end
   end

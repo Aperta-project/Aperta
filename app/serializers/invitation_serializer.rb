@@ -10,6 +10,6 @@ class InvitationSerializer < ActiveModel::Serializer
   has_one :task, embed: :id, polymorphic: true, include: true
 
   def invitation_type
-    object.task.invitee_role.capitalize
+    object.invitee_role.capitalize
   end
 end

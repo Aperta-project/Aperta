@@ -23,6 +23,6 @@ class InvitationIndexSerializer < ActiveModel::Serializer
   end
 
   def invitation_type
-    object.task.invitee_role.capitalize
+    object.invitee_role.capitalize
   end
 end

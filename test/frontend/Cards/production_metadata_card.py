@@ -37,7 +37,6 @@ class ProductionMedataCard(BaseCard):
   def check_style(self):
     """
     Style check for the card
-    :user: User to send the invitation
     :return: None
     """
     self.validate_common_elements_styles()

@@ -18,11 +18,9 @@ moduleForComponent('overlay-task-header', 'Integration | Component | overlay tas
         paperType: 'Research',
         publishingState: 'submitted',
         displayTitle: 'Chemistry is Amazing',
-        creatorUser: Ember.Object.create({
-          user: Ember.Object.create({
-            full_name: 'Anna Author'
-          })
-        })
+        creatorUser: {
+          user: { full_name: 'Anna Author' }
+        }
       })
     }));
 

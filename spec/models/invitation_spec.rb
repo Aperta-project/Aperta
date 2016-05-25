@@ -25,14 +25,19 @@ describe Invitation do
     end
 
     it 'requires an invitee_role' do
+      invitation.task = nil
       invitation.invitee_role = nil
       expect(invitation.valid?).to be(false)
     end
   end
 
-  describe '#task=' do
+  describe 'before validation' do
     let(:task_class) do
       Class.new(Task) do
+        def self.model_name
+          ActiveModel::Name.new(self, nil, "SomeTaskSubclass")
+        end
+
         def invitee_role
           'Superduperiffic'
         end
@@ -40,9 +45,17 @@ describe Invitation do
     end
 
     it 'sets the invitee_role to the invitee_role defined by the task' do
+      invitation.task = task_class.new
       expect do
-        invitation.task = task_class.new
+        invitation.valid?
       end.to change { invitation.invitee_role }.to 'Superduperiffic'
+    end
+
+    it 'does not set the invitee_role when there is no task' do
+      invitation.task = nil
+      expect do
+        invitation.valid?
+      end.to_not change { invitation.invitee_role }
     end
   end
 

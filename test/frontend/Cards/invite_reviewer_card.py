@@ -26,7 +26,7 @@ class InviteReviewersCard(BaseCard):
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._reviewer_suggester = (By.CSS_SELECTOR, 'div.auto-suggest')
     self._reviewer_suggestion_listing = (By.CSS_SELECTOR, 'div.auto-suggest-item')
-    self._compose_invitation_button = (By.CLASS_NAME, 'compose-invite-button')
+    self._compose_invitation_button = (By.CSS_SELECTOR, 'button.compose-invite-button')
 
     self._edit_invite_div = (By.CSS_SELECTOR, 'div.invite-reviewer-edit-invite')
     # the following locators assume they will be searched for by find element within the scope of
@@ -98,7 +98,7 @@ class InviteReviewersCard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert '{0}, {1} from '.format(creator_ln, creator_fn) in invite_text, invite_text
+    assert '{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
       # strip html, and remove whitespace
@@ -119,12 +119,12 @@ class InviteReviewersCard(BaseCard):
     time.sleep(1)
     invitee = self._get(self._invitee_listing)
     invitee.find_element(*self._invitee_avatar)
-    pagefullname = invitee.find_element(*self._invitee_full_name)
-    assert reviewer['name'] in pagefullname.text
+    invitee.find_element(*self._invitee_full_name)
     invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
-    assert 'Invited' in status.text
     invitee.find_element(*self._invitee_revoke)
+    self.validate_invitation(reviewer, 'Reviewer')
+    assert 'Invited' in status.text, status.text
 
   def validate_reviewer_response(self, reviewer, response):
     """
@@ -136,13 +136,14 @@ class InviteReviewersCard(BaseCard):
     :return void function
     """
     time.sleep(.5)
-    invitee = self._get(self._invitee_listing)
-    invitee.find_element(*self._invitee_avatar)
-    pagefullname = invitee.find_element(*self._invitee_full_name)
-    assert reviewer['name'] in pagefullname.text
-    invitee.find_element(*self._invitee_updated_at)
-    status = invitee.find_element(*self._invitee_state)
-    if response == 'Accept':
-      assert 'Accepted' in status.text, status.text
-    else:
-      assert 'Rejected' in status.text, status.text
+    invited = self._gets(self._invitee_listing)
+    for invite in invited:
+      invite.find_element(*self._invitee_avatar)
+      pagefullname = invite.find_element(*self._invitee_full_name)
+      if reviewer['name'] in pagefullname.text:
+        invite.find_element(*self._invitee_updated_at)
+        status = invite.find_element(*self._invitee_state)
+        if response == 'Accept':
+          assert 'Accepted' in status.text, status.text
+        else:
+          assert 'Rejected' in status.text, status.text

@@ -1,43 +1,25 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import random
-import time
-
-from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, handling_editor_login, \
-    cover_editor_login, prod_staff_login, pub_svcs_login, super_admin_login, \
-    reviewer_login
-from frontend.common_test import CommonTest
-from Cards.invite_reviewer_card import InviteReviewersCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-
 """
 This behavioral test case validates Paper submission and invite reviewer
 This test requires the following data:
 The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
     frontend/assets/docs/
 """
+import logging
+import random
+import time
+
+from Base.Decorators import MultiBrowserFixture
+from Base.PostgreSQL import PgSQL
+from Base.Resources import prod_staff_login, reviewer_login
+from frontend.common_test import CommonTest
+from Cards.basecard import users, editorial_users
+from Cards.invite_reviewer_card import InviteReviewersCard
+from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
+
 __author__ = 'jgray@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [handling_editor_login,
-                   cover_editor_login,
-                   internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
 
 
 @MultiBrowserFixture
@@ -66,7 +48,10 @@ class InviteReviewersCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # Abbreviate the timeout for conversion success message
+    manuscript_page.set_timeout(15)
     manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.restore_timeout()
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
@@ -85,7 +70,8 @@ class InviteReviewersCardTest(CommonTest):
     # logout and enter as editor
     manuscript_page.logout()
     # Set up a handling editor, academic editor and cover editor for this paper
-    self.set_editors_in_db(paper_id)
+
+    # self.set_editors_in_db(paper_id)
     # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
@@ -101,6 +87,7 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.validate_card_elements_styles()
+    logging.info('Paper id is: {0}.'.format(paper_id))
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                                encoding='utf-8',
@@ -110,6 +97,12 @@ class InviteReviewersCardTest(CommonTest):
                                               manuscript_title,
                                               creator_user,
                                               paper_id)
+    # Invite a second user to invite then delete before acceptance
+    invite_reviewers.validate_invite_reviewer(prod_staff_login,
+                                              manuscript_title,
+                                              creator_user,
+                                              paper_id)
+    invite_reviewers.revoke_invitee(prod_staff_login, 'Reviewer')
     invite_reviewers.click_close_button()
     time.sleep(.5)
     workflow_page.logout()

@@ -265,7 +265,7 @@ class WorkflowPage(AuthenticatedPage):
     """Add invite editor card"""
     author_col, staff_col = self._gets(self._add_card_overlay_columns)
     staff_cards = staff_col.find_elements_by_tag_name('label')
-    assert staff_cards[7].text == 'Invite Editor', staff_cards[7].text
+    assert staff_cards[7].text == 'Invite Academic Editor', staff_cards[7].text
     staff_cards[7].click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)

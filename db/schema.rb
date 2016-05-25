@@ -325,6 +325,7 @@ ActiveRecord::Schema.define(version: 20160602225405) do
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string  "paper_type"
     t.integer "journal_id"
+    t.boolean "uses_research_article_reviewer_report", default: false
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -437,6 +438,7 @@ ActiveRecord::Schema.define(version: 20160602225405) do
     t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",               default: false
+    t.boolean  "uses_research_article_reviewer_report", default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

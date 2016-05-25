@@ -18,7 +18,6 @@
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
-
 <div class="base-screen">
   <div class="paper-type-form">
 
@@ -32,6 +31,10 @@
       </div>
     {{/if}}
 
+    <label>
+      {{input checked=model.usesResearchArticleReviewerReport type="checkbox"}}
+      Uses research article reviewer report
+    </label>
     {{#if showSaveButton}}
       <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>
       <a class="button-link button--blue paper-type-cancel-button" {{action "cancel"}}>cancel</a>

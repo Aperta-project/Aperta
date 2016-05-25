@@ -33,13 +33,18 @@ class ManuscriptManagerTemplatesController < ApplicationController
   private
 
   def template_params
-    params.require(:manuscript_manager_template).permit(:paper_type, :journal_id)
+    params.require(:manuscript_manager_template).permit(
+      :paper_type,
+      :journal_id,
+      :uses_research_article_reviewer_report
+    )
   end
 
   def new_template_params
     params.require(:manuscript_manager_template).permit(
       :paper_type,
       :journal_id,
+      :uses_research_article_reviewer_report,
       phase_templates: [
         :name, :position, task_templates: [
           :title, :journal_task_type_id, :position

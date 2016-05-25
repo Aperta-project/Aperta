@@ -121,4 +121,20 @@ describe ReviewerReportTaskCreator do
       subject.process
     end
   end
+
+  context "when the paper is configured to use the research reviewer report" do
+    it "sets the task to be a ReviewerReportTask" do
+      paper.update_column :uses_research_article_reviewer_report, true
+      task = subject.process
+      expect(task).to be_kind_of(TahiStandardTasks::ReviewerReportTask)
+    end
+  end
+
+  context "when the paper is not configured to use the research reviewer report" do
+    it "sets the task to be a FrontMatterReviewerReportTask" do
+      paper.update_column :uses_research_article_reviewer_report, false
+      task = subject.process
+      expect(task).to be_kind_of(TahiStandardTasks::FrontMatterReviewerReportTask)
+    end
+  end
 end

@@ -101,11 +101,12 @@ class ITCCard(BaseCard):
     # Dissabled due to APERTA-6954
     #self.validate_field_title_style(field_title)
     autogenerate_email_btn = self._get(self._autogenerate_email)
-    self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
+    # Disabled due to APERTA-6964
+    #self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
     autogenerate_email_btn.click()
-
-
-    #self._text_area
+    time.sleep(2)
+    text_area = self._get(self._text_area)
+    print text_area.text
     import pdb; pdb.set_trace()
 
     #print len(self._gets(self._checkboxes))

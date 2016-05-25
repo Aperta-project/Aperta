@@ -34,6 +34,8 @@ class ITCCard(BaseCard):
     self._alert_info = (By.CLASS_NAME, 'alert-info')
     self._autogenerate_email = (By.ID, 'autogenerate-email')
 
+    self._text_area = (By.CSS_SELECTOR, 'textarea.ember-text-area')
+
     self._field_title = (By.CSS_SELECTOR, 'span.text-field-title')
 
     self._checkboxes = (By.CSS_SELECTOR, 'label.question-checkbox input')
@@ -98,7 +100,12 @@ class ITCCard(BaseCard):
     assert field_title.text == 'List all changes the author needs to make:', field_title.text
     # Dissabled due to APERTA-6954
     #self.validate_field_title_style(field_title)
+    autogenerate_email_btn = self._get(self._autogenerate_email)
+    self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
+    autogenerate_email_btn.click()
 
+
+    #self._text_area
     import pdb; pdb.set_trace()
 
     #print len(self._gets(self._checkboxes))

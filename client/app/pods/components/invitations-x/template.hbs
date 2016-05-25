@@ -12,8 +12,8 @@
         {{#if invitation.information}}
           <p class="preserve-line-breaks">{{{invitation.information}}}</p>
         {{/if}}
-        <button class="button-secondary button--green" {{action "accept" invitation}}> yes </button>
-        <button class="button-secondary button--green" {{action "reject" invitation}}> no </button>
+        <button class="button-primary button--green" {{action "accept" invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
+        <button class="button-secondary button--green" {{action "reject" invitation}}> Decline </button>
       </li>
     </div>
   {{/each}}

@@ -4,6 +4,7 @@ class InvitationSerializer < ActiveModel::Serializer
              :email,
              :created_at,
              :updated_at,
+             :invitee_role,
              :invitation_type
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true

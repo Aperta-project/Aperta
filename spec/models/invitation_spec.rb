@@ -30,6 +30,22 @@ describe Invitation do
     end
   end
 
+  describe '#task=' do
+    let(:task_class) do
+      Class.new(Task) do
+        def invitee_role
+          'Superduperiffic'
+        end
+      end
+    end
+
+    it 'sets the invitee_role to the invitee_role defined by the task' do
+      expect do
+        invitation.task = task_class.new
+      end.to change { invitation.invitee_role }.to 'Superduperiffic'
+    end
+  end
+
   describe '#create' do
     it "belongs to the paper's latest decision" do
       invitation.save!

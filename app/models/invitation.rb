@@ -57,6 +57,11 @@ class Invitation < ActiveRecord::Base
     email
   end
 
+  def task=(task)
+    super
+    self.invitee_role = task.invitee_role
+  end
+
   private
 
   def assign_to_latest_decision

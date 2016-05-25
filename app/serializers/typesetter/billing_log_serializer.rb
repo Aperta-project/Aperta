@@ -14,6 +14,8 @@ module Typesetter
     attribute :accepted_at, key: :date_first_entered_production
 
     def guid
+      billing_user = User.where(email: email).first
+      billing_user.ned_id if billing_user
     end
 
     def title

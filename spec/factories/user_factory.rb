@@ -15,6 +15,10 @@ FactoryGirl.define do
     "Henry#{n}"
   end
 
+  sequence :ned_id do |n|
+    100 + n
+  end
+
   factory :user do
     username
     first_name
@@ -22,6 +26,7 @@ FactoryGirl.define do
     email
     password 'password'
     password_confirmation 'password'
+    ned_id
     site_admin false
 
     trait :site_admin do

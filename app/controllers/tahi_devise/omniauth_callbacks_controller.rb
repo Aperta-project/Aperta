@@ -18,6 +18,7 @@ module TahiDevise
       user.last_name = ned[:lastName]
       user.email = downcased_email
       user.username = ned[:displayName]
+      user.ned_id = ned[:nedId]
       user.auto_generate_password
       user.save!
 

@@ -64,9 +64,9 @@ class AssignTeamCard(BaseCard):
     """
     Assigns the academic editor that is passed as parameter.
     :param person: user to assign as role specified as email, or, if in system, name,
-        or username
-        :param role: role to assign user to - valid choices are: Academic Editor, Cover Editor,
-          Handling Editor or Reviewer.
+      or username
+    :param role: role to assign user to - valid choices are: Academic Editor, Cover Editor,
+      Handling Editor or Reviewer.
     :return void function
     """
     logging.info('Assigning {0}'.format(role))

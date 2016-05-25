@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Invitation do
+  subject(:invitation) { FactoryGirl.build :invitation, task: task }
   let(:paper) { FactoryGirl.create(:paper, :with_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
-  let(:invitation) { FactoryGirl.build :invitation, task: task }
 
   describe ".invited" do
     let!(:open_invitation_1) { FactoryGirl.create(:invitation, :invited) }
@@ -16,6 +16,17 @@ describe Invitation do
 
     it "does not include invitations that are not in the 'invited' state" do
       expect(Invitation.invited).to_not include(accepted_invitation)
+    end
+  end
+
+  describe 'validations' do
+    it 'is valid' do
+      expect(invitation.valid?).to be(true)
+    end
+
+    it 'requires an invitee_role' do
+      invitation.invitee_role = nil
+      expect(invitation.valid?).to be(false)
     end
   end
 

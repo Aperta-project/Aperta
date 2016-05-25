@@ -2,6 +2,8 @@ require 'securerandom'
 
 FactoryGirl.define do
   factory :invitation do
+    invitee_role 'Some Role'
+
     association(:task, factory: :invitable_task)
     association(:invitee, factory: :user)
     association(:actor, factory: :user)

@@ -14,6 +14,8 @@ class Invitation < ActiveRecord::Base
   scope :where_email_matches,
         ->(email) { where('email = ? OR email like ?', email, "%<#{email}>") }
 
+  validates :invitee_role, presence: true
+
   aasm column: :state do
     state :pending, initial: true
     state :invited do

@@ -57,12 +57,12 @@ class AuthenticatedPage(PlosPage):
     self._nav_help_link = (By.ID, 'nav-help')
     self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
+    self._nav_feedback_link = (By.ID, 'nav-give-feedback')
     self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
     self._nav_profile_img = (By.CSS_SELECTOR, 'span.main-nav-item img')
     self._nav_profile_text = (By.CLASS_NAME, 'profile-dropdown-menu-text')
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
-    self._nav_feedback_link = (By.ID, 'nav-give-feedback')
     # Global toolbar Icons
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
@@ -76,7 +76,7 @@ class AuthenticatedPage(PlosPage):
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar.toot div.bar-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
-    self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
+    self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.overlay-header-title')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
     self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')
     # Discussion related items
@@ -180,10 +180,12 @@ class AuthenticatedPage(PlosPage):
     assert help_link.get_attribute('target') == '_blank', help_link.get_attribute('target')
     assert help_link.get_attribute('href') == \
         'http://journals.plos.org/plosbiology/s/aperta-help', help_link.get_attribute('href')
+    self._get(self._nav_feedback_link)
     self.click_profile_nav()
     self._get(self._nav_profile_link)
     self._get(self._nav_signout_link)
-    self._get(self._nav_feedback_link)
+    # Closing menu we opened
+    self.click_profile_nav()
     # Must have flow mgr, admin or superadmin
     if permissions in elevated:
       self._get(self._nav_admin_link)
@@ -270,7 +272,6 @@ class AuthenticatedPage(PlosPage):
 
   def click_feedback_link(self):
     """Click nav toolbar feedback link"""
-    self.click_profile_nav()
     self._get(self._nav_feedback_link).click()
     return self
 

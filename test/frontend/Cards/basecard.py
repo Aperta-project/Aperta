@@ -1,15 +1,39 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import time
 
 from loremipsum import generate_paragraph
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5, internal_editor_login, staff_admin_login, super_admin_login, prod_staff_login, \
+    pub_svcs_login, cover_editor_login, handling_editor_login, academic_editor_login
 from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface, tahi_green
 
 __author__ = 'sbassi@plos.org'
+
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         ]
+
+editorial_users = [internal_editor_login,
+                   staff_admin_login,
+                   super_admin_login,
+                   prod_staff_login,
+                   pub_svcs_login,
+                   ]
+
+external_editorial_users = [cover_editor_login,
+                            handling_editor_login,
+                            academic_editor_login,
+                            ]
+
 
 class BaseCard(AuthenticatedPage):
   """
@@ -42,6 +66,19 @@ class BaseCard(AuthenticatedPage):
     self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
     self._invite_box = (By.ID, 'invitation-recipient')
     self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')
+    # The invite table is shared between the invite ae and invite reviewer cards
+    self._invitees_table = (By.CLASS_NAME, 'invitees')
+    # There can be an arbitrary number of invitees, but once one is accepted, all others are
+    #   revoked - we retain information about revoked invitations.
+    self._invitee_listing = (By.CSS_SELECTOR, 'tr.invitation')
+    # the following locators assume they will be searched for by find element within the scope of
+    #   the above, enclosing div
+    self._invitee_avatar = (By.CSS_SELECTOR, 'img.invitee-thumbnail')
+    self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
+    self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
+    self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
+    self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
+
 
   # Common actions for all cards
   def click_task_completed_checkbox(self):
@@ -221,3 +258,55 @@ class BaseCard(AuthenticatedPage):
     :return: Version string
     """
     return self.get(self._versioned_metadata_version_string).text
+
+  def revoke_invitee(self, invitee, role):
+    """
+    A method to revoke an invitation for a user
+    :param invitee: The user with the invite to revoke
+    :param role: The role whose invitation you want to revoke
+    :return: void function
+    """
+    invited = self._gets(self._invitee_listing)
+    for invitation in invited:
+      pagefullname = invitation.find_element(*self._invitee_full_name)
+      revoke = invitation.find_element(*self._invitee_revoke)
+      logging.info('Checking assignee ({0}) for invite to be {1}'.format(invitee['name'], role))
+      if invitee['name'] in pagefullname.text:
+        logging.info('Removing role {0} for {1}'.format(role, invitee['name']))
+        revoke.click()
+    self._validate_invitation_revocation(invitee, role)
+
+  def validate_invitation(self, invitee, role):
+    """
+    a method to validate the invitation for a role for a user
+    :param invitee: person for whom the invite should have been sent
+    :param role: role whose invite should have been extended for the assignee
+    :return: void function
+    """
+    invited = self._gets(self._invitee_listing)
+    for invitation in invited:
+      pagefullname = invitation.find_element(*self._invitee_full_name)
+      logging.info('Checking invitee ({0}) for match among invitees'.format(invitee['name']))
+      if invitee['name'] in pagefullname.text:
+        match = True
+      else:
+        continue
+      if not match:
+        raise ElementDoesNotExistAssertionError('No Invitation found for {0} and '
+                                                '{1}'.format(invitee['name'], role))
+
+  def _validate_invitation_revocation(self, invitee, role):
+    """
+    an internal method to validate the revocation of an invite for a role for a user
+    :param invitee: person for whom the invite should have been revoked
+    :param role: role whose invite should have been revoked for the assignee
+    :return: void function
+    """
+    invited = self._gets(self._invitee_listing)
+    for invitation in invited:
+      pagefullname = invitation.find_element(*self._invitee_full_name)
+      logging.info('Checking invitee ({0}) for match among remaining '
+                   'invitees'.format(invitee['name']))
+      if invitee['name'] in pagefullname.text:
+        raise ElementExistsAssertionError('Invitation found for {0} and {1} - should have been '
+                                          'revoked'.format(invitee['name'], role))

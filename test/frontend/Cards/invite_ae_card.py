@@ -19,16 +19,16 @@ class InviteAECard(BaseCard):
   def __init__(self, driver):
     super(InviteAECard, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
-    ##self._ae_input = (By.ID, 'invitation-recipient')
+    # self._ae_input = (By.ID, 'invitation-recipient')
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._compose_invitation_button = (By.CLASS_NAME, 'compose-invite-button')
     self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
-    ##self._edit_invite_text_send_invite_button = (By.CSS_SELECTOR, 'button.invite-reviewer-button')
+    # self._edit_invite_text_send_invite_button = (By.CSS_SELECTOR, 'button.invite-reviewer-button')
 
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
@@ -54,15 +54,15 @@ class InviteAECard(BaseCard):
     time.sleep(2)
     self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
     self._get(self._send_invitation_button).click()
-    #give some time to allow complete to check automatically,
+    # give some time to allow complete to check automatically,
     time.sleep(.5)
     self.click_completion_button()
     self.click_close_button()
 
   def validate_invite_ae(self, ae, title, creator, manu_id):
     """
-    Invites the Academic Editor (AE) that is passed as parameter, verifying the composed email. Makes
-      function and style validations.
+    Invites the Academic Editor (AE) that is passed as parameter, verifying the composed email.
+      Makes function and style validations.
     :param ae: user to invite as AE specified as email, or, if in system, name,
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode

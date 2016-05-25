@@ -16,25 +16,13 @@ from Base.Resources import creator_login1, creator_login2, creator_login3, creat
     creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
     super_admin_login, academic_editor_login
 from frontend.common_test import CommonTest
+from Cards.basecard import users, editorial_users
 from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
 
 @MultiBrowserFixture
 class InviteAECardTest(CommonTest):
@@ -62,7 +50,9 @@ class InviteAECardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.set_timeout(15)
     manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.restore_timeout()
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
@@ -100,6 +90,12 @@ class InviteAECardTest(CommonTest):
                                           manuscript_title,
                                           creator_user,
                                           paper_id)
+    # Invite a second user to delete
+    invite_ae_card.validate_invite_ae(pub_svcs_login,
+                                      manuscript_title,
+                                      creator_user,
+                                      paper_id)
+    invite_ae_card.revoke_invitee(pub_svcs_login, 'Academic Editor')
     time.sleep(.5)
     workflow_page.logout()
     dashboard_page = self.cas_login(email=academic_editor_login['email'])

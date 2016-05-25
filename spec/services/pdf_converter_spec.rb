@@ -76,18 +76,23 @@ describe PDFConverter do
     end
 
     context 'when paper has figures' do
+      let(:figure) { paper.figures.first }
+      let(:figure_img) { doc.css("img").first }
       before do
         paper.figures
           .create attachment: File.open('spec/fixtures/yeti.tiff'),
                   status: 'done'
+        paper.update_attributes(body: "<p>Figure 1.</p>")
       end
 
       it 'replaces img src urls (which are normally proxied) with resolveable
         urls' do
-        figure = paper.figures.first
-        paper.body = "<p>Figure 1.</p>"
-        img = doc.css("img").first
-        expect(img['src']).to have_s3_url figure.proxyable_url(version: :detail)
+        expect(figure_img['src']).to have_s3_url figure.proxyable_url(version: :detail)
+      end
+
+      it 'has the proper css class to prevent figures spanning multiple lines' do
+        expect(figure_img['class']).to include("pdf-image",
+                                               "pdf-image-with-caption")
       end
     end
   end

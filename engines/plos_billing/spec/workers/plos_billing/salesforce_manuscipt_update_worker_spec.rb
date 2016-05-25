@@ -25,7 +25,7 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
   describe '#perform' do
     subject(:perform) { worker.perform(paper.id) }
     let(:worker) { described_class.new }
-    let!(:paper) { FactoryGirl.create(Paper, id: 88) }
+    let!(:paper) { FactoryGirl.create(:paper, id: 88) }
     let(:logger) { Logger.new(log_io) }
     let(:log_io) { StringIO.new }
 

@@ -1,5 +1,4 @@
 require 'rails_helper'
-require File.join(File.dirname(__FILE__), "concerns/invitation_codes_examples")
 
 describe ApplicationController do
   controller do
@@ -7,8 +6,6 @@ describe ApplicationController do
       redirect_to "/"
     end
   end
-
-  include_examples "controller supports invitation codes"
 
   describe "#cas_logout_path" do
     let(:controller) do

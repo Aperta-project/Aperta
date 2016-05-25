@@ -1,0 +1,12 @@
+.pdf-image {
+  page-break-inside:avoid;
+  width:auto;
+
+  // Max height of 825 was chosen to allow the image to fill most of the page
+  // while allowing a little room for the title/caption.
+  max-height:825px;
+}
+
+.pdf-image-with-caption {
+  page-break-after:avoid;
+}

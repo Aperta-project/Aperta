@@ -112,6 +112,7 @@ describe Figure, redis: true do
 
     it 'triggers when the figure title is updated' do
       allow(figure).to receive(:paper).and_return(paper_double)
+      allow(figure).to receive(:all_figures_done?).and_return(true)
       expect(paper_double).to receive(:insert_figures!)
 
       figure.update!(title: 'new title')

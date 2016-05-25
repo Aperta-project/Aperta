@@ -156,6 +156,15 @@ FactoryGirl.define do
     paper
     title "Billing"
     old_role "author"
+    trait :with_nested_question_answers do
+      after(:create) do |task|
+        task.nested_questions.each do |nested_question|
+          value = "#{nested_question.ident} answer"
+          value = 'bob@example.com' if nested_question.ident == 'plos_billing--email'
+          task.find_or_build_answer_for(nested_question: nested_question, value: value)
+        end
+      end
+    end
   end
 
   factory :authors_task, class: 'TahiStandardTasks::AuthorsTask' do

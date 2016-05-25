@@ -137,7 +137,7 @@ class EditJournalFragment < PageFragment
 
   def save
     click_on "Save"
-    wait_for_ajax
+    wait_for_ajax timeout: 20
     session.has_content? @name
   end
 

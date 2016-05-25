@@ -48,7 +48,15 @@ describe Typesetter::BillingLogSerializer do
 
   it 'has a guid for a pre-existing billing user with a NedId' do
     FactoryGirl.create(:user, email: 'bob@example.com', ned_id: '12345')
-    expect(output[:guid]).to eq('12345')
+    expect(output[:guid]).to eq(12345)
+  end
+
+  it 'has a corresponding_author_ned_id based upon the ned_id of the paper creator' do
+    expect(output[:corresponding_author_ned_id]).to eq(paper.creator.ned_id)
+  end
+
+  it 'has a corresponding_author_ned_email based upon the ned email of the paper creator' do
+    expect(output[:corresponding_author_ned_email]).to eq(paper.creator.email)
   end
 
   it 'has documentid which is the manuscript id' do

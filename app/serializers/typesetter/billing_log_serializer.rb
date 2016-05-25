@@ -2,8 +2,8 @@ module Typesetter
   # Serializes a paper's billing log information
   # Expects a paper as its object to serialize.
   class BillingLogSerializer < Typesetter::TaskAnswerSerializer
-    attributes :guid, :title, :journal_id, :doi,
-               :firstname, :middlename, :lastname,
+    attributes :guid, :corresponding_author_ned_id, :corresponding_author_ned_email,
+               :title, :journal_id, :doi, :firstname, :middlename, :lastname,
                :institute, :department, :address1, :address2, :address3,
                :city, :state, :zip, :country, :phone1, :phone2, :fax,
                :email, :pubdnumber, :dtitle, :fundRef,
@@ -16,6 +16,14 @@ module Typesetter
     def guid
       billing_user = User.where(email: email).first
       billing_user.ned_id if billing_user
+    end
+
+    def corresponding_author_ned_id
+      billing_task.paper.creator.ned_id
+    end
+
+    def corresponding_author_ned_email
+      billing_task.paper.creator.email
     end
 
     def title

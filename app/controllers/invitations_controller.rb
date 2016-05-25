@@ -52,7 +52,7 @@ class InvitationsController < ApplicationController
   private
 
   def invitation_params
-    params.require(:invitation).permit(:email, :task_id, :invitee_id, :actor_id, :body)
+    params.require(:invitation).permit(:email, :task_id, :actor_id, :body)
   end
 
   def task

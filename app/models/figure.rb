@@ -13,7 +13,7 @@ class Figure < ActiveRecord::Base
 
   mount_uploader :attachment, AttachmentUploader
 
-  after_update :insert_figures!, if: :should_insert_figures?
+  after_save :insert_figures!, if: :should_insert_figures?
   after_destroy :insert_figures!
 
   delegate :insert_figures!, to: :paper
@@ -57,7 +57,11 @@ class Figure < ActiveRecord::Base
   end
 
   def should_insert_figures?
-    title_changed? || attachment_changed?
+    (title_changed? || attachment_changed?) && all_figures_done?
+  end
+
+  def all_figures_done?
+    paper.figures.all? { |figure| figure.status == 'done' }
   end
 
   def rank

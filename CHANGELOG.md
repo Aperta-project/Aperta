@@ -10,6 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 - Removed University of Ottawa as an institutional account participant
+- Invitations can no longer be assigned via invitation codes.
 ### Fixed
 - Fixed figures in PDFs spanning multiple pages
 ### Security

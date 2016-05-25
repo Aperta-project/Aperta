@@ -12,7 +12,6 @@ module TahiStandardTasks
     end
 
     def invitation_invited(invitation)
-      invitation.body = add_invitation_link(invitation)
       invitation.save!
       PaperEditorMailer.delay.notify_invited invitation_id: invitation.id
     end
@@ -34,13 +33,6 @@ module TahiStandardTasks
         salutation: "Dear Dr. [EDITOR NAME],",
         body: invitation_body
       )
-    end
-
-    def add_invitation_link(invitation)
-      old_invitation_url = client_dashboard_url
-      new_invitation_url = client_dashboard_url(
-        invitation_code: invitation.code)
-      invitation.body.gsub old_invitation_url, new_invitation_url
     end
 
     private

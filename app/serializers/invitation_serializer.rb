@@ -4,13 +4,8 @@ class InvitationSerializer < ActiveModel::Serializer
              :email,
              :created_at,
              :updated_at,
-             :invitee_role,
-             :invitation_type
+             :invitee_role
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true, include: true
-
-  def invitation_type
-    object.invitee_role.capitalize
-  end
 end

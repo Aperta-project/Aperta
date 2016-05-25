@@ -14,10 +14,10 @@ export default Ember.Component.extend({
   latestDecisionInvitations: computed(
     'latestDecision', 'latestDecision.invitations',
     'latestDecision.invitations.[]', function() {
-      const type = this.get('invitationType');
+      const type = this.get('inviteeRole');
       if (this.get('latestDecision.invitations')) {
         return this.get('latestDecision.invitations')
-                   .filterBy('invitationType', type);
+                   .filterBy('inviteeRole', type);
       }
     }
   ),
@@ -30,11 +30,11 @@ export default Ember.Component.extend({
     'previousDecisions', 'previousDecisions.[]', function() {
       return this.get('previousDecisions').map(decision => {
         const allInvitations = decision.get('invitations');
-        const type = this.get('invitationType');
+        const type = this.get('inviteeRole');
 
         decision.set(
           'filteredInvitations',
-          allInvitations.filterBy('invitationType', type)
+          allInvitations.filterBy('inviteeRole', type)
         );
 
         return decision;

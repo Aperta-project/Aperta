@@ -14,10 +14,9 @@ export default Ember.Controller.extend({
 
   init() {
     Ember.assert('Application name is required for proper display', window.appName);
-    var that = this;
-    this.store.find('journal').then( (journals)=> {
-      that.set('journals', journals);
-      that.setCanViewPaperTracker();
+    this.store.find('journal').then( (journals) => {
+      this.set('journals', journals);
+      this.setCanViewPaperTracker();
     });
     return this._super(...arguments);
   },

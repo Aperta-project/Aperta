@@ -3,11 +3,7 @@ require 'rails_helper'
 describe SnapshotsController do
   let(:owner) { FactoryGirl.create(:user) }
   let(:other_user) { FactoryGirl.create(:user) }
-  let(:journal) do
-    FactoryGirl.create(:journal).tap do |journal|
-      journal.roles.create!(name: Role::TASK_PARTICIPANT_ROLE)
-    end
-  end
+  let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:task) do
     FactoryGirl.create(:ethics_task, paper: paper, participants: [owner])

@@ -246,7 +246,7 @@ describe ParticipationsController do
       FactoryGirl.create(
         :assignment,
         assigned_to: task,
-        role: FactoryGirl.create(:role, :task_participant, journal: task.journal),
+        role: task.journal.task_participant_role,
         user: participant
       )
     end

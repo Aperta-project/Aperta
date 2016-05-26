@@ -36,7 +36,7 @@ class FigureInserter
 
   def node_for_figure(figure)
     <<-HTML
-      <img class="paper-body-figure"
+      <img class="paper-body-figure pdf-image pdf-image-with-caption"
            data-figure-id="#{figure.id}"
            data-figure-rank="#{figure.rank}"
            src="#{figure_url(figure)}">

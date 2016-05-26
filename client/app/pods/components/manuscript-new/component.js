@@ -43,18 +43,18 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     uploadFinished(s3Url){
-      this.get('paper').save().then((paper) => {
-        const path = `/api/papers/${paper.id}/upload`;
-        this.get('restless').put(path, {url: s3Url}).then((data) => {
-          this.attrs.complete(paper, data);
-        });
-      }, (response) => {
-        this.set('isSaving', false);
+      let paper = this.get('paper')
+      paper.set('url', s3Url);
+      paper.save().then((paper) => {
+        this.attrs.complete(paper);
+      } , (response) => {
         this.get('flash').displayErrorMessagesFromResponse(response);
+      }).finally(() => {
+        this.set('isSaving', false);
       });
     },
 
-    uploadFailed(reason) {
+    uploadFailed(reason){
       this.set('isSaving', false);
       this.get('flash').displayMessage('error', reason);
       console.log(reason);

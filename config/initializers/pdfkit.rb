@@ -11,6 +11,8 @@ PDFKit.configure do |config|
     # rendering, maybe try increasing this?
     javascript_delay: 10_000, # milliseconds
     cache_dir: File.join(Dir.tmpdir, 'wkhtmltopdf-cache'),
-    page_size: 'Letter'
+    page_size: 'Letter',
+    load_error_handling: 'ignore'
   }
+  config.verbose = true
 end

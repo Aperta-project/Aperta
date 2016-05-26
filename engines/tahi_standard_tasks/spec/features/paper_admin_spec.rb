@@ -19,7 +19,7 @@ feature "Invite Admin", js: true do
     visit "/"
   end
 
-  scenario "Site Admin can invite a Paper Admin to a Paper", selenium: true do
+  scenario "Site Admin can invite a Paper Admin to a Paper" do
     dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper(paper)
     task_manager_page = paper_page.visit_task_manager

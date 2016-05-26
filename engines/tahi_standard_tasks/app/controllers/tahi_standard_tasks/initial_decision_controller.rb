@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class InitialDecisionController < ApplicationController
+  class InitialDecisionController < ::ApplicationController
 
     def create
       register_initial_decision

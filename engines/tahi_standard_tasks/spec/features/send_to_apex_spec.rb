@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Send to Apex task', js: true, selenium: true do
+feature 'Send to Apex task', js: true do
   include SidekiqHelperMethods
 
   let!(:paper) do

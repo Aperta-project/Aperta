@@ -21,10 +21,11 @@ module NestedQuestionable
   # == Optional Parameters
   #  * decision - if provided, will scope the answer to the given :decision.
   #
-  def find_or_build_answer_for(nested_question:, decision: nil)
+  def find_or_build_answer_for(nested_question:, decision: nil, value: nil)
     answer = nested_question_answers.find_or_build(
       nested_question: nested_question,
-      decision: decision
+      decision: decision,
+      value: value
     )
     answer.paper = paper if respond_to?(:paper)
 

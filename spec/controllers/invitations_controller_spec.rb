@@ -1,16 +1,5 @@
 require "rails_helper"
 
-class TestTask < Task
-  include Invitable
-
-  DEFAULT_TITLE = 'Test Task'
-  DEFAULT_ROLE = 'user'
-
-  def invitation_rescinded(code:)
-    true
-  end
-end
-
 describe InvitationsController do
   let(:user) { invitee }
   let(:invitee) { FactoryGirl.create(:user) }
@@ -133,7 +122,6 @@ describe InvitationsController do
 
           expect(invitation.invitee).to eq(invitee)
           expect(invitation.email).to eq(invitee.email)
-          expect(invitation.code).to be_present
           expect(invitation.actor).to be_nil
           expect(invitation.state).to eq('invited')
           expect(invitation.body).to eq(invitation_body)
@@ -152,7 +140,6 @@ describe InvitationsController do
 
           expect(invitation.invitee).to eq nil
           expect(invitation.email).to eq(email_to_invite)
-          expect(invitation.code).to be_present
           expect(invitation.actor).to be_nil
           expect(invitation.state).to eq('invited')
         end

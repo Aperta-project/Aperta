@@ -127,10 +127,11 @@ class PageFragment
     end
   end
 
-  def upload_file(element_id:, file_name:, sentinel:)
+  def upload_file(element_id:, file_name:, sentinel:, process_before_upload: false)
     file_path = Rails.root.join('spec', 'fixtures', file_name)
     wait_for_attachment_to_upload(sentinel) do
       attach_file element_id, file_path, visible: false
+      process_sidekiq_jobs if process_before_upload
     end
     process_sidekiq_jobs
   end

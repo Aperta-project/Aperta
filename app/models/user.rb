@@ -86,10 +86,13 @@ class User < ActiveRecord::Base
     )
   end
 
-  # Take a look at the InvitationCodes concern for other paths by which
-  # a user is associated to an invitation
+  # This associates existing invites to newly created users.
+  # Existing users have their invitations associated upon the creation of the
+  # invitation. See invitation.rb
   def associate_invites
-    Invitation.where(invitee: nil, email: email).update_all(invitee_id: id)
+    Invitation.where_email_matches(email)
+      .where(invitee: nil)
+      .update_all(invitee_id: id)
   end
 
   def created_papers_for_journal(journal)

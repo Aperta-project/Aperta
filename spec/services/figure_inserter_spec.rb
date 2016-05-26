@@ -39,7 +39,7 @@ describe FigureInserter do
         expect(html).to be_an_instance_of(String)
         expected_tree = parse <<-HTML
           <p>Doesn't matter</p>
-          <img class="paper-body-figure"
+          <img class="paper-body-figure pdf-image pdf-image-with-caption"
                data-figure-id="#{figure.id}"
                data-figure-rank="#{figure.rank}"
                src="#{figure.detail_src}">
@@ -57,7 +57,7 @@ describe FigureInserter do
         expect(html).to be_an_instance_of(String)
         expected_tree = parse <<-HTML
           <p>Doesn't matter</p>
-          <img class="paper-body-figure"
+          <img class="paper-body-figure pdf-image pdf-image-with-caption"
                data-figure-id="#{figure.id}"
                data-figure-rank="#{figure.rank}"
                src="#{figure.detail_src}">
@@ -77,7 +77,7 @@ describe FigureInserter do
           <p>Doesn't matter</p>
           <p id="only-for-testing">Figure 1. This is the caption</p>
           <p>Also doesn't matter</p>
-          <img class="paper-body-figure"
+          <img class="paper-body-figure pdf-image pdf-image-with-caption"
                data-figure-id="#{no_caption_figure.id}"
                data-figure-rank="#{no_caption_figure.rank}"
                src="#{no_caption_figure.detail_src}">
@@ -96,7 +96,7 @@ describe FigureInserter do
           <p>Doesn't matter</p>
           <p id="only-for-testing">Figure 1. This is the caption</p>
           <p>Also doesn't matter</p>
-          <img class="paper-body-figure"
+          <img class="paper-body-figure pdf-image pdf-image-with-caption"
                data-figure-id="#{bad_rank_figure.id}"
                data-figure-rank="#{bad_rank_figure.rank}"
                src="#{bad_rank_figure.detail_src}">
@@ -130,12 +130,12 @@ describe FigureInserter do
           figure_1, figure_2 = figures.sort_by(&:rank).to_a
           expected_tree = parse <<-HTML
             <p id="the-end"></p>
-            <img class="paper-body-figure"
+            <img class="paper-body-figure pdf-image pdf-image-with-caption"
                data-figure-id="#{figure_1.id}"
                data-figure-rank="#{figure_1.rank}"
                src="#{figure_1.detail_src}">
             <p class="paper-body-figure-caption">#{figure_1.title}.</p>
-            <img class="paper-body-figure"
+            <img class="paper-body-figure pdf-image pdf-image-with-caption"
                data-figure-id="#{figure_2.id}"
                data-figure-rank="#{figure_2.rank}"
                src="#{figure_2.detail_src}">

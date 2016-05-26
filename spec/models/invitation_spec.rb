@@ -174,4 +174,17 @@ describe Invitation do
       end
     end
   end
+
+  describe "#where_email_matches" do
+    let(:email) { "turtle@turtles.com" }
+    let!(:invitation_1) { create :invitation, email: email }
+    let!(:invitation_2) { create :invitation, email: "turtle <#{email}>" }
+    let!(:invitation_3) { create :invitation, email: "another@email.com" }
+
+    it "returns invitiations where the email matches the supplied argument" do
+      invitations = Invitation.where_email_matches email
+      expect(Invitation.count).to eq 3
+      expect(invitations.map(&:id)).to match [invitation_1.id, invitation_2.id]
+    end
+  end
 end

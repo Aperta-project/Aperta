@@ -5,9 +5,12 @@ describe SupportingInformationFile, redis: true do
   let(:file) do
     with_aws_cassette 'supporting_info_files_controller' do
       FactoryGirl.create :supporting_information_file,
-                         attachment: File.open('spec/fixtures/yeti.tiff')
+                         attachment: File.open('spec/fixtures/yeti.tiff'),
+                         status: 'done'
     end
   end
+
+  let(:file_src) { "/resource_proxy/supporting_information_files/#{file.token}" }
 
   it_behaves_like 'a striking image'
 
@@ -31,7 +34,7 @@ describe SupportingInformationFile, redis: true do
 
   describe '#src' do
     it 'returns the file url' do
-      expect(file.src).to match /yeti\.tiff/
+      expect(file.src).to eq(file_src)
     end
   end
 
@@ -39,7 +42,7 @@ describe SupportingInformationFile, redis: true do
     it 'returns a hash with attachment src, filename, alt, and S3 URL' do
       expect(file.access_details).to eq(filename: 'yeti.tiff',
                                         alt: 'Yeti',
-                                        src: file.attachment.url,
+                                        src: file_src,
                                         id: file.id)
     end
   end

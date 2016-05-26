@@ -12,7 +12,6 @@ module TahiDevise
             user.credentials.build(uid: auth[:uid], provider: :cas)
           end
         end
-
       # update user profile with latest attributes from NED
       user.first_name = ned[:firstName]
       user.last_name = ned[:lastName]

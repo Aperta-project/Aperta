@@ -73,6 +73,7 @@ class FigureInserter
                     "Fig. #{figure_id}"]
     delimiters = %w(. : - - –) # period, colon, hyphen, n-dash, m-dash
     possible_matches = figure_names.product(delimiters).map(&:join)
+      .concat(figure_names)
 
     selectors = possible_matches.flat_map do |match_test|
       ["p[text()^='#{match_test}']",

@@ -48,14 +48,14 @@ database:
 ## Customize test commands
 test:
   override:
-    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
+    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true
         files:
           # Only select non-feature specs
           - "spec/**{[!features]}**/**/*_spec.rb"
           - "engines/*/spec/**{[!features]}**/**/*_spec.rb"
-    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
+    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
         timeout: 1800
         parallel: true
         files:

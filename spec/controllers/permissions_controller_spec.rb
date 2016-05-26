@@ -4,24 +4,30 @@ describe PermissionsController do
   include AuthorizationSpecHelper
 
   let(:user) { FactoryGirl.create :user }
-  let(:paper) { FactoryGirl.create :paper }
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_creator_role,
+      :with_production_staff_role
+    )
+  end
+  let!(:paper) { FactoryGirl.create :paper, journal: journal }
 
   before { sign_in user }
 
   describe '#show' do
-
-    permission action: :withdraw, applies_to: 'Paper', states: ['*']
-    role 'Creator' do
-      has_permission action: 'withdraw', applies_to: 'Paper'
-    end
-    role 'JournalStaff' do
-      has_permission action: 'withdraw', applies_to: 'Paper'
-    end
-
     context 'has one assignment to the object' do
+      let!(:withdraw_permission_for_creator_role) do
+        journal.creator_role.ensure_permission_exists(
+          :withdraw,
+          applies_to: 'Paper',
+          states: ['*']
+        )
+      end
+
       context 'as the creator' do
         before do
-          assign_user user, to: paper, with_role: role_Creator
+          assign_user user, to: paper, with_role: journal.creator_role
         end
 
         it 'returns the permission' do
@@ -35,9 +41,21 @@ describe PermissionsController do
     end
 
     context 'has one permission at the journal level' do
-      context 'as the JournalStaff' do
+      let!(:withdraw_permission_for_production_staff_role) do
+        journal.production_staff_role.ensure_permission_exists(
+          :withdraw,
+          applies_to: 'Paper',
+          states: ['*']
+        )
+      end
+
+      context 'as staff' do
         before do
-          assign_user user, to: paper.journal, with_role: role_JournalStaff
+          assign_user(
+            user,
+            to: paper.journal,
+            with_role: journal.production_staff_role
+          )
         end
 
         it 'returns the permission' do

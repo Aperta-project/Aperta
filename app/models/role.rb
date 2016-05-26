@@ -59,18 +59,23 @@ class Role < ActiveRecord::Base
   def ensure_permission_exists(action, applies_to:, states: ['*'])
     perm = Permission.ensure_exists(action, applies_to: applies_to, role: self,
                                             states: states)
-    @ensured_permission_ids << perm.id
+    ensured_permission_ids << perm.id
     perm
   end
 
   private
+
+  def ensured_permission_ids
+    @ensured_permission_ids ||= []
+  end
 
   def reset_tracked_permissions
     @ensured_permission_ids = []
   end
 
   def delete_stray_permissions
-    permissions.delete(permissions.where.not(id: @ensured_permission_ids))
+    return if ensured_permission_ids.empty?
+    permissions.delete(permissions.where.not(id: ensured_permission_ids))
     reset_tracked_permissions
   end
 end

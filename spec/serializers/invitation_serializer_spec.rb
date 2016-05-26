@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe InvitationSerializer, serializer_test: true do
   let(:user) { FactoryGirl.create :user }
@@ -9,40 +9,26 @@ describe InvitationSerializer, serializer_test: true do
 
   let(:invitation_content) { deserialized_content.fetch(:invitation) }
 
-  it "serializes successfully" do
+  it 'serializes successfully' do
     expect(deserialized_content).to match(hash_including(:invitation))
+
+    expect(invitation_content).to match hash_including(
+      id: invitation.id,
+      state: invitation.state,
+      email: invitation.email,
+      invitee_role: invitation.invitee_role
+    )
+
+    expect(invitation_content.fetch(:created_at)).to be
+    expect(invitation_content.fetch(:updated_at)).to be
   end
 
-  context "without an invitee" do
+  context 'without an invitee' do
     subject(:invitation) { FactoryGirl.create :invitation, task: task, invitee: nil }
 
-    it "serializes successfully" do
+    it 'serializes successfully' do
       expect(deserialized_content).to match(hash_including(users: []))
     end
   end
 
-  it 'serializes :id' do
-    expect(invitation_content).to match(hash_including(id: invitation.id))
-  end
-
-  it 'serializes :state' do
-    expect(invitation_content).to match(hash_including(state: invitation.state))
-  end
-
-  it 'serializes :email' do
-    expect(invitation_content).to match(hash_including(email: invitation.email))
-  end
-
-  it 'serializes :invitee_role' do
-    expect(invitation_content).to match \
-      hash_including(invitee_role: invitation.invitee_role)
-  end
-
-  it 'serializes :created_at' do
-    expect(invitation_content.fetch(:created_at)).to be
-  end
-
-  it 'serializes :updated_at' do
-    expect(invitation_content.fetch(:created_at)).to be
-  end
 end

@@ -140,16 +140,13 @@ export default Ember.Component.extend({
   // MATHJAX (for rendering equations).
 
   loadMathJax: function() {
-    if (this.renderEquations) {
-      LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
-        this.refreshEquations();
-      });
-    }
+    LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
+      this.refreshEquations();
+    });
   },
 
   refreshEquations:  function() {
-    if (!this.renderEquations) { return; }
-    else if (!window.MathJax) { this.loadMathJax(); return; }
+    if (!window.MathJax) { this.loadMathJax(); return; }
     else if (!window.MathJax.Hub) { return; }
 
     Ember.run.next(() => {

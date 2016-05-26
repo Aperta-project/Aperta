@@ -9,11 +9,9 @@ export default Ember.View.extend(PaperIndexMixin, {
   }.observes('controller.model.body'),
 
   loadMathJax: function() {
-    if (this.renderEquations()) {
-      LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
-        this.refreshEquations();
-      });
-    }
+    LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
+      this.refreshEquations();
+    });
   },
 
   refreshEquations:  function() {

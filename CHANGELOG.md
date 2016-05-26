@@ -8,6 +8,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   readable error messages when not-valid. This is a non-user facing addition.
 - Added The Francis Crick Institute to institutional accounts
 ### Changed
+- Replaced EM GUID as a value that we export in the billing log in favor of NED
+  ID. Sent NED ID and email for corresponding author in billing log
 ### Deprecated
 ### Removed
 ### Fixed

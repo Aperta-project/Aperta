@@ -19,15 +19,19 @@ module Typesetter
     end
 
     def corresponding_author_ned_id
-      billing_task.paper.creator.ned_id
+      object.creator.ned_id
     end
 
     def corresponding_author_ned_email
-      billing_task.paper.creator.email
+      object.creator.email
     end
 
     def title
       billing_answer_for('plos_billing--title')
+    end
+
+    def journal_id
+      object.journal.name
     end
 
     def firstname

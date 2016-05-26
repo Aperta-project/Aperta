@@ -76,8 +76,8 @@ describe Typesetter::BillingLogSerializer do
     expect(output[:dtitle]).to eq(paper.title)
   end
 
-  it 'has journal_id' do
-    expect(output[:journal_id]).to eq(paper.journal.id)
+  it 'has journal_id equal to the journal name' do
+    expect(output[:journal_id]).to eq(paper.journal.name)
   end
 
   context 'pulls from corresponding billing task that' do

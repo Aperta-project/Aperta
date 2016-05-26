@@ -69,6 +69,26 @@ class UserMailer < ActionMailer::Base
       subject: "You've been mentioned on the manuscript, \"#{@paper.display_title}\"")
   end
 
+  def notify_creator_of_check_submission(paper_id)
+    @paper = Paper.find(paper_id)
+    @author = @paper.creator
+    @journal = @paper.journal
+
+    mail(
+      to: @author.try(:email),
+      subject: "Thank you for submitting your manuscript to #{@journal.name}")
+  end
+
+  def notify_creator_of_revision_submission(paper_id)
+    @paper = Paper.find(paper_id)
+    @author = @paper.creator
+    @journal = @paper.journal
+
+    mail(
+      to: @author.try(:email),
+      subject: "Thank you for submitting your manuscript to #{@journal.name}")
+  end
+
   def notify_creator_of_paper_submission(paper_id)
     @paper = Paper.find(paper_id)
     @author = @paper.creator

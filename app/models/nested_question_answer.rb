@@ -19,11 +19,12 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   validate :verify_from_owner
 
-  def self.find_or_build(nested_question:, decision: nil)
+  def self.find_or_build(nested_question:, decision: nil, value: nil)
     query_params = { nested_question_id: nested_question.id }
     query_params[:decision_id] = decision.id if decision
     where(query_params).first_or_initialize(
       value_type: nested_question.value_type,
+      value: value,
       decision: decision
     )
   end

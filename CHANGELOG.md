@@ -4,10 +4,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Generates a multiple line billing log file csv based on accepted papers that integrates EM GUID and
+  information from various cards
 ### Changed
 ### Deprecated
 ### Removed
+- Removed University of Ottawa as an institutional account participant
+- Invitations can no longer be assigned via invitation codes.
 ### Fixed
+- Fixed figures in PDFs spanning multiple pages
 ### Security
 
 ## [1.4.11] - 2016-05-19
@@ -26,6 +31,12 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Show discussion participants' emails when selecting and on hover
 
 ## [1.4.9] - 2016-05-13
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.9] - 2016-06-13
 
 ### Fixed
 -Fixed bug preventing changes for author card from being completed

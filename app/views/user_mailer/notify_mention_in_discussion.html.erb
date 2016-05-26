@@ -13,7 +13,7 @@
     </p>
     <p>
     <%= if @reply
-          @reply.body
+          simple_format(@reply.body)
         end %>
     </p>
     <p>

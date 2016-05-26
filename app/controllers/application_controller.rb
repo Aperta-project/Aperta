@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   include AuthorizationsControllerHelper
   include TahiPusher::SocketTracker
   include TahiPusher::CurrentUserTracker
-  include InvitationCodes
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

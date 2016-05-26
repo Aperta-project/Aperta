@@ -1,0 +1,23 @@
+{{#if readOnly}}
+  {{#if shouldDisplayQuestionText}}
+    <div class="{{textClassNames}}">{{{questionText}}}</div>
+  {{/if}}
+
+  {{#if model.answer.value}}
+    <div class="answer-text">{{model.answer.value}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+
+{{else}}
+  {{select-2-single class=class
+                    minimumResultsForSearch=minimumResultsForSearch
+                    placeholder=placeholder
+                    selectedData=selectedData
+                    selectionSelected="selectionSelected"
+                    source=source
+                    value=model.answer.value
+                    dropdownCssClass=dropdownCssClass
+                    width=width
+                    enable=enable}}
+{{/if}}

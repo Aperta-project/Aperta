@@ -25,7 +25,7 @@
 
   <div class="form-group required {{if validationErrors.affiliation "error"}}">
     {{error-message message=null}}
-    {{nested-question-select ident="plos_billing--ringgold_institution"
+    {{nested-question-select-institutional-account ident="plos_billing--ringgold_institution"
                       owner=task
                       placeholder="Select an Institution"
                       source=institutionalAccountProgramList

@@ -1,5 +1,19 @@
 require 'rails_helper'
 
+feature "Devise account creation", js: true do
+  scenario "User can create an account" do
+    sign_up_page = SignUpPage.visit
+    dashboard_page = sign_up_page.sign_up_as username: 'albert',
+     first_name: 'Albert',
+     last_name: 'Einstein',
+     email: 'einstein@example.org',
+     password: 'password'
+
+   expect(page.current_path).to eq(root_path)
+   expect(dashboard_page).to have_welcome_message("Hi, Albert")
+  end
+end
+
 feature "Devise signing in", js: true do
   let!(:user) { create :user }
   scenario "User can sign in to & out of the site using their email address" do

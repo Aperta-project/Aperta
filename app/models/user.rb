@@ -67,7 +67,9 @@ class User < ActiveRecord::Base
   validates :email, format: Devise.email_regexp
   validates :first_name, length: { maximum: 255 }
   validates :last_name, length: { maximum: 255 }
-  validates :ned_id, presence: true, uniqueness: true, numericality: true
+
+  validates :ned_id, uniqueness: true
+  validates_with NedValidator
 
   mount_uploader :avatar, AvatarUploader
 

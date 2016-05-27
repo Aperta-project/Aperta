@@ -32,7 +32,7 @@ class BillingTask(BaseTask):
     self._zip = (By.NAME, 'plos_billing--postal_code')
     self._payment_option = (By.CSS_SELECTOR, 'div.payment-method a')
     # This ID is bogus and dynamic, untrustworthy
-    self._li_question = (By.CSS_SELECTOR, 'li.question')
+    self._payment_options_title = (By.TAG_NAME, 'h2')
     self._payment_items_parent = (By.CSS_SELECTOR, 'div.select2-drop-active')
 
    # POM Actions
@@ -61,12 +61,13 @@ class BillingTask(BaseTask):
     self._get(self._address1).send_keys(data['address1'])
     self._get(self._city).send_keys(data['city'])
     self._get(self._zip).send_keys(data['zip'])
-    li = self._get(self._li_question)
+    payment_options_title = self._get(self._payment_options_title)
     # Move to this point to put drop down in a reachable position
-    self._actions.move_to_element(li).perform()
-    time.sleep(1)
+    self._actions.move_to_element(payment_options_title).perform()
+    time.sleep(2)
     payment_select = self._get(self._payment_option)
-    payment_select.click()
+    #import pdb; pdb.set_trace()
+    self._actions.move_to_element(payment_select).click().perform()
     # Grab the items in the select2 dropdown, then make selection
     # previous send_keys method no longer works.
     time.sleep(1)

@@ -20,7 +20,7 @@ export default NestedQuestionComponent.extend({
   actions: {
     selectionSelected(selection) {
       this.set('model.answer.value', selection.id);
-      this.set('model.answer.additionalInformation', selection.nav_customer_number)
+      this.set('model.answer.additionalData', { nav_customer_number: selection.nav_customer_number })
       this.sendAction('selectionSelected', selection);
       this.save();
 

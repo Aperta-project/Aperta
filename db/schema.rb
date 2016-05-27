@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525221313) do
+ActiveRecord::Schema.define(version: 20160527223746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20160525221313) do
   end
 
   create_table "billing_logs", force: :cascade do |t|
-    t.string   "guid"
+    t.string   "ned_id"
     t.integer  "documentid",                     null: false
     t.string   "title"
     t.string   "firstname"
@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 20160525221313) do
     t.string   "phone2"
     t.integer  "fax"
     t.string   "email"
-    t.integer  "journal_id",                     null: false
+    t.integer  "journal",                        null: false
     t.string   "pubdnumber"
     t.string   "doi"
     t.string   "dtitle"
@@ -176,8 +176,8 @@ ActiveRecord::Schema.define(version: 20160525221313) do
   add_index "billing_logs", ["corresponding_author_ned_email"], name: "index_billing_logs_on_corresponding_author_ned_email", using: :btree
   add_index "billing_logs", ["corresponding_author_ned_id"], name: "index_billing_logs_on_corresponding_author_ned_id", using: :btree
   add_index "billing_logs", ["documentid"], name: "index_billing_logs_on_documentid", using: :btree
-  add_index "billing_logs", ["guid"], name: "index_billing_logs_on_guid", using: :btree
-  add_index "billing_logs", ["journal_id"], name: "index_billing_logs_on_journal_id", using: :btree
+  add_index "billing_logs", ["journal"], name: "index_billing_logs_on_journal", using: :btree
+  add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"

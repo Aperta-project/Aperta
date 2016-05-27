@@ -76,10 +76,6 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_manu_mgr_thumb_phases = (By.TAG_NAME, 'span')
 
     self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
-    self._journal_admin_upload_epub_cvr_btn = (By.CSS_SELECTOR, 'span.epub-cover-upload span.fileinput-button')
-    self._journal_admin_epub_cvr_image_text = (By.CSS_SELECTOR, 'span.epub-cover-image p')
-    self._journal_admin_epub_cvr_image_link = (By.CSS_SELECTOR, 'a.epub-cover')
-    self._journal_admin_edit_epub_css_btn = (By.ID, 'edit-epub-css')
     self._journal_admin_edit_pdf_css_btn = (By.ID, 'edit-pdf-css')
     self._journal_admin_edit_ms_css_btn = (By.ID, 'edit-manuscript-css')
 
@@ -330,31 +326,6 @@ class JournalAdminPage(AdminPage):
     styles_title = self._get(self._journal_admin_style_settings_title)
     self.validate_application_h2_style(styles_title)
     assert 'Style Settings' in styles_title.text, styles_title.text
-    upload_epub_cover_btn = self._get(self._journal_admin_upload_epub_cvr_btn)
-    self._actions.move_to_element(upload_epub_cover_btn).perform()
-    assert 'UPLOAD EPUB COVER' in upload_epub_cover_btn.text
-    self.set_timeout(1)
-    try:
-      epub_cvr_status_text = self._get(self._journal_admin_epub_cvr_image_text)
-      assert epub_cvr_status_text.text == 'There is currently no default ePub cover.', epub_cvr_status_text.text
-    except ElementDoesNotExistAssertionError:
-      epub_cvr_img = self._get(self._journal_admin_epub_cvr_image_link)
-      logging.info('An ePub Cover image has been uploaded for this journal: {0}'.format(epub_cvr_img.text))
-    self.restore_timeout()
-    edit_epub_css_btn = self._get(self._journal_admin_edit_epub_css_btn)
-    assert edit_epub_css_btn.text == 'EDIT EPUB CSS', edit_epub_css_btn.text
-    edit_epub_css_btn.click()
-    time.sleep(.5)
-    closer = self._get(self._overlay_header_close)
-    title = self._get(self._overlay_header_title)
-    assert 'ePub CSS' in title.text, title.text
-    label = self._get(self._journal_styles_css_overlay_field_label)
-    assert label.text == 'Enter or edit CSS to format the ePub output for this journal\'s papers.', label.text
-    self._get(self._journal_styles_css_overlay_field)
-    self._get(self._journal_styles_css_overlay_cancel)
-    self._get(self._journal_styles_css_overlay_save)
-    closer.click()
-    time.sleep(.5)
     edit_pdf_css_btn = self._get(self._journal_admin_edit_pdf_css_btn)
     assert edit_pdf_css_btn.text == 'EDIT PDF CSS', edit_pdf_css_btn.text
     edit_pdf_css_btn.click()

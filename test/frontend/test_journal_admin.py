@@ -35,8 +35,6 @@ class ApertaJournalAdminTest(CommonTest):
          # TODO:  Manuscript Manager Templates
          # TODO:  Add Template, Edit Template and Delete Template
          # TODO:  Style Settings
-           - Upload Epub Cover
-           - Edit Epub CSS
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
@@ -182,12 +180,9 @@ class ApertaJournalAdminTest(CommonTest):
     test_journal_admin: Validate styling & functions of  journal admin page style settings section
     Validates the presence of the following elements:
       Section Heading
-      Upload Epub Cover and status text
-      Edit EPUB CSS button
       Edit PDF CSS button
       Edit Manuscript CSS button
     Validates the function of the:
-      Upload EPUB Cover button
       Edit * CSS buttons
     Validates the elements of the * CSS types overlay
       Title

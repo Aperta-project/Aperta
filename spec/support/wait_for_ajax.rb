@@ -6,10 +6,10 @@ class Capybara::Session
     wait_for_ajax
   end
 
-  def wait_for_ajax
+  def wait_for_ajax(timeout: Capybara.default_max_wait_time)
     return unless jquery_present?
 
-    Timeout.timeout(Capybara.default_max_wait_time) do
+    Timeout.timeout(timeout) do
       loop until finished_all_ajax_requests? && finished_ember_requests?
     end
   end
@@ -34,8 +34,8 @@ class Capybara::Session
 end
 
 module WaitForAjax
-  def wait_for_ajax(session = Capybara.current_session)
-    session.wait_for_ajax
+  def wait_for_ajax(session = Capybara.current_session, **opts)
+    session.wait_for_ajax **opts
   end
 end
 

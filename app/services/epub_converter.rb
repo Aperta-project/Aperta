@@ -67,23 +67,6 @@ class EpubConverter
     "#{_source_dir(workdir)}/#{_manuscript_source_path.basename}"
   end
 
-  def _epub_cover_path
-    epub_cover = paper.journal.epub_cover
-    if Rails.application.config.carrierwave_storage == :fog && epub_cover.file
-      TahiEpub::Tempfile.create RestClient.get(epub_cover.file.url), delete: false do |file|
-        file.path
-      end
-    else
-      epub_cover.file.path
-    end
-  end
-
-  def _epub_css
-    TahiEpub::Tempfile.create paper.journal.epub_css, delete: false do |file|
-      file.path
-    end
-  end
-
   def _manuscript_source_path
     Pathname.new(manuscript_source.file.path)
   end
@@ -130,10 +113,6 @@ class EpubConverter
         optional_file "input/#{source_file_name}" => this._path_to_source(workdir)
       end
       resources(workdir: workdir) do
-        file 'css/default.css' => this._epub_css
-        if this.include_cover_image && this.paper.journal.epub_cover.file
-          cover_image 'images/cover_image.jpg' => this._epub_cover_path
-        end
         ordered do
           file "./#{File.basename publishing_info_path}"
           file "./#{File.basename temp_paper_path}"

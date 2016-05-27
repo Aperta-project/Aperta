@@ -154,40 +154,6 @@
 
   <div class="admin-section">
     <h2 class="admin-section-title">Style Settings</h2>
-    <div class="admin-style-setting-section">
-
-      <span class="epub-cover-upload">
-        {{#if epubCoverUploading}}
-          <div class="loader-container">
-            {{progress-spinner visible=true color="white"}}
-          </div>
-        {{/if}}
-        <span class="button-primary button--blue fileinput-button">
-          Upload ePub Cover
-          {{file-uploader id="epub-cover-upload"
-                          class="button-primary button--blue"
-                          accept=".jpg,.jpeg"
-                          progress="epubCoverUploading"
-                          done="epubCoverUploaded"
-                          filePrefix="epub/cover"
-                          railsMethod="PUT"
-                          url=epubCoverUploadUrl}}
-        </span>
-      </span>
-      <br>
-      <span class="epub-cover-image">
-        {{#if epubCoverUrl}}
-          <a href={{epubCoverUrl}} class="epub-cover" target="_blank">{{epubCoverFileName}}</a>
-        {{else}}
-          <p>There is currently no default ePub cover.</p>
-        {{/if}}
-      </span>
-    </div>
-
-    <div class="admin-style-setting-section">
-      <button id="edit-epub-css" class="button-primary button--blue" {{action "editCSS" "epub"}}>Edit ePub CSS</button>
-      {{timed-message class="epub-css save-status" message=epubCssSaveStatus}}
-    </div>
 
     <div class="admin-style-setting-section">
       <button id="edit-pdf-css" class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>

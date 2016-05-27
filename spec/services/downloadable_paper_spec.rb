@@ -49,7 +49,6 @@ describe DownloadablePaper do
   describe '#document_type' do
     it 'returns first word of converter type' do
       expect(PDFConverter.new(paper, user).document_type).to eq :pdf
-      expect(EpubConverter.new(paper, user).document_type).to eq :epub
     end
   end
 end

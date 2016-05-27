@@ -162,7 +162,6 @@ Tahi::Application.routes.draw do
       end
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
-        put :upload_epub_cover, on: :member
         put :upload_logo, on: :member
       end
     end

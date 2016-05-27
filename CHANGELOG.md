@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 ### Deprecated
 ### Removed
+- epub conversion and download
 ### Fixed
 ### Security
 

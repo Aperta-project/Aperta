@@ -13,7 +13,7 @@ namespace :plos_billing do
     if args[:paper_id]
       paper = Paper.find args[:paper_id]
       bl =
-        BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
+        BillingLog.new(paper: paper).populate_attributes
       if bl.save_and_send_to_s3!
         puts("Uploaded #{bl.filename} \n #{bl.csv_file.url}")
       else

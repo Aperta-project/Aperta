@@ -47,7 +47,7 @@ class BillingLogReport < ActiveRecord::Base
     csv = CSV.new ""
     csv << billing_json(papers_to_process.first).keys
     papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
-      billing_log = BillingLog.new(paper: paper, journal: paper.journal).populate_attributes
+      billing_log = BillingLog.new(paper: paper).populate_attributes
       billing_log.save
       csv << billing_json(paper).values
     end

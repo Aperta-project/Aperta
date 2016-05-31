@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 - epub conversion and download
 ### Fixed
+- EPS file previews no longer have inverted colors
 ### Security
 
 ## [1.4.12] - 2016-05-25

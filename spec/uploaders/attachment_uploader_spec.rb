@@ -11,8 +11,8 @@ describe AttachmentUploader do
   end
 
   describe "image transcoding" do
-    let(:paper) { double("paper", :id => "1") }
-    let(:model) { double("attachment_model", :paper => paper, :id => "0") }
+    let(:paper) { double("paper", id: "1") }
+    let(:model) { double("attachment_model", paper: paper, id: "0") }
 
     before do
       AttachmentUploader.storage :file
@@ -38,8 +38,29 @@ describe AttachmentUploader do
       expect(preview.type).to eq("PNG")
     end
 
+    it "properly converts the colors of CMYK eps images" do
+      def color_of_pixel(path, x, y)
+        image = MiniMagick::Image.open(path)
+        image.run_command(
+          "convert",
+          "#{image.path}[1x1+#{x}+#{y}]",
+          "-depth",
+          "8",
+          "txt:"
+        ).split("\n")[1]
+      end
+
+      uploader = AttachmentUploader.new(model, :attachment)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'cmyk-chart.eps')))
+      MiniMagick::Image.open(uploader.preview.path)
+
+      color = color_of_pixel(uploader.preview.path, 0, 0)
+      expect(color).to include('#FFFFFF')
+    end
+
     it "does not transcode other images" do
       uploader = AttachmentUploader.new(model, :attachment)
+      expect(uploader).to_not receive(:set_srgb_colorspace)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.jpg')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -48,6 +69,7 @@ describe AttachmentUploader do
 
     it "does not transcode documents" do
       uploader = AttachmentUploader.new(model, :attachment)
+      expect(uploader).to_not receive(:set_srgb_colorspace)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'about_turtles.docx')))
 
       expect(uploader.content_type).to eq("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
@@ -55,8 +77,8 @@ describe AttachmentUploader do
   end
 
   describe "image resizing" do
-    let(:paper) { double("paper", :id => "1") }
-    let(:model) { double("attachment_model", :paper => paper, :id => "0") }
+    let(:paper) { double("paper", id: "1") }
+    let(:model) { double("attachment_model", paper: paper, id: "0") }
 
     before do
       AttachmentUploader.storage :file

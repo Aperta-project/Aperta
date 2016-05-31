@@ -1,7 +1,7 @@
-<ul class="dashboard-submitted-papers">
+<ul class="dashboard-open-invitations">
   {{#each invitations as |invitation|}}
     <div class="pending-invitation">
-      <h4>{{invitation.invitationType}} Invitation</h4>
+      <h4>{{invitation.inviteeRole}} Invitation</h4>
       <li class="dashboard-paper-title">
         {{partial "svg/manuscript-icon"}}
         <h3>{{{invitation.title}}}</h3>
@@ -12,8 +12,8 @@
         {{#if invitation.information}}
           <p class="preserve-line-breaks">{{{invitation.information}}}</p>
         {{/if}}
-        <button class="button-secondary button--green" {{action "accept" invitation}}> yes </button>
-        <button class="button-secondary button--green" {{action "reject" invitation}}> no </button>
+        <button class="button-primary button--green" {{action "accept" invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
+        <button class="button-secondary button--green" {{action "reject" invitation}}> Decline </button>
       </li>
     </div>
   {{/each}}

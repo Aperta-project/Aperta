@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Invitation do
+  subject(:invitation) { FactoryGirl.build :invitation, task: task }
   let(:paper) { FactoryGirl.create(:paper, :with_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
-  let(:invitation) { FactoryGirl.build :invitation, task: task }
 
   describe ".invited" do
     let!(:open_invitation_1) { FactoryGirl.create(:invitation, :invited) }
@@ -16,6 +16,46 @@ describe Invitation do
 
     it "does not include invitations that are not in the 'invited' state" do
       expect(Invitation.invited).to_not include(accepted_invitation)
+    end
+  end
+
+  describe 'validations' do
+    it 'is valid' do
+      expect(invitation.valid?).to be(true)
+    end
+
+    it 'requires an invitee_role' do
+      invitation.task = nil
+      invitation.invitee_role = nil
+      expect(invitation.valid?).to be(false)
+    end
+  end
+
+  describe 'before validation' do
+    let(:task_class) do
+      Class.new(Task) do
+        def self.model_name
+          ActiveModel::Name.new(self, nil, "SomeTaskSubclass")
+        end
+
+        def invitee_role
+          'Superduperiffic'
+        end
+      end
+    end
+
+    it 'sets the invitee_role to the invitee_role defined by the task' do
+      invitation.task = task_class.new
+      expect do
+        invitation.valid?
+      end.to change { invitation.invitee_role }.to 'Superduperiffic'
+    end
+
+    it 'does not set the invitee_role when there is no task' do
+      invitation.task = nil
+      expect do
+        invitation.valid?
+      end.to_not change { invitation.invitee_role }
     end
   end
 

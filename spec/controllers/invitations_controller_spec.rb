@@ -27,7 +27,7 @@ describe InvitationsController do
 
         expect(invitation_json).to have_key(:title)
         expect(invitation_json).to have_key(:abstract)
-        expect(invitation_json).to have_key(:invitation_type)
+        expect(invitation_json).to have_key(:invitee_role)
       end
     end
   end
@@ -51,7 +51,7 @@ describe InvitationsController do
 
         expect(invitation_json).to have_key(:email)
         expect(invitation_json).to have_key(:state)
-        expect(invitation_json).to have_key(:invitation_type)
+        expect(invitation_json).to have_key(:invitee_role)
       end
 
       it 'works if this is the invitee' do

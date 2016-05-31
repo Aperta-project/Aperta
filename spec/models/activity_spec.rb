@@ -95,7 +95,7 @@ describe Activity do
         activity_key: "invitation.created",
         subject: invitation.paper,
         user: user,
-        message: "#{invitation.recipient_name} was invited as #{invitation.task.invitee_role.capitalize}"
+        message: "#{invitation.recipient_name} was invited as #{invitation.invitee_role.capitalize}"
     )}
   end
 
@@ -109,7 +109,7 @@ describe Activity do
         activity_key: "invitation.accepted",
         subject: invitation.paper,
         user: user,
-        message: "#{invitation.recipient_name} accepted invitation as #{invitation.task.invitee_role.capitalize}"
+        message: "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
     )}
   end
 
@@ -123,7 +123,7 @@ describe Activity do
         activity_key: "invitation.rejected",
         subject: invitation.paper,
         user: user,
-        message: "#{invitation.recipient_name} declined invitation as #{invitation.task.invitee_role.capitalize}"
+        message: "#{invitation.recipient_name} declined invitation as #{invitation.invitee_role.capitalize}"
     )}
   end
 
@@ -131,7 +131,7 @@ describe Activity do
     subject(:activity) { Activity.invitation_withdrawn!(invitation, user: user) }
     let(:invitation) { FactoryGirl.build(:invitation) }
 
-    let(:role) { invitation.task.invitee_role.capitalize }
+    let(:role) { invitation.invitee_role.capitalize }
     let(:invitee) { invitation.recipient_name }
 
     it {

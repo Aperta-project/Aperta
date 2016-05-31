@@ -97,7 +97,7 @@ class Activity < ActiveRecord::Base
       activity_key: "invitation.created",
       subject: invitation.paper,
       user: user,
-      message: "#{invitation.recipient_name} was invited as #{invitation.task.invitee_role.capitalize}"
+      message: "#{invitation.recipient_name} was invited as #{invitation.invitee_role.capitalize}"
     )
   end
 
@@ -107,7 +107,7 @@ class Activity < ActiveRecord::Base
       activity_key: "invitation.accepted",
       subject: invitation.paper,
       user: user,
-      message: "#{invitation.recipient_name} accepted invitation as #{invitation.task.invitee_role.capitalize}"
+      message: "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
     )
   end
 
@@ -117,12 +117,12 @@ class Activity < ActiveRecord::Base
       activity_key: "invitation.rejected",
       subject: invitation.paper,
       user: user,
-      message: "#{invitation.recipient_name} declined invitation as #{invitation.task.invitee_role.capitalize}"
+      message: "#{invitation.recipient_name} declined invitation as #{invitation.invitee_role.capitalize}"
     )
   end
 
   def self.invitation_withdrawn!(invitation, user:)
-    role = invitation.task.invitee_role.capitalize
+    role = invitation.invitee_role.capitalize
     invitee = invitation.recipient_name
     create(
       feed_name: "workflow",

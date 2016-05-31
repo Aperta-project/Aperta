@@ -77,7 +77,6 @@ describe DiscussionTopicsController do
 
       it { is_expected.to responds_with(403) }
     end
-
   end
 
   describe 'POST create' do
@@ -91,7 +90,7 @@ describe DiscussionTopicsController do
       {
         discussion_topic: {
           paper_id: paper.id,
-          title: title,
+          title: title
         }
       }
     end
@@ -121,7 +120,7 @@ describe DiscussionTopicsController do
       subject(:do_request) { post :create, creation_params }
 
       before do
-      stub_sign_in user
+        stub_sign_in user
         allow(user).to receive(:can?)
           .with(:start_discussion, paper)
           .and_return false
@@ -129,7 +128,6 @@ describe DiscussionTopicsController do
 
       it { is_expected.to responds_with(403) }
     end
-
   end
 
   describe 'PATCH update' do
@@ -142,7 +140,7 @@ describe DiscussionTopicsController do
       {
         id: topic_a.id,
         discussion_topic: {
-          title: new_title,
+          title: new_title
         }
       }
     end
@@ -174,4 +172,34 @@ describe DiscussionTopicsController do
     end
   end
 
+  describe 'GET users' do
+    subject(:do_request) do
+      xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user is authorized' do
+      let(:searchable_users) do
+        [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
+      end
+
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_participant, topic_a)
+          .and_return true
+
+        allow(User).to receive(:fuzzy_search)
+          .with('Kangaroo')
+          .and_return searchable_users
+        do_request
+      end
+
+      it 'returns any user who matches the query' do
+        expect(res_body['users'].count).to eq(1)
+        expect(res_body['users'][0]['email']).to eq('foo@example.com')
+      end
+    end
+  end
 end

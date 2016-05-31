@@ -22,12 +22,9 @@
   <div class="bodypart-choose-receiver-overlay bodypart-overlay">
     <p>Please choose who should receive this email.</p>
     {{participant-selector currentParticipants=recipients
-                           everyone=allUsers
                            onRemove=(action "removeRecipient")
                            onSelect=(action "addRecipient")
                            label="Recipients:"
-                           task=task
-                           taskId=task.id
                            paperId=paperId
                            canManage=(can 'add_email_participants' task)}}
     <button class="button-secondary button--green knockout" {{action "toggleChooseReceivers"}}>Cancel</button>

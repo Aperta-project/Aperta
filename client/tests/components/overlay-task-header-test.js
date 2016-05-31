@@ -18,9 +18,9 @@ moduleForComponent('overlay-task-header', 'Integration | Component | overlay tas
         paperType: 'Research',
         publishingState: 'submitted',
         displayTitle: 'Chemistry is Amazing',
-        creatorUser: {
-          user: { full_name: 'Anna Author' }
-        }
+        creator: Ember.Object.create({
+          name: 'Anna Author'
+        })
       })
     }));
 
@@ -31,9 +31,9 @@ moduleForComponent('overlay-task-header', 'Integration | Component | overlay tas
 });
 
 test('basic paper information is included in overlay header', function(assert) {
-  assert.textPresent('li', 'Anna Author', 'displays author name');
-  assert.textPresent('li', 'test.10001', 'displays manuscript id');
-  assert.textPresent('li', 'Research', 'displays article type');
-  assert.textPresent('li', 'Submitted', 'displays manuscript status');
-  assert.textPresent('span', 'Chemistry is Amazing', 'displays paper title');
+  assert.textPresent('li.paper-creator', 'Anna Author', 'displays author name');
+  assert.textPresent('li.paper-manuscript-id', 'test.10001', 'displays manuscript id');
+  assert.textPresent('li.paper-type', 'Research', 'displays article type');
+  assert.textPresent('li.paper-publishing-state', 'Submitted', 'displays manuscript status');
+  assert.textPresent('.task-overlay-paper-title', 'Chemistry is Amazing', 'displays paper title');
 });

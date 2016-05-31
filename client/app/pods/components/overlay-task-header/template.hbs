@@ -1,13 +1,14 @@
-<span>
-  <ul>
+<div>
+  <ul class='paper-attributes'>
     <li class='paper-creator'>{{{paper.creator.name}}}</li>
-    <li class='manuscript-id'>{{{paper.manuscript_id}}}</li>
+    <li class='paper-manuscript-id'>{{{paper.manuscript_id}}}</li>
     <li class='paper-type'>{{{paper.paperType}}}</li>
-    <li class='publishing-state'>{{{humanize paper.publishingState}}}</li>
+    <li class='paper-publishing-state'>{{{humanize paper.publishingState}}}</li>
   </ul>
 
   {{#link-to "paper.index" paper.id class="task-overlay-paper-title"}}
     {{{paper.displayTitle}}}
   {{/link-to}}
-</span>
+</div>
+
 <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>

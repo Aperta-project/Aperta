@@ -4,11 +4,13 @@ class UseDefaultFlows < ActiveRecord::Migration
     # since they are not associted with the default flows.
     # The default flows will be included to the users choices when they
     # visit their flow manager.
-    UserFlow.destroy_all
-    Flow.destroy_all
+    execute <<-SQL
+      DELETE FROM user_flows;
+      DELETE FROM flows;
+    SQL
   end
 
   def down
-    raise ActiveRecord::IrreversibleMigration
+    fail ActiveRecord::IrreversibleMigration
   end
 end

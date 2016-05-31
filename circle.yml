@@ -51,13 +51,13 @@ test:
     - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true
-        files:
+        minitest_globs:
           # Only select non-feature specs
           - "**/spec/*[^features]*/**/*_spec.rb"
     - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
         timeout: 1800
         parallel: true
-        files:
+        minitest_globs:
           # Only select feature specs
           - "**/spec/features/**/*_spec.rb"
     - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"

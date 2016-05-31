@@ -1,6 +1,7 @@
 module TahiStandardTasks
-  # The model class for the Front Matter Reviewer Report task, which is
-  # used by SOMEONE for SOMETHING. FILL ME OUT PLEASE.
+  # The FrontMatterReviewerReportTask represents a different report
+  # that a reviewer (user) can fill out. It provides different questions
+  # than the generic ReviewerReportTask.  
   class FrontMatterReviewerReportTask < ReviewerReportTask
     DEFAULT_TITLE = 'Front Matter Reviewer Report'
 

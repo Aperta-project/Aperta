@@ -19,7 +19,8 @@ moduleForModel('figure', 'Unit | Model | figure', {
     'model:snapshot',
     'model:task',
     'model:paper-task-type',
-    'model:related-article'
+    'model:related-article',
+    'model:user'
   ]
 });
 

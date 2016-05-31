@@ -2,9 +2,10 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## [1.4.13] - {2016-05-31}
 ### Added
 ### Changed
+- Show discussion participants' emails when selecting and on hover
 ### Deprecated
 ### Removed
 - epub conversion and download
@@ -35,7 +36,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM
-- Show discussion participants' emails when selecting and on hover
 
 ## [1.4.9] - 2016-05-13
 ### Deprecated

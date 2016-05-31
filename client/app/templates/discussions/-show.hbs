@@ -13,9 +13,9 @@
     </h1>
 
     {{participant-selector currentParticipants=participants
-                           everyone=allUsers
-                           paperId=model.paperId
+                           url=discussionParticipantUrl
                            label="Participants:"
+                           displayEmails=true
                            canManage=(can 'manage_participant' model)
                            onRemove=(action "removeParticipantByUserId")
                            onSelect=(action "saveNewParticipant")}}

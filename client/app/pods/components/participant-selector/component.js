@@ -1,55 +1,80 @@
 import Ember from 'ember';
-var ParticipantSelectorComponent;
+import { filteredUsersPath } from 'tahi/lib/api-path-helpers';
 
-ParticipantSelectorComponent = Ember.Component.extend({
+let hasOldRoles = user => user.old_roles && user.old_roles.length;
 
+export default Ember.Component.extend({
   classNames: ['participant-selector', 'select2-multiple'],
 
-  init: function(){
-    this._super(...arguments);
-    this.set('selectedTemplate', this.selectedTemplateFn());
-  },
+  //passed in
+  paperId: null,
+  url: null,
+  currentParticipants: null,
+  label: null,
+  canManage: null,
+  displayEmails: false,
+
+  participantUrl: Ember.computed('paperId', 'url', function() {
+    let url = this.get('url');
+    if (Ember.isPresent(url)) {
+      return url;
+    } else {
+      return filteredUsersPath(this.get('paperId'));
+    }
+  }),
 
   setupTooltips: (function() {
     return Ember.run.schedule('afterRender', this, function() {
       this.$('.select2-search-choice img').tooltip({
-        placement: "bottom"
+        placement: 'bottom'
       });
 
       if (this.get('canManage')) {
-        return this.$('.add-participant-button').tooltip({
-          placement: "bottom"
+        this.$('.add-participant-button').tooltip({
+          placement: 'bottom'
         });
       }
     });
   }).on('didInsertElement').observes('currentParticipants.[]'),
 
+  // select2 uses this to show the actual autocomplete results
   resultsTemplate: function(user) {
-    var userInfo;
-    userInfo = user.old_roles.length ? user.username + ", " + (user.old_roles.join(', ')) : user.username;
-    return '<strong>' + user.full_name + '</strong><br><div class="suggestion-sub-value">' + userInfo + '</div>';
+    // This template accomodates user payloads from two kinds of serializers:
+    // 1. SensitiveInformationUserSerializer (id, full_name, avatar_url, email)
+    // 2. FilteredUserSerializer             (id, full_name, avatar_url, username, old_roles)
+    let userInfo = hasOldRoles(user) ? user.email + ", " + (user.old_roles.join(', ')) : user.email;
+    return `<strong>${user.full_name} @${user.username}</strong><br>
+            <div class="suggestion-sub-value">${userInfo || ''}</div>`;
   },
 
-  // Return function resolved when "this" in the context of this component, as opposed to
-  // resolving later in select-2 where "this" has a context within the select-2 object.
-  selectedTemplateFn: function() {
+  // select2 uses this to list the already-selected items
+  // Return function resolved when "this" in the context of this component,
+  // as opposed to resolving later in select-2 where "this" has a context
+  // within the select-2 object.
+  selectedTemplate: Ember.computed('displayEmails', 'canManage', function() {
     return (user) => {
-      var name, url;
-      name = user.full_name || user.get('fullName');
-      url = user.avatar_url || user.get('avatarUrl');
-      if (this.get('canManage')) {
-        return Ember.String.htmlSafe("<img alt='" + name + "' class='user-thumbnail-small' src='" + url + "' data-toggle='tooltip' title='" + name + "'/>");
+      let name = user.full_name || user.get('fullName');
+      let url = user.avatar_url || user.get('avatarUrl');
+      var email = '';
+      if (this.get('displayEmails')) {
+        email = Ember.get(user, 'email');
       }
-      else {
-        return Ember.String.htmlSafe("<img alt='" + name + "' class='user-thumbnail-small' src='" + url + "' title='" + name + "'/>");
-      }
-    }
-  },
+      let title = `${name} ${email || ''}`.trim();
+      let toggle = this.get('canManage') ? `data-toggle='tooltip'` : '';
+      return Ember.String.htmlSafe(
+        `<img
+            alt='${name}'
+            class='user-thumbnail-small'
+            src='${url}'
+            ${toggle}
+            title='${title}'/>`);
+    };
+  }),
 
   sortByCollaboration: function(a, b) {
-    if (a.old_roles.length && !b.old_roles.length) {
+    if (hasOldRoles(a) && !hasOldRoles(b)) {
       return -1;
-    } else if (!a.old_roles.length && b.old_roles.length) {
+    } else if (!hasOldRoles(a) && hasOldRoles(b)) {
       return 1;
     } else {
       if (a.full_name < b.full_name) {
@@ -65,10 +90,10 @@ ParticipantSelectorComponent = Ember.Component.extend({
   //used to translate our participant into a full user later
   foundParticipants: null,
 
-  remoteSource: (function() {
+  remoteSource: Ember.computed('participantUrl', function () {
     return {
-      url: "/api/filtered_users/users/" + (this.get('paperId')) + "/",
-      dataType: "json",
+      url: this.get('participantUrl'),
+      dataType: 'json',
       quietMillis: 500,
       data: function(term) {
         return {
@@ -85,7 +110,7 @@ ParticipantSelectorComponent = Ember.Component.extend({
         };
       })(this)
     };
-  }).property(),
+  }),
 
   actions: {
     addParticipant: function(newParticipant) {
@@ -96,13 +121,11 @@ ParticipantSelectorComponent = Ember.Component.extend({
     },
     dropdownClosed: function() {
       this.$('.select2-search-field input').removeClass('active');
-      return this.$('.add-participant-button').removeClass('searching');
+      this.$('.add-participant-button').removeClass('searching');
     },
     activateDropdown: function() {
       this.$('.select2-search-field input').addClass('active').trigger('click');
-      return this.$('.add-participant-button').addClass('searching');
+      this.$('.add-participant-button').addClass('searching');
     }
   }
 });
-
-export default ParticipantSelectorComponent;

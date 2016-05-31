@@ -15,9 +15,7 @@ FactoryGirl.define do
     "Henry#{n}"
   end
 
-  sequence :ned_id do |n|
-    100 + n
-  end
+  sequence :ned_id, 100
 
   factory :user do
     username

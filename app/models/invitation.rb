@@ -58,6 +58,10 @@ class Invitation < ActiveRecord::Base
     email
   end
 
+  def email=(new_email)
+    super(new_email.strip)
+  end
+
   private
 
   def assign_to_latest_decision

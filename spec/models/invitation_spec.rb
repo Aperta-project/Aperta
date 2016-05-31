@@ -75,6 +75,14 @@ describe Invitation do
         expect(invitation.decision.revision_number).to eq latest_revision_number
       end
     end
+
+    it 'strips whitespace in email addresses' do
+      invitation.email = ' foo@example.com '
+      expect(invitation.email).to eq('foo@example.com')
+      invitation.save!
+      invitation.reload
+      expect(invitation.email).to eq('foo@example.com')
+    end
   end
 
   describe '#destroy' do

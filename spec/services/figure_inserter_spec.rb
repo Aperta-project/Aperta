@@ -100,7 +100,7 @@ describe FigureInserter do
         expect(parse html).to be_equivalent_to(expected_tree)
       end
 
-      it 'Allows numbers but avoids false positives' do
+      it 'returns a document which avoids false positives' do
         figure_inserter = FigureInserter.new(just_wrong_number, [figure])
         allow(figure).to receive(:detail_src).and_return('/an/image.png')
         allow(figure).to receive(:attachment?).and_return(true)
@@ -110,10 +110,9 @@ describe FigureInserter do
           <p>Doesn't matter</p>
           <p id="only-for-testing"><span style="font-weight:bold">Figure 11</span></p>
           <p>Also doesn't matter</p>
-          <img class="paper-body-figure pdf-image pdf-image-with-caption"
-               data-figure-id="#{figure.id}"
-               data-figure-rank="#{figure.rank}"
-               src="#{figure.detail_src}">
+          <img class="paper-body-figure pdf-image pdf-image-with-caption" data-figure-id="#{figure.id}"
+             data-figure-rank="#{figure.rank}" src="/an/image.png">
+             <p class="paper-body-figure-caption">1.</p>
         HTML
         expect(parse html).to be_equivalent_to(expected_tree)
       end

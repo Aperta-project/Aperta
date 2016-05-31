@@ -71,17 +71,30 @@ class FigureInserter
     figure_names = ["Figure #{figure_id}",
                     "Fig #{figure_id}",
                     "Fig. #{figure_id}"]
+    node = node_with_delimiter(figure_names)
+    node = node_without_delimiter(figure_names) unless node
+
+    return node.at_xpath('./ancestor-or-self::p') if node
+  end
+
+  def node_with_delimiter(figure_names)
     delimiters = %w(. : - - –) # period, colon, hyphen, n-dash, m-dash
     possible_matches = figure_names.product(delimiters).map(&:join)
-      .concat(figure_names)
 
     selectors = possible_matches.flat_map do |match_test|
       ["p[text()^='#{match_test}']",
-       "p [text()^='#{match_test}']",
+       "p [text()^='#{match_test}']"]
+    end
+
+    @html_tree.at_css(*selectors)
+  end
+
+  def node_without_delimiter(figure_names)
+    selectors = figure_names.flat_map do |match_test|
+      ["p[text()='#{match_test}']",
        "p [text()='#{match_test}']"]
     end
 
-    node = @html_tree.at_css(*selectors)
-    node.at_xpath('./ancestor-or-self::p') if node
+    @html_tree.at_css(*selectors)
   end
 end

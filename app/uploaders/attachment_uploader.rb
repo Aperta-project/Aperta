@@ -12,6 +12,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :detail do
+    process :set_srgb_colorspace
     process resize_to_limit: [986, -1], if: :image?
     process :convert_to_png, if: :needs_transcoding?
 
@@ -21,6 +22,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
+    process :set_srgb_colorspace
     process resize_to_limit: [475, 220], if: :image?
     process :convert_to_png, if: :needs_transcoding?
 
@@ -30,6 +32,12 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   private
+
+  def set_srgb_colorspace
+    manipulate! do |image|
+      image.colorspace("sRGB")
+    end
+  end
 
   def convert_to_png
     manipulate! do |image|

@@ -77,7 +77,8 @@ class FigureInserter
 
     selectors = possible_matches.flat_map do |match_test|
       ["p[text()^='#{match_test}']",
-       "p [text()^='#{match_test}']"]
+       "p [text()^='#{match_test}']",
+       "p [text()='#{match_test}']"]
     end
 
     node = @html_tree.at_css(*selectors)

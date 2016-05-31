@@ -23,6 +23,14 @@ describe FigureInserter do
       <p>Also doesn't matter</p>
     HTML
   end
+  let(:just_wrong_number) do
+    <<-HTML
+      <p>Doesn't matter</p>
+      <p id="only-for-testing"><span style="font-weight:bold">Figure 11</span></p>
+      <p>Also doesn't matter</p>
+    HTML
+  end
+
   let(:figure_inserter) { FigureInserter.new(raw_html, []) }
 
   describe "#call" do
@@ -88,6 +96,24 @@ describe FigureInserter do
                src="#{figure.detail_src}">
           <p id="only-for-testing"><span style="font-weight:bold">Figure 1</span></p>
           <p>Also doesn't matter</p>
+        HTML
+        expect(parse html).to be_equivalent_to(expected_tree)
+      end
+
+      it 'Allows numbers but avoids false positives' do
+        figure_inserter = FigureInserter.new(just_wrong_number, [figure])
+        allow(figure).to receive(:detail_src).and_return('/an/image.png')
+        allow(figure).to receive(:attachment?).and_return(true)
+        html = figure_inserter.call
+        expect(html).to be_an_instance_of(String)
+        expected_tree = parse <<-HTML
+          <p>Doesn't matter</p>
+          <p id="only-for-testing"><span style="font-weight:bold">Figure 11</span></p>
+          <p>Also doesn't matter</p>
+          <img class="paper-body-figure pdf-image pdf-image-with-caption"
+               data-figure-id="#{figure.id}"
+               data-figure-rank="#{figure.rank}"
+               src="#{figure.detail_src}">
         HTML
         expect(parse html).to be_equivalent_to(expected_tree)
       end

@@ -14,6 +14,9 @@ class Invitation < ActiveRecord::Base
   scope :where_email_matches,
         ->(email) { where('email = ? OR email like ?', email, "%<#{email}>") }
 
+  before_validation :set_invitee_role
+  validates :invitee_role, presence: true
+
   aasm column: :state do
     state :pending, initial: true
     state :invited do
@@ -103,5 +106,9 @@ class Invitation < ActiveRecord::Base
 
   def event_stream_serializer(user: nil)
     InvitationIndexSerializer.new(self, root: "invitation")
+  end
+
+  def set_invitee_role
+    self.invitee_role = task.invitee_role if task
   end
 end

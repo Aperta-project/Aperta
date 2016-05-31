@@ -1,3 +1,6 @@
+# In additiont to the normal CRUD actions, the +users+ action
+# serves as a data source for the participants autocomplete.
+#
 class DiscussionTopicsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
@@ -27,6 +30,16 @@ class DiscussionTopicsController < ApplicationController
     respond_with discussion_topic
   end
 
+  def users
+    requires_user_can :manage_participant, discussion_topic
+    users = User.fuzzy_search params[:query]
+    respond_with(
+      users,
+      each_serializer: SensitiveInformationUserSerializer,
+      root: :users
+    )
+  end
+
   private
 
   def creation_params
@@ -50,5 +63,4 @@ class DiscussionTopicsController < ApplicationController
   def paper
     @paper ||= Paper.find(params[:paper_id])
   end
-
 end

@@ -6,7 +6,7 @@ class InvitationIndexSerializer < ActiveModel::Serializer
              :title,
              :abstract,
              :email,
-             :invitation_type,
+             :invitee_role,
              :created_at,
              :updated_at,
              :invitee_id,
@@ -20,9 +20,5 @@ class InvitationIndexSerializer < ActiveModel::Serializer
 
   def abstract
     object.paper.abstract
-  end
-
-  def invitation_type
-    object.task.invitee_role.capitalize
   end
 end

@@ -85,7 +85,7 @@ test("can withdraw the invitation", function(assert) {
 
     let invitation = FactoryGuy.make('invitation', {
       email: 'foo@bar.com',
-      invitationType: 'Reviewer',
+      inviteeRole: 'Reviewer',
       state: 'invited'
     });
     decision.set('invitations', [invitation]);

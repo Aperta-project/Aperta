@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { discussionUsersPath } from 'tahi/lib/api-path-helpers';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
@@ -8,6 +9,10 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   replySort: ['createdAt:desc'],
   sortedReplies: Ember.computed.sort('model.discussionReplies', 'replySort'),
+
+  discussionParticipantUrl: Ember.computed('model.id', function() {
+    return discussionUsersPath(this.get('model.id'));
+  }),
 
   actions: {
     saveTopic() {

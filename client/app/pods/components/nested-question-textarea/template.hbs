@@ -5,7 +5,7 @@
     {{/if}}
 
     {{#if model.answer.value}}
-      <div class="answer-text">{{model.answer.value}}</div>
+      <div class="answer-text">{{break-to-tag model.answer.value}}</div>
     {{else}}
       <div class="answer-text no-answer">{{noResponseText}}</div>
     {{/if}}

@@ -44,7 +44,7 @@ feature 'Invite Academic Editor', js: true do
     dashboard = DashboardPage.new
     dashboard.view_invitations do |invitations|
       expect(invitations.count).to eq 1
-      invitations.first.accept
+      invitations.first.accept("Accept Academic Editor Invitation")
       wait_for_ajax
       expect(dashboard.pending_invitations.count).to eq 0
     end

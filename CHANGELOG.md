@@ -35,6 +35,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM
+- Show discussion participants' emails when selecting and on hover
 
 ## [1.4.9] - 2016-05-13
 ### Deprecated

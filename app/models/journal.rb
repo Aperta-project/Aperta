@@ -28,7 +28,6 @@ class Journal < ActiveRecord::Base
   before_destroy :destroy_roles
 
   mount_uploader :logo,       LogoUploader
-  mount_uploader :epub_cover, EpubCoverUploader
 
   # rubocop:disable Metrics/LineLength
   has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
@@ -73,20 +72,6 @@ class Journal < ActiveRecord::Base
 
   def logo_url
     logo.thumbnail.url if logo
-  end
-
-  def epub_cover_file_name
-    return nil unless epub_cover.file
-
-    if Rails.application.config.carrierwave_storage == :fog
-      URI(epub_cover.file.url).path.split('/').last
-    else
-      epub_cover.file.filename
-    end
-  end
-
-  def epub_cover_url
-    epub_cover.url if epub_cover
   end
 
   def paper_types

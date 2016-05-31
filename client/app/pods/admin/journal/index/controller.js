@@ -2,7 +2,6 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
-  epubCssSaveStatus: '',
   pdfCssSaveStatus: '',
   manuscriptCssSaveStatus: '',
   doiEditState: false,
@@ -10,13 +9,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   canDeleteManuscriptManagerTemplates:
     Ember.computed.gt('model.manuscriptManagerTemplates.length', 1),
 
-  epubCoverUploadUrl: Ember.computed('model.id', function() {
-    const id = this.get('model.id');
-    return '/api/admin/journals/' + id + '/upload_epub_cover';
-  }),
-
   adminJournalUsers: null,
-  epubCoverUploading: false,
 
   showEditTaskTypesOverlay: false,
 
@@ -100,24 +93,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
     },
 
-    epubCoverUploading() {
-      this.set('epubCoverUploading', true);
-    },
-
-    epubCoverUploaded(data) {
-      this.set('epubCoverUploading', false);
-      const journal = data.admin_journal;
-
-      this.setProperties({
-        epubCoverUrl: journal.epub_cover_url,
-        epubCoverFileName: journal.epub_cover_file_name,
-        epubCoverUploadedAt: journal.epub_cover_uploaded_at
-      });
-    },
-
     resetSaveStatuses: function() {
       this.setProperties({
-        epubCssSaveStatus: '',
         pdfCssSaveStatus: '',
         manuscriptCssSaveStatus: ''
       });

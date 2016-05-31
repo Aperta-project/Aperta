@@ -45,8 +45,4 @@ class JournalPage < Page
   def find_role(name)
     RoleFragment.new(find('.admin-role', text: name))
   end
-
-  def epub_cover
-    find('.epub-cover-image a').text
-  end
 end

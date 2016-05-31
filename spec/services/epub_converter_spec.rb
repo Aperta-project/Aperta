@@ -137,19 +137,6 @@ describe EpubConverter do
       end
     end
 
-    context 'when cover image is requested' do
-      let(:include_cover_image) { true }
-      it 'includes the journal cover image in the epub' do
-        VCR.use_cassette('epub cover image') do
-          allow(journal).to receive_message_chain('epub_cover.file.url')
-            .and_return('http://example.com/cover_image.jpg')
-          entries = read_epub_stream(converter.epub_stream)
-          cover = entries.any? { |f| f.name == 'OEBPS/images/cover_image.jpg' }
-          expect(cover).to be(true)
-        end
-      end
-    end
-
     context 'paper with uploaded source' do
       let(:file) do
         File.open(Rails.root.join('spec', 'fixtures', 'about_cats.doc'), 'r')

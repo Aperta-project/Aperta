@@ -224,15 +224,18 @@ describe Invitation do
   end
 
   describe "#where_email_matches" do
-    let(:email) { "turtle@turtles.com" }
-    let!(:invitation_1) { create :invitation, email: email }
-    let!(:invitation_2) { create :invitation, email: "turtle <#{email}>" }
+    let(:emails) { ["turtle@turtles.com", "TURTLE@turtles.com"] }
+    let!(:invitation_1) { create :invitation, email: emails[0] }
+    let!(:invitation_2) { create :invitation, email: "turtle <#{emails[0]}>" }
     let!(:invitation_3) { create :invitation, email: "another@email.com" }
+    let!(:invitation_4) { create :invitation, email: emails[1] }
 
     it "returns invitiations where the email matches the supplied argument" do
-      invitations = Invitation.where_email_matches email
-      expect(Invitation.count).to eq 3
-      expect(invitations.map(&:id)).to match [invitation_1.id, invitation_2.id]
+      emails.each do |email|
+        invitations = Invitation.where_email_matches email
+        expect(Invitation.count).to eq 4
+        expect(invitations.map(&:id)).to contain_exactly(invitation_1.id, invitation_2.id, invitation_4.id)
+      end
     end
   end
 end

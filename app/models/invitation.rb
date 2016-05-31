@@ -12,7 +12,7 @@ class Invitation < ActiveRecord::Base
   before_create :assign_to_latest_decision
 
   scope :where_email_matches,
-        ->(email) { where('email = ? OR email like ?', email, "%<#{email}>") }
+        ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true

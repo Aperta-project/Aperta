@@ -7,9 +7,5 @@ module TahiStandardTasks
     def active_model_serializer
       TahiStandardTasks::FrontMatterReviewerReportTaskSerializer
     end
-
-    def nested_questions
-      ReviewerReportTask.nested_questions
-    end
   end
 end

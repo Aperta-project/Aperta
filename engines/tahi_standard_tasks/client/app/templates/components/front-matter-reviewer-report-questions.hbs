@@ -1,12 +1,12 @@
 <ol class="question-list">
   <li class="question">
-    {{nested-question-radio-decision ident="reviewer_report--decision_term"
+    {{nested-question-radio-decision ident="front_matter_reviewer_report--decision_term"
                                      owner=model
                                      decision=decision
                                      readOnly=readOnly}}
   </li>
   <li class="question">
-    {{nested-question-textarea ident="reviewer_report--competing_interests"
+    {{nested-question-textarea ident="front_matter_reviewer_report--competing_interests"
       owner=model
       decision=decision
       displayContent=true
@@ -15,15 +15,15 @@
   </li>
 
   <li class="question">
-      {{#nested-question-radio ident="reviewer_report--plos_biology_suitable"
+      {{#nested-question-radio ident="front_matter_reviewer_report--suitable"
                         owner=model
                         decision=decision
-                        helpText="<strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication' target='_blank'>referee</a> guidelines and comment on:</strong> <li>The novelty and significance of the work; <em>PLOS Biology</em> articles present significant advances in their field;</li> <li>The technical merit of the work, the quality of the data and depth of analysis; </li> <em>PLOS Biology</em> is committed to rigorous experimental and analytical design, and transparent reporting. <li>Please indicate if you feel the conclusions are well-supported with strong and well-controlled evidence. If not, but the manuscript can be revised to provide the required level of support, please indicate which of your proposed revisions would be essential to support the conclusions.</li><br> <li>If the manuscript does not meet the standards of <em>PLOS Biology</em>, we are interested in your opinion about its suitability for <em>PLOS ONE</em>. <em>PLOS ONE</em> articles are selected solely on evaluating whether the study was planned, performed and reported to high scientific and ethical standards, regardless of scope or impact of the work. <em>PLOS Biology</em> is committed to facilitate the transfer of suitable manuscripts to <em>PLOS ONE</em> to reduce redundant review cycles, and we appreciate your support. </li>"
                         wrapperClass="yes-no-with-comments"
+                        helpText="<strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication' target='_blank'>referee</a> guidelines and information on our article types. Submit your detailes in the box below. These will be communicated to the authors."
                         readOnly=readOnly as |radio|}}
 
         {{#if radio.yieldingForAdditionalData}}
-          {{nested-question-textarea ident="reviewer_report--plos_biology_suitable--comment"
+          {{nested-question-textarea ident="front_matter_reviewer_report--suitable"
               owner=model
               decision=decision
               displayQuestionText=false
@@ -35,13 +35,14 @@
   </li>
 
   <li class="question">
-    {{#nested-question-radio ident="reviewer_report--statistical_analysis"
+    {{#nested-question-radio ident="front_matter_reviewer_report--includes_unpublished_data"
                       owner=model
                       decision=decision
+                      unwrappedHelpText="<ul class=\"question-help\"><li>The data have been generated rigorously with relevant controls, replication and sample sizes, if applicable.</li><li>The data provided support the conclusions that are drawn.</li></ul>These comments will be communicated to the authors."
                       wrapperClass="yes-no-with-comments"
                       readOnly=readOnly as |radio|}}
       {{#if radio.yieldingForAdditionalData}}
-        {{nested-question-textarea ident="reviewer_report--statistical_analysis--explanation"
+        {{nested-question-textarea ident="front_matter_reviewer_report--includes_unpublished_data"
             owner=model
             decision=decision
             noResponseText=""
@@ -53,27 +54,7 @@
   </li>
 
   <li class="question">
-    {{#nested-question-radio ident="reviewer_report--standards"
-                      owner=model
-                      decision=decision
-                      helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
-                      wrapperClass="yes-no-with-comments"
-                      readOnly=readOnly as |radio|}}
-      {{#if radio.yieldingForAdditionalData}}
-        {{nested-question-textarea
-            ident="reviewer_report--standards--explanation"
-            owner=model
-            decision=decision
-            noResponseText=""
-            displayQuestionText=false
-            displayContent=true
-            readOnly=readOnly}}
-      {{/if}}
-    {{/nested-question-radio}}
-  </li>
-
-  <li class="question">
-    {{nested-question-textarea ident="reviewer_report--additional_comments"
+    {{nested-question-textarea ident="front_matter_reviewer_report--additional_comments"
                         owner=model
                         decision=decision
                         displayContent=true
@@ -82,7 +63,7 @@
   </li>
 
   <li class="question">
-    {{nested-question-textarea ident="reviewer_report--identity"
+    {{nested-question-textarea ident="front_matter_reviewer_report--identity"
                         owner=model
                         decision=decision
                         displayContent=true

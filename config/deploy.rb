@@ -31,6 +31,7 @@ after 'deploy:migrate', 'deploy:safe_seeds' do
       with rails_env: fetch(:rails_env) do
         execute :rake, 'nested-questions:seed'
         execute :rake, 'roles-and-permissions:seed'
+        execute :rake, 'data:update_journal_task_types'
       end
     end
   end

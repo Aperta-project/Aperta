@@ -9,8 +9,6 @@ export default Ember.Component.extend({
   //init with (actions):
   reject: null,
 
-  paper: Ember.computed.alias('invitation.task.paper'),
-
   actions: {
 
     declineFeedback(invitation) {

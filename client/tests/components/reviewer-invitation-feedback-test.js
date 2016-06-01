@@ -8,11 +8,7 @@ moduleForComponent('reviewer-invitation-feedback',
                     beforeEach: function() {
                       this.set('reject', () => {return;});
                       this.set('invitation', Ember.Object.create({
-                        task: Ember.Object.create({
-                          paper: Ember.Object.create({
-                            title: 'Awesome Paper!'
-                          })
-                        }) ,
+                        title: 'Awesome Paper!',
                         declineReason: null,
                         reviewerSuggestions: null
                       }));
@@ -32,7 +28,7 @@ test('displays paper title', function(assert){
   assert.expect(1);
 
   this.render(template);
-  assert.textPresent('.feedback-paper-title', 'Awesome Paper!');
+  assert.textPresent('.feedback-invitation-title', 'Awesome Paper!');
 });
 
 test('can set decline reason', function(assert){

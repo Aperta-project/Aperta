@@ -14,8 +14,7 @@ module Typesetter
     attribute :accepted_at, key: :date_first_entered_production
 
     def ned_id
-      billing_user = User.where(email: email).first
-      billing_user.ned_id if billing_user
+      User.find_by(email: email).try(:ned_id)
     end
 
     def corresponding_author_ned_id

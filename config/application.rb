@@ -38,10 +38,9 @@ module Tahi
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.basic_auth_required = ENV.fetch("BASIC_AUTH_REQUIRED", false)
-    if config.basic_auth_required
-      config.basic_auth_user = ENV.fetch('BASIC_HTTP_USERNAME')
-      config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
+    if TahiEnv.basic_auth_required?
+      config.basic_auth_user = TahiEnv.basic_http_username
+      config.basic_auth_password = TahiEnv.basic_http_password
     end
 
     config.x.pusher_verbose_logging = TahiEnv.pusher_verbose_logging?

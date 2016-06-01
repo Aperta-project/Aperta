@@ -35,23 +35,49 @@ shared_examples_for 'required env var' do |var:|
   end
 end
 
-shared_examples_for 'dependent required env var' do |var:, dependent_key:|
+shared_examples_for 'dependent required env var' do |var:, dependent_key:, dependent_values: []|
   describe "Dependent required env var: #{var}" do
-    it 'is not required to be set when dependent key is false' do
-      ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'false') do
-        expect(env.errors.full_messages.join).to_not match("Environment Variable: #{var} was expected")
+    let(:dependent_env_var) { TahiEnv.registered_env_vars.fetch(dependent_key) }
+    let(:dependent_default_value) { dependent_env_var.default_value }
+    let(:dependent_not_set_value) do
+      dependent_default_value ? (!dependent_default_value).to_s : nil
+    end
+    let(:dependent_set_value) do
+      if dependent_default_value
+        dependent_default_value.to_s
+      elsif dependent_env_var.boolean?
+        'true'
+      else
+        'some-value'
       end
     end
 
-    it 'is required to be set when dependent key is true' do
-      ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": 'true') do
+    it 'is not required to be set when dependent key is not set' do
+      ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": dependent_not_set_value) do
+        expect(env.errors.full_messages.join).to_not match("Environment Variable: #{var} was expected to be set, but was not.")
+      end
+    end
+
+    it 'is required to be set when dependent key is set' do
+      ClimateControl.modify valid_env.merge("#{var}": nil, "#{dependent_key}": dependent_set_value) do
         expect(env.errors.full_messages.join).to match("Environment Variable: #{var} was expected")
       end
     end
 
-    it 'is required to have a value when dependent key is true' do
-      ClimateControl.modify valid_env.merge("#{var}": '', "#{dependent_key}": 'true') do
-        expect(env.errors.full_messages.join).to match("Environment Variable: #{var} was expected")
+    if dependent_values.any?
+      dependent_values.each do |_dependent_set_value|
+        let(:dependent_set_value) { _dependent_set_value }
+        it 'is required to have a value when dependent key is set' do
+          ClimateControl.modify valid_env.merge("#{var}": '', "#{dependent_key}": dependent_set_value) do
+            expect(env.errors.full_messages.join).to match("Environment Variable: #{var} was expected")
+          end
+        end
+      end
+    else
+      it 'is required to have a value when dependent key is set' do
+        ClimateControl.modify valid_env.merge("#{var}": '', "#{dependent_key}": dependent_set_value) do
+          expect(env.errors.full_messages.join).to match("Environment Variable: #{var} was expected")
+        end
       end
     end
 

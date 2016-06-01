@@ -49,7 +49,7 @@ class TahiEnv
   required :APP_NAME
   required :ADMIN_EMAIL
   required :PASSWORD_AUTH_ENABLED
-  optional :RAILS_ASSET_HOST
+  required :RAILS_ASSET_HOST, if: :staging_or_production?
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
   required :DEFAULT_MAILER_URL
@@ -162,6 +162,10 @@ class TahiEnv
 
   # Sidekiq
   optional :SIDEKIQ_CONCURRENCY
+
+  def staging_or_production?
+    %w(staging production).include? ENV['RAILS_ENV']
+  end
 
   def validate!
     unless valid?

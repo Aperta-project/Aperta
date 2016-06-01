@@ -1,13 +1,17 @@
 require 'rails_helper'
 
-feature "Register Decision", js: true do
+feature "Register Decision", js: true, sidekiq: :inline! do
   let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal, :submitted) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, :submitted)
+  end
   let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
 
   before do
+    allow(PlosBilling::SalesforceManuscriptUpdateWorker)
+      .to receive(:perform_async).and_return(true)
     task.add_participant(user)
     assign_journal_role paper.journal, user, :editor
     login_as(user, scope: :user)
@@ -33,7 +37,7 @@ feature "Register Decision", js: true do
         wait_for_ajax
         expect(task.reload.completed?).to be true
         expect(overlay.success_state_message).to be true
-        expect(first('input[name=decision]')).to be_disabled
+        expect(overlay).to be_disabled
       end
 
       scenario "persist the decision radio button" do
@@ -52,8 +56,10 @@ feature "Register Decision", js: true do
 
   context "With previous decision history" do
     before do
-      paper.decisions.first.update! verdict: "major_revision",
-                                    letter: "Please revise the manuscript.\nAfter line break"
+      paper.decisions.first.update!(
+        verdict: "accept",
+        letter: "Please revise the manuscript.\nAfter line break",
+        registered: true)
       paper.decisions.create!
       paper.reload
     end
@@ -61,22 +67,23 @@ feature "Register Decision", js: true do
     scenario "User checks previous decision history" do
       overlay = Page.view_task_overlay(paper, task)
       expect(overlay.previous_decisions).to_not be_empty
-      expect(overlay.previous_decisions.first.revision_number).to eq("0")
-      overlay.find("#accordion h4.panel-title a").click # open Accordion
-      expect(overlay.previous_decisions.first.letter).to eq("Please revise the manuscript. After line break")
+      expect(overlay.previous_decisions.first.revision_number).to eq("0.")
+      overlay.previous_decisions.first.open
+      expect(overlay.previous_decisions.first.letter)
+        .to eq("Please revise the manuscript. After line break")
       expect(overlay.previous_decisions.first.letter).to_not include "<br>"
     end
   end
 
   context "with an unsubmitted Paper" do
     before do
-      paper.update_attributes!(publishing_state: 'unsubmitted')
+      paper.update!(publishing_state: 'unsubmitted')
       paper.reload
     end
 
     scenario "Participant cannot register a decision on the paper" do
       overlay = Page.view_task_overlay(paper, task)
-      expect(overlay.invalid_state_message).to be true
+      wait_for_ajax
       expect(overlay).to be_disabled
     end
   end

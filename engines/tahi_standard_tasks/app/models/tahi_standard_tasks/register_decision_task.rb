@@ -20,19 +20,15 @@ module TahiStandardTasks
       latest_decision.present? && latest_decision.verdict.present?
     end
 
-    def complete_decision
-      decision = latest_decision
+    def register(decision)
       paper.make_decision decision
-      # If it's a revise decision, prepare a new decision task.
-      DecisionReviser.new(self, decision).process! if decision.revision?
-    end
-
-    def send_email
+      ReviseTask.setup_new_revision(paper, phase) if decision.revision?
       RegisterDecisionMailer.delay.notify_author_email(
-        decision_id: paper.decisions.completed.latest)
-    end
-
-    def send_emails
+        decision_id: decision.id
+      )
+      decision.registered = true
+      decision.save!
+      complete!
     end
 
     # These methods are a bunch of english text. They should be moved to

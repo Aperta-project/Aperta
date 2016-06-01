@@ -85,7 +85,7 @@ export default DS.Model.extend({
     return this.get('title') || this.get('shortTitle');
   }),
 
-  collaborators: computed('collaborations.[]', function() {
+  collaborators: computed('collaborations.@each.user', function() {
     return this.get('collaborations').mapBy('user');
   }),
 
@@ -93,8 +93,21 @@ export default DS.Model.extend({
     return this.get('oldRoles').sort().join(', ');
   }),
 
-  latestDecision: computed('decisions.[]', function() {
+  latestDecision: computed('decisions.@each.isLatest', function() {
     return this.get('decisions').findBy('isLatest', true);
+  }),
+
+  latestRegisteredDecision: computed(
+    'decisions.@each.isLatestRegistered',
+    function() {
+      return this.get('decisions').findBy('isLatestRegistered', true);
+  }),
+
+  previousDecisions: computed('decisions.@each.registered', function() {
+    return this.get('decisions')
+      .filterBy('registered')
+      .sortBy('revisionNumber')
+      .reverseObjects();
   }),
 
   textForVersion(versionString) {
@@ -177,5 +190,10 @@ export default DS.Model.extend({
       return false;
     }
     return true;
-  })
+  }),
+
+  sortedDecisions: computed('decisions.@each.revision_number', function() {
+    return this.get('decisions').sortBy('revision_number');
+  }),
+
 });

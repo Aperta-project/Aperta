@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 describe Decision do
-  let(:paper) { FactoryGirl.create :paper }
-  let!(:decision) { paper.decisions.first }
+  let!(:decision) do
+    paper = FactoryGirl.create :paper
+    paper.decisions.first
+  end
+  let(:paper) { decision.paper }
 
   it "the first decision always has 0 revision number" do
     expect(decision.revision_number).to eq(0)
@@ -14,7 +17,7 @@ describe Decision do
   end
 
   it "automatically increments the revision number" do
-    new_decision = paper.decisions.create!
+    paper.decisions.create!
     newest_decision = paper.decisions.create!
     expect(newest_decision.revision_number).to eq 2
   end
@@ -34,12 +37,12 @@ describe Decision do
 
   describe '#revision?' do
     it 'counts major_revision as a revision' do
-      decision.update_attribute(:verdict, 'major_revision')   
+      decision.update_attribute(:verdict, 'major_revision')
       expect(decision.revision?).to be true
     end
 
     it 'counts minor_revision as a revision' do
-      decision.update_attribute(:verdict, 'minor_revision') 
+      decision.update_attribute(:verdict, 'minor_revision')
       expect(decision.revision?).to be true
     end
   end
@@ -48,8 +51,8 @@ describe Decision do
     it 'returns true if it is the latest decision' do
       early_decision = paper.decisions.create!
       paper.decisions.create!
-      (FactoryGirl.create :paper).decisions.create!
       latest_decision = paper.decisions.create!
+      (FactoryGirl.create :paper).decisions.create!
       expect(early_decision.latest?).to be false
       expect(latest_decision.latest?).to be true
     end
@@ -60,7 +63,7 @@ describe Decision do
       let(:decision) { FactoryGirl.create(:decision, :rejected) }
 
       it "is returned" do
-        Decision.completed.should eq([decision])
+        expect(Decision.completed).to eq([decision])
       end
     end
 
@@ -68,7 +71,7 @@ describe Decision do
       let(:decision) { FactoryGirl.create(:decision, :pending) }
 
       it "is not returned" do
-        Decision.completed.should be_empty
+        expect(Decision.completed).to be_empty
       end
     end
   end
@@ -98,7 +101,7 @@ describe Decision do
 
     context 'when the verdict is invalid' do
       it 'fails validation for an unknown verdict' do
-        decision.update_attribute(:verdict, 'Woop de doo') 
+        decision.update_attribute(:verdict, 'Woop de doo')
         expect(decision.valid?).to be false
       end
     end

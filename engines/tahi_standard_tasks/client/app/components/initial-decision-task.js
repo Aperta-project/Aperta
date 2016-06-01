@@ -17,6 +17,8 @@ export default TaskComponent.extend({
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
+  initialDecisions: computed.filterBy('task.paper.decisions', 'initial', true),
+  initialDecision: computed.alias('task.paper.initialDecision'),
   nonPublishable: not('publishable'),
   hasNoLetter: empty('initialDecision.letter'),
   hasNoVerdict: none('initialDecision.verdict'),
@@ -34,14 +36,9 @@ export default TaskComponent.extend({
   actions: {
     registerDecision() {
       this.set('isSavingData', true);
-      this.get('initialDecision').save().then(() => {
-        const path = `/api/initial_decision/${this.get('task.id')}`;
-        return this.get('restless').post(path);
-      }).then(() => {
-        this.set('task.completed', true);
-        return this.get('task').save();
-      }).then(() => {
-        this.set('isSavingData', false);
+      this.get('initialDecision').register(this.get('task'))
+        .finally(() => {
+          this.set('isSavingData', false);
       });
     },
 

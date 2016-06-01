@@ -226,4 +226,13 @@ class Activity < ActiveRecord::Base
     end
     activity
   end
+
+  def self.state_changed!(paper, to:)
+    create(
+      feed_name: 'forensic',
+      activity_key: "paper.state_changed.#{to}",
+      subject: paper,
+      message: "Paper state changed to #{to}"
+    )
+  end
 end

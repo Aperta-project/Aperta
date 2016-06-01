@@ -93,7 +93,7 @@ class Paper < ActiveRecord::Base
     state :published
     state :withdrawn
 
-    after_all_transitions :set_state_updated_at!
+    after_all_transitions :set_state_updated!
 
     event(:initial_submit) do
       transitions from: :unsubmitted,
@@ -157,12 +157,14 @@ class Paper < ActiveRecord::Base
     event(:accept) do
       transitions from: :submitted,
                   to: :accepted,
-                  after: [:set_accepted_at!]
+                  after: [:set_accepted_at!,
+                          :new_major_version!]
     end
 
     event(:reject) do
       transitions from: [:initially_submitted, :submitted],
-                  to: :rejected
+                  to: :rejected,
+                  after: :new_major_version!
       before do
         update(active: false)
       end
@@ -227,6 +229,10 @@ class Paper < ActiveRecord::Base
 
   def make_decision(decision)
     public_send "#{decision.verdict}!"
+  end
+
+  def awaiting_decision?
+    SUBMITTED_STATES.include? publishing_state.to_sym
   end
 
   def body
@@ -496,8 +502,13 @@ class Paper < ActiveRecord::Base
     update!(first_submitted_at: Time.current.utc)
   end
 
-  def set_state_updated_at!
+  def set_state_updated!
     update!(state_updated_at: Time.current.utc)
+    Activity.state_changed! self, to: publishing_state
+  end
+
+  def been_fully_submitted?
+    activities.where(activity_key: "paper.state_changed.submitted").exists?
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

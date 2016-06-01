@@ -680,6 +680,29 @@ describe Paper do
       end
     end
 
+    describe '#accept' do
+      context 'paper is submitted' do
+        let(:paper) do
+          FactoryGirl.create(:paper, :submitted, journal: journal)
+        end
+
+        include_examples "transitions save state_updated_at", :accept!
+
+        it 'transitions to accepted state from submitted' do
+          paper.accept!
+          expect(paper.accepted?).to be true
+        end
+
+        it "creates a new major version" do
+          expect(paper.latest_version.major_version).to be(0)
+          expect(paper.latest_version.minor_version).to be(0)
+          paper.accept!
+          expect(paper.latest_version.major_version).to be(1)
+          expect(paper.latest_version.minor_version).to be(0)
+        end
+      end
+    end
+
     describe '#reject' do
       context 'paper is submitted' do
         let(:paper) do
@@ -691,6 +714,14 @@ describe Paper do
         it 'transitions to rejected state from submitted' do
           paper.reject!
           expect(paper.rejected?).to be true
+        end
+
+        it "creates a new major version" do
+          expect(paper.latest_version.major_version).to be(0)
+          expect(paper.latest_version.minor_version).to be(0)
+          paper.reject!
+          expect(paper.latest_version.major_version).to be(1)
+          expect(paper.latest_version.minor_version).to be(0)
         end
       end
 
@@ -1092,6 +1123,21 @@ describe Paper do
     it "returns the latest version" do
       versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect(paper.latest_version).to eq(versioned_text)
+    end
+  end
+
+  describe "#awaiting_decision?" do
+    it "is true when the paper is submitted" do
+      paper = FactoryGirl.build(:paper, publishing_state: "submitted")
+      expect(paper.awaiting_decision?).to be(true)
+    end
+    it "is true when the paper is initially submitted" do
+      paper = FactoryGirl.build(:paper, publishing_state: "initially_submitted")
+      expect(paper.awaiting_decision?).to be(true)
+    end
+    it "is not true otherwise" do
+      paper = FactoryGirl.build(:paper, publishing_state: "rejected")
+      expect(paper.awaiting_decision?).to be(false)
     end
   end
 

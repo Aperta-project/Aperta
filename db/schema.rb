@@ -214,6 +214,8 @@ ActiveRecord::Schema.define(version: 20160525152903) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "author_response"
+    t.boolean  "registered",            default: false, null: false
+    t.boolean  "initial",               default: false, null: false
   end
 
   add_index "decisions", ["paper_id", "revision_number"], name: "index_decisions_on_paper_id_and_revision_number", unique: true, using: :btree

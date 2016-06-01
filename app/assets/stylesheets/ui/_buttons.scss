@@ -120,7 +120,7 @@
 
 
 // .button modifier
-.button--disabled {
+.button:disabled, .button--disabled {
   color: #eee;
   background-color: $tahi-grey-light;
   cursor: not-allowed;

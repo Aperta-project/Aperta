@@ -1,9 +1,11 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
-    {{progress-spinner visible=true size="large" center=true}}
-  </div>
+  {{#if isSavingData}}
+    <div class="register-decision-saving-cover">
+      {{progress-spinner visible=true size="large" center=true}}
+    </div>
+  {{/if}}
   {{error-message message=validationErrors.errors}}
 
   {{#if task.completed}}
@@ -22,41 +24,17 @@
   {{/if}}
 
   <div class="decision-selections">
-    <label class="decision-label">
-      {{radio-button value="accept"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Accept
-    </label>
-
-    <label class="decision-label">
-      {{radio-button value="reject"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Reject
-    </label>
-
-    <label class="decision-label">
-      {{radio-button value="major_revision"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Major Revision
-    </label>
-
-    <label class="decision-label">
-      {{radio-button value="minor_revision"
-                     selection=latestDecision.verdict
-                     disabled=task.completed
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Minor Revision
-    </label>
+    {{#each verdicts as |verdict|}}
+      <label class="decision-label">
+        {{radio-button
+          value=verdict
+          selection=latestDecision.verdict
+          disabled=nonPublishable
+          name="decision"
+          action=(action "setDecisionTemplate")}}
+        {{humanize verdict}}
+      </label>
+    {{/each}}
   </div>
 
   <p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
@@ -75,6 +53,10 @@
   {{#if previousDecisions}}
     <hr>
     <h3>Decision History</h3>
-    {{partial "overlays/partials/decision-list"}}
+    <div class="previous-decisions">
+      {{#each previousDecisions as |decision|}}
+        {{decision-bar decision=decision}}
+      {{/each}}
+    </div>
   {{/if}}
 </div>

@@ -36,6 +36,10 @@ class Decision < ActiveRecord::Base
     self == paper.decisions.latest
   end
 
+  def latest_registered?
+    self == paper.latest_registered_decision
+  end
+
   def revision?
     verdict == 'major_revision' || verdict == 'minor_revision'
   end

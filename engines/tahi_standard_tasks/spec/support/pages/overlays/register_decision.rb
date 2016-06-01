@@ -1,9 +1,9 @@
 class RegisterDecisionOverlay < CardOverlay
   def previous_decisions
     within(".previous-decisions") do
-      all('.decision').map { |decision_div|
+      all('.decision-bar').map do |decision_div|
         DecisionComponent.new(decision_div)
-      }
+      end
     end
   end
 
@@ -31,19 +31,19 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def disabled?
-    find("input[type='radio']", match: :first)
-    all("input[type='radio'][disabled]").size == 3 &&
-    find("textarea[disabled]") != nil
+    !find(".send-email-action:disabled").nil?
   end
 
   def click_send_email_button
     find(".button-primary.button--green.send-email-action").click
     # and wait for the flash message to show
-    find(".alert")
+    find(".decision-bar-verdict")
   end
 
-  def success_state_message
-    find(".alert-info").text == "A final decision of accept has been registered."
+  def success_state_message(decision: "Accept")
+    banner_text = find(".rescind-decision-container").text
+    match = banner_text =~ /A decision of #{decision} has been made./
+    !match.nil?
   end
 
   def invalid_state_message
@@ -59,10 +59,14 @@ class DecisionComponent
   end
 
   def revision_number
-    el.find('.revision-number').text
+    el.find('.decision-bar-revision-number').text
   end
 
   def letter
-    el.find('.letter').text
+    el.find('.decision-bar-letter').text
+  end
+
+  def open
+    el.find('.decision-bar-bar').click
   end
 end

@@ -47,7 +47,7 @@ describe Typesetter::BillingLogSerializer do
   end
 
   it 'has a ned_id for a pre-existing billing user' do
-    FactoryGirl.create(:user, email: 'bob@example.com', ned_id: '12345')
+    FactoryGirl.create(:user, email: paper.answer_for('plos_billing--email').value, ned_id: '12345')
     expect(output[:ned_id]).to eq(12345)
   end
 

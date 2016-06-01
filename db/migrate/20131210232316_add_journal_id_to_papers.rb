@@ -4,16 +4,11 @@ class AddJournalIdToPapers < ActiveRecord::Migration
 
     reversible do |dir|
       dir.up do
-        execute <<-SQL
-          INSERT INTO "journals" ("name") VALUES ('PLOS Yeti');
-          UPDATE "papers" SET "journal_id" = (SELECT "journals".id FROM "journals" WHERE "journals"."name" = 'PLOS Yeti' LIMIT 1);
-        SQL
+        # NB: This migration previously did something very wrong. It inserted
+        # data into the db. Now it does nothing, which is better.
       end
 
       dir.down do
-        execute <<-SQL
-          DELETE FROM "journals" WHERE "journals"."name" = 'PLOS Yeti';
-        SQL
       end
     end
   end

@@ -3573,10 +3573,12 @@ manuscript_manager_templates:
   - id
   - paper_type
   - journal_id
+  - uses_research_article_reviewer_report
   records: 
   - - '1'
     - Research
     - '1'
+    - true
 
 ---
 nested_question_answers:
@@ -8067,6 +8069,7 @@ papers:
   - striking_image_type
   - state_updated_at
   - processing
+  - uses_research_article_reviewer_report
   records: 
   - - '1'
     - 
@@ -8092,6 +8095,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '2'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
@@ -8116,6 +8120,7 @@ papers:
     - Figure
     - 
     - false
+    - true
   - - '3'
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -8140,6 +8145,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '4'
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
@@ -8164,6 +8170,7 @@ papers:
     - 
     - '2015-11-02 15:14:05.576249'
     - false
+    - true
   - - '8'
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -8188,6 +8195,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '9'
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
@@ -8212,6 +8220,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '10'
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
@@ -8236,6 +8245,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '12'
     - <p class="Body A">African forest elephants are being poached at accelerating
       rates, but we lack range-wide information on the repercussions. Analysis of
@@ -8271,6 +8281,7 @@ papers:
     - SupportingInformationFile
     - '2016-04-12 19:05:53.732615'
     - false
+    - true
 
 ---
 participations:

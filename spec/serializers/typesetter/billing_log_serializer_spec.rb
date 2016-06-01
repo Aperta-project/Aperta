@@ -166,8 +166,8 @@ describe Typesetter::BillingLogSerializer do
     end
   end
 
-  it 'has pubdnumber which is the same as manuscript id' do
-    expect(output[:pubdnumber]).to eq(paper.id)
+  it 'has pubdnumber which is the same as the manuscript_id of the paper' do
+    expect(output[:pubdnumber]).to eq(paper.manuscript_id)
   end
 
   it 'has fundRef' do

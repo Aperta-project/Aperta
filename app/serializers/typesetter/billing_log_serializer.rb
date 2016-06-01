@@ -98,8 +98,8 @@ module Typesetter
     end
 
     def pubdnumber
-      # Same as manuscript id for now
-      object.id
+      # pbio.000001
+      object.manuscript_id
     end
 
     def dtitle

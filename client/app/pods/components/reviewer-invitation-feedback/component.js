@@ -14,8 +14,8 @@ export default Ember.Component.extend({
     declineFeedback(invitation) {
       invitation.set('declineReason', null);
       invitation.set('reviewerSuggestions', null);
-
-      this.sendAction('reject', invitation);
+      invitation.set('pendingFeedback', false);
+      this.get('close')();
     }
   }
 });

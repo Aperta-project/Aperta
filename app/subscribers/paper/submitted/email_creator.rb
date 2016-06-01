@@ -9,7 +9,11 @@ class Paper::Submitted::EmailCreator
     when 'checking'
       UserMailer.delay.notify_creator_of_check_submission(paper.id)
     else
-      UserMailer.delay.notify_creator_of_paper_submission(paper.id)
+      if paper.publishing_state == "initially_submitted"
+        UserMailer.delay.notify_creator_of_initial_submission(paper.id)
+      else
+        UserMailer.delay.notify_creator_of_paper_submission(paper.id)
+      end
     end
   end
 end

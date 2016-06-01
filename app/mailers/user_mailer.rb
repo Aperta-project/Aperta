@@ -109,6 +109,17 @@ class UserMailer < ActionMailer::Base
       subject: "New manuscript submitted to PLOS #{@journal.name}: \"#{@paper.display_title}\"")
   end
 
+  def notify_creator_of_initial_submission(paper_id)
+    @paper = Paper.find(paper_id)
+    @author = @paper.creator
+    @journal = @paper.journal
+    @title = @paper.display_title(sanitized: false)
+
+    mail(
+      to: @author.try(:email),
+      subject: "Thank you for submitting to #{@journal.name}")
+  end
+
   def notify_mention_in_discussion(user_id, topic_id, reply_id = nil)
     @user = User.find(user_id)
     @reply = DiscussionReply.find(reply_id) if reply_id

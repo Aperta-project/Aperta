@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="greeting">
+    <p class="message">
+      Thank you for submitting your manuscript,
+      <%= @title %>, to <%= @journal.name %>.
+      Our staff will be in touch with next steps.
+    </p>
+  </div>
+  <hr>
+  <div class="paper-info">
+    <div class="journal-info">
+      <% if @journal.logo_url %>
+        <img class="journal-logo" src="<%= @journal.logo_url %>">
+      <% else %>
+        <div class="journal-name">
+          <%= @journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <p>
+      Dear <%= @author.full_name %>,
+    </p>
+    <p class="message">
+      Thank you for your submission, "<%= @title %>", which will 
+      now be passed to the editors to determine whether your scientific findings meet the criteria
+      for peer review at <%= @journal.name %>. The staff editors may also seek advice from an
+      Academic Editor with relevant expertise.
+    </p>
+
+    <p>
+      If the editorial evaluation is positive, the manuscript will be returned to you ahead of
+      initiating peer review for you to submit statements relating to ethical approval, funding,
+      data and competing interests. This additional information will need to satisfy PLOS’ policies
+      and be made available to reviewers.
+    </p>
+
+    <p>
+      You will be able to check on the progress of your paper by logging in here:
+      <%= link_to client_dashboard_url, client_dashboard_url %>.
+    </p>
+  </div>
+  <hr>
+  <div class="footer">
+    With best wishes,
+    The <%= @journal.name %> Team
+  </div>
+</div>

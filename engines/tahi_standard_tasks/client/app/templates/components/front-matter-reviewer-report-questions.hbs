@@ -23,7 +23,7 @@
                         readOnly=readOnly as |radio|}}
 
         {{#if radio.yieldingForAdditionalData}}
-          {{nested-question-textarea ident="front_matter_reviewer_report--suitable"
+          {{nested-question-textarea ident="front_matter_reviewer_report--suitable--comment"
               owner=model
               decision=decision
               displayQuestionText=false
@@ -42,7 +42,7 @@
                       wrapperClass="yes-no-with-comments"
                       readOnly=readOnly as |radio|}}
       {{#if radio.yieldingForAdditionalData}}
-        {{nested-question-textarea ident="front_matter_reviewer_report--includes_unpublished_data"
+        {{nested-question-textarea ident="front_matter_reviewer_report--includes_unpublished_data--explanation"
             owner=model
             decision=decision
             noResponseText=""

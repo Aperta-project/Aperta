@@ -33,7 +33,7 @@ namespace 'nested-questions:seed' do
           owner_type: TahiStandardTasks::FrontMatterReviewerReportTask.name,
           ident: "front_matter_reviewer_report--suitable--comment",
           value_type: "text",
-          text: "Comment",
+          text: "Suitable Comment",
           position: 1
         }
       ]
@@ -50,9 +50,9 @@ namespace 'nested-questions:seed' do
         {
           owner_id: nil,
           owner_type: TahiStandardTasks::FrontMatterReviewerReportTask.name,
-          ident: "front_matter_reviewer_report--statistical_analysis--explanation",
+          ident: "front_matter_reviewer_report--includes_unpublished_data--explanation",
           value_type: "text",
-          text: "Statistical Analysis Explanation",
+          text: "Includes Published Data Explanation",
           position: 1
         }
       ]

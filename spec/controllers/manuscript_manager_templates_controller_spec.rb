@@ -208,6 +208,11 @@ describe ManuscriptManagerTemplatesController do
           do_request
           expect(res_body).to have_key('errors')
         end
+
+        it "responds with 422 UNPROCESSABLE ENTITY" do
+          do_request
+          expect(response.status).to eq(422)
+        end
       end
 
       context "when a journal has multiple manuscript manager templates" do
@@ -215,27 +220,16 @@ describe ManuscriptManagerTemplatesController do
           FactoryGirl.create(:manuscript_manager_template, journal: journal)
         end
 
-        it "returns the deleted template as JSON" do
-          do_request
-          expect(mmt.paper_type).to eq(new_params[:paper_type])
-          expect(template.to_json).to eq(template_params.to_json)
+        it "deletes the ManuscriptManagerTemplate" do
+          expect do
+            do_request
+          end.to change { ManuscriptManagerTemplate.exists?(mmt.id) }.to false
         end
-      end
 
-      it "responds with 204 NO CONTENT" do
-        do_request
-        expect(response.status).to eq(204)
-      end
-
-      it "deletes the ManuscriptManagerTemplate" do
-        expect do
+        it "responds with 204 NO CONTENT" do
           do_request
-        end.to change { ManuscriptManagerTemplate.exists?(mmt) }.to false
-      end
-
-      context "with invalid params" do
-        let(:new_params) { {paper_type: nil, template: {}} }
-        it_behaves_like "a controller rendering an invalid model"
+          expect(response.status).to eq(204)
+        end
       end
     end
 

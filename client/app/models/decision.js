@@ -13,8 +13,20 @@ export default DS.Model.extend({
   verdict: DS.attr('string'),
   authorResponse: DS.attr('string'),
   registered: DS.attr('boolean'),
+  initial: DS.attr('boolean'),
+  rescinded: DS.attr('boolean'),
+  rescindMinorVersion: DS.attr('number'),
+  rescindable: DS.attr('boolean'),
 
   restless: Ember.inject.service('restless'),
+  rescind() {
+    return this.get('restless')
+      .put(`/api/decisions/${this.get('id')}/rescind`)
+      .then((data) => {
+        this.get('store').pushPayload(data);
+        return this;
+      });
+  },
 
   register(task) {
     const registerPath = `/api/decisions/${this.get('id')}/register`;

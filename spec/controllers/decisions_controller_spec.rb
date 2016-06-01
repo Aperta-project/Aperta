@@ -120,16 +120,42 @@ describe DecisionsController do
         do_request
       end
     end
+  end
 
-    context "assigns @decision" do
-      it "updates letter and verdict" do
-        expect(assigns(:decision).letter).to eq new_letter
-        expect(assigns(:decision).verdict).to eq new_verdict
+  describe "#rescind" do
+    subject(:do_request) do
+      put :rescind,
+          format: :json,
+          id: decision.id
+    end
+    let(:decision) { paper.decisions.latest }
+    let(:paper) { FactoryGirl.create(:paper, publishing_state: :rejected) }
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "and the user is signed in" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:rescind_decision, paper)
+          .and_return true
+        stub_sign_in(user)
       end
 
-      it "does not update revision_number" do
-        expect(assigns(:decision).revision_number).to_not eq 99
-        expect(assigns(:decision).revision_number).to eq 0
+      context "and the decision is rescindable" do
+        before do
+          decision.update(verdict: "reject", registered: true)
+        end
+
+        it "completes successfully" do
+          do_request
+          expect(response.status).to eq(200)
+        end
+
+        it "rescinds the latest decision" do
+          do_request
+          expect(paper.reload.publishing_state).to eq("initially_submitted")
+          expect(decision.reload.rescinded).to be(true)
+        end
       end
     end
   end

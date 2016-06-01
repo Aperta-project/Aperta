@@ -3,6 +3,28 @@ import QUnit from 'qunit';
 import sinon from 'sinon';
 
 export default function() {
+  QUnit.assert.arrayContainsExactly = function(actualArray, expectedArray, message){
+    if(!message){
+      message = `Expected array to contain the contents, but did not`;
+    }
+
+    let result = true;
+
+    if(actualArray.length != expectedArray.length){
+      result = false;
+    }
+    if(_.intersection(actualArray, expectedArray).length != expectedArray.length){
+      result = false;
+    }
+
+    return this.push(
+      result,
+      actualArray.invoke('toString'),
+      expectedArray.invoke('toString'),
+      message
+    );
+  }
+
   QUnit.assert.textPresent = function(selector, text, message) {
     let elementText  = Ember.$.trim(Ember.$(selector).text());
     let result       = elementText.indexOf(text) !== -1;
@@ -36,17 +58,27 @@ export default function() {
 
     return this.push(
       matches === 1,
-      `one '${selector}' not found`,
       `found ${matches} '${selector}'s`,
+      `found 1 '${selector}'s'`,
       message || `should find single element at ${selector}`);
+  };
+
+  QUnit.assert.nElementsFound = function(selector, n, message) {
+    const matches = $(selector).length;
+
+    return this.push(
+      matches === n,
+      `found ${matches} '${selector}'s`,
+      `found ${n} '${selector}'s`,
+      message || `should find ${n} elements at ${selector}`);
   };
 
   QUnit.assert.elementNotFound = function(selector, message) {
     const matches = Ember.$('#ember-testing ' + selector).length;
     return this.push(
       matches === 0,
-      `'${selector}' found`,
       `'${selector}' not found`,
+      `'${selector}' found`,
       message || `should find no element at ${selector}`);
   };
 
@@ -86,11 +118,18 @@ export default function() {
   };
 
   QUnit.assert.spyCalledWith = function(spy, args, message) {
-    sinon.assert.calledWith(spy, ...args);
     return this.push(
       spy.calledWith(...args),
       spy.lastCall.args,
       args,
       message || `should've been called with args ${args}`);
+  };
+
+  QUnit.assert.spyCalled = function(spy, message) {
+    return this.push(
+      spy.called,
+      'never called',
+      'called',
+      message || 'spy should have been called.');
   };
 }

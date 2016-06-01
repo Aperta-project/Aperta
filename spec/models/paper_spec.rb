@@ -59,6 +59,15 @@ describe Paper do
         )
       end
     end
+
+    describe 'TERMINAL_STATES' do
+      it 'defines the paper states for when a paper has exited the workflow' do
+        expect(Paper::TERMINAL_STATES).to contain_exactly(
+          :accepted,
+          :rejected
+        )
+      end
+    end
   end
 
   describe 'validations' do
@@ -753,6 +762,59 @@ describe Paper do
       it "marks the paper uneditable" do
         paper.publish!
         expect(paper.published_at).to be_truthy
+      end
+    end
+
+    describe '#rescind!' do
+      context 'when rejected after full submission' do
+        let(:paper) do
+          paper = FactoryGirl.create(:paper, :submitted, journal: journal)
+          paper.reject!
+          paper
+        end
+
+        include_examples "transitions save state_updated_at", :rescind!
+
+        it "transitions to submitted from rejected" do
+          paper.rescind!
+          expect(paper.publishing_state).to eq("submitted")
+        end
+
+        it "creates a new decision for terminal states" do
+          expect { paper.rescind! }.to change { paper.decisions.count }.by(1)
+        end
+      end
+
+      context 'when rejected after initial submission' do
+        let(:paper) do
+          paper = FactoryGirl.create(:paper, publishing_state: :initially_submitted, journal: journal)
+          paper.reject!
+          paper
+        end
+
+        include_examples "transitions save state_updated_at", :rescind!
+
+        it "transitions to initially_submitted from rejected" do
+          paper.rescind!
+          expect(paper.publishing_state).to eq("initially_submitted")
+        end
+      end
+
+      context 'after a request for revision' do
+        let(:paper) do
+          paper = FactoryGirl.create(:paper, :submitted, journal: journal)
+          paper.major_revision!
+          paper
+        end
+
+        it "transitions to submitted" do
+          paper.rescind!
+          expect(paper.publishing_state).to eq("submitted")
+        end
+
+        it "does not creates a new decision" do
+          expect { paper.rescind! }.to_not change { paper.decisions.count }
+        end
       end
     end
   end

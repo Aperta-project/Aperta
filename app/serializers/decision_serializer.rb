@@ -9,6 +9,10 @@ class DecisionSerializer < ActiveModel::Serializer
              :author_response,
              :registered,
              :initial,
+             :rescinded,
+             :rescindable,
+             :rescind_minor_version
+
   has_many :invitations, embed: :ids, include: true
   has_one :paper, embed: :id
 
@@ -22,5 +26,8 @@ class DecisionSerializer < ActiveModel::Serializer
     object.latest_registered?
   end
 
+  def rescindable
+    object.rescindable?
+  end
   # rubocop:enable Style/PredicateName
 end

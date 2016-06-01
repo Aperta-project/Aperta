@@ -28,11 +28,6 @@ export default TaskComponent.extend({
   cannotRegisterDecision: or('hasNoLetter',
                              'hasNoVerdict',
                              'isTaskCompleted'),
-
-  initialDecision: computed('task.paper.decisions.[]', function() {
-    return this.get('task.paper.decisions').findBy('revisionNumber', 0);
-  }),
-
   actions: {
     registerDecision() {
       this.set('isSavingData', true);
@@ -44,6 +39,14 @@ export default TaskComponent.extend({
 
     setInitialDecisionVerdict(decision) {
       this.get('initialDecision').set('verdict', decision);
-    }
+    },
+
+    showSpinner() {
+      this.set('isSavingData', true);
+    },
+
+    hideSpinner() {
+      this.set('isSavingData', false);
+    },
   }
 });

@@ -8,20 +8,11 @@
   {{/if}}
   {{error-message message=validationErrors.errors}}
 
-  {{#if task.completed}}
-    {{#if finalDecision}}
-      <div class="alert alert-info">
-        A final decision of {{latestDecision.verdict}} has been registered.
-      </div>
-    {{/if}}
-  {{else}}
-    {{#unless publishable}}
-      <div class="alert alert-warning">
-        A decision cannot be registered at this time.
-        The manuscript is not in a submitted state.
-      </div>
-    {{/unless}}
-  {{/if}}
+  {{rescind-decision
+    decision=latestRegisteredDecision
+    isEditable=isEditable
+    beforeRescind=(action "showSpinner")
+    afterRescind=(action "hideSpinner")}}
 
   <div class="decision-selections">
     {{#each verdicts as |verdict|}}

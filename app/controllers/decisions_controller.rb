@@ -46,6 +46,16 @@ class DecisionsController < ApplicationController
            root: 'decisions'
   end
 
+  def rescind
+    requires_user_can(:rescind_decision, decision.paper)
+    decision.paper.notify_requester = true
+    decision.rescind!
+
+    render json: decision.paper.decisions,
+           each_serializer: DecisionSerializer,
+           root: 'decisions'
+  end
+
   private
 
   def decision

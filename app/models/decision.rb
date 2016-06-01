@@ -16,6 +16,15 @@ class Decision < ActiveRecord::Base
   validates :revision_number, uniqueness: { scope: :paper_id }
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
+  # Decisions can be appealed, and if editorial staff agrees the wrong
+  # decision was made, they recind that choice. This method gets called by
+  # the paper.rescind! state transition.
+  def rescind!
+    paper.rescind!
+    update(rescinded: true,
+           rescind_minor_version: paper.minor_version)
+  end
+
   def self.recent_ordered
     order(revision_number: :desc)
   end
@@ -50,5 +59,27 @@ class Decision < ActiveRecord::Base
     if latest_revision_number = paper.decisions.maximum(:revision_number)
       self.revision_number = latest_revision_number + 1
     end
+  end
+
+  def rescindable?
+    latest_registered? &&
+      paper.publishing_state == resulting_state &&
+      !rescinded
+  end
+
+  def terminal?
+    ["accept", "reject"].include? verdict
+  end
+
+  private
+
+  def resulting_state
+    {
+      "minor_revision" => "in_revision",
+      "major_revision" => "in_revision",
+      "accept" => "accepted",
+      "reject" => "rejected",
+      "invite_full_submission" => "invited_for_full_submission"
+    }[verdict]
   end
 end

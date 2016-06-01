@@ -49,6 +49,14 @@ class RegisterDecisionOverlay < CardOverlay
   def invalid_state_message
     !find(".alert-warning").nil?
   end
+
+  def rescind_button
+    find(".rescind-decision-button")
+  end
+
+  def rescind_confirm_button
+    find(".full-overlay-verification-confirm")
+  end
 end
 
 class DecisionComponent
@@ -68,5 +76,9 @@ class DecisionComponent
 
   def open
     el.find('.decision-bar-bar').click
+  end
+
+  def rescinded?
+    el.find('.decision-bar-rescinded') != nil
   end
 end

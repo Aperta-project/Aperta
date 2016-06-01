@@ -87,4 +87,26 @@ feature "Register Decision", js: true, sidekiq: :inline! do
       expect(overlay).to be_disabled
     end
   end
+
+  context "when rescinding a decision" do
+    before do
+      paper.decisions.first.update!(
+        letter: "Please revise the manuscript.\nAfter line break",
+        registered: true,
+        verdict: "accept")
+      paper.accept!
+      paper.decisions.create!
+      paper.reload
+    end
+
+    scenario "user rescinds a decision" do
+      overlay = Page.view_task_overlay(paper, task)
+      expect(overlay.rescind_button).to_not be_disabled
+      overlay.rescind_button.click
+      overlay.rescind_confirm_button.click
+      wait_for_ajax
+      expect(overlay.previous_decisions.first.revision_number).to eq("0.1")
+      expect(overlay.previous_decisions.first.rescinded?).to be(true)
+    end
+  end
 end

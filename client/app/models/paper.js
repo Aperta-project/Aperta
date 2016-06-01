@@ -196,4 +196,32 @@ export default DS.Model.extend({
     return this.get('decisions').sortBy('revision_number');
   }),
 
+  initialDecision: computed(
+    'decisions.@each.registered',
+    'decisions.@each.rescinded',
+    function() {
+      let decisions = this.get('sortedDecisions');
+      let latestInitial = this.get('decisions')
+                              .filterBy('initial')
+                              .filterBy('rescinded', false)
+                              .get('lastObject');
+      // If there's already been a full decision
+      // then just return the most recent initial decision.
+      let fullDecisions = decisions.filterBy('registered')
+                                   .filterBy('initial', false);
+      if (fullDecisions.get('length') > 0) {
+        return latestInitial;
+      }
+
+      // If all other decisions have been rescinded,
+      // return the latest, unmade decision
+      let prevCount = decisions.filter((d) => {
+        return d.get('registered') && !d.get('rescinded');
+      }).get('length');
+      if (prevCount === 0) {
+        return decisions.findBy('registered', false);
+      }
+
+      return latestInitial;
+    })
 });

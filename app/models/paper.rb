@@ -52,7 +52,10 @@ class Paper < ActiveRecord::Base
            source_type: "GroupAuthor",
            source: :author
   has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
-
+  has_one :latest_registered_decision,
+          -> { where(registered: true).order('revision_number DESC') },
+          class_name: 'Decision'
+  has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
@@ -197,7 +200,21 @@ class Paper < ActiveRecord::Base
         update(active: true)
       end
     end
+
+    # Please use rescind! instead of these __'d methods. It will
+    # choose the right state for you to end up in. Thanks!
+    event(:__rescind_initial_decision) do
+      transitions to: :initially_submitted,
+                  from: [:rejected, :invited_for_full_submission]
+    end
+
+    event(:__rescind_decision) do
+      transitions to: :submitted,
+                  from: [:rejected, :accepted, :in_revision]
+    end
   end
+
+  private :__rescind_initial_decision!, :__rescind_decision!
 
   # All known paper states
   STATES = aasm.states.map(&:name)
@@ -211,6 +228,25 @@ class Paper < ActiveRecord::Base
   SUBMITTED_STATES = [:initially_submitted, :submitted]
   # States that represent when a paper can be reviewed by a Reviewer
   REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
+
+  TERMINAL_STATES = [:accepted, :rejected]
+
+  # This is a faux state transition, it dynamically picks which
+  # state transition to use when rescinding.
+  def rescind!
+    # If we're accepted or rejected, then there's no new un-registered
+    # decision to use for the next go-round -- we'll have to make it.
+    decisions.create if in_terminal_state?
+    remove_revise_task if in_revision?
+
+    if been_fully_submitted?
+      __rescind_decision!
+    else
+      __rescind_initial_decision!
+    end
+
+    new_minor_version!
+  end
 
   def users_with_role(role)
     User.joins(:assignments).where(
@@ -471,7 +507,19 @@ class Paper < ActiveRecord::Base
       .find_by(nested_questions: { ident: ident })
   end
 
+  def in_terminal_state?
+    TERMINAL_STATES.include? publishing_state.to_sym
+  end
+
   private
+
+  def remove_revise_task
+    # Do it by title, because different journals, etc may have different
+    # classes. This method a violation of the engine/core boundary,
+    # but I don't know how to resolve it peacefully without larger
+    # architectural changes. See APERTA-6750.
+    tasks.where(title: 'Revise Manuscript').destroy_all
+  end
 
   def new_major_version!
     latest_version.new_major_version!

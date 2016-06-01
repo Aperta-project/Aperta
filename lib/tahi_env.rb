@@ -73,7 +73,7 @@ class TahiEnv
   required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
 
   # Bugsnag
-  required :BUGSNAG_API_KEY
+  optional :BUGSNAG_API_KEY
   optional :BUGSNAG_JAVASCRIPT_API_KEY
 
   # CAS

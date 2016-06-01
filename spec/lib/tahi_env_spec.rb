@@ -79,7 +79,7 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
 
   # Bugsnag
-  include_examples 'required env var', var: 'BUGSNAG_API_KEY'
+  include_examples 'optional env var', var: 'BUGSNAG_API_KEY'
   include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
 
   # CAS

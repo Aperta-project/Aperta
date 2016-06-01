@@ -1,5 +1,5 @@
-import Task from 'tahi/models/task';
+import ReviewerReportTask from 'tahi/models/reviewer-report-task';
 
-export default Task.extend({
+export default ReviewerReportTask.extend({
   qualifiedType: 'TahiStandardTasks::FrontMatterReviewerReportTask'
 });

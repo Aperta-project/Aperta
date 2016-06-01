@@ -1,4 +1,4 @@
 module TahiStandardTasks
-  class FrontMatterReviewerReportTaskSerializer < ::TaskSerializer
+  class FrontMatterReviewerReportTaskSerializer < ReviewerReportTaskSerializer
   end
 end

@@ -35,7 +35,7 @@ class PaperPage < Page
       element = find(".#{name}")
     end
 
-    fragment_class = overlay_class ? overlay_class : PaperTask
+    fragment_class = overlay_class ? overlay_class : PaperTaskOverlay
 
     fragment = fragment_class.new(element)
 

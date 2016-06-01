@@ -3,7 +3,6 @@ class InvitationSerializer < ActiveModel::Serializer
              :created_at,
              :decline_reason,
              :email,
-             :invitation_type,
              :invitee_role,
              :reviewer_suggestions,
              :state,

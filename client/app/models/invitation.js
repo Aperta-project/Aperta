@@ -13,9 +13,11 @@ export default DS.Model.extend({
   inviteeRole: DS.attr('string'),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
-  task: DS.belongsTo('task', { polymorphic: true, async: false }),
+  task: DS.belongsTo('task', { polymorphic: true, async: true }),
   title: DS.attr('string'),
   updatedAt: DS.attr('date'),
+
+  pendingFeedback: false,
 
   accepted: Ember.computed('state', function() {
     return this.get('state') === 'accepted';
@@ -37,5 +39,10 @@ export default DS.Model.extend({
       this.unloadRecord();
       return this;
     });
-  }
+  },
+
+  invited: Ember.computed.equal('state', 'invited'),
+  rejected: Ember.computed.equal('state', 'rejected'),
+
+  needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback')
 });

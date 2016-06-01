@@ -1,0 +1,27 @@
+.rescind-decision {
+  padding: 15px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+
+  .rescind-decision-verdict {
+    font-weight: bold;
+  }
+
+  .rescind-decision-button {
+    color: $tahi-green;
+    border: none;
+    background-color: transparent;
+    margin-left: 10px;
+
+    &:disabled {
+      color: $tahi-grey-light;
+    }
+  }
+}
+
+
+

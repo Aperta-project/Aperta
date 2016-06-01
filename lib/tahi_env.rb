@@ -45,10 +45,12 @@ class TahiEnv
   #
   # Note in the second reader method generated there is an appended '?'.
 
+  validate :validate_at_least_one_form_of_auth
+
   # App
   required :APP_NAME
   required :ADMIN_EMAIL
-  required :PASSWORD_AUTH_ENABLED
+  required :PASSWORD_AUTH_ENABLED, :boolean
   required :RAILS_ASSET_HOST, if: :staging_or_production?
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
@@ -163,10 +165,6 @@ class TahiEnv
   # Sidekiq
   optional :SIDEKIQ_CONCURRENCY
 
-  def staging_or_production?
-    %w(staging production).include? ENV['RAILS_ENV']
-  end
-
   def validate!
     unless valid?
       error_message = "Environment validation failed:\n\n"
@@ -175,6 +173,21 @@ class TahiEnv
       end
       error_message << "\n"
       fail InvalidEnvironment, error_message
+    end
+  end
+
+  private
+
+  def staging_or_production?
+    %w(staging production).include? ENV['RAILS_ENV']
+  end
+
+  def validate_at_least_one_form_of_auth
+    has_auth = cas_enabled? || orcid_enabled? || password_auth_enabled?
+    unless has_auth
+      errors.add \
+        :base,
+        'Expected at least one form of authentication to be enabled, but none were. Possible forms: CAS, ORCID, PASSWORD_AUTH'
     end
   end
 end

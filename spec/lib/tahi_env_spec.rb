@@ -54,7 +54,7 @@ describe TahiEnv do
   # App
   include_examples 'required env var', var: 'APP_NAME'
   include_examples 'required env var', var: 'ADMIN_EMAIL'
-  include_examples 'required env var', var: 'PASSWORD_AUTH_ENABLED'
+  include_examples 'required boolean env var', var: 'PASSWORD_AUTH_ENABLED'
   include_examples 'required env var', var: 'RAILS_ENV'
   include_examples 'dependent required env var', var: 'RAILS_ASSET_HOST', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
   include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
@@ -168,6 +168,15 @@ describe TahiEnv do
 
   # Sidekiq
   include_examples 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
+
+  describe 'when no authentication is enabled' do
+    it 'is not valid' do
+      ClimateControl.modify CAS_ENABLED: nil, ORCID_ENABLED: nil, PASSWORD_AUTH_ENABLED: nil do
+        expect(env.errors.full_messages).to include \
+          "Expected at least one form of authentication to be enabled, but none were. Possible forms: CAS, ORCID, PASSWORD_AUTH"
+      end
+    end
+  end
 
   describe '#validate!' do
     it 'does not raise an error when the environment is valid' do

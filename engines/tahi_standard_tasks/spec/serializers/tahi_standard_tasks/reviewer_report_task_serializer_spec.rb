@@ -1,8 +1,8 @@
 require "rails_helper"
 
-describe TahiStandardTasks::FrontMatterReviewerReportTaskSerializer, serializer_test: true do
+describe TahiStandardTasks::ReviewerReportTaskSerializer, serializer_test: true do
   let(:object_for_serializer) { reviewer_report_task }
-  let(:reviewer_report_task) { FactoryGirl.build_stubbed :front_matter_reviewer_report_task }
+  let(:reviewer_report_task) { FactoryGirl.build_stubbed :reviewer_report_task }
   let(:decision) { FactoryGirl.build_stubbed(:decision) }
 
   before do

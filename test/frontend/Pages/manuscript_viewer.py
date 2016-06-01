@@ -555,11 +555,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # complete_billing task
       if not base_task.completed_state():
         base_task.click_completion_button()
-        try:
-          task.click()
-        except WebDriverException:
-          # Leave it open
-          pass
+        manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+        self._actions.move_to_element(manuscript_id_text).perform()
+        task.click()
       time.sleep(1)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)

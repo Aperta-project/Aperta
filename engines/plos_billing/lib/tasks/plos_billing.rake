@@ -29,12 +29,12 @@ namespace :plos_billing do
   desc "Generate a billing log file with an optional from_date of YYYY-MM-DD"
   task :generate_billing_log, [:from_date] => :environment do |t, args|
     date = Date.parse(args[:from_date]) if args[:from_date].present?
+
     report = BillingLogReport.create_report(from_date: date)
     if report
       puts "Uploaded to #{report.csv_file.url}"
     else
-      puts 'There were no accepted papers with a completed ' +
-      'Final Tech Check task left to process'
+      puts 'There were no accepted papers with billing tasks left to process'
     end
   end
 end

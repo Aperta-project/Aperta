@@ -4,7 +4,10 @@ class BillingLogReport < ActiveRecord::Base
   mount_uploader :csv_file, BillingLogUploader
   def papers_to_process
     @papers ||= begin
-      papers = Paper.accepted.joins(:tasks).where(tasks: { completed: true, type: PlosBioTechCheck::FinalTechCheckTask.sti_name })
+      papers =
+      Paper.accepted.joins(:tasks)
+        .where(tasks: { completed: true,
+                        type: PlosBilling::BillingTask.sti_name })
       if from_date
         papers.where('tasks.completed_at > ?', from_date)
       else

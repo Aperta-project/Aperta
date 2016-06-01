@@ -97,7 +97,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
     self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
     # Sidebar Info Items
-    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     self._paper_sidebar_submit_success_msg = (By.CLASS_NAME, 'task-list')
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
     # Assigned Tasks

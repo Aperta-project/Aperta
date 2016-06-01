@@ -78,6 +78,10 @@ class BillingTask(BaseTask):
         break
     completed = self.completed_state()
     if not completed:
+      # Scroll to top to leave the complete button without obstructions
+      manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+      self._actions.move_to_element(manuscript_id_text).perform()
+      time.sleep(.5)
       self.click_completion_button()
       time.sleep(1)
     return self

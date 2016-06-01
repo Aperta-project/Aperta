@@ -41,6 +41,8 @@ describe TahiEnv do
       ORCID_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
       ORCID_SITE_HOST: 'sandbox.orcid.com',
+      ORCID_SECRET: 'orcidsecret',
+      ORCID_KEY: 'orcidkey',
       PASSWORD_AUTH_ENABLED: 'true',
       PUSHER_URL: 'http://pusher.tahi-project.org',
       PUSHER_VERBOSE_LOGGING: 'false',
@@ -139,6 +141,8 @@ describe TahiEnv do
   include_examples 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
   include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
   include_examples 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
+  include_examples 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_ENABLED'
+  include_examples 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_ENABLED'
 
   # Puma
   include_examples 'optional env var', var: 'PUMA_WORKERS'

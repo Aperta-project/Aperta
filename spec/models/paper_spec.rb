@@ -93,7 +93,7 @@ describe Paper do
 
         expect(paper.doi).to be_truthy
         expect(last_doi_initial.succ).to eq(journal.last_doi_issued) #is incremented in journal
-        expect(journal.last_doi_issued).to eq(paper.doi.split('.')[1])
+        expect(journal.last_doi_issued).to eq(paper.doi.split('.').last)
       end
     end
   end

@@ -6,7 +6,7 @@
 class DoiService
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{[^\/]+}
-  DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
+  DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/journal#{SUFFIX_FORMAT})\z}
 
   attr_reader :journal
 
@@ -44,7 +44,7 @@ class DoiService
   end
 
   def to_s
-    [doi_publisher_prefix, suffix].join("/")
+    "#{doi_publisher_prefix}/journal.#{suffix}"
   end
 
   def journal_has_doi_prefixes?

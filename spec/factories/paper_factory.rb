@@ -175,7 +175,7 @@ FactoryGirl.define do
     end
 
     factory :paper_ready_for_export do
-      doi "blah/yetijour.123334"
+      doi "blah/journal.yetijour.123334"
 
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Typesetter::BillingLogSerializer do
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
-  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
+  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role, :with_doi) }
   let(:other_paper) { create(:paper) }
   let(:paper) do
     FactoryGirl.create(
@@ -167,6 +167,7 @@ describe Typesetter::BillingLogSerializer do
   end
 
   it 'has pubdnumber which is the same as the manuscript_id of the paper' do
+    expect(paper.manuscript_id.split('.').count).to eq(2)
     expect(output[:pubdnumber]).to eq(paper.manuscript_id)
   end
 

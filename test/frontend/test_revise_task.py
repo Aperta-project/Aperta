@@ -30,7 +30,7 @@ class ReviseManuscriptTest(CommonTest):
   more obvious place for the author to give us their response to reviewers. Different ways
   to response to reviewers are tested.
   AC out of: APERTA-6419
-     - Upload files to Response to Reviewers (NOTE: Testint only one file due to APERTA-6672)
+     - Upload files to Response to Reviewers (NOTE: Testing only one file due to APERTA-6672)
      - Fill a response in a text area in Response to Reviewers
   """
   def test_response_to_reviewers(self):

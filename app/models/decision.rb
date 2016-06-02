@@ -17,7 +17,7 @@ class Decision < ActiveRecord::Base
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
   # Decisions can be appealed, and if editorial staff agrees the wrong
-  # decision was made, they recind that choice. This method gets called by
+  # decision was made, they rescind that choice. This method gets called by
   # the paper.rescind! state transition.
   def rescind!
     paper.rescind!

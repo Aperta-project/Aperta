@@ -1,14 +1,14 @@
 .full-overlay-verification {
+  z-index: z('overlay-verification');
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0px;
+  right: 0px;
   background-color: $tahi-green;
-  width: 100%;
-  height: 100%;
   text-align: center;
   color: $tahi-white;
   font-size: 2rem;
-  z-index: z('overlay-verification');
 
   .full-overlay-verification-question {
     margin-top: 200px;

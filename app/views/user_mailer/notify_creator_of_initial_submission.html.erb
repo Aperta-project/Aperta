@@ -21,21 +21,24 @@
       Dear <%= @author.full_name %>,
     </p>
     <p class="message">
-      Thank you for your submission, "<%= @title %>", which will 
-      now be passed to the editors to determine whether your scientific findings meet the criteria
-      for peer review at <%= @journal.name %>. The staff editors may also seek advice from an
-      Academic Editor with relevant expertise.
+      Thank you for your submission to <%= @journal.name %>, which will now be assessed
+      by the editors to determine whether your manuscript meets the criteria
+      for peer review. We may seek advice from an Academic Editor with relevant
+      expertise.
     </p>
 
     <p>
-      If the editorial evaluation is positive, the manuscript will be returned to you ahead of
-      initiating peer review for you to submit statements relating to ethical approval, funding,
-      data and competing interests. This additional information will need to satisfy PLOS’ policies
-      and be made available to reviewers.
+      If our initial evaluation is positive, we will contact you to request
+      statements relating to ethical approval, funding, data and competing
+      interests ahead of initiating peer review. This additional information is
+      required to satisfy PLOS’ policies and will be made available to editors
+      and reviewers. If you anticipate that you will be unavailable during the
+      next few weeks, please provide us with an additional person of contact by
+      return email.
     </p>
 
     <p>
-      You will be able to check on the progress of your paper by logging in here:
+      You can access your manuscript and its associated files by logging in here:
       <%= link_to client_dashboard_url, client_dashboard_url %>.
     </p>
   </div>

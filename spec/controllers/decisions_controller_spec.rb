@@ -93,6 +93,19 @@ describe DecisionsController do
         expect(decision.letter).to eq(new_letter)
         expect(decision.verdict).to eq(new_verdict)
       end
+
+      context "the decision is registered" do
+        before do
+          decision.update(registered: true)
+        end
+
+        it "Returns a 422" do
+          do_request
+          expect(response.status).to be(422)
+          expect(res_body['errors'][0])
+            .to eq("The decision has already been registered")
+        end
+      end
     end
   end
 
@@ -164,6 +177,30 @@ describe DecisionsController do
         expect(Activity).to receive(:create).with hash_including(expected_activity)
         do_request
       end
+
+      context "the paper is unsubmitted" do
+        before do
+          paper.update(publishing_state: "unsubmitted")
+        end
+
+        it "Returns a 422" do
+          do_request
+          expect(response.status).to be(422)
+          expect(res_body['errors'][0]).to eq("The paper must be submitted")
+        end
+      end
+
+      context "the decision has no verdict" do
+        before do
+          decision.update(verdict: nil)
+        end
+
+        it "Returns a 422" do
+          do_request
+          expect(response.status).to be(422)
+          expect(res_body['errors'][0]).to eq("You must pick a verdict, first")
+        end
+      end
     end
   end
 
@@ -215,6 +252,18 @@ describe DecisionsController do
           do_request
           expect(paper.reload.publishing_state).to eq("initially_submitted")
           expect(decision.reload.rescinded).to be(true)
+        end
+      end
+
+      context "the decision is not rescindable" do
+        before do
+          decision.update(registered: false)
+        end
+
+        it "Returns a 422" do
+          do_request
+          expect(response.status).to be(422)
+          expect(res_body['errors'][0]).to eq("That decision is not rescindable")
         end
       end
     end

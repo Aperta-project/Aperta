@@ -24,6 +24,7 @@ class DecisionsController < ApplicationController
 
   def update
     requires_user_can(:register_decision, decision.paper)
+    assert !decision.registered, "The decision has already been registered"
 
     decision.update! decision_params
     render json: decision, serializer: DecisionSerializer, root: 'decision'
@@ -31,6 +32,8 @@ class DecisionsController < ApplicationController
 
   def register # I expect a task_id param, too!
     requires_user_can(:register_decision, decision.paper)
+    assert decision.paper.awaiting_decision?, "The paper must be submitted"
+    assert decision.verdict.present?, "You must pick a verdict, first"
 
     task = Task.find(params[:task_id])
     # These lines let us update the task/paper in the requester's browser
@@ -48,6 +51,8 @@ class DecisionsController < ApplicationController
 
   def rescind
     requires_user_can(:rescind_decision, decision.paper)
+    assert decision.rescindable?, "That decision is not rescindable"
+
     decision.paper.notify_requester = true
     decision.rescind!
 

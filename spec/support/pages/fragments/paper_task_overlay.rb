@@ -1,12 +1,9 @@
 class PaperTaskOverlay < Page
   def toggle
-  begin
     element.find(heading_selector).click
+
+    # this was taking more than the default on some runs
     wait_for_ajax(session, timeout: 20)
-  rescue Exception => ex
-    binding.pry
-    puts
-  end
   end
 
   private

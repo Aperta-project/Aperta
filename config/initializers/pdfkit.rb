@@ -9,7 +9,7 @@ PDFKit.configure do |config|
   config.default_options = {
     # We use javascript to render MathML. If there are problems with MathML
     # rendering, maybe try increasing this?
-    javascript_delay: 20_000, # milliseconds
+    javascript_delay: 10_000, # milliseconds
     cache_dir: File.join(Dir.tmpdir, 'wkhtmltopdf-cache'),
     page_size: 'Letter',
     load_error_handling: 'ignore',

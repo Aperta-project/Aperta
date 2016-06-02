@@ -6177,7 +6177,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-05-06 15:33:33.667191'
+    - '2016-06-06 20:37:56.395844'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -7862,6 +7862,106 @@ nested_questions:
     - '2016-03-22 15:09:05.801946'
     - '2016-03-22 15:09:05.801946'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '252'
+    - 'Please provide your publication recommendation:'
+    - text
+    - front_matter_reviewer_report--decision_term
+    - 
+    - '367'
+    - '368'
+    - '1'
+    - '2016-06-06 20:37:56.611509'
+    - '2016-06-06 20:37:56.611509'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '253'
+    - Do you have any potential or perceived competing interests that may influence
+      your review?
+    - text
+    - front_matter_reviewer_report--competing_interests
+    - 
+    - '369'
+    - '370'
+    - '2'
+    - '2016-06-06 20:37:56.61952'
+    - '2016-06-06 20:37:56.61952'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '254'
+    - Suitable Comment
+    - text
+    - front_matter_reviewer_report--suitable--comment
+    - '255'
+    - '372'
+    - '373'
+    - '1'
+    - '2016-06-06 20:37:56.625332'
+    - '2016-06-06 20:37:56.644529'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '255'
+    - Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments
+      for authors.
+    - boolean
+    - front_matter_reviewer_report--suitable
+    - 
+    - '371'
+    - '374'
+    - '3'
+    - '2016-06-06 20:37:56.634598'
+    - '2016-06-06 20:37:56.644529'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '256'
+    - Includes Published Data Explanation
+    - text
+    - front_matter_reviewer_report--includes_unpublished_data--explanation
+    - '257'
+    - '376'
+    - '377'
+    - '1'
+    - '2016-06-06 20:37:56.652954'
+    - '2016-06-06 20:37:56.669762'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '257'
+    - 'If previously unpublished data are included to support the conclusions, please
+      note in the box below whether:'
+    - boolean
+    - front_matter_reviewer_report--includes_unpublished_data
+    - 
+    - '375'
+    - '378'
+    - '4'
+    - '2016-06-06 20:37:56.66097'
+    - '2016-06-06 20:37:56.669762'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '258'
+    - "(Optional) Please offer any additional confidential comments to the editor"
+    - text
+    - front_matter_reviewer_report--additional_comments
+    - 
+    - '379'
+    - '380'
+    - '5'
+    - '2016-06-06 20:37:56.67712'
+    - '2016-06-06 20:37:56.67712'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '259'
+    - "(Optional) If you'd like your identity to be revealed to the authors, please
+      include your name here."
+    - text
+    - front_matter_reviewer_report--identity
+    - 
+    - '381'
+    - '382'
+    - '6'
+    - '2016-06-06 20:37:56.682991'
+    - '2016-06-06 20:37:56.682991'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
 
 ---

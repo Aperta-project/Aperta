@@ -20,7 +20,6 @@
 
 <div class="base-screen manuscript-manager-template">
   <div class="paper-type-form">
-
     {{#if editingName}}
       {{input value=model.paperType placeholder="Paper Type" class="edit-paper-type-field"}}
       {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
@@ -31,17 +30,21 @@
       </div>
     {{/if}}
 
-    <label>
-      {{input checked=usesResearchArticleReviewerReport type="checkbox"}}
-      Uses research article reviewer report
-    </label>
     {{#if showSaveButton}}
       <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>
       <a class="button-link button--blue paper-type-cancel-button" {{action "cancel"}}>cancel</a>
     {{else}}
       {{link-to "< Back" "admin.journal" journal class="button-link button--blue"}}
     {{/if}}
+
+    <div>
+      <label class="uses-research-article-reviewer-report">
+        {{input checked=usesResearchArticleReviewerReport type="checkbox" class="uses-research-article-reviewer-report"}}
+        Uses research article reviewer report
+      </label>
+    </div>
   </div>
+
 
   <div class="columns manuscript-manager-template-columns">
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}

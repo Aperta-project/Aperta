@@ -65,7 +65,7 @@ export default Ember.Component.extend({
   actions: {
     viewCard() {
       let action = this.get('action');
-      if (action) { action(this.get('task')); }
+      if (action) { action(); }
     },
 
     promptDelete() {

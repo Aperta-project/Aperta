@@ -103,6 +103,9 @@
     "FTP_ENABLED": {
       "required": true
     },
+    "FTP_USER": {
+      "required": true
+    },
     "FTP_HOST": {
       "required": true
     },

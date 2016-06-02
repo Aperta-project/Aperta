@@ -44,7 +44,7 @@ class DoiService
   end
 
   def to_s
-    "#{doi_publisher_prefix}/journal.#{suffix}"
+    "#{doi_publisher_prefix}/#{suffix}"
   end
 
   def journal_has_doi_prefixes?
@@ -62,6 +62,6 @@ class DoiService
   end
 
   def suffix
-    [doi_journal_prefix, last_doi_issued].join(".")
+    ['journal', doi_journal_prefix, last_doi_issued].join(".")
   end
 end

@@ -284,8 +284,8 @@ ActiveRecord::Schema.define(version: 20160527223746) do
     t.integer  "invitee_id"
     t.integer  "actor_id"
     t.string   "state"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "decision_id"
     t.string   "information"
     t.text     "body"

@@ -3559,8 +3559,8 @@ journals:
     - '2015-10-29 19:40:11.853622'
     - '2016-04-12 18:43:34.647157'
     - images/no-journal-image.gif
-    -
-    -
+    - 
+    - 
     - If you are a developer, you are in the right place for fun, for science, and
       for publication.
     - yetipub
@@ -8080,7 +8080,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100001
+    - 10.1371/journal.devs.100001
     - unsubmitted
     - 
     - 
@@ -8104,7 +8104,7 @@ papers:
     - 
     - '2'
     - true
-    - 10.1371/devs.100002
+    - 10.1371/journal.devs.100002
     - unsubmitted
     - 
     - 
@@ -8128,7 +8128,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100003
+    - 10.1371/journal.devs.100003
     - unsubmitted
     - 
     - 
@@ -8152,7 +8152,7 @@ papers:
     - 
     - 
     - false
-    - 10.1371/devs.100004
+    - 10.1371/journal.devs.100004
     - submitted
     - '2015-11-02 15:14:05.576249'
     - 
@@ -8176,7 +8176,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100008
+    - 10.1371/journal.devs.100008
     - unsubmitted
     - 
     - 
@@ -8200,7 +8200,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100009
+    - 10.1371/journal.devs.100009
     - unsubmitted
     - 
     - 
@@ -8224,7 +8224,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100010
+    - 10.1371/journal.devs.100010
     - unsubmitted
     - 
     - 
@@ -8259,7 +8259,7 @@ papers:
     - 
     - '5'
     - false
-    - yetipub/yetijour.1000002
+    - yetipub/journal.yetijour.1000002
     - submitted
     - '2016-04-12 19:05:53.748887'
     - 
@@ -17077,8 +17077,8 @@ users:
   - created_at
   - updated_at
   - username
-  - avatar
   - site_admin
+  - avatar
   - ned_id
   records: 
   - - '1'
@@ -17097,9 +17097,9 @@ users:
     - '2015-10-29 19:36:19.627844'
     - '2016-03-23 13:18:34.594851'
     - admin
-    - 
     - false
-    - 1000
+    - 
+    - '1001'
   - - '2'
     - Steve
     - SiteAdmin
@@ -17116,9 +17116,9 @@ users:
     - '2015-10-29 20:07:28.341906'
     - '2015-10-29 20:53:17.020456'
     - site_admin
-    - 
     - true
-    - 1001
+    - 
+    - '1002'
   - - '3'
     - Arthur
     - Author
@@ -17135,9 +17135,9 @@ users:
     - '2015-10-29 20:11:22.705226'
     - '2016-04-14 12:35:16.584125'
     - author
-    - 
     - false
-    - 1002
+    - 
+    - '1003'
   - - '4'
     - Edith
     - Editor
@@ -17154,9 +17154,9 @@ users:
     - '2015-11-02 15:15:33.644561'
     - '2016-03-11 13:30:59.798522'
     - editor
-    - 
     - false
-    - 1003
+    - 
+    - '1004'
   - - '5'
     - Reviewer
     - User
@@ -17173,9 +17173,9 @@ users:
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - 
     - false
-    - 1004
+    - 
+    - '1005'
   - - '7'
     - Jeffrey SA
     - Gray
@@ -17192,9 +17192,9 @@ users:
     - '2015-11-03 19:54:58.612514'
     - '2015-11-03 19:54:58.612514'
     - jgray_sa
-    - 
     - true
-    - 1005
+    - 
+    - '1006'
   - - '8'
     - Jeffrey OA
     - Gray
@@ -17211,9 +17211,9 @@ users:
     - '2015-11-03 19:54:58.707548'
     - '2015-11-03 19:54:58.707548'
     - jgray_oa
-    - 
     - false
-    - 1006
+    - 
+    - '1007'
   - - '9'
     - Jeffrey FM
     - Gray
@@ -17230,9 +17230,9 @@ users:
     - '2015-11-03 19:54:58.791185'
     - '2015-11-03 19:54:58.791185'
     - jgray_flowmgr
-    - 
     - false
-    - 1007
+    - 
+    - '1008'
   - - '10'
     - Jeffrey AMM
     - Gray
@@ -17249,9 +17249,9 @@ users:
     - '2015-11-03 19:54:58.877324'
     - '2015-11-03 19:54:58.877324'
     - jgray_editor
-    - 
     - false
-    - 1008
+    - 
+    - '1009'
   - - '11'
     - Jeffrey MM
     - Gray
@@ -17268,9 +17268,9 @@ users:
     - '2015-11-03 19:54:58.961825'
     - '2015-11-03 19:54:58.961825'
     - jgray_assoceditor
-    - 
     - false
-    - 1009
+    - 
+    - '1010'
   - - '12'
     - Jeffrey RV
     - Gray
@@ -17287,9 +17287,9 @@ users:
     - '2015-11-03 19:54:59.052702'
     - '2015-11-03 19:54:59.052702'
     - jgray_reviewer
-    - 
     - false
-    - 1010
+    - 
+    - '1011'
   - - '13'
     - Jeffrey AU
     - Gray
@@ -17306,9 +17306,9 @@ users:
     - '2015-11-03 19:54:59.135286'
     - '2015-11-03 19:54:59.135286'
     - jgray_author
-    - 
     - false
-    - 1011
+    - 
+    - '1012'
   - - '14'
     - Staff
     - Admin
@@ -17325,9 +17325,9 @@ users:
     - '2016-03-15 18:52:16.093885'
     - '2016-03-15 18:52:16.093885'
     - staff_admin
-    - 
     - false
-    - 1012
+    - 
+    - '1013'
   - - '15'
     - Fancy
     - Freelancer
@@ -17344,9 +17344,9 @@ users:
     - '2016-04-28 02:38:20.354896'
     - '2016-04-28 02:44:24.965543'
     - freelancer
-    - 
     - false
-    - 1013
+    - 
+    - '1014'
 
 ---
 versioned_texts:

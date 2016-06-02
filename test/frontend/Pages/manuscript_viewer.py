@@ -629,9 +629,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Get the infobox element"""
     return self._get(self._infobox)
 
-  def get_paper_doi(self):
+  def get_paper_doi_part(self):
     """
-    Returns the paper doi
+    Returns the local paper identifier part of the doi
     """
     doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]

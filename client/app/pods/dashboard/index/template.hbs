@@ -17,6 +17,7 @@
                       title="Here are your invitations."
                       overlayClass="invitations-overlay"
                       as |overlay|}}
+    {{flash-messages}}
     {{invitations-x invitations=pendingInvitations
                     accept=(action "acceptInvitation")
                     reject=(action "rejectInvitation")

@@ -39,7 +39,7 @@ class PaperPage < Page
 
     fragment = fragment_class.new(element)
 
-    fragment.toggle
+    fragment.open_task
     fragment
   end
 

@@ -1,9 +1,10 @@
 class PaperTaskOverlay < Page
-  def toggle
+  def open_task
     element.find(heading_selector).click
 
-    # this was taking more than the default on some runs
-    wait_for_ajax(session, timeout: 20)
+    session.wait_for_condition do
+      element.all(".task-loading").length == 0
+    end
   end
 
   private

@@ -4,6 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [1.4.13] - {2016-05-31}
 ### Added
+- Aperta validates its environment when booting and fails fast with human
+  readable error messages when not-valid. This is a non-user facing addition.
+
 ### Changed
 - Show discussion participants' emails when selecting and on hover
 ### Deprecated

@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20160525152903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
@@ -311,8 +310,6 @@ ActiveRecord::Schema.define(version: 20160525152903) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "logo"
-    t.string   "epub_cover"
-    t.text     "epub_css"
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
@@ -723,8 +720,8 @@ ActiveRecord::Schema.define(version: 20160525152903) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
+    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
-    t.boolean  "site_admin",                         default: false
     t.string   "em_guid"
   end
 

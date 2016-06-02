@@ -43,16 +43,19 @@
     "BUNDLE_WITHOUT": {
       "required": true
     },
-    "CAS_DISABLE_SSL_VERIFICATION": {
+    "CAS_ENABLED": {
       "required": true
     },
-    "CAS_ENABLED": {
+    "CAS_SSL_VERIFY": {
       "required": true
     },
     "CAS_HOST": {
       "required": true
     },
     "CAS_LOGIN_URL": {
+      "required": true
+    },
+    "CAS_LOGOUT_URL": {
       "required": true
     },
     "CAS_SIGNUP_URL": {
@@ -85,7 +88,7 @@
     "DEFAULT_MAILER_URL": {
       "required": true
     },
-    "DISABLE_PUSHER_SSL_VERIFICATION": {
+    "PUSHER_SSL_VERIFY": {
       "required": true
     },
     "EVENT_STREAM_WS_HOST": {
@@ -95,6 +98,21 @@
       "required": true
     },
     "FROM_EMAIL": {
+      "required": true
+    },
+    "FTP_ENABLED": {
+      "required": true
+    },
+    "FTP_HOST": {
+      "required": true
+    },
+    "FTP_PASSWORD": {
+      "required": true
+    },
+    "FTP_PORT": {
+      "required": true
+    },
+    "FTP_DIR": {
       "required": true
     },
     "HEROKU_APP_NAME": {
@@ -121,7 +139,7 @@
     "NED_CAS_APP_PASSWORD": {
       "required": true
     },
-    "NED_DISABLE_SSL_VERIFICATION": {
+    "NED_SSL_VERIFY": {
       "required": true
     },
     "NEWRELIC_APP_NAME": {
@@ -178,6 +196,9 @@
       "required": true
     },
     "SEGMENT_IO_WRITE_KEY": {
+      "required": true
+    },
+    "USE_NED_INSTITUTIONS": {
       "required": true
     }
   },

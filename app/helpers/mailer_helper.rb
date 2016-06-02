@@ -1,7 +1,7 @@
 module MailerHelper
 
   def app_name
-    ENV["APP_NAME"] || 'Aperta'
+    TahiEnv.app_name
   end
 
   def prefixed(subject)

@@ -71,13 +71,13 @@ module SalesforceServices
     end
 
     def self.salesforce_active
-      active = ENV['DATABASEDOTCOM_DISABLED'] == 'true' ? false : true
+      active = TahiEnv.salesforce_enabled?
       if active
         # ensure client has a session with SObjects materialized
         client
       else
         Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
-          Salesforce integration disabled due to ENV['DATABASEDOTCOM_DISABLED]'
+          Salesforce integration disabled due to ENV['SALESFORCE_ENABLED']
         INFO
       end
       active

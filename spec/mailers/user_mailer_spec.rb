@@ -38,7 +38,7 @@ describe UserMailer, redis: true do
     it_behaves_like "invitor is not available"
     it_behaves_like "recipient without email address"
 
-    it 'sends the email to the inivitees email address with correct subject' do
+    it 'sends the email to the invitees email address with correct subject' do
       expect(email.to).to contain_exactly(invitee.email)
       expect(email.subject).to eq "You've been added as a collaborator to the manuscript, \"#{paper.display_title}\""
     end
@@ -98,7 +98,7 @@ describe UserMailer, redis: true do
     let(:task) { FactoryGirl.create(:task) }
     let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
 
-    it 'sends the email to the inivitees email address with correct subject' do
+    it 'sends the email to the invitees email address with correct subject' do
       expect(email.to).to contain_exactly(invitee.email)
       expect(email.subject).to eq "You've been assigned as an editor for the manuscript, \"#{task.paper.display_title}\""
     end

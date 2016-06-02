@@ -19,5 +19,6 @@ export default DS.Model.extend({
   affiliationSort: ['isCurrent:desc', 'endDate:desc', 'startDate:asc'],
   affiliationsByDate: Ember.computed.sort('affiliations', 'affiliationSort'),
 
-  invitedInvitations: Ember.computed.filterBy('invitations', 'needsUserUpdate')
+  invitationsInvited: Ember.computed.filterBy('invitations', 'invited'),
+  invitationsPendingFeedback: Ember.computed.filterBy('invitations', 'needsUserUpdate')
 });

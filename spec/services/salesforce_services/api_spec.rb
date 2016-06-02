@@ -104,7 +104,7 @@ describe SalesforceServices::API do
       FactoryGirl.create(:paper_with_task,
                          task_params: task_params,
                          journal: journal,
-                         doi: 'ha/haha.2098')
+                         doi: 'ha/journal.haha.2098')
     end
 
     before do

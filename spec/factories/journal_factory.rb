@@ -47,7 +47,7 @@ FactoryGirl.define do
       end
     end
 
-    factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions]
+    factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions, :with_doi]
   end
 
   sequence :doi_journal_prefix do

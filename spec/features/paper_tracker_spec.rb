@@ -75,7 +75,7 @@ feature 'Paper Tracker', js: true do
   end
 
   scenario 'user can search by doi' do
-    FactoryGirl.create(:paper, :completed, journal: journal, doi: 'journal/foo.12345')
+    FactoryGirl.create(:paper, :completed, journal: journal, doi: '1000/journal.foo.12345')
     login_as(user, scope: :user)
     visit '/paper_tracker'
     fill_in('query-input', with: '12345')

@@ -52,11 +52,12 @@ class WithdrawManuscriptTest(CommonTest):
                         type_='NoCards',
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    dashboard_page.set_timeout(15)
     manuscript_page.validate_ihat_conversions_success()
+    dashboard_page.restore_timeout()
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -81,6 +82,8 @@ class WithdrawManuscriptTest(CommonTest):
                                                 'WHERE id = %s;', (paper_id,))[0][0]
     assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
     manuscript_page.withdraw_manuscript()
+    # Need a wee bit of time for the db to update
+    time.sleep(1)
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
                                                 'WHERE id = %s;', (paper_id,))[0][0]
@@ -99,6 +102,11 @@ class WithdrawManuscriptTest(CommonTest):
         withdraw_banner.value_of_css_property('color')
     assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')
+    # Pre-placing for the reactivate work
+    # manuscript_page.refresh()
+    # self._reactivate_button = (By.CSS_SELECTOR, 'div.withdrawal-banner > div.button-secondary')
+    # reactivate_button = manuscript_page._get(self._reactivate_button)
+    # assert reactivate_button.text == 'REACTIVATE', reactivate_button.text
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

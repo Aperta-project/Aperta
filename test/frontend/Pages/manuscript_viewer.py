@@ -42,6 +42,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._card = (By.CLASS_NAME, 'card')
     self._submit_button = (By.ID, 'sidebar-submit-paper')
     self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
+    self._withdraw_banner_reactivate_button = (By.CSS_SELECTOR,
+                                               'div.withdrawal-banner > div.button-secondary')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -449,7 +451,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     withdraw_link.click()
     self._get(self._wm_modal_textarea).send_keys('I am so bored with all this...')
     self._get(self._wm_modal_yes).click()
-    time.sleep(1)
+    # Give a little time for the db transaction
+    time.sleep(3)
 
 
   def validate_roles(self, user_buttons):

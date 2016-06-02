@@ -30,6 +30,9 @@ Tahi::Application.routes.draw do
     get 'users/sign_out' => 'devise/sessions#destroy'
   end
 
+  # TODO: Currently a noop so rails doesn't error here.
+  post '/users/auth/cas/callback', to: 'tahi_devise/omniauth_callbacks#sign_out'
+
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end

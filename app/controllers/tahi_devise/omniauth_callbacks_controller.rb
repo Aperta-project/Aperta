@@ -42,6 +42,10 @@ module TahiDevise
       end
     end
 
+    def sign_out
+      # TODO: This is a noop right now.
+    end
+
     private
 
     def credential
@@ -51,6 +55,5 @@ module TahiDevise
     def auth
       @auth ||= request.env['omniauth.auth']
     end
-
   end
 end

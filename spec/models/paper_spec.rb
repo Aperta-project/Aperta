@@ -87,7 +87,7 @@ describe Paper do
       end
 
       it "sets a doi in after_create callback" do
-        journal                 = FactoryGirl.create :journal, :with_doi
+        journal                 = FactoryGirl.create :journal
         last_doi_initial        = journal.last_doi_issued
         paper                   = FactoryGirl.create :paper, journal: journal
 

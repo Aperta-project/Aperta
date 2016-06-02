@@ -45,7 +45,7 @@ describe DoiService do
 
   describe "initialization" do
     context "with a journal" do
-      let(:journal) { create :journal, :with_doi }
+      let(:journal) { create :journal }
       it "assigns a journal as @journal" do
         expect(described_class.new(journal: journal).journal).to eq journal
       end
@@ -105,7 +105,7 @@ describe DoiService do
   end
 
   describe "#next_doi!" do
-    let(:journal) { create :journal, :with_doi }
+    let(:journal) { create :journal }
     let(:doi_service) { DoiService.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do

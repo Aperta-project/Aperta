@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Typesetter::BillingLogSerializer do
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
-  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role, :with_doi) }
+  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
   let(:other_paper) { create(:paper) }
   let(:paper) do
     FactoryGirl.create(

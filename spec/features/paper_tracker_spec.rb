@@ -75,12 +75,12 @@ feature 'Paper Tracker', js: true do
   end
 
   scenario 'user can search by doi' do
-    FactoryGirl.create(:paper, :completed, journal: journal, doi: '1000/journal.foo.12345')
+    paper = FactoryGirl.create(:paper, :completed, journal: journal)
     login_as(user, scope: :user)
     visit '/paper_tracker'
-    fill_in('query-input', with: '12345')
+    fill_in('query-input', with: paper.manuscript_id.split('.').last)
     find('button#search').click
-    expect(find('.paper-tracker-table')).to have_content('foo.12345')
+    expect(find('.paper-tracker-table')).to have_content(paper.manuscript_id)
   end
 
   scenario 'user can trigger search via enter button' do

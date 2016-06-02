@@ -7,10 +7,11 @@ require "sprockets/railtie"
 
 Bundler.require(:default, Rails.env)
 
+require File.dirname(__FILE__) + '/../lib/tahi_env'
+TahiEnv.validate!
+
 module Tahi
   class Application < Rails::Application
-    require 'config_helper'
-
     config.eager_load = true
 
     # use bin/rake tahi_standard_tasks:install:migrations
@@ -23,7 +24,7 @@ module Tahi
 
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
-    config.x.admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
+    config.x.admin_email = TahiEnv.admin_email
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     config.salesforce_username = ENV.fetch('DATABASEDOTCOM_USERNAME', :not_set)
@@ -37,14 +38,12 @@ module Tahi
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.basic_auth_required = ENV.fetch("BASIC_AUTH_REQUIRED", false)
-    if config.basic_auth_required
-      config.basic_auth_user = ENV.fetch('BASIC_HTTP_USERNAME')
-      config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
+    if TahiEnv.basic_auth_required?
+      config.basic_auth_user = TahiEnv.basic_http_username
+      config.basic_auth_password = TahiEnv.basic_http_password
     end
 
-    config.x.pusher_verbose_logging =
-      ConfigHelper.read_boolean_env('PUSHER_VERBOSE_LOGGING')
+    config.x.pusher_verbose_logging = TahiEnv.pusher_verbose_logging?
 
     config.omniauth_providers = []
   end

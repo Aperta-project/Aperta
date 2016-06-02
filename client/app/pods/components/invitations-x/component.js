@@ -5,26 +5,28 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   hasInvitations: Ember.computed.notEmpty('invitations'),
 
+  closeOverlay: function() {
+    if(!this.get('hasInvitations')) {
+      this.get('close')();
+    }
+  },
+
   actions: {
-    close() {
-      if(!this.get('hasInvitations')) {
-        this.attrs.close();
-      }
+    close(){
+      this.closeOverlay();
     },
 
     accept(invitation) {
-      this.attrs.accept(invitation);
-      this.close();
+      this.get('accept')(invitation).then(()=>{this.closeOverlay()});
     },
 
     aquireFeedback(invitation) {
       invitation.set('pendingFeedback', true);
-      this.reject(invitation);
+      this.get('reject')(invitation);
     },
 
-    reject(invitation) {
-      this.attrs.reject(invitation);
-      this.close();
+    update(invitation) {
+      this.get('update')(invitation).then(()=>{this.closeOverlay()});
     }
   }
 });

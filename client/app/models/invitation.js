@@ -41,6 +41,10 @@ export default DS.Model.extend({
     });
   },
 
+  feedbackSent() {
+    this.set('pendingFeedback', false);
+  },
+
   invited: Ember.computed.equal('state', 'invited'),
   rejected: Ember.computed.equal('state', 'rejected'),
 

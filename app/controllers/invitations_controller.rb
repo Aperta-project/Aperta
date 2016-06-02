@@ -49,6 +49,16 @@ class InvitationsController < ApplicationController
     respond_with(invitation)
   end
 
+  def update
+    fail AuthorizationError unless invitation.invitee == current_user
+    invitation.actor = current_user
+    invitation.update_attributes(
+      decline_reason: params[:decline_reason],
+      reviewer_suggestions: params[:reviewer_suggestions]
+    )
+    respond_with(invitation)
+  end
+
   private
 
   def invitation_params

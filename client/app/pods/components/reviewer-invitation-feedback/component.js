@@ -7,7 +7,8 @@ export default Ember.Component.extend({
   invitation: null,
 
   //init with (actions):
-  reject: null,
+  update: null,
+  close:null,
 
   actions: {
 

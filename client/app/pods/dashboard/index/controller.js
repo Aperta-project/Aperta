@@ -75,8 +75,14 @@ export default Ember.Controller.extend({
       });
     },
 
+    updateInvitation(invitation, callback = function(){}) {
+      return invitation.save().then(function(){
+        invitation.feedbackSent();
+      });
+    },
+
     acceptInvitation(invitation) {
-      this.get('restless').putModel(invitation, '/accept').then(function() {
+      return this.get('restless').putModel(invitation, '/accept').then(()=> {
         invitation.accept();
 
         // Force the user's papers to load

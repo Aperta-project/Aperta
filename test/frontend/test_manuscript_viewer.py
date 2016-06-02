@@ -312,6 +312,16 @@ class ManuscriptViewerTest(CommonTest):
       # Time needed for iHat conversion. This is not quite enough time in all circumstances
       time.sleep(5)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    # Need a seriously long pregnant pause to wait for URL to update - 10 seconds is too short
+    #   even 15s even fails sometimes - which is an embarrassment
+    time.sleep(15)
+    try:
+      logging.info('Paper for download tests is '
+                   'id: {0}'.format(manuscript_viewer.get_paper_db_id()))
+    except IndexError:
+      time.sleep(10)
+      logging.info(
+        'Paper for download tests is id: {0}'.format(manuscript_viewer.get_paper_db_id()))
     manuscript_viewer.validate_download_btn_actions()
 
 if __name__ == '__main__':

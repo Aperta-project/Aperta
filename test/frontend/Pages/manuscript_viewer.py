@@ -629,9 +629,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Get the infobox element"""
     return self._get(self._infobox)
 
-  def get_paper_id(self):
+  def get_paper_doi_part(self):
     """
-    Returns the paper id
+    Returns the local paper identifier part of the doi
     """
     doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]
@@ -646,7 +646,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Returns the DB paper ID from URL
     """
+    time.sleep(1)
     paper_url = self.get_current_url()
+    logging.debug(paper_url)
     paper_id = int(paper_url.split('papers/')[1])
     logging.info('The paper DB ID is: {0}'.format(paper_id))
     return paper_id

@@ -9,6 +9,14 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     return this.store.find('discussion-topic', params.topic_id);
   },
 
+  redirect(model, transition) {
+    var paperId = this.modelFor('paper').get('id');
+
+    if (model.get('paperId') !== paperId) {
+      this.transitionTo('paper.index.discussions');
+    }
+  },
+
   afterModel(model) {
     this.setModelChannel(model);
   },

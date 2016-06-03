@@ -301,7 +301,11 @@ class AuthenticatedPage(PlosPage):
 
   def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):
     """
-    Validate ihat conversion success
+    Validate ihat conversion success, or display of failure message or no message at all
+    :param timeout: alternate timeout (optional)
+    :param fail_on_missing: boolean, defaults to False. If True error on no or fail msg display,
+       else warn only.
+    :return: void function
     """
     # This needs to be an extraordinary timeout value to cover the case of iHat
     #  going out to lunch. 103+ seconds is the longest I've seen it take and still
@@ -316,18 +320,15 @@ class AuthenticatedPage(PlosPage):
         success_msg = self._get(self._flash_success_msg)
       except ElementDoesNotExistAssertionError:
         logging.warning('No successful conversion result message displayed')
-      if not success_msg:
         self.set_timeout(1)
         try:
           failure_msg = self._get(self._flash_error_msg)
-        except ElementDoesNotExistAssertionError:
-          logging.warning('No conversion result message displayed at all')
-        if failure_msg:
           logging.warning('Conversion failure result message displayed: '
                           '{0}'.format(failure_msg.text))
+        except ElementDoesNotExistAssertionError:
+          logging.warning('No conversion result message displayed at all')
     else:
       success_msg = self._get(self._flash_success_msg)
-    if success_msg:
       assert 'Finished loading Word file.' in success_msg.text, success_msg.text
     if success_msg or failure_msg:
       self.close_flash_message()
@@ -353,7 +354,6 @@ class AuthenticatedPage(PlosPage):
       error_msg = self._get(self._flash_error_msg)
     except ElementDoesNotExistAssertionError:
       self.restore_timeout()
-      pass
     if error_msg:
       raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg.text))
 
@@ -361,7 +361,7 @@ class AuthenticatedPage(PlosPage):
     """
     Check that any process (submit, save, send, etc) triggered a flash success message
     use where we are supposed to explicitly put up a success message - though not for
-    new manuscript creation - there is a custom method for that.
+    new manuscript creation - there is a custom method for that. Closes message, if found.
     :return: text of flash success message
     """
     self.set_timeout(15)

@@ -12,7 +12,7 @@ from datetime import datetime
 import time
 
 
-class needs(object):
+class Needs(object):
 
   """
   Decorator to guarantee a given attribute is **present** in an instance.

@@ -77,10 +77,7 @@ class RegisterDecisionCardTest(CommonTest):
     manuscript_page.logout()
 
     # login as staff admin
-    dashboard_page = self.cas_login(email=staff_admin_login['email'])
-    # look for the article in paper tracker
-    # go to paper tracker
-    dashboard_page._get(dashboard_page._nav_paper_tracker_link).click()
+    self.cas_login(email=staff_admin_login['email'])
     # Go to workflow
     url = self._driver.current_url
     paper_url = '{0}//{1}/papers/{2}'.format(url.split('/')[0], url.split('/')[2], paper_id)

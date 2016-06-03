@@ -147,7 +147,7 @@ class PlosPage(object):
       self.restore_timeout()
 
   def _wait_for_element(self, element):
-    self._wait.until(CustomExpectedConditions.element_to_be_clickable(element))
+    self._wait.until(CustomExpectedConditions.ElementToBeClickable(element))
 
   def _is_link_valid(self, link):
     return self.__linkVerifier.is_link_valid(link.get_attribute('href'))

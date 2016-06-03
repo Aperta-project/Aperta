@@ -102,6 +102,8 @@ class AuthenticatedPage(PlosPage):
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
+    # Task list id needed in task and manuscript page
+    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
     self._authors_card = None

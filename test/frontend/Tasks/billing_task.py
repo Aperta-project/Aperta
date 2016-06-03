@@ -30,9 +30,10 @@ class BillingTask(BaseTask):
     self._address1 = (By.NAME, 'plos_billing--address1')
     self._city = (By.NAME, 'plos_billing--city')
     self._zip = (By.NAME, 'plos_billing--postal_code')
-    self._payment_option = (By.CLASS_NAME, 'affiliation-field')
+    self._payment_option = (By.CSS_SELECTOR, 'div.payment-method a')
     # This ID is bogus and dynamic, untrustworthy
-    self._payment_items_parent = (By.CSS_SELECTOR, 'div.payment-method-select-list')
+    self._payment_prices_ul = (By.CSS_SELECTOR, 'div.task-main-content > div > p + ul')
+    self._payment_items_parent = (By.CSS_SELECTOR, 'div.select2-drop-active')
 
    # POM Actions
   def complete(self, data=data):
@@ -60,10 +61,14 @@ class BillingTask(BaseTask):
     self._get(self._address1).send_keys(data['address1'])
     self._get(self._city).send_keys(data['city'])
     self._get(self._zip).send_keys(data['zip'])
+    payment_prices = self._get(self._payment_prices_ul)
+    self._actions.move_to_element(payment_prices).perform()
+    time.sleep(5)
     payment_select = self._get(self._payment_option)
-    payment_select.click()
+    self._actions.move_to_element(payment_select).click().perform()
     # Grab the items in the select2 dropdown, then make selection
     # previous send_keys method no longer works.
+    time.sleep(1)
     payment_option_default = 'I will pay the full fee upon article acceptance'
     parent_div = self._get(self._payment_items_parent)
     for item in parent_div.find_elements_by_class_name('select2-result-label'):
@@ -73,6 +78,10 @@ class BillingTask(BaseTask):
         break
     completed = self.completed_state()
     if not completed:
+      # Scroll to top to leave the complete button without obstructions
+      manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+      self._actions.move_to_element(manuscript_id_text).perform()
+      time.sleep(.5)
       self.click_completion_button()
       time.sleep(1)
     return self

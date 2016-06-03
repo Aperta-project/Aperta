@@ -3,7 +3,9 @@
 import logging
 import time
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from frontend.Pages.authenticated_page import AuthenticatedPage
 
@@ -34,7 +36,10 @@ class BaseTask(AuthenticatedPage):
   # Common actions for all cards
   def click_completion_button(self):
     """Click completed checkbox"""
-    self._get(self._completion_button).click()
+    try:
+      self._get(self._completion_button).click()
+    except WebDriverException:
+      self._get(self._completion_button).send_keys(Keys.SPACE)
 
   def completed_state(self):
     """Returns the selected state of the task completed button as a boolean"""

@@ -121,7 +121,7 @@ class TahiEnv
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 
   # NED
-  required :NED_API_URL
+  required :NED_API_URL, if: :staging_or_production?
   required :NED_CAS_APP_ID
   required :NED_CAS_APP_PASSWORD
   optional :NED_SSL_VERIFY, :boolean, default: true

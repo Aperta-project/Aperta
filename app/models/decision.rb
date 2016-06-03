@@ -4,6 +4,14 @@ class Decision < ActiveRecord::Base
   VERDICTS = %w(minor_revision major_revision accept reject
                 invite_full_submission)
 
+  PUBLISHING_STATE_BY_VERDICT = {
+    "minor_revision" => "in_revision",
+    "major_revision" => "in_revision",
+    "accept" => "accepted",
+    "reject" => "rejected",
+    "invite_full_submission" => "invited_for_full_submission"
+  }
+
   belongs_to :paper
   has_many :invitations
   has_many :nested_question_answers
@@ -17,11 +25,10 @@ class Decision < ActiveRecord::Base
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
   # Decisions can be appealed, and if editorial staff agrees the wrong
-  # decision was made, they rescind that choice. This method gets called by
-  # the paper.rescind! state transition.
+  # decision was made, they rescind that choice.
   def rescind!
     paper.rescind!
-    update(rescinded: true,
+    update!(rescinded: true,
            rescind_minor_version: paper.minor_version)
   end
 
@@ -63,7 +70,7 @@ class Decision < ActiveRecord::Base
 
   def rescindable?
     latest_registered? &&
-      paper.publishing_state == resulting_state &&
+      paper_in_expected_state_given_verdict? &&
       !rescinded
   end
 
@@ -73,13 +80,7 @@ class Decision < ActiveRecord::Base
 
   private
 
-  def resulting_state
-    {
-      "minor_revision" => "in_revision",
-      "major_revision" => "in_revision",
-      "accept" => "accepted",
-      "reject" => "rejected",
-      "invite_full_submission" => "invited_for_full_submission"
-    }[verdict]
+  def paper_in_expected_state_given_verdict?
+    paper.publishing_state == PUBLISHING_STATE_BY_VERDICT[verdict]
   end
 end

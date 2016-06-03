@@ -53,13 +53,11 @@ describe Decision do
     end
 
     it 'flags rescinded as true' do
-      decision.rescind!
-      decision.reload
-      expect(decision.rescinded).to be(true)
+      expect { decision.rescind! }.to change { decision.rescinded }.to be(true)
     end
 
     it 'sets the rescind_minor_version' do
-      decision.rescind!
+      expect { decision.rescind! }.to change { paper.minor_version }.by(1)
       expect(decision.rescind_minor_version).to be(paper.minor_version)
     end
 
@@ -74,7 +72,7 @@ describe Decision do
       early_decision = paper.decisions.create!
       paper.decisions.create!
       latest_decision = paper.decisions.create!
-      (FactoryGirl.create :paper).decisions.create!
+      FactoryGirl.create(:paper).decisions.create!
       expect(early_decision.latest?).to be false
       expect(latest_decision.latest?).to be true
     end
@@ -196,6 +194,16 @@ describe Decision do
         paper.save!
         expect(decision.rescindable?).to be(true)
       end
+    end
+  end
+
+  describe 'PUBLISHING_STATE_BY_VERDICT' do
+    it 'contains an entry for every verdict' do
+      expect(Decision::PUBLISHING_STATE_BY_VERDICT.keys).to contain_exactly(*Decision::VERDICTS)
+    end
+
+    it 'has values which are all publishing states' do
+      expect(Paper::STATES.map(&:to_s)).to include(*Decision::PUBLISHING_STATE_BY_VERDICT.values)
     end
   end
 end

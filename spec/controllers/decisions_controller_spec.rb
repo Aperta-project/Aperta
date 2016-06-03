@@ -16,6 +16,21 @@ describe DecisionsController do
 
     it_behaves_like "an unauthenticated json request"
 
+    context "a user is logged in who may not register decisions" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:register_decision, paper)
+          .and_return false
+
+        stub_sign_in(user)
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to be(403)
+      end
+    end
+
     context "a user is logged in who may register decisions" do
       before do
         allow(user).to receive(:can?)
@@ -47,6 +62,21 @@ describe DecisionsController do
     end
 
     it_behaves_like "an unauthenticated json request"
+
+    context "a user is logged in who may not register decisions" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:register_decision, paper)
+          .and_return false
+
+        stub_sign_in(user)
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to be(403)
+      end
+    end
 
     context "a user is logged in who may register decisions" do
       before do
@@ -88,6 +118,21 @@ describe DecisionsController do
     end
 
     it_behaves_like "an unauthenticated json request"
+
+    context "a user is logged in who may not register decisions" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:register_decision, paper)
+          .and_return false
+
+        stub_sign_in(user)
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to be(403)
+      end
+    end
 
     context "when a user is logged in who may register decisions" do
       before do
@@ -132,6 +177,21 @@ describe DecisionsController do
     let(:paper) { FactoryGirl.create(:paper, publishing_state: :rejected) }
 
     it_behaves_like "an unauthenticated json request"
+
+    context "a user is logged in who may not rescind decisions" do
+      before do
+        allow(user).to receive(:can?)
+          .with(:rescind_decision, paper)
+          .and_return false
+
+        stub_sign_in(user)
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to be(403)
+      end
+    end
 
     context "and the user is signed in" do
       before do

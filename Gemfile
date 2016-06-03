@@ -45,6 +45,7 @@ gem 'puma'
 gem 'pusher'
 gem 'rack-timeout'
 gem 'rails', '~>4.2.4'
+gem 'rbtrace'
 gem 'render_anywhere', require: nil
 gem 'request_store'
 gem 'rest-client'

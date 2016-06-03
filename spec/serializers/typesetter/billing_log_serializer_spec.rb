@@ -148,7 +148,8 @@ describe Typesetter::BillingLogSerializer do
     it 'has a direct_bill_response when the payment method is institutional' do
       question = NestedQuestion.find_by(ident: 'plos_billing--payment_method')
       question.nested_question_answers.first.update_column(:value, 'institutional')
-      expect(output[:direct_bill_response]).to eq(billing_task.answer_for('plos_billing--ringgold_institution').value)
+      billing_task.answer_for('plos_billing--ringgold_institution').update_column(:additional_data, { 'nav_customer_number' => 'C01010' })
+      expect(output[:direct_bill_response]).to eq('C01010')
     end
 
     it 'does not have a direct_bill_response when the payment method is not institutional' do

@@ -94,18 +94,16 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
                         )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # The flash success message is not loading in all cases, even for successful conversion
-    #   temporarily disabling it. replacing with a sleep
     time.sleep(15)
-    # manuscript_page.validate_ihat_conversions_success()
-    # manuscript_page.close_flash_message()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
-    paper_id = manuscript_page.get_current_url().split('papers/')[1].split('?')[0]
-    logging.info('paper_id: {0}'.format(paper_id))
+    paper_id = manuscript_page.get_paper_db_id()
+
+    # Allow time for submit button to attach to the DOM
+    time.sleep(3)
     manuscript_page.click_submit_btn()
     time.sleep(3)
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
@@ -197,6 +195,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    paper_url = manuscript_page.get_current_url()
     paper_id = manuscript_page.get_paper_db_id()
 
     # Give a little time for the submit button to attach to the DOM
@@ -206,12 +205,13 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.confirm_submit_cancel()
     # The overlay must be cleared to interact with the submit button
     # and it takes time
-    time.sleep(.5)
+    time.sleep(2)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-
+    time.sleep(3)
+    manuscript_page.check_for_flash_error()
     manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_initial_submit_success()

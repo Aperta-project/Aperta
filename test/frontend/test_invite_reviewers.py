@@ -58,7 +58,7 @@ class InviteReviewersCardTest(CommonTest):
     # What I notice is that if we submit before iHat is done updating, the paper title
     # reverts to the temporary title specified on the CNS overlay (5s is too short)
     # APERTA-6514
-    time.sleep(10)
+    time.sleep(15)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

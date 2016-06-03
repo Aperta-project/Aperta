@@ -55,8 +55,8 @@ class AssignTeamCardTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1]
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    manuscript_page.get_paper_db_id()
+
     # Giving just a little extra time here so the title on the paper gets updated
     # What I notice is that if we submit before iHat is done updating, the paper title
     # reverts to the temporary title specified on the CNS overlay (5s is too short)

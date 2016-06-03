@@ -9,6 +9,8 @@ import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
+
 from loremipsum import generate_paragraph
 
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
@@ -333,7 +335,10 @@ class AuthenticatedPage(PlosPage):
       success_msg = self._get(self._flash_success_msg)
       assert 'Finished loading Word file.' in success_msg.text, success_msg.text
     if success_msg or failure_msg:
-      self.close_flash_message()
+      try:
+        self.close_flash_message()
+      except WebDriverException:
+        logging.warning('Flash message closer is inaccessible - probably under the toolbar')
     self.restore_timeout()
 
   def validate_ihat_conversions_failure(self):

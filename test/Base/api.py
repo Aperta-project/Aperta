@@ -29,7 +29,8 @@ class Needs(object):
     @wraps(method)
     def wrapper(value, *args, **kw):
       if not hasattr(value, self.attributeNeeded):
-        TestCase.fail(value, 'You MUST invoke %s first, BEFORE performing any validations!' % self.methodToInvoke)
+        TestCase.fail(value, 'You MUST invoke {0) first, BEFORE performing any '
+                             'validations!'.format(self.methodToInvoke))
       else:
         return method(value, *args, **kw)
 

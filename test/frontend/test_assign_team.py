@@ -52,9 +52,7 @@ class AssignTeamCardTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviating the timeout for success message
-    manuscript_page.set_timeout(15)
-    manuscript_page.validate_ihat_conversions_success()
-    manuscript_page.restore_timeout()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]

@@ -55,9 +55,7 @@ class WithdrawManuscriptTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    dashboard_page.set_timeout(15)
-    manuscript_page.validate_ihat_conversions_success()
-    dashboard_page.restore_timeout()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]

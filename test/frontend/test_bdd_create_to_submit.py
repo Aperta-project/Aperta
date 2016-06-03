@@ -194,8 +194,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success()
-    manuscript_page.close_flash_message()
+    manuscript_page.validate_ihat_conversions_success(timeout=15, fail_on_missing=True)
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()

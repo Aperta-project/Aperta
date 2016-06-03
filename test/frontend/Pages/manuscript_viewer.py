@@ -97,7 +97,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
     self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
     # Sidebar Info Items
-    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     self._paper_sidebar_submit_success_msg = (By.CLASS_NAME, 'task-list')
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
     # Assigned Tasks
@@ -493,6 +492,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task_div = task.find_element_by_xpath('..')
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+          self._actions.move_to_element(manuscript_id_text).perform()
           task.click()
           time.sleep(.5)
           break
@@ -525,9 +526,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
       # complete_billing task
+      task.click()
+      """
       if not base_task.completed_state():
         base_task.click_completion_button()
-      task.click()
+        manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+        self._actions.move_to_element(manuscript_id_text).perform()
+        task.click()
+      """
       time.sleep(1)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)

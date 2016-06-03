@@ -549,6 +549,8 @@ class AuthorsTask(BaseTask):
     edit_btn = self._get(self._edit_author)
     edit_btn.click()
     time.sleep(1)
+    govt_employee_question = self._get(self._govt_employee_question)
+    self._actions.move_to_element(govt_employee_question).perform()
     if 'government' in author_data and author_data['government']:
       self._get(self._govt_employee_radio_yes).click()
     else:

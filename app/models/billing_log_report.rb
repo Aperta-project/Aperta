@@ -25,11 +25,6 @@ class BillingLogReport < ActiveRecord::Base
     Time.current.strftime("%Y-%m-%d %H:%M:%S")
   end
 
-  def filename
-    @filename ||=
-    "billing-log-#{current_time}.csv"
-  end
-
   def self.create_report(from_date: nil)
     from_date ||= BillingLogReport.last.created_at if BillingLogReport.any?
     blr = BillingLogReport.new(from_date: from_date)
@@ -39,7 +34,7 @@ class BillingLogReport < ActiveRecord::Base
 
   def save_and_send_to_s3!
     return nil unless papers_to_process.present?
-    tmp_file = Tempfile.new('')
+    tmp_file = Tempfile.new(['billing-log', '.csv'])
     tmp_file.write(create_csv.string)
     update!(csv_file: tmp_file)
   end

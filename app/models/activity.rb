@@ -82,13 +82,22 @@ class Activity < ActiveRecord::Base
   end
 
   def self.decision_made!(decision, user:)
-    create(
-      feed_name: "workflow",
-      activity_key: "decision.made",
-      subject: decision.paper,
-      user: user,
-      message: "#{decision.verdict.titleize} was sent to author"
-    )
+    [
+      create(
+        feed_name: "workflow",
+        activity_key: "decision.made",
+        subject: decision.paper,
+        user: user,
+        message: "A decision was made: #{decision.verdict.titleize}"
+      ),
+      create(
+        feed_name: "manuscript",
+        activity_key: "decision.sent",
+        subject: decision.paper,
+        user: user,
+        message: "A decision was sent to the author"
+      )
+    ]
   end
 
   def self.invitation_created!(invitation, user:)

@@ -70,9 +70,3 @@ class FiguresCard(BaseCard):
     Placeholder for a function to upload a tiff file in the Figures Card
     """
     pass
-
-  def is_marked_completed(self):
-    """
-    Checks if the state of the card is set to completed so that changes can't be made
-    :return: Boolean
-    """

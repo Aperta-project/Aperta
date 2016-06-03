@@ -68,11 +68,11 @@ class InitialDecisionCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
-    paper_id = paper_url.split('papers/')[1]
+    paper_id = manuscript_page.get_paper_db_id()
 
     # Get paper version for AC 6
     version_before = Decimal(manuscript_page.get_manuscript_version()[1:])

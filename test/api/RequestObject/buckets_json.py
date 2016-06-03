@@ -8,7 +8,7 @@ __author__ = 'jgray@plos.org'
 
 from ...Base.base_service_test import BaseServiceTest
 from ...Base.Config import API_BASE_URL
-from ...Base.api import needs
+from ...Base.api import Needs
 
 BUCKETS_API = API_BASE_URL + '/v1/buckets'
 DEFAULT_HEADERS = {'Accept': 'application/json'}
@@ -27,7 +27,7 @@ class BucketsJson(BaseServiceTest):
     self.doGet('%s' % BUCKETS_API, header, DEFAULT_HEADERS)
     self.parse_response_as_json()
 
-  @needs('parsed', 'parse_response_as_json()')
+  @Needs('parsed', 'parse_response_as_json()')
   def verify_buckets(self):
     """
     Verifies a valid response

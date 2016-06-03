@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import os
 import random
 import time
 
@@ -10,8 +9,8 @@ from Base.Resources import login_valid_pw, creator_login1, creator_login2, creat
     creator_login5
 
 from frontend.common_test import CommonTest
-from Base.Resources import docs
 from Pages.dashboard import DashboardPage
+from Pages.manuscript_viewer import ManuscriptViewerPage
 
 """
 This behavioral test case validates the Aperta Create New Submission through Submit process.
@@ -129,30 +128,21 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
-    # Validate Create New Submissions modal
-    # Set long timeout due to the time it takes to load this page
-    dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
-    dashboard_page.restore_timeout()
+    # Temporary changing timeout
+    dashboard_page.set_timeout(60)
     # We recently became slow drawing this overlay (20151006)
-    time.sleep(2)
-    title = dashboard_page.title_generator()
-    dashboard_page.enter_title_field(title)
-    # This should be expanded to make a random choice of journal and a random choice within that
-    # journal of type
-    # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this
-    # must be called stripped of the same
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
-    time.sleep(3)
-    doc2upload = random.choice(docs)
-    logging.info('Sending document: {0}'.format(os.path.join(os.getcwd(),
-                                                             '/frontend/assets/docs/', doc2upload)))
-    fn = os.path.join(os.getcwd(), '/frontend/assets/docs/', doc2upload)
-    self._driver.find_element_by_id('upload-files').send_keys(fn)
-    dashboard_page.click_upload_button()
-
-    # Time needed for iHat conversion.
-    time.sleep(5)
+    time.sleep(.5)
+    self.create_article(journal='PLOS Wombat',
+                        type_='Research',
+                        random_bit=True,
+                        title='bdd_cns',
+                        )
+    dashboard_page.restore_timeout()
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(7)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success(timeout=15, fail_on_missing=True)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

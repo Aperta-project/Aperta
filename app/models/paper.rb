@@ -74,7 +74,9 @@ class Paper < ActiveRecord::Base
            to: :latest_version, allow_nil: true
 
   def manuscript_id
-    doi.match(%r{\A10\.\d+/(journal\.)?(.*)\Z})[2]
+    journal_prefix_and_number = doi.split('/').last.split('.') if doi
+    journal_prefix_and_number.try(:shift) # Remove 'journal' text
+    journal_prefix_and_number.try(:join, '.')
   end
 
   after_create :assign_doi!

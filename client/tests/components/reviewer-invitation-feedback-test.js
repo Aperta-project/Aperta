@@ -6,7 +6,8 @@ moduleForComponent('reviewer-invitation-feedback',
                    'Integration | Component | reviewer invitation feedback',
                    {integration: true,
                     beforeEach: function() {
-                      this.set('reject', () => {return;});
+                      this.set('update', () => {return;});
+                      this.set('close', () => {return;});
                       this.set('invitation', Ember.Object.create({
                         title: 'Awesome Paper!',
                         declineReason: null,
@@ -16,7 +17,8 @@ moduleForComponent('reviewer-invitation-feedback',
 
 var template = hbs`{{reviewer-invitation-feedback
                       invitation=invitation
-                      reject=(action reject invitation)
+                      close=(action close)
+                      update=(action update invitation)
                       }}`;
 
 var fillText = function(selector, text) {
@@ -35,7 +37,7 @@ test('can set decline reason', function(assert){
   assert.expect(1);
 
   this.render(template);
-  fillText('input[name="declineReason"]', 'Too busy!');
+  fillText('textarea[name="declineReason"]', 'Too busy!');
 
   assert.equal(this.get('invitation.declineReason'), 'Too busy!');
 
@@ -45,7 +47,7 @@ test('can set reviewer suggestions', function(assert){
   assert.expect(1);
 
   this.render(template);
-  fillText('input[name="reviewerSuggestions"]', 'Other guy is great');
+  fillText('textarea[name="reviewerSuggestions"]', 'Other guy is great');
 
   assert.equal(
     this.get('invitation.reviewerSuggestions'),
@@ -57,9 +59,9 @@ test('The form is contructed with the expected markup', function(assert){
   assert.expect(7);
 
   this.render(template);
-  assert.equal(this.$('input[type="text"]').length,
-               2, 'there are 2 text inputs');
-  assert.selectorHasClasses('input[type="text"]', ['feedback-text-box']);
+  assert.equal(this.$('textarea').length,
+               2, 'there are 2 textareas');
+  assert.selectorHasClasses('label>textarea', ['feedback-textarea']);
   assert.selectorHasClasses(
     '.reviewer-feedback-buttons > .reviewer-decline-feedback',
     ['button-link', 'button--green']
@@ -70,18 +72,16 @@ test('The form is contructed with the expected markup', function(assert){
   );
 });
 
-test('can "cancel" feedback', function(assert){
-  assert.expect(5);
-  this.set('reject', (invitation) => {
-    assert.ok(this.get('invitation')===invitation,
-      'The invitation object is passed in to the action');
+test('can respond "no thank you" to giving feedback', function(assert){
+  assert.expect(4);
+  this.set('close', () => {
 
     // assert the values were cleared on the invitation
-    assert.equal(invitation.get('declineReason'),
+    assert.equal(this.get('invitation.declineReason'),
                  null,
                  'Expected decline reason to be blank'
     );
-    assert.equal(invitation.get('reviewerSuggestions'),
+    assert.equal(this.get('invitation.reviewerSuggestions'),
                  null,
                  'Expected decline reason to be blank'
     );
@@ -89,8 +89,8 @@ test('can "cancel" feedback', function(assert){
 
   this.render(template);
 
-  fillText('input[name="declineReason"]', 'some value');
-  fillText('input[name="reviewerSuggestions"]', 'some other value');
+  fillText('textarea[name="declineReason"]', 'some value');
+  fillText('textarea[name="reviewerSuggestions"]', 'some other value');
 
   // assert the values were actually set on the invitation
   assert.equal(this.get('invitation.declineReason'),
@@ -107,7 +107,7 @@ test('can "cancel" feedback', function(assert){
 
 test('can Send Feedback', function(assert){
   assert.expect(3);
-  this.set('reject', (invitation) => {
+  this.set('update', (invitation) => {
     assert.ok(this.get('invitation')===invitation,
       'The invitation object is passed in to the action');
 
@@ -124,8 +124,8 @@ test('can Send Feedback', function(assert){
 
   this.render(template);
 
-  fillText('input[name="declineReason"]', 'some value');
-  fillText('input[name="reviewerSuggestions"]', 'some other value');
+  fillText('textarea[name="declineReason"]', 'some value');
+  fillText('textarea[name="reviewerSuggestions"]', 'some other value');
 
 
   this.$('.reviewer-feedback-buttons > .reviewer-send-feedback').click();

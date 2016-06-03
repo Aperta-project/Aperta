@@ -16,7 +16,7 @@ export default Ember.Component.extend({
       invitation.set('declineReason', null);
       invitation.set('reviewerSuggestions', null);
       invitation.set('pendingFeedback', false);
-      this.get('close')();
+      return this.get('close')();
     }
   }
 });

@@ -68,7 +68,7 @@ class ProductionMetadataCardTest(CommonTest):
     # We are occasionally getting errors because we are simply not waiting long enough for the
     #  submit button to show up. The conversion message, the population of the manuscript content,
     #  and the attachment of the Submit button to the DOM are all independent actions.
-    time.sleep(10)
+    time.sleep(15)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

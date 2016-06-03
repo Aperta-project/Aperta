@@ -197,9 +197,10 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
-    paper_url = manuscript_page.get_current_url()
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
-    paper_id = paper_url.split('papers/')[1]
+    paper_id = manuscript_page.get_paper_db_id()
+
+    # Give a little time for the submit button to attach to the DOM
+    time.sleep(3)
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()

@@ -6,8 +6,16 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Aperta validates its environment when booting and fails fast with human
   readable error messages when not-valid. This is a non-user facing addition.
-
 ### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.13] - {2016-05-31}
+### Added
+### Changed
+- Show discussion participants' emails when selecting and on hover
 ### Deprecated
 ### Removed
 - epub conversion and download
@@ -38,7 +46,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM
-- Show discussion participants' emails when selecting and on hover
 
 ## [1.4.9] - 2016-05-13
 ### Deprecated

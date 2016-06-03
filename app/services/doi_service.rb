@@ -62,6 +62,6 @@ class DoiService
   end
 
   def suffix
-    ['journal', doi_journal_prefix, last_doi_issued].join(".")
+    [doi_journal_prefix, last_doi_issued].join(".")
   end
 end

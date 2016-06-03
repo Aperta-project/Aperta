@@ -3,7 +3,7 @@ require 'rails_helper'
 describe DoiService do
 
   let(:journal_doi) do
-    "#{journal.doi_publisher_prefix}/journal.#{journal.doi_journal_prefix}.#{journal.last_doi_issued}"
+    "#{journal.doi_publisher_prefix}/#{journal.doi_journal_prefix}.#{journal.last_doi_issued}"
   end
 
   describe ".valid?" do

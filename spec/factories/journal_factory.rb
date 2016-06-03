@@ -49,7 +49,7 @@ FactoryGirl.define do
   end
 
   sequence :doi_journal_prefix do
-    |n| "JPREFIX#{n}"
+    |n| "journal.SHORTJPREFIX#{n}"
   end
 
   sequence :doi_publisher_prefix do

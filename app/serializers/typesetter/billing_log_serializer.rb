@@ -138,7 +138,7 @@ module Typesetter
     end
 
     def import_date
-      Time.current
+      # Intentionally left blank as this is handled by the billing program
     end
 
     private

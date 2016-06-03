@@ -53,7 +53,25 @@ test:
         parallel: true
         files:
           # Only select non-feature specs
-          - "**/spec/*[^features]*/**/*_spec.rb"
+          # WARNING: CircleCI does not appear to use Ruby's Dir.glob under the
+          #       hood so if you test something in irb don't expect to get the
+          #       same CircleCI.
+          #
+          # NOTE ON BELOW GLOB:
+          #       There is no way using standard file globbing to negate
+          #       entire words so we are ignoring all folders inside a spec/
+          #       directory that start with "f".
+          #
+          #       If you try to do [!features] or [^features] it will treat it
+          #       as character set and rather than doing what you hope it will
+          #       end up not matching on any directories that start with any of
+          #       those letters.
+          #
+          #       If you try to split it up as CircleCI's support suggeseted
+          #       like this, [^f][^e][^a], then it will fail on things where then
+          #       second letter was an "e" or the third letter an "a". This
+          #       results in not running all specs.
+          - "**/spec/[!f]*/**/*_spec.rb"
     - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
         timeout: 1800
         parallel: true

@@ -5,14 +5,25 @@ describe Paper::Submitted::EmailCreator do
 
   let(:mailer) { mock_delayed_class(UserMailer) }
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :with_creator)
+    FactoryGirl.build_stubbed(:paper)
   end
 
   describe "when a paper is submitted" do
     it "notifies the creator of a submission" do
       allow(paper).to receive(:previous_changes).and_return(
         publishing_state: ["unsubmitted", "submitted"])
-      expect(mailer).to receive(:notify_creator_of_paper_submission).with(paper.id)
+      expect(mailer).to receive(:notify_creator_of_paper_submission)
+        .with(paper.id)
+      described_class.call("tahi:paper:submitted", record: paper)
+    end
+
+    it "notifies the creator of an initial submission" do
+      allow(paper).to receive(:previous_changes).and_return(
+        publishing_state: ["unsubmitted", "initially_submitted"])
+      allow(paper).to receive(:publishing_state)
+        .and_return("initially_submitted")
+      expect(mailer).to receive(:notify_creator_of_initial_submission)
+        .with(paper.id)
       described_class.call("tahi:paper:submitted", record: paper)
     end
 

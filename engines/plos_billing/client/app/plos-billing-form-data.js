@@ -8,6 +8,7 @@ export default {
     { id: 'École Polytechnique Fédérale de Lausanne', text: 'École Polytechnique Fédérale de Lausanne' },
     { id: 'ETH Zurich', text: 'ETH Zurich' },
     { id: 'Faculty of Humanities and Social Sciences Libraries - University of Zagreb', text: 'Faculty of Humanities and Social Sciences Libraries - University of Zagreb' },
+    { id: 'Francis Crick Institute', text: 'Francis Crick Institute', nav_customer_number: 'C01725' },
     { id: 'Fondazione Telethon Italy', text: 'Fondazione Telethon Italy' },
     { id: 'Forschungszentrum Jülich', text: 'Forschungszentrum Jülich' },
     { id: 'Georg-August-Universitaet Goettingen', text: 'Georg-August-Universitaet Goettingen' },

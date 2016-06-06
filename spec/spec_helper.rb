@@ -12,6 +12,6 @@ RSpec.configure do |config|
   config.color = true
   config.filter_run focus: true
   config.formatter = 'RSpec::Instafail'
-  config.pattern = 'engines/*/spec/**/*_spec.rb,spec/**/*_spec.rb'
+  config.pattern = '**/spec/**/*_spec.rb'
   config.run_all_when_everything_filtered = true
 end

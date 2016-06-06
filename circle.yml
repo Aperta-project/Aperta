@@ -48,12 +48,16 @@ database:
 ## Customize test commands
 test:
   override:
-    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
+    - bundle exec rspec -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true
         files:
-          - "spec/**/*_spec.rb"
-          - "engines/*/spec/**/*_spec.rb"
+          - "**/spec/**/*_spec.rb"
+    - bundle exec rspec -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
+        timeout: 1800
+        parallel: true
+        files:
+          - "**/spec/**/*_spec.rb"
     - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
 
 ## Customize heroku deployment

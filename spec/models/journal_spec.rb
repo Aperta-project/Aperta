@@ -12,9 +12,9 @@ describe Journal do
     end
 
     it "still valid" do
-      expect(@journal.doi_publisher_prefix).to eq nil
-      expect(@journal.doi_journal_prefix).to eq nil
-      expect(@journal.last_doi_issued).to eq "0"
+      expect(@journal.doi_publisher_prefix).to be_present
+      expect(@journal.doi_journal_prefix).to be_present
+      expect(@journal.last_doi_issued).to eq "10000"
       expect(@journal.save!).to eq true
     end
   end
@@ -79,36 +79,30 @@ describe Journal do
   end
 
   describe "DOI" do
-    before do
-      @journal = build(:journal, :with_doi)
-      @journal.save!
-    end
+    let(:journal) { FactoryGirl.create(:journal) }
 
-    it "can be created" do
-      expect(@journal.doi_publisher_prefix).to be_truthy
-      expect(@journal.doi_journal_prefix).to   be_truthy
-      expect(@journal.last_doi_issued).to      be_truthy
+    it "contains DOI information" do
+      expect(journal.doi_publisher_prefix).to be_truthy
+      expect(journal.doi_journal_prefix).to   be_truthy
+      expect(journal.last_doi_issued).to      be_truthy
+      expect(journal.last_doi_issued.class).to eq(String)
     end
 
     it "will not save invalid DOI publisher prefix" do
-      @journal.doi_publisher_prefix = "#"
-
-      expect {
-        @journal.save!
-      }.to raise_error(ActiveRecord::RecordInvalid)
+      journal.doi_publisher_prefix = "#"
+      journal.save
+      expect(journal).to have(1).errors_on(:doi)
     end
 
     it "will not save invalid DOI journal prefix" do
-      @journal.doi_journal_prefix = "miss/2"
-
-      expect {
-        @journal.save!
-      }.to raise_error(ActiveRecord::RecordInvalid)
+      journal.doi_journal_prefix = "miss/2"
+      journal.save
+      expect(journal).to have(1).errors_on(:doi)
     end
 
     describe "additional Journals" do
       before do
-        existing_journal = Journal.last
+        existing_journal = create(:journal)
 
         @journal = build(:journal)
         @journal.doi_publisher_prefix = existing_journal.doi_publisher_prefix

@@ -11,7 +11,6 @@ import time
 from datetime import datetime
 
 from selenium.webdriver.common.by import By
-from epubcheck import EpubCheck
 
 from authenticated_page import AuthenticatedPage, application_typeface
 from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, \
@@ -43,6 +42,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._card = (By.CLASS_NAME, 'card')
     self._submit_button = (By.ID, 'sidebar-submit-paper')
     self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
+    self._withdraw_banner_reactivate_button = (By.CSS_SELECTOR,
+                                               'div.withdrawal-banner > div.button-secondary')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -55,8 +56,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
-    self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
-    self._tb_dl_epub_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
+    self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
     self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
     self._tb_more_link = (By.CSS_SELECTOR, 'div#more-dropdown-menu > div > span')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
@@ -97,7 +97,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
     self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
     # Sidebar Info Items
-    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     self._paper_sidebar_submit_success_msg = (By.CLASS_NAME, 'task-list')
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
     # Assigned Tasks
@@ -227,9 +226,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     word_link = self._get(self._tb_dl_docx_link)
     assert 'WORD' in word_link.text, word_link.text
     assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
-    epub_link = self._get(self._tb_dl_epub_link)
-    assert 'EPUB' in epub_link.text, epub_link.text
-    assert 'download.epub' in epub_link.get_attribute('href')
     pdf_link = self._get(self._tb_dl_pdf_link)
     assert 'PDF' in pdf_link.text, pdf_link.text
     assert 'download.pdf' in pdf_link.get_attribute('href')
@@ -239,7 +235,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def validate_download_btn_actions(self):
     """
-    Initiates all supported download types, validates complete download and for epub and pdf does
+    Initiates all supported download types, validates complete download and for pdf does
       some structural and metadata tests of the output.
     :return: void function
     """
@@ -266,30 +262,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       newest_file = files[-1]
       logging.debug(newest_file.split('.')[-1])
     logging.debug(newest_file)
-    os.remove(newest_file)
-    epub_link = self._get(self._tb_dl_epub_link)
-    epub_link.click()
-    time.sleep(3)
-    os.chdir('/tmp')
-    files = filter(os.path.isfile, os.listdir('/tmp'))
-    files = [os.path.join('/tmp', f) for f in files] # add path to each file
-    files.sort(key=lambda x: os.path.getmtime(x))
-    newest_file = files[-1]
-    logging.debug(newest_file)
-    while newest_file.split('.')[-1] == 'part':
-      time.sleep(5)
-      files = filter(os.path.isfile, os.listdir('/tmp'))
-      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-      files.sort(key=lambda x: os.path.getmtime(x))
-      newest_file = files[-1]
-      logging.debug(newest_file.split('.')[-1])
-    logging.debug(newest_file)
-    result = EpubCheck(newest_file)
-    if result.valid:
-      logging.info('EPUB file: {0} is valid'.format(newest_file))
-    else:
-      logging.error('EPUB file: {0} is not a valid EPUB file.'.format(newest_file))
-      logging.error('EPUB Validation messages: {0}'.format(result.messages))
     os.remove(newest_file)
     # Tiny delay between download types to keep clean
     time.sleep(1)
@@ -478,7 +450,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     withdraw_link.click()
     self._get(self._wm_modal_textarea).send_keys('I am so bored with all this...')
     self._get(self._wm_modal_yes).click()
-    time.sleep(1)
+    # Give a little time for the db transaction
+    time.sleep(3)
 
 
   def validate_roles(self, user_buttons):
@@ -519,6 +492,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task_div = task.find_element_by_xpath('..')
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+          self._actions.move_to_element(manuscript_id_text).perform()
           task.click()
           time.sleep(.5)
           break
@@ -551,9 +526,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
       # complete_billing task
+      task.click()
+      """
       if not base_task.completed_state():
         base_task.click_completion_button()
-      task.click()
+        manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+        self._actions.move_to_element(manuscript_id_text).perform()
+        task.click()
+      """
       time.sleep(1)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)
@@ -658,9 +638,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Get the infobox element"""
     return self._get(self._infobox)
 
-  def get_paper_id(self):
+  def get_paper_doi_part(self):
     """
-    Returns the paper id
+    Returns the local paper identifier part of the doi
     """
     doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]
@@ -675,8 +655,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Returns the DB paper ID from URL
     """
+    time.sleep(1)
     paper_url = self.get_current_url()
-    paper_id = int(paper_url.split('papers/')[1])
+    logging.debug(paper_url)
+    # Need to cover the first view case stripping the trailing garbage
+    paper_id = int(paper_url.split('papers/')[1].split('?')[0])
     logging.info('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 

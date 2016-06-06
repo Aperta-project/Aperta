@@ -61,10 +61,14 @@ class ProductionMetadataCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    # We are occasionally getting errors because we are simply not waiting long enough for the
+    #  submit button to show up. The conversion message, the population of the manuscript content,
+    #  and the attachment of the Submit button to the DOM are all independent actions.
+    time.sleep(15)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -88,7 +92,7 @@ class ProductionMetadataCardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_production_metadata_card()
     product_metadata_card = ProductionMedataCard(self.getDriver())
-    product_metadata_card.check_style(academic_editor_login)
+    product_metadata_card.check_style()
     # test content, it should be saved
     data = product_metadata_card.complete_card()
     time.sleep(2)

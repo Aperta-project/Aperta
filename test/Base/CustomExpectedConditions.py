@@ -6,7 +6,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 
 # === Element To Be Clickable expectation definition ===
-class element_to_be_clickable(object):
+class ElementToBeClickable(object):
     """
 
     An expectation for checking that an element is **present on the DOM** of a

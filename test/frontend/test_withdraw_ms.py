@@ -52,11 +52,10 @@ class WithdrawManuscriptTest(CommonTest):
                         type_='NoCards',
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -65,7 +64,7 @@ class WithdrawManuscriptTest(CommonTest):
     # What I notice is that if we submit before iHat is done updating, the paper title
     # reverts to the temporary title specified on the CNS overlay (5s is too short)
     # APERTA-6514
-    time.sleep(10)
+    time.sleep(15)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -81,6 +80,8 @@ class WithdrawManuscriptTest(CommonTest):
                                                 'WHERE id = %s;', (paper_id,))[0][0]
     assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
     manuscript_page.withdraw_manuscript()
+    # Need a wee bit of time for the db to update
+    time.sleep(1)
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
                                                 'WHERE id = %s;', (paper_id,))[0][0]
@@ -99,6 +100,11 @@ class WithdrawManuscriptTest(CommonTest):
         withdraw_banner.value_of_css_property('color')
     assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')
+    # Pre-placing for the reactivate work
+    # manuscript_page.refresh()
+    # self._reactivate_button = (By.CSS_SELECTOR, 'div.withdrawal-banner > div.button-secondary')
+    # reactivate_button = manuscript_page._get(self._reactivate_button)
+    # assert reactivate_button.text == 'REACTIVATE', reactivate_button.text
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

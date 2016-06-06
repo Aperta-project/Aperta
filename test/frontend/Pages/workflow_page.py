@@ -73,7 +73,11 @@ class WorkflowPage(AuthenticatedPage):
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
-    """ """
+    """
+    Validate the presence and style of the workflow page toolbar and top elements along with
+      column header elements.
+    :return: void function
+    """
     # Validate menu elements (title and icon)
     assert self._get(self._toolbar_items)
     self.validate_wf_top_elements()
@@ -115,17 +119,24 @@ class WorkflowPage(AuthenticatedPage):
     return column_header.text
 
   def click_cancel_column_header(self):
-    """ """
+    """
+    Click the cancel button of the column header when in edit mode
+    :return: void function
+    """
     self._get(self._column_header_cancel).click()
-    return self
 
   def modify_column_header(self, title, blank=True):
+    """
+    Edit the column header to title
+    :param title: The text to use in renaming the workflow column heading
+    :param blank: if blank, replace the heading with title, if not blank, append title to heading
+    :return: void function
+    """
     column_header = self._get(self._column_header)
     if blank:
       column_header.clear()
     column_header.send_keys(title)
     self._get(self._column_header_save).click()
-    return self
 
   def click_add_new_card(self):
     """Click on the add new card button on workflow"""

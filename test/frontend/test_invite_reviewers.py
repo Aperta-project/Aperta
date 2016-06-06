@@ -49,9 +49,7 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviate the timeout for conversion success message
-    manuscript_page.set_timeout(15)
-    manuscript_page.validate_ihat_conversions_success()
-    manuscript_page.restore_timeout()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
@@ -60,7 +58,7 @@ class InviteReviewersCardTest(CommonTest):
     # What I notice is that if we submit before iHat is done updating, the paper title
     # reverts to the temporary title specified on the CNS overlay (5s is too short)
     # APERTA-6514
-    time.sleep(10)
+    time.sleep(15)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

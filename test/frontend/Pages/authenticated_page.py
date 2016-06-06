@@ -1,20 +1,23 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import time
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from loremipsum import generate_paragraph
-
-from Base.PlosPage import PlosPage
-from Base.PostgreSQL import PgSQL
-from Base.Resources import staff_admin_login, super_admin_login, \
-    internal_editor_login, prod_staff_login, pub_svcs_login
-
 """
 A class to be inherited from every page for which one is authenticated and wants to access
 the navigation menu also vital for ensuring style consistency across the application.
 """
+import logging
+import time
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
+
+from loremipsum import generate_paragraph
+
+from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.PlosPage import PlosPage
+from Base.PostgreSQL import PgSQL
+from Base.Resources import staff_admin_login, super_admin_login, \
+    internal_editor_login, prod_staff_login, pub_svcs_login
 
 __author__ = 'jgray@plos.org'
 
@@ -101,6 +104,8 @@ class AuthenticatedPage(PlosPage):
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
+    # Task list id needed in task and manuscript page
+    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
     self._authors_card = None
@@ -298,23 +303,43 @@ class AuthenticatedPage(PlosPage):
     id_url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(manuscript_id)
     self._driver.get(id_url)
 
-  def validate_ihat_conversions_success(self):
+  def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):
     """
-    Validate ihat conversion success
+    Validate ihat conversion success, or display of failure message or no message at all
+    :param timeout: alternate timeout (optional)
+    :param fail_on_missing: boolean, defaults to False. If True error on no or fail msg display,
+       else warn only.
+    :return: void function
     """
-    # This needs to be an extrordinary timeout value to cover the case of iHat
+    # This needs to be an extraordinary timeout value to cover the case of iHat
     #  going out to lunch. 103+ seconds is the longest I've seen it take and still
     #  succeed:
     # 934edb97-2a49-4028-9523-25f1d31f7dcc
     # 2016-04-07T00:35:52Z   2016-04-07T00:35:53Z   11 of 11   103.04s completed
-    self.set_timeout(120)
-    try:
-      ihat_msg = self._get(self._flash_success_msg)
-    except Exception as e:
-      self.restore_timeout()
-      return e
+    self.set_timeout(timeout)
+    success_msg = ''
+    failure_msg = ''
+    if not fail_on_missing:
+      try:
+        success_msg = self._get(self._flash_success_msg)
+      except ElementDoesNotExistAssertionError:
+        logging.warning('No successful conversion result message displayed')
+        self.set_timeout(1)
+        try:
+          failure_msg = self._get(self._flash_error_msg)
+          logging.warning('Conversion failure result message displayed: '
+                          '{0}'.format(failure_msg.text))
+        except ElementDoesNotExistAssertionError:
+          logging.warning('No conversion result message displayed at all')
+    else:
+      success_msg = self._get(self._flash_success_msg)
+      assert 'Finished loading Word file.' in success_msg.text, success_msg.text
+    if success_msg or failure_msg:
+      try:
+        self.close_flash_message()
+      except WebDriverException:
+        logging.warning('Flash message closer is inaccessible - probably under the toolbar')
     self.restore_timeout()
-    assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text
 
   def validate_ihat_conversions_failure(self):
     """
@@ -325,12 +350,38 @@ class AuthenticatedPage(PlosPage):
     self.restore_timeout()
     assert 'There was an error loading your Word file.' in ihat_msg.text, ihat_msg.text
 
+  def check_for_flash_error(self):
+    """
+    Check that any process (submit, save, send, etc) did not trigger a flash error
+    :return: void function
+    """
+    error_msg = ''
+    self.set_timeout(15)
+    try:
+      error_msg = self._get(self._flash_error_msg)
+    except ElementDoesNotExistAssertionError:
+      self.restore_timeout()
+    if error_msg:
+      raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg.text))
+
+  def check_for_flash_success(self):
+    """
+    Check that any process (submit, save, send, etc) triggered a flash success message
+    use where we are supposed to explicitly put up a success message - though not for
+    new manuscript creation - there is a custom method for that. Closes message, if found.
+    :return: text of flash success message
+    """
+    self.set_timeout(15)
+    success_msg = self._get(self._flash_success_msg)
+    self.close_flash_message()
+    return success_msg.text
+
   def close_flash_message(self):
     """
     Close any type of flash message: error, info or success
     :return: void function
     """
-    self.set_timeout(90)
+    self.set_timeout(15)
     self._get(self._flash_closer).click()
     self.restore_timeout()
 
@@ -515,9 +566,9 @@ class AuthenticatedPage(PlosPage):
     # create topic btn
     time.sleep(.5)
     self._get(self._create_topic).click()
-    # add paper creator to the disussion
+    # add paper creator to the discussion
     if participants:
-      #the_creator (tm)
+      # the_creator (tm)
       for participant in participants:
         self._get(self._add_participant_btn).click()
         time.sleep(.5)
@@ -526,12 +577,12 @@ class AuthenticatedPage(PlosPage):
         self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     time.sleep(.5)
     js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    self._driver.execute_script(js_cmd);
+    self._driver.execute_script(js_cmd)
     time.sleep(.5)
+    msg_body = self._get(self._message_body_field)
     if msg:
       msg_body.send_keys(msg)
     else:
-      msg_body = self._get(self._message_body_field)
       msg_body.send_keys(generate_paragraph()[2])
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')

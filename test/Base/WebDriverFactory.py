@@ -97,7 +97,6 @@ class WebDriverFactory(object):
     """
     mime_types = 'application/pdf, ' \
                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document, ' \
-                 'application/epub+zip, ' \
                  'application/msword, ' \
                  'application/octet-stream, ' \
                  'application/download, ' \

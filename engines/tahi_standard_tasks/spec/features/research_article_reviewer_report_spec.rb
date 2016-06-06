@@ -5,29 +5,37 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   let(:paper) do
     FactoryGirl.create \
       :paper_with_phases,
+      :with_creator,
       journal: journal,
       uses_research_article_reviewer_report: true
   end
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
+  let(:paper_page){ PaperPage.new }
   let!(:reviewer) { create :user }
-
-  before do
-    assign_reviewer_role paper, reviewer
-
+  let!(:reviewer_report_task) do
     ReviewerReportTaskCreator.new(
       originating_task: task,
       assignee_id: reviewer.id
     ).process
+  end
+
+  before do
+    assign_reviewer_role paper, reviewer
 
     login_as(reviewer, scope: :user)
     visit "/"
     visit "/papers/#{paper.id}"
   end
 
-  scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
-    paper_page = PaperPage.new
+  scenario "A paper's creator cannot access the Reviewer Report" do
+    ensure_user_does_not_have_access_to_task(
+      user: paper.creator,
+      task: reviewer_report_task
+    )
+  end
 
+  scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests' => 'I have no competing interests with this work.'
     t.submit_report
@@ -37,9 +45,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A review can see their previous rounds of review' do
-    reviewer_report_task = TahiStandardTasks::ReviewerReportTask.last
-    paper_page = PaperPage.new
-
     # Revision 0
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)

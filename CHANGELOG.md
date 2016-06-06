@@ -4,7 +4,23 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Aperta validates its environment when booting and fails fast with human
+  readable error messages when not-valid. This is a non-user facing addition.
+- Added The Francis Crick Institute to institutional accounts
 ### Changed
+- Replaced EM GUID as a value that we export in the billing log in favor of NED
+  ID. Sent NED ID and email for corresponding author in billing log
+- Updated dois to the format 10.1371/journal.pbio.2000001 instead of
+  10.1371/pbio.2000001
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.13] - {2016-05-31}
+### Added
+### Changed
+- Show discussion participants' emails when selecting and on hover
 ### Deprecated
 ### Removed
 - epub conversion and download
@@ -35,7 +51,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM
-- Show discussion participants' emails when selecting and on hover
 
 ## [1.4.9] - 2016-05-13
 ### Deprecated

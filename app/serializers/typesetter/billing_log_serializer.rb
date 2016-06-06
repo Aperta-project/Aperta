@@ -2,8 +2,8 @@ module Typesetter
   # Serializes a paper's billing log information
   # Expects a paper as its object to serialize.
   class BillingLogSerializer < Typesetter::TaskAnswerSerializer
-    attributes :guid, :title, :journal_id, :doi,
-               :firstname, :middlename, :lastname,
+    attributes :ned_id, :corresponding_author_ned_id, :corresponding_author_ned_email,
+               :title, :journal, :doi, :firstname, :middlename, :lastname,
                :institute, :department, :address1, :address2, :address3,
                :city, :state, :zip, :country, :phone1, :phone2, :fax,
                :email, :pubdnumber, :dtitle, :fundRef,
@@ -13,12 +13,24 @@ module Typesetter
     attribute :first_submitted_at, key: :original_submission_start_date
     attribute :accepted_at, key: :date_first_entered_production
 
-    def guid
-      EditorialManager.find_or_create_guid_by_email(email: email)
+    def ned_id
+      User.find_by(email: email).try(:ned_id)
+    end
+
+    def corresponding_author_ned_id
+      object.creator.ned_id
+    end
+
+    def corresponding_author_ned_email
+      object.creator.email
     end
 
     def title
       billing_answer_for('plos_billing--title')
+    end
+
+    def journal
+      object.journal.name
     end
 
     def firstname
@@ -86,8 +98,8 @@ module Typesetter
     end
 
     def pubdnumber
-      # Same as manuscript id for now
-      object.id
+      # pbio.000001
+      object.manuscript_id
     end
 
     def dtitle
@@ -109,7 +121,9 @@ module Typesetter
     def direct_bill_response
       return unless billing_answer_for(
         'plos_billing--payment_method') == 'institutional'
-      billing_answer_for('plos_billing--ringgold_institution')
+      additional_data =
+        billing_task.answer_for('plos_billing--ringgold_institution').additional_data
+      additional_data['nav_customer_number'] if additional_data
     end
 
     def gpi_response
@@ -126,7 +140,7 @@ module Typesetter
     end
 
     def import_date
-      Time.current
+      # Intentionally left blank as this is handled by the billing program
     end
 
     private

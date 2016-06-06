@@ -3,29 +3,29 @@ require 'rails_helper'
 describe DoiService do
 
   let(:journal_doi) do
-    [journal[:doi_publisher_prefix], journal[:doi_journal_prefix]].join('/') + "." + journal[:last_doi_issued]
+    "#{journal.doi_publisher_prefix}/#{journal.doi_journal_prefix}.#{journal.last_doi_issued}"
   end
 
   describe ".valid?" do
     context "with a doi" do
-      let(:doi) { 'any.thing/thing.1' }
+      let(:doi) { 'any.thing/journal.thing.1' }
       it "returns true" do
         expect(described_class.valid? doi).to eq true
-        expect(described_class.valid? "10.10.1038/nphys1170").to eq true
-        expect(described_class.valid? "10.1002/0470841559.ch1").to eq true
-        expect(described_class.valid? "10.1594/PANGAEA.726855").to eq true
-        expect(described_class.valid? "10.1594/GFZ.GEOFON.gfz2009kciu").to eq true
-        expect(described_class.valid? "10.1594/PANGAEA.667386").to eq true
-        expect(described_class.valid? "10.3207/2959859860").to eq true
-        expect(described_class.valid? "10.3866/PKU.WHXB201112303").to eq true
-        expect(described_class.valid? "10.3972/water973.0145.db").to eq true
-        expect(described_class.valid? "10.7666/d.y351065").to eq true
-        expect(described_class.valid? "10.11467/isss2003.7.1_11").to eq true
-        expect(described_class.valid? "10.7875/leading.author.2.e008").to eq true
-        expect(described_class.valid? "10.1430/8105").to eq true
-        expect(described_class.valid? "10.1392/BC1.0").to eq true
-        expect(described_class.valid? "10.1000/182").to eq true
-        expect(described_class.valid? "10.1234/joe.jou.1516").to eq true
+        expect(described_class.valid? "10.10.1038/journal.nphys1170").to eq true
+        expect(described_class.valid? "10.1002/journal.0470841559.ch1").to eq true
+        expect(described_class.valid? "10.1594/journal.PANGAEA.726855").to eq true
+        expect(described_class.valid? "10.1594/journal.GFZ.GEOFON.gfz2009kciu").to eq true
+        expect(described_class.valid? "10.1594/journal.PANGAEA.667386").to eq true
+        expect(described_class.valid? "10.3207/journal.2959859860").to eq true
+        expect(described_class.valid? "10.3866/journal.PKU.WHXB201112303").to eq true
+        expect(described_class.valid? "10.3972/journal.water973.0145.db").to eq true
+        expect(described_class.valid? "10.7666/journal.d.y351065").to eq true
+        expect(described_class.valid? "10.11467/journal.isss2003.7.1_11").to eq true
+        expect(described_class.valid? "10.7875/journal.leading.author.2.e008").to eq true
+        expect(described_class.valid? "10.1430/journal.8105").to eq true
+        expect(described_class.valid? "10.1392/journal.BC1.0").to eq true
+        expect(described_class.valid? "10.1000/journal.182").to eq true
+        expect(described_class.valid? "10.1234/journal.joe.jou.1516").to eq true
       end
     end
 
@@ -45,7 +45,7 @@ describe DoiService do
 
   describe "initialization" do
     context "with a journal" do
-      let(:journal) { create :journal, :with_doi }
+      let(:journal) { create :journal }
       it "assigns a journal as @journal" do
         expect(described_class.new(journal: journal).journal).to eq journal
       end
@@ -105,7 +105,7 @@ describe DoiService do
   end
 
   describe "#next_doi!" do
-    let(:journal) { create :journal, :with_doi }
+    let(:journal) { create :journal }
     let(:doi_service) { DoiService.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do

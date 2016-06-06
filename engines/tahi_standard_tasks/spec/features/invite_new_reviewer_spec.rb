@@ -23,9 +23,10 @@ feature "Inviting a new reviewer", js: true do
     Page.new.sign_out
 
     open_email "malz@example.com"
+    reviewer = create :user, email: 'malz@example.com'
+    login_as(reviewer, scope: :user)
     visit_in_email root_path
-
-    dashboard_page = sign_up_as("malz@example.com")
+    dashboard_page = DashboardPage.new
     dashboard_page.accept_invitation_for_paper(paper)
 
     expect(dashboard_page).to have_submission(paper.title)

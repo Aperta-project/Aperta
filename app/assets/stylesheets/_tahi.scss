@@ -81,7 +81,9 @@ h1, h2, h3 {
   margin-top: 0;
 }
 
-textarea { resize: none; }
+textarea {
+  resize: vertical;
+}
 
 
 .warning {

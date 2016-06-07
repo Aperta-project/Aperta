@@ -377,7 +377,7 @@ class PaperTrackerPage(AuthenticatedPage):
         logging.debug('Page id: ' + manid.text + '\nDB id: ' + db_ms_id)
         # only on publication do we use the full manuscript id, until then we strip the front
         #   part: '10.1371/journal.' from the doi
-        assert manid.text in db_ms_id, manid.text + ' not found in ' + db_ms_id + ' from db.'
+        assert manid.text in db_ms_id, '{0} not found in {1} from db.'.format(manid.text, db_ms_id)
 
         page_paper_id = manid.get_attribute('href').split('/')[-1]
         assert '/papers/%s' % db_paper_id in title.get_attribute('href'), \

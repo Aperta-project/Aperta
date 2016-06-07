@@ -51,10 +51,10 @@ class InvitationsController < ApplicationController
 
   def update
     fail AuthorizationError unless invitation.invitee == current_user
-    invitation.actor = current_user
     invitation.update_attributes(
-      decline_reason: params[:decline_reason],
-      reviewer_suggestions: params[:reviewer_suggestions]
+      actor: current_user,
+      decline_reason: invitation_params[:decline_reason],
+      reviewer_suggestions: invitation_params[:reviewer_suggestions]
     )
     respond_with(invitation)
   end
@@ -62,7 +62,14 @@ class InvitationsController < ApplicationController
   private
 
   def invitation_params
-    params.require(:invitation).permit(:email, :task_id, :actor_id, :body)
+    params
+      .require(:invitation)
+      .permit(:actor_id,
+              :body,
+              :decline_reason,
+              :email,
+              :reviewer_suggestions,
+              :task_id)
   end
 
   def task

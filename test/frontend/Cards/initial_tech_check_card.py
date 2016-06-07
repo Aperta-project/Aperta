@@ -83,13 +83,32 @@ class ITCCard(BaseCard):
       will generate random data.
     :return: data used to complete the card
     """
+
+    email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the questions. In the box provided, please include the appropriate approval information, as well as any additional requirements listed.',
+                  1: '',
+                  2: 'In the Data Availability card, you have selected Yes in response to Question 1, but you have not fill in the text box under Question 2 explaining how your data can be accessed. Please choose the most appropriate option from the list and paste into the text box.',
+                  3: 'In the Data Availability card, you have mentioned your data has been submitted to the Dryad repository. Please provide the reviewer URL in the text box under question 2 so that your submitted data can be reviewed.',
+                  4: 'The list of authors in your manuscript file does not match the list of authors in the Authors card. Please ensure these are consistent.',
+                  5: 'Please provide a unique and current email address for each contributing author. It is important that you provide a working email address as we will contact each author to confirm authorship.',
+                  6: '',
+                  7: 'In the Competing Interests card, you have selected Yes, but not provided an explanation in the box provided. Please take this opportunity to include all relevant information.',
+                  8: "Please complete the Financial Disclosure card. This section should describe sources of funding that have supported the work. Please include relevant grant numbers and the URL of any funder's Web site. If the funders had a role in the manuscript, please include a description in the box provided.",
+                  9: '',
+                  10: '',
+                  11: 'We are unable to preview or download Figure [X]. Please upload a higher quality version, preferably in TIF or EPS format and ensure the uploaded version can be previewed and downloaded before resubmitting your manuscript.',
+                  12: 'Please remove captions from figure or supporting information files and ensure each file has a caption present in the manuscript.',
+                  13: 'Please provide a caption for [file name] in the manuscript file.',
+                  14: 'Please note you have cited a file, [file name], in your manuscript that has not been included with your submission. Please upload this file, or if this file was cited in error, please remove the corresponding citation from your manuscript.',
+                  15: "Please upload a 'Response to Reviewers' Word document in the Supporting Information card. This file should address all reviewer comments from the original submission point-by-point.",
+                  }
+
     # Input data, close, open and check if it is saved 05/04/2016
     if not data:
       # generate random data
       data = []
       for x in range(16):
         data.append(random.choice([True, False]))
-    print data
+    print 'data: {}'.format(data)
     for order, checkbox in enumerate(self._gets(self._checkboxes)):
       if data[order]:
         checkbox.click()
@@ -105,9 +124,11 @@ class ITCCard(BaseCard):
     #self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
     autogenerate_email_btn.click()
     time.sleep(2)
-    text_area = self._get(self._text_area)
-    print text_area.text
-    import pdb; pdb.set_trace()
+    issues_text = self._get(self._text_area).get_attribute('value')
+    for index, point in enumerate(data):
+      if not point:
+        assert email_text[index] in issues_text
+    #import pdb; pdb.set_trace()
 
     #print len(self._gets(self._checkboxes))
 

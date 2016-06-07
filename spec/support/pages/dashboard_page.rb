@@ -108,7 +108,7 @@ class DashboardPage < Page
   end
 
   def view_invitations &block
-    click_button 'View invitations'
+    press_view_invitations_button
 
     if block_given?
       block.call(pending_invitations.map do |invitation|
@@ -121,5 +121,9 @@ class DashboardPage < Page
 
   def pending_invitations
     all '.pending-invitation'
+  end
+
+  def press_view_invitations_button
+    click_button 'View invitations'
   end
 end

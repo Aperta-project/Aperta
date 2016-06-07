@@ -40,7 +40,6 @@ test('can set decline reason', function(assert){
   fillText('textarea[name="declineReason"]', 'Too busy!');
 
   assert.equal(this.get('invitation.declineReason'), 'Too busy!');
-
 });
 
 test('can set reviewer suggestions', function(assert){
@@ -55,7 +54,7 @@ test('can set reviewer suggestions', function(assert){
   );
 });
 
-test('The form is contructed with the expected markup', function(assert){
+test('The form is constructed with the expected markup', function(assert){
   assert.expect(7);
 
   this.render(template);
@@ -126,7 +125,6 @@ test('can Send Feedback', function(assert){
 
   fillText('textarea[name="declineReason"]', 'some value');
   fillText('textarea[name="reviewerSuggestions"]', 'some other value');
-
 
   this.$('.reviewer-feedback-buttons > .reviewer-send-feedback').click();
 });

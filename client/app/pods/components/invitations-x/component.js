@@ -25,7 +25,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       this.get('accept')(invitation).then(()=>{this.closeOverlayIfLast()});
     },
 
-    aquireFeedback(invitation) {
+    acquireFeedback(invitation) {
       invitation.set('pendingFeedback', true);
       this.get('reject')(invitation);
     },

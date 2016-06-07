@@ -55,7 +55,7 @@ test('can set reviewer suggestions', function(assert){
 });
 
 test('The form is constructed with the expected markup', function(assert){
-  assert.expect(7);
+  assert.expect(6);
 
   this.render(template);
 

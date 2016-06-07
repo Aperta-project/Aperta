@@ -7,10 +7,10 @@
     Please provide your reason for withdrawing this manuscript.
   </p>
 
-  {{textarea rows="10" class="form-control" value=model.withdrawalReason}}
+  {{textarea rows="10" class="form-control withdraw-reason" value=model.withdrawalReason}}
 
   <div class="pull-right">
-    <button class="button-link" {{action "withdraw"}}>YES, WITHDRAW</button>
-    <button class="button cancel-button" {{action "close"}}>NO, I'M STILL WORKING</button>
+    <button class="button-link withdraw-yes" {{action "withdraw"}}>YES, WITHDRAW</button>
+    <button class="button cancel-button withdraw-no" {{action "close"}}>NO, I'M STILL WORKING</button>
   </div>
 </div>

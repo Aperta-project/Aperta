@@ -172,6 +172,29 @@ HERE
     end
   end
 
+  def withdraw_paper
+    within '.control-bar' do
+      find('.control-bar-link', text: 'More').click
+      find('.withdraw-link', text: 'Withdraw Manuscript').click
+    end
+
+    within '.control-bar' do
+      find('.control-bar-link', text: 'More').click
+      find('.withdraw-link', text: 'Withdraw Manuscript').click
+    end
+
+    expect(page).to have_css('.paper-withdraw-wrapper')
+    within '.paper-withdraw-wrapper' do
+      find('textarea.withdraw-reason').set 'I really decided not to publish'
+      find('button.withdraw-yes').click
+    end
+
+    expect(page).to have_css(
+      '.withdrawal-banner',
+      text: 'This paper has been withdrawn from Plos Biology and is in View Only mode'
+    )
+  end
+
   def css
     find('.manuscript')['style']
   end

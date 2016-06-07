@@ -11,11 +11,6 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     }
   },
 
-  invitationFeedbackIsBlank: function(invitation) {
-    return Ember.isBlank(invitation.get('reviewerSuggestions')) &&
-      Ember.isBlank(invitation.get('declineReason'));
-  },
-
   actions: {
     close(){
       this.closeOverlayIfLast();
@@ -31,7 +26,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     update(invitation) {
-      if (this.invitationFeedbackIsBlank(invitation)){
+      if (invitation.get('invitationFeedbackIsBlank')){
         invitation.feedbackSent();
         return this.closeOverlayIfLast();
       }

@@ -17,7 +17,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
   end
 
   def journal_task_types
-    # TODO: refactor this woraround with a more general solution in this ticket:
+    # TODO: refactor this workaround as per this ticket:
     # https://developer.plos.org/jira/browse/APERTA-5490
     exluded_types = ['PlosBioTechCheck::ChangesForAuthorTask',
                      'TahiStandardTasks::ReviewerReportTask',

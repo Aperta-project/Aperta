@@ -114,18 +114,6 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       find('.adhoc-content-toolbar .fa-plus').click
       find('.adhoc-content-toolbar .adhoc-toolbar-item--text').click
-
-      # TODO: uncomment when compatible with firefox
-      # https://developer.plos.org/jira/browse/APERTA-5480
-
-      # find('.inline-edit-form div[contenteditable]').html("New contenteditable, yahoo!")
-      # find('.task-body .inline-edit-body-part .button--green:contains("Save")').click
-      # expect(page).to have_css('.inline-edit', text: 'yahoo')
-      # find('.inline-edit-body-part .fa-trash').click
-      # expect(page).to have_css('.inline-edit-body-part', text: 'Are you sure?')
-      # find('.inline-edit-body-part .delete-button').click
-      # expect(page).to_not have_css('.inline-edit', text: 'yahoo')
-      # find('.overlay-close-button:first').click
     end
 
     scenario 'Removing a task' do

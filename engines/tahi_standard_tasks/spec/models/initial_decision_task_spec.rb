@@ -18,7 +18,7 @@ describe TahiStandardTasks::InitialDecisionTask do
     end
   end
 
-  describe 'register' do
+  describe 'after_register' do
     let(:decision) { paper.decisions.latest }
 
     before do
@@ -31,8 +31,8 @@ describe TahiStandardTasks::InitialDecisionTask do
         allow(decision).to receive(:terminal?).and_return(false)
       end
 
-      it "when builds a new decision" do
-        expect { task.register decision }
+      it "it builds a new decision" do
+        expect { task.after_register decision }
           .to change { paper.reload.decisions.count }.by(1)
       end
     end
@@ -43,19 +43,13 @@ describe TahiStandardTasks::InitialDecisionTask do
       end
 
       it "builds a new decision" do
-        expect { task.register decision }
+        expect { task.after_register decision }
           .not_to change { paper.reload.decisions.count }
       end
     end
 
-    it "saves the decision to paper" do
-      expect(task.paper).to receive(:make_decision).with(decision)
-      task.register decision
-    end
-
-    it "sets the decision to be registered and initial" do
-      task.register decision
-      expect(decision.registered).to be(true)
+    it "sets the decision to be initial" do
+      task.after_register decision
       expect(decision.initial).to be(true)
     end
 
@@ -63,7 +57,7 @@ describe TahiStandardTasks::InitialDecisionTask do
       expect(TahiStandardTasks::InitialDecisionMailer)
         .to receive_message_chain(:delay, :notify)
         .with(decision_id: decision.id)
-      task.register decision
+      task.after_register decision
     end
   end
 end

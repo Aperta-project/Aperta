@@ -7,32 +7,8 @@ describe Decision do
   end
   let(:paper) { decision.paper }
 
-  it "the first decision always has 0 revision number" do
-    expect(decision.revision_number).to eq(0)
-  end
-
-  it "automatically increments the revision number" do
-    new_decision = paper.decisions.create!
-    expect(new_decision.revision_number).to eq 1
-  end
-
-  it "automatically increments the revision number" do
-    paper.decisions.create!
-    newest_decision = paper.decisions.create!
-    expect(newest_decision.revision_number).to eq 2
-  end
-
-  it "returns the correct revision number even if a revision number is provided while creating" do
-    invalid_decision = paper.decisions.create! revision_number: 0
-    expect(invalid_decision.revision_number).to eq 1
-  end
-
-  it "makes sure that the revision number is always unique" do
-    invalid_decision = paper.decisions.create! # 1
-    expect do
-      invalid_decision.update_attribute :revision_number, 0
-    end.to raise_error(ActiveRecord::RecordNotUnique)
-    expect(invalid_decision.revision_number).to_not eq(1)
+  it "the first decision always starts with a nil version number" do
+    expect(decision.major_version).to eq(nil)
   end
 
   describe '#revision?' do
@@ -56,11 +32,6 @@ describe Decision do
       expect { decision.rescind! }.to change { decision.rescinded }.to be(true)
     end
 
-    it 'sets the rescind_minor_version' do
-      expect { decision.rescind! }.to change { paper.minor_version }.by(1)
-      expect(decision.rescind_minor_version).to be(paper.minor_version)
-    end
-
     it 'calls paper.rescind!' do
       expect(paper).to receive(:rescind!)
       decision.rescind!
@@ -69,30 +40,11 @@ describe Decision do
 
   describe '#latest?' do
     it 'returns true if it is the latest decision' do
-      early_decision = paper.decisions.create!
-      paper.decisions.create!
+      paper.decisions.destroy_all
+      early_decision = paper.decisions.create! registered_at: DateTime.now.utc
       latest_decision = paper.decisions.create!
-      FactoryGirl.create(:paper).decisions.create!
       expect(early_decision.latest?).to be false
       expect(latest_decision.latest?).to be true
-    end
-  end
-
-  describe ".completed" do
-    context "with a verdict" do
-      let(:decision) { FactoryGirl.create(:decision, :rejected) }
-
-      it "is returned" do
-        expect(Decision.completed).to eq([decision])
-      end
-    end
-
-    context "without a verdict" do
-      let(:decision) { FactoryGirl.create(:decision, :pending) }
-
-      it "is not returned" do
-        expect(Decision.completed).to be_empty
-      end
     end
   end
 
@@ -147,7 +99,7 @@ describe Decision do
   describe 'rescindable?' do
     context 'when the decision is not registered' do
       it 'is not rescindable' do
-        decision.registered = false
+        decision.registered_at = nil
         decision.save!
         expect(decision.rescindable?).to be(false)
       end
@@ -155,7 +107,7 @@ describe Decision do
 
     context 'when the decision has been rescinded' do
       it 'is not rescindable' do
-        decision.registered = true
+        decision.registered_at = DateTime.now.utc
         decision.rescinded = true
         decision.save!
         expect(decision.rescindable?).to be(false)
@@ -164,11 +116,11 @@ describe Decision do
 
     context 'when the decision has a verdict but is not the latest decision' do
       it 'is not rescindable' do
-        decision.registered = true
         paper.publishing_state = "in_revision"
-        paper.decisions.create!(registered: true)
         decision.verdict = "major_revision"
+        decision.registered_at = DateTime.now.utc
         decision.save!
+        paper.decisions.create!(registered_at: DateTime.now.utc)
         paper.save!
         expect(decision.rescindable?).to be(false)
       end
@@ -176,7 +128,7 @@ describe Decision do
 
     context 'when the decision is the latest, has a verdict, but the paper has moved on in the process' do
       it 'is not rescindable' do
-        decision.registered = true
+        decision.registered_at = DateTime.now.utc
         paper.publishing_state = "submitted"
         decision.verdict = "accept"
         decision.save!
@@ -187,7 +139,7 @@ describe Decision do
 
     context 'when the decision is the latest, has a verdict, and the paper is in the right state' do
       it 'is rescindable' do
-        decision.registered = true
+        decision.registered_at = DateTime.now.utc
         paper.publishing_state = "accepted"
         decision.verdict = "accept"
         decision.save!

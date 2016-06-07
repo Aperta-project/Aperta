@@ -12,7 +12,7 @@ describe SnapshotService do
   end
 
   subject(:service) { described_class.new(paper, registry) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_creator, :submitted) }
   let(:registry) { SnapshotService::Registry.new }
 
   let(:things_to_snapshot) { [fake_thing_1, fake_thing_2, fake_thing_3] }

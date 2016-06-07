@@ -3,7 +3,8 @@ class Decision < ActiveRecord::Base
 
   VERDICTS = %w(minor_revision major_revision accept reject
                 invite_full_submission)
-
+  REVISION_VERDICTS = ['major_revision', 'minor_revision']
+  TERMINAL_VERDICTS = ['accept', 'reject']
   PUBLISHING_STATE_BY_VERDICT = {
     "minor_revision" => "in_revision",
     "major_revision" => "in_revision",
@@ -16,36 +17,30 @@ class Decision < ActiveRecord::Base
   has_many :invitations
   has_many :nested_question_answers
 
-  before_validation :increment_revision_number
-
-  # @deprecated - use recent_ordered explictly where needed
-  default_scope { self.recent_ordered }
-
-  validates :revision_number, uniqueness: { scope: :paper_id }
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
+
+  def register!(originating_task)
+    Decision.transaction do
+      paper.make_decision self
+      update! major_version: paper.major_version,
+              minor_version: paper.minor_version,
+              registered_at: DateTime.now.utc
+      originating_task.after_register self
+    end
+  end
 
   # Decisions can be appealed, and if editorial staff agrees the wrong
   # decision was made, they rescind that choice.
   def rescind!
-    paper.rescind!
-    update!(rescinded: true,
-           rescind_minor_version: paper.minor_version)
-  end
-
-  def self.recent_ordered
-    order(revision_number: :desc)
+    Decision.transaction do
+      paper.rescind!
+      update! rescinded: true
+    end
   end
 
   def self.latest
-    recent_ordered.limit(1).first
-  end
-
-  def self.completed
-    where.not(verdict: nil)
-  end
-
-  def self.pending
-    where(verdict: nil)
+    # Note: will return an unregistered decision, if there is one.
+    order('registered_at DESC').limit(1).first
   end
 
   def latest?
@@ -57,25 +52,17 @@ class Decision < ActiveRecord::Base
   end
 
   def revision?
-    verdict == 'major_revision' || verdict == 'minor_revision'
+    REVISION_VERDICTS.include? verdict
   end
 
-  def increment_revision_number
-    return if persisted?
-
-    if latest_revision_number = paper.decisions.maximum(:revision_number)
-      self.revision_number = latest_revision_number + 1
-    end
+  def terminal?
+    TERMINAL_VERDICTS.include? verdict
   end
 
   def rescindable?
     latest_registered? &&
       paper_in_expected_state_given_verdict? &&
       !rescinded
-  end
-
-  def terminal?
-    ["accept", "reject"].include? verdict
   end
 
   private

@@ -2,16 +2,16 @@ class DecisionSerializer < ActiveModel::Serializer
   attributes :id,
              :created_at,
              :verdict,
-             :revision_number,
              :letter,
              :is_latest,
              :is_latest_registered,
              :author_response,
-             :registered,
+             :registered_at,
              :initial,
              :rescinded,
              :rescindable,
-             :rescind_minor_version
+             :major_version,
+             :minor_version
 
   has_many :invitations, embed: :ids, include: true
   has_one :paper, embed: :id

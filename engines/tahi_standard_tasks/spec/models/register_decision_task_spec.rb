@@ -157,7 +157,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
   end
 
-  describe "#register" do
+  describe "#after_register" do
     let(:decision) { paper.decisions.latest }
 
     before do
@@ -173,20 +173,15 @@ describe TahiStandardTasks::RegisterDecisionTask do
       it "invokes DecisionReviser" do
         expect(TahiStandardTasks::ReviseTask)
           .to receive(:setup_new_revision).with(task.paper, task.phase)
-        task.register decision
+        task.after_register decision
       end
-    end
-
-    it "saves the decision to paper" do
-      expect(task.paper).to receive(:make_decision).with(decision)
-      task.register decision
     end
 
     it "sends an email to the author" do
       expect(TahiStandardTasks::RegisterDecisionMailer)
         .to receive_message_chain(:delay, :notify_author_email)
         .with(decision_id: decision.id)
-      task.register decision
+      task.after_register decision
     end
   end
 

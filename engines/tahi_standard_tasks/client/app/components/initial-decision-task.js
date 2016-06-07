@@ -17,7 +17,8 @@ export default TaskComponent.extend({
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
-  initialDecisions: computed.filterBy('task.paper.decisions', 'initial', true),
+  initialDecisions: computed.filterBy(
+    'task.paper.sortedDecisions', 'initial', true),
   initialDecision: computed.alias('task.paper.initialDecision'),
   nonPublishable: not('publishable'),
   hasNoLetter: empty('initialDecision.letter'),

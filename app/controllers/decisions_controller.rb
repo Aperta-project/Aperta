@@ -23,8 +23,7 @@ class DecisionsController < ApplicationController
   end
 
   def update
-    requires_user_can(:register_decision, decision.paper)
-    assert !decision.registered, "The decision has already been registered"
+    assert !decision.registered_at, "The decision has already been registered"
 
     decision.update! decision_params
     render json: decision, serializer: DecisionSerializer, root: 'decision'
@@ -40,7 +39,7 @@ class DecisionsController < ApplicationController
     # without having to serialize the task along with the decision
     task.notify_requester = true
     task.paper.notify_requester = true
-    task.register(decision)
+    decision.register!(task)
 
     Activity.decision_made! decision, user: current_user
 

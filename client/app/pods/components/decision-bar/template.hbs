@@ -2,7 +2,9 @@
      id="decision-{{unbound decision.id}}"
      {{action "fold"}}>
   <h4 class="decision-bar-verdict">
-    <div class="decision-bar-revision-number">{{decision.revisionNumber}}.{{#if decision.rescinded}}{{decision.rescindMinorVersion}}{{/if}}</div>
+    <div class="decision-bar-revision-number">
+      {{decision.majorVersion}}.{{decision.minorVersion}}
+    </div>
     {{humanize decision.verdict}}
   </h4>
 

@@ -33,7 +33,7 @@ class Paper < ActiveRecord::Base
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal
   has_many :activities, as: :subject
-  has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
+  has_many :decisions, -> { order 'registered_at DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
@@ -53,7 +53,7 @@ class Paper < ActiveRecord::Base
            source: :author
   has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
   has_one :latest_registered_decision,
-          -> { where(registered: true).order('revision_number DESC') },
+          -> { where.not(registered_at: nil).order('registered_at DESC') },
           class_name: 'Decision'
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   serialize :withdrawals, ArrayHashSerializer
@@ -73,7 +73,9 @@ class Paper < ActiveRecord::Base
                     tsearch: {dictionary: "english"} # stems
                   }
 
-  delegate :major_version, :minor_version, :figureful_text,
+  delegate :major_version, :minor_version,
+           to: :latest_submitted_version, allow_nil: true
+  delegate :figureful_text,
            to: :latest_version, allow_nil: true
 
   def manuscript_id
@@ -103,71 +105,75 @@ class Paper < ActiveRecord::Base
                   to: :initially_submitted,
                   after: [:set_submitted_at!,
                           :set_first_submitted_at!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :new_minor_version!]
     end
 
     event(:submit) do
+      # Major version numbers represent the number of times
+      # the manuscript has been revised. Initial submissions
+      # and first full submissions are not revisions, and
+      # so they do not increment that number.
+      transitions from: [:in_revision],
+                  to: :submitted,
+                  guards: :metadata_tasks_completed?,
+                  after: [:set_submitting_user_and_touch!,
+                          :set_submitted_at!,
+                          :set_first_submitted_at!,
+                          :prevent_edits!,
+                          :new_major_version!]
       transitions from: [:unsubmitted,
-                         :in_revision,
                          :invited_for_full_submission],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :new_minor_version!]
     end
 
     event(:invite_full_submission) do
       transitions from: :initially_submitted,
                   to: :invited_for_full_submission,
-                  after: [:allow_edits!,
-                          :new_minor_version!]
+                  after: [:allow_edits!]
     end
 
     event(:minor_check) do
       transitions from: :submitted,
                   to: :checking,
-                  after: [:allow_edits!,
-                          :new_minor_version!]
+                  after: [:allow_edits!]
     end
 
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
                   after: [:set_submitting_user_and_touch!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :new_minor_version!]
     end
 
     event(:minor_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: [:allow_edits!,
-                          # there is a terminology mismatch here: it
-                          # needs MINOR revision but we use a MAJOR
-                          # version to track all papers send back
-                          # after peer review.
-                          :new_major_version!]
+                  after: [:allow_edits!]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: [:allow_edits!,
-                          :new_major_version!]
+                  after: [:allow_edits!]
     end
 
     event(:accept) do
       transitions from: :submitted,
                   to: :accepted,
-                  after: [:set_accepted_at!,
-                          :new_major_version!]
+                  after: [:set_accepted_at!]
     end
 
     event(:reject) do
       transitions from: [:initially_submitted, :submitted],
-                  to: :rejected,
-                  after: :new_major_version!
+                  to: :rejected
       before do
         update(active: false)
       end
@@ -283,7 +289,7 @@ class Paper < ActiveRecord::Base
     if latest_version.nil?
       @new_body = new_body
     else
-      latest_version.update(original_text: new_body)
+      draft.update(original_text: new_body)
       notify(action: "updated") unless changed?
     end
   end
@@ -385,10 +391,6 @@ class Paper < ActiveRecord::Base
 
   def latest_withdrawal_reason
     withdrawals.last[:reason] if withdrawals.present?
-  end
-
-  def resubmitted?
-    decisions.pending.exists?
   end
 
   # Accepts any args the state transition accepts
@@ -497,6 +499,14 @@ class Paper < ActiveRecord::Base
     versioned_texts(true).version_desc.first
   end
 
+  def latest_submitted_version
+    versioned_texts.submitted.version_desc.first
+  end
+
+  def draft
+    versioned_texts.draft
+  end
+
   def insert_figures!
     latest_version.insert_figures!
     notify
@@ -522,11 +532,11 @@ class Paper < ActiveRecord::Base
   end
 
   def new_major_version!
-    latest_version.new_major_version!
+    draft.be_major_version!
   end
 
   def new_minor_version!
-    latest_version.new_minor_version!
+    draft.be_minor_version!
   end
 
   def set_editable!
@@ -560,8 +570,8 @@ class Paper < ActiveRecord::Base
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
-    latest_version.update!(submitting_user: submitting_user)
-    latest_version.touch
+    draft.update!(submitting_user: submitting_user)
+    draft.touch
   end
 
   def assign_doi!
@@ -569,8 +579,9 @@ class Paper < ActiveRecord::Base
   end
 
   def create_versioned_texts
-    versioned_texts.create!(major_version: 0, minor_version: 0, \
-                            original_text: (@new_body || ''))
+    versioned_texts.create! major_version: nil,
+                            minor_version: nil,
+                            original_text: (@new_body || '')
   end
 
   def state_changed?
@@ -583,7 +594,6 @@ class Paper < ActiveRecord::Base
     return unless state_changed?
 
     notify action: publishing_state
-    notify action: 'resubmitted' if submitted? && resubmitted?
   end
 
   def paper_participation_roles

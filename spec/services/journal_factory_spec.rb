@@ -22,12 +22,6 @@ describe JournalFactory do
         permission_states: { name: Paper::EDITABLE_STATES }
       )
     end
-    let(:permissions_on_paper_with_submitted_state) do
-      Permission.joins(:states).where(
-        applies_to: 'Paper',
-        permission_states: { name: 'submitted' }
-      )
-    end
     let(:permissions_on_paper_with_withdrawn_state) do
       Permission.joins(:states).where(
         applies_to: 'Paper',
@@ -275,8 +269,7 @@ describe JournalFactory do
 
           it ':register_decision' do
             expect(permissions).to include(
-              permissions_on_paper_with_submitted_state
-                .find_by(action: 'register_decision')
+              permissions_on_paper.find_by(action: 'register_decision')
             )
           end
 
@@ -471,8 +464,7 @@ describe JournalFactory do
 
           it ':register_decision' do
             expect(permissions).to include(
-              permissions_on_paper_with_submitted_state
-                .find_by(action: 'register_decision')
+              permissions_on_paper.find_by(action: 'register_decision')
             )
           end
 
@@ -634,8 +626,7 @@ describe JournalFactory do
           end
           it ':register_decision' do
             expect(permissions).to include(
-              permissions_on_paper_with_submitted_state
-                .find_by(action: 'register_decision')
+              permissions_on_paper.find_by(action: 'register_decision')
             )
           end
 
@@ -807,8 +798,7 @@ describe JournalFactory do
 
           it ':register_decision' do
             expect(permissions).to include(
-              permissions_on_paper_with_submitted_state
-                .find_by(action: 'register_decision')
+              permissions_on_paper.find_by(action: 'register_decision')
             )
           end
 
@@ -987,8 +977,7 @@ describe JournalFactory do
 
           it ':register_decision' do
             expect(permissions).to include(
-              permissions_on_paper_with_submitted_state
-                .find_by(action: 'register_decision')
+              permissions_on_paper.find_by(action: 'register_decision')
             )
           end
 
@@ -1234,8 +1223,7 @@ describe JournalFactory do
 
           it ':register_decision' do
             expect(permissions).to include(
-              permissions_on_paper_with_submitted_state
-                .find_by(action: 'register_decision')
+              permissions_on_paper.find_by(action: 'register_decision')
             )
           end
 

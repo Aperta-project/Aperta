@@ -20,14 +20,11 @@ module TahiStandardTasks
       latest_decision.present? && latest_decision.verdict.present?
     end
 
-    def register(decision)
-      paper.make_decision decision
+    def after_register(decision)
       ReviseTask.setup_new_revision(paper, phase) if decision.revision?
       RegisterDecisionMailer.delay.notify_author_email(
         decision_id: decision.id
       )
-      decision.registered = true
-      decision.save!
       complete!
     end
 

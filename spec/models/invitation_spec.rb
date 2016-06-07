@@ -61,19 +61,9 @@ describe Invitation do
 
   describe '#create' do
     it "belongs to the paper's latest decision" do
+      latest_decision = FactoryGirl.create :decision, paper: paper
       invitation.save!
       expect(paper.decisions.latest.invitations).to include invitation
-    end
-
-    context 'when there is more than one decision' do
-      it 'is associated with the latest decision' do
-        latest_decision = FactoryGirl.create :decision, paper: paper
-        invitation.save!
-        latest_revision_number = (paper.decisions.pluck :revision_number).max
-        expect(invitation.decision).to eq latest_decision
-        expect(invitation.decision).to eq paper.decisions.latest
-        expect(invitation.decision.revision_number).to eq latest_revision_number
-      end
     end
   end
 
@@ -201,6 +191,7 @@ describe Invitation do
 
       context "When invites belong to a previous decision" do
         before do
+          paper.decisions.latest.update(registered_at: DateTime.now.utc)
           paper.decisions.create!
         end
         it "doesn't filter users based on the old invites" do

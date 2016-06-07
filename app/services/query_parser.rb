@@ -240,10 +240,11 @@ class QueryParser < QueryLanguageParser
     @join_counter += 1
     latest_decisions = decision_table.project(
       :paper_id,
-      decision_table[:revision_number].maximum.as('revision_number'))
-                       .where(decision_table[:verdict].not_eq(nil))
-                       .group(:paper_id)
-                       .to_sql
+      decision_table[:registered_at].maximum.as('registered_at'))
+      .where(decision_table[:registered_at].not_eq(nil)
+             .and(decision_table[:rescinded].not_eq(true)))
+      .group(:paper_id)
+      .to_sql
     # Unfortunately, Arel doesn't cope with selecting from
     # sub-selects, so we've got to drop into raw SQL for this bit.
     good_decisions = <<-SQL.strip_heredoc + where_clause.to_sql
@@ -251,7 +252,7 @@ class QueryParser < QueryLanguageParser
         AS #{decision_alias}
     INNER JOIN decisions ON
         decisions.paper_id = #{decision_alias}.paper_id
-        AND decisions.revision_number = #{decision_alias}.revision_number
+        AND decisions.registered_at = #{decision_alias}.registered_at
     WHERE
     SQL
 

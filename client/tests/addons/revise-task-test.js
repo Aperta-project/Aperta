@@ -20,12 +20,14 @@ moduleForComponent('revise-task', 'Integration | Component | revise task', {
       isSubmissionTask: true,
       paper: {
         decisions: [{
-          revisionNumber: 0,
+          majorVersion: 0,
+          minorVersion: 0,
+          registeredAt: 2,
           save() {
             return Ember.RSVP.resolve();
           }
         }, {
-          revisionNumber: 1
+          registeredAt: 1
         }]
       },
       body: ['hi'],

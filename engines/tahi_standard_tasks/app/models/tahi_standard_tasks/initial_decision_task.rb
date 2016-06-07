@@ -16,12 +16,9 @@ module TahiStandardTasks
       paper.update_column(:gradual_engagement, true)
     end
 
-    def register(decision)
-      paper.make_decision decision
+    def after_register(decision)
       paper.decisions.create(notify_requester: true) unless decision.terminal?
-      decision.initial = true
       InitialDecisionMailer.delay.notify decision_id: decision.id
-      decision.registered = true
       decision.initial = true
       decision.save!
       complete!

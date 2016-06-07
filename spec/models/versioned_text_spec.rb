@@ -18,52 +18,90 @@ describe VersionedText do
       expect(versioned_text.valid?).to be(false)
     end
 
-    it 'requires a major_version' do
-      versioned_text.major_version = nil
-      expect(versioned_text.valid?).to be(false)
-    end
-
-    it 'requires a minor_version' do
-      versioned_text.minor_version = nil
+    it 'can only update version numbers if it is a draft' do
+      versioned_text = FactoryGirl.create(:versioned_text, major_version: nil, minor_version: nil)
+      expect(versioned_text.valid?).to be(true)
+      versioned_text.major_version = 1
+      expect(versioned_text.valid?).to be(true)
+      versioned_text.save!
+      versioned_text.major_version = 2
       expect(versioned_text.valid?).to be(false)
     end
   end
 
-  describe "#new_major_version!" do
-    it "creates a new major version while retaining the old" do
-      old_version = paper.latest_version
-      paper.latest_version.new_major_version!
-      expect(old_version.major_version).to eq(0)
-      expect(old_version.minor_version).to eq(0)
-      expect(VersionedText.where(paper: paper, major_version: 1, minor_version: 0).count).to eq(1)
+  describe "#draft" do
+    before do
+      paper.versioned_texts.destroy_all
     end
 
-    it "resets the minor version when a new major version is created" do
-      paper.latest_version.new_minor_version!
-      paper.latest_version.new_major_version!
-      expect([paper.latest_version.major_version, paper.latest_version.minor_version]).to eq([1, 0])
+    it "finds a draft version if one exists" do
+      draft = paper.versioned_texts.create(major_version: nil, minor_version: nil)
+      expect(paper.versioned_texts.draft.id).to be(draft.id)
     end
 
-    it "sets the created_at timestamp" do
-      paper.latest_version.update!(created_at: Time.zone.now - 10.days)
-      paper.latest_version.new_major_version!
-      expect(paper.latest_version.created_at.utc).to be_within(1.second).of Time.zone.now
+    it "creates a new draft version if there isn't one" do
+      expect { paper.versioned_texts.draft }.to change { VersionedText.count }.by(1)
+    end
+
+    it "creates a VersionedText with no version number" do
+      new_version = paper.versioned_texts.draft
+      expect(new_version.major_version).to be_nil
+      expect(new_version.minor_version).to be_nil
     end
   end
 
-  describe "#new_minor_version!" do
-    it "creates a new minor version while retaining the old" do
-      old_version = paper.latest_version
-      paper.latest_version.new_minor_version!
-      expect(old_version.major_version).to eq(0)
-      expect(old_version.minor_version).to eq(0)
-      expect(VersionedText.where(paper: paper, major_version: 0, minor_version: 1).count).to eq(1)
+  describe "#be_minor_version!" do
+    it "Creates a 0.0 version if there are no previous versions" do
+      # This would happen for an initial submission
+      draft = paper.draft
+      draft.be_minor_version!
+      expect(draft.major_version).to be(0)
+      expect(draft.minor_version).to be(0)
     end
 
-    it "sets the created_at timestamp" do
-      paper.latest_version.update!(created_at: Time.zone.now - 10.days)
-      paper.latest_version.new_minor_version!
-      expect(paper.latest_version.created_at.utc).to be_within(1.second).of Time.zone.now
+    it "Increments the minor version each time it is called" do
+      paper.draft.be_minor_version!
+      expect(paper.minor_version).to be(0)
+      paper.draft.be_minor_version!
+      expect(paper.minor_version).to be(1)
+      paper.draft.be_minor_version!
+      expect(paper.minor_version).to be(2)
+
+      expect(paper.major_version).to be(0)
+    end
+  end
+
+  describe "#be_major_version!" do
+    it "Creates a 0.0 version if there are no previous versions" do
+      # This would happen for an initial submission
+      draft = paper.draft
+      draft.be_major_version!
+      expect(draft.major_version).to be(0)
+      expect(draft.minor_version).to be(0)
+    end
+
+    it "increments the major version each time it is called" do
+      paper.draft.be_major_version!
+      expect(paper.major_version).to be(0)
+      paper.draft.be_major_version!
+      expect(paper.major_version).to be(1)
+      paper.draft.be_major_version!
+      expect(paper.major_version).to be(2)
+
+      expect(paper.minor_version).to be(0)
+    end
+  end
+
+  describe "#new_draft!" do
+    it "Creates a new VersionedText" do
+      versioned_text
+      expect { versioned_text.new_draft! }.to change { VersionedText.count }.by(1)
+    end
+
+    it "has no version number" do
+      draft = versioned_text.new_draft!
+      expect(draft.major_version).to be_nil
+      expect(draft.minor_version).to be_nil
     end
   end
 

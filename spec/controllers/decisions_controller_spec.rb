@@ -63,27 +63,8 @@ describe DecisionsController do
 
     it_behaves_like "an unauthenticated json request"
 
-    context "a user is logged in who may not register decisions" do
+    context "a user is logged in" do
       before do
-        allow(user).to receive(:can?)
-          .with(:register_decision, paper)
-          .and_return false
-
-        stub_sign_in(user)
-      end
-
-      it "returns a 403" do
-        do_request
-        expect(response.status).to be(403)
-      end
-    end
-
-    context "a user is logged in who may register decisions" do
-      before do
-        allow(user).to receive(:can?)
-          .with(:register_decision, paper)
-          .and_return true
-
         stub_sign_in(user)
       end
 
@@ -96,7 +77,7 @@ describe DecisionsController do
 
       context "the decision is registered" do
         before do
-          decision.update(registered: true)
+          decision.update(registered_at: DateTime.now.utc)
         end
 
         it "Returns a 422" do
@@ -120,7 +101,7 @@ describe DecisionsController do
     let(:decision) { paper.decisions.latest }
     let(:task) do
       dub = double("Task", id: 3, paper: paper)
-      allow(dub).to receive(:register)
+      allow(dub).to receive(:after_register)
       allow(dub).to receive(:notify_requester=)
       dub
     end
@@ -159,7 +140,7 @@ describe DecisionsController do
       end
 
       it "tells the task to register the decision" do
-        expect(task).to receive(:register)
+        expect(task).to receive(:after_register)
         do_request
       end
 
@@ -170,11 +151,21 @@ describe DecisionsController do
       end
 
       it "posts to the activity stream" do
-        expected_activity = {
-          message: "Accept was sent to author",
+        expected_activity_1 = {
+          message: "A decision was sent to the author",
+          feed_name: "manuscript"
+        }
+        expected_activity_2 = {
+          message: "A decision was made: Accept",
           feed_name: "workflow"
         }
-        expect(Activity).to receive(:create).with hash_including(expected_activity)
+        expected_activity_3 = {
+          message: "Paper state changed to submitted",
+          feed_name: "forensic"
+        }
+        expect(Activity).to receive(:create).with hash_including(expected_activity_1)
+        expect(Activity).to receive(:create).with hash_including(expected_activity_2)
+        expect(Activity).to receive(:create).with hash_including(expected_activity_3)
         do_request
       end
 
@@ -240,7 +231,7 @@ describe DecisionsController do
 
       context "and the decision is rescindable" do
         before do
-          decision.update(verdict: "reject", registered: true)
+          decision.update(verdict: "reject", registered_at: DateTime.now.utc)
         end
 
         it "completes successfully" do
@@ -257,7 +248,7 @@ describe DecisionsController do
 
       context "the decision is not rescindable" do
         before do
-          decision.update(registered: false)
+          decision.update(registered_at: DateTime.now.utc)
         end
 
         it "Returns a 422" do

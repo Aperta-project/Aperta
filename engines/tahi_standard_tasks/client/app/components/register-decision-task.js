@@ -17,8 +17,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');
   }),
 
-  revisionNumberDesc: ['revisionNumber:desc'],
-  decisions: computed.alias('paper.sortedDecisions'),
   latestDecision: computed.alias('paper.latestDecision'),
   latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
   previousDecisions: computed.alias('paper.previousDecisions'),

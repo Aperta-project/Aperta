@@ -464,6 +464,14 @@ describe Paper do
         expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
         paper.initial_submit!
       end
+
+      it 'increments the minor version' do
+        paper.versioned_texts = []
+        paper.save!
+        paper.initial_submit!(user)
+        expect(paper.major_version).to be(0)
+        expect(paper.minor_version).to be(0)
+      end
     end
 
     describe '#submit!' do
@@ -546,7 +554,51 @@ describe Paper do
       it 'snapshots metadata' do
         Subscriptions.reload
         expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
-        paper.initial_submit!
+        paper.submit! user
+      end
+
+      context 'called on an unsubmitted paper' do
+        before do
+          expect(paper.publishing_state).to eq("unsubmitted")
+        end
+
+        it 'sets the version to 0.0' do
+          expect(paper.minor_version).to be(nil)
+          expect(paper.major_version).to be(nil)
+          paper.submit! user
+          expect(paper.minor_version).to be(0)
+          expect(paper.major_version).to be(0)
+        end
+      end
+
+      context 'called on a paper invited for full submission' do
+        before do
+          paper.initial_submit!
+          paper.invite_full_submission!
+        end
+
+        it 'sets the version to 0.0' do
+          expect(paper.major_version).to be(0)
+          expect(paper.minor_version).to be(0)
+          paper.submit! user
+          expect(paper.major_version).to be(0)
+          expect(paper.minor_version).to be(1)
+        end
+      end
+
+      context 'called on a paper in revision' do
+        before do
+          paper.submit! user
+          paper.major_revision!
+        end
+
+        it 'increments the major version' do
+          expect { paper.submit!(user) }.to change { paper.major_version }.by(1)
+        end
+
+        it 'does not change the minor version' do
+          expect { paper.submit!(user) }.to_not change { paper.minor_version }
+        end
       end
     end
 
@@ -589,14 +641,6 @@ describe Paper do
       it 'marks the paper editable' do
         paper.invite_full_submission!
         expect(paper).to be_editable
-      end
-
-      it 'sets a new minor version' do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.invite_full_submission!
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(1)
       end
     end
 
@@ -650,14 +694,6 @@ describe Paper do
         paper.minor_check!
         expect(paper).to be_editable
       end
-
-      it "creates a new minor version" do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.minor_check!
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(1)
-      end
     end
 
     describe '#submit_minor_check!' do
@@ -679,13 +715,17 @@ describe Paper do
 
       it "sets the submitting_user of the latest version" do
         paper.submit_minor_check! user
-        expect(paper.latest_version.submitting_user).to eq(user)
+        expect(paper.latest_submitted_version.submitting_user).to eq(user)
       end
 
       it "sets the updated_at of the latest version" do
         paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
         paper.submit_minor_check! user
-        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
+        expect(paper.latest_submitted_version.updated_at.utc).to be_within(1.second).of Time.zone.now
+      end
+
+      it 'increments the minor version' do
+        expect { paper.submit_minor_check!(user) }.to change { paper.minor_version }.by(1)
       end
     end
 
@@ -701,14 +741,6 @@ describe Paper do
           paper.accept!
           expect(paper.accepted?).to be true
         end
-
-        it "creates a new major version" do
-          expect(paper.latest_version.major_version).to be(0)
-          expect(paper.latest_version.minor_version).to be(0)
-          paper.accept!
-          expect(paper.latest_version.major_version).to be(1)
-          expect(paper.latest_version.minor_version).to be(0)
-        end
       end
     end
 
@@ -723,14 +755,6 @@ describe Paper do
         it 'transitions to rejected state from submitted' do
           paper.reject!
           expect(paper.rejected?).to be true
-        end
-
-        it "creates a new major version" do
-          expect(paper.latest_version.major_version).to be(0)
-          expect(paper.latest_version.minor_version).to be(0)
-          paper.reject!
-          expect(paper.latest_version.major_version).to be(1)
-          expect(paper.latest_version.minor_version).to be(0)
         end
       end
 
@@ -857,14 +881,6 @@ describe Paper do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")
       end
-
-      it "creates a new major version" do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.make_decision decision
-        expect(paper.latest_version.major_version).to be(1)
-        expect(paper.latest_version.minor_version).to be(0)
-      end
     end
 
     context "minor revision" do
@@ -876,22 +892,18 @@ describe Paper do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")
       end
-
-      it "creates a new major version" do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.make_decision decision
-        expect(paper.latest_version.major_version).to be(1)
-        expect(paper.latest_version.minor_version).to be(0)
-      end
     end
   end
 
   describe "#major_version" do
-    before { expect(paper.latest_version).to be }
+    context "when there are versions" do
+      before do
+        paper.submit! user
+      end
 
-    it "returns the latest version's major_version" do
-      expect(paper.major_version).to eq(paper.latest_version.major_version)
+      it "returns the latest version's major_version" do
+        expect(paper.major_version).to eq(paper.latest_submitted_version.major_version)
+      end
     end
 
     context "when there is no latest_version" do
@@ -907,10 +919,14 @@ describe Paper do
   end
 
   describe "#minor_version" do
-    before { expect(paper.latest_version).to be }
+    context "when there are versions" do
+      before do
+        paper.submit! user
+      end
 
-    it "returns the latest version's minor_version" do
-      expect(paper.major_version).to eq(paper.latest_version.minor_version)
+      it "returns the latest version's minor_version" do
+        expect(paper.major_version).to eq(paper.latest_submitted_version.minor_version)
+      end
     end
 
     context "when there is no latest_version" do
@@ -1173,10 +1189,32 @@ describe Paper do
     end
   end
 
+  describe "#latest_submitted_version" do
+    before do
+      # create a bunch of old minor versions
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
+    end
+    let!(:latest) do
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+    end
+
+    it "returns the latest version" do
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
+      expect(paper.latest_submitted_version).to eq(versioned_text)
+    end
+
+    it "does not return a draft even if there is one" do
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: nil, minor_version: nil)
+      expect(paper.latest_submitted_version).to eq(latest)
+    end
+  end
 
   describe "#latest_version" do
     before do
       # create a bunch of old minor versions
+      paper.versioned_texts = []
+      paper.save!
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
@@ -1185,6 +1223,19 @@ describe Paper do
     it "returns the latest version" do
       versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect(paper.latest_version).to eq(versioned_text)
+    end
+
+    it "returns a draft if there is one" do
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: nil, minor_version: nil)
+      expect(paper.latest_version).to eq(versioned_text)
+    end
+  end
+
+  describe "#draft" do
+    it "returns a VersionedText with no version" do
+      draft = paper.draft
+      expect(draft.major_version).to be_nil
+      expect(draft.minor_version).to be_nil
     end
   end
 
@@ -1200,34 +1251,6 @@ describe Paper do
     it "is not true otherwise" do
       paper = FactoryGirl.build(:paper, publishing_state: "rejected")
       expect(paper.awaiting_decision?).to be(false)
-    end
-  end
-
-  describe "#resubmitted?" do
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-
-    context "with pending decisions" do
-      before do
-        paper.decisions.first.update!(verdict: nil)
-      end
-
-      specify { expect(paper.resubmitted?).to eq(true) }
-    end
-
-    context "with non-pending decisions" do
-      before do
-        paper.decisions.first.update!(verdict: "accept")
-      end
-
-      specify { expect(paper.resubmitted?).to eq(false) }
-    end
-
-    context "with no decisions" do
-      before do
-        paper.decisions.destroy_all
-      end
-
-      specify { expect(paper.resubmitted?).to eq(false) }
     end
   end
 

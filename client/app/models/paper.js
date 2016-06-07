@@ -103,10 +103,10 @@ export default DS.Model.extend({
       return this.get('decisions').findBy('isLatestRegistered', true);
   }),
 
-  previousDecisions: computed('decisions.@each.registered', function() {
+  previousDecisions: computed('decisions.@each.registeredAt', function() {
     return this.get('decisions')
-      .filterBy('registered')
-      .sortBy('revisionNumber')
+      .filterBy('registeredAt')
+      .sortBy('registeredAt')
       .reverseObjects();
   }),
 
@@ -175,7 +175,6 @@ export default DS.Model.extend({
   isInitialSubmission: computed.and('gradualEngagement', 'isUnsubmitted'),
   isFullSubmission: computed.and('gradualEngagement', 'invitedForFullSubmission'),
 
-
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {
       return "initial";
@@ -192,12 +191,12 @@ export default DS.Model.extend({
     return true;
   }),
 
-  sortedDecisions: computed('decisions.@each.revision_number', function() {
-    return this.get('decisions').sortBy('revision_number');
+  sortedDecisions: computed('decisions.@each.registeredAt', function() {
+    return this.get('decisions').sortBy('registeredAt');
   }),
 
   initialDecision: computed(
-    'decisions.@each.registered',
+    'decisions.@each.registeredAt',
     'decisions.@each.rescinded',
     function() {
       let decisions = this.get('sortedDecisions');
@@ -207,7 +206,7 @@ export default DS.Model.extend({
                               .get('lastObject');
       // If there's already been a full decision
       // then just return the most recent initial decision.
-      let fullDecisions = decisions.filterBy('registered')
+      let fullDecisions = decisions.filterBy('registeredAt')
                                    .filterBy('initial', false);
       if (fullDecisions.get('length') > 0) {
         return latestInitial;
@@ -216,10 +215,10 @@ export default DS.Model.extend({
       // If all other decisions have been rescinded,
       // return the latest, unmade decision
       let prevCount = decisions.filter((d) => {
-        return d.get('registered') && !d.get('rescinded');
+        return d.get('registeredAt') && !d.get('rescinded');
       }).get('length');
       if (prevCount === 0) {
-        return decisions.findBy('registered', false);
+        return decisions.findBy('registeredAt', null);
       }
 
       return latestInitial;

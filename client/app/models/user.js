@@ -20,5 +20,5 @@ export default DS.Model.extend({
   affiliationsByDate: Ember.computed.sort('affiliations', 'affiliationSort'),
 
   invitationsInvited: Ember.computed.filterBy('invitations', 'invited'),
-  invitationsPendingFeedback: Ember.computed.filterBy('invitations', 'needsUserUpdate')
+  invitationsNeedsUserUpdate: Ember.computed.filterBy('invitations', 'needsUserUpdate')
 });

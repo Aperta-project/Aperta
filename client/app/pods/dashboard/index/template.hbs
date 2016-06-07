@@ -18,7 +18,7 @@
                       overlayClass="invitations-overlay"
                       as |overlay|}}
     {{flash-messages}}
-    {{invitations-x invitations=invitationsPendingFeedback
+    {{invitations-x invitations=invitationsNeedsUserUpdate
                     accept=(action "acceptInvitation")
                     reject=(action "rejectInvitation")
                     update=(action "updateInvitation")

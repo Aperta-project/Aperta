@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
   papers: [],
   unreadComments: [],
   invitationsInvited: Ember.computed.alias('currentUser.invitationsInvited'),
-  invitationsPendingFeedback: Ember.computed.alias('currentUser.invitationsPendingFeedback'),
+  invitationsNeedsUserUpdate: Ember.computed.alias('currentUser.invitationsNeedsUserUpdate'),
 
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),

@@ -38,7 +38,9 @@ class InvitationsController < ApplicationController
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)
-    respond_with(invitation)
+    respond_with(invitation) do |format|
+      format.json { render json: invitation }
+    end
   end
 
   def reject
@@ -46,7 +48,9 @@ class InvitationsController < ApplicationController
     invitation.actor = current_user
     invitation.reject!
     Activity.invitation_rejected!(invitation, user: current_user)
-    respond_with(invitation)
+    respond_with(invitation) do |format|
+      format.json { render json: invitation }
+    end
   end
 
   def update

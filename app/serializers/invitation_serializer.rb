@@ -9,5 +9,5 @@ class InvitationSerializer < ActiveModel::Serializer
              :updated_at
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
-  has_one :task, embed: :id, polymorphic: true, include: true
+  has_one :task, embed: :id, polymorphic: true
 end

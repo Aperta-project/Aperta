@@ -68,21 +68,17 @@ export default Ember.Controller.extend({
     },
 
     rejectInvitation(invitation) {
-      this.get('restless').putModel(invitation, '/reject').then(function() {
-        invitation.reject();
-      });
+      return this.get('restless').putUpdate(invitation, '/reject');
     },
 
-    updateInvitation(invitation, callback = function(){}) {
+    updateInvitation(invitation) {
       return invitation.save().then(function(){
         invitation.feedbackSent();
       });
     },
 
     acceptInvitation(invitation) {
-      return this.get('restless').putModel(invitation, '/accept').then(()=> {
-        invitation.accept();
-
+      return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
         // Force the user's papers to load
         this.store.findAll('paper');
       }.bind(this));

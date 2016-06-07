@@ -6308,7 +6308,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-06-06 20:37:56.395844'
+    - '2016-06-07 01:39:19.358017'
     - PlosBilling::BillingTask
     -
   - - '90'
@@ -8032,8 +8032,8 @@ nested_questions:
     - TahiStandardTasks::FrontMatterReviewerReportTask
     -
   - - '255'
-    - Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments
-      for authors.
+    - Is this manuscript suitable in principle for the magazine section of <em>PLOS
+      Biology</em>?
     - boolean
     - front_matter_reviewer_report--suitable
     -
@@ -8041,7 +8041,7 @@ nested_questions:
     - '374'
     - '3'
     - '2016-06-06 20:37:56.634598'
-    - '2016-06-06 20:37:56.644529'
+    - '2016-06-07 01:39:19.588748'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     -
   - - '256'

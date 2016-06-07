@@ -25,7 +25,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::FrontMatterReviewerReportTask.name,
       ident: "front_matter_reviewer_report--suitable",
       value_type: "boolean",
-      text: "Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments for authors.",
+      text: "Is this manuscript suitable in principle for the magazine section of <em>PLOS Biology</em>?",
       position: 3,
       children: [
         {

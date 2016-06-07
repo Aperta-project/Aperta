@@ -206,6 +206,49 @@ describe Activity do
     end
   end
 
+  describe "#paper_created!" do
+    subject(:activity) { Activity.paper_created!(paper, user: user) }
+    let(:paper) { FactoryGirl.build(:paper) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
+        activity_key: "paper.created",
+        subject: paper,
+        user: user,
+        message: "Manuscript was created"
+    )}
+  end
+
+
+  describe "#paper_reactivated!" do
+    subject(:activity) { Activity.paper_reactivated!(paper, user: user) }
+    let(:paper) { FactoryGirl.build(:paper) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "paper.reactivated",
+        subject: paper,
+        user: user,
+        message: "Manuscript was reactivated"
+    )}
+  end
+
+  describe "#paper_withdrawn!" do
+    subject(:activity) { Activity.paper_withdrawn!(paper, user: user) }
+    let(:paper) { FactoryGirl.build(:paper) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "paper.withdrawn",
+        subject: paper,
+        user: user,
+        message: "Manuscript was withdrawn"
+    )}
+  end
+
   describe '#collaborator_added!' do
     subject(:activity) do
       Activity.collaborator_added!(collaboration, user: user)

@@ -180,6 +180,26 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.paper_withdrawn!(paper, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "paper.withdrawn",
+      subject: paper,
+      user: user,
+      message: "Manuscript was withdrawn"
+    )
+  end
+
+  def self.paper_reactivated!(paper, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "paper.reactivated",
+      subject: paper,
+      user: user,
+      message: "Manuscript was reactivated"
+    )
+  end
+
   def self.participation_created!(participation, user:)
     create(
       feed_name: "workflow",

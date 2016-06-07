@@ -45,6 +45,12 @@ export default DS.Model.extend({
     this.set('pendingFeedback', false);
   },
 
+  declineFeedback() {
+    this.set('declineReason', null);
+    this.set('reviewerSuggestions', null);
+    this.set('pendingFeedback', false);
+  },
+
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',
     'declineReason', 

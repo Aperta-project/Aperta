@@ -72,35 +72,17 @@ test('The form is constructed with the expected markup', function(assert){
 });
 
 test('can respond "no thank you" to giving feedback', function(assert){
-  assert.expect(4);
-  this.set('close', () => {
+  assert.expect(2);
 
-    // assert the values were cleared on the invitation
-    assert.equal(this.get('invitation.declineReason'),
-                 null,
-                 'Expected decline reason to be blank'
-    );
-    assert.equal(this.get('invitation.reviewerSuggestions'),
-                 null,
-                 'Expected decline reason to be blank'
-    );
+  this.set('invitation.declineFeedback', function(){
+    assert.ok(true, 'declineFeedback is called on invitation')
+  });
+
+  this.set('close', () => {
+    assert.ok(true, 'close action is called when declineFeedback is triggered');
   });
 
   this.render(template);
-
-  fillText('textarea[name="declineReason"]', 'some value');
-  fillText('textarea[name="reviewerSuggestions"]', 'some other value');
-
-  // assert the values were actually set on the invitation
-  assert.equal(this.get('invitation.declineReason'),
-               'some value',
-               'Expected declineReason to be some value'
-  );
-  assert.equal(this.get('invitation.reviewerSuggestions'),
-               'some other value',
-               'Expected reviewerSuggestions to be some other value'
-  );
-
   this.$('.reviewer-feedback-buttons > .reviewer-decline-feedback').click();
 });
 

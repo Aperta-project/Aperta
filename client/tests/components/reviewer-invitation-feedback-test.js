@@ -58,8 +58,7 @@ test('The form is constructed with the expected markup', function(assert){
   assert.expect(7);
 
   this.render(template);
-  assert.equal(this.$('textarea').length,
-               2, 'there are 2 textareas');
+
   assert.selectorHasClasses('label>textarea', ['feedback-textarea']);
   assert.selectorHasClasses(
     '.reviewer-feedback-buttons > .reviewer-decline-feedback',

@@ -6,6 +6,8 @@ const { computed } = Ember;
 const { equal } = computed;
 
 export default NestedQuestionComponent.extend({
+  helpText: null,
+  unwrappedHelpText: null,
   yesLabel: 'Yes',
   yesValue: true,
   noLabel: 'No',

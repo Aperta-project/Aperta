@@ -1,5 +1,5 @@
 # coding: utf-8
-class ReviewerReportTask < PaperTask
+class ReviewerReportTaskOverlay < PaperTaskOverlay
 
   def ensure_no_review_history
     expect(page).to_not have_selector(".review-history")

@@ -46,18 +46,12 @@ shared_examples_for "administrator for paper" do
 end
 
 shared_examples_for "author for paper" do
-  include AuthorizationSpecHelper
-
-  permissions do
-    permission action: 'view', applies_to: Paper.name
-  end
-
-  role 'Creator' do
-    has_permission action: 'view', applies_to: Paper.name
-  end
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
+  let(:role) { journal.creator_role }
 
   before do
-    assign_user user, to: paper, with_role: role_Creator
+    role.ensure_permission_exists 'view', applies_to: 'Paper'
+    user.assignments.create(assigned_to: paper, role: role)
   end
 
   it "lets them do everything except manage, keep the paper open and toggle edit mode" do

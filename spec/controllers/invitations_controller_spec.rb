@@ -255,7 +255,7 @@ describe InvitationsController do
 
         it "gives access to the user as an academic editor" do
           do_request
-          expect(response.status).to eq(204)
+          expect(response.status).to eq(200)
           invitation.reload
           expect(invitation.state).to eq("accepted")
           expect(invitation.actor).to eq(invitee)
@@ -286,7 +286,7 @@ describe InvitationsController do
 
         it 'rejects the invitation' do
           put(:reject, format: 'json', id: invitation.id)
-          expect(response.status).to eq(204)
+          expect(response.status).to eq(200)
           invitation.reload
           expect(invitation.state).to eq('rejected')
           expect(invitation.actor).to eq(invitee)

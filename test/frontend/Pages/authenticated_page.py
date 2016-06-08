@@ -161,9 +161,21 @@ class AuthenticatedPage(PlosPage):
 
   # POM Actions
   def click_profile_nav(self):
-    """Click profile navigation"""
+    """
+    Click profile navigation
+    :return: None
+    """
     profile_menu_toggle = self._get(self._nav_profile_menu_toggle)
     profile_menu_toggle.click()
+    return None
+
+  def get_flash_success_messages(self):
+    """
+    Get all flash sucess messages
+    :return: A list with all flash sucess messages elements 
+    """
+    return self._gets(self._flash_success_msg)
+
 
   def validate_nav_toolbar_elements(self, permissions):
     """

@@ -18,7 +18,7 @@ class FigureInserter
   private
 
   def figures_by_label
-    @figures_by_label ||= @figures.select(&:attachment?)
+    @figures.select(&:attachment?)
       .each_with_object({}) do |fig, accum|
         accum[fig.rank] = fig
       end
@@ -26,9 +26,8 @@ class FigureInserter
 
   def process_all_figures
     captions = captions_by_label
-    figures = figures_by_label
 
-    figures.each do |label, figure|
+    figures_by_label.each do |label, figure|
       if captions[label]
         insert_figure(figure, captions[label])
       else
@@ -57,7 +56,9 @@ class FigureInserter
 
   def find_possible_caption_nodes
     match_test = "Fig"
-    selectors = ["p[text()^='#{match_test}']", "p [text()^='#{match_test}']"]
+    # match paragraph tags that contain the text
+    # or whose children contain the text
+    selectors = ["p[text()^='#{match_test}']", "p *[text()^='#{match_test}']"]
 
     @html_tree.css(*selectors).map do |node|
       node.at_xpath('./ancestor-or-self::p')

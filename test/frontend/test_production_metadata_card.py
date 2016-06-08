@@ -61,14 +61,10 @@ class ProductionMetadataCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success()
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # We are occasionally getting errors because we are simply not waiting long enough for the
-    #  submit button to show up. The conversion message, the population of the manuscript content,
-    #  and the attachment of the Submit button to the DOM are all independent actions.
-    time.sleep(15)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -104,9 +100,12 @@ class ProductionMetadataCardTest(CommonTest):
     nested_queston = PgSQL().query(
         'SELECT nested_question_id, value from nested_question_answers '
         'WHERE owner_id = %s and owner_type=%s;', (task_id,'Task'))
-    answers = [x[1] for  x in nested_queston]
+    print 'nq', nested_queston
+    answers_in_db = [x[1] for  x in nested_queston]
+    print 'answers {}'.format(answers_in_db)
+    print 'data.values: {}'.format(data.values())
     for item in data.values():
-      assert item in answers,  (item, answers)
+      assert item in answers_in_db,  (item, answers_in_db)
     workflow_page.logout()
 
 if __name__ == '__main__':

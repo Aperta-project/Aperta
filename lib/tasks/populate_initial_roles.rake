@@ -6,7 +6,7 @@ namespace :data do
     task :csv, [:csv_url] => [:environment] do |t, args|
       if args[:csv_url].present?
         CSV.parse(open(args[:csv_url]), row_sep: :auto, headers: :first_row) do |csv|
-          if csv["Email"].present? && csv["Role"].present?
+          if csv["Email"].present?
             csv["Email"] = csv["Email"].strip.downcase
             user = User.find_or_create_by(email: csv['Email'])
             user.username = csv["Email"].split('@').first.delete('.')
@@ -14,24 +14,26 @@ namespace :data do
             user.last_name = csv["Name"].split.last if csv["Name"].try(:split).try(:count) == 2
             user.auto_generate_password
             user.save!
-            roles = csv["Role"].split(',')
-            journals = csv["Journals"].split(',')
-            journals.each do |journal_name|
-              journal_name.strip!
-              journal = Journal.where(name: journal_name).first
-              next unless journal.present?
-              roles.each do |role_name|
-                role_name.strip!
-                if role_name == 'Site Admin'
-                  user.update_column(:site_admin, true)
-                elsif role_name == 'User'
+            if csv["Role"].present?
+              roles = csv["Role"].split(',')
+              journals = csv["Journals"].split(',')
+              journals.each do |journal_name|
+                journal_name.strip!
+                journal = Journal.where(name: journal_name).first
+                next unless journal.present?
+                roles.each do |role_name|
+                  role_name.strip!
+                  if role_name == 'Site Admin'
+                    user.update_column(:site_admin, true)
+                  elsif role_name == 'User'
                   # Users are assigned later
-                else # Journal roles
-                  Assignment.where(
-                    user: user,
-                    role: Role.where(name: role_name, journal: journal).first,
-                    assigned_to: journal
-                  ).first_or_create!
+                  else # Journal roles
+                    Assignment.where(
+                      user: user,
+                      role: Role.where(name: role_name, journal: journal).first,
+                      assigned_to: journal
+                    ).first_or_create!
+                  end
                 end
               end
             end

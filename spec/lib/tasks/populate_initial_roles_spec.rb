@@ -54,6 +54,15 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
     end
   end
 
+  context 'a user without a role' do
+    let(:csv) { [['Jane Doe', 'jane@example.edu', nil, nil, journal.name]] }
+
+    it 'should be given a User role and nothing else' do
+      run_rake_task
+      expect(user.assignments.map(&:role)).to contain_exactly(user_role)
+    end
+  end
+
   context 'empty lines' do
     let(:csv) { [[nil, nil, nil, nil, nil]] }
 

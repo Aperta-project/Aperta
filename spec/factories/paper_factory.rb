@@ -112,12 +112,20 @@ FactoryGirl.define do
     ).each do |role|
       trait("with_#{role}_user".to_sym) do
         after(:create) do |paper|
-          FactoryGirl.create(
-            :assignment,
-            role: paper.journal.send("#{role}_role".to_sym),
-            user: FactoryGirl.build(:user),
-            assigned_to: paper
-          )
+          begin
+            FactoryGirl.create(
+              :assignment,
+              role: paper.journal.send("#{role}_role".to_sym),
+              user: FactoryGirl.build(:user),
+              assigned_to: paper
+            )
+          rescue Exception => ex
+            STDERR.puts <<-ERROR.strip_heredoc
+              Missing role #{role}!
+              Do you want to add :with_#{role}_role to your journal?
+            ERROR
+            fail ex
+          end
         end
       end
     end

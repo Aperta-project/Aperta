@@ -20,6 +20,18 @@ export default DS.Model.extend({
   pendingFeedback: false,
 
   accepted: Ember.computed.equal('state', 'accepted'),
+  
+  invitationFeedbackIsBlank: Ember.computed(
+    'reviewerSuggestions',
+    'declineReason',
+    function() {
+      return Ember.isBlank(this.get('reviewerSuggestions')) &&
+        Ember.isBlank(this.get('declineReason'));
+  }),
+
+  invited: Ember.computed.equal('state', 'invited'),
+  needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
+  rejected: Ember.computed.equal('state', 'rejected'),
 
   reject() {
     this.set('state', 'rejected');
@@ -47,18 +59,5 @@ export default DS.Model.extend({
     this.set('declineReason', null);
     this.set('reviewerSuggestions', null);
     this.set('pendingFeedback', false);
-  },
-
-  invitationFeedbackIsBlank: Ember.computed(
-    'reviewerSuggestions',
-    'declineReason',
-    function() {
-      return Ember.isBlank(this.get('reviewerSuggestions')) &&
-        Ember.isBlank(this.get('declineReason'));
-  }),
-
-  invited: Ember.computed.equal('state', 'invited'),
-  rejected: Ember.computed.equal('state', 'rejected'),
-
-  needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback')
+  }
 });

@@ -20,7 +20,7 @@ export default DS.Model.extend({
   pendingFeedback: false,
 
   accepted: Ember.computed.equal('state', 'accepted'),
-  
+
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',
     'declineReason',

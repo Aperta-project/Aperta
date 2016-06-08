@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'data:populate_initial_roles:csv', rake_test: true do
   # Populated from the value of `csv`, an array of arrays.
-  # e.g. [['JD', 'jd@example.com', 'User', 'Production', 'PLOS Biology']]
+  # e.g. [['JD', 'jd@example.com', Role::USER_ROLE, 'Production', 'PLOS Biology']]
   let(:csv_string) do
     ([%w(Name Email Role Environment Journals)] + csv)
       .map { |fields| CSV.generate_line(fields) }
@@ -10,7 +10,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:user_role) { Role.find_by(name: 'User') }
+  let(:user_role) { Role.find_by(name: Role::USER_ROLE) }
 
   let(:task_name) { 'data:populate_initial_roles:csv' }
   let(:task_args) { ['foo'] }
@@ -23,8 +23,8 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
 
   context 'with a basic CSV file ' do
     let(:csv) do
-      [['Jane Doe', 'jane@example.edu', 'User', nil, journal.name],
-       ['John Doe', 'john@example.edu', 'User', nil, journal.name]]
+      [['Jane Doe', 'jane@example.edu', Role::USER_ROLE, nil, journal.name],
+       ['John Doe', 'john@example.edu', Role::USER_ROLE, nil, journal.name]]
     end
 
     it 'should insert the new users with the User role' do
@@ -77,7 +77,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   context 'a user without a name' do
-    let(:csv) { [[nil, 'jane@example.edu', 'User', nil, journal.name]] }
+    let(:csv) { [[nil, 'jane@example.edu', Role::USER_ROLE, nil, journal.name]] }
 
     it 'should work' do
       expect { run_rake_task }.to change { User.count }.by 1
@@ -112,7 +112,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   context 'when the Role field is set to "User"' do
-    let(:csv) { [['Jane Doe', 'jane@example.edu', 'User', nil, journal.name]] }
+    let(:csv) { [['Jane Doe', 'jane@example.edu', Role::USER_ROLE, nil, journal.name]] }
 
     it 'should be given a User role and nothing else' do
       run_rake_task

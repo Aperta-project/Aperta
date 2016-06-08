@@ -4,7 +4,7 @@ namespace :data do
     namespace :users do
       desc 'Migrates users to use new R&P'
       task make_into_new_roles: :environment do
-        user_role = Role.find_by!(name: 'User')
+        user_role = Role.find_by!(name: Role::USER_ROLE)
         User.all.each do |user|
           puts "Assigning #{user.full_name} <#{user.email}> to User role in the system"
           Assignment.where(

@@ -107,7 +107,7 @@ module Typesetter
     end
 
     def fundRef
-      financial_disclosure_task.funding_statement
+      financial_disclosure_task.try(:funding_statement)
     end
 
     def collectionID
@@ -132,7 +132,7 @@ module Typesetter
     end
 
     def final_dispo_accept
-      final_tech_check_task.completed_at
+      final_tech_check_task.try(:completed_at)
     end
 
     def category

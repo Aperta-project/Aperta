@@ -35,7 +35,24 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
     end
   end
 
-  context 'with a user assigned as site admin ' do
+  context 'with an existing user' do
+    let(:csv) do
+      [['Jane Doe', 'jane@example.edu', 'Staff Admin', nil, journal.name]]
+    end
+    let!(:existing_user) { FactoryGirl.create(:user, email: 'jane@example.edu') }
+    let!(:staff_admin_role) do
+      FactoryGirl.create(:role,
+                         name: 'Staff Admin',
+                         journal: journal)
+    end
+
+    it 'should add the role to an existing user' do
+      expect { run_rake_task }.not_to change { User.count }
+      expect(existing_user.reload.assignments.map(&:role)).to contain_exactly(user_role, staff_admin_role)
+    end
+  end
+
+  context 'with a user assigned as site admin' do
     let(:csv) do
       [['Jane Doe', 'jane@example.edu', 'Site Admin', nil, journal.name]]
     end

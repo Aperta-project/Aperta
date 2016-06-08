@@ -24,12 +24,6 @@ describe FigureInserter do
       figure
     end
 
-    let(:figure11) do
-      figure = create :figure, title: "11"
-      allow(figure).to receive(:detail_src).and_return('/an/image2.png')
-      allow(figure).to receive(:attachment?).and_return(true)
-      figure
-    end
 
     let(:figure_inserter) { FigureInserter.new(html, figures) }
 
@@ -189,6 +183,13 @@ describe FigureInserter do
     end
 
     context 'with multiple figures' do
+      let(:figure11) do
+        figure = create :figure, title: "11"
+        allow(figure).to receive(:detail_src).and_return('/an/image2.png')
+        allow(figure).to receive(:attachment?).and_return(true)
+        figure
+      end
+
       let(:figures) { [figure1, figure11] }
 
       context 'when the html has no captions' do
@@ -235,6 +236,57 @@ describe FigureInserter do
 
         it "only inserts on the first occurrence" do
           is_expected.to be_equivalent_to(output).respecting_element_order
+        end
+      end
+
+      context "when one figure doesn't yet have an attachment" do
+        let(:unattached_figure2) do
+          figure = create :figure, title: "2"
+          allow(figure).to receive(:detail_src).and_return('/an/image2.png')
+          allow(figure).to receive(:attachment?).and_return(false)
+          figure
+        end
+
+        let(:figures) { [figure1, unattached_figure2] }
+
+        context "The figure without an attachment has a caption" do
+          let(:html) do
+            <<-HTML
+              <p>Figure 1. This is the caption</p>
+              <p>Figure 2. This should be ignored since not attached.</p>
+            HTML
+          end
+
+          let(:output) do
+            parse <<-HTML
+              #{image_html(figure1)}
+              <p>Figure 1. This is the caption</p>
+              <p>Figure 2. This should be ignored since not attached.</p>
+            HTML
+          end
+
+          it "doesn't insert an image for corresponding caption" do
+            is_expected.to be_equivalent_to(output).respecting_element_order
+          end
+        end
+
+        context "The figure without an attachment has no caption" do
+          let(:html) do
+            <<-HTML
+              <p>Figure 1. This is the caption</p>
+            HTML
+          end
+
+          let(:output) do
+            parse <<-HTML
+              #{image_html(figure1)}
+              <p>Figure 1. This is the caption</p>
+            HTML
+          end
+
+          it "doesn't insert an image or caption for the figure" do
+            is_expected.to be_equivalent_to(output).respecting_element_order
+          end
         end
       end
     end

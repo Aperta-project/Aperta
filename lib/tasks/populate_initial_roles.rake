@@ -20,14 +20,11 @@ namespace :data do
             end
             user.save!
             if csv["Role"].present?
-              roles = csv["Role"].split(',')
-              journals = csv["Journals"].split(',')
+              journals = csv["Journals"].split(',').map(&:strip)
               journals.each do |journal_name|
-                journal_name.strip!
                 journal = Journal.where(name: journal_name).first
                 next unless journal.present?
-                roles.each do |role_name|
-                  role_name.strip!
+                csv["Role"].split(',').map(&:strip).each do |role_name|
                   if role_name == 'Site Admin'
                     user.update_column(:site_admin, true)
                     STDERR.puts('  made site admin')

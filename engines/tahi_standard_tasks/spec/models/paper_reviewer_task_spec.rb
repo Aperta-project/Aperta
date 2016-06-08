@@ -89,14 +89,4 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
     end
   end
-
-  describe "#invitation_rescinded" do
-    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
-
-    it "sends an email to the invitee about the rescission" do
-      expect {
-        task.invitation_rescinded(invitation)
-      }.to change { Sidekiq::Extensions::DelayedMailer.jobs.length }.by 1
-    end
-  end
 end

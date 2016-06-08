@@ -45,4 +45,12 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
       expect(user.site_admin).to be true
     end
   end
+
+  context 'a user without a name' do
+    let(:csv) { [[nil, 'jane@example.edu', 'User', nil, journal.name]] }
+
+    it 'should work' do
+      expect { run_rake_task }.to change { User.count }.by 1
+    end
+  end
 end

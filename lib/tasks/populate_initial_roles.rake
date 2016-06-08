@@ -10,8 +10,8 @@ namespace :data do
             csv["Email"] = csv["Email"].strip.downcase
             user = User.find_or_create_by(email: csv['Email'])
             user.username = csv["Email"].split('@').first.delete('.')
-            user.first_name = csv["Name"].split.first if csv["Name"].split.count == 2
-            user.last_name = csv["Name"].split.last if csv["Name"].split.count == 2
+            user.first_name = csv["Name"].split.first if csv["Name"].try(:split).try(:count) == 2
+            user.last_name = csv["Name"].split.last if csv["Name"].try(:split).try(:count) == 2
             user.auto_generate_password
             user.save!
             roles = csv["Role"].split(',')

@@ -42,11 +42,7 @@ namespace :data do
               end
             end
             # Ensure User role
-            Assignment.where(
-              user: user,
-              role: Role.where(name: 'User').first,
-              assigned_to: user
-            ).first_or_create!
+            user.add_user_role!
           end
         end
         puts "Successfully loaded roles for #{args[:csv_url]}"

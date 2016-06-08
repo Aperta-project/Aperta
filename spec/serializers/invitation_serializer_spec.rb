@@ -16,7 +16,9 @@ describe InvitationSerializer, serializer_test: true do
       id: invitation.id,
       state: invitation.state,
       email: invitation.email,
-      invitee_role: invitation.invitee_role
+      invitee_role: invitation.invitee_role,
+      decline_reason: invitation.decline_reason,
+      reviewer_suggestions: invitation.reviewer_suggestions
     )
 
     expect(invitation_content.fetch(:created_at)).to be

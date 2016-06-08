@@ -93,22 +93,7 @@ class ITCCardTest(CommonTest):
     ITC_card.validate_styles()
     ITC_card.complete_card()
     # test content, it should be saved
-
-
-    data = product_metadata_card.complete_card()
-    time.sleep(2)
-    workflow_page.click_production_metadata_card()
-    # read card data in the DB and compare
-    task_id = PgSQL().query(
-        'SELECT id from tasks WHERE paper_id = %s and title = %s;',
-        (paper_id,'Production Metadata'))[0][0]
-    nested_queston = PgSQL().query(
-        'SELECT nested_question_id, value from nested_question_answers '
-        'WHERE owner_id = %s and owner_type=%s;', (task_id,'Task'))
-    answers = [x[1] for  x in nested_queston]
-    for item in data.values():
-      assert item in answers,  (item, answers)
-    workflow_page.logout()
+    
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@ class ITCCard(BaseCard):
     self._h2_titles = (By.CSS_SELECTOR, 'div.checklist h2')
     self._h3_titles = (By.CSS_SELECTOR, 'div.checklist h3')
     self._send_changes = (By.CSS_SELECTOR, 'div.tech-check-email h3')
-    self._send_changes_button = (By.CSS_SELECTOR, 'div.tech-check-email button')
+    self._send_changes_button = (By.CSS_SELECTOR, 'div.tech-check-email button.button--green')
     self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
@@ -32,7 +32,7 @@ class ITCCard(BaseCard):
     # TODO: Find out why class_name and tag_name locator not working here
     # self._register_decision_btn = (By.CLASS_NAME, 'button-primary')
     self._alert_info = (By.CLASS_NAME, 'alert-info')
-    self._autogenerate_email = (By.ID, 'autogenerate-email')
+    self._autogenerate_text = (By.ID, 'autogenerate-email')
 
     self._text_area = (By.CSS_SELECTOR, 'textarea.ember-text-area')
 
@@ -83,26 +83,45 @@ class ITCCard(BaseCard):
       will generate random data.
     :return: data used to complete the card
     """
-
-    email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the questions. In the box provided, please include the appropriate approval information, as well as any additional requirements listed.',
+    email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the '
+        'questions. In the box provided, please include the appropriate approval information, '
+        'as well as any additional requirements listed.',
                   1: '',
-                  2: 'In the Data Availability card, you have selected Yes in response to Question 1, but you have not fill in the text box under Question 2 explaining how your data can be accessed. Please choose the most appropriate option from the list and paste into the text box.',
-                  3: 'In the Data Availability card, you have mentioned your data has been submitted to the Dryad repository. Please provide the reviewer URL in the text box under question 2 so that your submitted data can be reviewed.',
-                  4: 'The list of authors in your manuscript file does not match the list of authors in the Authors card. Please ensure these are consistent.',
-                  5: 'Please provide a unique and current email address for each contributing author. It is important that you provide a working email address as we will contact each author to confirm authorship.',
+                  2: 'In the Data Availability card, you have selected Yes in response to '
+        'Question 1, but you have not fill in the text box under Question 2 explaining how '
+        'your data can be accessed. Please choose the most appropriate option from the list '
+        'and paste into the text box.',
+                  3: 'In the Data Availability card, you have mentioned your data has been '
+        'submitted to the Dryad repository. Please provide the reviewer URL in the text box '
+        'under question 2 so that your submitted data can be reviewed.',
+                  4: 'The list of authors in your manuscript file does not match the list of '
+        'authors in the Authors card. Please ensure these are consistent.',
+                  5: 'Please provide a unique and current email address for each contributing '
+        'author. It is important that you provide a working email address as we will contact '
+        'each author to confirm authorship.',
                   6: '',
-                  7: 'In the Competing Interests card, you have selected Yes, but not provided an explanation in the box provided. Please take this opportunity to include all relevant information.',
-                  8: "Please complete the Financial Disclosure card. This section should describe sources of funding that have supported the work. Please include relevant grant numbers and the URL of any funder's Web site. If the funders had a role in the manuscript, please include a description in the box provided.",
+                  7: 'In the Competing Interests card, you have selected Yes, but not provided '
+        'an explanation in the box provided. Please take this opportunity to include all '
+        'relevant information.',
+                  8: 'Please complete the Financial Disclosure card. This section should '
+        'describe sources of funding that have supported the work. Please include relevant '
+        'grant numbers and the URL of any funder\'s Web site. If the funders had a role in the '
+        'manuscript, please include a description in the box provided.',
                   9: '',
                   10: '',
-                  11: 'We are unable to preview or download Figure [X]. Please upload a higher quality version, preferably in TIF or EPS format and ensure the uploaded version can be previewed and downloaded before resubmitting your manuscript.',
-                  12: 'Please remove captions from figure or supporting information files and ensure each file has a caption present in the manuscript.',
+                  11: 'We are unable to preview or download Figure [X]. Please upload a higher '
+        'quality version, preferably in TIF or EPS format and ensure the uploaded version can '
+        'be previewed and downloaded before resubmitting your manuscript.',
+                  12: 'Please remove captions from figure or supporting information files and '
+        'ensure each file has a caption present in the manuscript.',
                   13: 'Please provide a caption for [file name] in the manuscript file.',
-                  14: 'Please note you have cited a file, [file name], in your manuscript that has not been included with your submission. Please upload this file, or if this file was cited in error, please remove the corresponding citation from your manuscript.',
-                  15: "Please upload a 'Response to Reviewers' Word document in the Supporting Information card. This file should address all reviewer comments from the original submission point-by-point.",
+                  14: 'Please note you have cited a file, [file name], in your manuscript that '
+        'has not been included with your submission. Please upload this file, or if this file '
+        'was cited in error, please remove the corresponding citation from your manuscript.',
+                  15: 'Please upload a \'Response to Reviewers\' Word document in the Supporting'
+        ' Information card. This file should address all reviewer comments from the original '
+        'submission point-by-point.',
                   }
-
-    # Input data, close, open and check if it is saved 05/04/2016
     if not data:
       # generate random data
       data = []
@@ -114,50 +133,15 @@ class ITCCard(BaseCard):
         checkbox.click()
     send_changes_button = self._get(self._send_changes_button)
     send_changes_button.click()
+    #import pdb; pdb.set_trace()
     time.sleep(1)
     field_title = self._get(self._field_title)
     assert field_title.text == 'List all changes the author needs to make:', field_title.text
     # Dissabled due to APERTA-6954
     #self.validate_field_title_style(field_title)
-    autogenerate_email_btn = self._get(self._autogenerate_email)
     # Disabled due to APERTA-6964
     #self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
-    autogenerate_email_btn.click()
-    time.sleep(2)
-    issues_text = self._get(self._text_area).get_attribute('value')
-    for index, point in enumerate(data):
-      if not point:
-        assert email_text[index] in issues_text
-    #import pdb; pdb.set_trace()
-
-    #print len(self._gets(self._checkboxes))
-
-
-    publication_date = self._get(self._publication_date)
-
-    send_changes_button.click()
-
-    time.sleep(2)
-    # autogenerate-email
-    import pdb; pdb.set_trace()
-    self._get(self._autogenerate_email).click()
-
-
-
-
-
-
-
-    # Check all h3 titles
-    intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
-    assert intro_text.text == 'Please write your decision letter in the area below', intro_text.text
-    self._get(self._reject_radio_button)
-    self._get(self._invite_radio_button)
-    self._get(self._decision_letter_textarea)
-    reg_dcn_btn = self._get(self._register_decision_btn)
-    # disabling due to APERTA-6224
-    # self.validate_primary_big_disabled_button_style(reg_dcn_btn)
+    return None
 
   def execute_decision(self, choice='random'):
     """

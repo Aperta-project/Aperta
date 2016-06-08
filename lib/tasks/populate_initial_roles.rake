@@ -9,11 +9,15 @@ namespace :data do
           if csv["Email"].present?
             STDERR.puts("user #{csv['Email']}")
             csv["Email"] = csv["Email"].strip.downcase
-            user = User.find_or_create_by(email: csv['Email'])
-            user.username = csv["Email"].split('@').first.delete('.')
-            user.first_name = csv["Name"].split.first if csv["Name"].try(:split).try(:count) == 2
-            user.last_name = csv["Name"].split.last if csv["Name"].try(:split).try(:count) == 2
-            user.auto_generate_password
+            user = User.find_or_create_by(email: csv['Email']) do |new_user|
+              new_user.username = csv["Email"].split('@').first.delete('.')
+              new_user.first_name = csv["Name"].split.first if csv["Name"].try(:split).try(:count) == 2
+              new_user.last_name = csv["Name"].split.last if csv["Name"].try(:split).try(:count) == 2
+              new_user.auto_generate_password
+              STDERR.puts('  creating...')
+              STDERR.puts("  with username: #{new_user.username}")
+              STDERR.puts("       name: #{new_user.first_name} #{new_user.last_name}")
+            end
             user.save!
             if csv["Role"].present?
               roles = csv["Role"].split(',')

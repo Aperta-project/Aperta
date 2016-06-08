@@ -37,9 +37,15 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
 
   context 'with an existing user' do
     let(:csv) do
-      [['Jane Doe', 'jane@example.edu', 'Staff Admin', nil, journal.name]]
+      [['Jane Roe', 'jane@example.edu', 'Staff Admin', nil, journal.name]]
     end
-    let!(:existing_user) { FactoryGirl.create(:user, email: 'jane@example.edu') }
+    let!(:existing_user) do
+      FactoryGirl.create(:user,
+                         email: 'jane@example.edu',
+                         first_name: 'Jane',
+                         last_name: 'Doe',
+                         username: 'jroe')
+    end
     let!(:staff_admin_role) do
       FactoryGirl.create(:role,
                          name: 'Staff Admin',
@@ -49,6 +55,13 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
     it 'should add the role to an existing user' do
       expect { run_rake_task }.not_to change { User.count }
       expect(existing_user.reload.assignments.map(&:role)).to contain_exactly(user_role, staff_admin_role)
+    end
+
+    it 'should not change the users name, username, or password' do
+      expect { run_rake_task }.not_to change { user.first_name }
+      expect { run_rake_task }.not_to change { user.last_name }
+      expect { run_rake_task }.not_to change { user.username }
+      expect { run_rake_task }.not_to change { user.password }
     end
   end
 

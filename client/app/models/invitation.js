@@ -19,9 +19,7 @@ export default DS.Model.extend({
 
   pendingFeedback: false,
 
-  accepted: Ember.computed('state', function() {
-    return this.get('state') === 'accepted';
-  }),
+  accepted: Ember.computed.equal('state', 'accepted'),
 
   reject() {
     this.set('state', 'rejected');
@@ -53,7 +51,7 @@ export default DS.Model.extend({
 
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',
-    'declineReason', 
+    'declineReason',
     function() {
       return Ember.isBlank(this.get('reviewerSuggestions')) &&
         Ember.isBlank(this.get('declineReason'));

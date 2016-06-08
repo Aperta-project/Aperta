@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
   end
 
   def add_user_role!
-    return unless user_role = Role.find_by(name: 'User')
-    assignments.where(role: user_role, assigned_to: self).first_or_create!
+    return unless Role.user_role
+    assignments.where(role: Role.user_role, assigned_to: self).first_or_create!
   end
 end

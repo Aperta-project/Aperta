@@ -6,7 +6,7 @@ namespace :data do
     task :csv, [:csv_url] => [:environment] do |t, args|
       if args[:csv_url].present?
         CSV.parse(open(args[:csv_url]), row_sep: :auto, headers: :first_row) do |csv|
-          if csv["Email"] && csv["Role"]
+          if csv["Email"].present? && csv["Role"].present?
             csv["Email"] = csv["Email"].strip.downcase
             user = User.find_or_create_by(email: csv['Email'])
             user.username = csv["Email"].split('@').first.delete('.')

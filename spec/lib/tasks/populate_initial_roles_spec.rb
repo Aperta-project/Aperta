@@ -53,4 +53,12 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
       expect { run_rake_task }.to change { User.count }.by 1
     end
   end
+
+  context 'empty lines' do
+    let(:csv) { [[nil, nil, nil, nil, nil]] }
+
+    it 'should skip them' do
+      expect { run_rake_task }.not_to change { User.count }
+    end
+  end
 end

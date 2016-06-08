@@ -57,6 +57,10 @@ class Invitation < ActiveRecord::Base
     email
   end
 
+  def rescind!
+    destroy!
+  end
+
   def email=(new_email)
     super(new_email.strip)
   end

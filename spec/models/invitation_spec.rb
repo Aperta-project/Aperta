@@ -85,10 +85,14 @@ describe Invitation do
     end
   end
 
-  describe '#destroy' do
-    it "calls #after_destroy hook" do
-      expect(task).to receive(:invitation_rescinded).with invitation
-      invitation.destroy!
+  describe '#rescind!' do
+    subject!(:invitation) { FactoryGirl.create :invitation, task: task }
+
+    it 'destroys the invitation' do
+      expect do
+        invitation.rescind!
+      end.to change { Invitation.count }.by -1
+      expect(Invitation.exists?(id: invitation.id)).to be(false)
     end
   end
 

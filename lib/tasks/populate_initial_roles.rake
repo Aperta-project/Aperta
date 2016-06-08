@@ -13,7 +13,7 @@ namespace :data do
             user.first_name = csv["Name"].split.first if csv["Name"].split.count == 2
             user.last_name = csv["Name"].split.last if csv["Name"].split.count == 2
             user.auto_generate_password
-            user.save
+            user.save!
             roles = csv["Role"].split(',')
             journals = csv["Journals"].split(',')
             journals.each do |journal_name|

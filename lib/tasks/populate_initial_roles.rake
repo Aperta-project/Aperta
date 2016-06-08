@@ -7,6 +7,7 @@ namespace :data do
       if args[:csv_url].present?
         CSV.parse(open(args[:csv_url]), row_sep: :auto, headers: :first_row) do |csv|
           if csv["Email"].present?
+            STDERR.puts("user #{csv['Email']}")
             csv["Email"] = csv["Email"].strip.downcase
             user = User.find_or_create_by(email: csv['Email'])
             user.username = csv["Email"].split('@').first.delete('.')
@@ -25,6 +26,7 @@ namespace :data do
                   role_name.strip!
                   if role_name == 'Site Admin'
                     user.update_column(:site_admin, true)
+                    STDERR.puts('  made site admin')
                   elsif role_name == 'User'
                   # Users are assigned later
                   else # Journal roles
@@ -33,6 +35,7 @@ namespace :data do
                       role: Role.where(name: role_name, journal: journal).first,
                       assigned_to: journal
                     ).first_or_create!
+                    STDERR.puts("  made #{role_name} on #{journal.name}")
                   end
                 end
               end
@@ -43,8 +46,6 @@ namespace :data do
               role: Role.where(name: 'User').first,
               assigned_to: user
             ).first_or_create!
-
-            csv.each { |a, b, c| puts "Updated #{a} #{b} #{c}"}
           end
         end
         puts "Successfully loaded roles for #{args[:csv_url]}"

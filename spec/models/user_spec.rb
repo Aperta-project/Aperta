@@ -70,7 +70,6 @@ describe User do
     it 'validates against blank username' do
       user = FactoryGirl.build(:user, username: '')
       expect(user).to_not be_valid
-      expect(user.errors.size).to eq 1
       expect(user.errors.to_a).to contain_exactly("Username can't be blank")
     end
 

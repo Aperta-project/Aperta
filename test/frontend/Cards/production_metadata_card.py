@@ -124,6 +124,8 @@ class ProductionMedataCard(BaseCard):
     provenance.send_keys(data['provenance'])
     production_notes.send_keys(data['production_notes'])
     special_handling_instructions.send_keys(data['special_handling_instructions'])
+    # Time to save
+    time.sleep(2)
     self._get(self._bottom_close_button).click()
     return data
 

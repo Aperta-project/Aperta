@@ -60,12 +60,12 @@ class ApertaDashboardTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    logging.info('Logging in as user: {0}'.format(user_type['name']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.validate_initial_page_elements_styles()
     dashboard_page.validate_invite_dynamic_content(user_type)
     (active_manuscript_count, active_manuscript_list, uid) = \
         dashboard_page.validate_manuscript_section_main_title(user_type)
+    logging.debug('Active manuscript count is: {0}'.format(active_manuscript_count))
     if active_manuscript_count > 0:
       dashboard_page.validate_active_manuscript_section(uid,
                                                         active_manuscript_count,

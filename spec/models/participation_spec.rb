@@ -41,11 +41,7 @@ describe "Participation" do
       before do
         FactoryGirl.create(:paper_role, :participant, paper: paper, user: user)
         tasks.each do |task|
-          Assignment.where(
-            assigned_to: task,
-            user: user,
-            role: paper.journal.task_participant_role
-          ).first_or_create!
+          user.assign_to!(assigned_to: task, role: paper.journal.task_participant_role)
         end
       end
 
@@ -59,11 +55,7 @@ describe "Participation" do
     context "user is participant on one paper task" do
       let(:task) { tasks.first }
       before do
-        Assignment.create!(
-          user: user,
-          assigned_to: task,
-          role: task.journal.task_participant_role
-        )
+        user.assign_to!(assigned_to: task, role: task.journal.task_participant_role)
       end
 
       it 'removes participant assignment when destroying the participation' do

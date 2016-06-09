@@ -31,11 +31,7 @@ namespace :data do
                   elsif role_name == Role::USER_ROLE
                   # Users are assigned later
                   else # Journal roles
-                    Assignment.where(
-                      user: user,
-                      role: Role.where(name: role_name, journal: journal).first,
-                      assigned_to: journal
-                    ).first_or_create!
+                    user.assign_to!(assigned_to: journal, role: role_name)
                     STDERR.puts("  made #{role_name} on #{journal.name}")
                   end
                 end

@@ -69,7 +69,6 @@ namespace :institutional_accounts do
     account_list = ReferenceJson.find_or_create_by(name: "Institutional Account List")
     puts "Seeding institutional accounts.."
     account_list.update_column(:items, items)
-    account_list.save
     puts "Finished updating"
   end
 
@@ -80,7 +79,7 @@ namespace :institutional_accounts do
           Example in zsh:
           rake 'institutional_accounts:add_accounts[Victoria University2, C01282]'
        DESC
-  task :add_accounts, [:text, :nav_customer_number] => :environment do |t, args|
+  task :add_account, [:text, :nav_customer_number] => :environment do |t, args|
     if args[:text].present? && args[:nav_customer_number].present?
       new_hash = { "id" => args[:text], "text" => args[:text], "nav_customer_number" => args[:nav_customer_number] }
       puts "Adding #{new_hash}.."
@@ -94,9 +93,14 @@ namespace :institutional_accounts do
   end
 
   desc "Removes an old Institutional Account from the database"
-  task :remove_accounts, [:nav_customer_number] => :environment do |t, args|
+  task :remove_account, [:nav_customer_number] => :environment do |t, args|
     if args[:nav_customer_number].present?
-
+      account_list = ReferenceJson.institutional_accounts
+      to_be_deleted = account_list.items.select { |item| item["nav_customer_number"] == args[:nav_customer_number] }
+      post_delete_list = account_list.items.delete_if { |item| item["nav_customer_number"] == args[:nav_customer_number] }
+      puts "Deleting #{to_be_deleted}.."
+      account_list.update_column(:items, post_delete_list)
+      puts "Deletion complete."
     else
       puts "A nav_customer_number is required to identify the account to remove"
     end

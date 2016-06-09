@@ -94,6 +94,12 @@ describe Invitation do
       end.to change { Invitation.count }.by -1
       expect(Invitation.exists?(id: invitation.id)).to be(false)
     end
+
+    it 'tells the task it was rescinded' do
+      expect(invitation.task).to receive(:invitation_rescinded)
+        .with(invitation)
+      invitation.rescind!
+    end
   end
 
   describe "#invite!" do

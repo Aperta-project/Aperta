@@ -58,7 +58,9 @@ class Invitation < ActiveRecord::Base
   end
 
   def rescind!
-    destroy!
+    destroy!.tap do
+      task.invitation_rescinded(self)
+    end
   end
 
   def email=(new_email)
@@ -69,10 +71,6 @@ class Invitation < ActiveRecord::Base
 
   def assign_to_latest_decision
     self.decision = paper.decisions.latest
-  end
-
-  def invitation_rescinded
-    task.invitation_rescinded(self)
   end
 
   def add_authors_to_information(invitation)

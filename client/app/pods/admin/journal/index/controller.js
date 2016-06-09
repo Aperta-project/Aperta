@@ -4,8 +4,6 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 export default Ember.Controller.extend(ValidationErrorsMixin, {
   pdfCssSaveStatus: '',
   manuscriptCssSaveStatus: '',
-  doiEditState: false,
-  doiStartNumberEditable: true,
   canDeleteManuscriptManagerTemplates:
     Ember.computed.gt('model.manuscriptManagerTemplates.length', 1),
 
@@ -20,31 +18,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     this.set('adminJournalUsers', null);
     return this.set('placeholderText', null);
   },
-
-  formattedDOI: Ember.computed(
-    'doiPublisherPrefix', 'doiJournalPrefix', 'lastDoiIssued', function() {
-      if (this.get('doiInvalid')) { return ''; }
-
-      const publisher = this.get('doiPublisherPrefix');
-      const journal = this.get('doiJournalPrefix');
-      const start = this.get('lastDoiIssued');
-      const dot = Ember.isEmpty(journal) ? '' : '.';
-      return publisher + '/' + journal + dot + start;
-    }
-  ),
-
-  doiInvalid: Ember.computed('doiPublisherPrefix', 'lastDoiIssued', function() {
-    const noPubPrefix = Ember.isEmpty(this.get('doiPublisherPrefix'));
-    const noLastDoi = Ember.isEmpty(this.get('lastDoiIssued'));
-    const invalid = this.get('doiStartNumberInvalid');
-
-    return noPubPrefix || noLastDoi || invalid;
-  }),
-
-  doiStartNumberInvalid: Ember.computed('lastDoiIssued', function() {
-    return !$.isNumeric(this.get('lastDoiIssued')) &&
-           !Ember.isEmpty(this.get('doiStartNumber'));
-  }),
 
   actions: {
     saveCSS(key, value) {
@@ -97,27 +70,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.setProperties({
         pdfCssSaveStatus: '',
         manuscriptCssSaveStatus: ''
-      });
-    },
-
-    editDOI() {
-      this.set('doiEditState', true);
-    },
-
-    cancelDOI() {
-      this.get('model').rollback();
-      this.set('doiEditState', false);
-    },
-
-    saveDOI() {
-      if (this.get('doiInvalid')) { return; }
-
-      this.set('doiStartNumberEditable', false);
-      this.get('model').save().then(()=> {
-        this.set('doiEditState', false);
-        this.clearAllValidationErrors();
-      }, (response)=> {
-        this.displayValidationErrorsFromResponse(response);
       });
     },
 

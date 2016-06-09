@@ -22,7 +22,7 @@ $comments-animation-speed: 0.3s;
     }
 
     .new-comment-field {
-      height: 74px;
+      height: 100px;
     }
   }
 
@@ -38,7 +38,7 @@ $comments-animation-speed: 0.3s;
   border-radius: 4px;
   border: 1px solid #ddd;
   padding: 5px;
-  @include transition(height $comments-animation-speed)
+  resize: vertical;
 }
 
 .message-comment-buttons {

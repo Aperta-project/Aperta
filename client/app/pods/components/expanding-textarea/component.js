@@ -3,11 +3,38 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   _setupGrowingTextarea: Ember.on('didInsertElement', function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
-      this.$('textarea').on('input', function() {
-        this.style.height = '';
-        let height = Math.min(this.scrollHeight, 300);
-        this.style.height = Math.max(34, height) + 'px';
+      var $textarea = this.$('textarea');
+
+      $textarea.on('input', function() {
+        this.style.height = this.scrollHeight + 'px';
       }).trigger('input');
+
+
+      // Only keep the resize bar if the browser is IE.
+      var ua = window.navigator.userAgent;
+      var msie = ua.indexOf('MSIE ');
+      var trident = ua.indexOf('Trident/');
+      var edge = ua.indexOf('Edge/');
+
+      var $dragToResize = this.$('div.drag-to-resize');
+      if (msie > 0 || trident > 0 || edge > 0) {
+        var $document = $(document);
+        $dragToResize.on('mousedown', function(e) {
+          e.preventDefault();
+
+          $document.on('mousemove', function(e) {
+            e.preventDefault();
+            $textarea.css('height', e.screenY - $textarea.offset().top - 70);
+          });
+        });
+
+        $document.on('mouseup', function(e) {
+          e.preventDefault();
+          $document.off('mousemove');
+        });
+      } else {
+        $dragToResize.remove();
+      }
     });
   }),
 

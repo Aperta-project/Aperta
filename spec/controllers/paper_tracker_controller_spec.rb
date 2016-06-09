@@ -144,12 +144,12 @@ describe PaperTrackerController do
       end
 
       it 'properly detects when its meant as a DOI, results are good' do
-        make_matchable_paper(title: 'title 123', doi: '456')
-        get :index, format: :json, query: '456'
+        make_matchable_paper(title: 'title 123', doi: 'PPREFIX1/journal.JPREFIX1.10001')
+        get :index, format: :json, query: '10001'
         json = JSON.parse(response.body)
         expect(Paper.count).to eq 1
         expect(json['papers'].count).to eq 1
-        expect(json['papers'].first['manuscript_id']).to eq '456'
+        expect(json['papers'].first['manuscript_id']).to eq Paper.first.manuscript_id
       end
 
       it 'respects pagination when there are more matches than per_page' do

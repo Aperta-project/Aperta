@@ -4,6 +4,8 @@ FactoryGirl.define do
   factory :paper do
     journal
 
+    uses_research_article_reviewer_report true
+
     trait :with_integration_journal do
       association :journal, factory: :journal_with_roles_and_permissions
     end
@@ -175,7 +177,7 @@ FactoryGirl.define do
     end
 
     factory :paper_ready_for_export do
-      doi "blah/yetijour.123334"
+      doi "blah/journal.yetijour.123334"
 
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)

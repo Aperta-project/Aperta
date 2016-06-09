@@ -4,7 +4,7 @@ describe TahiStandardTasks::ApexService do
   let(:apex_delivery) do
     FactoryGirl.build(:apex_delivery).tap { |d| d.paper.doi = doi }
   end
-  let(:doi) { "tur.0001" }
+  let(:doi) { "23423/journal.tur.0001" }
   let(:packager) do
     double('ApexPackager').tap do |d|
       allow(d).to receive(:zip_file).and_return(Tempfile.new('zip'))
@@ -61,7 +61,7 @@ describe TahiStandardTasks::ApexService do
 
     it "returns the filename of the package" do
       filename = service.send(:package_filename)
-      expect(filename).to match(/#{doi}\.zip/)
+      expect(filename).to match(/tur.0001\.zip/)
     end
   end
 
@@ -74,7 +74,7 @@ describe TahiStandardTasks::ApexService do
 
     it "returns the filename of the package" do
       filename = service.send(:manifest_filename)
-      expect(filename).to match(/#{doi}\.man.json/)
+      expect(filename).to match(/tur.0001\.man.json/)
     end
   end
 end

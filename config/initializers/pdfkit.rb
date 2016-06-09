@@ -12,7 +12,9 @@ PDFKit.configure do |config|
     javascript_delay: 10_000, # milliseconds
     cache_dir: File.join(Dir.tmpdir, 'wkhtmltopdf-cache'),
     page_size: 'Letter',
-    load_error_handling: 'ignore'
+    load_error_handling: 'ignore',
+    load_media_error_handling: 'ignore',
+    encoding: 'utf8'
   }
   config.verbose = true
 end

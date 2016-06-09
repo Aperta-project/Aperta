@@ -15,6 +15,7 @@ set :linked_files, %w(env puma.rb)
 set :repo_url, 'git@github.com:Tahi-project/tahi.git'
 set :web_service_name, 'tahi-web' # used by puma:{start,stop,restart}
 set :worker_service_name, 'tahi-worker' # used by sidekiq:{start,stop,restart}
+set :whenever_roles, %(cron)
 
 # Load from an env file managed by salt.
 fetch(:bundle_bins).each do |command|
@@ -31,6 +32,7 @@ after 'deploy:migrate', 'deploy:safe_seeds' do
       with rails_env: fetch(:rails_env) do
         execute :rake, 'nested-questions:seed'
         execute :rake, 'roles-and-permissions:seed'
+        execute :rake, 'data:update_journal_task_types'
       end
     end
   end

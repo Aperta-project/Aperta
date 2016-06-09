@@ -41,7 +41,7 @@ feature "Paper DOI Generation", selenium: true, js: true do
       let(:journal) {
         FactoryGirl.create :journal, :with_roles_and_permissions,
         doi_publisher_prefix: 'vicious',
-        doi_journal_prefix: 'robots',
+        doi_journal_prefix: 'journal.robots',
         last_doi_issued: '8887'
       }
 

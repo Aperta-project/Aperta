@@ -3,6 +3,12 @@ require 'rails_helper'
 describe SalesforceServices::API do
   let(:paper) { FactoryGirl.create(:paper) }
 
+  around do |example|
+    ClimateControl.modify SALESFORCE_ENABLED: 'true' do
+      example.run
+    end
+  end
+
   before do
     @api = SalesforceServices::API
 
@@ -20,27 +26,29 @@ describe SalesforceServices::API do
   end
 
   describe "salesforce_active" do
-    context "DATABASEDOTCOM_DISABLED is set to true" do
-      before do
-        ENV["DATABASEDOTCOM_DISABLED"] = 'true'
-      end
-      after do
-        ENV["DATABASEDOTCOM_DISABLED"] = nil
-      end
-
-      it "salesforce_active returns false" do
-        expect(SalesforceServices::API.salesforce_active).to eq(false)
+    context "SALESFORCE_ENABLED is not set" do
+      it "salesforce_active returns true" do
+        ClimateControl.modify SALESFORCE_ENABLED: nil do
+          expect(SalesforceServices::API).to receive(:client)
+          expect(SalesforceServices::API.salesforce_active).to eq(true)
+        end
       end
     end
 
-    context "DATABASEDOTCOM_DISABLED is nil" do
-      before do
-        ENV["DATABASEDOTCOM_DISABLED"] = nil
+    context "SALESFORCE_ENABLED is set to 'true'" do
+      it "salesforce_active returns true" do
+        ClimateControl.modify SALESFORCE_ENABLED: 'true' do
+          expect(SalesforceServices::API).to receive(:client)
+          expect(SalesforceServices::API.salesforce_active).to eq(true)
+        end
       end
+    end
 
+    context "SALESFORCE_ENABLED is set to 'false'" do
       it "creates the salesforce client" do
-        expect(SalesforceServices::API).to receive(:client)
-        expect(SalesforceServices::API.salesforce_active).to eq(true)
+        ClimateControl.modify SALESFORCE_ENABLED: 'false' do
+          expect(SalesforceServices::API.salesforce_active).to eq(false)
+        end
       end
     end
   end
@@ -95,8 +103,7 @@ describe SalesforceServices::API do
       }
       FactoryGirl.create(:paper_with_task,
                          task_params: task_params,
-                         journal: journal,
-                         doi: 'ha/haha.2098')
+                         journal: journal)
     end
 
     before do
@@ -104,7 +111,7 @@ describe SalesforceServices::API do
       allow(paper).to receive(:creator) { FactoryGirl.build(:user) }
       FactoryGirl.create(:financial_disclosure_task, paper: paper)
       expect(Case).to receive(:soql_conditions_for)
-        .with("Subject" => "haha.2098")
+        .with("Subject" => "#{paper.manuscript_id}")
     end
 
     context "existing PFA case on salesforce" do

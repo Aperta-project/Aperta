@@ -1,0 +1,53 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content reviewer-form">
+  <div class="reviewer-report-wrapper">
+    {{#if task.body.submitted}}
+    {{front-matter-reviewer-report-questions model=task decision=task.decision readOnly=true}}
+      <div class="feedback reviewer-report-feedback">
+        <i class="fa fa-check-circle"></i>
+        This report has been submitted
+      </div>
+    {{else}}
+      {{front-matter-reviewer-report-questions model=task decision=task.decision readOnly=isNotEditable}}
+
+      <div class="reviewer-report-confirmation">
+        {{#if submissionConfirmed}}
+          <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
+
+          <button class="button-primary button--green" {{action "submitReport"}}>Yes, I’m sure</button>
+          <button class="button-secondary button--green" {{action "cancelSubmission"}}>Nope</button>
+        {{else}}
+          <button class="button-primary button--green" {{action "confirmSubmission"}}>Submit this Report</button>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    {{#if previousDecisions}}
+      <hr>
+
+      <h3>Review History</h3>
+
+      <div class="previous-decisions review-history">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          {{#each previousDecisions as |decision|}}
+          <div class="panel panel-default decision">
+            <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
+              <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
+                  Revision {{decision.revisionNumber}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
+              <div class="panel-body">
+                {{front-matter-reviewer-report-questions model=task decision=decision readOnly=true}}
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>

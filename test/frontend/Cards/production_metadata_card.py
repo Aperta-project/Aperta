@@ -126,6 +126,7 @@ class ProductionMedataCard(BaseCard):
     special_handling_instructions.send_keys(data['special_handling_instructions'])
     # Time to save
     time.sleep(2)
+    self._driver.save_screenshot('PMD_before_closing_card.png')
     self._get(self._bottom_close_button).click()
     return data
 

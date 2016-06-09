@@ -9,6 +9,8 @@ from selenium.webdriver.common.keys import Keys
 
 from frontend.Cards.basecard import BaseCard
 
+from datetime import datetime
+
 __author__ = 'sbassi@plos.org'
 
 class ProductionMedataCard(BaseCard):
@@ -126,7 +128,9 @@ class ProductionMedataCard(BaseCard):
     special_handling_instructions.send_keys(data['special_handling_instructions'])
     # Time to save
     time.sleep(2)
-    self._driver.save_screenshot('PMD_before_closing_card.png')
+    ts = time.time()
+    timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
+    self._driver.save_screenshot('Output/PMD_before_closing_card-{}.png'.format(timestamp))
     self._get(self._bottom_close_button).click()
     return data
 

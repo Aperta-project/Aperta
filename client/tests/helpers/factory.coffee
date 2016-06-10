@@ -359,6 +359,22 @@ FactoryAttributes.ReviewerReportTask =
   participant_ids: []
   comment_ids: []
 
+FactoryAttributes.FrontMatterReviewerReportTask =
+  _rootKey: 'task'
+  id: null
+  title: "Front Matter Reviewer Report by Reviewer User"
+  type: "FrontMatterReviewerReportTask"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  old_role: "reviewer"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  participant_ids: []
+  comment_ids: []
+
 FactoryAttributes.ReviseTask =
   _rootKey: 'task'
   id: null

@@ -22,6 +22,22 @@ describe PaperFactory do
       PaperFactory.create(paper_attrs, user)
     end
 
+    context "when the mmt is configured to use the research reviewer report" do
+      it "sets the paper to use the research reviewer report" do
+        mmt.update_column :uses_research_article_reviewer_report, true
+        paper = PaperFactory.create(paper_attrs, user)
+        expect(paper.uses_research_article_reviewer_report).to eq(true)
+      end
+    end
+
+    context "when the mmt is not configured to use the research reviewer report" do
+      it "sets the paper to not to use the research reviewer report" do
+        mmt.update_column :uses_research_article_reviewer_report, false
+        paper = PaperFactory.create(paper_attrs, user)
+        expect(paper.uses_research_article_reviewer_report).to eq(false)
+      end
+    end
+
     it "makes the creator a collaborator on the paper" do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.collaborators.first).to eq(user)

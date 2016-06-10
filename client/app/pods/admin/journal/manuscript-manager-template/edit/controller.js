@@ -47,6 +47,17 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     this.endPropertyChanges();
   },
 
+  usesResearchArticleReviewerReport: Ember.computed('model.usesResearchArticleReviewerReport', function(key, value){
+    let model = this.get('model');
+
+    // when we're not being used as a getter
+    if(value !== undefined){
+      model.set(key, value);
+      model.save();
+    }
+    return model.get(key);
+  }),
+
   resetProperties(){
     this.setProperties({ editingName: false, pendingChanges: false });
   },

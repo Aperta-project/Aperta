@@ -19,6 +19,8 @@ class PaperFactory
     Paper.transaction do
       return unless paper.valid?
         if template
+          paper.uses_research_article_reviewer_report =
+            template.uses_research_article_reviewer_report
           paper.save!
           # TODO: This requires roles & permissions tables to exist. It should
           # be possible to create a paper for testing without them.

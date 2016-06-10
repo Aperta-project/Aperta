@@ -4,6 +4,8 @@ FactoryGirl.define do
   factory :paper do
     journal
 
+    uses_research_article_reviewer_report true
+
     trait :with_integration_journal do
       association :journal, factory: :journal_with_roles_and_permissions
     end

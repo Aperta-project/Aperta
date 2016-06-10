@@ -18,6 +18,10 @@
     <ul class="question-help">{{{helpText}}}</ul>
   {{/if}}
 
+  {{#if unwrappedHelpText}}
+    {{{unwrappedHelpText}}}
+  {{/if}}
+
   <div class="flex-group {{wrapperClass}}">
     <label class="flex-element">
       {{radio-button value="accept"

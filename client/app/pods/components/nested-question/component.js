@@ -6,7 +6,6 @@ const { Component, computed } = Ember;
 export default Component.extend({
   displayQuestionText: true,
   displayQuestionAsPlaceholder: false,
-  helpText: null,
   inputClassNames: null,
   disabled: false,
   noResponseText: '[No response]',

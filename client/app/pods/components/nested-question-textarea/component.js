@@ -1,5 +1,8 @@
 import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+
 export default NestedQuestionComponent.extend({
+  helpText: null,
+  unwrappedHelpText: null,
   placeholder: null,
   displayContent: true,
   inputClassNames: ['form-control'],

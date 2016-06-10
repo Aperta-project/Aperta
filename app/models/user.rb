@@ -172,6 +172,11 @@ class User < ActiveRecord::Base
     ).first_or_create!
   end
 
+  def resign_from!(assigned_to:, role:)
+    role = get_role_for_thing(assigned_to, role)
+    assignments.where(role: role, assigned_to: assigned_to).destroy_all
+  end
+
   private
 
   # Return the role with the name `role_name` associated with a given thing.

@@ -297,6 +297,92 @@ describe User do
     end
   end
 
+  describe "#unassign_from!" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:task) { FactoryGirl.create(:task, paper: paper) }
+    let!(:role) { FactoryGirl.create(:role, name: 'role', journal: journal) }
+    let!(:user_role) { FactoryGirl.create(:role, name: 'user role', journal: nil) }
+    # role with same name on a different journal
+    let!(:decoy_journal) { FactoryGirl.create(:journal) }
+    let!(:decoy_role) { FactoryGirl.create(:role, name: 'role', journal: decoy_journal) }
+
+    shared_examples_for 'resigning from a role' do
+      it 'can be used to resign a role on a journal' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: role,
+                           assigned_to: journal)
+        expect(user).to have_role(role, journal)
+        expect { user.resign_from!(assigned_to: journal, role: role_arg) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(role, journal)
+      end
+
+      it 'can be used to resign a role on a paper' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: role,
+                           assigned_to: paper)
+        expect(user).to have_role(role, paper)
+        expect { user.resign_from!(assigned_to: paper, role: role_arg) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(role, paper)
+      end
+
+      it 'can be used to resign a role on a task' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: role,
+                           assigned_to: task)
+        expect(user).to have_role(role, task)
+        expect { user.resign_from!(assigned_to: task, role: role_arg) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(role, task)
+      end
+
+      it 'should do nothing if the user is already not assigned' do
+        expect(user).not_to have_role(role, journal)
+        expect { user.resign_from!(assigned_to: journal, role: role_arg) }
+          .not_to change { user.roles.count }
+        expect(user).not_to have_role(role, journal)
+      end
+    end
+
+    context 'when supplying a role name' do
+      let(:role_arg) { 'role' }
+
+      it_behaves_like 'resigning from a role'
+
+      it 'raises an error for a role that does not exist' do
+        expect { user.resign_from!(assigned_to: paper, role: 'Chief Pirate') }.to \
+          raise_exception(/Could not find role Chief Pirate/)
+      end
+
+      it 'raises an error if the thing passed in does not have a `journal` method' do
+        expect { user.resign_from!(assigned_to: user, role: 'Chief Pirate') }.to \
+          raise_exception(/Expected.*to respond to journal method/)
+      end
+    end
+
+    context 'when supplying role' do
+      let(:role_arg) { role }
+
+      it_behaves_like 'resigning from a role'
+
+      it 'can be used to resign from role to a thing that does not implement the `journal` method' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: user_role,
+                           assigned_to: user)
+        expect { user.resign_from!(assigned_to: user, role: user_role) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(user_role, user)
+      end
+    end
+  end
+
   describe "#create" do
     describe "roles" do
       let(:user) { User.create! attributes_for(:user) }

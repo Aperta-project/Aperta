@@ -126,12 +126,12 @@ class ProductionMedataCard(BaseCard):
     provenance.send_keys(data['provenance'])
     production_notes.send_keys(data['production_notes'])
     special_handling_instructions.send_keys(data['special_handling_instructions'])
-    # Time to save
-    time.sleep(2)
     ts = time.time()
     timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
     self._driver.save_screenshot('Output/PMD_before_closing_card-{}.png'.format(timestamp))
-    self._get(self._bottom_close_button).click()
+    self.click_completion_button()
+    # Time to save
+    time.sleep(2)    
     return data
 
    #POM Actions

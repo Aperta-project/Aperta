@@ -93,7 +93,6 @@ class ProductionMetadataCardTest(CommonTest):
     # Due to bug APERTA-6843, I have to refresh
     product_metadata_card.refresh()
     data = product_metadata_card.complete_card()
-    time.sleep(2)
     # read card data from the DB and compare
     task_id = PgSQL().query(
         'SELECT id from tasks WHERE paper_id = %s and title = %s;',

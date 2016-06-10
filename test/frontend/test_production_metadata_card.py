@@ -101,7 +101,7 @@ class ProductionMetadataCardTest(CommonTest):
         'SELECT nested_question_id, value from nested_question_answers '
         'WHERE owner_id = %s and owner_type=%s;', (task_id,'Task'))
     print 'nq', nested_queston
-    answers_in_db = [x[1] for  x in nested_queston]
+    answers_in_db = [x[1][:-1] for  x in nested_queston]
     print 'answers {}'.format(answers_in_db)
     print 'data.values: {}'.format(data.values())
     for item in data.values():

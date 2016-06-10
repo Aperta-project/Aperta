@@ -11,7 +11,11 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
 
   let(:journal) { FactoryGirl.create(:journal) }
   let(:user_role) { Role.find_by(name: Role::USER_ROLE) }
-
+  let!(:staff_admin_role) do
+    FactoryGirl.create(:role,
+                       name: 'Staff Admin',
+                       journal: journal)
+  end
   let(:task_name) { 'data:populate_initial_roles:csv' }
   let(:task_args) { ['foo'] }
 
@@ -23,15 +27,21 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
 
   context 'with a basic CSV file ' do
     let(:csv) do
-      [['Jane Doe', 'jane@example.edu', Role::USER_ROLE, nil, journal.name],
+      [['Jane Doe', 'jane@example.edu', "#{Role::USER_ROLE}, #{Role::STAFF_ADMIN_ROLE}", nil, journal.name],
        ['John Doe', 'john@example.edu', Role::USER_ROLE, nil, journal.name]]
     end
 
     it 'should insert the new users with the User role' do
       expect { run_rake_task }.to change { User.count }.by 2
       User.all.each do |user|
-        expect(user.assignments.map(&:role)).to include(user_role)
+        expect(user).to have_role(Role::USER_ROLE)
       end
+    end
+
+    it 'should add the users to the listed roles' do
+      run_rake_task
+      expect(User.find_by(email: 'jane@example.edu'))
+        .to have_role(journal.staff_admin_role, journal)
     end
   end
 
@@ -46,15 +56,12 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
                          last_name: 'Doe',
                          username: 'jroe')
     end
-    let!(:staff_admin_role) do
-      FactoryGirl.create(:role,
-                         name: 'Staff Admin',
-                         journal: journal)
-    end
 
     it 'should add the role to an existing user' do
       expect { run_rake_task }.not_to change { User.count }
-      expect(existing_user.reload.assignments.map(&:role)).to contain_exactly(user_role, staff_admin_role)
+      existing_user.reload
+      expect(existing_user).to have_role(Role::USER_ROLE)
+      expect(existing_user).to have_role(journal.staff_admin_role, journal)
     end
 
     it 'should not change the users name, username, or password' do

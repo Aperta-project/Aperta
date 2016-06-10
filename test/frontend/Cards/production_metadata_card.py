@@ -129,9 +129,9 @@ class ProductionMedataCard(BaseCard):
     ts = time.time()
     timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
     self._driver.save_screenshot('Output/PMD_before_closing_card-{}.png'.format(timestamp))
+    time.sleep(5)
     self.click_completion_button()
-    # Time to save
-    time.sleep(2)    
+    time.sleep(2)
     return data
 
    #POM Actions

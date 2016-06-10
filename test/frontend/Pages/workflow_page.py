@@ -104,7 +104,7 @@ class WorkflowPage(AuthenticatedPage):
     """Click Invite Academic Editor Card"""
     self._get(self._invite_ae_card).click()
 
-  def click_ITC_card(self):
+  def click_itc_card(self):
     """Click ITC Card"""
     self._get(self._ITC_card).click()
 

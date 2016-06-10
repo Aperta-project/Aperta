@@ -149,14 +149,14 @@ class ITCCard(BaseCard):
     Complete the Initial Tech Check card using custom or random data
     :data: List with data to complete the card. If empty,
       will generate random data.
-    :return: data used to complete the card
+    :return: list with data used to complete the card
     """
     if not data:
       # generate random data
       data = []
       for x in range(16):
         data.append(random.choice([True, False]))
-    print 'data: {}'.format(data)
+    logging.info('Data: {0}'.format(data))
     for order, checkbox in enumerate(self._gets(self._checkboxes)):
       if data[order]:
         checkbox.click()

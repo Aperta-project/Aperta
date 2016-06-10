@@ -81,7 +81,7 @@ class ITCCardTest(CommonTest):
       'submission point-by-point.',
                 }
 
-  def test_ITC_card(self):
+  def test_itc_card(self):
     """
     test_initial_tech_check: Validates the elements, styles, roles and functions of invite academic
     editors from new document creation through inviting ae, validation of the invite on the
@@ -127,13 +127,13 @@ class ITCCardTest(CommonTest):
     if not workflow_page.is_card('Initial Tech Check'):
       workflow_page.add_card('Initial Tech Check')
     # click on invite academic editor
-    ITC_card = ITCCard(self.getDriver())
-    workflow_page.click_ITC_card()
-    ITC_card.validate_styles()
-    data = ITC_card.complete_card()
-    ITC_card.click_autogenerate_btn()
+    itc_card = ITCCard(self.getDriver())
+    workflow_page.click_itc_card()
+    itc_card.validate_styles()
+    data = itc_card.complete_card()
+    itc_card.click_autogenerate_btn()
     time.sleep(2)
-    issues_text = ITC_card.get_issues_text()
+    issues_text = itc_card.get_issues_text()
     for index, checked in enumerate(data):
       if not checked and self.email_text[index]:
         assert self.email_text[index] in issues_text, \
@@ -144,17 +144,14 @@ class ITCCardTest(CommonTest):
             '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
                 index, issues_text)
     time.sleep(1)
-    ITC_card.click_send_changes_btn()
-    all_success_messages = ITC_card.get_flash_success_messages()
+    itc_card.click_send_changes_btn()
+    all_success_messages = itc_card.get_flash_success_messages()
     success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
     assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
     assert 'The author has been notified via email that changes are needed. They will also '\
         'see your message the next time they log in to see their manuscript.' in success_msgs,\
         success_msgs
     # Note: Not checking for lack of error message due to APERTA-7012
-
-
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

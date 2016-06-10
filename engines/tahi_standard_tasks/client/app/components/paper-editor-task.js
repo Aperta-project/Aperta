@@ -73,14 +73,14 @@ export default TaskComponent.extend({
       if (!this.get('selectedUser')) {
         return;
       }
-      return this.store.createRecord('invitation', {
+      this.get('store').createRecord('invitation', {
         task: this.get('task'),
         email: this.get('selectedUser.email'),
         body: this.get('invitationBody')
       }).save().then((invitation) => {
         this.get('task.invitations').addObject(invitation);
         this.set('composingEmail', false);
-        return this.set('selectedUser', null);
+        this.set('selectedUser', null);
       });
     },
 

@@ -14,6 +14,7 @@ export default Ember.Component.extend({
   overlayParticipants: null,
   emailSentStates: Ember.computed.alias('parentView.emailSentStates'),
   lastSentAt: null,
+  store: Ember.inject.service(),
 
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
@@ -71,7 +72,7 @@ export default Ember.Component.extend({
 
     addRecipient: function(newRecipient, availableRecipients) {
       var recipient, store, user;
-      store = getOwner(this).lookup('store:main');
+      store = this.get('store');
       recipient = availableRecipients.findBy('id', newRecipient.id);
       user = store.findOrPush('user', recipient);
       return this.get('recipients').addObject(recipient);

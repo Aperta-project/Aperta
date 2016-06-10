@@ -1,9 +1,9 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template';
 
 export default TaskComponent.extend(BuildsTaskTemplate, {
+  store: Ember.inject.service(),
   restless: Ember.inject.service(),
   blocks: Ember.computed.alias('task.body'),
   hasAttachments: Ember.computed.notEmpty('task.attachments'),
@@ -19,7 +19,7 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
   }),
 
   attachmentsRequest(path, method, s3Url, file) {
-    const store = getOwner(this).lookup('store:main');
+    const store = this.get('store');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
       response.attachment.filename = file.name;

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 var Ability = Ember.Object.extend({
   name: null,
@@ -30,9 +29,10 @@ var Ability = Ember.Object.extend({
 });
 
 export default Ember.Service.extend({
+  store: Ember.inject.service(),
+
   build(abilityString, resource, callback) {
 
-    this.set('store', getOwner(this).lookup('store:main'));
     let classname = resource.constructor.typeKey;
     classname = classname.charAt(0).toLowerCase() + classname.slice(1);
     const permissionId =  classname + '+' + resource.id;

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
 const { computed } = Ember;
@@ -11,6 +10,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   paper: null,
   initialCollaborations: null,
   collaborations: null,
+
+  store: Ember.inject.service(),
 
   addedCollaborations: setDiff('collaborations', 'initialCollaborations'),
   removedCollaborations: setDiff('initialCollaborations', 'collaborations'),
@@ -57,7 +58,6 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   init() {
     this._super(...arguments);
-    this.set('store', getOwner(this).lookup('store:main'));
 
     const collaborations = this.get('paper.collaborations') || [];
     this.setProperties({

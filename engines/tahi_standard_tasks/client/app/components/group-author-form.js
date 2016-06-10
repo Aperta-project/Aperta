@@ -7,10 +7,10 @@ export default Ember.Component.extend({
   author: null,
   authorProxy: null,
   validationErrors: Ember.computed.alias('authorProxy.validationErrors'),
+  store: Ember.inject.service(),
 
   init() {
     this._super(...arguments);
-    this.set('store', this.container.lookup('store:main'));
 
     if(this.get('isNewAuthor')) {
       this.initNewAuthorQuestions().then(() => {
@@ -22,7 +22,7 @@ export default Ember.Component.extend({
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'GroupAuthor' };
-    return this.store.findQuery('nested-question', q).then((nestedQuestions)=> {
+    return this.get('store').findQuery('nested-question', q).then((nestedQuestions)=> {
       this.set('nestedQuestionsForNewAuthor', nestedQuestions);
     });
   },
@@ -34,7 +34,7 @@ export default Ember.Component.extend({
   },
 
   createNewAuthor() {
-    const newAuthor = this.store.createRecord('group-author', {
+    const newAuthor = this.get('store').createRecord('group-author', {
       paper: this.get('task.paper'),
       position: 0,
       nestedQuestions: this.get('nestedQuestionsForNewAuthor')

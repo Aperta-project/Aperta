@@ -11,6 +11,8 @@ const {
 
 export default Component.extend({
   countries: service(),
+  store: service(),
+
   classNames: ['author-form', 'individual-author-form'],
   author: null,
   authorProxy: null,
@@ -20,7 +22,6 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     this.get('countries').fetch();
-    this.set('store', this.container.lookup('store:main'));
 
     if(this.get('isNewAuthor')) {
       this.initNewAuthorQuestions().then(() => {
@@ -32,7 +33,7 @@ export default Component.extend({
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'Author' };
-    return this.store.findQuery('nested-question', q).then(
+    return this.get('store').findQuery('nested-question', q).then(
       (nestedQuestions) => {
         this.set('nestedQuestionsForNewAuthor', nestedQuestions);
       });
@@ -45,7 +46,7 @@ export default Component.extend({
   },
 
   createNewAuthor() {
-    const newAuthor = this.store.createRecord('author', {
+    const newAuthor = this.get('store').createRecord('author', {
       paper: this.get('task.paper'),
       position: 0,
       nestedQuestions: this.get('nestedQuestionsForNewAuthor')

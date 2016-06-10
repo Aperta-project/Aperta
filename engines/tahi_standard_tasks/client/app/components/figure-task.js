@@ -17,7 +17,7 @@ export default TaskComponent.extend(FileUploadMixin, {
   actions: {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
-      this.store.pushPayload('figure', data);
+      this.get('store').pushPayload('figure', data);
     },
 
     destroyAttachment(attachment) {

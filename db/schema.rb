@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602225405) do
+ActiveRecord::Schema.define(version: 20160607223159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -536,6 +536,13 @@ ActiveRecord::Schema.define(version: 20160602225405) do
 
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
   add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
+
+  create_table "reference_jsons", force: :cascade do |t|
+    t.text     "name"
+    t.jsonb    "items",      default: [],              array: true
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "related_articles", force: :cascade do |t|
     t.integer  "paper_id"

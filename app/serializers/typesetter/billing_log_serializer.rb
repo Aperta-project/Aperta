@@ -107,7 +107,7 @@ module Typesetter
     end
 
     def fundRef
-      financial_disclosure_task.funding_statement
+      financial_disclosure_task.try(:funding_statement)
     end
 
     def collectionID
@@ -122,7 +122,7 @@ module Typesetter
       return unless billing_answer_for(
         'plos_billing--payment_method') == 'institutional'
       additional_data =
-        billing_task.answer_for('plos_billing--ringgold_institution').additional_data
+        billing_task.answer_for('plos_billing--ringgold_institution').try(:additional_data)
       additional_data['nav_customer_number'] if additional_data
     end
 
@@ -132,7 +132,7 @@ module Typesetter
     end
 
     def final_dispo_accept
-      final_tech_check_task.completed_at
+      final_tech_check_task.try(:completed_at)
     end
 
     def category

@@ -63,9 +63,9 @@ class Admin::JournalsController < ApplicationController
 
   def journal_params
     params.require(:admin_journal).permit(
-      :description, :doi_journal_prefix,
-      :doi_publisher_prefix, :last_doi_issued,
-      :manuscript_css, :name,
+      :description,
+      :manuscript_css,
+      :name,
       :pdf_css
     )
   end

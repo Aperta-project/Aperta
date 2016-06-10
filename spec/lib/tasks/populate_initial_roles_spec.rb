@@ -70,6 +70,45 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
       expect { run_rake_task }.not_to change { user.username }
       expect { run_rake_task }.not_to change { user.password }
     end
+
+    context 'when prefixing a role with `-`' do
+      let(:csv) do
+        [[nil, 'jane@example.edu', '-Staff Admin', nil, journal.name]]
+      end
+
+      it 'should remove the users role assignment' do
+        existing_user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+        expect(existing_user).to have_role(journal.staff_admin_role, journal)
+        expect { run_rake_task }.not_to change { User.count }
+        existing_user.reload
+        expect(existing_user).not_to have_role(journal.staff_admin_role, journal)
+      end
+    end
+
+    context 'when Role field is set to None' do
+      let(:csv) do
+        [[nil, 'jane@example.edu', 'None', nil, journal.name]]
+      end
+      let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+      let(:task) { FactoryGirl.create(:task, paper: paper) }
+      let(:paper_role) { FactoryGirl.create(:role, journal: journal) }
+      let(:task_role) { FactoryGirl.create(:role, journal: journal) }
+      it 'should remove all users roles' do
+        existing_user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+        existing_user.assign_to!(assigned_to: paper, role: paper_role)
+        existing_user.assign_to!(assigned_to: task, role: task_role)
+        expect(existing_user).to have_role(journal.staff_admin_role, journal)
+        expect(existing_user).to have_role(paper_role, paper)
+        expect(existing_user).to have_role(task_role, task)
+        expect(existing_user).to have_role('User')
+        expect { run_rake_task }.not_to change { User.count }
+        existing_user.reload
+        expect(existing_user).not_to have_role(journal.staff_admin_role, journal)
+        expect(existing_user).not_to have_role(paper_role, paper)
+        expect(existing_user).not_to have_role(task_role, task)
+        expect(existing_user).not_to have_role('User')
+      end
+    end
   end
 
   context 'with a user assigned as site admin' do

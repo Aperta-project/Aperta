@@ -28,8 +28,14 @@ namespace :data do
                   if role_name == 'Site Admin'
                     user.update_column(:site_admin, true)
                     STDERR.puts('  made site admin')
+                  elsif role_name == 'None' # remove all roles
+                    user.assignments.destroy_all
                   elsif role_name == Role::USER_ROLE
                   # Users are assigned later
+                  elsif role_name.match(/^-/) # remove roles
+                    role_name = role_name[1..-1].strip # remove `-` at beginning and strip whitespace
+                    user.resign_from!(assigned_to: journal, role: role_name)
+                    STDERR.puts("  removed #{role_name} on #{journal.name}")
                   else # Journal roles
                     user.assign_to!(assigned_to: journal, role: role_name)
                     STDERR.puts("  made #{role_name} on #{journal.name}")
@@ -38,7 +44,7 @@ namespace :data do
               end
             end
             # Ensure User role
-            user.add_user_role!
+            user.add_user_role! unless csv["Role"].try(:strip) == 'None'
           end
         end
         puts "Successfully loaded roles for #{args[:csv_url]}"

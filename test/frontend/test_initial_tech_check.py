@@ -10,6 +10,8 @@ import logging
 import random
 import time
 
+from selenium.common.exceptions import NoSuchElementException
+
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
@@ -151,7 +153,15 @@ class ITCCardTest(CommonTest):
     assert 'The author has been notified via email that changes are needed. They will also '\
         'see your message the next time they log in to see their manuscript.' in success_msgs,\
         success_msgs
-    # Note: Not checking for lack of error message due to APERTA-7012
+    # Check not error message
+    try:
+      itc_card._get(itc_card._flash_error_msg)
+      # Note: Commonting out due to APERTA-7012
+      #raise ElementExistsAssertionError('There is an unexpected error message')
+      #logging.warning('There is an error message because of APERTA-7012')
+    except NoSuchElementException:
+      pass
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

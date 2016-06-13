@@ -1,23 +1,3 @@
-{{#overlay-fullscreen visible=showCardDeleteOverlay
-                      outAnimationComplete=(action "hideCardDeleteOverlay")
-                      title="You're about to delete this card forever."
-                      overlayClass="card-delete-overlay"
-                      as |overlay|}}
-    {{card-delete model=taskToDelete
-                  close=(action overlay.animateOut)}}
-{{/overlay-fullscreen}}
-
-{{#overlay-fullscreen visible=showChooseNewCardOverlay
-                      outAnimationComplete=(action "hideChooseNewCardOverlay")
-                      title="Pick the types of cards to add"
-                      as |overlay|}}
-    {{choose-new-card journalTaskTypes=journalTaskTypes
-                      phase=addToPhase
-                      isLoading=journalTaskTypesIsLoading
-                      addTaskType=(action "addTaskType")
-                      close=(action overlay.animateOut)}}
-{{/overlay-fullscreen}}
-
 <div class="base-screen manuscript-manager-template">
   <div class="paper-type-form">
     {{#if editingName}}
@@ -54,16 +34,37 @@
                               taskMovedBetweenList=(action "taskMovedBetweenList")
                               startDragging=(action "startDragging")
                               stopDragging=(action "stopDragging")
+                              editTaskTemplate=(action "editTaskTemplate")
                               addPhase="addPhase"
                               savePhase="savePhase"
                               removeRecord="removeRecord"
                               rollbackPhase="rollbackPhase"
                               showDeleteConfirm="showCardDeleteOverlay"
-                              chooseNewCardTypeOverlay="showChooseNewCardOverlay"
-                              itemUpdated="itemUpdated"}}
+                              chooseNewCardTypeOverlay="showChooseNewCardOverlay"}}
     {{/each}}
   </div>
 </div>
+
+{{#overlay-fullscreen visible=showCardDeleteOverlay
+                      outAnimationComplete=(action "hideCardDeleteOverlay")
+                      title="You're about to delete this card forever."
+                      overlayClass="card-delete-overlay"
+                      as |overlay|}}
+    {{card-delete model=taskToDelete
+                  close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showChooseNewCardOverlay
+                      outAnimationComplete=(action "hideChooseNewCardOverlay")
+                      title="Pick the types of cards to add"
+                      as |overlay|}}
+    {{choose-new-card journalTaskTypes=journalTaskTypes
+                      phase=addToPhase
+                      isLoading=journalTaskTypesIsLoading
+                      addTaskType=(action "addTaskType")
+                      close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 
 {{#if showAdHocTaskOverlay}}
   {{overlay-ad-hoc-template

@@ -78,8 +78,20 @@ RSpec.configure do |config|
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
 
+  # These are tables which are pre-seeded and we do not wish to truncate.
+  do_not_truncate = %w(nested_questions roles permissions
+                       permission_states permission_states_permissions
+                       permissions_roles)
+  ids_to_keep = {} # table_name -> ids for the pre-seeded data
+
   config.before(:suite) do
     Warden.test_mode!
+    # Store our pre-seeded ids that we should keep around.
+    do_not_truncate.each do |table_name|
+      ids_to_keep[table_name] = ActiveRecord::Base.connection
+        .execute("SELECT id FROM #{table_name}")
+        .map { |k| k['id'].to_i }
+    end
   end
 
   config.before(:context) do
@@ -93,9 +105,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this come after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions roles permissions
-                 permission_states permissions_states_permissions
-                 permissions_roles) }
+      except: do_not_truncate }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
@@ -164,6 +174,13 @@ RSpec.configure do |config|
 
   config.append_after(:each) do
     DatabaseCleaner.clean
+  end
+
+  config.append_after(:each, js: true) do
+    # Clean up the tables that we do not truncate.
+    ids_to_keep.each do |table_name, ids|
+      ActiveRecord::Base.connection.exec_delete("DELETE FROM #{table_name} WHERE id NOT IN (#{ids.join(',')})")
+    end
   end
 
   config.after(:each) do

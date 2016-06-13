@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.ArrayController.extend(Ember.SortableMixin, {
-  sortProperties: ['isNew', 'name'],
+  sortProperties: ['isNew', 'id'],
   sortAscending: false,
 
   newJournalPresent: Ember.computed('arrangedContent.[]', function() {

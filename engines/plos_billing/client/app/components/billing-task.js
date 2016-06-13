@@ -17,11 +17,12 @@ export default TaskComponent.extend({
   init() {
     this._super(...arguments);
     this.get('countries').fetch();
+    this.get('institutionalAccounts').fetch();
   },
 
   countries: service(),
   ringgold: [],
-  institutionalAccountProgramList: DATA.institutionalAccountProgramList,
+  institutionalAccounts: service(),
   states:    DATA.states,
   pubFee:    DATA.pubFee,
   journals:  DATA.journals,

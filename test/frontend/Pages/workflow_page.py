@@ -64,6 +64,7 @@ class WorkflowPage(AuthenticatedPage):
     self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
     self._register_decision_card = (By.XPATH, "//a/div[contains(., 'Register Decision')]")
     self._reviewer_report_card = (By.XPATH, "//a/div[contains(., 'Reviewer Report')]")
+    self._ITC_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
     self._cards = (By.CSS_SELECTOR, 'div.card')
@@ -102,6 +103,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_invite_ae_card(self):
     """Click Invite Academic Editor Card"""
     self._get(self._invite_ae_card).click()
+
+  def click_itc_card(self):
+    """Click ITC Card"""
+    self._get(self._ITC_card).click()
 
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""

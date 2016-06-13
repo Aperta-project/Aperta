@@ -161,9 +161,21 @@ class AuthenticatedPage(PlosPage):
 
   # POM Actions
   def click_profile_nav(self):
-    """Click profile navigation"""
+    """
+    Click profile navigation
+    :return: None
+    """
     profile_menu_toggle = self._get(self._nav_profile_menu_toggle)
     profile_menu_toggle.click()
+    return None
+
+  def get_flash_success_messages(self):
+    """
+    Get all flash sucess messages
+    :return: A list with all flash sucess messages elements 
+    """
+    return self._gets(self._flash_success_msg)
+
 
   def validate_nav_toolbar_elements(self, permissions):
     """
@@ -800,6 +812,24 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == font_weight
     assert title.value_of_css_property('line-height') == line_height
     assert title.value_of_css_property('color') == color
+
+  @staticmethod
+  def validate_field_title_style(title):
+    """
+    Ensure consistency in rendering field titles across the application
+    :param title: title to validate
+    :return: None
+    """
+    assert application_typeface in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '20px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('font-weight') == '400', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == 'rgba(135, 135, 135, 1)', \
+        title.value_of_css_property('color')
 
   @staticmethod
   def validate_accordion_task_title(title):

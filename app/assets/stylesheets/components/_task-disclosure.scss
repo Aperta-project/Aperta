@@ -15,7 +15,7 @@ $task-disclosure-radius: 4px;
   font-size: 1.8rem;
   line-height: 4.0rem;
   cursor: pointer;
-  background: #e6e6e6;
+  background: $tahi-grey-lighter;
   z-index: 1;
   @include ellipsis;
   @include user-select(none);

@@ -20,8 +20,8 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.get('store').pushPayload('figure', data);
     },
 
-    destroyAttachment(attachment) {
-      attachment.destroyRecord();
+    destroyFigure(figure) {
+      figure.destroyRecord();
     },
 
     // get updated paper text with figure inserted

@@ -9,10 +9,6 @@ export default DS.Model.extend({
 
   createdAt: DS.attr('date'),
   description: DS.attr('string'),
-  doi: DS.attr(),
-  doiJournalPrefix: DS.attr('string'),
-  doiPublisherPrefix: DS.attr('string'),
-  lastDoiIssued: DS.attr('number'),
   logoUrl: DS.attr('string'),
   manuscriptCss: DS.attr('string'),
   name: DS.attr('string'),

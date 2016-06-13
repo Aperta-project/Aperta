@@ -6,9 +6,6 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :pdf_css,
              :manuscript_css,
              :description,
-             :doi_publisher_prefix,
-             :doi_journal_prefix,
-             :last_doi_issued,
              :paper_count,
              :created_at
   has_many :manuscript_manager_templates, embed: :ids, include: true

@@ -55,7 +55,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
   },
 
   responseToQuestion(key) {
-    return this.answerForQuestion(key)
-               .get('value');
+    var questionResponse = (this.answerForQuestion(key) || Ember.ObjectProxy.create());
+    return questionResponse.get('value');
   }
 });

@@ -35,6 +35,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - epub conversion and download
 ### Fixed
 - EPS file previews no longer have inverted colors
+- Figure placement is now much more flexible with respect to delimiters
+- When uploading multiple figures, figures will now place more reliably
 ### Security
 
 ## [1.4.12] - 2016-05-25

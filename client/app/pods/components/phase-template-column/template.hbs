@@ -17,7 +17,7 @@
                       canRemoveCard=true
                       removeTask="removeRecord"
                       showDeleteConfirm="showDeleteConfirm"
-                      action=null}}
+                      action=(action attrs.editTaskTemplate task)}}
     {{/each}}
   {{/sortable-list}}
  <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">Add New Card</a>

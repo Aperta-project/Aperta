@@ -716,7 +716,7 @@ describe PapersController do
 
   describe 'PUT reactivate' do
     subject(:do_request) do
-       put :reactivate, id: paper.to_param, format: :json
+      put :reactivate, id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
@@ -739,6 +739,12 @@ describe PapersController do
 
       it 'reactivates the paper' do
         expect(paper).to receive(:reactivate!)
+        do_request
+      end
+
+      it 'creates an Activity' do
+        expect(Activity).to receive(:paper_reactivated!)
+          .with(paper, user: user)
         do_request
       end
 
@@ -792,6 +798,12 @@ describe PapersController do
 
       it 'withdraws the paper' do
         expect(paper).to receive(:withdraw!).with(withdrawal_reason)
+        do_request
+      end
+
+      it 'creates an Activity' do
+        expect(Activity).to receive(:paper_withdrawn!)
+          .with(paper, user: user)
         do_request
       end
 

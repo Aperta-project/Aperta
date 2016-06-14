@@ -196,7 +196,7 @@ describe InvitationsController do
         expect(invitation.reviewer_suggestions).to eq('Added reviewer suggesions')
       end
 
-      it { is_expected.to responds_with(204) }
+      it { is_expected.to responds_with(200) }
     end
 
     context 'when the user is invitee' do

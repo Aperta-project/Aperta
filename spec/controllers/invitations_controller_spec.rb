@@ -198,6 +198,17 @@ describe InvitationsController do
 
       it { is_expected.to responds_with(204) }
     end
+
+    context 'when the user is invitee' do
+      before do
+        stub_sign_in FactoryGirl.create(:user)
+      end
+
+      it 'renders status 403' do
+        do_request
+        expect(response.status).to eq 403
+      end
+    end
   end
 
   describe "PUT /invitations/:id/rescind" do
@@ -305,6 +316,17 @@ describe InvitationsController do
           do_request
         end
       end
+
+      context 'when the user is invitee' do
+        before do
+          stub_sign_in FactoryGirl.create(:user)
+        end
+
+        it 'renders status 403' do
+          do_request
+          expect(response.status).to eq 403
+        end
+      end
     end
 
     describe "PUT /invitations/:id/reject" do
@@ -332,6 +354,17 @@ describe InvitationsController do
           }
           expect(Activity).to receive(:create).with hash_including(expected_activity)
           put(:reject, format: 'json', id: invitation.id)
+        end
+      end
+
+      context 'when the user is invitee' do
+        before do
+          stub_sign_in FactoryGirl.create(:user)
+        end
+
+        it 'renders status 403' do
+          do_request
+          expect(response.status).to eq 403
         end
       end
     end

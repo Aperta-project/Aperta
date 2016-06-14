@@ -162,35 +162,4 @@ class User < ActiveRecord::Base
     return unless Role.user_role
     assign_to!(assigned_to: self, role: Role.user_role)
   end
-
-  def assign_to!(assigned_to:, role:)
-    role = get_role_for_thing(assigned_to, role)
-    Assignment.where(
-      user: self,
-      role: role,
-      assigned_to: assigned_to
-    ).first_or_create!
-  end
-
-  def resign_from!(assigned_to:, role:)
-    role = get_role_for_thing(assigned_to, role)
-    assignments.where(role: role, assigned_to: assigned_to).destroy_all
-  end
-
-  private
-
-  # Return the role with the name `role_name` associated with a given thing.
-  # Return role if role is already a Role.
-  def get_role_for_thing(thing, role_name)
-    return role_name if role_name.is_a?(Role)
-
-    # role_name is a string, need to get the right role for the journal
-    journal = thing.is_a?(Journal) ? thing : thing.try(:journal)
-    unless journal
-      fail <<-ERROR.strip_heredoc
-        Expected #{thing} to be a journal or respond to journal method
-      ERROR
-    end
-    Role.find_by!(journal: journal, name: role_name)
-  end
 end

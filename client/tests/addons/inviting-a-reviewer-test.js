@@ -35,6 +35,7 @@ module("Integration: Inviting a reviewer", {
     }});
     $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 200, responseText: {}});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
+    $.mockjax({url: /\/api\/invitations\/1\/rescind/, type: 'PUT', status: 200, responseText: {}});
 
     $.mockjax({
       url: /api\/tasks\/\d+\/eligible_users\/reviewers/,
@@ -45,7 +46,6 @@ module("Integration: Inviting a reviewer", {
         users: [{ id: 1, full_name: "Aaron", email: inviteeEmail }]
       }
     });
-
   }
 });
 
@@ -78,7 +78,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
   });
 });
 
-test("can withdraw the invitation", function(assert) {
+test("can rescind the invitation", function(assert) {
   Ember.run(function() {
     let decision = FactoryGuy.make('decision', { isLatest: true });
     task.set('decisions', [decision]);

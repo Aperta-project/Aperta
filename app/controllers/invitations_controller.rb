@@ -25,10 +25,10 @@ class InvitationsController < ApplicationController
     respond_with(invitation)
   end
 
-  def destroy
+  def rescind
     task = invitation.task
     requires_user_can(:manage_invitations, task)
-    invitation.destroy
+    invitation.rescind!
     Activity.invitation_withdrawn!(invitation, user: current_user)
     respond_with(invitation)
   end

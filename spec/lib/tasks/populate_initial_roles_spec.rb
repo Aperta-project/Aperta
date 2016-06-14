@@ -9,13 +9,8 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
       .join('')
   end
 
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
   let(:user_role) { Role.find_by(name: Role::USER_ROLE) }
-  let!(:staff_admin_role) do
-    FactoryGirl.create(:role,
-                       name: 'Staff Admin',
-                       journal: journal)
-  end
   let(:task_name) { 'data:populate_initial_roles:csv' }
   let(:task_args) { ['foo'] }
 
@@ -155,18 +150,12 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   context 'extra spaces' do
     let(:csv) { [[' Jane Doe ', ' jane@example.edu ', ' Staff Admin ', nil, " #{journal.name} "]] }
 
-    let!(:staff_admin_role) do
-      FactoryGirl.create(:role,
-                         name: 'Staff Admin',
-                         journal: journal)
-    end
-
     it 'should be ignored' do
       run_rake_task
       expect(user.first_name).to eq('Jane')
       expect(user.last_name).to eq('Doe')
       expect(user.username).to eq('jane')
-      expect(user.assignments.map(&:role)).to contain_exactly(user_role, staff_admin_role)
+      expect(user.assignments.map(&:role)).to contain_exactly(user_role, journal.staff_admin_role)
     end
   end
 

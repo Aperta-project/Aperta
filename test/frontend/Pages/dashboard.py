@@ -456,8 +456,8 @@ class DashboardPage(AuthenticatedPage):
         # Split both to eliminate differences in whitespace
         db_title = title.split()
         paper_text = paper.text.split()
-        logging.error('db_title: {0}'.format(db_title))
-        logging.error('paper_text: {0}'.format(paper_text))
+        logging.debug('db_title: {0}'.format(db_title))
+        logging.debug('paper_text: {0}'.format(paper_text))
         if not title:
           logging.info('Paper id: {0}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: '
@@ -498,9 +498,12 @@ class DashboardPage(AuthenticatedPage):
         # Validate Manuscript ID display
         dbmanuid = PgSQL().query('SELECT doi '
                                  'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        dbmanuid = 'ID: {0}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
         manu_id = manu_ids[count].text
-        assert dbmanuid == manu_id, dbmanuid + ' is not equal to: ' + manu_id
+        manu_id = manu_id.split(': ')[1]
+        logging.debug(manu_id)
+        logging.debug(dbmanuid)
+        dbmanuid = 'ID: {0}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
+        assert manu_id in dbmanuid, '{0} not found in {1}'.format(manu_id, dbmanuid)
         # Finally increment counter
         count += 1
 

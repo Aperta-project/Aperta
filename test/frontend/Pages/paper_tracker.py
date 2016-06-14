@@ -207,7 +207,7 @@ class PaperTrackerPage(AuthenticatedPage):
     total_count = self.validate_heading_and_subhead(username)[0]
     logging.debug("Total count is {0}".format(total_count))
     initial_paginination = self._get(self._paper_tracker_pagination_summary)
-    assert '({0} found)'.format(total_count) in initial_paginination.text, initial_paginination.text
+    assert '{0} found'.format(total_count) in initial_paginination.text, initial_paginination.text
     assert 'Page 1 of ' in initial_paginination.text, initial_paginination.text
     try:
       next = self._get(self._paper_tracker_pagination_next)
@@ -375,7 +375,9 @@ class PaperTrackerPage(AuthenticatedPage):
         db_paper_id = db_papers[count][0]
         manid = self._get(self._paper_tracker_table_tbody_manid)
         logging.debug('Page id: ' + manid.text + '\nDB id: ' + db_ms_id)
-        assert manid.text == db_ms_id, manid.text + ' is not equal to ' + db_ms_id + ' from db.'
+        # only on publication do we use the full manuscript id, until then we strip the front
+        #   part: '10.1371/journal.' from the doi
+        assert manid.text in db_ms_id, '{0} not found in {1} from db.'.format(manid.text, db_ms_id)
 
         page_paper_id = manid.get_attribute('href').split('/')[-1]
         assert '/papers/%s' % db_paper_id in title.get_attribute('href'), \
@@ -628,8 +630,10 @@ class PaperTrackerPage(AuthenticatedPage):
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
       papers = self._get_paper_list(journal_ids, sort_by='doi')
       db_ms_id = papers[0][2].split('/')[-1]
-      assert paper_tracker_ms_id == db_ms_id, \
-          'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
+      # Until publication we only include the penultimate and ultimate dot separated parts of the
+      #   doi as manuscript id, stripping the '10.1371/journal.' part
+      assert paper_tracker_ms_id in db_ms_id, \
+          'ID in page: {0} not found in ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
       logging.info('Sorting by Manuscript ID DESC')
       self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
@@ -640,8 +644,8 @@ class PaperTrackerPage(AuthenticatedPage):
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
       papers = self._get_paper_list(journal_ids, sort_by='doi', reverse=True)
       db_ms_id = papers[0][2].split('/')[-1]
-      assert paper_tracker_ms_id == db_ms_id, \
-          'ID in page: {0} != ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
+      assert paper_tracker_ms_id in db_ms_id, \
+          'ID in page: {0} not found in ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
 
       logging.info('Sorting by Title ASC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')

@@ -28,6 +28,9 @@ namespace :data do
                   if role_name == 'Site Admin'
                     user.update_column(:site_admin, true)
                     STDERR.puts('  made site admin')
+                  elsif role_name == '-Site Admin'
+                    user.update_column(:site_admin, false)
+                    STDERR.puts('  removed site admin')
                   elsif role_name == 'None' # remove all roles
                     user.assignments.destroy_all
                   elsif role_name == Role::USER_ROLE

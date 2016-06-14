@@ -1,8 +1,6 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 
 export default TaskComponent.extend({
-  classNames: ['title-and-abstract'],
-
   // title would collide with Task.title, so using 'paperTitle' instead
   paperTitle: Ember.computed('task.paper', {
     get(key) {

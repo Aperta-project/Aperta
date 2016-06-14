@@ -5,8 +5,8 @@ import FakeCanService from '../helpers/fake-can-service';
 
 
 moduleForComponent(
-  'title-and-abstract',
-  'Integration | Component | Tasks | title_and_abstract', {
+  'title-and-abstract-task',
+  'Integration | Component | Tasks | title_and_abstract_task', {
   integration: true
 });
 
@@ -22,7 +22,7 @@ var newTask = function (){
   return {
     id: 2,
     title: 'title-and-abstract',
-    type: 'title-and-abstract',
+    type: 'title-and-abstract-task',
     completed: false,
     isMetadataTask: false,
     isSubmissionTask: false,
@@ -30,7 +30,7 @@ var newTask = function (){
   };
 };
 
-var template = hbs`{{title-and-abstract task=task can=can}}`;
+var template = hbs`{{title-and-abstract-task task=task can=can}}`;
 
 var setupEditableTask = function(context, task) {
   task = task || newTask();

@@ -2,8 +2,21 @@ namespace :data do
   namespace :populate_initial_roles do
     require 'open-uri'
     require 'csv'
-    desc "This populates the initial roles based upon a CSV file"
-    task :csv, [:csv_url] => [:environment] do |t, args|
+    desc <<-DESC.strip_heredoc
+      This populates the initial roles based upon a CSV file.
+
+      Examples:
+        rake  data:populate_initial_roles[path/to/local/file.csv]
+        rake  data:populate_initial_roles[http://example.com/some.csv]
+
+      The CSV file should have the format:
+        Name,Email,Role,Journals
+        Jane Doe,jane@example.edu,Site Admin,Biology and Things
+        John Doe,john@example.edu,Staff Admin,Biology and Things
+        John Roe,roe@example.edu,User,Biology and Things
+        ...
+      DESC
+    task :csv, [:csv_url] => [:environment] do |_, args|
       if args[:csv_url].present?
         CSV.parse(open(args[:csv_url]), row_sep: :auto, headers: :first_row) do |csv|
           if csv["Email"].present?

@@ -21,6 +21,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   ID. Sent NED ID and email for corresponding author in billing log
 - Updated dois to the format 10.1371/journal.pbio.2000001 instead of
   10.1371/pbio.2000001
+- Allow all characters in usernames
 ### Deprecated
 ### Removed
 ### Fixed

@@ -70,15 +70,26 @@ describe User do
     it 'validates against blank username' do
       user = FactoryGirl.build(:user, username: '')
       expect(user).to_not be_valid
-      expect(user.errors.size).to eq 2
-      expect(user.errors.to_a.first).to eq "Username can't be blank"
-      expect(user.errors.to_a.last).to eq "Username is invalid"
+      expect(user.errors.to_a).to contain_exactly("Username can't be blank")
     end
 
-    it 'validates against a username with periods' do
+    it 'allows a username with periods' do
       user = FactoryGirl.build(:user, username: 'blah.blah')
-      expect(user).not_to be_valid
-      expect(user.errors.size).to eq 1
+      expect(user).to be_valid
+    end
+
+    it 'allows a username with with utf-8' do
+      user = FactoryGirl.build(:user, username: 'bláh blàh')
+      expect(user).to be_valid
+
+      user = FactoryGirl.build(:user, username: '😻')
+      expect(user).to be_valid
+
+      user = FactoryGirl.build(:user, username: 'Лев Никола́евич Толсто́й')
+      expect(user).to be_valid
+
+      user = FactoryGirl.build(:user, username: '李尧棠')
+      expect(user).to be_valid
     end
   end
 

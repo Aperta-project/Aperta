@@ -33,8 +33,9 @@ class ReviseManuscriptTest(CommonTest):
      - Upload files to Response to Reviewers (NOTE: Testing only one file due to APERTA-6672)
      - Fill a response in a text area in Response to Reviewers
   """
-  def test_response_to_reviewers(self):
+  def _test_response_to_reviewers(self):
     """
+    NOTE: Disabled due to bug APERTA-6994
     test_revise_manuscript: Functional test of revise task. This test walks through the path to
     create an article, make a decision about the manuscript and the author will use the revise task
     card.

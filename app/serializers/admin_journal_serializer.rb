@@ -6,9 +6,6 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :pdf_css,
              :manuscript_css,
              :description,
-             :doi_publisher_prefix,
-             :doi_journal_prefix,
-             :last_doi_issued,
              :paper_count,
              :created_at
   has_many :manuscript_manager_templates, embed: :ids, include: true
@@ -20,7 +17,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
   end
 
   def journal_task_types
-    # TODO: refactor this woraround with a more general solution in this ticket:
+    # TODO: refactor this workaround as per this ticket:
     # https://developer.plos.org/jira/browse/APERTA-5490
     exluded_types = ['PlosBioTechCheck::ChangesForAuthorTask',
                      'TahiStandardTasks::ReviewerReportTask',

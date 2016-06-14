@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Model.extend({
   journalTaskType: DS.belongsTo('journal-task-type', { async: false }),
@@ -6,6 +7,6 @@ export default DS.Model.extend({
   position: DS.attr('number'),
   template: DS.attr(),
   title: DS.attr('string'),
-
-  type: 'adHocTemplate'
+  type: 'adHocTemplate',
+  kind: Ember.computed.alias('journalTaskType.kind')
 });

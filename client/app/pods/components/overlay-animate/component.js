@@ -117,7 +117,9 @@ export default Ember.Component.extend({
     const method = this.get('type') + 'In';
 
     this[method]().then(()=> {
-      this.get('inAnimationComplete')();
+      if (!this.get('isDestroyed')) {
+        this.get('inAnimationComplete')();
+      }
     });
   },
 
@@ -125,7 +127,9 @@ export default Ember.Component.extend({
     const method = this.get('type') + 'Out';
 
     this[method]().then(()=> {
-      this.get('outAnimationComplete')();
+      if (!this.get('isDestroyed')) {
+        this.get('outAnimationComplete')();
+      }
     });
   },
 

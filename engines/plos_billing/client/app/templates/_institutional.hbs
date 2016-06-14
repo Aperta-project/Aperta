@@ -25,12 +25,16 @@
 
   <div class="form-group required {{if validationErrors.affiliation "error"}}">
     {{error-message message=null}}
-    {{nested-question-select ident="plos_billing--ringgold_institution"
-                      owner=task
-                      placeholder="Select an Institution"
-                      source=institutionalAccountProgramList
-                      enable=isEditable
-                      width="350"}}
+    {{#if institutionalAccounts.loaded}}
+      {{nested-question-select ident="plos_billing--ringgold_institution"
+                        owner=task
+                        placeholder="Select an Institution"
+                        source=institutionalAccounts.data
+                        enable=isEditable
+                        width="350"
+                        errors=validationErrors.plos_billing--ringgold_institution
+                        }}
+    {{/if}}
   </div>
 </div>
 {{/if}}

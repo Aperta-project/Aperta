@@ -8,9 +8,15 @@ export default TaskComponent.extend(FileUploadMixin, {
   }),
 
   figures: Ember.computed(
-     'task.paper.figures.@each.rank', function() {
-      return (this.get('task.paper.figures') || [])
-                .sortBy('rank');
+    'task.paper.figures.@each.rank', function() {
+      let figs = this.get('task.paper.figures');
+      if (Ember.isPresent(figs)) {
+        let labelled = figs.filterBy('rank').sortBy('rank');
+        let unlabelled = figs.rejectBy('rank');
+        return labelled.concat(unlabelled);
+      } else {
+        return [];
+      }
     }
   ),
 

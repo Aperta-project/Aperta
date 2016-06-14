@@ -65,9 +65,13 @@ class Figure < ActiveRecord::Base
   end
 
   def rank
-    return unless title
+    return 0 unless title
     number_match = title.match /\d+/
-    number_match[0].to_i if number_match
+    if number_match
+      number_match[0].to_i
+    else
+      0
+    end
   end
 
   private

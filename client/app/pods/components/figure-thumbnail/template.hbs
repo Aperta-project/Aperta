@@ -15,11 +15,13 @@
       <div class="right-column">
         <div class="{{if editState "edit-"}}info">
           {{#if editState}}
-            <div class="field title">
-              {{input placeholder="Enter a title"
-              class="attachment-title-field"
-              autofocus="autofocus"
-              value=figure.title}}
+            <div class="title">
+              <h2>Fig.
+                {{input type="number"
+                autofocus="autofocus"
+                min=1
+                value=rank}}
+              </h2>
             </div>
             <div class="field striking">
               <label>
@@ -64,6 +66,11 @@
                 done="uploadFinished"
                 cancel="cancelUploads"}}
             </div>
+            {{#if figureIsUnlabeled}}
+              {{error-message message=unlabeledFigureMessage
+                              displayIcon=true
+                              displayText=true}}
+            {{/if}}
           {{/if}}
 
         </div>
@@ -74,6 +81,7 @@
           </div>
         {{/if}}
       </div>
+
       {{#if isEditable}}
         <div class="edit-icons">
           <span class="fa fa-pencil" {{action "toggleEditState"}}></span>

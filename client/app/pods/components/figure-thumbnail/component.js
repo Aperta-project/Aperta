@@ -18,6 +18,22 @@ export default Ember.Component.extend({
   editState: false,
   isProcessing: Ember.computed.equal('figure.status', 'processing'),
   showSpinner: Ember.computed.or('isProcessing', 'isUploading'),
+  rank: Ember.computed('figure.rank', {
+    get() {
+      return this.get('figure.rank') || 1;
+    },
+    set(key, value) {
+      this.set('figure.title', `Fig. ${value}`);
+      return value;
+    }
+  }),
+
+  figureIsUnlabeled: Ember.computed.not('figure.rank'),
+
+  unlabeledFigureMessage: `
+    Sorry, we didn't find a figure label in this filename.
+    Please edit to add a label. `,
+
 
   figureUrl: Ember.computed('figure.id', function() {
     return `/api/figures/${this.get('figure.id')}/update_attachment`;

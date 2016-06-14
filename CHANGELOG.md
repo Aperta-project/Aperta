@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.14] - {2016-06-08}
+### Added
 - Aperta validates its environment when booting and fails fast with human
   readable error messages when not-valid. This is a non-user facing addition.
 - Added The Francis Crick Institute to institutional accounts

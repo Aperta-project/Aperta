@@ -8,16 +8,15 @@ export default TaskComponent.extend(FileUploadMixin, {
   }),
 
   figures: Ember.computed(
-    'task.paper.figures.[]', 'task.paper.figures.@each.createdAt', function() {
+     'task.paper.figures.@each.rank', function() {
       return (this.get('task.paper.figures') || [])
-                .sortBy('createdAt').reverse();
+                .sortBy('rank');
     }
   ),
 
   actions: {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
-      this.get('store').pushPayload('figure', data);
     },
 
     destroyFigure(figure) {

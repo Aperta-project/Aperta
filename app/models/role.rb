@@ -37,7 +37,7 @@ class Role < ActiveRecord::Base
 
   def self.user_role
     # This should never change.
-    @user_role || Role.find_by(name: Role::USER_ROLE)
+    @user_role ||= Role.find_by(name: Role::USER_ROLE)
   end
 
   def self.ensure_exists(name, journal: nil,

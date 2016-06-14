@@ -62,7 +62,7 @@ export default TaskComponent.extend({
     },
 
     destroyInvitation(invitation) {
-      return invitation.destroyRecord();
+      return invitation.rescind();
     },
 
     didSelectUser(selectedUser) {

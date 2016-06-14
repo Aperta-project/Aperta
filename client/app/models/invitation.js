@@ -28,5 +28,15 @@ export default DS.Model.extend({
 
   accept() {
     this.set('state', 'accepted');
+  },
+
+ restless: Ember.inject.service('restless'),
+ rescind() {
+   return this.get('restless')
+    .put(`/api/invitations/${this.get('id')}/rescind`)
+    .then((data) => {
+      this.unloadRecord();
+      return this;
+    });
   }
 });

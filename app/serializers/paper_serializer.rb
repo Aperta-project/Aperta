@@ -1,5 +1,5 @@
 class PaperSerializer < LitePaperSerializer
-  attributes :id, :short_title, :title, :doi, :body,
+  attributes :id, :short_title, :title, :doi, :body, :abstract,
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement

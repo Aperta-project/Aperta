@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   validates :first_name, length: { maximum: 255 }
   validates :last_name, length: { maximum: 255 }
 
-  validates :ned_id, uniqueness: true
+  validates :ned_id, uniqueness: true, allow_nil: true
   validates_with NedValidator
 
   mount_uploader :avatar, AvatarUploader

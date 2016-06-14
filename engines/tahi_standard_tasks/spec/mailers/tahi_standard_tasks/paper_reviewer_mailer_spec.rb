@@ -48,35 +48,4 @@ describe TahiStandardTasks::PaperReviewerMailer do
       end
     end
   end
-
-  describe ".notify_rescission" do
-    let(:invitation) { create :invitation, task: task, email: "foo@bar.com" }
-
-    let(:email) do
-      described_class.notify_rescission(
-        recipient_email: invitation.email,
-        recipient_name: invitation.invitee.full_name,
-        paper_id: invitation.paper.id
-      )
-    end
-
-    it_behaves_like 'an invitation notification email', email_identifier_word: 'rescinded'
-
-    specify do
-      title = task.paper.display_title(sanitized: false)
-      expect(email.body).to match(/#{title}/)
-    end
-
-    describe "email content and formatting" do
-      it "has correct subject line" do
-        expect(email.subject).to eq "Your invitation to be a reviewer has been rescinded for the manuscript, \"#{task.paper.display_title}\""
-      end
-    end
-
-    describe "email body content" do
-      it "includes appropriate body text" do
-        expect(email.body).to include "Invitation Rescinded"
-      end
-    end
-  end
 end

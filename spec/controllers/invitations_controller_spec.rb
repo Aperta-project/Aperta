@@ -167,9 +167,9 @@ describe InvitationsController do
     end
   end
 
-  describe "DELETE /invitations/:id" do
+  describe "PUT /invitations/:id/rescind" do
     subject(:do_request) do
-      delete(:destroy, {
+      delete(:rescind, {
         format: "json",
         id: invitation.to_param
       })
@@ -198,7 +198,7 @@ describe InvitationsController do
       end
 
       context "Invitation with invitee" do
-        it "deletes the invitation queues up email job" do
+        it "deletes the invitation" do
           expect do
             do_request
           end.to change { task.invitations.count }.by -1
@@ -214,7 +214,7 @@ describe InvitationsController do
           expect(invitation.invitee).to be nil
         end
 
-        it "deletes the invitation queues up email job" do
+        it "deletes the invitation" do
           expect do
             do_request
           end.to change { task.invitations.count }.by -1

@@ -11,27 +11,72 @@ class FigureInserter
 
   def call
     remove_figures
-    sorted_figures.each { |figure| insert_figure figure }
+    process_all_figures
     @html_tree.to_html
   end
 
   private
 
+  def figures_by_label
+    @figures.select(&:attachment?)
+      .each_with_object({}) do |fig, accum|
+        accum[fig.rank] = fig
+      end
+  end
+
+  def process_all_figures
+    captions = captions_by_label
+
+    figures_by_label.each do |label, figure|
+      if captions[label]
+        insert_figure(figure, captions[label])
+      else
+        append_figure(figure)
+      end
+    end
+  end
+
+  def captions_by_label
+    find_possible_caption_nodes
+      .each_with_object({}) do |node, accum|
+        figure_regex.match(node_text(node)) do |match|
+          matched_label = match["label"].to_i
+          accum[matched_label] ||= node
+        end
+      end
+  end
+
+  def insert_figure(figure, caption_node)
+    caption_node.add_previous_sibling node_for_figure(figure)
+  end
+
+  def append_figure(figure)
+    @html_tree.add_child node_for_not_found_figure(figure)
+  end
+
+  def find_possible_caption_nodes
+    match_test = "Fig"
+    # match paragraph tags that contain the text
+    # or whose children contain the text
+    selectors = ["p[text()^='#{match_test}']", "p *[text()^='#{match_test}']"]
+
+    @html_tree.css(*selectors).map do |node|
+      node.at_xpath('./ancestor-or-self::p')
+    end
+  end
+
+  # matches Fig. 1, Figure 25, etc.
+  # returns the label digits as 'label' in its MatchData
+  def figure_regex
+    /^Fig(ure|\.)?\s+(?<label>\d+)/
+  end
+
+  def node_text(node)
+    node.inner_text.rstrip.lstrip.gsub(/[[:space:]]+/, ' ')
+  end
+
   def remove_figures
     @html_tree.search('.//img').remove
-  end
-
-  def sorted_figures
-    @figures.select(&:attachment?).sort_by { |f| f.rank || 0 }
-  end
-
-  def insert_figure(figure)
-    node = find_caption_node figure.rank
-    if node
-      node.add_previous_sibling node_for_figure(figure)
-    else
-      @html_tree.add_child node_for_not_found_figure(figure)
-    end
   end
 
   def node_for_figure(figure)
@@ -55,31 +100,5 @@ class FigureInserter
     else
       figure.detail_src(cache_buster: true)
     end
-  end
-
-  ##
-  # Finds a caption label node.
-  #
-  # Caption nodes are <p> tags starting with a sentence labelling the figure
-  # number. For example "<p>Fig. 1.</p>" is a caption node. They are also
-  # considered to be whatever <p> tag surrounds a node containing that sentence.
-  # For instance in "<p><em>Fig. 1.<em></p>" the <p> node will be returned by
-  # this function
-
-  def find_caption_node(figure_id)
-    return unless figure_id.is_a? Numeric
-    figure_names = ["Figure #{figure_id}",
-                    "Fig #{figure_id}",
-                    "Fig. #{figure_id}"]
-    delimiters = %w(. : - - –) # period, colon, hyphen, n-dash, m-dash
-    possible_matches = figure_names.product(delimiters).map(&:join)
-
-    selectors = possible_matches.flat_map do |match_test|
-      ["p[text()^='#{match_test}']",
-       "p [text()^='#{match_test}']"]
-    end
-
-    node = @html_tree.at_css(*selectors)
-    node.at_xpath('./ancestor-or-self::p') if node
   end
 end

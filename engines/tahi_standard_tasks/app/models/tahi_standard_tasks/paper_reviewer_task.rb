@@ -30,14 +30,6 @@ module TahiStandardTasks
       )
     end
 
-    def invitation_rescinded(invitation)
-      PaperReviewerMailer.delay.notify_rescission(
-        recipient_email: invitation.email,
-        recipient_name: invitation.recipient_name,
-        paper_id: invitation.paper.id
-      )
-    end
-
     def array_attributes
       super + [:reviewer_ids]
     end

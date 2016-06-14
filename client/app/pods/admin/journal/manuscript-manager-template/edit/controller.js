@@ -64,7 +64,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   actions: {
     hideAdHocTaskOverlay() {
-      this.set('showAdHocTaskOverlay', false);
+      this.setProperties({
+        showAdHocTaskOverlay: false,
+        pendingChanges: true
+      });
     },
 
     showChooseNewCardOverlay(phase) {
@@ -157,7 +160,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     addPhase(position){
-
       this.get('phaseTemplates').forEach(function(phaseTemplate) {
         if (phaseTemplate.get('position') >= position) {
           phaseTemplate.incrementProperty('position');
@@ -188,6 +190,15 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     saveTemplateOnClick(transition){
       this.saveTemplate(transition);
+    },
+
+    editTaskTemplate(taskTemplate){
+      if (taskTemplate.get('kind') === 'Task') {
+        this.setProperties({
+          showAdHocTaskOverlay: true,
+          adHocTaskToDisplay: taskTemplate
+        });
+      }
     },
 
     cancel(){

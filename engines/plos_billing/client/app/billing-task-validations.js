@@ -1,16 +1,31 @@
-const pfaCheck = function(task) {
-  return task.responseToQuestion('plos_billing--payment_method') !== 'pfa';
+const matchesPaymentOption = function(task, answer) {
+  return task.responseToQuestion('plos_billing--payment_method') == answer;
 };
 
-const message = `Must be a number and contain no symbols,
+const numberMessage = `Must be a number and contain no symbols,
                 or letters, e.g. $1,000.00 should be written 1000`;
+
+const ringgoldMessage = `Must be a string`;
 
 const PFA_VALIDATION = {
   type: 'number',
   allowBlank: true,
   onlyInteger: true,
-  message: message
+  message: numberMessage
 };
+
+const RINGGOLD_VALIDATION = {
+  type: 'presence',
+  message: ringgoldMessage
+};
+
+const RINGGOLD_VALIDATION_WITH_SKIP = $.extend({
+  skipCheck(key) {
+    const task      = this.get('task');
+    const RINGGOLD  = matchesPaymentOption(task, 'institutional');
+    return !RINGGOLD;
+  }
+}, RINGGOLD_VALIDATION);
 
 // Note: These answers depend on the value of other questions
 // For example:
@@ -21,7 +36,7 @@ const PFA_VALIDATION_WITH_SKIP = $.extend({
   skipCheck(key) {
     const parentKey = key.slice(0, -1);
     const task      = this.get('task');
-    const notPFA    = pfaCheck(task);
+    const notPFA    = !matchesPaymentOption(task, 'pfa');
     const notActive = !(task.responseToQuestion(parentKey));
     return notPFA || notActive;
   }
@@ -45,7 +60,9 @@ export default {
 
   'plos_billing--pfa_amount_to_pay': [$.extend({
     skipCheck() {
-      return pfaCheck(this.get('task'));
+      return !matchesPaymentOption(this.get('task'), 'pfa');
     }
   }, PFA_VALIDATION)],
+
+  'plos_billing--ringgold_institution': [RINGGOLD_VALIDATION_WITH_SKIP]
 };

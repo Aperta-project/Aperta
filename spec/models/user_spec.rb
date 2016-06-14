@@ -276,12 +276,12 @@ describe User do
 
       it 'raises an error for a role that does not exist' do
         expect { user.assign_to!(assigned_to: paper, role: 'Chief Pirate') }.to \
-          raise_exception(/Could not find role Chief Pirate/)
+          raise_exception(ActiveRecord::RecordNotFound)
       end
 
       it 'raises an error if the thing passed in does not have a `journal` method' do
         expect { user.assign_to!(assigned_to: user, role: 'Chief Pirate') }.to \
-          raise_exception(/Expected.*to respond to journal method/)
+          raise_exception(/Expected.*to be a journal or respond to journal method/)
       end
     end
 
@@ -357,12 +357,12 @@ describe User do
 
       it 'raises an error for a role that does not exist' do
         expect { user.resign_from!(assigned_to: paper, role: 'Chief Pirate') }.to \
-          raise_exception(/Could not find role Chief Pirate/)
+          raise_exception(ActiveRecord::RecordNotFound)
       end
 
       it 'raises an error if the thing passed in does not have a `journal` method' do
         expect { user.resign_from!(assigned_to: user, role: 'Chief Pirate') }.to \
-          raise_exception(/Expected.*to respond to journal method/)
+          raise_exception(/Expected.*to be a journal or respond to journal method/)
       end
     end
 

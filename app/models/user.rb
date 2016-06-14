@@ -182,19 +182,15 @@ class User < ActiveRecord::Base
   # Return the role with the name `role_name` associated with a given thing.
   # Return role if role is already a Role.
   def get_role_for_thing(thing, role_name)
-    return role_name if role_name.is_a? Role
+    return role_name if role_name.is_a?(Role)
+
     # role_name is a string, need to get the right role for the journal
-    journal = if thing.class == Journal
-                thing
-              else
-                fail StandardError,
-                     "Expected #{thing} to respond to journal method" \
-                  unless thing.respond_to?(:journal)
-                thing.journal
-              end
-    role = Role.find_by(journal: journal, name: role_name)
-    fail StandardError, "Could not find role #{role_name} for #{journal}" \
-      unless role
-    role
+    journal = thing.is_a?(Journal) ? thing : thing.try(:journal)
+    unless journal
+      fail <<-ERROR.strip_heredoc
+        Expected #{thing} to be a journal or respond to journal method
+      ERROR
+    end
+    Role.find_by!(journal: journal, name: role_name)
   end
 end

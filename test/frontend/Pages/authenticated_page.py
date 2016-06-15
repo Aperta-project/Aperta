@@ -407,10 +407,10 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def get_db_submission_data(manu_id):
     """
-    Provided a manuscript ID, queries the database for current publishing_state, gradual_engagement state, and any
-      submitted_at date/time object if present
+    Provided a manuscript ID, queries the database for current publishing_state, gradual_engagement
+      state, and any submitted_at date/time object if present
     :param manu_id: ID of paper to query
-    :return: a tuple
+    :return: a tuple of (publishing_state, gradual_engagement (boolean), submitted_at (date/time))
     """
     submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                     'FROM papers '

@@ -162,6 +162,5 @@ class ITCCardTest(CommonTest):
     except NoSuchElementException:
       pass
 
-
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

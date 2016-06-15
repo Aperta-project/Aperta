@@ -15,25 +15,6 @@ from frontend.Pages.authenticated_page import AuthenticatedPage, application_typ
 
 __author__ = 'sbassi@plos.org'
 
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
-
-external_editorial_users = [cover_editor_login,
-                            handling_editor_login,
-                            academic_editor_login,
-                            ]
-
 
 class BaseCard(AuthenticatedPage):
   """

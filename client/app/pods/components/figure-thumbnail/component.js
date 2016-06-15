@@ -12,6 +12,7 @@ export default Ember.Component.extend({
   figure: null,
   isEditable: null,
 
+  isUploading: false,
   destroyState: false,
   previewState: false,
   editState: false,

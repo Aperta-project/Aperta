@@ -38,10 +38,10 @@ module('Integration: Submitting Paper', {
     });
     paper = FactoryGuy.make('paper', { journal: journal, phases: [phase], tasks: [task] });
 
-    TestHelper.handleFind(paper);
+    TestHelper.mockFind('paper').returns({model: paper});
 
-    TestHelper.handleFindAll('discussion-topic', 1);
-    TestHelper.handleFindAll('journal', 0);
+    TestHelper.mockFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('journal', 0);
 
     Factory.createPermission('Paper', paper.id, ['submit']);
     $.mockjax({url: `/api/papers/${paper.id}`, type: 'put', status: 204 });

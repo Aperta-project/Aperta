@@ -6,7 +6,7 @@ moduleFor('service:can', 'Unit: Can Service Permissions', {
   needs: ['model:permission', 'model:paper'],
   beforeEach(){
     this.App = startApp();
-    this.store = this.App.__container__.lookup('store:main');
+    this.store = this.App.__container__.lookup('service:store');
     this.container = this.App.__container__;
     let store = this.store;
 

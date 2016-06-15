@@ -78,7 +78,7 @@ export default TaskComponent.extend({
       if (!this.get('selectedReviewer')) {
         return;
       }
-      return this.store.createRecord('invitation', {
+      return this.get('store').createRecord('invitation', {
         task: this.get('task'),
         email: this.get('selectedReviewer.email'),
         body: this.get('invitationBody')

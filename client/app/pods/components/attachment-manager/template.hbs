@@ -18,7 +18,9 @@
 {{/each}}
 
 {{#if uploadInProgress}}
-  {{upload-preview upload=fileUpload}}
+  {{#each fileUploads as |f|}}
+    {{upload-preview upload=f}}
+  {{/each}}
 {{else}}
 
   {{#if showAddButton}}

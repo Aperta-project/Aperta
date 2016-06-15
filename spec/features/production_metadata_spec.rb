@@ -4,8 +4,8 @@ feature 'Production Metadata Card', js: true do
   let(:admin) { create :user, site_admin: true, first_name: 'Admin' }
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) do
-     create :paper, :with_integration_journal, :with_tasks, creator: author
-   end
+    create :paper, :with_integration_journal, :with_tasks, creator: author
+  end
   let(:production_metadata_task) do
     create :production_metadata_task, paper: paper, phase: paper.phases.first
   end
@@ -16,7 +16,7 @@ feature 'Production Metadata Card', js: true do
   end
 
   describe 'completing a Production Metadata card' do
-    describe 'adding a volumne number' do
+    describe 'adding a volume number' do
       it 'does not allows alphas to be entered' do
         fill_in('production_metadata--volume_number', with: 'alpha characters')
         volume_number_input = page.first("input[name='production_metadata--volume_number']")
@@ -69,7 +69,7 @@ feature 'Production Metadata Card', js: true do
     end
 
     context 'clicking complete' do
-       describe 'with invalid input in required fields' do
+      describe 'with invalid input in required fields' do
         it 'shows an error'do
           find('.task-completed').click
           expect(find(".volume-number")).to have_text("Must be a whole number")

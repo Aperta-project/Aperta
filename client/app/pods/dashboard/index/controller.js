@@ -80,12 +80,12 @@ export default Ember.Controller.extend({
         invitation.accept();
 
         // Force the user's papers to load
-        this.store.find('paper');
+        this.store.findAll('paper');
       }.bind(this));
     },
 
     showNewManuscriptOverlay() {
-      const journals = this.store.find('journal');
+      const journals = this.store.findAll('journal');
       const paper = this.store.createRecord('paper', {
         journal: null,
         paperType: null,

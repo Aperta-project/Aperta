@@ -77,7 +77,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
 
       const journalId = this.get('model.journal.id');
-      this.store.find('adminJournal', journalId).then(adminJournal => {
+      this.store.findRecord('admin-journal', journalId).then(adminJournal => {
         this.setProperties({
           journalTaskTypes: adminJournal.get('journalTaskTypes'),
           journalTaskTypesIsLoading: false
@@ -96,7 +96,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       let hasAdHocType = false;
 
       taskTypeList.forEach((taskType) => {
-        const newTaskTemplate = this.store.createRecord('taskTemplate', {
+        const newTaskTemplate = this.store.createRecord('task-template', {
           title: taskType.get('title'),
           journalTaskType: taskType,
           phaseTemplate: phaseTemplate,
@@ -166,7 +166,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         }
       });
 
-      this.store.createRecord('phaseTemplate', {
+      this.store.createRecord('phase-template', {
         name: 'New Phase',
         manuscriptManagerTemplate: this.get('model'),
         position: position
@@ -207,9 +207,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         this.resetProperties();
         this.transitionToRoute('admin.journal', this.get('journal'));
       } else {
-        this.store.unloadAll('taskTemplate');
-        this.store.unloadAll('phaseTemplate');
-        this.get('model').rollback();
+        this.store.unloadAll('task-template');
+        this.store.unloadAll('phase-template');
+        this.get('model').rollbackAttributes();
         this.get('journal').reload().then(() => {
           this.resetProperties();
         });

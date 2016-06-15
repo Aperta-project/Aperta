@@ -33,7 +33,7 @@ test 'Changing phase name', (assert) ->
   adminJournal = FactoryGuy.make('admin-journal', id: 1)
   mmt = FactoryGuy.make('manuscript-manager-template', id: 1, journal: adminJournal)
   pt = FactoryGuy.make('phase-template', id: 1, manuscriptManagerTemplate: mmt, name: "Phase 1")
-  TestHelper.handleFind(adminJournal)
+  TestHelper.mockFind('admin-journal').returns(model: adminJournal)
 
   columnTitleSelect = 'h2.column-title:contains("Phase 1")'
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
@@ -51,7 +51,7 @@ test 'Adding an Ad-Hoc card', (assert) ->
   adminJournal = FactoryGuy.make('admin-journal', id: 1, journalTaskTypes: [journalTaskType])
   mmt = FactoryGuy.make('manuscript-manager-template', id: 1, journal: adminJournal)
   pt = FactoryGuy.make('phase-template', id: 1, manuscriptManagerTemplate: mmt, name: "Phase 1")
-  TestHelper.handleFind(adminJournal)
+  TestHelper.mockFind('admin-journal').returns(model: adminJournal)
 
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('.button--green:contains("Add New Card")')
@@ -98,7 +98,7 @@ test 'User cannot edit a non Ad-Hoc card', (assert) ->
   adminJournal = FactoryGuy.make('admin-journal', id: 1, journalTaskTypes: [journalTaskType])
   mmt = FactoryGuy.make('manuscript-manager-template', id: 1, journal: adminJournal)
   pt = FactoryGuy.make('phase-template', id: 1, manuscriptManagerTemplate: mmt, name: "Phase 1")
-  TestHelper.handleFind(adminJournal)
+  TestHelper.mockFind('admin-journal').returns(model: adminJournal)
 
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('.button--green:contains("Add New Card")')

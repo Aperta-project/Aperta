@@ -21,7 +21,7 @@
   <td class="paper-tracker-members-column">
     {{#each paper.simplifiedRelatedUsers as |role|}}
     <div class="paper-tracker-users-group">
-      <span>{{pluralize-string string=role.name count=role.users.length}}:</span>
+      <span>{{role.users.length}} {{pluralize-string string=role.name count=role.users.length}}:</span>
       {{comma-separated-user-list users=role.users}}
     </div>
     {{/each}}

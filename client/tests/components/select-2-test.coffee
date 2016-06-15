@@ -6,6 +6,8 @@
 server = null
 
 moduleForComponent 'select-2', 'Unit: components/select-2',
+  unit: true
+
   beforeEach: ->
     startApp()
     server = setupMockServer()

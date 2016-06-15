@@ -2,6 +2,7 @@
 `import startApp from '../helpers/start-app'`
 `import { test } from 'ember-qunit'`
 `import FactoryGuy from 'ember-data-factory-guy'`
+`import { build, make, makeList } from 'ember-data-factory-guy'`
 `import Factory from '../helpers/factory'`
 `import TestHelper from "ember-data-factory-guy/factory-guy-test-helper"`
 
@@ -24,14 +25,14 @@ module 'Integration: Commenting',
 test 'A card with more than 5 comments has the show all comments button', (assert) ->
   expect(3)
 
-  paper = FactoryGuy.make("paper")
-  comments = FactoryGuy.makeList("comment", 10)
-  task = FactoryGuy.make("task", paper: paper, comments: comments)
+  paper    = make("paper")
+  comments = makeList("comment", 10)
+  task     = make("task", paper: paper, comments: comments)
   Factory.createPermission('Paper', paper.id, ['view'])
   Factory.createPermission('Task', task.id, ['view', 'edit'])
 
-  TestHelper.handleFind(paper)
-  TestHelper.handleFind(task)
+  TestHelper.mockFind('paper').returns(model: paper)
+  TestHelper.mockFind('task').returns(model: task)
 
   visit("/papers/#{paper.get("id")}/tasks/#{task.get("id")}")
 
@@ -48,13 +49,13 @@ test 'A card with less than 5 comments doesnt have the show all comments button'
   expect(3)
 
   paper = FactoryGuy.make("paper")
-  comments = FactoryGuy.makeList("comment", 3)
+  comments = makeList("comment", 3)
   task = FactoryGuy.make("task", paper: paper, comments: comments)
   Factory.createPermission('Paper', paper.id, ['view'])
   Factory.createPermission('Task', task.id, ['view', 'edit'])
 
-  TestHelper.handleFind(paper)
-  TestHelper.handleFind(task)
+  TestHelper.mockFind('paper').returns(model: paper)
+  TestHelper.mockFind('task').returns(model: task)
 
   visit("/papers/#{paper.get("id")}/tasks/#{task.get("id")}")
 
@@ -67,13 +68,13 @@ test 'A task with a commentLook shows up as unread and deletes its comment look'
   expect(4)
 
   paper = FactoryGuy.make("paper")
-  comments = FactoryGuy.makeList("comment", 2, "unread")
+  comments = makeList("comment", 2, "unread")
   task = FactoryGuy.make("task", paper: paper, comments: comments)
   Factory.createPermission('Paper', paper.id, ['view'])
   Factory.createPermission('Task', task.id, ['view', 'edit'])
 
-  TestHelper.handleFind(paper)
-  TestHelper.handleFind(task)
+  TestHelper.mockFind('paper').returns(model: paper)
+  TestHelper.mockFind('task').returns(model: task)
 
   andThen ->
     comments.forEach (comment) ->

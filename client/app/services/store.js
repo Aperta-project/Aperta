@@ -2,23 +2,11 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Store.extend({
-  push(type, data, _partial) {
+  push(data) {
     if (!data){
-      return;
+      return; // if we've managed to get falsey data don't try to push it in
     }
-
-    let oldRecord;
-    let oldType = type;
-    let dataType = data.type;
-    let modelType = oldType;
-
-    if (dataType && (this.modelFor(oldType) !== this.modelFor(dataType))) {
-      modelType = dataType;
-      if (oldRecord = this.getById(oldType, data.id)) {
-        this.dematerializeRecord(oldRecord);
-      }
-    }
-    return this._super(this.modelFor(modelType), data, _partial);
+    return this._super(data);
   },
 
   getPolymorphic(modelName, id) {
@@ -26,7 +14,7 @@ export default DS.Store.extend({
     if (modelName === "task" && (task = this.findTask(id))) {
       return task;
     } else {
-      return this.getById(modelName, id);
+      return this.peekRecord(modelName, id);
     }
   },
 
@@ -35,7 +23,7 @@ export default DS.Store.extend({
       return tm.idToRecord[id];
     });
     if (matchingTask) {
-      return this.getById(matchingTask.type.modelName, id);
+      return this.peekRecord(matchingTask.type.modelName, id);
     }
   },
 

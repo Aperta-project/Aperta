@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import TestHelper, { mockSetup, mockTeardown } from 'ember-data-factory-guy/factory-guy-test-helper';
 import Factory from '../helpers/factory';
 import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
@@ -22,7 +22,6 @@ const openNewAuthorForm = function() {
 module('Integration: adding an author', {
   afterEach() {
     server.restore();
-    Ember.run(function() { TestHelper.teardown(); });
     Ember.run(App, 'destroy');
   },
 
@@ -37,14 +36,15 @@ module('Integration: adding an author', {
     });
 
     Factory.createPermission('AuthorsTask', taskId, ['edit']);
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     const task = records[1];
 
     // -- Paper Setup
 
     const paperPayload = Factory.createPayload('paper');
-    paperId = paperPayload.id;
+    let paper = paperPayload.createRecord('Paper', {id: 1});
+    paperId = paper.id;
     paperPayload.addRecords(records.concat([fakeUser]));
     const paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
@@ -139,6 +139,7 @@ module('Integration: adding an author', {
 
 test('can add a new author', function(assert) {
     const firstName = 'James';
+    TestHelper.mockCreate('author');
 
     visit(`/papers/${paperId}/tasks/${taskId}`);
     openNewAuthorForm();
@@ -154,36 +155,40 @@ test('can add a new author', function(assert) {
 });
 
 test('validation works', function(assert) {
-  visit(`/papers/${paperId}/tasks/${taskId}`);
-  openNewAuthorForm();
-  click('.author-form-buttons .button-secondary:contains("done")');
-  click('.author-task-item-view-text');
-  click('.author-form-buttons .button-secondary:contains("done")');
+  Ember.run(function() {
+    TestHelper.mockCreate('author');
 
-  andThen(function() {
-    assert.elementFound(
-      '[data-test-id="author-first-name"].error',
-      'presence error on first name'
-    );
-    assert.elementFound(
-      '[data-test-id="author-last-name"].error',
-      'presence error on last name'
-    );
-    assert.elementFound(
-      '[data-test-id="author-initial"].error',
-      'presence error on initial'
-    );
-    assert.elementFound(
-      '[data-test-id="author-email"].error',
-      'presence error on email'
-    );
-    assert.elementFound(
-      '[data-test-id="author-affiliation"].error',
-      'presence error on affiliation'
-    );
-    assert.elementFound(
-      '[data-test-id="author-government"] .error-message:visible',
-      'presence error on government'
-    );
+    visit(`/papers/${paperId}/tasks/${taskId}`);
+    openNewAuthorForm();
+    click('.author-form-buttons .button-secondary:contains("done")');
+    click('.author-task-item-view-text');
+    click('.author-form-buttons .button-secondary:contains("done")');
+
+    andThen(function() {
+      assert.elementFound(
+        '[data-test-id="author-first-name"].error',
+        'presence error on first name'
+      );
+      assert.elementFound(
+        '[data-test-id="author-last-name"].error',
+        'presence error on last name'
+      );
+      assert.elementFound(
+        '[data-test-id="author-initial"].error',
+        'presence error on initial'
+      );
+      assert.elementFound(
+        '[data-test-id="author-email"].error',
+        'presence error on email'
+      );
+      assert.elementFound(
+        '[data-test-id="author-affiliation"].error',
+        'presence error on affiliation'
+      );
+      assert.elementFound(
+        '[data-test-id="author-government"] .error-message:visible',
+        'presence error on government'
+      );
+    });
   });
 });

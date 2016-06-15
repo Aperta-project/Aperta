@@ -90,11 +90,9 @@ var newTask = function() {
 };
 
 var stubStoreCreateRecord = function(fn, context) {
-  var mockContainer = new Ember.Container();
-  mockContainer.register('store:main', Ember.Object.extend({
+  context.register('service:store', Ember.Object.extend({
     createRecord: fn
   }));
-  context.set('container', mockContainer);
 };
 
 var stubAutocompleteUser = function(returnVal, context) {

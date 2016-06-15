@@ -43,7 +43,7 @@ module.exports = function(environment) {
 
   if (environment === 'development') {
     if(Error && Error.stackTraceLimit) {
-      Error.stackTraceLimit = 50;
+      Error.stackTraceLimit = 25;
     }
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;

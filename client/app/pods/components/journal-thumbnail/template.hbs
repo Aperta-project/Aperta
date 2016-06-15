@@ -78,7 +78,7 @@
         {{partial "svg/default-journal-logo"}}
       {{/if}}
     </div>
-    <span class="journal-thumbnail-paper-count">{{pluralize journal.paperCount "article"}}</span>
+    <span class="journal-thumbnail-paper-count">{{journal.paperCount}} {{pluralize-string count=journal.paperCount string="article"}}</span>
     <h3 class="journal-thumbnail-name">{{journal.name}}</h3>
     <p>{{journal.description}}</p>
   {{/link-to}}

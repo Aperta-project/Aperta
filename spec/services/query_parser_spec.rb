@@ -61,6 +61,13 @@ describe QueryParser do
         SQL
       end
 
+      it 'parses raw title queries with extra spaces' do
+        parse = QueryParser.new.parse ' composite abuse     scale '
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          to_tsvector('english', "papers"."title") @@ to_tsquery('english', 'composite&abuse&scale')
+        SQL
+      end
+
       it 'parses framed title queries' do
         q = 'TITLE IS composite abuse scale (AND other things)'
         parse = QueryParser.new.parse q

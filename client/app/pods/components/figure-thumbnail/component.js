@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ValidationErrorsMixin, {
   classNameBindings: ['destroyState:_destroy', 'editState:_edit'],
 
   /**
@@ -18,6 +19,22 @@ export default Ember.Component.extend({
   editState: false,
   isProcessing: Ember.computed.equal('figure.status', 'processing'),
   showSpinner: Ember.computed.or('isProcessing', 'isUploading'),
+
+  validations: {
+    'rank': [{
+      type: 'inline',
+      message: 'Figure label must be unique',
+      validation() {
+        let rank = this.get('figure.rank');
+        if (rank === 0) { return true; };
+
+        let count = this.get('figure.paper.figures').filterBy('rank', rank).get('length');
+
+        return count === 1;
+      }
+    }]
+  },
+
   rank: Ember.computed('figure.rank', {
     get() {
       return this.get('figure.rank') || 1;
@@ -26,6 +43,11 @@ export default Ember.Component.extend({
       this.set('figure.title', `Fig. ${value}`);
       return value;
     }
+  }),
+
+  rankErrorMessage: Ember.computed('figure.paper.figures.@each.rank', function() {
+    this.validate('rank');
+    return this.get('validationErrors.rank');
   }),
 
   figureIsUnlabeled: Ember.computed.not('figure.rank'),

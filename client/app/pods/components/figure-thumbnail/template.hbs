@@ -23,6 +23,11 @@
                 value=rank}}
               </h2>
             </div>
+
+            {{error-message message=rankErrorMessage
+                            displayIcon=true
+                            displayText=true}}
+
             <div class="field striking">
               <label>
                 {{check-box checked=figure.strikingImage}}
@@ -35,12 +40,17 @@
               {{if figure.title figure.title "Figure title"}}
             </h2>
 
+            {{error-message message=rankErrorMessage
+                            displayIcon=true
+                            displayText=true}}
+
             {{#if figure.strikingImage}}
               <div class="striking">
                 <span class="fa fa-check"></span> This is the striking image
               </div>
             {{/if}}
           {{/if}}
+
 
           <div class="download-link">
             <a target="_blank"

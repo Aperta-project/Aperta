@@ -19,7 +19,8 @@
 
 
   <div id="figure-list">
-      {{#each figures key="id" as |figure|}}
+    {{#liquid-bind figures as |figuresVersion|}}
+      {{#each figuresVersion key="id" as |figure|}}
         {{figure-thumbnail figure=figure
                            destroyFigure=(action "destroyFigure")
                            uploadFinished=(action "uploadFinished")
@@ -28,6 +29,7 @@
                            processingFinished=(action "processingFinished")
                            isEditable=isEditable}}
       {{/each}}
+    {{/liquid-bind}}
   </div>
 
 

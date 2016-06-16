@@ -137,12 +137,12 @@ class InviteAECard(BaseCard):
     else:
       assert 'Rejected' in status.text, status.text
 
-  def check_style(self, user):
+  def check_style(self, user, paper_id):
     """
     Style check for the card
     :user: User to send the invitation
     """
-    self.validate_common_elements_styles()
+    self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Invite Academic Editor'
     self.validate_application_title_style(card_title)

@@ -12,9 +12,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import prod_staff_login, reviewer_login
+from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.basecard import users, editorial_users
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -84,7 +83,7 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_card_elements_styles()
+    invite_reviewers.validate_card_elements_styles(paper_id)
     logging.info('Paper id is: {0}.'.format(paper_id))
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
@@ -100,6 +99,7 @@ class InviteReviewersCardTest(CommonTest):
                                               manuscript_title,
                                               creator_user,
                                               paper_id)
+    logging.info('Revoking invite for {0}'.format(prod_staff_login['name']))
     invite_reviewers.revoke_invitee(prod_staff_login, 'Reviewer')
     invite_reviewers.click_close_button()
     time.sleep(.5)

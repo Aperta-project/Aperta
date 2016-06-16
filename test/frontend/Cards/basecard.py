@@ -1,5 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+Common methods for all cards (workflow view) that are inherited by specific card instances
+"""
 import logging
 import time
 
@@ -8,6 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, internal_editor_login, staff_admin_login, super_admin_login, prod_staff_login, \
     pub_svcs_login, cover_editor_login, handling_editor_login, academic_editor_login
@@ -25,7 +29,11 @@ class BaseCard(AuthenticatedPage):
     super(BaseCard, self).__init__(driver)
 
     # Common element for all cards
-    self._header_link = (By.CSS_SELECTOR, 'a.task-overlay-paper-title')
+    self._header_author = (By.CLASS_NAME, 'paper-creator')
+    self._header_manuscript_id = (By.CLASS_NAME, 'paper-manuscript-id')
+    self._header_paper_type = (By.CLASS_NAME, 'paper-type')
+    self._header_paper_state = (By.CLASS_NAME, 'paper-publishing-state')
+    self._header_title_link = (By.CSS_SELECTOR, 'a.task-overlay-paper-title')
     self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._close_button = (By.CSS_SELECTOR, 'a.overlay-close-button')
     self._card_heading = (By.CSS_SELECTOR, 'h1.overlay-body-title')
@@ -141,20 +149,63 @@ class BaseCard(AuthenticatedPage):
     self._get(self._notepad_toggle_icon).click()
     return self
 
-  @staticmethod
-  def validate_card_header_title(title):
+  def validate_card_header(self, paper_id):
     """
     Validate the card heading header style
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
-        title.value_of_css_property('font-family')
+    paper_tuple = PgSQL().query('SELECT papers.journal_id, papers.doi, '
+                                'papers.paper_type, papers.publishing_state, papers.title '
+                                'FROM papers WHERE papers.id=%s;', (paper_id,))[0]
+    journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
+                                                 paper_tuple[3], paper_tuple[4]
+    manuscript_id = doi.split('journal.')[1]
+    status = status.replace('_', ' ').capitalize()
+    logging.info('{0}'.format(status))
+    role_id = PgSQL().query('SELECT id FROM roles '
+                            'WHERE name=\'Creator\' AND journal_id=%s;', (journal_id,))[0][0]
+    name_tuple = PgSQL().query('SELECT users.first_name, users.last_name '
+                               'FROM users JOIN assignments '
+                               'ON users.id = assignments.user_id '
+                               'WHERE role_id = %s '
+                               'AND assigned_to_type=\'Paper\' '
+                               'AND assigned_to_id = %s;', (role_id, paper_id))[0]
+    full_name = ' '.join([name_tuple[0], name_tuple[1]])
+    logging.info('{0}'.format(full_name))
+    # Validate Content
+    html_header_author = self._get(self._header_author)
+    assert html_header_author.text == full_name, '{0} != {1}'.format(html_header_author.text,
+                                                                     full_name)
+    html_header_msid = self._get(self._header_manuscript_id)
+    assert html_header_msid.text == manuscript_id, '{0} != {1}'.format(html_header_msid.text,
+                                                                       manuscript_id)
+    html_header_paper_type = self._get(self._header_paper_type)
+    assert html_header_paper_type.text == paper_type, '{0} != ' \
+                                                      '{1}'.format(html_header_paper_type.text,
+                                                                   paper_type)
+    html_header_state = self._get(self._header_paper_state)
+    assert html_header_state.text == status, '{0} != {1}'.format(html_header_state.text, status)
+    html_header_title = self._get(self._header_title_link)
+    assert html_header_title.text.strip() == title.strip(), \
+        '{0} != {1}'.format(html_header_title.text, title)
+    # Validate Styles
+    assert application_typeface in html_header_author.value_of_css_property('font-family'), \
+      html_header_author.value_of_css_property('font-family')
+    assert application_typeface in html_header_msid.value_of_css_property('font-family'), \
+      html_header_msid.value_of_css_property('font-family')
+    assert application_typeface in html_header_paper_type.value_of_css_property('font-family'), \
+      html_header_paper_type.value_of_css_property('font-family')
+    assert application_typeface in html_header_state.value_of_css_property('font-family'), \
+      html_header_state.value_of_css_property('font-family')
+    assert application_typeface in html_header_title.value_of_css_property('font-family'), \
+      html_header_title.value_of_css_property('font-family')
     # APERTA-6497
-    # assert title.value_of_css_property('font-size') == '18px', \
-    #    title.value_of_css_property('font-size')
-    assert title.value_of_css_property('color') == tahi_green, title.value_of_css_property('color')
+    # assert html_header_title.value_of_css_property('font-size') == '18px', \
+    #    html_header_title.value_of_css_property('font-size')
+    assert html_header_title.value_of_css_property('color') == tahi_green, \
+        paper_id.value_of_css_property('color')
     # APERTA-6497
-    # assert title.value_of_css_property('line-height') == '23px', \
-    #    title.value_of_css_property('line-height')
+    # assert html_header_title.value_of_css_property('line-height') == '23px', \
+    #    html_header_title.value_of_css_property('line-height')
 
   @staticmethod
   def validate_plus_style(plus):
@@ -171,20 +222,16 @@ class BaseCard(AuthenticatedPage):
     assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
     assert plus.text == '+', plus.text
 
-  def validate_common_elements_styles(self):
-    """Validate styles from elements common to all cards"""
-    header_link = self._get(self._header_link)
-    self.validate_card_header_title(header_link)
-    manuscript_icon = self._get(self._manuscript_icon)
-    icon_svg = manuscript_icon.find_element_by_xpath(
-      "//*[local-name() = 'path']").get_attribute('d')
-    assert icon_svg == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
-                        'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,'
-                        '18.9l-4-43.4c-0.1-1.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  '
-                        'h-16.2c-1.6,0-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8c0.1,'
-                        '1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-27.6l3.7,9.8c0.4,1.2,1.5,'
-                        '1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,'
-                        '406.2-168,403.5-171.3,403.5z'), icon_svg
+  def validate_common_elements_styles(self, paper_id):
+    """
+    Validate styles from elements common to all cards
+    :param paper_id: id of paper - needed to validate the card header elements
+    :return void function
+    """
+
+    self._get(self._header_title_link)
+    self.validate_card_header(paper_id)
+
     # Close btn
     close_btn = self._get(self._close_button)
     self.validate_secondary_big_green_button_style(close_btn)
@@ -251,10 +298,12 @@ class BaseCard(AuthenticatedPage):
     for invitation in invited:
       pagefullname = invitation.find_element(*self._invitee_full_name)
       revoke = invitation.find_element(*self._invitee_revoke)
-      logging.info('Checking assignee ({0}) for invite to be {1}'.format(invitee['name'], role))
+      logging.info('Checking for match between invitee to be revoked: {0} and '
+                   'invitation listing {1}'.format(invitee['name'], pagefullname.text))
       if invitee['name'] in pagefullname.text:
         logging.info('Removing role {0} for {1}'.format(role, invitee['name']))
         revoke.click()
+        time.sleep(5)
     self._validate_invitation_revocation(invitee, role)
 
   def validate_invitation(self, invitee, role):

@@ -49,12 +49,12 @@ class InviteReviewersCard(BaseCard):
     self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
 
   # POM Actions
-  def validate_card_elements_styles(self):
+  def validate_card_elements_styles(self, paper_id):
     """
     This method validates the styles of the card elements including the common card elements
     :return void function
     """
-    self.validate_common_elements_styles()
+    self.validate_common_elements_styles(paper_id)
 
   def invite_reviewer(self, reviewer):
     """

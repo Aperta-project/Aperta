@@ -1,0 +1,52 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@2.11.3
+3 info using node@v0.12.7
+4 verbose readDependencies loading dependencies from /Users/mercieca/MH-Projects/tahi/package.json
+5 verbose install where, deps [ '/Users/mercieca/MH-Projects/tahi', [ 'bower' ] ]
+6 verbose install where, peers [ '/Users/mercieca/MH-Projects/tahi', [] ]
+7 verbose installManyTop reading for lifecycle /Users/mercieca/MH-Projects/tahi/package.json
+8 info preinstall tahi@1.0.0
+9 verbose installManyTop reading scoped package data from /Users/mercieca/MH-Projects/tahi/node_modules/bower/package.json
+10 verbose readDependencies loading dependencies from /Users/mercieca/MH-Projects/tahi/package.json
+11 verbose targetResolver reading package data from /Users/mercieca/MH-Projects/tahi/node_modules/bower/package.json
+12 verbose targetResolver reading package data from /Users/mercieca/MH-Projects/tahi/node_modules/.bin/bower/package.json
+13 verbose already installed skipping bower@^1.7.7 /Users/mercieca/MH-Projects/tahi
+14 silly install resolved []
+15 info build /Users/mercieca/MH-Projects/tahi
+16 info linkStuff tahi@1.0.0
+17 silly linkStuff tahi@1.0.0 has /Users/mercieca/MH-Projects as its parent node_modules
+18 verbose linkBins tahi@1.0.0
+19 verbose linkMans tahi@1.0.0
+20 verbose rebuildBundles tahi@1.0.0
+21 verbose rebuildBundles [ '.bin', 'bower' ]
+22 info install tahi@1.0.0
+23 info postinstall tahi@1.0.0
+24 verbose unsafe-perm in lifecycle true
+25 info tahi@1.0.0 Failed to exec postinstall script
+26 verbose stack Error: tahi@1.0.0 postinstall: `./bin/heroku_install`
+26 verbose stack Exit status 1
+26 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+26 verbose stack     at EventEmitter.emit (events.js:110:17)
+26 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+26 verbose stack     at ChildProcess.emit (events.js:110:17)
+26 verbose stack     at maybeClose (child_process.js:1015:16)
+26 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+27 verbose pkgid tahi@1.0.0
+28 verbose cwd /Users/mercieca/MH-Projects/tahi
+29 error Darwin 15.4.0
+30 error argv "node" "/usr/local/bin/npm" "install"
+31 error node v0.12.7
+32 error npm  v2.11.3
+33 error code ELIFECYCLE
+34 error tahi@1.0.0 postinstall: `./bin/heroku_install`
+34 error Exit status 1
+35 error Failed at the tahi@1.0.0 postinstall script './bin/heroku_install'.
+35 error This is most likely a problem with the tahi package,
+35 error not with npm itself.
+35 error Tell the author that this fails on your system:
+35 error     ./bin/heroku_install
+35 error You can get their info via:
+35 error     npm owner ls tahi
+35 error There is likely additional logging output above.
+36 verbose exit [ 1, true ]

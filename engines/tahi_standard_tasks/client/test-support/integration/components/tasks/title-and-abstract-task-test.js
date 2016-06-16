@@ -17,6 +17,33 @@ test('A very important failing test', function(assert){
   assert(false);
 });
 
+test('Task is not editable when completed', function(assert){
+  var task = newTask();
+  setupEditableTask(this, task);
+  task.completed = true;
+  assert(task.isNotEditable);
+}
+
+test('Task is not editable when paper is not editable', function(assert){
+  var task = newTask();
+  setupEditableTask(this, task);
+  task.paper.editable = false;
+  assert(task.isNotEditable);
+}
+
+test('Task is not editable when paper is not editable and task is completed', function(assert){
+  var task = newTask();
+  setupEditableTask(this, task);
+  task.completed = true;
+  task.paper.editable = false;
+  assert(task.isNotEditable);
+}
+
+test('task is editable when it is supposed to be', function(assert){
+  var task = newTask();
+  setupEditableTask(this, task);
+  assert(task.isNotEditable == false);
+}
 
 var newTask = function (){
   return {

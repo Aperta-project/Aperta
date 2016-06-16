@@ -122,23 +122,19 @@ class ProductionMedataCard(BaseCard):
     special_handling_instructions = self._get(self._special_handling_instructions)
     publication_date.send_keys(data['date']+Keys.ENTER)
     volume_number.click()
+    # following 1 sec sleep is for background recording data at server
     time.sleep(1)
     volume_number.send_keys(data['volume']+Keys.ENTER)
     time.sleep(1)
     issue_number.send_keys(data['issue']+Keys.ENTER)
     time.sleep(1)
-    provenance.send_keys(data['provenance']+Keys.ENTER)
+    provenance.send_keys(data['provenance']+Keys.TAB)
     time.sleep(1)
-    production_notes.send_keys(data['production_notes']+Keys.ENTER)
+    production_notes.send_keys(data['production_notes']+Keys.TAB)
     time.sleep(1)
-    special_handling_instructions.send_keys(data['special_handling_instructions']+Keys.ENTER)
-    #provenance.click()
-    ts = time.time()
-    timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
-    self._driver.save_screenshot('Output/PMD_before_closing_card-{}.png'.format(timestamp))
-    time.sleep(5)
+    special_handling_instructions.send_keys(data['special_handling_instructions']+Keys.TAB)
+    time.sleep(1)
     self.click_completion_button()
-    time.sleep(2)
     return data
 
    #POM Actions

@@ -19,12 +19,13 @@ export default Ember.Component.extend({
       var $dragToResize = this.$('div.drag-to-resize');
       if (msie > 0 || trident > 0 || edge > 0) {
         var $document = $(document);
+        var dragOffset = $dragToResize.data('drag-offset');
         $dragToResize.on('mousedown', function(e) {
           e.preventDefault();
 
           $document.on('mousemove', function(e) {
             e.preventDefault();
-            $textarea.css('height', e.screenY - $textarea.offset().top - 70);
+            $textarea.css('height', e.screenY - $textarea.offset().top - dragOffset);
           });
         });
 

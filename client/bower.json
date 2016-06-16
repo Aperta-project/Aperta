@@ -8,7 +8,7 @@
     "ember-cli-test-loader": "0.2.1",
     "ember-data": "1.0.0-beta.18",
     "ember-load-initializers": "0.1.7",
-    "ember-pusher": "0.1.0",
+    "ember-pusher": "ivanvotti/ember-pusher-component#0.1.0",
     "ember-qunit": "0.4.16",
     "ember-qunit-notifications": "0.1.0",
     "ember-resolver": "0.1.21",

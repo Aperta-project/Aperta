@@ -1,20 +1,20 @@
 namespace :db do
 
   desc "Dumps the database to db/APP_NAME.dump"
-  task :dump => :environment do
+  task dump_database: :environment do
     cmd = nil
     with_config do |app, host, db, user|
-      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.dump"
+      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{ENV['APP_NAME'].downcase}.dump"
     end
     puts cmd
     exec cmd
   end
 
   desc "Restores the database dump at db/APP_NAME.dump."
-  task :restore => :environment do
+  task restore_database: :environment do
     cmd = nil
     with_config do |app, host, db, user|
-      cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{app}.dump"
+      cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{ENV['APP_NAME'].downcase}.dump"
     end
     Rake::Task["db:drop"].invoke
     Rake::Task["db:create"].invoke

@@ -41,7 +41,7 @@ setup.log
 # Other
 bin/eventsource
 dump.rdb
-db/tahi.dump
+db/aperta.dump
 spring
 
 # ignore Gemfile.lock in engines/

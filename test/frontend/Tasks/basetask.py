@@ -7,6 +7,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Pages.authenticated_page import AuthenticatedPage
 
 __author__ = 'jgray@plos.org'
@@ -87,3 +88,32 @@ class BaseTask(AuthenticatedPage):
     :return: Version string
     """
     return self._get(self._versioned_metadata_version_string).text
+
+  def check_flash_messages(self, expected_msg, timeout=15):
+    """
+    Used to check that a success message fired and that an error message did not. For the time
+      being, only log a warning, do not fail the test.
+    :return:
+    """
+    self.set_timeout(timeout)
+    all_success_messages = self.get_flash_success_messages()
+    success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
+    for msg in all_success_messages:
+      logging.info(msg.text)
+      try:
+        assert expected_msg in msg.text
+        found = True
+      except AssertionError:
+        continue
+    if not found:
+      raise(AssertionError, '{0} not found in success messages.'.format(expected_msg))
+    # Check not error message
+    try:
+      error_msg = self._get(self._flash_error_msg)
+      self.restore_timeout()
+      # Note: Commenting out due to APERTA-7012
+      # raise ElementExistsAssertionError('There is an unexpected error message')
+      logging.warning('WARNING: An error message fired on saving card')
+      logging.warning(error_msg.text)
+    except ElementDoesNotExistAssertionError:
+      pass

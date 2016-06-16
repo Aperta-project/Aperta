@@ -58,7 +58,7 @@ class AssignTeamCard(BaseCard):
     self.validate_common_elements_styles()
     title = self._get(self._card_heading)
     assert 'Assign Team' in title.text, title.text
-    # self.validate_card_header_title(title)
+    # self.validate_card_header(title)
 
   def assign_role(self, person, role):
     """

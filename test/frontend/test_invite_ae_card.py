@@ -14,9 +14,8 @@ from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login
+    super_admin_login, academic_editor_login, users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.basecard import users, editorial_users
 from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -80,7 +79,7 @@ class InviteAECardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
-    invite_ae_card.check_style(academic_editor_login)
+    invite_ae_card.check_style(academic_editor_login, paper_id)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',

@@ -5,7 +5,10 @@ class Paper::Updated::MarkTitleAndAbstractIncomplete
     paper = event_data[:record]
 
     unless paper.processing
-      tasks = paper.tasks.where(type: "TahiStandardTasks::TitleAndAbstractTask")
+      tasks = paper.tasks.select do |task|
+        task.type == "TahiStandardTasks::TitleAndAbstractTask"
+      end
+
       tasks.map do |task|
         task.completed = false
         task.save!

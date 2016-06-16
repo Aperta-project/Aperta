@@ -101,6 +101,15 @@ namespace :nginx do
   end
 end
 
+namespace :cleanup do
+  desc "Cleanup node temp files" # Prevents running out of inodes
+  task :tmp do
+    on release_roles(fetch(:assets_roles)) do
+      execute :rm, '-rf', '/tmp/npm-*'
+    end
+  end
+end
+
 # Hack to fake a puma.rb config, which we do not have on a worker
 before 'deploy:check:linked_files', :remove_junk do
   on roles(:db, :worker) do
@@ -112,3 +121,5 @@ after 'deploy:finished', 'puma:restart'
 
 after 'deploy:finished', 'sidekiq:restart'
 after 'deploy:finished', 'nginx:start'
+
+after 'deploy:finished', 'cleanup:tmp'

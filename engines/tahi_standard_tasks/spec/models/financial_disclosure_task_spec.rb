@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::FinancialDisclosureTask do
+  describe '.restore_defaults' do
+    include_examples '<Task class>.restore_defaults update title to the default'
+    include_examples '<Task class>.restore_defaults update old_role to the default'
+  end
+
   describe '#funders association' do
     let!(:task) do
       FactoryGirl.create(:financial_disclosure_task, funders: [funder])

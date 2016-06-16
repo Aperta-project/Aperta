@@ -17,6 +17,13 @@ FactoryGirl.define do
     old_role "admin"
   end
 
+  factory :cover_letter_task, class: 'TahiStandardTasks::CoverLetterTask' do
+    phase
+    paper
+    title "Cover Letter"
+    old_role "author"
+  end
+
   factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do
     phase
     paper
@@ -135,13 +142,6 @@ FactoryGirl.define do
     paper
     title "Invitable Task"
     old_role "user"
-  end
-
-  factory :cover_letter_task, class: "TahiStandardTasks::CoverLetterTask" do
-    phase
-    paper
-    title "Cover Letter"
-    old_role "author"
   end
 
   factory :metadata_task, class: 'MockMetadataTask' do

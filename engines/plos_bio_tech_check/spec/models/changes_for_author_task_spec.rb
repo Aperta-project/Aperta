@@ -12,6 +12,11 @@ describe PlosBioTechCheck::ChangesForAuthorTask do
     task.save!
   end
 
+  describe '.restore_defaults' do
+    include_examples '<Task class>.restore_defaults update title to the default'
+    include_examples '<Task class>.restore_defaults update old_role to the default'
+  end
+
   describe "#notify_changes_for_author" do
     it "queues an email to send" do
       expect { task.notify_changes_for_author }

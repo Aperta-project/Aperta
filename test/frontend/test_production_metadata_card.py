@@ -100,19 +100,24 @@ class ProductionMetadataCardTest(CommonTest):
     nested_queston = PgSQL().query(
         'SELECT nested_question_id, value from nested_question_answers '
         'WHERE owner_id = %s and owner_type=%s;', (task_id,'Task'))
+    answers_in_db = [x[1].replace('\n','') for  x in nested_queston]
+    logging.info('nested_queston {0}'.format(nested_queston))
+    logging.info('answers in DB {0}'.format(answers_in_db))
+    logging.info('data values {0}'.format(data.values()))
+    logging.info('data {0}'.format(data))
+    for item in data.values():
+      assert item in answers_in_db,  (item, answers_in_db)
+    """
     # get Publication Date id
     date_id = PgSQL().query(
         'SELECT id from nested_questions WHERE ident = %s;',
         ('production_metadata--publication_date',))
-    answers_in_db = [x[1] for  x in nested_queston]
     for item in nested_queston:
       if item[0] == int(date_id[0][0]):
         assert item[1] in answers_in_db,  (item, answers_in_db)
         # TODO: Find a way to save other fields in a consistent way
         break
-    logging.info('nested_queston {0}'.format(nested_queston))
-    logging.info('answers in DB {0}'.format(answers_in_db))
-    logging.info('data values {0}'.format(data.values()))
+    """
     workflow_page.logout()
 
 if __name__ == '__main__':

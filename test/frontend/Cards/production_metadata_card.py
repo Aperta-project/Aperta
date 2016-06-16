@@ -36,12 +36,12 @@ class ProductionMedataCard(BaseCard):
     self._volume_number_field = (By.CLASS_NAME, 'volume-number')
     self._issue_number_field = (By.CLASS_NAME, 'issue-number')
 
-  def check_style(self):
+  def check_style(self, paper_id):
     """
     Style check for the card
     :return: None
     """
-    self.validate_common_elements_styles()
+    self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Production Metadata'
     self.validate_application_title_style(card_title)

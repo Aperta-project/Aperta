@@ -88,7 +88,7 @@ class ProductionMetadataCardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_production_metadata_card()
     product_metadata_card = ProductionMedataCard(self.getDriver())
-    product_metadata_card.check_style()
+    product_metadata_card.check_style(paper_id)
     # test content, it should be saved
     # Due to bug APERTA-6843, I have to refresh
     product_metadata_card.refresh()
@@ -106,7 +106,7 @@ class ProductionMetadataCardTest(CommonTest):
     logging.info('data {0}'.format(data))
     for item in data.values():
       # TODO: Find a way to save other fields in a consistent way
-      if len(item)<12:
+      if 2<len(item)<12:
         assert item in answers_in_db,  (item, answers_in_db)
     workflow_page.logout()
 

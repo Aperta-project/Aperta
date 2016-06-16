@@ -5,6 +5,11 @@ describe Tahi::AssignTeam::AssignTeamTask do
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:journal) { FactoryGirl.create(:journal) }
 
+  describe '.restore_defaults' do
+    include_examples '<Task class>.restore_defaults update title to the default'
+    include_examples '<Task class>.restore_defaults update old_role to the default'
+  end
+
   describe '#assignable_roles' do
     let(:academic_editor_role) { FactoryGirl.build_stubbed(:role) }
     let(:cover_editor_role) { FactoryGirl.build_stubbed(:role) }

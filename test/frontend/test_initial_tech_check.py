@@ -131,7 +131,7 @@ class ITCCardTest(CommonTest):
     # click on invite academic editor
     itc_card = ITCCard(self.getDriver())
     workflow_page.click_itc_card()
-    itc_card.validate_styles()
+    itc_card.validate_styles(paper_id)
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     time.sleep(2)

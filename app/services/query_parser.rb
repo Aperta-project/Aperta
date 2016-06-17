@@ -164,12 +164,12 @@ class QueryParser < QueryLanguageParser
   end
 
   add_expression(keywords: ['TITLE IS']) do |_|
-    symbol('TITLE IS') >> /.*/.r.map do |title|
+    symbol('TITLE IS') >> /.*/m.r.map do |title|
       title_query(title)
     end
   end
 
-  add_statement(/^.+/.r) do |title|
+  add_statement(/^.+/m.r) do |title|
     title_query(title)
   end
 

@@ -83,6 +83,15 @@ class WorkflowPage(AuthenticatedPage):
     self.validate_wf_top_elements()
     assert self._get(self._column_header)
 
+  def click_recent_activity_link(self):
+    """
+    Open the Recent Activity Modal from the Workflow page
+    :return: void function
+    """
+    recent_activity = self._get(self._recent_activity)
+    recent_activity.click()
+    time.sleep(1)
+
   def click_initial_decision_card(self):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._initial_decision_card).click()

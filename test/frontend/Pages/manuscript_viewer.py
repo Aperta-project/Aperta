@@ -13,6 +13,7 @@ from datetime import datetime
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, \
     creator_login4, creator_login5, staff_admin_login, pub_svcs_login, internal_editor_login, \
     super_admin_login
@@ -43,7 +44,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._submit_button = (By.ID, 'sidebar-submit-paper')
     self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
     self._withdraw_banner_reactivate_button = (By.CSS_SELECTOR,
-                                               'div.withdrawal-banner > div.button-secondary')
+                                               'div.withdrawal-banner > button.button-secondary')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -453,6 +454,42 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Give a little time for the db transaction
     time.sleep(3)
 
+  def reactivate_manuscript(self):
+    """
+    Executes a reactivate action for a given manuscript
+    This must be called from the login of a valid internal staff account or the button will not
+      exist
+    :return: void function
+    """
+    reactivate_btn = self._get(self._withdraw_banner_reactivate_button)
+    reactivate_btn.click()
+    # Give a little time for the db transaction
+    time.sleep(3)
+
+  def check_for_reactivate_btn(self):
+    """
+    A method to check for the presence of the reactivate button for a given manuscript.
+    It should only display for Withdrawn manuscripts when viewed by an internal user.
+    :return: boolean indicating presence
+    """
+    self.set_timeout(15)
+    try:
+      self._get(self._withdraw_banner_reactivate_button)
+    except ElementDoesNotExistAssertionError:
+      self.restore_timeout()
+      return False
+    self.restore_timeout()
+    return True
+
+  def validate_reactivate_btn(self):
+    """
+    Content and Style validations for the reactivate button of the withdraw banner
+    :return: void function
+    """
+    reactivate_button = self._get(self._withdraw_banner_reactivate_button)
+    assert reactivate_button.text == 'REACTIVATE', reactivate_button.text
+    # Disabling while APERTA-7062 is not closed
+    # self.validate_secondary_big_grey_button_style(reactivate_button)
 
   def validate_roles(self, user_buttons):
     """

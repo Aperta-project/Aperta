@@ -117,7 +117,7 @@ before 'deploy:check:linked_files', :remove_junk do
   end
 end
 
-before 'deploy:updated', :create_backup do
+before 'deploy:migrate', :create_backup do
   on roles(:db) do
     within release_path do
       with rails_env: fetch(:rails_env) do

@@ -4,9 +4,10 @@ namespace :db do
   task dump_database: :environment do
     cmd = nil
     with_config do |app, host, db, user, password|
-      cmd = "PGPASSWORD='#{password}' pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > ~/aperta.dump"
+      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > ~/aperta.dump"
+      puts cmd
+      cmd = "PGPASSWORD='#{password}' " + cmd
     end
-    puts cmd
     exec cmd
   end
 

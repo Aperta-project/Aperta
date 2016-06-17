@@ -123,7 +123,7 @@ before 'deploy:migrate', :create_backup do
       with rails_env: fetch(:rails_env) do
         STDERR.puts 'Dumping database...'
         execute :rake, 'db:dump_database'
-        STDERR.puts 'Dumped database backup to db/aperta.dump'
+        STDERR.puts 'Dumped database backup to ~/aperta.dump'
       end
     end
   end

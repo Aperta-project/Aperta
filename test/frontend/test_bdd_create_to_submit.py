@@ -98,10 +98,18 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     time.sleep(2)
-    paper_title_from_page = manuscript_page.get_paper_title_from_page()
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     paper_id = manuscript_page.get_paper_db_id()
 
+    keep_waiting = True
+    while keep_waiting:
+      time.sleep(5)
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'full submit' in paper_title_from_page.encode('utf8'):
+        continue
+      else:
+        keep_waiting = False
+
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
     manuscript_page.click_submit_btn()
@@ -193,13 +201,21 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=15)
-    time.sleep(2)
-    paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    time.sleep(5)
     paper_url = manuscript_page.get_current_url()
     paper_id = manuscript_page.get_paper_db_id()
 
+    keep_waiting = True
+    while keep_waiting:
+      time.sleep(5)
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'initial submit' in paper_title_from_page.encode('utf8'):
+        continue
+      else:
+        keep_waiting = False
+
     # Give a little time for the submit button to attach to the DOM
-    time.sleep(3)
+    time.sleep(5)
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()

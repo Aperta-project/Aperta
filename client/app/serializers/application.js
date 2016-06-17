@@ -63,23 +63,32 @@ export default ActiveModelSerializer.extend({
 
   },
 
-  // mutates payload
-  pluralizePrimaryKeyData(singularKey, pluralKey, payload) {
+  // returns new payload
+  pluralizePrimaryKeyData(singularKey, pluralKey, payload, assumeObject) {
+    let newPayload = _.clone(payload);
+
     if((payload[singularKey] && payload[pluralKey])) {
       //if both keys are present, the singular key is the primary
       //record and the plural key should be sideloaded records
 
-      payload[pluralKey].unshift(payload[singularKey]);
+      newPayload[pluralKey] = payload[pluralKey].unshift(payload[singularKey]);
       delete payload[singularKey];
-
     } else {
       let singularPrimaryRecord = payload[singularKey];
+      let pluralKeyRecord = payload[pluralKey];
       if (singularPrimaryRecord) {
-        payload[pluralKey] = [singularPrimaryRecord];
-        delete payload[singularKey];
+        newPayload[pluralKey] = [singularPrimaryRecord];
+        delete newPayload[singularKey];
+      } else if(pluralKeyRecord) {
+        //no-op
+      } else if(assumeObject){
+        newPayload = {};
+        newPayload[pluralKey] = Ember.makeArray(payload);
       }
     }
+    return newPayload;
   },
+
 
   //mutates payload
   removeEmptyArrays(payload) {
@@ -91,6 +100,10 @@ export default ActiveModelSerializer.extend({
   },
 
   getPolymorphicModelName(modelName, records) {
+    if(!Ember.isArray(records)){
+      records = [records];
+    }
+
     if (records && records[0] && records[0].type) {
       return records[0].type.dasherize();
     } else {
@@ -136,14 +149,18 @@ export default ActiveModelSerializer.extend({
     return records.mapBy('type').uniq().length > 1
   },
 
-  newNormalize(modelName, sourcePayload) {
+  newNormalize(modelName, sourcePayload, assumeObject) {
     let payload = _.clone(sourcePayload);
 
+    if(assumeObject !== false) {
+      assumeObject = true;
+    }
+
     let singularPrimaryKey = modelName.underscore(),
-    primaryKey = singularPrimaryKey.pluralize();
+      primaryKey = singularPrimaryKey.pluralize();
 
     // author_task: {} ===> author_tasks: [{}]
-    this.pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload);
+    payload = this.pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload, assumeObject);
 
     let primaryContent = payload[primaryKey];
     // if the primary key's content has a type, and that type is different than the modelName,
@@ -161,16 +178,32 @@ export default ActiveModelSerializer.extend({
 
     this.removeEmptyArrays(payload);
 
-    return {newModelName, payload, isPolymorphic}
+    return {newModelName, payload, isPolymorphic};
+  },
 
+  normalizePayload(rawPayload){
+    var newPayload = {};
+    for(var key of Object.keys(rawPayload)) {
+      let {newModelName, payload, isPolymorphic} = this.newNormalize(key, rawPayload[key]);
+
+      // if we get { tasks: [{...}], authors: [{...}] } back from newNormalize
+      // make sure we add all key/value pairs to newPayload
+      for(var newKey of Object.keys(payload)){
+        newPayload[newKey] = payload[newKey];
+      }
+    }
+
+    return newPayload;
   },
 
   normalizeSingleResponse(
     store, primaryModelClass, originalPayload, recordId, requestType
   ) {
-
-      let {newModelName, payload} = this.newNormalize(primaryModelClass.modelName,
-                                                 this.mungePayloadTypes(originalPayload));
+      let {newModelName, payload} = this.newNormalize(
+        primaryModelClass.modelName,
+        this.mungePayloadTypes(originalPayload),
+        false
+      );
 
       let newModelClass = store.modelFor(newModelName);
       return this._super.apply(
@@ -181,8 +214,11 @@ export default ActiveModelSerializer.extend({
   normalizeArrayResponse(
     store, primaryModelClass, originalPayload, recordId, requestType
   ) {
-      let {newModelName, payload, isPolymorphic} = this.newNormalize(primaryModelClass.modelName,
-                                                                this.mungePayloadTypes(originalPayload));
+      let {newModelName, payload, isPolymorphic} = this.newNormalize(
+        primaryModelClass.modelName,
+        this.mungePayloadTypes(originalPayload),
+        false
+      );
 
       let newModelClass = store.modelFor(newModelName);
       let normalizedPayload = this._super.apply(

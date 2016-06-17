@@ -110,7 +110,8 @@ class InviteAECard(BaseCard):
     invitee = self._get(self._invitee_listing)
     invitee.find_element(*self._invitee_avatar)
     pagefullname = invitee.find_element(*self._invitee_full_name)
-    assert ae['name'] in pagefullname.text
+    assert ae['name'] in pagefullname.text, '{0} not found in {1}'.format(ae['name'],
+                                                                          pagefullname.text)
     invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
     assert 'Invited' in status.text

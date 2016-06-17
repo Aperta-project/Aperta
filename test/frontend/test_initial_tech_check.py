@@ -12,6 +12,7 @@ import time
 
 from selenium.common.exceptions import NoSuchElementException
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
@@ -103,7 +104,7 @@ class ITCCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     paper_id = paper_canonical_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
@@ -131,7 +132,7 @@ class ITCCardTest(CommonTest):
     # click on invite academic editor
     itc_card = ITCCard(self.getDriver())
     workflow_page.click_itc_card()
-    itc_card.validate_styles()
+    itc_card.validate_styles(paper_id)
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -159,7 +160,7 @@ class ITCCardTest(CommonTest):
       # Note: Commenting out due to APERTA-7012
       #raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('There is an error message because of APERTA-7012')
-    except NoSuchElementException:
+    except ElementDoesNotExistAssertionError:
       pass
 
 if __name__ == '__main__':

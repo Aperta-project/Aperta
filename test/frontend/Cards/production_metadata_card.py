@@ -9,6 +9,8 @@ from selenium.webdriver.common.keys import Keys
 
 from frontend.Cards.basecard import BaseCard
 
+from datetime import datetime
+
 __author__ = 'sbassi@plos.org'
 
 class ProductionMedataCard(BaseCard):
@@ -34,12 +36,12 @@ class ProductionMedataCard(BaseCard):
     self._volume_number_field = (By.CLASS_NAME, 'volume-number')
     self._issue_number_field = (By.CLASS_NAME, 'issue-number')
 
-  def check_style(self):
+  def check_style(self, paper_id):
     """
     Style check for the card
     :return: None
     """
-    self.validate_common_elements_styles()
+    self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Production Metadata'
     self.validate_application_title_style(card_title)
@@ -118,13 +120,21 @@ class ProductionMedataCard(BaseCard):
     provenance = self._get(self._provenance)
     production_notes = self._get(self._production_notes)
     special_handling_instructions = self._get(self._special_handling_instructions)
-    publication_date.send_keys(data['date'])
-    volume_number.send_keys(data['volume'])
-    issue_number.send_keys(data['issue'])
-    provenance.send_keys(data['provenance'])
-    production_notes.send_keys(data['production_notes'])
-    special_handling_instructions.send_keys(data['special_handling_instructions'])
-    self._get(self._bottom_close_button).click()
+    publication_date.send_keys(data['date']+Keys.ENTER)
+    volume_number.click()
+    # following 1 sec sleep is for background recording data at server
+    time.sleep(1)
+    volume_number.send_keys(data['volume']+Keys.ENTER)
+    time.sleep(1)
+    issue_number.send_keys(data['issue']+Keys.ENTER)
+    time.sleep(1)
+    provenance.send_keys(data['provenance']+Keys.ENTER)
+    time.sleep(1)
+    production_notes.send_keys(data['production_notes']+Keys.ENTER)
+    time.sleep(1)
+    special_handling_instructions.send_keys(data['special_handling_instructions']+Keys.ENTER)
+    time.sleep(1)
+    self.click_completion_button()
     return data
 
    #POM Actions

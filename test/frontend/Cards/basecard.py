@@ -228,10 +228,8 @@ class BaseCard(AuthenticatedPage):
     :param paper_id: id of paper - needed to validate the card header elements
     :return void function
     """
-
     self._get(self._header_title_link)
     self.validate_card_header(paper_id)
-
     # Close btn
     close_btn = self._get(self._close_button)
     self.validate_secondary_big_green_button_style(close_btn)

@@ -31,7 +31,7 @@ namespace :db do
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
       puts cmd
     end
-    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}")
+    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
   desc "Restores the database dump at ~/aperta.dump"
@@ -43,7 +43,7 @@ namespace :db do
     Rake::Task["db:drop"].invoke
     Rake::Task["db:create"].invoke
     puts cmd
-    system(cmd) || STDERR.puts("Restore failed for \n #{cmd}")
+    system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
   end
 
   private

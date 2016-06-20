@@ -476,9 +476,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     try:
       self._get(self._withdraw_banner_reactivate_button)
     except ElementDoesNotExistAssertionError:
-      self.restore_timeout()
       return False
-    self.restore_timeout()
+    finally:
+      self.restore_timeout()
     return True
 
   def validate_reactivate_btn(self):

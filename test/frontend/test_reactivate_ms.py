@@ -15,10 +15,9 @@ from selenium.webdriver.common.by import By
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, users, editorial_users
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Pages.authenticated_page import application_typeface
+from Pages.authenticated_page import application_typeface, tahi_grey_dark, white
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -72,7 +71,6 @@ class WithdrawManuscriptTest(CommonTest):
     time.sleep(1)
     # Do some style and element validations
     manuscript_page._check_more_btn(useremail=creator_user['email'])
-
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
                                                 'WHERE id = %s;', (paper_id,))[0][0]
@@ -92,9 +90,9 @@ class WithdrawManuscriptTest(CommonTest):
           withdraw_banner.text
     except AssertionError:
       logging.warning('Banner text is not correct: {0}'.format(withdraw_banner.text))
-    assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
+    assert withdraw_banner.value_of_css_property('background-color') == tahi_grey_dark, \
         withdraw_banner.value_of_css_property('background-color')
-    assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+    assert withdraw_banner.value_of_css_property('color') == white, \
         withdraw_banner.value_of_css_property('color')
     assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')

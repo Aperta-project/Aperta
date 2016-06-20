@@ -657,6 +657,24 @@ FactoryAttributes.AuthorsTask = {
   type: "AuthorsTask"
 };
 
+FactoryAttributes.TitleAndAbstractTask = {
+  _rootKey: 'task',
+  body: null,
+  comment_ids: [],
+  completed: false,
+  id: null,
+  lite_paper_id: null,
+  paper_id: null,
+  paper_title: "Test",
+  participation_ids: [],
+  phase_id: null,
+  question_ids: [],
+  assigned_to_me: true,
+  old_role: "editor",
+  title: "Title And Abstract",
+  type: "TitleAndAbstractTask"
+};
+
 FactoryAttributes.Comment = {
   _rootKey: 'comment',
   id: null,

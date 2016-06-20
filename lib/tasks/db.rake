@@ -6,8 +6,6 @@ namespace :db do
     with_config do |app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s
       cmd = "curl -sH 'Accept-encoding: gzip' 'http://bighector.plos.org/aperta/db_dump.tar.gz' | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}"
-      Rake::Task["db:drop"].invoke
-      Rake::Task["db:create"].invoke
       result = system(cmd)
       if result
         STDERR.puts("Successfully restored prod database by running \n #{cmd}")
@@ -33,7 +31,7 @@ namespace :db do
   desc "Restores the database dump at ~/aperta.dump"
   task restore_database: :environment do
     cmd = nil
-    with_config do |app, host, db, user|
+    with_config do |app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s
       cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} ~/aperta.dump"
     end

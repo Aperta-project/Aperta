@@ -124,7 +124,9 @@ class WithdrawManuscriptTest(CommonTest):
     #   otherwise failures
     time.sleep(10)
     workflow_page.click_recent_activity_link()
-    time.sleep(10)
+    time.sleep(1)
+    workflow_page.validate_recent_activity_entry('Manuscript was reactivated',
+                                                 internal_staff['name'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

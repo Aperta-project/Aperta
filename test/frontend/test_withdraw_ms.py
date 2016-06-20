@@ -14,20 +14,13 @@ from selenium.webdriver.common.by import By
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Pages.authenticated_page import application_typeface
 from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
 
 __author__ = 'jgray@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
 
 
 @MultiBrowserFixture
@@ -101,10 +94,30 @@ class WithdrawManuscriptTest(CommonTest):
     assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')
     # Pre-placing for the reactivate work
-    # manuscript_page.refresh()
-    # self._reactivate_button = (By.CSS_SELECTOR, 'div.withdrawal-banner > div.button-secondary')
-    # reactivate_button = manuscript_page._get(self._reactivate_button)
-    # assert reactivate_button.text == 'REACTIVATE', reactivate_button.text
+    time.sleep(1)
+    manuscript_page.logout()
+
+    # Login as a privileged user to check the Recent Activity entry
+    internal_staff = random.choice(editorial_users)
+    logging.info(internal_staff['name'])
+    dashboard_page = self.cas_login(email=internal_staff['email'])
+    self._driver.get(paper_url)
+    self._driver.navigated = True
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # Give a little time for the page to draw
+    time.sleep(3)
+    manuscript_page.validate_reactivate_btn()
+
+    manuscript_page.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
+    #   otherwise failures
+    time.sleep(10)
+    workflow_page.click_recent_activity_link()
+    time.sleep(1)
+
+    workflow_page.validate_recent_activity_entry('Manuscript was withdrawn',
+                                                 creator_user['name'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

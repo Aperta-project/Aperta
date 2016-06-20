@@ -1,0 +1,162 @@
+.figure-thumbnail {
+  margin-bottom: 10px;
+
+  .replace-file-button {
+    color: $tahi-grey;
+    font-size: 1.3rem;
+    display: inline;
+    background: transparent;
+    border: none;
+    i {
+      padding: 0;
+    }
+  }
+
+  .actions {
+    float: right;
+  }
+
+  .outline {
+    @include clearfix;
+    position: relative;
+    border: none;
+    padding: 20px;
+    background-color: $tahi-grey-xlight;
+    @include transition(background-color 0.1s ease-in-out);
+
+    &:hover {
+      background-color: $tahi-grey-lighter;
+      .edit-icons {
+        opacity: 1;
+      }
+    }
+
+    &.loading {
+      text-align: center;
+    }
+
+    .left-column {
+      float: left;
+      margin: 0;
+      border-radius: 0;
+      padding: 0;
+      width: 40%;
+
+      .download-link {
+        text-align: center;
+      }
+
+      .thumbnail-preview {
+        display: block;
+        position: relative;
+        width: 100%;
+
+        .file-thumbnail {
+          display: block;
+          margin: auto;
+          width: 60px;
+          color: $tahi-green;
+        }
+
+        .image-thumbnail {
+          display: block;
+          margin: auto;
+          max-width: 100%;
+        }
+
+        .progress-text {
+          margin-top: 100px;
+          text-align: center
+        }
+      }
+    }
+
+    .right-column {
+      position: relative;
+      float: left;
+      padding-left: 10px;
+      width: 60%;
+
+      .info {
+        .title {
+          word-wrap: break-word;
+          margin: 8px 0 1em 0;
+          outline: none;
+          font-size: 21px;
+        }
+
+        .caption {
+          margin-bottom: 15px;
+        }
+
+        .striking {
+          margin-bottom: 15px;
+          span {
+            color: $tahi-green;
+          }
+        }
+      }
+
+      .edit-info {
+        position: relative;
+        left: -5px;
+        padding-right: 55px;
+        width: 100%;
+        height: 100%;
+
+        input[type=text], textarea {
+          border-radius: 3px;
+          display: block;
+          border: 1px solid #999;
+          padding: 4px;
+          width: 100%;
+          color: #555;
+        }
+
+        .title {
+          margin-top: 0;
+        }
+
+        .field {
+          margin-bottom: 15px;
+        }
+      }
+    }
+
+    .edit-icons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: $tahi-grey;
+      font-size: 18px;
+      opacity: 0;
+
+      .fa {
+        &:hover { color: $tahi-green-dark; }
+        cursor: pointer;
+        padding-left: 10px;
+      }
+    }
+
+    .delete-confirmation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-color: $tahi-green;
+      padding-top: 30px;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      color: #fff;
+
+      h4 {
+        margin: 0px;
+      }
+
+      a, button {
+        margin-top: 20px;
+      }
+    }
+  }
+}

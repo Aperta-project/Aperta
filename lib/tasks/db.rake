@@ -17,12 +17,19 @@ namespace :db do
   end
 
   desc "Dumps the database to ~/aperta.dump"
-  task dump_database: :environment do
+  task :dump_database, [:location] => :environment do |t, args|
+    location =
+      if args[:location].present?
+        args[:location]
+      else
+        '~/aperta.dump'
+      end
+
     cmd = nil
     with_config do |app, host, db, user, password|
-      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > ~/aperta.dump"
+      ENV['PGPASSWORD'] = password.to_s
+      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
       puts cmd
-      cmd = "PGPASSWORD='#{password}' " + cmd
     end
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}")
   end

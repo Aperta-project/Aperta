@@ -56,7 +56,10 @@ class ProductionMetadataCardTest(CommonTest):
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
+                        # XXXX
+                        doc='PGENETICS-D-13-02065R1_FTC.docx'
                         )
+    # PGENETICS-D-13-02065R1_FTC.docx
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)

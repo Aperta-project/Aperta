@@ -182,6 +182,10 @@ export default ActiveModelSerializer.extend({
   },
 
   normalizePayload(rawPayload){
+    if(!rawPayload){
+      return;
+    }
+
     var newPayload = {};
     for(var key of Object.keys(rawPayload)) {
       let {newModelName, payload, isPolymorphic} = this.newNormalize(key, rawPayload[key]);

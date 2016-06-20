@@ -631,3 +631,11 @@ test("normalizePayload reorganizes a JSON payload according to the items' types"
   result = subject.normalizePayload(jsonHash);
   assert.deepEqual(result, expectedOutput);
 });
+
+test("normalizePayload does nothing when payload is undefined (e.g. 204 NO CONTENT)", function(assert) {
+  var jsonHash, result, store;
+  store = getStore();
+
+  result = subject.normalizePayload(undefined);
+  assert.ok(true, 'did not blow up');
+});

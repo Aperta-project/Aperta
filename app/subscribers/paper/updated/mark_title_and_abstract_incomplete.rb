@@ -9,10 +9,7 @@ class Paper::Updated::MarkTitleAndAbstractIncomplete
         task.type == "TahiStandardTasks::TitleAndAbstractTask"
       end
 
-      tasks.map do |task|
-        task.completed = false
-        task.save!
-      end
+      tasks.map(&:incomplete!)
     end
   end
 end

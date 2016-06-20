@@ -258,21 +258,6 @@ ActiveRecord::Schema.define(version: 20160622135656) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
-  create_table "figures", force: :cascade do |t|
-    t.string   "attachment"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title"
-    t.text     "caption"
-    t.string   "status",     default: "processing"
-    t.string   "token"
-    t.text     "s3_dir"
-  end
-
-  add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
-  add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
-
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"

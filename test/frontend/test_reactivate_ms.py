@@ -1,7 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This behavioral test case validates paper withdrawal and the withdraw banner
+This behavioral test case validates paper reactivation and the reactivate button of the withdraw
+  banner.
 This test requires the following data:
 The test document tarball from http://bighector.plos.org/aperta/testing_assets.tar.gz extracted into
     frontend/assets/
@@ -16,7 +17,7 @@ from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Pages.authenticated_page import application_typeface
+from Pages.authenticated_page import application_typeface, tahi_grey_dark, white
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -51,7 +52,10 @@ class WithdrawManuscriptTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1].split('?')[0]
+    paper_id = ''
+    while not paper_id:
+      time.sleep(5)
+      paper_id = paper_url.split('/')[-1].split('?')[0]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     # Giving just a little extra time here so the title on the paper gets updated
     # What I notice is that if we submit before iHat is done updating, the paper title
@@ -67,14 +71,13 @@ class WithdrawManuscriptTest(CommonTest):
     time.sleep(1)
     # Do some style and element validations
     manuscript_page._check_more_btn(useremail=creator_user['email'])
-
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
                                                 'WHERE id = %s;', (paper_id,))[0][0]
     assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
     manuscript_page.withdraw_manuscript()
     # Need a wee bit of time for the db to update
-    time.sleep(1)
+    time.sleep(2)
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
                                                 'WHERE id = %s;', (paper_id,))[0][0]
@@ -87,17 +90,18 @@ class WithdrawManuscriptTest(CommonTest):
           withdraw_banner.text
     except AssertionError:
       logging.warning('Banner text is not correct: {0}'.format(withdraw_banner.text))
-    assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
+    assert withdraw_banner.value_of_css_property('background-color') == tahi_grey_dark, \
         withdraw_banner.value_of_css_property('background-color')
-    assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+    assert withdraw_banner.value_of_css_property('color') == white, \
         withdraw_banner.value_of_css_property('color')
     assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')
-    # Pre-placing for the reactivate work
-    time.sleep(1)
+    # Ensure Reactivate button is not present
+    btn_present = manuscript_page.check_for_reactivate_btn()
+    assert not btn_present, btn_present
     manuscript_page.logout()
 
-    # Login as a privileged user to check the Recent Activity entry
+    # Only internal staff should see the reactivate button
     internal_staff = random.choice(editorial_users)
     logging.info(internal_staff['name'])
     dashboard_page = self.cas_login(email=internal_staff['email'])
@@ -107,7 +111,11 @@ class WithdrawManuscriptTest(CommonTest):
     # Give a little time for the page to draw
     time.sleep(3)
     manuscript_page.validate_reactivate_btn()
-
+    manuscript_page.reactivate_manuscript()
+    manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
+                                                'FROM papers '
+                                                'WHERE id = %s;', (paper_id,))[0][0]
+    assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
@@ -115,9 +123,8 @@ class WithdrawManuscriptTest(CommonTest):
     time.sleep(10)
     workflow_page.click_recent_activity_link()
     time.sleep(1)
-
-    workflow_page.validate_recent_activity_entry('Manuscript was withdrawn',
-                                                 creator_user['name'])
+    workflow_page.validate_recent_activity_entry('Manuscript was reactivated',
+                                                 internal_staff['name'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

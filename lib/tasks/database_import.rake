@@ -3,7 +3,7 @@
 
 namespace :db do
   desc "Import data from staging environment"
-  task :import, [:source_db_name] => [:environment] do |t, args|
+  task :heroku_import, [:source_db_name] => [:environment] do |t, args|
     fail "This can only be run in a development environment" unless Rails.env.development?
     source_db = args[:source_db_name].present? ? args[:source_db_name] : 'tahi-staging'
     Rake::Task['db:drop'].invoke

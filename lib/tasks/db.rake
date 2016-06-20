@@ -1,6 +1,22 @@
 namespace :db do
 
-  desc "Dumps the database to db/APP_NAME.dump"
+  desc "Dumps slightly older prod database from internal network into development environment"
+  task prod_restore: :environment do
+    return unless Rails.env.development?
+    with_config do |app, host, db, user, password|
+      cmd = "curl -sH 'Accept-encoding: gzip' 'http://bighector.plos.org/aperta/db_dump.tar.gz' | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}"
+      Rake::Task["db:drop"].invoke
+      Rake::Task["db:create"].invoke
+      result = system(cmd)
+      if result
+        STDERR.puts("Successfully restored prod database by running \n #{cmd}")
+      else
+        STDERR.puts("Command failed to restore database")
+      end
+    end
+  end
+
+  desc "Dumps the database to ~/aperta.dump"
   task dump_database: :environment do
     cmd = nil
     with_config do |app, host, db, user, password|
@@ -8,10 +24,10 @@ namespace :db do
       puts cmd
       cmd = "PGPASSWORD='#{password}' " + cmd
     end
-    exec cmd
+    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}")
   end
 
-  desc "Restores the database dump at db/APP_NAME.dump."
+  desc "Restores the database dump at ~/aperta.dump"
   task restore_database: :environment do
     cmd = nil
     with_config do |app, host, db, user|
@@ -20,7 +36,7 @@ namespace :db do
     Rake::Task["db:drop"].invoke
     Rake::Task["db:create"].invoke
     puts cmd
-    exec cmd
+    system(cmd) || STDERR.puts("Restore failed for \n #{cmd}")
   end
 
   private

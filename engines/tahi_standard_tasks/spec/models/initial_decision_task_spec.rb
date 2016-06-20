@@ -4,6 +4,11 @@ describe TahiStandardTasks::InitialDecisionTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
   let(:task) { FactoryGirl.create :initial_decision_task }
 
+  describe '.restore_defaults' do
+    include_examples '<Task class>.restore_defaults update title to the default'
+    include_examples '<Task class>.restore_defaults update old_role to the default'
+  end
+
   describe '#initial_decision' do
     it 'gets initial decision' do
       expect(task.initial_decision).to eq(task.paper.decisions.last)

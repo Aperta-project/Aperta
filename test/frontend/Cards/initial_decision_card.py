@@ -59,6 +59,7 @@ class InitialDecisionCard(BaseCard):
     if choice == 'random':
       choice = random.choice(choices)
       logging.info('Since choice was random, new choice is {0}'.format(choice))
+    time.sleep(2)
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()

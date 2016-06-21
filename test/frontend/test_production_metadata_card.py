@@ -56,6 +56,7 @@ class ProductionMetadataCardTest(CommonTest):
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
+                        title='full submit'
                         )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances

@@ -1,25 +1,39 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
-
 export default Ember.Component.extend(EscapeListenerMixin, {
-  didCompleteAllInvitations: Ember.observer('invitations.[]', function() {
-    if(Ember.isEmpty(this.get('invitations'))) {
-      this.attrs.close();
+  flash: Ember.inject.service(),
+
+  hasInvitations: Ember.computed.notEmpty('invitations'),
+
+  closeOverlayIfLast: function() {
+    if(!this.get('hasInvitations')) {
+      this.get('close')();
     }
-  }),
+  },
 
   actions: {
-    close() {
-      this.attrs.close();
+    close(){
+      this.closeOverlayIfLast();
     },
 
     accept(invitation) {
-      this.attrs.accept(invitation);
+      this.get('accept')(invitation).then(()=>{this.closeOverlayIfLast()});
     },
 
-    reject(invitation) {
-      this.attrs.reject(invitation);
+    acquireFeedback(invitation) {
+      invitation.set('pendingFeedback', true);
+      this.get('reject')(invitation);
+    },
+
+    update(invitation) {
+      if (invitation.get('invitationFeedbackIsBlank')){
+        invitation.feedbackSent();
+        return this.closeOverlayIfLast();
+      }
+
+      this.get('update')(invitation).then(()=>{
+        this.get('flash').displayMessage('success', 'Thank you for your feedback!');
+        this.closeOverlayIfLast()});
     }
   }
 });
-

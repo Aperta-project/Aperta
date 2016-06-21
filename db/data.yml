@@ -1506,6 +1506,15 @@ activities:
     - '1'
     - '2016-06-02 13:47:43.374893'
     - '2016-06-02 13:47:43.374893'
+  - - '167'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.created
+    - Edith Editor was invited as Reviewer
+    - '1'
+    - '2016-06-13 13:33:37.401749'
+    - '2016-06-13 13:33:37.401749'
 
 ---
 affiliations:
@@ -3421,6 +3430,8 @@ invitations:
   - body
   - inviter_id
   - invitee_role
+  - decline_reason
+  - reviewer_suggestions
   records: 
   - - '1'
     - reviewer@example.com
@@ -3462,6 +3473,52 @@ invitations:
 
     - '1'
     - Reviewer
+    - 
+    - 
+  - - '2'
+    - editor@example.com
+    - '188'
+    - '4'
+    - 
+    - invited
+    - '2016-06-13 13:33:37.292317'
+    - '2016-06-13 13:33:37.371221'
+    - '21'
+    - |-
+      Here are the authors on the paper:
+
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      Dear Edith Editor,
+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
 
 ---
 journal_task_types:

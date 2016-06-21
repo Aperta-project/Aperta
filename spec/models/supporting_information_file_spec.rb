@@ -4,9 +4,11 @@ require 'models/concerns/striking_image_shared_examples'
 describe SupportingInformationFile, redis: true do
   let(:file) do
     with_aws_cassette 'supporting_info_files_controller' do
-      FactoryGirl.create :supporting_information_file,
-                         attachment: File.open('spec/fixtures/yeti.tiff'),
-                         status: 'done'
+      FactoryGirl.create(
+        :supporting_information_file,
+        file: File.open('spec/fixtures/yeti.tiff'),
+        status: 'done'
+      )
     end
   end
 

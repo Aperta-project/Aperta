@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620195959) do
+ActiveRecord::Schema.define(version: 20160621150147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,10 @@ ActiveRecord::Schema.define(version: 20160620195959) do
     t.string   "type"
     t.integer  "old_id"
     t.string   "owner_type"
+    t.integer  "paper_id"
+    t.string   "category"
+    t.string   "label"
+    t.boolean  "publishable"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
@@ -593,26 +597,6 @@ ActiveRecord::Schema.define(version: 20160620195959) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
-
-  create_table "supporting_information_files", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.string   "attachment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",      default: "processing"
-    t.boolean  "publishable", default: true
-    t.string   "token"
-    t.string   "label"
-    t.string   "category"
-    t.integer  "si_task_id"
-    t.text     "s3_dir"
-  end
-
-  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
-  add_index "supporting_information_files", ["si_task_id"], name: "index_supporting_information_files_on_si_task_id", using: :btree
-  add_index "supporting_information_files", ["token"], name: "index_supporting_information_files_on_token", unique: true, using: :btree
 
   create_table "tables", force: :cascade do |t|
     t.integer  "paper_id"

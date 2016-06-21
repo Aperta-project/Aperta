@@ -5,9 +5,7 @@ module TahiStandardTasks
     DEFAULT_TITLE = 'Supporting Info'
     DEFAULT_ROLE = 'author'
 
-    has_many :supporting_information_files,
-             inverse_of: :supporting_information_task,
-             foreign_key: :si_task_id
+    has_many :supporting_information_files, as: :owner, class_name: 'SupportingInformationFile'
 
     validates_with AssociationValidator,
                    association: :supporting_information_files,

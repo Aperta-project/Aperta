@@ -2,30 +2,26 @@ require "rails_helper"
 
 describe Snapshot::SupportingInformationTaskSerializer do
   subject(:serializer) { described_class.new(task) }
-  let(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
-  let(:supporting_info_file_1) do
+  let!(:paper) { FactoryGirl.create(:paper) }
+  let!(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
+  let!(:supporting_info_file_1) do
     FactoryGirl.create(
       :supporting_information_file,
+      owner: task,
+      paper: paper,
       title: "supporting info 1 title",
       caption: "supporting info 1 caption",
-      attachment: File.open(Rails.root.join("spec/fixtures/yeti.jpg"))
+      file: File.open(Rails.root.join("spec/fixtures/yeti.jpg"))
     )
   end
-  let(:supporting_info_file_2) do
+  let!(:supporting_info_file_2) do
     FactoryGirl.create(
       :supporting_information_file,
+      owner: task,
+      paper: paper,
       title: "supporting info 2 title",
       caption: "supporting info 2 caption",
-      attachment: File.open(Rails.root.join("spec/fixtures/yeti.tiff"))
-    )
-  end
-  let(:paper) do
-    FactoryGirl.create(
-      :paper,
-      supporting_information_files: [
-        supporting_info_file_1,
-        supporting_info_file_2
-      ]
+      file: File.open(Rails.root.join("spec/fixtures/yeti.tiff"))
     )
   end
 

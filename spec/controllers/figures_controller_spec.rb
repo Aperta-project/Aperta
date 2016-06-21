@@ -11,8 +11,8 @@ describe FiguresController do
   end
 
   describe "#index" do
-    let!(:figure1) { FactoryGirl.create(:figure, paper: paper) }
-    let!(:figure2) { FactoryGirl.create(:figure, paper: paper) }
+    let!(:figure1) { FactoryGirl.create(:figure, owner: paper) }
+    let!(:figure2) { FactoryGirl.create(:figure, owner: paper) }
 
     subject(:do_request) do
       get :index, {

@@ -17,6 +17,10 @@ class Attachment < ActiveRecord::Base
 
   validates :owner, presence: true
 
+  # set_paper is required when creating attachments thru associations
+  # where the owner is the paper, it bypasses the owner= method.
+  before_create :set_paper
+
   # Where the attachment is placed on S3 is partially determined by the symbol
   # that is given to `mount_uploader`. ProxyableResource (and it's URL helper)
   # assumes the AttachmentUploader will be mounted as `attachment`. To prevent a
@@ -48,17 +52,23 @@ class Attachment < ActiveRecord::Base
   end
 
   def owner=(new_owner)
-    if new_owner.is_a?(Paper)
-      self.paper = new_owner
-    elsif new_owner.respond_to?(:paper)
-      self.paper = new_owner.paper
-    end
     super
+    set_paper
   end
 
   def task
     if owner_type == 'Task'
       owner
+    end
+  end
+
+  private
+
+  def set_paper
+    if owner_type == 'Paper'
+      self.paper_id = owner_id
+    elsif owner.respond_to?(:paper)
+      self.paper = owner.paper
     end
   end
 end

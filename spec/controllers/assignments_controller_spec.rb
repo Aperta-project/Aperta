@@ -208,6 +208,15 @@ describe AssignmentsController, type: :controller do
         end.to raise_error(ActiveRecord::RecordNotFound)
       end
 
+      it "creates an activity" do
+        activity = {
+          subject: paper,
+          message: "#{assignee.full_name} was removed as #{role.name}"
+        }
+        expect(Activity).to receive(:create).with(hash_including(activity))
+        do_request
+      end
+
       it 'responds with the deleted assignment' do
         do_request
         attrs = res_body['assignment'].slice(

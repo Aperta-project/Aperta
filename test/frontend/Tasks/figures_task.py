@@ -40,7 +40,7 @@ class FiguresTask(BaseTask):
 
   def check_question(self):
     """
-    Click on the checkmark for the question:
+    Click on the checkbox for the question:
     "Yes - I confirm our figures comply with the guidelines."
     :return: None
     """

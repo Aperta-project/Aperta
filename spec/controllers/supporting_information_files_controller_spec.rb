@@ -6,7 +6,7 @@ describe SupportingInformationFilesController, redis: true do
     FactoryGirl.create(:paper, :with_integration_journal, creator: user)
   end
   let(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
-  let(:file) { FactoryGirl.create(:supporting_information_file, paper: paper) }
+  let(:file) { FactoryGirl.create(:supporting_information_file, paper: paper, owner: task) }
   before { sign_in user }
 
   describe 'DELETE #destroy' do

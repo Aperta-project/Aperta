@@ -3,6 +3,14 @@ require 'rails_helper'
 describe JournalServices::CreateDefaultTaskTypes do
   let(:journal) { FactoryGirl.create(:journal) }
 
+  before do
+    # Filter out anonymous classes.
+    # This allows us to create test descendants of Task without polluting this.
+    allow(Task).to receive(:all_task_types).and_wrap_original do |m|
+      m.call.reject { |klass| klass.name.nil? }
+    end
+  end
+
   it 'Creates missing task types for an existing journal' do
     journal.journal_task_types.first.destroy
     expect {

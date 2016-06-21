@@ -1,7 +1,4 @@
-{{#expanding-textarea}}
-  {{textarea classNames="new-comment-field" value=comment placeholder="Type your message here"}}
-  <div class="drag-to-resize" data-drag-offset="65" title="Drag to resize">&nbsp;</div>
-{{/expanding-textarea}}
+{{expanding-textarea textareaClassNames="new-comment-field" value=comment placeholder="Type your message here"}}
 
 <div class="message-comment-buttons">
   <button type="submit" class="new-comment-submit-button button-secondary button--green" {{action "save"}}>

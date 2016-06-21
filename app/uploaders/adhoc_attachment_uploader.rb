@@ -1,5 +1,6 @@
 class AdhocAttachmentUploader < AttachmentUploader
   def store_dir
-    "uploads/attachments/#{model.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    model.try(:s3_dir) ||
+      "uploads/attachments/#{model.id}/attachment/file/#{model.id}"
   end
 end

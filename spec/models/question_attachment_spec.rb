@@ -4,11 +4,11 @@ describe QuestionAttachment do
   let(:paper) { FactoryGirl.create(:paper_with_phases) }
   let(:question_attachment) do
     task = FactoryGirl.build(:task, paper: paper)
-    answer = FactoryGirl.build(:nested_question_answer, owner: task)
+    answer = FactoryGirl.build(:nested_question_answer, owner: task, paper: paper)
     FactoryGirl.create(
       :question_attachment,
-      nested_question_answer: answer,
-      attachment: File.open('spec/fixtures/yeti.tiff')
+      owner: answer,
+      file: File.open('spec/fixtures/yeti.tiff')
     )
   end
 

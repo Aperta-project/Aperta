@@ -10,8 +10,8 @@ describe AdhocAttachment do
       expect(attachment.valid?).to be(true)
     end
 
-    it "requires a :task" do
-      attachment.task = nil
+    it "requires an :owner" do
+      attachment.owner = nil
       expect(attachment.valid?).to be(false)
     end
   end

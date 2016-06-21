@@ -2,19 +2,19 @@ require 'rails_helper'
 
 describe AttachmentsController do
   let(:user) { create :user }
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    FactoryGirl.create(:paper, journal: journal, creator: user)
   end
   let(:task) { FactoryGirl.create(:task, paper: paper) }
-
-  before { sign_in user }
 
   describe "viewing the attachment" do
     let(:attachment) { task.attachments.create! }
 
     context "with permission to view the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
       end
@@ -27,7 +27,8 @@ describe AttachmentsController do
 
     context "without permission to view the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:view, task)
           .and_return false
       end
@@ -47,7 +48,8 @@ describe AttachmentsController do
 
     context "with permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -59,7 +61,8 @@ describe AttachmentsController do
 
     context "without permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end
@@ -79,7 +82,8 @@ describe AttachmentsController do
     let(:url) { "http://someawesomeurl.com" }
     context "with permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -93,7 +97,8 @@ describe AttachmentsController do
 
     context "without permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end
@@ -111,7 +116,8 @@ describe AttachmentsController do
 
     context "with permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -125,7 +131,8 @@ describe AttachmentsController do
 
     context "without permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end
@@ -155,7 +162,8 @@ describe AttachmentsController do
 
     context "with permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
       end
@@ -171,7 +179,8 @@ describe AttachmentsController do
 
     context "without permission to edit the task" do
       before do
-        allow_any_instance_of(User).to receive(:can?)
+        stub_sign_in user
+        allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return false
       end

@@ -4,7 +4,7 @@ FactoryGirl.define do
 
     trait :with_fake_attachment do
       after :build do |attachment|
-        attachment[:file] = "some-attachment.png"
+        attachment.file = File.open(Rails.root.join('spec/fixtures/yeti.tiff'))
       end
     end
   end

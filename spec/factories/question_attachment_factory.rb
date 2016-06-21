@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :question_attachment do
-    association :nested_question_answer
+    association :owner, factory: :nested_question_answer
 
     trait :with_fake_attachment do
       after :build do |attachment|
-        attachment[:attachment] = "some-attachment.png"
+        attachment[:file] = "some-attachment.png"
       end
     end
   end

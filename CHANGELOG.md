@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Ability to remove user roles via CSV file.
 ### Changed
 ### Deprecated
 ### Removed

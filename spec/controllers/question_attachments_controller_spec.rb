@@ -107,6 +107,13 @@ describe QuestionAttachmentsController do
         expect(attachment.caption).to eq('This is a great caption!')
       end
 
+      it 'sets the paper on the question attachment' do
+        do_request
+        attachment = answer.attachments.last
+        expect(answer.paper).to_not be(nil)
+        expect(attachment.paper).to eq(answer.paper)
+      end
+
       it 'processes the attachment in the background' do
         do_request
         question_attachment = answer.attachments.last

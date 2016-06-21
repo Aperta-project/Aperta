@@ -4,6 +4,7 @@
 Common methods for all cards (workflow view) that are inherited by specific card instances
 """
 import logging
+import re
 import time
 
 from loremipsum import generate_paragraph
@@ -144,6 +145,16 @@ class BaseCard(AuthenticatedPage):
     else:
       return False
 
+  def normalize_spaces(self, text):
+    """
+    Helper method to leave strings with only one space between each word
+    Used for string comparison when at least one string cames from an HTML document
+    :text: string
+    :return: string
+    """
+    text = text.strip()
+    return re.sub(r'\s+', ' ', text)
+
   def toggle_notepad_icon(self):
     """Click on the notepad open/close icon"""
     self._get(self._notepad_toggle_icon).click()
@@ -187,24 +198,30 @@ class BaseCard(AuthenticatedPage):
     html_header_title = self._get(self._header_title_link)
     if isinstance(html_header_title.text, unicode) and isinstance(title, unicode):
       # Split both to eliminate differences in whitespace
-      html_header_title = html_header_title.text.split()
+      html_header_title_text = html_header_title.text.split()
       title = title.split()
-      assert html_header_title == title, \
-        'Title in page: {0} != Title in DB: {1}'.format(html_header_title, title)
+      assert html_header_title_text == title, \
+        'Title in page: {0} != Title in DB: {1}'.format(html_header_title_text, title)
     elif isinstance(html_header_title.text, unicode) and not isinstance(title, unicode):
-      assert html_header_title == title.decode('utf-8'), \
-        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(html_header_title,
-          title.decode('utf-8'))
+      html_header_title_text = self.normalize_spaces(html_header_title.text).split()
+      title = self.normalize_spaces(title.decode('utf-8')).split()
+      assert html_header_title_text == title, \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(html_header_title_text,
+          title)
     elif not isinstance(html_header_title.text, unicode) and isinstance(title, unicode):
-      assert html_header_title.decode('utf-8') == title, \
+      html_header_title_text = self.normalize_spaces(
+        html_header_title.text.decode('utf-8')).split()
+      title = self.normalize_spaces(title).split()
+      assert html_header_title_text == title, \
         'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(
-          html_header_title.decode('utf-8'), title)
+          html_header_title_text, title
+          )
     else:
-      html_header_title = html_header_title.text.split()
-      title = title.split()
-      assert html_header_title == title, \
-        'Title in page: {0} != Title in DB: {1}'.format(
-          html_header_title.decode('utf-8'), title.decode('utf-8')
+      html_header_title_text = self.normalize_spaces(html_header_title.text.decode('utf-8')).split()
+      title = self.normalize_spaces(title.decode('utf-8')).split()
+      assert html_header_title_text == title, \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(
+          html_header_title_text, title
           )
     # Validate Styles
     assert application_typeface in html_header_author.value_of_css_property('font-family'), \

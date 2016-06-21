@@ -5,11 +5,12 @@ describe PDFConverter do
   let(:journal) do
     FactoryGirl.create(
       :journal,
-      :with_roles_and_permissions,
+      :with_creator_role,
       pdf_css: 'body { background-color: red; }'
     )
   end
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:converter) { PDFConverter.new(paper, user) }
 
   describe '#convert' do
@@ -47,8 +48,10 @@ describe PDFConverter do
 
     context 'when paper has supporting information files' do
       let(:file) do
-        paper.supporting_information_files
-          .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+        paper.supporting_information_files.create!(
+          owner: task,
+          attachment: ::File.open('spec/fixtures/yeti.tiff')
+        )
       end
 
       it 'has supporting information' do

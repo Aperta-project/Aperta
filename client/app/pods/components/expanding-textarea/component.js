@@ -19,18 +19,25 @@ export default Ember.Component.extend({
 
       // Use the initial height of the textarea as the minimum height.
       // We will not let the user resize the textarea smaller than this.
-      var minOuterHeight = $textarea.outerHeight();
+      var minOuterHeight = $textarea.outerHeight(),
+        minHeight = $textarea.height();
+
+      var resizeTextarea = () => {
+        if(!this.get('user-resized')){
+          $textarea.height(0);
+          $textarea.scrollTop(0);
+          let height = ($textarea[0].scrollHeight + 1) - $textarea[0].clientHeight;
+          $textarea.height(Math.max(minHeight, height));
+        }
+      };
 
       // When a user types into the textarea auto-resize the height unless
       // they have manually starting resizing it. Once they do that they
       // are in control of the textarea's height.
       $textarea.on('input', () => {
-        if(!this.get('user-resized')){
-          $textarea[0].style.height = '';
-          let height = $textarea[0].scrollHeight;
-          $textarea.css('height', Math.max(minOuterHeight, height) + 'px');
-        }
+        resizeTextarea();
       }).trigger('input');
+
 
       // Apply CSS styles inside the component so there are no external
       // dependencies

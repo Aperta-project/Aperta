@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [{version}] - {release_date}
 ### Added
 ### Changed
+- The Figure task has been reworked.  It's now much simpler to reorder figures after uploading.
 ### Deprecated
 ### Removed
 ### Fixed

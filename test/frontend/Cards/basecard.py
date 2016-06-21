@@ -191,15 +191,21 @@ class BaseCard(AuthenticatedPage):
       title = title.split()
       assert html_header_title == title, \
         'Title in page: {0} != Title in DB: {1}'.format(html_header_title, title)
+    elif isinstance(html_header_title.text, unicode) and not isinstance(title, unicode):
+      assert html_header_title == title.decode('utf-8'), \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(html_header_title,
+          title.decode('utf-8'))
+    elif not isinstance(html_header_title.text, unicode) and isinstance(title, unicode):
+      assert html_header_title.decode('utf-8') == title, \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(
+          html_header_title.decode('utf-8'), title)
     else:
-      logging.info(html_header_title.text)
-      logging.info(title)
-      raise TypeError('Database title or Page title are not both unicode objects')
-    #assert html_header_title.text.strip() == title.strip(), \
-    #    (html_header_title.text, title)
-        # DEBUG
-        #PGENETICS-D-13-02065R1_FTC.docx
-        #'{0} != {1}'.format(html_header_title.text, title)
+      html_header_title = html_header_title.text.split()
+      title = title.split()
+      assert html_header_title == title, \
+        'Title in page: {0} != Title in DB: {1}'.format(
+          html_header_title.decode('utf-8'), title.decode('utf-8')
+          )
     # Validate Styles
     assert application_typeface in html_header_author.value_of_css_property('font-family'), \
       html_header_author.value_of_css_property('font-family')

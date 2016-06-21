@@ -521,21 +521,6 @@ ActiveRecord::Schema.define(version: 20160622135656) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
-  create_table "question_attachments", force: :cascade do |t|
-    t.integer  "nested_question_answer_id"
-    t.string   "attachment"
-    t.string   "title"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "token"
-    t.string   "caption"
-    t.text     "s3_dir"
-  end
-
-  add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
-  add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
-
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true

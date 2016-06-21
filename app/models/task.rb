@@ -49,7 +49,7 @@ class Task < ActiveRecord::Base
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy
-  has_many :attachments, class_name: 'AdhocAttachment'
+  has_many :attachments, as: :owner, class_name: 'AdhocAttachment'
 
   has_many :snapshots, as: :source
 

@@ -39,13 +39,11 @@ namespace :db do
       ENV['PGPASSWORD'] = password.to_s
       cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} ~/aperta.dump"
     end
-    Rake::Task["db:drop"].invoke
-    Rake::Task["db:create"].invoke
     puts cmd
     system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
   end
 
-  # In zsh, this is run as `rake 'db:import[SOURCEDB]'` where SOURCEDB is the heroku address or
+  # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address or
   # `rake db:import` for the tahi-staging db default
   desc "Import data from the heroku staging environment"
   task :import_heroku, [:source_db_name] => [:environment] do |t, args|

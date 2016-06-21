@@ -8,7 +8,7 @@ describe Snapshot::FigureTaskSerializer do
       :figure,
       title: "figure 1 title",
       caption: "figure 1 caption",
-      attachment: File.open(Rails.root.join("spec/fixtures/yeti.jpg"))
+      file: File.open(Rails.root.join("spec/fixtures/yeti.jpg"))
     )
   end
   let(:figure_2) do
@@ -16,7 +16,7 @@ describe Snapshot::FigureTaskSerializer do
       :figure,
       title: "figure 2 title",
       caption: "figure 2 caption",
-      attachment: File.open(Rails.root.join("spec/fixtures/yeti.tiff"))
+      file: File.open(Rails.root.join("spec/fixtures/yeti.tiff"))
     )
   end
 
@@ -35,14 +35,14 @@ describe Snapshot::FigureTaskSerializer do
         { name: "figure", type: "properties", children: [
           { name: "id", type: "integer", value: figure_1.id },
           { name: "file", type: "text", value: "yeti.jpg" },
-          { name: "file_hash", type: "text", value: nil },
+          { name: "file_hash", type: "text", value: figure_1.file_hash },
           { name: "title", type: "text", value: "figure 1 title" },
           { name: "striking_image", type: "boolean", value: false }
         ]},
         { name: "figure", type: "properties", children: [
           { name: "id", type: "integer", value: figure_2.id },
           { name: "file", type: "text", value: "yeti.tiff" },
-          { name: "file_hash", type: "text", value: nil },
+          { name: "file_hash", type: "text", value: figure_2.file_hash },
           { name: "title", type: "text", value: "figure 2 title" },
           { name: "striking_image", type: "boolean", value: false }
         ]}

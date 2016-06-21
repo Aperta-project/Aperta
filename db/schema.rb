@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.string   "status",     default: "processing"
     t.string   "kind"
     t.string   "token"
+    t.text     "s3_dir"
   end
 
   add_index "attachments", ["token"], name: "index_attachments_on_token", unique: true, using: :btree
@@ -262,6 +263,7 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.text     "caption"
     t.string   "status",     default: "processing"
     t.string   "token"
+    t.text     "s3_dir"
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
@@ -535,6 +537,7 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.datetime "updated_at"
     t.string   "token"
     t.string   "caption"
+    t.text     "s3_dir"
   end
 
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
@@ -616,6 +619,7 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.string   "label"
     t.string   "category"
     t.integer  "si_task_id"
+    t.text     "s3_dir"
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree

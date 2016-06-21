@@ -185,8 +185,18 @@ class BaseCard(AuthenticatedPage):
     html_header_state = self._get(self._header_paper_state)
     assert html_header_state.text == status, '{0} != {1}'.format(html_header_state.text, status)
     html_header_title = self._get(self._header_title_link)
-    assert html_header_title.text.strip() == title.strip(), \
-        (html_header_title.text, title)
+    if isinstance(html_header_title.text, unicode) and isinstance(title, unicode):
+      # Split both to eliminate differences in whitespace
+      html_header_title = html_header_title.text.split()
+      title = title.split()
+      assert html_header_title == title, \
+        'Title in page: {0} != Title in DB: {1}'.format(html_header_title, title)
+    else:
+      logging.info(html_header_title.text)
+      logging.info(title)
+      raise TypeError('Database title or Page title are not both unicode objects')
+    #assert html_header_title.text.strip() == title.strip(), \
+    #    (html_header_title.text, title)
         # DEBUG
         #PGENETICS-D-13-02065R1_FTC.docx
         #'{0} != {1}'.format(html_header_title.text, title)

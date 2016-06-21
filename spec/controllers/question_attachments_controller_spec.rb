@@ -3,7 +3,7 @@ require 'rails_helper'
 describe QuestionAttachmentsController do
   let(:user) { FactoryGirl.build_stubbed :user }
   let!(:question_attachment) do
-    FactoryGirl.create(:question_attachment, nested_question_answer: answer)
+    FactoryGirl.create(:question_attachment, owner: answer)
   end
   let(:answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
   let(:task) { FactoryGirl.create(:task) }
@@ -19,7 +19,7 @@ describe QuestionAttachmentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, question_attachment.nested_question_answer.task)
+          .with(:view, question_attachment.owner.task)
           .and_return(true)
       end
 
@@ -38,7 +38,7 @@ describe QuestionAttachmentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, question_attachment.nested_question_answer.task)
+          .with(:view, question_attachment.owner.task)
           .and_return(false)
       end
 
@@ -57,7 +57,7 @@ describe QuestionAttachmentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, question_attachment.nested_question_answer.task)
+          .with(:edit, question_attachment.owner.task)
           .and_return(true)
       end
 
@@ -72,7 +72,7 @@ describe QuestionAttachmentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, question_attachment.nested_question_answer.task)
+          .with(:edit, question_attachment.owner.task)
           .and_return(false)
       end
 

@@ -1,16 +1,18 @@
 require "rails_helper"
 
-describe AttachmentSerializer, serializer_test: true do
+describe AdhocAttachmentSerializer, serializer_test: true do
   let(:attachment) do
-    FactoryGirl.create :attachment,
-                       :with_task,
-                       status: 'done',
-                       token: token
+    FactoryGirl.create(
+      :adhoc_attachment,
+      :with_task,
+      status: 'done',
+      token: token
+    )
   end
   let(:token) { 'hfrrpwV1VHYb7x2T' }
   let(:object_for_serializer) { attachment }
   let(:src) do
-    "/resource_proxy/attachments/" + token
+    "/resource_proxy/adhoc_attachments/" + token
   end
 
   it "serializes successfully" do
@@ -19,17 +21,18 @@ describe AttachmentSerializer, serializer_test: true do
 
   describe "serialized content" do
     it 'includes the data we expect' do
-      expect(deserialized_content)
-        .to match(hash_including(attachment:
-                                   hash_including(
-                                     id: attachment.id,
-                                     title: attachment.title,
-                                     caption: attachment.caption,
-                                     kind: attachment.kind,
-                                     src: src,
-                                     status: attachment.status,
-                                     filename: attachment.filename,
-                                     task: { id: attachment.task.id, type: "Task" })))
+      expected_contents = hash_including(
+        id: attachment.id,
+        title: attachment.title,
+        caption: attachment.caption,
+        kind: attachment.kind,
+        src: src,
+        status: attachment.status,
+        filename: attachment.filename,
+        task: { id: attachment.task.id, type: "Task" },
+        type: 'AdhocAttachment'
+      )
+      expect(deserialized_content[:adhoc_attachment]).to match(expected_contents)
     end
   end
 
@@ -41,7 +44,7 @@ describe AttachmentSerializer, serializer_test: true do
     it "has :preview_src & :detail_sec" do
       expect(deserialized_content)
         .to match(hash_including(
-                    attachment: hash_including(
+                    adhoc_attachment: hash_including(
                       preview_src: src + "/preview",
                       detail_src: src + "/detail")))
     end
@@ -51,7 +54,7 @@ describe AttachmentSerializer, serializer_test: true do
     it "has empty :preview_src & :detail_sec" do
       expect(deserialized_content)
         .to match(hash_including(
-                    attachment: hash_including(
+                    adhoc_attachment: hash_including(
                       preview_src: nil,
                       detail_src: nil)))
     end

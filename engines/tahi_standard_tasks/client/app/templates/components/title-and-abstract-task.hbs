@@ -2,20 +2,20 @@
 
 <div class="task-main-content">
   <div class="title-and-abstract">
-    <div class="form-group">
+    <div class="form-group qa-paper-title">
        <h3>Title</h3>
         {{format-input name=paperTitle
                        value=paperTitle
-                       class="form-paper-title form-textarea"
+                       class="form-textarea"
                        disabled=isNotEditable
                        focus-out=(action "focusOut") }}
 
     </div>
-    <div class="form-group">
+    <div class="form-group qa-paper-abstract">
        <h3>Abstract</h3>
         {{format-input name=paperAbstract
                        value=paperAbstract
-                       class="form-paper-abstract form-textarea"
+                       class="form-textarea"
                        disabled=isNotEditable
                        focus-out=(action "focusOut") }}
 

@@ -62,6 +62,17 @@ class Task < ActiveRecord::Base
   validates :title, length: { maximum: 255 }
 
   class << self
+    # Public: Restores the task defaults to all of its instances/models
+    #
+    # * restores title to DEFAULT_TITLE
+    # * restores old_role to DEFAULT_ROLE
+    #
+    # Note: this will not restore the +title+ or +old_role+ on ad-hoc tasks.
+    def restore_defaults
+      return if self == Task
+      update_all(old_role: self::DEFAULT_ROLE, title: self::DEFAULT_TITLE)
+    end
+
     # Public: Scopes the tasks with a given old_role
     #
     # old_role  - The String of old_role name.

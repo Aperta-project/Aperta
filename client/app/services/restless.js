@@ -6,7 +6,7 @@ import camelizeKeys from 'tahi/lib/camelize-keys';
 
 export default Ember.Service.extend({
   pathFor(model) {
-    let adapter = model.get('store').adapterFor(model);
+    let adapter = model.get('store').adapterFor(model.constructor.modelName);
     let resourceType = model.constructor.modelName;
     return adapter.buildURL(resourceType, model.get('id'));
   },

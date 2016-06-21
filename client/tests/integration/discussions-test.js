@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
-import { make } from 'ember-data-factory-guy';
+import { build, make } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+
+const { mockFind } = TestHelper;
 
 let App = null;
 let paper, topic;
@@ -27,7 +29,7 @@ module('Integration: Discussions', {
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
-    TestHelper.handleFind(paper);
+    mockFind('paper').returns({ model: paper });
     TestHelper.handleFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', paper.id, ['manage_workflow']);
@@ -41,13 +43,13 @@ module('Integration: Discussions', {
 
 test('can see a list of topics', function(assert) {
   Ember.run(function() {
-    TestHelper.handleFind(topic);
+    mockFind('discussion-topic').returns({ model: topic });
 
     visit('/papers/' + paper.id + '/workflow/discussions/');
 
     andThen(function() {
-      const topic = find('.discussions-index-topic:first');
-      assert.ok(topic.length, 'Topic is found: ' + topic.text());
+      const firstTopic = find('.discussions-index-topic:first');
+      assert.ok(firstTopic.length, 'Topic is found: ' + firstTopic.text());
     });
   });
 });
@@ -56,7 +58,7 @@ test('can see a non-editable topic with view permissions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    TestHelper.handleFind(topic);
+    mockFind('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -70,7 +72,7 @@ test('can reply to a topic with view permissions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    TestHelper.handleFind(topic);
+    mockFind('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -84,7 +86,7 @@ test('comment body line returns converted to break tags', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    TestHelper.handleFind(topic);
+    mockFind('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -94,12 +96,11 @@ test('comment body line returns converted to break tags', function(assert) {
   });
 });
 
-
 test('can see an editable topic with edit permissions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
 
   Ember.run(function() {
-    TestHelper.handleFind(topic);
+    mockFind('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {

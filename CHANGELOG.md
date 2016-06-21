@@ -4,6 +4,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Ability for invited reviewer to provide decline reason and suggested
+  reviewers when declining invitation.
 - Ability to remove user roles via CSV file.
 ### Changed
 ### Deprecated
@@ -22,6 +24,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   ID. Sent NED ID and email for corresponding author in billing log
 - Updated dois to the format 10.1371/journal.pbio.2000001 instead of
   10.1371/pbio.2000001
+- Allow all characters in usernames
 ### Deprecated
 ### Removed
 ### Fixed
@@ -60,6 +63,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Authors will see the feedback form whenever they submit a paper
 - Add manifest to Apex export
 - Apex export will include title and DOI of applicable related articles
+- Add basic paper information to task overlay header
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM

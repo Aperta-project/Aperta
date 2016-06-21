@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import deepJoinArrays from 'tahi/lib/deep-join-arrays';
-import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 import validator from 'tahi/lib/validator';
+import prepareResponseErrors from 'tahi/lib/validations/prepare-response-errors';
 
 const {
   isArray,
@@ -60,27 +59,6 @@ export default Mixin.create({
       this.set('validationErrors', {});
     }
   }),
-
-  /**
-    Take response from Rails, camelize keys and join arrays.
-
-    @private
-    @method _prepareResponseErrors
-    @param {Object} errors
-    @param {Object} options
-    @return {Object}
-  */
-
-  _prepareResponseErrors(errors, options) {
-    let errorsObject = deepJoinArrays(deepCamelizeKeys(errors));
-
-    if (options && options.includeNames) {
-      for(var key in errorsObject) {
-        errorsObject[key] = `${key.capitalize()} ${errors[key]}`;
-      }
-    }
-    return errorsObject;
-  },
 
   /**
     Get pluralized name of model.
@@ -176,7 +154,7 @@ export default Mixin.create({
   displayValidationErrorsFromResponse(response, options) {
     this.set(
       'validationErrors',
-      this._prepareResponseErrors(response.errors, options)
+      prepareResponseErrors(response.errors, options)
     );
   },
 

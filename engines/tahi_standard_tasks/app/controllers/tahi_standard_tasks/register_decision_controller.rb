@@ -19,7 +19,7 @@ module TahiStandardTasks
         task.complete_decision
         task.send_email
         Activity.decision_made! decision, user: current_user
-        render json: {}, status: :created
+        render json: decision, status: :created
       end
     end
   end

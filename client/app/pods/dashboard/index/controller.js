@@ -6,11 +6,9 @@ export default Ember.Controller.extend({
 
   papers: [],
   unreadComments: [],
-  pendingInvitations: Ember.computed(
-    'currentUser.invitedInvitations', function() {
-      return this.get('currentUser.invitedInvitations');
-    }
-  ),
+  invitationsInvited: Ember.computed.alias('currentUser.invitationsInvited'),
+  invitationsNeedsUserUpdate: Ember.computed.alias('currentUser.invitationsNeedsUserUpdate'),
+
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
@@ -70,22 +68,24 @@ export default Ember.Controller.extend({
     },
 
     rejectInvitation(invitation) {
-      this.get('restless').putModel(invitation, '/reject').then(function() {
-        invitation.reject();
+      return this.get('restless').putUpdate(invitation, '/reject');
+    },
+
+    updateInvitation(invitation) {
+      return invitation.save().then(function(){
+        invitation.feedbackSent();
       });
     },
 
     acceptInvitation(invitation) {
-      this.get('restless').putModel(invitation, '/accept').then(function() {
-        invitation.accept();
-
+      return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
         // Force the user's papers to load
         this.store.find('paper');
-      }.bind(this));
+      });
     },
 
     showNewManuscriptOverlay() {
-      const journals = this.store.find('journal');
+      const journals = this.store.findAll('journal');
       const paper = this.store.createRecord('paper', {
         journal: null,
         paperType: null,

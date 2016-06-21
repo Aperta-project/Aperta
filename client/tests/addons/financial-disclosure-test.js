@@ -106,7 +106,7 @@ module('Integration: FinancialDisclosure', {
       }, JSON.stringify(financialDisclosureTask)
     ]);
 
-    server.respondWith('PUT', /\/api\/tasks\/\d+/, JSON.stringify({}));
+    server.respondWith('PUT', /\/api\/tasks\/\d+/, [204, {'Content-Type': 'application/json' }, ""]);
 
     server.respondWith('GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {
@@ -150,7 +150,7 @@ module('Integration: FinancialDisclosure', {
 });
 
 test('Viewing the card and adding new funder', function(assert) {
-  return visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId).then(function() {
+  visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId).then(function() {
     assert.equal(find('.overlay-body-title').text().trim(), 'Financial Disclosure');
     assert.elementFound(
       "label:contains('Yes')",
@@ -168,7 +168,7 @@ test('Viewing the card and adding new funder', function(assert) {
       );
       Ember.$('.funder-name').val("Hello");
       Ember.$('.grant-number').val("1234567890");
-      return click(".task-completed");
+      click(".task-completed");
     });
   });
 });

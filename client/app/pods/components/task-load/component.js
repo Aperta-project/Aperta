@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 /**
  *  task-load ensures the task and other required data is loaded
@@ -18,11 +17,11 @@ import getOwner from 'ember-getowner-polyfill';
 
 
 export default Ember.Component.extend({
+  store: Ember.inject.service(),
   taskLoad: null,
 
   init() {
     this._super(...arguments);
-    const store = getOwner(this).lookup('store:main');
     const task = this.get('task');
 
     // Note: task find
@@ -33,7 +32,7 @@ export default Ember.Component.extend({
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),
-      store.find('task', task.get('id')) // see "NOTE: task find"
+      this.get('store').findRecord('task', task.get('id')) // see "NOTE: task find"
     ]));
   }
 });

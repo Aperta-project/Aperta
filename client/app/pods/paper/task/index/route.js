@@ -8,11 +8,11 @@ export default AuthorizedRoute.extend({
 
   model(params) {
     // Force the reload of the task when visiting the tasks' route.
-    let task = this.store.findTask(params.task_id);
+    const task = this.store.findTask(params.task_id);
     if (task) {
       return task.reload();
     } else {
-      return this.store.find('task', params.task_id).then(
+      return this.store.findRecord('task', params.task_id).then(
         (task) => { return task; },
         () => {
           this.handleUnauthorizedRequest(this.get('previousTransition'));

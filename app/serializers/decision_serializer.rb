@@ -1,7 +1,14 @@
 class DecisionSerializer < ActiveModel::Serializer
-  attributes :id, :verdict, :revision_number, :letter, :is_latest, :created_at, :author_response
+  attributes :author_response,
+             :created_at,
+             :id,
+             :is_latest,
+             :letter,
+             :verdict,
+             :revision_number
+
   has_many :invitations, embed: :ids, include: true
-  has_one :paper, embed: :id
+  has_one :paper, embed: :id, include: true
 
   def is_latest
     object.latest?

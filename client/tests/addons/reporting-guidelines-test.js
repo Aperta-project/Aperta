@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import TestHelper, { mockSetup, mockTeardown } from 'ember-data-factory-guy/factory-guy-test-helper';
 import Factory from '../helpers/factory';
 import startApp from '../helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
@@ -11,12 +11,13 @@ import {
 let app      = null;
 let server   = null;
 let fakeUser = null;
+let paperId  = null;
 const taskId = 90210;
 
 module('Integration: Reporting Guidelines Card', {
   afterEach() {
     server.restore();
-    Ember.run(function() { TestHelper.teardown(); });
+    $.mockjax.clear()
     Ember.run(app, 'destroy');
   },
 
@@ -31,14 +32,15 @@ module('Integration: Reporting Guidelines Card', {
     });
 
     Factory.createPermission('ReportingGuidelinesTask', taskId, ['edit']);
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     const task = records[1];
 
     // -- Paper Setup
 
     const paperPayload = Factory.createPayload('paper');
-    paperId = paperPayload.id;
+    let paper = paperPayload.createRecord('Paper', {id: 1});
+    paperId = paper.id;
     paperPayload.addRecords(records.concat([fakeUser]));
     const paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(task, fakeUser)];

@@ -100,6 +100,14 @@ class RegisterDecisionCardTest(CommonTest):
     self._driver.get(paper_url)
     self._driver.navigated = True
     time.sleep(2)
+    keep_waiting = True
+    while keep_waiting:
+      time.sleep(5)
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'full submit' in paper_title_from_page.encode('utf8'):
+        continue
+      else:
+        keep_waiting = False
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     time.sleep(2)

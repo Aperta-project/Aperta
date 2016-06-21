@@ -67,6 +67,7 @@ class WorkflowPage(AuthenticatedPage):
     self._ITC_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
+    self._title_abstract_card = (By.XPATH, "//a/div[contains(., 'Title and Abstract')]")
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
@@ -213,18 +214,19 @@ class WorkflowPage(AuthenticatedPage):
     assert author_cards[0].text == 'Additional Information', author_cards[0].text
     assert author_cards[1].text == 'Authors', author_cards[1].text
     assert author_cards[2].text == 'Billing', author_cards[2].text
-    # APERTA-6333
-    # assert author_cards[3].text == 'Competing Interests', author_cards[3].text
-    # assert author_cards[4].text == 'Cover Letter', author_cards[4].text
-    # assert author_cards[5].text == 'Data Availability', author_cards[5].text
-    # assert author_cards[6].text == 'Ethics Statement', author_cards[6].text
-    # assert author_cards[7].text == 'Figures', author_cards[7].text
-    # assert author_cards[8].text == 'Financial Disclosure', author_cards[8].text
-    # assert author_cards[9].text == 'New Taxon', author_cards[9].text
-    # assert author_cards[10].text == 'Reporting Guidelines', author_cards[10].text
-    # assert author_cards[11].text == 'Reviewer Candidates', author_cards[11].text
-    # assert author_cards[12].text == 'Supporting Info', author_cards[12].text
-    # assert author_cards[13].text == 'Upload Manuscript', author_cards[13].text
+    assert author_cards[3].text == 'Changes for Author', author_cards[3].text
+    assert author_cards[4].text == 'Competing Interests', author_cards[4].text
+    assert author_cards[5].text == 'Cover Letter', author_cards[5].text
+    assert author_cards[6].text == 'Data Availability', author_cards[6].text
+    assert author_cards[7].text == 'Ethics Statement', author_cards[7].text
+    assert author_cards[8].text == 'Figures', author_cards[8].text
+    assert author_cards[9].text == 'Financial Disclosure', author_cards[9].text
+    assert author_cards[10].text == 'New Taxon', author_cards[10].text
+    assert author_cards[11].text == 'Reporting Guidelines', author_cards[11].text
+    assert author_cards[12].text == 'Reviewer Candidates', author_cards[12].text
+    assert author_cards[13].text == 'Revise Task', author_cards[13].text
+    assert author_cards[14].text == 'Supporting Info', author_cards[14].text
+    assert author_cards[15].text == 'Upload Manuscript', author_cards[15].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
     assert staff_cards[0].text == 'Ad-hoc', staff_cards[0].text
     assert staff_cards[1].text == 'Assign Admin', staff_cards[1].text
@@ -237,8 +239,11 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[8].text == 'Invite Reviewers', staff_cards[8].text
     assert staff_cards[9].text == 'Production Metadata', staff_cards[9].text
     assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
-    # APERTA-6333
-    # assert staff_cards[11].text == 'Revision Tech Check', staff_cards[11].text
+    assert staff_cards[11].text == 'Related Articles', staff_cards[11].text
+    assert staff_cards[12].text == 'Reviewer Report', staff_cards[12].text
+    assert staff_cards[13].text == 'Revision Tech Check', staff_cards[13].text
+    assert staff_cards[14].text == 'Send to Apex', staff_cards[14].text
+    assert staff_cards[15].text == 'Title and Abstract', staff_cards[15].text
     # APERTA-5513 AC 3
     author_cards[10].click()
     author_cards[11].click()

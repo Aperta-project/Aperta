@@ -25,8 +25,9 @@ module.exports = function(environment) {
       blueprints: false
     },
 
+    // Also set in /app/views/downloadable_paper/pdf.html.erb
     'mathjax': {
-      url: '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+      url: '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full'
     },
 
     contentSecurityPolicy: {
@@ -42,7 +43,7 @@ module.exports = function(environment) {
 
   if (environment === 'development') {
     if(Error && Error.stackTraceLimit) {
-      Error.stackTraceLimit = 50;
+      Error.stackTraceLimit = 25;
     }
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;

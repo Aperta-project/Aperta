@@ -47,13 +47,27 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     this.endPropertyChanges();
   },
 
+  usesResearchArticleReviewerReport: Ember.computed('model.usesResearchArticleReviewerReport', function(key, value){
+    let model = this.get('model');
+
+    // when we're not being used as a getter
+    if(value !== undefined){
+      model.set(key, value);
+      model.save();
+    }
+    return model.get(key);
+  }),
+
   resetProperties(){
     this.setProperties({ editingName: false, pendingChanges: false });
   },
 
   actions: {
     hideAdHocTaskOverlay() {
-      this.set('showAdHocTaskOverlay', false);
+      this.setProperties({
+        showAdHocTaskOverlay: false,
+        pendingChanges: true
+      });
     },
 
     showChooseNewCardOverlay(phase) {
@@ -63,7 +77,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
 
       const journalId = this.get('model.journal.id');
-      this.store.find('adminJournal', journalId).then(adminJournal => {
+      this.store.findRecord('admin-journal', journalId).then(adminJournal => {
         this.setProperties({
           journalTaskTypes: adminJournal.get('journalTaskTypes'),
           journalTaskTypesIsLoading: false
@@ -82,7 +96,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       let hasAdHocType = false;
 
       taskTypeList.forEach((taskType) => {
-        const newTaskTemplate = this.store.createRecord('taskTemplate', {
+        const newTaskTemplate = this.store.createRecord('task-template', {
           title: taskType.get('title'),
           journalTaskType: taskType,
           phaseTemplate: phaseTemplate,
@@ -146,14 +160,13 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     addPhase(position){
-
       this.get('phaseTemplates').forEach(function(phaseTemplate) {
         if (phaseTemplate.get('position') >= position) {
           phaseTemplate.incrementProperty('position');
         }
       });
 
-      this.store.createRecord('phaseTemplate', {
+      this.store.createRecord('phase-template', {
         name: 'New Phase',
         manuscriptManagerTemplate: this.get('model'),
         position: position
@@ -179,15 +192,24 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.saveTemplate(transition);
     },
 
+    editTaskTemplate(taskTemplate){
+      if (taskTemplate.get('kind') === 'Task') {
+        this.setProperties({
+          showAdHocTaskOverlay: true,
+          adHocTaskToDisplay: taskTemplate
+        });
+      }
+    },
+
     cancel(){
       if (this.get('model.isNew')){
         this.get('model').deleteRecord();
         this.resetProperties();
         this.transitionToRoute('admin.journal', this.get('journal'));
       } else {
-        this.store.unloadAll('taskTemplate');
-        this.store.unloadAll('phaseTemplate');
-        this.get('model').rollback();
+        this.store.unloadAll('task-template');
+        this.store.unloadAll('phase-template');
+        this.get('model').rollbackAttributes();
         this.get('journal').reload().then(() => {
           this.resetProperties();
         });

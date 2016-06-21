@@ -87,7 +87,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     },
 
     cancel() {
-      this.get('journal').rollback();
+      this.get('journal').rollbackAttributes();
       this.stopEditing();
       this.clearAllValidationErrors();
     },

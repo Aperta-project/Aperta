@@ -13,10 +13,26 @@
   }
 }
 
+.overlay-header {
+  ul.paper-attributes {
+    padding-left: 0;
+    margin-bottom: 5px;
+
+    li {
+      display: inline-block;
+      font-size: 1.6rem;
+    }
+
+    li + li:before {
+      content: " | ";
+      padding: 0 5px;
+    }
+  }
+}
+
 .task-overlay-paper-title {
   position: relative;
   display: inline-block;
-  padding-left: 27px;
   font-size: 1.6rem;
   line-height: 1.2;
 
@@ -27,8 +43,10 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .task-overlay-paper-title {
-    font-size: 1.3rem;
+  .overlay-header {
+    .task-overlay-paper-title, ul.paper-attributes li {
+      font-size: 1.3rem;
+    }
   }
 }
 

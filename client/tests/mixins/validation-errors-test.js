@@ -4,7 +4,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const FakeObject = Ember.Object.extend(ValidationErrorsMixin);
 
-module('ValidationErrorsMixin', {
+module('unit: ValidationErrorsMixin', {
   beforeEach() {
     this.object = FakeObject.create();
   }
@@ -87,28 +87,56 @@ test('#validationErrorsPresentForKey empty', function(assert) {
 
 // #displayValidationErrorsFromResponse ------------------------------
 
+// Instead of passing along rails-style errors we now get a JSON API errors
+// object that we'll temporarily munge into the old style
+// http://emberjs.com/blog/2015/06/18/ember-data-1-13-released.html#toc_new-errors-api
+// has more detail, as well as http://jsonapi.org/format/#error-objects
 test('#displayValidationErrorsFromResponse', function(assert) {
-  this.object.displayValidationErrorsFromResponse({
-    errors: {
-      'email': ['is required', 'invalid format'],
+  let newFormatedErrors = [
+    {
+      detail: 'must be a whole number',
+      source: {
+        pointer: '/data/attributes/volume_number'
+      }
+    },
+    {
+      detail: 'is required',
+      source: {
+        pointer: '/data/attributes/email'
+      }
+    },
+    {
+      detail: 'invalid format',
+      source: {
+        pointer: '/data/attributes/email'
+      }
     }
-  });
+  ];
 
-  const errors = this.object.get('validationErrors')['email'];
+  this.object.displayValidationErrorsFromResponse({ errors: newFormatedErrors });
+  let errors = this.object.get('validationErrors.email');
+  assert.equal(errors,
+               'is required, invalid format',
+               'it concatenates multiple error objects details under one key by pointer');
+  assert.ok(this.object.get('validationErrors.volumeNumber'),
+            'it camelCases the end of the pointer for the error key');
 
-  assert.equal(errors, 'is required, invalid format', 'errors found');
-});
+  this.object.displayValidationErrorsFromResponse({ errors: newFormatedErrors},
+                                                  {includeNames: true });
+  assert.equal(this.object.get('validationErrors.email'),
+               'Email is required, invalid format',
+               'the includeNames option sticks the source pointer at the beginning');
 
-test('#displayValidationErrorsFromResponse with options', function(assert) {
-  this.object.displayValidationErrorsFromResponse({
-    errors: {
-      'email': ['is required', 'invalid format'],
-    }
-  }, {
-    includeNames: true
-  });
+  this.object.displayValidationErrorsFromResponse({ errors: newFormatedErrors},
+                                                  {includeNames: true });
+  assert.equal(this.object.get('validationErrors.volumeNumber'),
+               'VolumeNumber must be a whole number',
+               'includeNames capitalizes the key by default');
 
-  const errors = this.object.get('validationErrors')['email'];
+  this.object.displayValidationErrorsFromResponse({ errors: newFormatedErrors},
+                                                  {includeNames: 'humanize' });
+  assert.equal(this.object.get('validationErrors.volumeNumber'),
+               'Volume number must be a whole number',
+               'includeNames will humanize the key too');
 
-  assert.equal(errors, 'Email is required,invalid format', 'errors found');
 });

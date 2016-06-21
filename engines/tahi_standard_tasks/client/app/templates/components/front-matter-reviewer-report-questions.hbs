@@ -1,0 +1,73 @@
+<ol class="question-list">
+  <li class="question">
+    {{nested-question-radio-decision ident="front_matter_reviewer_report--decision_term"
+                                     owner=model
+                                     decision=decision
+                                     readOnly=readOnly}}
+  </li>
+  <li class="question">
+    {{nested-question-textarea ident="front_matter_reviewer_report--competing_interests"
+      owner=model
+      decision=decision
+      displayContent=true
+      helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"
+      readOnly=readOnly}}
+  </li>
+
+  <li class="question">
+      {{#nested-question-radio ident="front_matter_reviewer_report--suitable"
+                        owner=model
+                        decision=decision
+                        wrapperClass="yes-no-with-comments"
+                        helpText="<p><strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication' target='_blank'>referee</a> guidelines and information on our <a href='http://journals.plos.org/plosbiology/s/other-article-types' target='_blank'>article types</a>.</strong></p><p>Submit your detailed comments in the box below. These will be communicated to the authors.</p>"
+                        readOnly=readOnly as |radio|}}
+
+        {{#if radio.yieldingForAdditionalData}}
+          {{nested-question-textarea ident="front_matter_reviewer_report--suitable--comment"
+              owner=model
+              decision=decision
+              displayQuestionText=false
+              displayContent=true
+              noResponseText=""
+              readOnly=readOnly}}
+        {{/if}}
+      {{/nested-question-radio}}
+  </li>
+
+  <li class="question">
+    {{#nested-question-radio ident="front_matter_reviewer_report--includes_unpublished_data"
+                      owner=model
+                      decision=decision
+                      unwrappedHelpText="<ul class=\"question-help\"><li>The data have been generated rigorously with relevant controls, replication and sample sizes, if applicable.</li><li>The data provided support the conclusions that are drawn.</li></ul>These comments will be communicated to the authors."
+                      wrapperClass="yes-no-with-comments"
+                      readOnly=readOnly as |radio|}}
+      {{#if radio.yieldingForAdditionalData}}
+        {{nested-question-textarea ident="front_matter_reviewer_report--includes_unpublished_data--explanation"
+            owner=model
+            decision=decision
+            noResponseText=""
+            displayQuestionText=false
+            displayContent=true
+            readOnly=readOnly}}
+      {{/if}}
+    {{/nested-question-radio}}
+  </li>
+
+  <li class="question">
+    {{nested-question-textarea ident="front_matter_reviewer_report--additional_comments"
+                        owner=model
+                        decision=decision
+                        displayContent=true
+                        helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
+                        readOnly=readOnly}}
+  </li>
+
+  <li class="question">
+    {{nested-question-textarea ident="front_matter_reviewer_report--identity"
+                        owner=model
+                        decision=decision
+                        displayContent=true
+                        helpText="<li>Your name and review will not be published with the manuscript.</li>"
+                        readOnly=readOnly}}
+  </li>
+</ol>

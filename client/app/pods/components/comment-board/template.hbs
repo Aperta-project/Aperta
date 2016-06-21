@@ -16,7 +16,7 @@
   <div class="comment-actions">
     <a class="load-all-comments" href="#" {{action "showAllComments"}}>
       <span class="fa fa-comment"></span>
-      View older {{pluralize omittedCommentsCount "comment"}}
+      View older {{pluralize-string count=omittedCommentsCount string="comment"}}
     </a>
   </div>
 {{/unless}}

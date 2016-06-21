@@ -1479,6 +1479,33 @@ activities:
     - '3'
     - '2016-04-12 19:05:54.323985'
     - '2016-04-12 19:05:54.323985'
+  - - '164'
+    - manuscript
+    - '3'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2016-06-02 13:41:34.276207'
+    - '2016-06-02 13:41:34.276207'
+  - - '165'
+    - manuscript
+    - '13'
+    - Paper
+    - paper.created
+    - Manuscript was created
+    - '3'
+    - '2016-06-02 13:43:23.635878'
+    - '2016-06-02 13:43:23.635878'
+  - - '166'
+    - workflow
+    - '13'
+    - Paper
+    - invitation.created
+    - Reviewer User was invited as Reviewer
+    - '1'
+    - '2016-06-02 13:47:43.374893'
+    - '2016-06-02 13:47:43.374893'
 
 ---
 affiliations:
@@ -2679,6 +2706,13 @@ assignments:
     - User
     - '2016-04-28 02:42:33.683171'
     - '2016-04-28 02:42:33.683171'
+  - - '153'
+    - '3'
+    - '8'
+    - '13'
+    - Paper
+    - '2016-06-02 13:43:23.190949'
+    - '2016-06-02 13:43:23.190949'
 
 ---
 author_list_items:
@@ -2775,6 +2809,13 @@ author_list_items:
     - '2016-04-12 18:50:28.600541'
     - '2016-04-12 19:00:55.863007'
     - '12'
+  - - '15'
+    - '1'
+    - '13'
+    - Author
+    - '2016-06-02 13:43:23.451642'
+    - '2016-06-02 13:43:23.451642'
+    - '13'
 
 ---
 authors:
@@ -3020,6 +3061,26 @@ authors:
     - 
     - 
     - 
+  - - '13'
+    - Arthur
+    - Author
+    - '2016-06-02 13:43:23.449261'
+    - '2016-06-02 13:43:23.463704'
+    - 
+    - author@example.com
+    - 
+    - 
+    - PLOS
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
 
 ---
 comments:
@@ -3217,6 +3278,14 @@ decisions:
     - '2016-04-12 19:03:40.743898'
     - '2016-04-12 19:03:40.743898'
     - 
+  - - '22'
+    - '13'
+    - '0'
+    - 
+    - 
+    - '2016-06-02 13:43:23.198268'
+    - '2016-06-02 13:43:23.198268'
+    - 
 
 ---
 figures:
@@ -3335,6 +3404,64 @@ group_authors:
     - GA
     - '2016-04-12 18:47:58.788407'
     - '2016-04-12 18:47:58.788407'
+
+---
+invitations:
+  columns:
+  - id
+  - email
+  - task_id
+  - invitee_id
+  - actor_id
+  - state
+  - created_at
+  - updated_at
+  - decision_id
+  - information
+  - body
+  - inviter_id
+  - invitee_role
+  records: 
+  - - '1'
+    - reviewer@example.com
+    - '207'
+    - '5'
+    - 
+    - invited
+    - '2016-06-02 13:47:43.341436'
+    - '2016-06-02 13:47:43.365654'
+    - '22'
+    - |-
+      Here are the authors on the paper:
+
+      1. Author, Arthur from PLOS
+    - |+
+      Dear Reviewer User,
+
+      You've been invited as a Reviewer on “My non-research paper”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      My non-research paper
+
+      Authors:
+      1. Author, Arthur from PLOS
+
+      Abstract:
+
+
+    - '1'
+    - Reviewer
 
 ---
 journal_task_types:
@@ -3559,12 +3686,12 @@ journals:
     - '2015-10-29 19:40:11.853622'
     - '2016-04-12 18:43:34.647157'
     - images/no-journal-image.gif
-    -
-    -
+    - 
+    - 
     - If you are a developer, you are in the right place for fun, for science, and
       for publication.
     - yetipub
-    - yetijour
+    - journal.yetijour
     - '1000002'
 
 ---
@@ -3573,10 +3700,16 @@ manuscript_manager_templates:
   - id
   - paper_type
   - journal_id
+  - uses_research_article_reviewer_report
   records: 
   - - '1'
     - Research
     - '1'
+    - true
+  - - '2'
+    - Non-Research
+    - '1'
+    - false
 
 ---
 nested_question_answers:
@@ -6175,7 +6308,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-05-06 15:33:33.667191'
+    - '2016-06-07 01:39:19.358017'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -7861,6 +7994,106 @@ nested_questions:
     - '2016-03-22 15:09:05.801946'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+  - - '252'
+    - 'Please provide your publication recommendation:'
+    - text
+    - front_matter_reviewer_report--decision_term
+    - 
+    - '367'
+    - '368'
+    - '1'
+    - '2016-06-06 20:37:56.611509'
+    - '2016-06-06 20:37:56.611509'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '253'
+    - Do you have any potential or perceived competing interests that may influence
+      your review?
+    - text
+    - front_matter_reviewer_report--competing_interests
+    - 
+    - '369'
+    - '370'
+    - '2'
+    - '2016-06-06 20:37:56.61952'
+    - '2016-06-06 20:37:56.61952'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '254'
+    - Suitable Comment
+    - text
+    - front_matter_reviewer_report--suitable--comment
+    - '255'
+    - '372'
+    - '373'
+    - '1'
+    - '2016-06-06 20:37:56.625332'
+    - '2016-06-06 20:37:56.644529'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '255'
+    - Is this manuscript suitable in principle for the magazine section of <em>PLOS
+      Biology</em>?
+    - boolean
+    - front_matter_reviewer_report--suitable
+    - 
+    - '371'
+    - '374'
+    - '3'
+    - '2016-06-06 20:37:56.634598'
+    - '2016-06-07 01:39:19.588748'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '256'
+    - Includes Published Data Explanation
+    - text
+    - front_matter_reviewer_report--includes_unpublished_data--explanation
+    - '257'
+    - '376'
+    - '377'
+    - '1'
+    - '2016-06-06 20:37:56.652954'
+    - '2016-06-06 20:37:56.669762'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '257'
+    - 'If previously unpublished data are included to support the conclusions, please
+      note in the box below whether:'
+    - boolean
+    - front_matter_reviewer_report--includes_unpublished_data
+    - 
+    - '375'
+    - '378'
+    - '4'
+    - '2016-06-06 20:37:56.66097'
+    - '2016-06-06 20:37:56.669762'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '258'
+    - "(Optional) Please offer any additional confidential comments to the editor"
+    - text
+    - front_matter_reviewer_report--additional_comments
+    - 
+    - '379'
+    - '380'
+    - '5'
+    - '2016-06-06 20:37:56.67712'
+    - '2016-06-06 20:37:56.67712'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '259'
+    - "(Optional) If you'd like your identity to be revealed to the authors, please
+      include your name here."
+    - text
+    - front_matter_reviewer_report--identity
+    - 
+    - '381'
+    - '382'
+    - '6'
+    - '2016-06-06 20:37:56.682991'
+    - '2016-06-06 20:37:56.682991'
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
 
 ---
 old_roles:
@@ -8067,6 +8300,7 @@ papers:
   - striking_image_type
   - state_updated_at
   - processing
+  - uses_research_article_reviewer_report
   records: 
   - - '1'
     - 
@@ -8080,7 +8314,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100001
+    - 10.1371/journal.devs.100001
     - unsubmitted
     - 
     - 
@@ -8092,6 +8326,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '2'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
@@ -8104,7 +8339,7 @@ papers:
     - 
     - '2'
     - true
-    - 10.1371/devs.100002
+    - 10.1371/journal.devs.100002
     - unsubmitted
     - 
     - 
@@ -8116,6 +8351,7 @@ papers:
     - Figure
     - 
     - false
+    - true
   - - '3'
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -8128,7 +8364,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100003
+    - 10.1371/journal.devs.100003
     - unsubmitted
     - 
     - 
@@ -8140,6 +8376,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '4'
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
@@ -8152,7 +8389,7 @@ papers:
     - 
     - 
     - false
-    - 10.1371/devs.100004
+    - 10.1371/journal.devs.100004
     - submitted
     - '2015-11-02 15:14:05.576249'
     - 
@@ -8164,6 +8401,7 @@ papers:
     - 
     - '2015-11-02 15:14:05.576249'
     - false
+    - true
   - - '8'
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -8176,7 +8414,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100008
+    - 10.1371/journal.devs.100008
     - unsubmitted
     - 
     - 
@@ -8188,6 +8426,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '9'
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
@@ -8200,7 +8439,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100009
+    - 10.1371/journal.devs.100009
     - unsubmitted
     - 
     - 
@@ -8212,6 +8451,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '10'
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
@@ -8224,7 +8464,7 @@ papers:
     - 
     - 
     - true
-    - 10.1371/devs.100010
+    - 10.1371/journal.devs.100010
     - unsubmitted
     - 
     - 
@@ -8236,6 +8476,7 @@ papers:
     - 
     - 
     - false
+    - true
   - - '12'
     - <p class="Body A">African forest elephants are being poached at accelerating
       rates, but we lack range-wide information on the repercussions. Analysis of
@@ -8259,7 +8500,7 @@ papers:
     - 
     - '5'
     - false
-    - yetipub/yetijour.1000002
+    - yetipub/journal.yetijour.1000002
     - submitted
     - '2016-04-12 19:05:53.748887'
     - 
@@ -8270,6 +8511,32 @@ papers:
     - 
     - SupportingInformationFile
     - '2016-04-12 19:05:53.732615'
+    - false
+    - true
+  - - '13'
+    - ''
+    - My non-research paper; reviewer invited
+    - '2016-06-02 13:43:23.17536'
+    - '2016-06-02 13:48:15.405799'
+    - 
+    - Non-Research
+    - '1'
+    - 
+    - 
+    - 
+    - true
+    - yetipub/yetijour.1000003
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
+    - 
+    - false
     - false
 
 ---
@@ -8855,6 +9122,24 @@ permission_requirements:
     - Task
     - '2016-04-12 18:43:34.79506'
     - '2016-04-12 18:43:34.79506'
+  - - '19'
+    - '10'
+    - '194'
+    - Task
+    - '2016-06-02 13:43:23.245605'
+    - '2016-06-02 13:43:23.245605'
+  - - '20'
+    - '13'
+    - '194'
+    - Task
+    - '2016-06-02 13:43:23.247564'
+    - '2016-06-02 13:43:23.247564'
+  - - '21'
+    - '209'
+    - '194'
+    - Task
+    - '2016-06-02 13:43:23.249536'
+    - '2016-06-02 13:43:23.249536'
 
 ---
 permission_states:
@@ -13307,6 +13592,36 @@ phase_templates:
     - '2015-10-29 20:00:21.415546'
     - '2015-10-29 20:00:21.415546'
     - '5'
+  - - '66'
+    - Submission
+    - '2'
+    - '2016-06-02 13:40:41.524038'
+    - '2016-06-02 13:40:41.524038'
+    - '1'
+  - - '67'
+    - Tech Check
+    - '2'
+    - '2016-06-02 13:40:41.556091'
+    - '2016-06-02 13:40:41.556091'
+    - '2'
+  - - '68'
+    - Internal Review
+    - '2'
+    - '2016-06-02 13:40:41.567183'
+    - '2016-06-02 13:40:41.567183'
+    - '3'
+  - - '69'
+    - External Review
+    - '2'
+    - '2016-06-02 13:40:41.575534'
+    - '2016-06-02 13:40:41.575534'
+    - '4'
+  - - '70'
+    - Make Decision
+    - '2'
+    - '2016-06-02 13:40:41.582947'
+    - '2016-06-02 13:40:41.582947'
+    - '5'
 
 ---
 phases:
@@ -13558,6 +13873,36 @@ phases:
     - '2016-04-12 18:43:35.009563'
     - '5'
     - '12'
+  - - '46'
+    - Submission
+    - '2016-06-02 13:43:23.203709'
+    - '2016-06-02 13:43:23.203709'
+    - '1'
+    - '13'
+  - - '47'
+    - Tech Check
+    - '2016-06-02 13:43:23.334354'
+    - '2016-06-02 13:43:23.334354'
+    - '2'
+    - '13'
+  - - '48'
+    - Internal Review
+    - '2016-06-02 13:43:23.375141'
+    - '2016-06-02 13:43:23.375141'
+    - '3'
+    - '13'
+  - - '49'
+    - External Review
+    - '2016-06-02 13:43:23.412779'
+    - '2016-06-02 13:43:23.412779'
+    - '4'
+    - '13'
+  - - '50'
+    - Make Decision
+    - '2016-06-02 13:43:23.428445'
+    - '2016-06-02 13:43:23.428445'
+    - '5'
+    - '13'
 
 ---
 question_attachments:
@@ -13599,6 +13944,106 @@ question_attachments:
     - '2016-01-21 17:58:45.060737'
     - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
     - 
+
+---
+reference_jsons:
+  columns:
+  - id
+  - name
+  - items
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - Institutional Account List
+    - '{"{\"id\": \"Bielefeld University\", \"text\": \"Bielefeld University\", \"nav_customer_number\":
+      \"C01013\"}","{\"id\": \"Brunel University\", \"text\": \"Brunel University\",
+      \"nav_customer_number\": \"C01035\"}","{\"id\": \"CINVESTAV Unidad Irapuato\",
+      \"text\": \"CINVESTAV Unidad Irapuato\", \"nav_customer_number\": \"C01212\"}","{\"id\":
+      \"Delft University of Technology\", \"text\": \"Delft University of Technology\",
+      \"nav_customer_number\": \"C01240\"}","{\"id\": \"Dulbecco Telethon Institute
+      (DTI)\", \"text\": \"Dulbecco Telethon Institute (DTI)\", \"nav_customer_number\":
+      \"C00509\"}","{\"id\": \"École Polytechnique Fédérale de Lausanne\", \"text\":
+      \"École Polytechnique Fédérale de Lausanne\", \"nav_customer_number\": \"C01564\"}","{\"id\":
+      \"ETH Zurich\", \"text\": \"ETH Zurich\", \"nav_customer_number\": \"C00643\"}","{\"id\":
+      \"Faculty of Humanities and Social Sciences Libraries - University of Zagreb\",
+      \"text\": \"Faculty of Humanities and Social Sciences Libraries - University
+      of Zagreb\", \"nav_customer_number\": \"C01284\"}","{\"id\": \"Francis Crick
+      Institute\", \"text\": \"Francis Crick Institute\", \"nav_customer_number\":
+      \"C01725\"}","{\"id\": \"Fondazione Telethon Italy\", \"text\": \"Fondazione
+      Telethon Italy\", \"nav_customer_number\": \"C00509\"}","{\"id\": \"Forschungszentrum
+      Jülich\", \"text\": \"Forschungszentrum Jülich\", \"nav_customer_number\": \"C01089\"}","{\"id\":
+      \"Georg-August-Universitaet Goettingen\", \"text\": \"Georg-August-Universitaet
+      Goettingen\", \"nav_customer_number\": \"C00812\"}","{\"id\": \"George Mason
+      University\", \"text\": \"George Mason University\", \"nav_customer_number\":
+      \"C01050\"}","{\"id\": \"Helmholtz Centre for Environmental Research – UFZ\",
+      \"text\": \"Helmholtz Centre for Environmental Research – UFZ\", \"nav_customer_number\":
+      \"C01086\"}","{\"id\": \"Helmholtz Centre for Infection Research\", \"text\":
+      \"Helmholtz Centre for Infection Research\", \"nav_customer_number\": \"C01085\"}","{\"id\":
+      \"Helmholtz Centre for Materials and Coastal Research\", \"text\": \"Helmholtz
+      Centre for Materials and Coastal Research\", \"nav_customer_number\": \"C01087\"}","{\"id\":
+      \"Helmholtz Zentrum Dresden Rossendorf\", \"text\": \"Helmholtz Zentrum Dresden
+      Rossendorf\", \"nav_customer_number\": \"C01084\"}","{\"id\": \"Imperial College
+      London\", \"text\": \"Imperial College London\", \"nav_customer_number\": \"C01530\"}","{\"id\":
+      \"Institute for Health & Behavior - University of Luxembourg\", \"text\": \"Institute
+      for Health & Behavior - University of Luxembourg\", \"nav_customer_number\":
+      \"C01234\"}","{\"id\": \"Instituto Venezolano de Investigaciones Cientificas\",
+      \"text\": \"Instituto Venezolano de Investigaciones Cientificas\", \"nav_customer_number\":
+      \"C01562\"}","{\"id\": \"John Innes Centre\", \"text\": \"John Innes Centre\",
+      \"nav_customer_number\": \"C01311\"}","{\"id\": \"Karlsruhe Institute of Technology\",
+      \"text\": \"Karlsruhe Institute of Technology\", \"nav_customer_number\": \"C01088\"}","{\"id\":
+      \"Leipzig University\", \"text\": \"Leipzig University\", \"nav_customer_number\":
+      \"C01665\"}","{\"id\": \"Lund University\", \"text\": \"Lund University\", \"nav_customer_number\":
+      \"C00019\"}","{\"id\": \"Macalester College\", \"text\": \"Macalester College\",
+      \"nav_customer_number\": \"C01703\"}","{\"id\": \"Max Planck Institute\", \"text\":
+      \"Max Planck Institute\", \"nav_customer_number\": \"C00018\"}","{\"id\": \"Newcastle
+      University\", \"text\": \"Newcastle University\", \"nav_customer_number\": \"C01129\"}","{\"id\":
+      \"Nottingham Trent University\", \"text\": \"Nottingham Trent University\",
+      \"nav_customer_number\": \"C01474\"}","{\"id\": \"Queen Mary University of London\",
+      \"text\": \"Queen Mary University of London\", \"nav_customer_number\": \"C01123\"}","{\"id\":
+      \"Queen''s University Belfast\", \"text\": \"Queen''s University Belfast\",
+      \"nav_customer_number\": \"C01128\"}","{\"id\": \"Rollins College\", \"text\":
+      \"Rollins College\", \"nav_customer_number\": \"C01563\"}","{\"id\": \"Ryerson
+      University\", \"text\": \"Ryerson University\", \"nav_customer_number\": \"C01199\"}","{\"id\":
+      \"Ruhr University Bochum\", \"text\": \"Ruhr University Bochum\", \"nav_customer_number\":
+      \"C01309\"}","{\"id\": \"San Raffaele- Telethon Institute of Gene Therapy (HSR-
+      TIGET)\", \"text\": \"San Raffaele- Telethon Institute of Gene Therapy (HSR-
+      TIGET)\", \"nav_customer_number\": \"C00509\"}","{\"id\": \"Simon Fraser University\",
+      \"text\": \"Simon Fraser University\", \"nav_customer_number\": \"C00046\"}","{\"id\":
+      \"Technische Universitaet Muenchen\", \"text\": \"Technische Universitaet Muenchen\",
+      \"nav_customer_number\": \"C01173\"}","{\"id\": \"Telethon Institute of Genetics
+      and Medicine (TIGEM)\", \"text\": \"Telethon Institute of Genetics and Medicine
+      (TIGEM)\", \"nav_customer_number\": \"C00509\"}","{\"id\": \"Temasek Life Sciences
+      Laboratory\", \"text\": \"Temasek Life Sciences Laboratory\", \"nav_customer_number\":
+      \"C01185\"}","{\"id\": \"Universitatsbibliothek Regensburg\", \"text\": \"Universitatsbibliothek
+      Regensburg\", \"nav_customer_number\": \"C00676\"}","{\"id\": \"University College
+      London\", \"text\": \"University College London\", \"nav_customer_number\":
+      \"C00897\"}","{\"id\": \"University of Birmingham\", \"text\": \"University
+      of Birmingham\", \"nav_customer_number\": \"C01018\"}","{\"id\": \"University
+      of Bristol\", \"text\": \"University of Bristol\", \"nav_customer_number\":
+      \"C01404\"}","{\"id\": \"University of Edinburgh\", \"text\": \"University of
+      Edinburgh\", \"nav_customer_number\": \"C01440\"}","{\"id\": \"University of
+      Glasgow\", \"text\": \"University of Glasgow\", \"nav_customer_number\": \"C01213\"}","{\"id\":
+      \"University of Leeds\", \"text\": \"University of Leeds\", \"nav_customer_number\":
+      \"C01141\"}","{\"id\": \"University of Manchester\", \"text\": \"University
+      of Manchester\", \"nav_customer_number\": \"C01356\"}","{\"id\": \"University
+      of Manitoba\", \"text\": \"University of Manitoba\", \"nav_customer_number\":
+      \"C00330\"}","{\"id\": \"University of Potsdam\", \"text\": \"University of
+      Potsdam\", \"nav_customer_number\": \"C01369\"}","{\"id\": \"University of Reading\",
+      \"text\": \"University of Reading\", \"nav_customer_number\": \"C01332\"}","{\"id\":
+      \"University of Sheffield\", \"text\": \"University of Sheffield\", \"nav_customer_number\":
+      \"C01518\"}","{\"id\": \"University of St. Andrews\", \"text\": \"University
+      of St. Andrews\", \"nav_customer_number\": \"C01197\"}","{\"id\": \"University
+      of Stirling\", \"text\": \"University of Stirling\", \"nav_customer_number\":
+      \"C01310\"}","{\"id\": \"University of Stuttgart\", \"text\": \"University of
+      Stuttgart\", \"nav_customer_number\": \"C01066\"}","{\"id\": \"University of
+      Warwick\", \"text\": \"University of Warwick\", \"nav_customer_number\": \"C01397\"}","{\"id\":
+      \"University of Western Sydney\", \"text\": \"University of Western Sydney\",
+      \"nav_customer_number\": \"C01598\"}","{\"id\": \"University of York\", \"text\":
+      \"University of York\", \"nav_customer_number\": \"C01575\"}","{\"id\": \"Victoria
+      University\", \"text\": \"Victoria University\", \"nav_customer_number\": \"C01702\"}"}'
+    - '2016-06-08 17:18:45.881733'
+    - '2016-06-08 17:18:45.881733'
 
 ---
 roles:
@@ -14925,6 +15370,108 @@ task_templates:
     - Register Decision
     - "[]"
     - '1'
+  - - '202'
+    - '19'
+    - '66'
+    - Supporting Info
+    - "[]"
+    - '1'
+  - - '203'
+    - '2'
+    - '66'
+    - Authors
+    - "[]"
+    - '2'
+  - - '204'
+    - '27'
+    - '66'
+    - Billing
+    - "[]"
+    - '3'
+  - - '205'
+    - '3'
+    - '66'
+    - Competing Interests
+    - "[]"
+    - '4'
+  - - '206'
+    - '5'
+    - '66'
+    - Data Availability
+    - "[]"
+    - '5'
+  - - '207'
+    - '4'
+    - '66'
+    - Cover Letter
+    - "[]"
+    - '6'
+  - - '208'
+    - '6'
+    - '66'
+    - Ethics Statement
+    - "[]"
+    - '7'
+  - - '209'
+    - '7'
+    - '66'
+    - Figures
+    - "[]"
+    - '8'
+  - - '210'
+    - '8'
+    - '66'
+    - Financial Disclosure
+    - "[]"
+    - '9'
+  - - '211'
+    - '13'
+    - '66'
+    - Additional Information
+    - "[]"
+    - '10'
+  - - '212'
+    - '24'
+    - '67'
+    - Initial Tech Check
+    - "[]"
+    - '1'
+  - - '213'
+    - '25'
+    - '67'
+    - Revision Tech Check
+    - "[]"
+    - '2'
+  - - '214'
+    - '23'
+    - '67'
+    - Final Tech Check
+    - "[]"
+    - '3'
+  - - '215'
+    - '9'
+    - '68'
+    - Assign Admin
+    - "[]"
+    - '1'
+  - - '216'
+    - '26'
+    - '68'
+    - Editor Discussion
+    - "[]"
+    - '2'
+  - - '217'
+    - '11'
+    - '69'
+    - Invite Reviewers
+    - "[]"
+    - '1'
+  - - '218'
+    - '14'
+    - '70'
+    - Register Decision
+    - "[]"
+    - '1'
 
 ---
 tasks:
@@ -15487,14 +16034,14 @@ tasks:
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
     - '11'
-    - true
+    - false
     - '2015-11-02 14:04:03.010843'
-    - '2015-11-02 14:08:06.760205'
+    - '2016-06-02 13:41:34.266402'
     - author
     - "[]"
     - '3'
     - '3'
-    - '2016-02-02 19:33:00'
+    - 
   - - '46'
     - Billing
     - PlosBilling::BillingTask
@@ -17012,6 +17559,210 @@ tasks:
     - '2'
     - '12'
     - '2016-04-12 19:05:50.940757'
+  - - '192'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.217559'
+    - '2016-06-02 13:43:23.217559'
+    - author
+    - "[]"
+    - '1'
+    - '13'
+    - 
+  - - '193'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.227724'
+    - '2016-06-02 13:43:23.227724'
+    - author
+    - "[]"
+    - '2'
+    - '13'
+    - 
+  - - '194'
+    - Billing
+    - PlosBilling::BillingTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.242027'
+    - '2016-06-02 13:43:23.242027'
+    - author
+    - "[]"
+    - '3'
+    - '13'
+    - 
+  - - '195'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.259435'
+    - '2016-06-02 13:43:23.259435'
+    - author
+    - "[]"
+    - '4'
+    - '13'
+    - 
+  - - '196'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.270904'
+    - '2016-06-02 13:43:23.270904'
+    - author
+    - "[]"
+    - '5'
+    - '13'
+    - 
+  - - '197'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.283689'
+    - '2016-06-02 13:43:23.283689'
+    - author
+    - "[]"
+    - '6'
+    - '13'
+    - 
+  - - '198'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.295083'
+    - '2016-06-02 13:43:23.295083'
+    - author
+    - "[]"
+    - '7'
+    - '13'
+    - 
+  - - '199'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.307236'
+    - '2016-06-02 13:43:23.307236'
+    - author
+    - "[]"
+    - '8'
+    - '13'
+    - 
+  - - '200'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.318357'
+    - '2016-06-02 13:43:23.318357'
+    - author
+    - "[]"
+    - '9'
+    - '13'
+    - 
+  - - '201'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '46'
+    - false
+    - '2016-06-02 13:43:23.32938'
+    - '2016-06-02 13:43:23.32938'
+    - author
+    - "[]"
+    - '10'
+    - '13'
+    - 
+  - - '202'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '47'
+    - false
+    - '2016-06-02 13:43:23.347567'
+    - '2016-06-02 13:43:23.347567'
+    - editor
+    - '{"round":1}'
+    - '1'
+    - '13'
+    - 
+  - - '203'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '47'
+    - false
+    - '2016-06-02 13:43:23.359241'
+    - '2016-06-02 13:43:23.359241'
+    - editor
+    - "{}"
+    - '2'
+    - '13'
+    - 
+  - - '204'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '47'
+    - false
+    - '2016-06-02 13:43:23.37078'
+    - '2016-06-02 13:43:23.37078'
+    - editor
+    - "{}"
+    - '3'
+    - '13'
+    - 
+  - - '205'
+    - Assign Admin
+    - TahiStandardTasks::PaperAdminTask
+    - '48'
+    - false
+    - '2016-06-02 13:43:23.39417'
+    - '2016-06-02 13:43:23.39417'
+    - admin
+    - "[]"
+    - '1'
+    - '13'
+    - 
+  - - '206'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '48'
+    - false
+    - '2016-06-02 13:43:23.408359'
+    - '2016-06-02 13:43:23.408359'
+    - admin
+    - "[]"
+    - '2'
+    - '13'
+    - 
+  - - '207'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '49'
+    - false
+    - '2016-06-02 13:43:23.424514'
+    - '2016-06-02 13:43:23.424514'
+    - editor
+    - "[]"
+    - '1'
+    - '13'
+    - 
+  - - '208'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '50'
+    - false
+    - '2016-06-02 13:43:23.441442'
+    - '2016-06-02 13:43:23.441442'
+    - editor
+    - "[]"
+    - '1'
+    - '13'
+    - 
 
 ---
 user_roles:
@@ -17077,9 +17828,9 @@ users:
   - created_at
   - updated_at
   - username
-  - avatar
   - site_admin
-  - em_guid
+  - avatar
+  - ned_id
   records: 
   - - '1'
     - Adam
@@ -17097,9 +17848,9 @@ users:
     - '2015-10-29 19:36:19.627844'
     - '2016-03-23 13:18:34.594851'
     - admin
-    - 
     - false
     - 
+    - '1001'
   - - '2'
     - Steve
     - SiteAdmin
@@ -17116,9 +17867,9 @@ users:
     - '2015-10-29 20:07:28.341906'
     - '2015-10-29 20:53:17.020456'
     - site_admin
-    - 
     - true
     - 
+    - '1002'
   - - '3'
     - Arthur
     - Author
@@ -17127,17 +17878,17 @@ users:
     - 
     - 
     - 
-    - '7'
+    - '8'
+    - '2016-06-02 13:41:20.332905'
     - '2016-04-14 12:35:16.582633'
-    - '2016-03-23 12:57:57.287568'
-    - 10.43.0.68
+    - 127.0.0.1
     - 10.43.0.68
     - '2015-10-29 20:11:22.705226'
-    - '2016-04-14 12:35:16.584125'
+    - '2016-06-02 13:41:20.334489'
     - author
-    - 
     - false
     - 
+    - '1003'
   - - '4'
     - Edith
     - Editor
@@ -17154,9 +17905,9 @@ users:
     - '2015-11-02 15:15:33.644561'
     - '2016-03-11 13:30:59.798522'
     - editor
-    - 
     - false
     - 
+    - '1004'
   - - '5'
     - Reviewer
     - User
@@ -17173,9 +17924,9 @@ users:
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - 
     - false
     - 
+    - '1005'
   - - '7'
     - Jeffrey SA
     - Gray
@@ -17192,9 +17943,9 @@ users:
     - '2015-11-03 19:54:58.612514'
     - '2015-11-03 19:54:58.612514'
     - jgray_sa
-    - 
     - true
     - 
+    - '1006'
   - - '8'
     - Jeffrey OA
     - Gray
@@ -17211,9 +17962,9 @@ users:
     - '2015-11-03 19:54:58.707548'
     - '2015-11-03 19:54:58.707548'
     - jgray_oa
-    - 
     - false
     - 
+    - '1007'
   - - '9'
     - Jeffrey FM
     - Gray
@@ -17230,9 +17981,9 @@ users:
     - '2015-11-03 19:54:58.791185'
     - '2015-11-03 19:54:58.791185'
     - jgray_flowmgr
-    - 
     - false
     - 
+    - '1008'
   - - '10'
     - Jeffrey AMM
     - Gray
@@ -17249,9 +18000,9 @@ users:
     - '2015-11-03 19:54:58.877324'
     - '2015-11-03 19:54:58.877324'
     - jgray_editor
-    - 
     - false
     - 
+    - '1009'
   - - '11'
     - Jeffrey MM
     - Gray
@@ -17268,9 +18019,9 @@ users:
     - '2015-11-03 19:54:58.961825'
     - '2015-11-03 19:54:58.961825'
     - jgray_assoceditor
-    - 
     - false
     - 
+    - '1010'
   - - '12'
     - Jeffrey RV
     - Gray
@@ -17287,9 +18038,9 @@ users:
     - '2015-11-03 19:54:59.052702'
     - '2015-11-03 19:54:59.052702'
     - jgray_reviewer
-    - 
     - false
     - 
+    - '1011'
   - - '13'
     - Jeffrey AU
     - Gray
@@ -17306,9 +18057,9 @@ users:
     - '2015-11-03 19:54:59.135286'
     - '2015-11-03 19:54:59.135286'
     - jgray_author
-    - 
     - false
     - 
+    - '1012'
   - - '14'
     - Staff
     - Admin
@@ -17325,9 +18076,9 @@ users:
     - '2016-03-15 18:52:16.093885'
     - '2016-03-15 18:52:16.093885'
     - staff_admin
-    - 
     - false
     - 
+    - '1013'
   - - '15'
     - Fancy
     - Freelancer
@@ -17344,9 +18095,9 @@ users:
     - '2016-04-28 02:38:20.354896'
     - '2016-04-28 02:44:24.965543'
     - freelancer
-    - 
     - false
     - 
+    - '1014'
 
 ---
 versioned_texts:
@@ -19255,3 +20006,372 @@ versioned_texts:
       </p><p class="SOM Text">
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
+  - - '18'
+    - 
+    - '13'
+    - '0'
+    - '0'
+    - "<!--TEI front--><!--TEI body--><div class=\"teidiv0\" id=\"effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game\">\n<h2><span
+      class=\"head\">NON-RESEARCH PAPER for Effect of Heterogeneous Investments on
+      the Evolution of Cooperation in Spatial Public Goods Game</span></h2>\n<div
+      class=\"teidiv1\" id=\"effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game-1\">\n<h3><span
+      class=\"head\">Effect of Heterogeneous Investments on the Evolution of Cooperation
+      in Spatial Public Goods Game</span></h3>\n<p class=\"First Paragraph\">Keke
+      Huang<sup>1</sup>, Tao Wang<sup>1</sup>, Yuan Cheng<sup>2</sup>, Xiaoping Zheng<sup>1</sup>*</p>\n<p><sup>1</sup>
+      Department of Automation, Tsinghua University, Beijing 100084, China</p>\n<p><sup>2</sup>
+      School of Mechanical and Electrical Engineering, Beijing University of Chemical
+      Technology, Beijing 100029, China</p>\n<p>*<a class=\"link_ref\" href=\"mailto:asean@mail.tsinghua.edu.cn\">asean@mail.tsinghua.edu.cn(XZ)</a></p>\n<div
+      class=\"teidiv2\" id=\"abstract\">\n<h4><span class=\"head\">Abstract</span></h4>\n<p
+      class=\"First Paragraph\">Understanding the emergence of cooperation in spatial
+      public goods game remains a grand challenge across disciplines. In most previous
+      studies, it is assumed that the investments of all the cooperators are identical,
+      and often equal to 1. However, it is worth mentioning that players are diverse
+      and heterogeneous when choosing actions in the rapidly developing modern society
+      and researchers have shown more interest to the heterogeneity of players recently.
+      For modeling the heterogeneous players without loss of generality, it is assumed
+      in this work that the investment of a cooperator is a random variable with uniform
+      distribution, the mean value of which is equal to 1. The results of extensive
+      numerical simulations convincingly indicate that heterogeneous investments can
+      promote cooperation. Specifically, a large value of the variance of the random
+      variable can decrease the two critical values for the result of behavioral evolution
+      effectively. Moreover, the larger the variance is, the better the promotion
+      effect will be. In addition, this article has discussed the impact of heterogeneous
+      investments when the coevolution of both strategy and investment is taken into
+      account. Comparing the promotion effect of coevolution of strategy and investment
+      with that of strategy imitation only, we can conclude that the coevolution of
+      strategy and investment decreases the asymptotic fraction of cooperators by
+      weakening the heterogeneity of investments, which further demonstrates that
+      heterogeneous investments can promote cooperation in spatial public goods game.</p>\n</div>\n<div
+      class=\"teidiv2\" id=\"introduction\">\n<h4><span class=\"head\">Introduction</span></h4>\n<p
+      class=\"First Paragraph\">Cooperation and defection are two fundamental strategies
+      for individuals confronted with every social dilemma [1-3]. According to Darwin’s
+      theory of the origin of species, cooperation extinction is inevitable [4]. However,
+      in the daily life, cooperation is abundantly observed in animal and human societies.
+      One primary challenge in fields ranging from genetics and cell biology to evolutionary
+      anthropology and behavioral economics is to explain the mechanism for these
+      universal cooperative phenomena. Among the game theoretical approaches to investigating
+      evolution of cooperation, one of the most popular frameworks to study the conflict
+      between individuals is the so-called public goods game (PGG), in which several
+      players decide whether or not to contribute to the common pool simultaneously
+      [5-7]. In the model of PGG, cooperators contribute a fixed share to the public
+      whereas defectors do not. Subsequently, all contributions are added up and multiplied
+      by an enhancement factor�, then the total welfare is equally divided among all
+      players irrespective of their strategies. Consequently, players are faced with
+      the temptation of being free-riders and rational players invest nothing which
+      causes the “Tragedy of the Commons” [8-10].</p>\n<p>Aiming at solving the above
+      tragedy and investigating the reason why cooperators can survive in reality,
+      several mechanisms have been proposed, such as reward [11], punishment [12-15],
+      reputation [12, 16], volunteering [9, 17, 18], social diversity [19] and so
+      on. Besides, the enhancement factor evolving with time is identified as a useful
+      mechanism for evolution of cooperative behavior in PGG [20]. Recently, the topology
+      of the game has been intensively studied as a paradigm for illustrating how
+      cooperative behavior evolves in spatial PGG [21, 22], such as scale free networks
+      [23-25], interdependent networks [26, 27], and they have proved valuable for
+      solving the tragedy to some extent. To summarize, in all the works above it
+      is assumed that the investments of all the cooperators are identical, often
+      equal to 1. However, it is worth mentioning that in the rapidly developing modern
+      society, players are diverse and they often treat the same problem differently
+      [28-30].</p>\n<p>In the present work, the diversity of players is taken into
+      consideration. With the aim of modeling the heterogeneous players in spatial
+      PGG without loss of generality, it is assumed that the investment of a cooperator
+      is a random variable with uniform distribution�, the mean value of which is
+      equal to 1. Moreover, we will discuss the impact of � on evolution of cooperative
+      behavior. In order to explore how the heterogeneous investment affects the evolution
+      of cooperative behavior, we compare the traditional update rule with the coevolution
+      of strategy and investment, and by statistical analysis we further reveal that
+      heterogeneous investment can promote cooperation in spatial PGG.</p>\n</div>\n<div
+      class=\"teidiv2\" id=\"methods\">\n<h4><span class=\"head\">Methods</span></h4>\n<p
+      class=\"First Paragraph\">In this article, the public goods game is considered
+      on a two dimensional square lattice of size � with periodic boundary conditions.
+      At the first step, each player can choose a pure strategy cooperation or defection
+      randomly. Suppose that cooperator � contributes � to the public goods while
+      defectors contribute nothing, here � is a random variable, and�. It is apparent
+      that the mean of � is 1 without loss of generality. Practically, when�, the
+      model is identical with the traditional PGG. Suppose that the contribution of
+      � is independent of that of other players.</p>\n<p>For the sake of accelerating
+      the simulations but without causing major modifications in the system’s dynamics,
+      it is assumed that the score of player � is determined by a single PGG which
+      involves the focal player and its four nearest neighbors [9]. The sum of all
+      contributions in the group is multiplied by the factor �, and the resulting
+      public goods are distributed among all the group members. Correspondingly, the
+      payoff of player � is</p>\n<p>�</p>\n<p>where � denotes the strategy of player
+      �, � denotes the group size, and in this article �.</p>\n<p>The Monte Carlo
+      (MC) simulations start from a random initial strategy distribution, and the
+      evolution procedure is subsequently controlled by a random sequential strategy
+      update. In detail, player � and one of its neighbors � are chosen randomly.
+      Following the payoffs � calculated as described above, player � imitates the
+      strategy of player � with a probability</p>\n<p>�</p>\n<p>where � denotes the
+      cost of strategy change and � introduces some noise to allow for irrational
+      decisions, and in this article � [9]. For the sake of comparison, the coevolution
+      of strategy and investment, namely player � imitates also the investment of
+      player � simultaneously, is considered. Furthermore, for the results presented
+      in the next section, the square lattice used is sized �. The asymptotic fraction
+      of cooperators is determined by averaging over 5000 generations after a transient
+      time of 55000 MCS.</p>\n</div>\n<div class=\"teidiv2\" id=\"results\">\n<h4><span
+      class=\"head\">Results</span></h4>\n<p class=\"First Paragraph\">Firstly, it
+      is instructive to examine the time series of the fraction of cooperators. Results
+      presented in figure 1 are the time series of the fraction of cooperators for
+      different values of � when � equals to 5. The figure depicts that the fraction
+      of cooperators decreases at the beginning of the evolution but increases to
+      the value in the steady state later. The random distribution of the initial
+      strategy gives rise to the decline of cooperation in the beginning, that is,
+      the cooperators are dispersed and the defectors can invade the cooperators easily,
+      which is corresponding to the initial phase in figure 1. As the evolution proceeds,
+      the lived cooperators form clusters and the payoffs of them are enhanced, which
+      restrain the invasion of the defectors. Meanwhile, the heterogeneous investments
+      render the manifold payoff difference between cooperators and defectors, which
+      in turn boosts the possibility for defectors to imitate cooperators.</p>\n<p>Fig.
+      1. Time series of the fraction of cooperators for different values of � when
+      � equals to 5. The value of �is equal to 0.0,0.2,0.5,0.8,1.0 respectively. While
+      �, which is exactly the traditional case, the investment of all the cooperators
+      is 1. With the increment of �, the asymptotic fraction of cooperators will increase.</p>\n<p>While
+      figure 1 shows the time series of fraction of cooperators, the relationship
+      between asymptotic fraction of cooperators � and enhancement factor � when�
+      is presented in figure 2. It is worth to note that, the black curve in figure
+      2 corresponding to � is in agreement with the results in reference [9]. The
+      asymptotic fraction of cooperators � depending on the enhancement factor � reveals
+      that � is enhanced with increasing of � for different values of �. Meanwhile,
+      the larger the value of � is, the bigger the asymptotic fraction of cooperators
+      � will be. Besides, a large value of � will guarantee that the cooperators will
+      survive when the enhancement factor � is small. In addition, for each curve
+      in figure 2, there exit two thresholds � and �. In other words, if � the phase
+      of the population after behavioral evolution is pure defectors, and if � the
+      phase of the population is pure cooperators, while in case of � the population
+      consist of not only cooperators but also defectors. Figure 2 clearly demonstrates
+      that larger value of � can decrease the value of � and � effectively. Therefore,
+      to sum up, when the investment of a cooperator is a random variable with uniform
+      distribution �, the asymptotic fraction of cooperators can be promoted. Furthermore,
+      the larger the value of � is, the better the promotion effect will be.</p>\n<p>Fig.
+      2. Relationship between asymptotic fraction of cooperators � and enhancement
+      factor � corresponding to �respectively. The curves in the figure show that
+      the larger the value of � is, the bigger the asymptotic fraction of cooperators
+      � will be. In addition, larger value of � can decrease the values of � and �
+      effectively.</p>\n<p>In order to depict the evolutionary process vividly, the
+      typical snapshots are represented in figure 3 when � and �. From the figure
+      it can be clearly concluded that the fraction of cooperators decreases at the
+      beginning of the evolution, but as the evolution proceeds, the cooperators form
+      into clusters to restrain the invasion of the defectors and spread to the defectors
+      reversely. At the end of the evolution all the players in the population hold
+      the cooperation strategy.</p>\n<p>Fig. 3. Typical snapshots of strategy distributions
+      on the square lattice when � and �. Cooperators and defectors are colored red
+      and blue, and the MCS of (a)-(d) is 1, 10, 100, 50000 respectively. The figure
+      shows that the fraction of cooperators decreases at the beginning of the evolution,
+      but as the evolution proceeds, the cooperators form into clusters to restrain
+      the invasion of the defectors, and spread to the defectors reversely. At the
+      end of the evolution all the players in the population hold the cooperation
+      strategy.</p>\n<p>Next, the relationship between fraction of cooperators and
+      enhancement factor when the coevolution of strategy and investment is taken
+      into consideration will be discussed. The curves in figure 4 show that if �,
+      the thresholds � and � become smaller compared to the case of �, which is exactly
+      the traditional situation. This implies that cooperation can be promoted through
+      the coevolution of strategy and investment.</p>\n<p>Fig. 4. Relationship between
+      asymptotic fraction of cooperators � and enhancement factor � corresponding
+      to � respectively when the coevolution of strategy and investment is taken into
+      account. The curves show that if �, the thresholds � and � decrease compared
+      to the case of �, which is exactly the traditional situation. This implies that
+      cooperation can be promoted by introducing the coevolution of strategy and investment.</p>\n<p>Comparing
+      the curves in figures 2 and 4 leads to the interesting conclusion that the promotion
+      effect of coevolution of strategy and investment is inferior to that of strategy
+      imitation only. With the aim to explore the difference between them, we will
+      discuss the investment distribution of cooperators in steady state. Figure 5
+      shows the investment distribution in case of coevolution of strategy and investment
+      (Right panel) and the distribution in case of strategy imitation only (Left
+      panel), and the parameters in the two situations are equal, namely �，�. When
+      only strategy is updated, the distribution of the investment in steady state
+      is still a uniform distribution�. However, when the coevolution of strategy
+      and investment is taken into account, the previous uniform distribution is severely
+      distorted, and the steady investment satisfies a discrete distribution valued
+      �. Therefore, the heterogeneity of investment is weakened in this case. Consequently,
+      the asymptotic fraction of cooperators � decreases. In the same way, through
+      statistical analysis it can be concluded that for the same enhancement �, the
+      smaller the value of � is, the more severe the distortion from previous uniform
+      distribution will be. This implies that the coevolution of strategy and investment
+      decreases the asymptotic fraction of cooperators � by weakening the heterogeneity
+      of investment once again.</p>\n<p>Fig. 5. The steady distribution of investment
+      corresponding to strategy evolution only (Left panel) and that corresponding
+      to coevolution of strategy and investment (Right panel), when �，�. From the
+      figure, it can be found that when only strategy is updated, the distribution
+      of the investment in steady state is still a uniform distribution�, however,
+      when the coevolution of strategy and investment is taken into account, the previous
+      uniform distribution is severely distorted, and the steady investment satisfies
+      a discrete distribution valued �. In conclusion, compared to the former case,
+      as the heterogeneity of investment is weakened, the asymptotic fraction of cooperators
+      � decreases in the case of coevolution.</p>\n</div>\n<div class=\"teidiv2\"
+      id=\"conclusions\">\n<h4><span class=\"head\">Conclusions</span></h4>\n<p class=\"First
+      Paragraph\">To summarize, this article further explores the impact of heterogeneous
+      investment on the evolution of cooperative behavior in spatial PGG. Above all,
+      the relationship between asymptotic fraction of cooperators � and enhancement
+      factor � when � varies has been presented, and it can be concluded that the
+      larger value of � has the capacity to decrease the values of � and � effectively,
+      and that the larger the value of� is, the better the promotion effect will be.
+      In addition, this article has also discussed the influence of heterogeneous
+      investment when the coevolution of strategy and investment is taken into consideration.
+      Comparing the promotion effect of coevolution of strategy and investment with
+      that of strategy imitation only, the conclusion can be naturally drawn that
+      the coevolution of strategy and investment decreases the asymptotic fraction
+      of cooperators � by weakening the heterogeneity of investment. Therefore, the
+      result above further demonstrates that heterogeneous investment is capable of
+      promoting cooperation in spatial PGG.</p>\n</div>\n<div class=\"teidiv2\" id=\"acknowledgments\">\n<h4><span
+      class=\"head\">Acknowledgments</span></h4>\n<p class=\"First Paragraph\">We
+      thank Mr. Zhijie Li for technique support.</p>\n</div>\n<div class=\"teidiv2\"
+      id=\"references\">\n<h4><span class=\"head\">References</span></h4>\n<p class=\"First
+      Paragraph\">1. Kollock P. Social dilemmas: The anatomy of cooperation. Annual
+      review of sociology. 1998:183-214.</p>\n<p>2. Fehr E, Fischbacher U. Social
+      norms and human cooperation. Trends in cognitive sciences. 2004;8(4):185-90.</p>\n<p>3.
+      Bornstein G, Ben-Yossef M. Cooperation in intergroup and single-group social
+      dilemmas. Journal of Experimental Social Psychology. 1994;30(1):52-67.</p>\n<p>4.
+      Pennisi E. How did cooperative behavior evolve? Science. 2005;309(5731):93-.</p>\n<p>5.
+      Szabó G, Fath G. Evolutionary games on graphs. Physics Reports. 2007;446(4):97-216.</p>\n<p>6.
+      Perc M, Gómez-Gardeñes J, Szolnoki A, Floría LM, Moreno Y. Evolutionary dynamics
+      of group interactions on structured populations: a review. Journal of The Royal
+      Society Interface. 2013;10(80):20120997.</p>\n<p>7. Perc M, Grigolini P. Collective
+      behavior and evolutionary games–An introduction. Chaos, Solitons &amp; Fractals.
+      2013;56:1-5.</p>\n<p>8. Killingback T, Doebeli M, Hauert C. Diversity of cooperation
+      in the tragedy of the commons. Biol Theory. 2010;5:3-6.</p>\n<p>9. Szabó G,
+      Hauert C. Phase transitions and volunteering in spatial public goods games.
+      Physical Review Letters. 2002;89(11):118101.</p>\n<p>10. Szolnoki A, Perc M,
+      Szabó G. Topology-independent impact of noise on cooperation in spatial public
+      goods games. Physical Review E. 2009;80(5):056109.</p>\n<p>11. Szolnoki A, Perc
+      M. Reward and cooperation in the spatial public goods game. EPL (Europhysics
+      Letters). 2010;92(3):38003.</p>\n<p>12. Brandt H, Hauert C, Sigmund K. Punishment
+      and reputation in spatial public goods games. Proceedings of the Royal Society
+      of London Series B: Biological Sciences. 2003;270(1519):1099-104.</p>\n<p>13.
+      Helbing D, Szolnoki A, Perc M, Szabó G. Punish, but not too hard: how costly
+      punishment spreads in the spatial public goods game. New Journal of Physics.
+      2010;12(8):083005.</p>\n<p>14. Brandt H, Hauert C, Sigmund K. Punishing and
+      abstaining for public goods. Proceedings of the National Academy of Sciences.
+      2006;103(2):495-7.</p>\n<p>15. Fehr E, Gächter S. Cooperation and punishment
+      in public goods experiments. American Economic Review. 2000:980-94.</p>\n<p>16.
+      Milinski M, Semmann D, Krambeck H-J. Reputation helps solve the ‘tragedy of
+      the commons’. Nature. 2002;415(6870):424-6.</p>\n<p>17. Hauert C, De Monte S,
+      Hofbauer J, Sigmund K. Volunteering as red queen mechanism for cooperation in
+      public goods games. Science. 2002;296(5570):1129-32.</p>\n<p>18. Semmann D,
+      Krambeck H-J, Milinski M. Volunteering leads to rock–paper–scissors dynamics
+      in a public goods game. Nature. 2003;425(6956):390-3.</p>\n<p>19. Santos FC,
+      Santos MD, Pacheco JM. Social diversity promotes the emergence of cooperation
+      in public goods games. Nature. 2008;454(7201):213-6.</p>\n<p>20. Chen X, Liu
+      Y, Zhou Y, Wang L, Perc M. Adaptive and bounded investment returns promote cooperation
+      in spatial public goods games. PloS one. 2012;7(5):e36895.</p>\n<p>21. Gómez-Gardeñes
+      J, Romance M, Criado R, Vilone D, Sánchez A. Evolutionary games defined at the
+      network mesoscale: The public goods game. Chaos: An Interdisciplinary Journal
+      of Nonlinear Science. 2011;21(1):016113.</p>\n<p>22. Wang Z, Kokubo S, Tanimoto
+      J, Fukuda E, Shigaki K. Insight into the so-called spatial reciprocity. Physical
+      Review E. 2013;88(4):042145.</p>\n<p>23. Rong Z, Wu Z-X. Effect of the degree
+      correlation in public goods game on scale-free networks. EPL (Europhysics Letters).
+      2009;87(3):30001.</p>\n<p>24. Guan J-Y, Wu Z-X, Wang Y-H. Effects of inhomogeneous
+      activity of players and noise on cooperation in spatial public goods games.
+      Physical Review E. 2007;76(5):056101.</p>\n<p>25. Yuan W-J, Zhou J-F, Li Q,
+      Chen D-B, Wang Z. Spontaneous scale-free structure in adaptive networks with
+      synchronously dynamical linking. Physical Review E. 2013;88(2):022818.</p>\n<p>26.
+      Wang Z, Szolnoki A, Perc M. Interdependent network reciprocity in evolutionary
+      games. Scientific reports. 2013;3.</p>\n<p>27. Wang Z, Wang L, Perc M. Degree
+      mixing in multilayer networks impedes the evolution of cooperation. Physical
+      Review E. 2014;89(5):052813.</p>\n<p>28. Burlando RM, Guala F. Heterogeneous
+      agents in public goods experiments. Experimental Economics. 2005;8(1):35-54.</p>\n<p>29.
+      Shi D-M, Zhuang Y, Wang B-H. Group diversity promotes cooperation in the spatial
+      public goods game. EPL (Europhysics Letters). 2010;90(5):58003.</p>\n<p>30.
+      Fischbacher U, Gächter S. Heterogeneous social preference and the dynamics of
+      free riding in public goods. CeDEx Discussion Paper, The University of Nottingham,
+      2006.</p>\n</div>\n<div class=\"teidiv2\" id=\"supporting-information-captions\">\n<h4><span
+      class=\"head\">Supporting Information Captions</span></h4>\n<p class=\"First
+      Paragraph\">S1_Dataset.xlsx. The dataset of Figure 1.</p>\n<p>S2_Dataset.xlsx.
+      The dataset of Figure 2.</p>\n<p>S3_Dataset.xlsx. The dataset of Figure 3.</p>\n<p>S4_Dataset.xlsx.
+      The dataset of Figure 4.</p>\n<p>S5_Dataset.xlsx. The dataset of Figure 5.</p>\n</div>\n</div>\n</div><!--TEI
+      back-->      \n      \n"
+    - '2016-06-02 13:43:23.183174'
+    - '2016-06-02 13:53:56.274782'
+    - 
+    - |
+      <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
+      <h2><span class="head">NON-RESEARCH PAPER for Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
+      <div class="teidiv1" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game-1">
+      <h3><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h3>
+      <p class="First Paragraph">Keke Huang<sup>1</sup>, Tao Wang<sup>1</sup>, Yuan Cheng<sup>2</sup>, Xiaoping Zheng<sup>1</sup>*</p>
+      <p><sup>1</sup> Department of Automation, Tsinghua University, Beijing 100084, China</p>
+      <p><sup>2</sup> School of Mechanical and Electrical Engineering, Beijing University of Chemical Technology, Beijing 100029, China</p>
+      <p>*<a class="link_ref" href="mailto:asean@mail.tsinghua.edu.cn">asean@mail.tsinghua.edu.cn(XZ)</a></p>
+      <div class="teidiv2" id="abstract">
+      <h4><span class="head">Abstract</span></h4>
+      <p class="First Paragraph">Understanding the emergence of cooperation in spatial public goods game remains a grand challenge across disciplines. In most previous studies, it is assumed that the investments of all the cooperators are identical, and often equal to 1. However, it is worth mentioning that players are diverse and heterogeneous when choosing actions in the rapidly developing modern society and researchers have shown more interest to the heterogeneity of players recently. For modeling the heterogeneous players without loss of generality, it is assumed in this work that the investment of a cooperator is a random variable with uniform distribution, the mean value of which is equal to 1. The results of extensive numerical simulations convincingly indicate that heterogeneous investments can promote cooperation. Specifically, a large value of the variance of the random variable can decrease the two critical values for the result of behavioral evolution effectively. Moreover, the larger the variance is, the better the promotion effect will be. In addition, this article has discussed the impact of heterogeneous investments when the coevolution of both strategy and investment is taken into account. Comparing the promotion effect of coevolution of strategy and investment with that of strategy imitation only, we can conclude that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators by weakening the heterogeneity of investments, which further demonstrates that heterogeneous investments can promote cooperation in spatial public goods game.</p>
+      </div>
+      <div class="teidiv2" id="introduction">
+      <h4><span class="head">Introduction</span></h4>
+      <p class="First Paragraph">Cooperation and defection are two fundamental strategies for individuals confronted with every social dilemma [1-3]. According to Darwin’s theory of the origin of species, cooperation extinction is inevitable [4]. However, in the daily life, cooperation is abundantly observed in animal and human societies. One primary challenge in fields ranging from genetics and cell biology to evolutionary anthropology and behavioral economics is to explain the mechanism for these universal cooperative phenomena. Among the game theoretical approaches to investigating evolution of cooperation, one of the most popular frameworks to study the conflict between individuals is the so-called public goods game (PGG), in which several players decide whether or not to contribute to the common pool simultaneously [5-7]. In the model of PGG, cooperators contribute a fixed share to the public whereas defectors do not. Subsequently, all contributions are added up and multiplied by an enhancement factor�, then the total welfare is equally divided among all players irrespective of their strategies. Consequently, players are faced with the temptation of being free-riders and rational players invest nothing which causes the “Tragedy of the Commons” [8-10].</p>
+      <p>Aiming at solving the above tragedy and investigating the reason why cooperators can survive in reality, several mechanisms have been proposed, such as reward [11], punishment [12-15], reputation [12, 16], volunteering [9, 17, 18], social diversity [19] and so on. Besides, the enhancement factor evolving with time is identified as a useful mechanism for evolution of cooperative behavior in PGG [20]. Recently, the topology of the game has been intensively studied as a paradigm for illustrating how cooperative behavior evolves in spatial PGG [21, 22], such as scale free networks [23-25], interdependent networks [26, 27], and they have proved valuable for solving the tragedy to some extent. To summarize, in all the works above it is assumed that the investments of all the cooperators are identical, often equal to 1. However, it is worth mentioning that in the rapidly developing modern society, players are diverse and they often treat the same problem differently [28-30].</p>
+      <p>In the present work, the diversity of players is taken into consideration. With the aim of modeling the heterogeneous players in spatial PGG without loss of generality, it is assumed that the investment of a cooperator is a random variable with uniform distribution�, the mean value of which is equal to 1. Moreover, we will discuss the impact of � on evolution of cooperative behavior. In order to explore how the heterogeneous investment affects the evolution of cooperative behavior, we compare the traditional update rule with the coevolution of strategy and investment, and by statistical analysis we further reveal that heterogeneous investment can promote cooperation in spatial PGG.</p>
+      </div>
+      <div class="teidiv2" id="methods">
+      <h4><span class="head">Methods</span></h4>
+      <p class="First Paragraph">In this article, the public goods game is considered on a two dimensional square lattice of size � with periodic boundary conditions. At the first step, each player can choose a pure strategy cooperation or defection randomly. Suppose that cooperator � contributes � to the public goods while defectors contribute nothing, here � is a random variable, and�. It is apparent that the mean of � is 1 without loss of generality. Practically, when�, the model is identical with the traditional PGG. Suppose that the contribution of � is independent of that of other players.</p>
+      <p>For the sake of accelerating the simulations but without causing major modifications in the system’s dynamics, it is assumed that the score of player � is determined by a single PGG which involves the focal player and its four nearest neighbors [9]. The sum of all contributions in the group is multiplied by the factor �, and the resulting public goods are distributed among all the group members. Correspondingly, the payoff of player � is</p>
+      <p>�</p>
+      <p>where � denotes the strategy of player �, � denotes the group size, and in this article �.</p>
+      <p>The Monte Carlo (MC) simulations start from a random initial strategy distribution, and the evolution procedure is subsequently controlled by a random sequential strategy update. In detail, player � and one of its neighbors � are chosen randomly. Following the payoffs � calculated as described above, player � imitates the strategy of player � with a probability</p>
+      <p>�</p>
+      <p>where � denotes the cost of strategy change and � introduces some noise to allow for irrational decisions, and in this article � [9]. For the sake of comparison, the coevolution of strategy and investment, namely player � imitates also the investment of player � simultaneously, is considered. Furthermore, for the results presented in the next section, the square lattice used is sized �. The asymptotic fraction of cooperators is determined by averaging over 5000 generations after a transient time of 55000 MCS.</p>
+      </div>
+      <div class="teidiv2" id="results">
+      <h4><span class="head">Results</span></h4>
+      <p class="First Paragraph">Firstly, it is instructive to examine the time series of the fraction of cooperators. Results presented in figure 1 are the time series of the fraction of cooperators for different values of � when � equals to 5. The figure depicts that the fraction of cooperators decreases at the beginning of the evolution but increases to the value in the steady state later. The random distribution of the initial strategy gives rise to the decline of cooperation in the beginning, that is, the cooperators are dispersed and the defectors can invade the cooperators easily, which is corresponding to the initial phase in figure 1. As the evolution proceeds, the lived cooperators form clusters and the payoffs of them are enhanced, which restrain the invasion of the defectors. Meanwhile, the heterogeneous investments render the manifold payoff difference between cooperators and defectors, which in turn boosts the possibility for defectors to imitate cooperators.</p>
+      <p>Fig. 1. Time series of the fraction of cooperators for different values of � when � equals to 5. The value of �is equal to 0.0,0.2,0.5,0.8,1.0 respectively. While �, which is exactly the traditional case, the investment of all the cooperators is 1. With the increment of �, the asymptotic fraction of cooperators will increase.</p>
+      <p>While figure 1 shows the time series of fraction of cooperators, the relationship between asymptotic fraction of cooperators � and enhancement factor � when� is presented in figure 2. It is worth to note that, the black curve in figure 2 corresponding to � is in agreement with the results in reference [9]. The asymptotic fraction of cooperators � depending on the enhancement factor � reveals that � is enhanced with increasing of � for different values of �. Meanwhile, the larger the value of � is, the bigger the asymptotic fraction of cooperators � will be. Besides, a large value of � will guarantee that the cooperators will survive when the enhancement factor � is small. In addition, for each curve in figure 2, there exit two thresholds � and �. In other words, if � the phase of the population after behavioral evolution is pure defectors, and if � the phase of the population is pure cooperators, while in case of � the population consist of not only cooperators but also defectors. Figure 2 clearly demonstrates that larger value of � can decrease the value of � and � effectively. Therefore, to sum up, when the investment of a cooperator is a random variable with uniform distribution �, the asymptotic fraction of cooperators can be promoted. Furthermore, the larger the value of � is, the better the promotion effect will be.</p>
+      <p>Fig. 2. Relationship between asymptotic fraction of cooperators � and enhancement factor � corresponding to �respectively. The curves in the figure show that the larger the value of � is, the bigger the asymptotic fraction of cooperators � will be. In addition, larger value of � can decrease the values of � and � effectively.</p>
+      <p>In order to depict the evolutionary process vividly, the typical snapshots are represented in figure 3 when � and �. From the figure it can be clearly concluded that the fraction of cooperators decreases at the beginning of the evolution, but as the evolution proceeds, the cooperators form into clusters to restrain the invasion of the defectors and spread to the defectors reversely. At the end of the evolution all the players in the population hold the cooperation strategy.</p>
+      <p>Fig. 3. Typical snapshots of strategy distributions on the square lattice when � and �. Cooperators and defectors are colored red and blue, and the MCS of (a)-(d) is 1, 10, 100, 50000 respectively. The figure shows that the fraction of cooperators decreases at the beginning of the evolution, but as the evolution proceeds, the cooperators form into clusters to restrain the invasion of the defectors, and spread to the defectors reversely. At the end of the evolution all the players in the population hold the cooperation strategy.</p>
+      <p>Next, the relationship between fraction of cooperators and enhancement factor when the coevolution of strategy and investment is taken into consideration will be discussed. The curves in figure 4 show that if �, the thresholds � and � become smaller compared to the case of �, which is exactly the traditional situation. This implies that cooperation can be promoted through the coevolution of strategy and investment.</p>
+      <p>Fig. 4. Relationship between asymptotic fraction of cooperators � and enhancement factor � corresponding to � respectively when the coevolution of strategy and investment is taken into account. The curves show that if �, the thresholds � and � decrease compared to the case of �, which is exactly the traditional situation. This implies that cooperation can be promoted by introducing the coevolution of strategy and investment.</p>
+      <p>Comparing the curves in figures 2 and 4 leads to the interesting conclusion that the promotion effect of coevolution of strategy and investment is inferior to that of strategy imitation only. With the aim to explore the difference between them, we will discuss the investment distribution of cooperators in steady state. Figure 5 shows the investment distribution in case of coevolution of strategy and investment (Right panel) and the distribution in case of strategy imitation only (Left panel), and the parameters in the two situations are equal, namely �，�. When only strategy is updated, the distribution of the investment in steady state is still a uniform distribution�. However, when the coevolution of strategy and investment is taken into account, the previous uniform distribution is severely distorted, and the steady investment satisfies a discrete distribution valued �. Therefore, the heterogeneity of investment is weakened in this case. Consequently, the asymptotic fraction of cooperators � decreases. In the same way, through statistical analysis it can be concluded that for the same enhancement �, the smaller the value of � is, the more severe the distortion from previous uniform distribution will be. This implies that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators � by weakening the heterogeneity of investment once again.</p>
+      <p>Fig. 5. The steady distribution of investment corresponding to strategy evolution only (Left panel) and that corresponding to coevolution of strategy and investment (Right panel), when �，�. From the figure, it can be found that when only strategy is updated, the distribution of the investment in steady state is still a uniform distribution�, however, when the coevolution of strategy and investment is taken into account, the previous uniform distribution is severely distorted, and the steady investment satisfies a discrete distribution valued �. In conclusion, compared to the former case, as the heterogeneity of investment is weakened, the asymptotic fraction of cooperators � decreases in the case of coevolution.</p>
+      </div>
+      <div class="teidiv2" id="conclusions">
+      <h4><span class="head">Conclusions</span></h4>
+      <p class="First Paragraph">To summarize, this article further explores the impact of heterogeneous investment on the evolution of cooperative behavior in spatial PGG. Above all, the relationship between asymptotic fraction of cooperators � and enhancement factor � when � varies has been presented, and it can be concluded that the larger value of � has the capacity to decrease the values of � and � effectively, and that the larger the value of� is, the better the promotion effect will be. In addition, this article has also discussed the influence of heterogeneous investment when the coevolution of strategy and investment is taken into consideration. Comparing the promotion effect of coevolution of strategy and investment with that of strategy imitation only, the conclusion can be naturally drawn that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators � by weakening the heterogeneity of investment. Therefore, the result above further demonstrates that heterogeneous investment is capable of promoting cooperation in spatial PGG.</p>
+      </div>
+      <div class="teidiv2" id="acknowledgments">
+      <h4><span class="head">Acknowledgments</span></h4>
+      <p class="First Paragraph">We thank Mr. Zhijie Li for technique support.</p>
+      </div>
+      <div class="teidiv2" id="references">
+      <h4><span class="head">References</span></h4>
+      <p class="First Paragraph">1. Kollock P. Social dilemmas: The anatomy of cooperation. Annual review of sociology. 1998:183-214.</p>
+      <p>2. Fehr E, Fischbacher U. Social norms and human cooperation. Trends in cognitive sciences. 2004;8(4):185-90.</p>
+      <p>3. Bornstein G, Ben-Yossef M. Cooperation in intergroup and single-group social dilemmas. Journal of Experimental Social Psychology. 1994;30(1):52-67.</p>
+      <p>4. Pennisi E. How did cooperative behavior evolve? Science. 2005;309(5731):93-.</p>
+      <p>5. Szabó G, Fath G. Evolutionary games on graphs. Physics Reports. 2007;446(4):97-216.</p>
+      <p>6. Perc M, Gómez-Gardeñes J, Szolnoki A, Floría LM, Moreno Y. Evolutionary dynamics of group interactions on structured populations: a review. Journal of The Royal Society Interface. 2013;10(80):20120997.</p>
+      <p>7. Perc M, Grigolini P. Collective behavior and evolutionary games–An introduction. Chaos, Solitons &amp; Fractals. 2013;56:1-5.</p>
+      <p>8. Killingback T, Doebeli M, Hauert C. Diversity of cooperation in the tragedy of the commons. Biol Theory. 2010;5:3-6.</p>
+      <p>9. Szabó G, Hauert C. Phase transitions and volunteering in spatial public goods games. Physical Review Letters. 2002;89(11):118101.</p>
+      <p>10. Szolnoki A, Perc M, Szabó G. Topology-independent impact of noise on cooperation in spatial public goods games. Physical Review E. 2009;80(5):056109.</p>
+      <p>11. Szolnoki A, Perc M. Reward and cooperation in the spatial public goods game. EPL (Europhysics Letters). 2010;92(3):38003.</p>
+      <p>12. Brandt H, Hauert C, Sigmund K. Punishment and reputation in spatial public goods games. Proceedings of the Royal Society of London Series B: Biological Sciences. 2003;270(1519):1099-104.</p>
+      <p>13. Helbing D, Szolnoki A, Perc M, Szabó G. Punish, but not too hard: how costly punishment spreads in the spatial public goods game. New Journal of Physics. 2010;12(8):083005.</p>
+      <p>14. Brandt H, Hauert C, Sigmund K. Punishing and abstaining for public goods. Proceedings of the National Academy of Sciences. 2006;103(2):495-7.</p>
+      <p>15. Fehr E, Gächter S. Cooperation and punishment in public goods experiments. American Economic Review. 2000:980-94.</p>
+      <p>16. Milinski M, Semmann D, Krambeck H-J. Reputation helps solve the ‘tragedy of the commons’. Nature. 2002;415(6870):424-6.</p>
+      <p>17. Hauert C, De Monte S, Hofbauer J, Sigmund K. Volunteering as red queen mechanism for cooperation in public goods games. Science. 2002;296(5570):1129-32.</p>
+      <p>18. Semmann D, Krambeck H-J, Milinski M. Volunteering leads to rock–paper–scissors dynamics in a public goods game. Nature. 2003;425(6956):390-3.</p>
+      <p>19. Santos FC, Santos MD, Pacheco JM. Social diversity promotes the emergence of cooperation in public goods games. Nature. 2008;454(7201):213-6.</p>
+      <p>20. Chen X, Liu Y, Zhou Y, Wang L, Perc M. Adaptive and bounded investment returns promote cooperation in spatial public goods games. PloS one. 2012;7(5):e36895.</p>
+      <p>21. Gómez-Gardeñes J, Romance M, Criado R, Vilone D, Sánchez A. Evolutionary games defined at the network mesoscale: The public goods game. Chaos: An Interdisciplinary Journal of Nonlinear Science. 2011;21(1):016113.</p>
+      <p>22. Wang Z, Kokubo S, Tanimoto J, Fukuda E, Shigaki K. Insight into the so-called spatial reciprocity. Physical Review E. 2013;88(4):042145.</p>
+      <p>23. Rong Z, Wu Z-X. Effect of the degree correlation in public goods game on scale-free networks. EPL (Europhysics Letters). 2009;87(3):30001.</p>
+      <p>24. Guan J-Y, Wu Z-X, Wang Y-H. Effects of inhomogeneous activity of players and noise on cooperation in spatial public goods games. Physical Review E. 2007;76(5):056101.</p>
+      <p>25. Yuan W-J, Zhou J-F, Li Q, Chen D-B, Wang Z. Spontaneous scale-free structure in adaptive networks with synchronously dynamical linking. Physical Review E. 2013;88(2):022818.</p>
+      <p>26. Wang Z, Szolnoki A, Perc M. Interdependent network reciprocity in evolutionary games. Scientific reports. 2013;3.</p>
+      <p>27. Wang Z, Wang L, Perc M. Degree mixing in multilayer networks impedes the evolution of cooperation. Physical Review E. 2014;89(5):052813.</p>
+      <p>28. Burlando RM, Guala F. Heterogeneous agents in public goods experiments. Experimental Economics. 2005;8(1):35-54.</p>
+      <p>29. Shi D-M, Zhuang Y, Wang B-H. Group diversity promotes cooperation in the spatial public goods game. EPL (Europhysics Letters). 2010;90(5):58003.</p>
+      <p>30. Fischbacher U, Gächter S. Heterogeneous social preference and the dynamics of free riding in public goods. CeDEx Discussion Paper, The University of Nottingham, 2006.</p>
+      </div>
+      <div class="teidiv2" id="supporting-information-captions">
+      <h4><span class="head">Supporting Information Captions</span></h4>
+      <p class="First Paragraph">S1_Dataset.xlsx. The dataset of Figure 1.</p>
+      <p>S2_Dataset.xlsx. The dataset of Figure 2.</p>
+      <p>S3_Dataset.xlsx. The dataset of Figure 3.</p>
+      <p>S4_Dataset.xlsx. The dataset of Figure 4.</p>
+      <p>S5_Dataset.xlsx. The dataset of Figure 5.</p>
+      </div>
+      </div>
+      </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="6" data-figure-rank="" src="/resource_proxy/figures/qt3FhbrR5Q4KNM1F35DXTHNx/detail">
+            <img class="paper-body-figure" data-figure-id="7" data-figure-rank="" src="/resource_proxy/figures/2vM873Fqxyfm22GtB5VDqEND/detail">

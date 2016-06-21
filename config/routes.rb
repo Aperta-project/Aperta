@@ -40,6 +40,7 @@ Tahi::Application.routes.draw do
   #
   scope '/api', constraints: { format: :json } do
     resources :countries, only: :index
+    resources :institutional_accounts, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
@@ -71,9 +72,10 @@ Tahi::Application.routes.draw do
       end
     end
     resources :formats, only: [:index]
-    resources :invitations, only: [:index, :show, :create, :destroy] do
+    resources :invitations, only: [:index, :show, :create] do
       put :accept, on: :member
       put :reject, on: :member
+      put :rescind, on: :member
     end
     resources :journals, only: [:index, :show] do
       resources :old_roles, only: :index, shallow: true do

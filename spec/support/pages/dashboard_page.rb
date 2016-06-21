@@ -75,6 +75,15 @@ class DashboardPage < Page
     find '.load-more-papers'
   end
 
+  def expect_paper_to_be_withdrawn(paper)
+    row = page.find("tr[data-test-id='dashboard-paper-#{paper.id}']")
+    expect(row).to be
+    within "tr[data-test-id='dashboard-paper-#{paper.id}']" do
+      status = page.find('.status-tag')
+      expect(status.text).to match(/withdrawn/i)
+    end
+  end
+
   def expect_active_invitations_count(count)
     if count == 0
       expect(page).not_to have_selector('.invitation-count')

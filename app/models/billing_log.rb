@@ -3,8 +3,7 @@ require 'csv'
 
 class BillingLog < ActiveRecord::Base
   belongs_to :paper, class_name: 'Paper', foreign_key: 'documentid'
-  belongs_to :journal
-  validates :paper, :journal, presence: true
+  validates :paper, presence: true
 
   mount_uploader :csv_file, BillingLogUploader
 

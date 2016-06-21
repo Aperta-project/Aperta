@@ -28,6 +28,10 @@
     <ul class="question-help">{{{helpText}}}</ul>
   {{/if}}
 
+  {{#if unwrappedHelpText}}
+    {{{unwrappedHelpText}}}
+  {{/if}}
+
   <div class={{wrapperClass}}>
     {{binary-radio-button name=namePrefix
                           selection=model.answer.value

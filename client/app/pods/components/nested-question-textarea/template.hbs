@@ -19,6 +19,10 @@
       <ul class="question-help">{{{helpText}}}</ul>
     {{/if}}
 
+    {{#if unwrappedHelpText}}
+      {{{unwrappedHelpText}}}
+    {{/if}}
+
     {{textarea name=ident value=model.answer.value class=inputClassNames placeholder=placeholder disabled=disabled}}
   {{/if}}
 {{/if}}

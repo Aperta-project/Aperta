@@ -4,10 +4,24 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.14] - {2016-06-08}
+### Added
 - Aperta validates its environment when booting and fails fast with human
   readable error messages when not-valid. This is a non-user facing addition.
 - Added The Francis Crick Institute to institutional accounts
+- Added Front Matter Reviewer Report for non-Research Article papers. Can be enabled/disabled by a journal admin when editing a Manuscript Manager Template.
 ### Changed
+- Replaced EM GUID as a value that we export in the billing log in favor of NED
+  ID. Sent NED ID and email for corresponding author in billing log
+- Updated dois to the format 10.1371/journal.pbio.2000001 instead of
+  10.1371/pbio.2000001
+- Allow all characters in usernames
 ### Deprecated
 ### Removed
 ### Fixed
@@ -22,6 +36,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - epub conversion and download
 ### Fixed
 - EPS file previews no longer have inverted colors
+- Figure placement is now much more flexible with respect to delimiters
+- When uploading multiple figures, figures will now place more reliably
 ### Security
 
 ## [1.4.12] - 2016-05-25
@@ -44,6 +60,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Authors will see the feedback form whenever they submit a paper
 - Add manifest to Apex export
 - Apex export will include title and DOI of applicable related articles
+- Add basic paper information to task overlay header
 ### Changed
 - Update RTC and FTC text.
 - Billing task institutions and countries synced with EM

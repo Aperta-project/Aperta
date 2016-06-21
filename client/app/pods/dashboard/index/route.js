@@ -3,13 +3,13 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model() {
     return Ember.RSVP.hash({
-      papers: this.store.find('paper'),
-      invitations: this.store.find('invitation')
+      papers: this.store.findAll('paper'),
+      invitations: this.store.findAll('invitation')
     });
   },
 
   setupController(controller, model) {
-    this.store.find('comment-look').then(function(commentLooks) {
+    this.store.findAll('comment-look').then(function(commentLooks) {
       return controller.set('unreadComments', commentLooks);
     });
     controller.set('papers', this.store.filter('paper', function(p) {

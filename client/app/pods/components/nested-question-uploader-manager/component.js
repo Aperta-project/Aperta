@@ -5,6 +5,8 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 export default NestedQuestionComponent.extend({
   multiple: false,
 
+  store: Ember.inject.service(),
+
   attachments: Ember.computed('model.answer.attachment', function() {
     return this.get('model.answer.attachments');
   }),
@@ -22,7 +24,7 @@ export default NestedQuestionComponent.extend({
       Ember.assert(file, 'Must provide a file');
 
       const answer = this.get('model.answer');
-      const store =  getOwner(this).lookup('store:main');
+      const store =  this.get('store');
       answer.save().then( (savedAnswer) => {
         if(!attachment){
           attachment = store.createRecord('question-attachment');

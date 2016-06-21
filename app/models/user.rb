@@ -63,10 +63,12 @@ class User < ActiveRecord::Base
     presence: true,
     uniqueness: { case_sensitive: false },
     length: { maximum: 255 }
-  validates_format_of :username, with: /\A[A-Za-z\d_-]+\z/
   validates :email, format: Devise.email_regexp
   validates :first_name, length: { maximum: 255 }
   validates :last_name, length: { maximum: 255 }
+
+  validates :ned_id, uniqueness: true, allow_nil: true
+  validates_with NedValidator
 
   mount_uploader :avatar, AvatarUploader
 

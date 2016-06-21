@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const {
@@ -12,6 +11,8 @@ const {
 
 export default Component.extend(ValidationErrorsMixin, {
   can: service(),
+  store: service(),
+
   classNames: ['task'],
   classNameBindings: [
     'isNotEditable:read-only',
@@ -21,7 +22,6 @@ export default Component.extend(ValidationErrorsMixin, {
 
   init() {
     this._super(...arguments);
-    this.set('store', getOwner(this).lookup('store:main'));
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
   },
 

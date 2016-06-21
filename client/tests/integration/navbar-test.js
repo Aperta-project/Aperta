@@ -22,8 +22,9 @@ module('Integration: Navbar', {
   beforeEach() {
     app = startApp();
     server = setupMockServer();
-    TestHelper.handleFindAll('paper', 0);
-    TestHelper.handleFindAll('invitation', 0);
+    TestHelper.mockFindAll('paper');
+    TestHelper.mockFindAll('invitation');
+    TestHelper.mockFindAll('journal');
 
     let dashboardResponse = {
       dashboards: [
@@ -39,17 +40,11 @@ module('Integration: Navbar', {
       }, JSON.stringify(dashboardResponse)
     ]);
 
-    server.respondWith('GET', "/api/journals", [
-      200, {
-        'Content-Type': 'application/json' },
-        JSON.stringify({journals:[]})
-    ]);
   }
 });
 
 respondAuthorized = function() {
-  var adminJournalsResponse;
-  adminJournalsResponse = {
+  let adminJournalsResponse = {
     admin_journals: [
       {
         id: 1,
@@ -96,10 +91,7 @@ test('all users can see their username', function(assert) {
   });
 
   andThen(function() {
-    assert.equal(
-      find('#profile-dropdown-menu:contains("Fake User")').length,
-      1
-    );
+    assert.elementFound( '#profile-dropdown-menu:contains("Fake User")');
   });
 });
 
@@ -107,7 +99,7 @@ test('(200 response) can see the Admin link', function(assert) {
   respondAuthorized();
   visit('/');
   andThen(function() {
-    assert.equal(find('.main-nav:contains("Admin")').length, 1);
+    assert.elementFound('.main-nav:contains("Admin")');
   });
 });
 
@@ -115,47 +107,38 @@ test('(403 response) cannot see the Admin link', function(assert) {
   respondUnauthorized();
   visit('/');
   andThen(function() {
-    assert.equal(find('.main-nav:contains("Admin")').length, 0);
+    assert.elementNotFound('.main-nav:contains("Admin")');
   });
 });
 
 test('(200 response) with permission can see Paper Tracker link', function(assert) {
+  respondAuthorized();
   Ember.run(function(){
-    var store = getStore();
-    store.createRecord('journal', {
+    getStore().createRecord('journal', {
       id: 1,
       name: 'Test Journal of America'
     });
 
     Factory.createPermission('Journal', 1, ['view_paper_tracker']);
-    Ember.run(function() {
-    andThen(function() {
-      respondAuthorized();
-      visit('/');
-      andThen(function() {
-        assert.equal(find('#nav-paper-tracker').length, 1,
-                     'paper tracker link is shown');
-      });
-    });
-});
+  });
+  visit('/');
+  waitForElement('#nav-paper-tracker');
+  andThen(function() {
+    assert.elementFound('#nav-paper-tracker');
   });
 });
 
 test('(200 response) without permission Paper Tracker link is hidden', function(assert) {
+  respondAuthorized();
   Ember.run(function(){
     var store = getStore();
     store.createRecord('journal', {
       id: 1,
       name: 'Test Journal of America'
     });
-
-    andThen(function() {
-      respondAuthorized();
-      visit('/');
-      andThen(function() {
-        assert.equal(find('#nav-paper-tracker').length, 0,
-                     'paper tracker link is shown');
-      });
-    });
+  });
+  visit('/');
+  andThen(function() {
+    assert.elementNotFound('#nav-paper-tracker');
   });
 });

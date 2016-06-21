@@ -19,15 +19,16 @@ moduleForModel('figure', 'Unit | Model | figure', {
     'model:snapshot',
     'model:task',
     'model:paper-task-type',
-    'model:related-article'
+    'model:related-article',
+    'model:user'
   ]
 });
 
 test('makes its paper reload when it is deleted', function(assert) {
   const model = this.subject();
   assert.ok(!!model);
-  mock = sinon.mock(model);
-  reload = mock.expects("reloadPaper");
+  const mock = sinon.mock(model);
+  const reload = mock.expects('reloadPaper');
 
   const start = assert.async();
   Ember.run(() => {
@@ -42,7 +43,9 @@ test('makes its paper reload when it is saved', function(assert) {
   const model = this.subject();
   assert.ok(!!model);
   const mock = sinon.mock(model);
-  const reload = mock.expects("reloadPaper");
+  const reload = mock.expects('reloadPaper');
+
+  $.mockjax({url: /figures/, type: 'POST', status: 204, responseText: {}});
 
   const start = assert.async();
   Ember.run(() => {

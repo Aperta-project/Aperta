@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PaperFactory do
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions, :with_doi) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
@@ -20,6 +20,22 @@ describe PaperFactory do
     let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: mmt.paper_type) }
     subject do
       PaperFactory.create(paper_attrs, user)
+    end
+
+    context "when the mmt is configured to use the research reviewer report" do
+      it "sets the paper to use the research reviewer report" do
+        mmt.update_column :uses_research_article_reviewer_report, true
+        paper = PaperFactory.create(paper_attrs, user)
+        expect(paper.uses_research_article_reviewer_report).to eq(true)
+      end
+    end
+
+    context "when the mmt is not configured to use the research reviewer report" do
+      it "sets the paper to not to use the research reviewer report" do
+        mmt.update_column :uses_research_article_reviewer_report, false
+        paper = PaperFactory.create(paper_attrs, user)
+        expect(paper.uses_research_article_reviewer_report).to eq(false)
+      end
     end
 
     it "makes the creator a collaborator on the paper" do

@@ -4,15 +4,7 @@
                        as |animateOut|}}
       <div class="overlay overlay--card {{task-component-name task.type}}-overlay">
         <div class="overlay-container">
-          <header class="overlay-header">
-            <span>
-              {{#link-to "paper.index" task.paper.id class="task-overlay-paper-title"}}
-                {{partial "svg/manuscript-icon"}}
-                {{{task.paperTitle}}}
-              {{/link-to}}
-            </span>
-            <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
-          </header>
+          {{overlay-task-header task=task animateOut=animateOut}}
           <div class="overlay-body">
             <h1 class="overlay-body-title">{{{task.title}}}</h1>
             {{#task-load task=task}}

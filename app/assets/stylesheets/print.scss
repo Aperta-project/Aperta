@@ -1,0 +1,41 @@
+@media print {
+  // What we want to hide
+  .split-pane-drag-handle {
+    display: none;
+  }
+  .split-pane-element {
+    display: none;
+  }
+
+  .main-nav {
+    display: none ;
+  }
+
+  .paper-sidebar {
+    display: none;
+  }
+  .control-bar {
+    display: none ;
+  }
+
+  // What we want to show
+  .main-content {
+    border: 0;
+    top: 0;
+    left: 0;
+    display: block;
+    overflow: visible;
+  }
+
+  .manuscript-pane {
+    flex: 1 1 0% !important;
+    -webkit-box-flex: 1 !important;
+    display: block;
+    overflow: visible;
+  }
+
+  p {
+    page-break-inside: avoid;
+    display: inline-block;
+  }
+}

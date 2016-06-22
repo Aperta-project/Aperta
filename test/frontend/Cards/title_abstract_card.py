@@ -5,9 +5,12 @@ import time
 
 from selenium.webdriver.common.by import By
 
+from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.PostgreSQL import PgSQL
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'jgray@plos.org'
+
 
 class TitleAbstractCard(BaseCard):
   """
@@ -17,45 +20,96 @@ class TitleAbstractCard(BaseCard):
     super(TitleAbstractCard, self).__init__(driver)
 
     #Locators - Instance members
-    self._title_label = (By.CSS_SELECTOR, 'div.title-and-abstract > div.form-group > h3')
-    self._title_textarea = (By.CSS_SELECTOR,
-                            'div.title-and-abstract > div.form-group > div.form-textarea')
-    self._abstract_label = (By. CSS_SELECTOR,
-                            'div.title-and-abstract > div.form-group + div.form-group > h3')
-    self._abstract_textarea = (
-        By.CSS_SELECTOR,
-        'div.title-and-abstract > div.form-group + div.form-group > div.form-textarea')
+    self._title_label = (By.CSS_SELECTOR, 'div.qa-paper-title > h3')
+    self._title_textarea = (By.CSS_SELECTOR, 'div.qa-paper-title > div.form-textarea')
+    self._active_title_textarea = (By.CSS_SELECTOR, 'div.qa-paper-title > div.format-input--active')
+    self._title_input = (By.CSS_SELECTOR,
+                         'div.qa-paper-title > div.form-textarea > div.format-input-field')
+    self._abstract_label = (By. CSS_SELECTOR, 'div.qa-paper-abstract > h3')
+    self._abstract_textarea = (By.CSS_SELECTOR, 'div.qa-paper-abstract > div.form-textarea')
+    self._active_abstract_textarea = (By.CSS_SELECTOR,
+                                      'div.qa-paper-abstract > div.format-input--active')
+    self._abstract_input = (By.CSS_SELECTOR,
+                            'div.qa-paper-abstract > div.form-textarea > div.format-input-field')
+    self._textarea_bold_icon = (By.CSS_SELECTOR, 'i.fa-bold')
+    self._textarea_italic_icon = (By.CSS_SELECTOR, 'i.fa-italic')
+    self._textarea_superscript_icon = (By.CSS_SELECTOR, 'i.fa-superscript')
+    self._textarea_subscript_icon = (By.CSS_SELECTOR, 'i.fa-subscript')
+
 
     #POM Actions
 
   def validate_styles(self):
     """
     Validate styles in the Title and Abstract Card
+    :return: void function
     """
-
-    card_title = self._get(self._card_title)
-    assert card_title.text == 'Figures'
+    card_title = self._get(self._card_heading)
+    assert card_title.text == 'Title And Abstract'
     self.validate_application_title_style(card_title)
-    intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
-    assert intro_text.text == (
-      "Please confirm that your figures comply with our guidelines for preparation and "
-      "have not been inappropriately manipulated. For information on image manipulation, "
-      "please see our general guidance notes on image manipulation."
-      ), intro_text.text
-    assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the guidelines."
-    self.validate_application_ptext(self._get(self._question_label))
-    add_new_figures_btn = self._get(self._add_new_figures_btn)
-    add_new_figures_btn.text == "ADD NEW FIGURES"
-    self.validate_primary_big_green_button_style(add_new_figures_btn)
+    title_label = self._get(self._title_label)
+    abstract_label = self._get(self._abstract_label)
+    assert title_label.text == 'Title', title_label.text
+    assert abstract_label.text == 'Abstract', abstract_label.text
+    title_input = self._get(self._title_input)
+    abstract_input = self._get(self._abstract_input)
+    self.validate_application_h3_style(title_label)
+    self.validate_application_h3_style(abstract_label)
+    title_textarea = self._get(self._title_textarea)
+    title_textarea.find_element(*self._textarea_bold_icon)
+    title_textarea.find_element(*self._textarea_italic_icon)
+    title_textarea.find_element(*self._textarea_superscript_icon)
+    title_textarea.find_element(*self._textarea_subscript_icon)
+    self.set_timeout(3)
+    try:
+      self._get(self._active_title_textarea)
+    except ElementDoesNotExistAssertionError:
+      pass
+    finally:
+      self.restore_timeout()
+    title_input.click()
+    time.sleep(2)
+    self.set_timeout(3)
+    try:
+      self._get(self._active_title_textarea)
+    finally:
+      self.restore_timeout()
+    abstract_textarea = self._get(self._abstract_textarea)
+    abstract_textarea.find_element(*self._textarea_bold_icon)
+    abstract_textarea.find_element(*self._textarea_italic_icon)
+    abstract_textarea.find_element(*self._textarea_superscript_icon)
+    abstract_textarea.find_element(*self._textarea_subscript_icon)
+    self.set_timeout(3)
+    try:
+      self._get(self._active_abstract_textarea)
+    except ElementDoesNotExistAssertionError:
+      pass
+    finally:
+      self.restore_timeout()
+    abstract_input.click()
+    time.sleep(2)
+    self.set_timeout(3)
+    try:
+      self._get(self._active_abstract_textarea)
+    finally:
+      self.restore_timeout()
 
-  def check_question(self):
+  def check_initial_population(self, paper_id):
     """
-    Click on the checkmark for the question:
-    "Yes - I confirm our figures comply with the guidelines."
-    :return: None
+    Verify that the values populated in the form are those ihat initially extracted
+    :return: void function
     """
-    self._get(self._question_check).click()
+    db_title, db_abstract = PgSQL().query('SELECT title, abstract '
+                                          'FROM papers '
+                                          'WHERE id=%s;', (paper_id,))[0]
+
+    extracted_title = self._get(self._title_input).text
+    extracted_abstract = self._get(self._abstract_input).text
+    assert db_title in extracted_title, '{0} != {1}'.format(db_title, extracted_title)
+    if db_abstract:
+      assert db_abstract in extracted_abstract, '{0} != {1}'.format(db_abstract, extracted_abstract)
+    else:
+      assert not extracted_abstract.text
     time.sleep(.5)
 
   def is_question_checked(self):

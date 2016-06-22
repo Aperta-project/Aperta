@@ -25,15 +25,15 @@ class TitleAbstractTest(CommonTest):
   """
   def test_smoke_components_styles(self):
     creator = random.choice(users)
-    journal = 'PLOS Wombat'
+    journal = 'PLOS Yeti'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    paper_type = 'NoCards'
+    paper_type = 'Research'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Discussion Forum notifications',
+    self.create_article(title='Testing Title and Abstract Card',
                         journal=journal,
                         type_=paper_type,
                         random_bit=True,
@@ -44,17 +44,22 @@ class TitleAbstractTest(CommonTest):
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
-    paper_viewer.click_submit_btn()
-    paper_viewer.confirm_submit_btn()
-    paper_viewer.close_submit_overlay()
+    # paper_viewer.click_submit_btn()
+    # paper_viewer.confirm_submit_btn()
+    # paper_viewer.close_submit_overlay()
     # logout
+    time.sleep(5)
     paper_viewer.logout()
+
     # log as editor - validate T&A Card
     staff_user = random.choice(editorial_users)
     logging.info('Logging in as user: {0}'.format(['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
+    time.sleep(5)
     dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+    time.sleep(5)
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -63,7 +68,13 @@ class TitleAbstractTest(CommonTest):
     time.sleep(3)
     title_abstract = TitleAbstractCard(self.getDriver())
     title_abstract.validate_card_header(paper_id)
-    title_abstract.validate_common_elements_styles()
+    title_abstract.validate_styles()
+    title_abstract.check_initial_population(paper_id)
+    title_abstract.click_completion_button()
+    title_abstract.validate_common_elements_styles(paper_id)
+    title_abstract.click_close_button()
+    title_abstract.logout()
 
+    # log back in as author
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

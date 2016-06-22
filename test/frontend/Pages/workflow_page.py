@@ -67,7 +67,7 @@ class WorkflowPage(AuthenticatedPage):
     self._ITC_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")
-    self._title_abstract_card = (By.XPATH, "//a/div[contains(., 'Title and Abstract')]")
+    self._title_abstract_card = (By.XPATH, "//a/div[contains(., 'Title And Abstract')]")
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')

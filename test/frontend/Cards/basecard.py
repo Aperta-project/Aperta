@@ -158,6 +158,8 @@ class BaseCard(AuthenticatedPage):
                                 'FROM papers WHERE papers.id=%s;', (paper_id,))[0]
     journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
                                                  paper_tuple[3], paper_tuple[4]
+    logging.info(title)
+    logging.info(type(title))
     manuscript_id = doi.split('journal.')[1]
     status = status.replace('_', ' ').capitalize()
     logging.info('{0}'.format(status))

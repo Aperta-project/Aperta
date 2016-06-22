@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20160622135656) do
 
   create_table "attachments", force: :cascade do |t|
     t.string   "file"
-    t.integer  "task_id"
+    t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
@@ -83,8 +83,10 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.text     "s3_dir"
     t.string   "type"
     t.integer  "old_id"
+    t.string   "owner_type"
   end
 
+  add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
   add_index "attachments", ["token"], name: "index_attachments_on_token", unique: true, using: :btree
 
   create_table "author_list_items", force: :cascade do |t|

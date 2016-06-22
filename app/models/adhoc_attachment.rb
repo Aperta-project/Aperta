@@ -3,18 +3,6 @@ class AdhocAttachment < Attachment
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
 
-  # Where the attachment is placed on S3 is partially determined by the symbol
-  # that is given to `mount_uploader`. ProxyableResource (and it's URL helper)
-  # assumes the AttachmentUploader will be mounted as `attachment`. To prevent a
-  # production S3 data migration we're aliasing `attachment` to `file`.
-  def attachment
-    file
-  end
-
-  def filename
-    self[:file]
-  end
-
   def src
     non_expiring_proxy_url if done?
   end
@@ -33,11 +21,5 @@ class AdhocAttachment < Attachment
     else
       false
     end
-  end
-
-  private
-
-  def done?
-    status == 'done'
   end
 end

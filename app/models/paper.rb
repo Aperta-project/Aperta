@@ -15,7 +15,7 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :striking_image, polymorphic: true
 
-  has_many :figures, dependent: :destroy
+  has_many :figures, dependent: :destroy, as: :owner, class_name: 'Figure'
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy

@@ -2724,6 +2724,317 @@ assignments:
     - '2016-06-02 13:43:23.190949'
 
 ---
+attachments:
+  columns:
+  - id
+  - file
+  - owner_id
+  - created_at
+  - updated_at
+  - title
+  - caption
+  - status
+  - kind
+  - token
+  - s3_dir
+  - type
+  - old_id
+  - owner_type
+  - paper_id
+  - category
+  - label
+  - publishable
+  records: 
+  - - '1'
+    - cover_image.jpg
+    - '1'
+    - '2015-10-30 18:09:55.844755'
+    - '2015-12-28 21:19:52.285992'
+    - cover_image.jpg
+    - 
+    - done
+    - 
+    - 4JRhTr616NQ4JW3AnmutrWPX
+    - uploads/paper/1/figure/attachment/1
+    - Figure
+    - '1'
+    - Paper
+    - '1'
+    - 
+    - 
+    - false
+  - - '2'
+    - cover_image.jpg
+    - '2'
+    - '2015-10-30 19:45:16.1553'
+    - '2015-12-28 21:19:52.30923'
+    - Balmer Effect
+    - He likes his coding
+    - done
+    - 
+    - 7MzbAxAuoAK8h91VEBkrGaHd
+    - uploads/paper/2/figure/attachment/2
+    - Figure
+    - '2'
+    - Paper
+    - '2'
+    - 
+    - 
+    - false
+  - - '3'
+    - cat2.jpg
+    - '2'
+    - '2015-10-30 19:58:30.783132'
+    - '2015-12-28 21:19:52.322347'
+    - Kitten who loves life
+    - The only part of the experiment he was used in was making people say, "Awwwwwwww."
+    - done
+    - 
+    - 7n1aAGioTqC1ApA8Ld2eYkbu
+    - uploads/paper/2/figure/attachment/3
+    - Figure
+    - '3'
+    - Paper
+    - '2'
+    - 
+    - 
+    - false
+  - - '4'
+    - cover_image.jpg
+    - '3'
+    - '2015-11-02 14:08:05.496311'
+    - '2015-12-28 21:19:52.328685'
+    - cover_image.jpg
+    - 
+    - done
+    - 
+    - w3qHf38vMDCqKFXfcrCZE2LK
+    - uploads/paper/3/figure/attachment/4
+    - Figure
+    - '4'
+    - Paper
+    - '3'
+    - 
+    - 
+    - false
+  - - '5'
+    - quad-cat.jpg
+    - '3'
+    - '2015-11-02 14:15:51.668637'
+    - '2015-12-28 21:19:52.333408'
+    - Cats
+    - There are four of them
+    - done
+    - 
+    - ajxQpM7BWyqje3rdUEjtpMTb
+    - uploads/paper/3/figure/attachment/5
+    - Figure
+    - '5'
+    - Paper
+    - '3'
+    - 
+    - 
+    - false
+  - - '6'
+    - cover_image.jpg
+    - '4'
+    - '2015-11-02 15:08:10.833865'
+    - '2015-12-28 21:19:52.337508'
+    - cover_image.jpg
+    - 
+    - done
+    - 
+    - qt3FhbrR5Q4KNM1F35DXTHNx
+    - uploads/paper/4/figure/attachment/6
+    - Figure
+    - '6'
+    - Paper
+    - '4'
+    - 
+    - 
+    - false
+  - - '7'
+    - cat2.jpg
+    - '4'
+    - '2015-11-02 15:10:35.531229'
+    - '2015-12-28 21:19:52.341773'
+    - A waiting cat
+    - This cat is waiting
+    - done
+    - 
+    - 2vM873Fqxyfm22GtB5VDqEND
+    - uploads/paper/4/figure/attachment/7
+    - Figure
+    - '7'
+    - Paper
+    - '4'
+    - 
+    - 
+    - false
+  - - '8'
+    - 139.jpg
+    - '12'
+    - '2016-04-12 18:52:36.083488'
+    - '2016-04-12 19:00:01.344933'
+    - Figure 2
+    - 
+    - done
+    - 
+    - UF91o1Sp2kVzQ2fMRYGUVLkU
+    - uploads/paper/12/figure/attachment/12
+    - Figure
+    - '12'
+    - Paper
+    - '12'
+    - 
+    - 
+    - false
+  - - '9'
+    - 140.jpg
+    - '12'
+    - '2016-04-12 18:52:49.614331'
+    - '2016-04-12 18:59:58.303227'
+    - Figure 1
+    - 
+    - done
+    - 
+    - yEUYk9R5AnnMdHu37FBfC5fw
+    - uploads/paper/12/figure/attachment/13
+    - Figure
+    - '13'
+    - Paper
+    - '12'
+    - 
+    - 
+    - false
+  - - '10'
+    - sample.doc
+    - '22'
+    - '2015-10-30 19:52:32.177953'
+    - '2015-10-30 19:52:32.793467'
+    - 'Title: sample.doc'
+    - 
+    - done
+    - 
+    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
+    - uploads/attachments/1/supporting_information_file/attachment/1
+    - SupportingInformationFile
+    - '1'
+    - Task
+    - '2'
+    - 
+    - 
+    - true
+  - - '11'
+    - turtles-are-amazing.docx
+    - '43'
+    - '2015-11-02 14:13:19.427337'
+    - '2015-11-02 14:13:19.701157'
+    - 'Title: turtles-are-amazing.docx'
+    - 
+    - done
+    - 
+    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
+    - uploads/attachments/2/supporting_information_file/attachment/2
+    - SupportingInformationFile
+    - '2'
+    - Task
+    - '3'
+    - 
+    - 
+    - true
+  - - '12'
+    - turtles-are-amazing.docx
+    - '64'
+    - '2015-11-02 15:09:02.825204'
+    - '2015-11-02 15:09:03.10794'
+    - 'Title: turtles-are-amazing.docx'
+    - 
+    - done
+    - 
+    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
+    - uploads/attachments/3/supporting_information_file/attachment/3
+    - SupportingInformationFile
+    - '3'
+    - Task
+    - '4'
+    - 
+    - 
+    - true
+  - - '13'
+    - 140.jpg
+    - '170'
+    - '2016-04-12 18:44:51.665146'
+    - '2016-04-12 18:45:01.090125'
+    - 140.jpg
+    - Another cat
+    - done
+    - 
+    - EXxRBJ9WzLn3KTQLjm5Nc6dC
+    - uploads/attachments/5/supporting_information_file/attachment/5
+    - SupportingInformationFile
+    - '5'
+    - Task
+    - '12'
+    - Figure
+    - 
+    - true
+  - - '14'
+    - turtles-are-amazing.docx
+    - '78'
+    - '2015-11-02 14:16:35.584565'
+    - '2016-01-21 17:58:45.04696'
+    - 
+    - 
+    - done
+    - 
+    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
+    - uploads/question/78/question_attachment/1
+    - QuestionAttachment
+    - '1'
+    - NestedQuestionAnswer
+    - '3'
+    - 
+    - 
+    - false
+  - - '15'
+    - turtles-are-amazing.docx
+    - '88'
+    - '2015-11-02 14:18:02.598388'
+    - '2016-01-21 17:58:45.059148'
+    - 
+    - 
+    - done
+    - 
+    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
+    - uploads/question/88/question_attachment/2
+    - QuestionAttachment
+    - '2'
+    - NestedQuestionAnswer
+    - '3'
+    - 
+    - 
+    - false
+  - - '16'
+    - manuscript+_281_29.docx
+    - '126'
+    - '2015-11-02 15:12:01.338942'
+    - '2016-01-21 17:58:45.060737'
+    - 
+    - 
+    - done
+    - 
+    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
+    - uploads/question/126/question_attachment/3
+    - QuestionAttachment
+    - '3'
+    - NestedQuestionAnswer
+    - '4'
+    - 
+    - 
+    - false
+
+---
 author_list_items:
   columns:
   - id
@@ -3295,101 +3606,6 @@ decisions:
     - '2016-06-02 13:43:23.198268'
     - '2016-06-02 13:43:23.198268'
     - 
-
----
-figures:
-  columns:
-  - id
-  - attachment
-  - paper_id
-  - created_at
-  - updated_at
-  - title
-  - caption
-  - status
-  - token
-  records: 
-  - - '1'
-    - cover_image.jpg
-    - '1'
-    - '2015-10-30 18:09:55.844755'
-    - '2015-12-28 21:19:52.285992'
-    - cover_image.jpg
-    - 
-    - done
-    - 4JRhTr616NQ4JW3AnmutrWPX
-  - - '2'
-    - cover_image.jpg
-    - '2'
-    - '2015-10-30 19:45:16.1553'
-    - '2015-12-28 21:19:52.30923'
-    - Balmer Effect
-    - He likes his coding
-    - done
-    - 7MzbAxAuoAK8h91VEBkrGaHd
-  - - '3'
-    - cat2.jpg
-    - '2'
-    - '2015-10-30 19:58:30.783132'
-    - '2015-12-28 21:19:52.322347'
-    - Kitten who loves life
-    - The only part of the experiment he was used in was making people say, "Awwwwwwww."
-    - done
-    - 7n1aAGioTqC1ApA8Ld2eYkbu
-  - - '4'
-    - cover_image.jpg
-    - '3'
-    - '2015-11-02 14:08:05.496311'
-    - '2015-12-28 21:19:52.328685'
-    - cover_image.jpg
-    - 
-    - done
-    - w3qHf38vMDCqKFXfcrCZE2LK
-  - - '5'
-    - quad-cat.jpg
-    - '3'
-    - '2015-11-02 14:15:51.668637'
-    - '2015-12-28 21:19:52.333408'
-    - Cats
-    - There are four of them
-    - done
-    - ajxQpM7BWyqje3rdUEjtpMTb
-  - - '6'
-    - cover_image.jpg
-    - '4'
-    - '2015-11-02 15:08:10.833865'
-    - '2015-12-28 21:19:52.337508'
-    - cover_image.jpg
-    - 
-    - done
-    - qt3FhbrR5Q4KNM1F35DXTHNx
-  - - '7'
-    - cat2.jpg
-    - '4'
-    - '2015-11-02 15:10:35.531229'
-    - '2015-12-28 21:19:52.341773'
-    - A waiting cat
-    - This cat is waiting
-    - done
-    - 2vM873Fqxyfm22GtB5VDqEND
-  - - '12'
-    - 139.jpg
-    - '12'
-    - '2016-04-12 18:52:36.083488'
-    - '2016-04-12 19:00:01.344933'
-    - Figure 2
-    - 
-    - done
-    - UF91o1Sp2kVzQ2fMRYGUVLkU
-  - - '13'
-    - 140.jpg
-    - '12'
-    - '2016-04-12 18:52:49.614331'
-    - '2016-04-12 18:59:58.303227'
-    - Figure 1
-    - 
-    - done
-    - yEUYk9R5AnnMdHu37FBfC5fw
 
 ---
 group_authors:
@@ -13962,47 +14178,6 @@ phases:
     - '13'
 
 ---
-question_attachments:
-  columns:
-  - id
-  - nested_question_answer_id
-  - attachment
-  - title
-  - status
-  - created_at
-  - updated_at
-  - token
-  - caption
-  records: 
-  - - '1'
-    - '78'
-    - turtles-are-amazing.docx
-    - 
-    - done
-    - '2015-11-02 14:16:35.584565'
-    - '2016-01-21 17:58:45.04696'
-    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
-    - 
-  - - '2'
-    - '88'
-    - turtles-are-amazing.docx
-    - 
-    - done
-    - '2015-11-02 14:18:02.598388'
-    - '2016-01-21 17:58:45.059148'
-    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
-    - 
-  - - '3'
-    - '126'
-    - manuscript+_281_29.docx
-    - 
-    - done
-    - '2015-11-02 15:12:01.338942'
-    - '2016-01-21 17:58:45.060737'
-    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
-    - 
-
----
 reference_jsons:
   columns:
   - id
@@ -15080,76 +15255,6 @@ snapshots:
       Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
-
----
-supporting_information_files:
-  columns:
-  - id
-  - paper_id
-  - title
-  - caption
-  - attachment
-  - created_at
-  - updated_at
-  - status
-  - publishable
-  - token
-  - label
-  - category
-  - si_task_id
-  records: 
-  - - '1'
-    - '2'
-    - 'Title: sample.doc'
-    - 
-    - sample.doc
-    - '2015-10-30 19:52:32.177953'
-    - '2015-10-30 19:52:32.793467'
-    - done
-    - true
-    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
-    - 
-    - 
-    - '22'
-  - - '2'
-    - '3'
-    - 'Title: turtles-are-amazing.docx'
-    - 
-    - turtles-are-amazing.docx
-    - '2015-11-02 14:13:19.427337'
-    - '2015-11-02 14:13:19.701157'
-    - done
-    - true
-    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
-    - 
-    - 
-    - '43'
-  - - '3'
-    - '4'
-    - 'Title: turtles-are-amazing.docx'
-    - 
-    - turtles-are-amazing.docx
-    - '2015-11-02 15:09:02.825204'
-    - '2015-11-02 15:09:03.10794'
-    - done
-    - true
-    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
-    - 
-    - 
-    - '64'
-  - - '5'
-    - '12'
-    - 140.jpg
-    - Another cat
-    - 140.jpg
-    - '2016-04-12 18:44:51.665146'
-    - '2016-04-12 18:45:01.090125'
-    - done
-    - true
-    - EXxRBJ9WzLn3KTQLjm5Nc6dC
-    - 
-    - Figure
-    - '170'
 
 ---
 tahi_standard_tasks_funders:

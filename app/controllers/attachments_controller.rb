@@ -1,3 +1,5 @@
+# The AttachmentsController provides end-points for interacting with and
+# retrieving a task's AdhocAttachment(s).
 class AttachmentsController < ApplicationController
   respond_to :json
 

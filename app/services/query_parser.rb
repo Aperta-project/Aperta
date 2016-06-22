@@ -51,7 +51,7 @@ class QueryParser < QueryLanguageParser
   add_two_part_expression('USER', 'HAS ROLE') do |username, role|
     user_id = get_user_id(username)
     role_ids = Role.where('lower(name) = ?', role.downcase)
-                   .pluck(:id)
+                   .pluck(:id).sort
 
     table = join(Assignment, 'assigned_to_id')
     table['user_id'].eq(user_id)

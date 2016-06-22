@@ -15,7 +15,7 @@
     </div>
 
     <p>
-      <a class="button" href="<%= client_dashboard_url %>" target="_blank">
+      <a class="button" href="<%= client_dashboard_url({ invitation_token: @invitation.token }) %>" target="_blank">
         View Invitation
       </a>
     </p>

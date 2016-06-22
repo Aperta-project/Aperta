@@ -3,16 +3,14 @@ require 'securerandom'
 FactoryGirl.define do
   factory :invitation do
     invitee_role 'Some Role'
-
+    token { SecureRandom.hex(10) }
     association(:task, factory: :invitable_task)
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
     association(:decision, factory: :decision)
 
     after(:build) do |invitation, evaluator|
-      if evaluator.invitee && invitation.email.nil?
-        invitation.email = evaluator.invitee.email
-      end
+      invitation.email = evaluator.invitee.email if evaluator.invitee
       invitation.body = "You've been invited to"
     end
 

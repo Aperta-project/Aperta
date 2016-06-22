@@ -122,7 +122,7 @@ before 'deploy:migrate', :create_backup do
     within release_path do
       with rails_env: fetch(:rails_env) do
         STDERR.puts 'Dumping database...'
-        location = "~/aperta-#{Time.current.strftime('%F-%H%M%S')}.dump"
+        location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
         execute :rake, "db:dump[#{location}]"
         STDERR.puts "Dumped database backup to #{location}"
       end

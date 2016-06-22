@@ -16,6 +16,23 @@ describe AdhocAttachment do
     end
   end
 
+  describe '#download!', vcr: { cassette_name: 'attachment' } do
+    let(:attachment) { FactoryGirl.create(:adhoc_attachment, :with_task) }
+    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+
+    it 'downloads the file at the given URL' do
+      attachment.download!(url)
+      expect(attachment.reload.file.path).to match(/bill_ted1\.jpg/)
+    end
+
+    it 'sets the title and status' do
+      attachment.download!(url)
+      attachment.reload
+      expect(attachment.title).to eq('bill_ted1.jpg')
+      expect(attachment.status).to eq(self.described_class::STATUS_DONE)
+    end
+  end
+
   describe "#image" do
     it "returns true if the file is of type image" do
       file = OpenStruct.new(file: OpenStruct.new(extension: "jpg"))

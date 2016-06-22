@@ -117,7 +117,7 @@ describe QuestionAttachmentsController do
       it 'processes the attachment in the background' do
         do_request
         question_attachment = answer.attachments.last
-        expect(DownloadQuestionAttachmentWorker).to have_queued_job(
+        expect(DownloadAttachmentWorker).to have_queued_job(
           question_attachment.id,
           'http://some.cat.image.gif'
         )
@@ -169,7 +169,7 @@ describe QuestionAttachmentsController do
 
       it 'processes the attachment in the background' do
         do_request
-        expect(DownloadQuestionAttachmentWorker).to have_queued_job(
+        expect(DownloadAttachmentWorker).to have_queued_job(
           question_attachment.id,
           'http://some.cat.image.gif'
         )

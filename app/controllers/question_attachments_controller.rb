@@ -64,7 +64,7 @@ class QuestionAttachmentsController < ApplicationController
   end
 
   def process_attachments(question_attachment, url)
-    DownloadQuestionAttachmentWorker.perform_async question_attachment.id, url
+    DownloadAttachmentWorker.perform_async question_attachment.id, url
   end
 
   def attachment_params

@@ -2,13 +2,15 @@ require 'rails_helper'
 require 'models/concerns/striking_image_shared_examples'
 
 describe Figure, redis: true do
-  let(:figure) {
+  let(:figure) do
     with_aws_cassette('figure') do
-      FactoryGirl.create :figure,
-                         file: File.open('spec/fixtures/yeti.tiff'),
-                         status: 'done'
+      FactoryGirl.create(
+        :figure,
+        file: File.open('spec/fixtures/yeti.tiff'),
+        status: Figure::STATUS_DONE
+      )
     end
-  }
+  end
 
   it_behaves_like 'a striking image'
 
@@ -18,6 +20,31 @@ describe Figure, redis: true do
                                           alt: 'Yeti',
                                           src: figure.non_expiring_proxy_url,
                                           id: figure.id)
+    end
+  end
+
+  describe '#download!', vcr: { cassette_name: 'figures' } do
+    subject(:figure) { FactoryGirl.create(:figure, owner: paper) }
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+
+    it 'downloads the file at the given URL' do
+      figure.download!(url)
+      expect(figure.reload.file.path).to match(/bill_ted1\.jpg/)
+    end
+
+    it 'sets the title and status' do
+      figure.download!(url)
+      figure.reload
+      expect(figure.title).to eq('bill_ted1.jpg')
+      expect(figure.status).to eq(self.described_class::STATUS_DONE)
+    end
+
+    it 'does not set the title when it is already set' do
+      figure.update_column(:title, 'Great picture!')
+      expect do
+        figure.download!(url)
+      end.to_not change { figure.reload.title }.from('Great picture!')
     end
   end
 

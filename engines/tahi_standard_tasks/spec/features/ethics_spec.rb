@@ -65,7 +65,7 @@ feature 'Ethics Task', js: true do
           expect(page).to have_content('We encourage authors to comply with')
           expect(page).to have_content('UPLOAD ARRIVE CHECKLIST')
 
-          expect(DownloadQuestionAttachmentWorker).to receive(:perform_async)
+          expect(DownloadAttachmentWorker).to receive(:perform_async)
           file_path = Rails.root.join('spec/fixtures/about_turtles.docx')
           attach_file 'file', file_path, visible: false
 

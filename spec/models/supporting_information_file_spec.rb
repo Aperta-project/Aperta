@@ -7,7 +7,7 @@ describe SupportingInformationFile, redis: true do
       FactoryGirl.create(
         :supporting_information_file,
         file: File.open('spec/fixtures/yeti.tiff'),
-        status: 'done'
+        status: described_class::STATUS_DONE
       )
     end
   end

@@ -42,7 +42,7 @@ describe QuestionAttachment do
     end
 
     it 'returns a public non-expiring URL when processing is done' do
-      question_attachment.status = 'done'
+      question_attachment.status = described_class::STATUS_DONE
       expect(question_attachment.src).to eq(
         question_attachment.non_expiring_proxy_url
       )

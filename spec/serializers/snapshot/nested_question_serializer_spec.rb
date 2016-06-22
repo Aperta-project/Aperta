@@ -99,7 +99,7 @@ describe Snapshot::NestedQuestionSerializer do
       attachment = FactoryGirl.create(
         :question_attachment,
         file: File.open('spec/fixtures/yeti.tiff'),
-        status: 'done'
+        status: QuestionAttachment::STATUS_DONE
       )
 
       nested_question.nested_question_answers << FactoryGirl.build(
@@ -117,7 +117,7 @@ describe Snapshot::NestedQuestionSerializer do
           { name: 'file', type: 'text', value: 'yeti.tiff' },
           { name: 'title', type: 'text', value: nil },
           { name: 'caption', type: 'text', value: nil },
-          { name: 'status', type: 'text', value: 'done' }
+          { name: 'status', type: 'text', value: QuestionAttachment::STATUS_DONE }
         ]
       ])
     end

@@ -6,7 +6,7 @@ describe QuestionAttachmentSerializer, serializer_test: true do
       :question_attachment,
       title: 'La Attachment',
       attachment: File.open('spec/fixtures/yeti.tiff'),
-      status: 'done'
+      status: QuestionAttachment::STATUS_DONE
     )
   end
   let(:object_for_serializer) { attachment }

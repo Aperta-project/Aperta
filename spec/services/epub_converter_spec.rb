@@ -89,9 +89,10 @@ describe EpubConverter do
 
       context 'when paper has figures' do
         before do
-          paper.figures
-            .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                    status: 'done'
+          paper.figures.create(
+            file: File.open('spec/fixtures/yeti.tiff'),
+            status: Figure::STATUS_DONE
+          )
         end
 
         it 'has expirinig s3 URLs for the images' do

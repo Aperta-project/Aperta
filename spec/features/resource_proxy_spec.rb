@@ -3,9 +3,11 @@ require 'rails_helper'
 feature 'Resource Proxy', js: true do
   let(:file) do
     with_aws_cassette('supporting_info_file') do
-      FactoryGirl.create :supporting_information_file,
-                         attachment: File.open('spec/fixtures/yeti.tiff'),
-                         status: 'done'
+      FactoryGirl.create(
+        :supporting_information_file,
+        attachment: File.open('spec/fixtures/yeti.tiff'),
+        status: SupportingInformationFile::STATUS_DONE
+      )
     end
   end
 

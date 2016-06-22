@@ -39,7 +39,7 @@ class QuestionAttachmentsController < ApplicationController
         answer = NestedQuestionAnswer.where(
           id: attachment_params[:nested_question_answer_id]
         ).first!
-        answer.attachments.build(paper: answer.paper)
+        answer.attachments.build
       end
     end
   end

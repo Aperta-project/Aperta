@@ -19,7 +19,7 @@ class Attachment < ActiveRecord::Base
 
   # set_paper is required when creating attachments thru associations
   # where the owner is the paper, it bypasses the owner= method.
-  before_create :set_paper
+  after_initialize :set_paper, if: :new_record?
 
   # Where the attachment is placed on S3 is partially determined by the symbol
   # that is given to `mount_uploader`. ProxyableResource (and it's URL helper)

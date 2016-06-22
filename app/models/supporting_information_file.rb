@@ -18,6 +18,14 @@ class SupportingInformationFile < Attachment
 
   before_create :set_publishable
 
+  def download!(url)
+    file.download!(url)
+    update_attributes!(
+      title: file.filename,
+      status: STATUS_DONE
+    )
+  end
+
   def ensure_striking_image_category_is_figure
     self.striking_image = false unless category == 'Figure'
     true
@@ -57,10 +65,6 @@ class SupportingInformationFile < Attachment
     else
       false
     end
-  end
-
-  def insert_title
-    self.title = "#{attachment.filename}" if attachment.present?
   end
 
   private

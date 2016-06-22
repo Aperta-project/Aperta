@@ -3,6 +3,11 @@
 class QuestionAttachment < Attachment
   mount_uploader :file, QuestionAttachmentUploader
 
+  def download!(url)
+    file.download!(url)
+    update_attributes!(status: STATUS_DONE)
+  end
+
   def src
     non_expiring_proxy_url if done?
   end

@@ -8,6 +8,8 @@ class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
 
+  STATUS_DONE = 'done'
+
   # writes to `token` attr on create
   # `regenerate_token` for new token
   has_secure_token
@@ -33,6 +35,11 @@ class Attachment < ActiveRecord::Base
     self.file = attach
   end
 
+  def download!(url)
+    file.download! url
+    update_attributes!(title: file.filename, status: STATUS_DONE)
+  end
+
   def filename
     self[:file]
   end
@@ -48,7 +55,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def done?
-    status == 'done'
+    status == STATUS_DONE
   end
 
   def owner=(new_owner)

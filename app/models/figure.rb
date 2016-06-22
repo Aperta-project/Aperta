@@ -20,7 +20,7 @@ class Figure < Attachment
   def download!(url)
     file.download! url
     update_attributes!(
-      title: create_title_from_filename,
+      title: build_title,
       status: STATUS_DONE
     )
   end
@@ -57,15 +57,15 @@ class Figure < Attachment
 
   private
 
-  def title_rank_regex
-    /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
+  def build_title
+    return title if title.present?
+    title_from_filename || 'Unlabeled'
   end
 
-  def create_title_from_filename
-    return if title
-    self.title = "Unlabeled"
-    title_rank_regex.match(attachment.filename) do |match|
-      self.title = "Fig. #{match['label']}"
+  def title_from_filename
+    title_rank_regex = /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
+    title_rank_regex.match(file.filename) do |match|
+      return "Fig. #{match['label']}"
     end
   end
 

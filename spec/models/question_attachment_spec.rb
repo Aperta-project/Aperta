@@ -12,6 +12,23 @@ describe QuestionAttachment do
     )
   end
 
+  describe '#download!', vcr: { cassette_name: 'question_attachment' } do
+    let(:attachment) { FactoryGirl.create(:question_attachment) }
+    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+
+    it 'downloads the file at the given URL' do
+      attachment.download!(url)
+      expect(attachment.reload.file.path).to match(/bill_ted1\.jpg/)
+    end
+
+    it 'sets the status, but not the title' do
+      attachment.download!(url)
+      attachment.reload
+      expect(attachment.title).to be(nil)
+      expect(attachment.status).to eq(self.described_class::STATUS_DONE)
+    end
+  end
+
   describe '#paper' do
     it "returns the question's paper" do
       expect(question_attachment.paper).to eq(paper)
@@ -31,5 +48,4 @@ describe QuestionAttachment do
       )
     end
   end
-
 end

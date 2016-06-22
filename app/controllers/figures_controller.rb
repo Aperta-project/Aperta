@@ -15,7 +15,7 @@ class FiguresController < ApplicationController
 
   def create
     figure.update_attributes(status: "processing")
-    DownloadFigureWorker.perform_async(figure.id, params[:url])
+    DownloadAttachmentWorker.perform_async(figure.id, params[:url])
     respond_with figure
   end
 
@@ -26,7 +26,7 @@ class FiguresController < ApplicationController
 
   def update_attachment
     figure.update_attribute(:status, "processing")
-    DownloadFigureWorker.perform_async(figure.id, params[:url])
+    DownloadAttachmentWorker.perform_async(figure.id, params[:url])
     render json: figure
   end
 

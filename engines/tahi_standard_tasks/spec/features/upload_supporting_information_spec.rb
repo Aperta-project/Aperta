@@ -17,7 +17,7 @@ feature "Upload Supporting Information", js: true do
     login_as(author, scope: :user)
     visit "/"
 
-    allow(DownloadSupportingInfoWorker).to receive(:perform_async) do |supporting_info_id, url|
+    allow(DownloadAttachmentWorker).to receive(:perform_async) do |supporting_info_id, url|
       supporting_info = SupportingInformationFile.find(supporting_info_id)
       supporting_info.save
     end

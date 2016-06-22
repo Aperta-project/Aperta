@@ -16,6 +16,23 @@ describe SupportingInformationFile, redis: true do
 
   it_behaves_like 'a striking image'
 
+  describe '#download!', vcr: { cassette_name: 'supporting_info_file' } do
+    subject(:file) { FactoryGirl.create(:supporting_information_file) }
+    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+
+    it 'downloads the file at the given URL' do
+      file.download!(url)
+      expect(file.reload.file.path).to match(/bill_ted1\.jpg/)
+    end
+
+    it 'sets the title and status' do
+      file.download!(url)
+      file.reload
+      expect(file.title).to eq('bill_ted1.jpg')
+      expect(file.status).to eq(self.described_class::STATUS_DONE)
+    end
+  end
+
   describe '#filename' do
     it 'returns the proper filename' do
       expect(file.filename).to eq 'yeti.tiff'

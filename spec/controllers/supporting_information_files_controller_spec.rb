@@ -21,7 +21,7 @@ describe SupportingInformationFilesController, redis: true do
   describe 'POST #create' do
     it 'creates the supporting file' do
       url = 'http://someawesomeurl.com'
-      expect(DownloadSupportingInfoWorker).to receive(:perform_async)
+      expect(DownloadAttachmentWorker).to receive(:perform_async)
       post :create, format: 'json', task_id: task.id, url: url
       expect(response.status).to eq(201)
     end

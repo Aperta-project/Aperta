@@ -89,7 +89,7 @@ describe AdhocAttachmentsController do
       end
 
       it "causes the creation of the attachment" do
-        expect(DownloadAdhocTaskAttachmentWorker).to receive(:perform_async)
+        expect(DownloadAttachmentWorker).to receive(:perform_async)
         post :create, format: "json", task_id: task.to_param, title: 'Cool'
         expect(response).to be_success
       end
@@ -122,8 +122,8 @@ describe AdhocAttachmentsController do
           .and_return true
       end
 
-      it "calls DownloadAdhocTaskAttachmentWorker" do
-        expect(DownloadAdhocTaskAttachmentWorker).to receive(:perform_async).with(attachment.id, url)
+      it "calls DownloadAttachmentWorker" do
+        expect(DownloadAttachmentWorker).to receive(:perform_async).with(attachment.id, url)
         put :update_attachment, format: "json", task_id: task.to_param, id: attachment.id, url: url
         expect(response).to be_success
       end

@@ -36,8 +36,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def download!(url)
-    file.download! url
-    update_attributes!(title: file.filename, status: STATUS_DONE)
+    fail NotImplementedError
   end
 
   def filename

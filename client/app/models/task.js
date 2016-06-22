@@ -4,8 +4,10 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
 export default NestedQuestionOwner.extend(CardThumbnailObserver, {
-  attachments: DS.hasMany('attachment', { async: true }),
-
+  attachments: DS.hasMany('adhoc-attachment', {
+    async: true,
+    inverse: 'task'
+  }),
   cardThumbnail: DS.belongsTo('card-thumbnail', {
     inverse: 'task',
     async: false

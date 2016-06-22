@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.string   "kind"
     t.string   "token"
     t.text     "s3_dir"
+    t.string   "type"
+    t.integer  "old_id"
   end
 
   add_index "attachments", ["token"], name: "index_attachments_on_token", unique: true, using: :btree

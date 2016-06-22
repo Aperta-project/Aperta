@@ -25,6 +25,7 @@ class ResourceProxyController < ApplicationController
   def resource_whitelist
     [
       :attachments,
+      :adhoc_attachments,
       :figures,
       :question_attachments,
       :supporting_information_files

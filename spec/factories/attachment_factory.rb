@@ -1,9 +1,9 @@
 FactoryGirl.define do
-  factory :attachment do
+  factory :adhoc_attachment, class: 'AdhocAttachment' do
     status "processing"
 
     trait :with_task do
-      association :task
+      association :owner, factory: :task
     end
   end
 end

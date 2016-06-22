@@ -5,7 +5,7 @@
     <div class="form-group qa-paper-title">
        <h3>Title</h3>
         {{format-input name=paperTitle
-                       value=paperTitle
+                       value=task.paperTitle
                        class="form-textarea"
                        disabled=isNotEditable
                        focus-out=(action "focusOut") }}
@@ -14,7 +14,7 @@
     <div class="form-group qa-paper-abstract">
        <h3>Abstract</h3>
         {{format-input name=paperAbstract
-                       value=paperAbstract
+                       value=task.paperAbstract
                        class="form-textarea"
                        disabled=isNotEditable
                        focus-out=(action "focusOut") }}

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AttachmentsController do
+describe AdhocAttachmentsController do
   let(:user) { create :user }
   let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
   let(:paper) do

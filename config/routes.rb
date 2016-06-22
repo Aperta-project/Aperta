@@ -45,7 +45,7 @@ Tahi::Application.routes.draw do
       put :update_attachment, on: :member
     end
     resources :affiliations, only: [:index, :create, :destroy]
-    resources :attachments, only: [:show, :destroy, :update]
+    resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments'
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
@@ -135,7 +135,7 @@ Tahi::Application.routes.draw do
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
-      resources :attachments, only: [:index, :create, :update, :destroy] do
+      resources :attachments, only: [:index, :create, :update, :destroy], controller: 'adhoc_attachments' do
         put :update_attachment, on: :member
       end
       resources :comments, only: [:index]

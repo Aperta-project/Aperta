@@ -1,6 +1,6 @@
-# The AttachmentsController provides end-points for interacting with and
+# The AdhocAttachmentsController provides end-points for interacting with and
 # retrieving a task's AdhocAttachment(s).
-class AttachmentsController < ApplicationController
+class AdhocAttachmentsController < ApplicationController
   respond_to :json
 
   def index

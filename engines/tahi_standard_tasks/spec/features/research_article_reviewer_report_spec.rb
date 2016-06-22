@@ -37,18 +37,21 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
-    t.fill_in_report 'reviewer_report--competing_interests' => 'I have no competing interests with this work.'
+    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
+      'I have no competing interests'
     t.submit_report
     t.confirm_submit_report
 
-    expect(page).to have_selector('.answer-text', text: 'I have no competing interests with this work.')
+    expect(page).to have_selector('.answer-text',
+                                  text: 'I have no competing interests')
   end
 
   scenario 'A review can see their previous rounds of review' do
     # Revision 0
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
-    t.fill_in_report 'reviewer_report--competing_interests' => 'answer for round 0'
+    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
+      'answer for round 0'
 
     # no history yet, since we only have the current round of review
     t.ensure_no_review_history
@@ -57,8 +60,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     decision_revision_1 = FactoryGirl.create(:decision, paper: paper)
     reviewer_report_task.update!(decision: decision_revision_1)
     visit "/papers/#{paper.id}"
-    t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
-    t.fill_in_report 'reviewer_report--competing_interests' => 'answer for round 1'
+    t = paper_page.view_task("Review by #{reviewer.full_name}",
+                             ReviewerReportTaskOverlay)
+    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
+      'answer for round 1'
 
     t.ensure_review_history(
       title: 'Revision 0', answers: ['answer for round 0']
@@ -69,7 +74,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     reviewer_report_task.update!(decision: decision_revision_2)
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
-    t.fill_in_report 'reviewer_report--competing_interests' => 'answer for round 2'
+    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
+      'answer for round 2'
 
     t.ensure_review_history(
       {title: 'Revision 0', answers: ['answer for round 0']},

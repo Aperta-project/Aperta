@@ -50,7 +50,7 @@ describe PDFConverter do
       let(:file) do
         paper.supporting_information_files.create!(
           owner: task,
-          attachment: ::File.open('spec/fixtures/yeti.tiff')
+          file: ::File.open('spec/fixtures/yeti.tiff')
         )
       end
 
@@ -67,7 +67,7 @@ describe PDFConverter do
         expect(file)
         expect(doc.css('.si_preview').count).to be 1
         expect(doc.css('.si_preview').first['src'])
-          .to have_s3_url(file.attachment.url(:preview))
+          .to have_s3_url(file.file.url(:preview))
       end
 
       it 'the si_link urls are non-expiring proxy urls' do

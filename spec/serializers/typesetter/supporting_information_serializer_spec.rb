@@ -1,26 +1,27 @@
 require 'rails_helper'
 
 describe Typesetter::SupportingInformationFileSerializer do
-  subject(:serializer) { described_class.new(file) }
+  subject(:serializer) { described_class.new(si_file) }
 
   let(:title) { 'My title' }
   let(:caption) { 'My caption' }
   let(:label) { 'S3' }
   let(:category) { 'Figure' }
   let(:file_name) { 'file_name.csv' }
-  let(:file) do
+  let(:si_file) do
     FactoryGirl.create(
       :supporting_information_file,
       title: title,
       caption: caption,
       label: label,
-      category: category)
+      category: category
+    )
   end
 
   let(:output) { serializer.serializable_hash }
 
   before do
-    allow(file.attachment).to receive(:path).and_return('a/b/c/' + file_name)
+    allow(si_file).to receive(:filename).and_return(file_name)
   end
 
   it 'has the correct fields' do

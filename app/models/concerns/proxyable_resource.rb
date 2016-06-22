@@ -5,7 +5,7 @@ module ProxyableResource
 
   # makes a non expiring proxy url
   # version:
-  #   is a attachment version (size) in carrierwave (:detail, :preview, etc)
+  #   is a file version (size) in carrierwave (:detail, :preview, etc)
   # only_path
   #   allows for relative urls
   def non_expiring_proxy_url(version: nil, only_path: true, cache_buster: false)
@@ -32,7 +32,7 @@ module ProxyableResource
   private
 
   def cache_buster_value
-    # This will over-aggressively invalidate attachment caches as it will create
+    # This will over-aggressively invalidate file caches as it will create
     # a new cache buster for changes having nothing to do with the file
     # content. If we want to bust more intelligently, we can ask S3 for an etag
     # for the file, or keep track of a file checksum or file_updated_at in the
@@ -41,7 +41,7 @@ module ProxyableResource
   end
 
   def expiring_s3_url(version)
-    # unfortunately attachment.ur(nil) fails, so can't be 'defaulted'
-    version ? attachment.url(version) : attachment.url
+    # unfortunately file.ur(nil) fails, so can't be 'defaulted'
+    version ? file.url(version) : file.url
   end
 end

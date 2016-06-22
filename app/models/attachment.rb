@@ -23,18 +23,6 @@ class Attachment < ActiveRecord::Base
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
 
-  # Where the attachment is placed on S3 is partially determined by the symbol
-  # that is given to `mount_uploader`. ProxyableResource (and it's URL helper)
-  # assumes the AttachmentUploader will be mounted as `attachment`. To prevent a
-  # production S3 data migration we're aliasing `attachment` to `file`.
-  def attachment
-    file
-  end
-
-  def attachment=(attach)
-    self.file = attach
-  end
-
   def download!(url)
     fail NotImplementedError
   end

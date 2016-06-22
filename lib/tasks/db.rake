@@ -19,9 +19,9 @@ namespace :db do
     end
   end
 
-  desc "Dumps the database to ~/aperta.dump"
-  task :dump, [:location] => :environment do |t, args|
-    location = args[:location] || '~/aperta.dump'
+  desc "Dumps the database to ~/aperta-TIMESTAMP.dump"
+  task dump: :environment do
+    location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
     cmd = nil
     with_config do |app, host, db, user, password|
@@ -32,15 +32,20 @@ namespace :db do
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
-  desc "Restores the database dump at ~/aperta.dump"
-  task restore: :environment do
-    cmd = nil
-    with_config do |app, host, db, user, password|
-      ENV['PGPASSWORD'] = password.to_s
-      cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} ~/aperta.dump"
+  desc "Restores the database dump at LOCATION"
+  task :restore, [:location] => :environment do |t, args|
+    location = args[:location]
+    if location
+      cmd = nil
+      with_config do |app, host, db, user, password|
+        ENV['PGPASSWORD'] = password.to_s
+        cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+      end
+      puts cmd
+      system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
+    else
+      STDERR.puts('Location argument is required.')
     end
-    puts cmd
-    system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
   end
 
   # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address or

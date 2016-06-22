@@ -24,18 +24,8 @@ class ReviewerReportTaskCreator
         old_role: PaperRole::REVIEWER,
         title: "Review by #{assignee.full_name}"
       )
-
-      Assignment.where(
-        user: assignee,
-        role: paper.journal.task_participant_role,
-        assigned_to: task
-      ).first_or_create!
-
-      Assignment.where(
-        user: assignee,
-        role: paper.journal.reviewer_report_owner_role,
-        assigned_to: task
-      ).first_or_create!
+      assignee.assign_to!(assigned_to: task, role: paper.journal.task_participant_role)
+      assignee.assign_to!(assigned_to: task, role: paper.journal.reviewer_report_owner_role)
 
       ParticipationFactory.create(task: task, assignee: assignee, notify: false)
       TahiStandardTasks::ReviewerMailer
@@ -69,11 +59,7 @@ class ReviewerReportTaskCreator
 
   # Multiple assignees can exist on `paper` as a reviewer
   def assign_paper_role!
-    Assignment.where(
-      user: assignee,
-      role: paper.journal.reviewer_role,
-      assigned_to: paper
-    ).first_or_create!
+    assignee.assign_to!(assigned_to: paper, role: paper.journal.reviewer_role)
   end
 
   def default_phase

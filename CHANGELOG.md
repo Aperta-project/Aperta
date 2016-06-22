@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Ability for invited reviewer to provide decline reason and suggested
   reviewers when declining invitation.
+- Ability to remove user roles via CSV file.
 ### Changed
 ### Deprecated
 ### Removed

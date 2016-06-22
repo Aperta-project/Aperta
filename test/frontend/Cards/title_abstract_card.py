@@ -105,11 +105,17 @@ class TitleAbstractCard(BaseCard):
 
     extracted_title = self._get(self._title_input).text
     extracted_abstract = self._get(self._abstract_input).text
-    assert db_title in extracted_title, '{0} != {1}'.format(db_title, extracted_title)
+    test_title = self.compare_unicode(db_title, extracted_title)
+    if not test_title:
+      raise(ValueError, '{0} != {1}'.format(db_title, extracted_title))
     if db_abstract:
-      assert db_abstract in extracted_abstract, '{0} != {1}'.format(db_abstract, extracted_abstract)
+      clean_extracted_abstract = self.get_text(extracted_abstract)
+      clean_db_abstract = self.get_text(db_abstract)
+      test_abstract = self.compare_unicode(clean_db_abstract, clean_extracted_abstract)
+      if not test_abstract:
+        raise(ValueError, '{0} != {1}'.format(clean_db_abstract, clean_extracted_abstract))
     else:
-      assert not extracted_abstract.text
+      assert not extracted_abstract
     time.sleep(.5)
 
   def is_question_checked(self):

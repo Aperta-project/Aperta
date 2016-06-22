@@ -85,12 +85,17 @@ class BaseCard(AuthenticatedPage):
     self._get(self._completion_button).click()
 
   def completed_state(self):
-    """Returns the selected state of the card completed button as a boolean"""
+    """
+    Returns the selected state of the card completed button as a boolean
+    Note that there is a styling difference for this text, depending on context, so doing a case
+      independent comparison
+    :return boolean True if completed
+    """
     time.sleep(.5)
     btn_label = self._get(self._completion_button).text
-    if btn_label == 'I am done with this task':
+    if btn_label.lower() == 'i am done with this task':
       return False
-    elif btn_label == 'Make changes to this task':
+    elif btn_label.lower() == 'make changes to this task':
       return True
     else:
       raise ValueError('Completed button in unexpected state {0}'.format(btn_label))

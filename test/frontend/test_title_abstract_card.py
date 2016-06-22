@@ -13,6 +13,7 @@ from Cards.title_abstract_card import TitleAbstractCard
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
+from Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'jgray@plos.org'
 
@@ -75,6 +76,48 @@ class TitleAbstractTest(CommonTest):
     title_abstract.click_close_button()
     title_abstract.logout()
 
-    # log back in as author
+    # log back in as author to reupload MS
+    dashboard_page = self.cas_login(email=creator['email'])
+    time.sleep(5)
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    time.sleep(5)
+    paper_viewer.click_task('upload_manuscript')
+    time.sleep(3)
+    upms = UploadManuscriptTask(self.getDriver())
+    time.sleep(1)
+    upms.click_completion_button()
+    time.sleep(1)
+    upms.upload_manuscript()
+    upms.validate_ihat_conversions_success(timeout=30)
+    upms.logout()
+
+    # log back in as editor to validate T&A card state reset
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as user: {0}'.format(['name']))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    time.sleep(5)
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    time.sleep(5)
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    time.sleep(2)
+    workflow_page.click_card('title_and_abstract')
+    time.sleep(3)
+    title_abstract = TitleAbstractCard(self.getDriver())
+    ta_state = title_abstract.completed_state()
+    if ta_state:
+      raise(AssertionError, 'Title and Abstract card state not reset on re-upload of manuscript')
+    title_abstract.click_completion_button()
+    new_ta_state = title_abstract.completed_state()
+    time.sleep(1)
+    if not new_ta_state:
+      raise (AssertionError, 'Title and Abstract card state not in completed state')
+
+
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

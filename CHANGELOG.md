@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## [1.4.16] - {2016-06-22}
 ### Added
 - Ability for invited reviewer to provide decline reason and suggested
   reviewers when declining invitation.
@@ -11,6 +11,19 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## [1.4.15] - {2016-06-15}
+### Added
+- Activity feed items for withdraw and reactivate of a manuscript
+### Changed
+- Institutional accounts are not pulled from a static list for easier updating
+### Deprecated
+### Removed
+- Notification when an invitation was recended
+### Fixed
+- Ad-hoc cards on manuscript manager templates can be edited
+- Figures placement improvements
 ### Security
 
 ## [1.4.14] - {2016-06-08}

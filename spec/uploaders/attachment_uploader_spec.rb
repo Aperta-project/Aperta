@@ -5,8 +5,8 @@ describe AttachmentUploader do
     it "includes the paper id in the path" do
       paper = FactoryGirl.create(:paper)
       figure = paper.figures.create!
-      uploader = AttachmentUploader.new(figure, :attachment)
-      expect(uploader.store_dir).to eq "uploads/paper/#{paper.id}/figure/attachment/#{figure.id}"
+      uploader = AttachmentUploader.new(figure, :file)
+      expect(uploader.store_dir).to eq "uploads/paper/#{paper.id}/figure/file/#{figure.id}"
     end
   end
 
@@ -23,7 +23,7 @@ describe AttachmentUploader do
     end
 
     it "transcodes tiffs" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.tiff')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -31,7 +31,7 @@ describe AttachmentUploader do
     end
 
     it "transcodes eps" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'HTML5_Logo.eps')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -50,7 +50,7 @@ describe AttachmentUploader do
         ).split("\n")[1]
       end
 
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'cmyk-chart.eps')))
       MiniMagick::Image.open(uploader.preview.path)
 
@@ -59,7 +59,7 @@ describe AttachmentUploader do
     end
 
     it "does not transcode other images" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       expect(uploader).to_not receive(:set_srgb_colorspace)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.jpg')))
       preview = MiniMagick::Image.open(uploader.preview.path)
@@ -68,7 +68,7 @@ describe AttachmentUploader do
     end
 
     it "does not transcode documents" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       expect(uploader).to_not receive(:set_srgb_colorspace)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'about_turtles.docx')))
 
@@ -89,7 +89,7 @@ describe AttachmentUploader do
     end
 
     it "resizes tiffs" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.tiff')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -98,7 +98,7 @@ describe AttachmentUploader do
     end
 
     it "resizes eps" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'HTML5_Logo.eps')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -107,7 +107,7 @@ describe AttachmentUploader do
     end
 
     it "resizes jpg" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.jpg')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -116,7 +116,7 @@ describe AttachmentUploader do
     end
 
     it "resizes png" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.png')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -125,7 +125,7 @@ describe AttachmentUploader do
     end
 
     it "resizes gif" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.gif')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -134,7 +134,7 @@ describe AttachmentUploader do
     end
 
     it "does not resize documents" do
-      uploader = AttachmentUploader.new(model, :attachment)
+      uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'about_turtles.docx')))
 
       expect(uploader.content_type).to eq("application/vnd.openxmlformats-officedocument.wordprocessingml.document")

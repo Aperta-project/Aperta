@@ -5,7 +5,7 @@ RSpec.shared_examples 'a striking image' do
   let(:instance) { described_class.new }
   let(:another_instance) { described_class.new }
   before(:each) do
-    instance.paper = paper
+    instance.owner = paper
     instance.save
   end
 

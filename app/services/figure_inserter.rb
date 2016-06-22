@@ -18,7 +18,7 @@ class FigureInserter
   private
 
   def figures_by_label
-    @figures.select(&:attachment?)
+    @figures.select(&:file?)
       .each_with_object({}) do |fig, accum|
         accum[fig.rank] = fig
       end

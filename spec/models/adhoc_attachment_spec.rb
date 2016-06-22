@@ -1,7 +1,9 @@
 require 'rails_helper'
 
-describe Attachment do
-  subject(:attachment) { FactoryGirl.build(:attachment, :with_task) }
+describe AdhocAttachment do
+  subject(:attachment) do
+    FactoryGirl.build(:adhoc_attachment, :with_task)
+  end
 
   describe "validations" do
     it "is valid" do

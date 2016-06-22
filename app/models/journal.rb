@@ -74,7 +74,9 @@ class Journal < ActiveRecord::Base
   end
 
   def paper_types
-    self.manuscript_manager_templates.pluck(:paper_type)
+    # We ordering by the oldest articles first to have 'Research Article'
+    # to float to the top of the article drop down list
+    manuscript_manager_templates.unscoped.order('id asc').pluck(:paper_type)
   end
 
   def valid_old_roles

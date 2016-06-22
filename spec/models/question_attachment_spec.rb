@@ -16,9 +16,13 @@ describe QuestionAttachment do
     let(:attachment) { FactoryGirl.create(:question_attachment) }
     let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
 
-    it 'downloads the file at the given URL' do
+    it 'downloads the file at the given URL, caches the s3 store_dir' do
       attachment.download!(url)
-      expect(attachment.reload.file.path).to match(/bill_ted1\.jpg/)
+      attachment.reload
+      expect(attachment.file.path).to match(/bill_ted1\.jpg/)
+
+      expect(attachment.file.store_dir).to be
+      expect(attachment.s3_dir).to eq(attachment.file.store_dir)
     end
 
     it 'sets the status, but not the title' do

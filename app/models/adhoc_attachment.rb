@@ -7,7 +7,7 @@ class AdhocAttachment < Attachment
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
 
   def download!(url)
-    file.download! url
+    super(url)
     update_attributes!(title: file.filename, status: STATUS_DONE)
   end
 

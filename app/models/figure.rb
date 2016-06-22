@@ -18,7 +18,7 @@ class Figure < Attachment
   end
 
   def download!(url)
-    file.download! url
+    super(url)
     update_attributes!(
       title: build_title,
       status: STATUS_DONE

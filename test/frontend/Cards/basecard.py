@@ -185,8 +185,8 @@ class BaseCard(AuthenticatedPage):
     html_header_state = self._get(self._header_paper_state)
     assert html_header_state.text == status, '{0} != {1}'.format(html_header_state.text, status)
     html_header_title = self._get(self._header_title_link)
-    assert html_header_title.text.strip() == title.strip(), \
-        '{0} != {1}'.format(html_header_title.text, title)
+
+    self.compare_unicode(html_header_title.text, title)
     # Validate Styles
     assert application_typeface in html_header_author.value_of_css_property('font-family'), \
       html_header_author.value_of_css_property('font-family')

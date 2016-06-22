@@ -24,7 +24,8 @@ class Attachment < ActiveRecord::Base
   after_initialize :set_paper, if: :new_record?
 
   def download!(url)
-    fail NotImplementedError
+    file.download! url
+    self.s3_dir = file.store_dir
   end
 
   def filename

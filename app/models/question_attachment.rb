@@ -4,7 +4,7 @@ class QuestionAttachment < Attachment
   mount_uploader :file, QuestionAttachmentUploader
 
   def download!(url)
-    file.download!(url)
+    super(url)
     update_attributes!(status: STATUS_DONE)
   end
 

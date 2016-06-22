@@ -28,9 +28,13 @@ describe Figure, redis: true do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
 
-    it 'downloads the file at the given URL' do
+    it 'downloads the file at the given URL, caches the s3 store_dir' do
       figure.download!(url)
-      expect(figure.reload.file.path).to match(/bill_ted1\.jpg/)
+      figure.reload
+      expect(figure.file.path).to match(/bill_ted1\.jpg/)
+
+      expect(figure.file.store_dir).to be
+      expect(figure.s3_dir).to eq(figure.file.store_dir)
     end
 
     it 'sets the title and status' do

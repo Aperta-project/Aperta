@@ -10,7 +10,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
-  let(:user_role) { Role.find_by(name: Role::USER_ROLE) }
+  let!(:user_role) { Role.find_or_create_by!(name: Role::USER_ROLE) }
   let(:task_name) { 'data:populate_initial_roles:csv' }
   let(:task_args) { ['foo'] }
 

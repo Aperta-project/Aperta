@@ -5,6 +5,7 @@ import json
 import logging
 import platform
 import os
+import re
 import tempfile
 from time import sleep
 
@@ -151,6 +152,49 @@ class PlosPage(object):
 
   def _is_link_valid(self, link):
     return self.__linkVerifier.is_link_valid(link.get_attribute('href'))
+
+  @staticmethod
+  def normalize_spaces(text):
+    """
+    Helper method to leave strings with only one space between each word
+    Used for string comparison when at least one string cames from an HTML document
+    :text: string
+    :return: string
+    """
+    text = text.strip()
+    return re.sub(r'\s+', ' ', text)
+
+  @staticmethod
+  def compare_unicode(string_1, string_2):
+    """
+    Compare two string taking into account that there may be differente ammount of whitespaces
+    Used to compare text taken from HTML.
+    :string_1: Text string (may be Unicode or not)
+    :string_2: Text string (may be Unicode or not)
+    :return: True if compare is OK, is not, an assertion will fail
+    """
+    if isinstance(string_1, unicode) and isinstance(string_2, unicode):
+      # Split both to eliminate differences in whitespace
+      string_1 = string_1.split()
+      string_2 = title.split()
+      assert string_1 == string_2, \
+        'Title in page: {0} != Title in DB: {1}'.format(string_1, string_2)
+    elif isinstance(string_1, unicode) and not isinstance(string_2, unicode):
+      string_1 = PlosPage.normalize_spaces(string_1).split()
+      string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
+      assert string_1 == string_2, \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
+    elif not isinstance(string_1, unicode) and isinstance(string_2, unicode):
+      string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
+      string_2 = PlosPage.normalize_spaces(string_2).split()
+      assert string_1 == string_2, \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
+    else:
+      string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
+      string_2 = PlosPage.normalize_spaces(title.decode('utf-8')).split()
+      assert string_1 == string_2, \
+        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
+    return True
 
   def traverse_to_frame(self, frame):
     print '\t[WebDriver] About to switch to frame "%s"...' % frame,

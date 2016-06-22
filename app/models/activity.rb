@@ -22,6 +22,17 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.assignment_removed!(assignment, user:)
+    msg = "#{assignment.user.full_name} was removed as #{assignment.role.name}"
+    create(
+      feed_name: "workflow",
+      activity_key: "assignment.removed",
+      subject: assignment.assigned_to,
+      user: user,
+      message: msg
+    )
+  end
+
   def self.author_added!(author, user:)
     create(
       feed_name: "manuscript",

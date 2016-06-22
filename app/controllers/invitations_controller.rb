@@ -65,11 +65,11 @@ class InvitationsController < ApplicationController
     params
       .require(:invitation)
       .permit(:actor_id,
-              :body,
-              :decline_reason,
-              :email,
-              :reviewer_suggestions,
-              :task_id)
+        :body,
+        :decline_reason,
+        :email,
+        :reviewer_suggestions,
+        :task_id)
   end
 
   def task

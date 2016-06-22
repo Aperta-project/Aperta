@@ -82,9 +82,10 @@ describe PDFConverter do
       let(:figure) { paper.figures.first }
       let(:figure_img) { doc.css("img").first }
       before do
-        paper.figures
-          .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                  status: 'done'
+        paper.figures.create(
+          file: File.open('spec/fixtures/yeti.tiff'),
+          status: Figure::STATUS_DONE
+        )
         paper.update_attributes(body: "<p>Figure 1.</p>")
       end
 

@@ -17,6 +17,14 @@ class Figure < Attachment
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end
 
+  def download!(url)
+    file.download! url
+    update_attributes!(
+      title: create_title_from_filename,
+      status: STATUS_DONE
+    )
+  end
+
   def alt
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end
@@ -37,18 +45,6 @@ class Figure < Attachment
     { filename: filename, alt: alt, id: id, src: src }
   end
 
-  def title_rank_regex
-    /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
-  end
-
-  def create_title_from_filename
-    return if title
-    self.title = "Unlabeled"
-    title_rank_regex.match(attachment.filename) do |match|
-      self.title = "Fig. #{match['label']}"
-    end
-  end
-
   def rank
     return 0 unless title
     number_match = title.match /\d+/
@@ -60,6 +56,18 @@ class Figure < Attachment
   end
 
   private
+
+  def title_rank_regex
+    /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
+  end
+
+  def create_title_from_filename
+    return if title
+    self.title = "Unlabeled"
+    title_rank_regex.match(attachment.filename) do |match|
+      self.title = "Fig. #{match['label']}"
+    end
+  end
 
   def should_insert_figures?
     (title_changed? || file_changed?) && all_figures_done?

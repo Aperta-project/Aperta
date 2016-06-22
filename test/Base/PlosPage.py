@@ -167,6 +167,11 @@ class PlosPage(object):
   @staticmethod
   def compare_unicode(string_1, string_2):
     """
+    Compare two string taking into account that there may be differente ammount of whitespaces
+    Used to compare text taken from HTML.
+    :string_1: Text string (may be Unicode or not)
+    :string_2: Text string (may be Unicode or not)
+    :return: True if compare is OK, is not, an assertion will fail
     """
     if isinstance(string_1, unicode) and isinstance(string_2, unicode):
       # Split both to eliminate differences in whitespace

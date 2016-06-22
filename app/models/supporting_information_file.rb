@@ -32,7 +32,7 @@ class SupportingInformationFile < Attachment
   end
 
   def alt
-    if attachment.present?
+    if file.present?
       filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
     else
       "no attachment"
@@ -60,8 +60,8 @@ class SupportingInformationFile < Attachment
   end
 
   def image?
-    if attachment.file
-      IMAGE_TYPES.include? attachment.file.extension
+    if file.file
+      IMAGE_TYPES.include? file.file.extension
     else
       false
     end

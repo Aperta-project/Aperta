@@ -11,7 +11,7 @@ module Typesetter
     end
 
     def file_name
-      File.basename object.attachment.path
+      object.filename
     end
   end
 end

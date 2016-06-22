@@ -1,4 +1,6 @@
-# A manuscript figure.
+# A Figure is an image the author provides, that is included as part of the
+# manuscript, to elucidate upon the point they are trying to make. Figures are
+# typically graphs, charts, or other scientific extrapolations of data.
 class Figure < Attachment
   include CanBeStrikingImage
 

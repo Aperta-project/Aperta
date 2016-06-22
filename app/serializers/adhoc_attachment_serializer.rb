@@ -1,3 +1,4 @@
+# Serializes AdhocAttachmnent(s).
 class AdhocAttachmentSerializer < ActiveModel::Serializer
   has_one :task, embed: :id, polymorphic: true
 

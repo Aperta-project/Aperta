@@ -1,5 +1,6 @@
-# SupportingInformationFile is a file/resource/artifact intended to supporting
-# the manuscript.
+# Supporting Information includes Figures, Data, and other Files that help in
+# understanding the manuscript, but are not central to the scientific argument.
+# They are often linked to, but not typically embedded in the document.
 class SupportingInformationFile < Attachment
   include CanBeStrikingImage
 

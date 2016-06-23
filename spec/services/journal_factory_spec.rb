@@ -394,6 +394,28 @@ describe JournalFactory do
         end
       end
 
+      context 'Discussion Participant' do
+        let(:permissions) { journal.discussion_participant_role.permissions }
+
+        describe 'has discussion reply permission to' do
+          specify ':view' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'view')
+            )
+          end
+          specify ':reply' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'reply')
+            )
+          end
+          specify ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
+            )
+          end
+        end
+      end
+
       context 'Academic Editor' do
         let(:permissions) { journal.academic_editor_role.permissions }
 
@@ -754,6 +776,12 @@ describe JournalFactory do
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
+            )
+          end
         end
 
         describe 'permission to PlosBilling::BillingTask' do
@@ -931,6 +959,12 @@ describe JournalFactory do
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
+            )
+          end
         end
 
         describe 'permission to PlosBilling::BillingTask' do
@@ -1106,6 +1140,12 @@ describe JournalFactory do
           it ':reply' do
             expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
+            )
+          end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
             )
           end
         end
@@ -1308,6 +1348,12 @@ describe JournalFactory do
           it ':manage_participant' do
             expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
             )
           end
         end

@@ -20,7 +20,8 @@ class FTCCard(BaseCard):
 
     # Locators - Instance members
     self._h2_titles = (By.CSS_SELECTOR, 'div.checklist h2')
-    self._h3_titles = (By.CSS_SELECTOR, 'div.checklist h3')
+    self._h3_titles = (By.CSS_SELECTOR, 'ul.list-unstyled h3')
+    self._h4_titles = (By.CSS_SELECTOR, 'ul.list-unstyled h4')
     self._send_changes = (By.CSS_SELECTOR, 'h3.change-instructions')
     self._send_changes_button = (By.CSS_SELECTOR, 'div.task-main-content button.button-primary')
     self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
@@ -77,22 +78,20 @@ class FTCCard(BaseCard):
     self.validate_application_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles
-    # TODO: Following check disabled due to APERTA-7087
-    """
-    h2_titles = self._gets(self._h2_titles)
-    h2 = [h2.text for h2 in h2_titles]
-    assert h2 == [u'Submission tasks', u'Figures and Supporting Information',
-        u'If there are issues the author needs to address, click below to send changes to the '
-        'author.'], h2
-    # get style
-    for h2 in h2_titles:
-        self.validate_application_h2_style(h2)
     h3_titles = self._gets(self._h3_titles)
     h3 = [h3.text for h3 in h3_titles]
-    assert h3 == [u'Ethics Statement', u'Data Policy', u'Author List',
-        u'Author Email Addresses', u'Authors Added/Removed', u'Competing Interests',
-        u'Financial Disclosure Statement', u'Collections', u'Figures', u'Figure Captions',
-        u'Cited Files Present', u'Response to Reviewers for Open Rejects'], h3
+    assert h3 == [u'Submission tasks', u'Figures and Supporting Information'], h3
+    # get style
+    # TODO: Following check disabled due to APERTA-7087
+    """
+    for h2 in h2_titles:
+        self.validate_application_h2_style(h2)
+    """
+    h4_titles = self._gets(self._h4_titles)
+    h4 = [h4.text for h4 in h4_titles]
+    assert h4 == [u'Ethics Statement', u'Financial Disclosure Statement'], h4
+    # TODO: Following check disabled due to APERTA-7087
+    """
     for h3 in h3_titles:
         self.validate_application_h3_style(h3)
     """

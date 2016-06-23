@@ -6,13 +6,12 @@ describe AdhocAttachmentSerializer, serializer_test: true do
       :adhoc_attachment,
       :with_task,
       status: AdhocAttachment::STATUS_DONE,
-      token: token
     )
   end
-  let(:token) { 'hfrrpwV1VHYb7x2T' }
+  let(:token) { attachment.token }
   let(:object_for_serializer) { attachment }
   let(:src) do
-    "/resource_proxy/adhoc_attachments/" + token
+    "/resource_proxy/" + token
   end
 
   it "serializes successfully" do

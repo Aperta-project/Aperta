@@ -544,6 +544,14 @@ ActiveRecord::Schema.define(version: 20160628185730) do
 
   add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
 
+  create_table "resource_tokens", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "token"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
     t.integer  "journal_id"

@@ -18,19 +18,25 @@ class Attachment < ActiveRecord::Base
     skip_callback :save, :after, :remove_previously_stored_file, if: -> { snapshotted? }
   end
 
-  # writes to `token` attr on create
-  # `regenerate_token` for new token
-  has_secure_token
-
   belongs_to :owner, polymorphic: true
   belongs_to :paper
   has_many :snapshots, as: :source, dependent: :destroy
+
+  has_one :resource_token, as: :owner, dependent: :destroy
+  delegate :token, to: :resource_token
 
   validates :owner, presence: true
 
   # set_paper is required when creating attachments thru associations
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
+
+  # This creates the token used by resource proxy to lookup the attachment.
+  after_create :do_resource_token
+
+  def do_resource_token
+    ResourceToken.create owner: self
+  end
 
   def download!(url)
     file.download! url

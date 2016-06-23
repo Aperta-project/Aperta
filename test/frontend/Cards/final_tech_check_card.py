@@ -28,7 +28,7 @@ class FTCCard(BaseCard):
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
     self._alert_info = (By.CLASS_NAME, 'alert-info')
-    self._autogenerate_text = (By.XPATH, 
+    self._autogenerate_text = (By.XPATH,
         '//div[contains(@class, \'form-group\')]/following-sibling::button')
     self._text_area = (By.CSS_SELECTOR, 'textarea.ember-text-area')
     self._field_title = (By.CSS_SELECTOR, 'span.text-field-title')
@@ -114,7 +114,6 @@ class FTCCard(BaseCard):
     Click autogenerate button
     :return: None
     """
-    import pdb; pdb.set_trace()
     autogenerate_text_btn = self._get(self._autogenerate_text)
     autogenerate_text_btn.click()
     return None

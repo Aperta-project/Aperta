@@ -126,6 +126,9 @@ class FTCCardTest(CommonTest):
     time.sleep(2)
     issues_text = ftc_card.get_issues_text()
     print issues_text
+    print len(issues_text)
+    import pdb; pdb.set_trace()
+
     for index, checked in enumerate(data):
       if not checked and self.email_text[index]:
         assert self.email_text[index] in issues_text, \

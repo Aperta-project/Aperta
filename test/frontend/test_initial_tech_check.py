@@ -154,7 +154,7 @@ class ITCCardTest(CommonTest):
     # Check not error message
     try:
       itc_card._get(itc_card._flash_error_msg)
-      # Note: Commonting out due to APERTA-7012
+      # Note: Commenting out due to APERTA-7012
       #raise ElementExistsAssertionError('There is an unexpected error message')
       #logging.warning('There is an error message because of APERTA-7012')
     except NoSuchElementException:

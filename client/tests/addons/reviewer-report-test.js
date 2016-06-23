@@ -57,31 +57,25 @@ module('Integration: Reviewer Report', {
         ident: 'reviewer_report--decision_term'
       }),
       Factory.createRecord('NestedQuestion', {
+        ident: 'reviewer_report--identity'
+      }),
+      Factory.createRecord('NestedQuestion', {
         ident: 'reviewer_report--competing_interests'
       }),
       Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--plos_biology_suitable'
-      }),
-      Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--plos_biology_suitable--comment'
-      }),
-      Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--statistical_analysis'
-      }),
-      Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--statistical_analysis--explanation'
-      }),
-      Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--standards'
-      }),
-      Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--standards--explanation'
+        ident: 'reviewer_report--competing_interests--detail'
       }),
       Factory.createRecord('NestedQuestion', {
         ident: 'reviewer_report--additional_comments'
       }),
       Factory.createRecord('NestedQuestion', {
-        ident: 'reviewer_report--identity'
+        ident: 'reviewer_report--comments_for_author'
+      }),
+      Factory.createRecord('NestedQuestion', {
+        ident: 'reviewer_report--suitable_for_another_journal'
+      }),
+      Factory.createRecord('NestedQuestion', {
+        ident: 'reviewer_report--suitable_for_another_journal--journal'
       })
     ];
 
@@ -153,25 +147,17 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
     assert.notOk(find('input[name*=reviewer_report--decision_term][type=radio][value=major_revision]').length, 'User cannot provide a major revision recommendation');
     assert.notOk(find('input[name*=reviewer_report--decision_term][type=radio][value=minor_revision]').length, 'User cannot provide a minor revision recommendation');
 
-    assert.notOk(find('textarea[name=reviewer_report--competing_interests]').length, 'User cannot provide their competing interests statement');
+    assert.notOk(find('input[name*=reviewer_report--competing_interests][type=radio][value=yes]').length, 'User cannot provide their competing interests statement');
+    assert.notOk(find('textarea[name=reviewer_report--competing_interests--detail]').length, 'User cannot provide their competing interests statement');
+    assert.notOk(find('textarea[name=reviewer_report--comments_for_author]').length, 'User cannot provide additional comments');
 
-    assert.notOk(find('textarea[name=reviewer_report--competing_interests]').length, 'User cannot provide their competing interests statement');
-
-    assert.notOk(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=true]').length, 'User cannot provide yes response to biology suitability');
-    assert.notOk(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=false]').length, 'User cannot provide no response to biology suitability');
-    assert.notOk(find('textarea[name=reviewer_report--plos_biology_suitable--comment]').length, 'User cannot provide their review of biology suitability');
-
-    assert.notOk(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=true]').length, 'User cannot provide respond yes to statistical analysis');
-    assert.notOk(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=false]').length, 'User cannot provide response no to statistical analysis');
-    assert.notOk(find('textarea[name=reviewer_report--statistical_analysis--explanation]').length, 'User cannot provide their review of statistical analysis');
-
-    assert.notOk(find('input[name*=reviewer_report--standards][type=radio][value=true]').length, 'User cannot provide respond yes to standards compliance');
-    assert.notOk(find('input[name*=reviewer_report--standards][type=radio][value=false]').length, 'User cannot provide response no to standards compliance');
-    assert.notOk(find('textarea[name=reviewer_report--standards--explanation]').length, 'User cannot provide their review of standards compliance');
-
-    assert.notOk(find('textarea[name=reviewer_report--additional_comments]').length, 'User cannot provide additional comments');
+    assert.notOk(find('textarea[name=reviewer_report--additional_comments]').length, 'User cannot provide comments for author');
 
     assert.notOk(find('textarea[name=reviewer_report--identity]').length, 'User cannot provide their identity');
+
+    assert.notOk(find('input[name*=reviewer_report--suitable_for_another_journal]').length, 'User cannot provide suitability for another journal');
+    assert.notOk(find('textarea[name=reviewer_report--suitable_for_another_journal--journal]').length, 'User cannot specify another journal');
+
   });
 });
 
@@ -185,24 +171,17 @@ test('Edit mode: Providing reviewer feedback', function(assert) {
     assert.ok(find('input[name*=reviewer_report--decision_term][type=radio][value=major_revision]').length == 1, 'User can provide a major revision recommendation');
     assert.ok(find('input[name*=reviewer_report--decision_term][type=radio][value=minor_revision]').length == 1, 'User can provide a minor revision recommendation');
 
-    assert.ok(find('textarea[name=reviewer_report--competing_interests]').length == 1, 'User can provide their competing interests statement');
+    assert.ok(find('input[name*=reviewer_report--competing_interests][type=radio][value=true]').length == 1, 'User can provide their competing interests statement');
+    assert.ok(find('input[name*=reviewer_report--competing_interests][type=radio][value=false]').length == 1, 'User can provide their competing interests statement');
+    assert.ok(find('textarea[name=reviewer_report--competing_interests--detail]').length == 1, 'User can provide their competing interests statement');
+    assert.ok(find('textarea[name=reviewer_report--comments_for_author]').length == 1, 'User can provide additional comments');
 
-    assert.ok(find('textarea[name=reviewer_report--competing_interests]').length == 1, 'User can provide their competing interests statement');
-
-    assert.ok(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=true]').length == 1, 'User can respond yes to biology suitability');
-    assert.ok(find('input[name*=reviewer_report--plos_biology_suitable][type=radio][value=false]').length == 1, 'User can respond no to biology suitability');
-    assert.ok(find('textarea[name=reviewer_report--plos_biology_suitable--comment]').length == 1, 'User can provide their review of biology suitability');
-
-    assert.ok(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=true]').length == 1, 'User can provide respond yes to statistical analysis');
-    assert.ok(find('input[name*=reviewer_report--statistical_analysis][type=radio][value=false]').length == 1, 'User can provide response no to statistical analysis');
-    assert.ok(find('textarea[name=reviewer_report--statistical_analysis--explanation]').length == 1, 'User can provide their review of statistical analysis');
-
-    assert.ok(find('input[name*=reviewer_report--standards][type=radio][value=true]').length == 1, 'User can provide respond yes to standards compliance');
-    assert.ok(find('input[name*=reviewer_report--standards][type=radio][value=false]').length == 1, 'User can provide response no to standards compliance');
-    assert.ok(find('textarea[name=reviewer_report--standards--explanation]').length == 1, 'User can provide their review of standards compliance');
-
-    assert.ok(find('textarea[name=reviewer_report--additional_comments]').length == 1, 'User can provide additional comments');
+    assert.ok(find('textarea[name=reviewer_report--additional_comments]').length == 1, 'User can provide comments for author');
 
     assert.ok(find('textarea[name=reviewer_report--identity]').length == 1, 'User can provide their identity');
+
+    assert.ok(find('input[name*=reviewer_report--suitable_for_another_journal][type=radio][value=true]').length == 1, 'User can provide suitability for another journal');
+    assert.ok(find('input[name*=reviewer_report--suitable_for_another_journal][type=radio][value=false]').length == 1, 'User can provide suitability for another journal');
+    assert.ok(find('textarea[name=reviewer_report--suitable_for_another_journal--journal]').length == 1, 'User can specify another journal');
   });
 });

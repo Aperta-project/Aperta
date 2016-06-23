@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608144550) do
+ActiveRecord::Schema.define(version: 20160615184308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20160608144550) do
   end
 
   create_table "billing_logs", force: :cascade do |t|
-    t.string   "guid"
+    t.string   "ned_id"
     t.integer  "documentid",                     null: false
     t.string   "title"
     t.string   "firstname"
@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 20160608144550) do
     t.string   "phone2"
     t.integer  "fax"
     t.string   "email"
-    t.integer  "journal_id",                     null: false
+    t.integer  "journal",                        null: false
     t.string   "pubdnumber"
     t.string   "doi"
     t.string   "dtitle"
@@ -169,11 +169,15 @@ ActiveRecord::Schema.define(version: 20160608144550) do
     t.string   "csv_file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "corresponding_author_ned_id"
+    t.integer  "corresponding_author_ned_email"
   end
 
+  add_index "billing_logs", ["corresponding_author_ned_email"], name: "index_billing_logs_on_corresponding_author_ned_email", using: :btree
+  add_index "billing_logs", ["corresponding_author_ned_id"], name: "index_billing_logs_on_corresponding_author_ned_id", using: :btree
   add_index "billing_logs", ["documentid"], name: "index_billing_logs_on_documentid", using: :btree
-  add_index "billing_logs", ["guid"], name: "index_billing_logs_on_guid", using: :btree
-  add_index "billing_logs", ["journal_id"], name: "index_billing_logs_on_journal_id", using: :btree
+  add_index "billing_logs", ["journal"], name: "index_billing_logs_on_journal", using: :btree
+  add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
@@ -290,6 +294,8 @@ ActiveRecord::Schema.define(version: 20160608144550) do
     t.text     "body"
     t.integer  "inviter_id"
     t.string   "invitee_role", null: false
+    t.text     "decline_reason"
+    t.text     "reviewer_suggestions"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
@@ -324,6 +330,7 @@ ActiveRecord::Schema.define(version: 20160608144550) do
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string  "paper_type"
     t.integer "journal_id"
+    t.boolean "uses_research_article_reviewer_report", default: false
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -436,6 +443,7 @@ ActiveRecord::Schema.define(version: 20160608144550) do
     t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",               default: false
+    t.boolean  "uses_research_article_reviewer_report", default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -533,6 +541,13 @@ ActiveRecord::Schema.define(version: 20160608144550) do
 
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
   add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
+
+  create_table "reference_jsons", force: :cascade do |t|
+    t.text     "name"
+    t.jsonb    "items",      default: [],              array: true
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "related_articles", force: :cascade do |t|
     t.integer  "paper_id"
@@ -725,7 +740,7 @@ ActiveRecord::Schema.define(version: 20160608144550) do
     t.string   "username"
     t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
-    t.string   "em_guid"
+    t.integer  "ned_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

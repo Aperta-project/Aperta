@@ -4,7 +4,7 @@
 require 'rails_helper'
 
 describe Activity do
-  let(:user) { FactoryGirl.build(:user) }
+  let(:user) { FactoryGirl.build_stubbed(:user) }
 
   describe "#assignment_created!" do
     subject(:activity) { Activity.assignment_created!(assignment, user: user) }
@@ -31,7 +31,7 @@ describe Activity do
 
   describe "#author_added!" do
     subject(:activity) { Activity.author_added!(author, user: user) }
-    let(:author) { FactoryGirl.build(:author) }
+    let(:author) { FactoryGirl.build_stubbed(:author) }
 
     it {
       is_expected.to have_attributes(
@@ -45,7 +45,7 @@ describe Activity do
 
   describe "#task_sent_to_author!" do
     subject(:activity) { Activity.task_sent_to_author!(task, user: user) }
-    let(:task) { FactoryGirl.build(:assign_team_task) }
+    let(:task) { FactoryGirl.build_stubbed(:assign_team_task) }
 
     it {
       is_expected.to have_attributes(
@@ -59,7 +59,7 @@ describe Activity do
 
   describe "#comment_created" do
     subject(:activity) { Activity.comment_created!(comment, user: user) }
-    let(:comment){ FactoryGirl.build(:comment) }
+    let(:comment){ FactoryGirl.build_stubbed(:comment) }
 
     it {
       is_expected.to have_attributes(
@@ -73,7 +73,7 @@ describe Activity do
 
   describe "#decision_made!" do
     subject(:activities) { Activity.decision_made!(decision, user: user) }
-    let(:decision) { FactoryGirl.build(:decision) }
+    let(:decision) { FactoryGirl.build_stubbed(:decision) }
 
     it "creates two activities" do
       expect(activities[0]).to have_attributes(
@@ -95,7 +95,7 @@ describe Activity do
 
   describe "#invitation_created!" do
     subject(:activity) { Activity.invitation_created!(invitation, user: user) }
-    let(:invitation) { FactoryGirl.build(:invitation) }
+    let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
     it {
       is_expected.to have_attributes(
@@ -109,7 +109,7 @@ describe Activity do
 
   describe "#invitation_accepted!" do
     subject(:activity) { Activity.invitation_accepted!(invitation, user: user) }
-    let(:invitation) { FactoryGirl.build(:invitation) }
+    let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
     it {
       is_expected.to have_attributes(
@@ -123,7 +123,7 @@ describe Activity do
 
   describe "#invitation_rejected!" do
     subject(:activity) { Activity.invitation_rejected!(invitation, user: user) }
-    let(:invitation) { FactoryGirl.build(:invitation) }
+    let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
     it {
       is_expected.to have_attributes(
@@ -137,7 +137,7 @@ describe Activity do
 
   describe "#invitation_withdrawn!" do
     subject(:activity) { Activity.invitation_withdrawn!(invitation, user: user) }
-    let(:invitation) { FactoryGirl.build(:invitation) }
+    let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
     let(:role) { invitation.invitee_role.capitalize }
     let(:invitee) { invitation.recipient_name }
@@ -155,7 +155,7 @@ describe Activity do
 
   describe "#paper_created!" do
     subject(:activity) { Activity.paper_created!(paper, user: user) }
-    let(:paper) { FactoryGirl.build(:paper) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
     it {
       is_expected.to have_attributes(
@@ -169,7 +169,7 @@ describe Activity do
 
   describe "#paper_edited!" do
     subject(:activity) { Activity.paper_edited!(paper, user: user) }
-    let(:paper) { FactoryGirl.build(:paper) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
     it {
       is_expected.to have_attributes(
@@ -212,6 +212,49 @@ describe Activity do
         end
       end
     end
+  end
+
+  describe "#paper_created!" do
+    subject(:activity) { Activity.paper_created!(paper, user: user) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
+        activity_key: "paper.created",
+        subject: paper,
+        user: user,
+        message: "Manuscript was created"
+    )}
+  end
+
+
+  describe "#paper_reactivated!" do
+    subject(:activity) { Activity.paper_reactivated!(paper, user: user) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "paper.reactivated",
+        subject: paper,
+        user: user,
+        message: "Manuscript was reactivated"
+    )}
+  end
+
+  describe "#paper_withdrawn!" do
+    subject(:activity) { Activity.paper_withdrawn!(paper, user: user) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "paper.withdrawn",
+        subject: paper,
+        user: user,
+        message: "Manuscript was withdrawn"
+    )}
   end
 
   describe '#collaborator_added!' do
@@ -264,7 +307,7 @@ describe Activity do
 
   describe "#paper_submitted!" do
     subject(:activity) { Activity.paper_submitted!(paper, user: user) }
-    let(:paper) { FactoryGirl.build(:paper) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
     it {
       is_expected.to have_attributes(
@@ -278,7 +321,7 @@ describe Activity do
 
   describe "#paper_initially_submitted!" do
     subject(:activity) { Activity.paper_initially_submitted!(paper, user: user) }
-    let(:paper) { FactoryGirl.build(:paper) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
     it do
       is_expected.to have_attributes(
@@ -292,7 +335,7 @@ describe Activity do
 
   describe '#editability_toggled!' do
     subject(:activity) { Activity.editable_toggled!(paper, user: user) }
-    let(:paper) { FactoryGirl.build(:paper) }
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
     it 'adds a workflow activity when editability is toggled' do
       is_expected.to have_attributes(
@@ -307,7 +350,7 @@ describe Activity do
 
   describe "#participation_created!" do
     subject(:activity) { Activity.participation_created!(participation, user: user) }
-    let(:participation) { FactoryGirl.build(:assignment, :assigned_to_task) }
+    let(:participation) { FactoryGirl.build_stubbed(:assignment, :assigned_to_task) }
 
     it {
       is_expected.to have_attributes(
@@ -321,7 +364,7 @@ describe Activity do
 
   describe "#participation_destroyed!" do
     subject(:activity) { Activity.participation_destroyed!(participation, user: user) }
-    let(:participation) { FactoryGirl.build(:assignment, :assigned_to_task) }
+    let(:participation) { FactoryGirl.build_stubbed(:assignment, :assigned_to_task) }
 
     it {
       is_expected.to have_attributes(

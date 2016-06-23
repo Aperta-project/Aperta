@@ -22,6 +22,17 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.assignment_removed!(assignment, user:)
+    msg = "#{assignment.user.full_name} was removed as #{assignment.role.name}"
+    create(
+      feed_name: "workflow",
+      activity_key: "assignment.removed",
+      subject: assignment.assigned_to,
+      user: user,
+      message: msg
+    )
+  end
+
   def self.author_added!(author, user:)
     create(
       feed_name: "manuscript",
@@ -186,6 +197,26 @@ class Activity < ActiveRecord::Base
       subject: paper,
       user: user,
       message: "Manuscript was initially submitted"
+    )
+  end
+
+  def self.paper_withdrawn!(paper, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "paper.withdrawn",
+      subject: paper,
+      user: user,
+      message: "Manuscript was withdrawn"
+    )
+  end
+
+  def self.paper_reactivated!(paper, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "paper.reactivated",
+      subject: paper,
+      user: user,
+      message: "Manuscript was reactivated"
     )
   end
 

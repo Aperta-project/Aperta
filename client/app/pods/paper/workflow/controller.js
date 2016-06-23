@@ -124,7 +124,7 @@ export default Ember.Controller.extend({
     },
 
     rollbackPhase(phase) {
-      phase.rollback();
+      phase.rollbackAttributes();
     },
 
     taskMovedWithinList(item, oldIndex, newIndex, itemList) {

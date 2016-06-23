@@ -8,7 +8,7 @@ export default {
     const store = instance.container.lookup('service:store');
     store.pushPayload(data);
 
-    let user = store.getById('user', data.user.id);
+    let user = store.peekRecord('user', data.user.id);
     instance.registry.register('user:current', user, {
       instantiate: false
     });

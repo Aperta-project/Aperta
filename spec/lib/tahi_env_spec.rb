@@ -27,7 +27,6 @@ describe TahiEnv do
       FTP_PORT: '21',
       FTP_DIR: 'where/the/wild/things/are',
       IHAT_URL: 'http://ihat.tahi-project.com',
-      NED_API_URL: 'http://ned.example.com',
       NED_CAS_APP_ID: 'ned123',
       NED_CAS_APP_PASSWORD: 'password',
       USE_NED_INSTITUTIONS: 'false',
@@ -127,7 +126,7 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
 
   # NED
-  include_examples 'required env var', var: 'NED_API_URL'
+  include_examples 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
   include_examples 'required env var', var: 'NED_CAS_APP_ID'
   include_examples 'required env var', var: 'NED_CAS_APP_PASSWORD'
   include_examples 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true

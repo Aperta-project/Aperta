@@ -75,6 +75,15 @@ class DashboardPage < Page
     find '.load-more-papers'
   end
 
+  def expect_paper_to_be_withdrawn(paper)
+    row = page.find("tr[data-test-id='dashboard-paper-#{paper.id}']")
+    expect(row).to be
+    within "tr[data-test-id='dashboard-paper-#{paper.id}']" do
+      status = page.find('.status-tag')
+      expect(status.text).to match(/withdrawn/i)
+    end
+  end
+
   def expect_active_invitations_count(count)
     if count == 0
       expect(page).not_to have_selector('.invitation-count')
@@ -99,7 +108,7 @@ class DashboardPage < Page
   end
 
   def view_invitations &block
-    click_button 'View invitations'
+    press_view_invitations_button
 
     if block_given?
       block.call(pending_invitations.map do |invitation|
@@ -112,5 +121,9 @@ class DashboardPage < Page
 
   def pending_invitations
     all '.pending-invitation'
+  end
+
+  def press_view_invitations_button
+    click_button 'View invitations'
   end
 end

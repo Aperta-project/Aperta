@@ -19,7 +19,6 @@ export default DS.Model.extend({
   affiliationSort: ['isCurrent:desc', 'endDate:desc', 'startDate:asc'],
   affiliationsByDate: Ember.computed.sort('affiliations', 'affiliationSort'),
 
-  invitedInvitations: Ember.computed('invitations.@each.state', function() {
-    return this.get('invitations').filterBy('state', 'invited');
-  })
+  invitationsInvited: Ember.computed.filterBy('invitations', 'invited'),
+  invitationsNeedsUserUpdate: Ember.computed.filterBy('invitations', 'needsUserUpdate')
 });

@@ -6,7 +6,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   channelName: null,
 
   model(params) {
-    return this.store.find('discussion-topic', params.topic_id);
+    return this.store.findRecord('discussion-topic', params.topic_id);
   },
 
   redirect(model, transition) {

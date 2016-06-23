@@ -1,0 +1,28 @@
+.reviewer-invitation-feedback {
+  background-color: #F6F6F6;
+  padding: 1.5rem 3.25rem;
+  margin-bottom: 3rem;
+
+  .reviewer-feedback-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .feedback-reviewer-invitation {
+    margin-bottom: 1.625rem;
+  }
+
+  .feedback-textarea {
+    display: block;
+    margin-top: .5rem;
+  }
+
+  .feedback-request {
+    display: block;
+    margin: 1.5rem 0;
+  }
+
+  .feedback-decline-notice {
+    margin: 2rem 0;
+  }
+}

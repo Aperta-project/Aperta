@@ -1,15 +1,26 @@
 require 'rails_helper'
 
 feature 'Manuscript Manager Templates', js: true, selenium: true do
-  let(:admin) { create :user, :site_admin }
+  let(:journal_admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:mmt) { journal.manuscript_manager_templates.first }
   let(:mmt_page) { ManuscriptManagerTemplatePage.new }
   let(:task_manager_page) { TaskManagerPage.new }
 
   before do
-    login_as(admin, scope: :user)
+    assign_journal_role journal, journal_admin, :admin
+    login_as(journal_admin, scope: :user)
     visit "/admin/journals/#{journal.id}/manuscript_manager_templates/#{mmt.id}/edit"
+  end
+
+  scenario 'Choosing a Reviewer Report Type' do
+    check 'Uses research article reviewer report'
+    Page.new.reload
+    expect(page.has_checked_field?('Uses research article reviewer report')).to be(true)
+
+    uncheck 'Uses research article reviewer report'
+    Page.new.reload
+    expect(page.has_checked_field?('Uses research article reviewer report')).to be(false)
   end
 
   describe 'Page Content' do
@@ -19,7 +30,6 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
   end
 
   describe 'Phase Templates' do
-
     scenario 'Adding a phase' do
       phase = task_manager_page.phase 'Submission Data'
       phase.add_phase
@@ -56,9 +66,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
   end
 
   describe 'Task Templates' do
-
     scenario 'Adding a new Task Template'do
-
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
@@ -75,7 +83,6 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
     end
 
     scenario 'Adding multiple Task Templates'do
-
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
@@ -93,7 +100,6 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
     end
 
     scenario 'Adding a new Ad-Hoc Task Template'do
-
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
@@ -108,18 +114,6 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       find('.adhoc-content-toolbar .fa-plus').click
       find('.adhoc-content-toolbar .adhoc-toolbar-item--text').click
-
-      # TODO: uncomment when compatible with firefox
-      # https://developer.plos.org/jira/browse/APERTA-5480
-
-      # find('.inline-edit-form div[contenteditable]').html("New contenteditable, yahoo!")
-      # find('.task-body .inline-edit-body-part .button--green:contains("Save")').click
-      # expect(page).to have_css('.inline-edit', text: 'yahoo')
-      # find('.inline-edit-body-part .fa-trash').click
-      # expect(page).to have_css('.inline-edit-body-part', text: 'Are you sure?')
-      # find('.inline-edit-body-part .delete-button').click
-      # expect(page).to_not have_css('.inline-edit', text: 'yahoo')
-      # find('.overlay-close-button:first').click
     end
 
     scenario 'Removing a task' do

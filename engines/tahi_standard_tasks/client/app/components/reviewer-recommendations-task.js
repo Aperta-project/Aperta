@@ -17,7 +17,7 @@ export default TaskComponent.extend({
 
   newRecommendationQuestions: Ember.on('init', function() {
     const queryParams = { type: 'ReviewerRecommendation' };
-    this.store.findQuery('nested-question', queryParams).then( (questions) => {
+    this.get('store').findQuery('nested-question', queryParams).then( (questions) => {
       this.set('nestedQuestionsForNewRecommendation', questions);
     });
   }),
@@ -30,7 +30,10 @@ export default TaskComponent.extend({
 
   actions: {
     addNewReviewer() {
-      const recommendation = this.store.createRecord('reviewerRecommendation', {
+      // Note that when referring to ember data models when interacting with the store
+      // (pushPayload, createRecord, findRecord, etc) we should always be using the
+      // dasherized form of the name going forward
+      const recommendation = this.get('store').createRecord('reviewer-recommendation', {
         reviewerRecommendationsTask: this.get('task'),
         nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
       });

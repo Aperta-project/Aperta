@@ -8,11 +8,10 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
-  after_destroy :invitation_rescinded
   before_create :assign_to_latest_decision
 
   scope :where_email_matches,
-        ->(email) { where('email = ? OR email like ?', email, "%<#{email}>") }
+        ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
@@ -58,14 +57,20 @@ class Invitation < ActiveRecord::Base
     email
   end
 
+  def rescind!
+    destroy!.tap do
+      task.invitation_rescinded(self)
+    end
+  end
+
+  def email=(new_email)
+    super(new_email.strip)
+  end
+
   private
 
   def assign_to_latest_decision
     self.decision = paper.decisions.latest
-  end
-
-  def invitation_rescinded
-    task.invitation_rescinded(self)
   end
 
   def add_authors_to_information(invitation)

@@ -31,6 +31,7 @@ class UploadServer < Sinatra::Base
   before do
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Method'] = 'PUT, POST'
+    response.headers['Access-Control-Allow-Headers'] = 'x-csrf-token'
   end
 
   get "/:filename" do

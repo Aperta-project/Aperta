@@ -3,6 +3,11 @@ require 'rails_helper'
 describe Task do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
+  describe '.restore_defaults' do
+    include_examples '<Task class>.restore_defaults does not update title'
+    include_examples '<Task class>.restore_defaults does not update old_role'
+  end
+
   describe ".without" do
     let!(:tasks) do
       2.times.map do

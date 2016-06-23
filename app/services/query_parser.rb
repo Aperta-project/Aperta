@@ -51,7 +51,7 @@ class QueryParser < QueryLanguageParser
   add_two_part_expression('USER', 'HAS ROLE') do |username, role|
     user_id = get_user_id(username)
     role_ids = Role.where('lower(name) = ?', role.downcase)
-                   .pluck(:id)
+                   .pluck(:id).sort
 
     table = join(Assignment, 'assigned_to_id')
     table['user_id'].eq(user_id)
@@ -164,12 +164,12 @@ class QueryParser < QueryLanguageParser
   end
 
   add_expression(keywords: ['TITLE IS']) do |_|
-    symbol('TITLE IS') >> /.*/.r.map do |title|
+    symbol('TITLE IS') >> /.*/m.r.map do |title|
       title_query(title)
     end
   end
 
-  add_statement(/^.+/.r) do |title|
+  add_statement(/^.+/m.r) do |title|
     title_query(title)
   end
 
@@ -226,7 +226,7 @@ class QueryParser < QueryLanguageParser
       'to_tsvector',
       [language, title_col])
 
-    quoted_query_str = Arel::Nodes.build_quoted(title.gsub(/\s/, '&'))
+    quoted_query_str = Arel::Nodes.build_quoted(title.strip.gsub(/\s+/, '&'))
     query_vector = Arel::Nodes::NamedFunction.new(
       'to_tsquery',
       [language, quoted_query_str])

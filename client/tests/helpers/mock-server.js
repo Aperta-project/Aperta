@@ -13,7 +13,7 @@ export default function() {
   ]);
 
   server.respondWith('GET', RegExp("/api/permissions/(.*)%2B(\\d+)"), function (xhr, object, id) {
-    json = JSON.stringify({permissions:[{ id:''+object+'%2B'+id , permissions:[]}]})
+    json = JSON.stringify({permissions:[{ id:''+object+'+'+id , permissions:[]}]})
     xhr.respond(200, { 'Content-Type': 'application/json' }, json)
   });
 

@@ -61,7 +61,7 @@ export default Ember.Component.extend({
   actions: {
     cancelEditing() {
       this.set('editState', false);
-      this.get('attachment').rollback();
+      this.get('attachment').rollbackAttributes();
     },
 
     toggleEditState() {

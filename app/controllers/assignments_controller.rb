@@ -42,6 +42,9 @@ class AssignmentsController < ApplicationController
     assignment = Assignment.find(params[:id])
     requires_user_can :assign_roles, assignment.assigned_to
     assignment.destroy
+
+    Activity.assignment_removed!(assignment, user: current_user)
+
     render json: assignment, serializer: AssignmentSerializer, root: :assignment
   end
 

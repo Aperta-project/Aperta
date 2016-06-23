@@ -16,6 +16,8 @@ class PaperSerializer < LitePaperSerializer
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
 
+  has_one :creator, embed: :id
+
   def paper_task_types
     paper.journal.journal_task_types
   end

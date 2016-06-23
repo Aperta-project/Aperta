@@ -1,10 +1,10 @@
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
   isAssignable: Ember.computed.bool('selectedUser'),
+  store: Ember.inject.service(),
 
   assignableRoles: Ember.computed.alias('task.assignableRoles'),
   selectableRoles: Ember.computed('assignableRoles', function() {
@@ -16,10 +16,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       };
     });
   }),
-
-  getStore() {
-    return getOwner(this).lookup('store:main');
-  },
 
   select2RemoteSource: Ember.computed('select2RemoteUrl', function(){
     const url = this.get('select2RemoteUrl');
@@ -50,7 +46,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     assignRoleToUser() {
-      const store = this.getStore();
+      const store = this.get('store');
 
       let user = store.findOrPush('user', this.get('selectedUser'));
 

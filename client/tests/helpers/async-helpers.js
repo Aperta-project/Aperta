@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default function() {
-  return Ember.Test.registerAsyncHelper('waitForElement', function(app, element) {
+  Ember.Test.registerAsyncHelper('waitForElement', function(app, element) {
     return Ember.Test.promise(function(resolve) {
       Ember.Test.adapter.asyncStart();
       let interval = window.setInterval(function() {
@@ -12,5 +12,13 @@ export default function() {
         }
       }, 10);
     });
+  });
+
+  Ember.Test.registerAsyncHelper('fillInContentEditable', function(app, selector, content) {
+      let $el = findWithAssert(selector)
+      Ember.run(() => {
+        $el.html(content)
+        .trigger('keyup')
+      });
   });
 }

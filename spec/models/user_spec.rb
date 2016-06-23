@@ -70,15 +70,26 @@ describe User do
     it 'validates against blank username' do
       user = FactoryGirl.build(:user, username: '')
       expect(user).to_not be_valid
-      expect(user.errors.size).to eq 2
-      expect(user.errors.to_a.first).to eq "Username can't be blank"
-      expect(user.errors.to_a.last).to eq "Username is invalid"
+      expect(user.errors.to_a).to contain_exactly("Username can't be blank")
     end
 
-    it 'validates against a username with periods' do
+    it 'allows a username with periods' do
       user = FactoryGirl.build(:user, username: 'blah.blah')
-      expect(user).not_to be_valid
-      expect(user.errors.size).to eq 1
+      expect(user).to be_valid
+    end
+
+    it 'allows a username with with utf-8' do
+      user = FactoryGirl.build(:user, username: 'bláh blàh')
+      expect(user).to be_valid
+
+      user = FactoryGirl.build(:user, username: '😻')
+      expect(user).to be_valid
+
+      user = FactoryGirl.build(:user, username: 'Лев Никола́евич Толсто́й')
+      expect(user).to be_valid
+
+      user = FactoryGirl.build(:user, username: '李尧棠')
+      expect(user).to be_valid
     end
   end
 
@@ -225,14 +236,172 @@ describe User do
     end
   end
 
+  describe "#assign_to!" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal) }
+    let!(:role) { FactoryGirl.create(:role, name: 'role', journal: journal) }
+    let!(:user_role) { FactoryGirl.create(:role, name: 'user role', journal: nil) }
+    # role with same name on a different journal
+    let!(:decoy_journal) { FactoryGirl.create(:journal) }
+    let!(:decoy_role) { FactoryGirl.create(:role, name: 'role', journal: decoy_journal) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:task) { FactoryGirl.create(:task, paper: paper) }
+
+    shared_examples_for 'assigning to a role' do
+      it 'can be used to assign a role on a journal' do
+        expect { user.assign_to!(assigned_to: journal, role: role_arg) }
+          .to change { user.roles.count }.by 1
+        expect(user).to have_role(role, journal)
+        expect(user).not_to have_role(decoy_role, journal)
+        expect(user).not_to have_role(decoy_role, decoy_journal)
+      end
+
+      it 'can be used to assign a role on a paper' do
+        expect { user.assign_to!(assigned_to: paper, role: role_arg) }
+          .to change { user.roles.count }.by 1
+        expect(user).to have_role(role, paper)
+        expect(user).not_to have_role(decoy_role, paper)
+      end
+
+      it 'can be used to assign a role on a task' do
+        expect { user.assign_to!(assigned_to: task, role: role_arg) }
+          .to change { user.roles.count }.by 1
+        expect(user).to have_role(role, task)
+        expect(user).not_to have_role(decoy_role, task)
+      end
+
+      it 'should do nothing if the user is already assigned' do
+        expect(user).not_to have_role(role, paper)
+        expect { user.assign_to!(assigned_to: paper, role: role_arg) }
+          .to change { user.roles.count }.by 1
+        expect(user).to have_role(role, paper)
+        expect { user.assign_to!(assigned_to: paper, role: role_arg) }
+          .not_to change { user.roles.count }
+      end
+    end
+
+    context 'when supplying a role name' do
+      let(:role_arg) { 'role' }
+
+      it_behaves_like 'assigning to a role'
+
+      it 'raises an error for a role that does not exist' do
+        expect { user.assign_to!(assigned_to: paper, role: 'Chief Pirate') }.to \
+          raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+      it 'raises an error if the thing passed in does not have a `journal` method' do
+        expect { user.assign_to!(assigned_to: user, role: 'Chief Pirate') }.to \
+          raise_exception(/Expected.*to be a journal or respond to journal method/)
+      end
+    end
+
+    context 'when supplying role' do
+      let(:role_arg) { role }
+
+      it_behaves_like 'assigning to a role'
+
+      it 'can be used to assign a role to a thing that does not implement the `journal` method' do
+        user.assign_to!(assigned_to: user, role: user_role)
+        expect(user).to have_role(user_role, user)
+      end
+    end
+  end
+
+  describe "#unassign_from!" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:task) { FactoryGirl.create(:task, paper: paper) }
+    let!(:role) { FactoryGirl.create(:role, name: 'role', journal: journal) }
+    let!(:user_role) { FactoryGirl.create(:role, name: 'user role', journal: nil) }
+    # role with same name on a different journal
+    let!(:decoy_journal) { FactoryGirl.create(:journal) }
+    let!(:decoy_role) { FactoryGirl.create(:role, name: 'role', journal: decoy_journal) }
+
+    shared_examples_for 'resigning from a role' do
+      it 'can be used to resign a role on a journal' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: role,
+                           assigned_to: journal)
+        expect(user).to have_role(role, journal)
+        expect { user.resign_from!(assigned_to: journal, role: role_arg) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(role, journal)
+      end
+
+      it 'can be used to resign a role on a paper' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: role,
+                           assigned_to: paper)
+        expect(user).to have_role(role, paper)
+        expect { user.resign_from!(assigned_to: paper, role: role_arg) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(role, paper)
+      end
+
+      it 'can be used to resign a role on a task' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: role,
+                           assigned_to: task)
+        expect(user).to have_role(role, task)
+        expect { user.resign_from!(assigned_to: task, role: role_arg) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(role, task)
+      end
+
+      it 'should do nothing if the user is already not assigned' do
+        expect(user).not_to have_role(role, journal)
+        expect { user.resign_from!(assigned_to: journal, role: role_arg) }
+          .not_to change { user.roles.count }
+        expect(user).not_to have_role(role, journal)
+      end
+    end
+
+    context 'when supplying a role name' do
+      let(:role_arg) { 'role' }
+
+      it_behaves_like 'resigning from a role'
+
+      it 'raises an error for a role that does not exist' do
+        expect { user.resign_from!(assigned_to: paper, role: 'Chief Pirate') }.to \
+          raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+      it 'raises an error if the thing passed in does not have a `journal` method' do
+        expect { user.resign_from!(assigned_to: user, role: 'Chief Pirate') }.to \
+          raise_exception(/Expected.*to be a journal or respond to journal method/)
+      end
+    end
+
+    context 'when supplying role' do
+      let(:role_arg) { role }
+
+      it_behaves_like 'resigning from a role'
+
+      it 'can be used to resign from role to a thing that does not implement the `journal` method' do
+        FactoryGirl.create(:assignment,
+                           user: user,
+                           role: user_role,
+                           assigned_to: user)
+        expect { user.resign_from!(assigned_to: user, role: user_role) }
+          .to change { user.roles.count }.by(-1)
+        expect(user).not_to have_role(user_role, user)
+      end
+    end
+  end
+
   describe "#create" do
     describe "roles" do
       let(:user) { User.create! attributes_for(:user) }
-      let!(:user_role) { Role.where(name: 'User').first_or_create! }
+      let!(:user_role) { Role.where(name: Role::USER_ROLE).first_or_create! }
 
       it "should create a user record with the User role assigned" do
         expect(user_role).to be_present
-        expect(user).to have_role_name 'User'
+        expect(user).to have_role Role::USER_ROLE
       end
     end
 

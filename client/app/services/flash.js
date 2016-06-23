@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import prepareResponseErrors from 'tahi/lib/validations/prepare-response-errors';
 
 /**
   ## How to Use
@@ -97,11 +98,12 @@ export default Ember.Service.extend({
 
   displayErrorMessagesFromResponse(response) {
     this.clearAllMessages();
-    for (var key in response.errors) {
-      if(!response.errors.hasOwnProperty(key)) { continue; }
-      if(Ember.isEmpty(response.errors[key]))  { continue; }
-      this.displayMessage('error', this._formatKey(key) + ' ' + response.errors[key].join(', '));
-    }
+    let errors = prepareResponseErrors(response.errors, ({includeNames: 'humanize'}));
+
+    Object.keys(errors).forEach((key) => {
+      let msg = errors[key];
+      if(Ember.isPresent(msg)) { this.displayMessage('error', msg); }
+    });
   },
 
   /**
@@ -127,17 +129,5 @@ export default Ember.Service.extend({
 
   clearAllMessages() {
     this.set('messages', []);
-  },
-
-  /**
-    Return human friendly string.
-
-    @private
-    @method _formatKey
-    @return {String}
-  */
-
-  _formatKey(key) {
-    return key.underscore().replace('_', ' ').capitalize();
   }
 });

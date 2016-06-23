@@ -63,14 +63,16 @@ class User < ActiveRecord::Base
     presence: true,
     uniqueness: { case_sensitive: false },
     length: { maximum: 255 }
-  validates_format_of :username, with: /\A[A-Za-z\d_-]+\z/
   validates :email, format: Devise.email_regexp
   validates :first_name, length: { maximum: 255 }
   validates :last_name, length: { maximum: 255 }
 
+  validates :ned_id, uniqueness: true, allow_nil: true
+  validates_with NedValidator
+
   mount_uploader :avatar, AvatarUploader
 
-  after_create :add_user_role, :associate_invites
+  after_create :add_user_role!, :associate_invites
 
   if Rails.configuration.password_auth_enabled
     devise(
@@ -155,10 +157,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  private
-
-  def add_user_role
-    return unless user_role = Role.find_by(name: 'User')
-    assignments.where(role: user_role, assigned_to: self).first_or_create!
+  def add_user_role!
+    return unless Role.user_role
+    assign_to!(assigned_to: self, role: Role.user_role)
   end
 end

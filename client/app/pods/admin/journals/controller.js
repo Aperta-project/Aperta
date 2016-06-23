@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
   actions: {
     searchUsers() {
       this.resetSearch();
-      this.store.find( 'admin-journal-user', {query: this.get('searchQuery')} ).then((users) => {
+      this.store.query('admin-journal-user', {query: this.get('searchQuery')}).then((users) => {
         this.set('adminJournalUsers', users);
         if(Ember.isEmpty(users)) { this.displayMatchNotFoundMessage(); }
       });

@@ -1,5 +1,6 @@
 class DecisionSerializer < ActiveModel::Serializer
   attributes :id,
+             :author_response,
              :created_at,
              :verdict,
              :letter,
@@ -14,7 +15,7 @@ class DecisionSerializer < ActiveModel::Serializer
              :minor_version
 
   has_many :invitations, embed: :ids, include: true
-  has_one :paper, embed: :id
+  has_one :paper, embed: :id, include: true
 
   # rubocop:disable Style/PredicateName
   # the question marks won't play well with serialization

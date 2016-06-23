@@ -46,9 +46,21 @@ describe Typesetter::BillingLogSerializer do
     end
   end
 
-  it 'has a guid for a pre-existing billing user guid' do
-    FactoryGirl.create(:user, email: 'bob@example.com', em_guid: 'PONE-1234')
-    expect(output[:guid]).to eq('PONE-1234')
+  it 'has a ned_id for a pre-existing billing user' do
+    FactoryGirl.create(:user, email: paper.answer_for('plos_billing--email').value, ned_id: '12345')
+    expect(output[:ned_id]).to eq(12345)
+  end
+
+  it 'does not have a ned_id for a billing user that does not exist' do
+    expect(output[:ned_id]).to be_nil
+  end
+
+  it 'has a corresponding_author_ned_id based upon the ned_id of the paper creator' do
+    expect(output[:corresponding_author_ned_id]).to eq(paper.creator.ned_id)
+  end
+
+  it 'has a corresponding_author_ned_email based upon the ned email of the paper creator' do
+    expect(output[:corresponding_author_ned_email]).to eq(paper.creator.email)
   end
 
   it 'has documentid which is the manuscript id' do
@@ -68,8 +80,8 @@ describe Typesetter::BillingLogSerializer do
     expect(output[:dtitle]).to eq(paper.title)
   end
 
-  it 'has journal_id' do
-    expect(output[:journal_id]).to eq(paper.journal.id)
+  it 'has journal equal to the journal name' do
+    expect(output[:journal]).to eq(paper.journal.name)
   end
 
   context 'pulls from corresponding billing task that' do
@@ -136,7 +148,8 @@ describe Typesetter::BillingLogSerializer do
     it 'has a direct_bill_response when the payment method is institutional' do
       question = NestedQuestion.find_by(ident: 'plos_billing--payment_method')
       question.nested_question_answers.first.update_column(:value, 'institutional')
-      expect(output[:direct_bill_response]).to eq(billing_task.answer_for('plos_billing--ringgold_institution').value)
+      billing_task.answer_for('plos_billing--ringgold_institution').update_column(:additional_data, { 'nav_customer_number' => 'C01010' })
+      expect(output[:direct_bill_response]).to eq('C01010')
     end
 
     it 'does not have a direct_bill_response when the payment method is not institutional' do
@@ -154,8 +167,9 @@ describe Typesetter::BillingLogSerializer do
     end
   end
 
-  it 'has pubdnumber which is the same as manuscript id' do
-    expect(output[:pubdnumber]).to eq(paper.id)
+  it 'has pubdnumber which is the same as the manuscript_id of the paper' do
+    expect(paper.manuscript_id.split('.').count).to eq(2)
+    expect(output[:pubdnumber]).to eq(paper.manuscript_id)
   end
 
   it 'has fundRef' do

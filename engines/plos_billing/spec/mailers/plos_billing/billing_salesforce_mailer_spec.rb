@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe PlosBilling::BillingSalesforceMailer do
-  let(:doi) { "fake_doi" }
-  let(:paper) { FactoryGirl.create(:paper, doi: doi, journal: journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:admin1) { FactoryGirl.create(:user) }
   let(:admin2) { FactoryGirl.create(:user) }
@@ -23,7 +22,7 @@ describe PlosBilling::BillingSalesforceMailer do
     end
 
     it "contains the paper doi" do
-      expect(email.body).to include(doi)
+      expect(email.body).to include(paper.doi)
     end
 
     it "is sent to the correct people" do

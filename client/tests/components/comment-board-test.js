@@ -4,6 +4,8 @@ import { test, moduleForComponent } from 'ember-qunit';
 let board;
 
 moduleForComponent('comment-board', 'Unit: components/comment-board', {
+  unit: true,
+
   beforeEach: function() {
     let comments = [1,2,3,4,5,6,7,8].map((number)=> {
       return Ember.Object.create({

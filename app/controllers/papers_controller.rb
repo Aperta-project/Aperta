@@ -155,12 +155,14 @@ class PapersController < ApplicationController
   def reactivate
     requires_user_can(:reactivate, paper)
     paper.reactivate!
+    Activity.paper_reactivated! paper, user: current_user
     render json: paper, status: :ok
   end
 
   def withdraw
     requires_user_can :withdraw, paper
     paper.withdraw! withdrawal_params[:reason]
+    Activity.paper_withdrawn! paper, user: current_user
     render json: paper, status: :ok
   end
 

@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import Participants from 'tahi/mixins/components/task-participants';
 
 export default Ember.Component.extend(Participants, {
+  store: Ember.inject.service(),
   to: 'overlay-drop-zone',
 
   /**
@@ -35,9 +35,7 @@ export default Ember.Component.extend(Participants, {
 
   actions: {
     postComment(body) {
-      const store = getOwner(this).lookup('store:main');
-
-      return store.createRecord('comment', {
+      return this.get('store').createRecord('comment', {
         commenter: this.currentUser,
         task: this.get('task'),
         body: body,

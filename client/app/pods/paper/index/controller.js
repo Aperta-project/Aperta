@@ -3,8 +3,6 @@ import PaperBase from 'tahi/mixins/controllers/paper-base';
 import Discussions from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(PaperBase, Discussions, {
-  restless: Ember.inject.service('restless'),
-
   //sent by paper-new on creation, used to show submission process 1st view
   queryParams: ['firstView'],
 
@@ -32,7 +30,7 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
 
   actions: {
     toggleSubmissionProcess() {
-      this.set('showSubmissionProcess', !this.get('showSubmissionProcess'));
+      this.toggleProperty('showSubmissionProcess');
     },
 
     showPaperSubmitOverlay() {

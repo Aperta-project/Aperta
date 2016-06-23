@@ -103,8 +103,7 @@ describe SalesforceServices::API do
       }
       FactoryGirl.create(:paper_with_task,
                          task_params: task_params,
-                         journal: journal,
-                         doi: 'ha/haha.2098')
+                         journal: journal)
     end
 
     before do
@@ -112,7 +111,7 @@ describe SalesforceServices::API do
       allow(paper).to receive(:creator) { FactoryGirl.build(:user) }
       FactoryGirl.create(:financial_disclosure_task, paper: paper)
       expect(Case).to receive(:soql_conditions_for)
-        .with("Subject" => "haha.2098")
+        .with("Subject" => "#{paper.manuscript_id}")
     end
 
     context "existing PFA case on salesforce" do

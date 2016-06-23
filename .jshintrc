@@ -92,7 +92,10 @@
     "MathJax",
     "JsDiff",
     "selectChoose",
-    "selectSearch"
+    "selectSearch",
+    "getStore",
+    "getContainer",
+    "expect"
     ],
 
   /*

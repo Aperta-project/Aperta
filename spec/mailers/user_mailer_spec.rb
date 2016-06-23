@@ -32,18 +32,15 @@ describe UserMailer, redis: true do
   describe '#add_collaborator' do
     let(:invitor) { FactoryGirl.create(:user) }
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:paper) { FactoryGirl.create(:paper) }
     let(:email) { UserMailer.add_collaborator(invitor.id, invitee.id, paper.id) }
 
     it_behaves_like "invitor is not available"
     it_behaves_like "recipient without email address"
 
-    it 'has correct subject line' do
+    it 'sends the email to the invitees email address with correct subject' do
+      expect(email.to).to contain_exactly(invitee.email)
       expect(email.subject).to eq "You've been added as a collaborator to the manuscript, \"#{paper.display_title}\""
-    end
-
-    it 'sends the email to the inivitees email address' do
-      expect(email.to).to include(invitee.email)
     end
 
     it 'tells the user they have been added as a collaborator' do
@@ -60,12 +57,9 @@ describe UserMailer, redis: true do
     it_behaves_like "invitor is not available"
     it_behaves_like "recipient without email address"
 
-    it 'has correct subject line' do
+    it 'sends the email to the invitees email address with the correct subject' do
+      expect(email.to).to contain_exactly(invitee.email)
       expect(email.subject).to eq "You've been added to a conversation on the manuscript, \"#{task.paper.display_title}\""
-    end
-
-    it 'sends the email to the inivitees email address' do
-      expect(email.to).to include(invitee.email)
     end
 
     it 'tells the user they have been added as a collaborator' do
@@ -104,12 +98,9 @@ describe UserMailer, redis: true do
     let(:task) { FactoryGirl.create(:task) }
     let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
 
-    it 'has correct subject line' do
+    it 'sends the email to the invitees email address with correct subject' do
+      expect(email.to).to contain_exactly(invitee.email)
       expect(email.subject).to eq "You've been assigned as an editor for the manuscript, \"#{task.paper.display_title}\""
-    end
-
-    it 'sends the email to the inivitees email address' do
-      expect(email.to).to include(invitee.email)
     end
 
     it 'tells the user they have been added as an editor' do
@@ -119,7 +110,7 @@ describe UserMailer, redis: true do
 
   describe '#mention_collaborator' do
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:paper) { FactoryGirl.create(:paper) }
     let(:task) { FactoryGirl.create(:task, paper: paper) }
     let(:comment) { FactoryGirl.create(:comment, task: task) }
 
@@ -127,12 +118,9 @@ describe UserMailer, redis: true do
 
     it_behaves_like "recipient without email address"
 
-    it 'has correct subject line' do
+    it 'sends the email to the mentioned user with the correct subject' do
+      expect(email.to).to contain_exactly(invitee.email)
       expect(email.subject).to eq "You've been mentioned on the manuscript, \"#{task.paper.display_title}\""
-    end
-
-    it 'sends the email to the mentioned user' do
-      expect(email.to).to eq [invitee.email]
     end
 
     it 'tells the user they have been mentioned' do
@@ -145,46 +133,57 @@ describe UserMailer, redis: true do
   end
 
   describe '#notify_creator_of_paper_submission' do
-    let(:author) { FactoryGirl.create(:user) }
     let(:paper) do
-      FactoryGirl.create(:paper, :submitted, :with_integration_journal, creator: author)
+      FactoryGirl.create(:paper, :with_creator, :submitted)
     end
+    let(:author) { paper.creator }
     let(:email) { UserMailer.notify_creator_of_paper_submission(paper.id) }
 
-    it 'has correct subject line' do
+    it "sends the email to the paper's creator with the correct subject" do
+      expect(email.to).to contain_exactly(author.email)
       expect(email.subject).to eq "Thank you for submitting your manuscript to #{paper.journal.name}"
-    end
-
-    it "sends the email to the paper's creator" do
-      expect(email.to).to eq [author.email]
     end
 
     it "emails the creator user they have been mentioned" do
-      expect(email.subject).to eq "Thank you for submitting your manuscript to #{paper.journal.name}"
       expect(email.body).to include "Thank you for submitting your manuscript"
       expect(email.body).to include paper.title
       expect(email.body).to include paper.journal.name
     end
   end
 
+  describe '#notify_creator_of_initial_submission' do
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_creator, :initially_submitted)
+    end
+    let(:author) { paper.creator }
+    let(:email) { UserMailer.notify_creator_of_initial_submission(paper.id) }
+
+    it "sends the email to the paper's creator with the correct subject" do
+      expect(email.to).to contain_exactly(author.email)
+      expect(email.subject).to eq "Thank you for submitting to #{paper.journal.name}"
+    end
+
+    it "includes key points in the text" do
+      expect(email.body).to include "whether your manuscript meets the criteria"
+      expect(email.body).to include paper.title
+      expect(email.body).to include paper.journal.name
+    end
+  end
+
   describe '#notify_admin_of_paper_submission' do
-    let(:author) { FactoryGirl.create(:user) }
     let(:admin) { FactoryGirl.create(:user) }
     let(:paper) do
       FactoryGirl.create(
         :paper,
-        :submitted,
-        :with_integration_journal,
-        creator: author
+        :with_creator,
+        :submitted
       )
     end
+    let(:author) { paper.creator }
     let(:email) { UserMailer.notify_admin_of_paper_submission(paper.id, admin.id) }
 
-    it "send email to the paper's admin" do
-      expect(email.to).to eq [admin.email]
-    end
-
-    it "specify subject line" do
+    it "send email to the paper's admin with the correct subject" do
+      expect(email.to).to contain_exactly(admin.email)
       expect(email.subject).to eq "New manuscript submitted to PLOS #{paper.journal.name}: \"#{paper.display_title}\""
     end
 

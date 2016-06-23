@@ -4,11 +4,9 @@ FactoryGirl.define do
       "Journal #{n}"
     end
 
-    trait :with_doi do
-      doi_journal_prefix
-      doi_publisher_prefix
-      last_doi_issued "10000"
-    end
+    doi_journal_prefix
+    doi_publisher_prefix
+    last_doi_issued "10000"
 
     trait(:with_paper) do
       after(:create) do |journal|
@@ -51,7 +49,7 @@ FactoryGirl.define do
   end
 
   sequence :doi_journal_prefix do
-    |n| "JPREFIX#{n}"
+    |n| "journal.SHORTJPREFIX#{n}"
   end
 
   sequence :doi_publisher_prefix do

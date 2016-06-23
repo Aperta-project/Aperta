@@ -2,21 +2,30 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
   createThumbnail: Ember.on('didCreate', function() {
-    let thumbnailParams = this.getProperties('id', 'completed', 'title', 'paper');
-    thumbnailParams.taskType = this.get('type');
-    this.store.push('card-thumbnail', thumbnailParams);
+    const attrs = this.getProperties('completed', 'title', 'paper');
+    attrs.taskType = this.get('type');
+
+    const payload = {
+      data: {
+        id: this.get('id'),
+        type: 'card-thumbnail',
+        attributes: attrs
+      }
+    };
+
+    this.store.push(payload);
     this.setThumbnailRelationship();
   }),
 
   updateThumbnail: Ember.on('didUpdate', function() {
-    let thumbnail = this.store.getById('card-thumbnail', this.get('id'));
+    const thumbnail = this.store.peekRecord('card-thumbnail', this.get('id'));
     if (thumbnail) {
       thumbnail.set('completed', this.get('completed'));
     }
   }),
 
   deleteThumbnail: Ember.on('didDelete', function() {
-    let thumbnail = this.store.getById('card-thumbnail', this.get('id'));
+    const thumbnail = this.store.peekRecord('card-thumbnail', this.get('id'));
     if (thumbnail) {
       thumbnail.deleteRecord();
     }
@@ -33,7 +42,7 @@ export default Ember.Mixin.create({
   }),
 
   setThumbnailRelationship() {
-    let thumbnail = this.store.getById('card-thumbnail', this.get('id'));
+    const thumbnail = this.store.peekRecord('card-thumbnail', this.get('id'));
     this.set('cardThumbnail', thumbnail);
   }
 });

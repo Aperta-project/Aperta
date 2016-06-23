@@ -65,12 +65,41 @@ describe Invitation do
       invitation.save!
       expect(paper.decisions.latest.invitations).to include invitation
     end
+
+    context 'when there is more than one decision' do
+      it 'is associated with the latest decision' do
+        latest_decision = FactoryGirl.create :decision, paper: paper
+        invitation.save!
+        latest_revision_number = (paper.decisions.pluck :revision_number).max
+        expect(invitation.decision).to eq latest_decision
+        expect(invitation.decision).to eq paper.decisions.latest
+        expect(invitation.decision.revision_number).to eq latest_revision_number
+      end
+    end
+
+    it 'strips whitespace in email addresses' do
+      invitation.email = ' foo@example.com '
+      expect(invitation.email).to eq('foo@example.com')
+      invitation.save!
+      invitation.reload
+      expect(invitation.email).to eq('foo@example.com')
+    end
   end
 
-  describe '#destroy' do
-    it "calls #after_destroy hook" do
-      expect(task).to receive(:invitation_rescinded).with invitation
-      invitation.destroy!
+  describe '#rescind!' do
+    subject!(:invitation) { FactoryGirl.create :invitation, task: task }
+
+    it 'destroys the invitation' do
+      expect do
+        invitation.rescind!
+      end.to change { Invitation.count }.by -1
+      expect(Invitation.exists?(id: invitation.id)).to be(false)
+    end
+
+    it 'tells the task it was rescinded' do
+      expect(invitation.task).to receive(:invitation_rescinded)
+        .with(invitation)
+      invitation.rescind!
     end
   end
 
@@ -207,15 +236,18 @@ describe Invitation do
   end
 
   describe "#where_email_matches" do
-    let(:email) { "turtle@turtles.com" }
-    let!(:invitation_1) { create :invitation, email: email }
-    let!(:invitation_2) { create :invitation, email: "turtle <#{email}>" }
+    let(:emails) { ["turtle@turtles.com", "TURTLE@turtles.com"] }
+    let!(:invitation_1) { create :invitation, email: emails[0] }
+    let!(:invitation_2) { create :invitation, email: "turtle <#{emails[0]}>" }
     let!(:invitation_3) { create :invitation, email: "another@email.com" }
+    let!(:invitation_4) { create :invitation, email: emails[1] }
 
     it "returns invitiations where the email matches the supplied argument" do
-      invitations = Invitation.where_email_matches email
-      expect(Invitation.count).to eq 3
-      expect(invitations.map(&:id)).to match [invitation_1.id, invitation_2.id]
+      emails.each do |email|
+        invitations = Invitation.where_email_matches email
+        expect(Invitation.count).to eq 4
+        expect(invitations.map(&:id)).to contain_exactly(invitation_1.id, invitation_2.id, invitation_4.id)
+      end
     end
   end
 end

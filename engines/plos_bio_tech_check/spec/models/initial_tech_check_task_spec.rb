@@ -14,6 +14,12 @@ describe PlosBioTechCheck::InitialTechCheckTask do
   let(:phase) { FactoryGirl.create :phase, paper: paper }
   let(:task) { FactoryGirl.create :initial_tech_check_task, paper: paper, phase: phase }
   let(:subject) { described_class.new(paper: paper, phase: phase, title: "new task", old_role: PaperRole::COLLABORATOR) }
+
+  describe '.restore_defaults' do
+    include_examples '<Task class>.restore_defaults update title to the default'
+    include_examples '<Task class>.restore_defaults update old_role to the default'
+  end
+
   describe '#round' do
     it 'initializes with the round 1' do
       expect(task.round).to eq 1

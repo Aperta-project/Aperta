@@ -5,11 +5,8 @@ class Paper::Updated::MarkTitleAndAbstractIncomplete
     paper = event_data[:record]
 
     unless paper.processing
-      tasks = paper.tasks.select do |task|
-        task.type == "TahiStandardTasks::TitleAndAbstractTask"
-      end
-
-      tasks.map(&:incomplete!)
+      paper.tasks.of_type(TahiStandardTasks::TitleAndAbstractTask)
+        .map(&:incomplete!)
     end
   end
 end

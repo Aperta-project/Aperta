@@ -352,6 +352,12 @@ describe JournalFactory do
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
+
+          it ':edit TitleAndAbstractTask regardless of paper state' do
+            expect(permissions).to include(
+              Permission.find_by(action: 'edit',
+                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask'))
+          end
         end
 
         context 'has DiscussionTopic permission to' do
@@ -545,6 +551,12 @@ describe JournalFactory do
             expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
+          end
+
+          it ':edit TitleAndAbstractTask regardless of paper state' do
+            expect(permissions).to include(
+              Permission.find_by(action: 'edit',
+                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask'))
           end
         end
 

@@ -9,8 +9,7 @@ module ProxyableResource
   # only_path
   #   allows for relative urls
   def non_expiring_proxy_url(version: nil, only_path: true, cache_buster: false)
-    options = { resource: self.class.to_s.underscore.pluralize,
-                token: token,
+    options = { token: resource_token.token,
                 version: version,
                 only_path: only_path }
     options[:cb] = cache_buster_value if cache_buster

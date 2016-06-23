@@ -195,8 +195,20 @@ Tahi::Application.routes.draw do
     get :download, on: :member
   end
 
-  get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
-                                                     as: :resource_proxy
+  # legacy resource_proxy routes
+  get '/resource_proxy/:resource/:token(/:version)',
+      constraints: {
+        resource: /
+          (adhoc_|question_)?attachments
+          | figures
+          | supporting_information_files
+        /x },
+      to: 'resource_proxy#url', as: :old_resource_proxy
+
+  # current resource proxy
+  get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',
+                                           as: :resource_proxy
+
   root to: 'ember_cli/ember#index'
   mount_ember_app :client, to: '/'
 end

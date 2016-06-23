@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627142558) do
-
+ActiveRecord::Schema.define(version: 20160627190304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
@@ -88,6 +87,8 @@ ActiveRecord::Schema.define(version: 20160627142558) do
     t.string   "category"
     t.string   "label"
     t.boolean  "publishable"
+    t.string   "file_hash"
+    t.string   "previous_file_hash"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
@@ -554,6 +555,20 @@ ActiveRecord::Schema.define(version: 20160627142558) do
   add_index "roles", ["journal_id", "name"], name: "index_roles_on_journal_id_and_name", unique: true, using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
+
+  create_table "s3_migrations", force: :cascade do |t|
+    t.text     "source_url",                        null: false
+    t.text     "destination_url"
+    t.string   "attachment_type",                   null: false
+    t.integer  "attachment_id",                     null: false
+    t.boolean  "version",                           null: false
+    t.string   "state",           default: "ready"
+    t.text     "error_message"
+    t.text     "error_backtrace"
+    t.datetime "errored_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"

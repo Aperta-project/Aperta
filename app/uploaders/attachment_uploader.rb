@@ -48,6 +48,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   def full_name(orig_file)
+    orig_file = model.filename unless orig_file
     if needs_transcoding?(orig_file)
       "#{version_name}_#{File.basename(orig_file, '.*')}.png"
     else
@@ -56,6 +57,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   def needs_transcoding?(file)
+    return false unless file
     # On direct upload, the file's content_type is application/octet-stream, so
     # we also need to check the filename
     if file.respond_to?('content_type')

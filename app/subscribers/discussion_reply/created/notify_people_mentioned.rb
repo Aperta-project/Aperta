@@ -3,11 +3,8 @@
 class DiscussionReply::Created::NotifyPeopleMentioned
   def self.call(_event_name, event_data)
     reply = event_data[:record]
-
-    people_mentioned = UserMentions.new(reply.body,
-                                        reply.replier).people_mentioned
-
-    people_mentioned.each do |mentionee|
+    notifiable_users_mentioned = reply.user_mentions.notifiable_users_mentioned
+    notifiable_users_mentioned.each do |mentionee|
       create_notification(reply, mentionee) if reply.discussion_topic.has_participant?(mentionee)
     end
   end

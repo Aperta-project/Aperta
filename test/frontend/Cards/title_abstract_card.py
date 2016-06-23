@@ -109,7 +109,7 @@ class TitleAbstractCard(BaseCard):
     if not test_title:
       raise(ValueError, '{0} != {1}'.format(db_title, extracted_title))
     if db_abstract:
-      clean_extracted_abstract = self.get_text(extracted_abstract)
+      clean_extracted_abstract = self.get_text(extracted_abstract.encode('utf8'))
       clean_db_abstract = self.get_text(db_abstract)
       test_abstract = self.compare_unicode(clean_db_abstract, clean_extracted_abstract)
       if not test_abstract:

@@ -7,6 +7,7 @@ module TahiStandardTasks
     DEFAULT_ROLE = 'editor'
 
     attr_accessor :paper_title, :paper_abstract
+    after_save :update_paper
 
     def paper_title
       @paper_title || paper.title
@@ -20,15 +21,17 @@ module TahiStandardTasks
       TahiStandardTasks::TitleAndAbstractTaskSerializer
     end
 
-    def save!
+    def self.permitted_attributes
+      super << [:paper_title, :paper_abstract]
+    end
+
+    private
+
+    def update_paper
       paper.title = paper_title
       paper.abstract = paper_abstract
 
       paper.save!
-    end
-
-    def self.permitted_attributes
-      super << [:paper_title, :paper_abstract]
     end
   end
 end

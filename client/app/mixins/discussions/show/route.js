@@ -40,6 +40,9 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   setupController(controller, model) {
+    let discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
+    const discussionModel = this.modelFor(discussionRouteName);
+    controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     this._super(controller, model);
     model.reload();
   },

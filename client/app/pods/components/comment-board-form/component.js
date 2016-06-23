@@ -1,9 +1,36 @@
 import Ember from 'ember';
+import PropTypeMixin, {PropTypes} from 'ember-prop-types'
 
 export default Ember.Component.extend({
+  propTypes: {
+    participants: PropTypes.array,
+    atMentionableStaffUsers: PropTypes.array
+  },
+
+  getDefaultProps() {
+    return {
+      participants: [],
+      atMentionableStaffUsers: []
+    };
+  },
+
   classNameBindings: ['editing', ':comment-board-form', 'form-group'],
   editing: false,
   comment: '',
+
+  atMentionableUsersUnion: Ember.computed.union('participants', 'atMentionableStaffUsers'),
+
+  atMentionableUsers: Ember.computed('atMentionableUsersUnion', function() {
+    const uniqueUsers = [];
+
+    this.get('atMentionableUsersUnion').forEach(function(item){
+      if(!uniqueUsers.isAny('username', item.get('username'))){
+        uniqueUsers.push(item);
+      }
+    });
+
+    return uniqueUsers;
+  }),
 
   _setupFocus: Ember.on('didInsertElement', function() {
     this.$('.new-comment-field').on('focus', ()=> {

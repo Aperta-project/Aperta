@@ -1,0 +1,62 @@
+{
+    //this config extends the default rules specified at  http://eslint.org/docs/rules/
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+
+    "rules": {
+      "camelcase": "error",
+      "indent": ["error", 2],
+      "eqeqeq": "error",
+      "max-len": ["error", 80],
+      "semi": ["error", "always"],
+      "quotes": [
+        "error",
+        "single",
+        {"avoidEscape": true, "allowTemplateLiterals": true}
+      ]
+
+    },
+
+    "globals": {
+      "document": true,
+      "window": true,
+      "-Promise": true,
+      "Spinner": true,
+      "moment": true,
+      "$": true,
+      "CodeMirror": true,
+      "Bugsnag": true,
+      "_": true,
+      "location": true,
+      "setTimeout": true,
+      "define": true,
+      "console": true,
+      "visit": true,
+      "exists": true,
+      "fillIn": true,
+      "click": true,
+      "keyEvent": true,
+      "triggerEvent": true,
+      "find": true,
+      "findWithAssert": true,
+      "wait": true,
+      "waitForElement": true,
+      "DS": true,
+      "sinon": true,
+      "andThen": true,
+      "currentURL": true,
+      "currentPath": true,
+      "currentRouteName": true,
+      "pickFromSelect": true,
+      "pickFromSelect2": true,
+      "pickFromChosenSingle": true,
+      "MathJax": true,
+      "JsDiff": true,
+      "selectChoose": true,
+      "selectSearch": true
+    }
+
+}

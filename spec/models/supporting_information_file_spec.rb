@@ -12,7 +12,7 @@ describe SupportingInformationFile, redis: true do
     end
   end
 
-  let(:file_src) { "/resource_proxy/supporting_information_files/#{file.token}" }
+  let(:file_src) { "/resource_proxy/#{file.token}" }
 
   it_behaves_like 'a striking image'
 

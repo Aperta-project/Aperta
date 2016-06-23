@@ -50,7 +50,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return this.get('validationErrors.rank');
   }),
 
-  figureIsUnlabeled: Ember.computed.not('figure.rank'),
+  figureIsUnlabeled: Ember.computed.lt('figure.rank', 1),
 
   unlabeledFigureMessage: `
     Sorry, we didn't find a figure label in this filename.

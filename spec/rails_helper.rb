@@ -72,6 +72,7 @@ RSpec.configure do |config|
   config.extend TahiHelperClassMethods
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
+  config.include HTMLHelpers
 
   config.before(:suite) do
     Warden.test_mode!

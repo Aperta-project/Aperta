@@ -12,31 +12,16 @@ import time
 
 from selenium.common.exceptions import NoSuchElementException
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
 
 @MultiBrowserFixture
 class ITCCardTest(CommonTest):
@@ -101,7 +86,7 @@ class ITCCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success(timeout=15)
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     paper_id = paper_canonical_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
@@ -128,8 +113,8 @@ class ITCCardTest(CommonTest):
       workflow_page.add_card('Initial Tech Check')
     # click on invite academic editor
     itc_card = ITCCard(self.getDriver())
-    workflow_page.click_initial_decision_card()
-    itc_card.validate_styles()
+    workflow_page.click_initial_tech_check_card()
+    itc_card.validate_styles(paper_id)
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -157,7 +142,7 @@ class ITCCardTest(CommonTest):
       # Note: Commenting out due to APERTA-7012
       #raise ElementExistsAssertionError('There is an unexpected error message')
       #logging.warning('There is an error message because of APERTA-7012')
-    except NoSuchElementException:
+    except ElementDoesNotExistAssertionError:
       pass
 
 

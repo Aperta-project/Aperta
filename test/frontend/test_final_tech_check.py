@@ -15,29 +15,13 @@ from selenium.common.exceptions import NoSuchElementException
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.final_tech_check_card import FTCCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
 
 @MultiBrowserFixture
 class FTCCardTest(CommonTest):
@@ -118,11 +102,9 @@ class FTCCardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(4)
-    # add card invite AE with add new card
-    # Check if card is there
+    # Check if FTC card is there, if not, add it.
     if not workflow_page.is_card('Final Tech Check'):
       workflow_page.add_card('Final Tech Check')
-    # click on invite academic editor
     ftc_card = FTCCard(self.getDriver())
     workflow_page.click_final_tech_check_card()
     ftc_card.validate_styles(paper_id)

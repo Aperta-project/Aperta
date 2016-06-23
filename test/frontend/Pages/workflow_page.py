@@ -56,9 +56,9 @@ class WorkflowPage(AuthenticatedPage):
     self._assign_admin_card = (By.XPATH, "//a/div[contains(., 'Assign Admin')]")
     self._assign_team_card = (By.XPATH, "//a/div[contains(., 'Assign Team')]")
     self._editor_discussion_card = (By.XPATH, "//a/div[contains(., 'Editor Discussion')]")
+    self._final_tech_check_card = (By.XPATH, "//a/div[contains(., 'Final Tech Check')]")
     self._initial_decision_card = (By.XPATH, "//a/div[contains(., 'Initial Decision')]")
     self._initial_tech_check_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
-    self._final_tech_check_card = (By.XPATH, "//a/div[contains(., 'Final Tech Check')]")
     self._invite_ae_card = (By.XPATH, "//a/div[contains(., 'Invite Academic Editor')]")
     self._invite_reviewers_card = (By.XPATH, "//a/div[contains(., 'Invite Reviewers')]")
     self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
@@ -102,7 +102,7 @@ class WorkflowPage(AuthenticatedPage):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._initial_decision_card).click()
 
-  def click_inital_tech_check_card(self):
+  def click_initial_tech_check_card(self):
     """Open the Initial Tech Check Card from the workflow page"""
     self._get(self._initial_tech_check_card).click()
 

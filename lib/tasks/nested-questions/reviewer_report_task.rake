@@ -62,7 +62,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
       ident: "reviewer_report--suitable_for_another_journal",
       value_type: "boolean",
-      text: "If the manuscript does not meet the standards of PLOS Biology, do you think it is suitable for another PLOS journal?",
+      text: "If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em> journal</a>?",
       position: 6,
       children: [
         {

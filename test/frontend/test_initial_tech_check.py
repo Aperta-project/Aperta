@@ -12,7 +12,6 @@ import time
 
 from selenium.common.exceptions import NoSuchElementException
 
-from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
@@ -104,7 +103,7 @@ class ITCCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     paper_id = paper_canonical_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
@@ -131,8 +130,8 @@ class ITCCardTest(CommonTest):
       workflow_page.add_card('Initial Tech Check')
     # click on invite academic editor
     itc_card = ITCCard(self.getDriver())
-    workflow_page.click_itc_card()
-    itc_card.validate_styles(paper_id)
+    workflow_page.click_initial_decision_card()
+    itc_card.validate_styles()
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -157,11 +156,12 @@ class ITCCardTest(CommonTest):
     # Check not error message
     try:
       itc_card._get(itc_card._flash_error_msg)
-      # Note: Commenting out due to APERTA-7012
+      # Note: Commonting out due to APERTA-7012
       #raise ElementExistsAssertionError('There is an unexpected error message')
-      logging.warning('There is an error message because of APERTA-7012')
-    except ElementDoesNotExistAssertionError:
+      #logging.warning('There is an error message because of APERTA-7012')
+    except NoSuchElementException:
       pass
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

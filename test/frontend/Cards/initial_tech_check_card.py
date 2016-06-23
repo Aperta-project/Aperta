@@ -81,15 +81,14 @@ class ITCCard(BaseCard):
         ]
 
    # POM Actions
-  def validate_styles(self, paper_id):
+  def validate_styles(self):
     """
     Validate styles for the Initial Tech Check Card
-    :param paper_id: passed through for validate_common_elements_styles - needed for card header
     :return: None
     """
-    self.validate_common_elements_styles(paper_id)
+    self.validate_common_elements_styles()
     card_title = self._get(self._card_heading)
-    assert card_title.text == 'Initial Tech Check'
+    assert card_title.text == 'Initial Tech Check', card_title.text
     self.validate_application_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles

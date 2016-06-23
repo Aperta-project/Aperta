@@ -125,10 +125,6 @@ class FTCCardTest(CommonTest):
     ftc_card.click_autogenerate_btn()
     time.sleep(2)
     issues_text = ftc_card.get_issues_text()
-    print issues_text
-    print len(issues_text)
-    import pdb; pdb.set_trace()
-
     for index, checked in enumerate(data):
       if not checked and self.email_text[index]:
         assert self.email_text[index] in issues_text, \
@@ -138,7 +134,7 @@ class FTCCardTest(CommonTest):
         assert self.email_text[index] not in issues_text, \
             '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
                 index, issues_text)
-    time.sleep(1)
+    time.sleep(2)
     ftc_card.click_send_changes_btn()
     all_success_messages = ftc_card.get_flash_success_messages()
     success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]

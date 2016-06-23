@@ -168,7 +168,9 @@ class WorkflowPage(AuthenticatedPage):
     :param card_name: String with the name of the card
     :returns: Bool
     """
+    self.set_timeout(120)
     all_cards = self._gets(self._cards)
+    self.restore_timeout()
     card_titles = [card.text for card in all_cards]
     if card_name in card_titles:
       return True

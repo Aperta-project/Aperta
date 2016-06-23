@@ -22,7 +22,7 @@ class FTCCard(BaseCard):
     self._h2_titles = (By.CSS_SELECTOR, 'div.checklist h2')
     self._h3_titles = (By.CSS_SELECTOR, 'div.checklist h3')
     self._send_changes = (By.CSS_SELECTOR, 'h3.change-instructions')
-    self._send_changes_button = (By.CSS_SELECTOR, 'div.task-main-content button')
+    self._send_changes_button = (By.CSS_SELECTOR, 'div.task-main-content button.button-primary')
     self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
@@ -135,7 +135,7 @@ class FTCCard(BaseCard):
 
   def complete_card(self, data=None):
     """
-    Complete the Initial Tech Check card using custom or random data
+    Complete the Final Tech Check card using custom or random data
     :data: List with data to complete the card. If empty,
       will generate random data.
     :return: list with data used to complete the card
@@ -143,7 +143,7 @@ class FTCCard(BaseCard):
     if not data:
       # generate random data
       data = []
-      for x in range(16):
+      for x in range(13):
         data.append(random.choice([True, False]))
     logging.info('Data: {0}'.format(data))
     for order, checkbox in enumerate(self._gets(self._checkboxes)):
@@ -151,7 +151,6 @@ class FTCCard(BaseCard):
         checkbox.click()
     send_changes_button = self._get(self._send_changes_button)
     send_changes_button.click()
-    #import pdb; pdb.set_trace()
     time.sleep(1)
     field_title = self._get(self._field_title)
     assert field_title.text == 'List all changes the author needs to make:', field_title.text

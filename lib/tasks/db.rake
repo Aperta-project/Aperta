@@ -26,8 +26,8 @@ namespace :db do
     cmd = nil
     with_config do |app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s
+      fail('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
-      puts cmd
     end
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end

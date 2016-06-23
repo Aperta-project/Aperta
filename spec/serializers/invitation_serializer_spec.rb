@@ -13,10 +13,12 @@ describe InvitationSerializer, serializer_test: true do
     expect(deserialized_content).to match(hash_including(:invitation))
 
     expect(invitation_content).to match hash_including(
-      id: invitation.id,
-      state: invitation.state,
+      decline_reason: invitation.decline_reason,
       email: invitation.email,
-      invitee_role: invitation.invitee_role
+      id: invitation.id,
+      invitee_role: invitation.invitee_role,
+      reviewer_suggestions: invitation.reviewer_suggestions,
+      state: invitation.state
     )
 
     expect(invitation_content.fetch(:created_at)).to be

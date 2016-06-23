@@ -1,6 +1,6 @@
+# Helper class for running specs
 # coding: utf-8
 class ReviewerReportTaskOverlay < PaperTaskOverlay
-
   def ensure_no_review_history
     expect(page).to_not have_selector(".review-history")
   end
@@ -8,7 +8,8 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
   # Ensures given review(s) is on the page.
   #
   # === Example 1
-  #   ensure_review_history(title: "Revision 0", answers: ["answer for round 0"])
+  #   ensure_review_history(title: "Revision 0",
+  #                         answers: ["answer for round 0"])
   #
   # === Example 2
   #   ensure_review_history(
@@ -31,13 +32,12 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
     end
   end
 
-  def fill_in_report(values={})
+  def fill_in_report(values = {})
     values = values.with_indifferent_access.reverse_merge(
-      "reviewer_report--competing_interests" => "default competing interests content",
-      "reviewer_report--plos_biology_suitable--comment" => "default biology_suitable.comment content",
-      "reviewer_report--statistical_analysis--explanation" => "default statistical_analysis.explanation content",
-      "reviewer_report--standards--explanation" => "default standards.explanation content",
-      "reviewer_report--additional_comments" => "default additional_comments content",
+      "reviewer_report--competing_interests--detail" =>
+        "default competing interests",
+      "reviewer_report--additional_comments" =>
+        "default additional_comments content",
       "reviewer_report--identity" => "default identity content"
     )
 
@@ -56,7 +56,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
     click_button "Yes, I’m sure"
   end
 
-  def reload(reviewer_report_task=TahiStandardTasks::ReviewerReportTask.last)
+  def reload(reviewer_report_task = TahiStandardTasks::ReviewerReportTask.last)
     paper = reviewer_report_task.paper
     visit "/papers/#{paper.id}/tasks/#{reviewer_report_task.id}"
   end

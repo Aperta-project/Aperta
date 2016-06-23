@@ -2,47 +2,65 @@ namespace :data do
   namespace :populate_initial_roles do
     require 'open-uri'
     require 'csv'
-    desc "This populates the initial roles based upon a CSV file"
-    task :csv, [:csv_url] => [:environment] do |t, args|
+    desc <<-DESC.strip_heredoc
+      This populates the initial roles based upon a CSV file.
+
+      Examples:
+        rake  data:populate_initial_roles[path/to/local/file.csv]
+        rake  data:populate_initial_roles[http://example.com/some.csv]
+
+      The CSV file should have the format:
+        Name,Email,Role,Journals
+        Jane Doe,jane@example.edu,Site Admin,Biology and Things
+        John Doe,john@example.edu,Staff Admin,Biology and Things
+        John Roe,roe@example.edu,User,Biology and Things
+        ...
+      DESC
+    task :csv, [:csv_url] => [:environment] do |_, args|
       if args[:csv_url].present?
         CSV.parse(open(args[:csv_url]), row_sep: :auto, headers: :first_row) do |csv|
-          if csv["Email"] && csv["Role"]
+          if csv["Email"].present?
+            STDERR.puts("user #{csv['Email']}")
             csv["Email"] = csv["Email"].strip.downcase
-            user = User.find_or_create_by(email: csv['Email'])
-            user.username = csv["Email"].split('@').first.delete('.')
-            user.first_name = csv["Name"].split.first if csv["Name"].split.count == 2
-            user.last_name = csv["Name"].split.last if csv["Name"].split.count == 2
-            user.auto_generate_password
-            user.save
-            roles = csv["Role"].split(',')
-            journals = csv["Journals"].split(',')
-            journals.each do |journal_name|
-              journal_name.strip!
-              journal = Journal.where(name: journal_name).first
-              next unless journal.present?
-              roles.each do |role_name|
-                role_name.strip!
-                if role_name == 'Site Admin'
-                  user.update_column(:site_admin, true)
-                elsif role_name == 'User'
+            user = User.find_or_create_by(email: csv['Email']) do |new_user|
+              new_user.username = csv["Email"].split('@').first.delete('.')
+              new_user.first_name = csv["Name"].split.first if csv["Name"].try(:split).try(:count) == 2
+              new_user.last_name = csv["Name"].split.last if csv["Name"].try(:split).try(:count) == 2
+              new_user.auto_generate_password
+              STDERR.puts('  creating...')
+              STDERR.puts("  with username: #{new_user.username}")
+              STDERR.puts("       name: #{new_user.first_name} #{new_user.last_name}")
+            end
+            user.save!
+            if csv["Role"].present?
+              journals = csv["Journals"].split(',').map(&:strip)
+              journals.each do |journal_name|
+                journal = Journal.where(name: journal_name).first
+                next unless journal.present?
+                csv["Role"].split(',').map(&:strip).each do |role_name|
+                  if role_name == 'Site Admin'
+                    user.update_column(:site_admin, true)
+                    STDERR.puts('  made site admin')
+                  elsif role_name == '-Site Admin'
+                    user.update_column(:site_admin, false)
+                    STDERR.puts('  removed site admin')
+                  elsif role_name == 'None' # remove all roles
+                    user.assignments.destroy_all
+                  elsif role_name == Role::USER_ROLE
                   # Users are assigned later
-                else # Journal roles
-                  Assignment.where(
-                    user: user,
-                    role: Role.where(name: role_name, journal: journal).first,
-                    assigned_to: journal
-                  ).first_or_create!
+                  elsif role_name.match(/^-/) # remove roles
+                    role_name = role_name[1..-1].strip # remove `-` at beginning and strip whitespace
+                    user.resign_from!(assigned_to: journal, role: role_name)
+                    STDERR.puts("  removed #{role_name} on #{journal.name}")
+                  else # Journal roles
+                    user.assign_to!(assigned_to: journal, role: role_name)
+                    STDERR.puts("  made #{role_name} on #{journal.name}")
+                  end
                 end
               end
             end
             # Ensure User role
-            Assignment.where(
-              user: user,
-              role: Role.where(name: 'User').first,
-              assigned_to: user
-            ).first_or_create!
-
-            csv.each { |a, b, c| puts "Updated #{a} #{b} #{c}"}
+            user.add_user_role! unless csv["Role"].try(:strip) == 'None'
           end
         end
         puts "Successfully loaded roles for #{args[:csv_url]}"

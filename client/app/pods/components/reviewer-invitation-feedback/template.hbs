@@ -1,0 +1,31 @@
+<h4 class="feedback-reviewer-invitation">Reviewer Invitation</h4>
+{{partial "svg/manuscript-icon"}}
+<h3 class="feedback-invitation-title">{{{invitation.title}}}</h3>
+
+<h4 class="feedback-decline-notice">
+  You've successfully declined this invitation.
+  We're always trying to improve our invitation process
+  and would appreciate your feedback below.
+</h4>
+
+<label class="feedback-request">Please give your reasons for declining this invitation.
+  {{textarea
+    name="declineReason"
+    classNames="feedback-textarea form-control declineReason"
+    value=invitation.declineReason
+  }}
+</label>
+
+<label class="feedback-request">We would value your suggestions of alternative reviewers for this manuscript.
+  {{textarea
+    name="reviewerSuggestions"
+    classNames="feedback-textarea form-control reviewerSuggestions"
+    value=invitation.reviewerSuggestions
+    placeholder="Please provide reviewers' names, institutions, and email adresses if known."
+  }}
+</label>
+
+<div class="reviewer-feedback-buttons">
+  <a href="#" role="button" class="reviewer-decline-feedback button-link button--green" {{action 'declineFeedback' invitation}}>No Thank You</a>
+  <button type="button" class="reviewer-send-feedback button-secondary button--green" {{action update invitation}}>Send Feedback</button>
+</div>

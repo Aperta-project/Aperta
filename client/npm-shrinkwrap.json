@@ -12826,6 +12826,10 @@
           }
         }
       }
+    },
+    "ember-cli-at-js": {
+      "version": "0.0.3",
+      "from": "ember-cli-at-js@latest"
     }
   }
 }

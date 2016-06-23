@@ -21,6 +21,7 @@
   "devDependencies": {
     "ember-can": "0.7.0",
     "ember-cli-font-awesome": "^1.5.0",
+    "ember-prop-types": "2.0.0",
     "ember-sinon": "0.5.0"
   },
   "dependencies": {

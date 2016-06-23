@@ -167,6 +167,50 @@ describe InvitationsController do
     end
   end
 
+  describe "PUT /invitations/:id" do
+    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+
+    subject(:do_request) do
+      put(
+        :update,
+        id: invitation.to_param,
+        format: :json,
+        invitation: {
+          decline_reason: 'This is my decline reason',
+          reviewer_suggestions: 'Added reviewer suggesions' }
+      )
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context "when the user has access" do
+      before do
+        stub_sign_in(user)
+      end
+
+      it 'updates the invitation' do
+        do_request
+        invitation.reload
+        expect(invitation.actor).to eq(invitee)
+        expect(invitation.decline_reason).to eq('This is my decline reason')
+        expect(invitation.reviewer_suggestions).to eq('Added reviewer suggesions')
+      end
+
+      it { is_expected.to responds_with(200) }
+    end
+
+    context 'when the user is invitee' do
+      before do
+        stub_sign_in FactoryGirl.create(:user)
+      end
+
+      it 'renders status 403' do
+        do_request
+        expect(response.status).to eq 403
+      end
+    end
+  end
+
   describe "PUT /invitations/:id/rescind" do
     subject(:do_request) do
       delete(:rescind, {
@@ -255,7 +299,7 @@ describe InvitationsController do
 
         it "gives access to the user as an academic editor" do
           do_request
-          expect(response.status).to eq(204)
+          expect(response.status).to eq(200)
           invitation.reload
           expect(invitation.state).to eq("accepted")
           expect(invitation.actor).to eq(invitee)
@@ -272,6 +316,17 @@ describe InvitationsController do
           do_request
         end
       end
+
+      context 'when the user is invitee' do
+        before do
+          stub_sign_in FactoryGirl.create(:user)
+        end
+
+        it 'renders status 403' do
+          do_request
+          expect(response.status).to eq 403
+        end
+      end
     end
 
     describe "PUT /invitations/:id/reject" do
@@ -286,7 +341,7 @@ describe InvitationsController do
 
         it 'rejects the invitation' do
           put(:reject, format: 'json', id: invitation.id)
-          expect(response.status).to eq(204)
+          expect(response.status).to eq(200)
           invitation.reload
           expect(invitation.state).to eq('rejected')
           expect(invitation.actor).to eq(invitee)
@@ -299,6 +354,17 @@ describe InvitationsController do
           }
           expect(Activity).to receive(:create).with hash_including(expected_activity)
           put(:reject, format: 'json', id: invitation.id)
+        end
+      end
+
+      context 'when the user is invitee' do
+        before do
+          stub_sign_in FactoryGirl.create(:user)
+        end
+
+        it 'renders status 403' do
+          do_request
+          expect(response.status).to eq 403
         end
       end
     end

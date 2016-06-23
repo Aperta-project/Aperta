@@ -24,69 +24,37 @@ module TahiHelperMethods
   end
 
   def assign_author_role(paper, creator)
-    Assignment.where(
-      user: creator,
-      role: paper.journal.creator_role,
-      assigned_to: paper
-    ).first_or_create!
+    creator.assign_to!(assigned_to: paper, role: paper.journal.creator_role)
   end
 
   def assign_reviewer_role(paper, reviewer)
-    Assignment.where(
-      user: reviewer,
-      role: paper.journal.reviewer_role,
-      assigned_to: paper
-    ).first_or_create!
+    reviewer.assign_to!(assigned_to: paper, role: paper.journal.reviewer_role)
   end
 
   def assign_handling_editor_role(paper, editor)
-    Assignment.where(
-      user: editor,
-      role: paper.journal.handling_editor_role,
-      assigned_to: paper
-    ).first_or_create!
+    editor.assign_to!(assigned_to: paper, role: paper.journal.handling_editor_role)
     # this is an old role:
     paper.paper_roles.create user: editor, old_role: PaperRole::EDITOR
   end
 
   def assign_internal_editor_role(paper, editor)
-    Assignment.where(
-      user: editor,
-      role: paper.journal.internal_editor_role,
-      assigned_to: paper
-    ).first_or_create!
+    editor.assign_to!(assigned_to: paper, role: paper.journal.internal_editor_role)
   end
 
   def assign_production_staff_role(journal, user)
-    Assignment.where(
-      user: user,
-      role: journal.production_staff_role,
-      assigned_to: journal
-    ).first_or_create!
+    user.assign_to!(assigned_to: journal, role: paper.journal.production_staff_role)
   end
 
   def assign_publishing_services_role(journal, user)
-    Assignment.where(
-      user: user,
-      role: journal.publishing_services_role,
-      assigned_to: journal
-    ).first_or_create!
+    user.assign_to!(assigned_to: journal, role: paper.journal.publishing_services_role)
   end
 
   def assign_journal_role(journal, user, role_or_type)
     # New Roles
     if role_or_type == :admin
-      Assignment.where(
-        user: user,
-        role: journal.staff_admin_role,
-        assigned_to: journal
-      ).first_or_create!
+      user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
     elsif role_or_type == :editor
-      Assignment.where(
-        user: user,
-        role: journal.internal_editor_role,
-        assigned_to: journal
-      ).first_or_create!
+      user.assign_to!(assigned_to: journal, role: journal.internal_editor_role)
     end
 
     # Old Roles

@@ -1,11 +1,13 @@
 class InvitationSerializer < ActiveModel::Serializer
   attributes :id,
-             :state,
-             :email,
              :created_at,
-             :updated_at,
-             :invitee_role
+             :decline_reason,
+             :email,
+             :invitee_role,
+             :reviewer_suggestions,
+             :state,
+             :updated_at
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
-  has_one :task, embed: :id, polymorphic: true, include: true
+  has_one :task, embed: :id, polymorphic: true
 end

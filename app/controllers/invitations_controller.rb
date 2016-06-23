@@ -38,7 +38,7 @@ class InvitationsController < ApplicationController
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)
-    respond_with(invitation)
+    render json: invitation
   end
 
   def reject
@@ -46,13 +46,30 @@ class InvitationsController < ApplicationController
     invitation.actor = current_user
     invitation.reject!
     Activity.invitation_rejected!(invitation, user: current_user)
-    respond_with(invitation)
+    render json: invitation
+  end
+
+  def update
+    fail AuthorizationError unless invitation.invitee == current_user
+    invitation.update_attributes(
+      actor: current_user,
+      decline_reason: invitation_params[:decline_reason],
+      reviewer_suggestions: invitation_params[:reviewer_suggestions]
+    )
+    render json: invitation
   end
 
   private
 
   def invitation_params
-    params.require(:invitation).permit(:email, :task_id, :actor_id, :body)
+    params
+      .require(:invitation)
+      .permit(:actor_id,
+              :body,
+              :decline_reason,
+              :email,
+              :reviewer_suggestions,
+              :task_id)
   end
 
   def task

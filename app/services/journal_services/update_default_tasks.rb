@@ -4,9 +4,7 @@ module JournalServices
   class UpdateDefaultTasks < BaseService
     def self.call
       Task.all_task_types.each do |klass|
-        next if klass == Task
-        klass.update_all old_role: klass::DEFAULT_ROLE,
-                         title: klass::DEFAULT_TITLE
+        klass.restore_defaults
       end
     end
   end

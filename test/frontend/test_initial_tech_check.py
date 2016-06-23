@@ -41,7 +41,7 @@ editorial_users = [internal_editor_login,
 @MultiBrowserFixture
 class ITCCardTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Invite AE card
+  Validate the elements, styles, functions of the Initial Tech Check card
   """
   email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the '
       'questions. In the box provided, please include the appropriate approval information, '
@@ -85,10 +85,8 @@ class ITCCardTest(CommonTest):
 
   def test_itc_card(self):
     """
-    test_initial_tech_check: Validates the elements, styles, roles and functions of invite academic
-    editors from new document creation through inviting ae, validation of the invite on the
-    invitees dashboard, acceptance and rejections
-    :return: void function
+    test_initial_tech_check: Validates the elements, styles, and functions of ITC Card
+    :return: None
     """
     # Users logs in and make a submission
     creator_user = random.choice(users)

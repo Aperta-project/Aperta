@@ -66,17 +66,22 @@ class FTCCardTest(CommonTest):
       '10MB. We recommend saving your figures as TIFF files using LZW compression.'
       ' More detailed guidelines can be found on our website: '
       'http://journals.plos.org/plosbiology/s/figures.',
-                9: 'Please note you have cited a file in your manuscript that has not been included with your submission. Please upload this file, or if this file was cited in error, please remove the corresponding citation from your manuscript.',
+                9: 'Please note you have cited a file in your manuscript that has not'
+      ' been included with your submission. Please upload this file, or if this file '
+      'was cited in error, please remove the corresponding citation from your '
+      'manuscript.',
                 10: '',
-                11: 'Please note that our policy requires the removal of any mention of billing information from the cover letter. I have forwarded your query to our Billing Team (authorbilling@plos.org). Further infromation about Publication Fees can be found here: http://www.plos.org/publications/publication-fees/. Thank you, PLOS Biology',
+                11: 'Please note that our policy requires the removal of any mention '
+      'of billing information from the cover letter. I have forwarded your query to '
+      'our Billing Team (authorbilling@plos.org). Further infromation about Publication'
+      ' Fees can be found here: http://www.plos.org/publications/publication-fees/. '
+      'Thank you, PLOS Biology',
                 12: '',
                 }
 
   def test_ftc_card(self):
     """
-    test_initial_tech_check: Validates the elements, styles, roles and functions of invite academic
-    editors from new document creation through inviting ae, validation of the invite on the
-    invitees dashboard, acceptance and rejections
+    test_final_tech_check: Validates the elements, styles, and functions of FTC Card
     :return: void function
     """
     # Users logs in and make a submission

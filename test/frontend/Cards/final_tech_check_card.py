@@ -67,7 +67,7 @@ class FTCCard(BaseCard):
    # POM Actions
   def validate_styles(self, paper_id):
     """
-    Validate styles for the Initial Tech Check Card
+    Validate styles for the Final Tech Check Card
     :param paper_id: passed through for validate_common_elements_styles - needed for card header
     :return: None
     """

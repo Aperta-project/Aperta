@@ -129,7 +129,7 @@ class RTCCard(BaseCard):
   def get_issues_text(self):
     """
     Get the contents of the issues to address in the text area
-    :return: Text in the text area of ITC
+    :return: Text in the text area of RTC
     """
     return self._get(self._text_area).get_attribute('value')
 

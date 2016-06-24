@@ -1,0 +1,43 @@
+<div>
+  <p>Please select the reject template letter and then edit further.</p>
+
+  {{select-2-single
+    class="assignment-role-input"
+    minimumInputLength=0
+    name="journal_roles"
+    placeholder="Please select Role"
+    selectedData=nil
+    source=templates
+    selectionSelected="didSelectRole"
+    value=""
+    width="200px"}}
+
+  <div class='input-group'>
+    <div class='input-group-addon'>
+      To:
+    </div>
+    <input type='text' class='form-control' placeholder='amount'>
+  </div>
+
+  <div class='input-group'>
+    <div class='input-group-addon'>
+      Subject:
+    </div>
+  {{input name=ident
+        value=model.answer.value
+        class=inputClassNames
+        placeholder=placeholder
+        type=type}}
+  </div>
+
+  {{textarea onEvent="false"
+             class="decision-letter-field"
+             placeholder="A boilerplate decision letter will appear here"
+             disabled=nonPublishableOrUnselected
+             value=letterValue}}
+
+  <button class="button-primary button--green send-email-action" disabled={{nonPublishable}} {{action "registerDecision"}}>
+    Register Decision and Email the Author
+  </button>
+
+</div>

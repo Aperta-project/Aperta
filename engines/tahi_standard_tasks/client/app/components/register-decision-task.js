@@ -21,6 +21,9 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   submitted: computed.equal('paperState', 'submitted'), 
   uncompleted: computed.equal('task.completed', false),
   isNotEditable: false, // This task has custom editability behavior
+  rejectionTemplates: computed(('task.paper'), function() {
+    return [{id: 1, name: 'rejectAfterReview', content: 'This is a rejection'}];
+  }),
   nonPublishable: computed.not('publishable'),
   nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');

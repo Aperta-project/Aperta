@@ -59,17 +59,11 @@
     </label>
   </div>
 
-  <p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
-
-  {{textarea onEvent="false"
-             class="decision-letter-field"
-             placeholder="A boilerplate decision letter will appear here"
-             disabled=nonPublishableOrUnselected
-             value=latestDecision.letter}}
-
-  <button class="button-primary button--green send-email-action" disabled={{nonPublishable}} {{action "registerDecision"}}>
-    Register Decision and Email the Author
-  </button>
+  {{letter-template disabled=nonPublishableOrUnselected
+                    letterValue=latestDecision.letter
+                    templates=rejectionTemplates
+                    actionTrigger='reject'
+  }}
 
   {{#if previousDecisions}}
     <hr>

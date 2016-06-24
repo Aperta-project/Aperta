@@ -5,7 +5,8 @@ ask :branch, proc {
   `git ls-remote --heads`.lines
     .map { |l| l.split(' ').last.strip }
     .select { |b| b =~ %r{^refs/heads/release/[0-9\.]+$} }
-    .sort.last
+    .sort_by { |b| Gem::Version.new(b.split(%r{/}).last) }
+    .last
 }
 
 server 'tahi-worker-201.sfo.plos.org', user: 'aperta', roles: %w(cron db worker)

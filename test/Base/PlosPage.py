@@ -178,22 +178,22 @@ class PlosPage(object):
       string_1 = string_1.split()
       string_2 = string_2.split()
       assert string_1 == string_2, \
-        'Title in page: {0} != Title in DB: {1}'.format(string_1, string_2)
+        'String 1: {0} != String 2: {1}'.format(string_1, string_2)
     elif isinstance(string_1, unicode) and not isinstance(string_2, unicode):
       string_1 = PlosPage.normalize_spaces(string_1).split()
       string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
       assert string_1 == string_2, \
-        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
+        'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
     elif not isinstance(string_1, unicode) and isinstance(string_2, unicode):
       string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
       string_2 = PlosPage.normalize_spaces(string_2).split()
       assert string_1 == string_2, \
-        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
+        'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
     else:
       string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
       string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
       assert string_1 == string_2, \
-        'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
+        'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
     return True
 
   def traverse_to_frame(self, frame):

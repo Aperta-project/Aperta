@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [1.4.17] - {2016-06-24}
+### Fixed
+- Tasks were not rendering correctly on some manuscript pages
+
 ## [1.4.16] - {2016-06-22}
 ### Added
 - Ability for invited reviewer to provide decline reason and suggested

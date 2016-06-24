@@ -313,6 +313,7 @@ task_names = ['Ad-hoc',
               'Revision Tech Check',
               'Send to Apex',
               'Supporting Info',
+              'Title and Abstract',
               'Upload Manuscript']
 
 yeti_task_names = ['Ad-hoc',
@@ -343,6 +344,7 @@ yeti_task_names = ['Ad-hoc',
                    'Send to Apex',
                    'Supporting Info',
                    'Test Task',
+                   'Title and Abstract',
                    'Upload Manuscript']
 
 paper_tracker_search_queries = ['0000003',

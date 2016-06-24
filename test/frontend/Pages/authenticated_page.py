@@ -136,6 +136,7 @@ class AuthenticatedPage(PlosPage):
     self._reviewer_report_card = None
     self._revision_tech_check_card = None
     self._send_to_apex_card = None
+    self._title_abstract_card = None
     # Tasks - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_task = None
     self._authors_task = None
@@ -481,8 +482,6 @@ class AuthenticatedPage(PlosPage):
     elif cardname.lower() == 'initial_decision':
       card_title = self._get(self._initial_decision_card)
     elif cardname.lower() == 'invite_academic_editor':
-      self._invite_academic_editors_card = (By.XPATH,
-          "//a/div[contains(., 'Invite Academic Editor')]")
       card_title = self._get(self._invite_academic_editors_card)
     elif cardname.lower() == 'invite_reviewers':
       card_title = self._get(self._invite_reviewers_card)
@@ -496,6 +495,8 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._revision_tech_check_card)
     elif cardname.lower() == 'send_to_apex':
       card_title = self._get(self._send_to_apex_card)
+    elif cardname.lower() == 'title_and_abstract':
+      card_title = self._get(self._title_abstract_card)
     else:
       print('Unknown Card')
       self.restore_timeout()

@@ -242,7 +242,7 @@ class CFACardTest(CommonTest):
       workflow_page.add_card('Revision Tech Check')
     # click on RTC
     rtc_card = RTCCard(self.getDriver())
-    workflow_page.click_rtc_card()
+    workflow_page.click_revision_tech_check_card()
     data = rtc_card.complete_card()
     rtc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -351,7 +351,7 @@ class CFACardTest(CommonTest):
       workflow_page.add_card('Final Tech Check')
     # click on FTC
     ftc_card = FTCCard(self.getDriver())
-    workflow_page.click_ftc_card()
+    workflow_page.click_final_tech_check_card()
     data = ftc_card.complete_card()
     ftc_card.click_autogenerate_btn()
     time.sleep(2)

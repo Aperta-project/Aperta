@@ -30,13 +30,13 @@ class TitleAbstractTest(CommonTest):
     :return: void function
     """
     creator = random.choice(users)
-    journal = 'PLOS Yeti'
+    journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    paper_type = 'Research'
+    paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Title and Abstract Card',
                         journal=journal,

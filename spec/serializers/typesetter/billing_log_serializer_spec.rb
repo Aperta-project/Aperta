@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe Typesetter::BillingLogSerializer do
+  before do
+    Rake::Task['nested-questions:seed:plos-billing-task'].reenable
+    Rake::Task['nested-questions:seed:plos-billing-task'].invoke
+  end
+
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
   let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }

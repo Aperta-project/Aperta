@@ -89,7 +89,8 @@ FactoryGirl.define do
         task = FactoryGirl.create(
           :publishing_related_questions_task,
           paper: paper)
-        nested_question = NestedQuestion.find_by(
+        nested_question = FactoryGirl.create(
+          :nested_question,
           ident: 'publishing_related_questions--short_title')
         task.find_or_build_answer_for(nested_question: nested_question,
                                       value: evaluator.short_title).save

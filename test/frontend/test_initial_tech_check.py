@@ -15,9 +15,7 @@ from selenium.common.exceptions import NoSuchElementException
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -25,24 +23,10 @@ from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
-
 @MultiBrowserFixture
 class ITCCardTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Invite AE card
+  Validate the elements, styles, functions of the Initial Tech Check card
   """
   email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the '
       'questions. In the box provided, please include the appropriate approval information, '
@@ -86,10 +70,8 @@ class ITCCardTest(CommonTest):
 
   def test_itc_card(self):
     """
-    test_initial_tech_check: Validates the elements, styles, roles and functions of invite academic
-    editors from new document creation through inviting ae, validation of the invite on the
-    invitees dashboard, acceptance and rejections
-    :return: void function
+    test_initial_tech_check: Validates the elements, styles, and functions of ITC Card
+    :return: None
     """
     # Users logs in and make a submission
     creator_user = random.choice(users)
@@ -131,7 +113,7 @@ class ITCCardTest(CommonTest):
       workflow_page.add_card('Initial Tech Check')
     # click on invite academic editor
     itc_card = ITCCard(self.getDriver())
-    workflow_page.click_itc_card()
+    workflow_page.click_initial_tech_check_card()
     itc_card.validate_styles(paper_id)
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
@@ -159,9 +141,10 @@ class ITCCardTest(CommonTest):
       itc_card._get(itc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
       #raise ElementExistsAssertionError('There is an unexpected error message')
-      logging.warning('There is an error message because of APERTA-7012')
+      #logging.warning('There is an error message because of APERTA-7012')
     except ElementDoesNotExistAssertionError:
       pass
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

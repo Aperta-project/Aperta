@@ -5,8 +5,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5
+from Base.Resources import login_valid_pw, users
 
 from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
@@ -16,13 +15,6 @@ from Pages.manuscript_viewer import ManuscriptViewerPage
 This behavioral test case validates the Aperta Create New Submission through Submit process.
 """
 __author__ = 'jgray@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5
-         ]
 
 cards = ['cover_letter',
          'billing',

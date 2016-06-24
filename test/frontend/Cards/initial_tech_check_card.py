@@ -84,12 +84,11 @@ class ITCCard(BaseCard):
   def validate_styles(self, paper_id):
     """
     Validate styles for the Initial Tech Check Card
-    :param paper_id: passed through for validate_common_elements_styles - needed for card header
     :return: None
     """
     self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
-    assert card_title.text == 'Initial Tech Check'
+    assert card_title.text == 'Initial Tech Check', card_title.text
     self.validate_application_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles
@@ -117,7 +116,6 @@ class ITCCard(BaseCard):
     self.validate_application_h3_style(send_changes)
     send_changes_button = self._get(self._send_changes_button)
     assert send_changes_button.text == 'SEND CHANGES TO AUTHOR', send_changes_button.text
-    #assert self.validate_green_on_green_button_style(send_changes_button)
     self.validate_primary_big_green_button_style(send_changes_button)
     return None
 

@@ -61,12 +61,10 @@ describe JournalFactory do
 
     context 'creating the default roles and permission for the journal' do
       before(:all) do
-        clear_roles_and_permissions
         @journal = JournalFactory.create(name: 'Genetics Journal')
       end
 
       after(:all) do
-        clear_roles_and_permissions
         @journal.destroy!
       end
 

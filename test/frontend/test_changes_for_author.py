@@ -21,7 +21,7 @@ from Base.Resources import creator_login1, creator_login2, creator_login3, creat
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
 # from Cards.revision_tech_check_card import RTCCard
-# from Cards.final_tech_check_card import FTCCard
+from Cards.final_tech_check_card import FTCCard
 from Tasks.changes_for_author_task import ChangesForAuthorTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -133,7 +133,7 @@ class CFACardTest(CommonTest):
       workflow_page.add_card('Initial Tech Check')
     # click on ITC
     itc_card = ITCCard(self.getDriver())
-    workflow_page.click_itc_card()
+    workflow_page.click_initial_tech_check_card()
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -242,7 +242,7 @@ class CFACardTest(CommonTest):
       workflow_page.add_card('Revision Tech Check')
     # click on RTC
     rtc_card = RTCCard(self.getDriver())
-    workflow_page.click_rtc_card()
+    workflow_page.click_revision_tech_check_card()
     data = rtc_card.complete_card()
     rtc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -345,13 +345,13 @@ class CFACardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(4)
-    # add card ITC with add new card if not present
+    # add card FTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Final Tech Check'):
       workflow_page.add_card('Final Tech Check')
     # click on FTC
     ftc_card = FTCCard(self.getDriver())
-    workflow_page.click_ftc_card()
+    workflow_page.click_final_tech_check_card()
     data = ftc_card.complete_card()
     ftc_card.click_autogenerate_btn()
     time.sleep(2)

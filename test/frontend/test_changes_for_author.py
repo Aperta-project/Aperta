@@ -41,45 +41,6 @@ class CFACardTest(CommonTest):
       own test cases. We are covering only state changes, generation of the card, and UI elements
       and the function of the "These changes have been made" button.
   """
-  email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the '
-      'questions. In the box provided, please include the appropriate approval information, '
-      'as well as any additional requirements listed.',
-                1: '',
-                2: 'In the Data Availability card, you have selected Yes in response to '
-      'Question 1, but you have not fill in the text box under Question 2 explaining how '
-      'your data can be accessed. Please choose the most appropriate option from the list '
-      'and paste into the text box.',
-                3: 'In the Data Availability card, you have mentioned your data has been '
-      'submitted to the Dryad repository. Please provide the reviewer URL in the text box '
-      'under question 2 so that your submitted data can be reviewed.',
-                4: 'The list of authors in your manuscript file does not match the list of '
-      'authors in the Authors card. Please ensure these are consistent.',
-                5: 'Please provide a unique and current email address for each contributing '
-      'author. It is important that you provide a working email address as we will contact '
-      'each author to confirm authorship.',
-                6: '',
-                7: 'In the Competing Interests card, you have selected Yes, but not provided '
-      'an explanation in the box provided. Please take this opportunity to include all '
-      'relevant information.',
-                8: 'Please complete the Financial Disclosure card. This section should '
-      'describe sources of funding that have supported the work. Please include relevant '
-      'grant numbers and the URL of any funder\'s Web site. If the funders had a role in the '
-      'manuscript, please include a description in the box provided.',
-                9: '',
-                10: '',
-                11: 'We are unable to preview or download Figure [X]. Please upload a higher '
-      'quality version, preferably in TIF or EPS format and ensure the uploaded version can '
-      'be previewed and downloaded before resubmitting your manuscript.',
-                12: 'Please remove captions from figure or supporting information files and '
-      'ensure each file has a caption present in the manuscript.',
-                13: 'Please provide a caption for [file name] in the manuscript file.',
-                14: 'Please note you have cited a file, [file name], in your manuscript that '
-      'has not been included with your submission. Please upload this file, or if this file '
-      'was cited in error, please remove the corresponding citation from your manuscript.',
-                15: 'Please upload a \'Response to Reviewers\' Word document in the Supporting'
-      ' Information card. This file should address all reviewer comments from the original '
-      'submission point-by-point.',
-                }
 
   def test_cfa_from_itc_card(self):
     """
@@ -139,13 +100,13 @@ class CFACardTest(CommonTest):
     time.sleep(2)
     issues_text = itc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-            '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
+      if not checked and itc_card.email_text[index]:
+        assert itc_card.email_text[index] in issues_text, \
+            '{0} (Not checked item #{1}) not in {2}'.format(itc_card.email_text[index],
                 index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-            '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
+      elif checked and itc_card.email_text[index]:
+        assert itc_card.email_text[index] not in issues_text, \
+            '{0} (Checked item #{1}) not in {2}'.format(itc_card.email_text[index],
                 index, issues_text)
     time.sleep(1)
     itc_card.click_send_changes_btn()
@@ -248,13 +209,13 @@ class CFACardTest(CommonTest):
     time.sleep(2)
     issues_text = rtc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-          '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
+      if not checked and rtc_card.email_text[index]:
+        assert rtc_card.email_text[index] in issues_text, \
+          '{0} (Not checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
                                                           index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-          '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
+      elif checked and rtc_card.email_text[index]:
+        assert rtc_card.email_text[index] not in issues_text, \
+          '{0} (Checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
                                                       index, issues_text)
     time.sleep(1)
     rtc_card.click_send_changes_btn()
@@ -357,13 +318,13 @@ class CFACardTest(CommonTest):
     time.sleep(2)
     issues_text = ftc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-          '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
+      if not checked and ftc_card.email_text[index]:
+        assert ftc_card.email_text[index] in issues_text, \
+          '{0} (Not checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
                                                           index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-          '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
+      elif checked and ftc_card.email_text[index]:
+        assert ftc_card.email_text[index] not in issues_text, \
+          '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
                                                       index, issues_text)
     time.sleep(1)
     ftc_card.click_send_changes_btn()

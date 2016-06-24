@@ -227,7 +227,7 @@ class CFACardTest(CommonTest):
       success_msgs
     # Check not error message
     try:
-      rtc_card._get(itc_card._flash_error_msg)
+      rtc_card._get(rtc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
       # raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('WARNING: An error message fired on Send Changes to Author for RTC card')

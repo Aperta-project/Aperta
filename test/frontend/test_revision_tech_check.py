@@ -28,39 +28,40 @@ class RTCCardTest(CommonTest):
   """
   Validate the elements, styles, functions of the Revision Tech Check card
   """
-  email_text = {0: '',
-                1: 'Please ensure that all of the following sections are present and '
-      'appear in your manuscript file in the following order: Title, Authors, '
-      'Affiliations, Abstract, Introduction, Results, Discussion, Materials and '
-      'Methods, References, Acknowledgments, and Figure Legends. More detailed '
-      'guidelines can be found on our website: '
-      'http://journals.plos.org/plosbiology/s/submission-guidelines#loc-manuscript-'
-      'organization.',
-                2: '',
-                3: '',
-                4: '',
+  email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the questions.'
+      ' In the box provided, please include the appropriate approval information, as well as any'
+      ' additional requirements listed.',
+                1: '',
+                2: 'In the Data Availability card, you have selected Yes in response to Question'
+      ' 1, but you have not fill in the text box under Question 2 explaining how your data can '
+      'be accessed. Please choose the most appropriate option from the list and paste into the '
+      'text box.',
+                3: 'In the Data Availability card, you have mentioned your data has been '
+      'submitted to the Dryad repository. Please provide the reviewer URL in the text box under '
+      'question 2 so that your submitted data can be reviewed.',
+                4: 'The list of authors in your manuscript file does not match the list of '
+      'authors in the Authors card. Please ensure these are consistent.',
                 5: '',
-                6: 'Please complete the Financial Disclosure Statement field of the '
-      'online submission form.',
-                7: 'This section should describe sources of funding that have '
-      'supported the work. Please include relevant grant numbers and the URL of any '
-      'funder\'s Web site.',
-                8: 'Your Figure is not easily legible. Please provide a higher '
-      'quality version of this Figure while ensuring the file size remains below '
-      '10MB. We recommend saving your figures as TIFF files using LZW compression.'
-      ' More detailed guidelines can be found on our website: '
-      'http://journals.plos.org/plosbiology/s/figures.',
-                9: 'Please note you have cited a file in your manuscript that has not'
-      ' been included with your submission. Please upload this file, or if this file '
-      'was cited in error, please remove the corresponding citation from your '
-      'manuscript.',
+                6: 'In the Competing Interests card, you have selected Yes, but not provided an '
+      'explanation in the box provided. Please take this opportunity to include all relevant '
+      'information.',
+                7: 'Please complete the Financial Disclosure card. This section should describe '
+      'sources of funding that have supported the work. Please include relevant grant numbers '
+      'and the URL of any funder\'s Web site. If the funders had a role in the manuscript, '
+      'please include a description in the box provided.',
+                8: '',
+                9: 'Please respond to all reviewer comments point-by-point in the Revision '
+      'Details section of your Revise Manuscript card.',
                 10: '',
-                11: 'Please note that our policy requires the removal of any mention '
-      'of billing information from the cover letter. I have forwarded your query to '
-      'our Billing Team (authorbilling@plos.org). Further infromation about Publication'
-      ' Fees can be found here: http://www.plos.org/publications/publication-fees/. '
-      'Thank you, PLOS Biology',
-                12: '',
+                11: 'We are unable to preview or download Figure [X]. Please upload a higher '
+      'quality version, preferably in TIF or EPS format and ensure the uploaded version can be '
+      'previewed and downloaded before resubmitting your manuscript.',
+                12: 'Please remove captions from figure or supporting information files and ensure'
+      ' each file has a caption present in the manuscript.',
+                13: 'Please provide a caption for [file name] in the manuscript file.',
+                14: 'Please note you have cited a file, [file name], in your manuscript that has '
+      'not been included with your submission. Please upload this file, or if this file was cited '
+      'in error, please remove the corresponding citation from your manuscript.'
                 }
 
   def test_rtc_card(self):
@@ -106,7 +107,7 @@ class RTCCardTest(CommonTest):
     if not workflow_page.is_card('Revision Tech Check'):
       workflow_page.add_card('Revision Tech Check')
     rtc_card = RTCCard(self.getDriver())
-    workflow_page.click_final_tech_check_card()
+    workflow_page.click_revision_tech_check_card()
     rtc_card.validate_styles(paper_id)
     data = rtc_card.complete_card()
     rtc_card.click_autogenerate_btn()
@@ -123,7 +124,7 @@ class RTCCardTest(CommonTest):
                 index, issues_text)
     time.sleep(2)
     rtc_card.click_send_changes_btn()
-    all_success_messages = ftc_card.get_flash_success_messages()
+    all_success_messages = rtc_card.get_flash_success_messages()
     success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
     assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
     assert 'The author has been notified via email that changes are needed. They will also '\
@@ -131,7 +132,7 @@ class RTCCardTest(CommonTest):
         success_msgs
     # Check not error message
     try:
-      ftc_card._get(ftc_card._flash_error_msg)
+      rtc_card._get(rtc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
       #raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('There is an error message because of APERTA-7012')

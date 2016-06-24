@@ -35,34 +35,48 @@ class RTCCard(BaseCard):
     self._field_title = (By.CSS_SELECTOR, 'span.text-field-title')
     self._checkboxes = (By.CSS_SELECTOR, 'label.question-checkbox input')
     self._check_items = (By.CSS_SELECTOR, 'p.model-question')
-    self._check_items_text = [u'Check Section Headings of all new submissions (including Open '
-        'Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction,'
-        ' Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure '
-        'Legends.',
-        'Check the ethics statement - does it mention Human Participants? If so, flag this with'
-        ' the editor in the discussion below.',
-        'Check if there are any obvious ethical flags (mentions of animal/human work in the '
-        'title/abstract), check that there\'s an ethics statement. If not, ask the authors about'
-        ' this.',
-        'Is the data available? If not, or it\'s only available by contacting an author or the '
-        'institution, make a note in the discussion below.',
-        'If author indicates the data is available in Supporting Information, check to make sure'
-        ' there are Supporting Information files in the submission (don\'t need to check for '
-        'specifics at this stage).',
-        'If the author has mentioned Dryad in their Data statement, check that they\'ve included'
-        ' the Dryad reviewer URL. If not, make a note in the discussion below.',
-        'If Financial Disclosure Statement is not complete (they\'ve written N/A or something '
-        'similar), message author.',
+    self._check_items_text = ['Make sure the ethics statement looks complete. If the authors '
+        'have responded Yes to any question, but have not provided approval information, please'
+        ' request this from them.',
+        'In the Data Availability card, if the answer to Q1 is \'No\' or if the answer to Q2 is'
+        ' \'Data are from the XXX study whose authors may be contacted at XXX\' or \'Data are '
+        'available from the XXX Institutional Data Access/ Ethics Committee for researchers who'
+        ' meet the criteria for access to confidential data\', start a \'MetaData\' discussion '
+        'and ping the handling editor.',
+        'In the Data Availability card, if the authors have not selected one of the reasons '
+        'listed in Q2 and pasted it into the text box, please request that they complete this '
+        'section.',
+        'In the Data Availability card, if the authors have mentioned data submitted to Dryad, '
+        'check that the author has provided the Dryad reviewer URL and if not, request it from'
+        ' them.',
+        'Compare the author list between the manuscript file and the Authors card. If the author'
+        ' list does not match, request the authors to update whichever section is missing '
+        'information. Ignore omissions of middle initials.',
+        'If the author list has changed (author(s) being added or removed), flag it to the '
+        'editor/initiate our COPE process if an author was removed.',
+        'If any competing interests are listed, please add a manuscript note. ex: \'Initials '
+        'Date: Note to Editor - COI statement present, please see COI field.\'',
+        'Check that the Financial Disclosure card has been filled out correctly. Ensure the '
+        'authors have provided a description of the roles of the funder, if they responded Yes'
+        ' to our standard statement.',
         'If the Financial Disclosure Statement includes any companies from the Tobacco Industry,'
-        ' make a note in the discussion below.',
-        'If any figures are completely illegible, contact the author.',
-        'If any files or figures are cited but not included in the submission, message the '
-        'author.',
-        'Have the authors asked any questions in the cover letter? If yes, contact the '
-        'editor/journal team.',
-        'Have the authors mentioned any billing information in the cover letter? If yes, contact'
-        ' the editor/journal team.',
-        'If an Ethics Statement is present, make a note in the discussion below.',
+        ' start a \'MetaData\' discussion and ping the handling editor. See this list.',
+        'For any resubmissions that have previously gone through review, ensure the authors have'
+        ' responded to the reviewer comments in the Revision Details box of the Revise '
+        'Manuscript card. If this information is not present, request it from author.',
+        'If the authors mention submitting their paper to a collection in the cover letter or '
+        'Additional Information card, alert Jenni Horsley by pinging her through the discussion '
+        'of the ITC card.',
+        'Make sure you can view and download all files uploaded to your Figures card. Check '
+        'against figure citations in the manuscript to ensure there are no missing figures.',
+        'If main figures or supporting information captions are only available in the file '
+        'itself (and not in the manuscript), request that the author remove the captions from '
+        'the file and instead place them in the manuscript file.',
+        'If main figures or supporting information captions are missing entirely, ask the '
+        'author to provide them in the manuscript file.',
+        'If any files or figures are cited in the manuscript but not included in the Figures or'
+        ' Supporting Information cards, ask the author to provide the missing information. '
+        '(Search Fig, Table, Text, Movie and check that they are in the file inventory).',
         ]
 
    # POM Actions
@@ -74,27 +88,23 @@ class RTCCard(BaseCard):
     """
     self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
-    assert card_title.text == 'Final Tech Check', card_title.text
+    assert card_title.text == 'Revision Tech Check', card_title.text
     self.validate_application_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles
-    h3_titles = self._gets(self._h3_titles)
-    h3 = [h3.text for h3 in h3_titles]
-    assert h3 == [u'Submission tasks', u'Figures and Supporting Information'], h3
+    h2_titles = self._gets(self._h2_titles)
+    h2 = [h2.text for h2 in h2_titles]
+    assert h2 == [u'Submission Cards', u'Figures/Supporting Information'], h2
     # get style
-    # TODO: Following check disabled due to APERTA-7087
-    """
     for h2 in h2_titles:
         self.validate_application_h2_style(h2)
-    """
-    h4_titles = self._gets(self._h4_titles)
-    h4 = [h4.text for h4 in h4_titles]
-    assert h4 == [u'Ethics Statement', u'Financial Disclosure Statement'], h4
-    # TODO: Following check disabled due to APERTA-7087
-    """
+    h3_titles = self._gets(self._h3_titles)
+    h3 = [h3.text for h3 in h3_titles]
+    assert h3 == [u'Ethics Statement', u'Data Policy', u'Author List', u'Authors Added/Removed',
+        u'Competing Interests', u'Financial Disclosure Statement', u'Response to Reviewers',
+        u'Collections', u'Figures', u'Figure Captions', u'Cited Files Present'], h3
     for h3 in h3_titles:
         self.validate_application_h3_style(h3)
-    """
     check_items = self._gets(self._check_items)
     for item in [item.text for item in check_items]:
       assert item in self._check_items_text, '{0} not in {1}'.format(item, self._check_items_text)
@@ -141,7 +151,7 @@ class RTCCard(BaseCard):
     if not data:
       # generate random data
       data = []
-      for x in range(13):
+      for x in range(15):
         data.append(random.choice([True, False]))
     logging.info('Data: {0}'.format(data))
     for order, checkbox in enumerate(self._gets(self._checkboxes)):

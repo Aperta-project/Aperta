@@ -111,6 +111,10 @@ class WorkflowPage(AuthenticatedPage):
     """Open the Final Tech Check Card from the workflow page"""
     self._get(self._final_tech_check_card).click()
 
+  def click_revision_tech_check_card(self):
+    """Open the Revision Tech Check Card from the workflow page"""
+    self._get(self._revision_tech_check_card).click()
+
   def click_production_metadata_card(self):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._production_metadata_card).click()

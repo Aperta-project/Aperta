@@ -176,7 +176,7 @@ class PlosPage(object):
     if isinstance(string_1, unicode) and isinstance(string_2, unicode):
       # Split both to eliminate differences in whitespace
       string_1 = string_1.split()
-      string_2 = title.split()
+      string_2 = string_2.split()
       assert string_1 == string_2, \
         'Title in page: {0} != Title in DB: {1}'.format(string_1, string_2)
     elif isinstance(string_1, unicode) and not isinstance(string_2, unicode):
@@ -191,7 +191,7 @@ class PlosPage(object):
         'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
     else:
       string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
-      string_2 = PlosPage.normalize_spaces(title.decode('utf-8')).split()
+      string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
       assert string_1 == string_2, \
         'Title in page: {0} != Title in DB: {1}'.decode('utf-8').format(string_1, string_2)
     return True

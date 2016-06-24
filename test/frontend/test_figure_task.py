@@ -65,7 +65,9 @@ class WithdrawManuscriptTest(CommonTest):
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     figures_task.validate_styles()
     figures_task.check_question()
-    time.sleep(10)
+    for i in range(0, 4):
+      figures_task.upload_figure()
+      time.sleep(2)
     figures_task.logout()
 
     # Login as a privileged user to check the Card view of the figures task
@@ -76,14 +78,14 @@ class WithdrawManuscriptTest(CommonTest):
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Give a little time for the page to draw
-    time.sleep(3)
+    time.sleep(5)
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
-    time.sleep(15)
-    # workflow_page.click_card('figures')
-    # time.sleep(10)
+    time.sleep(10)
+    workflow_page.click_card('figures')
+    time.sleep(10)
 
 
 if __name__ == '__main__':

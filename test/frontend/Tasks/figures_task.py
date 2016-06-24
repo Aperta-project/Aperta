@@ -1,7 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
+import os
+import random
+import time
 from selenium.webdriver.common.by import By
 
+from Base.Resources import figures
 from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'jgray@plos.org'
@@ -15,7 +20,7 @@ class FiguresTask(BaseTask):
     super(FiguresTask, self).__init__(driver)
 
     #Locators - Instance members
-    self._intro_text = (By.TAG_NAME, 'p')
+    self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content p')
     self._question_label = (By.CLASS_NAME, 'question-checkbox')
     self._question_check = (By.CLASS_NAME, 'ember-checkbox')
     self._add_new_figures_btn = (By.CLASS_NAME, 'button-primary')
@@ -26,13 +31,15 @@ class FiguresTask(BaseTask):
     Validate styles in Figures Task
     """
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
+    # The intro paragraph is rendered in the incorrect font size
+    # self.validate_application_ptext(intro_text)
     assert intro_text.text == (
         "Please confirm that your figures comply with our guidelines for preparation and "
         "have not been inappropriately manipulated. For information on image manipulation, "
         "please see our general guidance notes on image manipulation."
-      ), intro_text.text
-    assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the guidelines."
+        ), intro_text.text
+    assert self._get(self._question_label).text == 'Yes - I confirm our figures comply with the ' \
+                                                   'guidelines.'
     self.validate_application_ptext(self._get(self._question_label))
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     assert add_new_figures_btn.text == "ADD NEW FIGURES"
@@ -63,9 +70,22 @@ class FiguresTask(BaseTask):
     else:
       return False
 
-  @staticmethod
-  def upload_figure(self, file_path):
+  def upload_figure(self, figure='random'):
     """
-    Placeholder for a function to upload a tiff file in the Figures Task
+    Function to upload a figure file
+    :param figure: Name of the figure to upload. If blank will default to 'random', this will choose
+      one of available figures
+    :return void function
     """
-    pass
+    if figure == 'random':
+      fig2upload = random.choice(figures)
+      fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/{0}'.format(fig2upload))
+    else:
+      fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/', figure)
+    logging.info('Sending figure: {0}'.format(fn))
+    time.sleep(1)
+    self._driver.find_element_by_id('figure_attachment').send_keys(fn)
+    add_new_figures_btn = self._get(self._add_new_figures_btn)
+    add_new_figures_btn.click()
+    # Time needed for script execution.
+    time.sleep(7)

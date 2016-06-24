@@ -22,9 +22,9 @@ test('User can edit the title and abstract', function(assert) {
 test('Title and abstract are not editable when the paper is not', function(assert) {
   var task = newTask(false, false);
   setupEditableTask(this, task);
-  assert.elementsFound('.form-textarea.ember-view.format-input.read-only',
+  assert.elementsFound('.form-textarea.ember-view.format-input',
                        2,
-                       'User can edit the title and abstract');
+                       'User cannot edit the title and abstract');
 });
 
 test('Title and abstract are not editable when the task is complete', function(assert) {

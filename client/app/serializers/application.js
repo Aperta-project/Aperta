@@ -130,6 +130,12 @@ export default ActiveModelSerializer.extend({
     });
   },
 
+  hasMultipleTypes(records) {
+    if (!Ember.isArray(records)) { return false; }
+
+    return records.mapBy('type').uniq().length > 1
+  },
+
   newNormalize(modelName, sourcePayload) {
     let payload = _.clone(sourcePayload);
 
@@ -139,10 +145,14 @@ export default ActiveModelSerializer.extend({
     // author_task: {} ===> author_tasks: [{}]
     this.pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload);
 
+    let primaryContent = payload[primaryKey];
     // if the primary key's content has a type, and that type is different than the modelName,
     // then THAT type should be the model name when we call super.
-    let newModelName = this.getPolymorphicModelName(modelName, payload[primaryKey]);
-    let isPolymorphic = newModelName !== modelName;
+    let newModelName = this.getPolymorphicModelName(modelName, primaryContent);
+
+    // the payload is 'polymorphic' if the returned type is different than the one we asked for,
+    // or if the payload has multiple different types.
+    let isPolymorphic = (newModelName !== modelName) || this.hasMultipleTypes(primaryContent);
 
     // loop through each key in the payload and move models into buckets based on their dasherized and pluralized 'type'
     // attributes if they have them

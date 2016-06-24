@@ -1,5 +1,5 @@
 # Command Line script for TeamCity build job for test run
-# Depends on 
+# Depends on
 # env.APERTA_PSQL_DBNAME
 # env.APERTA_PSQL_HOST
 # env.APERTA_PSQL_PORT
@@ -42,8 +42,7 @@ python -m frontend.test_production_metadata_card
 python -m frontend.test_profile
 python -m frontend.test_register_decision
 python -m frontend.test_revise_task
+python -m frontend.test_revision_tech_check
 python -m frontend.test_title_abstract_card
 python -m frontend.test_withdraw_ms
 python -m frontend.test_workflow
-
-

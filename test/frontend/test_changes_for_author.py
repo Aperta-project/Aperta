@@ -10,17 +10,12 @@ import logging
 import random
 import time
 
-from selenium.common.exceptions import NoSuchElementException
-
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login, users, editorial_users
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
-# from Cards.revision_tech_check_card import RTCCard
+from Cards.revision_tech_check_card import RTCCard
 from Cards.final_tech_check_card import FTCCard
 from Tasks.changes_for_author_task import ChangesForAuthorTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -41,45 +36,6 @@ class CFACardTest(CommonTest):
       own test cases. We are covering only state changes, generation of the card, and UI elements
       and the function of the "These changes have been made" button.
   """
-  email_text = {0: 'In the Ethics statement card, you have selected Yes to one of the '
-      'questions. In the box provided, please include the appropriate approval information, '
-      'as well as any additional requirements listed.',
-                1: '',
-                2: 'In the Data Availability card, you have selected Yes in response to '
-      'Question 1, but you have not fill in the text box under Question 2 explaining how '
-      'your data can be accessed. Please choose the most appropriate option from the list '
-      'and paste into the text box.',
-                3: 'In the Data Availability card, you have mentioned your data has been '
-      'submitted to the Dryad repository. Please provide the reviewer URL in the text box '
-      'under question 2 so that your submitted data can be reviewed.',
-                4: 'The list of authors in your manuscript file does not match the list of '
-      'authors in the Authors card. Please ensure these are consistent.',
-                5: 'Please provide a unique and current email address for each contributing '
-      'author. It is important that you provide a working email address as we will contact '
-      'each author to confirm authorship.',
-                6: '',
-                7: 'In the Competing Interests card, you have selected Yes, but not provided '
-      'an explanation in the box provided. Please take this opportunity to include all '
-      'relevant information.',
-                8: 'Please complete the Financial Disclosure card. This section should '
-      'describe sources of funding that have supported the work. Please include relevant '
-      'grant numbers and the URL of any funder\'s Web site. If the funders had a role in the '
-      'manuscript, please include a description in the box provided.',
-                9: '',
-                10: '',
-                11: 'We are unable to preview or download Figure [X]. Please upload a higher '
-      'quality version, preferably in TIF or EPS format and ensure the uploaded version can '
-      'be previewed and downloaded before resubmitting your manuscript.',
-                12: 'Please remove captions from figure or supporting information files and '
-      'ensure each file has a caption present in the manuscript.',
-                13: 'Please provide a caption for [file name] in the manuscript file.',
-                14: 'Please note you have cited a file, [file name], in your manuscript that '
-      'has not been included with your submission. Please upload this file, or if this file '
-      'was cited in error, please remove the corresponding citation from your manuscript.',
-                15: 'Please upload a \'Response to Reviewers\' Word document in the Supporting'
-      ' Information card. This file should address all reviewer comments from the original '
-      'submission point-by-point.',
-                }
 
   def test_cfa_from_itc_card(self):
     """
@@ -120,7 +76,7 @@ class CFACardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
@@ -139,14 +95,14 @@ class CFACardTest(CommonTest):
     time.sleep(2)
     issues_text = itc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-            '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
-                index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-            '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
-                index, issues_text)
+      if not checked and itc_card.email_text[index]:
+        assert itc_card.email_text[index] in issues_text, \
+            '{0} (Not checked item #{1}) not in {2}'.format(itc_card.email_text[index],
+                                                            index, issues_text)
+      elif checked and itc_card.email_text[index]:
+        assert itc_card.email_text[index] not in issues_text, \
+            '{0} (Checked item #{1}) not in {2}'.format(itc_card.email_text[index],
+                                                        index, issues_text)
     time.sleep(1)
     itc_card.click_send_changes_btn()
     all_success_messages = itc_card.get_flash_success_messages()
@@ -159,7 +115,7 @@ class CFACardTest(CommonTest):
     try:
       itc_card._get(itc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
-      #raise ElementExistsAssertionError('There is an unexpected error message')
+      # raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('WARNING: An error message fired on Send Changes to Author for ITC card')
     except ElementDoesNotExistAssertionError:
       pass
@@ -189,8 +145,7 @@ class CFACardTest(CommonTest):
     logging.info('Current publishing state is {0}'.format(cfa_complete_state))
     assert cfa_complete_state == 'submitted', cfa_complete_state
 
-
-  def rest_cfa_from_rtc_card(self):
+  def test_cfa_from_rtc_card(self):
     """
     test_changes_for_author: Test the creation of the Changes for Author card from the RTC card.
     Validates the elements, styles, roles and functions of Changes for Author card, including
@@ -229,14 +184,14 @@ class CFACardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(4)
-    # add card ITC with add new card if not present
+    # add card RTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Revision Tech Check'):
       workflow_page.add_card('Revision Tech Check')
@@ -248,14 +203,14 @@ class CFACardTest(CommonTest):
     time.sleep(2)
     issues_text = rtc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-          '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
-                                                          index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-          '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
-                                                      index, issues_text)
+      if not checked and rtc_card.email_text[index]:
+        assert rtc_card.email_text[index] in issues_text, \
+            '{0} (Not checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
+                                                            index, issues_text)
+      elif checked and rtc_card.email_text[index]:
+        assert rtc_card.email_text[index] not in issues_text, \
+            '{0} (Checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
+                                                        index, issues_text)
     time.sleep(1)
     rtc_card.click_send_changes_btn()
     all_success_messages = rtc_card.get_flash_success_messages()
@@ -263,10 +218,10 @@ class CFACardTest(CommonTest):
     assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
     assert 'The author has been notified via email that changes are needed. They will also ' \
            'see your message the next time they log in to see their manuscript.' in success_msgs, \
-      success_msgs
+        success_msgs
     # Check not error message
     try:
-      rtc_card._get(itc_card._flash_error_msg)
+      rtc_card._get(rtc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
       # raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('WARNING: An error message fired on Send Changes to Author for RTC card')
@@ -298,8 +253,7 @@ class CFACardTest(CommonTest):
     logging.info('Current publishing state is {0}'.format(cfa_complete_state))
     assert cfa_complete_state == 'submitted', cfa_complete_state
 
-
-  def rest_cfa_from_ftc_card(self):
+  def test_cfa_from_ftc_card(self):
     """
     test_changes_for_author: Test the creation of the Changes for Author card from the FTC card.
     Validates the elements, styles, roles and functions of Changes for Author card, including
@@ -338,7 +292,7 @@ class CFACardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
@@ -357,14 +311,14 @@ class CFACardTest(CommonTest):
     time.sleep(2)
     issues_text = ftc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-          '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
-                                                          index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-          '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
-                                                      index, issues_text)
+      if not checked and ftc_card.email_text[index]:
+        assert ftc_card.email_text[index] in issues_text, \
+            '{0} (Not checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
+                                                            index, issues_text)
+      elif checked and ftc_card.email_text[index]:
+        assert ftc_card.email_text[index] not in issues_text, \
+            '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
+                                                        index, issues_text)
     time.sleep(1)
     ftc_card.click_send_changes_btn()
     all_success_messages = ftc_card.get_flash_success_messages()
@@ -372,7 +326,7 @@ class CFACardTest(CommonTest):
     assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
     assert 'The author has been notified via email that changes are needed. They will also ' \
            'see your message the next time they log in to see their manuscript.' in success_msgs, \
-      success_msgs
+        success_msgs
     # Check not error message
     try:
       ftc_card._get(ftc_card._flash_error_msg)
@@ -406,7 +360,6 @@ class CFACardTest(CommonTest):
     cfa_complete_state = final_db_submission_data[0][0]
     logging.info('Current publishing state is {0}'.format(cfa_complete_state))
     assert cfa_complete_state == 'submitted', cfa_complete_state
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -28,40 +28,6 @@ class FTCCardTest(CommonTest):
   """
   Validate the elements, styles, functions of the Final Tech Check card
   """
-  email_text = {0: '',
-                1: 'Please ensure that all of the following sections are present and '
-      'appear in your manuscript file in the following order: Title, Authors, '
-      'Affiliations, Abstract, Introduction, Results, Discussion, Materials and '
-      'Methods, References, Acknowledgments, and Figure Legends. More detailed '
-      'guidelines can be found on our website: '
-      'http://journals.plos.org/plosbiology/s/submission-guidelines#loc-manuscript-'
-      'organization.',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: 'Please complete the Financial Disclosure Statement field of the '
-      'online submission form.',
-                7: 'This section should describe sources of funding that have '
-      'supported the work. Please include relevant grant numbers and the URL of any '
-      'funder\'s Web site.',
-                8: 'Your Figure is not easily legible. Please provide a higher '
-      'quality version of this Figure while ensuring the file size remains below '
-      '10MB. We recommend saving your figures as TIFF files using LZW compression.'
-      ' More detailed guidelines can be found on our website: '
-      'http://journals.plos.org/plosbiology/s/figures.',
-                9: 'Please note you have cited a file in your manuscript that has not'
-      ' been included with your submission. Please upload this file, or if this file '
-      'was cited in error, please remove the corresponding citation from your '
-      'manuscript.',
-                10: '',
-                11: 'Please note that our policy requires the removal of any mention '
-      'of billing information from the cover letter. I have forwarded your query to '
-      'our Billing Team (authorbilling@plos.org). Further infromation about Publication'
-      ' Fees can be found here: http://www.plos.org/publications/publication-fees/. '
-      'Thank you, PLOS Biology',
-                12: '',
-                }
 
   def test_ftc_card(self):
     """
@@ -113,13 +79,13 @@ class FTCCardTest(CommonTest):
     time.sleep(2)
     issues_text = ftc_card.get_issues_text()
     for index, checked in enumerate(data):
-      if not checked and self.email_text[index]:
-        assert self.email_text[index] in issues_text, \
-            '{0} (Not checked item #{1}) not in {2}'.format(self.email_text[index],
+      if not checked and ftc_card.email_text[index]:
+        assert ftc_card.email_text[index] in issues_text, \
+            '{0} (Not checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
                 index, issues_text)
-      elif checked and self.email_text[index]:
-        assert self.email_text[index] not in issues_text, \
-            '{0} (Checked item #{1}) not in {2}'.format(self.email_text[index],
+      elif checked and ftc_card.email_text[index]:
+        assert ftc_card.email_text[index] not in issues_text, \
+            '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
                 index, issues_text)
     time.sleep(2)
     ftc_card.click_send_changes_btn()

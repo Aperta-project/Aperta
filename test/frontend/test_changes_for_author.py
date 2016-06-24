@@ -20,8 +20,8 @@ from Base.Resources import creator_login1, creator_login2, creator_login3, creat
     super_admin_login, academic_editor_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
-# from Cards.revision_tech_check_card import RTCCard
-# from Cards.final_tech_check_card import FTCCard
+from Cards.revision_tech_check_card import RTCCard
+from Cards.final_tech_check_card import FTCCard
 from Tasks.changes_for_author_task import ChangesForAuthorTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -133,7 +133,7 @@ class CFACardTest(CommonTest):
       workflow_page.add_card('Initial Tech Check')
     # click on ITC
     itc_card = ITCCard(self.getDriver())
-    workflow_page.click_itc_card()
+    workflow_page.click_initial_tech_check_card()
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     time.sleep(2)
@@ -190,7 +190,7 @@ class CFACardTest(CommonTest):
     assert cfa_complete_state == 'submitted', cfa_complete_state
 
 
-  def rest_cfa_from_rtc_card(self):
+  def test_cfa_from_rtc_card(self):
     """
     test_changes_for_author: Test the creation of the Changes for Author card from the RTC card.
     Validates the elements, styles, roles and functions of Changes for Author card, including
@@ -299,7 +299,7 @@ class CFACardTest(CommonTest):
     assert cfa_complete_state == 'submitted', cfa_complete_state
 
 
-  def rest_cfa_from_ftc_card(self):
+  def test_cfa_from_ftc_card(self):
     """
     test_changes_for_author: Test the creation of the Changes for Author card from the FTC card.
     Validates the elements, styles, roles and functions of Changes for Author card, including

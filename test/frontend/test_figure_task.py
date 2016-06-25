@@ -65,9 +65,13 @@ class WithdrawManuscriptTest(CommonTest):
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     figures_task.validate_styles()
     figures_task.check_question()
+    figures_list = []
     for i in range(0, 4):
-      figures_task.upload_figure()
+      figure_file = figures_task.upload_figure()
+      figures_list.append(figure_file)
       time.sleep(2)
+    figures_list.sort(reverse=True)
+    logging.info(figures_list)
     figures_task.logout()
 
     # Login as a privileged user to check the Card view of the figures task
@@ -85,6 +89,7 @@ class WithdrawManuscriptTest(CommonTest):
     #   otherwise failures
     time.sleep(10)
     workflow_page.click_card('figures')
+
     time.sleep(10)
 
 

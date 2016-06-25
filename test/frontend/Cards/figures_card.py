@@ -21,6 +21,16 @@ class FiguresCard(BaseCard):
     self._question_label = (By.CLASS_NAME, 'question-checkbox')
     self._question_check = (By.CLASS_NAME, 'ember-checkbox')
     self._add_new_figures_btn = (By.CLASS_NAME, 'button-primary')
+    self._populated_figure_listing = (By.CLASS_NAME, 'attachment-thumbnail')
+    self._populated_figure_preview = (By.CLASS_NAME, 'image-thumbnail')
+    self._populated_figure_view_detail = (By.CSS_SELECTOR,
+                                          'div.image-hover-buttons button.view-attachment-detail')
+    self._populated_figure_replace = (By.CSS_SELECTOR, 'div.image-hover-buttons button.replace')
+    self._populated_figure_dl_link = (By.CLASS_NAME, 'download-link')
+    self._populated_figure_view_title = (By.CSS_SELECTOR, 'h2.title')
+    self._populated_figure_edit_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-pencil')
+    self._populated_figure_delete_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-trash')
+
 
    #POM Actions
 
@@ -65,8 +75,3 @@ class FiguresCard(BaseCard):
     else:
       return False
 
-  def upload_figure(self, file_path):
-    """
-    Placeholder for a function to upload a tiff file in the Figures Card
-    """
-    pass

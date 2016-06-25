@@ -75,11 +75,11 @@ class FiguresTask(BaseTask):
     Function to upload a figure file
     :param figure: Name of the figure to upload. If blank will default to 'random', this will choose
       one of available figures
-    :return void function
+    :return filename of uploaded figure
     """
     if figure == 'random':
-      fig2upload = random.choice(figures)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/{0}'.format(fig2upload))
+      figure = random.choice(figures)
+      fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/{0}'.format(figure))
     else:
       fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/', figure)
     logging.info('Sending figure: {0}'.format(fn))
@@ -89,3 +89,4 @@ class FiguresTask(BaseTask):
     add_new_figures_btn.click()
     # Time needed for script execution.
     time.sleep(7)
+    return figure

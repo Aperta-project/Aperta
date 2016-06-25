@@ -133,6 +133,7 @@ class AuthenticatedPage(PlosPage):
     self._invite_reviewers_card = None
     self._production_metadata_card = None
     self._register_decision_card = None
+    self._related_articles_card = None
     self._reviewer_report_card = None
     self._revision_tech_check_card = None
     self._send_to_apex_card = None

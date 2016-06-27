@@ -1,11 +1,8 @@
 require 'rails_helper'
 
 describe SupportingInformationFileUploader do
-  around do |example|
-    AttachmentUploader.storage :file
-    example.run
-    AttachmentUploader.storage Rails.application.config.carrierwave_storage
-  end
+  include_examples 'standard attachment image transcoding'
+  include_examples 'standard attachment image resizing'
 
   describe '#store_dir' do
     let(:uploader) { described_class.new(model, :attachment) }

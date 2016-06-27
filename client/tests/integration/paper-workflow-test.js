@@ -19,7 +19,7 @@ module('Integration: Paper Workflow page', {
     Factory.resetFactoryIds();
     app = startApp();
     server = setupMockServer();
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     let taskPayload = {
       task: {
@@ -78,33 +78,29 @@ module('Integration: Paper Workflow page', {
 
 test('transition to route without permission fails', function(assert){
   expect(1);
-  Ember.run.later(function(){
-    var store = getStore();
-    store.all('permission').invoke('destroyRecord');
+  var store = getStore();
+  Ember.run(() => store.peekAll('permission').invoke('unloadRecord'));
 
-    visit('/papers/1/workflow');
-    andThen(function(){
-      assert.equal(
-        currentPath(),
-        'dashboard.index',
-        "Should have redirected to the dashboard"
-      );
-    });
+  visit('/papers/1/workflow');
+  andThen(function(){
+    assert.equal(
+      currentPath(),
+      'dashboard.index',
+      "Should have redirected to the dashboard"
+    );
   });
 });
 
 test('transition to route with permission succeeds', function(assert){
   expect(1);
-  Ember.run.later(function(){
-    visit('/papers/1/workflow');
+  visit('/papers/1/workflow');
 
-    andThen(function(){
-      assert.equal(
-        currentPath(),
-        'paper.workflow.index',
-        'Should have visited the workflow page'
-      );
-    });
+  andThen(function(){
+    assert.equal(
+      currentPath(),
+      'paper.workflow.index',
+      'Should have visited the workflow page'
+    );
   });
 });
 

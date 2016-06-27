@@ -21,7 +21,7 @@ class FiguresController < ApplicationController
 
   def update
     figure.update_attributes figure_params
-    respond_with figure
+    render json: figure
   end
 
   def update_attachment

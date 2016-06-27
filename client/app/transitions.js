@@ -22,4 +22,12 @@ export default function() {
     this.use('slideToLeft', discussionsOptions),
     this.reverse('slideToRight', discussionsOptions)
   );
+
+  this.transition(
+    this.childOf('#figure-list'),
+    this.use('explode', {
+      matchBy: 'data-figure-id',
+      use: ['fly-to', {duration: 600, easing: 'easeOutCubic'}]
+    })
+  );
 }

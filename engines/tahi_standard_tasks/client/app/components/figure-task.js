@@ -8,20 +8,25 @@ export default TaskComponent.extend(FileUploadMixin, {
   }),
 
   figures: Ember.computed(
-    'task.paper.figures.[]', 'task.paper.figures.@each.createdAt', function() {
-      return (this.get('task.paper.figures') || [])
-                .sortBy('createdAt').reverse();
+    'task.paper.figures.@each.rank', function() {
+      let figs = this.get('task.paper.figures');
+      if (Ember.isPresent(figs)) {
+        let labelled = figs.filterBy('rank').sortBy('rank');
+        let unlabelled = figs.rejectBy('rank');
+        return labelled.concat(unlabelled);
+      } else {
+        return [];
+      }
     }
   ),
 
   actions: {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
-      this.get('store').pushPayload('figure', data);
     },
 
-    destroyAttachment(attachment) {
-      attachment.destroyRecord();
+    destroyFigure(figure) {
+      figure.destroyRecord();
     },
 
     // get updated paper text with figure inserted

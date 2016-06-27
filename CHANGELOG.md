@@ -20,6 +20,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   reviewers when declining invitation.
 - Ability to remove user roles via CSV file.
 ### Changed
+- The Figure task has been reworked.  It's now much simpler to reorder figures after uploading.
 ### Deprecated
 ### Removed
 ### Fixed

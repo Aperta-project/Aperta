@@ -96,14 +96,14 @@ describe Figure, redis: true do
       expect(figure.rank).to eq 42
     end
 
-    it 'is nil if the title can not be coerced into an integer' do
+    it 'is 0 if the title can not be coerced into an integer' do
       figure = create :figure, title: "I didn't follow instructions"
-      expect(figure.rank).to be_nil
+      expect(figure.rank).to eq 0
     end
 
-    it 'is nil if the title is nil' do
+    it 'is 0 if the title is nil' do
       figure = create :figure, title: nil
-      expect(figure.rank).to be_nil
+      expect(figure.rank).to eq 0
     end
   end
 

@@ -4,8 +4,4 @@ export default ApplicationSerializer.extend({
   serializeIntoHash(data, type, record, options) {
     return data['attachment'] = this.serialize(record, options);
   },
-
-  primaryTypeName() {
-    return 'attachment';
-  }
 });

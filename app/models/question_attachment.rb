@@ -1,7 +1,7 @@
 # QuestionAttachment is a file attached to an answer for a specific question.
 # It will have an owner of NestedQuestionAnswer.
 class QuestionAttachment < Attachment
-  mount_uploader :file, QuestionAttachmentUploader
+  attachment_uploader QuestionAttachmentUploader
 
   def download!(url)
     super(url)

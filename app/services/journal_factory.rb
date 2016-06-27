@@ -329,16 +329,15 @@ class JournalFactory
       task_klasses = Task.submission_task_types
 
       # AEs cannot view billing task or reviewer recommendation tasks
-      task_klasses -=  [
+      task_klasses -= [
         PlosBilling::BillingTask,
-        TahiStandardTasks::RegisterDecisionTask
+        TahiStandardTasks::RegisterDecisionTask,
+        TahiStandardTasks::ReviewerRecommendationsTask
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end
-
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask)
     end
 
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|

@@ -21,13 +21,13 @@ describe Attachment do
       end.to change(attachment, :paper).to task.paper
     end
 
-    it 'is set when the build thru an association that has a paper' do
+    it 'is set when the attachment is built thru an association whose owner has a paper' do
       attachment = task.attachments.build
       expect(attachment.paper).to eq(paper)
       expect(attachment.paper_id).to eq(paper.id)
     end
 
-    it 'is set when the creating thru an association that has a paper' do
+    it 'is set when the attachment is created thru an association whose owner has a paper' do
       attachment = task.attachments.create
       expect(attachment.paper).to eq(paper)
       expect(attachment.paper_id).to eq(paper.id)

@@ -4,19 +4,19 @@
   {{select-2-single
     class="assignment-role-input"
     minimumInputLength=0
-    name="journal_roles"
-    placeholder="Please select Role"
+    name="letter_templates"
+    placeholder="Please select the letter template"
     selectedData=nil
     source=templates
-    selectionSelected="didSelectRole"
+    selectionSelected="didSelectTemplate"
     value=""
-    width="200px"}}
+    width="350px"}}
 
   <div class='input-group'>
     <div class='input-group-addon'>
       To:
     </div>
-    <input type='text' class='form-control' placeholder='amount'>
+    <input type='text' class='form-control' placeholder='someone@example.edu' value={{authorEmail}}>
   </div>
 
   <div class='input-group'>
@@ -24,7 +24,7 @@
       Subject:
     </div>
   {{input name=ident
-        value=model.answer.value
+        value=subjectLine
         class=inputClassNames
         placeholder=placeholder
         type=type}}

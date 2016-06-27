@@ -6,6 +6,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   canEdit: null,   // passed-in,
   journal: null,   // passed-in,
   uploadLogoFunction: null,
+  authorEmail: Ember.computed('task', function() {
+    return this.get('task.paper.creator.email');
+  }),
 
   inputClassNames: ['form-control'],
 

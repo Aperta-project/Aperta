@@ -158,12 +158,12 @@ export default ActiveModelSerializer.extend({
       primaryKey = singularPrimaryKey.pluralize();
 
     // author_task: {} ===> author_tasks: [{}]
-    payload = this.pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload, assumeObject);
+    let newPayload = this.pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload, assumeObject);
 
     let primaryContent = payload[primaryKey];
     // if the primary key's content has a type, and that type is different than the modelName,
     // then THAT type should be the model name when we call super.
-    let newModelName = this.getPolymorphicModelName(modelName, primaryContent);
+    let newModelName = this.getPolymorphicModelName(modelName, newPayload[primaryKey]);
 
     // the payload is 'polymorphic' if the returned type is different than the one we asked for,
     // or if the payload has multiple different types.
@@ -171,12 +171,11 @@ export default ActiveModelSerializer.extend({
 
     // loop through each key in the payload and move models into buckets based on their dasherized and pluralized 'type'
     // attributes if they have them
-    //
-    this.distributeRecordsByType(payload);
+    this.distributeRecordsByType(newPayload);
 
-    this.removeEmptyArrays(payload);
+    this.removeEmptyArrays(newPayload);
 
-    return {newModelName, payload, isPolymorphic};
+    return {newModelName, payload: newPayload, isPolymorphic};
   },
 
   normalizePayload(rawPayload){

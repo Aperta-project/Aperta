@@ -328,11 +328,10 @@ class JournalFactory
 
       task_klasses = Task.submission_task_types
 
-      # AEs cannot view billing task or reviewer recommendation tasks
+      # AEs cannot view billing task or register decision tasks
       task_klasses -= [
         PlosBilling::BillingTask,
-        TahiStandardTasks::RegisterDecisionTask,
-        TahiStandardTasks::ReviewerRecommendationsTask
+        TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
       task_klasses.each do |klass|

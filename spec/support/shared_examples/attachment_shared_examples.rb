@@ -1,3 +1,84 @@
+RSpec.shared_examples_for 'attachment#download! sets the file_hash' do
+  before do
+    subject || fail('The calling example was expected to set up the subject, but it did not.')
+    url || fail('The calling example was expected to set up a :url, but it did not.')
+  end
+
+  it 'sets the file_hash' do
+    fixture_file = Rails.root.join('spec/fixtures', File.basename(url))
+    unless File.exists?(fixture_file)
+      fail <<-ERROR.strip_heredoc
+        There is no local fixture file with a name matching the file in the
+        provided url:
+
+        url provided: #{url}
+        looking for file: #{fixture_file}
+
+        A fixture file needs to exist in order to determine that the file_hash
+        is set correctly.
+      ERROR
+    end
+
+    expect do
+      subject.download!(url)
+    end.to change {
+      subject.file_hash
+    }.to Digest::SHA256.hexdigest(IO.read(fixture_file))
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! stores the file' do
+  before do
+    subject || fail('The calling example was expected to set up the subject, but it did not.')
+    url || fail('The calling example was expected to set up a :url, but it did not.')
+  end
+
+  it 'downloads the file at the given URL, caches the s3 store_dir' do
+    expect do
+      subject.download!(url)
+    end.to change { subject.file.path }.to match(File.basename(url))
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! caches the s3 store_dir' do
+  before do
+    subject || fail('The calling example was expected to set up the subject, but it did not.')
+    url || fail('The calling example was expected to set up a :url, but it did not.')
+  end
+
+  it 'caches the s3 store_dir' do
+    expect do
+      subject.download!(url)
+    end.to change { subject.s3_dir }.to subject.file.store_dir
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! sets title to file name' do
+  before do
+    subject || fail('The calling example was expected to set up the subject, but it did not.')
+    url || fail('The calling example was expected to set up a :url, but it did not.')
+  end
+
+  it 'sets the title' do
+    expect do
+      subject.download!(url)
+    end.to change { subject.title }.to eq(File.basename(url))
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! sets the status' do
+  before do
+    subject || fail('The calling example was expected to set up the subject, but it did not.')
+    url || fail('The calling example was expected to set up a :url, but it did not.')
+  end
+
+  it 'sets the status to done' do
+    expect do
+      subject.download!(url)
+    end.to change { subject.status }.to self.described_class::STATUS_DONE
+  end
+end
+
 RSpec.shared_examples_for 'standard attachment image transcoding' do
   around do |example|
     # Do not change this to described_class or the subclass. CarrierWave
@@ -74,7 +155,7 @@ RSpec.shared_examples_for 'standard attachment image resizing' do
     example.run
     AttachmentUploader.storage Rails.application.config.carrierwave_storage
   end
-  
+
   describe "image resizing" do
     let(:paper) { double("paper", id: "1") }
     let(:model) { double("attachment_model", paper: paper, id: "0") }

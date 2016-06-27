@@ -23,15 +23,6 @@
 
   <div class="decision-selections">
     <label class="decision-label">
-      {{radio-button value="accept"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Accept
-    </label>
-
-    <label class="decision-label">
       {{radio-button value="reject"
                      selection=latestDecision.verdict
                      disabled=nonPublishable
@@ -56,6 +47,15 @@
                      name="decision"
                      action=(action "setDecisionTemplate")}}
       Minor Revision
+    </label>
+
+    <label class="decision-label">
+      {{radio-button value="accept"
+                     selection=latestDecision.verdict
+                     disabled=nonPublishable
+                     name="decision"
+                     action=(action "setDecisionTemplate")}}
+      Accept
     </label>
   </div>
 

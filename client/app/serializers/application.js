@@ -100,9 +100,7 @@ export default ActiveModelSerializer.extend({
   },
 
   getPolymorphicModelName(modelName, records) {
-    if(!Ember.isArray(records)){
-      records = [records];
-    }
+    records = Ember.makeArray(records);
 
     if (records && records[0] && records[0].type) {
       return records[0].type.dasherize();

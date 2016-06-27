@@ -26,16 +26,12 @@ describe Figure, redis: true do
   describe '#download!', vcr: { cassette_name: 'figures' } do
     subject(:figure) { FactoryGirl.create(:figure, title: nil, owner: paper) }
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+    let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
-    it 'downloads the file at the given URL, caches the s3 store_dir' do
-      figure.download!(url)
-      figure.reload
-      expect(figure.file.path).to match(/bill_ted1\.jpg/)
-
-      expect(figure.file.store_dir).to be
-      expect(figure.s3_dir).to eq(figure.file.store_dir)
-    end
+    include_examples 'attachment#download! stores the file'
+    include_examples 'attachment#download! caches the s3 store_dir'
+    include_examples 'attachment#download! sets the file_hash'
+    include_examples 'attachment#download! sets the status'
 
     it 'sets the title, status, and rank' do
       figure.download!(url)

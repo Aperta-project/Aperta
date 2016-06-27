@@ -18,23 +18,13 @@ describe SupportingInformationFile, redis: true do
 
   describe '#download!', vcr: { cassette_name: 'supporting_info_file' } do
     subject(:si_file) { FactoryGirl.create(:supporting_information_file) }
-    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+    let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
-    it 'downloads the file at the given URL, caches the s3 store_dir' do
-      si_file.download!(url)
-      si_file.reload
-      expect(si_file.file.path).to match(/bill_ted1\.jpg/)
-
-      expect(si_file.file.store_dir).to be
-      expect(si_file.s3_dir).to eq(si_file.file.store_dir)
-    end
-
-    it 'sets the title and status' do
-      si_file.download!(url)
-      si_file.reload
-      expect(si_file.title).to eq('bill_ted1.jpg')
-      expect(si_file.status).to eq(self.described_class::STATUS_DONE)
-    end
+    include_examples 'attachment#download! stores the file'
+    include_examples 'attachment#download! caches the s3 store_dir'
+    include_examples 'attachment#download! sets the file_hash'
+    include_examples 'attachment#download! sets title to file name'
+    include_examples 'attachment#download! sets the status'
   end
 
   describe '#filename' do

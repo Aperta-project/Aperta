@@ -1,17 +1,12 @@
-class Figure < ActiveRecord::Base
-  include EventStream::Notifiable
+# A Figure is an image the author provides, that is included as part of the
+# manuscript, to elucidate upon the point they are trying to make. Figures are
+# typically graphs, charts, or other scientific extrapolations of data.
+class Figure < Attachment
   include CanBeStrikingImage
-  include ProxyableResource
-
-  # writes to `token` attr on create
-  # `regenerate_token` for new token
-  has_secure_token
-
-  belongs_to :paper
 
   default_scope { order(:id) }
 
-  mount_uploader :attachment, AttachmentUploader
+  attachment_uploader AttachmentUploader
 
   after_save :insert_figures!, if: :should_insert_figures?
   after_destroy :insert_figures!
@@ -22,18 +17,12 @@ class Figure < ActiveRecord::Base
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end
 
-  def filename
-    self[:attachment]
-  end
-
-  # This is a hash used for recognizing changes in file contents; if
-  # the file doens't exist, or if we can't connect to amazon, minimal
-  # harm comes from returning nil instead. The error thrown is,
-  # unfortunately, not wrapped by carrierwave.
-  def file_hash
-    attachment.file.attributes[:etag]
-  rescue
-    nil
+  def download!(url)
+    super(url)
+    update_attributes!(
+      title: title || file.filename,
+      status: STATUS_DONE
+    )
   end
 
   def alt
@@ -56,14 +45,6 @@ class Figure < ActiveRecord::Base
     { filename: filename, alt: alt, id: id, src: src }
   end
 
-  def should_insert_figures?
-    (title_changed? || attachment_changed?) && all_figures_done?
-  end
-
-  def all_figures_done?
-    paper.figures.all? { |figure| figure.status == 'done' }
-  end
-
   def rank
     return unless title
     number_match = title.match /\d+/
@@ -72,7 +53,11 @@ class Figure < ActiveRecord::Base
 
   private
 
-  def done?
-    status == 'done'
+  def should_insert_figures?
+    (title_changed? || file_changed?) && all_figures_done?
+  end
+
+  def all_figures_done?
+    paper.figures.all?(&:done?)
   end
 end

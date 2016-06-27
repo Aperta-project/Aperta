@@ -5,9 +5,9 @@ class ResourceProxyController < ApplicationController
 
   def url
     if params[:version]
-      redirect_to resource.attachment.url(params[:version])
+      redirect_to resource.file.url(params[:version])
     else
-      redirect_to resource.attachment.url
+      redirect_to resource.file.url
     end
   end
 
@@ -25,6 +25,7 @@ class ResourceProxyController < ApplicationController
   def resource_whitelist
     [
       :attachments,
+      :adhoc_attachments,
       :figures,
       :question_attachments,
       :supporting_information_files

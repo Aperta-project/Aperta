@@ -5,8 +5,8 @@ describe QuestionAttachmentSerializer, serializer_test: true do
     FactoryGirl.create(
       :question_attachment,
       title: 'La Attachment',
-      attachment: File.open('spec/fixtures/yeti.tiff'),
-      status: 'done'
+      file: File.open('spec/fixtures/yeti.tiff'),
+      status: QuestionAttachment::STATUS_DONE
     )
   end
   let(:object_for_serializer) { attachment }

@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :figure do
-    paper
+    association :owner, factory: :paper
   end
 end

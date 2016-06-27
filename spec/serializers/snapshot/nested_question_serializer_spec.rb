@@ -96,10 +96,12 @@ describe Snapshot::NestedQuestionSerializer do
     end
 
     it 'serializes questions with attachments as answers' do
-      attachment = FactoryGirl.build(
+      attachment = FactoryGirl.create(
         :question_attachment,
-        :with_fake_attachment
+        file: File.open('spec/fixtures/yeti.tiff'),
+        status: QuestionAttachment::STATUS_DONE
       )
+
       nested_question.nested_question_answers << FactoryGirl.build(
         :nested_question_answer,
         owner: owner,
@@ -112,10 +114,10 @@ describe Snapshot::NestedQuestionSerializer do
         type: 'properties',
         children: [
           { name: 'id', type: 'integer', value: attachment.id },
-          { name: 'file', type: 'text', value: 'some-attachment.png' },
+          { name: 'file', type: 'text', value: 'yeti.tiff' },
           { name: 'title', type: 'text', value: nil },
           { name: 'caption', type: 'text', value: nil },
-          { name: 'status', type: 'text', value: nil }
+          { name: 'status', type: 'text', value: QuestionAttachment::STATUS_DONE }
         ]
       ])
     end

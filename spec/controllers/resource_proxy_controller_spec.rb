@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 describe ResourceProxyController do
-  let(:file) do
+  subject(:file) do
     with_aws_cassette('supporting_info_file') do
-      FactoryGirl.create :supporting_information_file,
-                         attachment: File.open('spec/fixtures/yeti.tiff'),
-                         status: 'done'
+      FactoryGirl.create(
+        :supporting_information_file,
+        file: File.open('spec/fixtures/yeti.tiff'),
+        status: SupportingInformationFile::STATUS_DONE
+      )
     end
   end
 
@@ -16,7 +18,7 @@ describe ResourceProxyController do
 
     it 'redirects to S3 URL for supporting_information_files' do
       subject
-      target = file.attachment.url
+      target = file.file.url
       expect(subject).to redirect_to(target)
       expect(target).to include('amazonaws')
       expect(target).to include(file.filename)
@@ -33,7 +35,7 @@ describe ResourceProxyController do
 
     it 'redirects to S3 URL for supporting_information_files' do
       subject
-      target = file.attachment.url(:preview)
+      target = file.file.url(:preview)
       expect(subject).to redirect_to(target)
       expect(target).to include('amazonaws')
       # for versions, they are converted to png: yeti.tiff => preview_yeti.png
@@ -72,7 +74,7 @@ describe ResourceProxyController do
           resource: :supporting_information_files,
           token: file.token
 
-      target = file.attachment.url
+      target = file.file.url
       expect(response).to redirect_to(target)
     end
   end

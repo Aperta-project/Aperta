@@ -5,11 +5,12 @@ describe PDFConverter do
   let(:journal) do
     FactoryGirl.create(
       :journal,
-      :with_roles_and_permissions,
+      :with_creator_role,
       pdf_css: 'body { background-color: red; }'
     )
   end
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:converter) { PDFConverter.new(paper, user) }
 
   describe '#convert' do
@@ -47,8 +48,10 @@ describe PDFConverter do
 
     context 'when paper has supporting information files' do
       let(:file) do
-        paper.supporting_information_files
-          .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+        paper.supporting_information_files.create!(
+          owner: task,
+          file: ::File.open('spec/fixtures/yeti.tiff')
+        )
       end
 
       it 'has supporting information' do
@@ -64,7 +67,7 @@ describe PDFConverter do
         expect(file)
         expect(doc.css('.si_preview').count).to be 1
         expect(doc.css('.si_preview').first['src'])
-          .to have_s3_url(file.attachment.url(:preview))
+          .to have_s3_url(file.file.url(:preview))
       end
 
       it 'the si_link urls are non-expiring proxy urls' do
@@ -79,9 +82,10 @@ describe PDFConverter do
       let(:figure) { paper.figures.first }
       let(:figure_img) { doc.css("img").first }
       before do
-        paper.figures
-          .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                  status: 'done'
+        paper.figures.create(
+          file: File.open('spec/fixtures/yeti.tiff'),
+          status: Figure::STATUS_DONE
+        )
         paper.update_attributes(body: "<p>Figure 1.</p>")
       end
 

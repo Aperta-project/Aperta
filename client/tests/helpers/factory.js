@@ -168,7 +168,9 @@ Factory = {
         });
       }
       if (records.length > 0) {
-        return payload[typeName + "s"] = records;
+        var singularRecord = payload[typeName];
+        delete payload[typeName];
+        return payload[typeName + "s"] = records.concat(Ember.makeArray(singularRecord));;
       }
     });
     return payload;

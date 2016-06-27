@@ -1,55 +1,73 @@
+# Attachment represents a generic file/resource. It is intended to be used
+# as a base-class.
+#
+# Note: the subclass(es) should mount the uploader as :file and keep any
+# custom processing/version logic with it. Only generic aspects of an
+# attachment should be pushed up to this base-class.
 class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
+
+  STATUS_DONE = 'done'
+
+  def self.attachment_uploader(uploader_class)
+    mount_uploader :file, uploader_class
+  end
 
   # writes to `token` attr on create
   # `regenerate_token` for new token
   has_secure_token
 
-  belongs_to :task
-  has_one :paper, through: :task
+  belongs_to :owner, polymorphic: true
+  belongs_to :paper
 
-  validates :task, presence: true
+  validates :owner, presence: true
 
-  mount_uploader :file, AdhocAttachmentUploader
+  # set_paper is required when creating attachments thru associations
+  # where the owner is the paper, it bypasses the owner= method.
+  after_initialize :set_paper, if: :new_record?
 
-  IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
-
-  # Where the attachment is placed on S3 is partially determined by the symbol
-  # that is given to `mount_uploader`. ProxyableResource (and it's URL helper)
-  # assumes the AttachmentUploader will be mounted as `attachment`. To prevent a
-  # production S3 data migration we're aliasing `attachment` to `file`.
-  def attachment
-    file
+  def download!(url)
+    file.download! url
+    self.s3_dir = file.store_dir
   end
 
   def filename
     self[:file]
   end
 
-  def src
-    non_expiring_proxy_url if done?
+  # This is a hash used for recognizing changes in file contents; if
+  # the file doens't exist, or if we can't connect to amazon, minimal
+  # harm comes from returning nil instead. The error thrown is,
+  # unfortunately, not wrapped by carrierwave.
+  def file_hash
+    file.file.attributes[:etag]
+  rescue
+    nil
   end
 
-  def detail_src(**opts)
-    non_expiring_proxy_url(version: :detail, **opts) if done? && image?
+  def done?
+    status == STATUS_DONE
   end
 
-  def preview_src
-    non_expiring_proxy_url(version: :preview) if done? && image?
+  def owner=(new_owner)
+    super
+    set_paper
   end
 
-  def image?
-    if file.file
-      IMAGE_TYPES.include? file.file.extension
-    else
-      false
+  def task
+    if owner_type == 'Task'
+      owner
     end
   end
 
   private
 
-  def done?
-    status == 'done'
+  def set_paper
+    if owner_type == 'Paper'
+      self.paper_id = owner_id
+    elsif owner.respond_to?(:paper)
+      self.paper = owner.paper
+    end
   end
 end

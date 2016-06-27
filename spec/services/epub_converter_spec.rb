@@ -5,11 +5,12 @@ describe EpubConverter do
   let(:journal) do
     FactoryGirl.create(
       :journal,
-      :with_roles_and_permissions,
+      :with_creator_role,
       pdf_css: 'body { background-color: red; }'
     )
   end
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:include_source) { false }
   let(:include_cover_image) { true }
 
@@ -56,8 +57,10 @@ describe EpubConverter do
 
       context 'when paper has supporting information files' do
         let(:file) do
-          paper.supporting_information_files
-            .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+          paper.supporting_information_files.create!(
+            owner: task,
+            file: ::File.open('spec/fixtures/yeti.tiff')
+          )
         end
 
         it 'has have supporting information' do
@@ -86,9 +89,10 @@ describe EpubConverter do
 
       context 'when paper has figures' do
         before do
-          paper.figures
-            .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                    status: 'done'
+          paper.figures.create(
+            file: File.open('spec/fixtures/yeti.tiff'),
+            status: Figure::STATUS_DONE
+          )
         end
 
         it 'has expirinig s3 URLs for the images' do

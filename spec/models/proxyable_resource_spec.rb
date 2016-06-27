@@ -5,7 +5,7 @@ describe ProxyableResource, redis: true do
     with_aws_cassette 'supporting_info_files_controller' do
       # SupportingInformationFile includes ProxyableResource
       FactoryGirl.create :supporting_information_file,
-                         attachment: File.open('spec/fixtures/yeti.tiff')
+                         file: File.open('spec/fixtures/yeti.tiff')
     end
   end
 

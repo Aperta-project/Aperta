@@ -1,37 +1,36 @@
 require 'rails_helper'
 
 describe Attachment do
-  subject(:attachment) { FactoryGirl.build(:attachment, :with_task) }
-
-  describe "validations" do
-    it "is valid" do
-      expect(attachment.valid?).to be(true)
-    end
-
-    it "requires a :task" do
-      attachment.task = nil
-      expect(attachment.valid?).to be(false)
-    end
+  subject(:attachment) do
+    FactoryGirl.build(:attachment)
   end
 
-  describe "#image" do
-    it "returns true if the file is of type image" do
-      file = OpenStruct.new(file: OpenStruct.new(extension: "jpg"))
-      expect(attachment).to receive(:file).twice.and_return(file)
-      expect(attachment.image?).to eq(true)
+  describe 'setting #paper' do
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:task) { FactoryGirl.create(:task, paper: paper) }
+
+    it 'is set when assigning #owner and the owner is a Paper' do
+      expect do
+        attachment.owner = paper
+      end.to change(attachment, :paper).to paper
     end
 
-    it "returns false if the file is not of type image" do
-      file = OpenStruct.new(file: OpenStruct.new(extension: "pdf"))
-      expect(attachment).to receive(:file).twice.and_return(file)
-      expect(attachment.image?).to eq(false)
+    it 'is set when assigning #owner and the owner responds to :paper' do
+      expect do
+        attachment.owner = task
+      end.to change(attachment, :paper).to task.paper
     end
-  end
 
-  describe "#filename" do
-    it "returns the proper filename" do
-      attachment.update_attributes file: ::File.open('spec/fixtures/yeti.tiff')
-      expect(attachment.filename).to eq "yeti.tiff"
+    it 'is set when the attachment is built thru an association whose owner has a paper' do
+      attachment = task.attachments.build
+      expect(attachment.paper).to eq(paper)
+      expect(attachment.paper_id).to eq(paper.id)
+    end
+
+    it 'is set when the attachment is created thru an association whose owner has a paper' do
+      attachment = task.attachments.create
+      expect(attachment.paper).to eq(paper)
+      expect(attachment.paper_id).to eq(paper.id)
     end
   end
 end

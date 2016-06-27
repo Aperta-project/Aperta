@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('comment-board-form', 'Unit | Component | comment board form', {
@@ -10,7 +11,13 @@ const charmander = {
   name: 'Charmander Pokémon'
 };
 
-test('#atMentionableUsers', function(assert) {
+const bulbasaur = Ember.Object.create({
+  username: 'bulbasaur',
+  email: 'plant@oak.edu',
+  name: 'Bulbasaur Pokemon'
+});
+
+test('#atMentionableUsers does not have duplicates', function(assert) {
   const userA = Ember.Object.create(charmander);
   const userB = Ember.Object.create(charmander);
 
@@ -21,4 +28,16 @@ test('#atMentionableUsers', function(assert) {
 
   assert.equal(component.get('atMentionableUsers.length'), 1,
                'it should contain no duplicates');
+});
+
+test('#atMentionableUsers does not have the current user', function(assert) {
+  const otherUser = Ember.Object.create(charmander);
+  const currentUser = Ember.Object.create(bulbasaur);
+
+  const component = this.subject({
+    participants: [otherUser, currentUser],
+    currentUser
+  });
+
+  assert.deepEqual(component.get('atMentionableUsers'), [otherUser]);
 });

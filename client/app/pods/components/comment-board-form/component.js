@@ -22,10 +22,12 @@ export default Ember.Component.extend({
 
   atMentionableUsers: Ember.computed('atMentionableUsersUnion', function() {
     const uniqueUsers = [];
+    const currentUsername = this.get('currentUser.username');
 
-    this.get('atMentionableUsersUnion').forEach(function(item){
-      if(!uniqueUsers.isAny('username', item.get('username'))){
-        uniqueUsers.push(item);
+    this.get('atMentionableUsersUnion').forEach(function(user) {
+      if(!uniqueUsers.isAny('username', user.get('username'))
+          && user.get('username') !== currentUsername){
+        uniqueUsers.push(user);
       }
     });
 

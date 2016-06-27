@@ -20,7 +20,7 @@ export default Ember.Component.extend({
 
   atMentionableUsersUnion: Ember.computed.union('participants', 'atMentionableStaffUsers'),
 
-  atMentionableUsers: Ember.computed('atMentionableUsersUnion', function() {
+  atMentionableUsers: Ember.computed('atMentionableUsersUnion.[]', function() {
     const uniqueUsers = [];
     const currentUsername = this.get('currentUser.username');
 

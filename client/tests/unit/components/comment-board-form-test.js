@@ -41,3 +41,18 @@ test('#atMentionableUsers does not have the current user', function(assert) {
 
   assert.deepEqual(component.get('atMentionableUsers'), [otherUser]);
 });
+
+test('#atMentionableUsers updates when a participant is removed',
+function(assert) {
+  const user = Ember.Object.create(charmander);
+  const users = Ember.A([user]);
+
+  const component = this.subject({
+    participants: users
+  });
+
+  assert.deepEqual(component.get('atMentionableUsers'), [user]);
+  users.popObject();
+  assert.deepEqual(component.get('atMentionableUsers'), []);
+});
+

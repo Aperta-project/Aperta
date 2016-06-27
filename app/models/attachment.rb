@@ -10,6 +10,10 @@ class Attachment < ActiveRecord::Base
 
   STATUS_DONE = 'done'
 
+  def self.attachment_uploader(uploader_class)
+    mount_uploader :file, uploader_class
+  end
+
   # writes to `token` attr on create
   # `regenerate_token` for new token
   has_secure_token

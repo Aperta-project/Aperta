@@ -117,6 +117,18 @@ before 'deploy:check:linked_files', :remove_junk do
   end
 end
 
+before 'deploy:migrate', :create_backup do
+  on roles(:db) do
+    within release_path do
+      with rails_env: fetch(:rails_env) do
+        STDERR.puts 'Dumping database...'
+        execute :rake, "db:dump"
+        STDERR.puts "Dumped database backup to ~"
+      end
+    end
+  end
+end
+
 after 'deploy:finished', 'puma:restart'
 
 after 'deploy:finished', 'sidekiq:restart'

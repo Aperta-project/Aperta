@@ -35,9 +35,6 @@ describe AdhocAttachment do
       expect(attachment.title).to eq('bill_ted1.jpg')
       expect(attachment.status).to eq(self.described_class::STATUS_DONE)
     end
-
-    it 'caches the s3 key' do
-    end
   end
 
   describe "#image" do

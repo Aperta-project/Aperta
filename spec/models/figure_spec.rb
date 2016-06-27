@@ -49,7 +49,7 @@ describe Figure, redis: true do
       expect do
         figure.download!(url)
       end.to_not change { figure.reload.title }.from('Great picture!')
-    end
+    end    
   end
 
   describe '#src' do

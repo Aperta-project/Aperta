@@ -6,7 +6,7 @@ FactoryGirl.define do
     minor_version 1
 
     after(:build) do |snapshot|
-      snapshot.source = FactoryGirl.create(:task)
+      snapshot.source ||= FactoryGirl.create(:task)
     end
   end
 end

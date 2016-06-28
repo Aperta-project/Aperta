@@ -7,11 +7,15 @@
 class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
+  include Snapshottable
+
+  self.snapshottable = true
 
   STATUS_DONE = 'done'
 
   def self.attachment_uploader(uploader_class)
     mount_uploader :file, uploader_class
+    skip_callback :save, :after, :remove_previously_stored_file, if: -> { snapshotted? }
   end
 
   # writes to `token` attr on create
@@ -20,6 +24,7 @@ class Attachment < ActiveRecord::Base
 
   belongs_to :owner, polymorphic: true
   belongs_to :paper
+  has_many :snapshots, as: :source, dependent: :destroy
 
   validates :owner, presence: true
 
@@ -53,6 +58,22 @@ class Attachment < ActiveRecord::Base
   def owner=(new_owner)
     super
     set_paper
+  end
+
+  def snapshot
+    snapshots.where(key: snapshot_key)
+  end
+
+  def snapshot_key
+    file_hash
+  end
+
+  def snapshotted?
+    if @previous_model_for_file
+      @previous_model_for_file.snapshot.present?
+    else
+      snapshot.present?
+    end
   end
 
   def task

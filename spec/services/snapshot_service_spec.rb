@@ -24,6 +24,19 @@ describe SnapshotService do
     registry.serialize fake_thing_1.class, with: ExampleSnapshotSerializer
   end
 
+  describe '.snapshot_paper!' do
+    before do
+      allow(paper).to receive(:snapshottable_tasks)
+        .and_return [fake_thing_1]
+    end
+
+    it 'snapshots the paper' do
+      expect do
+        SnapshotService.snapshot_paper!(paper, registry)
+      end.to change { Snapshot.count }
+    end
+  end
+
   describe '#preview' do
     context "each snapshot" do
       let(:snapshots) { Snapshot.all.order('id') }

@@ -7,6 +7,11 @@ class SnapshotService
     @registry ||= Registry.new
   end
 
+  def self.snapshot_paper!(paper, registry = SnapshotService.regisry)
+    snapshot_service = new(paper, registry)
+    snapshot_service.snapshot!(paper.snapshottable_tasks)
+  end
+
   def initialize(paper, registry = SnapshotService.registry)
     @paper = paper
     @registry = registry

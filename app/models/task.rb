@@ -178,11 +178,6 @@ class Task < ActiveRecord::Base
     Task.submission_types.include?(self.class.name)
   end
 
-  def snapshot_task?
-    return false if Task.snapshot_types.blank?
-    Task.snapshot_types.include?(self.class.name)
-  end
-
   def array_attributes
     [:body]
   end

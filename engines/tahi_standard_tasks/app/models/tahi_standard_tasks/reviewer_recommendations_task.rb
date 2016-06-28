@@ -7,6 +7,8 @@ module TahiStandardTasks
     DEFAULT_TITLE = 'Reviewer Candidates'
     DEFAULT_ROLE = 'author'
 
+    self.snapshottable = true
+
     has_many :reviewer_recommendations,
       dependent: :destroy,
       foreign_key: 'reviewer_recommendations_task_id'

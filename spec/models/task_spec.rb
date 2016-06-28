@@ -3,6 +3,8 @@ require 'rails_helper'
 describe Task do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
+  include_examples 'is not snapshottable'
+
   describe '.restore_defaults' do
     include_examples '<Task class>.restore_defaults does not update title'
     include_examples '<Task class>.restore_defaults does not update old_role'
@@ -204,18 +206,6 @@ describe Task do
     it 'fails with non-tasks' do
       expect { Task.safe_constantize('User') }
         .to raise_error(/constantize disallowed/)
-    end
-  end
-
-  describe 'Task.snapshot_types' do
-    it 'includes all metadata task types' do
-      Task.metadata_task_types.map(&:name).each do |task_name|
-        expect(Task.snapshot_types).to include(task_name)
-      end
-    end
-
-    it 'includes ReviewerRecommendationsTask' do
-      expect(Task.snapshot_types).to include('TahiStandardTasks::ReviewerRecommendationsTask')
     end
   end
 

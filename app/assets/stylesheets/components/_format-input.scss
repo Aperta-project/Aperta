@@ -51,3 +51,16 @@
     color: #555555;
   }
 }
+
+.form-textarea {
+  border-radius: 5px;
+  padding: 30px 10px 10px 10px;
+
+  .format-input-button {
+    margin-top: -20px;
+  }
+
+  .format-input-field {
+    margin-top: 10px;
+  }
+}

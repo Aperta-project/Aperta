@@ -15,6 +15,7 @@ export default DS.Model.extend({
   status: DS.attr('string'),
   title: DS.attr('string'),
   strikingImage: DS.attr('boolean'),
+  rank: DS.attr('number'),
 
   saveDebounced() {
     return Ember.run.debounce(this, this.save, 2000);

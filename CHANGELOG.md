@@ -13,13 +13,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.4.17] - {2016-06-24}
 ### Fixed
 - Tasks were not rendering correctly on some manuscript pages
-
+- Manuscript and accordion scroll independently
 ## [1.4.16] - {2016-06-22}
 ### Added
 - Ability for invited reviewer to provide decline reason and suggested
   reviewers when declining invitation.
 - Ability to remove user roles via CSV file.
 ### Changed
+- The Figure task has been reworked.  It's now much simpler to reorder figures after uploading.
 ### Deprecated
 ### Removed
 ### Fixed
@@ -28,6 +29,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.4.15] - {2016-06-15}
 ### Added
 - Activity feed items for withdraw and reactivate of a manuscript
+- Title and Abstract task to allow internal staff to view and edit the
+  title and abstract of any paper.
 ### Changed
 - Institutional accounts are not pulled from a static list for easier updating
 ### Deprecated

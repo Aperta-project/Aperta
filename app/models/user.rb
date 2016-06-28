@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  after_create :add_user_role, :associate_invites
+  after_create :add_user_role!, :associate_invites
 
   if Rails.configuration.password_auth_enabled
     devise(
@@ -157,10 +157,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  private
-
-  def add_user_role
-    return unless user_role = Role.find_by(name: 'User')
-    assignments.where(role: user_role, assigned_to: self).first_or_create!
+  def add_user_role!
+    return unless Role.user_role
+    assign_to!(assigned_to: self, role: Role.user_role)
   end
 end

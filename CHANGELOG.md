@@ -2,14 +2,43 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## {[version]} - {release date}
 ### Added
-- Ability for invited reviewer to provide decline reason and suggested
-  reviewers when declining invitation.
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## [1.4.17] - {2016-06-24}
+### Fixed
+- Tasks were not rendering correctly on some manuscript pages
+- Manuscript and accordion scroll independently
+## [1.4.16] - {2016-06-22}
+### Added
+- Ability for invited reviewer to provide decline reason and suggested
+  reviewers when declining invitation.
+- Ability to remove user roles via CSV file.
+### Changed
+- The Figure task has been reworked.  It's now much simpler to reorder figures after uploading.
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.4.15] - {2016-06-15}
+### Added
+- Activity feed items for withdraw and reactivate of a manuscript
+- Title and Abstract task to allow internal staff to view and edit the
+  title and abstract of any paper.
+### Changed
+- Institutional accounts are not pulled from a static list for easier updating
+### Deprecated
+### Removed
+- Notification when an invitation was recended
+### Fixed
+- Ad-hoc cards on manuscript manager templates can be edited
+- Figures placement improvements
 ### Security
 
 ## [1.4.14] - {2016-06-08}

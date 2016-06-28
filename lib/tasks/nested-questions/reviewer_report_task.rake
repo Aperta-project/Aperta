@@ -15,23 +15,14 @@ namespace 'nested-questions:seed' do
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
       ident: "reviewer_report--competing_interests",
-      value_type: "text",
-      text: "Do you have any potential or perceived competing interests that may influence your review?",
-      position: 2
-    }
-
-    questions << {
-      owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
-      ident: "reviewer_report--plos_biology_suitable",
       value_type: "boolean",
-      text: "Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments for authors.",
-      position: 3,
+      text: "Do you have any potential or perceived competing interests that may influence your review?",
+      position: 2,
       children: [
         {
           owner_id: nil,
           owner_type: TahiStandardTasks::ReviewerReportTask.name,
-          ident: "reviewer_report--plos_biology_suitable--comment",
+          ident: "reviewer_report--competing_interests--detail",
           value_type: "text",
           text: "Comment",
           position: 1
@@ -42,39 +33,19 @@ namespace 'nested-questions:seed' do
     questions << {
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
-      ident: "reviewer_report--statistical_analysis",
-      value_type: "boolean",
-      text: "Has the statistical analysis been performed appropriately and rigorously?",
-      position: 4,
-      children: [
-        {
-          owner_id: nil,
-          owner_type: TahiStandardTasks::ReviewerReportTask.name,
-          ident: "reviewer_report--statistical_analysis--explanation",
-          value_type: "text",
-          text: "Statistical Analysis Explanation",
-          position: 1
-        }
-      ]
+      ident: "reviewer_report--identity",
+      value_type: "text",
+      text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
+      position: 3
     }
 
     questions << {
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
-      ident: "reviewer_report--standards",
-      value_type: "boolean",
-      text: "Does the manuscript adhere to standards in this field for data availability?",
-      position: 5,
-      children: [
-        {
-          owner_id: nil,
-          owner_type: TahiStandardTasks::ReviewerReportTask.name,
-          ident: "reviewer_report--standards--explanation",
-          value_type: "text",
-          text: "Standards Explanation",
-          position: 1
-        }
-      ]
+      ident: "reviewer_report--comments_for_author",
+      value_type: "text",
+      text: "Add your comments to authors below.",
+      position: 4
     }
 
     questions << {
@@ -82,17 +53,27 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
       ident: "reviewer_report--additional_comments",
       value_type: "text",
-      text: "(Optional) Please offer any additional confidential comments to the editor",
-      position: 6
+      text: "(Optional) If you have any additional confidential comments to the editor, please add them below.",
+      position: 5
     }
 
     questions << {
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerReportTask.name,
-      ident: "reviewer_report--identity",
-      value_type: "text",
-      text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
-      position: 7
+      ident: "reviewer_report--suitable_for_another_journal",
+      value_type: "boolean",
+      text: "If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em> journal</a>?",
+      position: 6,
+      children: [
+        {
+          owner_id: nil,
+          owner_type: TahiStandardTasks::ReviewerReportTask.name,
+          ident: "reviewer_report--suitable_for_another_journal--journal",
+          value_type: "text",
+          text: "Other Journal",
+          position: 1
+        }
+      ]
     }
 
     NestedQuestion.where(

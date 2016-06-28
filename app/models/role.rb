@@ -35,6 +35,10 @@ class Role < ActiveRecord::Base
     end
   end
 
+  def self.user_role
+    find_by(name: Role::USER_ROLE, journal: nil)
+  end
+
   def self.ensure_exists(name, journal: nil,
                                participates_in: [],
                                delete_stray_permissions: true,

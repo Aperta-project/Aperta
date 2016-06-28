@@ -64,10 +64,26 @@ class Figure < ActiveRecord::Base
     paper.figures.all? { |figure| figure.status == 'done' }
   end
 
+  def title_rank_regex
+    /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
+  end
+
+  def create_title_from_filename
+    return if title
+    self.title = "Unlabeled"
+    title_rank_regex.match(attachment.filename) do |match|
+      self.title = "Fig. #{match['label']}"
+    end
+  end
+
   def rank
-    return unless title
+    return 0 unless title
     number_match = title.match /\d+/
-    number_match[0].to_i if number_match
+    if number_match
+      number_match[0].to_i
+    else
+      0
+    end
   end
 
   private

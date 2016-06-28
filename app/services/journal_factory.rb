@@ -73,6 +73,7 @@ class JournalFactory
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)
@@ -211,6 +212,7 @@ class JournalFactory
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)

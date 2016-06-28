@@ -4,6 +4,7 @@
   <p>
     Please confirm that your figures comply with our guidelines for preparation and have not been
     inappropriately manipulated. For information on image manipulation, please see our
+    {{!-- TODO: remove hardcoding as part of APERTA-7056 --}}
     <a href="http://journals.plos.org/plosbiology/s/figures#loc-image-manipulation" target="_blank">general guidance</a>
     notes on image manipulation.
   </p>
@@ -12,20 +13,24 @@
                    owner=task
                    disabled=isNotEditable}}
 
+  <p>Figure labels (e.g. Fig 1) are generated from file names and will automatically place figures above matching legends.</p>
+
   <hr>
 
-  {{#each figures as |figure|}}
-    {{attachment-thumbnail attachment=figure
-                           figure=true
-                           strikingImageAction="changeStrikingImage"
-                           saveAttachment="updateStrikingImage"
-                           destroyAttachment="destroyAttachment"
-                           uploadFinished="uploadFinished"
-                           uploadStarted="uploadStarted"
-                           uploadProgress="uploadProgress"
-                           processingFinished="processingFinished"
+
+  <div id="figure-list">
+    {{#liquid-bind figures as |figuresVersion|}}
+      {{#each figuresVersion key="id" as |figure|}}
+        {{figure-thumbnail figure=figure
+                           destroyFigure=(action "destroyFigure")
+                           uploadFinished=(action "uploadFinished")
+                           uploadStarted=(action "uploadStarted")
+                           uploadProgress=(action "uploadProgress")
+                           processingFinished=(action "processingFinished")
                            isEditable=isEditable}}
-  {{/each}}
+      {{/each}}
+    {{/liquid-bind}}
+  </div>
 
 
   <div id="paper-attachment-uploads">

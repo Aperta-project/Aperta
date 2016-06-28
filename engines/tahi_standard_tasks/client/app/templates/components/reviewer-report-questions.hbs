@@ -6,79 +6,17 @@
                                      readOnly=readOnly}}
   </li>
   <li class="question">
-    {{nested-question-textarea ident="reviewer_report--competing_interests"
+    {{nested-question-radio ident="reviewer_report--competing_interests"
       owner=model
       decision=decision
       displayContent=true
-      helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"
+      helpText="Please review our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-competing-interests'>Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review."
+      readOnly=readoOnly}}
+    {{nested-question-textarea ident="reviewer_report--competing_interests--detail"
+      owner=model
+      decision=decision
+      shouldDisplayQuestionText=false
       readOnly=readOnly}}
-  </li>
-
-  <li class="question">
-      {{#nested-question-radio ident="reviewer_report--plos_biology_suitable"
-                        owner=model
-                        decision=decision
-                        helpText="<strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication' target='_blank'>referee</a> guidelines and comment on:</strong> <li>The novelty and significance of the work; <em>PLOS Biology</em> articles present significant advances in their field;</li> <li>The technical merit of the work, the quality of the data and depth of analysis; </li> <em>PLOS Biology</em> is committed to rigorous experimental and analytical design, and transparent reporting. <li>Please indicate if you feel the conclusions are well-supported with strong and well-controlled evidence. If not, but the manuscript can be revised to provide the required level of support, please indicate which of your proposed revisions would be essential to support the conclusions.</li><br> <li>If the manuscript does not meet the standards of <em>PLOS Biology</em>, we are interested in your opinion about its suitability for <em>PLOS ONE</em>. <em>PLOS ONE</em> articles are selected solely on evaluating whether the study was planned, performed and reported to high scientific and ethical standards, regardless of scope or impact of the work. <em>PLOS Biology</em> is committed to facilitate the transfer of suitable manuscripts to <em>PLOS ONE</em> to reduce redundant review cycles, and we appreciate your support. </li>"
-                        wrapperClass="yes-no-with-comments"
-                        readOnly=readOnly as |radio|}}
-
-        {{#if radio.yieldingForAdditionalData}}
-          {{nested-question-textarea ident="reviewer_report--plos_biology_suitable--comment"
-              owner=model
-              decision=decision
-              displayQuestionText=false
-              displayContent=true
-              noResponseText=""
-              readOnly=readOnly}}
-        {{/if}}
-      {{/nested-question-radio}}
-  </li>
-
-  <li class="question">
-    {{#nested-question-radio ident="reviewer_report--statistical_analysis"
-                      owner=model
-                      decision=decision
-                      wrapperClass="yes-no-with-comments"
-                      readOnly=readOnly as |radio|}}
-      {{#if radio.yieldingForAdditionalData}}
-        {{nested-question-textarea ident="reviewer_report--statistical_analysis--explanation"
-            owner=model
-            decision=decision
-            noResponseText=""
-            displayQuestionText=false
-            displayContent=true
-            readOnly=readOnly}}
-      {{/if}}
-    {{/nested-question-radio}}
-  </li>
-
-  <li class="question">
-    {{#nested-question-radio ident="reviewer_report--standards"
-                      owner=model
-                      decision=decision
-                      helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
-                      wrapperClass="yes-no-with-comments"
-                      readOnly=readOnly as |radio|}}
-      {{#if radio.yieldingForAdditionalData}}
-        {{nested-question-textarea
-            ident="reviewer_report--standards--explanation"
-            owner=model
-            decision=decision
-            noResponseText=""
-            displayQuestionText=false
-            displayContent=true
-            readOnly=readOnly}}
-      {{/if}}
-    {{/nested-question-radio}}
-  </li>
-
-  <li class="question">
-    {{nested-question-textarea ident="reviewer_report--additional_comments"
-                        owner=model
-                        decision=decision
-                        displayContent=true
-                        helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
-                        readOnly=readOnly}}
   </li>
 
   <li class="question">
@@ -86,7 +24,43 @@
                         owner=model
                         decision=decision
                         displayContent=true
-                        helpText="<li>Your name and review will not be published with the manuscript.</li>"
+                        helpText="Your name and review will not be published with the manuscript."
                         readOnly=readOnly}}
   </li>
+
+  <li class="question">
+    {{nested-question-textarea ident="reviewer_report--comments_for_author"
+                        owner=model
+                        decision=decision
+                        displayContent=true
+                        inputClassNames="form-control taller"
+                        helpText="These comments will be transmitted to the author."
+                        readOnly=readOnly}}
+  </li>
+
+  <li class="question">
+    {{nested-question-textarea ident="reviewer_report--additional_comments"
+                        owner=model
+                        decision=decision
+                        displayContent=true
+                        helpText="Additional comments may include concerns about dual publication, research or publication ethics.<br><br>These comments will not be transmitted to the authors."
+                        readOnly=readOnly}}
+  </li>
+
+  <li class="question">
+    {{nested-question-radio ident="reviewer_report--suitable_for_another_journal"
+      owner=model
+      decision=decision
+      readOnly=readOnly
+      helpText="If so, please specify which journal and whether you will be willing to continue there as reviewer. <em>PLOS Biology</em> is committed to facilitate the transfer between journals of suitable manuscripts to reduce redundant review cycles, and we appreciate your support."}}
+
+    {{nested-question-textarea ident="reviewer_report--suitable_for_another_journal--journal"
+      owner=model
+      decision=decision
+      shouldDisplayQuestionText=false
+      readOnly=readOnly}}
+  </li>
+
+
+
 </ol>

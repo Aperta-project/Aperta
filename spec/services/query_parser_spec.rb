@@ -310,7 +310,7 @@ describe QueryParser do
 
       it 'parses USER x HAS ROLE x AND NO ONE HAS ROLE president with extra whitespace' do
         janitor_role = create(:role, name: 'janitor')
-        parse = QueryParser.new.parse "\tUSER someuser HAS     ROLE   janitor   AND NO \rONE\t HAS ROLE  president  "
+        parse = QueryParser.new.parse "\tUSER someuser HAS   \n  ROLE   janitor   AND NO \rONE\t HAS ROLE  president  "
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{janitor_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL

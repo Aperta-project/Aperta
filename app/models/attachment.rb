@@ -25,6 +25,9 @@ class Attachment < ActiveRecord::Base
   has_one :resource_token, as: :owner, dependent: :destroy
   delegate :token, to: :resource_token
 
+  has_one :resource_token, as: :owner, dependent: :destroy
+  delegate :token, to: :resource_token
+
   validates :owner, presence: true
 
   # set_paper is required when creating attachments thru associations

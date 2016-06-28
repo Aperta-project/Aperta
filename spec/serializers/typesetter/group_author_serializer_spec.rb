@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe Typesetter::GroupAuthorSerializer do
+  before do
+    Rake::Task['nested-questions:seed:group-author'].reenable
+    Rake::Task['nested-questions:seed:group-author'].invoke
+  end
+
   subject(:serializer) { described_class.new(group_author) }
 
   let(:contact_first_name) { 'first name' }
@@ -20,26 +25,16 @@ describe Typesetter::GroupAuthorSerializer do
     )
   end
 
-  let!(:contributes_question) do
-    NestedQuestion.find_by(ident: "group-author--contributions") ||
-      FactoryGirl.create(
-        :nested_question,
-        owner_id: nil,
-        owner_type: 'GroupAuthor',
-        ident: 'group-author--contributions'
-      )
+  let(:contributes_question) do
+    NestedQuestion.find_by(ident: "group-author--contributions")
   end
 
-  let!(:question1) do
+  let(:question1) do
     group_author.class.contributions_question.children[0]
   end
 
-  let!(:question2) do
+  let(:question2) do
     group_author.class.contributions_question.children[1]
-  end
-
-  let!(:question3) do
-    group_author.class.contributions_question.children.find_by_ident('other')
   end
 
   let!(:answer1) do
@@ -51,6 +46,7 @@ describe Typesetter::GroupAuthorSerializer do
       value_type: 'boolean'
     )
   end
+
   let!(:answer2) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -60,6 +56,7 @@ describe Typesetter::GroupAuthorSerializer do
       value_type: 'boolean'
     )
   end
+
   let!(:answer3) do
     FactoryGirl.create(
       :nested_question_answer,

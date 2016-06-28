@@ -5,9 +5,9 @@ class ResourceProxyController < ApplicationController
 
   def url
     if params[:version]
-      redirect_to resource.file.url(params[:version])
+      redirect_to resource.url(params[:version])
     else
-      redirect_to resource.file.url
+      redirect_to resource.url
     end
   end
 

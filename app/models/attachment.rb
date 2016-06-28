@@ -32,11 +32,7 @@ class Attachment < ActiveRecord::Base
   after_initialize :set_paper, if: :new_record?
 
   # This creates the token used by resource proxy to lookup the attachment.
-  after_create :do_resource_token
-
-  def do_resource_token
-    ResourceToken.create owner: self
-  end
+  after_create :create_resource_token
 
   def download!(url)
     file.download! url
@@ -80,6 +76,10 @@ class Attachment < ActiveRecord::Base
   end
 
   private
+
+  def create_resource_token
+    ResourceToken.create owner: self
+  end
 
   def set_paper
     if owner_type == 'Paper'

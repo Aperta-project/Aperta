@@ -214,11 +214,15 @@ Tahi::Application.routes.draw do
     to: 'token_invitations#thank_you',
     as: 'invitation_thank_you'
 
-  # legacy resource_proxy routes
+  # Legacy resource_proxy routes
+  # We need to maintain this route as existing resources have been linked with
+  # this scheme.
   get '/resource_proxy/:resource/:token(/:version)',
       constraints: {
         resource: /
-          (adhoc_|question_)?attachments
+          adhoc_attachments
+          | attachments
+          | question_attachments
           | figures
           | supporting_information_files
         /x },

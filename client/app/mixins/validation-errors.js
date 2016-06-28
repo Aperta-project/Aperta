@@ -152,9 +152,15 @@ export default Mixin.create({
   */
 
   displayValidationErrorsFromResponse(response, options) {
+    var errors = null;
+    if (response && response.name) {
+      errors = prepareResponseErrors(response.errors, options);
+    } else {
+      errors = response.errors;
+    }
     this.set(
       'validationErrors',
-      prepareResponseErrors(response.errors, options)
+      errors
     );
   },
 

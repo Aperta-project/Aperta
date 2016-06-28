@@ -4,7 +4,6 @@
   <div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
     {{progress-spinner visible=true size="large" center=true}}
   </div>
-  {{error-message message=validationErrors.errors}}
 
   {{#if task.completed}}
     {{#if decidedDecision}}
@@ -59,12 +58,15 @@
     </label>
   </div>
 
+  {{error-message message=validationErrors.errors}}
+
   {{letter-template disabled=nonPublishableOrUnselected
                     letterValue=latestDecision.letter
                     subjectLine='Your bio submission'
                     task=task
                     templates=rejectionTemplates
                     actionTrigger='reject'
+                    registerDecision=(action 'registerDecision')
   }}
 
   {{#if previousDecisions}}

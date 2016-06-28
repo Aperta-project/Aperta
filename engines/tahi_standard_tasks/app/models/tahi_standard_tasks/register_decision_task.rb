@@ -40,7 +40,7 @@ module TahiStandardTasks
     # mailer template, because users can edit the text before it gets
     # sent out.
     # rubocop:disable Metrics/LineLength
-    def accept_letter
+    def accept_templates
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 
@@ -54,14 +54,15 @@ module TahiStandardTasks
 
         With kind regards,
 
-        [YOUR NAME]
+        %{your_name}
         %{journal_name}
       TEXT
 
-      template % template_data
+      replaced_template = template % template_data
+      [{ template_name: 'accept', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
     end
 
-    def minor_revision_letter
+    def minor_revision_templates
       template = <<-TEXT.strip_heredoc
         THIS IS THE MINOR REVISION
         Dear Dr. %{author_last_name},
@@ -86,14 +87,15 @@ module TahiStandardTasks
 
         Yours sincerely,
 
-        [YOUR NAME]
+        %{your_name}
         %{journal_name}
       TEXT
 
-      template % template_data
+      replaced_template = template % template_data
+      [{ template_name: 'minor revision', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
     end
 
-    def major_revision_letter
+    def major_revision_templates
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 
@@ -117,15 +119,16 @@ module TahiStandardTasks
 
         Yours sincerely,
 
-        [YOUR NAME]
+        %{your_name}
         %{journal_name}
       TEXT
 
-      template % template_data
+      replaced_template = template % template_data
+      [{ template_name: 'major revision', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
     end
 
-    def reject_letter
-      template = <<-TEXT.strip_heredoc
+    def reject_templates
+      template1 = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 
         Thank you for submitting your manuscript, %{manuscript_title}, to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected.
@@ -144,21 +147,77 @@ module TahiStandardTasks
 
         Yours sincerely,
 
-        [YOUR NAME]
+        %{your_name}
         %{journal_name}
       TEXT
 
-      template % template_data
+      template2 = <<-TEXT.strip_heredoc
+        Dear Dr. %{author_last_name},
+
+        Thank you for submitting your manuscript, %{manuscript_title}, to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected.
+
+        Specifically:
+
+        ***
+
+        ACADEMIC EDITOR:
+
+        PLEASE INSERT COMMENTS HERE GIVING CONTEXT TO THE REVIEWS AND EXPLAINING HOW THE MANUSCRIPT DOES NOT MEET OUR PUBLICATION CRITERIA.
+
+        ***
+
+        I am sorry that we cannot be more positive on this occasion, but hope that you appreciate the reasons for this decision.
+
+        Yours sincerely,
+
+        %{your_name}
+        %{journal_name}
+      TEXT
+
+      template3 = <<-TEXT.strip_heredoc
+        Dear Dr. %{author_last_name},
+
+        Thank you for submitting your manuscript, %{manuscript_title}, to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected.
+
+        Specifically:
+
+        ***
+
+        ACADEMIC EDITOR:
+
+        PLEASE INSERT COMMENTS HERE GIVING CONTEXT TO THE REVIEWS AND EXPLAINING HOW THE MANUSCRIPT DOES NOT MEET OUR PUBLICATION CRITERIA.
+
+        ***
+
+        I am sorry that we cannot be more positive on this occasion, but hope that you appreciate the reasons for this decision.
+
+        Yours sincerely,
+
+        %{your_name}
+        %{journal_name}
+      TEXT
+
+      one = template1 % template_data
+      two = template2 % template_data
+      three = template3 % template_data
+      [{ template_name: 'reject 1', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: one },
+       { template_name: 'reject 2', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: two },
+       { template_name: 'reject 3', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: three }]
     end
     # rubocop:enable Metrics/LineLength
 
     private
 
+    def journal_name
+      @journal_name ||= paper.journal.name
+    end
+
     def template_data
       {
         author_last_name: paper.creator.last_name,
         manuscript_title: paper.display_title(sanitized: false),
-        journal_name: paper.journal.name
+        journal_name: paper.journal.name,
+        your_name: '[YOUR NAME]'
       }
     end
   end

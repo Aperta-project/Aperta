@@ -10,19 +10,19 @@ export default Task.extend({
   paperDecision: attr('string'),
   paperDecisionLetter: attr('string'),
 
-  acceptLetterTemplate: computed('decisionLetters', function() {
-    return JSON.parse(this.get('decisionLetters')).accept;
-  }),
-
-  rejectLetterTemplate: computed('decisionLetters', function() {
+  rejectLetterTemplates: computed('decisionLetters', function() {
     return JSON.parse(this.get('decisionLetters')).reject;
   }),
 
-  majorRevisionLetterTemplate: computed('decisionLetters', function() {
+  majorRevisionLetterTemplates: computed('decisionLetters', function() {
     return JSON.parse(this.get('decisionLetters')).major_revision;
   }),
 
-  minorRevisionLetterTemplate: computed('decisionLetters', function() {
+  minorRevisionLetterTemplates: computed('decisionLetters', function() {
     return JSON.parse(this.get('decisionLetters')).minor_revision;
+  }),
+
+  acceptLetterTemplates: computed('decisionLetters', function() {
+    return JSON.parse(this.get('decisionLetters')).accept;
   })
 });

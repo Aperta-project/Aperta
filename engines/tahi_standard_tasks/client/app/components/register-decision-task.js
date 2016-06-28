@@ -79,7 +79,10 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     },
 
     setDecisionTemplate(decision) {
-      const template = this.get(`task.${decision.camelize()}LetterTemplate`);
+      const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
+      for (let t of templates) {
+        var template = t['letter'];
+      }
       const letter = this.applyTemplateReplacements(template);
       this.get('latestDecision').set('verdict', decision);
       this.get('latestDecision').set('letter', letter);

@@ -35,6 +35,10 @@ class Attachment < ActiveRecord::Base
     self.file_hash = Digest::SHA256.hexdigest(file.file.read)
   end
 
+  def url(*args)
+    file.url(*args)
+  end
+
   def filename
     self[:file]
   end

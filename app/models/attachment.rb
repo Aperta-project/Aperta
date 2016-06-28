@@ -42,15 +42,6 @@ class Attachment < ActiveRecord::Base
     self[:file]
   end
 
-  # # This is a hash used for recognizing changes in file contents; if
-  # # the file doens't exist, or if we can't connect to amazon, minimal
-  # # harm comes from returning nil instead. The error thrown is,
-  # # unfortunately, not wrapped by carrierwave.
-  # require 'digest'
-  # def file_hash
-  #   Digest::SHA256.hexdigest((rand(10000) + 1).to_s(16))
-  # end
-
   def done?
     status == STATUS_DONE
   end

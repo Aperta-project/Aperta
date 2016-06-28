@@ -537,7 +537,7 @@ describe Paper do
       it 'snapshots metadata' do
         Subscriptions.reload
         expect(Paper::Submitted::SnapshotPaper).to receive(:call)
-        paper.submit!
+        paper.submit! user
       end
     end
 

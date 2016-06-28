@@ -452,7 +452,7 @@ describe Paper do
 
       it 'snapshots metadata' do
         Subscriptions.reload
-        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
+        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
         paper.initial_submit!
       end
     end
@@ -536,8 +536,8 @@ describe Paper do
 
       it 'snapshots metadata' do
         Subscriptions.reload
-        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
-        paper.initial_submit!
+        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
+        paper.submit!
       end
     end
 
@@ -1058,6 +1058,20 @@ describe Paper do
     end
   end
 
+  describe '#snapshottable_tasks' do
+    subject(:paper) { Paper.new }
+
+    it 'returns the snapshottable tasks' do
+      task_1 = Task.new(snapshottable: true)
+      task_2 = Task.new(snapshottable: false)
+      task_3 = Task.new(snapshottable: true)
+
+      paper.tasks.push [task_1, task_2, task_3]
+      expect(paper.tasks).to contain_exactly(task_1, task_2, task_3)
+      expect(paper.snapshottable_tasks).to contain_exactly(task_1, task_3)
+    end
+  end
+
   describe "#abstract" do
     before do
       paper.update(body: "a bunch of words")
@@ -1079,7 +1093,6 @@ describe Paper do
       end
     end
   end
-
 
   describe "#latest_version" do
     before do

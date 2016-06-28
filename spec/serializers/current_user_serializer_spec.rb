@@ -5,7 +5,6 @@ describe CurrentUserSerializer, serializer_test: true do
 
   before do
     Authorizations::Configuration.reset
-    clear_roles_and_permissions
   end
 
   let(:user) { FactoryGirl.create(:user) }

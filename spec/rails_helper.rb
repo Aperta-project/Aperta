@@ -50,11 +50,6 @@ DatabaseCleaner.clean_with(:truncation)
 # Necessary to run a rake task from here
 Rake::Task.clear
 Tahi::Application.load_tasks
-# Load question and roles & permission seeds before any tests start since we don't want them
-# to be rolled back as part of a transaction
-Rake::Task['nested-questions:seed'].invoke
-Rake::Task['roles-and-permissions:seed'].invoke
-
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = false
@@ -127,6 +122,11 @@ RSpec.configure do |config|
       Capybara.save_and_open_page_path =
         "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
     end
+
+    # Load question and roles & permission seeds before any tests start since we don't want them
+    # to be rolled back as part of a transaction
+    Rake::Task['nested-questions:seed'].invoke
+    Rake::Task['roles-and-permissions:seed'].invoke
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars
   end

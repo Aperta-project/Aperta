@@ -38,12 +38,4 @@ module AuthorizationSpecHelper
   ensure
     ActiveSupport::Notifications.unsubscribe(subscriber) if subscriber
   end
-
-  def clear_roles_and_permissions
-    # start with a blank state for these examples
-    Role.destroy_all
-    Permission.destroy_all
-    PermissionState.destroy_all
-  end
-
 end

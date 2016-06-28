@@ -6,12 +6,10 @@ describe ManuscriptManagersPolicy do
   let(:policy) { ManuscriptManagersPolicy.new(current_user: user, paper: paper) }
 
   before(:all) do
-    clear_roles_and_permissions
     @journal = JournalFactory.create(name: 'Genetics Journal')
   end
 
   after(:all) do
-    clear_roles_and_permissions
     @journal.destroy!
   end
 

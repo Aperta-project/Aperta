@@ -19,60 +19,23 @@ describe SnapshotService do
   let(:task_1) { FactoryGirl.create(:task) }
   let(:task_2) { FactoryGirl.create(:task) }
   let(:task_3) { FactoryGirl.create(:task) }
+  let(:adhoc_attachment) do
+    FactoryGirl.create(:adhoc_attachment, :with_task, paper: paper)
+  end
 
   before do
     registry.serialize task_1.class, with: ExampleSnapshotSerializer
+    registry.serialize adhoc_attachment.class, with: ExampleSnapshotSerializer
   end
 
   describe '.snapshot_paper!' do
-    let(:adhoc_attachment) do
-      FactoryGirl.create(:adhoc_attachment, :with_task, paper: paper)
-    end
-    let(:figure) { FactoryGirl.create(:figure, paper: paper) }
-    let(:question_attachment) do
-      FactoryGirl.create(:question_attachment, paper: paper)
-    end
-    let(:si_file) do
-      FactoryGirl.create(:supporting_information_file, paper: paper)
-    end
-
-    it 'snapshots the snapshottable tasks on the paper' do
-      allow(paper).to receive(:snapshottable_tasks).and_return [task_1]
+    it 'snapshots the snapshottable things on the paper' do
+      allow(paper).to receive(:snapshottable_things).and_return [
+        task_1, adhoc_attachment
+      ]
       expect do
         SnapshotService.snapshot_paper!(paper, registry)
-      end.to change { Snapshot.where(source_type: Task.sti_name).count }.by(1)
-    end
-
-    it 'snapshots the adhoc_attachments for the paper' do
-      paper.adhoc_attachments.push adhoc_attachment
-      registry.serialize AdhocAttachment, with: ExampleSnapshotSerializer
-      expect do
-        SnapshotService.snapshot_paper!(paper, registry)
-      end.to change { Snapshot.where(source: adhoc_attachment).count }.by(1)
-    end
-
-    it 'snapshots the figures for the paper' do
-      paper.figures.push figure
-      registry.serialize Figure, with: ExampleSnapshotSerializer
-      expect do
-        SnapshotService.snapshot_paper!(paper, registry)
-      end.to change { Snapshot.where(source: figure).count }.by(1)
-    end
-
-    it 'snapshots the question_attachments for the paper' do
-      paper.question_attachments.push question_attachment
-      registry.serialize QuestionAttachment, with: ExampleSnapshotSerializer
-      expect do
-        SnapshotService.snapshot_paper!(paper, registry)
-      end.to change { Snapshot.where(source: question_attachment).count }.by(1)
-    end
-
-    it 'snapshots the supporting_information_files for the paper' do
-      paper.supporting_information_files.push si_file
-      registry.serialize SupportingInformationFile, with: ExampleSnapshotSerializer
-      expect do
-        SnapshotService.snapshot_paper!(paper, registry)
-      end.to change { Snapshot.where(source: si_file).count }.by(1)
+      end.to change { Snapshot.where(paper_id: paper.id).count }.by(2)
     end
   end
 

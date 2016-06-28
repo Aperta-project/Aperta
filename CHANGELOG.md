@@ -29,6 +29,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.4.15] - {2016-06-15}
 ### Added
 - Activity feed items for withdraw and reactivate of a manuscript
+- Title and Abstract task to allow internal staff to view and edit the
+  title and abstract of any paper.
 ### Changed
 - Institutional accounts are not pulled from a static list for easier updating
 ### Deprecated

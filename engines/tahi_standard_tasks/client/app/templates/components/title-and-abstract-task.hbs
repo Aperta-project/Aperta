@@ -1,0 +1,25 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <div class="title-and-abstract">
+    <div class="form-group qa-paper-title">
+       <h3>Title</h3>
+        {{format-input name=paperTitle
+                       value=task.paperTitle
+                       class="form-textarea"
+                       disabled=isNotEditable
+                       focus-out=(action "focusOut") }}
+
+    </div>
+    <div class="form-group qa-paper-abstract">
+       <h3>Abstract</h3>
+        {{format-input name=paperAbstract
+                       value=task.paperAbstract
+                       class="form-textarea"
+                       disabled=isNotEditable
+                       focus-out=(action "focusOut") }}
+
+    </div>
+
+  </div>
+</div>

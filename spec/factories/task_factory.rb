@@ -194,6 +194,13 @@ FactoryGirl.define do
     title 'Send to Apex'
     old_role 'admin'
   end
+
+  factory :title_and_abstract_task, class: 'TahiStandardTasks::TitleAndAbstractTask' do
+    phase
+    paper
+    title 'Title and Abstract'
+    old_role 'editor'
+  end
 end
 
 class MockMetadataTask < Task

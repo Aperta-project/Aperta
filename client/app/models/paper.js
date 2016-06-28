@@ -64,6 +64,7 @@ export default DS.Model.extend({
   strikingImageId: attr('string'),
   submittedAt: attr('date'),
   title: attr('string'),
+  abstract: attr('string'),
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
   url: attr('string'),

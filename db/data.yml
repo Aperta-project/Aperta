@@ -3722,6 +3722,18 @@ journal_task_types:
     - editor
     - TahiStandardTasks::RelatedArticlesTask
     - "{}"
+  - - '33'
+    - '1'
+    - Title And Abstract
+    - editor
+    - TahiStandardTasks::TitleAndAbstractTask
+    - "{}"
+  - - '34'
+    - '1'
+    - Front Matter Reviewer Report
+    - reviewer
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - "{}"
 
 ---
 journals:

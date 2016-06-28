@@ -25,6 +25,7 @@ describe SupportingInformationFile, redis: true do
     include_examples 'attachment#download! sets the file_hash'
     include_examples 'attachment#download! sets title to file name'
     include_examples 'attachment#download! sets the status'
+    include_examples 'attachment#download! knows when to keep and remove s3 files'
   end
 
   describe '#filename' do

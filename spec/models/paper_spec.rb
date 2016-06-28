@@ -1058,17 +1058,64 @@ describe Paper do
     end
   end
 
-  describe '#snapshottable_tasks' do
+  describe '#snapshottable_things' do
     subject(:paper) { Paper.new }
+    let(:task) do
+      FactoryGirl.build_stubbed(:task, paper: paper, snapshottable: true)
+    end
+    let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
+    let(:si_file) do
+      FactoryGirl.build_stubbed(:supporting_information_file, paper: paper)
+    end
+    let(:adhoc_attachment) do
+      FactoryGirl.build_stubbed(:adhoc_attachment, paper: paper)
+    end
+    let(:question_attachment) do
+      FactoryGirl.build_stubbed(:question_attachment, paper: paper)
+    end
 
-    it 'returns the snapshottable tasks' do
-      task_1 = Task.new(snapshottable: true)
-      task_2 = Task.new(snapshottable: false)
-      task_3 = Task.new(snapshottable: true)
+    it 'returns the independently snapshottable things about a paper' do
+      expect(paper.snapshottable_things).to be_kind_of(Array)
+    end
 
-      paper.tasks.push [task_1, task_2, task_3]
-      expect(paper.tasks).to contain_exactly(task_1, task_2, task_3)
-      expect(paper.snapshottable_tasks).to contain_exactly(task_1, task_3)
+    it 'includes snapshottable tasks' do
+      paper.tasks.push task
+      expect(paper.snapshottable_things).to include(task)
+
+      task.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(task)
+    end
+
+    it 'includes snapshottable figures' do
+      paper.figures.push figure
+      expect(paper.snapshottable_things).to include(figure)
+
+      figure.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(figure)
+    end
+
+    it 'includes snapshottable supporting_information_files' do
+      paper.supporting_information_files.push si_file
+      expect(paper.snapshottable_things).to include(si_file)
+
+      si_file.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(si_file)
+    end
+
+    it 'includes snapshottable adhoc_attachments' do
+      paper.adhoc_attachments.push adhoc_attachment
+      expect(paper.snapshottable_things).to include(adhoc_attachment)
+
+      adhoc_attachment.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(adhoc_attachment)
+    end
+
+    it 'includes snapshottable question_attachments' do
+      paper.question_attachments.push question_attachment
+      expect(paper.snapshottable_things).to include(question_attachment)
+
+      question_attachment.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(question_attachment)
     end
   end
 

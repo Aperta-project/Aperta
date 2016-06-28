@@ -32,6 +32,7 @@ describe Figure, redis: true do
     include_examples 'attachment#download! caches the s3 store_dir'
     include_examples 'attachment#download! sets the file_hash'
     include_examples 'attachment#download! sets the status'
+    include_examples 'attachment#download! knows when to keep and remove s3 files'
 
     it 'sets the title, status, and rank' do
       figure.download!(url)

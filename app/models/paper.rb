@@ -217,8 +217,13 @@ class Paper < ActiveRecord::Base
   # States that represent when a paper can be reviewed by a Reviewer
   REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
 
-  def snapshottable_tasks
-    tasks.select(&:snapshottable?)
+  def snapshottable_things
+    [].concat(tasks)
+      .concat(figures)
+      .concat(supporting_information_files)
+      .concat(adhoc_attachments)
+      .concat(question_attachments)
+      .select(&:snapshottable?)
   end
 
   def users_with_role(role)

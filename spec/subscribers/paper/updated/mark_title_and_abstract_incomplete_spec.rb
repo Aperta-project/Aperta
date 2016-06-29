@@ -10,6 +10,7 @@ describe Paper::Updated::MarkTitleAndAbstractIncomplete do
   context 'when the paper is processing again' do
     before do
       allow(paper).to receive(:previous_changes).and_return("processing" => ["true", "false"])
+      allow(paper).to receive(:processing?).and_return(false)
     end
 
     it 'marks the title and abstract task incomplete if there is one' do

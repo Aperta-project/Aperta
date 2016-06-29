@@ -62,7 +62,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def snapshot_key
-    file_hash
+    file.current_path
   end
 
   def snapshotted?

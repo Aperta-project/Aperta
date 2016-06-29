@@ -147,20 +147,20 @@ describe Figure, redis: true do
   end
 
   describe 'inserting figures into a paper' do
-    let(:paper_double) { double 'paper' }
+    let(:paper) { FactoryGirl.build_stubbed :paper }
+    before do
+      figure.paper = paper
+    end
 
     it 'triggers when the figure title is updated' do
-      allow(figure).to receive(:paper).and_return(paper_double)
       allow(figure).to receive(:all_figures_done?).and_return(true)
-      expect(paper_double).to receive(:insert_figures!)
+      expect(paper).to receive(:insert_figures!)
 
       figure.update!(title: 'new title')
     end
 
     it 'triggers when the figure is destroyed' do
-      allow(figure).to receive(:paper).and_return(paper_double)
-      expect(paper_double).to receive(:insert_figures!)
-      allow(paper_double).to receive(:id)
+      expect(paper).to receive(:insert_figures!)
 
       figure.destroy!
     end

@@ -95,11 +95,24 @@ class WebDriverFactory(object):
 
     **Returns** a web driver instance of a Firefox browser
     """
-    mime_types = 'application/pdf, ' \
+    mime_types = 'application/eps, ' \
+                 'application/pdf, ' \
                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document, ' \
                  'application/msword, ' \
                  'application/octet-stream, ' \
+                 'application/postscript, ' \
                  'application/download, ' \
+                 'application/tif, ' \
+                 'application/tiff, ' \
+                 'application/x-eps, ' \
+                 'application/x-tif, ' \
+                 'application/x-tiff, ' \
+                 'image/eps, ' \
+                 'image/tif, ' \
+                 'image/tiff, ' \
+                 'image/x-eps, ' \
+                 'image/x-tif, ' \
+                 'image/x-tiff, ' \
                  'text/plain'
     # Set up a default Firefox profile, if not specified
     if not profile:

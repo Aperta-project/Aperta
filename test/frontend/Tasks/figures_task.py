@@ -4,6 +4,8 @@ import logging
 import os
 import random
 import time
+import urllib
+
 from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -38,6 +40,11 @@ class FiguresTask(BaseTask):
                                 'div.info > div.replace-file-button + div.error-message')
     self._figure_edit_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-pencil')
     self._figure_delete_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-trash')
+    self._figure_delete_confirmation = (By.CSS_SELECTOR, 'div.delete-confirmation')
+    self._figure_delete_confirm_line1 = (By.CSS_SELECTOR, 'div.delete-confirmation > h4')
+    self._figure_delete_confirm_line2 = (By.CSS_SELECTOR, 'div.delete-confirmation > h4 + h4')
+    self._figure_delete_confirm_cancel = (By.CSS_SELECTOR, 'div.delete-confirmation > a')
+    self._figure_delete_confirm_confirm = (By.CSS_SELECTOR, 'div.delete-confirmation > button')
 
   # POM Actions
   def validate_styles(self):
@@ -59,9 +66,8 @@ class FiguresTask(BaseTask):
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     assert add_new_figures_btn.text == "ADD NEW FIGURES"
     self.validate_primary_big_green_button_style(add_new_figures_btn)
+
     self.set_timeout(5)
-    # Trying moving this down to where it gets populated
-    logging.info('Attempting to locate thumbnail')
     try:
       fig_listings = self._get(self._figures_list).find_elements(*self._figure_listing)
     except ElementDoesNotExistAssertionError:
@@ -144,16 +150,18 @@ class FiguresTask(BaseTask):
       add_new_figures_btn = self._get(self._add_new_figures_btn)
       add_new_figures_btn.click()
       figure_candidates_list.remove(figure)
-      # Time needed for script execution.
-      time.sleep(7)
+      # Time needed for script execution per photo for upload, storing, preview generation, and
+      #   page update
+      time.sleep(25)
       chosen_figures_list.append(figure)
+      self.check_for_flash_error()
     return chosen_figures_list
 
   def replace_figure(self, figure=''):
     """
     Function to replace and existing figure file
     :param figure: Name of the figure to replace.
-    :return void function
+    :return a list containing the filename of the new figure
     """
     if not figure:
       raise(ValueError, 'A figure was not specified')
@@ -161,11 +169,131 @@ class FiguresTask(BaseTask):
       new_figure = random.choice(figures)
       fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/{0}'.format(new_figure))
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
-    time.sleep(1)
+    time.sleep(5)
+    # Redefining this down here to avoid a stale element reference due to the listing having been
+    #   replaced, potentially, since lookup
+    self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_input.send_keys(fn)
     replace_btn.click()
-    # Time needed for script execution.
-    time.sleep(7)
+    # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
+    #   stale reference error
+    time.sleep(30)
+    fig_list = []
+    fig_list.append(new_figure)
+    return fig_list
 
+  def delete_figure(self, figure=''):
+    """
+    Function to delete the named figure file, also validates the styles of the delete components
+    :param figure: Name of the figure to delete.
+    :return void function
+    """
+    if not figure:
+      raise(ValueError, 'A figure must be specified')
+    logging.info(figure)
+
+    page_fig_list = self._gets(self._figure_dl_link)
+    figure = urllib.quote_plus(figure[0])
+    for page_fig_item in page_fig_list:
+      if figure == page_fig_item.text:
+        logging.info('Deleting figure: {0}'.format(figure))
+        time.sleep(5)
+        # Redefining this down here to avoid a stale element reference due to the listing having
+        #   been replaced, potentially, since lookup
+        self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+        # Move to item to get the edit icons to appear
+        self._actions.move_to_element(page_fig_item).perform()
+        delete_icon = self._get(self._figure_delete_icon)
+        delete_icon.click()
+        time.sleep(1)
+        self._get(self._figure_delete_confirmation)
+        line_1 = self._get(self._figure_delete_confirm_line1)
+        assert 'This will permanently delete this file.' in line_1.text, line_1.text
+        line_2 = self._get(self._figure_delete_confirm_line2)
+        assert 'Are you sure?' in line_2.text, line_2.text
+        cancel_link = self._get(self._figure_delete_confirm_cancel)
+        assert 'cancel' in cancel_link.text
+        cancel_link.click()
+        delete_icon.click()
+        time.sleep(1)
+        delete_btn = self._get(self._figure_delete_confirm_confirm)
+        assert 'DELETE FOREVER' in delete_btn.text, delete_btn.text
+        delete_btn.click()
+        time.sleep(5)
+        return
+      logging.info('no match found')
+
+  def download_figure(self, figure=''):
+    """
+    Function to download an existing figure file
+    :param figure: Name of the figure to download.
+    :return void function
+    """
+    matched = False
+    if not figure:
+      raise (ValueError, 'A figure was not specified')
+    logging.info('Downloading figure: {0}'.format(figure))
+    time.sleep(5)
+    page_fig_list = self._gets(self._figure_dl_link)
+    for page_fig_item in page_fig_list:
+      for fig in figure:
+        fig = urllib.quote_plus(fig)
+        if fig in page_fig_item.text:
+          logging.info('Match!')
+          page_fig_item.click()
+          time.sleep(1)
+          os.chdir('/tmp')
+          files = filter(os.path.isfile, os.listdir('/tmp'))
+          files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+          files.sort(key=lambda x: os.path.getmtime(x))
+          newest_file = files[-1]
+          logging.debug(newest_file)
+          while newest_file.split('.')[-1] == 'part':
+            time.sleep(5)
+            files = filter(os.path.isfile, os.listdir('/tmp'))
+            files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+            files.sort(key=lambda x: os.path.getmtime(x))
+            newest_file = files[-1]
+            logging.debug(newest_file.split('.')[-1])
+          newest_file = newest_file.split('/')[-1]
+          assert fig == newest_file, newest_file
+          os.remove(newest_file)
+          return
+    if not matched:
+      raise(ElementDoesNotExistAssertionError, 'No match found for {0}'.format(figure))
+
+  def validate_figure_presence(self, fig_list):
+    """
+    Given a list of figures (file titles), validated they are all present on the Figures task
+    :param fig_list: list of file names
+    :return: boolean, true if all passed filenames appear on the figures card
+    """
+    page_fig_list = self._gets(self._figure_dl_link)
+    page_fig_name_list = []
+    for page_fig_item in page_fig_list:
+      page_fig_name_list.append(page_fig_item.text)
+    logging.info('Figures from the page: {0}'.format(page_fig_name_list))
+    for figure in fig_list:
+      # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
+      assert urllib.quote_plus(figure) in page_fig_name_list, \
+          '{0} not found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
+
+  def validate_figure_not_present(self, fig_list):
+    """
+    Given a list of figures (file titles), validated they are not present on the Figures task
+    :param fig_list: list of file names
+    :return: void function
+    """
+    page_fig_name_list = []
+    page_fig_list = self._gets(self._figure_dl_link)
+    for page_fig_item in page_fig_list:
+      if not page_fig_item.text:
+        return
+      else:
+        page_fig_name_list.append(page_fig_item.text)
+        for figure in fig_list:
+          # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
+          assert urllib.quote_plus(figure) not in page_fig_name_list, \
+              '{0} found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)

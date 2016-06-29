@@ -677,8 +677,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     return self._get(self._infobox)
 
   def close_infobox(self):
-    """Close the infobox element"""
-    self._get(self._infobox_closer).click()
+    """Close the infobox element, if present"""
+    try:
+      infobox_closer = self._get(self._infobox_closer)
+    except ElementDoesNotExistAssertionError:
+      logging.info('No Initial Decision infobox shown yet, skipping close of infobox.')
+      return
+    infobox_closer.click()
     time.sleep(1)
 
   def get_paper_doi_part(self):

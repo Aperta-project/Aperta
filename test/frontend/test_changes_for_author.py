@@ -10,14 +10,9 @@ import logging
 import random
 import time
 
-from selenium.common.exceptions import NoSuchElementException
-
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login, users, editorial_users
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
 from Cards.revision_tech_check_card import RTCCard
@@ -81,7 +76,7 @@ class CFACardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
@@ -103,11 +98,11 @@ class CFACardTest(CommonTest):
       if not checked and itc_card.email_text[index]:
         assert itc_card.email_text[index] in issues_text, \
             '{0} (Not checked item #{1}) not in {2}'.format(itc_card.email_text[index],
-                index, issues_text)
+                                                            index, issues_text)
       elif checked and itc_card.email_text[index]:
         assert itc_card.email_text[index] not in issues_text, \
             '{0} (Checked item #{1}) not in {2}'.format(itc_card.email_text[index],
-                index, issues_text)
+                                                        index, issues_text)
     time.sleep(1)
     itc_card.click_send_changes_btn()
     all_success_messages = itc_card.get_flash_success_messages()
@@ -120,7 +115,7 @@ class CFACardTest(CommonTest):
     try:
       itc_card._get(itc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
-      #raise ElementExistsAssertionError('There is an unexpected error message')
+      # raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('WARNING: An error message fired on Send Changes to Author for ITC card')
     except ElementDoesNotExistAssertionError:
       pass
@@ -149,7 +144,6 @@ class CFACardTest(CommonTest):
     cfa_complete_state = final_db_submission_data[0][0]
     logging.info('Current publishing state is {0}'.format(cfa_complete_state))
     assert cfa_complete_state == 'submitted', cfa_complete_state
-
 
   def test_cfa_from_rtc_card(self):
     """
@@ -190,14 +184,14 @@ class CFACardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(4)
-    # add card ITC with add new card if not present
+    # add card RTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Revision Tech Check'):
       workflow_page.add_card('Revision Tech Check')
@@ -211,12 +205,12 @@ class CFACardTest(CommonTest):
     for index, checked in enumerate(data):
       if not checked and rtc_card.email_text[index]:
         assert rtc_card.email_text[index] in issues_text, \
-          '{0} (Not checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
-                                                          index, issues_text)
+            '{0} (Not checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
+                                                            index, issues_text)
       elif checked and rtc_card.email_text[index]:
         assert rtc_card.email_text[index] not in issues_text, \
-          '{0} (Checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
-                                                      index, issues_text)
+            '{0} (Checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
+                                                        index, issues_text)
     time.sleep(1)
     rtc_card.click_send_changes_btn()
     all_success_messages = rtc_card.get_flash_success_messages()
@@ -224,7 +218,7 @@ class CFACardTest(CommonTest):
     assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
     assert 'The author has been notified via email that changes are needed. They will also ' \
            'see your message the next time they log in to see their manuscript.' in success_msgs, \
-      success_msgs
+        success_msgs
     # Check not error message
     try:
       rtc_card._get(rtc_card._flash_error_msg)
@@ -258,7 +252,6 @@ class CFACardTest(CommonTest):
     cfa_complete_state = final_db_submission_data[0][0]
     logging.info('Current publishing state is {0}'.format(cfa_complete_state))
     assert cfa_complete_state == 'submitted', cfa_complete_state
-
 
   def test_cfa_from_ftc_card(self):
     """
@@ -299,14 +292,14 @@ class CFACardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
     time.sleep(4)
-    # add card ITC with add new card if not present
+    # add card FTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Final Tech Check'):
       workflow_page.add_card('Final Tech Check')
@@ -320,12 +313,12 @@ class CFACardTest(CommonTest):
     for index, checked in enumerate(data):
       if not checked and ftc_card.email_text[index]:
         assert ftc_card.email_text[index] in issues_text, \
-          '{0} (Not checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
-                                                          index, issues_text)
+            '{0} (Not checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
+                                                            index, issues_text)
       elif checked and ftc_card.email_text[index]:
         assert ftc_card.email_text[index] not in issues_text, \
-          '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
-                                                      index, issues_text)
+            '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
+                                                        index, issues_text)
     time.sleep(1)
     ftc_card.click_send_changes_btn()
     all_success_messages = ftc_card.get_flash_success_messages()
@@ -333,7 +326,7 @@ class CFACardTest(CommonTest):
     assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
     assert 'The author has been notified via email that changes are needed. They will also ' \
            'see your message the next time they log in to see their manuscript.' in success_msgs, \
-      success_msgs
+        success_msgs
     # Check not error message
     try:
       ftc_card._get(ftc_card._flash_error_msg)
@@ -367,7 +360,6 @@ class CFACardTest(CommonTest):
     cfa_complete_state = final_db_submission_data[0][0]
     logging.info('Current publishing state is {0}'.format(cfa_complete_state))
     assert cfa_complete_state == 'submitted', cfa_complete_state
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

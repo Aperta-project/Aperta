@@ -123,6 +123,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # While IDs are normally king, for this element, we don't hide the element, we just change
     # its class to "hide" it
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
+    self._infobox_closer = (By.ID, 'sp-close')
     self._manuscript_viewer_status_area = (By.ID, 'submission-state-information')
     self._status_info_initial_submit_todo = (By.CSS_SELECTOR,
                                              'div.gradual-engagement-presubmission-messaging')
@@ -674,6 +675,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def get_infobox(self):
     """Get the infobox element"""
     return self._get(self._infobox)
+
+  def close_infobox(self):
+    """Close the infobox element, if present"""
+    try:
+      infobox_closer = self._get(self._infobox_closer)
+    except ElementDoesNotExistAssertionError:
+      logging.info('No Initial Decision infobox shown yet, skipping close of infobox.')
+      return
+    infobox_closer.click()
+    time.sleep(1)
 
   def get_paper_doi_part(self):
     """

@@ -1,0 +1,33 @@
+<td>
+  <span>
+    {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
+  </span>
+</td>
+
+<td>
+  <span class='invitee-full-name'>
+    {{#if invitee}}
+      {{invitee.fullName}}
+    {{else}}
+      {{invitation.email}}
+    {{/if}}
+  </span>
+</td>
+
+<td>
+  <span class='invitation-updated-at'>
+    {{format-date invitation.updatedAt format='LLL'}}
+  </span>
+</td>
+
+<td>
+  <span class='invitation-state'>
+    {{invitation.state}}
+  </span>
+</td>
+
+{{#if displayDestroy}}
+  <td>
+    <span class='fa fa-trash invite-remove' {{action 'destroyAction'}}></span>
+  </td>
+{{/if}}

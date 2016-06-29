@@ -466,7 +466,6 @@ describe Paper do
       end
 
       it 'increments the minor version' do
-        paper.versioned_texts = []
         paper.save!
         paper.initial_submit!(user)
         expect(paper.major_version).to be(0)
@@ -1236,6 +1235,13 @@ describe Paper do
       draft = paper.draft
       expect(draft.major_version).to be_nil
       expect(draft.minor_version).to be_nil
+    end
+
+    context 'when there is no draft' do
+      let(:paper) { FactoryGirl.create :paper, :submitted, journal: journal }
+      it 'returns nil' do
+        expect(paper.draft).to be_nil
+      end
     end
   end
 

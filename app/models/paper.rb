@@ -138,13 +138,13 @@ class Paper < ActiveRecord::Base
     event(:invite_full_submission) do
       transitions from: :initially_submitted,
                   to: :invited_for_full_submission,
-                  after: [:allow_edits!]
+                  after: [:allow_edits!, :new_draft!]
     end
 
     event(:minor_check) do
       transitions from: :submitted,
                   to: :checking,
-                  after: [:allow_edits!]
+                  after: [:allow_edits!, :new_draft!]
     end
 
     event(:submit_minor_check) do
@@ -158,13 +158,13 @@ class Paper < ActiveRecord::Base
     event(:minor_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: [:allow_edits!]
+                  after: [:allow_edits!, :new_draft!]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: [:allow_edits!]
+                  after: [:allow_edits!, :new_draft!]
     end
 
     event(:accept) do
@@ -252,7 +252,7 @@ class Paper < ActiveRecord::Base
     else
       __rescind_initial_decision!
     end
-
+    new_draft! if draft.nil?
     new_minor_version!
   end
 
@@ -506,7 +506,7 @@ class Paper < ActiveRecord::Base
   end
 
   def draft
-    versioned_texts.draft
+    versioned_texts.find_by(minor_version: nil, major_version: nil)
   end
 
   def insert_figures!
@@ -531,6 +531,11 @@ class Paper < ActiveRecord::Base
     # but I don't know how to resolve it peacefully without larger
     # architectural changes. See APERTA-6750.
     tasks.where(title: 'Revise Manuscript').destroy_all
+  end
+
+  def new_draft!
+    fail StandardError, 'Draft already exists' unless draft.nil?
+    latest_version.new_draft!
   end
 
   def new_major_version!

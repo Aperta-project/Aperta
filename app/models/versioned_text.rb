@@ -23,19 +23,6 @@ class VersionedText < ActiveRecord::Base
   validates :paper, presence: true
   validate :only_version_once
 
-  def self.draft
-    find_by(major_version: nil, minor_version: nil) || new_draft
-  end
-
-  def self.new_draft
-    previous_version = version_desc.first
-    if previous_version
-      previous_version.new_draft!
-    else
-      create
-    end
-  end
-
   # Make a copy of the text and give it a new MAJOR version.
   def be_major_version!
     update!(
@@ -48,10 +35,6 @@ class VersionedText < ActiveRecord::Base
     update!(
       major_version: (paper.major_version || 0),
       minor_version: (paper.minor_version || -1) + 1)
-  end
-
-  def draft?
-    major_version.nil?
   end
 
   def submitted?

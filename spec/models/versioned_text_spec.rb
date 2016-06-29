@@ -29,27 +29,6 @@ describe VersionedText do
     end
   end
 
-  describe "#draft" do
-    before do
-      paper.versioned_texts.destroy_all
-    end
-
-    it "finds a draft version if one exists" do
-      draft = paper.versioned_texts.create(major_version: nil, minor_version: nil)
-      expect(paper.versioned_texts.draft.id).to be(draft.id)
-    end
-
-    it "creates a new draft version if there isn't one" do
-      expect { paper.versioned_texts.draft }.to change { VersionedText.count }.by(1)
-    end
-
-    it "creates a VersionedText with no version number" do
-      new_version = paper.versioned_texts.draft
-      expect(new_version.major_version).to be_nil
-      expect(new_version.minor_version).to be_nil
-    end
-  end
-
   describe "#be_minor_version!" do
     it "Creates a 0.0 version if there are no previous versions" do
       # This would happen for an initial submission
@@ -62,8 +41,10 @@ describe VersionedText do
     it "Increments the minor version each time it is called" do
       paper.draft.be_minor_version!
       expect(paper.minor_version).to be(0)
+      paper.send(:new_draft!)
       paper.draft.be_minor_version!
       expect(paper.minor_version).to be(1)
+      paper.send(:new_draft!)
       paper.draft.be_minor_version!
       expect(paper.minor_version).to be(2)
 
@@ -83,8 +64,10 @@ describe VersionedText do
     it "increments the major version each time it is called" do
       paper.draft.be_major_version!
       expect(paper.major_version).to be(0)
+      paper.send(:new_draft!)
       paper.draft.be_major_version!
       expect(paper.major_version).to be(1)
+      paper.send(:new_draft!)
       paper.draft.be_major_version!
       expect(paper.major_version).to be(2)
 

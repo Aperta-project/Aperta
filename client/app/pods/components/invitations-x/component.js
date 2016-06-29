@@ -22,7 +22,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     acquireFeedback(invitation) {
       invitation.set('pendingFeedback', true);
-      this.get('reject')(invitation);
+      this.get('decline')(invitation);
     },
 
     update(invitation) {

@@ -73,7 +73,7 @@ Tahi::Application.routes.draw do
     resources :formats, only: [:index]
     resources :invitations, only: [:index, :show, :create, :update] do
       put :accept, on: :member
-      put :reject, on: :member
+      put :decline, on: :member
       put :rescind, on: :member
     end
     resources :journals, only: [:index, :show] do

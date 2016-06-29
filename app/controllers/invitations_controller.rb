@@ -41,11 +41,11 @@ class InvitationsController < ApplicationController
     render json: invitation
   end
 
-  def reject
+  def decline
     fail AuthorizationError unless invitation.invitee == current_user
     invitation.actor = current_user
-    invitation.reject!
-    Activity.invitation_rejected!(invitation, user: current_user)
+    invitation.decline!
+    Activity.invitation_declined!(invitation, user: current_user)
     render json: invitation
   end
 

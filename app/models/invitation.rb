@@ -22,7 +22,7 @@ class Invitation < ActiveRecord::Base
       validates :invitee, presence: true
     end
     state :accepted
-    state :rejected
+    state :declined
 
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
@@ -33,22 +33,20 @@ class Invitation < ActiveRecord::Base
     }) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
-    event(:accept, {
-      after_commit: :notify_invitation_accepted
-    }) do
+    event(:accept,
+          after_commit: :notify_invitation_accepted) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
-    event(:reject, {
-      after_commit: :notify_invitation_rejected
-    }) do
-      transitions from: :invited, to: :rejected, guards: :reject_allowed?
+    event(:decline,
+          after_commit: :notify_invitation_declined) do
+      transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
   end
 
   def self.find_uninvited_users_for_paper(possible_users, paper)
     invited_users = where(
       decision_id: paper.decisions.latest.id,
-      state: ["invited", "accepted", "rejected"]
+      state: ["invited", "accepted", "declined"]
     ).includes(:invitee).map(&:invitee)
     possible_users - invited_users
   end
@@ -92,8 +90,8 @@ class Invitation < ActiveRecord::Base
     task.invitation_accepted(self)
   end
 
-  def notify_invitation_rejected
-    task.invitation_rejected(self)
+  def notify_invitation_declined
+    task.invitation_declined(self)
   end
 
   def associate_existing_user
@@ -112,8 +110,8 @@ class Invitation < ActiveRecord::Base
     task.accept_allowed?(self)
   end
 
-  def reject_allowed?
-    task.reject_allowed?(self)
+  def decline_allowed?
+    task.decline_allowed?(self)
   end
 
   def event_stream_serializer(user: nil)

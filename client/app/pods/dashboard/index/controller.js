@@ -67,8 +67,8 @@ export default Ember.Controller.extend({
       this.set('showInvitationsOverlay', false);
     },
 
-    rejectInvitation(invitation) {
-      return this.get('restless').putUpdate(invitation, '/reject');
+    declineInvitation(invitation) {
+      return this.get('restless').putUpdate(invitation, '/decline');
     },
 
     updateInvitation(invitation) {

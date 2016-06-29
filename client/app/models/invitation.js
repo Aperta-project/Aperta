@@ -31,10 +31,10 @@ export default DS.Model.extend({
 
   invited: Ember.computed.equal('state', 'invited'),
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
-  rejected: Ember.computed.equal('state', 'rejected'),
+  declined: Ember.computed.equal('state', 'declined'),
 
-  reject() {
-    this.set('state', 'rejected');
+  decline() {
+    this.set('state', 'declined');
   },
 
   accept() {

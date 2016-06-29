@@ -58,7 +58,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def snapshot
-    snapshots.where(key: snapshot_key)
+    snapshots.find_by(key: snapshot_key)
   end
 
   def snapshot_key

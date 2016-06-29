@@ -226,7 +226,7 @@ class QueryParser < QueryLanguageParser
       'to_tsvector',
       [language, title_col])
 
-    quoted_query_str = Arel::Nodes.build_quoted(title.strip.gsub(/\s+/, '&'))
+    quoted_query_str = Arel::Nodes.build_quoted(title.gsub(/\s+/, '&'))
     query_vector = Arel::Nodes::NamedFunction.new(
       'to_tsquery',
       [language, quoted_query_str])

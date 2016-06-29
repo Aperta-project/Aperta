@@ -1,20 +1,22 @@
 module TahiStandardTasks
   class ReviewerRecommendationsController < ::ApplicationController
     before_action :authenticate_user!
-    before_action :enforce_policy
     respond_to :json
 
     def create
+      requires_user_can(:edit, reviewer_recommendation.task)
       reviewer_recommendation.save!
       render json: reviewer_recommendation, status: :created
     end
 
     def update
+      requires_user_can(:edit, reviewer_recommendation.task)
       reviewer_recommendation.update!(reviewer_recommendation_params)
       render json: reviewer_recommendation
     end
 
     def destroy
+      requires_user_can(:edit, reviewer_recommendation.task)
       reviewer_recommendation.destroy!
       head :no_content
     end
@@ -42,10 +44,6 @@ module TahiStandardTasks
         :department,
         :affiliation,
         :ringgold_id)
-    end
-
-    def enforce_policy
-      authorize_action!(reviewer_recommendation: reviewer_recommendation)
     end
   end
 end

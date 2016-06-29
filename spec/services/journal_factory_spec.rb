@@ -425,7 +425,8 @@ describe JournalFactory do
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask, TahiStandardTasks::RegisterDecisionTask]
+            [PlosBilling::BillingTask,
+             TahiStandardTasks::RegisterDecisionTask]
           end
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses
@@ -448,11 +449,8 @@ describe JournalFactory do
             end
           end
 
-          it 'is able to view and edit the ReviewerRecommendationsTask' do
-            expect(permissions).to include(
-              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
-            )
-            expect(permissions).to include(
+          it 'is not able to edit the ReviewerRecommendationsTask' do
+            expect(permissions).to_not include(
               Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
           end
@@ -1209,6 +1207,15 @@ describe JournalFactory do
               )
             end
           end
+        end
+
+        it 'cannot :view or :edit the ReviewerRecommendationsTask' do
+          expect(permissions).to_not include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
+          )
+          expect(permissions).to_not include(
+            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
+          )
         end
       end
 

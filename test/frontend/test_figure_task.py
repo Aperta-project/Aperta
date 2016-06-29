@@ -23,17 +23,13 @@ import logging
 import random
 import time
 
-from selenium.webdriver.common.by import By
-
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from Cards.figures_card import FiguresCard
-from Tasks.figures_task import FiguresTask
 from frontend.common_test import CommonTest
-from Pages.authenticated_page import application_typeface
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
+from Tasks.figures_task import FiguresTask
 
 __author__ = 'jgray@plos.org'
 
@@ -223,6 +219,35 @@ class FigureTaskTest(CommonTest):
     figures_task.download_figure(figures_list)
     # Need to do some sort of validation on the downloaded file.
     time.sleep(5)
+
+  def test_core_figures_task_edit_reorder(self):
+    """
+    test_figure_task: Validates the edit function of the figures task, including re-ordering
+    :return: void function
+    """
+    creator = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
+    logging.info('Calling Create new Article')
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.close_infobox()
+    manuscript_page.click_task('figures')
+    paper_url = manuscript_page.get_current_url()
+    paper_id = paper_url.split('/')[-1].split('?')[0]
+    figures_task = FiguresTask(self.getDriver())
+    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    figures_task.check_question()
+    figures_list = figures_task.upload_figure('ardea_herodias_lzw.tiff')
+    # It is necessary to provide a lengthy wait for upload and processing of the image
+    next_figure = figures_task.upload_figure('fig2.eps')
+    figures_list.append(next_figure)
+    time.sleep(10)
+    logging.info(figures_list)
+    figures_task.edit_figure(figures_list[0])
+    figures_task.logout()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

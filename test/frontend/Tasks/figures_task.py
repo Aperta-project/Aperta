@@ -23,14 +23,21 @@ class FiguresTask(BaseTask):
     super(FiguresTask, self).__init__(driver)
 
     #Locators - Instance members
-    self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content p')
+    self._intro_text_p1 = (By.CSS_SELECTOR, 'div.task-main-content > p')
+    self._intro_text_p1_link = (By.CSS_SELECTOR, 'div.task-main-content > p > a')
+    self._intro_text_p2 = (By.CSS_SELECTOR, 'div.task-main-content > p + p')
+    self._intro_text_p2_link1 = (By.CSS_SELECTOR, 'div.task-main-content > p + p > a')
+    self._intro_text_p2_link2 = (By.CSS_SELECTOR, 'div.task-main-content > p + p > a + a')
     self._question_label = (By.CLASS_NAME, 'question-checkbox')
     self._question_check = (By.CLASS_NAME, 'ember-checkbox')
+    self._labels_intro_p1 = (By.CSS_SELECTOR, 'div.task-main-content > div + p')
     self._add_new_figures_btn = (By.CLASS_NAME, 'button-primary')
     self._figures_list = (By.ID, 'figure-list')
     self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
     self._figure_preview = (By.CSS_SELECTOR, 'img.image-thumbnail')
     self._figure_label = (By.CSS_SELECTOR, 'h2.title')
+    self._figure_striking_chkmrk = (By.CSS_SELECTOR, 'div.striking > span.fa-check')
+    self._figure_striking_status = (By.CSS_SELECTOR, 'div.striking')
     self._figure_error_msg_a = (By.CSS_SELECTOR, 'div.info > h2 + div.error-message')
     self._figure_error_icon = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
     self._figure_dl_link = (By.CSS_SELECTOR, 'div.download-link > a')
@@ -39,6 +46,12 @@ class FiguresTask(BaseTask):
     self._figure_error_msg_b = (By.CSS_SELECTOR,
                                 'div.info > div.replace-file-button + div.error-message')
     self._figure_edit_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-pencil')
+    self._figure_edit_label_prefix = (By.CSS_SELECTOR, 'div.title > h2')
+    self._figure_edit_label_field = (By.CSS_SELECTOR, 'div.title > h2 > input')
+    self._figure_edit_striking_img_checkbox_lbl = (By.CSS_SELECTOR, 'div.striking > label')
+    self._figure_edit_striking_img_checkbox = (By.CSS_SELECTOR, 'div.striking > label > input')
+    self._figure_edit_cancel_link = (By.CSS_SELECTOR, 'div.actions > a.button-link')
+    self._figure_edit_save_btn = (By.CSS_SELECTOR, 'div.actions > a.button-primary')
     self._figure_delete_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-trash')
     self._figure_delete_confirmation = (By.CSS_SELECTOR, 'div.delete-confirmation')
     self._figure_delete_confirm_line1 = (By.CSS_SELECTOR, 'div.delete-confirmation > h4')
@@ -52,17 +65,38 @@ class FiguresTask(BaseTask):
     Validate styles in Figures Task
     """
     error_msg = ''
-    intro_text = self._get(self._intro_text)
+    intro_text_p1 = self._get(self._intro_text_p1)
     # The intro paragraph is rendered in the incorrect font size
     # self.validate_application_ptext(intro_text)
-    assert intro_text.text == (
-        "Please confirm that your figures comply with our guidelines for preparation and "
-        "have not been inappropriately manipulated. For information on image manipulation, "
-        "please see our general guidance notes on image manipulation."
-        ), intro_text.text
+    assert intro_text_p1.text == (
+        'Please confirm that your figures comply with our guidelines for preparation and '
+        'have not been inappropriately manipulated. For information on image manipulation, '
+        'please see our general guidance notes on image manipulation.'), intro_text_p1.text
+    intro_text_p1_link = self._get(self._intro_text_p1_link)
+    assert 'general guidance' in intro_text_p1_link.text, intro_text_p1_link.text
+    assert intro_text_p1_link.get_attribute('href') == \
+        'http://journals.plos.org/plosbiology/s/figures#loc-image-manipulation', \
+        intro_text_p1_link.get_attribute('href')
+    intro_text_p2 = self._get(self._intro_text_p2)
+    assert intro_text_p2.text == (
+        'We recommend that you use the PACE tool to prepare your figures for submission according '
+        'to our figure requirements.'), intro_text_p2.text
+    intro_text_p2_link1 = self._get(self._intro_text_p2_link1)
+    assert 'PACE' in intro_text_p2_link1.text, intro_text_p2_link1.text
+    assert intro_text_p2_link1.get_attribute('href') == 'http://pace.apexcovantage.com/', \
+        intro_text_p2_link1.get_attribute('href')
+    intro_text_p2_link2 = self._get(self._intro_text_p2_link2)
+    assert 'figure requirements' in intro_text_p2_link2.text, intro_text_p2_link2.text
+    assert intro_text_p2_link2.get_attribute('href') == \
+        'http://journals.plos.org/plosbiology/s/aperta-user-guide-for-authors#loc-figures', \
+        intro_text_p2_link2.get_attribute('href')
     assert self._get(self._question_label).text == 'Yes - I confirm our figures comply with the ' \
                                                    'guidelines.'
     self.validate_application_ptext(self._get(self._question_label))
+    labels_intro = self._get(self._labels_intro_p1)
+    assert labels_intro.text == (
+        'Figure labels (e.g. Fig 1) are generated from file names and will automatically place '
+        'figures above matching legends.'), labels_intro.text
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     assert add_new_figures_btn.text == "ADD NEW FIGURES"
     self.validate_primary_big_green_button_style(add_new_figures_btn)
@@ -264,6 +298,73 @@ class FiguresTask(BaseTask):
     if not matched:
       raise(ElementDoesNotExistAssertionError, 'No match found for {0}'.format(figure))
 
+  def edit_figure(self, figure=''):
+    """
+    Function to edit the named figure file, also validates the styles of the edit components
+    :param figure: Name of the figure to edit.
+    :return void function
+    """
+    matched = False
+    if not figure:
+      raise(ValueError, 'A figure must be specified')
+    logging.info(figure)
+    figure = urllib.quote_plus(figure)
+
+    # Redefining this down here to avoid a stale element reference due to the listing having
+    #   been replaced, potentially, since lookup
+    self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+    figure_blocks = self._gets(self._figure_listing)
+    original_order = []
+    final_order = []
+    for figure_block in figure_blocks:
+      page_fig_name = figure_block.find_element(*self._figure_dl_link)
+      original_order.append(page_fig_name.text)
+    logging.info(original_order)
+    for figure_block in figure_blocks:
+      page_fig_name = figure_block.find_element(*self._figure_dl_link)
+      if figure in page_fig_name.text:
+        logging.info('Editing figure: {0}'.format(figure))
+        time.sleep(5)
+        # Move to item to get the edit icons to appear
+        self._actions.move_to_element(figure_block).perform()
+        edit_icon = figure_block.find_element(*self._figure_edit_icon)
+        self._actions.move_to_element(edit_icon).perform()
+        edit_icon.click()
+        time.sleep(1)
+        label_prefix = figure_block.find_element(*self._figure_edit_label_prefix)
+        assert 'Fig.' in label_prefix.text, label_prefix.text
+        label_field = figure_block.find_element(*self._figure_edit_label_field)
+        assert label_field.get_attribute('value') == '1', label_field.get_attribute('value')
+        striking_label = figure_block.find_element(*self._figure_edit_striking_img_checkbox_lbl)
+        assert 'This is the striking image' in striking_label.text, striking_label.text
+        striking_chkbx = figure_block.find_element(*self._figure_edit_striking_img_checkbox)
+        assert striking_chkbx.is_selected() == False, striking_chkbx.is_selected()
+        cancel_link = figure_block.find_element(*self._figure_edit_cancel_link)
+        assert 'cancel' in cancel_link.text, cancel_link.text
+        save_link = figure_block.find_element(*self._figure_edit_save_btn)
+        assert 'SAVE' in save_link.text, save_link.text
+        striking_chkbx.click()
+        assert striking_chkbx.is_selected() == True, striking_chkbx.is_selected()
+        label_field.click()
+        time.sleep(.5)
+        save_link.click()
+        time.sleep(5)
+        matched = True
+    # time for order of blocks to update - often very slow - particularly when on Heroku CI
+    time.sleep(15)
+    # Redefining this down here to avoid a stale element reference due to the listing having
+    #   been replaced, potentially, since lookup
+    self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+    figure_blocks = self._gets(self._figure_listing)
+    for figure_block in figure_blocks:
+      page_fig_name = figure_block.find_element(*self._figure_dl_link)
+      final_order.append(page_fig_name.text)
+    original_order.sort()
+    assert original_order == final_order, '{0} != {1}'.format(original_order, final_order)
+    self._validate_striking_image_set(figure)
+    if not matched:
+      logging.info('no match found')
+
   def validate_figure_presence(self, fig_list):
     """
     Given a list of figures (file titles), validated they are all present on the Figures task
@@ -297,3 +398,25 @@ class FiguresTask(BaseTask):
           # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
           assert urllib.quote_plus(figure) not in page_fig_name_list, \
               '{0} found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
+
+  def _validate_striking_image_set(self, figure):
+    """
+    Given a figure name, validate it is set as striking image candidates
+    :param figure: filename of image
+    :return: void function
+    """
+    logging.info(figure)
+    matched = False
+    # Redefining this down here to avoid a stale element reference due to the listing having
+    #   been replaced, potentially, since lookup
+    self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+    figure_blocks = self._gets(self._figure_listing)
+    for figure_block in figure_blocks:
+      page_fig_name = figure_block.find_element(*self._figure_dl_link)
+      if figure == page_fig_name.text:
+        matched = True
+        page_strike_status = figure_block.find_element(*self._figure_striking_status)
+        figure_block.find_element(*self._figure_striking_chkmrk)
+        assert 'This is the striking image' in page_strike_status.text, page_strike_status.text
+    if not matched:
+      raise(ValueError, 'Figure list: {0} not found on page'.format(figure))

@@ -271,10 +271,6 @@ class Paper < ActiveRecord::Base
     withdrawals.last[:previous_publishing_state] == event.to_s
   end
 
-  def make_decision(decision)
-    public_send "#{decision.verdict}!"
-  end
-
   def awaiting_decision?
     SUBMITTED_STATES.include? publishing_state.to_sym
   end

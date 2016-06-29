@@ -12,7 +12,7 @@ module TahiStandardTasks
     private
 
     def register_initial_decision
-      task.paper.make_decision initial_decision
+      paper.public_send "#{initial_decision.verdict}!"
     end
 
     def create_blank_decision

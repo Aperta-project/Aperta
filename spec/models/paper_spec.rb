@@ -842,53 +842,33 @@ describe Paper do
     end
   end
 
-  describe "#make_decision" do
+  describe "transitions from submitted" do
     let(:paper) do
       FactoryGirl.create(:paper, :submitted, journal: journal)
     end
 
-    context "acceptance" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accept")
-      end
-
+    describe "#accept!" do
       it "accepts the paper" do
-        paper.make_decision decision
+        paper.accept!
         expect(paper.publishing_state).to eq("accepted")
       end
 
-      it 'sets accepted_at!' do
-        paper.make_decision decision
+      it "sets accepted_at" do
+        paper.accept!
         expect(paper.accepted_at.utc).to be_within(1.second).of Time.zone.now
       end
     end
 
-    context "rejection" do
-      it 'rejects the paper' do
-        decision = instance_double('Decision', verdict: 'reject')
-        expect(paper).to receive(:reject!)
-        paper.make_decision decision
-      end
-    end
-
-    context "major revision" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "major_revision")
-      end
-
+    describe "#major_revision!" do
       it "puts the paper in_revision" do
-        paper.make_decision decision
+        paper.major_revision!
         expect(paper.publishing_state).to eq("in_revision")
       end
     end
 
-    context "minor revision" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "minor_revision")
-      end
-
+    describe "#minor_revision!" do
       it "puts the paper in_revision" do
-        paper.make_decision decision
+        paper.minor_revision!
         expect(paper.publishing_state).to eq("in_revision")
       end
     end

@@ -21,7 +21,7 @@ class Decision < ActiveRecord::Base
 
   def register!(originating_task)
     Decision.transaction do
-      paper.make_decision self
+      paper.public_send "#{verdict}!"
       update! major_version: paper.major_version,
               minor_version: paper.minor_version,
               registered_at: DateTime.now.utc

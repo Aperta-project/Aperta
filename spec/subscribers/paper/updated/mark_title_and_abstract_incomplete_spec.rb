@@ -30,7 +30,7 @@ describe Paper::Updated::MarkTitleAndAbstractIncomplete do
 
   context 'when something else has changed' do
     before do
-      allow(paper).to receive(:previous_changes).and_return("body" => ["first", "second"])
+      allow(paper).to receive(:previous_changes).and_return("title" => ["first", "second"])
     end
 
     it 'marks the title and abstract task incomplete if there is one' do

@@ -45,9 +45,14 @@ class TitleAbstractTest(CommonTest):
                         )
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=15)
+    paper_viewer.validate_ihat_conversions_success(timeout=30)
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info('-{0}-'.format(paper_id))
+    while not paper_id:
+      time.sleep(15)
+      paper_id = paper_viewer.get_current_url().split('/')[-1]
+      paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
     # paper_viewer.click_submit_btn()
     # paper_viewer.confirm_submit_btn()
@@ -82,13 +87,13 @@ class TitleAbstractTest(CommonTest):
     :return: void function
     """
     creator = random.choice(users)
-    journal = 'PLOS Yeti'
+    journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    paper_type = 'Research'
+    paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Title and Abstract Card',
                         journal=journal,
@@ -101,10 +106,6 @@ class TitleAbstractTest(CommonTest):
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
-    # paper_viewer.click_submit_btn()
-    # paper_viewer.confirm_submit_btn()
-    # paper_viewer.close_submit_overlay()
-    # logout
     time.sleep(5)
     paper_viewer.logout()
 
@@ -116,7 +117,7 @@ class TitleAbstractTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(5)
+    time.sleep(15)
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -135,7 +136,7 @@ class TitleAbstractTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(5)
+    time.sleep(15)
     paper_viewer.click_task('upload_manuscript')
     time.sleep(3)
     upms = UploadManuscriptTask(self.getDriver())
@@ -144,6 +145,7 @@ class TitleAbstractTest(CommonTest):
     time.sleep(1)
     upms.upload_manuscript()
     upms.validate_ihat_conversions_success(timeout=30)
+    upms.check_for_flash_error()
     upms.logout()
 
     # log back in as editor to validate T&A card state reset

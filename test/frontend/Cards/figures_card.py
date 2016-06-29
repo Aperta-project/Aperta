@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import time
+import urllib
 
 from selenium.webdriver.common.by import By
 
@@ -49,7 +51,8 @@ class FiguresCard(BaseCard):
       "have not been inappropriately manipulated. For information on image manipulation, "
       "please see our general guidance notes on image manipulation."
       ), intro_text.text
-    assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the guidelines."
+    assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the " \
+                                                   "guidelines."
     self.validate_application_ptext(self._get(self._question_label))
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     add_new_figures_btn.text == "ADD NEW FIGURES"
@@ -74,4 +77,20 @@ class FiguresCard(BaseCard):
       return True
     else:
       return False
+
+  def validate_figure_presence(self, fig_list):
+    """
+    Given a list of figures (file titles), validated they are all present on the Figures card
+    :param fig_list: list of file names
+    :return: boolean, true if all passed filenames appear on the figures card
+    """
+    page_fig_list = self._gets(self._populated_figure_dl_link)
+    page_fig_name_list = []
+    for page_fig_item in page_fig_list:
+      page_fig_name_list.append(page_fig_item.text)
+    logging.info(page_fig_name_list)
+    for figure in fig_list:
+      # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
+      assert urllib.quote_plus(figure) in page_fig_name_list, \
+          '{0} not found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
 

@@ -276,10 +276,6 @@ docs = ['10yearsRabiesSL20140723.doc',
         'revised_maintext_20160226_formatted_FINAL.docx',
         'resubmission_text_ethics_changed.doc',
         'sample.docx',
-        'simpledocepsimageinline.docx',
-        'simpledocjpgimageinline.docx',
-        'simpledocpngimageinline.docx',
-        'simpledoctiffnocompress.docx',
         'tbParBSASpl1.docx',
         ]
 

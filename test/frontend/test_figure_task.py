@@ -39,12 +39,12 @@ __author__ = 'jgray@plos.org'
 
 
 @MultiBrowserFixture
-class WithdrawManuscriptTest(CommonTest):
+class FigureTaskTest(CommonTest):
   """
   Validate the elements, styles, functions of the Figures Card
   """
 
-  def rest_smoke_figures_task_styles(self):
+  def test_smoke_figures_task_styles(self):
     """
     test_figure_task: Validates the elements and styles of the figures task
     :return: void function
@@ -82,7 +82,7 @@ class WithdrawManuscriptTest(CommonTest):
     figures_task.validate_styles()
     figures_task.logout()
 
-  def rest_core_figures_task_upload(self):
+  def test_core_figures_task_upload(self):
     """
     test_figure_task: Validates the upload function of the figures task
     :return: void function
@@ -130,7 +130,7 @@ class WithdrawManuscriptTest(CommonTest):
     figures_card.validate_figure_presence(figures_list)
     figures_card.logout()
 
-  def rest_core_figures_task_replace(self):
+  def test_core_figures_task_replace(self):
     """
     test_figure_task: Validates the replacement function of the figures task
     :return: void function
@@ -163,7 +163,7 @@ class WithdrawManuscriptTest(CommonTest):
     time.sleep(5)
     figures_task.logout()
 
-  def rest_core_figures_task_delete(self):
+  def test_core_figures_task_delete(self):
     """
     test_figure_task: Validates the delete function of the figures task
     :return: void function

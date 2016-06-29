@@ -1,77 +1,20 @@
-{{#if groupByDecision}}
-
-  <tbody class='active-invitations'>
-    {{#each latestDecisionInvitations as |invitation|}}
-    <tr class='invitation'>
-      <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
-      <td>
-        <span class='invitee-full-name'>
-        {{#if invitation.invitee}}
-          {{invitation.invitee.fullName}}
-        {{else}}
-          {{invitation.email}}
-        {{/if}}
-        </span>
-      </td>
-      <td><span class='invitation-updated-at'>{{format-date invitation.updatedAt format='LLL'}}</span></td>
-      <td><span class='invitation-state'>{{invitation.state}}</span></td>
-      {{#unless invitation.accepted}}
-      <td>
-        <span class='fa fa-trash invite-remove' {{action 'destroyInvitation' invitation}}></span>
-      </td>
-      {{/unless}}
-    </tr>
-    {{/each}}
-  </tbody>
-
-  {{#each previousDecisionsWithFilteredInvitations as |decision|}}
-  <tr class='revision-human-number'>
-    <td colspan=5>Round {{decision.revisionNumber}}</td>
-  </tr>
-  <tbody class='expired-invitations'>
-    {{#each decision.filteredInvitations as |invitation|}}
-    <tr class='invitation'>
-      <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
-      <td>
-        <span class='invitee-full-name'>
-        {{#if invitation.invitee}}
-          {{invitation.invitee.fullName}}
-        {{else}}
-          {{invitation.email}}
-        {{/if}}
-        </span>
-      </td>
-      <td><span class='invitation-updated-at'>{{format-date invitation.updatedAt format='LLL'}}</span></td>
-      <td><span class='invitation-state'>{{invitation.state}}</span></td>
-    </tr>
-    {{/each}}
-  </tbody>
+<tbody class='active-invitations'>
+  {{#each invitations as |invitation|}}
+    {{invitation-detail-row
+        invitation=invitation
+        destroyAction=(action 'destroyInvitation' invitation)}}
   {{/each}}
+</tbody>
 
-{{else}}
-
-  <tbody class='active-invitations'>
-    {{#each invitations as |invitation|}}
-    <tr class='invitation'>
-      <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
-      <td>
-        <span class='invitee-full-name'>
-        {{#if invitation.invitee}}
-          {{invitation.invitee.fullName}}
-        {{else}}
-          {{invitation.email}}
-        {{/if}}
-        </span>
-      </td>
-      <td><span class='invitation-updated-at'>{{format-date invitation.updatedAt format='LLL'}}</span></td>
-      <td><span class='invitation-state'>{{invitation.state}}</span></td>
-      {{#unless invitation.accepted}}
-      <td>
-        <span class='fa fa-trash invite-remove' {{action 'destroyInvitation' invitation}}></span>
-      </td>
-      {{/unless}}
+{{#if groupByDecision}}
+  {{#each previousDecisionsWithFilteredInvitations as |decision|}}
+    <tr class='revision-human-number'>
+      <td colspan=5>Round {{decision.revisionNumber}}</td>
     </tr>
-    {{/each}}
-  </tbody>
-
+    <tbody class='expired-invitations'>
+      {{#each decision.filteredInvitations as |invitation|}}
+        {{invitation-detail-row invitation=invitation}}
+      {{/each}}
+    </tbody>
+  {{/each}}
 {{/if}}

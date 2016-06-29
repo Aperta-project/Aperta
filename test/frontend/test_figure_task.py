@@ -145,7 +145,7 @@ class FigureTaskTest(CommonTest):
     paper_id = paper_url.split('/')[-1].split('?')[0]
     figures_task = FiguresTask(self.getDriver())
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Need, apparently more time, at times for the figures card to opn and populated enough to see
+    # Need, apparently more time, at times for the figures card to open and populated enough to see
     #   the completion button.
     time.sleep(5)
     figures_task.check_question()
@@ -244,7 +244,7 @@ class FigureTaskTest(CommonTest):
     # It is necessary to provide a lengthy wait for upload and processing of the image
     next_figure = figures_task.upload_figure('fig2.eps')
     figures_list.append(next_figure)
-    time.sleep(10)
+    time.sleep(15)
     logging.info(figures_list)
     figures_task.edit_figure(figures_list[0])
     figures_task.logout()

@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20160720010120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
@@ -228,6 +229,7 @@ ActiveRecord::Schema.define(version: 20160720010120) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "author_response"
+    t.boolean  "decided",         default: false
   end
 
   add_index "decisions", ["paper_id", "revision_number"], name: "index_decisions_on_paper_id_and_revision_number", unique: true, using: :btree

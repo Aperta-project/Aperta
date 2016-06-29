@@ -1,4 +1,8 @@
-{{textarea classNames=textareaClassNames value=value placeholder=placeholder}}
+{{#if hasBlock}}
+  {{yield}}
+{{else}}
+  {{textarea classNames=textareaClassNames value=value placeholder=placeholder}}
+{{/if}}
 <div class='expanding-textarea-arrow'>
   <div class='expanding-textarea-arrow-line1'></div>
   <div class='expanding-textarea-arrow-line2'></div>

@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe Typesetter::AuthorSerializer do
+  before do
+    Rake::Task['nested-questions:seed:author'].reenable
+    Rake::Task['nested-questions:seed:author'].invoke
+  end
+
   subject(:serializer) { described_class.new(author) }
 
   let(:first_name) { 'first name' }
@@ -28,34 +33,20 @@ describe Typesetter::AuthorSerializer do
     )
   end
 
-  let!(:contributes_question) do
-    NestedQuestion.find_by(ident: "author--contributions") ||
-      FactoryGirl.create(
-        :nested_question,
-        owner_id: nil,
-        owner_type: 'Author',
-        ident: 'author--contributions'
-      )
+  let(:contributes_question) do
+    NestedQuestion.find_by(ident: "author--contributions")
   end
 
-  let!(:question1) do
+  let(:question1) do
     author.class.contributions_question.children[0]
   end
 
-  let!(:question2) do
+  let(:question2) do
     author.class.contributions_question.children[1]
-  end
-
-  let!(:question3) do
-    author.class.contributions_question.children.find_by_ident('other')
   end
 
   let!(:deceased_question) do
     author.nested_questions.find_by_ident('author--deceased')
-  end
-
-  let!(:corresponding_question) do
-    author.nested_questions.find_by_ident('author--published_as_corresponding_author')
   end
 
   let!(:answer1) do

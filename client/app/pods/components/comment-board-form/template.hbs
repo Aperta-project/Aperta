@@ -1,4 +1,11 @@
-{{expanding-textarea textareaClassNames="new-comment-field" value=comment placeholder="Type your message here"}}
+{{#expanding-textarea}}
+  {{at-mentionable-textarea
+      atMentionableUsers=atMentionableUsers
+      classNames="new-comment-field"
+      value=comment
+      placeholder="Type your message here"}}
+{{/expanding-textarea}}
+
 
 <div class="message-comment-buttons">
   <button type="submit" class="new-comment-submit-button button-secondary button--green" {{action "save"}}>

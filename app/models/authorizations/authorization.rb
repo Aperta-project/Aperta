@@ -36,5 +36,12 @@ module Authorizations
     def authorizes
       @authorizes.constantize
     end
+
+    # 'inverse_of_via' returns the association on @authorizes which is the
+    # inverse of the association represented by @via.
+    # This can be used to traverse the authorization chain backwards
+    def inverse_of_via
+      assignment_to.reflections[via.to_s].inverse_of.name.to_s
+    end
   end
 end

@@ -27,7 +27,7 @@ describe FigureInserter do
 
     let(:figure_inserter) { FigureInserter.new(html, figures) }
 
-    subject(:modified_html) { parse figure_inserter.call }
+    subject(:modified_html) { parse_html figure_inserter.call }
     context "there are no figures" do
       let(:figures) { [] }
 
@@ -40,7 +40,7 @@ describe FigureInserter do
           HTML
         end
 
-        let(:output) { parse html }
+        let(:output) { parse_html html }
 
         it 'returns the same html as the input' do
           is_expected.to be_equivalent_to(output)
@@ -57,7 +57,7 @@ describe FigureInserter do
         end
 
         let(:output) do
-          parse <<-HTML
+          parse_html <<-HTML
             <p></p>
             <p></p>
           HTML
@@ -80,7 +80,7 @@ describe FigureInserter do
           HTML
         end
         let(:output) do
-          parse <<-HTML
+          parse_html <<-HTML
             <p>Doesn't matter</p>
             #{image_html(figure1)}
             <p>#{caption_text}</p>
@@ -112,7 +112,7 @@ describe FigureInserter do
           HTML
         end
         let(:output) do
-          parse <<-HTML
+          parse_html <<-HTML
             <p>Doesn't matter</p>
             <p><span style="font-weight:bold">Figure 11</span></p>
             <p>Also doesn't matter</p>
@@ -137,7 +137,7 @@ describe FigureInserter do
           HTML
         end
         let(:output) do
-          parse <<-HTML
+          parse_html <<-HTML
             <p>Doesn't matter</p>
             <p>Fig newton does not match</p>
             <p>Figure A does not match</p>
@@ -170,7 +170,7 @@ describe FigureInserter do
         HTML
       end
       let(:output) do
-        parse <<-HTML
+        parse_html <<-HTML
           <p>Doesn't matter</p>
           <p>Figure 1. This is the caption</p>
           <p>Also doesn't matter</p>
@@ -200,7 +200,7 @@ describe FigureInserter do
         end
 
         let(:output) do
-          parse <<-HTML
+          parse_html <<-HTML
             <p></p>
             #{caption_and_image_html(figure1)}
             #{caption_and_image_html(figure11)}
@@ -223,7 +223,7 @@ describe FigureInserter do
           HTML
         end
         let(:output) do
-          parse <<-HTML
+          parse_html <<-HTML
             <p>Doesn't matter</p>
             #{image_html(figure1)}
             <p>Figure 1. This is the caption</p>
@@ -258,7 +258,7 @@ describe FigureInserter do
           end
 
           let(:output) do
-            parse <<-HTML
+            parse_html <<-HTML
               #{image_html(figure1)}
               <p>Figure 1. This is the caption</p>
               <p>Figure 2. This should be ignored since not attached.</p>
@@ -278,7 +278,7 @@ describe FigureInserter do
           end
 
           let(:output) do
-            parse <<-HTML
+            parse_html <<-HTML
               #{image_html(figure1)}
               <p>Figure 1. This is the caption</p>
             HTML
@@ -305,10 +305,6 @@ describe FigureInserter do
       allow(fake_figure).to receive(:detail_src).and_return 'amazonaws.com'
       expect(figure_inserter.send(:figure_url, fake_figure)).to include 'amazonaws'
     end
-  end
-
-  def parse(html)
-    Nokogiri::HTML::DocumentFragment.parse html
   end
 
   def get_node(doc, selector)

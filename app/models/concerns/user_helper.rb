@@ -7,6 +7,15 @@ module UserHelper
     has_many :roles, through: :assignments
   end
 
+  class_methods do
+    def who_can(permission, target)
+      Authorizations::ReverseQuery.new(
+        permission: permission,
+        target: target
+      ).all
+    end
+  end
+
   def can?(permission, target)
     # TODO: Remove this when site_admin is no more
     return true if site_admin

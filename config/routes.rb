@@ -48,6 +48,7 @@ Tahi::Application.routes.draw do
     end
     resources :affiliations, only: [:index, :create, :destroy]
     resources :attachments, only: [:show, :destroy, :update]
+    resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]

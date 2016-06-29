@@ -12806,6 +12806,30 @@
           }
         }
       }
+    },
+    "ember-prop-types": {
+      "version": "2.0.0",
+      "from": "ember-prop-types@*",
+      "dependencies": {
+        "ember-get-config": {
+          "version": "0.0.4",
+          "from": "ember-get-config@>=0.0.2 <2.0.0"
+        },
+        "ember-lodash": {
+          "version": "0.0.6",
+          "from": "ember-lodash@>=0.0.6 <0.0.7",
+          "dependencies": {
+            "lodash-es": {
+              "version": "3.10.1",
+              "from": "lodash-es@>=3.10.0 <4.0.0"
+            }
+          }
+        }
+      }
+    },
+    "ember-cli-at-js": {
+      "version": "0.0.3",
+      "from": "ember-cli-at-js@latest"
     }
   }
 }

@@ -7,9 +7,10 @@ describe Paper::Updated::MarkTitleAndAbstractIncomplete do
   let!(:task) { FactoryGirl.create(:title_and_abstract_task, paper: paper) }
   let!(:other_task) { FactoryGirl.create(:authors_task, paper: paper) }
 
-  context 'when the title has changied' do
+  context 'when the paper is processing again' do
     before do
-      allow(paper).to receive(:previous_changes).and_return("title" => ["first", "second"])
+      allow(paper).to receive(:previous_changes).and_return("processing" => ["true", "false"])
+      allow(paper).to receive(:processing?).and_return(false)
     end
 
     it 'marks the title and abstract task incomplete if there is one' do
@@ -28,9 +29,9 @@ describe Paper::Updated::MarkTitleAndAbstractIncomplete do
     end
   end
 
-  context 'when something else has changied' do
+  context 'when something else has changed' do
     before do
-      allow(paper).to receive(:previous_changes).and_return("body" => ["first", "second"])
+      allow(paper).to receive(:previous_changes).and_return("title" => ["first", "second"])
     end
 
     it 'marks the title and abstract task incomplete if there is one' do

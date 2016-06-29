@@ -30,13 +30,11 @@ FactoryGirl.define do
     end
 
     trait(:active) do
-      publishing_state "unsubmitted"
-      active true
+      # noop
     end
 
     trait(:inactive) do
-      publishing_state "withdrawn"
-      active false
+      after(:create, &:withdraw!)
     end
 
     trait(:checking) do
@@ -48,16 +46,23 @@ FactoryGirl.define do
     end
 
     trait(:accepted) do
-      publishing_state "accepted"
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.submit! paper.creator
+        paper.accept!
+      end
     end
 
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
-      publishing_state "submitted"
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.submit! paper.creator
+      end
     end
 
     trait(:initially_submitted) do
-      publishing_state 'initially_submitted'
+      after(:create, &:initial_submit!)
     end
 
     trait(:submitted) do
@@ -68,10 +73,7 @@ FactoryGirl.define do
     end
 
     trait(:unsubmitted) do
-      after(:create) do |paper|
-        paper.update_column(:publishing_state, 'unsubmitted')
-        paper.update_column(:editable, true)
-      end
+      # noop
     end
 
     trait(:with_tasks) do

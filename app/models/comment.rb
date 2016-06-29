@@ -15,7 +15,7 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_mentioned_people
-    people_mentioned = UserMentions.new(body, commenter).people_mentioned
+    people_mentioned = UserMentions.new(body, commenter).all_users_mentioned
     people_mentioned.each do |mentionee|
       UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
     end

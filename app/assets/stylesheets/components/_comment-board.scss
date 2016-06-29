@@ -76,6 +76,10 @@ $comments-animation-speed: 0.3s;
   .badge {
     @include position(absolute, 5px auto auto -10px);
   }
+
+  .discussion-at-mention:hover {
+    text-decoration: none;
+  }
 }
 
 .comment-date,

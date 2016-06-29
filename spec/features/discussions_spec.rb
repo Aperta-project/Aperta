@@ -3,6 +3,12 @@ require 'rails_helper'
 feature "Discussions", js: true, selenium: true do
   let(:admin) { FactoryGirl.create :user }
   let(:creator) { FactoryGirl.create :user }
+  let(:mentioned_username) { 'charmander' }
+  let!(:mentioned_user) do
+    FactoryGirl.create(:user, username: mentioned_username).tap do |u|
+      assign_journal_role(journal, u, :editor)
+    end
+  end
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: creator, journal: journal }
   let(:discussion_page) { DiscussionsPage.new }
@@ -13,18 +19,17 @@ feature "Discussions", js: true, selenium: true do
 
       login_as(admin, scope: :user)
       visit "/papers/#{paper.id}"
-      wait_for_ajax
 
       find('#nav-discussions').click
-      wait_for_ajax
 
       discussion_page.new_topic
       discussion_page.fill_in_topic
       discussion_page.create_topic
       discussion_page.expect_topic_created_succesfully(admin)
       discussion_page.expect_can_add_participant
-      discussion_page.add_reply
-      discussion_page.expect_reply_created(admin, 2)
+      discussion_page.add_reply_mentioning_user(mentioned_user, fragment: 'char')
+      discussion_page.expect_reply_count(2)
+      discussion_page.expect_reply_mentioning_user(by: admin, mentioned: mentioned_user)
     end
   end
 

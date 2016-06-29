@@ -153,10 +153,11 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
-      # Journals
+      # Journal
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
 
       # Paper
@@ -192,6 +193,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -228,7 +230,10 @@ class JournalFactory
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
+      # Journal
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+
+      # Paper
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper)
@@ -263,10 +268,14 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
+      # Journals
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+
+      # Paper
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper)
@@ -300,6 +309,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
@@ -334,6 +344,7 @@ class JournalFactory
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)

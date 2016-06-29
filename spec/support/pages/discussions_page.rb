@@ -32,18 +32,54 @@ class DiscussionsPage < Page
     expect(page).not_to have_css(create_topic_button)
   end
 
+  def expect_no_at_mention_suggestions
+    expect(page).to have_no_css(at_mention_suggestions)
+  end
+
+  def expect_at_mention_suggestion_count(count)
+    expect(page).to have_css(at_mention_suggestions, count: count)
+  end
+
+  def expect_reply_count(count)
+    expect(page).to have_css(discussion_replies, count: count)
+  end
+
   def expect_view_topic
     expect(find('h1.discussions-show-title'))
     expect(find('.participant-selector'))
     expect(find('.discussions-show-form'))
   end
 
+  def expect_reply_mentioning_user(by:, mentioned:)
+    author = most_recent_reply.find('.comment-name')
+    expect(author).to have_content(by.full_name)
+    user_mention = most_recent_reply.find('.comment-body .discussion-at-mention')
+    expect(user_mention).to have_content(mentioned.username)
+  end
+
+  def most_recent_reply
+    all(discussion_replies).first
+  end
+
   def add_reply
-    find('.discussions-show-form .new-comment-field').set('new reply')
-    find('.discussions-show-form .new-comment-field').send_keys(:tab)
+    find(new_comment_field).set('new reply')
+    submit_comment
     wait_for_ajax
+  end
+
+  def submit_comment
+    find(new_comment_field).send_keys(:tab)
     find('button.new-comment-submit-button').click
-    wait_for_ajax
+  end
+
+  def add_reply_mentioning_user(mentioning_user, fragment: mentioning_user.username)
+    comment_field = find(new_comment_field)
+    comment_field.set("@#{fragment}")
+    expect_at_mention_suggestion_count(1)
+    comment_field.send_keys(:tab)
+    expect_no_at_mention_suggestions
+    expect(comment_field.value).to eq "@#{mentioning_user.username} "
+    submit_comment
   end
 
   def expect_reply_created(user, count)
@@ -62,6 +98,18 @@ class DiscussionsPage < Page
   end
 
   private
+
+  def new_comment_field
+    '.discussions-show-form .new-comment-field'
+  end
+
+  def discussion_replies
+    '.message-comment'
+  end
+
+  def at_mention_suggestions
+    '.atwho-container li'
+  end
 
   def create_topic_button
     '.discussions-index-header .button-secondary'

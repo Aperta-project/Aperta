@@ -22,18 +22,12 @@
   </div>
 
   <div class="discussions-show-form">
-    {{comment-board-form save="postReply"}}
+    {{comment-board-form save="postReply" participants=participants atMentionableStaffUsers=atMentionableStaffUsers}}
   </div>
 
   <br>
 
   {{#each sortedReplies as |reply|}}
-    <div class="message-comment">
-      {{notification type="DiscussionReply" id=reply.id}}
-      {{user-thumbnail user=reply.replier}}
-      <span class="comment-name">{{reply.replier.fullName}}</span>
-      <span class="comment-date">posted {{format-date reply.createdAt}}</span>
-      <div class="comment-body">{{url-to-href text=(break-to-tag reply.body)}}</div>
-    </div>
+    {{discussion-reply reply=reply}}
   {{/each}}
 </div>

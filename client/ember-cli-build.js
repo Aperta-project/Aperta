@@ -66,6 +66,9 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/bootstrap-datepicker/css/datepicker3.css');
   app.import(app.bowerDirectory + '/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
+  // At.js
+  app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');
+
   if (app.env !== 'production') {
     app.import(app.bowerDirectory + '/sinon/index.js', { type: 'test' });
     app.import(app.bowerDirectory + '/ember/ember-template-compiler.js', { type: 'test' });

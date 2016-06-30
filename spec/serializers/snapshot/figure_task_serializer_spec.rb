@@ -37,14 +37,16 @@ describe Snapshot::FigureTaskSerializer do
           { name: "file", type: "text", value: "yeti.jpg" },
           { name: "file_hash", type: "text", value: figure_1.file_hash },
           { name: "title", type: "text", value: "figure 1 title" },
-          { name: "striking_image", type: "boolean", value: false }
+          { name: "striking_image", type: "boolean", value: false },
+          { name: 'url', type: 'url', value: figure_1.non_expiring_proxy_url }
         ]},
         { name: "figure", type: "properties", children: [
           { name: "id", type: "integer", value: figure_2.id },
           { name: "file", type: "text", value: "yeti.tiff" },
           { name: "file_hash", type: "text", value: figure_2.file_hash },
           { name: "title", type: "text", value: "figure 2 title" },
-          { name: "striking_image", type: "boolean", value: false }
+          { name: "striking_image", type: "boolean", value: false },
+          { name: 'url', type: 'url', value: figure_2.non_expiring_proxy_url }
         ]}
       )
     end

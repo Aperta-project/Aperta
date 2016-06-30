@@ -42,7 +42,8 @@ describe Snapshot::SupportingInformationTaskSerializer do
           { name: "title", type: "text", value: "supporting info 1 title" },
           { name: "caption", type: "text", value: "supporting info 1 caption" },
           { name: "publishable", type: "boolean", value: true },
-          { name: "striking_image", type: "boolean", value: false }
+          { name: "striking_image", type: "boolean", value: false },
+          { name: 'url', type: 'url', value: supporting_info_file_1.non_expiring_proxy_url }
         ] },
         { name: "supporting-information-file", type: "properties", children: [
           { name: "id", type: "integer", value: supporting_info_file_2.id },
@@ -51,7 +52,8 @@ describe Snapshot::SupportingInformationTaskSerializer do
           { name: "title", type: "text", value: "supporting info 2 title" },
           { name: "caption", type: "text", value: "supporting info 2 caption" },
           { name: "publishable", type: "boolean", value: true },
-          { name: "striking_image", type: "boolean", value: false }
+          { name: "striking_image", type: "boolean", value: false },
+          { name: 'url', type: 'url', value: supporting_info_file_2.non_expiring_proxy_url }
         ] }
       )
     end

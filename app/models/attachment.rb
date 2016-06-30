@@ -22,17 +22,12 @@ class Attachment < ActiveRecord::Base
   belongs_to :paper
   has_many :snapshots, as: :source, dependent: :destroy
 
-  has_one :resource_token, as: :owner, dependent: :destroy
-  delegate :token, to: :resource_token
-
   validates :owner, presence: true
 
   # set_paper is required when creating attachments thru associations
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
 
-  # This creates the token used by resource proxy to lookup the attachment.
-  after_create :create_resource_token
 
   def download!(url)
     file.download! url
@@ -80,10 +75,6 @@ class Attachment < ActiveRecord::Base
   end
 
   private
-
-  def create_resource_token
-    ResourceToken.create owner: self
-  end
 
   def set_paper
     if owner_type == 'Paper'

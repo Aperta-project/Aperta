@@ -66,4 +66,13 @@ describe ProxyableResource, redis: true do
       end
     end
   end
+  describe 'creating resource tokens' do
+    it 'creates a new resource token when creating a new attachment' do
+      before_count = ResourceToken.all.count
+      owner = FactoryGirl.create(:paper)
+      FactoryGirl.create(:attachment, owner: owner)
+      after_count = ResourceToken.all.count
+      expect(after_count - before_count).to eq(1)
+    end
+  end
 end

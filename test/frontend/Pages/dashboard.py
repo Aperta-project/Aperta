@@ -563,6 +563,35 @@ class DashboardPage(AuthenticatedPage):
     selected_type = self._gets(self._cns_paper_type_dd)
     assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
 
+  def select_journal_get_types(self, journal):
+    """
+    Select a journal and get the ordered type list
+    :param journal: Title of the journal
+    :return paper_type list: ordered list of paper_types
+    """
+    journal_dd, type_dd = self._gets((By.CLASS_NAME, 'ember-basic-dropdown-trigger'))
+    journal_dd.click()
+    time.sleep(.5)
+    parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
+
+    # for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+    for item in parent_div.find_elements_by_tag_name('li'):
+      if item.text == journal:
+        item.click()
+        time.sleep(1)
+        break
+    selected_journal = self._get(self._cns_journal_chooser)
+    assert journal in selected_journal.text, '{0} != {1}'.format(selected_journal.text, journal)
+    # Time to change select contents
+    time.sleep(.1)
+    type_dd.click()
+    # Note have to recall this element here because is not the same as last call
+    parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
+    ordered_pap_type_list=[]
+    for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
+      ordered_pap_type_list.append(item.text)
+    return ordered_pap_type_list
+
   @staticmethod
   def title_generator(prefix='', random_bit=True):
     """
@@ -719,6 +748,37 @@ class DashboardPage(AuthenticatedPage):
     assert 'Journal can\'t be blank' in errors
     assert 'Paper type can\'t be blank' in errors
     closer.click()
+
+  def validate_mmt_ordering(self, journals=()):
+    """
+    Validates that the manuscript manager templates are listed in order of creation on the
+      create new manuscript overlay paper_type drop-down list
+    :param journals: a list of journal tuples (id, name) for which to validate the order.
+      Defaults to all journals
+    :return:
+    """
+    # Open the overlay
+    self.click_create_new_submission_button()
+    if not journals:
+      # First things first, get the list of journal names and their ids
+      journal_info = PgSQL().query('SELECT id, name FROM journals;')
+    else:
+      list(journals)
+      journal_info = journals
+    for journal_entry in journal_info:
+      mmt_list = []
+      journal_id, journal_name = journal_entry
+      # Get list of mmts for journal in id order ASC
+      ordered_mmts = PgSQL().query('SELECT paper_type FROM manuscript_manager_templates '
+                                   'WHERE journal_id = %s ORDER BY id ASC;', (journal_id,))
+      # turn db returned tuples into a simple list
+      for mmt in ordered_mmts:
+        mmt_list.append(mmt[0])
+      # Now look at the ordering in the interface
+      page_paper_type_list = self.select_journal_get_types(journal_name)
+      assert mmt_list == page_paper_type_list, '{0} != {1}'.format(mmt_list, page_paper_type_list)
+    self.close_modal()
+    time.sleep(1)
 
   def return_cns_base_overlay_div(self):
     """Method for debugging purposes only"""

@@ -587,7 +587,7 @@ class DashboardPage(AuthenticatedPage):
     type_dd.click()
     # Note have to recall this element here because is not the same as last call
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
-    ordered_pap_type_list=[]
+    ordered_pap_type_list = []
     for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
       ordered_pap_type_list.append(item.text)
     return ordered_pap_type_list

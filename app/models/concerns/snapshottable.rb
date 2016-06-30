@@ -12,7 +12,8 @@ module Snapshottable
   class_methods do
     # +snapshottable_uploader+ will prevent carrierwave from removing a
     # mounted file/attachment if it the including model has been snapshotted.
-    def snapshottable_uploader(mounted_as)
+    def mount_snapshottable_uploader(mounted_as, uploader_class)
+      mount_uploader mounted_as, uploader_class
       carrierwave_removal_method = "remove_previously_stored_#{mounted_as}".to_sym
       skip_callback :save, :after, carrierwave_removal_method, if: -> { snapshotted? }
     end

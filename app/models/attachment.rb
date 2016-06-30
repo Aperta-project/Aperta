@@ -13,11 +13,7 @@ class Attachment < ActiveRecord::Base
 
   STATUS_DONE = 'done'
 
-  def self.attachment_uploader(uploader_class)
-    mount_as = :file
-    mount_uploader mount_as, uploader_class
-    snapshottable_uploader mount_as
-  end
+  mount_snapshottable_uploader :file, AttachmentUploader
 
   belongs_to :owner, polymorphic: true
   belongs_to :paper

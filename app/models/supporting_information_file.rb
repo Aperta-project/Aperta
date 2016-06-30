@@ -10,8 +10,6 @@ class SupportingInformationFile < Attachment
 
   scope :publishable, -> { where(publishable: true) }
 
-  attachment_uploader AttachmentUploader
-
   validates :category, :title, presence: true, if: :task_completed?
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}

@@ -14,20 +14,19 @@ class Attachment < ActiveRecord::Base
   STATUS_DONE = 'done'
 
   def self.attachment_uploader(uploader_class)
-    mount_uploader :file, uploader_class
-    skip_callback :save, :after, :remove_previously_stored_file, if: -> { snapshotted? }
+    mount_as = :file
+    mount_uploader mount_as, uploader_class
+    snapshottable_uploader mount_as
   end
 
   belongs_to :owner, polymorphic: true
   belongs_to :paper
-  has_many :snapshots, as: :source, dependent: :destroy
 
   validates :owner, presence: true
 
   # set_paper is required when creating attachments thru associations
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
-
 
   def download!(url)
     file.download! url
@@ -50,10 +49,6 @@ class Attachment < ActiveRecord::Base
   def owner=(new_owner)
     super
     set_paper
-  end
-
-  def snapshot
-    snapshots.find_by(key: snapshot_key)
   end
 
   def snapshot_key

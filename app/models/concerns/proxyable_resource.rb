@@ -3,6 +3,14 @@ module ProxyableResource
   extend ActiveSupport::Concern
   include UrlBuilder
 
+  def self.included(base)
+    # This creates the token used by resource proxy to lookup the attachment.
+    base.after_create :create_resource_token
+
+    base.has_one :resource_token, as: :owner, dependent: :destroy
+    base.delegate :token, to: :resource_token
+  end
+
   # makes a non expiring proxy url
   # version:
   #   is a file version (size) in carrierwave (:detail, :preview, etc)
@@ -42,5 +50,11 @@ module ProxyableResource
   def expiring_s3_url(version)
     # unfortunately file.ur(nil) fails, so can't be 'defaulted'
     version ? file.url(version) : file.url
+  end
+
+  private
+
+  def create_resource_token
+    ResourceToken.create owner: self
   end
 end

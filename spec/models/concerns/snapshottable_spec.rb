@@ -30,7 +30,7 @@ describe Snapshottable do
       expect(instance.snapshottable).to be(false)
     end
 
-    it 'can be made snapshottable without affecting the class-level snapshotibility' do
+    it 'can be made snapshottable without affecting the class-level snapshotability' do
       instance.snapshottable = true
       expect(instance.snapshottable).to be(true)
       expect(klass.snapshottable).to be(false)

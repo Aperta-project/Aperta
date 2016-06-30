@@ -59,7 +59,7 @@ module TahiStandardTasks
       TEXT
 
       replaced_template = template % template_data
-      [{ template_name: 'accept', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
+      [{ id: 'accept', text: 'accept', template_name: 'accept', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
     end
 
     def minor_revision_templates
@@ -92,7 +92,7 @@ module TahiStandardTasks
       TEXT
 
       replaced_template = template % template_data
-      [{ template_name: 'minor revision', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
+      [{ id: 'minor revision', text: 'minor revision', template_name: 'minor revision', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
     end
 
     def major_revision_templates
@@ -124,7 +124,7 @@ module TahiStandardTasks
       TEXT
 
       replaced_template = template % template_data
-      [{ template_name: 'major revision', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
+      [{ id: 'major revision', text: 'major revision', template_name: 'major revision', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: replaced_template }]
     end
 
     def reject_templates
@@ -200,9 +200,9 @@ module TahiStandardTasks
       one = template1 % template_data
       two = template2 % template_data
       three = template3 % template_data
-      [{ template_name: 'reject 1', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: one },
-       { template_name: 'reject 2', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: two },
-       { template_name: 'reject 3', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: three }]
+      [{ id: 'reject 1', text: 'reject 1', template_name: 'reject 1', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: one },
+       { id: 'reject 2', text: 'reject 2', template_name: 'reject 2', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: two },
+       { id: 'reject 3', text: 'reject 3', template_name: 'reject 3', to: '%{author_email}', subject: "Your #{journal_name} Submission", letter: three }]
     end
     # rubocop:enable Metrics/LineLength
 

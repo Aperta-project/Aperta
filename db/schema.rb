@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628185730) do
+ActiveRecord::Schema.define(version: 20160630213904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20160628185730) do
     t.string   "caption"
     t.string   "status",     default: "processing"
     t.string   "kind"
-    t.string   "token"
     t.text     "s3_dir"
     t.string   "type"
     t.integer  "old_id"
@@ -94,7 +93,6 @@ ActiveRecord::Schema.define(version: 20160628185730) do
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
   add_index "attachments", ["paper_id"], name: "index_attachments_on_paper_id", using: :btree
-  add_index "attachments", ["token"], name: "index_attachments_on_token", unique: true, using: :btree
 
   create_table "author_list_items", force: :cascade do |t|
     t.integer  "position"

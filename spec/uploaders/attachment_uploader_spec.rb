@@ -8,7 +8,7 @@ describe AttachmentUploader do
     let(:uploader) { described_class.new(model, :attachment) }
 
     context 'when the model has a cached s3_dir' do
-      let(:model) { double("attachment_model", s3_dir: 'some/cached/path') }
+      let(:model) { double("attachment_model", s3_dir: 'some/cached/path', paper_id: 99) }
 
       it 'returns the cached s3_dir' do
         expect(uploader.store_dir).to eq('some/cached/path')
@@ -16,8 +16,7 @@ describe AttachmentUploader do
     end
 
     context 'when the model does not respond_to :s3_dir' do
-      let(:paper) { double('paper', id: 11) }
-      let(:model) { double('attachment_model', id: 99, paper: paper) }
+      let(:model) { double('attachment_model', id: 99, paper_id: 11) }
 
       it 'returns a computed value' do
         expect(uploader.store_dir).to eq \
@@ -26,8 +25,7 @@ describe AttachmentUploader do
     end
 
     context 'when the model responds to :s3_dir, but has no s3_dir value' do
-      let(:paper) { double('paper', id: 11) }
-      let(:model) { double('attachment_model', id: 99, paper: paper) }
+      let(:model) { double('attachment_model', id: 99, paper_id: 11) }
 
       it 'returns a computed value' do
         expect(uploader.store_dir).to eq \

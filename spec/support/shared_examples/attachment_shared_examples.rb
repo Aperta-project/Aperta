@@ -122,8 +122,7 @@ RSpec.shared_examples_for 'standard attachment image transcoding' do
   end
 
   describe "image transcoding" do
-    let(:paper) { double("paper", id: "1") }
-    let(:model) { double("attachment_model", paper: paper, id: "0") }
+    let(:model) { double("attachment_model", paper_id: 99, id: 1) }
 
     it "transcodes tiffs" do
       uploader = AttachmentUploader.new(model, :file)
@@ -189,8 +188,7 @@ RSpec.shared_examples_for 'standard attachment image resizing' do
   end
 
   describe "image resizing" do
-    let(:paper) { double("paper", id: "1") }
-    let(:model) { double("attachment_model", paper: paper, id: "0") }
+    let(:model) { double("attachment_model", paper_id: 99, id: 1) }
 
     it "resizes tiffs" do
       uploader = AttachmentUploader.new(model, :file)

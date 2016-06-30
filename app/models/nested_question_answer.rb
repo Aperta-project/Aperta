@@ -12,7 +12,7 @@ class NestedQuestionAnswer < ActiveRecord::Base
   belongs_to :decision
   belongs_to :nested_question, inverse_of: :nested_question_answers
   belongs_to :owner, polymorphic: true
-  has_many :attachments, dependent: :destroy, as: :owner, class_name: 'QuestionAttachment'
+  has_many :attachments, -> { order('id ASC') }, dependent: :destroy, as: :owner, class_name: 'QuestionAttachment'
 
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
   validates :value, presence: true, if: :value_is_required?

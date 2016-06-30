@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe AdhocAttachmentUploader do
-  include_examples 'standard attachment image transcoding'
-  include_examples 'standard attachment image resizing'
+  include_examples 'AttachmentUploader: standard attachment image transcoding'
+  include_examples 'AttachmentUploader: standard attachment image resizing'
 
   describe '#store_dir' do
     let(:uploader) { AdhocAttachmentUploader.new(model, :attachment) }

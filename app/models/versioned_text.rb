@@ -74,8 +74,4 @@ class VersionedText < ActiveRecord::Base
       :major_version,
       "This versioned_text is not a draft. You may not change its version.")
   end
-
-  def creator_name
-    submitting_user ? submitting_user.full_name : "(draft)"
-  end
 end

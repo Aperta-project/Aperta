@@ -1,5 +1,6 @@
 class Decision < ActiveRecord::Base
   include EventStream::Notifiable
+  include Versioned
 
   VERDICTS = %w(minor_revision major_revision accept reject
                 invite_full_submission)
@@ -16,6 +17,9 @@ class Decision < ActiveRecord::Base
   belongs_to :paper
   has_many :invitations
   has_many :nested_question_answers
+
+  scope :registered, -> { versioned }
+  scope :unregistered, -> { unversioned }
 
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 

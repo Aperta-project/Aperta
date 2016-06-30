@@ -1,10 +1,13 @@
 # coding: utf-8
 require 'rails_helper'
+require 'models/concerns/versioned_thing_shared_examples'
 
 describe VersionedText do
   let(:paper) { FactoryGirl.create :paper }
   let(:user) { FactoryGirl.create :user }
   let(:versioned_text) { paper.latest_version }
+
+  it_behaves_like 'a thing with major and minor versions', :versioned_text
 
   context 'validation' do
     subject(:versioned_text) { FactoryGirl.build(:versioned_text) }

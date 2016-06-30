@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'models/concerns/versioned_thing_shared_examples'
 
 describe Decision do
   let!(:decision) do
@@ -6,6 +7,8 @@ describe Decision do
     paper.decisions.first
   end
   let(:paper) { decision.paper }
+
+  it_behaves_like 'a thing with major and minor versions', :decision
 
   it "the first decision always starts with a nil version number" do
     expect(decision.major_version).to eq(nil)

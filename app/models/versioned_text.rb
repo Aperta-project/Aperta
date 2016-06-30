@@ -5,6 +5,7 @@
 # major versions for full revisions (after a revise decision).
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
+  include Versioned
 
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
@@ -12,8 +13,8 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
-  scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
-  scope :submitted, -> { where.not(major_version: nil) }
+  scope :submitted, -> { versioned }
+  scope :unsubmitted, -> { unversioned }
 
   mount_uploader :source, SourceUploader # CarrierWave obj
 

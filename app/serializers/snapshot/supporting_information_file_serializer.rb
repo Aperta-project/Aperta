@@ -9,7 +9,8 @@ class Snapshot::SupportingInformationFileSerializer < Snapshot::BaseSerializer
       snapshot_property("title", "text", model.title),
       snapshot_property("caption", "text", model.caption),
       snapshot_property("publishable", "boolean", model.publishable),
-      snapshot_property("striking_image", "boolean", model.striking_image)
+      snapshot_property("striking_image", "boolean", model.striking_image),
+      snapshot_property("url", "url", model.non_expiring_proxy_url)
     ]
   end
 end

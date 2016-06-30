@@ -3,7 +3,6 @@
     {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
   </span>
 </td>
-
 <td>
   <span class='invitee-full-name'>
     {{#if invitee}}
@@ -13,21 +12,39 @@
     {{/if}}
   </span>
 </td>
-
 <td>
   <span class='invitation-updated-at'>
     {{format-date invitation.updatedAt format='LLL'}}
   </span>
 </td>
-
 <td>
   <span class='invitation-state'>
     {{invitation.state}}
   </span>
 </td>
-
-{{#if displayDestroy}}
-  <td>
+<td>
+  {{#if displayDestroy}}
     <span class='fa fa-trash invite-remove' {{action 'destroyAction'}}></span>
-  </td>
-{{/if}}
+  {{/if}}
+</td>
+
+{{#if invitation.declined}}
+  <tr class='invitation-decline-reason'>
+    <td></td>
+    <td colspan=4>
+      <span>
+        <strong>Reasons: </strong>
+        {{declineReason}}
+      </span>
+    </td>
+  </tr>
+
+  <tr class='invitation-reviewer-suggestions'>
+    <td></td>
+    <td colspan=4>
+      <span>
+        <strong>Reviewer Suggestions: </strong>
+        {{reviewerSuggestions}}
+      </span>
+    </td>
+  </tr>

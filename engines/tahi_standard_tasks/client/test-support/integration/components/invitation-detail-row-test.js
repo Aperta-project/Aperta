@@ -9,14 +9,17 @@ moduleForComponent('invitation-detail-row',
                         this.set('update-date', new Date('January 01, 2016'));
                         this.set('destroyAction', () => {return;});
                         this.set('invitation', Ember.Object.create({
-                          title: 'Awesome Paper!',
-                          updatedAt: this.get('update-date'),
-                          state: 'pending',
                           accepted: false,
+                          declineReason: null,
+                          declined: false,
                           email: 'jane@example.com',
                           invitee: Ember.Object.create({
                             fullName: 'Jane McEdits'
-                          })
+                          }),
+                          reviewerSuggestions: null,
+                          state: 'pending',
+                          title: 'Awesome Paper!',
+                          updatedAt: this.get('update-date')
                         }));
                       }
                     });
@@ -35,6 +38,7 @@ test('displays invitation information', function(assert){
 
 test('displays invitee information when present', function(assert){
   this.render(template);
+
   assert.elementFound('.invitee-thumbnail');
   assert.textPresent('.invitee-full-name', 'Jane McEdits');
   assert.textNotPresent('.invitee-full-name', 'jane@example.com');
@@ -43,6 +47,7 @@ test('displays invitee information when present', function(assert){
 test('displays invitation email when no invitee present', function(assert){
   this.set('invitation.invitee', null);
   this.render(template);
+
   assert.textNotPresent('.invitee-full-name', 'Jane McEdits');
   assert.textPresent('.invitee-full-name', 'jane@example.com');
 });
@@ -50,6 +55,7 @@ test('displays invitation email when no invitee present', function(assert){
 test('displays remove icon if invite not accepted and given destroyAction',
   function(assert){
     this.render(template);
+
     assert.elementFound('.invite-remove');
   }
 );
@@ -58,6 +64,7 @@ test('does not display remove icon if invite accepted',
   function(assert){
     this.set('invitation.accepted', true);
     this.render(template);
+
     assert.elementNotFound('.invite-remove');
   }
 );
@@ -66,6 +73,29 @@ test('does not display remove icon if invite not accepted and no destroyAction',
   function(assert){
     this.set('destroyAction', null);
     this.render(template);
+
     assert.elementNotFound('.invite-remove');
+  }
+);
+
+test('displays decline feedback when declined', function(assert){
+  this.set('invitation.accepted', false);
+  this.set('invitation.declineReason', 'No current availability');
+  this.set('invitation.declined', true);
+  this.set('invitation.reviewerSuggestions', 'Jane McReviewer');
+  this.render(template);
+
+  assert.textPresent('.invitation-decline-reason', 'No current availability');
+  assert.textPresent('.invitation-reviewer-suggestions', 'Jane McReviewer');
+});
+
+test('displays decline feedback as n/a when not entered during decline process',
+  function(assert){
+    this.set('invitation.accepted', false);
+    this.set('invitation.declined', true);
+    this.render(template);
+
+    assert.textPresent('.invitation-decline-reason', 'n/a');
+    assert.textPresent('.invitation-reviewer-suggestions', 'n/a');
   }
 );

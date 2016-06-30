@@ -4,13 +4,15 @@ require 'securerandom'
 # be migrated from its old +store_dir+ to a new +store_dir+. It assumes the
 # old +store_dir+ is cached on the original attachment in a column called
 # +s3_dir+.
+#
+# NOTE: THIS DOES NOT MOVE OR DELETE ANY EXISTING S3 FILES, IT JUST COPIES THEM
 class S3Migration < ActiveRecord::Base
   # UploaderOverrides updates the CarrierWave uploaders
   # that we are intending to migration files from. We do this at the class
   # and not instance level because CarrierWave caches a lot of stuff
   # internally once you instantiate an instance of an uploader. This
   # allows us to avoid having to deal with cached information as long as
-  # this mixin is included before any speific instances are loaded.
+  # this mixin is included before any specific instances are loaded.
   module UploaderOverrides
     def self.included(base)
       base.class_eval do
@@ -19,7 +21,7 @@ class S3Migration < ActiveRecord::Base
         alias_method :new_store_dir, :store_dir
 
         # Override +store_dir+ to point to a cached +s3_dir+ since this is
-        # where the old store_dir location will be stored.
+        # where the old store_dir location was stored.
         def store_dir
           model.s3_dir
         end

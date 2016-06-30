@@ -51,8 +51,6 @@ class Task < ActiveRecord::Base
   has_many :assignments, as: :assigned_to, dependent: :destroy
   has_many :attachments, as: :owner, class_name: 'AdhocAttachment', dependent: :destroy
 
-  has_many :snapshots, as: :source
-
   belongs_to :phase, inverse_of: :tasks
 
   acts_as_list scope: :phase

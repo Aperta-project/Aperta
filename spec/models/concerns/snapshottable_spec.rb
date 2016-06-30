@@ -1,7 +1,23 @@
 require 'rails_helper'
 
 describe Snapshottable do
-  let(:klass) { Class.new { include Snapshottable } }
+  let(:create_fake_snapshottables_table) do
+    silence_stream($stdout) do
+      ActiveRecord::Schema.define do
+        create_table :fake_snapshottables, force: true do |t|
+          t.string :name
+        end
+      end
+    end
+  end
+
+  let(:klass) do
+    create_fake_snapshottables_table
+    Class.new(ActiveRecord::Base) do
+      include Snapshottable
+      self.table_name = 'fake_snapshottables'
+    end
+  end
 
   describe 'an including class' do
     it 'is not snapshottable by default' do

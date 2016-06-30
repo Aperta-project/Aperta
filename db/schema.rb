@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615184308) do
+ActiveRecord::Schema.define(version: 20160630210056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 20160615184308) do
     t.integer  "minor_version"
   end
 
+  add_index "decisions", ["minor_version", "major_version", "paper_id"], name: "unique_decision_version", unique: true, using: :btree
   add_index "decisions", ["paper_id"], name: "index_decisions_on_paper_id", using: :btree
 
   create_table "discussion_participants", force: :cascade do |t|

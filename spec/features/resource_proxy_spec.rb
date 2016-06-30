@@ -2,13 +2,9 @@ require 'rails_helper'
 
 feature 'Resource Proxy', js: true do
   let(:file) do
-    with_aws_cassette('supporting_info_file') do
-      FactoryGirl.create(
-        :supporting_information_file,
-        file: File.open('spec/fixtures/yeti.tiff'),
-        status: SupportingInformationFile::STATUS_DONE
-      )
-    end
+    FactoryGirl.create \
+      :supporting_information_file,
+      file: File.open('spec/fixtures/bill_ted1.jpg')
   end
 
   describe 'GET #url without version' do
@@ -21,7 +17,17 @@ feature 'Resource Proxy', js: true do
 
     it 'redirects to S3 URL for supporting_information_files' do
       visit("/resource_proxy/supporting_information_files/#{file.token}")
-      expect(current_url).to match(%r{\Ahttps://.*.amazonaws\.com/uploads/attachments/[0-9]+/supporting_information_file/attachment/[0-9]+/yeti\.tiff\?X-Amz-Expires.*\Z})
+      expect(current_url).to match(/
+        https:\/\/.*amazonaws.com
+        \/uploads
+        \/paper
+        \/#{file.paper_id}
+        \/attachment
+        \/#{file.id}
+        \/#{file.file_hash}
+        \/#{file.filename}
+        \?X-Amz-Expires.*\Z
+      /x)
     end
   end
 end

@@ -122,7 +122,7 @@ RSpec.shared_examples_for 'standard attachment image transcoding' do
   end
 
   describe "image transcoding" do
-    let(:model) { double("attachment_model", paper_id: 99, id: 1) }
+    let(:model) { FactoryGirl.build_stubbed(:attachment, paper_id: 99) }
 
     it "transcodes tiffs" do
       uploader = AttachmentUploader.new(model, :file)
@@ -188,7 +188,7 @@ RSpec.shared_examples_for 'standard attachment image resizing' do
   end
 
   describe "image resizing" do
-    let(:model) { double("attachment_model", paper_id: 99, id: 1) }
+    let(:model) { FactoryGirl.build_stubbed(:attachment, paper_id: 99) }
 
     it "resizes tiffs" do
       uploader = AttachmentUploader.new(model, :file)

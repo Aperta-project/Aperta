@@ -35,8 +35,6 @@ namespace :data do
       DESC
       task perform: :environment do
         ::AttachmentUploader.include S3Migration::UploaderOverrides
-        ::AdhocAttachmentUploader.include S3Migration::UploaderOverrides
-        ::SupportingInformationFileUploader.include S3Migration::UploaderOverrides
 
         S3Migration.transaction { S3Migration.migrate! }
       end

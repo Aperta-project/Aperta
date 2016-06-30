@@ -2,8 +2,6 @@
 # adhoc task card that does not fall into the other predefined attachment
 # categories such as Figure(s), SupportingInformationFile(s), etc.
 class AdhocAttachment < Attachment
-  attachment_uploader AttachmentUploader
-
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
 
   def download!(url)

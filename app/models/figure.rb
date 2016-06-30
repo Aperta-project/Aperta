@@ -6,8 +6,6 @@ class Figure < Attachment
 
   default_scope { order(:id) }
 
-  attachment_uploader AttachmentUploader
-
   after_save :insert_figures!, if: :should_insert_figures?
   after_destroy :insert_figures!
 

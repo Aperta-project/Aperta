@@ -8,8 +8,11 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    model.try(:s3_dir) ||
-      "uploads/paper/#{model.paper_id}/attachment/#{model.id}/#{model.file_hash}"
+    model.try(:s3_dir) || generate_new_store_dir
+  end
+
+  def generate_new_store_dir
+    "uploads/paper/#{model.paper_id}/attachment/#{model.id}/#{model.file_hash}"
   end
 
   version :detail do

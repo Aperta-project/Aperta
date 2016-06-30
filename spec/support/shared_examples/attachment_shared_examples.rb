@@ -59,6 +59,19 @@ RSpec.shared_examples_for 'attachment#download! caches the s3 store_dir' do
       expect(subject.s3_dir).to eq \
         "uploads/paper/#{subject.paper_id}/attachment/#{subject.id}/#{subject.file_hash}"
     end
+
+    it 'caches a new value when the file is replaced' do
+      subject.download!(url)
+      first_time_s3_dir = subject.s3_dir
+
+      expect do
+        new_url = 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg'
+        subject.download!(new_url)
+      end.to change { subject.reload.s3_dir }
+      expect(subject.s3_dir).to_not eq first_time_s3_dir
+      expect(subject.s3_dir).to eq \
+        "uploads/paper/#{subject.paper_id}/attachment/#{subject.id}/#{subject.file_hash}"
+    end
   end
 end
 
@@ -95,7 +108,7 @@ end
 RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3 files' do
   describe 'previously uploaded s3 file' do
     let(:url_1) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
-    let(:url_2) { 'http://tahi-test.s3.amazonaws.com/temp/frank_sally.jpg' }
+    let(:url_2) { 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg' }
 
     before do
       subject.download!(url_1)
@@ -109,7 +122,7 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
     it 'is not removed when it has been snapshotted' do
       snapshot = FactoryGirl.create(:snapshot, source: subject)
       expect(subject).to_not receive(:remove_previously_stored_file)
-      url = 'http://tahi-test.s3.amazonaws.com/temp/frank_sally.jpg'
+      url = 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg'
       subject.download!(url_2)
     end
   end

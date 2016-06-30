@@ -3,7 +3,7 @@ require 'models/concerns/striking_image_shared_examples'
 
 describe Figure, redis: true do
   let(:figure) do
-    with_aws_cassette('figure') do
+    with_aws_cassette('attachment') do
       FactoryGirl.create(
         :figure,
         file: File.open('spec/fixtures/yeti.tiff'),
@@ -23,7 +23,7 @@ describe Figure, redis: true do
     end
   end
 
-  describe '#download!', vcr: { cassette_name: 'figures' } do
+  describe '#download!', vcr: { cassette_name: 'attachment' } do
     subject(:figure) { FactoryGirl.create(:figure, owner: paper) }
     let(:paper) { FactoryGirl.create(:paper) }
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }

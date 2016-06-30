@@ -39,7 +39,7 @@ RSpec.shared_examples_for 'attachment#download! stores the file' do
     it 'is downloaded from the given URL' do
       expect do
         subject.download!(url)
-      end.to change { subject.file.path }.to match(File.basename(url))
+      end.to change { subject.reload.file.path }.to match(File.basename(url))
     end
   end
 end
@@ -54,7 +54,7 @@ RSpec.shared_examples_for 'attachment#download! caches the s3 store_dir' do
     it 'is cached' do
       expect do
         subject.download!(url)
-      end.to change { subject.s3_dir }.to subject.file.store_dir
+      end.to change { subject.reload.s3_dir }.to subject.file.store_dir
     end
   end
 end
@@ -69,7 +69,7 @@ RSpec.shared_examples_for 'attachment#download! sets title to file name' do
     it 'is set to the file name' do
       expect do
         subject.download!(url)
-      end.to change { subject.title }.to eq(File.basename(url))
+      end.to change { subject.reload.title }.to eq(File.basename(url))
     end
   end
 end
@@ -84,7 +84,7 @@ RSpec.shared_examples_for 'attachment#download! sets the status' do
     it 'is set to done' do
       expect do
         subject.download!(url)
-      end.to change { subject.status }.to self.described_class::STATUS_DONE
+      end.to change { subject.reload.status }.to self.described_class::STATUS_DONE
     end
   end
 end

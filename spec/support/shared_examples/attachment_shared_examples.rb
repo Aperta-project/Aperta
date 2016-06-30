@@ -54,7 +54,10 @@ RSpec.shared_examples_for 'attachment#download! caches the s3 store_dir' do
     it 'is cached' do
       expect do
         subject.download!(url)
-      end.to change { subject.reload.s3_dir }.to subject.file.store_dir
+        expect(subject.file_hash).to be
+      end.to change { subject.reload.s3_dir }
+      expect(subject.s3_dir).to eq \
+        "uploads/paper/#{subject.paper_id}/attachment/#{subject.id}/#{subject.file_hash}"
     end
   end
 end

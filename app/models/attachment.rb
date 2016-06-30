@@ -30,8 +30,8 @@ class Attachment < ActiveRecord::Base
 
   def download!(url)
     file.download! url
-    self.s3_dir = file.store_dir
     self.file_hash = Digest::SHA256.hexdigest(file.file.read)
+    self.s3_dir = file.store_dir
   end
 
   def url(*args)

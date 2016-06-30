@@ -10,7 +10,7 @@ class SupportingInformationFile < Attachment
 
   scope :publishable, -> { where(publishable: true) }
 
-  attachment_uploader SupportingInformationFileUploader
+  attachment_uploader AttachmentUploader
 
   validates :category, :title, presence: true, if: :task_completed?
 

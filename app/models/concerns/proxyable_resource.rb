@@ -55,6 +55,6 @@ module ProxyableResource
   private
 
   def create_resource_token
-    ResourceToken.create owner: self
+    ResourceToken.create! owner: self
   end
 end

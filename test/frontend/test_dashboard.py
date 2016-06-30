@@ -5,10 +5,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-    internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login, \
-    cover_editor_login, prod_staff_login
+from Base.Resources import users, editorial_users, external_editorial_users
 from frontend.common_test import CommonTest
 
 """
@@ -21,27 +18,13 @@ Note that this case does NOT test actually creating a new manuscript, or accepti
 
 __author__ = 'jgray@plos.org'
 
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         reviewer_login,
-         handling_editor_login,
-         cover_editor_login,
-         academic_editor_login,
-         internal_editor_login,
-         staff_admin_login,
-         pub_svcs_login,
-         prod_staff_login,
-         super_admin_login,
-         ]
+all_users = [users + editorial_users + external_editorial_users]
 
 
 @MultiBrowserFixture
 class ApertaDashboardTest(CommonTest):
   """
-  Self imposed AC:
+  AC:
      - validate page elements and styles for:
          - dashboard page:
             - Optional Invitation elements
@@ -50,8 +33,9 @@ class ApertaDashboardTest(CommonTest):
               - title, button, manuscript details
          - view invitations modal dialog elements and function
          - create new submission modal dialog and function
+          - validate ordering of mmt per journal
   """
-  def test_validate_components_styles(self):
+  def test_smoke_validate_components_styles(self):
     """
     test_dashboard: Validates element presentation and styles for dashboard and associated modals
     Validates the presence of the following elements:
@@ -61,6 +45,7 @@ class ApertaDashboardTest(CommonTest):
     """
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email'])
+    dashboard_page.validate_mmt_ordering()
     dashboard_page.validate_initial_page_elements_styles()
     dashboard_page.validate_invite_dynamic_content(user_type)
     (active_manuscript_count, active_manuscript_list, uid) = \

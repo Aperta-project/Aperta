@@ -23,6 +23,7 @@ from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
+
 @MultiBrowserFixture
 class FTCCardTest(CommonTest):
   """

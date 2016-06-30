@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :figure do
+  factory :figure, parent: :attachment, class: 'Figure' do
     association :owner, factory: :paper
   end
 end

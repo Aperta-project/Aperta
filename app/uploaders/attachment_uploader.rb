@@ -9,7 +9,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     model.try(:s3_dir) ||
-      "uploads/paper/#{model.paper_id}/#{model.class.to_s.underscore}/attachment/#{model.id}"
+      "uploads/paper/#{model.paper_id}/attachment/#{model.id}/#{model.file_hash}"
   end
 
   version :detail do

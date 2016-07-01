@@ -13,7 +13,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   decisionTemplates: Ember.computed('decision', function() {
     var letters = JSON.parse(this.get('task.decisionLetters'))[this.get('decision')];
-    return letters;
+    return letters || [];
   }),
 
   inputClassNames: ['form-control'],

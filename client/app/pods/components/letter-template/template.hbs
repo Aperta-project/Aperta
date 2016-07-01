@@ -1,6 +1,14 @@
 <div>
   <p>Please select the template letter and then edit further.</p>
 
+  {{nested-question-select ident="register_decision_questions--selected-template"
+                    owner=task
+                    displayQuestionText=false
+                    placeholder="Please select the letter template"
+                    source=decisionTemplates
+                    enable=isEditable
+                    width="300"}}
+
   {{select-2-single
     class="assignment-role-input"
     minimumInputLength=0
@@ -16,7 +24,15 @@
     <div class='input-group-addon'>
       To:
     </div>
-    <input type='text' class='form-control' placeholder='someone@example.edu' value={{authorEmail}}>
+    {{nested-question-input
+      ident="register_decision_questions--to-field"
+      owner=task
+      inputClassNames='form-control'
+      displayQuestionText=false
+      placeholder='someone@example.edu'
+      setDefault=truesdfas
+    }}
+    <!-- <input type='text' class='form-control' placeholder='someone@example.edu' value={{authorEmail}}> -->
   </div>
 
   <div class='input-group'>

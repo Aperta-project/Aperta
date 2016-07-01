@@ -300,11 +300,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.debug(newest_file.split('.')[-1])
     logging.debug(newest_file)
     pdf_valid = PdfUtil.validate_pdf(newest_file)
+    os.remove(newest_file)
+    os.chdir(original_dir)
     if not pdf_valid:
       logging.error('PDF file: {0} is invalid'.format(newest_file))
       raise ('Invalid PDF generated for {0}'.format(newest_file))
-    os.remove(newest_file)
-    os.chdir(original_dir)
 
   def validate_download_pdf_actions(self):
     """

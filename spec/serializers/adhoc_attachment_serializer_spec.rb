@@ -50,6 +50,10 @@ describe AdhocAttachmentSerializer, serializer_test: true do
   end
 
   context "and the attachment is not an image" do
+    before do
+      attachment.update_attributes file: ::File.open('spec/fixtures/blah.zip')
+    end
+
     it "has empty :preview_src & :detail_sec" do
       expect(deserialized_content)
         .to match(hash_including(

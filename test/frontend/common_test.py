@@ -148,12 +148,16 @@ class CommonTest(FrontEndTest):
     dashboard.select_journal_and_type(journal, type_)
     # This time helps to avoid random upload failures
     time.sleep(3)
-
+    current_path = os.getcwd()
+    # Download tests change dir to /tmp. If for some reason, they do not return to the correct
+    #   directory, catch and abort - no good will follow
+    assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
+                                   'incorrect value, aborting: {0}'.format(current_path)
     if doc == 'random':
       doc2upload = random.choice(docs)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
+      fn = os.path.join(current_path, 'frontend/assets/docs/{0}'.format(doc2upload))
     else:
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc)
+      fn = os.path.join(current_path, 'frontend/assets/docs/', doc)
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)

@@ -11,7 +11,7 @@ The author should be able to:
       i) labels must be unique
     f) change figure order
       i) figures auto-order based on figure label
-      ii) figures with undiscernable labels are placed last
+      ii) figures with indiscernable labels are placed last
     g) tag an image as the striking image
     h) hover over an image to see the edit and delete icons in grey
       i) hovering over the grey icons turns them green

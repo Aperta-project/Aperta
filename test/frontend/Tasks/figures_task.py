@@ -171,13 +171,18 @@ class FiguresTask(BaseTask):
     """
     figure_candidates_list = figures
     chosen_figures_list = []
+    current_path = os.getcwd()
+    # Download tests change dir to /tmp. If for some reason, they do not return to the correct
+    #   directory, catch and abort - no good will follow
+    assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
+                                   'incorrect value, aborting: {0}'.format(current_path)
     for iteration in range(0, iterations):
       if figure2send == 'random':
         figure = random.choice(figure_candidates_list)
-        fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/{0}'.format(figure))
+        fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(figure))
       else:
         figure = figure2send
-        fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/', figure)
+        fn = os.path.join(current_path, 'frontend/assets/imgs/', figure)
       logging.info('Sending figure: {0}'.format(fn))
       time.sleep(1)
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
@@ -197,16 +202,20 @@ class FiguresTask(BaseTask):
     :param figure: Name of the figure to replace.
     :return a list containing the filename of the new figure
     """
+    current_path = os.getcwd()
+    # Download tests change dir to /tmp. If for some reason, they do not return to the correct
+    #   directory, catch and abort - no good will follow
+    assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
+                                   'incorrect value, aborting: {0}'.format(current_path)
     if not figure:
       raise(ValueError, 'A figure was not specified')
     else:
-      new_figure = random.choice(figures)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/{0}'.format(new_figure))
+      # Creating a fresh copy of the list to get around a stale reference error
+      remaining_figures = figures
+      new_figure = random.choice(remaining_figures)
+      fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(new_figure))
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
     time.sleep(5)
-    # Redefining this down here to avoid a stale element reference due to the listing having been
-    #   replaced, potentially, since lookup
-    self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_input.send_keys(fn)
@@ -278,6 +287,7 @@ class FiguresTask(BaseTask):
           logging.info('Match!')
           page_fig_item.click()
           time.sleep(1)
+          orig_dir = os.getcwd()
           os.chdir('/tmp')
           files = filter(os.path.isfile, os.listdir('/tmp'))
           files = [os.path.join('/tmp', f) for f in files]  # add path to each file
@@ -292,8 +302,11 @@ class FiguresTask(BaseTask):
             newest_file = files[-1]
             logging.debug(newest_file.split('.')[-1])
           newest_file = newest_file.split('/')[-1]
-          assert fig == newest_file, newest_file
+          # doing the following ahead of the assert to ensure we end up in the right directory
+          #   whether the assert fails or succeeds
           os.remove(newest_file)
+          os.chdir(orig_dir)
+          assert fig == newest_file, newest_file
           return
     if not matched:
       raise(ElementDoesNotExistAssertionError, 'No match found for {0}'.format(figure))

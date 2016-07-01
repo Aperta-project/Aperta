@@ -15,7 +15,8 @@ describe DecisionSerializer, serializer_test: true do
         is_latest: decision.latest?,
         letter: decision.letter,
         paper_id: paper.id,
-        revision_number: decision.revision_number,
+        major_version: decision.major_version,
+        minor_version: decision.minor_version,
         verdict: decision.verdict
       )
   end

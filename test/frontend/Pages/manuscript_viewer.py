@@ -45,6 +45,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
     self._withdraw_banner_reactivate_button = (By.CSS_SELECTOR,
                                                'div.withdrawal-banner > button.button-secondary')
+    self._manuscript_pane = (By.CLASS_NAME, 'manuscript-pane')
+    self._accordion_pane = (By.CSS_SELECTOR, 'div.split-pane-element + div.split-pane-element')
+
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -147,6 +150,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_recent_activity()
     self._check_discussion(useremail)
     self._check_more_btn(useremail)
+
+  def validate_independent_scrolling(self):
+    """Ensure both the manuscript and accordion panes scroll independently"""
+    logging.info('Validating Scrollbar presence')
+    manuscript_pane = self._get(self._manuscript_pane)
+    accordion_pane = self._get(self._accordion_pane)
+    assert manuscript_pane.value_of_css_property('overflow-y') == 'auto', \
+        manuscript_pane.value_of_css_property('overflow-y')
+    assert accordion_pane.value_of_css_property('overflow-y') == 'auto', \
+        accordion_pane.value_of_css_property('overflow-y')
 
   def _check_version_btn_style(self):
     """

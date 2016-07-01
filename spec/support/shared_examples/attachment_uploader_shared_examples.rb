@@ -65,7 +65,7 @@ RSpec.shared_examples_for 'AttachmentUploader: standard attachment image transco
   end
 end
 
-RSpec.shared_examples_for 'AttachmentUploader: AttachmentUploader: standard attachment image resizing' do
+RSpec.shared_examples_for 'AttachmentUploader: standard attachment image resizing' do
   around do |example|
     # Do not change this to described_class or the subclass. CarrierWave
     # really wants this configured on the base uploader

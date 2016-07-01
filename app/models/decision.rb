@@ -2,8 +2,6 @@ class Decision < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
 
-  VERDICTS = %w(minor_revision major_revision accept reject
-                invite_full_submission)
   REVISION_VERDICTS = ['major_revision', 'minor_revision']
   TERMINAL_VERDICTS = ['accept', 'reject']
   PUBLISHING_STATE_BY_VERDICT = {
@@ -13,6 +11,8 @@ class Decision < ActiveRecord::Base
     "reject" => "rejected",
     "invite_full_submission" => "invited_for_full_submission"
   }
+
+  VERDICTS = PUBLISHING_STATE_BY_VERDICT.keys
 
   belongs_to :paper
   has_many :invitations

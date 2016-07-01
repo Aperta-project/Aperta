@@ -7,6 +7,7 @@ import time
 import urllib
 
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import StaleElementReferenceException
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import figures
@@ -217,8 +218,13 @@ class FiguresTask(BaseTask):
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
     time.sleep(5)
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
-    replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_input.send_keys(fn)
+    try:
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+    except StaleElementReferenceException:
+      time.sleep(5)
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
     #   stale reference error

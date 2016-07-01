@@ -151,8 +151,8 @@ class FigureTaskTest(CommonTest):
     figures_task.check_question()
     figures_list = figures_task.upload_figure()
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
-    #  Have had rare failures at 20s
-    time.sleep(22)
+    #  Have had rare failures at 22s
+    time.sleep(25)
     figures_list = figures_task.replace_figure(figures_list)
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)

@@ -52,9 +52,6 @@ class Paper < ActiveRecord::Base
            source_type: "GroupAuthor",
            source: :author
   has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
-  has_one :latest_registered_decision,
-          -> { where.not(registered_at: nil).order('registered_at DESC') },
-          class_name: 'Decision'
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   serialize :withdrawals, ArrayHashSerializer
 

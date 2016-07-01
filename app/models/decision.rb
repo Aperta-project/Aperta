@@ -52,7 +52,8 @@ class Decision < ActiveRecord::Base
   end
 
   def latest_registered?
-    self == paper.latest_registered_decision
+    self == paper.decisions.where.not(registered_at: nil)
+      .order('registered_at DESC')
   end
 
   def revision?

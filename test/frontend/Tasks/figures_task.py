@@ -364,9 +364,6 @@ class FiguresTask(BaseTask):
         matched = True
     # time for order of blocks to update - often very slow - particularly when on Heroku CI
     time.sleep(20)
-    # # Redefining this down here to avoid a stale element reference due to the listing having
-    # #   been replaced, potentially, since lookup
-    # self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
     figure_blocks = self._gets(self._figure_listing)
     # Test still occasionally failing for second block not redrawing yet
     count = 0

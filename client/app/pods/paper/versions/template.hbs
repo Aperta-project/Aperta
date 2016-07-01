@@ -4,39 +4,9 @@
                     exportDocument="exportDocument"
                     showWithdrawOverlay="showWithdrawOverlay"
                     topicsIndexPath=topicsIndexPath
+                    setViewingVersion=(action "setViewingVersion")
                     supportedDownloadFormats=supportedDownloadFormats
                     versionsVisible=true}}
-
-
-<div id="versioning-bar" class="toot">
-  <div class="bar-item">
-    <i class="fa fa-files-o"></i>
-  </div>
-  <div class="bar-item">
-    Now viewing:
-    {{select-native
-      name="view_version"
-      content=model.versionedTexts
-      optionValuePath="id"
-      optionLabelPath="versionString"
-      selection=viewingVersion
-      action=(action "setViewingVersion")}}
-  </div>
-  <div class="bar-item">
-    Compare With:
-    {{select-native
-      name="compare_version"
-      prompt="-"
-      content=model.versionedTexts
-      optionValuePath="id"
-      optionLabelPath="versionString"
-      selection=comparisonVersion
-      action=(action "setComparisonVersion")}}
-  </div>
-  <div class="bar-item exit-versions" {{action "exitVersions"}}>
-    &times;
-  </div>
-</div>
 
 <div id="paper-container">
   {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}

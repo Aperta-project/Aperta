@@ -15,16 +15,21 @@
 
 
   {{#if versionsVisible}}
-    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link" id="nav-exit-versions"}}
+    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link" id="nav-exit-versionsORIG"}}
       <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
       Exit Versions
     {{/link-to}}
   {{else}}
-    {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link" id="nav-versions"}}
+    {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link" id="nav-versionsORIG"}}
       <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
       Versions
     {{/link-to}}
   {{/if}}
+
+  <div class="control-bar-item control-bar-link versions-link" {{action "showSubNav" "versions"}} id="nav-versions">
+    <div class="control-bar-link-icon"><span class="fa fa-files-o"></span></div>
+    Versions
+  </div>
 
   <div class="control-bar-item control-bar-link contributors-link" {{action "showSubNav" "contributors"}} id="nav-collaborators">
     <div class="control-bar-link-icon"><span class="fa fa-user"></span></div>
@@ -80,6 +85,11 @@
       {{/each}}
     </div>
   {{/if}}
+
+  {{paper-version-picker
+      paper=paper
+      versionsVisible=versionsVisible
+  }}
 
   {{#if downloadsVisible}}
     <div class="manuscript-download-links active">

@@ -8,18 +8,14 @@ describe Snapshot::FigureTaskSerializer do
       :figure,
       title: 'figure 1 title',
       caption: 'figure 1 caption',
-    ).tap do |figure|
-      figure['file'] = 'yeti-1.jpg'
-    end
+    )
   end
   let(:figure_2) do
     FactoryGirl.create(
       :figure,
       title: 'figure 2 title',
       caption: 'figure 2 caption'
-    ).tap do |figure|
-      figure['file'] = 'yeti-2.jpg'
-    end
+    )
   end
 
   let(:paper) { FactoryGirl.create(:paper, figures: [figure_1, figure_2]) }

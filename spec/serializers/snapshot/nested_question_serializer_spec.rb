@@ -102,14 +102,14 @@ describe Snapshot::NestedQuestionSerializer do
         FactoryGirl.create(
           :question_attachment,
           status: QuestionAttachment::STATUS_DONE
-        ).tap { |a| a.update_column :file, 'yeti-1.tiff' }
+        )
       end
 
       let(:attachment_2) do
         FactoryGirl.create(
           :question_attachment,
           status: QuestionAttachment::STATUS_DONE
-        ).tap { |a| a.update_column :file, 'yeti-2.tiff' }
+        )
       end
 
       before do

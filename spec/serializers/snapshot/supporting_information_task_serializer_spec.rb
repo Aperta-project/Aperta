@@ -12,9 +12,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
       owner: task,
       paper: paper,
       title: 'supporting info 1 title',
-    ).tap do |si_file|
-      si_file.update_column :file, 'yeti-1.jpg'
-    end
+    )
   end
   let!(:si_file_2) do
     FactoryGirl.create(
@@ -24,9 +22,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
       owner: task,
       paper: paper,
       title: 'supporting info 2 title',
-    ).tap do |si_file|
-      si_file.update_column :file, 'yeti-2.jpg'
-    end
+    )
   end
 
   describe '#as_json' do

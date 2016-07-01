@@ -24,14 +24,14 @@ class VersionedText < ActiveRecord::Base
   validates :paper, presence: true
   validate :only_version_once
 
-  # Make a copy of the text and give it a new MAJOR version.
+  # Give the text a new MAJOR version.
   def be_major_version!
     update!(
       major_version: (paper.major_version || -1) + 1,
       minor_version: 0)
   end
 
-  # Make a copy of the text and give it a new MINOR version
+  # Give the text a new MINOR version
   def be_minor_version!
     update!(
       major_version: (paper.major_version || 0),

@@ -18,7 +18,8 @@ export default Ember.Component.extend({
   resetSubmenuFlags() {
     this.setProperties({
       contributorsVisible: false,
-      downloadsVisible: false
+      downloadsVisible: false,
+      versionsVisible: false
     });
   },
 

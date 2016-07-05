@@ -11,6 +11,10 @@ class ActivitySerializer < ActiveModel::Serializer
   end
 
   def user_avatar_url
-    user.avatar_url
+    if user
+      user.avatar_url
+    else
+      AvatarUploader::DEFAULT_URL
+    end
   end
 end

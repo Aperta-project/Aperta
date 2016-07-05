@@ -2,6 +2,7 @@
 @import 'variables';
 @import 'webfonts';
 @import 'ui/buttons';
+@import 'invitations';
 
 html { box-sizing: border-box; }
 *, *:before, *:after { box-sizing: inherit; }
@@ -249,3 +250,5 @@ a {
   max-width: 170px;
   height: auto;
 }
+
+

@@ -40,6 +40,15 @@ describe TahiStandardTasks::PaperReviewerMailer do
       it "has a dashboard link" do
         expect(email.body).to include client_dashboard_url
       end
+
+      it "has an accept link" do
+        expect(email.body).to include "Accept"
+      end
+
+      it "has a decline link" do
+        expect(email.body).to include
+        confirm_decline_invitation_url(invitation.token)
+      end
     end
 
     describe "email body content" do

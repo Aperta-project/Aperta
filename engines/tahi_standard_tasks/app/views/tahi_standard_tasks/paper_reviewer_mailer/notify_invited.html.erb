@@ -16,7 +16,11 @@
 
     <p>
       <a class="button" href="<%= client_dashboard_url({ invitation_token: @invitation.token }) %>" target="_blank">
-        View Invitation
+        Accept Invitation
+      </a>
+      <span class="spacer">|</span>
+      <a class="button" href="<%= confirm_decline_invitation_url({ token: @invitation.token }) %>" target="_blank">
+        Decline
       </a>
     </p>
   </div>

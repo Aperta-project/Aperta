@@ -5,11 +5,14 @@
                     showWithdrawOverlay="showWithdrawOverlay"
                     topicsIndexPath=topicsIndexPath
                     setViewingVersion=(action "setViewingVersion")
+                    viewingVersion=viewingVersion
+                    comparisonVersion=comparisonVersion
                     submenuVisible=true
+                    setQueryParam=(action 'setQueryParam')
                     supportedDownloadFormats=supportedDownloadFormats
                     versionsVisible=true}}
 
-<div id="paper-container">
+<div class="paper-container versions-expanded">
   {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
   {{#split-pane class="paper-container--versions"

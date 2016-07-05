@@ -26,11 +26,6 @@
     {{/link-to}}
   {{/if}}
 
-  <div class="control-bar-item control-bar-link versions-link" {{action "showSubNav" "versions"}} id="nav-versions">
-    <div class="control-bar-link-icon"><span class="fa fa-files-o"></span></div>
-    Versions
-  </div>
-
   <div class="control-bar-item control-bar-link contributors-link" {{action "showSubNav" "contributors"}} id="nav-collaborators">
     <div class="control-bar-link-icon"><span class="fa fa-user"></span></div>
     Collaborators
@@ -88,7 +83,10 @@
 
   {{paper-version-picker
       paper=paper
+      setQueryParam=attrs.setQueryParam
       versionsVisible=versionsVisible
+      viewingVersion=viewingVersion
+      comparisonVersion=comparisonVersion
   }}
 
   {{#if downloadsVisible}}

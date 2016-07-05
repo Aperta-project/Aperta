@@ -1,10 +1,10 @@
 {{#if versionsVisible}}
   <div class="versions active">
-    <div id="versioning-bar2" class="toot2">
+    <div id="versioning-bar" class="toot">
       <div class="bar-item">
         <i class="fa fa-files-o"></i>
       </div>
-      <div class="bar-item2">
+      <div class="bar-item">
         Now viewing:
         {{ select-native
           name="view_version"
@@ -14,7 +14,7 @@
           selection=viewingVersion
           action=(action "setViewingVersion")}}
       </div>
-      <div class="bar-item2">
+      <div class="bar-item">
         Compare With:
         {{ select-native
           name="compare_version"
@@ -25,20 +25,9 @@
           selection=comparisonVersion
           action=(action "setComparisonVersion")}}
       </div>
-      <div class="bar-item2 exit-versions2" {{action "exitVersions"}}>
+      <div class="bar-item exit-versions" {{action "exitVersions"}}>
         &times;
       </div>
     </div>
-
-
-    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link" id="nav-exit-versions"}}
-      <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
-      Exit Versions
-    {{/link-to}}
   </div>
-{{else}}
-  {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link" id="nav-versions"}}
-    <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
-    Versions
-  {{/link-to}}
 {{/if}}

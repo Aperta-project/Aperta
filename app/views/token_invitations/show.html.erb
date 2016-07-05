@@ -2,7 +2,7 @@
   <div class="pending-invitation">
     <h2 class='invitation-metadata'><%= @invitation.invitee_role %> Invitation | 
       <span class="date"><%= @invitation.created_at.strftime('%b %d, %Y') %></span></h2>
-    <h3 class="dashboard-paper-title"><img src='/images/manuscript-icon.svg' /> <%= @paper.title %></h3>
+    <h3 class="dashboard-paper-title"><img src='/images/manuscript-icon.svg' /> <%= @paper.title.html_safe %></h3>
       <% if @invitation.information %>
         <h4>Authors</h4>
         <p class="preserve-line-breaks"><%= @invitation.information %></p>

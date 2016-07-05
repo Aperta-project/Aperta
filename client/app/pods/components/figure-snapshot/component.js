@@ -8,7 +8,8 @@ var FigureSnapshot = Ember.Object.extend({
   file: namedComputedProperty('snapshot', 'file'),
   title: namedComputedProperty('snapshot', 'title'),
   strikingImage: namedComputedProperty('snapshot', 'striking_image'),
-  fileHash: namedComputedProperty('snapshot', 'file_hash')
+  fileHash: namedComputedProperty('snapshot', 'file_hash'),
+  url: namedComputedProperty('snapshot', 'url')
 });
 
 export default Ember.Component.extend({

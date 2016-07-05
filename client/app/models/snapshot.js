@@ -5,7 +5,7 @@ export default DS.Model.extend({
   paper: DS.belongsTo('paper', {
     async: true
   }),
-  source: DS.belongsTo('snapshot-source', {
+  source: DS.belongsTo('snapshottable', {
     async: true,
     inverse: 'snapshots',
     polymorphic:  true

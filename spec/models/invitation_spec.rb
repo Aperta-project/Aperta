@@ -120,7 +120,7 @@ describe Invitation do
       expect(authors_list).to_not be_empty
       invitation.invite!
       expect(invitation.information)
-        .to eq("Here are the authors on the paper:\n\n#{authors_list}")
+        .to eq("#{authors_list}")
     end
   end
 
@@ -235,10 +235,10 @@ describe Invitation do
 
   describe "#where_email_matches" do
     let(:emails) { ["turtle@turtles.com", "TURTLE@turtles.com"] }
-    let!(:invitation_1) { create :invitation, email: emails[0] }
-    let!(:invitation_2) { create :invitation, email: "turtle <#{emails[0]}>" }
-    let!(:invitation_3) { create :invitation, email: "another@email.com" }
-    let!(:invitation_4) { create :invitation, email: emails[1] }
+    let!(:invitation_1) { create :invitation, invitee: nil, email: emails[0] }
+    let!(:invitation_2) { create :invitation, invitee: nil, email: "turtle <#{emails[0]}>" }
+    let!(:invitation_3) { create :invitation, invitee: nil, email: "another@email.com" }
+    let!(:invitation_4) { create :invitation, invitee: nil, email: emails[1] }
 
     it "returns invitiations where the email matches the supplied argument" do
       emails.each do |email|

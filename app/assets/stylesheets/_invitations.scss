@@ -1,0 +1,140 @@
+.invitation-container {
+  padding: 0 60px 35px 60px;
+
+  .methods {
+    @include flex(0 1 auto);
+    @include display(flex);
+    @include flex-flow(row wrap);
+    @include justify-content(center);
+  }
+
+  .logo {
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    @include flex(0 0 100%);
+    margin-top: 1px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 44px;
+  }
+
+  p {
+    text-align: left;
+    margin: 0 0 25px 0;
+    flex: 0 0 100%;
+    font-size: 14px;
+  }
+}
+
+.invitation {
+  background: rgba(255,255,255, 0.95);
+  width: 860px;
+  height: 550px;
+
+  .message {
+    font-size: 20px;
+    margin-bottom: 20px;
+
+    &.declined {
+      margin-top: 100px;
+    }
+  }
+
+  .feedback-header {
+    padding: 5px 15px;
+    border-bottom: 1px solid #ccc;
+    margin-right: auto;
+  }
+
+  .aperta-logo {
+    font-size: 18px;
+    font-weight: 300;
+    margin-right: auto;
+    @include align-self(flex-start);
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .right {
+    float: right;
+    margin-left: 15px;
+  }
+
+  .flex-bar {
+    @include clearfix;
+    @include display(flex);
+    @include flex-direction(row);
+    @include justify-content(flex-end);
+    @include align-items(center);
+  }
+
+  .flex-item {
+    margin-left: 15px;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    height: 64px;
+    margin-bottom: 16px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  }
+}
+
+.pending-invitation {
+
+  .invitation-metadata {
+    font-size: 14px;
+    font-weight: bold;
+    .date {
+      font-weight: normal;
+    }
+  }
+
+  .decline-button {
+    margin-left: 15px;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+  }
+
+  h1, .h1 {
+    font-size: 36px;
+  }
+
+  h2, .h2 {
+    font-size: 30px;
+  }
+
+  h3, .h3 {
+    font-size: 24px;
+  }
+
+  h4 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+  
+  p, h3 {
+    margin-bottom: 20px;
+  }
+}

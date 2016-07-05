@@ -70,7 +70,11 @@ class Journal < ActiveRecord::Base
   end
 
   def logo_url
-    logo.thumbnail.url if logo
+    if logo
+      logo.thumbnail.url
+    else
+      '/images/plos_logo.png'
+    end
   end
 
   def paper_types

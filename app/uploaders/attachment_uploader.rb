@@ -14,10 +14,6 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   version :detail do
     process :convert_to_png, if: :needs_transcoding?
     process resize_to_limit: [984, -1], if: :image?
-    process :set_srgb_colorspace, if: :needs_transcoding?
-    process :set_density, if: :needs_transcoding?
-    process :set_background, if: :needs_transcoding?
-    process :strip_undefined_stuff, if: :needs_transcoding?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -27,7 +23,6 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   version :preview do
     process :convert_to_png, if: :needs_transcoding?
     process resize_to_limit: [475, 220], if: :image?
-    process :set_srgb_colorspace, if: :needs_transcoding?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -36,31 +31,11 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   private
 
-  def strip_undefined_stuff
-    manipulate!(&:strip)
-  end
-
-  def set_srgb_colorspace
-    manipulate! do |image|
-      image.colorspace("sRGB")
-    end
-  end
-
-  def set_background
-    manipulate! do |image|
-      image.background("white")
-    end
-  end
-
-  def set_density
-    manipulate! do |image|
-      image.density("72")
-    end
-  end
-
   def convert_to_png
-    manipulate! do |image|
-      image.format("png")
+    convert(:png) do |image|
+      image.density("300")
+      image.resize("984")
+      image.colorspace("sRGB")
     end
     file.content_type = "image/png"
   end

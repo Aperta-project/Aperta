@@ -11,7 +11,7 @@ export default Ember.Component.extend(PaperBase, Discussions, {
         'selectedVersion1',
         `${version.get('majorVersion')}.${version.get('minorVersion')}`);
 
-      this.get('setQueryParam')(
+      this.attrs.setQueryParam(
         'selectedVersion1', this.get('selectedVersion1')
       );
     },

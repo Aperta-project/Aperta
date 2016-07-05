@@ -17,7 +17,7 @@ from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Pages.authenticated_page import application_typeface, tahi_grey_dark, white
+from Pages.authenticated_page import application_typeface, aperta_grey_dark, white
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -90,7 +90,7 @@ class WithdrawManuscriptTest(CommonTest):
           withdraw_banner.text
     except AssertionError:
       logging.warning('Banner text is not correct: {0}'.format(withdraw_banner.text))
-    assert withdraw_banner.value_of_css_property('background-color') == tahi_grey_dark, \
+    assert withdraw_banner.value_of_css_property('background-color') == aperta_grey_dark, \
         withdraw_banner.value_of_css_property('background-color')
     assert withdraw_banner.value_of_css_property('color') == white, \
         withdraw_banner.value_of_css_property('color')

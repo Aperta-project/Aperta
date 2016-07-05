@@ -119,6 +119,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
     self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
     self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
+    self._review_cands_task = (By.CLASS_NAME, 'reviewer-recommendations-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox

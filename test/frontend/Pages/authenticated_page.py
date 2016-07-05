@@ -27,18 +27,25 @@ __author__ = 'jgray@plos.org'
 application_typeface = 'source-sans-pro'
 manuscript_typeface = 'lora'
 # colors
-tahi_green = 'rgba(57, 163, 41, 1)'
-tahi_green_light = 'rgba(142, 203, 135, 1)'
-tahi_green_dark = 'rgba(15, 116, 0, 1)'
-tahi_blue = 'rgba(45, 133, 222, 1)'
-tahi_blue_light = 'rgba(148, 184, 224, 1)'
-tahi_blue_dark = 'rgba(32, 94, 156, 1)'
-tahi_grey = 'rgba(242, 242, 242, 1)'
-tahi_grey_xlight = 'rgba(245, 245, 245, 1)'
-tahi_grey_light = 'rgba(213, 213, 213, 1)'
-tahi_grey_dark = 'rgba(135, 135, 135, 1)'
-tahi_black = 'rgba(0, 0, 0, 1)'
+aperta_green = 'rgba(57, 163, 41, 1)'
+aperta_green_light = 'rgba(142, 203, 135, 1)'
+aperta_green_dark = 'rgba(15, 116, 0, 1)'
+aperta_blue = 'rgba(45, 133, 222, 1)'
+aperta_blue_light = 'rgba(148, 184, 224, 1)'
+aperta_blue_dark = 'rgba(32, 94, 156, 1)'
+aperta_grey_xlight = 'rgba(245, 245, 245, 1)'
+aperta_grey_medlight = 'rgba(228, 228, 228, 1)'
+aperta_grey_light = 'rgba(213, 213, 213, 1)'
+aperta_grey_dark = 'rgba(135, 135, 135, 1)'
+aperta_black = 'rgba(51, 51, 51, 1)'
+aperta_error = 'rgba(206, 11, 36, 1)'
 white = 'rgba(255, 255, 255, 1)'
+aperta_flash_error = 'rgba(122, 51, 78, 1)'
+aperta_flash_error_bkgrnd = 'rgba(230, 221, 210, 1)'
+aperta_flash_success = aperta_green
+aperta_flash_success_bkgrnd = 'rgba(234, 253, 231, 1)'
+aperta_flash_info = 'rgba(146, 139, 113, 1)'
+aperta_flash_info_bkgrnd = 'rgba(242, 242, 213, 1)'
 
 
 class AuthenticatedPage(PlosPage):
@@ -627,7 +634,6 @@ class AuthenticatedPage(PlosPage):
     self._get(post_message_btn).click()
     return None
 
-
   # Style Validations
   # Divider and Border Styles ===========================
   @staticmethod
@@ -639,7 +645,7 @@ class AuthenticatedPage(PlosPage):
     """
     # This color is not represented in the tahi palette
     assert border.value_of_css_property('color') == 'rgba(128, 128, 128, 1)', border.value_of_css_property('color')
-    assert border.value_of_css_property('background-color') in (tahi_green_light, tahi_blue_light, tahi_grey_light), \
+    assert border.value_of_css_property('background-color') in (aperta_green_light, aperta_blue_light, aperta_grey_light), \
         border.value_of_css_property('background-color')
 
   @staticmethod
@@ -889,7 +895,7 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == tahi_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   @staticmethod
@@ -903,7 +909,7 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == tahi_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '700', link.value_of_css_property('font-weight')
 
   @staticmethod
@@ -917,7 +923,7 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == tahi_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
     assert link.value_of_css_property('text-decoration') == 'underline', link.value_of_css_property('text-decoration')
 
@@ -932,7 +938,7 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == tahi_blue, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == aperta_blue, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   @staticmethod
@@ -946,7 +952,7 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == tahi_blue, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == aperta_blue, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
     assert link.value_of_css_property('text-decoration') == 'underline', link.value_of_css_property('text-decoration')
 
@@ -992,7 +998,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_green, \
+    assert button.value_of_css_property('background-color') == aperta_green, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1015,7 +1021,7 @@ class AuthenticatedPage(PlosPage):
     # APERTA-6498
     # assert button.value_of_css_property('line-height') == '18px', \
     #     button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_green, \
+    assert button.value_of_css_property('color') == aperta_green, \
         button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == white, \
         button.value_of_css_property('background-color')
@@ -1044,7 +1050,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1066,7 +1072,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_green, \
+    assert button.value_of_css_property('background-color') == aperta_green, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1086,7 +1092,7 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == tahi_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1109,7 +1115,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1131,7 +1137,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_grey_light, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_grey_light, button.value_of_css_property('color')
     # This color is not represented in the tahi palette
     assert button.value_of_css_property('background-color') == 'rgba(238, 238, 238, 1)', \
         button.value_of_css_property('background-color')
@@ -1154,7 +1160,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_grey_light, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_grey_light, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == white, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1176,7 +1182,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_grey_light, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_grey_light, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1190,7 +1196,7 @@ class AuthenticatedPage(PlosPage):
   def validate_green_on_green_button_style(button):
     """
     Ensure consistency in rendering page and overlay light green-backed, dark green text buttons across the application.
-    These buttons should be used against a standard tahi_green background
+    These buttons should be used against a standard aperta_green background
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
@@ -1198,8 +1204,8 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_green_dark, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_green_light, \
+    assert button.value_of_css_property('color') == aperta_green_dark, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == aperta_green_light, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1361,8 +1367,8 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_grey_dark, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_grey_light, \
+    assert button.value_of_css_property('color') == aperta_grey_dark, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == aperta_grey_light, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1383,7 +1389,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_blue, \
+    assert button.value_of_css_property('background-color') == aperta_blue, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1403,7 +1409,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == white, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1424,7 +1430,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1446,7 +1452,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_blue, \
+    assert button.value_of_css_property('background-color') == aperta_blue, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1466,7 +1472,7 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == tahi_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1490,7 +1496,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1504,7 +1510,7 @@ class AuthenticatedPage(PlosPage):
   def validate_blue_on_blue_button_style(button):
     """
     Ensure consistency in rendering page and overlay light blue-backed, dark-blue text buttons across the application
-    These should only be used against a standard tahi_blue background
+    These should only be used against a standard aperta_blue background
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
@@ -1512,8 +1518,8 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == tahi_blue_dark, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == tahi_blue_light, \
+    assert button.value_of_css_property('color') == aperta_blue_dark, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == aperta_blue_light, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1524,20 +1530,20 @@ class AuthenticatedPage(PlosPage):
 
   # Form Styles ==============================
   @staticmethod
-  def validate_input_field_label_style(label):
+  def validate_input_field_inside_label_style(label):
     """
     Ensure consistency in rendering page, card and overlay input field labels across the application
     :param label: label to validate
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '18px', \
+    assert label.value_of_css_property('font-size') == '14px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
     # This color is not represented in the tahi palette
-    assert label.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+    assert label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', \
         label.value_of_css_property('color')
-    assert label.value_of_css_property('line-height') == '25.7167px', \
+    assert label.value_of_css_property('line-height') == '20px', \
         label.value_of_css_property('line-height')
 
   @staticmethod
@@ -1625,7 +1631,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('font-style') == 'normal', button.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert button.value_of_css_property('color') == tahi_black, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_black, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '18px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('margin-top') == '4px', button.value_of_css_property('margin-top')
 
@@ -1640,10 +1646,9 @@ class AuthenticatedPage(PlosPage):
     assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
     assert label.value_of_css_property('font-style') == 'normal', label.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert label.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', label.value_of_css_property('color')
+    assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
-    assert label.value_of_css_property('margin-right') == '20px', label.value_of_css_property('margin-right')
-    assert label.value_of_css_property('margin-bottom') == '5px', label.value_of_css_property('margin-bottom')
+
 
   @staticmethod
   def validate_checkbox(checkbox):
@@ -1721,7 +1726,7 @@ class AuthenticatedPage(PlosPage):
     """
     assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
-    assert msg.value_of_css_property('color') == tahi_green, msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == aperta_green, msg.value_of_css_property('color')
     # This color is not represented in the style guide
     assert msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
         msg.value_of_css_property('background-color')

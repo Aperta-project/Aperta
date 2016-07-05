@@ -15,7 +15,7 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, internal_editor_login, staff_admin_login, super_admin_login, prod_staff_login, \
     pub_svcs_login, cover_editor_login, handling_editor_login, academic_editor_login
-from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface, tahi_green
+from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface, aperta_green
 
 __author__ = 'sbassi@plos.org'
 
@@ -208,7 +208,7 @@ class BaseCard(AuthenticatedPage):
     # APERTA-6497
     # assert html_header_title.value_of_css_property('font-size') == '18px', \
     #    html_header_title.value_of_css_property('font-size')
-    assert html_header_title.value_of_css_property('color') == tahi_green, \
+    assert html_header_title.value_of_css_property('color') == aperta_green, \
         paper_id.value_of_css_property('color')
     # APERTA-6497
     # assert html_header_title.value_of_css_property('line-height') == '23px', \
@@ -225,7 +225,7 @@ class BaseCard(AuthenticatedPage):
     assert plus.value_of_css_property('height') == '25px'
     assert plus.value_of_css_property('width') == '25px'
     assert plus.value_of_css_property('line-height') == '20px'
-    assert plus.value_of_css_property('color') == tahi_green
+    assert plus.value_of_css_property('color') == aperta_green
     assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
     assert plus.text == '+', plus.text
 

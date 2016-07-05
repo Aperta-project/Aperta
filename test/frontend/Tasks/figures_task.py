@@ -7,6 +7,7 @@ import time
 import urllib
 
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import StaleElementReferenceException
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import figures
@@ -217,8 +218,13 @@ class FiguresTask(BaseTask):
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
     time.sleep(5)
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
-    replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_input.send_keys(fn)
+    try:
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+    except StaleElementReferenceException:
+      time.sleep(5)
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
     #   stale reference error
@@ -363,11 +369,17 @@ class FiguresTask(BaseTask):
         time.sleep(5)
         matched = True
     # time for order of blocks to update - often very slow - particularly when on Heroku CI
-    time.sleep(15)
-    # Redefining this down here to avoid a stale element reference due to the listing having
-    #   been replaced, potentially, since lookup
-    self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+    time.sleep(20)
     figure_blocks = self._gets(self._figure_listing)
+    # Test still occasionally failing for second block not redrawing yet
+    count = 0
+    while len(figure_blocks) < 2:
+      # It takes some time after the block initially draws for the content to populate
+      time.sleep(5)
+      figure_blocks = self._gets(self._figure_listing)
+      count += 1
+      if count >= 9:
+        raise(AssertionError, 'On edit, a minute passed without figure blocks ordering properly')
     for figure_block in figure_blocks:
       page_fig_name = figure_block.find_element(*self._figure_dl_link)
       final_order.append(page_fig_name.text)

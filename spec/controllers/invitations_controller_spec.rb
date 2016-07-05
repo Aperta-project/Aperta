@@ -51,7 +51,7 @@ describe InvitationsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authorized' do
-        before { stub_sign_in user }
+      before { stub_sign_in user }
       it 'returns required fields' do
         do_request
         expect(response.status).to eq(200)
@@ -95,14 +95,14 @@ describe InvitationsController do
 
   describe 'POST /invitations' do
     subject(:do_request) do
-      post(:create, {
+      post(
+        :create,
         format: 'json',
         invitation: {
           email: email_to_invite,
           task_id: task.id,
           body: invitation_body
-        }
-      })
+        })
     end
 
     let(:email_to_invite) { invitee.email }
@@ -226,10 +226,10 @@ describe InvitationsController do
 
   describe "PUT /invitations/:id/rescind" do
     subject(:do_request) do
-      delete(:rescind, {
+      delete(
+        :rescind,
         format: "json",
-        id: invitation.to_param
-      })
+        id: invitation.to_param)
     end
 
     let(:invitation) do

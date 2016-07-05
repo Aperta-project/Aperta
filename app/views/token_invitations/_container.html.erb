@@ -1,0 +1,13 @@
+<div class="invitation">
+  <div class='feedback-header flex-bar'>
+    <span class='aperta-logo'>Aperta</span>
+    <%= link_to "Sign into Aperta with PLOS", new_user_session_path, class:'flex-item bold' %>
+    <%= link_to "Create an account", new_user_registration_path, class:'flex-item' %>
+  </div>
+  <div class="invitation-container">
+    <div class='logo'>
+      <img class='plos auth-logo' src="<%=@journal_logo_url %>" />
+    </div>
+    <%= yield %>
+  </div>
+</div>

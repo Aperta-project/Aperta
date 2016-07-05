@@ -1,12 +1,12 @@
 require 'sidekiq/web'
 
+# rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do
   mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioInternalReview::Engine => '/api'
   mount PlosBioTechCheck::Engine => '/api'
   mount PlosBilling::Engine => '/api'
-
 
   # Test specific
   #
@@ -15,7 +15,6 @@ Tahi::Application.routes.draw do
     mount UploadServer, at: '/fake_s3/'
   end
 
-
   # Authentication
   #
   devise_for :users, controllers: {
@@ -23,7 +22,7 @@ Tahi::Application.routes.draw do
     registrations: 'tahi_devise/registrations'
   }
   devise_scope :user do
-    if !Rails.configuration.password_auth_enabled
+    unless Rails.configuration.password_auth_enabled
       # devise will not auto create this route if :database_authenticatable is not enabled
       get 'users/sign_in' => 'devise/sessions#new', as: :new_user_session
     end
@@ -33,7 +32,6 @@ Tahi::Application.routes.draw do
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
-
 
   # Internal API
   # TODO: namespace to api
@@ -198,6 +196,27 @@ Tahi::Application.routes.draw do
 
   get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
                                                      as: :resource_proxy
+
+  get '/invitations/:token',
+    to: 'token_invitations#show',
+    as: 'confirm_decline_invitation'
+
+  post '/invitations/:token/decline',
+    to: 'token_invitations#decline',
+    as: 'decline_invitation'
+
+  get '/invitations/:token/feedback',
+    to: 'token_invitations#feedback_form',
+    as: 'invitation_feedback_form'
+
+  post '/invitations/:token/feedback',
+    to: 'token_invitations#feedback',
+    as: 'post_feedback'
+
+  get '/invitations/:token/thank_you',
+    to: 'token_invitations#thank_you',
+    as: 'invitation_thank_you'
+
   root to: 'ember_cli/ember#index'
   mount_ember_app :client, to: '/'
 end

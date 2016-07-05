@@ -54,8 +54,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def recipient_name
-    return invitee.full_name if invitee
-    email
+    invitee.try(:full_name) || email
   end
 
   def rescind!
@@ -66,6 +65,10 @@ class Invitation < ActiveRecord::Base
 
   def email=(new_email)
     super(new_email.strip)
+  end
+
+  def feedback_given?
+    decline_reason.present? || reviewer_suggestions.present?
   end
 
   private

@@ -9,7 +9,7 @@
       <% end %>
       <% if @paper.abstract %>
         <h4>Abstract</h4>
-        <p><%= @paper.abstract %></p>
+        <p><%= @paper.abstract.html_safe %></p>
       <% end %>
     <%= form_for @invitation, url: decline_invitation_path(@invitation.token), method: 'post'  do |f| %>
       <%= link_to "Accept Reviewer Invitation", root_path, class: 'button-primary button--green' %>

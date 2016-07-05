@@ -44,18 +44,13 @@ class InvitationsController < ApplicationController
   def decline
     fail AuthorizationError unless invitation.invitee == current_user
     invitation.actor = current_user
-    invitation.decline!
-    Activity.invitation_declined!(invitation, user: current_user)
-    render json: invitation
-  end
-
-  def update
-    fail AuthorizationError unless invitation.invitee == current_user
     invitation.update_attributes(
       actor: current_user,
       decline_reason: invitation_params[:decline_reason],
       reviewer_suggestions: invitation_params[:reviewer_suggestions]
     )
+    invitation.decline!
+    Activity.invitation_declined!(invitation, user: current_user)
     render json: invitation
   end
 

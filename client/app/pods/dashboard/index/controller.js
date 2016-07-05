@@ -67,14 +67,32 @@ export default Ember.Controller.extend({
       this.set('showInvitationsOverlay', false);
     },
 
-    declineInvitation(invitation) {
-      return this.get('restless').putUpdate(invitation, '/decline');
+    invitationsPendingDecline: Ember.computed.filter(
+      'invitationsNeedsUserUpdate',
+      function(invitation) {
+        return invitation.get('declined') && invitation.get('pendingFeedback');
+      }
+    ),
+
+    closeOverlay(overlay) {
+      this.get('invitationsPendingDecline').forEach((invitation) => {
+        this.declineInvitation(invitation);
+      });
+      overlay.animateOut();
     },
 
-    updateInvitation(invitation) {
-      return invitation.save().then(function(){
-        invitation.feedbackSent();
-      });
+    declineInvitation(invitation) {
+      let data = {
+        'invitation': {
+          'decline_reason': invitation.get('declineReason'),
+          'reviewer_suggestions': invitation.get('reviewerSuggestions')
+        }
+      };
+
+      return this.get('restless').putUpdate(invitation, '/decline', data)
+        .then(function(){
+          invitation.feedbackSent();
+        });
     },
 
     acceptInvitation(invitation) {

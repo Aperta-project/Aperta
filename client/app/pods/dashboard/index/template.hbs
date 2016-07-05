@@ -20,9 +20,8 @@
     {{flash-messages}}
     {{invitations-x invitations=invitationsNeedsUserUpdate
                     accept=(action "acceptInvitation")
-                    decline=(action "declineInvitation")
-                    update=(action "updateInvitation")
-                    close=(action overlay.animateOut)}}
+                    close=(action overlay.animateOut)
+                    decline=(action "declineInvitation")}}
 {{/overlay-fullscreen}}
 
 <div class="base-screen">

@@ -14,6 +14,26 @@
   }
 }
 
+.pending-invitation {
+  .invitation-metadata {
+    font-size: 14px;
+    font-weight: bold;
+    .date {
+      font-weight: normal;
+    }
+  }
+
+  h4 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+  
+  p, h3 {
+    margin-bottom: 20px;
+  }
+}
+
 .invitees, .assignments {
   width: $message-body-width;
   margin-top: 36px;

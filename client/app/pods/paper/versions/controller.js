@@ -71,6 +71,10 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
       this.set(
         'selectedVersion2',
         `${version.get('majorVersion')}.${version.get('minorVersion')}`);
+    },
+
+    setQueryParam(key, value) {
+      this.set(key, value);
     }
   }
 });

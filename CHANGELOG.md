@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Versioning bar now appears again in versioning mode
 ### Security
 
 ## [1.4.17] - {2016-06-24}

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import {
   namedComputedProperty
-} from 'tahi/mixins/components/snapshot-named-computed-property';
+} from 'tahi/lib/snapshots/snapshot-named-computed-property';
 
 var FigureSnapshot = Ember.Object.extend({
   snapshot: null,

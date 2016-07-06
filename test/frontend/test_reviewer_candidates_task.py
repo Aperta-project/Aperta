@@ -12,10 +12,8 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, users
+from Base.Resources import users
 from frontend.common_test import CommonTest
-from Cards.initial_decision_card import InitialDecisionCard
-from Cards.register_decision_card import RegisterDecisionCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 from Tasks.reviewer_candidates_task import ReviewerCandidatesTask
@@ -52,7 +50,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_db_id()
+    manuscript_page.get_paper_db_id()
     time.sleep(2)
     # figures
     manuscript_page.click_task('review_candidates')

@@ -11,12 +11,13 @@ from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'jgray@plos.org'
 
+
 class ReviewerCandidatesTask(BaseTask):
   """
   Page Object Model for Upload Manuscript task
   """
 
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(ReviewerCandidatesTask, self).__init__(driver)
 
     # Locators - Instance members

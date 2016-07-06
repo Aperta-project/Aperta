@@ -81,7 +81,13 @@ describe QuestionAttachmentsController do
   end
 
   describe '#create' do
-    let!(:answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
+    let!(:answer) do
+      FactoryGirl.create(
+        :nested_question_answer,
+        owner: task,
+        paper: task.paper
+      )
+    end
 
     subject(:do_request) do
       post :create, format: :json, question_attachment: {

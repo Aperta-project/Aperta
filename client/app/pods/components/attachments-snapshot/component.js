@@ -3,16 +3,7 @@ import {
   namedComputedProperty
 } from 'tahi/lib/snapshots/snapshot-named-computed-property';
 
-let AttachmentSnapshot = Ember.Object.extend({
-  snapshot: null,
-
-  id: namedComputedProperty('snapshot', 'id'),
-  file: namedComputedProperty('snapshot', 'file'),
-  fileHash: namedComputedProperty('snapshot', 'file'),
-  title: namedComputedProperty('snapshot', 'title'),
-  caption: namedComputedProperty('snapshot', 'caption'),
-  url: namedComputedProperty('snapshot', 'url')
-});
+import SnapshotAttachment from 'tahi/models/snapshot/attachment';
 
 export default Ember.Component.extend({
   attachments1: null,
@@ -21,13 +12,13 @@ export default Ember.Component.extend({
   snapshotAttachments1: Ember.computed('attachments.[]', function() {
     let attachments = this.get('attachments1');
     return Ember.makeArray(attachments).map( (attachment) => {
-      return AttachmentSnapshot.create({snapshot: attachment});
+      return SnapshotAttachment.create({attachment: attachment});
     });
   }),
   snapshotAttachments2: Ember.computed('attachments.[]', function() {
     let attachments = this.get('attachments2');
     return Ember.makeArray(attachments).map( (attachment) => {
-      return AttachmentSnapshot.create({snapshot: attachment});
+      return SnapshotAttachment.create({attachment: attachment});
     });
   }),
 

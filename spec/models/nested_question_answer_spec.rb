@@ -37,6 +37,31 @@ describe NestedQuestionAnswer do
     end
   end
 
+  describe '#attachments' do
+    subject(:nested_question_answer) do
+      FactoryGirl.create(:nested_question_answer)
+    end
+    let!(:question_1){ FactoryGirl.create(:question_attachment, id: 9999 ) }
+    let!(:question_2){ FactoryGirl.create(:question_attachment, id: 98) }
+
+    before do
+      nested_question_answer.attachments = [
+        question_1,
+        question_2
+      ]
+    end
+
+    it 'is ordered by id in ascending order' do
+      expect(nested_question_answer.attachments).to \
+        eq([question_1, question_2].map(&:reload))
+
+      # Test default order is hard so we're going to peek at the SQL
+      # just to make sure.
+      expect(nested_question_answer.attachments.to_sql).to \
+        match(/ORDER BY id ASC/i)
+    end
+  end
+
   describe '#task' do
     context 'and the owner is a Task' do
       let(:task) { Task.new }

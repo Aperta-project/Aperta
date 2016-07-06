@@ -33,7 +33,7 @@ export default Ember.Component.extend({
       var hash1 = this.get('figure1.fileHash');
       var hash2 = this.get('figure2.fileHash');
       if (!hash1 || !hash2) {
-          return false;
+        return false;
       } else {
         return hash1 !== hash2;
       }

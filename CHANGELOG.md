@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## {[version]} - {release date}
 ### Added
 - Autosuggested at-mentions in discussion topics
+- Reviewers can decline invites without an Aperta account and without having to sign in
 ### Changed
 ### Deprecated
 ### Removed

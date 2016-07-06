@@ -64,6 +64,7 @@ export default DS.Model.extend({
   strikingImageId: attr('string'),
   submittedAt: attr('date'),
   title: attr('string'),
+  abstract: attr('string'),
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
   url: attr('string'),
@@ -223,5 +224,21 @@ export default DS.Model.extend({
       }
 
       return latestInitial;
-    })
+    }),
+
+  restless: Ember.inject.service(),
+
+  atMentionableStaffUsers() {
+    const url = '/api/at_mentionable_users';
+    const data = { on_paper_id: this.get('id') };
+
+    return this.get('restless').get(url, data).then((data)=> {
+      // push the response into the DS and return a promise which resolves to
+      // the records which were pushed.
+      this.store.pushPayload(data);
+      return _.map(data['users'], (user) => {
+        return this.store.find('user', user['id']);
+      });
+    });
+  }
 });

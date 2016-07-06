@@ -1,6 +1,11 @@
 require "rails_helper"
 
 describe Snapshot::AuthorTaskSerializer do
+  before do
+    Rake::Task['nested-questions:seed:authors-task'].reenable
+    Rake::Task['nested-questions:seed:authors-task'].invoke
+  end
+
   subject(:serializer) { described_class.new(task) }
   let(:task) { FactoryGirl.create(:authors_task) }
 

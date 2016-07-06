@@ -29,6 +29,29 @@ describe Activity do
     end
   end
 
+  describe "#assignment_removed!" do
+    subject(:activity) { Activity.assignment_removed!(assignment, user: user) }
+    let(:assignment) do
+      FactoryGirl.build_stubbed(
+        :assignment,
+        assigned_to: paper,
+        role: role,
+        user: user
+      )
+    end
+    let(:paper) { FactoryGirl.build_stubbed(:paper) }
+    let(:role) { FactoryGirl.build_stubbed(:role, name: "Super") }
+
+    it do
+      is_expected.to have_attributes \
+        feed_name: "workflow",
+        activity_key: "assignment.removed",
+        subject: assignment.assigned_to,
+        user: user,
+        message: "#{user.full_name} was removed as #{role.name}"
+    end
+  end
+
   describe "#author_added!" do
     subject(:activity) { Activity.author_added!(author, user: user) }
     let(:author) { FactoryGirl.build_stubbed(:author) }

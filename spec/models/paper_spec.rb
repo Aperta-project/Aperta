@@ -189,7 +189,7 @@ describe Paper do
           FactoryGirl.create(
             :paper_with_task,
             journal: journal,
-            task_params: { type: "MockMetadataTask", completed: true }
+            task_params: { type: "MetadataTestTask", completed: true }
           )
         end
 
@@ -203,7 +203,7 @@ describe Paper do
           FactoryGirl.create(
             :paper_with_task,
             journal: journal,
-            task_params: { type: "MockMetadataTask", completed: false }
+            task_params: { type: "MetadataTestTask", completed: false }
           )
         end
 

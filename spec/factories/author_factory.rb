@@ -19,7 +19,10 @@ FactoryGirl.define do
     trait :corresponding do
       after(:create) do |author|
         correponding_author_question = NestedQuestion.where(
-          ident: Author::CORRESPONDING_QUESTION_IDENT
+          ident: Author::CORRESPONDING_QUESTION_IDENT,
+          owner_id: nil,
+          owner_type: Author.name,
+          value_type: 'boolean'
         ).first_or_create!
         author.nested_question_answers << FactoryGirl.create(
           :nested_question_answer,

@@ -1,6 +1,7 @@
 {
   "name": "tahi",
   "dependencies": {
+    "At.js": "^1.5.0",
     "bootstrap": "3.3.6",
     "bootstrap-datepicker": "1.3.1",
     "ember": "1.13.10",

@@ -137,14 +137,14 @@ FactoryGirl.define do
     old_role "admin"
   end
 
-  factory :invitable_task, class: 'InvitableTask' do
+  factory :invitable_task, class: 'InvitableTestTask' do
     phase
     paper
     title "Invitable Task"
     old_role "user"
   end
 
-  factory :metadata_task, class: 'MockMetadataTask' do
+  factory :metadata_task, class: 'MetadataTestTask' do
     phase
     paper
     title "Metadata Task"
@@ -194,17 +194,22 @@ FactoryGirl.define do
     title 'Send to Apex'
     old_role 'admin'
   end
+
+  factory :title_and_abstract_task, class: 'TahiStandardTasks::TitleAndAbstractTask' do
+    phase
+    paper
+    title 'Title and Abstract'
+    old_role 'editor'
+  end
 end
 
-class MockMetadataTask < Task
+class MetadataTestTask < Task
   include MetadataTask
 
   DEFAULT_TITLE = 'Mock Metadata Task'
 end
 
-class MetadataTaskPolicy < TasksPolicy; end
-
-class InvitableTask < Task
+class InvitableTestTask < Task
   include Invitable
 
   DEFAULT_TITLE = 'Test Task'
@@ -234,5 +239,3 @@ class InvitableTask < Task
     'test old_role'
   end
 end
-
-class InvitableTasksPolicy < TasksPolicy; end

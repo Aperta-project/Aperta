@@ -54,7 +54,7 @@ class QueryLanguageParser
 
   def parse(str)
     language = (expression_statement | statements.reduce(:|)).eof
-    language.parse! str
+    language.parse! str.strip.gsub(/\s+/, " ")
   end
 
   private

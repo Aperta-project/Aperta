@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { module } from 'qunit';
 import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
-import registerStoreHelpers from '../helpers/store-helpers';
 
 var app = null;
 module('Unit: Task Model', {
@@ -29,7 +28,6 @@ test("findQuestion finds and returns the first nestedQuestion when the given pat
   assert.equal(task.findQuestion('foobar'), nestedQuestion);
 });
 
-
 test("findQuestion returns null when it doesn't have a nestedQuestion whose ident that matches the given path", function(assert) {
   let store = getStore();
   let task, nestedQuestion;
@@ -46,7 +44,6 @@ test("findQuestion returns null when it doesn't have a nestedQuestion whose iden
 });
 
 test("permissionState delegates permission state to paper", function(assert) {
-  registerStoreHelpers();
   let store = getStore();
   let paper, task;
   Ember.run(() => {

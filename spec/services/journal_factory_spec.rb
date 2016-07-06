@@ -55,12 +55,10 @@ describe JournalFactory do
 
     context 'creating the default roles and permission for the journal' do
       before(:all) do
-        clear_roles_and_permissions
         @journal = JournalFactory.create(name: 'Genetics Journal')
       end
 
       after(:all) do
-        clear_roles_and_permissions
         @journal.destroy!
       end
 
@@ -345,6 +343,12 @@ describe JournalFactory do
               permissions_on_task.find_by(action: 'manage_invitations')
             )
           end
+
+          it ':edit TitleAndAbstractTask regardless of paper state' do
+            expect(permissions).to include(
+              Permission.find_by(action: 'edit',
+                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask'))
+          end
         end
 
         context 'has DiscussionTopic permission to' do
@@ -383,6 +387,28 @@ describe JournalFactory do
         end
       end
 
+      context 'Discussion Participant' do
+        let(:permissions) { journal.discussion_participant_role.permissions }
+
+        describe 'has discussion reply permission to' do
+          specify ':view' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'view')
+            )
+          end
+          specify ':reply' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'reply')
+            )
+          end
+          specify ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
+            )
+          end
+        end
+      end
+
       context 'Academic Editor' do
         let(:permissions) { journal.academic_editor_role.permissions }
 
@@ -392,7 +418,8 @@ describe JournalFactory do
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask, TahiStandardTasks::RegisterDecisionTask]
+            [PlosBilling::BillingTask,
+             TahiStandardTasks::RegisterDecisionTask]
           end
           let(:all_inaccessible_task_klasses) do
             ::Task.descendants - accessible_task_klasses
@@ -415,11 +442,8 @@ describe JournalFactory do
             end
           end
 
-          it 'is able to view and edit the ReviewerRecommendationsTask' do
-            expect(permissions).to include(
-              Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
-            )
-            expect(permissions).to include(
+          it 'is not able to edit the ReviewerRecommendationsTask' do
+            expect(permissions).to_not include(
               Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
           end
@@ -537,6 +561,12 @@ describe JournalFactory do
             expect(permissions).to include(
               permissions_on_task.find_by(action: 'manage_invitations')
             )
+          end
+
+          it ':edit TitleAndAbstractTask regardless of paper state' do
+            expect(permissions).to include(
+              Permission.find_by(action: 'edit',
+                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask'))
           end
         end
 
@@ -735,6 +765,12 @@ describe JournalFactory do
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
+            )
+          end
         end
 
         describe 'permission to PlosBilling::BillingTask' do
@@ -909,6 +945,12 @@ describe JournalFactory do
           it ':reply' do
             expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'reply')
+            )
+          end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
             )
           end
         end
@@ -1087,6 +1129,12 @@ describe JournalFactory do
               permissions_on_discussion_topic.find_by(action: 'reply')
             )
           end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
+            )
+          end
         end
 
         describe 'permission to PlosBilling::BillingTask' do
@@ -1148,6 +1196,15 @@ describe JournalFactory do
               )
             end
           end
+        end
+
+        it 'cannot :view or :edit the ReviewerRecommendationsTask' do
+          expect(permissions).to_not include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
+          )
+          expect(permissions).to_not include(
+            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
+          )
         end
       end
 
@@ -1286,6 +1343,12 @@ describe JournalFactory do
           it ':manage_participant' do
             expect(permissions).to include(
               permissions_on_discussion_topic.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':be_at_mentioned' do
+            expect(permissions).to include(
+              permissions_on_discussion_topic.find_by(action: 'be_at_mentioned')
             )
           end
         end

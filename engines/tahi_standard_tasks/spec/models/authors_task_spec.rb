@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::AuthorsTask do
+  before do
+    Rake::Task['nested-questions:seed:author'].reenable
+    Rake::Task['nested-questions:seed:author'].invoke
+  end
+
   describe '.restore_defaults' do
     include_examples '<Task class>.restore_defaults update title to the default'
     include_examples '<Task class>.restore_defaults update old_role to the default'

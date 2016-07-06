@@ -17,6 +17,9 @@ Subscriptions.configure do
       Paper::Submitted::SnapshotMetadata,
       Paper::Submitted::EmailCreator
 
+  add 'paper:updated', \
+      Paper::Updated::MarkTitleAndAbstractIncomplete
+
   add 'discussion_reply:created', \
       DiscussionReply::Created::EmailPeopleMentioned,
       DiscussionReply::Created::NotifyPeopleMentioned

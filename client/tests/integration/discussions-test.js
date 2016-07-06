@@ -25,6 +25,16 @@ module('Integration: Discussions', {
       'topic_with_replies',
       { paperId: paper.id, title: 'Hipster Ipsum Dolor' });
 
+    $.mockjax({
+      url: "/api/at_mentionable_users",
+      type: 'GET',
+      status: 200,
+      contentType: "application/json",
+      responseText: {
+        users: [{id: 1, full_name: "Charmander", email: "fire@oak.edu"}]
+      }
+    });
+
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});

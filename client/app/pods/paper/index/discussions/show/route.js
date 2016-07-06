@@ -14,5 +14,5 @@ export default AuthorizedRoute.extend(DiscussionsShowRouteMixin, {
       }
       this.setModelChannel(topic);
     });
-  },
+  }
 });

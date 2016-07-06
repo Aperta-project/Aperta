@@ -309,6 +309,7 @@ test("newNormalize when the primary record has a different type attribute than t
   };
   ref = subject.newNormalize('task', payloadToChange), newModelName = ref.newModelName, payload = ref.payload;
   assert.equal(newModelName, 'author-task', 'since the primary record had a type, the model name is changed to that type (and dasherized)');
+  assert.equal(ref.isPolymorphic, true);
   assert.deepEqual(payload, {
     'author_tasks': [
       {
@@ -317,6 +318,23 @@ test("newNormalize when the primary record has a different type attribute than t
       }
     ]
   }, 'model is moved to correct primary key');
+
+  payloadToChange = {
+    tasks: [
+      {
+        id: 1,
+        type: 'Task'
+      },
+      {
+        id: 1,
+        type: 'AuthorTask'
+      }
+    ]
+  };
+  ref = subject.newNormalize('task', payloadToChange);
+  assert.equal(ref.newModelName, 'task', 'the new model name is unchanged');
+  assert.equal(ref.isPolymorphic, true, 'there are multiple types in the payload, so it must be polymorphic');
+
   payloadToChange = {
     task: {
       id: 1,
@@ -325,7 +343,8 @@ test("newNormalize when the primary record has a different type attribute than t
   };
   ref1 = subject.newNormalize('task', payloadToChange), newModelName = ref1.newModelName, payload = ref1.payload;
   assert.equal(newModelName, 'author-task', 'model type is corrected for singular payloads too');
-  return assert.deepEqual(payload, {
+  assert.equal(ref.isPolymorphic, true);
+  assert.deepEqual(payload, {
     'author_tasks': [
       {
         id: 1,
@@ -352,7 +371,7 @@ test("newNormalize puts non-primary records into new buckets based on their type
   };
   ref = subject.newNormalize('paper', payloadToChange), newModelName = ref.newModelName, payload = ref.payload;
   assert.equal(newModelName, 'paper', 'primary record type is still paper');
-  return assert.deepEqual(payload, {
+  assert.deepEqual(payload, {
     'author_tasks': [
       {
         id: 2,
@@ -383,7 +402,7 @@ test("newNormalize doesn't touch non-primary records that don't have a type attr
   };
   ref = subject.newNormalize('paper', payloadToChange), newModelName = ref.newModelName, payload = ref.payload;
   assert.equal(newModelName, 'paper', 'primary record type is still paper');
-  return assert.deepEqual(payload, {
+  assert.deepEqual(payload, {
     tasks: [
       {
         id: 2
@@ -492,6 +511,35 @@ test("normalizeArrayResponse normalizes an array of tasks via each task's type a
   };
   result = subject.normalizeArrayResponse(store, store.modelFor('task'), jsonHash);
   assert.equal(result.data.length, 3, 'All three tasks are included in data');
+  assert.notOk(result.included, 0, 'no tasks are put into the included field');
+  assert.ok(result.data.findBy('type', 'task'), 'the base task type is included');
+  assert.ok(result.data.findBy('type', 'initial-tech-check-task'), 'initial-tech-check-task found');
+  return assert.ok(result.data.findBy('type', 'authors-task'), 'author-task found');
+});
+
+test("normalizeArrayResponse normalizes an array of tasks via each task's type attribute, even when the first task is not polymorphic", function(assert) {
+  var jsonHash, result, store;
+  store = getStore();
+  jsonHash = {
+    tasks: [
+      {
+        id: '3',
+        type: 'Task',
+        title: 'Ad-hoc'
+      }, {
+        id: '2',
+        type: 'Other::AuthorsTask',
+        title: 'Author'
+      }, {
+        id: '1',
+        type: 'Tahi::InitialTechCheckTask',
+        title: 'Initial Tech Check'
+      }
+    ]
+  };
+  result = subject.normalizeArrayResponse(store, store.modelFor('task'), jsonHash);
+  assert.equal(result.data.length, 3, 'All three tasks are included in data');
+  assert.notOk(result.included, 0, 'no tasks are put into the included field');
   assert.ok(result.data.findBy('type', 'task'), 'the base task type is included');
   assert.ok(result.data.findBy('type', 'initial-tech-check-task'), 'initial-tech-check-task found');
   return assert.ok(result.data.findBy('type', 'authors-task'), 'author-task found');

@@ -1,0 +1,118 @@
+<div class="figure-thumbnail" data-figure-id={{figure.id}}>
+  <div class="outline {{if showSpinner 'loading'}}">
+    {{#if showSpinner}}
+      {{progress-spinner visible=true size="large"}}
+      <div class="progress-text">
+        <h4>Figure Processing ... but you can continue working!</h4>
+      </div>
+    {{else}}
+      <div class="left-column">
+        <div class="thumbnail-preview">
+          <img src="{{figure.previewSrc}}" alt={{figure.alt}} class="image-thumbnail" />
+        </div>
+      </div>
+
+      <div class="right-column">
+        <div class="{{if editState "edit-"}}info">
+          {{#if editState}}
+            <div class="title">
+              <h2>Fig.
+                {{input type="number"
+                autofocus="autofocus"
+                min=1
+                value=rank}}
+              </h2>
+            </div>
+
+            {{error-message message=rankErrorMessage
+                            displayIcon=true
+                            displayText=true}}
+
+            <div class="field striking">
+              <label>
+                {{check-box checked=figure.strikingImage}}
+                This is the striking image
+              </label>
+            </div>
+          {{else}}
+            <h2 class="title"
+              {{action "toggleEditState" on="doubleClick"}}>
+              {{if figure.title figure.title "Figure title"}}
+            </h2>
+
+            {{error-message message=rankErrorMessage
+                            displayIcon=true
+                            displayText=true}}
+
+            {{#if figure.strikingImage}}
+              <div class="striking">
+                <span class="fa fa-check"></span> This is the striking image
+              </div>
+            {{/if}}
+          {{/if}}
+
+
+          <div class="download-link">
+            <a target="_blank"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="Download original image"
+              href="{{figure.src}}">
+              {{figure.filename}}
+            </a>
+          </div>
+          {{#if isEditable}}
+            <div class="replace-file-button fileinput-button" >
+              <span class="fa fa-refresh"></span>
+              <span>Replace</span>
+              {{file-uploader
+                url=figureUrl
+                accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                railsMethod="PUT"
+                multiple=false
+                filePrefix="paper/figures"
+                start="uploadStarted"
+                progress="uploadProgress"
+                done="uploadFinished"
+                cancel="cancelUploads"}}
+            </div>
+            {{#if figureIsUnlabeled}}
+              {{error-message message=unlabeledFigureMessage
+                              displayIcon=true
+                              displayText=true}}
+            {{/if}}
+          {{/if}}
+
+        </div>
+        {{#if editState}}
+          <div class="actions">
+            <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
+            <a href="#" class="button-primary button--green attachment-save-button" {{action "saveFigure"}}>Save</a>
+          </div>
+        {{/if}}
+      </div>
+
+      {{#if isEditable}}
+        <div class="edit-icons">
+          <span class="fa fa-pencil" {{action "toggleEditState"}}></span>
+          <span class="fa fa-trash" {{action "confirmDestroyFigure"}}></span>
+        </div>
+      {{/if}}
+      {{#if destroyState}}
+        <div class="delete-confirmation">
+          <h4>This will permanently delete this file.</h4>
+          <h4>Are you sure?</h4>
+          <a class="button-link button--white"
+            {{action "cancelDestroyFigure"}}>
+            cancel
+          </a>
+
+          <button class="button-secondary button--green attachment-delete-button"
+            {{action "destroyFigure"}}>
+            Delete Forever
+          </button>
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

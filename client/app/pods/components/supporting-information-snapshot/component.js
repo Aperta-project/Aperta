@@ -10,7 +10,8 @@ const SIFileSnapshot = Ember.Object.extend({
   caption: namedComputedProperty('snapshot', 'caption'),
   strikingImage: namedComputedProperty('snapshot', 'striking_image'),
   publishable: namedComputedProperty('snapshot', 'publishable'),
-  fileHash: namedComputedProperty('snapshot', 'file_hash')
+  fileHash: namedComputedProperty('snapshot', 'file_hash'),
+  url: namedComputedProperty('snapshot', 'url')
 });
 
 export default Ember.Component.extend({

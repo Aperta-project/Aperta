@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import Snapshottable from 'tahi/mixins/snapshottable';
 
-export default DS.Model.extend({
+export default DS.Model.extend(Snapshottable, {
   task: DS.belongsTo('task', { async: false, polymorphic: true, inverse: 'attachments' }),
   caption: DS.attr('string'),
   filename: DS.attr('string'),

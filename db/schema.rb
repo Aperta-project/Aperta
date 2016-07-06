@@ -324,6 +324,16 @@ ActiveRecord::Schema.define(version: 20160720010120) do
     t.string   "staff_email"
   end
 
+  create_table "letter_templates", force: :cascade do |t|
+    t.string   "text"
+    t.string   "template_decision"
+    t.string   "to"
+    t.text     "letter"
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string  "paper_type"
     t.integer "journal_id"

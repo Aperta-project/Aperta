@@ -66,8 +66,8 @@ test('no diff, no added or removed', function(assert){
 testProperty('caption');
 testProperty('category');
 testProperty('label');
-testProperty('publishable');
-testProperty('striking_image', { cssClass: 'striking-image' });
+testProperty('publishable', { diffType: 'boolean' });
+testProperty('striking_image', { cssClass: 'striking-image', diffType: 'boolean' });
 testProperty('title');
 
 
@@ -109,6 +109,21 @@ function testProperty(property, options){
   options = options || {};
 
   let cssClass = options.cssClass || property;
+  let diffType = options.diffType;
+
+  testBlankPropertyIsNotDisplayed(property, { cssClass: cssClass });
+
+  if(diffType === 'boolean'){
+    testBooleanPropertyWithoutDiff(property, { cssClass: cssClass });
+    testBooleanPropertyWithDiff(property);
+  } else {
+    testTextPropertyWithoutDiff(property, { cssClass: cssClass });
+    testTextPropertyWithDiff(property);
+  }
+}
+
+function testBlankPropertyIsNotDisplayed(property, options){
+  let cssClass = options.cssClass || property;
 
   test(`when ${property} is not present, it is not displayed`, function(assert){
     let oldProperties = {}, newProperties = {};
@@ -123,8 +138,65 @@ function testProperty(property, options){
 
     assert.elementNotFound(`.snapshot-attachment-${cssClass}`);
   });
+}
 
-  test(`when ${property} is present and unchanged, it is displayed, not diffed`, function(assert){
+
+function testBooleanPropertyWithDiff(property){
+  test(`when ${property} is different (boolean), it is displayed as a diff`, function(assert){
+    let oldProperties = {}, newProperties = {};
+
+    oldProperties[property] = false;
+    newProperties[property] = true;
+
+    this.set('oldSnapshot', snapshot(oldProperties));
+    this.set('newSnapshot', snapshot(newProperties));
+
+    this.render(template);
+
+    assert.diffPresent('No', 'Yes');
+  });
+}
+
+function testBooleanPropertyWithoutDiff(property, options){
+  let cssClass = options.cssClass || property;
+
+  test(`when ${property} (boolean) is present and unchanged , it is displayed, not diffed`, function(assert){
+    let oldProperties = {}, newProperties = {};
+    let value = 'Yes';
+
+    oldProperties[property] = true;
+    newProperties[property] = true;
+
+    this.set('oldSnapshot', snapshot(oldProperties));
+    this.set('newSnapshot', snapshot(newProperties));
+
+    this.render(template);
+
+    assert.elementFound(`.snapshot-attachment-${cssClass}:contains(${value})`)
+    assert.notDiffed(value, value);
+  });
+};
+
+function testTextPropertyWithDiff(property){
+  test('when ${property} is different (text), it is displayed as a diff', function(assert){
+    let oldProperties = {}, newProperties = {};
+
+    oldProperties[property] = `my old ${property} value`;
+    newProperties[property] = `my new ${property} value`;
+
+    this.set('oldSnapshot', snapshot(oldProperties));
+    this.set('newSnapshot', snapshot(newProperties));
+
+    this.render(template);
+
+    assert.diffPresent(oldProperties[property], newProperties[property]);
+  });
+}
+
+function testTextPropertyWithoutDiff(property, options){
+  let cssClass = options.cssClass || property;
+
+  test(`when ${property} (text) is present and unchanged, it is displayed, not diffed`, function(assert){
     let oldProperties = {}, newProperties = {};
     let value = `a ${property} value`;
 
@@ -138,19 +210,5 @@ function testProperty(property, options){
 
     assert.elementFound(`.snapshot-attachment-${cssClass}:contains(${value})`)
     assert.notDiffed(oldProperties[property], newProperties[property]);
-  });
-
-  test('when caption is different, it is displayed as a diff', function(assert){
-    let oldProperties = {}, newProperties = {};
-
-    oldProperties[property] = `my old ${property} value`;
-    newProperties[property] = `my new ${property} value`;
-
-    this.set('oldSnapshot', snapshot(oldProperties));
-    this.set('newSnapshot', snapshot(newProperties));
-
-    this.render(template);
-
-    assert.diffPresent(oldProperties[property], newProperties[property]);
   });
 };

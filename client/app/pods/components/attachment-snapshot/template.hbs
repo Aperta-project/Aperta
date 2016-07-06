@@ -47,14 +47,14 @@
   {{#if (or attachment1.publishable attachment2.publishable)}}
     <div class="snapshot-attachment-publishable">
       <label class="publishable">Publishable:</label>
-      {{boolean-diff viewingText=attachment1.publishable comparisonText=attachment2.publishable}}
+      {{boolean-diff viewingBool=attachment1.publishable comparisonBool=attachment2.publishable}}
     </div>
   {{/if}}
 
   {{#if (or attachment1.strikingImage attachment2.strikingImage)}}
     <div class="snapshot-attachment-striking-image">
       <label>Striking Image:</label>
-      {{text-diff viewingText=attachment1.strikingImage comparisonText=attachment2.strikingImage}}
+      {{boolean-diff viewingBool=attachment1.strikingImage comparisonBool=attachment2.strikingImage}}
     </div>
   {{/if}}
 

@@ -11,10 +11,8 @@ export default function() {
   }
 
   QUnit.assert.diffPresent = function(oldText, newText) {
-    this.equal(Ember.$('.added').length, 1, 'Has 1 added diff elements');
-    this.equal(Ember.$('.removed').length, 1, 'Has 1 removed diff elements');
-    this.isGreen(newText);
-    this.isRed(oldText);
+    this.elementFound(`.added:contains(${newText})`, 'Has 1 added diff elements');
+    this.elementFound(`.removed:contains(${oldText})`, 'Has 1 removed diff elements');
   }
 
   QUnit.assert.linkDiffPresent = function(options){

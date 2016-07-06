@@ -1,3 +1,11 @@
+# Snapshottable can be included in a model to indicate that it is a
+# a snapshottable resource and may have associated snapshots of itself.
+#
+# A class and all of its instances can be marked as
+# snapshottable by setting <tt>self.snapshottable = true</tt>. The default
+# value if <tt>false</tt>. This value can be overridden at the class
+# or instance level.
+#
 module Snapshottable
   extend ActiveSupport::Concern
 

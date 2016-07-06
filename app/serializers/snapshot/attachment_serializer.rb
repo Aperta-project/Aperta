@@ -1,3 +1,13 @@
+# Snapshot::AttachmentSerializer is responsible for generically
+# snapshotting Attachment models.
+#
+# Since multiple kinds of attachments re-use the Attachment model as a
+# base-class this serializer will snapshot all of the properties, even if they
+# are unused.
+#
+# It is the responsibility of the whomever is consuming these attachment snapshots to use or not use
+# the values captured.
+#
 class Snapshot::AttachmentSerializer < Snapshot::BaseSerializer
   private
 

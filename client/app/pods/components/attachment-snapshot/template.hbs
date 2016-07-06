@@ -1,16 +1,32 @@
-<div class="snapshot-question-attachment">
-  <div>
-    <span class="snapshot-question-label">File: </span>{{file}}
-  </div>
-  {{#if title}}
+<div class="snapshot-attachment">
+  <div><span class="snapshot-attachment-label">File:</span></div>
+
+  {{#if (or attachment1.fileHash attachment2.fileHash)}}
     <div>
-      <span class="snapshot-question-label">Title: </span>{{title}}
+      <span class="snapshot-attachment-label">
+        {{#if fileHashChanged}}
+          {{! If the file contents changed, still show a diff on the file name }}
+          <a class="removed" href="{{attachment2.url}}">{{attachment2.file}}</a><a class="added" href="{{attachment1.url}}">{{attachment1.file}}</a>
+        {{else}}
+          {{text-diff viewingText=attachment1.file comparisonText=attachment2.file}}
+        {{/if}}
+      </span>
     </div>
   {{/if}}
 
-  {{#if caption}}
+  {{#if (or attachment1.title attachment2.title)}}
     <div>
-      <span class="snapshot-question-label">Caption: </span>{{caption}}
+      <span class="snapshot-attachment-label">
+        {{text-diff viewingText=attachment1.title comparisonText=attachment2.title}}
+      </span>
+    </div>
+  {{/if}}
+
+  {{#if (or attachment1.caption attachment2.caption)}}
+    <div>
+      <span class="snapshot-attachment-label">
+        {{text-diff viewingText=attachment1.caption comparisonText=attachment2.caption}}
+      </span>
     </div>
   {{/if}}
 </div>

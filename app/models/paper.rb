@@ -21,7 +21,7 @@ class Paper < ActiveRecord::Base
   has_many :supporting_information_files, dependent: :destroy
   has_many :adhoc_attachments, dependent: :destroy
 
-  # Everyting else
+  # Everything else
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy

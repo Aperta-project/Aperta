@@ -129,9 +129,8 @@ before 'deploy:migrate', :create_backup do
   end
 end
 
-after 'deploy:finished', 'puma:restart'
-
-after 'deploy:finished', 'sidekiq:restart'
-after 'deploy:finished', 'nginx:start'
+after 'deploy:publishing', 'puma:restart'
+after 'deploy:publishing', 'sidekiq:restart'
+after 'deploy:publishing', 'nginx:start'
 
 after 'deploy:finished', 'cleanup:tmp'

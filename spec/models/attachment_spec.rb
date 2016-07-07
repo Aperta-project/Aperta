@@ -56,12 +56,3 @@ describe Attachment do
     end
   end
 end
-__END__
-  def self.authenticated_url_for_key(key)
-    uploader = new.file
-    CarrierWave::Storage::Fog::File.new(
-      uploader,
-      uploader.send(:storage),
-      key
-    ).url
-  end

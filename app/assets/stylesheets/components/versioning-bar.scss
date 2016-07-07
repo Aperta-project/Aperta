@@ -1,10 +1,10 @@
 #versioning-bar {
   @include clearfix;
   @include position(relative, 60px 0 auto 0);
-  padding: 25px 30px;
+  padding: 5px 30px;
   margin-bottom: 10px;
   background-color: #fff;
-  border-bottom: 1px solid #eee;
+  top: 0px;
 
   .bar-item {
     float: left;

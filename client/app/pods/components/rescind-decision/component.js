@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   isEditable: true, // pass in false to disable the rescind button
 
   beforeRescind: null,
-  aferRescind: null,
+  afterRescind: null,
 
   // States:
   confirmingRescind: false,

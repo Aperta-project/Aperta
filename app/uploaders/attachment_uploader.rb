@@ -1,4 +1,5 @@
 class AttachmentUploader < CarrierWave::Uploader::Base
+  require 'mini_magick'
   include CarrierWave::MiniMagick
   include CarrierWave::MimeTypes
 
@@ -12,8 +13,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :detail do
-    process :convert_to_png, if: :needs_transcoding?
-    process resize_to_limit: [984, -1], if: :image?
+    process convert_image: ["984x-1>"], if: :image?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -21,8 +21,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process :convert_to_png, if: :needs_transcoding?
-    process resize_to_limit: [475, 220], if: :image?
+    process convert_image: ["475x220"], if: :image?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -31,12 +30,18 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   private
 
-  def convert_to_png
-    convert(:png) do |image|
-      image.density("300")
-      image.resize("984")
-      image.colorspace("sRGB")
+  def convert_image(size)
+    image = MiniMagick::Image.open(current_path)
+    temp_file = MiniMagick::Utilities.tempfile(".png")
+    MiniMagick::Tool::Convert.new do |convert|
+      convert.merge! image_density(image)
+      convert.merge! image_colorspace(image)
+      convert.merge! ["-resize", size]
+      convert << current_path
+      convert.merge! ["-colorspace", "sRGB"]
+      convert << temp_file.path
     end
+    FileUtils.cp(temp_file.path, current_path)
     file.content_type = "image/png"
   end
 
@@ -46,6 +51,16 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     else
       "#{version_name}_#{orig_file}"
     end
+  end
+
+  def image_density(image)
+    return [] unless image.details['Total ink density']
+    ['-density', image.details['Total ink density']]
+  end
+
+  def image_colorspace(image)
+    return [] unless image.details['Colorspace']
+    ['-colorspace', image.details['Colorspace']]
   end
 
   def needs_transcoding?(file)

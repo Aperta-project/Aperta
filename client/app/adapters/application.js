@@ -30,6 +30,8 @@ export default ActiveModelAdapter.extend({
     return false;
   },
 
+  // defaults to true in ember-data 2.0,
+  // TODO: investigate returning `true` as part of #2466
   shouldBackgroundReloadRecord() {
     return false;
   },
@@ -39,6 +41,8 @@ export default ActiveModelAdapter.extend({
     return true;
   },
 
+  // defaults to true in ember-data 2.0,
+  // TODO: investigate returning `true` as part of #2466
   shouldBackgroundReloadAll() {
     return false;
   }

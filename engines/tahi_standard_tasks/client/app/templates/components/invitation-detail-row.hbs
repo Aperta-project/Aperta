@@ -27,25 +27,3 @@
     <span class='fa fa-trash invite-remove' {{action 'destroyAction'}}></span>
   {{/if}}
 </td>
-
-{{#if invitation.declined}}
-  <tr class='invitation-decline-reason'>
-    <td></td>
-    <td colspan=4>
-      <span>
-        <strong>Reasons: </strong>
-        {{declineReason}}
-      </span>
-    </td>
-  </tr>
-
-  <tr class='invitation-reviewer-suggestions'>
-    <td></td>
-    <td colspan=4>
-      <span>
-        <strong>Reviewer Suggestions: </strong>
-        {{reviewerSuggestions}}
-      </span>
-    </td>
-  </tr>
-{{/if}}

@@ -1,0 +1,27 @@
+{{#each invitations as |invitation|}}
+  {{invitation-detail-row
+      invitation=invitation
+      destroyAction=destroyAction}}
+
+  {{#if invitation.declined}}
+    <tr class='invitation-decline-reason'>
+      <td></td>
+      <td colspan=4>
+        <span>
+          <strong>Reasons: </strong>
+          {{empty-default text=invitation.declineReason default='n/a'}}
+        </span>
+      </td>
+    </tr>
+
+    <tr class='invitation-reviewer-suggestions'>
+      <td></td>
+      <td colspan=4>
+        <span>
+          <strong>Reviewer Suggestions: </strong>
+          {{empty-default text=invitation.reviewerSuggestions default='n/a'}}
+        </span>
+      </td>
+    </tr>
+  {{/if}}
+{{/each}}

@@ -36,14 +36,30 @@ class Attachment < ActiveRecord::Base
   after_destroy :destroy_old_resource_token!
 
   def download!(url)
+    @downloading = true
     file.download! url
     self.file_hash = Digest::SHA256.hexdigest(file.file.read)
     self.s3_dir = file.generate_new_store_dir
-    Attachment.transaction do
-      save!
-      destroy_old_resource_token!
-      create_resource_token!
-    end
+    self.title = title || file.filename
+    self.status = STATUS_DONE
+    # Using save! instead of update_attributes because the above are not the
+    # only attributes that have been updated. We want to persist all changes
+    save!
+    destroy_old_resource_token!
+    create_resource_token!
+    @downloading = false
+    on_download_complete
+  ensure
+    @downloading = false
+  end
+
+  def downloading?
+    @downloading
+  end
+
+  def on_download_complete
+    # no-op. Sweet hook method to add in a subclass to perform actions after an
+    # attachment is downloaded.
   end
 
   def create_resource_token!

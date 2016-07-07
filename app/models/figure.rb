@@ -41,10 +41,14 @@ class Figure < Attachment
     number_match[0].to_i if number_match
   end
 
+  def on_download_complete
+    insert_figures! if all_figures_done?
+  end
+
   private
 
   def should_insert_figures?
-    (title_changed? || file_changed?) && all_figures_done?
+    title_changed? && !downloading? && all_figures_done?
   end
 
   def all_figures_done?

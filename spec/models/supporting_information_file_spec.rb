@@ -18,7 +18,7 @@ describe SupportingInformationFile, redis: true do
   it_behaves_like 'a striking image'
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
-    subject(:si_file) { FactoryGirl.create(:supporting_information_file) }
+    subject(:si_file) { FactoryGirl.create(:supporting_information_file, :with_resource_token) }
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
     include_examples 'attachment#download! stores the file'

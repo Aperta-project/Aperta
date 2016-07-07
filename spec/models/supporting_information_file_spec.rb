@@ -6,6 +6,7 @@ describe SupportingInformationFile, redis: true do
     with_aws_cassette 'supporting_info_files_controller' do
       FactoryGirl.create(
         :supporting_information_file,
+        :with_resource_token,
         file: File.open('spec/fixtures/yeti.tiff'),
         status: described_class::STATUS_DONE
       )
@@ -26,6 +27,7 @@ describe SupportingInformationFile, redis: true do
     include_examples 'attachment#download! sets title to file name'
     include_examples 'attachment#download! sets the status'
     include_examples 'attachment#download! knows when to keep and remove s3 files'
+    include_examples 'attachment#download! manages resource tokens'
   end
 
   describe '#filename' do
@@ -54,16 +56,12 @@ describe SupportingInformationFile, redis: true do
 
   describe '#access_details' do
     it 'returns a hash with attachment src, filename, alt, and S3 URL' do
-      expect(file.access_details).to eq(filename: 'yeti.tiff',
-                                        alt: 'Yeti',
-                                        src: file_src,
-                                        id: file.id)
-    end
-  end
-
-  describe '#token' do
-    it 'is auto generated on create' do
-      expect(file.token).to be_truthy
+      expect(file.access_details).to eq(
+        filename: 'yeti.tiff',
+        alt: 'Yeti',
+        src: file_src,
+        id: file.id
+      )
     end
   end
 end

@@ -15,11 +15,6 @@ class Figure < Attachment
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end
 
-  def download!(url)
-    super(url)
-    update_attributes!(title: build_title)
-  end
-
   def alt
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end
@@ -50,12 +45,18 @@ class Figure < Attachment
     end
   end
 
-  private
+  def on_download_complete
+    insert_figures! if all_figures_done?
+  end
+
+  protected
 
   def build_title
     return title if title.present?
     title_from_filename || 'Unlabeled'
   end
+
+  private
 
   def title_from_filename
     title_rank_regex = /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
@@ -65,7 +66,7 @@ class Figure < Attachment
   end
 
   def should_insert_figures?
-    (title_changed? || file_changed?) && all_figures_done?
+    title_changed? && !downloading? && all_figures_done?
   end
 
   def all_figures_done?

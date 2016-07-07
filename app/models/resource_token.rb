@@ -7,4 +7,13 @@ class ResourceToken < ActiveRecord::Base
   has_secure_token
 
   belongs_to :owner, polymorphic: true
+
+  def url(version = nil)
+    if version
+      chosen_url = version_urls[version.to_s]
+    else
+      chosen_url = default_url
+    end
+    owner_type.constantize.authenticated_url_for_key chosen_url
+  end
 end

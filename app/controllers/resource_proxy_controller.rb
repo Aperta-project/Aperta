@@ -4,16 +4,18 @@ class ResourceProxyController < ApplicationController
   # no auth
 
   def url
-    if params[:version]
-      redirect_to resource.url(params[:version])
-    else
-      redirect_to resource.url
+    deproxied_url = resource.url(params[:version])
+    unless deproxied_url
+      fail(ActiveRecord::RecordNotFound,
+           "Couldn't find url for token #{params[:token]} and version" \
+           "#{params[:version] || 'default'}")
     end
+    redirect_to deproxied_url
   end
 
   private
 
   def resource
-    ResourceToken.find_by!(token: params[:token]).owner
+    ResourceToken.find_by!(token: params[:token])
   end
 end

@@ -5,6 +5,7 @@ describe Snapshot::AttachmentSerializer do
   let!(:attachment) do
     FactoryGirl.create(
       :attachment,
+      :with_resource_token,
       caption: 'attachment 1 caption',
       category: 'CategoryOne',
       file_hash: 'abc123',

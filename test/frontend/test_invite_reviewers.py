@@ -126,6 +126,10 @@ class InviteReviewersCardTest(CommonTest):
       assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
                                                      'value: {1}'.format(test_for_role,
                                                                          reviewer_role_for_env)
+    if invite_response == 'Reject':
+      # search for reply
+      pass
+
     workflow_page.logout()
 
     # log back in as editorial user and validate status display on card

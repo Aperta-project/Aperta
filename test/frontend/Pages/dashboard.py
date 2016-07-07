@@ -107,6 +107,9 @@ class DashboardPage(AuthenticatedPage):
     self._yes_button = (By.TAG_NAME, 'button')
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
+    # Reviewer invitation modal
+    self._reviewer_invitation_modal_title = (By.CSS_SELECTOR, 'h4.feedback-reviewer-invitation')
+
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
     """
@@ -153,6 +156,7 @@ class DashboardPage(AuthenticatedPage):
     """
     choices = ['Accept', 'Reject']
     response = random.choice(choices)
+    response = 'Reject'
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
       try:
@@ -169,7 +173,11 @@ class DashboardPage(AuthenticatedPage):
       else:
         no_btn = listing.find_element(*self._invite_no_btn)
         btn = no_btn
+
       btn.click()
+      time.sleep(1)
+      if response == 'Reject':
+        self.validate_reviewer_invitation_response_styles(title)
     return response
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
@@ -204,6 +212,20 @@ class DashboardPage(AuthenticatedPage):
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
     self.validate_primary_big_green_button_style(cns_btn)
+
+  def validate_reviewer_invitation_response_styles(self, paper_title):
+    """
+
+    """
+    reviewer_invitation_modal_title = self._get(self._reviewer_invitation_modal_title)
+    assert reviewer_invitation_modal_title.text == 'Reviewer Invitation'
+    assert reviewer_invitation_modal_title.value_of_css_property('font-size') == '18px'
+    assert reviewer_invitation_modal_title.value_of_css_property('font-style') == 'normal'
+    assert reviewer_invitation_modal_title.value_of_css_property('line-height') == '19.8px'
+    assert reviewer_invitation_modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    # paper_title
+    return None
+
 
   def validate_invite_dynamic_content(self, username):
     """

@@ -5,6 +5,7 @@ describe AdhocAttachmentSerializer, serializer_test: true do
     FactoryGirl.create(
       :adhoc_attachment,
       :with_task,
+      :with_resource_token,
       status: AdhocAttachment::STATUS_DONE,
     )
   end

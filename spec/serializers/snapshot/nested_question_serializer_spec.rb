@@ -101,6 +101,7 @@ describe Snapshot::NestedQuestionSerializer do
       let(:attachment_1) do
         FactoryGirl.create(
           :question_attachment,
+          :with_resource_token,
           status: QuestionAttachment::STATUS_DONE
         )
       end
@@ -108,6 +109,7 @@ describe Snapshot::NestedQuestionSerializer do
       let(:attachment_2) do
         FactoryGirl.create(
           :question_attachment,
+          :with_resource_token,
           status: QuestionAttachment::STATUS_DONE
         )
       end

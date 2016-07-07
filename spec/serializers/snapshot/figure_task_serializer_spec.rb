@@ -6,6 +6,7 @@ describe Snapshot::FigureTaskSerializer do
   let(:figure_1) do
     FactoryGirl.create(
       :figure,
+      :with_resource_token,
       title: 'figure 1 title',
       caption: 'figure 1 caption',
     )
@@ -13,6 +14,7 @@ describe Snapshot::FigureTaskSerializer do
   let(:figure_2) do
     FactoryGirl.create(
       :figure,
+      :with_resource_token,
       title: 'figure 2 title',
       caption: 'figure 2 caption'
     )

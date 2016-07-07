@@ -2735,7 +2735,6 @@ attachments:
   - caption
   - status
   - kind
-  - token
   - s3_dir
   - type
   - old_id
@@ -2744,6 +2743,8 @@ attachments:
   - category
   - label
   - publishable
+  - file_hash
+  - previous_file_hash
   records: 
   - - '1'
     - cover_image.jpg
@@ -2754,7 +2755,6 @@ attachments:
     - 
     - done
     - 
-    - 4JRhTr616NQ4JW3AnmutrWPX
     - uploads/paper/1/figure/attachment/1
     - Figure
     - '1'
@@ -2763,6 +2763,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '2'
     - cover_image.jpg
     - '2'
@@ -2772,7 +2774,6 @@ attachments:
     - He likes his coding
     - done
     - 
-    - 7MzbAxAuoAK8h91VEBkrGaHd
     - uploads/paper/2/figure/attachment/2
     - Figure
     - '2'
@@ -2781,6 +2782,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '3'
     - cat2.jpg
     - '2'
@@ -2790,7 +2793,6 @@ attachments:
     - The only part of the experiment he was used in was making people say, "Awwwwwwww."
     - done
     - 
-    - 7n1aAGioTqC1ApA8Ld2eYkbu
     - uploads/paper/2/figure/attachment/3
     - Figure
     - '3'
@@ -2799,6 +2801,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '4'
     - cover_image.jpg
     - '3'
@@ -2808,7 +2812,6 @@ attachments:
     - 
     - done
     - 
-    - w3qHf38vMDCqKFXfcrCZE2LK
     - uploads/paper/3/figure/attachment/4
     - Figure
     - '4'
@@ -2817,6 +2820,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '5'
     - quad-cat.jpg
     - '3'
@@ -2826,7 +2831,6 @@ attachments:
     - There are four of them
     - done
     - 
-    - ajxQpM7BWyqje3rdUEjtpMTb
     - uploads/paper/3/figure/attachment/5
     - Figure
     - '5'
@@ -2835,6 +2839,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '6'
     - cover_image.jpg
     - '4'
@@ -2844,7 +2850,6 @@ attachments:
     - 
     - done
     - 
-    - qt3FhbrR5Q4KNM1F35DXTHNx
     - uploads/paper/4/figure/attachment/6
     - Figure
     - '6'
@@ -2853,6 +2858,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '7'
     - cat2.jpg
     - '4'
@@ -2862,7 +2869,6 @@ attachments:
     - This cat is waiting
     - done
     - 
-    - 2vM873Fqxyfm22GtB5VDqEND
     - uploads/paper/4/figure/attachment/7
     - Figure
     - '7'
@@ -2871,6 +2877,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '8'
     - 139.jpg
     - '12'
@@ -2880,7 +2888,6 @@ attachments:
     - 
     - done
     - 
-    - UF91o1Sp2kVzQ2fMRYGUVLkU
     - uploads/paper/12/figure/attachment/12
     - Figure
     - '12'
@@ -2889,6 +2896,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '9'
     - 140.jpg
     - '12'
@@ -2898,7 +2907,6 @@ attachments:
     - 
     - done
     - 
-    - yEUYk9R5AnnMdHu37FBfC5fw
     - uploads/paper/12/figure/attachment/13
     - Figure
     - '13'
@@ -2907,6 +2915,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '10'
     - sample.doc
     - '22'
@@ -2916,7 +2926,6 @@ attachments:
     - 
     - done
     - 
-    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
     - uploads/attachments/1/supporting_information_file/attachment/1
     - SupportingInformationFile
     - '1'
@@ -2925,6 +2934,8 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
   - - '11'
     - turtles-are-amazing.docx
     - '43'
@@ -2934,7 +2945,6 @@ attachments:
     - 
     - done
     - 
-    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
     - uploads/attachments/2/supporting_information_file/attachment/2
     - SupportingInformationFile
     - '2'
@@ -2943,6 +2953,8 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
   - - '12'
     - turtles-are-amazing.docx
     - '64'
@@ -2952,7 +2964,6 @@ attachments:
     - 
     - done
     - 
-    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
     - uploads/attachments/3/supporting_information_file/attachment/3
     - SupportingInformationFile
     - '3'
@@ -2961,6 +2972,8 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
   - - '13'
     - 140.jpg
     - '170'
@@ -2970,7 +2983,6 @@ attachments:
     - Another cat
     - done
     - 
-    - EXxRBJ9WzLn3KTQLjm5Nc6dC
     - uploads/attachments/5/supporting_information_file/attachment/5
     - SupportingInformationFile
     - '5'
@@ -2979,6 +2991,8 @@ attachments:
     - Figure
     - 
     - true
+    - 
+    - 
   - - '14'
     - turtles-are-amazing.docx
     - '78'
@@ -2988,7 +3002,6 @@ attachments:
     - 
     - done
     - 
-    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
     - uploads/question/78/question_attachment/1
     - QuestionAttachment
     - '1'
@@ -2997,6 +3010,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '15'
     - turtles-are-amazing.docx
     - '88'
@@ -3006,7 +3021,6 @@ attachments:
     - 
     - done
     - 
-    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
     - uploads/question/88/question_attachment/2
     - QuestionAttachment
     - '2'
@@ -3015,6 +3029,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '16'
     - manuscript+_281_29.docx
     - '126'
@@ -3024,7 +3040,6 @@ attachments:
     - 
     - done
     - 
-    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
     - uploads/question/126/question_attachment/3
     - QuestionAttachment
     - '3'
@@ -3033,6 +3048,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
 
 ---
 author_list_items:
@@ -3937,6 +3954,18 @@ journal_task_types:
     - Related Articles
     - editor
     - TahiStandardTasks::RelatedArticlesTask
+    - "{}"
+  - - '33'
+    - '1'
+    - Title And Abstract
+    - editor
+    - TahiStandardTasks::TitleAndAbstractTask
+    - "{}"
+  - - '34'
+    - '1'
+    - Front Matter Reviewer Report
+    - reviewer
+    - TahiStandardTasks::FrontMatterReviewerReportTask
     - "{}"
 
 ---
@@ -6581,7 +6610,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-06-07 01:39:19.358017'
+    - '2016-06-23 16:58:00.932583'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -6774,74 +6803,27 @@ nested_questions:
   - - '124'
     - Do you have any potential or perceived competing interests that may influence
       your review?
-    - text
+    - boolean
     - reviewer_report--competing_interests
     - 
     - '201'
-    - '202'
+    - '204'
     - '2'
     - '2015-10-30 19:51:03.496382'
-    - '2016-03-10 19:55:38.108421'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
-  - - '127'
-    - Has the statistical analysis been performed appropriately and rigorously?
-    - boolean
-    - reviewer_report--statistical_analysis
-    - 
-    - '203'
-    - '206'
-    - '4'
-    - '2015-10-30 19:51:03.511001'
-    - '2016-03-10 19:55:38.108421'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
-  - - '128'
-    - Statistical Analysis Explanation
-    - text
-    - reviewer_report--statistical_analysis--explanation
-    - '127'
-    - '204'
-    - '205'
-    - '1'
-    - '2015-10-30 19:51:03.513191'
-    - '2016-03-10 19:55:38.108421'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
-  - - '129'
-    - Does the manuscript adhere to standards in this field for data availability?
-    - boolean
-    - reviewer_report--standards
-    - 
-    - '207'
-    - '210'
-    - '5'
-    - '2015-10-30 19:51:03.521073'
-    - '2016-03-10 19:55:38.108421'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
-  - - '130'
-    - Standards Explanation
-    - text
-    - reviewer_report--standards--explanation
-    - '129'
-    - '208'
-    - '209'
-    - '1'
-    - '2015-10-30 19:51:03.523338'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.130209'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '131'
-    - "(Optional) Please offer any additional confidential comments to the editor"
+    - "(Optional) If you have any additional confidential comments to the editor,
+      please add them below."
     - text
     - reviewer_report--additional_comments
     - 
-    - '211'
-    - '212'
-    - '6'
+    - '205'
+    - '206'
+    - '5'
     - '2015-10-30 19:51:03.531234'
-    - '2016-03-22 14:32:49.277819'
+    - '2016-06-23 16:58:01.146664'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '132'
@@ -6850,11 +6832,11 @@ nested_questions:
     - text
     - reviewer_report--identity
     - 
-    - '213'
-    - '214'
-    - '7'
+    - '207'
+    - '208'
+    - '3'
     - '2015-10-30 19:51:03.534949'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.136552'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '133'
@@ -6862,11 +6844,11 @@ nested_questions:
     - boolean
     - taxon--zoological
     - 
-    - '215'
-    - '218'
+    - '209'
+    - '212'
     - '1'
     - '2015-10-30 19:51:03.541213'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
     - 
   - - '134'
@@ -6874,11 +6856,11 @@ nested_questions:
     - boolean
     - taxon--zoological--complies
     - '133'
-    - '216'
-    - '217'
+    - '210'
+    - '211'
     - '1'
     - '2015-10-30 19:51:03.543667'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
     - 
   - - '135'
@@ -6886,11 +6868,11 @@ nested_questions:
     - boolean
     - taxon--botanical
     - 
-    - '219'
-    - '222'
+    - '213'
+    - '216'
     - '2'
     - '2015-10-30 19:51:03.55182'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
     - 
   - - '136'
@@ -6898,11 +6880,11 @@ nested_questions:
     - boolean
     - taxon--botanical--complies
     - '135'
-    - '220'
-    - '221'
+    - '214'
+    - '215'
     - '1'
     - '2015-10-30 19:51:03.554061'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
     - 
   - - '137'
@@ -6910,11 +6892,11 @@ nested_questions:
     - boolean
     - reviewer_recommendations--recommend_or_oppose
     - 
-    - '223'
-    - '224'
+    - '217'
+    - '218'
     - '1'
     - '2015-11-02 13:38:26.272946'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '138'
@@ -6922,11 +6904,11 @@ nested_questions:
     - text
     - reviewer_recommendations--reason
     - 
-    - '225'
-    - '226'
+    - '219'
+    - '220'
     - '2'
     - '2015-11-02 13:38:26.280143'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '145'
@@ -6936,11 +6918,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--financial_disclosure
     - 
-    - '227'
-    - '228'
+    - '221'
+    - '222'
     - '9'
     - '2015-11-02 13:38:26.319212'
-    - '2016-03-22 15:09:05.735978'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
@@ -6951,11 +6933,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--tobacco
     - 
-    - '229'
-    - '230'
+    - '223'
+    - '224'
     - '10'
     - '2015-11-02 13:38:26.322791'
-    - '2016-03-22 15:09:05.74447'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
@@ -6965,11 +6947,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--ethics_statement
     - 
-    - '231'
-    - '232'
+    - '225'
+    - '226'
     - '1'
     - '2015-11-02 13:38:26.340953'
-    - '2016-03-22 15:09:05.657008'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
@@ -6980,11 +6962,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--open_rejects
     - 
-    - '233'
-    - '234'
+    - '227'
+    - '228'
     - '1'
     - '2015-11-02 13:38:26.346485'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '153'
@@ -6993,11 +6975,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--human_subjects
     - 
-    - '235'
-    - '236'
+    - '229'
+    - '230'
     - '2'
     - '2015-11-02 13:38:26.350087'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '154'
@@ -7007,11 +6989,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_needed
     - 
-    - '237'
-    - '238'
+    - '231'
+    - '232'
     - '3'
     - '2015-11-02 13:38:26.355497'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '155'
@@ -7020,11 +7002,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_available
     - 
-    - '239'
-    - '240'
+    - '233'
+    - '234'
     - '4'
     - '2015-11-02 13:38:26.359242'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '156'
@@ -7034,11 +7016,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--supporting_information
     - 
-    - '241'
-    - '242'
+    - '235'
+    - '236'
     - '5'
     - '2015-11-02 13:38:26.3628'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '157'
@@ -7047,11 +7029,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--dryad_url
     - 
-    - '243'
-    - '244'
+    - '237'
+    - '238'
     - '6'
     - '2015-11-02 13:38:26.366706'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
@@ -7061,11 +7043,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
-    - '245'
-    - '246'
+    - '239'
+    - '240'
     - '7'
     - '2015-11-02 13:38:26.370339'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '159'
@@ -7076,11 +7058,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
-    - '247'
-    - '248'
+    - '241'
+    - '242'
     - '8'
     - '2015-11-02 13:38:26.373836'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '160'
@@ -7088,11 +7070,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_legible
     - 
-    - '249'
-    - '250'
+    - '243'
+    - '244'
     - '9'
     - '2015-11-02 13:38:26.37734'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '161'
@@ -7101,11 +7083,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cited
     - 
-    - '251'
-    - '252'
+    - '245'
+    - '246'
     - '10'
     - '2015-11-02 13:38:26.380912'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '162'
@@ -7114,11 +7096,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cover_letter
     - 
-    - '253'
-    - '254'
+    - '247'
+    - '248'
     - '11'
     - '2015-11-02 13:38:26.384466'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '163'
@@ -7127,11 +7109,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--billing_inquiries
     - 
-    - '255'
-    - '256'
+    - '249'
+    - '250'
     - '12'
     - '2015-11-02 13:38:26.387949'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
@@ -7141,11 +7123,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
-    - '257'
-    - '258'
+    - '251'
+    - '252'
     - '13'
     - '2015-11-02 13:38:26.39145'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '165'
@@ -7156,11 +7138,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--open_rejects
     - 
-    - '259'
-    - '260'
+    - '253'
+    - '254'
     - '1'
     - '2015-11-02 13:38:26.396833'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '166'
@@ -7169,11 +7151,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--human_subjects
     - 
-    - '261'
-    - '262'
+    - '255'
+    - '256'
     - '2'
     - '2015-11-02 13:38:26.400512'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '167'
@@ -7183,11 +7165,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_needed
     - 
-    - '263'
-    - '264'
+    - '257'
+    - '258'
     - '3'
     - '2015-11-02 13:38:26.403989'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '168'
@@ -7196,11 +7178,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--data_available
     - 
-    - '265'
-    - '266'
+    - '259'
+    - '260'
     - '4'
     - '2015-11-02 13:38:26.407564'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '169'
@@ -7210,11 +7192,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--supporting_information
     - 
-    - '267'
-    - '268'
+    - '261'
+    - '262'
     - '5'
     - '2015-11-02 13:38:26.411338'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '170'
@@ -7223,11 +7205,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--dryad_url
     - 
-    - '269'
-    - '270'
+    - '263'
+    - '264'
     - '6'
     - '2015-11-02 13:38:26.415031'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '171'
@@ -7236,11 +7218,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--financial_disclosure
     - 
-    - '271'
-    - '272'
+    - '265'
+    - '266'
     - '7'
     - '2015-11-02 13:38:26.418577'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '172'
@@ -7249,11 +7231,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--tobacco
     - 
-    - '273'
-    - '274'
+    - '267'
+    - '268'
     - '8'
     - '2015-11-02 13:38:26.422021'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '173'
@@ -7261,11 +7243,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--figures_legible
     - 
-    - '275'
-    - '276'
+    - '269'
+    - '270'
     - '9'
     - '2015-11-02 13:38:26.425661'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '174'
@@ -7274,11 +7256,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cited
     - 
-    - '277'
-    - '278'
+    - '271'
+    - '272'
     - '10'
     - '2015-11-02 13:38:26.429237'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '175'
@@ -7287,11 +7269,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cover_letter
     - 
-    - '279'
-    - '280'
+    - '273'
+    - '274'
     - '11'
     - '2015-11-02 13:38:26.433036'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '176'
@@ -7300,11 +7282,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--billing_inquiries
     - 
-    - '281'
-    - '282'
+    - '275'
+    - '276'
     - '12'
     - '2015-11-02 13:38:26.436669'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '177'
@@ -7312,11 +7294,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_statement
     - 
-    - '283'
-    - '284'
+    - '277'
+    - '278'
     - '13'
     - '2015-11-02 13:38:26.440221'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '178'
@@ -7325,11 +7307,11 @@ nested_questions:
     - text
     - ethics--field_study--field_permit_number
     - '179'
-    - '284'
-    - '285'
+    - '278'
+    - '279'
     - '1'
     - '2015-12-21 16:53:24.223742'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::EthicsTask
     - 
   - - '179'
@@ -7338,11 +7320,11 @@ nested_questions:
     - boolean
     - ethics--field_study
     - 
-    - '283'
-    - '286'
+    - '277'
+    - '280'
     - '3'
     - '2015-12-21 16:53:24.230439'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::EthicsTask
     - 
   - - '180'
@@ -7374,11 +7356,11 @@ nested_questions:
     - text
     - reviewer_report--decision_term
     - 
-    - '283'
-    - '284'
+    - '277'
+    - '278'
     - '1'
     - '2015-12-23 17:34:57.06078'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '183'
@@ -7399,11 +7381,11 @@ nested_questions:
     - text
     - publishing_related_questions--short_title
     - 
-    - '287'
-    - '288'
+    - '281'
+    - '282'
     - '8'
     - '2016-01-26 17:37:47.789077'
-    - '2016-03-10 19:55:38.108421'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '185'
@@ -7579,11 +7561,11 @@ nested_questions:
     - boolean
     - author--government-employee
     - 
-    - '289'
-    - '290'
+    - '283'
+    - '284'
     - '4'
     - '2016-03-10 19:55:38.12136'
-    - '2016-03-10 19:55:38.12136'
+    - '2016-06-23 16:58:01.120896'
     - Author
     - 
   - - '200'
@@ -7592,11 +7574,11 @@ nested_questions:
     - boolean
     - authors--persons_agreed_to_be_named
     - 
-    - '291'
-    - '292'
+    - '285'
+    - '286'
     - '1'
     - '2016-03-10 19:55:38.241783'
-    - '2016-03-10 19:55:38.241783'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::AuthorsTask
     - 
   - - '201'
@@ -7605,11 +7587,11 @@ nested_questions:
     - boolean
     - authors--authors_confirm_icmje_criteria
     - 
-    - '293'
-    - '294'
+    - '287'
+    - '288'
     - '2'
     - '2016-03-10 19:55:38.247863'
-    - '2016-03-10 19:55:38.247863'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::AuthorsTask
     - 
   - - '202'
@@ -7617,11 +7599,11 @@ nested_questions:
     - boolean
     - authors--authors_agree_to_submission
     - 
-    - '295'
-    - '296'
+    - '289'
+    - '290'
     - '3'
     - '2016-03-10 19:55:38.253569'
-    - '2016-03-10 19:55:38.253569'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::AuthorsTask
     - 
   - - '203'
@@ -7629,11 +7611,11 @@ nested_questions:
     - boolean
     - group-author--contributions--conceptualization
     - '217'
-    - '298'
-    - '299'
+    - '292'
+    - '293'
     - '1'
     - '2016-03-22 14:32:48.202013'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '204'
@@ -7641,11 +7623,11 @@ nested_questions:
     - boolean
     - group-author--contributions--investigation
     - '217'
-    - '300'
-    - '301'
+    - '294'
+    - '295'
     - '2'
     - '2016-03-22 14:32:48.217167'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '205'
@@ -7653,11 +7635,11 @@ nested_questions:
     - boolean
     - group-author--contributions--visualization
     - '217'
-    - '302'
-    - '303'
+    - '296'
+    - '297'
     - '3'
     - '2016-03-22 14:32:48.228819'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '206'
@@ -7665,11 +7647,11 @@ nested_questions:
     - boolean
     - group-author--contributions--methodology
     - '217'
-    - '304'
-    - '305'
+    - '298'
+    - '299'
     - '4'
     - '2016-03-22 14:32:48.241637'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '207'
@@ -7677,11 +7659,11 @@ nested_questions:
     - boolean
     - group-author--contributions--resources
     - '217'
-    - '306'
-    - '307'
+    - '300'
+    - '301'
     - '5'
     - '2016-03-22 14:32:48.254186'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '208'
@@ -7689,11 +7671,11 @@ nested_questions:
     - boolean
     - group-author--contributions--supervision
     - '217'
-    - '308'
-    - '309'
+    - '302'
+    - '303'
     - '6'
     - '2016-03-22 14:32:48.266474'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '209'
@@ -7701,11 +7683,11 @@ nested_questions:
     - boolean
     - group-author--contributions--software
     - '217'
-    - '310'
-    - '311'
+    - '304'
+    - '305'
     - '7'
     - '2016-03-22 14:32:48.277041'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '210'
@@ -7713,11 +7695,11 @@ nested_questions:
     - boolean
     - group-author--contributions--data-curation
     - '217'
-    - '312'
-    - '313'
+    - '306'
+    - '307'
     - '8'
     - '2016-03-22 14:32:48.290615'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '211'
@@ -7725,11 +7707,11 @@ nested_questions:
     - boolean
     - group-author--contributions--project-administration
     - '217'
-    - '314'
-    - '315'
+    - '308'
+    - '309'
     - '9'
     - '2016-03-22 14:32:48.301073'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '212'
@@ -7737,11 +7719,11 @@ nested_questions:
     - boolean
     - group-author--contributions--validation
     - '217'
-    - '316'
-    - '317'
+    - '310'
+    - '311'
     - '10'
     - '2016-03-22 14:32:48.31193'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '213'
@@ -7749,11 +7731,11 @@ nested_questions:
     - boolean
     - group-author--contributions--writing-original-draft
     - '217'
-    - '318'
-    - '319'
+    - '312'
+    - '313'
     - '11'
     - '2016-03-22 14:32:48.326853'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '214'
@@ -7761,11 +7743,11 @@ nested_questions:
     - boolean
     - group-author--contributions--writing-review-and-editing
     - '217'
-    - '320'
-    - '321'
+    - '314'
+    - '315'
     - '12'
     - '2016-03-22 14:32:48.337572'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '215'
@@ -7773,11 +7755,11 @@ nested_questions:
     - boolean
     - group-author--contributions--funding-acquisition
     - '217'
-    - '322'
-    - '323'
+    - '316'
+    - '317'
     - '13'
     - '2016-03-22 14:32:48.347748'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '216'
@@ -7785,11 +7767,11 @@ nested_questions:
     - boolean
     - group-author--contributions--formal-analysis
     - '217'
-    - '324'
-    - '325'
+    - '318'
+    - '319'
     - '14'
     - '2016-03-22 14:32:48.360903'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '217'
@@ -7797,11 +7779,11 @@ nested_questions:
     - question-set
     - group-author--contributions
     - 
-    - '297'
-    - '326'
+    - '291'
+    - '320'
     - '1'
     - '2016-03-22 14:32:48.399978'
-    - '2016-03-22 14:32:48.653571'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '218'
@@ -7809,11 +7791,11 @@ nested_questions:
     - boolean
     - group-author--government-employee
     - 
-    - '327'
-    - '328'
+    - '321'
+    - '322'
     - '2'
     - '2016-03-22 14:32:48.669691'
-    - '2016-03-22 14:32:48.669691'
+    - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
   - - '219'
@@ -7825,11 +7807,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_confidential
     - 
-    - '329'
-    - '330'
+    - '323'
+    - '324'
     - '2'
     - '2016-03-22 15:09:05.665082'
-    - '2016-03-22 15:09:05.665082'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '220'
@@ -7839,11 +7821,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_blank
     - 
-    - '331'
-    - '332'
+    - '325'
+    - '326'
     - '3'
     - '2016-03-22 15:09:05.675633'
-    - '2016-03-22 15:09:05.675633'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '221'
@@ -7853,11 +7835,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_availability_dryad
     - 
-    - '333'
-    - '334'
+    - '327'
+    - '328'
     - '4'
     - '2016-03-22 15:09:05.684371'
-    - '2016-03-22 15:09:05.684371'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '222'
@@ -7867,11 +7849,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--authors_match
     - 
-    - '335'
-    - '336'
+    - '329'
+    - '330'
     - '5'
     - '2016-03-22 15:09:05.693357'
-    - '2016-03-22 15:09:05.693357'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '223'
@@ -7879,11 +7861,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--author_emails
     - 
-    - '337'
-    - '338'
+    - '331'
+    - '332'
     - '6'
     - '2016-03-22 15:09:05.70232'
-    - '2016-03-22 15:09:05.70232'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '224'
@@ -7893,11 +7875,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--author_removed
     - 
-    - '339'
-    - '340'
+    - '333'
+    - '334'
     - '7'
     - '2016-03-22 15:09:05.712588'
-    - '2016-03-22 15:09:05.712588'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '225'
@@ -7906,11 +7888,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--competing_interests
     - 
-    - '341'
-    - '342'
+    - '335'
+    - '336'
     - '8'
     - '2016-03-22 15:09:05.726444'
-    - '2016-03-22 15:09:05.726444'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '226'
@@ -7920,11 +7902,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--collection
     - 
-    - '343'
-    - '344'
+    - '337'
+    - '338'
     - '11'
     - '2016-03-22 15:09:05.752494'
-    - '2016-03-22 15:09:05.752494'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '227'
@@ -7934,11 +7916,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_viewable
     - 
-    - '345'
-    - '346'
+    - '339'
+    - '340'
     - '12'
     - '2016-03-22 15:09:05.765773'
-    - '2016-03-22 15:09:05.765773'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '228'
@@ -7948,11 +7930,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--embedded_captions
     - 
-    - '347'
-    - '348'
+    - '341'
+    - '342'
     - '13'
     - '2016-03-22 15:09:05.77707'
-    - '2016-03-22 15:09:05.77707'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '229'
@@ -7961,11 +7943,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--captions_missing
     - 
-    - '349'
-    - '350'
+    - '343'
+    - '344'
     - '14'
     - '2016-03-22 15:09:05.788747'
-    - '2016-03-22 15:09:05.788747'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '230'
@@ -7976,11 +7958,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_missing
     - 
-    - '351'
-    - '352'
+    - '345'
+    - '346'
     - '15'
     - '2016-03-22 15:09:05.801946'
-    - '2016-03-22 15:09:05.801946'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '231'
@@ -7992,11 +7974,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--open_reject
     - 
-    - '353'
-    - '354'
+    - '347'
+    - '348'
     - '16'
     - '2016-03-22 15:09:05.811934'
-    - '2016-03-22 15:09:05.811934'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '232'
@@ -8004,11 +7986,11 @@ nested_questions:
     - text
     - cover_letter--text
     - 
-    - '355'
-    - '356'
+    - '349'
+    - '350'
     - '1'
     - '2016-03-29 20:28:06.743537'
-    - '2016-03-29 20:28:06.743537'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::CoverLetterTask
     - 
   - - '233'
@@ -8016,11 +7998,11 @@ nested_questions:
     - attachment
     - cover_letter--attachment
     - 
-    - '357'
-    - '358'
+    - '351'
+    - '352'
     - '2'
     - '2016-03-29 20:28:06.750541'
-    - '2016-03-29 20:28:06.750541'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::CoverLetterTask
     - 
   - - '234'
@@ -8054,11 +8036,11 @@ nested_questions:
     - boolean
     - data_availability--additional_information_doi
     - 
-    - '359'
-    - '360'
+    - '353'
+    - '354'
     - '3'
     - '2016-04-18 23:09:30.193042'
-    - '2016-04-18 23:09:30.193042'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::DataAvailabilityTask
     - 
   - - '237'
@@ -8067,37 +8049,12 @@ nested_questions:
     - boolean
     - data_availability--additional_information_other
     - 
-    - '361'
-    - '362'
+    - '355'
+    - '356'
     - '4'
     - '2016-04-18 23:09:30.20367'
-    - '2016-04-18 23:09:30.20367'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::DataAvailabilityTask
-    - 
-  - - '238'
-    - Comment
-    - text
-    - reviewer_report--plos_biology_suitable--comment
-    - '239'
-    - '364'
-    - '365'
-    - '1'
-    - '2016-04-20 14:32:03.179991'
-    - '2016-04-20 14:32:03.194211'
-    - TahiStandardTasks::ReviewerReportTask
-    - 
-  - - '239'
-    - Is this manuscript suitable in principle for <em>PLOS Biology</em>? Comments
-      for authors.
-    - boolean
-    - reviewer_report--plos_biology_suitable
-    - 
-    - '363'
-    - '366'
-    - '3'
-    - '2016-04-20 14:32:03.188263'
-    - '2016-05-06 15:33:33.81934'
-    - TahiStandardTasks::ReviewerReportTask
     - 
   - - '240'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
@@ -8108,11 +8065,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_availability_confidential
     - 
-    - '329'
-    - '330'
+    - '323'
+    - '324'
     - '2'
     - '2016-03-22 15:09:05.665082'
-    - '2016-03-22 15:09:05.665082'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '241'
@@ -8122,11 +8079,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_availability_blank
     - 
-    - '331'
-    - '332'
+    - '325'
+    - '326'
     - '3'
     - '2016-03-22 15:09:05.675633'
-    - '2016-03-22 15:09:05.675633'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '242'
@@ -8136,11 +8093,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_availability_dryad
     - 
-    - '333'
-    - '334'
+    - '327'
+    - '328'
     - '4'
     - '2016-03-22 15:09:05.684371'
-    - '2016-03-22 15:09:05.684371'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '243'
@@ -8150,11 +8107,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--authors_match
     - 
-    - '335'
-    - '336'
+    - '329'
+    - '330'
     - '5'
     - '2016-03-22 15:09:05.693357'
-    - '2016-03-22 15:09:05.693357'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '244'
@@ -8163,11 +8120,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--author_removed
     - 
-    - '339'
-    - '340'
+    - '333'
+    - '334'
     - '7'
     - '2016-03-22 15:09:05.712588'
-    - '2016-05-06 15:33:33.935546'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '245'
@@ -8176,11 +8133,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--competing_interests
     - 
-    - '341'
-    - '342'
+    - '335'
+    - '336'
     - '8'
     - '2016-03-22 15:09:05.726444'
-    - '2016-05-06 15:33:33.94426'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '246'
@@ -8190,11 +8147,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--collection
     - 
-    - '343'
-    - '344'
+    - '337'
+    - '338'
     - '11'
     - '2016-03-22 15:09:05.752494'
-    - '2016-05-06 15:33:33.951722'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '247'
@@ -8204,11 +8161,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_viewable
     - 
-    - '345'
-    - '346'
+    - '339'
+    - '340'
     - '12'
     - '2016-03-22 15:09:05.765773'
-    - '2016-03-22 15:09:05.765773'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '248'
@@ -8218,11 +8175,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--embedded_captions
     - 
-    - '347'
-    - '348'
+    - '341'
+    - '342'
     - '13'
     - '2016-03-22 15:09:05.77707'
-    - '2016-03-22 15:09:05.77707'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '249'
@@ -8231,11 +8188,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--captions_missing
     - 
-    - '349'
-    - '350'
+    - '343'
+    - '344'
     - '14'
     - '2016-03-22 15:09:05.788747'
-    - '2016-03-22 15:09:05.788747'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '250'
@@ -8246,11 +8203,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_missing
     - 
-    - '351'
-    - '352'
+    - '345'
+    - '346'
     - '15'
     - '2016-03-22 15:09:05.801946'
-    - '2016-03-22 15:09:05.801946'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '251'
@@ -8260,11 +8217,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--response_to_reviewers
     - 
-    - '351'
-    - '352'
+    - '345'
+    - '346'
     - '15'
     - '2016-03-22 15:09:05.801946'
-    - '2016-03-22 15:09:05.801946'
+    - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '252'
@@ -8272,11 +8229,11 @@ nested_questions:
     - text
     - front_matter_reviewer_report--decision_term
     - 
-    - '367'
-    - '368'
+    - '357'
+    - '358'
     - '1'
     - '2016-06-06 20:37:56.611509'
-    - '2016-06-06 20:37:56.611509'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '253'
@@ -8285,11 +8242,11 @@ nested_questions:
     - text
     - front_matter_reviewer_report--competing_interests
     - 
-    - '369'
-    - '370'
+    - '359'
+    - '360'
     - '2'
     - '2016-06-06 20:37:56.61952'
-    - '2016-06-06 20:37:56.61952'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '254'
@@ -8297,11 +8254,11 @@ nested_questions:
     - text
     - front_matter_reviewer_report--suitable--comment
     - '255'
-    - '372'
-    - '373'
+    - '362'
+    - '363'
     - '1'
     - '2016-06-06 20:37:56.625332'
-    - '2016-06-06 20:37:56.644529'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '255'
@@ -8310,11 +8267,11 @@ nested_questions:
     - boolean
     - front_matter_reviewer_report--suitable
     - 
-    - '371'
-    - '374'
+    - '361'
+    - '364'
     - '3'
     - '2016-06-06 20:37:56.634598'
-    - '2016-06-07 01:39:19.588748'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '256'
@@ -8322,11 +8279,11 @@ nested_questions:
     - text
     - front_matter_reviewer_report--includes_unpublished_data--explanation
     - '257'
-    - '376'
-    - '377'
+    - '366'
+    - '367'
     - '1'
     - '2016-06-06 20:37:56.652954'
-    - '2016-06-06 20:37:56.669762'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '257'
@@ -8335,11 +8292,11 @@ nested_questions:
     - boolean
     - front_matter_reviewer_report--includes_unpublished_data
     - 
-    - '375'
-    - '378'
+    - '365'
+    - '368'
     - '4'
     - '2016-06-06 20:37:56.66097'
-    - '2016-06-06 20:37:56.669762'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '258'
@@ -8347,11 +8304,11 @@ nested_questions:
     - text
     - front_matter_reviewer_report--additional_comments
     - 
-    - '379'
-    - '380'
+    - '369'
+    - '370'
     - '5'
     - '2016-06-06 20:37:56.67712'
-    - '2016-06-06 20:37:56.67712'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
   - - '259'
@@ -8360,12 +8317,62 @@ nested_questions:
     - text
     - front_matter_reviewer_report--identity
     - 
-    - '381'
-    - '382'
+    - '371'
+    - '372'
     - '6'
     - '2016-06-06 20:37:56.682991'
-    - '2016-06-06 20:37:56.682991'
+    - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
+  - - '260'
+    - Comment
+    - text
+    - reviewer_report--competing_interests--detail
+    - '124'
+    - '202'
+    - '203'
+    - '1'
+    - '2016-06-23 16:58:01.107308'
+    - '2016-06-23 16:58:01.120896'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '261'
+    - Add your comments to authors below.
+    - text
+    - reviewer_report--comments_for_author
+    - 
+    - '373'
+    - '374'
+    - '4'
+    - '2016-06-23 16:58:01.140458'
+    - '2016-06-23 16:58:01.140458'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '262'
+    - Other Journal
+    - text
+    - reviewer_report--suitable_for_another_journal--journal
+    - '263'
+    - '376'
+    - '377'
+    - '1'
+    - '2016-06-23 16:58:01.150799'
+    - '2016-06-23 16:58:01.166221'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '263'
+    - If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you
+      think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em>
+      journal</a>?
+    - boolean
+    - reviewer_report--suitable_for_another_journal
+    - 
+    - '375'
+    - '378'
+    - '6'
+    - '2016-06-23 16:58:01.158079'
+    - '2016-06-23 16:58:01.166221'
+    - TahiStandardTasks::ReviewerReportTask
     - 
 
 ---
@@ -10879,6 +10886,11 @@ permission_states_permissions:
     - '7'
     - '2016-05-04 16:08:06.859302'
     - '2016-05-04 16:08:06.859302'
+  - - '291'
+    - '229'
+    - '2'
+    - '2016-06-22 18:55:43.093464'
+    - '2016-06-22 18:55:43.093464'
 
 ---
 permissions:
@@ -11994,6 +12006,11 @@ permissions:
     - TahiStandardTasks::ReviewerReportTask
     - '2016-05-04 16:08:06.835387'
     - '2016-05-04 16:08:06.835387'
+  - - '229'
+    - be_at_mentioned
+    - DiscussionTopic
+    - '2016-06-22 18:55:43.079088'
+    - '2016-06-22 18:55:43.079088'
 
 ---
 permissions_roles:
@@ -12954,11 +12971,6 @@ permissions_roles:
     - '14'
     - '2016-03-03 21:36:02.832425'
     - '2016-03-03 21:36:02.832425'
-  - - '437'
-    - '140'
-    - '17'
-    - '2016-03-03 21:36:03.843851'
-    - '2016-03-03 21:36:03.843851'
   - - '438'
     - '139'
     - '17'
@@ -13824,6 +13836,31 @@ permissions_roles:
     - '19'
     - '2016-05-04 16:08:08.030796'
     - '2016-05-04 16:08:08.030796'
+  - - '652'
+    - '229'
+    - '10'
+    - '2016-06-22 18:55:43.110376'
+    - '2016-06-22 18:55:43.110376'
+  - - '653'
+    - '229'
+    - '11'
+    - '2016-06-22 18:55:43.321575'
+    - '2016-06-22 18:55:43.321575'
+  - - '654'
+    - '229'
+    - '20'
+    - '2016-06-22 18:55:43.779221'
+    - '2016-06-22 18:55:43.779221'
+  - - '655'
+    - '229'
+    - '19'
+    - '2016-06-22 18:55:43.998288'
+    - '2016-06-22 18:55:43.998288'
+  - - '656'
+    - '229'
+    - '18'
+    - '2016-06-22 18:55:44.166894'
+    - '2016-06-22 18:55:44.166894'
 
 ---
 phase_templates:
@@ -14278,6 +14315,147 @@ reference_jsons:
     - '2016-06-08 17:18:45.881733'
 
 ---
+resource_tokens:
+  columns:
+  - id
+  - created_at
+  - updated_at
+  - owner_id
+  - owner_type
+  - token
+  - version_urls
+  - default_url
+  records: 
+  - - '1'
+    - '2015-10-30 18:09:55.844755'
+    - '2015-10-30 18:09:55.844755'
+    - '1'
+    - Attachment
+    - 4JRhTr616NQ4JW3AnmutrWPX
+    - "{}"
+    - 
+  - - '2'
+    - '2015-10-30 19:45:16.1553'
+    - '2015-10-30 19:45:16.1553'
+    - '2'
+    - Attachment
+    - 7MzbAxAuoAK8h91VEBkrGaHd
+    - "{}"
+    - 
+  - - '3'
+    - '2015-10-30 19:58:30.783132'
+    - '2015-10-30 19:58:30.783132'
+    - '3'
+    - Attachment
+    - 7n1aAGioTqC1ApA8Ld2eYkbu
+    - "{}"
+    - 
+  - - '4'
+    - '2015-11-02 14:08:05.496311'
+    - '2015-11-02 14:08:05.496311'
+    - '4'
+    - Attachment
+    - w3qHf38vMDCqKFXfcrCZE2LK
+    - "{}"
+    - 
+  - - '5'
+    - '2015-11-02 14:15:51.668637'
+    - '2015-11-02 14:15:51.668637'
+    - '5'
+    - Attachment
+    - ajxQpM7BWyqje3rdUEjtpMTb
+    - "{}"
+    - 
+  - - '6'
+    - '2015-11-02 15:08:10.833865'
+    - '2015-11-02 15:08:10.833865'
+    - '6'
+    - Attachment
+    - qt3FhbrR5Q4KNM1F35DXTHNx
+    - "{}"
+    - 
+  - - '7'
+    - '2015-11-02 15:10:35.531229'
+    - '2015-11-02 15:10:35.531229'
+    - '7'
+    - Attachment
+    - 2vM873Fqxyfm22GtB5VDqEND
+    - "{}"
+    - 
+  - - '8'
+    - '2016-04-12 18:52:36.083488'
+    - '2016-04-12 18:52:36.083488'
+    - '8'
+    - Attachment
+    - UF91o1Sp2kVzQ2fMRYGUVLkU
+    - "{}"
+    - 
+  - - '9'
+    - '2016-04-12 18:52:49.614331'
+    - '2016-04-12 18:52:49.614331'
+    - '9'
+    - Attachment
+    - yEUYk9R5AnnMdHu37FBfC5fw
+    - "{}"
+    - 
+  - - '10'
+    - '2015-10-30 19:52:32.177953'
+    - '2015-10-30 19:52:32.177953'
+    - '10'
+    - Attachment
+    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
+    - "{}"
+    - 
+  - - '11'
+    - '2015-11-02 14:13:19.427337'
+    - '2015-11-02 14:13:19.427337'
+    - '11'
+    - Attachment
+    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
+    - "{}"
+    - 
+  - - '12'
+    - '2015-11-02 15:09:02.825204'
+    - '2015-11-02 15:09:02.825204'
+    - '12'
+    - Attachment
+    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
+    - "{}"
+    - 
+  - - '13'
+    - '2016-04-12 18:44:51.665146'
+    - '2016-04-12 18:44:51.665146'
+    - '13'
+    - Attachment
+    - EXxRBJ9WzLn3KTQLjm5Nc6dC
+    - "{}"
+    - 
+  - - '14'
+    - '2015-11-02 14:16:35.584565'
+    - '2015-11-02 14:16:35.584565'
+    - '14'
+    - Attachment
+    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
+    - "{}"
+    - 
+  - - '15'
+    - '2015-11-02 14:18:02.598388'
+    - '2015-11-02 14:18:02.598388'
+    - '15'
+    - Attachment
+    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
+    - "{}"
+    - 
+  - - '16'
+    - '2015-11-02 15:12:01.338942'
+    - '2015-11-02 15:12:01.338942'
+    - '16'
+    - Attachment
+    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
+    - "{}"
+    - 
+
+---
 roles:
   columns:
   - id
@@ -14413,6 +14591,7 @@ snapshots:
   - contents
   - created_at
   - updated_at
+  - key
   records: 
   - - '31'
     - Task
@@ -14432,6 +14611,7 @@ snapshots:
       studies","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 18:55:57.385235'
     - '2016-04-12 18:55:57.385235'
+    - 
   - - '32'
     - Task
     - '180'
@@ -14469,6 +14649,7 @@ snapshots:
       text and tasks\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 18:55:57.39098'
     - '2016-04-12 18:55:57.39098'
+    - 
   - - '33'
     - Task
     - '179'
@@ -14485,6 +14666,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 18:55:57.397146'
     - '2016-04-12 18:55:57.397146'
+    - 
   - - '34'
     - Task
     - '178'
@@ -14497,6 +14679,7 @@ snapshots:
       2"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 18:55:57.400639'
     - '2016-04-20 19:57:10.182141'
+    - 
   - - '35'
     - Task
     - '177'
@@ -14517,6 +14700,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 18:55:57.40395'
     - '2016-04-12 18:55:57.40395'
+    - 
   - - '36'
     - Task
     - '176'
@@ -14530,6 +14714,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at YYY","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 18:55:57.407862'
     - '2016-04-12 18:55:57.407862'
+    - 
   - - '37'
     - Task
     - '174'
@@ -14546,6 +14731,7 @@ snapshots:
       authors have declared that no competing interests exist.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 18:55:57.410827'
     - '2016-04-12 18:55:57.410827'
+    - 
   - - '38'
     - Task
     - '172'
@@ -14555,6 +14741,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 18:55:57.413755'
     - '2016-04-12 18:55:57.413755'
+    - 
   - - '39'
     - Task
     - '171'
@@ -14599,6 +14786,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 18:55:57.423837'
     - '2016-04-12 18:55:57.423837'
+    - 
   - - '40'
     - Task
     - '170'
@@ -14610,6 +14798,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 18:55:57.447758'
     - '2016-04-12 18:55:57.447758'
+    - 
   - - '41'
     - Task
     - '181'
@@ -14628,6 +14817,7 @@ snapshots:
       studies","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 19:00:20.257146'
     - '2016-04-12 19:00:20.257146'
+    - 
   - - '42'
     - Task
     - '180'
@@ -14665,6 +14855,7 @@ snapshots:
       text and tasks\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 19:00:20.262293'
     - '2016-04-12 19:00:20.262293'
+    - 
   - - '43'
     - Task
     - '179'
@@ -14681,6 +14872,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 19:00:20.268499'
     - '2016-04-12 19:00:20.268499'
+    - 
   - - '44'
     - Task
     - '178'
@@ -14693,6 +14885,7 @@ snapshots:
       1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:00:20.271983'
     - '2016-04-20 19:57:11.86435'
+    - 
   - - '45'
     - Task
     - '177'
@@ -14713,6 +14906,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 19:00:20.275502'
     - '2016-04-12 19:00:20.275502'
+    - 
   - - '46'
     - Task
     - '176'
@@ -14726,6 +14920,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at YYY","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 19:00:20.279153'
     - '2016-04-12 19:00:20.279153'
+    - 
   - - '47'
     - Task
     - '174'
@@ -14742,6 +14937,7 @@ snapshots:
       authors have declared that no competing interests exist.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 19:00:20.281788'
     - '2016-04-12 19:00:20.281788'
+    - 
   - - '48'
     - Task
     - '172'
@@ -14751,6 +14947,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 19:00:20.284162'
     - '2016-04-12 19:00:20.284162'
+    - 
   - - '49'
     - Task
     - '171'
@@ -14795,6 +14992,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 19:00:20.291942'
     - '2016-04-12 19:00:20.291942'
+    - 
   - - '50'
     - Task
     - '170'
@@ -14805,6 +15003,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:00:20.307669'
     - '2016-04-12 19:00:20.307669'
+    - 
   - - '51'
     - Task
     - '181'
@@ -14823,6 +15022,7 @@ snapshots:
       studies","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 19:02:46.791411'
     - '2016-04-12 19:02:46.791411'
+    - 
   - - '52'
     - Task
     - '180'
@@ -14860,6 +15060,7 @@ snapshots:
       has versioned text and tasks\u003c/i\u003e\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 19:02:46.797007'
     - '2016-04-12 19:02:46.797007'
+    - 
   - - '53'
     - Task
     - '179'
@@ -14876,6 +15077,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 19:02:46.803029'
     - '2016-04-12 19:02:46.803029'
+    - 
   - - '54'
     - Task
     - '178'
@@ -14888,6 +15090,7 @@ snapshots:
       1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:02:46.806287'
     - '2016-04-20 19:57:13.478481'
+    - 
   - - '55'
     - Task
     - '177'
@@ -14908,6 +15111,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 19:02:46.809625'
     - '2016-04-12 19:02:46.809625'
+    - 
   - - '56'
     - Task
     - '176'
@@ -14921,6 +15125,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at YYY","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 19:02:46.812959'
     - '2016-04-12 19:02:46.812959'
+    - 
   - - '57'
     - Task
     - '174'
@@ -14937,6 +15142,7 @@ snapshots:
       forgot I have a competing interest. I''m reviewing a paper on this same topic.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 19:02:46.815511'
     - '2016-04-12 19:02:46.815511'
+    - 
   - - '58'
     - Task
     - '172'
@@ -14946,6 +15152,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 19:02:46.817923'
     - '2016-04-12 19:02:46.817923'
+    - 
   - - '59'
     - Task
     - '171'
@@ -14990,6 +15197,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 19:02:46.825956'
     - '2016-04-12 19:02:46.825956'
+    - 
   - - '60'
     - Task
     - '170'
@@ -15000,6 +15208,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:02:46.874959'
     - '2016-04-12 19:02:46.874959'
+    - 
   - - '61'
     - Task
     - '181'
@@ -15018,6 +15227,7 @@ snapshots:
       studies","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 19:05:54.198612'
     - '2016-04-12 19:05:54.198612'
+    - 
   - - '62'
     - Task
     - '180'
@@ -15055,6 +15265,7 @@ snapshots:
       has versioned text and tasks\u003c/i\u003e\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 19:05:54.206472'
     - '2016-04-12 19:05:54.206472'
+    - 
   - - '63'
     - Task
     - '179'
@@ -15072,6 +15283,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 19:05:54.218481'
     - '2016-04-12 19:05:54.218481'
+    - 
   - - '64'
     - Task
     - '178'
@@ -15084,6 +15296,7 @@ snapshots:
       1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:05:54.230517'
     - '2016-04-20 19:57:15.088468'
+    - 
   - - '65'
     - Task
     - '177'
@@ -15104,6 +15317,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 19:05:54.23844'
     - '2016-04-12 19:05:54.23844'
+    - 
   - - '66'
     - Task
     - '176'
@@ -15117,6 +15331,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at XXX","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 19:05:54.244174'
     - '2016-04-12 19:05:54.244174'
+    - 
   - - '67'
     - Task
     - '174'
@@ -15133,6 +15348,7 @@ snapshots:
       forgot I have a competing interest. I''m reviewing a paper on this same topic.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 19:05:54.247847'
     - '2016-04-12 19:05:54.247847'
+    - 
   - - '68'
     - Task
     - '172'
@@ -15142,6 +15358,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 19:05:54.251117'
     - '2016-04-12 19:05:54.251117'
+    - 
   - - '69'
     - Task
     - '171'
@@ -15186,6 +15403,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 19:05:54.264846'
     - '2016-04-12 19:05:54.264846'
+    - 
   - - '70'
     - Task
     - '170'
@@ -15196,6 +15414,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
+    - 
   - - '71'
     - Task
     - '182'
@@ -15212,6 +15431,7 @@ snapshots:
       Prof"},{"name":"affiliation","type":"text","value":"ABC University"}]}]}'
     - '2016-04-12 18:55:57.423837'
     - '2016-04-12 18:55:57.423837'
+    - 
   - - '72'
     - Task
     - '182'
@@ -15227,6 +15447,7 @@ snapshots:
       recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:00:20.284162'
     - '2016-04-12 19:00:20.284162'
+    - 
   - - '73'
     - Task
     - '182'
@@ -15239,6 +15460,7 @@ snapshots:
       oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:02:46.817923'
     - '2016-04-12 19:02:46.817923'
+    - 
   - - '74'
     - Task
     - '182'
@@ -15255,6 +15477,7 @@ snapshots:
       Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
+    - 
 
 ---
 tahi_standard_tasks_funders:

@@ -9,17 +9,6 @@
                     enable=isEditable
                     width="300"}}
 
-  {{select-2-single
-    class="assignment-role-input"
-    minimumInputLength=0
-    name="letter_templates"
-    placeholder="Please select the letter template"
-    selectedData=nil
-    source=decisionTemplates
-    selectionSelected="didSelectTemplate"
-    value=""
-    width="350px"}}
-
   <div class='input-group'>
     <div class='input-group-addon'>
       To:
@@ -30,9 +19,8 @@
       inputClassNames='form-control'
       displayQuestionText=false
       placeholder='someone@example.edu'
-      setDefault=truesdfas
+      defaultAnswer=authorEmail
     }}
-    <!-- <input type='text' class='form-control' placeholder='someone@example.edu' value={{authorEmail}}> -->
   </div>
 
   <div class='input-group'>

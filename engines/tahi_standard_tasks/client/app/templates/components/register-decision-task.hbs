@@ -62,10 +62,11 @@
 
   {{letter-template disabled=nonPublishableOrUnselected
                     letterValue=latestDecision.letter
-                    subjectLine='Your bio submission'
+                    subjectLine=subjectLine
                     task=task
                     decision=latestDecision.verdict
                     actionTrigger='reject'
+                    templates=rejectLetterTemplates
                     registerDecision=(action 'registerDecision')
   }}
 

@@ -9,20 +9,21 @@ export default Task.extend({
   decisionLetters: attr('string'),
   paperDecision: attr('string'),
   paperDecisionLetter: attr('string'),
+  letterTemplates: DS.hasMany('letter-template', { async: false }),
 
-  rejectLetterTemplates: computed('decisionLetters', function() {
-    return JSON.parse(this.get('decisionLetters')).reject;
+  rejectLetterTemplates: computed('letterTemplates', function() {
+    return this.get('letterTemplates');
   }),
 
-  majorRevisionLetterTemplates: computed('decisionLetters', function() {
-    return JSON.parse(this.get('decisionLetters')).major_revision;
+  majorRevisionLetterTemplates: computed('letterTemplates', function() {
+    return this.get('letterTemplates');
   }),
 
-  minorRevisionLetterTemplates: computed('decisionLetters', function() {
-    return JSON.parse(this.get('decisionLetters')).minor_revision;
+  minorRevisionLetterTemplates: computed('letterTemplates', function() {
+    return this.get('letterTemplates');
   }),
 
-  acceptLetterTemplates: computed('decisionLetters', function() {
-    return JSON.parse(this.get('decisionLetters')).accept;
+  acceptLetterTemplates: computed('letterTemplates', function() {
+    return this.get('letterTemplates');
   })
 });

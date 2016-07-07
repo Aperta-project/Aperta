@@ -21,12 +21,14 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   submitted: computed.equal('paperState', 'submitted'), 
   uncompleted: computed.equal('task.completed', false),
   isNotEditable: false, // This task has custom editability behavior
-  rejectionTemplates: computed(('task.paper'), function() {
-    return [{id: 1, name: 'rejectAfterReview', content: 'This is a rejection'}];
-  }),
   nonPublishable: computed.not('publishable'),
   nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');
+  }),
+  subjectLine: computed('task.paper.journal.name', function() {
+    var journalName = this.get('task.paper.journal.name');
+    journalName = (journalName) ? (journalName + ' ') : '';
+    return 'Your ' + journalName + 'submission';
   }),
   revisionNumberDesc: ['revisionNumber:desc'],
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
@@ -80,7 +82,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
     setDecisionTemplate(decision) {
       const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
-      var template = templates[0]['letter'];
+      const template = templates.get('firstObject.letter');
       const letter = this.applyTemplateReplacements(template);
       this.get('latestDecision').set('verdict', decision);
       this.get('latestDecision').set('letter', letter);

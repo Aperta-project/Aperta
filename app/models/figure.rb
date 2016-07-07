@@ -15,14 +15,6 @@ class Figure < Attachment
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end
 
-  def download!(url)
-    super(url)
-    update_attributes!(
-      title: title || file.filename,
-      status: STATUS_DONE
-    )
-  end
-
   def alt
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end

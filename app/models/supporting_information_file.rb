@@ -16,14 +16,6 @@ class SupportingInformationFile < Attachment
 
   before_create :set_publishable
 
-  def download!(url)
-    super(url)
-    update_attributes!(
-      title: file.filename,
-      status: STATUS_DONE
-    )
-  end
-
   def ensure_striking_image_category_is_figure
     self.striking_image = false unless category == 'Figure'
     true

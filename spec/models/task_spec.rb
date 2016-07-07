@@ -163,21 +163,18 @@ describe Task do
 
   describe 'Task.all_task_types' do
     it 'includes a new subclass of Task' do
-      class NewTask < Task
-        DEFAULT_TITLE = "New Task for Testing"
-      end
-      expect(Task.all_task_types).to include(NewTask)
+      new_task = Class.new(Task)
+      expect(Task.all_task_types).to include(new_task)
     end
 
     it 'returns all the tasks' do
       tasks_from_source = Dir[Rails.root.join('**/*.rb')]
-                          .select { |path| path.match(%r{models/.*task.rb}) }
-                          .reject { |path| path.match(/concerns/) }
-                          .map { |path| path.match(%r{models/(.*).rb})[1] }
+        .select { |path| path.match(%r{models/.*task.rb}) }
+        .reject { |path| path.match(/concerns/) }
+        .map { |path| path.match(%r{models/(.*).rb})[1] }
 
-      tasks = Task.all_task_types.map { |c| c.to_s.underscore }.sort -
-              %w(mock_metadata_task test_task invitable_task new_task)
-      expect(tasks).to eq((tasks_from_source).sort)
+      tasks = Task.all_task_types.map { |c| c.to_s.underscore }
+      expect(tasks).to include(*tasks_from_source)
     end
 
     it 'works across reload' do

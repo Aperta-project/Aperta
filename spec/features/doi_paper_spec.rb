@@ -31,7 +31,7 @@ feature "Paper DOI Generation", selenium: true, js: true do
 
       scenario "it doesn't contain any doi artifacts" do
         visit "/papers/#{paper.id}"
-        within "#paper-container" do
+        within ".paper-container" do
           expect(page).to_not have_text("Manuscript ID")
         end
       end

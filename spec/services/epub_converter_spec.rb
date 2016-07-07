@@ -58,6 +58,7 @@ describe EpubConverter do
       context 'when paper has supporting information files' do
         let(:file) do
           paper.supporting_information_files.create!(
+            resource_tokens: [ResourceToken.new],
             owner: task,
             file: ::File.open('spec/fixtures/yeti.tiff')
           )
@@ -90,6 +91,7 @@ describe EpubConverter do
       context 'when paper has figures' do
         before do
           paper.figures.create!(
+            resource_tokens: [ResourceToken.new],
             file: File.open('spec/fixtures/yeti.tiff'),
             status: Figure::STATUS_DONE
           )

@@ -126,7 +126,9 @@ RSpec.configure do |config|
 
     # Load question and roles & permission seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
+    Rake::Task['nested-questions:seed'].reenable
     Rake::Task['nested-questions:seed'].invoke
+    Rake::Task['roles-and-permissions:seed'].reenable
     Rake::Task['roles-and-permissions:seed'].invoke
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars

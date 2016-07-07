@@ -30,19 +30,29 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def convert_image(size)
-    image = MiniMagick::Image.open(current_path)
-    temp_file = MiniMagick::Utilities.tempfile(".png")
+    temp_file = MiniMagick::Utilities.tempfile(".#{format}")
+
+    if needs_transcoding?(file)
+      temp_file = MiniMagick::Utilities.tempfile(".png")
+    end
+
     MiniMagick::Tool::Convert.new do |convert|
-      convert.merge! image_density(image)
-      convert.merge! image_colorspace(image)
+      convert.merge! density_arguments
+      convert.merge! colorspace_arguments
       convert.merge! ["-resize", size]
       convert << current_path
       convert.merge! ["-colorspace", "sRGB"]
       convert << temp_file.path
     end
+
     FileUtils.cp(temp_file.path, current_path)
-    file.content_type = "image/png"
+    file.content_type = "image/png" if format == "png"
+  end
+
+  def image
+    @image ||= MiniMagick::Image.open(current_path)
   end
 
   def full_name(orig_file)
@@ -53,14 +63,19 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     end
   end
 
-  def image_density(image)
+  def density_arguments
     return [] unless image.details['Total ink density']
     ['-density', image.details['Total ink density']]
   end
 
-  def image_colorspace(image)
+  def colorspace_arguments
     return [] unless image.details['Colorspace']
     ['-colorspace', image.details['Colorspace']]
+  end
+
+  def format
+    return unless image.details['Base filename']
+    image.details['Base filename'].split('.').last
   end
 
   def needs_transcoding?(file)

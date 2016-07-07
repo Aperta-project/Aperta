@@ -33,12 +33,8 @@ export default DS.Model.extend({
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
   declined: Ember.computed.equal('state', 'declined'),
 
-  decline() {
+  setDeclined() {
     this.set('state', 'declined');
-  },
-
-  accept() {
-    this.set('state', 'accepted');
   },
 
  restless: Ember.inject.service('restless'),
@@ -49,6 +45,22 @@ export default DS.Model.extend({
       this.unloadRecord();
       return this;
     });
+  },
+
+  decline() {
+    let data = {
+      'invitation': {
+        'decline_reason': this.get('declineReason') || '',
+        'reviewer_suggestions': this.get('reviewerSuggestions') || ''
+      }
+    };
+
+    return this.get('restless')
+     .put(`/api/invitations/${this.get('id')}/decline`, data)
+     .then((data) => {
+       this.feedbackSent();
+       return this;
+     });
   },
 
   feedbackSent() {

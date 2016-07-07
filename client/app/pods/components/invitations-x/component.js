@@ -11,16 +11,13 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     }
   },
 
-  init() {
-    this._super(...arguments);
-  },
-
   actions: {
     accept(invitation) {
       this.get('accept')(invitation).then(()=>{this.closeOverlayIfLast()});
     },
 
     acquireFeedback(invitation) {
+      invitation.setDeclined();
       invitation.set('pendingFeedback', true);
     },
 

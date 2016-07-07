@@ -8,6 +8,12 @@ export default Ember.Controller.extend({
   unreadComments: [],
   invitationsInvited: Ember.computed.alias('currentUser.invitationsInvited'),
   invitationsNeedsUserUpdate: Ember.computed.alias('currentUser.invitationsNeedsUserUpdate'),
+  invitationsPendingDecline: Ember.computed.filter(
+    'invitationsNeedsUserUpdate',
+    function(invitation) {
+      return invitation.get('declined') && invitation.get('pendingFeedback');
+    }
+  ),
 
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
@@ -50,6 +56,10 @@ export default Ember.Controller.extend({
 
   showNewManuscriptOverlay: false,
 
+  hideInvitationsOverlay() {
+    this.set('showInvitationsOverlay', false);
+  },
+
   actions: {
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
@@ -64,35 +74,14 @@ export default Ember.Controller.extend({
     },
 
     hideInvitationsOverlay() {
-      this.set('showInvitationsOverlay', false);
-    },
-
-    invitationsPendingDecline: Ember.computed.filter(
-      'invitationsNeedsUserUpdate',
-      function(invitation) {
-        return invitation.get('declined') && invitation.get('pendingFeedback');
-      }
-    ),
-
-    closeOverlay(overlay) {
       this.get('invitationsPendingDecline').forEach((invitation) => {
-        this.declineInvitation(invitation);
+        invitation.decline();
       });
-      overlay.animateOut();
+      this.hideInvitationsOverlay();
     },
 
     declineInvitation(invitation) {
-      let data = {
-        'invitation': {
-          'decline_reason': invitation.get('declineReason'),
-          'reviewer_suggestions': invitation.get('reviewerSuggestions')
-        }
-      };
-
-      return this.get('restless').putUpdate(invitation, '/decline', data)
-        .then(function(){
-          invitation.feedbackSent();
-        });
+      return invitation.decline();
     },
 
     acceptInvitation(invitation) {

@@ -3,7 +3,7 @@ require 'rails_helper'
 feature "Invite Reviewer", js: true do
   let(:editor) { create :user }
   let(:task) { FactoryGirl.create :paper_reviewer_task }
-  let!(:invitation2) do
+  let!(:invitation_no_feedback) do
     FactoryGirl.create(:invitation, :invited, task: task, invitee: editor)
   end
   let!(:invitation) do
@@ -20,13 +20,13 @@ feature "Invite Reviewer", js: true do
   end
 
   scenario 'decline invitations' do
-    invitation_overlay.expect_invitation_count(2)
+    invitation_overlay.expect_pending_invitation_count(2)
 
-    # decline and send  feedback
+    # decline and send feedback
     invitation_overlay.decline_invitation(1)
     invitation_overlay.submit_feedback
     invitation_overlay.expect_success_message
-    invitation_overlay.expect_invitation_count(1)
+    invitation_overlay.expect_pending_invitation_count(1)
 
     # decline and cancel feedback
     invitation_overlay.decline_invitation(1)

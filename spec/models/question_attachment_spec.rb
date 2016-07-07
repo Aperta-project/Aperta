@@ -4,6 +4,7 @@ describe QuestionAttachment do
   subject(:attachment) do
     FactoryGirl.create(
       :question_attachment,
+      :with_resource_token,
       owner: answer,
       file: File.open('spec/fixtures/yeti.tiff')
     )

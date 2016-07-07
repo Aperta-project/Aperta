@@ -7,5 +7,11 @@ FactoryGirl.define do
         attachment.file = File.open(Rails.root.join('spec/fixtures/yeti.tiff'))
       end
     end
+
+    trait :with_resource_token do
+      after :create do |attachment|
+        FactoryGirl.create(:resource_token, owner: attachment)
+      end
+    end
   end
 end

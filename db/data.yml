@@ -2735,7 +2735,6 @@ attachments:
   - caption
   - status
   - kind
-  - token
   - s3_dir
   - type
   - old_id
@@ -2744,6 +2743,8 @@ attachments:
   - category
   - label
   - publishable
+  - file_hash
+  - previous_file_hash
   records: 
   - - '1'
     - cover_image.jpg
@@ -2754,7 +2755,6 @@ attachments:
     - 
     - done
     - 
-    - 4JRhTr616NQ4JW3AnmutrWPX
     - uploads/paper/1/figure/attachment/1
     - Figure
     - '1'
@@ -2763,6 +2763,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '2'
     - cover_image.jpg
     - '2'
@@ -2772,7 +2774,6 @@ attachments:
     - He likes his coding
     - done
     - 
-    - 7MzbAxAuoAK8h91VEBkrGaHd
     - uploads/paper/2/figure/attachment/2
     - Figure
     - '2'
@@ -2781,6 +2782,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '3'
     - cat2.jpg
     - '2'
@@ -2790,7 +2793,6 @@ attachments:
     - The only part of the experiment he was used in was making people say, "Awwwwwwww."
     - done
     - 
-    - 7n1aAGioTqC1ApA8Ld2eYkbu
     - uploads/paper/2/figure/attachment/3
     - Figure
     - '3'
@@ -2799,6 +2801,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '4'
     - cover_image.jpg
     - '3'
@@ -2808,7 +2812,6 @@ attachments:
     - 
     - done
     - 
-    - w3qHf38vMDCqKFXfcrCZE2LK
     - uploads/paper/3/figure/attachment/4
     - Figure
     - '4'
@@ -2817,6 +2820,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '5'
     - quad-cat.jpg
     - '3'
@@ -2826,7 +2831,6 @@ attachments:
     - There are four of them
     - done
     - 
-    - ajxQpM7BWyqje3rdUEjtpMTb
     - uploads/paper/3/figure/attachment/5
     - Figure
     - '5'
@@ -2835,6 +2839,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '6'
     - cover_image.jpg
     - '4'
@@ -2844,7 +2850,6 @@ attachments:
     - 
     - done
     - 
-    - qt3FhbrR5Q4KNM1F35DXTHNx
     - uploads/paper/4/figure/attachment/6
     - Figure
     - '6'
@@ -2853,6 +2858,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '7'
     - cat2.jpg
     - '4'
@@ -2862,7 +2869,6 @@ attachments:
     - This cat is waiting
     - done
     - 
-    - 2vM873Fqxyfm22GtB5VDqEND
     - uploads/paper/4/figure/attachment/7
     - Figure
     - '7'
@@ -2871,6 +2877,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '8'
     - 139.jpg
     - '12'
@@ -2880,7 +2888,6 @@ attachments:
     - 
     - done
     - 
-    - UF91o1Sp2kVzQ2fMRYGUVLkU
     - uploads/paper/12/figure/attachment/12
     - Figure
     - '12'
@@ -2889,6 +2896,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '9'
     - 140.jpg
     - '12'
@@ -2898,7 +2907,6 @@ attachments:
     - 
     - done
     - 
-    - yEUYk9R5AnnMdHu37FBfC5fw
     - uploads/paper/12/figure/attachment/13
     - Figure
     - '13'
@@ -2907,6 +2915,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '10'
     - sample.doc
     - '22'
@@ -2916,7 +2926,6 @@ attachments:
     - 
     - done
     - 
-    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
     - uploads/attachments/1/supporting_information_file/attachment/1
     - SupportingInformationFile
     - '1'
@@ -2925,6 +2934,8 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
   - - '11'
     - turtles-are-amazing.docx
     - '43'
@@ -2934,7 +2945,6 @@ attachments:
     - 
     - done
     - 
-    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
     - uploads/attachments/2/supporting_information_file/attachment/2
     - SupportingInformationFile
     - '2'
@@ -2943,6 +2953,8 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
   - - '12'
     - turtles-are-amazing.docx
     - '64'
@@ -2952,7 +2964,6 @@ attachments:
     - 
     - done
     - 
-    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
     - uploads/attachments/3/supporting_information_file/attachment/3
     - SupportingInformationFile
     - '3'
@@ -2961,6 +2972,8 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
   - - '13'
     - 140.jpg
     - '170'
@@ -2970,7 +2983,6 @@ attachments:
     - Another cat
     - done
     - 
-    - EXxRBJ9WzLn3KTQLjm5Nc6dC
     - uploads/attachments/5/supporting_information_file/attachment/5
     - SupportingInformationFile
     - '5'
@@ -2979,6 +2991,8 @@ attachments:
     - Figure
     - 
     - true
+    - 
+    - 
   - - '14'
     - turtles-are-amazing.docx
     - '78'
@@ -2988,7 +3002,6 @@ attachments:
     - 
     - done
     - 
-    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
     - uploads/question/78/question_attachment/1
     - QuestionAttachment
     - '1'
@@ -2997,6 +3010,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '15'
     - turtles-are-amazing.docx
     - '88'
@@ -3006,7 +3021,6 @@ attachments:
     - 
     - done
     - 
-    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
     - uploads/question/88/question_attachment/2
     - QuestionAttachment
     - '2'
@@ -3015,6 +3029,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
   - - '16'
     - manuscript+_281_29.docx
     - '126'
@@ -3024,7 +3040,6 @@ attachments:
     - 
     - done
     - 
-    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
     - uploads/question/126/question_attachment/3
     - QuestionAttachment
     - '3'
@@ -3033,6 +3048,8 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
 
 ---
 author_list_items:
@@ -14301,6 +14318,147 @@ reference_jsons:
     - '2016-06-08 17:18:45.881733'
 
 ---
+resource_tokens:
+  columns:
+  - id
+  - created_at
+  - updated_at
+  - owner_id
+  - owner_type
+  - token
+  - version_urls
+  - default_url
+  records: 
+  - - '1'
+    - '2015-10-30 18:09:55.844755'
+    - '2015-10-30 18:09:55.844755'
+    - '1'
+    - Attachment
+    - 4JRhTr616NQ4JW3AnmutrWPX
+    - "{}"
+    - 
+  - - '2'
+    - '2015-10-30 19:45:16.1553'
+    - '2015-10-30 19:45:16.1553'
+    - '2'
+    - Attachment
+    - 7MzbAxAuoAK8h91VEBkrGaHd
+    - "{}"
+    - 
+  - - '3'
+    - '2015-10-30 19:58:30.783132'
+    - '2015-10-30 19:58:30.783132'
+    - '3'
+    - Attachment
+    - 7n1aAGioTqC1ApA8Ld2eYkbu
+    - "{}"
+    - 
+  - - '4'
+    - '2015-11-02 14:08:05.496311'
+    - '2015-11-02 14:08:05.496311'
+    - '4'
+    - Attachment
+    - w3qHf38vMDCqKFXfcrCZE2LK
+    - "{}"
+    - 
+  - - '5'
+    - '2015-11-02 14:15:51.668637'
+    - '2015-11-02 14:15:51.668637'
+    - '5'
+    - Attachment
+    - ajxQpM7BWyqje3rdUEjtpMTb
+    - "{}"
+    - 
+  - - '6'
+    - '2015-11-02 15:08:10.833865'
+    - '2015-11-02 15:08:10.833865'
+    - '6'
+    - Attachment
+    - qt3FhbrR5Q4KNM1F35DXTHNx
+    - "{}"
+    - 
+  - - '7'
+    - '2015-11-02 15:10:35.531229'
+    - '2015-11-02 15:10:35.531229'
+    - '7'
+    - Attachment
+    - 2vM873Fqxyfm22GtB5VDqEND
+    - "{}"
+    - 
+  - - '8'
+    - '2016-04-12 18:52:36.083488'
+    - '2016-04-12 18:52:36.083488'
+    - '8'
+    - Attachment
+    - UF91o1Sp2kVzQ2fMRYGUVLkU
+    - "{}"
+    - 
+  - - '9'
+    - '2016-04-12 18:52:49.614331'
+    - '2016-04-12 18:52:49.614331'
+    - '9'
+    - Attachment
+    - yEUYk9R5AnnMdHu37FBfC5fw
+    - "{}"
+    - 
+  - - '10'
+    - '2015-10-30 19:52:32.177953'
+    - '2015-10-30 19:52:32.177953'
+    - '10'
+    - Attachment
+    - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
+    - "{}"
+    - 
+  - - '11'
+    - '2015-11-02 14:13:19.427337'
+    - '2015-11-02 14:13:19.427337'
+    - '11'
+    - Attachment
+    - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
+    - "{}"
+    - 
+  - - '12'
+    - '2015-11-02 15:09:02.825204'
+    - '2015-11-02 15:09:02.825204'
+    - '12'
+    - Attachment
+    - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
+    - "{}"
+    - 
+  - - '13'
+    - '2016-04-12 18:44:51.665146'
+    - '2016-04-12 18:44:51.665146'
+    - '13'
+    - Attachment
+    - EXxRBJ9WzLn3KTQLjm5Nc6dC
+    - "{}"
+    - 
+  - - '14'
+    - '2015-11-02 14:16:35.584565'
+    - '2015-11-02 14:16:35.584565'
+    - '14'
+    - Attachment
+    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
+    - "{}"
+    - 
+  - - '15'
+    - '2015-11-02 14:18:02.598388'
+    - '2015-11-02 14:18:02.598388'
+    - '15'
+    - Attachment
+    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
+    - "{}"
+    - 
+  - - '16'
+    - '2015-11-02 15:12:01.338942'
+    - '2015-11-02 15:12:01.338942'
+    - '16'
+    - Attachment
+    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
+    - "{}"
+    - 
+
+---
 roles:
   columns:
   - id
@@ -14436,6 +14594,7 @@ snapshots:
   - contents
   - created_at
   - updated_at
+  - key
   records: 
   - - '31'
     - Task
@@ -14455,6 +14614,7 @@ snapshots:
       studies","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 18:55:57.385235'
     - '2016-04-12 18:55:57.385235'
+    - 
   - - '32'
     - Task
     - '180'
@@ -14492,6 +14652,7 @@ snapshots:
       text and tasks\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 18:55:57.39098'
     - '2016-04-12 18:55:57.39098'
+    - 
   - - '33'
     - Task
     - '179'
@@ -14508,6 +14669,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 18:55:57.397146'
     - '2016-04-12 18:55:57.397146'
+    - 
   - - '34'
     - Task
     - '178'
@@ -14520,6 +14682,7 @@ snapshots:
       2"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 18:55:57.400639'
     - '2016-04-20 19:57:10.182141'
+    - 
   - - '35'
     - Task
     - '177'
@@ -14540,6 +14703,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 18:55:57.40395'
     - '2016-04-12 18:55:57.40395'
+    - 
   - - '36'
     - Task
     - '176'
@@ -14553,6 +14717,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at YYY","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 18:55:57.407862'
     - '2016-04-12 18:55:57.407862'
+    - 
   - - '37'
     - Task
     - '174'
@@ -14569,6 +14734,7 @@ snapshots:
       authors have declared that no competing interests exist.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 18:55:57.410827'
     - '2016-04-12 18:55:57.410827'
+    - 
   - - '38'
     - Task
     - '172'
@@ -14578,6 +14744,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 18:55:57.413755'
     - '2016-04-12 18:55:57.413755'
+    - 
   - - '39'
     - Task
     - '171'
@@ -14622,6 +14789,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 18:55:57.423837'
     - '2016-04-12 18:55:57.423837'
+    - 
   - - '40'
     - Task
     - '170'
@@ -14633,6 +14801,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 18:55:57.447758'
     - '2016-04-12 18:55:57.447758'
+    - 
   - - '41'
     - Task
     - '181'
@@ -14651,6 +14820,7 @@ snapshots:
       studies","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 19:00:20.257146'
     - '2016-04-12 19:00:20.257146'
+    - 
   - - '42'
     - Task
     - '180'
@@ -14688,6 +14858,7 @@ snapshots:
       text and tasks\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 19:00:20.262293'
     - '2016-04-12 19:00:20.262293'
+    - 
   - - '43'
     - Task
     - '179'
@@ -14704,6 +14875,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 19:00:20.268499'
     - '2016-04-12 19:00:20.268499'
+    - 
   - - '44'
     - Task
     - '178'
@@ -14716,6 +14888,7 @@ snapshots:
       1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:00:20.271983'
     - '2016-04-20 19:57:11.86435'
+    - 
   - - '45'
     - Task
     - '177'
@@ -14736,6 +14909,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 19:00:20.275502'
     - '2016-04-12 19:00:20.275502'
+    - 
   - - '46'
     - Task
     - '176'
@@ -14749,6 +14923,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at YYY","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 19:00:20.279153'
     - '2016-04-12 19:00:20.279153'
+    - 
   - - '47'
     - Task
     - '174'
@@ -14765,6 +14940,7 @@ snapshots:
       authors have declared that no competing interests exist.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 19:00:20.281788'
     - '2016-04-12 19:00:20.281788'
+    - 
   - - '48'
     - Task
     - '172'
@@ -14774,6 +14950,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 19:00:20.284162'
     - '2016-04-12 19:00:20.284162'
+    - 
   - - '49'
     - Task
     - '171'
@@ -14818,6 +14995,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 19:00:20.291942'
     - '2016-04-12 19:00:20.291942'
+    - 
   - - '50'
     - Task
     - '170'
@@ -14828,6 +15006,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:00:20.307669'
     - '2016-04-12 19:00:20.307669'
+    - 
   - - '51'
     - Task
     - '181'
@@ -14846,6 +15025,7 @@ snapshots:
       studies","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 19:02:46.791411'
     - '2016-04-12 19:02:46.791411'
+    - 
   - - '52'
     - Task
     - '180'
@@ -14883,6 +15063,7 @@ snapshots:
       has versioned text and tasks\u003c/i\u003e\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 19:02:46.797007'
     - '2016-04-12 19:02:46.797007'
+    - 
   - - '53'
     - Task
     - '179'
@@ -14899,6 +15080,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 19:02:46.803029'
     - '2016-04-12 19:02:46.803029'
+    - 
   - - '54'
     - Task
     - '178'
@@ -14911,6 +15093,7 @@ snapshots:
       1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:02:46.806287'
     - '2016-04-20 19:57:13.478481'
+    - 
   - - '55'
     - Task
     - '177'
@@ -14931,6 +15114,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 19:02:46.809625'
     - '2016-04-12 19:02:46.809625'
+    - 
   - - '56'
     - Task
     - '176'
@@ -14944,6 +15128,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at YYY","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 19:02:46.812959'
     - '2016-04-12 19:02:46.812959'
+    - 
   - - '57'
     - Task
     - '174'
@@ -14960,6 +15145,7 @@ snapshots:
       forgot I have a competing interest. I''m reviewing a paper on this same topic.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 19:02:46.815511'
     - '2016-04-12 19:02:46.815511'
+    - 
   - - '58'
     - Task
     - '172'
@@ -14969,6 +15155,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 19:02:46.817923'
     - '2016-04-12 19:02:46.817923'
+    - 
   - - '59'
     - Task
     - '171'
@@ -15013,6 +15200,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 19:02:46.825956'
     - '2016-04-12 19:02:46.825956'
+    - 
   - - '60'
     - Task
     - '170'
@@ -15023,6 +15211,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:02:46.874959'
     - '2016-04-12 19:02:46.874959'
+    - 
   - - '61'
     - Task
     - '181'
@@ -15041,6 +15230,7 @@ snapshots:
       studies","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
     - '2016-04-12 19:05:54.198612'
     - '2016-04-12 19:05:54.198612'
+    - 
   - - '62'
     - Task
     - '180'
@@ -15078,6 +15268,7 @@ snapshots:
       has versioned text and tasks\u003c/i\u003e\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
     - '2016-04-12 19:05:54.206472'
     - '2016-04-12 19:05:54.206472'
+    - 
   - - '63'
     - Task
     - '179'
@@ -15095,6 +15286,7 @@ snapshots:
       comments go here."}]}]}'
     - '2016-04-12 19:05:54.218481'
     - '2016-04-12 19:05:54.218481'
+    - 
   - - '64'
     - Task
     - '178'
@@ -15107,6 +15299,7 @@ snapshots:
       1"},{"name":"caption","type":"text","value":null},{"name":"id","value":121,"type":"integer"}]}]}'
     - '2016-04-12 19:05:54.230517'
     - '2016-04-20 19:57:15.088468'
+    - 
   - - '65'
     - Task
     - '177'
@@ -15127,6 +15320,7 @@ snapshots:
       that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
     - '2016-04-12 19:05:54.23844'
     - '2016-04-12 19:05:54.23844'
+    - 
   - - '66'
     - Task
     - '176'
@@ -15140,6 +15334,7 @@ snapshots:
       are from the XXX study whose authors may be contacted at XXX","attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
     - '2016-04-12 19:05:54.244174'
     - '2016-04-12 19:05:54.244174'
+    - 
   - - '67'
     - Task
     - '174'
@@ -15156,6 +15351,7 @@ snapshots:
       forgot I have a competing interest. I''m reviewing a paper on this same topic.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
     - '2016-04-12 19:05:54.247847'
     - '2016-04-12 19:05:54.247847'
+    - 
   - - '68'
     - Task
     - '172'
@@ -15165,6 +15361,7 @@ snapshots:
     - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
     - '2016-04-12 19:05:54.251117'
     - '2016-04-12 19:05:54.251117'
+    - 
   - - '69'
     - Task
     - '171'
@@ -15209,6 +15406,7 @@ snapshots:
       Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
     - '2016-04-12 19:05:54.264846'
     - '2016-04-12 19:05:54.264846'
+    - 
   - - '70'
     - Task
     - '170'
@@ -15219,6 +15417,7 @@ snapshots:
       cat"},{"name":"publishable","type":"boolean","value":true}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
+    - 
   - - '71'
     - Task
     - '182'
@@ -15235,6 +15434,7 @@ snapshots:
       Prof"},{"name":"affiliation","type":"text","value":"ABC University"}]}]}'
     - '2016-04-12 18:55:57.423837'
     - '2016-04-12 18:55:57.423837'
+    - 
   - - '72'
     - Task
     - '182'
@@ -15250,6 +15450,7 @@ snapshots:
       recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:00:20.284162'
     - '2016-04-12 19:00:20.284162'
+    - 
   - - '73'
     - Task
     - '182'
@@ -15262,6 +15463,7 @@ snapshots:
       oppose this reviewer. Along with additional comments.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Robert"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":"B"},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:02:46.817923'
     - '2016-04-12 19:02:46.817923'
+    - 
   - - '74'
     - Task
     - '182'
@@ -15278,6 +15480,7 @@ snapshots:
       Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
+    - 
 
 ---
 tahi_standard_tasks_funders:

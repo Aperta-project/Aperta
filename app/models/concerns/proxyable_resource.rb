@@ -39,17 +39,6 @@ module ProxyableResource
     end
   end
 
-  def create_resource_token!
-    file_versions = file.versions.keys
-    default_url = file.path
-    version_urls = Hash[file_versions.map do |k|
-      [k, file.versions[k].path]
-    end]
-    ResourceToken.create!(owner: self,
-                          default_url: default_url,
-                          version_urls: version_urls)
-  end
-
   private
 
   def cache_buster_value

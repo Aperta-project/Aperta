@@ -46,6 +46,17 @@ class Attachment < ActiveRecord::Base
     end
   end
 
+  def create_resource_token!
+    file_versions = file.versions.keys
+    default_url = file.path
+    version_urls = Hash[file_versions.map do |k|
+      [k, file.versions[k].path]
+    end]
+    ResourceToken.create!(owner: self,
+                          default_url: default_url,
+                          version_urls: version_urls)
+  end
+
   def destroy_old_resource_token!
     return true if snapshotted? || !resource_token
     resource_token.destroy!

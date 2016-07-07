@@ -6,6 +6,7 @@ describe Figure, redis: true do
     with_aws_cassette('attachment') do
       FactoryGirl.create(
         :figure,
+        :with_resource_token,
         file: File.open('spec/fixtures/yeti.tiff'),
         status: Figure::STATUS_DONE
       )
@@ -24,7 +25,7 @@ describe Figure, redis: true do
   end
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
-    subject(:figure) { FactoryGirl.create(:figure, owner: paper) }
+    subject(:figure) { FactoryGirl.create(:figure, :with_resource_token, owner: paper) }
     let(:paper) { FactoryGirl.create(:paper) }
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
@@ -149,10 +150,10 @@ describe Figure, redis: true do
       figure.destroy!
     end
 
-    it 'triggers if the file is updated' do
+    it 'triggers if the file is downloaded' do
       expect(figure).to receive(:insert_figures!)
-      with_aws_cassette('figure') do
-        figure.update!(file: File.open('spec/fixtures/yeti.jpg'))
+      with_aws_cassette('attachment') do
+        figure.download!('http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg')
       end
     end
   end

@@ -9,11 +9,10 @@ class ResourceToken < ActiveRecord::Base
   belongs_to :owner, polymorphic: true
 
   def url(version = nil)
-    if version
-      chosen_url = version_urls[version.to_s]
-    else
-      chosen_url = default_url
+    chosen_url = default_url
+    chosen_url = version_urls[version.to_s] if version
+    if chosen_url
+      owner_type.constantize.authenticated_url_for_key(chosen_url)
     end
-    owner_type.constantize.authenticated_url_for_key chosen_url
   end
 end

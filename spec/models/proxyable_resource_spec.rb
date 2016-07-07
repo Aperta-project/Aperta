@@ -1,11 +1,14 @@
 require 'rails_helper'
 
 describe ProxyableResource, redis: true do
-  let(:file) do
+  subject(:file) do
     with_aws_cassette 'supporting_info_files_controller' do
       # SupportingInformationFile includes ProxyableResource
-      FactoryGirl.create :supporting_information_file,
-                         file: File.open('spec/fixtures/yeti.tiff')
+      FactoryGirl.create(
+        :supporting_information_file,
+        :with_resource_token,
+        file: File.open('spec/fixtures/yeti.tiff')
+      )
     end
   end
   let(:token) { file.resource_token.token }
@@ -38,6 +41,7 @@ describe ProxyableResource, redis: true do
       expect(file.non_expiring_proxy_url(cache_buster: true)).to eq url
     end
   end
+
   describe '#proxyable_url' do
     context 'without version' do
       it 'returns relative url by default when proxy requested' do
@@ -64,15 +68,6 @@ describe ProxyableResource, redis: true do
       it 'returns immediate aws url when requested with version' do
         expect(file.proxyable_url(version: :detail, is_proxied: false)).to include('detail_')
       end
-    end
-  end
-  describe 'creating resource tokens' do
-    it 'creates a new resource token when creating a new attachment' do
-      before_count = ResourceToken.all.count
-      owner = FactoryGirl.create(:paper)
-      FactoryGirl.create(:attachment, owner: owner)
-      after_count = ResourceToken.all.count
-      expect(after_count - before_count).to eq(1)
     end
   end
 end

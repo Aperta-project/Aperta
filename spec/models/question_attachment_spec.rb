@@ -25,6 +25,7 @@ describe QuestionAttachment do
     include_examples 'attachment#download! sets the file_hash'
     include_examples 'attachment#download! sets the status'
     include_examples 'attachment#download! knows when to keep and remove s3 files'
+    include_examples 'attachment#download! manages resource tokens'
 
     it 'does not set the title' do
       expect do

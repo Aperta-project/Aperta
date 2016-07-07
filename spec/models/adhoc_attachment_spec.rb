@@ -26,6 +26,7 @@ describe AdhocAttachment do
     include_examples 'attachment#download! sets title to file name'
     include_examples 'attachment#download! sets the status'
     include_examples 'attachment#download! knows when to keep and remove s3 files'
+    include_examples 'attachment#download! manages resource tokens'
   end
 
   describe "#image" do

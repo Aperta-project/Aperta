@@ -127,3 +127,27 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
     end
   end
 end
+
+RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
+  describe 'managing resource tokens' do
+    before do
+      subject || fail('The calling example was expected to set up the subject, but it did not.')
+      url || fail('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    let(:resource_token) { subject.resource_token }
+
+    it 'creates a resource token with URLs for each version of the file' do
+      expect do
+        subject.download!(url)
+      end.to change { subject.resource_tokens.count }.by 1
+
+      expect(resource_token.default_url).to eq(subject.file.store_path)
+      subject.file.versions.keys.each do |version|
+        resource_token_version_url = resource_token.version_urls[version.to_s]
+        expect(resource_token_version_url).to eq \
+          subject.file.versions[version.to_sym].store_path
+      end
+    end
+  end
+end

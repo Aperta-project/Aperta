@@ -133,6 +133,10 @@ RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
     before do
       subject || fail('The calling example was expected to set up the subject, but it did not.')
       url || fail('The calling example was expected to set up a :url, but it did not.')
+
+      # we don't want any resource tokens to exist for these shared examples,
+      # but there's no need to bother the including test about this.
+      subject.resource_tokens.delete_all
     end
 
     it 'creates a resource token with URLs for each version of the file' do

@@ -2,93 +2,88 @@ require 'rails_helper'
 
 describe ResourceProxyController do
   let(:example_token) { 'proxy_token' }
-  let(:aws_url) { 'https://awsurl.example.com' }
-  let(:preview_url) { 'https://awsurl.example.com/preview' }
-  let(:detail_url) { 'https://awsurl.example.com/detail' }
+  let(:resource_url) { 'https://example.com/some/s3/key' }
   let(:resource_token) do
-    FactoryGirl.build_stubbed :resource_token,
-      owner: attachment,
-      default_url: aws_url,
-      version_urls: {preview: preview_url, detail: detail_url}
+    FactoryGirl.build_stubbed(:resource_token, owner: attachment)
   end
   let(:attachment) { FactoryGirl.build_stubbed :attachment }
 
+  before do
+    allow(ResourceToken).to receive(:find_by!)
+      .with(token: example_token)
+      .and_return resource_token
+    allow(resource_token).to receive(:url).and_return resource_url
+  end
+
   describe 'GET #url without version' do
-    let(:attachment_double) { double }
     subject do
       get :url, resource: :supporting_information_files, token: example_token
     end
 
-    it 'redirects to S3 URL for unversioned resources' do
-      allow(attachment).to receive(:url) { aws_url }
-      allow(ResourceToken)
-        .to receive(:find_by!)
-          .with(token: example_token) { resource_token }
-
-      expect(subject).to redirect_to(aws_url)
+    it 'redirects to the ResourceToken#url' do
+      expect(subject).to redirect_to(resource_url)
     end
   end
 
   describe 'GET #url with version' do
-    let(:attachment_double) { double }
-    let(:url_double) { double }
-    let(:subject) do
-      get :url,
-          resource: :supporting_information_files,
-          token: example_token,
-          version: version
+    subject do
+      get(
+        :url,
+        resource: :supporting_information_files,
+        token: example_token,
+        version: 'preview'
+      )
+    end
+    let(:preview_url) { 'https://example.com/s3/key/preview' }
+
+    before do
+      allow(resource_token).to receive(:url)
+        .with('preview')
+        .and_return preview_url
     end
 
-    describe 'preview version' do
-      let(:version) { :preview }
-      it 'redirects to S3 URL for preview version resources' do
-        allow(ResourceToken)
-          .to receive(:find_by!)
-            .with(token: example_token) { resource_token }
-        expect(subject).to redirect_to(preview_url)
-      end
-    end
-
-    describe 'detail version' do
-      let(:version) { :detail }
-      it 'redirects to S3 URL for preview version resources' do
-        allow(ResourceToken)
-          .to receive(:find_by!)
-            .with(token: example_token) { resource_token }
-
-        expect(subject).to redirect_to(detail_url)
-      end
+    it 'redirects to the ResourceToken#url(version)' do
+      expect(subject).to redirect_to(preview_url)
     end
   end
 
-  describe 'GET #url with non-existant token' do
+  describe 'GET #url with non-existent token' do
     subject do
-      get :url,
-          resource: :supporting_information_files,
-          token: example_token,
-          version: :preview
+      get(
+        :url,
+        resource: :supporting_information_files,
+        token: example_token
+      )
+    end
+
+    before do
+      allow(ResourceToken).to receive(:find_by!)
+        .with(token: example_token)
+        .and_raise ActiveRecord::RecordNotFound
     end
 
     it 'returns an HTTP 404' do
-      expect(ResourceToken)
-        .to receive(:find_by!)
-          .with(token: example_token) { fail ActiveRecord::RecordNotFound }
       expect(subject.status).to eq 404
     end
   end
 
-  describe 'GET #url with a good token, but non-existant version' do
+  describe 'GET #url with a good token, but non-existent version' do
     subject do
-      get :url,
-          resource: :supporting_information_files,
-          token: example_token,
-          version: :bogus_version
+      get(:url,
+        resource: :supporting_information_files,
+        token: example_token,
+        version: :bogus_version
+      )
+    end
+
+    before do
+      allow(resource_token).to receive(:url).and_return nil
     end
 
     it 'returns an HTTP 404' do
-      expect(ResourceToken)
-        .to receive(:find_by!)
-          .with(token: example_token) { resource_token }
+      expect(ResourceToken).to receive(:find_by!)
+        .with(token: example_token)
+        .and_return resource_token
       expect(subject.status).to eq 404
     end
   end

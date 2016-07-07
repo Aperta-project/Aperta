@@ -17,10 +17,7 @@ class Figure < Attachment
 
   def download!(url)
     super(url)
-    update_attributes!(
-      title: build_title,
-      status: STATUS_DONE
-    )
+    update_attributes!(title: build_title)
   end
 
   def alt

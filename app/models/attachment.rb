@@ -39,6 +39,7 @@ class Attachment < ActiveRecord::Base
     file.download! url
     self.file_hash = Digest::SHA256.hexdigest(file.file.read)
     self.s3_dir = file.generate_new_store_dir
+    self.status = STATUS_DONE
     Attachment.transaction do
       save!
       destroy_old_resource_token!

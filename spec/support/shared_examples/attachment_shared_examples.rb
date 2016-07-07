@@ -115,7 +115,7 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
     end
 
     it 'is removed when it has never been snapshotted' do
-      expect(subject).to receive(:remove_previously_stored_file).twice
+      expect(subject).to receive(:remove_previously_stored_file)
       subject.download!(url_2)
     end
 

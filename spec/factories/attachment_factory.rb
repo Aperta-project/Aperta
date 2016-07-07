@@ -9,6 +9,10 @@ FactoryGirl.define do
       attachment['file'] ||= 'factory-test-file.jpg'
     end
 
+    before :create do |attachment|
+      attachment.owner ||= FactoryGirl.create(:task)
+    end
+
     trait :with_resource_token do
       after :build do |attachment|
         attachment.create_resource_token!

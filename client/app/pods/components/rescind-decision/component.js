@@ -12,7 +12,9 @@ export default Ember.Component.extend({
 
   classNames: ['rescind-decision'],
   classNameBindings: ['hidden'],
-  hidden: Ember.computed.or('decision.registeredAt', 'decision.rescinded'),
+  notDecision: Ember.computed.not('decision'),
+  hidden: Ember.computed.or(
+    'notDecision', 'decision.registeredAt', 'decision.rescinded'),
 
   actions: {
     cancel() {

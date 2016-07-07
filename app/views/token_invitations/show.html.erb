@@ -2,14 +2,14 @@
   <div class="pending-invitation">
     <h2 class='invitation-metadata'><%= @invitation.invitee_role %> Invitation | 
       <span class="date"><%= @invitation.created_at.strftime('%b %d, %Y') %></span></h2>
-    <h3 class="dashboard-paper-title"><img src='/images/manuscript-icon.svg' /> <%= @paper.title %></h3>
+    <h3 class="dashboard-paper-title"><img src='/images/manuscript-icon.svg' /> <%= @paper.title.html_safe %></h3>
       <% if @invitation.information %>
         <h4>Authors</h4>
         <p class="preserve-line-breaks"><%= @invitation.information %></p>
       <% end %>
       <% if @paper.abstract %>
         <h4>Abstract</h4>
-        <p><%= @paper.abstract %></p>
+        <p><%= @paper.abstract.html_safe %></p>
       <% end %>
     <%= form_for @invitation, url: decline_invitation_path(@invitation.token), method: 'post'  do |f| %>
       <%= link_to "Accept Reviewer Invitation", root_path, class: 'button-primary button--green' %>

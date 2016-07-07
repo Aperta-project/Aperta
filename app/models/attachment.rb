@@ -15,6 +15,15 @@ class Attachment < ActiveRecord::Base
 
   mount_snapshottable_uploader :file, AttachmentUploader
 
+  def self.authenticated_url_for_key(key)
+    uploader = new.file
+    CarrierWave::Storage::Fog::File.new(
+      uploader,
+      uploader.send(:storage),
+      key
+    ).url
+  end
+
   belongs_to :owner, polymorphic: true
   belongs_to :paper
 
@@ -24,10 +33,22 @@ class Attachment < ActiveRecord::Base
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
 
+  after_destroy :destroy_old_resource_token!
+
   def download!(url)
     file.download! url
     self.file_hash = Digest::SHA256.hexdigest(file.file.read)
     self.s3_dir = file.generate_new_store_dir
+    Attachment.transaction do
+      save!
+      destroy_old_resource_token!
+      create_resource_token!
+    end
+  end
+
+  def destroy_old_resource_token!
+    return true if snapshotted? || !resource_token
+    resource_token.destroy!
   end
 
   def url(*args)

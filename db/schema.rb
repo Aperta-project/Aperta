@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630213904) do
+ActiveRecord::Schema.define(version: 20160630220443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -547,7 +547,12 @@ ActiveRecord::Schema.define(version: 20160630213904) do
     t.integer  "owner_id"
     t.string   "owner_type"
     t.string   "token"
+    t.jsonb    "version_urls", default: {}, null: false
+    t.string   "default_url"
   end
+
+  add_index "resource_tokens", ["owner_id", "owner_type"], name: "index_resource_tokens_on_owner_id_and_owner_type", using: :btree
+  add_index "resource_tokens", ["token"], name: "index_resource_tokens_on_token", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false

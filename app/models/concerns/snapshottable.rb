@@ -3,7 +3,7 @@
 #
 # A class and all of its instances can be marked as
 # snapshottable by setting <tt>self.snapshottable = true</tt>. The default
-# value if <tt>false</tt>. This value can be overridden at the class
+# value is <tt>false</tt>. This value can be overridden at the class
 # or instance level.
 #
 module Snapshottable
@@ -19,7 +19,7 @@ module Snapshottable
 
   class_methods do
     # +snapshottable_uploader+ will prevent carrierwave from removing a
-    # mounted file/attachment if it the including model has been snapshotted.
+    # mounted file/attachment if the including model has been snapshotted.
     def mount_snapshottable_uploader(mounted_as, uploader_class)
       mount_uploader mounted_as, uploader_class
       carrierwave_removal_method = "remove_previously_stored_#{mounted_as}".to_sym

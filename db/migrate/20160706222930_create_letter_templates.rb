@@ -4,6 +4,7 @@ class CreateLetterTemplates < ActiveRecord::Migration
       t.string :text
       t.string :template_decision
       t.string :to
+      t.string :subject
       t.text :letter
       t.integer :journal_id
       t.timestamps

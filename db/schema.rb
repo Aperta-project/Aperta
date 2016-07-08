@@ -328,6 +328,7 @@ ActiveRecord::Schema.define(version: 20160720010120) do
     t.string   "text"
     t.string   "template_decision"
     t.string   "to"
+    t.string   "subject"
     t.text     "letter"
     t.integer  "journal_id"
     t.datetime "created_at"

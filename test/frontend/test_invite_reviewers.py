@@ -109,7 +109,7 @@ class InviteReviewersCardTest(CommonTest):
     self.cas_login(email=reviewer_login['email'])
     time.sleep(2)
     dashboard_page.click_view_invites_button()
-    invite_response = dashboard_page.accept_or_reject_invitation(manuscript_title)
+    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
     if invite_response == 'Accept':

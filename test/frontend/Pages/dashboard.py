@@ -9,6 +9,7 @@ import uuid
 
 from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
+from loremipsum import generate_paragraph
 
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
@@ -108,7 +109,13 @@ class DashboardPage(AuthenticatedPage):
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
     # Reviewer invitation modal
-    self._reviewer_invitation_modal_title = (By.CSS_SELECTOR, 'h4.feedback-reviewer-invitation')
+    self._fb_modal_title = (By.CSS_SELECTOR, 'h4.feedback-reviewer-invitation')
+    self._fb_modal_ms_title = (By.CSS_SELECTOR, 'h3.feedback-invitation-title')
+    self._fb_modal_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
+    self._fb_modal_request_labels = (By.CLASS_NAME, 'feedback-request')
+    self._fb_modal_reasons = (By.CSS_SELECTOR, 'textarea.declineReason')
+    self._fb_modal_suggestions = (By.CSS_SELECTOR, 'textarea.reviewerSuggestions')
+    self._fb_modal_send_fb_btn = (By.CSS_SELECTOR, 'button.reviewer-send-feedback')
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -152,7 +159,7 @@ class DashboardPage(AuthenticatedPage):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
-    :return: decision
+    :return: A tuple with the decision and ...
     """
     choices = ['Accept', 'Reject']
     response = random.choice(choices)
@@ -169,16 +176,28 @@ class DashboardPage(AuthenticatedPage):
                                            .format(title.encode('utf8')))
       if response == 'Accept':
         yes_btn = listing.find_element(*self._invite_yes_btn)
-        btn = yes_btn
+        yes_btn.click()
       else:
         no_btn = listing.find_element(*self._invite_no_btn)
-        btn = no_btn
-
-      btn.click()
-      time.sleep(1)
-      if response == 'Reject':
+        no_btn.click()
+        time.sleep(1)
         self.validate_reviewer_invitation_response_styles(title)
-    return response
+        # Enter reason
+        # rnd
+        reasons = generate_paragraph()[2]
+        suggestions = generate_paragraph()[2]
+
+        self._get(self._fb_modal_reasons).send_keys(reasons)
+        self._get(self._fb_modal_suggestions).send_keys(suggestions)
+
+        time.sleep(1)
+        
+        self._get(self._fb_modal_send_fb_btn).click()
+        time.sleep(1)
+
+
+
+    return response, reasons, suggestions
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """
@@ -215,17 +234,64 @@ class DashboardPage(AuthenticatedPage):
 
   def validate_reviewer_invitation_response_styles(self, paper_title):
     """
-
+    Validates elements in feedback form of reviewer_invitation_response
+    :param paper_title: Title of the submitted paper
     """
-    reviewer_invitation_modal_title = self._get(self._reviewer_invitation_modal_title)
-    assert reviewer_invitation_modal_title.text == 'Reviewer Invitation'
-    assert reviewer_invitation_modal_title.value_of_css_property('font-size') == '18px'
-    assert reviewer_invitation_modal_title.value_of_css_property('font-style') == 'normal'
-    assert reviewer_invitation_modal_title.value_of_css_property('line-height') == '19.8px'
-    assert reviewer_invitation_modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    feedback_modal_title = self._get(self._fb_modal_title)
+    assert feedback_modal_title.text == 'Reviewer Invitation'
+    assert feedback_modal_title.value_of_css_property('font-size') == '18px'
+    assert feedback_modal_title.value_of_css_property('font-style') == 'normal'
+    assert feedback_modal_title.value_of_css_property('line-height') == '19.8px'
+    assert feedback_modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     # paper_title
+    assert self._get(self._dashboard_paper_icon)
+    fb_modal_ms_title = self._get(self._fb_modal_ms_title)
+    assert fb_modal_ms_title.text.strip() == paper_title.strip(), \
+        (fb_modal_ms_title.text.strip(), paper_title.strip())
+    assert fb_modal_ms_title.value_of_css_property('font-size') == '24px'
+    assert fb_modal_ms_title.value_of_css_property('font-style') == 'normal', \
+        fb_modal_ms_title.value_of_css_property('font-style')
+    assert fb_modal_ms_title.value_of_css_property('line-height') == '26.4px', \
+        fb_modal_ms_title.value_of_css_property('line-height')
+    assert fb_modal_ms_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        fb_modal_ms_title.value_of_css_property('color')
+    fb_modal_ms_decline_notice = self._get(self._fb_modal_ms_decline_notice)
+    assert fb_modal_ms_decline_notice.text == 'You\'ve successfully declined this invitation.'\
+        ' We\'re always trying to improve our invitation process and would appreciate your '\
+        'feedback below.', fb_modal_ms_decline_notice.text
+    assert fb_modal_ms_decline_notice.value_of_css_property('font-size') == '18px', \
+        fb_modal_ms_decline_notice.value_of_css_property('font-size')
+    assert fb_modal_ms_decline_notice.value_of_css_property('font-style') == 'normal', \
+        fb_modal_ms_decline_notice.value_of_css_property('font-style')
+    assert fb_modal_ms_decline_notice.value_of_css_property('line-height') == '19.8px'
+    assert fb_modal_ms_decline_notice.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        fb_modal_ms_decline_notice.value_of_css_property('color')
+    labels = self._gets(self._fb_modal_request_labels)
+    assert labels[0].text == 'Please give your reasons for declining this invitation.', \
+        labels[0].text
+    assert labels[0].value_of_css_property('font-size') == '14px', \
+        labels[0].value_of_css_property('font-size')
+    assert labels[0].value_of_css_property('font-style') == 'normal', \
+        labels[0].value_of_css_property('font-style')
+    assert labels[0].value_of_css_property('line-height') == '20px', \
+        labels[0].value_of_css_property('line-height')
+    assert labels[0].value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        labels[0].value_of_css_property('color')
+    assert labels[1].text == 'We would value your suggestions of alternative reviewers for '\
+        'this manuscript.', labels[1].text
+    assert labels[1].value_of_css_property('font-size') == '14px', \
+        labels[1].value_of_css_property('font-size')
+    assert labels[1].value_of_css_property('font-style') == 'normal', \
+        labels[1].value_of_css_property('font-style')
+    assert labels[1].value_of_css_property('line-height') == '20px', \
+        labels[1].value_of_css_property('line-height')
+    assert labels[1].value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        labels[1].value_of_css_property('color')
+    fb_modal_suggestions = self._get(self._fb_modal_suggestions)
+    assert fb_modal_suggestions.get_attribute('placeholder') == 'Please provide reviewers\' names,'\
+        ' institutions, and email adresses if known.', \
+        fb_modal_suggestions.get_attribute('placeholder')
     return None
-
 
   def validate_invite_dynamic_content(self, username):
     """

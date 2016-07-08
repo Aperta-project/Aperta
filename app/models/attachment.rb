@@ -46,6 +46,8 @@ class Attachment < ActiveRecord::Base
     refresh_resource_token!(file)
     @downloading = false
     on_download_complete
+  rescue Exception => ex
+    on_download_failed(ex)
   ensure
     @downloading = false
   end
@@ -62,6 +64,10 @@ class Attachment < ActiveRecord::Base
   def on_download_complete
     # no-op. Sweet hook method to add in a subclass to perform actions after an
     # attachment is downloaded.
+  end
+
+  def on_download_failed(exception)
+    fail exception
   end
 
   def url(*args)

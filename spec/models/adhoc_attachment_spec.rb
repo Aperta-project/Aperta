@@ -20,6 +20,7 @@ describe AdhocAttachment do
     subject(:attachment) { FactoryGirl.create(:adhoc_attachment, :with_task) }
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
+    include_examples 'attachment#download! raises exception when it fails'
     include_examples 'attachment#download! stores the file'
     include_examples 'attachment#download! caches the s3 store_dir'
     include_examples 'attachment#download! sets the file_hash'

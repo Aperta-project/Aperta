@@ -1,3 +1,21 @@
+RSpec.shared_examples_for 'attachment#download! raises exception when it fails' do
+  describe 'when download! fails' do
+    before do
+      subject || fail('The calling example was expected to set up the subject, but it did not.')
+      url || fail('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    it 'it raises the exception that caused it to fail' do
+      allow(subject.file).to receive(:download!)
+        .and_raise(Exception, "Download failed!")
+
+      expect do
+        subject.download!(url)
+      end.to raise_error(Exception, "Download failed!")
+    end
+  end
+end
+
 RSpec.shared_examples_for 'attachment#download! sets the file_hash' do
   describe 'the file_hash' do
     before do

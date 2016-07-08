@@ -15,7 +15,7 @@ FactoryGirl.define do
 
     trait :with_resource_token do
       after :build do |attachment|
-        attachment.create_resource_token!
+        attachment.build_resource_token(attachment.file)
       end
     end
   end

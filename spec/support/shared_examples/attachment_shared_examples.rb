@@ -137,12 +137,13 @@ RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
       # we don't want any resource tokens to exist for these shared examples,
       # but there's no need to bother the including test about this.
       subject.resource_tokens.delete_all
+
     end
 
     it 'creates a resource token with URLs for each version of the file' do
       expect do
         subject.download!(url)
-      end.to change { subject.resource_tokens.count }.by 1
+      end.to change { subject.reload.resource_tokens.count }.by 1
 
       resource_token = subject.resource_token
       expect(resource_token.default_url).to eq(subject.file.store_path)

@@ -8,6 +8,7 @@ import time
 import uuid
 
 from psycopg2 import DatabaseError
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from loremipsum import generate_paragraph
 
@@ -159,45 +160,42 @@ class DashboardPage(AuthenticatedPage):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
-    :return: A tuple with the decision and ...
+    :return: A tuple with the decision and an ID for reasons and suggestions
     """
-    choices = ['Accept', 'Reject']
-    response = random.choice(choices)
-    response = 'Reject'
+    response = random.choice(['Accept', 'Reject'])
     invite_listings = self._gets(self._view_invites_invite_listing)
+    reasons = ''
+    suggestions = ''
     for listing in invite_listings:
       try:
         # Remember to use single quotes outside to ensure you don't run afoul of
         #  a single quote in the title - More often, double-quotes in titles are
         #  rendered as smart quotes (unicode) so don't as often cause problems.
-        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
+        listing.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
       except UnicodeEncodeError:
-        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'
+        listing.find_element_by_xpath('//*[contains(text(), "{0}")]'
                                            .format(title.encode('utf8')))
-      if response == 'Accept':
-        yes_btn = listing.find_element(*self._invite_yes_btn)
-        yes_btn.click()
+      except NoSuchElementException:
+        pass
       else:
-        no_btn = listing.find_element(*self._invite_no_btn)
-        no_btn.click()
-        time.sleep(1)
-        self.validate_reviewer_invitation_response_styles(title)
-        # Enter reason
-        # rnd
-        reasons = generate_paragraph()[2]
-        suggestions = generate_paragraph()[2]
-
-        self._get(self._fb_modal_reasons).send_keys(reasons)
-        self._get(self._fb_modal_suggestions).send_keys(suggestions)
-
-        time.sleep(1)
-        
-        self._get(self._fb_modal_send_fb_btn).click()
-        time.sleep(1)
-
-
-
-    return response, reasons, suggestions
+        if response == 'Accept':
+          yes_btn = listing.find_element(*self._invite_yes_btn)
+          yes_btn.click()
+        else:
+          no_btn = listing.find_element(*self._invite_no_btn)
+          no_btn.click()
+          time.sleep(1)
+          self.validate_reviewer_invitation_response_styles(title)
+          # Enter reason and suggestions
+          reasons = str(uuid.uuid4())
+          suggestions = str(uuid.uuid4())
+          self._get(self._fb_modal_reasons).send_keys(reasons + generate_paragraph()[2])
+          self._get(self._fb_modal_suggestions).send_keys(suggestions + generate_paragraph()[2])
+          time.sleep(1)
+          self._get(self._fb_modal_send_fb_btn).click()
+          # Time to get sure information is sent
+          time.sleep(2)
+        return response, (reasons, suggestions)
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """

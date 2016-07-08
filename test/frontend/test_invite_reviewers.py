@@ -112,26 +112,34 @@ class InviteReviewersCardTest(CommonTest):
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
-    if invite_response == 'Accept':
-      wombat_journal_id = PgSQL().query('SELECT id '
-                                        'FROM journals '
-                                        'WHERE name = \'PLOS Wombat\';')[0][0]
-      reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'areviewer\';')[0][0]
-      reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                            'name = \'Reviewer\';',
-                                            (wombat_journal_id,))[0][0]
+    wombat_journal_id = PgSQL().query('SELECT id '
+                                      'FROM journals '
+                                      'WHERE name = \'PLOS Wombat\';')[0][0]
+    reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'areviewer\';')[0][0]
+    reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                      'name = \'Reviewer\';',
+                                      (wombat_journal_id,))[0][0]
+    try:
       test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
-                                    'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
-                                    (reviewer_user_id, paper_id))[0][0]
+                                  'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
+                                  (reviewer_user_id, paper_id))[0][0]
+    except IndexError:
+      test_for_role = False
+    if invite_response == 'Accept':
+      print 'test_for_role in ACCEPT: ', test_for_role
       assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
                                                      'value: {1}'.format(test_for_role,
                                                                          reviewer_role_for_env)
-    if invite_response == 'Reject':
+    elif invite_response == 'Reject':
+      assert not test_for_role
       # search for reply
-      pass
-
+      reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions FROM '
+          'invitations WHERE invitee_id = %s AND state=\'rejected\' AND invitee_role '
+          '=\'Reviewer\' AND decline_reason LIKE %s AND reviewer_suggestions LIKE %s;',
+          (reviewer_user_id, response_data[0]+'%', response_data[1]+'%'))[0]
+      assert response_data[0] in reasons
+      assert response_data[1] in suggestions
     workflow_page.logout()
-
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
     self.cas_login(email=editorial_user['email'])

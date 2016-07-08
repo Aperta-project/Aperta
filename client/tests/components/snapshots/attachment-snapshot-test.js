@@ -105,9 +105,7 @@ test('when file is present and its fileHash has changed, it is diffed', function
   });
 });
 
-function testProperty(property, options){
-  options = options || {};
-
+function testProperty(property, options = {}){
   let cssClass = options.cssClass || property;
   let diffType = options.diffType;
 

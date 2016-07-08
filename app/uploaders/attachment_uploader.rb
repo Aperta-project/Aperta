@@ -32,11 +32,8 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # rubocop:disable Metrics/AbcSize
   def convert_image(size)
-    temp_file = MiniMagick::Utilities.tempfile(".#{format}")
-
-    if needs_transcoding?(file)
-      temp_file = MiniMagick::Utilities.tempfile(".png")
-    end
+    extension = needs_transcoding?(file) ? ".png" : ".#{format}"
+    temp_file = MiniMagick::Utilities.tempfile(extension)
 
     MiniMagick::Tool::Convert.new do |convert|
       convert.merge! density_arguments
@@ -48,7 +45,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     end
 
     FileUtils.cp(temp_file.path, current_path)
-    file.content_type = "image/png" if format == "png"
+    file.content_type = MiniMagick::Image.open(current_path).mime_type
   end
 
   def image
@@ -74,7 +71,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   def format
-    return unless image.details['Base filename']
+    fail 'Cannot identify image format' unless image.details['Base filename']
     image.details['Base filename'].split('.').last
   end
 

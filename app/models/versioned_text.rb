@@ -13,9 +13,6 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
-  scope :submitted, -> { versioned }
-  scope :unsubmitted, -> { unversioned }
-
   mount_uploader :source, SourceUploader # CarrierWave obj
 
   before_create :insert_figures

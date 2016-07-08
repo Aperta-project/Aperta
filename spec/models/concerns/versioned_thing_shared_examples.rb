@@ -25,7 +25,7 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
 
   describe '#version_desc' do
     it 'should return the versioned things in descending version order' do
-      things = paper.send(@things).versioned
+      things = paper.send(@things).completed
       expect(things.version_desc.to_a).to match([version_0_1, version_0_0])
     end
 
@@ -38,7 +38,7 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
 
   describe '#version_asc' do
     it 'should return the versioned things in ascending version order' do
-      things = paper.send(@things).versioned
+      things = paper.send(@things).completed
       expect(things.version_asc.to_a).to match([version_0_0, version_0_1])
     end
 

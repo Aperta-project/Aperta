@@ -18,9 +18,6 @@ class Decision < ActiveRecord::Base
   has_many :invitations
   has_many :nested_question_answers
 
-  scope :registered, -> { versioned }
-  scope :unregistered, -> { unversioned }
-
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
   def register!(originating_task)

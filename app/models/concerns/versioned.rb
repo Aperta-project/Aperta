@@ -4,7 +4,7 @@ module Versioned
   included do
     scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
     scope :version_asc, -> { order('major_version ASC, minor_version ASC') }
-    scope :versioned, -> { where.not(major_version: nil) }
-    scope :unversioned, -> { where(major_version: nil) }
+    scope :completed, -> { where.not(major_version: nil) }
+    scope :drafts, -> { where(major_version: nil) }
   end
 end

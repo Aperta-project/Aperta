@@ -495,7 +495,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_submitted_version
-    versioned_texts.submitted.version_desc.first
+    versioned_texts.completed.version_desc.first
   end
 
   def draft

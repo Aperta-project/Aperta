@@ -71,7 +71,7 @@ class PapersController < ApplicationController
 
   def versioned_texts
     requires_user_can(:view, paper)
-    versions = paper.versioned_texts.submitted
+    versions = paper.versioned_texts.completed
       .includes(:submitting_user)
       .order(updated_at: :desc)
     respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'

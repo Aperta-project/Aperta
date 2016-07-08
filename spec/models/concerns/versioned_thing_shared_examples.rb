@@ -23,10 +23,26 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       minor_version: 1)
   end
 
+  let!(:version_0_2) do
+    FactoryGirl.create(
+      name.to_sym,
+      paper: paper,
+      major_version: 0,
+      minor_version: 2)
+  end
+
+  let!(:version_1_0) do
+    FactoryGirl.create(
+      name.to_sym,
+      paper: paper,
+      major_version: 1,
+      minor_version: 0)
+  end
+
   describe '#version_desc' do
     it 'should return the versioned things in descending version order' do
       things = paper.send(@things).completed
-      expect(things.version_desc.to_a).to match([version_0_1, version_0_0])
+      expect(things.version_desc.to_a).to eq([version_1_0, version_0_2, version_0_1, version_0_0])
     end
 
     it 'should return an unversioned thing first' do
@@ -39,7 +55,7 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
   describe '#version_asc' do
     it 'should return the versioned things in ascending version order' do
       things = paper.send(@things).completed
-      expect(things.version_asc.to_a).to match([version_0_0, version_0_1])
+      expect(things.version_asc.to_a).to eq([version_0_0, version_0_1, version_0_2, version_1_0])
     end
 
     it 'should return an unversioned thing last' do

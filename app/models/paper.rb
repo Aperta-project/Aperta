@@ -33,7 +33,7 @@ class Paper < ActiveRecord::Base
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal
   has_many :activities, as: :subject
-  has_many :decisions, -> { order 'registered_at DESC' }, dependent: :destroy
+  has_many :decisions, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper

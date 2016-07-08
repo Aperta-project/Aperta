@@ -11,7 +11,7 @@ module ProxyableResource
   end
 
   def resource_token
-    resource_tokens.order('created_at DESC').limit(1).first
+    resource_tokens.order('created_at DESC').first
   end
 
   # makes a non expiring proxy url

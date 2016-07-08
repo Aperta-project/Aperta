@@ -81,19 +81,25 @@ describe PDFConverter do
 
     context 'when paper has figures' do
       let(:figure) { paper.figures.first }
-      let(:figure_img) { doc.css("img").first }
+      let(:figure_img) { doc.css('img').first }
+      let(:proxy_url) { 'http://some.proxy.url' }
+
       before do
-        paper.figures.create(
+        paper.figures.create!(
           resource_tokens: [ResourceToken.new],
           file: File.open('spec/fixtures/yeti.tiff'),
           status: Figure::STATUS_DONE
         )
+
+        allow(figure).to receive(:proxyable_url)
+          .with(version: :detail)
+          .and_return proxy_url
+
         paper.update_attributes(body: "<p>Figure 1.</p>")
       end
 
-      it 'replaces img src urls (which are normally proxied) with resolveable
-        urls' do
-        expect(figure_img['src']).to have_s3_url figure.proxyable_url(version: :detail)
+      it 'replaces img src urls (which are normally proxied) with resolveable urls' do
+        expect(figure_img['src']).to eq proxy_url
       end
 
       it 'has the proper css class to prevent figures spanning multiple lines' do

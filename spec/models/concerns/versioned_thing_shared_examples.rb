@@ -48,4 +48,12 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       expect(things.version_asc.last.minor_version).to be(nil)
     end
   end
+
+  describe 'creating a draft' do
+    it 'fails if a draft already exists' do
+      expect(paper.draft).not_to be(nil)
+      expect { paper.send(name.to_s.pluralize.to_sym).drafts.create! }
+        .to raise_exception(ActiveRecord::RecordInvalid)
+    end
+  end
 end

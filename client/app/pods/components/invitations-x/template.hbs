@@ -1,9 +1,9 @@
-<ul class="dashboard-open-invitations">
+<ul class='dashboard-open-invitations'>
   {{#each invitations as |invitation|}}
     {{#if invitation.pendingFeedback}}
       {{reviewer-invitation-feedback
           invitation=invitation
-          decline=(action "decline" invitation)
+          decline=(action 'decline' invitation)
       }}
     {{else}}
       <div class="pending-invitation">
@@ -18,8 +18,8 @@
             <h4>Abstract</h4>
             <p>{{{invitation.abstract}}}</p>
           {{/if}}
-          <button class="button-primary button--green" {{action "accept" invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
-          <button class="button-secondary button--green" {{action "acquireFeedback" invitation}}> Decline </button>
+          <button class='button-primary button--green invitation-accept' {{action 'accept' invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
+          <button class='button-secondary button--green invitation-decline' {{action 'acquireFeedback' invitation}}> Decline </button>
         </li>
       </div>
     {{/if}}

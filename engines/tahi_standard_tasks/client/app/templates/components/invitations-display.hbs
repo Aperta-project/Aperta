@@ -3,7 +3,7 @@
   {{invitation-detail-tbody
       invitations=latestDecisionInvitations
       classNames='active-invitations'
-      destroyAction=(action 'destroyInvitation' invitation)}}
+      destroyAction=(action 'destroyInvitation')}}
 
   {{#each previousDecisionsWithFilteredInvitations as |decision|}}
     <tr class='revision-human-number'>
@@ -13,7 +13,7 @@
     {{invitation-detail-tbody
         invitations=filteredInvitations
         classNames='expired-invitations'
-        destroyAction=(action 'destroyInvitation' invitation)}}
+        destroyAction=(action 'destroyInvitation')}}
   {{/each}}
 
 {{else}}
@@ -21,6 +21,6 @@
   {{invitation-detail-tbody
       invitations=invitations
       classNames='active-invitations'
-      destroyAction=(action 'destroyInvitation' invitation)}}
+      destroyAction=(action 'destroyInvitation')}}
 
 {{/if}}

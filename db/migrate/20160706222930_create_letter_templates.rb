@@ -1,5 +1,5 @@
 class CreateLetterTemplates < ActiveRecord::Migration
-  def change
+  def up
     create_table :letter_templates do |t|
       t.string :text
       t.string :template_decision
@@ -9,5 +9,11 @@ class CreateLetterTemplates < ActiveRecord::Migration
       t.integer :journal_id
       t.timestamps
     end
+
+    Rake::Task['data:migrate:letter_templates:populate'].invoke
+  end
+
+  def down
+    drop_table :letter_templates
   end
 end

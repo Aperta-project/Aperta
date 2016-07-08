@@ -89,20 +89,26 @@ describe EpubConverter do
       end
 
       context 'when paper has figures' do
+        let(:figure) { paper.figures.first }
+        let(:figure_img) { doc.css('img').first }
+        let(:proxy_url) { 'http://some.proxy.url' }
+
         before do
           paper.figures.create!(
             resource_tokens: [ResourceToken.new],
             file: File.open('spec/fixtures/yeti.tiff'),
             status: Figure::STATUS_DONE
           )
+
+          allow(figure).to receive(:proxyable_url)
+            .with(version: :detail)
+            .and_return proxy_url
+
+          paper.update_attributes(body: "<p>Figure 1.</p>")
         end
 
-        it 'has expirinig s3 URLs for the images' do
-          figure = paper.figures.first
-          paper.body = "<p>dammit donnie</p>"
-
-          img = doc.css("img").first
-          expect(img['src']).to eq figure.proxyable_url(version: :detail)
+        it 'has expiring s3 URLs for the images' do
+          expect(figure_img['src']).to eq proxy_url
         end
       end
     end

@@ -77,7 +77,7 @@ class S3Migration < ActiveRecord::Base
   end
 
   def s3object
-    response ||= storage.get_object(
+    @response ||= storage.get_object(
       ENV['S3_BUCKET'],
       source_url
     )

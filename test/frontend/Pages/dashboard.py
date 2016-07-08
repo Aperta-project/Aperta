@@ -235,6 +235,7 @@ class DashboardPage(AuthenticatedPage):
     Validates elements in feedback form of reviewer_invitation_response
     :param paper_title: Title of the submitted paper
     """
+    # TODO: Validate these asserts with ST
     feedback_modal_title = self._get(self._fb_modal_title)
     assert feedback_modal_title.text == 'Reviewer Invitation'
     assert feedback_modal_title.value_of_css_property('font-size') == '18px'

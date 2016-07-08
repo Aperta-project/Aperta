@@ -8,10 +8,8 @@ module ProxyableResource
 
     has_many :resource_tokens, as: :owner
     delegate :token, to: :resource_token
-  end
 
-  def resource_token
-    resource_tokens.order('created_at DESC').first
+    after_destroy :destroy_resource_token!
   end
 
   # makes a non expiring proxy url
@@ -37,6 +35,32 @@ module ProxyableResource
     else
       expiring_s3_url(version)
     end
+  end
+
+  def build_resource_token(resource)
+    resource_versions = resource.versions.keys
+    default_url = resource.path
+    version_urls = Hash[resource_versions.map do |k|
+      [k, resource.versions[k].path]
+    end]
+    resource_tokens.build(default_url: default_url, version_urls: version_urls)
+  end
+
+  def create_resource_token!(resource)
+    build_resource_token(resource).save!
+  end
+
+  def destroy_resource_token!
+    resource_token.destroy! if resource_token
+  end
+
+  def refresh_resource_token!(resource)
+    destroy_resource_token!
+    create_resource_token!(resource)
+  end
+
+  def resource_token
+    resource_tokens.order('created_at DESC').first
   end
 
   private

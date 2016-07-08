@@ -33,8 +33,6 @@ class Attachment < ActiveRecord::Base
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
 
-  after_destroy :destroy_old_resource_token!
-
   def download!(url)
     @downloading = true
     file.download! url
@@ -45,12 +43,16 @@ class Attachment < ActiveRecord::Base
     # Using save! instead of update_attributes because the above are not the
     # only attributes that have been updated. We want to persist all changes
     save!
-    destroy_old_resource_token!
-    create_resource_token!
+    refresh_resource_token!(file)
     @downloading = false
     on_download_complete
   ensure
     @downloading = false
+  end
+
+  def destroy_resource_token!
+    return if snapshotted?
+    super
   end
 
   def downloading?
@@ -60,22 +62,6 @@ class Attachment < ActiveRecord::Base
   def on_download_complete
     # no-op. Sweet hook method to add in a subclass to perform actions after an
     # attachment is downloaded.
-  end
-
-  def create_resource_token!
-    file_versions = file.versions.keys
-    default_url = file.path
-    version_urls = Hash[file_versions.map do |k|
-      [k, file.versions[k].path]
-    end]
-    ResourceToken.create!(owner: self,
-                          default_url: default_url,
-                          version_urls: version_urls)
-  end
-
-  def destroy_old_resource_token!
-    return true if snapshotted? || !resource_token
-    resource_token.destroy!
   end
 
   def url(*args)

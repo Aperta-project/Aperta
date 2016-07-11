@@ -692,6 +692,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def close_infobox(self):
     """Close the infobox element, if present"""
+    # Note due to APERTA-7210 the closer element is present but is z-ordered underneath
+    # another element and thus not visible or clickable at present.
+    time.sleep(1)
     try:
       infobox_closer = self._get(self._infobox_closer)
     except ElementDoesNotExistAssertionError:

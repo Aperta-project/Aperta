@@ -78,6 +78,10 @@ class ReviewerCandidatesCard(BaseCard):
   def validate_styles(self, user_object, paper_id):
     """
     Validate styles in the Title and Abstract Card
+    :param user_object: The user object for the user that was recommended or opposed for use in
+      validating the presented information
+    :param paper_id: db id of the paper, passed through to style validation for the card - used to
+      validate the card header items
     :return: void function
     """
     completed = self.completed_state()

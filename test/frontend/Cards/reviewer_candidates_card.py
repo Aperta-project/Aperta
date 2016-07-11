@@ -235,6 +235,10 @@ class ReviewerCandidatesCard(BaseCard):
   def check_initial_population(self, decision, reason):
     """
     Verify that the values populated in the form are those were submitted
+    :param decision: the decision that should be reflected in the card-based entry
+    :param reason: the reason given in the task for the decision - to ensure it is floated
+      accurately into the card.
     :return: void function
     """
+    # TODO: Implement this validation
     pass

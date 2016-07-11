@@ -7,49 +7,10 @@ describe DecisionsController do
     FactoryGirl.create(:paper)
   end
 
-  describe "#create" do
-    subject(:do_request) do
-      post :create,
-           format: :json,
-           decision: { paper_id: paper.id }
-    end
-
-    it_behaves_like "an unauthenticated json request"
-
-    context "a user is logged in who may not register decisions" do
-      before do
-        allow(user).to receive(:can?)
-          .with(:register_decision, paper)
-          .and_return false
-
-        stub_sign_in(user)
-      end
-
-      it "returns a 403" do
-        do_request
-        expect(response.status).to be(403)
-      end
-    end
-
-    context "a user is logged in who may register decisions" do
-      before do
-        allow(user).to receive(:can?)
-          .with(:register_decision, paper)
-          .and_return true
-
-        stub_sign_in(user)
-      end
-
-      it "creates a decision" do
-        expect { do_request }.to change { paper.decisions.count }.by 1
-      end
-    end
-  end
-
   describe "#update" do
     let(:new_letter) { "Positive Words in a Letter" }
     let(:new_verdict) { "accept" }
-    let(:decision) { paper.decisions.latest }
+    let(:decision) { paper.draft_decision }
 
     subject(:do_request) do
       put :update,
@@ -98,7 +59,7 @@ describe DecisionsController do
           task_id: task.id
     end
 
-    let(:decision) { paper.decisions.latest }
+    let(:decision) { paper.draft_decision }
     let(:task) do
       dub = double("Task", id: 3, paper: paper)
       allow(dub).to receive(:after_register)
@@ -201,7 +162,7 @@ describe DecisionsController do
           format: :json,
           id: decision.id
     end
-    let(:decision) { paper.decisions.latest }
+    let(:decision) { paper.draft_decision }
     let(:paper) { FactoryGirl.create(:paper, publishing_state: :rejected) }
 
     it_behaves_like "an unauthenticated json request"
@@ -231,7 +192,7 @@ describe DecisionsController do
 
       context "and the decision is rescindable" do
         before do
-          decision.update(verdict: "reject", registered_at: DateTime.now.utc)
+          decision.update(verdict: "reject", registered_at: DateTime.now.utc, minor_version: 0, major_version: 0)
         end
 
         it "completes successfully" do

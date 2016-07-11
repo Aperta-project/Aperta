@@ -13,15 +13,6 @@ class DecisionsController < ApplicationController
            serializer: DecisionSerializer, root: 'decision'
   end
 
-  def create
-    paper = Paper.find(params[:decision][:paper_id])
-
-    requires_user_can(:register_decision, paper)
-
-    decision = paper.decisions.create!(decision_params)
-    render json: decision, serializer: DecisionSerializer, root: 'decision'
-  end
-
   def update
     assert !decision.registered_at, "The decision has already been registered"
 

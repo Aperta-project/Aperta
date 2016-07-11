@@ -22,8 +22,11 @@ module Snapshottable
     # mounted file/attachment if the including model has been snapshotted.
     def mount_snapshottable_uploader(mounted_as, uploader_class)
       mount_uploader mounted_as, uploader_class
-      carrierwave_removal_method = "remove_previously_stored_#{mounted_as}".to_sym
-      skip_callback :save, :after, carrierwave_removal_method, if: -> { snapshotted? }
+      carrierwave_removal_method_on_save = "remove_previously_stored_#{mounted_as}".to_sym
+      skip_callback :save, :after, carrierwave_removal_method_on_save, if: -> { snapshotted? }
+
+      carrierwave_removal_method_on_destroy = "remove_#{mounted_as}!".to_sym
+      skip_callback :commit, :after, carrierwave_removal_method_on_destroy, if: -> { snapshotted? }
     end
   end
 

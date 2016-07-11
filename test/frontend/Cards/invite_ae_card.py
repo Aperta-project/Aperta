@@ -149,7 +149,7 @@ class InviteAECard(BaseCard):
     self.validate_application_title_style(card_title)
     invite_text = self._get(self._invite_text)
     assert invite_text.text == 'Academic Editor'
-    self.validate_input_field_label_style(invite_text)
+    self.validate_input_field_inside_label_style(invite_text)
     ae_input = self._get(self._invite_box)
     assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
         ae_input.get_attribute('placeholder')

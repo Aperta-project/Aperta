@@ -1,3 +1,4 @@
+#!/bin/bash
 # Command Line script for TeamCity build job for test run
 # Depends on
 # env.APERTA_PSQL_DBNAME
@@ -42,6 +43,7 @@ python -m frontend.test_paper_tracker
 python -m frontend.test_production_metadata_card
 python -m frontend.test_profile
 python -m frontend.test_register_decision
+python -m frontend.test_reviewer_candidates
 python -m frontend.test_revise_task
 python -m frontend.test_revision_tech_check
 python -m frontend.test_title_abstract_card

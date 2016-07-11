@@ -79,11 +79,6 @@ describe Figure, redis: true do
       expect(figure.detail_src)
         .to eq figure.non_expiring_proxy_url(version: :detail)
     end
-
-    it 'returns a path with a cache buster if requested' do
-      url = figure.detail_src(cache_buster: true)
-      expect(url).to match /\?cb=\w+$/
-    end
   end
 
   describe '.acceptable_content_type?' do

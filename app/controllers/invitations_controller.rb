@@ -1,6 +1,6 @@
+# Serves as the API for invitations
 class InvitationsController < ApplicationController
   before_action :authenticate_user!
-
   respond_to :json
 
   def index
@@ -10,8 +10,8 @@ class InvitationsController < ApplicationController
 
   def show
     fail AuthorizationError unless current_user == invitation.invitee ||
-                                   current_user.can?(:manage_invitations,
-                                                     invitation.task)
+        current_user.can?(:manage_invitations,
+          invitation.task)
     respond_with invitation
   end
 
@@ -65,11 +65,11 @@ class InvitationsController < ApplicationController
     params
       .require(:invitation)
       .permit(:actor_id,
-              :body,
-              :decline_reason,
-              :email,
-              :reviewer_suggestions,
-              :task_id)
+        :body,
+        :decline_reason,
+        :email,
+        :reviewer_suggestions,
+        :task_id)
   end
 
   def task

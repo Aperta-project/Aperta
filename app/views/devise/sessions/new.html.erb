@@ -1,22 +1,3 @@
-<!--[if lte IE 9]>
-  <h2 class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</h2>
-<![endif]-->
-
-<script>
-  // This really only works for IE10. Starting with IE11, the user agent no longer indicates IE version.
-  // http://stackoverflow.com/questions/18871760/how-to-detect-ie-11-with-javascript-in-asp-net
-  var showIENotification = function() {
-    var IERegex = /MSIE\s?(\d+)(?:\.(\d+))?/i;
-    var matches = navigator.userAgent.match(IERegex);
-
-    if (matches != null && parseInt(matches[1]) >= 10) {
-      $('#tahi-container').prepend("<h3 class='browsehappy'>You are using an <strong>unsupported</strong> browser. #{app_name} works best in open source browsers, such as Firefox and Chrome. Please <a href='http://browsehappy.com/'>upgrade your browser</a> to improve your experience.</h3>");
-    }
-  }
-
-  showIENotification();
-</script>
-
 <div class="auth-container">
   <div class='logo'>
     <img class='plos auth-logo' src='/images/plos_logo.png' />
@@ -88,4 +69,3 @@
 
   </div>
 </div>
-</html>

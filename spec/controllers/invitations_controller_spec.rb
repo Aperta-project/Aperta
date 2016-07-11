@@ -1,5 +1,16 @@
 require "rails_helper"
 
+class TestTask < Task
+  include Invitable
+
+  DEFAULT_TITLE = 'Test Task'
+  DEFAULT_ROLE = 'user'
+
+  def invitation_rescinded(token:)
+    true
+  end
+end
+
 describe InvitationsController do
   let(:user) { invitee }
   let(:invitee) { FactoryGirl.create(:user) }
@@ -40,7 +51,7 @@ describe InvitationsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authorized' do
-        before { stub_sign_in user }
+      before { stub_sign_in user }
       it 'returns required fields' do
         do_request
         expect(response.status).to eq(200)
@@ -84,14 +95,14 @@ describe InvitationsController do
 
   describe 'POST /invitations' do
     subject(:do_request) do
-      post(:create, {
+      post(
+        :create,
         format: 'json',
         invitation: {
           email: email_to_invite,
           task_id: task.id,
           body: invitation_body
-        }
-      })
+        })
     end
 
     let(:email_to_invite) { invitee.email }
@@ -122,6 +133,7 @@ describe InvitationsController do
 
           expect(invitation.invitee).to eq(invitee)
           expect(invitation.email).to eq(invitee.email)
+          expect(invitation.token).to be_present
           expect(invitation.actor).to be_nil
           expect(invitation.state).to eq('invited')
           expect(invitation.body).to eq(invitation_body)
@@ -140,6 +152,7 @@ describe InvitationsController do
 
           expect(invitation.invitee).to eq nil
           expect(invitation.email).to eq(email_to_invite)
+          expect(invitation.token).to be_present
           expect(invitation.actor).to be_nil
           expect(invitation.state).to eq('invited')
         end
@@ -213,10 +226,10 @@ describe InvitationsController do
 
   describe "PUT /invitations/:id/rescind" do
     subject(:do_request) do
-      delete(:rescind, {
+      delete(
+        :rescind,
         format: "json",
-        id: invitation.to_param
-      })
+        id: invitation.to_param)
     end
 
     let(:invitation) do

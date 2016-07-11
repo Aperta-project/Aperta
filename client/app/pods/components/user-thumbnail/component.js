@@ -16,5 +16,9 @@ export default Ember.Component.extend({
   toggle: 'tooltip',
   alt:    Ember.computed.alias('user.name'),
   title:  Ember.computed.alias('alt'),
-  src:    Ember.computed.alias('user.avatarUrl')
+  src:    Ember.computed('user.avatarUrl', function() {
+    // WARNING: The default image is hard-coded here. Any update to the filename
+    // will have to be made here and in AvatarUploader on the server side
+    return this.get('user.avatarUrl') || '/images/profile-no-image.png';
+  })
 });

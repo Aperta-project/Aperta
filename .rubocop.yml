@@ -21,6 +21,9 @@ Metrics/MethodLength:
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
 Style/StringLiterals:
   # English text needs double quotes, to avoid escaping the very
   # common apostrophe.

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615184308) do
+ActiveRecord::Schema.define(version: 20160622135656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(version: 20160615184308) do
     t.string   "invitee_role", null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
+    t.string   "token"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree

@@ -8,16 +8,16 @@
       }}
     {{else}}
       <div class="pending-invitation">
-        <h4>{{invitation.inviteeRole}} Invitation</h4>
+        <h2 class='invitation-metadata'>{{invitation.inviteeRole}} Invitation | <span class="date">{{format-date invitation.createdAt format='MMMM D, YYYY'}}</span></h2>
         <li class="dashboard-paper-title">
-          {{partial "svg/manuscript-icon"}}
-          <h3>{{{invitation.title}}}</h3>
-          {{#if invitation.abstract}}
-            <h4>Abstract:</h4>
-            <p>{{{invitation.abstract}}}</p>
-          {{/if}}
+          <h3>{{partial "svg/manuscript-icon"}} {{{invitation.title}}}</h3>
           {{#if invitation.information}}
+            <h4>Authors</h4>
             <p class="preserve-line-breaks">{{{invitation.information}}}</p>
+          {{/if}}
+          {{#if invitation.abstract}}
+            <h4>Abstract</h4>
+            <p>{{{invitation.abstract}}}</p>
           {{/if}}
           <button class="button-primary button--green" {{action "accept" invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
           <button class="button-secondary button--green" {{action "acquireFeedback" invitation}}> Decline </button>

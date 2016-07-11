@@ -27,9 +27,10 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite,
-          after: :associate_existing_user,
-          after_commit: :notify_invitation_invited) do
+    event(:invite, {
+      after: [:generate_token, :associate_existing_user],
+      after_commit: :notify_invitation_invited
+    }) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
     event(:accept, {
@@ -53,8 +54,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def recipient_name
-    return invitee.full_name if invitee
-    email
+    invitee.try(:full_name) || email
   end
 
   def rescind!
@@ -67,6 +67,10 @@ class Invitation < ActiveRecord::Base
     super(new_email.strip)
   end
 
+  def feedback_given?
+    decline_reason.present? || reviewer_suggestions.present?
+  end
+
   private
 
   def assign_to_latest_decision
@@ -76,8 +80,7 @@ class Invitation < ActiveRecord::Base
   def add_authors_to_information(invitation)
     authors_list = TahiStandardTasks::AuthorsList.authors_list(paper)
     return unless authors_list.present?
-    invitation.update! information:
-      "Here are the authors on the paper:\n\n#{authors_list}"
+    invitation.update! information: authors_list
   end
 
   def notify_invitation_invited
@@ -95,6 +98,10 @@ class Invitation < ActiveRecord::Base
 
   def associate_existing_user
     update(invitee: User.find_by(email: email))
+  end
+
+  def generate_token
+    self.token ||= SecureRandom.hex(10)
   end
 
   def invite_allowed?

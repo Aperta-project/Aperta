@@ -162,9 +162,9 @@ class S3Migration < ActiveRecord::Base
     )
   end
 
-  # Finds the first Snapshot"that makes reference of the previous_file_hash,
+  # Finds the first Snapshot that makes reference of the previous_file_hash,
   # updating that reference to point to the new_file_hash, then returning
-  # that Snapshot. Returns nil if not snapshot matches.
+  # that Snapshot. Returns nil if not snapshot.
   def find_and_update_task_snapshot(previous_file_hash, new_file_hash)
     ::Snapshot.all.each do |snapshot|
       child = find_child_with_file_hash previous_file_hash, snapshot.contents

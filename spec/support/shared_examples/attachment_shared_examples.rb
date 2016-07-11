@@ -132,16 +132,31 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
       subject.download!(url_1)
     end
 
-    it 'is removed when it has never been snapshotted' do
-      expect(subject).to receive(:remove_previously_stored_file)
-      subject.download!(url_2)
+    context 'downloading a new file over an existing file' do
+      it 'removes the existing file when it has never been snapshotted' do
+        expect(subject).to receive(:remove_previously_stored_file)
+        subject.download!(url_2)
+      end
+
+      it 'does not remove the existings file when it has been snapshotted' do
+        snapshot = FactoryGirl.create(:snapshot, source: subject)
+        expect(subject).to_not receive(:remove_previously_stored_file)
+        url = 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg'
+        subject.download!(url_2)
+      end
     end
 
-    it 'is not removed when it has been snapshotted' do
-      snapshot = FactoryGirl.create(:snapshot, source: subject)
-      expect(subject).to_not receive(:remove_previously_stored_file)
-      url = 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg'
-      subject.download!(url_2)
+    context 'destroying the attachment' do
+      it 'removes the existing file when it has never been snapshotted' do
+        expect(subject).to receive(:remove_file!)
+        subject.destroy!
+      end
+
+      it 'does not remove the existing file when it has been snapshotted' do
+        snapshot = FactoryGirl.create(:snapshot, source: subject)
+        expect(subject).to_not receive(:remove_file!)
+        subject.destroy!
+      end
     end
   end
 end

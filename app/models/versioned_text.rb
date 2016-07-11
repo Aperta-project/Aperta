@@ -36,7 +36,7 @@ class VersionedText < ActiveRecord::Base
   end
 
   def figureful_text(**opts)
-    FigureInserter.new(original_text, figures, opts).call
+    FigureInserter.new(original_text, figures.reload, opts).call
   end
 
   def insert_figures

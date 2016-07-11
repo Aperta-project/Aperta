@@ -75,11 +75,14 @@ class ReviewerCandidatesCard(BaseCard):
 
     #POM Actions
 
-  def validate_styles(self):
+  def validate_styles(self, user_object, paper_id):
     """
     Validate styles in the Title and Abstract Card
     :return: void function
     """
+    completed = self.completed_state()
+    if completed:
+      self.click_completion_button()
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Reviewer Candidates'
     self.validate_application_title_style(card_title)
@@ -104,10 +107,8 @@ class ReviewerCandidatesCard(BaseCard):
       assert user_object['email'] == email.text, email.text
       decision = entry.find_element(*self._cand_view_decision)
       self.validate_application_ptext(decision)
-      assert choice in decision.text.lower(), decision.text.lower()
       stated_reason = entry.find_element(*self._cand_view_reason)
       self.validate_application_ptext(stated_reason)
-      assert reason == stated_reason.text, '{0} != {1}'.format(reason, stated_reason.text)
       self._actions.move_to_element(entry).perform()
       delete_recommendation = entry.find_element(*self._cand_view_delete)
       time.sleep(.5)
@@ -129,7 +130,7 @@ class ReviewerCandidatesCard(BaseCard):
       time.sleep(1)
     # Now validate the new candidate form
     self.validate_primary_big_green_button_style(new_cand_btn)
-    self.validate_common_elements_styles()
+    self.validate_common_elements_styles(paper_id)
     new_cand_btn.click()
     self._get(self._new_candidate_form)
     fn_element = self._get(self._cand_first_name)

@@ -110,7 +110,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     workflow_page.click_card('reviewer_candidates')
     time.sleep(10)
     rcc = ReviewerCandidatesCard(self.getDriver())
-    rcc.validate_styles()
+    rcc.validate_styles(reviewer_login, paper_id)
     rcc.check_initial_population(choice, reason)
 
   def test_core_delete_reviewer_candidate(self):

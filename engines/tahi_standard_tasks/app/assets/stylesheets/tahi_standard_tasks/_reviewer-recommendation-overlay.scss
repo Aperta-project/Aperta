@@ -5,7 +5,7 @@
       width: 40%;
     }
 
-    .decision { width: 20%; }
+    .decision { width: 80%; }
   }
 }
 
@@ -22,3 +22,74 @@
     text-transform: capitalize;
   }
 }
+
+.reviewer-task-item-view {
+  @include align-items(center);
+  background: $tahi-grey-xlight;
+
+  .flex-group {
+    margin-left: 1rem;
+  }
+}
+
+.reviewer-task-item-view.last {
+  border-bottom: 1px solid $tahi-grey-light;
+}
+
+.reviewer-task-item-view-text {
+  padding: 1.25rem 0.5rem 0.5rem 0.5rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.reviewer-task-item-view-text:last-of-type {
+  padding-bottom: 1.5rem;
+}
+
+.reviewer-task-item-view:hover {
+  .reviewer-task-item-view-actions .fa {
+    opacity: 1.0;
+
+    &:hover {
+      color: #444;
+    }
+  }
+}
+
+.reviewer-overlay-item-delete {
+  padding: 10px 15px;
+  color: #fff;
+  background-color: $tahi-green;
+  z-index: 1;
+}
+
+.reviewer-task-item-view-actions {
+  max-width: 4rem;
+  padding-right: 2rem;
+  font-size: 2.2rem;
+  text-align: right;
+
+  .fa {
+    color: #bbb;
+    cursor: pointer;
+    opacity: 0;
+  }
+}
+
+.reviewer-task-item-view:hover {
+  .reviewer-task-item-view-actions .fa {
+    opacity: 1.0;
+
+    &:hover {
+      color: #444;
+    }
+  }
+}
+
+.reviewer-overlay-item-delete {
+  padding: 10px 15px;
+  color: #fff;
+  background-color: $tahi-green;
+  z-index: 1;
+}
+

@@ -119,6 +119,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
     self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
     self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
+    self._review_cands_task = (By.CLASS_NAME, 'reviewer-recommendations-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox
@@ -720,7 +721,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     paper_url = self.get_current_url()
     logging.info(paper_url)
     # Need to cover the first view case stripping the trailing garbage
-    paper_id = int(paper_url.split('papers/')[1].split('?')[0])
+    try:
+      paper_id = int(paper_url.split('papers/')[1].split('?')[0])
+    except IndexError:
+      time.sleep(5)
+      paper_id = int(paper_url.split('papers/')[1].split('?')[0])
+
     logging.info('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 

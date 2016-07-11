@@ -11,7 +11,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, application_typeface, tahi_blue, white
+from authenticated_page import AuthenticatedPage, application_typeface, aperta_blue, white
 
 __author__ = 'jgray@plos.org'
 
@@ -192,7 +192,7 @@ class AdminPage(AuthenticatedPage):
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
       time.sleep(2)
-      assert upload_button.value_of_css_property('color') == tahi_blue, \
+      assert upload_button.value_of_css_property('color') == aperta_blue, \
           upload_button.value_of_css_property('color')
       assert upload_button.value_of_css_property('background-color') == white, \
           upload_button.value_of_css_property('background-color')
@@ -213,7 +213,7 @@ class AdminPage(AuthenticatedPage):
       journal_title_label = self._get(self._base_admin_journals_edit_title_label)
       assert journal_title_label.text == 'Journal Title', journal_title_label.text
       # APERTA-6829
-      # self.validate_input_field_label_style(journal_title_label)
+      # self.validate_input_field_inside_label_style(journal_title_label)
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
       assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti', \
           journal_title_field.get_attribute('placeholder')
@@ -234,7 +234,7 @@ class AdminPage(AuthenticatedPage):
       journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
       assert journal_desc_label.text == 'Journal Description', journal_desc_label.text
       # APERTA-6829
-      # self.validate_input_field_label_style(journal_desc_label)
+      # self.validate_input_field_inside_label_style(journal_desc_label)
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
       assert journal_desc_field.get_attribute('placeholder') == \
           'Accelerating the publication of peer-reviewed science', \
@@ -259,7 +259,7 @@ class AdminPage(AuthenticatedPage):
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
       time.sleep(2)
-      assert save_button.value_of_css_property('color') == tahi_blue, \
+      assert save_button.value_of_css_property('color') == aperta_blue, \
           save_button.value_of_css_property('color')
       assert save_button.value_of_css_property('background-color') == white, \
           save_button.value_of_css_property('background-color')
@@ -316,7 +316,7 @@ class AdminPage(AuthenticatedPage):
       journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
       assert journal_desc_label.text == 'Journal Description'
       # APERTA-6829
-      # self.validate_input_field_label_style(journal_desc_label)
+      # self.validate_input_field_inside_label_style(journal_desc_label)
       self._get(self._base_admin_journals_edit_desc_field)
       save_button = self._get(self._base_admin_journals_edit_save_button)
       assert save_button.text == 'SAVE'

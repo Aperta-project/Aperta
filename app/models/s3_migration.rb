@@ -29,7 +29,7 @@ class S3Migration < ActiveRecord::Base
         # Add +new_store_path+ to return the S3 key for where we want the
         # file to go.
         def new_store_path(for_file=filename)
-          File.join([new_store_dir, full_filename(for_file)].compact)
+          File.join([generate_new_store_dir, full_filename(for_file)].compact)
         end
       end
     end
@@ -123,7 +123,7 @@ class S3Migration < ActiveRecord::Base
 
     destination_url = attachment.file.new_store_path(File.basename(source_url))
     update_attributes!(
-      destination_url: attachment.file.store_path(File.basename(source_url))
+      destination_url: destination_url
     )
 
     # Move the old file to the new S3 location
@@ -138,7 +138,7 @@ class S3Migration < ActiveRecord::Base
         ENV['S3_BUCKET'],
         destination_url
       )
-      attachment.update_column :s3_dir, attachment.file.store_dir
+      attachment.update_column :s3_dir, attachment.file.generate_new_store_dir
     end
     completed!
   rescue Exception => ex
@@ -192,5 +192,4 @@ class S3Migration < ActiveRecord::Base
       nil
     end
   end
-
 end

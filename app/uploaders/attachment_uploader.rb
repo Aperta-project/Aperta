@@ -1,4 +1,5 @@
 class AttachmentUploader < CarrierWave::Uploader::Base
+  require 'mini_magick'
   include CarrierWave::MiniMagick
   include CarrierWave::MimeTypes
 
@@ -12,9 +13,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :detail do
-    process :set_srgb_colorspace, if: :needs_transcoding?
-    process resize_to_limit: [986, -1], if: :image?
-    process :convert_to_png, if: :needs_transcoding?
+    process convert_image: ["984x-1>"], if: :image?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -22,9 +21,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process :set_srgb_colorspace, if: :needs_transcoding?
-    process resize_to_limit: [475, 220], if: :image?
-    process :convert_to_png, if: :needs_transcoding?
+    process convert_image: ["475x220"], if: :image?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -33,17 +30,26 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   private
 
-  def set_srgb_colorspace
-    manipulate! do |image|
-      image.colorspace("sRGB")
+  # rubocop:disable Metrics/AbcSize
+  def convert_image(size)
+    extension = needs_transcoding?(file) ? ".png" : ".#{format}"
+    temp_file = MiniMagick::Utilities.tempfile(extension)
+
+    MiniMagick::Tool::Convert.new do |convert|
+      convert.merge! density_arguments
+      convert.merge! colorspace_arguments
+      convert.merge! ["-resize", size]
+      convert << current_path
+      convert.merge! ["-colorspace", "sRGB"]
+      convert << temp_file.path
     end
+
+    FileUtils.cp(temp_file.path, current_path)
+    file.content_type = MiniMagick::Image.open(current_path).mime_type
   end
 
-  def convert_to_png
-    manipulate! do |image|
-      image.format("png")
-    end
-    file.content_type = "image/png"
+  def image
+    @image ||= MiniMagick::Image.open(current_path)
   end
 
   def full_name(orig_file)
@@ -52,6 +58,21 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     else
       "#{version_name}_#{orig_file}"
     end
+  end
+
+  def density_arguments
+    return [] unless image.details['Total ink density']
+    ['-density', image.details['Total ink density']]
+  end
+
+  def colorspace_arguments
+    return [] unless image.details['Colorspace']
+    ['-colorspace', image.details['Colorspace']]
+  end
+
+  def format
+    fail 'Cannot identify image format' unless image.details['Base filename']
+    image.details['Base filename'].split('.').last
   end
 
   def needs_transcoding?(file)

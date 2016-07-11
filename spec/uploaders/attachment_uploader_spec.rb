@@ -60,7 +60,6 @@ describe AttachmentUploader do
 
     it "does not transcode other images" do
       uploader = AttachmentUploader.new(model, :attachment)
-      expect(uploader).to_not receive(:set_srgb_colorspace)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.jpg')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
@@ -69,7 +68,7 @@ describe AttachmentUploader do
 
     it "does not transcode documents" do
       uploader = AttachmentUploader.new(model, :attachment)
-      expect(uploader).to_not receive(:set_srgb_colorspace)
+      expect(uploader).to_not receive(:convert_image)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'about_turtles.docx')))
 
       expect(uploader.content_type).to eq("application/vnd.openxmlformats-officedocument.wordprocessingml.document")

@@ -13,6 +13,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       };
     });
   }),
-
+  decisionTemplateCount: Ember.computed.map('decisionTemplates', function(template, index) {
+    return index;
+  }),
+  showDropdowns: Ember.computed.gt('decisionTemplateCount', 1),
   inputClassNames: ['form-control']
 });

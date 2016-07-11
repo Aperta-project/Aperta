@@ -53,7 +53,8 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    manuscript_page.close_infobox()
+    # APERTA-7210
+    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -91,7 +92,8 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    manuscript_page.close_infobox()
+    # APERTA-7210
+    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -139,7 +141,8 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    manuscript_page.close_infobox()
+    # APERTA-7210
+    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -172,7 +175,8 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    manuscript_page.close_infobox()
+    # APERTA-7210
+    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -202,7 +206,8 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    manuscript_page.close_infobox()
+    # APERTA-7210
+    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -233,7 +238,8 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    manuscript_page.close_infobox()
+    # APERTA-7210
+    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]

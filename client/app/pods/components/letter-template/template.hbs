@@ -1,13 +1,16 @@
 <div>
   <p>Please select the template letter and then edit further.</p>
 
-  {{nested-question-select ident="register_decision_questions--selected-template"
-                    owner=task
-                    displayQuestionText=false
-                    placeholder="Please select the letter template"
-                    source=decisionTemplates
-                    enable=isEditable
-                    width="300"}}
+  {{#if showDropdowns }}
+    {{nested-question-select ident="register_decision_questions--selected-template"
+                      owner=task
+                      displayQuestionText=false
+                      placeholder="Please select the letter template"
+                      source=decisionTemplates
+                      enable=isEditable
+                      width="300"}}
+
+  {{/if}}
 
   <div class='input-group'>
     <div class='input-group-addon'>

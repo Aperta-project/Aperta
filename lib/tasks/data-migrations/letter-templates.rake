@@ -3,7 +3,7 @@
 namespace :data do
   namespace :migrate do
     namespace :letter_templates do
-      desc 'Adds default letter-templates for Register Decision to all journals'
+      desc 'Adds default letter-templates for Register Decision to all journals. First template_decision is default'
       task populate: :environment do
         Journal.all.each do |journal|
 

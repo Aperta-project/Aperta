@@ -82,18 +82,15 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
     templateSelected(template) {
       const letter = this.applyTemplateReplacements(template.letter);
-      this.get('latestDecision').set('letter', letter);
+      this.get('latestDecision').set('verdict', template.templateDecision);
+      this.get('latestDecision').set('letter', letter); // will trigger save
+      return template;
     },
 
     setDecisionTemplate(decision) {
       const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
-      const template = templates.get('firstObject.letter');
-      const letter = this.applyTemplateReplacements(template);
-      this.get('latestDecision').set('verdict', decision);
-      this.get('latestDecision').set('letter', letter);
-      // This ensures that the decision is saved even if the decision letter
-      // stays the same.
-      this.triggerSave();
+      const template = templates.get('firstObject');
+      this.send('templateSelected', template.toJSON());
     }
   }
 });

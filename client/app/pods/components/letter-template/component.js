@@ -21,6 +21,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
           return {
             id: letterTemplate.get('text'),
             text: letterTemplate.get('text'),
+            templateDecision: letterTemplate.get('templateDecision'),
             to: letterTemplate.get('to'),
             subject: letterTemplate.get('subject'),
             letter: letterTemplate.get('letter')

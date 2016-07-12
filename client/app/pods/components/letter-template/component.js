@@ -3,7 +3,10 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['well'],
-  templateDecision: null, // passed-in
+  //passed-in stuff
+  templateDecision: null,
+  letterValue: null,
+  templateSelected: null, //action
 
   authorEmail: Ember.computed.alias('task.paper.creator.email'),
   decisionTemplates: Ember.computed('task.letterTemplates.[]',
@@ -14,7 +17,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
         ).map(function(letterTemplate) {
           return {
             id: letterTemplate.get('text'),
-            text: letterTemplate.get('text')
+            text: letterTemplate.get('text'),
+            to: letterTemplate.get('to'),
+            subject: letterTemplate.get('subject'),
+            letter: letterTemplate.get('letter')
           };
         });
   }),
@@ -24,3 +30,4 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   showDropdowns: Ember.computed.gt('decisionTemplateCount', 1),
   inputClassNames: ['form-control']
 });
+

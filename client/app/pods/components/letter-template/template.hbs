@@ -1,10 +1,13 @@
 <div>
-  <p>Please select the template letter and then edit further.</p>
+  {{#if templateDecision}}
+    <p>Please select the template letter and then edit further.</p>
+  {{/if}}
 
   {{#if showDropdowns }}
     {{nested-question-select ident="register_decision_questions--selected-template"
                       owner=task
                       displayQuestionText=false
+                      selectionSelected=templateSelected
                       placeholder="Please select the letter template"
                       source=decisionTemplates
                       enable=isEditable

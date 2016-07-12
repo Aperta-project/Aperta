@@ -80,6 +80,11 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       });
     },
 
+    templateSelected(template) {
+      const letter = this.applyTemplateReplacements(template.letter);
+      this.get('latestDecision').set('letter', letter);
+    },
+
     setDecisionTemplate(decision) {
       const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
       const template = templates.get('firstObject.letter');

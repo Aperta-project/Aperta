@@ -75,19 +75,20 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it 'contains n/a for decline reason when not set' do
-        expect(email.body).to match('<strong>Reason:\s<\/strong>\s?n\/a')
+        expect(email.body).to match(%r{<strong>Reason:\s</strong>.+n/a})
       end
 
       it 'contains n/a for reviewer suggestions when not set' do
         expect(email.body).to match(
-          '<strong>Reviewer\sSuggestions:\s<\/strong>\s?n\/a'
+          %r{<strong>Reviewer\sSuggestions:\s</strong>.+n/a}
         )
       end
 
       context 'invitee entered decline reason and reviewer suggestions' do
         before do
-          invitation.update_attributes decline_reason: 'Unable to review',
-                                       reviewer_suggestions: 'Jane is available'
+          invitation.update_attributes(
+            decline_reason: 'Unable to review',
+            reviewer_suggestions: 'Jane is available')
         end
 
         it 'contains the decline reason' do

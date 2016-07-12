@@ -69,6 +69,14 @@ class Invitation < ActiveRecord::Base
     decline_reason.present? || reviewer_suggestions.present?
   end
 
+  def decline_reason
+    self[:decline_reason].present? ? self[:decline_reason] : 'n/a'
+  end
+
+  def reviewer_suggestions
+    self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'n/a'
+  end
+
   private
 
   def assign_to_latest_decision

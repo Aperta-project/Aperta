@@ -3,8 +3,8 @@ namespace :data do
   namespace :migrate do
     task s3_attachments: ['data:migrate:s3_attachments:prepare', 'data:migrate:s3_attachments:perform']
     namespace :s3_attachments do
-      desc <<-DESC.gsub(/^\s*\|/, '')
-        |Prepares migration of S3 attachments. Run migrate next.
+      desc <<-DESC.strip_heredoc
+        Prepares migration of S3 attachments. Run migrate next.
       DESC
       task prepare: :environment do
         Attachment.transaction do
@@ -30,8 +30,8 @@ namespace :data do
         end
       end
 
-      desc <<-DESC.gsub(/^\s*\|/, '')
-        |Prepares migration of S3 attachments. Run migrate next.
+      desc <<-DESC.strip_heredoc
+        Prepares migration of S3 attachments. Run migrate next.
       DESC
       task perform: :environment do
         ::AttachmentUploader.include S3Migration::UploaderOverrides

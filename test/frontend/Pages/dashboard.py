@@ -8,7 +8,9 @@ import time
 import uuid
 
 from psycopg2 import DatabaseError
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from loremipsum import generate_paragraph
 
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
@@ -107,6 +109,16 @@ class DashboardPage(AuthenticatedPage):
     self._yes_button = (By.TAG_NAME, 'button')
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
+    # Reviewer invitation modal
+    self._rim_title = (By.CSS_SELECTOR, 'h4.feedback-reviewer-invitation')
+    self._rim_ms_title = (By.CSS_SELECTOR, 'h3.feedback-invitation-title')
+    self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
+    self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
+    self._rim_request_labels = (By.CLASS_NAME, 'feedback-request')
+    self._rim_reasons = (By.CSS_SELECTOR, 'textarea.declineReason')
+    self._rim_suggestions = (By.CSS_SELECTOR, 'textarea.reviewerSuggestions')
+    self._rim_send_fb_btn = (By.CSS_SELECTOR, 'button.reviewer-send-feedback')
+
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
     """
@@ -149,28 +161,42 @@ class DashboardPage(AuthenticatedPage):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
-    :return: decision
+    :return: A tuple with the decision and an ID for reasons and suggestions
     """
-    choices = ['Accept', 'Reject']
-    response = random.choice(choices)
+    response = random.choice(['Accept', 'Reject'])
     invite_listings = self._gets(self._view_invites_invite_listing)
+    reasons = ''
+    suggestions = ''
     for listing in invite_listings:
       try:
         # Remember to use single quotes outside to ensure you don't run afoul of
         #  a single quote in the title - More often, double-quotes in titles are
         #  rendered as smart quotes (unicode) so don't as often cause problems.
-        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
+        listing.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
       except UnicodeEncodeError:
-        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'
+        listing.find_element_by_xpath('//*[contains(text(), "{0}")]'
                                            .format(title.encode('utf8')))
-      if response == 'Accept':
-        yes_btn = listing.find_element(*self._invite_yes_btn)
-        btn = yes_btn
+      except NoSuchElementException:
+        pass
       else:
-        no_btn = listing.find_element(*self._invite_no_btn)
-        btn = no_btn
-      btn.click()
-    return response
+        if response == 'Accept':
+          yes_btn = listing.find_element(*self._invite_yes_btn)
+          yes_btn.click()
+        else:
+          no_btn = listing.find_element(*self._invite_no_btn)
+          no_btn.click()
+          time.sleep(1)
+          self.validate_reviewer_invitation_response_styles(title)
+          # Enter reason and suggestions
+          reasons = str(uuid.uuid4())
+          suggestions = str(uuid.uuid4())
+          self._get(self._rim_reasons).send_keys(reasons + generate_paragraph()[2])
+          self._get(self._rim_suggestions).send_keys(suggestions + generate_paragraph()[2])
+          time.sleep(1)
+          self._get(self._rim_send_fb_btn).click()
+          # Time to get sure information is sent
+          time.sleep(2)
+        return response, (reasons, suggestions)
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """
@@ -204,6 +230,47 @@ class DashboardPage(AuthenticatedPage):
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
     self.validate_primary_big_green_button_style(cns_btn)
+
+  def validate_reviewer_invitation_response_styles(self, paper_title):
+    """
+    Validates elements in feedback form of reviewer_invitation_response
+    :param paper_title: Title of the submitted paper
+    """
+    XXXX
+    # TODO: Validate these asserts with ST
+    fb_modal_title = self._get(self._rim_title)
+    assert fb_modal_title.text == 'Reviewer Invitation'
+    # Disable due APERTA-7212
+    #self.validate_modal_title_style(fb_modal_title)
+    # paper_title
+    assert self._get(self._dashboard_paper_icon)
+    rim_ms_title = self._get(self._rim_ms_title)
+    assert rim_ms_title.text.strip() == paper_title.strip(), \
+        (rim_ms_title.text.strip(), paper_title.strip())
+    # Disable due APERTA-7212
+    #self.validate_X_style(rim_ms_title)
+    rim_ms_decline_notice = self._get(self._rim_ms_decline_notice)
+    assert rim_ms_decline_notice.text == 'You\'ve successfully declined this invitation.'\
+        ' We\'re always trying to improve our invitation process and would appreciate your '\
+        'feedback below.', rim_ms_decline_notice.text
+    # Disable due APERTA-7212
+    #self.validate_X_style(rim_ms_decline_notice)
+    labels = self._gets(self._rim_request_labels)
+    assert labels[0].text == 'Please give your reasons for declining this invitation.', \
+        labels[0].text
+    # Disable due APERTA-7212
+    #self.validate_X_style(labels[0])
+    assert labels[1].text == 'We would value your suggestions of alternative reviewers for '\
+        'this manuscript.', labels[1].text
+    # Disable due APERTA-7212
+    #self.validate_X_style(labels[1])
+    rim_suggestions = self._get(self._rim_suggestions)
+    assert rim_suggestions.get_attribute('placeholder') == 'Please provide reviewers\' names,'\
+        ' institutions, and email adresses if known.', \
+        rim_suggestions.get_attribute('placeholder')
+    # Disable due APERTA-7212
+    #self.validate_X_style(rim_suggestions)
+    return None
 
   def validate_invite_dynamic_content(self, username):
     """

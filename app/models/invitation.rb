@@ -8,7 +8,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
-  before_create :assign_to_latest_decision
+  before_create :assign_to_draft_decision
 
   scope :where_email_matches,
         ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
@@ -69,8 +69,8 @@ class Invitation < ActiveRecord::Base
 
   private
 
-  def assign_to_latest_decision
-    self.decision = paper.decisions.latest
+  def assign_to_draft_decision
+    self.decision = paper.draft_decision
   end
 
   def add_authors_to_information(invitation)

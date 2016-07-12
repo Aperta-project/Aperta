@@ -3,7 +3,7 @@ module TahiStandardTasks
     DEFAULT_TITLE = 'Reviewer Report'
     DEFAULT_ROLE = 'reviewer'
 
-    before_create :assign_to_latest_decision
+    before_create :assign_to_draft_decision
     has_many :decisions, -> { uniq }, through: :paper
 
     # Overrides Task#restore_defaults to be only restore +old_role+. This
@@ -51,7 +51,7 @@ module TahiStandardTasks
     end
 
     def incomplete!
-      assign_to_latest_decision
+      assign_to_draft_decision
       update!(
         completed: false,
         body: body.except("submitted")
@@ -99,8 +99,8 @@ module TahiStandardTasks
 
     private
 
-    def assign_to_latest_decision
-      self.decision = paper.decisions.latest
+    def assign_to_draft_decision
+      self.decision = paper.draft_decision
     end
 
     def update_body(hsh)

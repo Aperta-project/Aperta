@@ -203,7 +203,7 @@ Tahi::Application.routes.draw do
 
   post '/invitations/:token/decline',
     to: 'token_invitations#decline',
-    as: 'decline_invitation'
+    as: 'decline_token_invitation'
 
   get '/invitations/:token/feedback',
     to: 'token_invitations#feedback_form',

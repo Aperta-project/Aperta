@@ -6,18 +6,21 @@ describe DataMigration, rake: true do
 
   context 'when `RAKE_TASK_UP` is not defined' do
     it 'fails on up' do
-      expect { klass.new.up }.to raise_exception(/did not define RAKE_TASK_UP/)
+      expect { klass.new.up }.to raise_exception(NameError)
     end
   end
 
-  context 'when `RAKE_TASK_DOWN` is not defined' do
-    it 'noops' do
-      expect(klass.new.down).to be(nil)
+  context 'when `RAKE_TASK_UP` is not a string' do
+    before do
+      klass::RAKE_TASK_UP = nil
+    end
+
+    it 'fails on up' do
+      expect { klass.new.up }.to raise_exception(/RAKE_TASK_UP is not a string/)
     end
   end
 
   context 'when `RAKE_TASK_UP` is defined' do
-    let(:klass) { Class.new(DataMigration) }
     let(:task_name) { SecureRandom.hex(10) }
 
     before do
@@ -25,7 +28,8 @@ describe DataMigration, rake: true do
     end
 
     context 'but the task does not exist' do
-      it 'noops' do
+      it 'warns' do
+        expect(Rails.logger).to receive(:warn)
         expect(klass.new.up).to be(nil)
       end
     end
@@ -45,8 +49,13 @@ describe DataMigration, rake: true do
     end
   end
 
+  context 'when `RAKE_TASK_DOWN` is not defined' do
+    it 'does nothing' do
+      klass.new.down
+    end
+  end
+
   context 'when `RAKE_TASK_DOWN` is defined' do
-    let(:klass) { Class.new(DataMigration) }
     let(:task_name) { SecureRandom.hex(10) }
 
     before do
@@ -54,8 +63,9 @@ describe DataMigration, rake: true do
     end
 
     context 'but the task does not exist' do
-      it 'noops' do
-        expect(klass.new.down).to be(nil)
+      it 'warns' do
+        expect(Rails.logger).to receive(:warn)
+        klass.new.down
       end
     end
 

@@ -6,13 +6,13 @@ class TokenInvitationsController < ApplicationController
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
     redirect_to root_path and return if invitation.accepted?
-    redirect_to invitation_feedback_form_path(token) and return if invitation.rejected?
+    redirect_to invitation_feedback_form_path(token) and return if invitation.declined?
 
     assign_template_vars
   end
 
   def decline
-    redirect_to root_path and return if invitation.rejected?
+    redirect_to root_path and return if invitation.declined?
     redirect_to invitation_feedback_form_path(token)
 
     invitation.reject!
@@ -54,7 +54,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def redirect_unless_rejected
-    redirect_to root_path and return unless invitation.rejected?
+    redirect_to root_path and return unless invitation.declined?
   end
 
   def feedback_params

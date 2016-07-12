@@ -6,6 +6,15 @@ export default NestedQuestionComponent.extend({
     'errorPresent:error' // errorPresent defined in NestedQuestionComponent
   ],
 
+  defaultSelection: null,
+  setDefaultSelection: Ember.computed('model.answer.value', 'defaultSelection', 
+      function() {
+        if (this.get('defaultSelection') && !this.get('model.answer.value')) {
+          this.set('model.answer.value', this.get('defaultSelection'));
+        }
+      }
+  ),
+
   selectedData: Ember.computed('model.answer.value', function() {
     const value = this.get('model.answer.value');
     const id = parseInt(value) || value;

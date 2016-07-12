@@ -3,6 +3,9 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['well'],
+  firstDecisionTemplate: Ember.computed('decisionTemplates', function() {
+    return this.get('decisionTemplates.firstObject');
+  }),
   //passed-in stuff
   templateDecision: null,
   letterValue: null,

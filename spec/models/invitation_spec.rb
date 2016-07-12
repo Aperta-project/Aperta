@@ -143,7 +143,7 @@ describe Invitation do
   end
 
   describe "#decline!" do
-    it "calls the the invitation declineion callback" do
+    it "calls the the invitation decline action callback" do
       invitation.invite!
       expect(task).to receive(:decline_allowed?).with(invitation).and_return(true)
       expect(task).to receive(:invitation_declined).with(invitation)

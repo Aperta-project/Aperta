@@ -43,7 +43,6 @@ class InvitationsController < ApplicationController
 
   def decline
     fail AuthorizationError unless invitation.invitee == current_user
-    invitation.actor = current_user
     invitation.update_attributes(
       actor: current_user,
       decline_reason: invitation_params[:decline_reason],

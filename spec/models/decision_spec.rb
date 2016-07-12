@@ -28,6 +28,10 @@ describe Decision do
 
   describe '#rescind!' do
     before do
+      decision.update!(verdict: "reject",
+                       major_version: 0,
+                       minor_version: 0,
+                       registered_at: DateTime.now.utc)
       paper.update_columns(publishing_state: :rejected)
     end
 
@@ -44,7 +48,7 @@ describe Decision do
   describe '#latest?' do
     it 'returns true if it is the latest decision' do
       paper.decisions.destroy_all
-      early_decision = paper.decisions.create! registered_at: DateTime.now.utc
+      early_decision = paper.decisions.create!(registered_at: DateTime.now.utc, minor_version: 0, major_version: 0)
       latest_decision = paper.decisions.create!
       expect(early_decision.latest?).to be false
       expect(latest_decision.latest?).to be true
@@ -120,10 +124,13 @@ describe Decision do
     context 'when the decision has a verdict but is not the latest decision' do
       it 'is not rescindable' do
         paper.publishing_state = "in_revision"
-        decision.verdict = "major_revision"
-        decision.registered_at = DateTime.now.utc
-        decision.save!
-        paper.decisions.create!(registered_at: DateTime.now.utc)
+        decision.update!(verdict: "major_revision",
+                         major_version: 0,
+                         minor_version: 0,
+                         registered_at: DateTime.now.utc)
+        paper.decisions.create!(registered_at: DateTime.now.utc,
+                                major_version: 0,
+                                minor_version: 1)
         paper.save!
         expect(decision.rescindable?).to be(false)
       end
@@ -131,22 +138,22 @@ describe Decision do
 
     context 'when the decision is the latest, has a verdict, but the paper has moved on in the process' do
       it 'is not rescindable' do
-        decision.registered_at = DateTime.now.utc
-        paper.publishing_state = "submitted"
-        decision.verdict = "accept"
-        decision.save!
-        paper.save!
+        decision.update!(verdict: "accept",
+                         major_version: 0,
+                         minor_version: 0,
+                         registered_at: DateTime.now.utc)
+        paper.update!(publishing_state: "submitted")
         expect(decision.rescindable?).to be(false)
       end
     end
 
     context 'when the decision is the latest, has a verdict, and the paper is in the right state' do
       it 'is rescindable' do
-        decision.registered_at = DateTime.now.utc
-        paper.publishing_state = "accepted"
-        decision.verdict = "accept"
-        decision.save!
-        paper.save!
+        decision.update!(verdict: "accept",
+                         major_version: 0,
+                         minor_version: 0,
+                         registered_at: DateTime.now.utc)
+        paper.update!(publishing_state: "accepted")
         expect(decision.rescindable?).to be(true)
       end
     end

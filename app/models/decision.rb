@@ -39,18 +39,12 @@ class Decision < ActiveRecord::Base
     end
   end
 
-  def self.latest
-    # Note: will return an unregistered decision, if there is one.
-    order('registered_at DESC').limit(1).first
-  end
-
   def latest?
-    self == paper.decisions.latest
+    self == paper.decisions.version_asc.last
   end
 
   def latest_registered?
-    self == paper.decisions.where.not(registered_at: nil)
-      .order('registered_at DESC')
+    self == paper.decisions.version_asc.completed.last
   end
 
   def revision?

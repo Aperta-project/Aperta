@@ -11,7 +11,7 @@ namespace :data do
         end
 
         Paper.all.each do |paper|
-          paper.decisions.latest.update(registered_at: nil) unless paper.in_terminal_state?
+          paper.draft_decision.update(registered_at: nil) unless paper.in_terminal_state?
         end
       end
     end

@@ -163,7 +163,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe "#after_register" do
-    let(:decision) { paper.decisions.latest }
+    let(:decision) { paper.draft_decision }
 
     before do
       paper.update(publishing_state: :submitted)
@@ -193,7 +193,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
   describe "#after_update" do
     before do
       allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
-      task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
+      task.paper.draft_decision.update_attribute(:verdict, 'major_revision')
     end
 
     context "when the decision is 'Major Revision' and task is incomplete" do

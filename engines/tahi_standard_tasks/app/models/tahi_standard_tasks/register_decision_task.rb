@@ -12,14 +12,6 @@ module TahiStandardTasks
       super + [:paper_decision_letter]
     end
 
-    def latest_decision
-      paper.decisions.latest
-    end
-
-    def latest_decision_ready?
-      latest_decision.present? && latest_decision.verdict.present?
-    end
-
     def after_register(decision)
       ReviseTask.setup_new_revision(paper, phase) if decision.revision?
       RegisterDecisionMailer.delay.notify_author_email(

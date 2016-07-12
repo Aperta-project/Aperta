@@ -24,7 +24,7 @@ describe TahiStandardTasks::InitialDecisionTask do
   end
 
   describe 'after_register' do
-    let(:decision) { paper.decisions.latest }
+    let(:decision) { paper.draft_decision }
 
     before do
       paper.update(publishing_state: :submitted)

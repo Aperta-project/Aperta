@@ -7,12 +7,16 @@ export default NestedQuestionComponent.extend({
   ],
 
   defaultSelection: null,
-  setDefaultSelection: Ember.computed('model.answer.value', 'defaultSelection', 
+  setDefaultSelection: Ember.observer(
+      'model.answer.value',
+      'defaultSelection',
+      'init', 
       function() {
         if (this.get('defaultSelection') && !this.get('model.answer.value')) {
-          this.set('model.answer.value', this.get('defaultSelection'));
+          this.set('selectedData', this.get('defaultSelection'));
+          this.sendAction('selectionSelected', this.get('defaultSelection'));
         }
-      }
+      }.on('init')
   ),
 
   selectedData: Ember.computed('model.answer.value', function() {

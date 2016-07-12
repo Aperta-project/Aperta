@@ -25,7 +25,7 @@ namespace :data do
             [EDITOR TITLE]
             PLOS Biology  
             TEXT
-          LetterTemplate.create(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'Editor Decision - Reject After Review CJs'
           letter = <<-TEXT.strip_heredoc
@@ -56,7 +56,7 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.create(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'Editor Decision - Reject After Review ONE'
           letter = <<-TEXT.strip_heredoc
@@ -87,7 +87,7 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.create(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'Reject After Review ONE'
           letter = <<-TEXT.strip_heredoc
@@ -120,7 +120,7 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.create(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'Reject After Revision and Re-review ONE'
           letter = <<-TEXT.strip_heredoc
@@ -151,7 +151,7 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.create(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'RA Major Revision'
           letter = <<-TEXT.strip_heredoc
@@ -199,7 +199,7 @@ namespace :data do
             Reviewer Notes:
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.create(template_decision: 'major_revision', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'major_revision', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'RA Minor Revision'
           letter = <<-TEXT.strip_heredoc
@@ -259,7 +259,7 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.create(template_decision: 'minor_revision', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'minor_revision', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
 
           text   = 'RA Accept'
           letter = <<-TEXT.strip_heredoc
@@ -278,7 +278,7 @@ namespace :data do
             %{your_name}
             %{journal_name}
             TEXT
-          LetterTemplate.create(template_decision: 'accept', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter)
+          LetterTemplate.where(template_decision: 'accept', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
         end
       end
     end

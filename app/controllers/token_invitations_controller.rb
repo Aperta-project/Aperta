@@ -16,7 +16,7 @@ class TokenInvitationsController < ApplicationController
     redirect_to invitation_feedback_form_path(token)
 
     invitation.reject!
-    Activity.invitation_rejected!(invitation, user: nil)
+    Activity.invitation_declined!(invitation, user: nil)
   end
 
   def feedback_form

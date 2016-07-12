@@ -104,7 +104,6 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.click_close_button()
     time.sleep(.5)
     workflow_page.logout()
-
     # login as reviewer respond to invite
     self.cas_login(email=reviewer_login['email'])
     time.sleep(2)

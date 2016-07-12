@@ -502,6 +502,10 @@ class Paper < ActiveRecord::Base
     versioned_texts.find_by(minor_version: nil, major_version: nil)
   end
 
+  def draft_decision
+    decisions.drafts.first
+  end
+
   def insert_figures!
     latest_version.insert_figures!
     notify

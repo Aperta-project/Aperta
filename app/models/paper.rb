@@ -499,7 +499,7 @@ class Paper < ActiveRecord::Base
   end
 
   def draft
-    versioned_texts.find_by(minor_version: nil, major_version: nil)
+    versioned_texts.drafts.first
   end
 
   def draft_decision

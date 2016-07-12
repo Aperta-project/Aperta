@@ -1,7 +1,7 @@
-<div>
-  {{#if templateDecision}}
+{{#if templateDecision}}
+  {{#unless disabled }}
     <p>Please select the template letter and then edit further.</p>
-  {{/if}}
+  {{/unless}}
 
   {{#if showDropdowns }}
     {{nested-question-select ident="register_decision_questions--selected-template"
@@ -11,7 +11,7 @@
                       defaultSelection=firstDecisionTemplate
                       placeholder="Please select the letter template"
                       source=decisionTemplates
-                      enable=isEditable
+                      enable=disabled
                       width="300"}}
 
   {{/if}}
@@ -24,6 +24,7 @@
       ident="register_decision_questions--to-field"
       owner=task
       inputClassNames='form-control'
+      disabled=disabled
       displayQuestionText=false
       placeholder='someone@example.edu'
       defaultAnswer=authorEmail
@@ -37,6 +38,7 @@
   {{input name=ident
         value=subjectLine
         class=inputClassNames
+        disabled=disabled
         placeholder=placeholder
         type=type}}
   </div>
@@ -44,12 +46,15 @@
   {{textarea onEvent="false"
              class="decision-letter-field"
              placeholder="A boilerplate decision letter will appear here"
-             disabled=nonPublishableOrUnselected
+             disabled=disabled
              value=letterValue}}
 
-  <button class="button-primary button--green send-email-action"
-disabled={{nonPublishable}} {{action registerDecision}}>
-    Register Decision and Email the Author
-  </button>
-
-</div>
+  {{#unless disabled}}
+    <button class="button-primary button--green send-email-action"
+  disabled={{disabled}} {{action registerDecision}}>
+      Register Decision and Email the Author
+    </button>
+  {{/unless}}
+{{else}}
+  <p>No decision has been registered.</p>
+{{/if}}

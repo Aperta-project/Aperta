@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
-  classNames: ['well'],
+  classNameBindings: ['templateDecision:well'],
   firstDecisionTemplate: Ember.computed('decisionTemplates', function() {
     return this.get('decisionTemplates.firstObject');
   }),

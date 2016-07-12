@@ -17,8 +17,26 @@ namespace :data do
               )
 
               attachment.file.versions.each_pair do |version, file|
+                source_url = file.path
+
+                # SupportingInformationFile had its versions stored in
+                # a different location than the main attachment due to
+                # a bug (or at least very odd behavior) in CarrierWave
+                # involving subclassing uploaders.
+                if attachment.is_a?(SupportingInformationFile)
+                  task = attachment.try(:task)
+                  paper = attachment.try(:paper) || task.try(:paper)
+                  if task && paper
+                    source_url = "uploads/paper/#{paper.id}/supporting_information_file/attachment/#{attachment.old_id}"
+                  elsif !task
+                    puts "Attachment has no task: #{attachment.inspect}"
+                  elsif !paper
+                    puts "Attachment has no paper: #{attachment.inspect}"
+                  end
+                end
+
                 S3Migration.create!(
-                  source_url: file.path,
+                  source_url: source_url,
                   attachment: attachment,
                   version: true
                 )

@@ -12,7 +12,7 @@ class AddTypeAndOldIdToAttachment < ActiveRecord::Migration
       dir.up do
         execute <<-SQL
           UPDATE attachments
-          SET type='AdhocAttachment'
+          SET type='AdhocAttachment', old_id=id
         SQL
       end
     end

@@ -382,9 +382,18 @@ class FiguresTask(BaseTask):
         raise(AssertionError, 'On edit, a minute passed without figure blocks ordering properly')
     for figure_block in figure_blocks:
       page_fig_name = figure_block.find_element(*self._figure_dl_link)
+      logging.info(page_fig_name.text)
+      count = 0
+      while not page_fig_name.text:
+        time.sleep(5)
+        page_fig_name = figure_block.find_element(*self._figure_dl_link)
+        count += 1
+        if count > 10:
+          raise(StandardError, 'Figure block not populating correctly - not getting a figure name')
       final_order.append(page_fig_name.text)
     original_order.sort()
-    assert original_order == final_order, '{0} != {1}'.format(original_order, final_order)
+    assert original_order == final_order, 'Original Order sorted: {0} != ' \
+                                          'Final Order{1}'.format(original_order, final_order)
     self._validate_striking_image_set(figure)
     if not matched:
       logging.info('no match found')

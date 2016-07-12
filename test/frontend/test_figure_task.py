@@ -40,7 +40,7 @@ class FigureTaskTest(CommonTest):
   Validate the elements, styles, functions of the Figures Card
   """
 
-  def test_smoke_figures_task_styles(self):
+  def rest_smoke_figures_task_styles(self):
     """
     test_figure_task: Validates the elements and styles of the figures task
     :return: void function
@@ -79,7 +79,7 @@ class FigureTaskTest(CommonTest):
     figures_task.validate_styles()
     figures_task.logout()
 
-  def test_core_figures_task_upload(self):
+  def rest_core_figures_task_upload(self):
     """
     test_figure_task: Validates the upload function of the figures task
     :return: void function
@@ -128,7 +128,7 @@ class FigureTaskTest(CommonTest):
     figures_card.validate_figure_presence(figures_list)
     figures_card.logout()
 
-  def test_core_figures_task_replace(self):
+  def rest_core_figures_task_replace(self):
     """
     test_figure_task: Validates the replacement function of the figures task
     :return: void function
@@ -162,7 +162,7 @@ class FigureTaskTest(CommonTest):
     time.sleep(5)
     figures_task.logout()
 
-  def test_core_figures_task_delete(self):
+  def rest_core_figures_task_delete(self):
     """
     test_figure_task: Validates the delete function of the figures task
     :return: void function
@@ -193,7 +193,7 @@ class FigureTaskTest(CommonTest):
     figures_task.delete_figure(figures_list)
     figures_task.validate_figure_not_present(figures_list)
 
-  def test_core_figures_task_download(self):
+  def rest_core_figures_task_download(self):
     """
     test_figure_task: Validates the download function of the figures task
     :return: void function
@@ -246,9 +246,9 @@ class FigureTaskTest(CommonTest):
     figures_task = FiguresTask(self.getDriver())
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     figures_task.check_question()
-    figures_list = figures_task.upload_figure('ardea_herodias_lzw.tiff')
+    figures_list = figures_task.upload_figure('ardea_herodias_lzw_sm.tiff')
     # It is necessary to provide a lengthy wait for upload and processing of the image
-    next_figure = figures_task.upload_figure('fig2.eps')
+    next_figure = figures_task.upload_figure('figure2_tiff_lzw.tiff')
     figures_list.append(next_figure)
     time.sleep(15)
     logging.info(figures_list)

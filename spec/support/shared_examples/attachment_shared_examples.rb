@@ -141,7 +141,6 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
       it 'does not remove the existings file when it has been snapshotted' do
         snapshot = FactoryGirl.create(:snapshot, source: subject)
         expect(subject).to_not receive(:remove_previously_stored_file)
-        url = 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg'
         subject.download!(url_2)
       end
     end

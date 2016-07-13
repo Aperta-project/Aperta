@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Reviewer recommendations display full reason in accordion and workflow view.
 ### Security
 
 ## [1.4.18] - {2016-07-06}

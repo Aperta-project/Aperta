@@ -15,7 +15,7 @@ describe NestedQuestionAnswersController do
           value: "Hello",
           owner_id: owner.id,
           owner_type: owner.type,
-          additional_data: { "insitution-id" => "123" }
+          additional_data: { "institution-id" => "123" }
         }
       }
       post(:create, post_params)
@@ -40,7 +40,7 @@ describe NestedQuestionAnswersController do
         expect(answer.nested_question).to eq(nested_question)
         expect(answer.owner).to eq(owner)
         expect(answer.value).to eq("Hello")
-        expect(answer.additional_data).to eq("insitution-id" => "123")
+        expect(answer.additional_data).to eq("institution-id" => "123")
       end
 
       it "responds with 200 OK" do
@@ -72,7 +72,7 @@ describe NestedQuestionAnswersController do
           value: "bar",
           owner_id: owner.id,
           owner_type: owner.type,
-          additional_data: { "insitution-id" => "123" }
+          additional_data: { "institution-id" => "123" }
         }
       }
       post(:create, post_params)
@@ -127,7 +127,7 @@ describe NestedQuestionAnswersController do
           value: "Bye",
           owner_id: owner.id,
           owner_type: owner.type,
-          additional_data: { "insitution-id" => "234" }
+          additional_data: { "institution-id" => "234" }
         }
       }
       put(:update, put_params)
@@ -150,7 +150,7 @@ describe NestedQuestionAnswersController do
 
         answer = nested_question_answer.reload
         expect(answer.value).to eq("Bye")
-        expect(answer.additional_data).to eq("insitution-id" => "234")
+        expect(answer.additional_data).to eq("institution-id" => "234")
       end
 
       it "responds with 200 OK" do
@@ -185,7 +185,7 @@ describe NestedQuestionAnswersController do
           value: "Bye",
           owner_id: owner.id,
           owner_type: owner.type,
-          additional_data: { "insitution-id" => "234" }
+          additional_data: { "institution-id" => "234" }
         }
       }
       delete(:destroy, delete_params)

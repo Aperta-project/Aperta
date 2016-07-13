@@ -164,30 +164,22 @@ class DashboardPage(AuthenticatedPage):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
-    :return: A tuple with the decision and an ID for reasons and suggestions
+    :return: A tuple with the first element a string with the the decision and the second
+    element there is a tuple with two elements and ID for reasons an ID for suggestions
     """
     response = random.choice(['Accept', 'Reject'])
+    logging.info(response)
     invite_listings = self._gets(self._view_invites_invite_listing)
     reasons = ''
     suggestions = ''
     for listing in invite_listings:
-      try:
-        # Remember to use single quotes outside to ensure you don't run afoul of
-        #  a single quote in the title - More often, double-quotes in titles are
-        #  rendered as smart quotes (unicode) so don't as often cause problems.
-        listing.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
-      except UnicodeEncodeError:
-        listing.find_element_by_xpath('//*[contains(text(), "{0}")]'
-                                           .format(title.encode('utf8')))
-      except NoSuchElementException:
-        pass
-      else:
+      if title in listing.text:
         if response == 'Accept':
-          yes_btn = listing.find_element(*self._invite_yes_btn)
-          yes_btn.click()
+          listing.find_element(*self._invite_yes_btn).click()
+          time.sleep(2)
+          return response, (reasons, suggestions)
         else:
-          no_btn = listing.find_element(*self._invite_no_btn)
-          no_btn.click()
+          listing.find_element(*self._invite_no_btn).click()
           time.sleep(1)
           self.validate_reviewer_invitation_response_styles(title)
           # Enter reason and suggestions
@@ -199,7 +191,7 @@ class DashboardPage(AuthenticatedPage):
           self._get(self._rim_send_fb_btn).click()
           # Time to get sure information is sent
           time.sleep(2)
-        return response, (reasons, suggestions)
+          return response, (reasons, suggestions)
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """
@@ -239,7 +231,6 @@ class DashboardPage(AuthenticatedPage):
     Validates elements in feedback form of reviewer_invitation_response
     :param paper_title: Title of the submitted paper
     """
-    XXXX
     # TODO: Validate these asserts with ST
     fb_modal_title = self._get(self._rim_title)
     assert fb_modal_title.text == 'Reviewer Invitation'

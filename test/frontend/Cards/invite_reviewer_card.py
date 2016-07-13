@@ -47,6 +47,8 @@ class InviteReviewersCard(BaseCard):
     self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
+    self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
+    self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestion')
 
   # POM Actions
   def validate_card_elements_styles(self, paper_id):
@@ -126,13 +128,15 @@ class InviteReviewersCard(BaseCard):
     self.validate_invitation(reviewer, 'Reviewer')
     assert 'Invited' in status.text, status.text
 
-  def validate_reviewer_response(self, reviewer, response):
+  def validate_reviewer_response(self, reviewer, response, reason='N/A', suggestions='N/A'):
     """
     This method invites the reviewer that is passed as parameter, verifying the composed email. It
       then checks the table of invited reviewers
     :param reviewer: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :param response: The reviewers response to the invitation
+    :param reason: Reason to reject the invitation
+    :param suggestions: Suggestion for another reviewer
     :return void function
     """
     time.sleep(.5)
@@ -147,3 +151,10 @@ class InviteReviewersCard(BaseCard):
           assert 'Accepted' in status.text, status.text
         else:
           assert 'Rejected' in status.text, status.text
+          reason_text = self._get(self._reason).text
+          reason_text = self.normalize_spaces(reason_text)
+          assert reason in reason_text, '{0} not in {1}'.format(reason, reason_text)
+          suggestion_text = self._get(self._suggestions).text
+          suggestion_text = self.normalize_spaces(suggestion_text)
+          assert suggestions in suggestion_text, '{0} not in {1}'.format(reason,
+            suggestion_text)

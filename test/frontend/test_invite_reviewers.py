@@ -151,7 +151,9 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_reviewer_response(reviewer_login, invite_response)
+    invite_reviewers.validate_reviewer_response(reviewer_login, invite_response,
+        response_data[0], response_data[1])
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

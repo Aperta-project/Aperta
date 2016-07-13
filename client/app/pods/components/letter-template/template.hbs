@@ -1,10 +1,9 @@
 {{#if templateDecision}}
-  {{#unless disabled }}
-    <p>Please select the template letter and then edit further.</p>
-  {{/unless}}
-
   {{#if showDropdowns }}
+    <p>Please select the template letter and then edit further.</p>
+
     {{nested-question-select ident="register_decision_questions--selected-template"
+                      class='letter-select2'
                       owner=task
                       displayQuestionText=false
                       selectionSelected=templateSelected

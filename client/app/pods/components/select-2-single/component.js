@@ -12,6 +12,7 @@ Select2SingleComponent = Select2Component.extend({
     return this.$().select2('val', this.get('selectedData'));
   }).observes('selectedData'),
   initSelection: function(el, callback) {
+    $('.select2-arrow').html('<i class="fa fa-angle-down"></i>');
     return (new Ember.RSVP.Promise((function(_this) {
       return function(resolve) {
         return resolve(_this.get('selectedData'));

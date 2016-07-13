@@ -79,15 +79,32 @@ describe VersionedText do
   end
 
   describe "#new_draft!" do
-    it "Creates a new VersionedText" do
-      versioned_text
-      expect { versioned_text.new_draft! }.to change { VersionedText.count }.by(1)
+    subject(:new_draft!) { versioned_text.new_draft! }
+
+    context "the versioned_text is a draft" do
+      let(:versioned_text) { paper.draft }
+
+      it "fails" do
+        expect { new_draft! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
 
-    it "has no version number" do
-      draft = versioned_text.new_draft!
-      expect(draft.major_version).to be_nil
-      expect(draft.minor_version).to be_nil
+    context "the versioned_text is completed" do
+      let!(:versioned_text) { paper.draft }
+
+      before :each do
+        versioned_text.update! major_version: 0, minor_version: 0
+      end
+
+      it "Creates a new VersionedText" do
+        expect { new_draft! }.to change { VersionedText.count }.by(1)
+      end
+
+      it "has no version number" do
+        draft = new_draft!
+        expect(draft.major_version).to be_nil
+        expect(draft.minor_version).to be_nil
+      end
     end
   end
 
@@ -96,7 +113,7 @@ describe VersionedText do
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect do
         FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
-      end.to raise_exception(ActiveRecord::RecordNotUnique)
+      end.to raise_exception(ActiveRecord::RecordInvalid)
     end
   end
 

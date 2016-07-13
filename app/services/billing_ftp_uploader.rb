@@ -28,4 +28,18 @@ class BillingFTPUploader < FtpUploaderService
     upload_datetime = Time.zone.now.strftime "%Y%m%d-%H%M"
     "aperta-billing-#{upload_datetime}.csv"
   end
+
+  private
+
+  def notify_admin
+    transfer_error <<-DESC
+      Billing FTP Transfer failed for #{@final_filename}:
+      #{@ftp.last_response}.
+
+      #{@billing_log_report.papers_to_process.count} papers with the
+      following IDs were not sent to billing:
+      #{@billing_log_report.papers_to_process.map(&:ids)}.
+    DESC
+    Bugsnag.notify(transfer_error)
+  end
 end

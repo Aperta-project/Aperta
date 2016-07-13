@@ -401,3 +401,11 @@ class WorkflowPage(AuthenticatedPage):
         return True
       else:
         return False
+
+  def set_editable(self):
+    """
+    Click the editable checkbox of the workflow page
+    :return: void function
+    """
+    editable_checkbox = self._get(self._editable_checkbox)
+    editable_checkbox.click()

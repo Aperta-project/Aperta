@@ -3432,6 +3432,7 @@ invitations:
   - invitee_role
   - decline_reason
   - reviewer_suggestions
+  - token
   records: 
   - - '1'
     - reviewer@example.com
@@ -3473,6 +3474,7 @@ invitations:
 
     - '1'
     - Reviewer
+    - 
     - 
     - 
   - - '2'
@@ -3517,6 +3519,7 @@ invitations:
 
     - '1'
     - Reviewer
+    - 
     - 
     - 
 
@@ -6377,7 +6380,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-06-23 16:58:00.932583'
+    - '2016-07-11 19:05:34.450735'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -6655,7 +6658,7 @@ nested_questions:
     - TahiStandardTasks::TaxonTask
     - 
   - - '137'
-    - Are you recommending or opposing this reviewer? (required)
+    - Are you recommending or opposing this reviewer?
     - boolean
     - reviewer_recommendations--recommend_or_oppose
     - 
@@ -6663,7 +6666,7 @@ nested_questions:
     - '218'
     - '1'
     - '2015-11-02 13:38:26.272946'
-    - '2016-06-23 16:58:01.120896'
+    - '2016-07-11 19:05:34.63917'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '138'

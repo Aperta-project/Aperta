@@ -43,7 +43,7 @@
     </div>
 
     <div class="flex-element inset-form-control required email {{if validationErrors.email "error"}}">
-      <div class="text-field-title required">
+      <div class="text-field-title">
         <label>Email</label>
         {{error-message message=validationErrors.email
                         displayIcon=true
@@ -88,7 +88,7 @@
   </div>
 
   <div class="flex-group">
-    <div class="flex-element insitution {{if validationErrors.affiliation "error"}}">
+    <div class="flex-element institution {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
       {{institution-search value=affiliation
                            institutionSelected="institutionSelected"
@@ -102,6 +102,7 @@
                             owner=reviewerRecommendation
                             yesLabel="Recommend"
                             noLabel="Oppose"
+                            textClassNames="required"
                             disabled=isNotEditable}}
     {{error-message message=validationErrors.recommendOrOppose}}
   </div>

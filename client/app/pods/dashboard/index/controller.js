@@ -8,6 +8,12 @@ export default Ember.Controller.extend({
   unreadComments: [],
   invitationsInvited: Ember.computed.alias('currentUser.invitationsInvited'),
   invitationsNeedsUserUpdate: Ember.computed.alias('currentUser.invitationsNeedsUserUpdate'),
+  invitationsPendingDecline: Ember.computed.filter(
+    'invitationsNeedsUserUpdate',
+    function(invitation) {
+      return invitation.get('declined') && invitation.get('pendingFeedback');
+    }
+  ),
 
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
@@ -50,6 +56,10 @@ export default Ember.Controller.extend({
 
   showNewManuscriptOverlay: false,
 
+  hideInvitationsOverlay() {
+    this.set('showInvitationsOverlay', false);
+  },
+
   actions: {
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
@@ -64,17 +74,14 @@ export default Ember.Controller.extend({
     },
 
     hideInvitationsOverlay() {
-      this.set('showInvitationsOverlay', false);
-    },
-
-    rejectInvitation(invitation) {
-      return this.get('restless').putUpdate(invitation, '/reject');
-    },
-
-    updateInvitation(invitation) {
-      return invitation.save().then(function(){
-        invitation.feedbackSent();
+      this.get('invitationsPendingDecline').forEach((invitation) => {
+        invitation.decline();
       });
+      this.hideInvitationsOverlay();
+    },
+
+    declineInvitation(invitation) {
+      return invitation.decline();
     },
 
     acceptInvitation(invitation) {

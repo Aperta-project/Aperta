@@ -7,13 +7,12 @@ export default Ember.Component.extend({
   invitation: null,
 
   //init with (actions):
-  update: null,
-  close:null,
+  decline: null,
 
   actions: {
     declineFeedback(invitation) {
       invitation.declineFeedback();
-      return this.get('close')();
+      return this.get('decline')();
     }
   }
 });

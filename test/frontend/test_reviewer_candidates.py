@@ -193,7 +193,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
     test_reviewer_candidates_task: Validates the access permissions for the reviewer candidates task
       a Reviewer will never ever see a reviewer recommendations card
       an AE will always be able to view the reviewer recommendations card
-      a paper Creator can view/edit the reviewer recommendations card
+      DONE inherently in previous two tests a paper Creator can view/edit the reviewer
+        recommendations card
       a paper Collaborator can view/edit the reviewer recommendations card
       DONE inherently in the previous two tests Staff can view/edit the reviewer
         recommendations card

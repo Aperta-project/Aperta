@@ -133,6 +133,16 @@ namespace :check_status do
     end
   end
 end
+
+namespace :deploy do
+  desc "Restart puma and sidekiq. Start nginx."
+  task :restart do
+    invoke 'puma:restart'
+    invoke 'sidekiq:restart'
+    invoke 'nginx:start'
+  end
+end
+
 # Hack to fake a puma.rb config, which we do not have on a worker
 before 'deploy:check:linked_files', :remove_junk do
   on roles(:db, :worker) do
@@ -152,8 +162,6 @@ before 'deploy:migrate', :create_backup do
   end
 end
 
-after 'deploy:publishing', 'puma:restart'
-after 'deploy:publishing', 'sidekiq:restart'
-after 'deploy:publishing', 'nginx:start'
+after 'deploy:publishing', 'deploy:restart'
 
 after 'deploy:finished', 'cleanup:tmp'

@@ -1,5 +1,5 @@
 class AddDecidedToDecisions < ActiveRecord::Migration
-  def change
+  def up
     add_column :decisions, :decided, :boolean, default: false
 
     decided_papers =

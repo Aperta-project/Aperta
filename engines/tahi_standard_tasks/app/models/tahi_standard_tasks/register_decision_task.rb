@@ -25,6 +25,7 @@ module TahiStandardTasks
 
     def complete_decision
       decision = latest_decision
+      decision.update_column(:decided, true)
       paper.make_decision decision
       # If it's a revise decision, prepare a new decision task.
       DecisionReviser.new(self, decision).process! if decision.revision?

@@ -4,6 +4,7 @@ describe QuestionAttachmentSerializer, serializer_test: true do
   let(:attachment) do
     FactoryGirl.create(
       :question_attachment,
+      :with_resource_token,
       title: 'La Attachment',
       file: File.open('spec/fixtures/yeti.tiff'),
       status: QuestionAttachment::STATUS_DONE

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627142558) do
+ActiveRecord::Schema.define(version: 20160630220443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20160627142558) do
     t.string   "caption"
     t.string   "status",     default: "processing"
     t.string   "kind"
-    t.string   "token"
     t.text     "s3_dir"
     t.string   "type"
     t.integer  "old_id"
@@ -88,11 +87,12 @@ ActiveRecord::Schema.define(version: 20160627142558) do
     t.string   "category"
     t.string   "label"
     t.boolean  "publishable"
+    t.string   "file_hash"
+    t.string   "previous_file_hash"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
   add_index "attachments", ["paper_id"], name: "index_attachments_on_paper_id", using: :btree
-  add_index "attachments", ["token"], name: "index_attachments_on_token", unique: true, using: :btree
 
   create_table "author_list_items", force: :cascade do |t|
     t.integer  "position"
@@ -541,6 +541,19 @@ ActiveRecord::Schema.define(version: 20160627142558) do
 
   add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
 
+  create_table "resource_tokens", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "token"
+    t.jsonb    "version_urls", default: {}, null: false
+    t.string   "default_url"
+  end
+
+  add_index "resource_tokens", ["owner_id", "owner_type"], name: "index_resource_tokens_on_owner_id_and_owner_type", using: :btree
+  add_index "resource_tokens", ["token"], name: "index_resource_tokens_on_token", using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
     t.integer  "journal_id"
@@ -553,6 +566,20 @@ ActiveRecord::Schema.define(version: 20160627142558) do
   add_index "roles", ["journal_id", "name"], name: "index_roles_on_journal_id_and_name", unique: true, using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
+
+  create_table "s3_migrations", force: :cascade do |t|
+    t.text     "source_url",                        null: false
+    t.text     "destination_url"
+    t.string   "attachment_type",                   null: false
+    t.integer  "attachment_id",                     null: false
+    t.boolean  "version",                           null: false
+    t.string   "state",           default: "ready"
+    t.text     "error_message"
+    t.text     "error_backtrace"
+    t.datetime "errored_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"
@@ -582,7 +609,10 @@ ActiveRecord::Schema.define(version: 20160627142558) do
     t.json     "contents"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.string   "key"
   end
+
+  add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
 
   create_table "tables", force: :cascade do |t|
     t.integer  "paper_id"

@@ -9,17 +9,28 @@ moduleForComponent('supporting-information-snapshot',
                       registerDiffAssertions();
                     }});
 
-var snapshot = function (){
+var snapshot = function (attrs){
+  let properties = _.extend({
+    id: 'foo',
+    title: 'squid',
+    file: 'theFile.jpg',
+    caption: 'I\'m the caption now',
+    publishable: true,
+    striking_image: true,
+    file_hash: 'a9876a98c987b96h',
+    url: '/path/to/theFile.jpg'
+  }, attrs);
   return {
     name: 'supporting-information-file',
     children: [
-      {name: 'id', value: 'foo'},
-      {name: 'title', value: 'squid'},
-      {name: 'file', value: 'theFile.jpg'},
-      {name: 'caption', value: 'I\'m the caption now'},
-      {name: 'publishable', value: true},
-      {name: 'striking_image', value: true},
-      {name: 'file_hash', value: 'a9876a98c987b96h'}
+      {name: 'id', value: properties.id},
+      {name: 'title', value: properties.title},
+      {name: 'file', value: properties.file},
+      {name: 'caption', value: properties.caption},
+      {name: 'publishable', value: properties.publishable},
+      {name: 'striking_image', value: properties.striking_image},
+      {name: 'file_hash', value: properties.file_hash},
+      {name: 'url', value: properties.url}
     ]
   };
 };
@@ -98,13 +109,26 @@ test('Diffs the striking image bool', function(assert){
 });
 
 test('Diffs the filename when the file has changed', function(assert) {
-  let secondSnaps = snapshot();
-  secondSnaps.children[6].value = 'anewhashverydifferentmuchchange';
-  this.set('oldSnapshot', snapshot());
+  let firstSnaps = snapshot({
+    file: 'removedFile.jpg',
+    file_hash: 'theoriginalfilehash',
+    url: '/path/to/removedFile.jpg'
+  });
+  let secondSnaps = snapshot({
+    file: 'addedFile.jpg',
+    file_hash: 'anewhashverydifferentmuchchange',
+    url: '/path/to/addedFile.jpg'
+  });
+
+  this.set('oldSnapshot', firstSnaps);
   this.set('newSnapshot', secondSnaps);
 
   this.render(template);
-  assert.diffPresent('theFile.jpg', 'theFile.jpg');
+
+  assert.linkDiffPresent({
+    removed: { text: 'removedFile.jpg', url: '/path/to/removedFile.jpg' },
+    added: { text: 'addedFile.jpg', url: '/path/to/addedFile.jpg' }
+  });
 });
 
 test('Shows the filename added when null in comparing snapshot', function(assert) {

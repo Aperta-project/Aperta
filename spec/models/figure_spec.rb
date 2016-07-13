@@ -3,9 +3,10 @@ require 'models/concerns/striking_image_shared_examples'
 
 describe Figure, redis: true do
   let(:figure) do
-    with_aws_cassette('figure') do
+    with_aws_cassette('attachment') do
       FactoryGirl.create(
         :figure,
+        :with_resource_token,
         file: File.open('spec/fixtures/yeti.tiff'),
         status: Figure::STATUS_DONE
       )
@@ -23,33 +24,26 @@ describe Figure, redis: true do
     end
   end
 
-  describe '#download!', vcr: { cassette_name: 'figures' } do
-    subject(:figure) { FactoryGirl.create(:figure, owner: paper) }
+  describe '#download!', vcr: { cassette_name: 'attachment' } do
+    subject(:figure) { FactoryGirl.create(:figure, :with_resource_token, owner: paper) }
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+    let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
-    it 'downloads the file at the given URL, caches the s3 store_dir' do
-      figure.download!(url)
-      figure.reload
-      expect(figure.file.path).to match(/bill_ted1\.jpg/)
-
-      expect(figure.file.store_dir).to be
-      expect(figure.s3_dir).to eq(figure.file.store_dir)
-    end
-
-    it 'sets the title and status' do
-      figure.download!(url)
-      figure.reload
-      expect(figure.title).to eq('bill_ted1.jpg')
-      expect(figure.status).to eq(self.described_class::STATUS_DONE)
-    end
+    include_examples 'attachment#download! raises exception when it fails'
+    include_examples 'attachment#download! stores the file'
+    include_examples 'attachment#download! caches the s3 store_dir'
+    include_examples 'attachment#download! sets the file_hash'
+    include_examples 'attachment#download! sets title to file name'
+    include_examples 'attachment#download! sets the status'
+    include_examples 'attachment#download! knows when to keep and remove s3 files'
+    include_examples 'attachment#download! manages resource tokens'
 
     it 'does not set the title when it is already set' do
       figure.update_column(:title, 'Great picture!')
       expect do
         figure.download!(url)
       end.to_not change { figure.reload.title }.from('Great picture!')
-    end    
+    end
   end
 
   describe '#src' do
@@ -84,11 +78,6 @@ describe Figure, redis: true do
     it 'returns a path with figure id for the proxy image endpoint' do
       expect(figure.detail_src)
         .to eq figure.non_expiring_proxy_url(version: :detail)
-    end
-
-    it 'returns a path with a cache buster if requested' do
-      url = figure.detail_src(cache_buster: true)
-      expect(url).to match /\?cb=\w+$/
     end
   end
 
@@ -139,28 +128,28 @@ describe Figure, redis: true do
   end
 
   describe 'inserting figures into a paper' do
-    let(:paper_double) { double 'paper' }
+    let(:paper) { FactoryGirl.build_stubbed :paper }
+    before do
+      figure.paper = paper
+    end
 
     it 'triggers when the figure title is updated' do
-      allow(figure).to receive(:paper).and_return(paper_double)
       allow(figure).to receive(:all_figures_done?).and_return(true)
-      expect(paper_double).to receive(:insert_figures!)
+      expect(paper).to receive(:insert_figures!)
 
       figure.update!(title: 'new title')
     end
 
     it 'triggers when the figure is destroyed' do
-      allow(figure).to receive(:paper).and_return(paper_double)
-      expect(paper_double).to receive(:insert_figures!)
-      allow(paper_double).to receive(:id)
+      expect(paper).to receive(:insert_figures!)
 
       figure.destroy!
     end
 
-    it 'triggers if the file is updated' do
+    it 'triggers if the file is downloaded' do
       expect(figure).to receive(:insert_figures!)
-      with_aws_cassette('figure') do
-        figure.update!(file: File.open('spec/fixtures/yeti.jpg'))
+      with_aws_cassette('attachment') do
+        figure.download!('http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg')
       end
     end
   end

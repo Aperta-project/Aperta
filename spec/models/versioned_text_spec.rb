@@ -86,8 +86,26 @@ describe VersionedText do
   end
 
   describe 'updating original_text' do
-    it 'should trigger an update of text' do
-      expect(versioned_text).to receive(:insert_figures)
+    let!(:figure) { FactoryGirl.create(:figure, owner: paper) }
+
+    before do
+      allow(FigureInserter).to receive(:new)
+        .and_return -> { }
+    end
+
+    it 'should trigger an update of text and figures' do
+      expect(FigureInserter).to receive(:new)
+        .with('new original text', [figure], {})
+        .and_return -> { }
+      versioned_text.update!(original_text: 'new original text')
+    end
+
+    it 'uses the latest figures' do
+      figure2 = FactoryGirl.create(:figure, owner: paper)
+      expect(FigureInserter).to receive(:new)
+        .with('new original text', [figure2], {})
+        .and_return -> { }
+      figure.destroy
       versioned_text.update!(original_text: 'new original text')
     end
   end

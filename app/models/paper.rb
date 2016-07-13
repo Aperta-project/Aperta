@@ -15,12 +15,17 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :striking_image, polymorphic: true
 
+  # Attachment-related things
   has_many :figures, as: :owner, dependent: :destroy
+  has_many :question_attachments, dependent: :destroy
+  has_many :supporting_information_files, dependent: :destroy
+  has_many :adhoc_attachments, dependent: :destroy
+
+  # Everything else
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
-  has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, dependent: :destroy
   has_many :users, -> { uniq }, through: :paper_roles
   has_many :old_assigned_users, -> { uniq }, through: :paper_roles, source: :user
@@ -211,6 +216,15 @@ class Paper < ActiveRecord::Base
   SUBMITTED_STATES = [:initially_submitted, :submitted]
   # States that represent when a paper can be reviewed by a Reviewer
   REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
+
+  def snapshottable_things
+    [].concat(tasks)
+      .concat(figures)
+      .concat(supporting_information_files)
+      .concat(adhoc_attachments)
+      .concat(question_attachments)
+      .select(&:snapshottable?)
+  end
 
   def users_with_role(role)
     User.joins(:assignments).where(

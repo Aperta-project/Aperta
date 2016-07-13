@@ -98,7 +98,7 @@ class FigureInserter
     if @direct_img_links
       figure.proxyable_url(version: :detail)
     else
-      figure.detail_src(cache_buster: true)
+      figure.detail_src
     end
   end
 end

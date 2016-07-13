@@ -17,24 +17,17 @@ describe AdhocAttachment do
   end
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
-    let(:attachment) { FactoryGirl.create(:adhoc_attachment, :with_task) }
-    let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
+    subject(:attachment) { FactoryGirl.create(:adhoc_attachment, :with_task) }
+    let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
-    it 'downloads the file at the given URL, caches the s3 store_dir' do
-      attachment.download!(url)
-      attachment.reload
-      expect(attachment.file.path).to match(/bill_ted1\.jpg/)
-
-      expect(attachment.file.store_dir).to be
-      expect(attachment.s3_dir).to eq(attachment.file.store_dir)
-    end
-
-    it 'sets the title and status' do
-      attachment.download!(url)
-      attachment.reload
-      expect(attachment.title).to eq('bill_ted1.jpg')
-      expect(attachment.status).to eq(self.described_class::STATUS_DONE)
-    end
+    include_examples 'attachment#download! raises exception when it fails'
+    include_examples 'attachment#download! stores the file'
+    include_examples 'attachment#download! caches the s3 store_dir'
+    include_examples 'attachment#download! sets the file_hash'
+    include_examples 'attachment#download! sets title to file name'
+    include_examples 'attachment#download! sets the status'
+    include_examples 'attachment#download! knows when to keep and remove s3 files'
+    include_examples 'attachment#download! manages resource tokens'
   end
 
   describe "#image" do

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import {
   namedComputedProperty
-} from 'tahi/mixins/components/snapshot-named-computed-property';
+} from 'tahi/lib/snapshots/snapshot-named-computed-property';
 
 const SIFileSnapshot = Ember.Object.extend({
   snapshot: null,
@@ -10,7 +10,8 @@ const SIFileSnapshot = Ember.Object.extend({
   caption: namedComputedProperty('snapshot', 'caption'),
   strikingImage: namedComputedProperty('snapshot', 'striking_image'),
   publishable: namedComputedProperty('snapshot', 'publishable'),
-  fileHash: namedComputedProperty('snapshot', 'file_hash')
+  fileHash: namedComputedProperty('snapshot', 'file_hash'),
+  url: namedComputedProperty('snapshot', 'url')
 });
 
 export default Ember.Component.extend({

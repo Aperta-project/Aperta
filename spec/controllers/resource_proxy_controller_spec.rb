@@ -1,88 +1,90 @@
 require 'rails_helper'
 
 describe ResourceProxyController do
-  subject(:file) do
-    with_aws_cassette('supporting_info_file') do
-      FactoryGirl.create(
-        :supporting_information_file,
-        file: File.open('spec/fixtures/yeti.tiff'),
-        status: SupportingInformationFile::STATUS_DONE
-      )
-    end
+  let(:example_token) { 'proxy_token' }
+  let(:resource_url) { 'https://example.com/some/s3/key' }
+  let(:resource_token) do
+    FactoryGirl.build_stubbed(:resource_token, owner: attachment)
+  end
+  let(:attachment) { FactoryGirl.build_stubbed :attachment }
+
+  before do
+    allow(ResourceToken).to receive(:find_by!)
+      .with(token: example_token)
+      .and_return resource_token
+    allow(resource_token).to receive(:url).and_return resource_url
   end
 
   describe 'GET #url without version' do
     subject do
-      get :url, resource: :supporting_information_files, token: file.token
+      get :url, resource: :supporting_information_files, token: example_token
     end
 
-    it 'redirects to S3 URL for supporting_information_files' do
-      subject
-      target = file.file.url
-      expect(subject).to redirect_to(target)
-      expect(target).to include('amazonaws')
-      expect(target).to include(file.filename)
+    it 'redirects to the ResourceToken#url' do
+      expect(subject).to redirect_to(resource_url)
     end
   end
 
   describe 'GET #url with version' do
     subject do
-      get :url,
-          resource: :supporting_information_files,
-          token: file.token,
-          version: :preview
+      get(
+        :url,
+        resource: :supporting_information_files,
+        token: example_token,
+        version: 'preview'
+      )
+    end
+    let(:preview_url) { 'https://example.com/s3/key/preview' }
+
+    before do
+      allow(resource_token).to receive(:url)
+        .with('preview')
+        .and_return preview_url
     end
 
-    it 'redirects to S3 URL for supporting_information_files' do
-      subject
-      target = file.file.url(:preview)
-      expect(subject).to redirect_to(target)
-      expect(target).to include('amazonaws')
-      # for versions, they are converted to png: yeti.tiff => preview_yeti.png
-      expect(target).to include("preview_#{file.filename.split('.').first}.png")
+    it 'redirects to the ResourceToken#url(version)' do
+      expect(subject).to redirect_to(preview_url)
     end
   end
 
-  describe 'GET #url with bad (never generated) token' do
+  describe 'GET #url with non-existent token' do
     subject do
-      get :url,
-          resource: :supporting_information_files,
-          token: 'faketoken',
-          version: :preview
+      get(
+        :url,
+        resource: :supporting_information_files,
+        token: example_token
+      )
     end
 
-    it 'is not found' do
-      expect(file)
+    before do
+      allow(ResourceToken).to receive(:find_by!)
+        .with(token: example_token)
+        .and_raise ActiveRecord::RecordNotFound
+    end
+
+    it 'returns an HTTP 404' do
       expect(subject.status).to eq 404
     end
   end
 
-  describe 'GET #url with old token' do
-    it 'is not found' do
-      expect(file.token).to be_truthy
-      old_token = file.token
-      file.regenerate_token
-      expect(file.token).not_to eq(old_token)
-
-      get :url,
-          resource: :supporting_information_files,
-          token: old_token
-
-      expect(response.status).to eq 404
-
-      get :url,
-          resource: :supporting_information_files,
-          token: file.token
-
-      target = file.file.url
-      expect(response).to redirect_to(target)
+  describe 'GET #url with a good token, but non-existent version' do
+    subject do
+      get(:url,
+        resource: :supporting_information_files,
+        token: example_token,
+        version: :bogus_version
+      )
     end
-  end
 
-  describe 'GET #url with resouce not in whitelist' do
-    it 'redirects to S3 URL for supporting_information_files' do
-      expect { get :url, resource: :protected_resource, token: file.token }
-        .to raise_error(ActionController::RoutingError)
+    before do
+      allow(resource_token).to receive(:url).and_return nil
+    end
+
+    it 'returns an HTTP 404' do
+      expect(ResourceToken).to receive(:find_by!)
+        .with(token: example_token)
+        .and_return resource_token
+      expect(subject.status).to eq 404
     end
   end
 end

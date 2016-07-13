@@ -10,21 +10,11 @@ class SupportingInformationFile < Attachment
 
   scope :publishable, -> { where(publishable: true) }
 
-  attachment_uploader SupportingInformationFileUploader
-
   validates :category, :title, presence: true, if: :task_completed?
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
 
   before_create :set_publishable
-
-  def download!(url)
-    super(url)
-    update_attributes!(
-      title: file.filename,
-      status: STATUS_DONE
-    )
-  end
 
   def ensure_striking_image_category_is_figure
     self.striking_image = false unless category == 'Figure'

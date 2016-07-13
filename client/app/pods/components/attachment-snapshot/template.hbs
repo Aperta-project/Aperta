@@ -1,16 +1,61 @@
-<div class="snapshot-question-attachment">
+<div class="snapshot-attachment">
   <div>
-    <span class="snapshot-question-label">File: </span>{{file}}
+    <label>File:</label>
   </div>
-  {{#if title}}
+
+  {{#if (or attachment1.file attachment2.file)}}
     <div>
-      <span class="snapshot-question-label">Title: </span>{{title}}
+      <span class="snapshot-attachment-file">
+        {{#if fileHashChanged}}
+          <a class="removed" href="{{attachment2.url}}">{{attachment2.file}}</a>
+          <a class="added" href="{{attachment1.url}}">{{attachment1.file}}</a>
+        {{else}}
+          <a href="{{attachment1.url}}">{{attachment1.file}}</a>
+        {{/if}}
+      </span>
     </div>
   {{/if}}
 
-  {{#if caption}}
-    <div>
-      <span class="snapshot-question-label">Caption: </span>{{caption}}
+  {{#if (or attachment1.title attachment2.title)}}
+    <div class="snapshot-attachment-title">
+      <label>Title:</label>
+      {{text-diff viewingText=attachment1.title comparisonText=attachment2.title}}
     </div>
   {{/if}}
+
+  {{#if (or attachment1.caption attachment2.caption)}}
+    <div class="snapshot-attachment-caption">
+      <label>Caption:</label>
+      {{text-diff viewingText=attachment1.caption comparisonText=attachment2.caption}}
+    </div>
+  {{/if}}
+
+  {{#if (or attachment1.category attachment2.category)}}
+    <div class="snapshot-attachment-category">
+      <label>Category:</label>
+      {{text-diff viewingText=attachment1.category comparisonText=attachment2.category}}
+    </div>
+  {{/if}}
+
+  {{#if (or attachment1.label attachment2.label)}}
+    <div class="snapshot-attachment-label">
+      <label>Label:</label>
+      {{text-diff viewingText=attachment1.label comparisonText=attachment2.label}}
+    </div>
+  {{/if}}
+
+  {{#if (or attachment1.publishable attachment2.publishable)}}
+    <div class="snapshot-attachment-publishable">
+      <label class="publishable">Publishable:</label>
+      {{boolean-diff viewingBool=attachment1.publishable comparisonBool=attachment2.publishable}}
+    </div>
+  {{/if}}
+
+  {{#if (or attachment1.strikingImage attachment2.strikingImage)}}
+    <div class="snapshot-attachment-striking-image">
+      <label>Striking Image:</label>
+      {{boolean-diff viewingBool=attachment1.strikingImage comparisonBool=attachment2.strikingImage}}
+    </div>
+  {{/if}}
+
 </div>

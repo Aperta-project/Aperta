@@ -2,14 +2,7 @@
 # adhoc task card that does not fall into the other predefined attachment
 # categories such as Figure(s), SupportingInformationFile(s), etc.
 class AdhocAttachment < Attachment
-  attachment_uploader AdhocAttachmentUploader
-
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
-
-  def download!(url)
-    super(url)
-    update_attributes!(title: file.filename, status: STATUS_DONE)
-  end
 
   def src
     non_expiring_proxy_url if done?

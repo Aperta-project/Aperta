@@ -7,16 +7,22 @@
 class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
+  include Snapshottable
+
+  self.snapshottable = true
 
   STATUS_DONE = 'done'
 
-  def self.attachment_uploader(uploader_class)
-    mount_uploader :file, uploader_class
-  end
+  mount_snapshottable_uploader :file, AttachmentUploader
 
-  # writes to `token` attr on create
-  # `regenerate_token` for new token
-  has_secure_token
+  def self.authenticated_url_for_key(key)
+    uploader = new.file
+    CarrierWave::Storage::Fog::File.new(
+      uploader,
+      uploader.send(:storage),
+      key
+    ).url
+  end
 
   belongs_to :owner, polymorphic: true
   belongs_to :paper
@@ -28,22 +34,48 @@ class Attachment < ActiveRecord::Base
   after_initialize :set_paper, if: :new_record?
 
   def download!(url)
+    @downloading = true
     file.download! url
-    self.s3_dir = file.store_dir
+    self.file_hash = Digest::SHA256.hexdigest(file.file.read)
+    self.s3_dir = file.generate_new_store_dir
+    self.title = title || file.filename
+    self.status = STATUS_DONE
+    # Using save! instead of update_attributes because the above are not the
+    # only attributes that have been updated. We want to persist all changes
+    save!
+    refresh_resource_token!(file)
+    @downloading = false
+    on_download_complete
+  rescue Exception => ex
+    on_download_failed(ex)
+  ensure
+    @downloading = false
+  end
+
+  def destroy_resource_token!
+    return if snapshotted?
+    super
+  end
+
+  def downloading?
+    @downloading
+  end
+
+  def on_download_complete
+    # no-op. Sweet hook method to add in a subclass to perform actions after an
+    # attachment is downloaded.
+  end
+
+  def on_download_failed(exception)
+    fail exception
+  end
+
+  def url(*args)
+    file.url(*args)
   end
 
   def filename
     self[:file]
-  end
-
-  # This is a hash used for recognizing changes in file contents; if
-  # the file doens't exist, or if we can't connect to amazon, minimal
-  # harm comes from returning nil instead. The error thrown is,
-  # unfortunately, not wrapped by carrierwave.
-  def file_hash
-    file.file.attributes[:etag]
-  rescue
-    nil
   end
 
   def done?
@@ -53,6 +85,18 @@ class Attachment < ActiveRecord::Base
   def owner=(new_owner)
     super
     set_paper
+  end
+
+  def snapshot_key
+    file.current_path
+  end
+
+  def snapshotted?
+    if @previous_model_for_file
+      @previous_model_for_file.snapshot.present?
+    else
+      snapshot.present?
+    end
   end
 
   def task

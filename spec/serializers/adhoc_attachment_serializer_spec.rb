@@ -5,14 +5,14 @@ describe AdhocAttachmentSerializer, serializer_test: true do
     FactoryGirl.create(
       :adhoc_attachment,
       :with_task,
+      :with_resource_token,
       status: AdhocAttachment::STATUS_DONE,
-      token: token
     )
   end
-  let(:token) { 'hfrrpwV1VHYb7x2T' }
+  let(:token) { attachment.token }
   let(:object_for_serializer) { attachment }
   let(:src) do
-    "/resource_proxy/adhoc_attachments/" + token
+    "/resource_proxy/" + token
   end
 
   it "serializes successfully" do
@@ -51,6 +51,10 @@ describe AdhocAttachmentSerializer, serializer_test: true do
   end
 
   context "and the attachment is not an image" do
+    before do
+      attachment.update_attributes file: ::File.open('spec/fixtures/blah.zip')
+    end
+
     it "has empty :preview_src & :detail_sec" do
       expect(deserialized_content)
         .to match(hash_including(

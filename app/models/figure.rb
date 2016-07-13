@@ -6,8 +6,6 @@ class Figure < Attachment
 
   default_scope { order(:id) }
 
-  attachment_uploader AttachmentUploader
-
   after_save :insert_figures!, if: :should_insert_figures?
   after_destroy :insert_figures!
 
@@ -15,14 +13,6 @@ class Figure < Attachment
 
   def self.acceptable_content_type?(content_type)
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
-  end
-
-  def download!(url)
-    super(url)
-    update_attributes!(
-      title: title || file.filename,
-      status: STATUS_DONE
-    )
   end
 
   def alt
@@ -51,10 +41,14 @@ class Figure < Attachment
     number_match[0].to_i if number_match
   end
 
+  def on_download_complete
+    insert_figures! if all_figures_done?
+  end
+
   private
 
   def should_insert_figures?
-    (title_changed? || file_changed?) && all_figures_done?
+    title_changed? && !downloading? && all_figures_done?
   end
 
   def all_figures_done?

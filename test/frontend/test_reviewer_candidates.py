@@ -30,8 +30,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
 
   def test_smoke_reviewer_candidates_styles(self):
     """
-    test_reviewer_candidates_task: Validates the elements, styles and functions of the reviewer
-      candidates task and card from new document creation through making a recommendation through
+    test_reviewer_candidates: Validates the elements, styles of the reviewer candidates task and
+      card from new document creation through making a recommendation through
       view of that data on the reviewer candidates card
     :return: void function
     """
@@ -51,7 +51,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=15)
     # Note: Request title to make sure the required page is loaded
-    manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_db_id()
     time.sleep(2)
     # figures
     manuscript_page.click_task('review_candidates')
@@ -59,11 +59,32 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     time.sleep(1)
     rev_cand_task.validate_styles()
+    rev_cand_task.logout()
+
+    # login as privileged user to validate the presentation of the data on the RC Card
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as user: {0}'.format(['name']))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    time.sleep(3)
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    time.sleep(3)
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    time.sleep(2)
+    workflow_page.click_card('reviewer_candidates')
+    time.sleep(10)
+    rcc = ReviewerCandidatesCard(self.getDriver())
+    rcc.validate_styles(reviewer_login, paper_id)
 
   def test_core_add_reviewer_candidate(self):
     """
     test_reviewer_candidates_task: Validates the submission of a recommended or opposed reviewer.
-      Validates the presentation of the data submitted from the task on the workflow card.
+      Validates the presentation of the data submitted from the task on the workflow card. Note
+      that this also validates the styling of the candidate display on the card - as this isn't
+      covered in the style validation due to lack of an entry.
     :return: void function
     """
     # Users logs in and make a submission
@@ -111,7 +132,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     time.sleep(10)
     rcc = ReviewerCandidatesCard(self.getDriver())
     rcc.validate_styles(reviewer_login, paper_id)
-    rcc.check_initial_population(choice, reason)
+    rcc.check_initial_population(reviewer_login, choice, reason)
 
   def test_core_delete_reviewer_candidate(self):
     """
@@ -164,7 +185,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
     time.sleep(2)
     workflow_page.click_card('reviewer_candidates')
     time.sleep(10)
-    # TODO: Instantiate POM for Reviewer Candidate Card, validate information presented.
+    rcc = ReviewerCandidatesCard(self.getDriver())
+    rcc.check_no_entry()
 
   def test_core_reviewer_candidates_permissions(self):
     """
@@ -173,7 +195,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
       an AE will always be able to view the reviewer recommendations card
       a paper Creator can view/edit the reviewer recommendations card
       a paper Collaborator can view/edit the reviewer recommendations card
-      Staff can view/edit the reviewer recommendations card
+      DONE inherently in the previous two tests Staff can view/edit the reviewer
+        recommendations card
     :return: void function
     """
     pass

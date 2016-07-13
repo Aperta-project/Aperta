@@ -598,7 +598,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
-                       'Financial Disclosure'):
+                       'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):

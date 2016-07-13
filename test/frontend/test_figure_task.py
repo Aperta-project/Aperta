@@ -246,9 +246,9 @@ class FigureTaskTest(CommonTest):
     figures_task = FiguresTask(self.getDriver())
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     figures_task.check_question()
-    figures_list = figures_task.upload_figure('ardea_herodias_lzw.tiff')
+    figures_list = figures_task.upload_figure('ardea_herodias_lzw_sm.tiff')
     # It is necessary to provide a lengthy wait for upload and processing of the image
-    next_figure = figures_task.upload_figure('fig2.eps')
+    next_figure = figures_task.upload_figure('figure2_tiff_lzw.tiff')
     figures_list.append(next_figure)
     time.sleep(15)
     logging.info(figures_list)

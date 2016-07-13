@@ -32,7 +32,7 @@ var template = hbs`{{invitations-x invitations=invitations
 test('pending invitation loads with accept/decline options', function(assert){
   this.render(template);
 
-  assert.textPresent('h4', 'Reviewer Invitation');
+  assert.textPresent('h2', 'Reviewer Invitation');
   assert.textPresent('button.invitation-accept', 'Accept Reviewer Invitation');
   assert.textPresent('button.invitation-decline', 'Decline');
   assert.elementFound('.pending-invitation', 'flagged as pending invitation');

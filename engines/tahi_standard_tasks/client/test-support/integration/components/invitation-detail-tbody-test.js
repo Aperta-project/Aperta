@@ -30,12 +30,3 @@ test('displays decline feedback when declined', function(assert){
   assert.textPresent('.invitation-decline-reason', 'No current availability');
   assert.textPresent('.invitation-reviewer-suggestions', 'Jane McReviewer');
 });
-
-test('displays decline feedback as n/a when not entered during decline process',
-  function(assert){
-    this.render(template);
-
-    assert.textPresent('.invitation-decline-reason', 'n/a');
-    assert.textPresent('.invitation-reviewer-suggestions', 'n/a');
-  }
-);

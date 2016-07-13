@@ -11,7 +11,7 @@
     </tr>
 
     {{invitation-detail-tbody
-        invitations=filteredInvitations
+        invitations=decision.filteredInvitations
         classNames='expired-invitations'
         destroyAction=(action 'destroyInvitation')}}
   {{/each}}

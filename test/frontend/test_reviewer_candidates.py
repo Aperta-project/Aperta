@@ -222,6 +222,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
 
     # Users logs in and make a submission
     creator_user = random.choice(users)
+    logging.info('Logging in as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()

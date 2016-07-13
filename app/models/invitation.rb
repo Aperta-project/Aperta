@@ -66,7 +66,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def feedback_given?
-    decline_reason.present? || reviewer_suggestions.present?
+    self[:decline_reason].present? || self[:reviewer_suggestions].present?
   end
 
   def decline_reason

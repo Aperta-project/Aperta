@@ -110,6 +110,29 @@ namespace :cleanup do
   end
 end
 
+namespace :check_status do
+  [{ name: :nginx,
+     pidfile: :nginx_pidfile
+   },
+   { name: :sidekiq,
+     pidfile: :sidekiq_pidfile
+   },
+   { name: :puma,
+     pidfile: :puma_pidfile
+   }].each do |config|
+    desc "Check the status of the #{config[:name]} process"
+    task config[:name] do
+      on roles(:web) do
+        pidfile = fetch(config[:pidfile])
+        if test("[ -s #{pidfile} ]") && test("ps -o pid= -p `< #{pidfile}`")
+          info "#{config[:name]} is running"
+        else
+          error "#{config[:name]} is NOT running"
+        end
+      end
+    end
+  end
+end
 # Hack to fake a puma.rb config, which we do not have on a worker
 before 'deploy:check:linked_files', :remove_junk do
   on roles(:db, :worker) do

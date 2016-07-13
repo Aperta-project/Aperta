@@ -85,16 +85,29 @@ class S3Migration < ActiveRecord::Base
 
   private
 
+  def retrieve_fresh_attachment
+    Attachment.find(attachment.id)
+  end
+
+  def add_urls_to_resource_tokens
+    fresh_attachment = retrieve_fresh_attachment
+    fresh_attachment.ensure_resource_token_has_urls!(fresh_attachment.file)
+  end
+
+  def recreate_versions!
+    retrieve_fresh_attachment.file.recreate_versions!
+  end
+
   def perform_migration
     # There is a lot of orphaned data (at least on staging) so this is to
     # ignore it.
     if attachment.is_a?(Figure)
       if attachment.paper.nil?
-        puts "Task or Paper is nil. Attachment (id=#{attachment.id}) is an orphan. :("
+        puts "Paper is nil. Attachment (id=#{attachment.id}) is an orphan. :("
         return
       end
-    elsif attachment.task.nil? || attachment.paper.nil?
-      puts "Task or Paper is nil. Attachment (id=#{attachment.id}) is an orphan. :("
+    elsif attachment.owner.nil? && attachment.paper.nil?
+      puts "Owner and Paper are nil. Attachment (id=#{attachment.id}) is an orphan. :("
       return
     end
 
@@ -140,6 +153,8 @@ class S3Migration < ActiveRecord::Base
       )
       attachment.update_column :s3_dir, attachment.file.generate_new_store_dir
     end
+    add_urls_to_resource_tokens
+    recreate_versions! if attachment.is_a? QuestionAttachment
     completed!
   rescue Exception => ex
     update_attributes!(

@@ -240,7 +240,7 @@ class WorkflowPage(AuthenticatedPage):
     assert author_cards[0].text == 'Additional Information', author_cards[0].text
     assert author_cards[1].text == 'Authors', author_cards[1].text
     assert author_cards[2].text == 'Billing', author_cards[2].text
-    assert author_cards[3].text == 'Changes for Author', author_cards[3].text
+    assert author_cards[3].text == 'Changes For Author', author_cards[3].text
     assert author_cards[4].text == 'Competing Interests', author_cards[4].text
     assert author_cards[5].text == 'Cover Letter', author_cards[5].text
     assert author_cards[6].text == 'Data Availability', author_cards[6].text
@@ -259,17 +259,18 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[2].text == 'Assign Team', staff_cards[2].text
     assert staff_cards[3].text == 'Editor Discussion', staff_cards[3].text
     assert staff_cards[4].text == 'Final Tech Check', staff_cards[4].text
-    assert staff_cards[5].text == 'Initial Decision', staff_cards[5].text
-    assert staff_cards[6].text == 'Initial Tech Check', staff_cards[6].text
-    assert staff_cards[7].text == 'Invite Academic Editor', staff_cards[7].text
-    assert staff_cards[8].text == 'Invite Reviewers', staff_cards[8].text
-    assert staff_cards[9].text == 'Production Metadata', staff_cards[9].text
-    assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
-    assert staff_cards[11].text == 'Related Articles', staff_cards[11].text
-    assert staff_cards[12].text == 'Reviewer Report', staff_cards[12].text
-    assert staff_cards[13].text == 'Revision Tech Check', staff_cards[13].text
-    assert staff_cards[14].text == 'Send to Apex', staff_cards[14].text
-    assert staff_cards[15].text == 'Title and Abstract', staff_cards[15].text
+    assert staff_cards[5].text == 'Front Matter Reviewer Report', staff_cards[5].text
+    assert staff_cards[6].text == 'Initial Decision', staff_cards[6].text
+    assert staff_cards[7].text == 'Initial Tech Check', staff_cards[7].text
+    assert staff_cards[8].text == 'Invite Academic Editor', staff_cards[8].text
+    assert staff_cards[9].text == 'Invite Reviewers', staff_cards[9].text
+    assert staff_cards[10].text == 'Production Metadata', staff_cards[10].text
+    assert staff_cards[11].text == 'Register Decision', staff_cards[11].text
+    assert staff_cards[12].text == 'Related Articles', staff_cards[12].text
+    assert staff_cards[13].text == 'Reviewer Report', staff_cards[13].text
+    assert staff_cards[14].text == 'Revision Tech Check', staff_cards[14].text
+    assert staff_cards[15].text == 'Send to Apex', staff_cards[15].text
+    assert staff_cards[16].text == 'Title And Abstract', staff_cards[16].text
     # APERTA-5513 AC 3
     author_cards[10].click()
     author_cards[11].click()
@@ -401,3 +402,11 @@ class WorkflowPage(AuthenticatedPage):
         return True
       else:
         return False
+
+  def set_editable(self):
+    """
+    Click the editable checkbox of the workflow page
+    :return: void function
+    """
+    editable_checkbox = self._get(self._editable_checkbox)
+    editable_checkbox.click()

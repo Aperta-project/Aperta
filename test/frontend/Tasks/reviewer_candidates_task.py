@@ -319,3 +319,16 @@ class ReviewerCandidatesTask(BaseTask):
       logging.info('No listing was found - pass case')
       return
     raise(StandardError, 'Reviewer Recommendation found - should have been deleted')
+
+  def assert_add_new_cand_btn_present(self):
+    """
+    As a stand-in for determining edit permissions, look for the existence of
+      an "Add New Candidates" button. Note this is only accurate if card is in make changes mode
+      and paper is in general editable state
+    :return: True if present, else False
+    """
+    try:
+      self._get(self._new_candidate_btn)
+    except ElementDoesNotExistAssertionError:
+      return False
+    return True

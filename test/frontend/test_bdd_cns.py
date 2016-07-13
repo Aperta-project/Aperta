@@ -134,7 +134,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15, fail_on_missing=True)
+    manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

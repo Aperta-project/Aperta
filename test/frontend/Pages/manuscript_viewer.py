@@ -598,7 +598,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
-                       'Financial Disclosure'):
+                       'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
@@ -692,6 +692,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def close_infobox(self):
     """Close the infobox element, if present"""
+    # Note due to APERTA-7210 the closer element is present but is z-ordered underneath
+    # another element and thus not visible or clickable at present.
+    time.sleep(1)
     try:
       infobox_closer = self._get(self._infobox_closer)
     except ElementDoesNotExistAssertionError:

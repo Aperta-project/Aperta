@@ -49,8 +49,8 @@ class InviteAECard(BaseCard):
     :user: User to send the invitation
     """
     time.sleep(.5)
-    self._get(self._ae_input).send_keys(user['email'] + Keys.ENTER)
-    self._get(self._ae_input).send_keys(Keys.ENTER)
+    self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
+    self._get(self._recipient_field).send_keys(Keys.ENTER)
     time.sleep(2)
     self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
     self._get(self._send_invitation_button).click()

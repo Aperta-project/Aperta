@@ -84,6 +84,7 @@ class ReviewerCandidatesCard(BaseCard):
       validate the card header items
     :return: void function
     """
+    entry = ''
     completed = self.completed_state()
     if completed:
       self.click_completion_button()
@@ -101,7 +102,10 @@ class ReviewerCandidatesCard(BaseCard):
     new_cand_btn = self._get(self._new_candidate_btn)
     assert new_cand_btn.text == 'NEW REVIEWER CANDIDATE'
     # validate the extant entry if present
-    entry = self._get(self._cand_entry_view)
+    try:
+      entry = self._get(self._cand_entry_view)
+    except ElementDoesNotExistAssertionError:
+      logging.info('No Reviewer candidate entry present, skipping existing entry validation')
     if entry:
       full_name = entry.find_element(*self._cand_view_full_name)
       self.validate_application_ptext(full_name)
@@ -232,13 +236,46 @@ class ReviewerCandidatesCard(BaseCard):
     assert 'DONE' in save_button.text, save_button.text
     self.validate_green_on_green_button_style(save_button)
 
-  def check_initial_population(self, decision, reason):
+  def check_initial_population(self, candidate, choice, reason):
     """
     Verify that the values populated in the form are those were submitted
-    :param decision: the decision that should be reflected in the card-based entry
+    :param candidate: the dictionary object of the user to validate
+    :param choice: the choice that should be reflected in the card-based entry, recommend or oppose
     :param reason: the reason given in the task for the decision - to ensure it is floated
       accurately into the card.
     :return: void function
     """
-    # TODO: Implement this validation
-    pass
+    # Now to do a little style validation for the view listing of the recommendation
+    entry = self._get(self._cand_entry_view)
+    full_name = entry.find_element(*self._cand_view_full_name)
+    self.validate_application_ptext(full_name)
+    logging.info('Validating existing entry')
+    assert candidate['name'] == full_name.text, full_name.text
+    email = entry.find_element(*self._cand_view_email)
+    self.validate_application_ptext(email)
+    assert candidate['email'] == email.text, email.text
+    decision = entry.find_element(*self._cand_view_decision)
+    self.validate_application_ptext(decision)
+    assert choice in decision.text.lower(), decision.text.lower()
+    stated_reason = entry.find_element(*self._cand_view_reason)
+    self.validate_application_ptext(stated_reason)
+    assert reason == stated_reason.text, '{0} != {1}'.format(reason, stated_reason.text)
+
+  def check_no_entry(self):
+    """
+    Verify that there is no recommendation/oppose entry populated in the card
+    """
+    # Now to do a little style validation for the view listing of the recommendation
+    try:
+      entry = self._get(self._cand_entry_view)
+    except ElementDoesNotExistAssertionError:
+      return
+    full_name = entry.find_element(*self._cand_view_full_name)
+    email = entry.find_element(*self._cand_view_email)
+    decision = entry.find_element(*self._cand_view_decision)
+    stated_reason = entry.find_element(*self._cand_view_reason)
+    raise (StandardError, 'Reviewer entry found in card when it '
+                          'was supposed to be deleted: {0}, {1}, {2}, {3}'.format(full_name,
+                                                                                  email,
+                                                                                  decision,
+                                                                                  stated_reason))

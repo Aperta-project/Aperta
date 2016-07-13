@@ -1,6 +1,8 @@
 {{#if templateDecision}}
   {{#if showDropdowns }}
-    <p>Please select the template letter and then edit further.</p>
+    {{#unless disabled }}
+      <p>Please select the template letter and then edit further.</p>
+    {{/unless}}
 
     {{nested-question-select ident="register_decision_questions--selected-template"
                       class='letter-select2'

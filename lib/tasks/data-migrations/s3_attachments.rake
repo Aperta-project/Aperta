@@ -15,6 +15,11 @@ namespace :data do
                 attachment: attachment,
                 version: false
               )
+              if attachment.is_a?(QuestionAttachment)
+                # QuestionAttachments did not have versions, but the converged
+                # Attachment model assumes they do.
+                next
+              end
 
               attachment.file.versions.each_pair do |version, file|
                 source_url = file.path
@@ -29,6 +34,18 @@ namespace :data do
                   paper = attachment.try(:paper) || task.try(:paper)
                   if task && paper
                     source_dir = "uploads/paper/#{paper.id}/supporting_information_file/attachment/#{attachment.old_id}"
+                    source_url = File.join(source_dir, base_name)
+                  elsif !task
+                    puts "Attachment has no task: #{attachment.inspect}"
+                  elsif !paper
+                    puts "Attachment has no paper: #{attachment.inspect}"
+                  end
+
+                elsif attachment.is_a?(AdhocAttachment)
+                  task = attachment.try(:task)
+                  paper = attachment.try(:paper) || task.try(:paper)
+                  if task && paper
+                    source_dir = "uploads/paper/#{paper.id}/attachment/file/#{attachment.old_id}"
                     source_url = File.join(source_dir, base_name)
                   elsif !task
                     puts "Attachment has no task: #{attachment.inspect}"

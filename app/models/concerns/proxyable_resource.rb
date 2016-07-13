@@ -36,13 +36,25 @@ module ProxyableResource
     end
   end
 
-  def build_resource_token(resource)
+  def urls_for_resource(resource)
     resource_versions = resource.versions.keys
     default_url = resource.path
     version_urls = Hash[resource_versions.map do |k|
       [k, resource.versions[k].path]
     end]
-    resource_tokens.build(default_url: default_url, version_urls: version_urls)
+    { default_url: default_url, version_urls: version_urls }
+  end
+
+  def ensure_resource_token_has_urls!(resource)
+    return create_resource_token(resource) unless resource_token
+    urls = urls_for_resource(resource)
+
+    resource_token.update!(default_url: urls[:default_url]) if resource_token.default_url.blank?
+    resource_token.update!(version_urls: urls[:version_urls]) if resource_token.version_urls.blank?
+  end
+
+  def build_resource_token(resource)
+    resource_tokens.build urls_for_resource(resource)
   end
 
   def create_resource_token!(resource)
@@ -58,6 +70,9 @@ module ProxyableResource
     create_resource_token!(resource)
   end
 
+  # Not memoizing on purpose because it creates a situation where we have an
+  # outdated resource token. If you memoize be sure to handle invalidating the
+  # cache in every situation where the resource token changes.
   def resource_token
     resource_tokens.order('created_at DESC').first
   end

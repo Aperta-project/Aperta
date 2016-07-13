@@ -37,4 +37,15 @@ namespace :plos_billing do
       puts 'There were no accepted papers with billing tasks left to process'
     end
   end
+
+  desc 'Auotmated billing export and ftp to designated billing host'
+  task daily_billing_log_export: :environment do
+    date = Time.zone.now.utc.days_ago(1)
+    report = BillingLogReport.create_report(from_date: date)
+
+    if report
+      BillingFTPUploader.new(report).upload
+      puts "Uploaded to #{report.csv_file.url}"
+    end
+  end
 end

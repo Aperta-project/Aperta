@@ -1,22 +1,22 @@
 # Serves as the method for non-users to decline without having to sign in.
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in
-  before_action :redirect_unless_rejected, except: [:show, :decline]
+  before_action :redirect_unless_declined, except: [:show, :decline]
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
     redirect_to root_path and return if invitation.accepted?
-    redirect_to invitation_feedback_form_path(token) and return if invitation.rejected?
+    redirect_to invitation_feedback_form_path(token) and return if invitation.declined?
 
     assign_template_vars
   end
 
   def decline
-    redirect_to root_path and return if invitation.rejected?
+    redirect_to root_path and return if invitation.declined?
     redirect_to invitation_feedback_form_path(token)
 
-    invitation.reject!
-    Activity.invitation_rejected!(invitation, user: nil)
+    invitation.decline!
+    Activity.invitation_declined!(invitation, user: nil)
   end
 
   def feedback_form
@@ -53,8 +53,8 @@ class TokenInvitationsController < ApplicationController
     redirect_to root_path if current_user
   end
 
-  def redirect_unless_rejected
-    redirect_to root_path and return unless invitation.rejected?
+  def redirect_unless_declined
+    redirect_to root_path and return unless invitation.declined?
   end
 
   def feedback_params

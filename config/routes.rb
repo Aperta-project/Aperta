@@ -73,7 +73,7 @@ Tahi::Application.routes.draw do
     resources :formats, only: [:index]
     resources :invitations, only: [:index, :show, :create, :update] do
       put :accept, on: :member
-      put :reject, on: :member
+      put :decline, on: :member
       put :rescind, on: :member
     end
     resources :journals, only: [:index, :show] do
@@ -203,7 +203,7 @@ Tahi::Application.routes.draw do
 
   post '/invitations/:token/decline',
     to: 'token_invitations#decline',
-    as: 'decline_invitation'
+    as: 'decline_token_invitation'
 
   get '/invitations/:token/feedback',
     to: 'token_invitations#feedback_form',

@@ -6,8 +6,7 @@ moduleForComponent('reviewer-invitation-feedback',
                    'Integration | Component | reviewer invitation feedback',
                    {integration: true,
                     beforeEach: function() {
-                      this.set('update', () => {return;});
-                      this.set('close', () => {return;});
+                      this.set('decline', () => {return;});
                       this.set('invitation', Ember.Object.create({
                         title: 'Awesome Paper!',
                         declineReason: null,
@@ -17,8 +16,7 @@ moduleForComponent('reviewer-invitation-feedback',
 
 var template = hbs`{{reviewer-invitation-feedback
                       invitation=invitation
-                      close=(action close)
-                      update=(action update invitation)
+                      decline=(action decline invitation)
                       }}`;
 
 var fillText = function(selector, text) {
@@ -77,7 +75,7 @@ test('can respond "no thank you" to giving feedback', function(assert){
     assert.ok(true, 'declineFeedback is called on invitation')
   });
 
-  this.set('close', () => {
+  this.set('decline', () => {
     assert.ok(true, 'close action is called when declineFeedback is triggered');
   });
 
@@ -87,7 +85,7 @@ test('can respond "no thank you" to giving feedback', function(assert){
 
 test('can Send Feedback', function(assert){
   assert.expect(3);
-  this.set('update', (invitation) => {
+  this.set('decline', (invitation) => {
     assert.ok(this.get('invitation')===invitation,
       'The invitation object is passed in to the action');
 

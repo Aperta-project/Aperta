@@ -142,21 +142,21 @@ describe Invitation do
     end
   end
 
-  describe "#reject!" do
-    it "calls the the invitation rejection callback" do
+  describe "#decline!" do
+    it "calls the the invitation decline action callback" do
       invitation.invite!
-      expect(task).to receive(:reject_allowed?).with(invitation).and_return(true)
-      expect(task).to receive(:invitation_rejected).with(invitation)
-      invitation.reject!
+      expect(task).to receive(:decline_allowed?).with(invitation).and_return(true)
+      expect(task).to receive(:invitation_declined).with(invitation)
+      invitation.decline!
     end
 
-    it "prevents transition to rejected" do
+    it "prevents transition to declined" do
       invitation.invite!
-      expect(task).to receive(:reject_allowed?) .with(invitation).and_return(false)
-      expect { invitation.reject! }.to raise_exception(AASM::InvalidTransition)
+      expect(task).to receive(:decline_allowed?) .with(invitation).and_return(false)
+      expect { invitation.decline! }.to raise_exception(AASM::InvalidTransition)
       invitation.run_callbacks(:commit)
       expect(invitation.invited?).to be_truthy
-      expect(invitation.rejected?).to be_falsey
+      expect(invitation.declined?).to be_falsey
     end
   end
 
@@ -188,19 +188,19 @@ describe Invitation do
     let(:no_invite_user) { FactoryGirl.create(:user) }
     let(:pending_invite_user) { FactoryGirl.create(:user) }
     let(:accepted_invite_user) { FactoryGirl.create(:user) }
-    let(:rejected_invite_user) { FactoryGirl.create(:user) }
+    let(:declined_invite_user) { FactoryGirl.create(:user) }
     let(:all_users) do
       [no_invite_user,
        pending_invite_user,
        accepted_invite_user,
-       rejected_invite_user
+       declined_invite_user
       ]
     end
     context 'Users with invites in various states' do
       before do
         FactoryGirl.create :invitation, :invited, task: task, invitee: pending_invite_user
         FactoryGirl.create :invitation, :accepted, task: task, invitee: accepted_invite_user
-        FactoryGirl.create :invitation, :rejected, task: task, invitee: rejected_invite_user
+        FactoryGirl.create :invitation, :declined, task: task, invitee: declined_invite_user
       end
 
       let(:result) { Invitation.find_uninvited_users_for_paper(all_users, paper) }
@@ -213,8 +213,8 @@ describe Invitation do
       it "filters out the user with an accepted invite" do
         expect(result).to_not include(accepted_invite_user)
       end
-      it "filters out the user with a rejected invite" do
-        expect(result).to_not include(rejected_invite_user)
+      it "filters out the user with a declined invite" do
+        expect(result).to_not include(declined_invite_user)
       end
 
       context "When invites belong to a previous decision" do
@@ -225,7 +225,7 @@ describe Invitation do
           expect(result).to contain_exactly(
             no_invite_user,
             pending_invite_user,
-            rejected_invite_user,
+            declined_invite_user,
             accepted_invite_user
           )
         end

@@ -44,6 +44,12 @@
     font-size: 14px;
     text-transform: capitalize;
   }
+
+  .invitation-decline-reason span,
+  .invitation-reviewer-suggestions span {
+    font-size: 14px;
+  }
+
   .revision-human-number {
     border-bottom: 1px solid $tahi-grey-light;
     td {

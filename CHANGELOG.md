@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Require only a single click to register a decision
 ### Security
 
 ## [1.4.18] - {2016-07-06}

@@ -85,6 +85,8 @@ class S3Migration < ActiveRecord::Base
 
   private
 
+  # CarrierWave caches its file too agressivly. We retrieve a fresh attachment
+  # instance to ensure we have the most up-to-date copy of the file.
   def retrieve_fresh_attachment
     Attachment.find(attachment.id)
   end

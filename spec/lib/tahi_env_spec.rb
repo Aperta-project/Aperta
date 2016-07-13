@@ -79,6 +79,14 @@ describe TahiEnv do
   include_examples 'dependent required env var', var: 'BASIC_HTTP_USERNAME', dependent_key: 'BASIC_AUTH_REQUIRED'
   include_examples 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
 
+  # Billing FTP
+  include_examples 'required boolean env var', var: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_DIR', dependent_key: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_HOST', dependent_key: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_PASSWORD', dependent_key: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_PORT', dependent_key: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_USER', dependent_key: 'BILLING_FTP_ENABLED'
+
   # Bugsnag
   include_examples 'optional env var', var: 'BUGSNAG_API_KEY'
   include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'

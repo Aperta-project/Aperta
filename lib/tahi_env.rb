@@ -74,6 +74,14 @@ class TahiEnv
   required :BASIC_HTTP_USERNAME, if: :basic_auth_required?
   required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
 
+  # Billing FTP
+  required :BILLING_FTP_ENABLED, :boolean
+  required :BILLING_FTP_HOST, if: :billing_ftp_enabled?
+  required :BILLING_FTP_USER, if: :billing_ftp_enabled?
+  required :BILLING_FTP_PASSWORD, if: :billing_ftp_enabled?
+  required :BILLING_FTP_PORT, if: :billing_ftp_enabled?
+  required :BILLING_FTP_DIR, if: :billing_ftp_enabled?
+
   # Bugsnag
   optional :BUGSNAG_API_KEY
   optional :BUGSNAG_JAVASCRIPT_API_KEY

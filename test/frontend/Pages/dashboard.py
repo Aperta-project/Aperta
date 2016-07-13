@@ -161,7 +161,8 @@ class DashboardPage(AuthenticatedPage):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
-    :return: A tuple with the decision and an ID for reasons and suggestions
+    :return: A tuple with the first element a string with the the decision and the second
+    element there is a tuple with two elements and ID for reasons an ID for suggestions
     """
     response = random.choice(['Accept', 'Reject'])
     logging.info(response)

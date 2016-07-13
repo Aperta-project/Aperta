@@ -105,3 +105,22 @@ test('Diffs the attachment filename when the file has changed', function(assert)
   });
 });
 
+test('Diffs the attachment filename when new', function(assert) {
+  let firstSnaps = snapshot({attachment: [] });
+
+  let secondSnaps = snapshot({attachment: attachment({
+    file: 'addedFile.jpg',
+    file_hash: 'anewhashverydifferentmuchchange',
+    url: '/path/to/addedFile.jpg'
+  })});
+
+  this.set('oldSnapshot', firstSnaps);
+  this.set('newSnapshot', secondSnaps);
+
+  this.render(template);
+
+  assert.linkDiffPresent({
+    added: { text: 'addedFile.jpg', url: '/path/to/addedFile.jpg' }
+  });
+});
+

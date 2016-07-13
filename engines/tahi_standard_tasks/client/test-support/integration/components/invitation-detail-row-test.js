@@ -9,7 +9,6 @@ moduleForComponent('invitation-detail-row',
                         this.set('update-date', new Date('January 01, 2016'));
                         this.set('destroyAction', () => {return;});
                         this.set('invitation', Ember.Object.create({
-                          accepted: false,
                           declineReason: null,
                           declined: false,
                           email: 'jane@example.com',
@@ -54,6 +53,7 @@ test('displays invitation email when no invitee present', function(assert){
 
 test('displays remove icon if invite not accepted and given destroyAction',
   function(assert){
+    this.set('invitation.accepted', false);
     this.render(template);
 
     assert.elementFound('.invite-remove');
@@ -69,8 +69,19 @@ test('does not display remove icon if invite accepted',
   }
 );
 
+test('does not display remove icon if invite accepted and no destroyAction',
+  function(assert){
+    this.set('invitation.accepted', true);
+    this.set('destroyAction', null);
+    this.render(template);
+
+    assert.elementNotFound('.invite-remove');
+  }
+);
+
 test('does not display remove icon if invite not accepted and no destroyAction',
   function(assert){
+    this.set('invitation.accepted', false);
     this.set('destroyAction', null);
     this.render(template);
 

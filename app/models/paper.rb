@@ -535,6 +535,10 @@ class Paper < ActiveRecord::Base
     latest_version.new_draft!
   end
 
+  def new_draft_decision!
+    decisions.create unless draft_decision
+  end
+
   def new_major_version!
     draft.be_major_version!
   end

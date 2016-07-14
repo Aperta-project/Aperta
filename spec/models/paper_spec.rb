@@ -1292,4 +1292,17 @@ describe Paper do
         .to contain_exactly(*Paper.aasm.states.map(&:name))
     end
   end
+
+  describe '#new_draft_decision!' do
+    it 'creates a new decision' do
+      expect { paper.send(:new_draft_decision!) }
+        .to change { paper.decisions.count }.from(0).to(1)
+    end
+
+    it 'noops if a draft decision exists' do
+      paper.send(:new_draft_decision!)
+      expect { paper.send(:new_draft_decision!) }
+        .not_to change { paper.decisions.count }
+    end
+  end
 end

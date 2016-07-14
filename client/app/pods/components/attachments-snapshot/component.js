@@ -2,6 +2,7 @@ import Ember from 'ember';
 import {
   namedComputedProperty
 } from 'tahi/lib/snapshots/snapshot-named-computed-property';
+import SnapshotsById from 'tahi/lib/snapshots/snapshots-by-id'
 
 import SnapshotAttachment from 'tahi/models/snapshot/attachment';
 
@@ -9,32 +10,42 @@ export default Ember.Component.extend({
   attachments1: null,
   attachments2: null,
 
-  snapshotAttachments1: Ember.computed('attachments.[]', function() {
-    let attachments = this.get('attachments1');
-    return Ember.makeArray(attachments).map( (attachment) => {
-      return SnapshotAttachment.create({attachment: attachment});
-    });
-  }),
-  snapshotAttachments2: Ember.computed('attachments.[]', function() {
-    let attachments = this.get('attachments2');
-    return Ember.makeArray(attachments).map( (attachment) => {
-      return SnapshotAttachment.create({attachment: attachment});
-    });
-  }),
-
   children: Ember.computed(
-    'snapshotAttachments1.[]',
-    'snapshotAttachments2.[]',
+    'attachments1.[]',
+    'attachments2.[]',
     function(){
-      let snapshots1 = this.get('snapshotAttachments1'),
-        snapshots2 = this.get('snapshotAttachments2');
+      let attachments1 = this.get('attachments1'),
+        attachments2 = this.get('attachments2');
+      let itemName;
 
-      let orderedSnapshots2 = Ember.makeArray();
-      snapshots1.forEach( (snapshot) => {
-        orderedSnapshots2.push(snapshots2.findBy('id', snapshot.get('id')));
+      if(Ember.isPresent(attachments1)){
+        itemName = attachments1[0].name;
+      } else if(Ember.isPresent(attachments2)){
+        itemName = attachments2[0].name;
+      } else {
+        return [];
+      }
+
+      var attachmentsById = new SnapshotsById(itemName);
+      attachmentsById.addSnapshots(attachments1);
+      attachmentsById.addSnapshots(attachments2);
+
+      let results = attachmentsById.toArray().map( (pairs) => {
+        let snapshotA = pairs[0],
+          snapshotB = pairs[1];
+
+        let snapshotAttachmentA, snapshotAttachmentB;
+        if(snapshotA){
+          snapshotAttachmentA = SnapshotAttachment.create({attachment: snapshotA});
+        }
+
+        if(snapshotB){
+          snapshotAttachmentB = SnapshotAttachment.create({attachment: snapshotB});
+        }
+
+        return [snapshotAttachmentA, snapshotAttachmentB];
       });
-
-      return _.zip(snapshots1, orderedSnapshots2);
+      return results;
     }
   )
 });

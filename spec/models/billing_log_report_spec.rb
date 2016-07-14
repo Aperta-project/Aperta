@@ -94,6 +94,17 @@ describe BillingLogReport do
     end
   end
 
+  context '#papers_to_process' do
+    it 'returns nil when no papers meet criteria for report' do
+      expect(BillingLogReport.new.papers_to_process.count).to eq(0)
+    end
+
+    it 'returns accepted paper with completed billing' do
+      paper = create_paper_with_completed_billing
+      expect(BillingLogReport.new.papers_to_process).to eq([paper])
+    end
+  end
+
   def create_paper_with_completed_billing
     FactoryGirl.create(
       :paper_with_task,

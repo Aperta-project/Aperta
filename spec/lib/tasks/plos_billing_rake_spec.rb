@@ -60,8 +60,9 @@ describe "plos_billing namespace rake task" do
   end
 
   describe 'plos_billing:generate_billing_log' do
-    it "should run " do
-      Rake::Task['plos_billing:daily_billing_log_export'].reenable
+    it 'creates BillingLogReport and FTPs resulting csv' do
+      BillingLogReport.any_instance.should_receive :save_and_send_to_s3!
+      BillingFTPUploader.any_instance.should_receive :upload
       Rake.application.invoke_task "plos_billing:daily_billing_log_export"
     end
   end

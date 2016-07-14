@@ -22,6 +22,18 @@ class BillingLogReport < ActiveRecord::Base
     @csv ||= create_csv
   end
 
+  def papers_to_process
+    @papers ||= begin
+      papers = accepted_papers_with_completed_billing_tasks
+
+      if from_date
+        papers.where('tasks.completed_at > ?', from_date)
+      else
+        papers
+      end
+    end
+  end
+
   private
 
   def accepted_papers_with_completed_billing_tasks
@@ -52,17 +64,5 @@ class BillingLogReport < ActiveRecord::Base
 
   def current_time
     Time.current.strftime("%Y-%m-%d %H:%M:%S")
-  end
-
-  def papers_to_process
-    @papers ||= begin
-      papers = accepted_papers_with_completed_billing_tasks
-
-      if from_date
-        papers.where('tasks.completed_at > ?', from_date)
-      else
-        papers
-      end
-    end
   end
 end

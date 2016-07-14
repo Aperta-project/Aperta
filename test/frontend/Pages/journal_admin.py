@@ -256,9 +256,9 @@ class JournalAdminPage(AdminPage):
       # the air.
       name = task.find_element(*self._journal_admin_att_overlay_row_taskname)
       if journal == 'PLOS Yeti':
-        assert name.text in yeti_task_names, name.text
+        assert name.text in yeti_task_names, '{0} not in {1}'.format(name.text, yeti_task_names)
       else:
-        assert name.text in task_names, name.text
+        assert name.text in task_names, '{0} not in {1}'.format(name.text, task_names)
       task.find_element(*self._journal_admin_att_overlay_row_selector)
       task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
 

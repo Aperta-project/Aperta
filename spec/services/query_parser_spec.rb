@@ -209,18 +209,50 @@ describe QueryParser do
     end
 
     describe 'review queries' do
+      let(:review_report_types) do
+        [TahiStandardTasks::ReviewerReportTask,
+         TahiStandardTasks::FrontMatterReviewerReportTask]
+      end
+      let(:review_report_sql) { review_report_types.map{ |r| "'#{r}'" }.join(', ') }
       it 'parses ALL REVIEWS COMPLETE' do
         parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks"."completed" = 'f') AND "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask'
+          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" IN (#{review_report_sql}) AND "tasks"."completed" = 'f') AND "tasks_0"."type" IN (#{review_report_sql})
         SQL
       end
 
       it 'parses NOT ALL REVIEWS COMPLETE' do
         parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks_0"."completed" = 'f'
+          "tasks_0"."type" IN (#{review_report_sql}) AND "tasks_0"."completed" = 'f'
         SQL
+      end
+
+      context 'review reports extend to future descendants' do
+        before(:context) do
+          class FictionalReport < TahiStandardTasks::ReviewerReportTask
+          end
+        end
+        after(:context) do
+          Object.send(:remove_const, :FictionalReport)
+        end
+
+        it 'parses ALL REVIEWS COMPLETE' do
+          review_report_types << FictionalReport
+          parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
+
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" IN (#{review_report_sql}) AND "tasks"."completed" = 'f') AND "tasks_0"."type" IN (#{review_report_sql})
+          SQL
+        end
+
+        it 'parses NOT ALL REVIEWS COMPLETE for a fictional future review task' do
+          review_report_types << FictionalReport
+          parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "tasks_0"."type" IN (#{review_report_sql}) AND "tasks_0"."completed" = 'f'
+          SQL
+        end
       end
     end
 

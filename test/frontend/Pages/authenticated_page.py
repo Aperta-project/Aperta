@@ -382,8 +382,12 @@ class AuthenticatedPage(PlosPage):
       error_msg = self._get(self._flash_error_msg)
     except ElementDoesNotExistAssertionError:
       self.restore_timeout()
+    if isinstance(error_msg, unicode):
+      error_msg_string = error_msg.decode('utf-8')
+    else:
+      error_msg_string = error_msg
     if error_msg:
-      raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg.text))
+      raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
 
   def check_for_flash_success(self):
     """

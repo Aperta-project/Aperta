@@ -34,9 +34,9 @@ class BaseTask(AuthenticatedPage):
     self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
 
-  # Common actions for all cards
+  # Common actions for all tasks
   def click_completion_button(self):
-    """Click completed checkbox"""
+    """Click completed button"""
     try:
       self._get(self._completion_button).click()
     except WebDriverException:

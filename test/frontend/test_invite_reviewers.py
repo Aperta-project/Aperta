@@ -132,7 +132,7 @@ class InviteReviewersCardTest(CommonTest):
       assert not test_for_role
       # search for reply
       reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions FROM '
-          'invitations WHERE invitee_id = %s AND state=\'rejected\' AND invitee_role '
+          'invitations WHERE invitee_id = %s AND state=\'declined\' AND invitee_role '
           '=\'Reviewer\' AND decline_reason LIKE %s AND reviewer_suggestions LIKE %s;',
           (reviewer_user_id, response_data[0]+'%', response_data[1]+'%'))[0]
       assert response_data[0] in reasons

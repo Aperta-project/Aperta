@@ -29,6 +29,10 @@
     margin-bottom: 16px;
   }
 
+  a.added, a.removed {
+    padding: 1px 1px;
+  }
+
   .added {
     background-color: rgba($tahi-green-light, .5);
     padding: 5px 10px;

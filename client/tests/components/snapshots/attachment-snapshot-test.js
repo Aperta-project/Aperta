@@ -82,7 +82,7 @@ test('when file is present and unchanged, it is displayed', function(assert){
 
   this.render(template);
 
-  assert.elementFound(`.snapshot-attachment-file a[href="carebears.jpg"]:contains(picture.jpg)`);
+  assert.elementFound(`.attachment-snapshot-file a[href="carebears.jpg"]:contains(picture.jpg)`);
 });
 
 test('when file is present and its fileHash has changed, it is diffed', function(assert){
@@ -134,7 +134,7 @@ function testBlankPropertyIsNotDisplayed(property, options){
 
     this.render(template);
 
-    assert.elementNotFound(`.snapshot-attachment-${cssClass}`);
+    assert.elementNotFound(`.attachment-snapshot-${cssClass}`);
   });
 }
 
@@ -170,7 +170,7 @@ function testBooleanPropertyWithoutDiff(property, options){
 
     this.render(template);
 
-    assert.elementFound(`.snapshot-attachment-${cssClass}:contains(${value})`)
+    assert.elementFound(`.attachment-snapshot-${cssClass}:contains(${value})`)
     assert.notDiffed(value, value);
   });
 };
@@ -206,7 +206,7 @@ function testTextPropertyWithoutDiff(property, options){
 
     this.render(template);
 
-    assert.elementFound(`.snapshot-attachment-${cssClass}:contains(${value})`)
+    assert.elementFound(`.attachment-snapshot-${cssClass}:contains(${value})`)
     assert.notDiffed(oldProperties[property], newProperties[property]);
   });
 };

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  tagName: 'span',
   classNames: ['text-diff'],
 
   // This is the text of the version being viewed (left dropdown)

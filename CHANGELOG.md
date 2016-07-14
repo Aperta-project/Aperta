@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Version] - {Date}
 ### Added
+- Daily export of billing log
 ### Changed
 ### Deprecated
 ### Removed

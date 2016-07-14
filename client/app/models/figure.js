@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import Snapshottable from 'tahi/mixins/snapshottable';
 
-export default DS.Model.extend({
+export default DS.Model.extend(Snapshottable, {
   paper: DS.belongsTo('paper', { async: false }),
 
   alt: DS.attr('string'),

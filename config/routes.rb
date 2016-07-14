@@ -45,7 +45,7 @@ Tahi::Application.routes.draw do
       put :update_attachment, on: :member
     end
     resources :affiliations, only: [:index, :create, :destroy]
-    resources :attachments, only: [:show, :destroy, :update]
+    resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments'
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
@@ -135,7 +135,7 @@ Tahi::Application.routes.draw do
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
-      resources :attachments, only: [:index, :create, :update, :destroy] do
+      resources :attachments, only: [:index, :create, :update, :destroy], controller: 'adhoc_attachments' do
         put :update_attachment, on: :member
       end
       resources :comments, only: [:index]
@@ -194,9 +194,6 @@ Tahi::Application.routes.draw do
     get :download, on: :member
   end
 
-  get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
-                                                     as: :resource_proxy
-
   get '/invitations/:token',
     to: 'token_invitations#show',
     as: 'confirm_decline_invitation'
@@ -216,6 +213,24 @@ Tahi::Application.routes.draw do
   get '/invitations/:token/thank_you',
     to: 'token_invitations#thank_you',
     as: 'invitation_thank_you'
+
+  # Legacy resource_proxy routes
+  # We need to maintain this route as existing resources have been linked with
+  # this scheme.
+  get '/resource_proxy/:resource/:token(/:version)',
+      constraints: {
+        resource: /
+          adhoc_attachments
+          | attachments
+          | question_attachments
+          | figures
+          | supporting_information_files
+        /x },
+      to: 'resource_proxy#url', as: :old_resource_proxy
+
+  # current resource proxy
+  get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',
+                                           as: :resource_proxy
 
   root to: 'ember_cli/ember#index'
   mount_ember_app :client, to: '/'

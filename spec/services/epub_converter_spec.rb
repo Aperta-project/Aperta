@@ -5,11 +5,12 @@ describe EpubConverter do
   let(:journal) do
     FactoryGirl.create(
       :journal,
-      :with_roles_and_permissions,
+      :with_creator_role,
       pdf_css: 'body { background-color: red; }'
     )
   end
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:include_source) { false }
   let(:include_cover_image) { true }
 
@@ -56,8 +57,11 @@ describe EpubConverter do
 
       context 'when paper has supporting information files' do
         let(:file) do
-          paper.supporting_information_files
-            .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+          paper.supporting_information_files.create!(
+            resource_tokens: [ResourceToken.new],
+            owner: task,
+            file: ::File.open('spec/fixtures/yeti.tiff')
+          )
         end
 
         it 'has have supporting information' do
@@ -85,18 +89,35 @@ describe EpubConverter do
       end
 
       context 'when paper has figures' do
+        let(:figure) { paper.figures.first }
+        let(:figure_img) { doc.css('img').first }
+
         before do
-          paper.figures
-            .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                    status: 'done'
+          paper.figures.create!(
+            resource_tokens: [ResourceToken.new],
+            file: File.open('spec/fixtures/yeti.tiff'),
+            status: Figure::STATUS_DONE
+          )
+
+          paper.update_attributes(body: "<p>Figure 1.</p>")
         end
 
-        it 'has expirinig s3 URLs for the images' do
-          figure = paper.figures.first
-          paper.body = "<p>dammit donnie</p>"
+        it 'replaces img src urls (which are normally proxied) with resolveable urls' do
+          expected_uri = URI.parse(figure.proxyable_url)
+          actual_uri = URI.parse(figure.proxyable_url)
 
-          img = doc.css("img").first
-          expect(img['src']).to eq figure.proxyable_url(version: :detail)
+          expect(actual_uri.scheme).to eq expected_uri.scheme
+          expect(actual_uri.host).to eq expected_uri.host
+          expect(actual_uri.path).to eq expected_uri.path
+          expect(CGI.parse(actual_uri.query).keys).to \
+            contain_exactly(
+              'X-Amz-Expires',
+              'X-Amz-Date',
+              'X-Amz-Algorithm',
+              'X-Amz-Credential',
+              'X-Amz-SignedHeaders',
+              'X-Amz-Signature'
+            )
         end
       end
     end

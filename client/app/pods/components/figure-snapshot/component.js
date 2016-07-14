@@ -1,14 +1,15 @@
 import Ember from 'ember';
 import {
   namedComputedProperty
-} from 'tahi/mixins/components/snapshot-named-computed-property';
+} from 'tahi/lib/snapshots/snapshot-named-computed-property';
 
 var FigureSnapshot = Ember.Object.extend({
   snapshot: null,
   file: namedComputedProperty('snapshot', 'file'),
   title: namedComputedProperty('snapshot', 'title'),
   strikingImage: namedComputedProperty('snapshot', 'striking_image'),
-  fileHash: namedComputedProperty('snapshot', 'file_hash')
+  fileHash: namedComputedProperty('snapshot', 'file_hash'),
+  url: namedComputedProperty('snapshot', 'url')
 });
 
 export default Ember.Component.extend({
@@ -32,7 +33,7 @@ export default Ember.Component.extend({
       var hash1 = this.get('figure1.fileHash');
       var hash2 = this.get('figure2.fileHash');
       if (!hash1 || !hash2) {
-          return false;
+        return false;
       } else {
         return hash1 !== hash2;
       }

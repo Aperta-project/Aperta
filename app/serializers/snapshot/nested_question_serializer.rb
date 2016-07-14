@@ -32,7 +32,7 @@ class Snapshot::NestedQuestionSerializer
     attachments = []
     attachments = @answer.attachments if @answer
     attachments.map do |attachment|
-      Snapshot::QuestionAttachmentSerializer.new(attachment).as_json
+      Snapshot::AttachmentSerializer.new(attachment).as_json
     end
   end
 

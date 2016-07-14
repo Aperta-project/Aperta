@@ -1,55 +1,123 @@
+# Attachment represents a generic file/resource. It is intended to be used
+# as a base-class.
+#
+# Note: the subclass(es) should mount the uploader as :file and keep any
+# custom processing/version logic with it. Only generic aspects of an
+# attachment should be pushed up to this base-class.
 class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
+  include Snapshottable
 
-  # writes to `token` attr on create
-  # `regenerate_token` for new token
-  has_secure_token
+  self.snapshottable = true
 
-  belongs_to :task
-  has_one :paper, through: :task
+  STATUS_DONE = 'done'
 
-  validates :task, presence: true
+  mount_snapshottable_uploader :file, AttachmentUploader
 
-  mount_uploader :file, AdhocAttachmentUploader
+  def self.authenticated_url_for_key(key)
+    uploader = new.file
+    CarrierWave::Storage::Fog::File.new(
+      uploader,
+      uploader.send(:storage),
+      key
+    ).url
+  end
 
-  IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
+  belongs_to :owner, polymorphic: true
+  belongs_to :paper
 
-  # Where the attachment is placed on S3 is partially determined by the symbol
-  # that is given to `mount_uploader`. ProxyableResource (and it's URL helper)
-  # assumes the AttachmentUploader will be mounted as `attachment`. To prevent a
-  # production S3 data migration we're aliasing `attachment` to `file`.
-  def attachment
-    file
+  validates :owner, presence: true
+
+  # set_paper is required when creating attachments thru associations
+  # where the owner is the paper, it bypasses the owner= method.
+  after_initialize :set_paper, if: :new_record?
+
+  def download!(url)
+    @downloading = true
+    file.download! url
+    self.file_hash = Digest::SHA256.hexdigest(file.file.read)
+    self.s3_dir = file.generate_new_store_dir
+    self.title = build_title
+    self.status = STATUS_DONE
+    # Using save! instead of update_attributes because the above are not the
+    # only attributes that have been updated. We want to persist all changes
+    save!
+    refresh_resource_token!(file)
+    @downloading = false
+    on_download_complete
+  rescue Exception => ex
+    on_download_failed(ex)
+  ensure
+    @downloading = false
+  end
+
+  def destroy_resource_token!
+    return if snapshotted?
+    super
+  end
+
+  def downloading?
+    @downloading
+  end
+
+  def on_download_complete
+    # no-op. Sweet hook method to add in a subclass to perform actions after an
+    # attachment is downloaded.
+  end
+
+  def on_download_failed(exception)
+    fail exception
+  end
+
+  def url(*args)
+    file.url(*args)
   end
 
   def filename
     self[:file]
   end
 
-  def src
-    non_expiring_proxy_url if done?
+  def done?
+    status == STATUS_DONE
   end
 
-  def detail_src(**opts)
-    non_expiring_proxy_url(version: :detail, **opts) if done? && image?
+  def owner=(new_owner)
+    super
+    set_paper
   end
 
-  def preview_src
-    non_expiring_proxy_url(version: :preview) if done? && image?
+  def snapshot_key
+    file.current_path
   end
 
-  def image?
-    if file.file
-      IMAGE_TYPES.include? file.file.extension
+  def snapshotted?
+    if @previous_model_for_file
+      @previous_model_for_file.snapshot.present?
     else
-      false
+      snapshot.present?
     end
+  end
+
+  def task
+    if owner_type == 'Task'
+      owner
+    end
+  end
+
+  protected
+
+  def build_title
+    title || file.filename
   end
 
   private
 
-  def done?
-    status == 'done'
+  def set_paper
+    if owner_type == 'Paper'
+      self.paper_id = owner_id
+    elsif owner.respond_to?(:paper)
+      self.paper = owner.paper
+    end
   end
 end

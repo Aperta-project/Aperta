@@ -4,7 +4,7 @@ namespace :data do
     task s3_attachments: ['data:migrate:s3_attachments:prepare', 'data:migrate:s3_attachments:perform']
     namespace :s3_attachments do
       desc <<-DESC.strip_heredoc
-        Prepares migration of S3 attachments. Run migrate next.
+        Prepares migration of S3 attachments. Run perform next.
       DESC
       task prepare: :environment do
         Attachment.transaction do
@@ -68,7 +68,7 @@ namespace :data do
       end
 
       desc <<-DESC.strip_heredoc
-        Prepares migration of S3 attachments. Run migrate next.
+        Performs migration of S3 attachments.
       DESC
       task perform: :environment do
         ::AttachmentUploader.include S3Migration::UploaderOverrides

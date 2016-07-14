@@ -22,7 +22,7 @@ class ReviewerCandidatesCard(BaseCard):
     #Locators - Instance members
     self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content > p')
     # APERTA-7177 Typo in class name for the main form
-    self._new_candidate_btn = (By.CSS_SELECTOR, 'div.reviewer-canditates-wrapper > button')
+    self._new_candidate_btn = (By.CSS_SELECTOR, 'div.reviewer-candidates-wrapper > button')
     # New Candidate Edit Form
     self._new_candidate_form = (By.CSS_SELECTOR, 'div.reviewer-form')
     self._cand_first_name = (By.CSS_SELECTOR, 'div.first-name')
@@ -44,9 +44,9 @@ class ReviewerCandidatesCard(BaseCard):
     self._cand_department_label = (By.CSS_SELECTOR, 'div.department > div > label')
     self._cand_department_input = (By.CSS_SELECTOR, 'div.department > input')
     # APERTA-7176 the div class name has a typo
-    self._cand_institution = (By.CSS_SELECTOR, 'div.insitution')
-    self._cand_inst_input = (By.CSS_SELECTOR, 'div.insitution > div > div > div > input')
-    self._cand_inst_btn = (By.CSS_SELECTOR, 'div.insitution > div > div > div > button')
+    self._cand_institution = (By.CSS_SELECTOR, 'div.institution')
+    self._cand_inst_input = (By.CSS_SELECTOR, 'div.institution > div > div > div > input')
+    self._cand_inst_btn = (By.CSS_SELECTOR, 'div.institution > div > div > div > button')
     self._cand_recc_or_oppose = (By.CSS_SELECTOR, 'div.question-text')
     self._cand_recc_radio_btn_label = (By.CSS_SELECTOR, 'div.question-text + div > div > label')
     self._cand_recc_radio_btn = (By.CSS_SELECTOR, 'div.question-text + div > div > label > input')
@@ -59,12 +59,12 @@ class ReviewerCandidatesCard(BaseCard):
     self._cand_form_save = (By.CSS_SELECTOR, 'div.author-form-buttons > button')
     # Candidate View display
     self._cand_entry_view = (By.CSS_SELECTOR,
-                             'div.reviewer-canditates-wrapper > div.author-task-item')
+                             'div.reviewer-candidates-wrapper > div.author-task-item')
     self._cand_view_full_name = (By.CSS_SELECTOR, 'div.author-name.full-name')
-    self._cand_view_email = (By.CSS_SELECTOR, 'div.email')
+    self._cand_view_email = (By.CSS_SELECTOR, 'span.email')
     self._cand_view_decision = (By.CSS_SELECTOR, 'div.decision > span')
     self._cand_view_reason = (By.CSS_SELECTOR, 'div.reason > span')
-    self._cand_view_delete = (By.CSS_SELECTOR, 'div.author-task-item-view-actions > span.fa-trash')
+    self._cand_view_delete = (By.CSS_SELECTOR, 'div.reviewer-task-item-view-actions > span.fa-trash')
     self._cand_view_delete_confirm_text = (By.CSS_SELECTOR, 'div.authors-overlay-item-delete > p')
     self._cand_view_delete_confirm_cancel = (By.CSS_SELECTOR,
                                              'div.authors-overlay-item-delete > button')
@@ -109,7 +109,7 @@ class ReviewerCandidatesCard(BaseCard):
     if entry:
       full_name = entry.find_element(*self._cand_view_full_name)
       self.validate_application_ptext(full_name)
-      assert user_object['name'] == full_name.text, full_name.text
+      assert user_object['name'] in full_name.text, full_name.text
       email = entry.find_element(*self._cand_view_email)
       self.validate_application_ptext(email)
       assert user_object['email'] == email.text, email.text
@@ -250,7 +250,7 @@ class ReviewerCandidatesCard(BaseCard):
     full_name = entry.find_element(*self._cand_view_full_name)
     self.validate_application_ptext(full_name)
     logging.info('Validating existing entry')
-    assert candidate['name'] == full_name.text, full_name.text
+    assert candidate['name'] in full_name.text, full_name.text
     email = entry.find_element(*self._cand_view_email)
     self.validate_application_ptext(email)
     assert candidate['email'] == email.text, email.text

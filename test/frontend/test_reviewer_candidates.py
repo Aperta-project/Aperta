@@ -53,7 +53,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page.restore_timeout()
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
     paper_id = manuscript_page.get_paper_db_id()
     time.sleep(2)
@@ -105,7 +105,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page.restore_timeout()
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
     paper_id = manuscript_page.get_paper_db_id()
     time.sleep(2)
@@ -159,7 +159,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page.restore_timeout()
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
     paper_id = manuscript_page.get_paper_db_id()
     time.sleep(2)
@@ -297,7 +297,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(3)
+    time.sleep(6)
     rc_task = paper_viewer.is_task_present('Reviewer Candidates')
     assert not rc_task
     paper_viewer.logout()

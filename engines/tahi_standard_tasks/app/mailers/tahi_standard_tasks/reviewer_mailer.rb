@@ -21,9 +21,12 @@ module TahiStandardTasks
       mail(to: @assigner.email, subject: "Reviewer invitation was accepted on the manuscript, \"#{@paper.display_title}\"")
     end
 
-    def reviewer_declined(invite_reviewer_task_id:, reviewer_id:, assigner_id:)
+    def reviewer_declined(invite_reviewer_task_id:, invitation_id:,
+      reviewer_id:, assigner_id:)
+
       @assigner = User.find_by(id: assigner_id)
       @reviewer = User.find_by(id: reviewer_id)
+      @invitation = Invitation.find_by(id: invitation_id)
 
       return unless @assigner.present? && @reviewer.present?
 

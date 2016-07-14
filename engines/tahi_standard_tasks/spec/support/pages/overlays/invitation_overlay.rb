@@ -3,8 +3,12 @@
 # used by the application.
 #
 class InvitationOverlay < Page
-  def expect_invitation_count(count)
+  def expect_pending_invitation_count(count)
     expect(all_pending_invitations.count).to eq(count)
+  end
+
+  def expect_declined_waiting_feedback_invitation_count(count)
+    expect(all_declined_waiting_feedback_invitations.count).to eq(count)
   end
 
   def decline_invitation(element_number)
@@ -44,5 +48,13 @@ class InvitationOverlay < Page
 
   def all_pending_invitations
     all('.pending-invitation')
+  end
+
+  def all_declined_waiting_feedback_invitations
+    all('.reviewer-invitation-feedback')
+  end
+
+  def close_overlay
+    find('.overlay-close').click
   end
 end

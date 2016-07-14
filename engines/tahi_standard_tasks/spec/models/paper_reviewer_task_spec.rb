@@ -69,12 +69,12 @@ describe TahiStandardTasks::PaperReviewerTask do
     end
   end
 
-  describe "#invitation_rejected" do
+  describe "#invitation_declined" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
     context "with a paper editor" do
       it "queues the email" do
-        expect {task.invitation_rejected invitation}.to change {
+        expect { task.invitation_declined invitation }.to change {
           Sidekiq::Extensions::DelayedMailer.jobs.length
         }.by(1)
       end
@@ -87,7 +87,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
 
       it "queues the email" do
-        expect {task.invitation_rejected invitation}.to change {
+        expect { task.invitation_declined invitation }.to change {
           Sidekiq::Extensions::DelayedMailer.jobs.length
         }.by(1)
       end

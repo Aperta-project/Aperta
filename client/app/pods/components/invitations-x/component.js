@@ -12,26 +12,17 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   },
 
   actions: {
-    close(){
-      this.closeOverlayIfLast();
-    },
-
     accept(invitation) {
       this.get('accept')(invitation).then(()=>{this.closeOverlayIfLast()});
     },
 
     acquireFeedback(invitation) {
+      invitation.setDeclined();
       invitation.set('pendingFeedback', true);
-      this.get('reject')(invitation);
     },
 
-    update(invitation) {
-      if (invitation.get('invitationFeedbackIsBlank')){
-        invitation.feedbackSent();
-        return this.closeOverlayIfLast();
-      }
-
-      this.get('update')(invitation).then(()=>{
+    decline(invitation) {
+      this.get('decline')(invitation).then(()=>{
         this.get('flash').displayMessage('success', 'Thank you for your feedback!');
         this.closeOverlayIfLast()});
     }

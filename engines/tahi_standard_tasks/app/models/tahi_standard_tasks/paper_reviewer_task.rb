@@ -22,9 +22,10 @@ module TahiStandardTasks
       )
     end
 
-    def invitation_rejected(invitation)
+    def invitation_declined(invitation)
       ReviewerMailer.delay.reviewer_declined(
         invite_reviewer_task_id: id,
+        invitation_id: invitation.id,
         assigner_id: invitation.inviter_id,
         reviewer_id: invitation.invitee_id
       )

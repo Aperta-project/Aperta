@@ -7,12 +7,20 @@
 {{/if}}
 
 {{#unless (or isEditing isDeleting)}}
-  <div class="author-task-item-view flex-group">
-    <div class="author-task-item-view-text flex-element flex-group" {{action "edit"}}>
+  <div class="reviewer-task-item-view flex-group">
+    <div class="reviewer-task-item-view-text flex-element flex-group qa-edit-reviewer-form" {{action "edit"}}>
       <div class="flex-element">
-        <div class="author-name full-name">{{reviewerRecommendation.fullName}}</div>
-        <div class="email">{{reviewerRecommendation.email}}</div>
+        <div class="author-name full-name">{{reviewerRecommendation.fullName}}<br />
+          <span class="email">{{reviewerRecommendation.email}}</span>
+        </div>
       </div>
+      <div class="reviewer-task-item-view-actions flex-element">
+        <span class="fa fa-trash scaleIn" {{action "delete"}}></span>
+      </div>
+    </div>
+  </div>
+  <div class="reviewer-task-item-view last flex-group">
+    <div class="reviewer-task-item-view-text flex-element flex-group" {{action "edit"}}>
       <div class="flex-element decision">
         <div class="decision">
           {{nested-question-answer ident="reviewer_recommendations--recommend_or_oppose"
@@ -25,10 +33,6 @@
                                    owner=reviewerRecommendation}}
         </div>
       </div>
-    </div>
-
-    <div class="author-task-item-view-actions flex-element">
-      <span class="fa fa-trash scaleIn" {{action "delete"}}></span>
     </div>
   </div>
 {{/unless}}

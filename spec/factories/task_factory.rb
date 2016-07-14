@@ -223,8 +223,8 @@ class InvitableTestTask < Task
     :accepted
   end
 
-  def invitation_rejected(_invitation)
-    :rejected
+  def invitation_declined(_invitation)
+    :declined
   end
 
   def invitation_rescinded(invitation)

@@ -136,14 +136,14 @@ describe Activity do
     )}
   end
 
-  describe "#invitation_rejected!" do
-    subject(:activity) { Activity.invitation_rejected!(invitation, user: user) }
+  describe "#invitation_declined!" do
+    subject(:activity) { Activity.invitation_declined!(invitation, user: user) }
     let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
     it {
       is_expected.to have_attributes(
         feed_name: "workflow",
-        activity_key: "invitation.rejected",
+        activity_key: "invitation.declined",
         subject: invitation.paper,
         user: user,
         message: "#{invitation.recipient_name} declined invitation as #{invitation.invitee_role.capitalize}"

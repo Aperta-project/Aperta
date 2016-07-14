@@ -91,6 +91,41 @@ feature 'Viewing Versions:', js: true do
         overlay.expect_versions('R0.0', 'R1.0')
       end
     end
+
+    context 'The user is a reviewer' do
+      let(:reviewer) { FactoryGirl.create :user }
+      let(:task) do
+        FactoryGirl.create :cover_letter_task,
+                           paper: paper,
+                           phase: paper.phases.first
+      end
+
+      before do
+        assign_reviewer_role(paper, reviewer)
+
+        login_as(reviewer, scope: :user)
+      end
+
+      scenario 'A reviewer cannot see the cover letter task' do
+        ensure_user_does_not_have_access_to_task(
+          user: reviewer,
+          task: task
+        )
+      end
+
+      scenario 'The reviewer cannot see cover letter task versions', selenium: true do
+        SnapshotService.new(paper).snapshot!(task)
+        FactoryGirl.create(:snapshot,
+                           major_version: 0,
+                           minor_version: 0,
+                           source: task)
+        page = PaperPage.new
+        page.version_button.click
+        wait_for_ajax
+
+        expect(page).to_not have_content('Cover Letter')
+      end
+    end
   end
 end
 

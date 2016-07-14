@@ -153,7 +153,10 @@ export default Mixin.create({
 
   displayValidationErrorsFromResponse(response, options) {
     var errors = null;
-    if (response && response.name) {
+    // only use prepareResponseErrors if the errors have a json-api
+    // format (ie, getting a 422 when saving an ember-data model).
+    // for all other cases assume standard Rails-formatted errors
+    if (Ember.isArray(response.errors)) {
       errors = prepareResponseErrors(response.errors, options);
     } else {
       errors = response.errors;

@@ -64,10 +64,14 @@ class DiscussionForumTest(CommonTest):
     logging.info(ms_viewer.get_current_url())
     paper_id = ms_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    counter = 0
     while not paper_id:
       time.sleep(1)
       paper_id = ms_viewer.get_current_url().split('/')[-1]
       paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+      counter += 1
+      if counter >= 60:
+        raise  ValueError('Page not loaded')
     logging.info("Assigned paper id: {0}".format(paper_id))
     ms_viewer.logout()
     user_type = random.choice(staff_users)

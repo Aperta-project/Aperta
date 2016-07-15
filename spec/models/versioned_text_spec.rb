@@ -10,25 +10,29 @@ describe VersionedText do
   it_behaves_like 'a thing with major and minor versions', :versioned_text
 
   context 'validation' do
-    subject(:versioned_text) { FactoryGirl.build(:versioned_text) }
+    context 'versioned text is completed' do
+      subject(:versioned_text) { FactoryGirl.build(:versioned_text) }
 
-    it 'is valid' do
-      expect(versioned_text.valid?).to be(true)
+      it 'is valid' do
+        expect(versioned_text.valid?).to be(true)
+      end
+
+      it 'requires a paper' do
+        versioned_text.paper = nil
+        expect(versioned_text.valid?).to be(false)
+      end
     end
 
-    it 'requires a paper' do
-      versioned_text.paper = nil
-      expect(versioned_text.valid?).to be(false)
-    end
-
-    it 'can only update version numbers if it is a draft' do
-      versioned_text = FactoryGirl.create(:versioned_text, major_version: nil, minor_version: nil)
-      expect(versioned_text.valid?).to be(true)
-      versioned_text.major_version = 1
-      expect(versioned_text.valid?).to be(true)
-      versioned_text.save!
-      versioned_text.major_version = 2
-      expect(versioned_text.valid?).to be(false)
+    context 'versioned text is a draft' do
+      it 'can only update version numbers if it is a draft' do
+        expect(versioned_text).to be_draft
+        expect(versioned_text.valid?).to be(true)
+        versioned_text.major_version = 1
+        expect(versioned_text.valid?).to be(true)
+        versioned_text.save!
+        versioned_text.major_version = 2
+        expect(versioned_text.valid?).to be(false)
+      end
     end
   end
 

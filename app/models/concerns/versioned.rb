@@ -12,4 +12,12 @@ module Versioned
       scope: [:major_version, :minor_version],
       message: "Paper already has a %{model} with that version" }
   end
+
+  def draft?
+    major_version.nil?
+  end
+
+  def completed?
+    !draft?
+  end
 end

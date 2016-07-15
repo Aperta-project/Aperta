@@ -40,8 +40,8 @@ class S3Migration < ActiveRecord::Base
   def self.migrate!
     ready.all.each do |migration|
       transaction do
-        puts "Performing migration: #{migration.inspect}"
         migration.migrate!
+        puts "\e[32m.\e[0m"
       end
     end
   end

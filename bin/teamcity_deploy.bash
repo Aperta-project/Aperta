@@ -1,4 +1,6 @@
 #!/bin/bash
+# It is necessary to define an environment var TARGET_ENV
+#  that is one of development, production, staging or test
 sudo -u aperta -i /bin/bash << "EOF"
 cd %teamcity.build.checkoutDir%
 export BRANCH_NAME=%teamcity.build.branch%
@@ -14,5 +16,5 @@ ssh-add /home/aperta/.ssh/id_rsa
 ssh-add -l
 source /usr/share/chruby/chruby.sh
 chruby `cat .ruby-version` || exit 1
-gem install bundler && bundle install && bundle exec cap production deploy || exit 1
+gem install bundler && bundle install && bundle exec cap $TARGET_ENV deploy || exit 1
 EOF

@@ -17,6 +17,18 @@ describe TaskSerializer, serializer_test: true do
     end
   end
 
+  describe '#is_snapshot_task' do
+    it 'returns false when task is not snapshottable' do
+      task.snapshottable = false
+      expect(deserialized_content[:task][:is_snapshot_task]).to eq(false)
+    end
+
+    it 'returns true whe task is not snapshottable' do
+      task.snapshottable = true
+      expect(deserialized_content[:task][:is_snapshot_task]).to eq(true)
+    end
+  end
+
   describe '#is_submission_task' do
     it 'returns false if task is not a submission type' do
       expect(deserialized_content[:task][:is_submission_task]).to eq(false)

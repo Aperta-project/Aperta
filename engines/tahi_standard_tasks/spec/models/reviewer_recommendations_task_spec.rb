@@ -3,6 +3,8 @@ require 'rails_helper'
 describe TahiStandardTasks::ReviewerRecommendationsTask do
   subject(:task) { FactoryGirl.create(:reviewer_recommendations_task) }
 
+  include_examples 'is snapshottable'
+
   describe '.restore_defaults' do
     include_examples '<Task class>.restore_defaults update title to the default'
     include_examples '<Task class>.restore_defaults update old_role to the default'

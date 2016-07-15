@@ -18,7 +18,7 @@ class FigureInserter
   private
 
   def figures_by_label
-    @figures.select(&:attachment?)
+    @figures.select(&:file?)
       .each_with_object({}) do |fig, accum|
         accum[fig.rank] = fig
       end
@@ -98,7 +98,7 @@ class FigureInserter
     if @direct_img_links
       figure.proxyable_url(version: :detail)
     else
-      figure.detail_src(cache_buster: true)
+      figure.detail_src
     end
   end
 end

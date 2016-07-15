@@ -1,17 +1,10 @@
-class Figure < ActiveRecord::Base
-  include EventStream::Notifiable
+# A Figure is an image the author provides, that is included as part of the
+# manuscript, to elucidate upon the point they are trying to make. Figures are
+# typically graphs, charts, or other scientific extrapolations of data.
+class Figure < Attachment
   include CanBeStrikingImage
-  include ProxyableResource
-
-  # writes to `token` attr on create
-  # `regenerate_token` for new token
-  has_secure_token
-
-  belongs_to :paper
 
   default_scope { order(:id) }
-
-  mount_uploader :attachment, AttachmentUploader
 
   after_save :insert_figures!, if: :should_insert_figures?
   after_destroy :insert_figures!
@@ -20,20 +13,6 @@ class Figure < ActiveRecord::Base
 
   def self.acceptable_content_type?(content_type)
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
-  end
-
-  def filename
-    self[:attachment]
-  end
-
-  # This is a hash used for recognizing changes in file contents; if
-  # the file doens't exist, or if we can't connect to amazon, minimal
-  # harm comes from returning nil instead. The error thrown is,
-  # unfortunately, not wrapped by carrierwave.
-  def file_hash
-    attachment.file.attributes[:etag]
-  rescue
-    nil
   end
 
   def alt
@@ -56,26 +35,6 @@ class Figure < ActiveRecord::Base
     { filename: filename, alt: alt, id: id, src: src }
   end
 
-  def should_insert_figures?
-    (title_changed? || attachment_changed?) && all_figures_done?
-  end
-
-  def all_figures_done?
-    paper.figures.all? { |figure| figure.status == 'done' }
-  end
-
-  def title_rank_regex
-    /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
-  end
-
-  def create_title_from_filename
-    return if title
-    self.title = "Unlabeled"
-    title_rank_regex.match(attachment.filename) do |match|
-      self.title = "Fig. #{match['label']}"
-    end
-  end
-
   def rank
     return 0 unless title
     number_match = title.match /\d+/
@@ -86,9 +45,31 @@ class Figure < ActiveRecord::Base
     end
   end
 
+  def on_download_complete
+    insert_figures! if all_figures_done?
+  end
+
+  protected
+
+  def build_title
+    return title if title.present?
+    title_from_filename || 'Unlabeled'
+  end
+
   private
 
-  def done?
-    status == 'done'
+  def title_from_filename
+    title_rank_regex = /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
+    title_rank_regex.match(file.filename) do |match|
+      return "Fig. #{match['label']}"
+    end
+  end
+
+  def should_insert_figures?
+    title_changed? && !downloading? && all_figures_done?
+  end
+
+  def all_figures_done?
+    paper.figures.all?(&:done?)
   end
 end

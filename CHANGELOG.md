@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
 ### Security
 

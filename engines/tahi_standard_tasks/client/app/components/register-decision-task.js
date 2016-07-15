@@ -32,6 +32,13 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
 
+  triggerSave: Ember.observer('latestDecision.letter', function() {
+    let latestDecision = this.get('latestDecision');
+    if (latestDecision) {
+      Ember.run.debounce(latestDecision, latestDecision.save, 500);
+    }
+  }),
+
   actions: {
     registerDecision() {
       const id = this.get('task.id');
@@ -52,19 +59,14 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       });
     },
 
-    saveLatestDecision() {
-      this.set('isSavingData', true);
-      this.get('latestDecision').save().then(() => {
-        this.set('isSavingData', false);
-      });
-    },
-
     setDecisionTemplate(decision) {
       const template = this.get(`task.${decision.camelize()}LetterTemplate`);
       const letter = this.applyTemplateReplacements(template);
       this.get('latestDecision').set('verdict', decision);
       this.get('latestDecision').set('letter', letter);
-      this.send('saveLatestDecision');
+      // This ensures that the decision is saved even if the decision letter
+      // stays the same.
+      this.triggerSave();
     }
   }
 });

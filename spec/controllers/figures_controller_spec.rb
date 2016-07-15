@@ -11,8 +11,8 @@ describe FiguresController do
   end
 
   describe "#index" do
-    let!(:figure1) { FactoryGirl.create(:figure, paper: paper) }
-    let!(:figure2) { FactoryGirl.create(:figure, paper: paper) }
+    let!(:figure1) { FactoryGirl.create(:figure, owner: paper) }
+    let!(:figure2) { FactoryGirl.create(:figure, owner: paper) }
 
     subject(:do_request) do
       get :index, {
@@ -71,7 +71,7 @@ describe FiguresController do
       before { stub_sign_in user }
 
       it "causes the creation of the figure" do
-        expect(DownloadFigureWorker).to receive(:perform_async)
+        expect(DownloadAttachmentWorker).to receive(:perform_async)
         do_request
         expect(response).to be_success
       end
@@ -90,8 +90,8 @@ describe FiguresController do
     context 'and the user is authenticated' do
       before { stub_sign_in user }
 
-      it "calls DownloadFigureWorker" do
-        expect(DownloadFigureWorker).to receive(:perform_async).with(figure.id, url)
+      it "calls DownloadAttachmentWorker" do
+        expect(DownloadAttachmentWorker).to receive(:perform_async).with(figure.id, url)
         do_request
         expect(response).to be_success
       end

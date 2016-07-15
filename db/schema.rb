@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160622135656) do
+ActiveRecord::Schema.define(version: 20160714160516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,17 +72,27 @@ ActiveRecord::Schema.define(version: 20160622135656) do
 
   create_table "attachments", force: :cascade do |t|
     t.string   "file"
-    t.integer  "task_id"
+    t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
     t.string   "status",     default: "processing"
     t.string   "kind"
-    t.string   "token"
+    t.text     "s3_dir"
+    t.string   "type"
+    t.integer  "old_id"
+    t.string   "owner_type"
+    t.integer  "paper_id"
+    t.string   "category"
+    t.string   "label"
+    t.boolean  "publishable"
+    t.string   "file_hash"
+    t.string   "previous_file_hash"
   end
 
-  add_index "attachments", ["token"], name: "index_attachments_on_token", unique: true, using: :btree
+  add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
+  add_index "attachments", ["paper_id"], name: "index_attachments_on_paper_id", using: :btree
 
   create_table "author_list_items", force: :cascade do |t|
     t.integer  "position"
@@ -252,20 +262,6 @@ ActiveRecord::Schema.define(version: 20160622135656) do
   end
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
-
-  create_table "figures", force: :cascade do |t|
-    t.string   "attachment"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title"
-    t.text     "caption"
-    t.string   "status",     default: "processing"
-    t.string   "token"
-  end
-
-  add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
-  add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
 
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
@@ -526,20 +522,6 @@ ActiveRecord::Schema.define(version: 20160622135656) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
-  create_table "question_attachments", force: :cascade do |t|
-    t.integer  "nested_question_answer_id"
-    t.string   "attachment"
-    t.string   "title"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "token"
-    t.string   "caption"
-  end
-
-  add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
-  add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
-
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true
@@ -560,6 +542,19 @@ ActiveRecord::Schema.define(version: 20160622135656) do
 
   add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
 
+  create_table "resource_tokens", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "token"
+    t.jsonb    "version_urls", default: {}, null: false
+    t.string   "default_url"
+  end
+
+  add_index "resource_tokens", ["owner_id", "owner_type"], name: "index_resource_tokens_on_owner_id_and_owner_type", using: :btree
+  add_index "resource_tokens", ["token"], name: "index_resource_tokens_on_token", using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
     t.integer  "journal_id"
@@ -572,6 +567,20 @@ ActiveRecord::Schema.define(version: 20160622135656) do
   add_index "roles", ["journal_id", "name"], name: "index_roles_on_journal_id_and_name", unique: true, using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
+
+  create_table "s3_migrations", force: :cascade do |t|
+    t.text     "source_url",                        null: false
+    t.text     "destination_url"
+    t.string   "attachment_type",                   null: false
+    t.integer  "attachment_id",                     null: false
+    t.boolean  "version",                           null: false
+    t.string   "state",           default: "ready"
+    t.text     "error_message"
+    t.text     "error_backtrace"
+    t.datetime "errored_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"
@@ -601,26 +610,10 @@ ActiveRecord::Schema.define(version: 20160622135656) do
     t.json     "contents"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.string   "key"
   end
 
-  create_table "supporting_information_files", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.string   "attachment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",      default: "processing"
-    t.boolean  "publishable", default: true
-    t.string   "token"
-    t.string   "label"
-    t.string   "category"
-    t.integer  "si_task_id"
-  end
-
-  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
-  add_index "supporting_information_files", ["si_task_id"], name: "index_supporting_information_files_on_si_task_id", using: :btree
-  add_index "supporting_information_files", ["token"], name: "index_supporting_information_files_on_token", unique: true, using: :btree
+  add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
 
   create_table "tables", force: :cascade do |t|
     t.integer  "paper_id"

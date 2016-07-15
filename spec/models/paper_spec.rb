@@ -452,7 +452,7 @@ describe Paper do
 
       it 'snapshots metadata' do
         Subscriptions.reload
-        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
+        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
         paper.initial_submit!
       end
     end
@@ -536,8 +536,8 @@ describe Paper do
 
       it 'snapshots metadata' do
         Subscriptions.reload
-        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
-        paper.initial_submit!
+        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
+        paper.submit! user
       end
     end
 
@@ -1058,6 +1058,67 @@ describe Paper do
     end
   end
 
+  describe '#snapshottable_things' do
+    subject(:paper) { Paper.new }
+    let(:task) do
+      FactoryGirl.build_stubbed(:task, paper: paper, snapshottable: true)
+    end
+    let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
+    let(:si_file) do
+      FactoryGirl.build_stubbed(:supporting_information_file, paper: paper)
+    end
+    let(:adhoc_attachment) do
+      FactoryGirl.build_stubbed(:adhoc_attachment, paper: paper)
+    end
+    let(:question_attachment) do
+      FactoryGirl.build_stubbed(:question_attachment, paper: paper)
+    end
+
+    it 'returns the independently snapshottable things about a paper' do
+      expect(paper.snapshottable_things).to be_kind_of(Array)
+    end
+
+    it 'includes snapshottable tasks' do
+      paper.tasks.push task
+      expect(paper.snapshottable_things).to include(task)
+
+      task.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(task)
+    end
+
+    it 'includes snapshottable figures' do
+      paper.figures.push figure
+      expect(paper.snapshottable_things).to include(figure)
+
+      figure.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(figure)
+    end
+
+    it 'includes snapshottable supporting_information_files' do
+      paper.supporting_information_files.push si_file
+      expect(paper.snapshottable_things).to include(si_file)
+
+      si_file.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(si_file)
+    end
+
+    it 'includes snapshottable adhoc_attachments' do
+      paper.adhoc_attachments.push adhoc_attachment
+      expect(paper.snapshottable_things).to include(adhoc_attachment)
+
+      adhoc_attachment.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(adhoc_attachment)
+    end
+
+    it 'includes snapshottable question_attachments' do
+      paper.question_attachments.push question_attachment
+      expect(paper.snapshottable_things).to include(question_attachment)
+
+      question_attachment.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(question_attachment)
+    end
+  end
+
   describe "#abstract" do
     before do
       paper.update(body: "a bunch of words")
@@ -1079,7 +1140,6 @@ describe Paper do
       end
     end
   end
-
 
   describe "#latest_version" do
     before do

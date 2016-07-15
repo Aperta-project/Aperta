@@ -16,4 +16,17 @@ class Snapshot < ActiveRecord::Base
   validates :source, presence: true
   validates :major_version, presence: true
   validates :minor_version, presence: true
+
+  after_initialize :set_key, if: :new_record?
+
+  def source=(new_source)
+    super
+    set_key
+  end
+
+  private
+
+  def set_key
+    self.key = source.try(:snapshot_key)
+  end
 end

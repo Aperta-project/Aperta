@@ -4,37 +4,18 @@ class ResourceProxyController < ApplicationController
   # no auth
 
   def url
-    if params[:version]
-      redirect_to resource.attachment.url(params[:version])
-    else
-      redirect_to resource.attachment.url
+    deproxied_url = resource.url(params[:version])
+    unless deproxied_url
+      fail(ActiveRecord::RecordNotFound,
+           "Couldn't find url for token #{params[:token]} and version" \
+           "#{params[:version] || 'default'}")
     end
+    redirect_to deproxied_url
   end
 
   private
 
   def resource
-    whitelisted_resource!.classify.constantize.find_by_token! params[:token]
-  end
-
-  def whitelisted_resource!
-    enforce_whitelist
-    params[:resource]
-  end
-
-  def resource_whitelist
-    [
-      :attachments,
-      :figures,
-      :question_attachments,
-      :supporting_information_files
-    ]
-  end
-
-  def enforce_whitelist
-    unless resource_whitelist.include? params[:resource].to_sym
-      fail ActionController::RoutingError
-        .new('proxy url not available for this resource')
-    end
+    ResourceToken.find_by!(token: params[:token])
   end
 end

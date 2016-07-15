@@ -11,9 +11,12 @@
 ActionDispatch::Reloader.to_prepare do
   if SnapshotService.registry.empty?
     SnapshotService.configure do
+      serialize AdhocAttachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
+      serialize Figure, with: Snapshot::AttachmentSerializer
       serialize NestedQuestion, with: Snapshot::NestedQuestionSerializer
-      serialize QuestionAttachment, with: Snapshot::QuestionAttachmentSerializer
+      serialize QuestionAttachment, with: Snapshot::AttachmentSerializer
+      serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 
       serialize TahiStandardTasks::AuthorsTask, with: Snapshot::AuthorTaskSerializer
       serialize TahiStandardTasks::CompetingInterestsTask, with: Snapshot::CompetingInterestsTaskSerializer

@@ -4,15 +4,32 @@ require 'models/concerns/striking_image_shared_examples'
 describe SupportingInformationFile, redis: true do
   let(:file) do
     with_aws_cassette 'supporting_info_files_controller' do
-      FactoryGirl.create :supporting_information_file,
-                         attachment: File.open('spec/fixtures/yeti.tiff'),
-                         status: 'done'
+      FactoryGirl.create(
+        :supporting_information_file,
+        :with_resource_token,
+        file: File.open('spec/fixtures/yeti.tiff'),
+        status: described_class::STATUS_DONE
+      )
     end
   end
 
-  let(:file_src) { "/resource_proxy/supporting_information_files/#{file.token}" }
+  let(:file_src) { "/resource_proxy/#{file.token}" }
 
   it_behaves_like 'a striking image'
+
+  describe '#download!', vcr: { cassette_name: 'attachment' } do
+    subject(:si_file) { FactoryGirl.create(:supporting_information_file, :with_resource_token) }
+    let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
+
+    include_examples 'attachment#download! raises exception when it fails'
+    include_examples 'attachment#download! stores the file'
+    include_examples 'attachment#download! caches the s3 store_dir'
+    include_examples 'attachment#download! sets the file_hash'
+    include_examples 'attachment#download! sets title to file name'
+    include_examples 'attachment#download! sets the status'
+    include_examples 'attachment#download! knows when to keep and remove s3 files'
+    include_examples 'attachment#download! manages resource tokens'
+  end
 
   describe '#filename' do
     it 'returns the proper filename' do
@@ -40,16 +57,12 @@ describe SupportingInformationFile, redis: true do
 
   describe '#access_details' do
     it 'returns a hash with attachment src, filename, alt, and S3 URL' do
-      expect(file.access_details).to eq(filename: 'yeti.tiff',
-                                        alt: 'Yeti',
-                                        src: file_src,
-                                        id: file.id)
-    end
-  end
-
-  describe '#token' do
-    it 'is auto generated on create' do
-      expect(file.token).to be_truthy
+      expect(file.access_details).to eq(
+        filename: 'yeti.tiff',
+        alt: 'Yeti',
+        src: file_src,
+        id: file.id
+      )
     end
   end
 end

@@ -17,7 +17,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def is_snapshot_task
-    object.snapshot_task?
+    object.snapshottable?
   end
 
   def assigned_to_me

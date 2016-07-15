@@ -46,8 +46,6 @@ class S3Migration < ActiveRecord::Base
     end
   end
 
-  scope :ready, ->{ where(state: 'ready') }
-
   belongs_to :attachment, polymorphic: true
 
   aasm column: :state, requires_new_transaction: false do

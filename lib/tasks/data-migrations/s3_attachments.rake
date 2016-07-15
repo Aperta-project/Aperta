@@ -9,6 +9,10 @@ namespace :data do
       task prepare: :environment do
         Attachment.transaction do
           Attachment.all.each do |attachment|
+            # if there are attachment(s) that failed during processing
+            # then they won't have a file path, so skip them
+            next unless attachment.file.path
+
             if attachment.s3_dir
               S3Migration.create!(
                 source_url: attachment.file.path,
@@ -73,7 +77,7 @@ namespace :data do
       task perform: :environment do
         ::AttachmentUploader.include S3Migration::UploaderOverrides
 
-        S3Migration.transaction { S3Migration.migrate! }
+        S3Migration.migrate!
       end
     end
   end

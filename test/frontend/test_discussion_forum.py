@@ -58,70 +58,82 @@ class DiscussionForumTest(CommonTest):
                         random_bit=True,
                         )
     dashboard_page.restore_timeout()
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=15)
-    paper_id = paper_viewer.get_current_url().split('/')[-1]
+    ms_viewer.validate_ihat_conversions_success(timeout=40)
+    logging.info(ms_viewer.get_current_url())
+    paper_id = ms_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    counter = 0
+    while not paper_id:
+      time.sleep(1)
+      paper_id = ms_viewer.get_current_url().split('/')[-1]
+      paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+      counter += 1
+      if counter >= 60:
+        raise  ValueError('Page not loaded')
     logging.info("Assigned paper id: {0}".format(paper_id))
-    paper_viewer.logout()
+    ms_viewer.logout()
     user_type = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
                                      msg='', participants=[creator['user']])
     # send another msg
-    paper_viewer.logout()
+    ms_viewer.logout()
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
     time.sleep(2)
-    red_badge = paper_viewer._get(paper_viewer._badge_red)
+    ms_viewer.set_timeout(120)
+    red_badge = ms_viewer._get(ms_viewer._badge_red)
+    ms_viewer.restore_timeout()
     red_badge_first = int(red_badge.text)
     red_badge.click()
     time.sleep(.5)
-    paper_viewer._get(paper_viewer._badge_red)
-    paper_viewer.logout()
+    ms_viewer._get(ms_viewer._badge_red)
+    ms_viewer.logout()
     #time.sleep(10)
     user_type = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
-    paper_viewer.post_discussion('@' + creator['user'])
-    paper_viewer.logout()
+    ms_viewer.post_discussion('@' + creator['user'])
+    ms_viewer.logout()
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
-    red_badge = paper_viewer._get(paper_viewer._badge_red)
+    time.sleep(2)
+    red_badge = ms_viewer._get(ms_viewer._badge_red)
     red_badge_last = int(red_badge.text)
     assert red_badge_first + 1 == red_badge_last, (red_badge_first, red_badge_last)
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
-    paper_viewer._get(paper_viewer._first_discussion_lnk).click()
+    ms_viewer._get(ms_viewer._first_discussion_lnk).click()
     time.sleep(.5)
-    red_badge = paper_viewer._get(paper_viewer._comment_sheet_badge_red)
+    red_badge = ms_viewer._get(ms_viewer._comment_sheet_badge_red)
     red_badge_current = int(red_badge.text)
     assert red_badge_first == red_badge_current, (red_badge_first, red_badge_current)
     # close and check if any badge
-    paper_viewer.close_sheet()
-    paper_viewer.set_timeout(2)
+    ms_viewer.close_sheet()
+    ms_viewer.set_timeout(2)
     try:
-      paper_viewer._get(paper_viewer._badge_red)
+      ms_viewer._get(ms_viewer._badge_red)
       assert False, 'There should not be any discussion badge'
     except ElementDoesNotExistAssertionError:
       logging.info('There is no badge')
-    paper_viewer.restore_timeout()
+    ms_viewer.restore_timeout()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { 
   namedComputedProperty,
-  namedComputedAttachmentProperty
 } from 'tahi/lib/snapshots/snapshot-named-computed-property';
-
+import namedComputedAttachmentProperty
+from 'tahi/lib/snapshots/named-computed-attachment-property';
 
 export default Ember.Component.extend({
   snapshot1: null,

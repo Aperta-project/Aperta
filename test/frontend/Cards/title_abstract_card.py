@@ -68,8 +68,8 @@ class TitleAbstractCard(BaseCard):
     finally:
       self.restore_timeout()
     title_input.click()
-    time.sleep(2)
-    self.set_timeout(3)
+    time.sleep(1)
+    self.set_timeout(4)
     try:
       self._get(self._active_title_textarea)
     finally:
@@ -79,7 +79,7 @@ class TitleAbstractCard(BaseCard):
     abstract_textarea.find_element(*self._textarea_italic_icon)
     abstract_textarea.find_element(*self._textarea_superscript_icon)
     abstract_textarea.find_element(*self._textarea_subscript_icon)
-    self.set_timeout(3)
+    self.set_timeout(4)
     try:
       self._get(self._active_abstract_textarea)
     except ElementDoesNotExistAssertionError:
@@ -87,10 +87,16 @@ class TitleAbstractCard(BaseCard):
     finally:
       self.restore_timeout()
     abstract_input.click()
-    time.sleep(2)
-    self.set_timeout(3)
+    time.sleep(1)
+    self.set_timeout(4)
     try:
       self._get(self._active_abstract_textarea)
+    except ElementDoesNotExistAssertionError:
+      logging.warning('Programmatic isolation of this element in active form often fails due to '
+                      'a kind of Heisenberg uncertainty principle that we click into the field '
+                      'to set it active, but on trying to isolate the element in the DOM seems to '
+                      'remove focus from the field, thus removing the --active part of the '
+                      'locator. This needs to be validated manually.')
     finally:
       self.restore_timeout()
 

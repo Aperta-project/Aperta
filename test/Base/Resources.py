@@ -68,13 +68,13 @@ creator_login6 = {'user': 'aauthor6', 'name': 'atest author6', 'email': 'sealres
 creator_login7 = {'user': 'aauthor7', 'name': 'atest author7', 'email': 'sealresq+1015@gmail.com'}
 creator_login8 = {'user': 'aauthor8', 'name': 'atest author8', 'email': 'sealresq+1016@gmail.com'}
 creator_login9 = {'user': 'aauthor9', 'name': 'atest author9', 'email': 'sealresq+1017@gmail.com'}
-creator_login10 = {'user': 'hgrœnßmøñé',
-                   'name': 'Hęrmänn. Grœnßmøñé',
+creator_login10 = {'user': u'hgrœnßmøñé',
+                   'name': u'Hęrmänn. Grœnßmøñé',
                    'email': 'sealresq+1018@gmail.com'}
 creator_login11 = {'user': 'aauthor11',
                    'name': 'atest author11',
                    'email': 'sealresq+1019@gmail.com'}
-creator_login12 = {'user': 'æöxfjørd', 'name': 'Ænid Öxfjørd', 'email': 'sealresq+1020@gmail.com'}
+creator_login12 = {'user': u'æöxfjørd', 'name': u'Ænid Öxfjørd', 'email': 'sealresq+1020@gmail.com'}
 reviewer_login = {'user': 'areviewer',
                   'name': 'atest reviewer',
                   'email': 'sealresq+1005@gmail.com'}

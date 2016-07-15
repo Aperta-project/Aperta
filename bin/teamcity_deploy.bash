@@ -12,6 +12,7 @@ eval `ssh-agent -s`
 echo $SSH_AGENT_PID
 ssh-add /home/aperta/.ssh/id_rsa
 ssh-add -l
+source /usr/share/chruby/chruby.sh
 chruby `cat .ruby-version` || exit 1
 gem install bundler && bundle install && bundle exec cap production deploy || exit 1
 EOF

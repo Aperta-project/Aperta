@@ -119,6 +119,7 @@ class S3Migration < ActiveRecord::Base
         errored_at: Time.zone.now
       )
       puts "Owner and Paper are nil. Attachment (id=#{attachment.id}) is an orphan. :("
+      failed!
       return
     end
 

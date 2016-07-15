@@ -12,7 +12,7 @@ TIMEOUT = 30         # API call timeout, in seconds
 # === WebDriver specific section ===
 
 # WebDriver's implicit timeout (in seconds)
-wait_timeout = 20
+wait_timeout = 30
 
 # WebDriver's Page Load timeout (in seconds)
 page_load_timeout = 30

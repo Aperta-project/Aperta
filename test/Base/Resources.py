@@ -64,6 +64,17 @@ creator_login2 = {'user': 'aauthor2', 'name': 'atest author2', 'email': 'sealres
 creator_login3 = {'user': 'aauthor3', 'name': 'atest author3', 'email': 'sealresq+1002@gmail.com'}
 creator_login4 = {'user': 'aauthor4', 'name': 'atest author4', 'email': 'sealresq+1003@gmail.com'}
 creator_login5 = {'user': 'aauthor5', 'name': 'atest author5', 'email': 'sealresq+1004@gmail.com'}
+creator_login6 = {'user': 'aauthor6', 'name': 'atest author6', 'email': 'sealresq+1014@gmail.com'}
+creator_login7 = {'user': 'aauthor7', 'name': 'atest author7', 'email': 'sealresq+1015@gmail.com'}
+creator_login8 = {'user': 'aauthor8', 'name': 'atest author8', 'email': 'sealresq+1016@gmail.com'}
+creator_login9 = {'user': 'aauthor9', 'name': 'atest author9', 'email': 'sealresq+1017@gmail.com'}
+creator_login10 = {'user': 'hgrœnßmøñé',
+                   'name': 'Hęrmänn. Grœnßmøñé',
+                   'email': 'sealresq+1018@gmail.com'}
+creator_login11 = {'user': 'aauthor11',
+                   'name': 'atest author11',
+                   'email': 'sealresq+1019@gmail.com'}
+creator_login12 = {'user': 'æöxfjørd', 'name': 'Ænid Öxfjørd', 'email': 'sealresq+1020@gmail.com'}
 reviewer_login = {'user': 'areviewer',
                   'name': 'atest reviewer',
                   'email': 'sealresq+1005@gmail.com'}
@@ -99,6 +110,13 @@ users = [creator_login1,
          creator_login3,
          creator_login4,
          creator_login5,
+         creator_login6,
+         creator_login7,
+         creator_login8,
+         creator_login9,
+         creator_login10,
+         creator_login11,
+         creator_login12,
          ]
 
 editorial_users = [internal_editor_login,

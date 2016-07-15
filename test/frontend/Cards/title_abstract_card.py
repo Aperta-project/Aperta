@@ -72,6 +72,12 @@ class TitleAbstractCard(BaseCard):
     self.set_timeout(4)
     try:
       self._get(self._active_title_textarea)
+    except ElementDoesNotExistAssertionError:
+      logging.warning('Programmatic isolation of this element in active form often fails due to '
+                      'a kind of Heisenberg uncertainty principle that we click into the field '
+                      'to set it active, but on trying to isolate the element in the DOM seems to '
+                      'remove focus from the field, thus removing the --active part of the '
+                      'locator. This needs to be validated manually.')
     finally:
       self.restore_timeout()
     abstract_textarea = self._get(self._abstract_textarea)

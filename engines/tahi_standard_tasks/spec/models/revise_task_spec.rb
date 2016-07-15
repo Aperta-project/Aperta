@@ -13,16 +13,6 @@ describe TahiStandardTasks::ReviseTask do
     let(:phase) { paper.phases[1] }
     subject(:subject) { TahiStandardTasks::ReviseTask }
 
-    it "sets the paper's editable flag to true" do
-      subject.setup_new_revision paper, phase
-      expect(paper.editable).to be(true)
-    end
-
-    it "creates a new decision for the paper" do
-      expect { subject.setup_new_revision paper, phase }
-        .to change { Decision.count }.by(1)
-    end
-
     context "with an existing revise task" do
       let!(:task) do
         FactoryGirl.create(

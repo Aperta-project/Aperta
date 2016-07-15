@@ -84,11 +84,6 @@ describe Paper do
   end
 
   context "#create" do
-    it "also create Decision" do
-      expect(paper.decisions.length).to eq 1
-      expect(paper.decisions.first.class).to eq Decision
-    end
-
     describe "after_create doi callback" do
       it "the doi is not set coming from factory girl before create" do
         unsaved_paper_from_factory_girl = FactoryGirl.build :paper
@@ -426,6 +421,8 @@ describe Paper do
 
   context 'State Machine' do
     describe '#initial_submit' do
+      subject { paper.initial_submit! }
+
       include_examples "transitions save state_updated_at", :initial_submit!
 
       it 'transitions to initially_submitted' do
@@ -437,6 +434,7 @@ describe Paper do
         paper.initial_submit!
         expect(paper).to_not be_editable
       end
+      include_examples 'creates a new draft decision'
 
       it 'sets the updated_at of the initial version' do
         Timecop.freeze(Time.current.utc) do
@@ -474,6 +472,8 @@ describe Paper do
     end
 
     describe '#submit!' do
+      subject { paper.submit! user }
+
       include_examples "transitions save state_updated_at", :submit!
 
       it 'does not transition when metadata tasks are incomplete' do
@@ -487,11 +487,7 @@ describe Paper do
         expect(paper).to be_submitted
       end
 
-      it "marks the paper not editable" do
-        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
-        paper.submit! user
-        expect(paper).to_not be_editable
-      end
+      include_examples 'creates a new draft decision'
 
       it "sets the submitting_user of the latest version" do
         paper.submit! user
@@ -696,6 +692,8 @@ describe Paper do
     end
 
     describe '#submit_minor_check!' do
+      subject { paper.submit_minor_check! user }
+
       include_examples "transitions save state_updated_at",
                        :submit_minor_check!
 
@@ -707,9 +705,13 @@ describe Paper do
         paper.minor_check!
       end
 
+      it "keeps the draft decision from before" do
+        expect { subject }.to_not change { paper.draft_decision }
+      end
+
       it "marks the paper uneditable" do
-        paper.submit_minor_check! user
-        expect(paper).to_not be_editable
+        expect { paper.submit_minor_check! user }
+          .to change { paper.editable }.to(false)
       end
 
       it "sets the submitting_user of the latest version" do
@@ -792,7 +794,8 @@ describe Paper do
       context 'when rejected after full submission' do
         let(:paper) do
           paper = FactoryGirl.create(:paper, :submitted, journal: journal)
-          paper.reject!
+          paper.draft_decision.update(verdict: 'reject', letter: 'it stinks')
+          paper.draft_decision.register! FactoryGirl.create(:register_decision_task)
           paper
         end
 
@@ -1184,7 +1187,7 @@ describe Paper do
     end
 
     it "does not return a draft even if there is one" do
-      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: nil, minor_version: nil)
+      expect(paper.draft).to be_present
       expect(paper.latest_submitted_version).to eq(latest)
     end
   end

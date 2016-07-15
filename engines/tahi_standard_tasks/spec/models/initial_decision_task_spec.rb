@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::InitialDecisionTask do
-  let(:paper) { FactoryGirl.create :paper, :with_tasks }
+  let(:paper) { FactoryGirl.create :paper, :submitted_lite, :with_tasks }
   let(:task) { FactoryGirl.create :initial_decision_task, paper: paper }
 
   describe '.restore_defaults' do
@@ -25,33 +25,6 @@ describe TahiStandardTasks::InitialDecisionTask do
 
   describe 'after_register' do
     let(:decision) { paper.draft_decision }
-
-    before do
-      paper.update(publishing_state: :submitted)
-      task.reload
-    end
-
-    context "when decision is not terminal" do
-      before do
-        allow(decision).to receive(:terminal?).and_return(false)
-      end
-
-      it "it builds a new decision" do
-        expect { task.after_register decision }
-          .to change { paper.reload.decisions.count }.by(1)
-      end
-    end
-
-    context "when decision is terminal" do
-      before do
-        allow(decision).to receive(:terminal?).and_return(true)
-      end
-
-      it "builds a new decision" do
-        expect { task.after_register decision }
-          .not_to change { paper.reload.decisions.count }
-      end
-    end
 
     it "sets the decision to be initial" do
       task.after_register decision

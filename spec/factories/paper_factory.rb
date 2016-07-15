@@ -72,6 +72,23 @@ FactoryGirl.define do
       end
     end
 
+    # TODO: get rid of this in favor of using :submitted. At the moment
+    # :submitted requires a full R&P setup which makes it fail in most unit
+    # tests. We should make the state transitions behave gracefully when R&P
+    # config doesn't exist
+    trait(:submitted_lite) do
+      publishing_state :submitted
+      after :create, &:new_draft_decision!
+    end
+
+    # TODO: reimplement this using actual AASM transitions. Like above.
+    trait(:rejected_lite) do
+      publishing_state :rejected
+      after :create do |paper|
+        paper.decisions.completed.create!(verdict: "reject")
+      end
+    end
+
     trait(:unsubmitted) do
       # noop
     end
@@ -155,8 +172,6 @@ FactoryGirl.define do
     end
 
     after(:create) do |paper, evaluator|
-      paper.decisions.create!
-
       paper.body = evaluator.body
     end
 

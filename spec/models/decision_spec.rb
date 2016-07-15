@@ -3,7 +3,7 @@ require 'models/concerns/versioned_thing_shared_examples'
 
 describe Decision do
   let!(:decision) do
-    paper = FactoryGirl.create :paper
+    paper = FactoryGirl.create :paper, :submitted_lite
     paper.decisions.first
   end
   let(:paper) { decision.paper }

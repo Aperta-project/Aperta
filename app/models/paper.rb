@@ -87,9 +87,9 @@ class Paper < ActiveRecord::Base
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
-    state :initially_submitted
+    state :initially_submitted, before_enter: :new_draft_decision!
     state :invited_for_full_submission
-    state :submitted
+    state :submitted, before_enter: :new_draft_decision!
     state :checking # small change that does not require resubmission, as in a tech check
     state :in_revision # has revised decision and requires resubmission
     state :accepted
@@ -239,9 +239,6 @@ class Paper < ActiveRecord::Base
   # This is a faux state transition, it dynamically picks which
   # state transition to use when rescinding.
   def rescind!
-    # If we're accepted or rejected, then there's no new un-registered
-    # decision to use for the next go-round -- we'll have to make it.
-    decisions.create if in_terminal_state?
     remove_revise_task if in_revision?
 
     if been_fully_submitted?
@@ -498,6 +495,10 @@ class Paper < ActiveRecord::Base
     versioned_texts.completed.version_desc.first
   end
 
+  def new_draft_decision!
+    decisions.create unless draft_decision
+  end
+
   def draft
     versioned_texts.drafts.first
   end
@@ -533,10 +534,6 @@ class Paper < ActiveRecord::Base
   def new_draft!
     fail StandardError, 'Draft already exists' unless draft.nil?
     latest_version.new_draft!
-  end
-
-  def new_draft_decision!
-    decisions.create unless draft_decision
   end
 
   def new_major_version!

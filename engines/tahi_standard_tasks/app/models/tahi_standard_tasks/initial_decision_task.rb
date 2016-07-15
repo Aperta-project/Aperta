@@ -17,7 +17,6 @@ module TahiStandardTasks
     end
 
     def after_register(decision)
-      paper.decisions.create(notify_requester: true) unless decision.terminal?
       InitialDecisionMailer.delay.notify decision_id: decision.id
       decision.initial = true
       decision.save!

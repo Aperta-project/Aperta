@@ -4,7 +4,7 @@ describe DecisionsController do
   let(:user) { FactoryGirl.build(:user) }
 
   let(:paper) do
-    FactoryGirl.create(:paper)
+    FactoryGirl.create(:paper, :submitted_lite)
   end
 
   describe "#update" do
@@ -163,7 +163,7 @@ describe DecisionsController do
           id: decision.id
     end
     let(:decision) { paper.draft_decision }
-    let(:paper) { FactoryGirl.create(:paper, publishing_state: :rejected) }
+    let(:paper) { FactoryGirl.create(:paper, :rejected_lite) }
 
     it_behaves_like "an unauthenticated json request"
 

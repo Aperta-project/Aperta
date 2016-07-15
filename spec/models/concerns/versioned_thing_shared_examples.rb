@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'a thing with major and minor versions' do |name|
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
 
   before do
     @things = name.to_s.pluralize.to_sym
@@ -66,9 +66,13 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
   end
 
   describe 'creating a draft' do
+    let(:versions) { paper.send(name.to_s.pluralize.to_sym) }
+    let(:first_version) { versions.first }
+
     it 'fails if a draft already exists' do
-      expect(paper.draft).not_to be(nil)
-      expect { paper.send(name.to_s.pluralize.to_sym).drafts.create! }
+      expect(versions.drafts.count).to eq 1
+      expect(first_version).to be_present
+      expect { versions.create! }
         .to raise_exception(ActiveRecord::RecordInvalid)
     end
   end

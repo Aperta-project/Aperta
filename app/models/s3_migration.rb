@@ -39,8 +39,10 @@ class S3Migration < ActiveRecord::Base
 
   def self.migrate!
     ready.all.each do |migration|
-      puts "Performing migration: #{migration.inspect}"
-      migration.migrate!
+      transaction do
+        puts "Performing migration: #{migration.inspect}"
+        migration.migrate!
+      end
     end
   end
 
@@ -188,8 +190,10 @@ class S3Migration < ActiveRecord::Base
       if child
         # update snapshot to use new_file_hash instead of the previous_file_hash
         child['value'] = new_file_hash
-        child.save!
-        snapshot
+
+        # we're updating the internals contents of the snaphot above so
+        # be sure to save the snapshot
+        snapshot.save!
       end
     end
   end

@@ -1,6 +1,6 @@
 #!/bin/bash
 # It is necessary to define an environment var TARGET_ENV
-#  that is one of development, production, staging or test
+#  that is one of vagrant, production, rc, ci or stage 
 sudo -u aperta -i /bin/bash << "EOF"
 cd %teamcity.build.checkoutDir%
 export BRANCH_NAME=%teamcity.build.branch%

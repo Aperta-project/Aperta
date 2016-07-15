@@ -348,7 +348,7 @@ class AuthenticatedPage(PlosPage):
         self.set_timeout(1)
         try:
           failure_msg = self._get(self._flash_error_msg)
-          logging.warning('Conversion failure result message displayed: '
+          logging.warning(u'Conversion failure result message displayed: '
                           '{0}'.format(failure_msg.text))
         except ElementDoesNotExistAssertionError:
           logging.warning('No conversion result message displayed at all')

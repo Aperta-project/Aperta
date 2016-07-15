@@ -48,7 +48,7 @@ class InviteReviewersCard(BaseCard):
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
     self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
-    self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestion')
+    self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestions')
 
   # POM Actions
   def validate_card_elements_styles(self, paper_id):
@@ -150,7 +150,7 @@ class InviteReviewersCard(BaseCard):
         if response == 'Accept':
           assert 'Accepted' in status.text, status.text
         else:
-          assert 'Rejected' in status.text, status.text
+          assert 'Declined' in status.text, status.text
           reason_text = self._get(self._reason).text
           reason_text = self.normalize_spaces(reason_text)
           assert reason in reason_text, '{0} not in {1}'.format(reason, reason_text)

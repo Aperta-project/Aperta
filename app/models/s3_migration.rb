@@ -40,13 +40,11 @@ class S3Migration < ActiveRecord::Base
   def self.migrate!
     ready.all.each do |migration|
       transaction do
-        puts "Performing migration: #{migration.inspect}"
         migration.migrate!
+        puts "\e[32m.\e[0m"
       end
     end
   end
-
-  scope :ready, ->{ where(state: 'ready') }
 
   belongs_to :attachment, polymorphic: true
 
@@ -108,9 +106,18 @@ class S3Migration < ActiveRecord::Base
     if attachment.is_a?(Figure)
       if attachment.paper.nil?
         puts "Paper is nil. Attachment (id=#{attachment.id}) is an orphan. :("
+        update_attributes!(
+          error_message: "Orphaned figure, paper is nil",
+          errored_at: Time.zone.now
+        )
+        failed!
         return
       end
     elsif attachment.owner.nil? && attachment.paper.nil?
+      update_attributes!(
+        error_message: "Orphaned attachment, owner and paper are both nil",
+        errored_at: Time.zone.now
+      )
       puts "Owner and Paper are nil. Attachment (id=#{attachment.id}) is an orphan. :("
       return
     end
@@ -129,7 +136,6 @@ class S3Migration < ActiveRecord::Base
       attachment.update_column :previous_file_hash, previous_file_hash
       attachment.update_column :file_hash, new_file_hash
     end
-
 
     # only backfill an attachment snapshot if we found an existing
     # task snapshot for this attachment

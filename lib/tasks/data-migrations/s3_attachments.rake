@@ -77,7 +77,21 @@ namespace :data do
       task perform: :environment do
         ::AttachmentUploader.include S3Migration::UploaderOverrides
 
-        S3Migration.migrate!
+        # Try three times to move all files in case we run into any problems
+        # or rate-limiting issues with Amazon.
+        range = (1..3)
+        range.each do |i|
+          puts
+          puts "#"*100
+          puts "Performing migration round #{i} of #{range.max}"
+          puts "#"*100
+          puts
+
+          S3Migration.migrate!
+          break if S3Migration.ready.count == 0
+
+          sleep 3
+        end
       end
     end
   end

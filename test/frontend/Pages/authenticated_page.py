@@ -510,7 +510,7 @@ class AuthenticatedPage(PlosPage):
     elif cardname.lower() == 'title_and_abstract':
       card_title = self._get(self._title_abstract_card)
     else:
-      print('Unknown Card')
+      logging.info('Unknown Card')
       self.restore_timeout()
       return False
     card_title.find_element_by_xpath('.//ancestor::a').click()
@@ -566,7 +566,7 @@ class AuthenticatedPage(PlosPage):
     elif taskname.lower() == 'initial_decision':
       task_title = self._get(self._initial_decision_card)
     else:
-      print('Unknown Task')
+      logging.info('Unknown Task')
       return False
     # For whatever reason, selenium can't grok a simple click() here
     self._actions.click_and_hold(task_title).release().perform()
@@ -1541,14 +1541,14 @@ class AuthenticatedPage(PlosPage):
     :param label: label to validate
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '14px', \
+    assert label.value_of_css_property('font-size') == '18px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
     # This color is not represented in the tahi palette
-    assert label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', \
+    assert label.value_of_css_property('color') == aperta_black, \
         label.value_of_css_property('color')
-    assert label.value_of_css_property('line-height') == '20px', \
+    assert label.value_of_css_property('line-height') == '25.7167px', \
         label.value_of_css_property('line-height')
 
   @staticmethod
@@ -1783,7 +1783,6 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering warning alerts across the application
     :field: field to validate
     """
-    import pdb; pdb.set_trace()
     assert field.value_of_css_property('color')  == 'rgba(208, 2, 27, 1)', \
         field.value_of_css_property('color')
     assert field.value_of_css_property('font-size') == '14px', \

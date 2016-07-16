@@ -88,7 +88,7 @@ class InviteAECard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert '{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
+    assert u'{0}, {1}'.format(creator_ln.decode('utf-8'), creator_fn.decode('utf-8')) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
       # strip html, and remove whitespace
@@ -110,11 +110,12 @@ class InviteAECard(BaseCard):
     invitee = self._get(self._invitee_listing)
     invitee.find_element(*self._invitee_avatar)
     pagefullname = invitee.find_element(*self._invitee_full_name)
-    assert ae['name'] in pagefullname.text, '{0} not found in {1}'.format(ae['name'],
-                                                                          pagefullname.text)
+    invitees = self._gets(self._invitee_listing)
+    assert any(ae['name'] in s for s in [x.text for x in invitees]), \
+        '{0} not found in {1}'.format(ae['name'], [x.text for x in invitees])
     invitee.find_element(*self._invitee_updated_at)
-    status = invitee.find_element(*self._invitee_state)
-    assert 'Invited' in status.text
+    assert any('Invited' in s for s in [x.text for x in invitees]), \
+        'Invited not found in {1}'.format([x.text for x in invitees])
     invitee.find_element(*self._invitee_revoke)
 
   def validate_ae_response(self, ae, response):
@@ -136,7 +137,7 @@ class InviteAECard(BaseCard):
     if response == 'Accept':
       assert 'Accepted' in status.text, status.text
     else:
-      assert 'Rejected' in status.text, status.text
+      assert 'Declined' in status.text, status.text
 
   def check_style(self, user, paper_id):
     """

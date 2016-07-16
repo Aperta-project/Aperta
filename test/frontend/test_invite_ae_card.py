@@ -12,9 +12,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login, users, editorial_users
+from Base.Resources import staff_admin_login, internal_editor_login, prod_staff_login, \
+    pub_svcs_login, super_admin_login, academic_editor_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -129,7 +128,7 @@ class InviteAECardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
     time.sleep(10)
-    workflow_page.click_card('invite_academic_editor')
+    workflow_page.click_invite_ae_card()
     time.sleep(3)
     invite_ae = InviteAECard(self.getDriver())
     invite_ae.validate_ae_response(academic_editor_login, invite_response)

@@ -180,17 +180,17 @@ class BaseCard(AuthenticatedPage):
     logging.info('{0}'.format(full_name))
     # Validate Content
     html_header_author = self._get(self._header_author)
-    assert html_header_author.text == full_name, '{0} != {1}'.format(html_header_author.text,
-                                                                     full_name)
+    assert self.compare_unicode(html_header_author.text, full_name), u'{0} != {1}'.\
+        format(html_header_author.text, full_name)
     html_header_msid = self._get(self._header_manuscript_id)
-    assert html_header_msid.text == manuscript_id, '{0} != {1}'.format(html_header_msid.text,
+    assert html_header_msid.text == manuscript_id, u'{0} != {1}'.format(html_header_msid.text,
                                                                        manuscript_id)
     html_header_paper_type = self._get(self._header_paper_type)
-    assert html_header_paper_type.text == paper_type, '{0} != ' \
-                                                      '{1}'.format(html_header_paper_type.text,
+    assert html_header_paper_type.text == paper_type, u'{0} != ' \
+                                                      u'{1}'.format(html_header_paper_type.text,
                                                                    paper_type)
     html_header_state = self._get(self._header_paper_state)
-    assert html_header_state.text == status, '{0} != {1}'.format(html_header_state.text, status)
+    assert html_header_state.text == status, u'{0} != {1}'.format(html_header_state.text, status)
     html_header_title = self._get(self._header_title_link)
 
     self.compare_unicode(html_header_title.text, title)

@@ -148,7 +148,10 @@ class PlosPage(object):
       self.restore_timeout()
 
   def _wait_for_element(self, element):
+    # For this method, we want to give an exaggerated amount of time compared to the normal timeout
+    self.set_timeout(120)
     self._wait.until(CustomExpectedConditions.ElementToBeClickable(element))
+    self.restore_timeout()
 
   def _is_link_valid(self, link):
     return self.__linkVerifier.is_link_valid(link.get_attribute('href'))

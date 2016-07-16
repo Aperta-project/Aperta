@@ -180,8 +180,8 @@ class BaseCard(AuthenticatedPage):
     logging.info('{0}'.format(full_name))
     # Validate Content
     html_header_author = self._get(self._header_author)
-    assert self.compare_unicode(html_header_author.text, full_name), u'{0} != {1}'.\
-        format(html_header_author.text, full_name)
+    author_match = self.compare_unicode(html_header_author.text, full_name)
+    assert author_match, '{0} != {1}'.format(html_header_author.text, full_name)
     html_header_msid = self._get(self._header_manuscript_id)
     assert html_header_msid.text == manuscript_id, u'{0} != {1}'.format(html_header_msid.text,
                                                                        manuscript_id)

@@ -33,9 +33,11 @@ class TitleAbstractTest(CommonTest):
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
     # Create paper
     dashboard_page.click_create_new_submission_button()
-    time.sleep(.5)
+    dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Title and Abstract Card',
@@ -46,37 +48,36 @@ class TitleAbstractTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     paper_viewer.validate_ihat_conversions_success(timeout=30)
+    # Need to wait for url to update
+    count = 0
     paper_id = paper_viewer.get_current_url().split('/')[-1]
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info('-{0}-'.format(paper_id))
     while not paper_id:
-      time.sleep(15)
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
       paper_id = paper_viewer.get_current_url().split('/')[-1]
-      paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
-    # paper_viewer.click_submit_btn()
-    # paper_viewer.confirm_submit_btn()
-    # paper_viewer.close_submit_overlay()
-    # logout
-    time.sleep(5)
     paper_viewer.logout()
 
     # log as editor - validate T&A Card
     staff_user = random.choice(editorial_users)
     logging.info('Logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    time.sleep(5)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(2)
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    time.sleep(2)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('title_and_abstract')
-    time.sleep(3)
     title_abstract = TitleAbstractCard(self.getDriver())
+    title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))
     title_abstract.validate_card_header(paper_id)
     title_abstract.validate_styles()
 
@@ -90,9 +91,11 @@ class TitleAbstractTest(CommonTest):
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
     # Create paper
     dashboard_page.click_create_new_submission_button()
-    time.sleep(.5)
+    dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Title and Abstract Card',
@@ -102,29 +105,37 @@ class TitleAbstractTest(CommonTest):
                         )
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=15)
+    paper_viewer.validate_ihat_conversions_success(timeout=30)
+    # Need to wait for url to update
+    count = 0
     paper_id = paper_viewer.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise(StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = paper_viewer.get_current_url().split('/')[-1]
+      count += 1
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
-    time.sleep(5)
     paper_viewer.logout()
 
     # log as editor - validate T&A Card
     staff_user = random.choice(editorial_users)
     logging.info('Logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    time.sleep(5)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(15)
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    time.sleep(2)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('title_and_abstract')
-    time.sleep(3)
     title_abstract = TitleAbstractCard(self.getDriver())
+    title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))
     title_abstract.check_initial_population(paper_id)
     title_abstract.click_completion_button()
     title_abstract.click_close_button()
@@ -132,17 +143,17 @@ class TitleAbstractTest(CommonTest):
 
     # log back in as author to re-upload MS
     dashboard_page = self.cas_login(email=creator['email'])
-    time.sleep(5)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(15)
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._upload_manu_task))
     paper_viewer.click_task('upload_manuscript')
-    time.sleep(3)
     upms = UploadManuscriptTask(self.getDriver())
-    time.sleep(1)
+    upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()
-    time.sleep(1)
+    upms._wait_for_element(upms._get(upms._upload_manuscript_btn))
     upms.upload_manuscript()
     upms.validate_ihat_conversions_success(timeout=30)
     upms.check_for_flash_error()
@@ -152,23 +163,25 @@ class TitleAbstractTest(CommonTest):
     staff_user = random.choice(editorial_users)
     logging.info('Logging in as user: {0}'.format(['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    time.sleep(5)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(5)
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    time.sleep(2)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('title_and_abstract')
-    time.sleep(3)
     title_abstract = TitleAbstractCard(self.getDriver())
+    title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))
     ta_state = title_abstract.completed_state()
     if ta_state:
       raise (AssertionError, 'Title and Abstract card state not reset on re-upload of manuscript')
     title_abstract.click_completion_button()
     new_ta_state = title_abstract.completed_state()
+    # I don't see a non-rococo way to avoid this one
     time.sleep(1)
     if not new_ta_state:
       raise (AssertionError, 'Title and Abstract card state not in completed state')

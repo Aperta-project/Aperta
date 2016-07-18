@@ -40,7 +40,7 @@ namespace :plos_billing do
   end
 
   # Set to run each day exporting completed billing tasks in the last day
-  desc 'Auotmated billing export and ftp to designated billing host'
+  desc 'Automated billing export and ftp to designated billing host'
   task daily_billing_log_export: :environment do
     date = Time.zone.now.utc.days_ago(1).beginning_of_day
     report = BillingLogReport.create_report(from_date: date)

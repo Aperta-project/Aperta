@@ -39,9 +39,9 @@ test('User has the ability to rescind', function(assert){
 
 test('User can see the decision history', function(assert){
   let decisions = [
-    FactoryGuy.make('decision', {verdict: null, registered: false}),
-    FactoryGuy.make('decision', {verdict: 'accept', registered: true}),
-    FactoryGuy.make('decision', {verdict: 'minor_revision', registered: true})
+    FactoryGuy.make('decision', {verdict: null, registeredAt: null }),
+    FactoryGuy.make('decision', {verdict: 'accept', registeredAt: new Date()}),
+    FactoryGuy.make('decision', {verdict: 'minor_revision', registeredAt: new Date()})
   ];
   let paper = FactoryGuy.make('paper', { decisions: decisions });
   var task = FactoryGuy.make('task', { paper: paper });

@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  # Note the ReviewerReportTask and it's subclasses are used for
+  # Note the ReviewerReportTask and its subclasses are used for
   # "ALL REVIEWS COMPLETE" in the paper tracker. If a task is expected to show
   # up in the "ALL REVIEWS COMPLETE" query, it should inherit from
   # ReviewerReportTask.

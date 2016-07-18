@@ -209,26 +209,27 @@ describe QueryParser do
     end
 
     describe 'review queries' do
-      let(:review_report_types) do
+      let(:reviewer_report_types) do
         [TahiStandardTasks::ReviewerReportTask,
          TahiStandardTasks::FrontMatterReviewerReportTask]
       end
-      let(:review_report_sql) { review_report_types.map{ |r| "'#{r}'" }.join(', ') }
+
+      let(:reviewer_report_sql) { reviewer_report_types.map{ |r| "'#{r}'" }.join(', ') }
       it 'parses ALL REVIEWS COMPLETE' do
         parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" IN (#{review_report_sql}) AND "tasks"."completed" = 'f') AND "tasks_0"."type" IN (#{review_report_sql})
+          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" IN (#{reviewer_report_sql}) AND "tasks"."completed" = 'f') AND "tasks_0"."type" IN (#{reviewer_report_sql})
         SQL
       end
 
       it 'parses NOT ALL REVIEWS COMPLETE' do
         parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks_0"."type" IN (#{review_report_sql}) AND "tasks_0"."completed" = 'f'
+          "tasks_0"."type" IN (#{reviewer_report_sql}) AND "tasks_0"."completed" = 'f'
         SQL
       end
 
-      context 'review reports extend to future descendants' do
+      context 'reviewer reports extend to future descendants' do
         before(:context) do
           class FictionalReport < TahiStandardTasks::ReviewerReportTask
           end

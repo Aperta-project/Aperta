@@ -50,36 +50,25 @@ test('it renders decision selections', function(assert) {
   let testTask = createTask();
   this.set('testTask', testTask);
   this.render(template);
-  //assert.elementsFound('.decision-label', 4);
+  assert.elementsFound('.decision-label', 4);
   this.$("input[type='radio']").last().click();
-  wait().then(() =>
-    assert.textPresent('.decision-letter-field', 'Dear Someone')
-  );
+  assert.inputContains('.decision-letter-field', 'Dear');
 });
 
 test('it switches the letter contents on change', function(assert) {
   let testTask = createTask();
   this.set('testTask', testTask);
   this.render(template);
-  //assert.elementsFound('.decision-label', 4);
   this.$("input[type='radio']").last().click();
-  wait().then(() =>
-    assert.textPresent('.decision-letter-field', 'who Accepts')
-  );
+  assert.inputContains('.decision-letter-field', 'who Accepts');
   this.$("input[type='radio']").first().click();
-  wait().then(() =>
-    assert.textPresent('.decision-letter-field', 'who Rejects')
-  );
+  assert.inputContains('.decision-letter-field', 'who Rejects');
 });
 
 test('it replaces template variables', function(assert) {
   let testTask = createTask();
   this.set('testTask', testTask);
   this.render(template);
-  //assert.elementsFound('.decision-label', 4);
   this.$("input[type='radio']").last().click();
-  wait().then(() =>
-    assert.textPresent('.decision-letter-field', 'Dear Dr. Smith')
-  );
+  assert.inputContains('.decision-letter-field', 'Dear Dr. Smith');
 });
-

@@ -9,6 +9,10 @@ namespace :data do
       task prepare: :environment do
         Attachment.transaction do
           Attachment.all.each do |attachment|
+            # if there are attachment(s) that failed during processing
+            # then they won't have a file path, so skip them
+            next unless attachment.file.path
+
             if attachment.s3_dir
               S3Migration.create!(
                 source_url: attachment.file.path,
@@ -73,7 +77,21 @@ namespace :data do
       task perform: :environment do
         ::AttachmentUploader.include S3Migration::UploaderOverrides
 
-        S3Migration.transaction { S3Migration.migrate! }
+        # Try three times to move all files in case we run into any problems
+        # or rate-limiting issues with Amazon.
+        range = (1..3)
+        range.each do |i|
+          puts
+          puts "#"*100
+          puts "Performing migration round #{i} of #{range.max}"
+          puts "#"*100
+          puts
+
+          S3Migration.migrate!
+          break if S3Migration.ready.count == 0
+
+          sleep 3
+        end
       end
     end
   end

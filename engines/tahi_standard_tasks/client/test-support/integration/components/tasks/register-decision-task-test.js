@@ -17,14 +17,19 @@ let createTask = function() {
         { id: 1 }
       ]
     },
-    letterTemplates: [{ 
-      id: 1,
-      text: 'something',
-      templateDecision: 'accept',
-      letter: 'Dear Someone, Sincerely Someone' }],
+    letterTemplates: [
+      { 
+        id: 1,
+        text: 'RA Accept',
+        templateDecision: 'accept',
+        letter: 'Dear Dr. [LAST_NAME], Sincerely Someone who Accepts' },
+      {
+        id: 2,
+        text: 'Editor Reject',
+        templateDecision: 'reject',
+        letter: 'Dear Dr. [LAST_NAME], Sincerely who Rejects' }],
     nestedQuestions: [
-      { id: 1, ident: 'register_decision_questions--to-field' }
-    ]
+      { id: 1, ident: 'register_decision_questions--to-field' }]
   });
 };
 
@@ -45,9 +50,36 @@ test('it renders decision selections', function(assert) {
   let testTask = createTask();
   this.set('testTask', testTask);
   this.render(template);
-  assert.elementsFound('.decision-label', 4);
+  //assert.elementsFound('.decision-label', 4);
   this.$("input[type='radio']").last().click();
   wait().then(() =>
     assert.textPresent('.decision-letter-field', 'Dear Someone')
   );
 });
+
+test('it switches the letter contents on change', function(assert) {
+  let testTask = createTask();
+  this.set('testTask', testTask);
+  this.render(template);
+  //assert.elementsFound('.decision-label', 4);
+  this.$("input[type='radio']").last().click();
+  wait().then(() =>
+    assert.textPresent('.decision-letter-field', 'who Accepts')
+  );
+  this.$("input[type='radio']").first().click();
+  wait().then(() =>
+    assert.textPresent('.decision-letter-field', 'who Rejects')
+  );
+});
+
+test('it replaces template variables', function(assert) {
+  let testTask = createTask();
+  this.set('testTask', testTask);
+  this.render(template);
+  //assert.elementsFound('.decision-label', 4);
+  this.$("input[type='radio']").last().click();
+  wait().then(() =>
+    assert.textPresent('.decision-letter-field', 'Dear Dr. Smith')
+  );
+});
+

@@ -139,7 +139,7 @@ FactoryGirl.define do
 
   factory :invitable_task, class: 'InvitableTestTask' do
     phase
-    paper
+    paper { FactoryGirl.create(:paper, :submitted_lite) }
     title "Invitable Task"
     old_role "user"
   end

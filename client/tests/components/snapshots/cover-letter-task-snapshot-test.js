@@ -14,8 +14,8 @@ moduleForComponent('cover-letter-task-snapshot',
 var snapshot = function(attrs){
   let properties = _.extend({
     attachment: attachment(),
-    text: text("interesting cover letter"),
-    id: 'foo',
+    text: text('interesting cover letter'),
+    id: 'foo'
   }, attrs);
   return {
     name: 'cover-letter-task',
@@ -24,13 +24,14 @@ var snapshot = function(attrs){
       {name: 'cover_letter--attachment', value: properties.attachment},
       {name: 'cover_letter--text', value: properties.text}
     ]
-  }
+  };
 };
 
 let text = function(words){
-  return { answer_type: "text",
-           answer: words
-  }
+  return {
+    answer_type: 'text',
+    answer: words
+  };
 };
 
 let attachment = function(attrs){
@@ -54,7 +55,7 @@ let attachment = function(attrs){
       ]
       }
     ]
-  }
+  };
 };
 
 var template = hbs`{{cover-letter-task-snapshot

@@ -14,6 +14,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     FactoryGirl.create(
       :paper_with_phases,
       :with_creator,
+      :submitted_lite,
       journal: journal,
       title: 'Crazy stubbing tests on rats'
     )

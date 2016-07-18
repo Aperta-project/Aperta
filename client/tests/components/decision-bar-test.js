@@ -29,16 +29,17 @@ test('shows the decision verdict when closed', function(assert) {
 });
 
 test('shows the revision number when closed', function(assert) {
-  let decision = FactoryGuy.make('decision', {  revisionNumber: 2 });
+  let decision = FactoryGuy.make(
+    'decision', { majorVersion: 2, minorVersion: 1 });
   setup(this, { decision });
-  assert.textPresent('.decision-bar-revision-number', '2', 'shows revision');
+  assert.textPresent('.decision-bar-revision-number', '2.1', 'shows revision');
 });
 
 test('shows the rescinded flag for a rescinded decision when closed',
   function(assert) {
     let decision = FactoryGuy.make('decision', {
-      revisionNumber: 2,
-      rescindMinorVersion: 3,
+      majorVersion: 2,
+      minorVersion: 3,
       rescinded: true });
 
     setup(this, { decision });

@@ -40,16 +40,18 @@ test('displayTitle displays title if present', function(assert) {
   assert.equal(paper.get('displayTitle'), title);
 });
 
-test('previousDecisions returns decisions that have non-null verdict', function(assert){
-  var noVerdictDecision = FactoryGuy.make('decision', { registered: false });
-  var acceptedDecision = FactoryGuy.make('decision', { registered: true });
-  var rejectedDecision = FactoryGuy.make('decision', { registered: true });
+test('previousDecisions returns decisions that have registeredAt set', function(assert){
+  var noVerdictDecision = FactoryGuy.make(
+    'decision', { registeredAt: null });
+  var acceptedDecision = FactoryGuy.make(
+    'decision', { registeredAt: new Date() });
+  var rejectedDecision = FactoryGuy.make(
+    'decision', { registeredAt: new Date() });
 
   var paper = FactoryGuy.make('paper', {
     decisions: [noVerdictDecision, acceptedDecision, rejectedDecision]
   });
 
-  var arr = paper.get('previousDecisions');
   assert.arrayContainsExactly(
     paper.get('previousDecisions'),
     [acceptedDecision, rejectedDecision]

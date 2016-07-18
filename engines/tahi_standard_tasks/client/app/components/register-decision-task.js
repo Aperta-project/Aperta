@@ -49,6 +49,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
         this.set('task.completed', true);
         this.get('task').save().then(() => {
           return this.get('latestDecision').save().then(() => {
+            this.get('task.paper.decisions').reload();
             this.set('isSavingData', false);
             this.clearAllValidationErrors();
           });

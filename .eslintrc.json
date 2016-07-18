@@ -7,10 +7,10 @@
     },
 
     "rules": {
-      "camelcase": "error",
+      "camelcase": "warn",
       "indent": ["error", 2],
       "eqeqeq": "error",
-      "max-len": ["error", 80],
+      "max-len": ["error", 110],
       "semi": ["error", "always"],
       "quotes": [
         "error",

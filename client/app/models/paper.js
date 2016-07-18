@@ -95,14 +95,14 @@ export default DS.Model.extend({
     return this.get('oldRoles').sort().join(', ');
   }),
 
-  latestDecision: computed('decisions.@each.isLatest', function() {
-    return this.get('decisions').findBy('isLatest', true);
+  latestDecision: computed('decisions.@each.latest', function() {
+    return this.get('decisions').findBy('latest', true);
   }),
 
   latestRegisteredDecision: computed(
-    'decisions.@each.isLatestRegistered',
+    'decisions.@each.latestRegistered',
     function() {
-      return this.get('decisions').findBy('isLatestRegistered', true);
+      return this.get('decisions').findBy('latestRegistered', true);
   }),
 
   previousDecisions: computed('decisions.@each.registeredAt', function() {

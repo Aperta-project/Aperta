@@ -10,13 +10,19 @@ describe DecisionSerializer, serializer_test: true do
     expect(serializer.as_json[:decision])
       .to include(
         author_response: decision.author_response,
+        created_at: decision.created_at,
         id: decision.id,
+        initial: decision.initial?,
         invitation_ids: decision.invitation_ids,
-        is_latest: decision.latest?,
+        latest: decision.latest?,
+        latest_registered: decision.latest_registered?,
         letter: decision.letter,
-        paper_id: paper.id,
         major_version: decision.major_version,
         minor_version: decision.minor_version,
+        paper_id: paper.id,
+        registered_at: decision.registered_at,
+        rescindable: decision.rescindable?,
+        rescinded: decision.rescinded,
         verdict: decision.verdict
       )
   end

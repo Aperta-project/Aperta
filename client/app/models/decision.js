@@ -2,21 +2,21 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Model.extend({
-  invitations: DS.hasMany('invitation', { async: false }),
-  paper: DS.belongsTo('paper', { async: false }),
-  nestedQuestionAnswers: DS.hasMany('nested-question-answer', { async: false }),
-  createdAt: DS.attr('date'),
-  isLatest: DS.attr('boolean'),
-  isLatestRegistered: DS.attr('boolean'),
-  letter: DS.attr('string'),
-  verdict: DS.attr('string'),
   authorResponse: DS.attr('string'),
-  registeredAt: DS.attr('date'),
+  createdAt: DS.attr('date'),
   initial: DS.attr('boolean'),
-  rescinded: DS.attr('boolean'),
+  invitations: DS.hasMany('invitation', { async: false }),
+  latest: DS.attr('boolean'),
+  latestRegistered: DS.attr('boolean'),
+  letter: DS.attr('string'),
   majorVersion: DS.attr('number'),
   minorVersion: DS.attr('number'),
+  nestedQuestionAnswers: DS.hasMany('nested-question-answer', { async: false }),
+  paper: DS.belongsTo('paper', { async: false }),
+  registeredAt: DS.attr('date'),
   rescindable: DS.attr('boolean'),
+  rescinded: DS.attr('boolean'),
+  verdict: DS.attr('string'),
 
   restless: Ember.inject.service('restless'),
   rescind() {

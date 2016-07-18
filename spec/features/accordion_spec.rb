@@ -30,7 +30,7 @@ feature 'Accordion cards', js: true do
       find('.task-disclosure-heading').click
       expect(page).to have_css('.task-main-content')
       find('.task-disclosure-heading').click
-      expect(page).not_to have_css('.task-main-content')
+      expect(page).to have_no_css('.task-main-content')
     end
 
     scenario 'does not crash Ember on double click', js: true do

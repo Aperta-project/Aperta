@@ -132,20 +132,20 @@ class QueryParser < QueryLanguageParser
   add_no_args_expression('ALL REVIEWS COMPLETE') do
     task_table = Task.arel_table
     incomplete_reviews = task_table.project(:paper_id).where(
-      task_table[:type].in(sti_helper TahiStandardTasks::ReviewerReportTask)
+      task_table[:type].in(types_for_sti TahiStandardTasks::ReviewerReportTask)
       .and(task_table[:completed].eq(false)))
 
     joined_tasks = join Task
 
     paper_table[:id].not_in(
       Arel::Nodes::SqlLiteral.new(incomplete_reviews.to_sql)).and(
-        joined_tasks[:type].in(sti_helper TahiStandardTasks::ReviewerReportTask))
+        joined_tasks[:type].in(types_for_sti TahiStandardTasks::ReviewerReportTask))
   end
 
   add_no_args_expression('NOT ALL REVIEWS COMPLETE') do
     table = join Task
 
-    table[:type].in(sti_helper TahiStandardTasks::ReviewerReportTask)
+    table[:type].in(types_for_sti TahiStandardTasks::ReviewerReportTask)
       .and(table[:completed].eq(false))
   end
 
@@ -234,7 +234,7 @@ class QueryParser < QueryLanguageParser
     Arel::Nodes::InfixOperation.new('@@', title_vector, query_vector)
   end
 
-  def sti_helper(parent_class)
+  def types_for_sti(parent_class)
     [parent_class] + parent_class.descendants
   end
 

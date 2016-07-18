@@ -30,8 +30,7 @@ feature 'Viewing Versions:', js: true do
 
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
 
       page.select_viewing_version(version_1)
 
@@ -44,8 +43,7 @@ feature 'Viewing Versions:', js: true do
 
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
       page.select_viewing_version(version_0)
 
       page.select_comparison_version(version_1)
@@ -57,8 +55,7 @@ feature 'Viewing Versions:', js: true do
     scenario 'The user views an old version of a task', selenium: true do
       SnapshotService.new(paper).snapshot!(task)
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
       page.select_viewing_version(version_0)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
@@ -82,8 +79,7 @@ feature 'Viewing Versions:', js: true do
                          source: task)
 
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
       page.select_viewing_version(version_0)
       page.select_comparison_version(version_1)
 
@@ -120,8 +116,7 @@ feature 'Viewing Versions:', js: true do
                            minor_version: 0,
                            source: task)
         page = PaperPage.new
-        page.version_button.click
-        wait_for_ajax
+        page.view_versions
 
         expect(page).to_not have_content('Cover Letter')
       end

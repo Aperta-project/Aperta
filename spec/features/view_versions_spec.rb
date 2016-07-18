@@ -92,7 +92,7 @@ feature 'Viewing Versions:', js: true do
       end
     end
 
-    context 'The user is a reviewer' do
+    context 'The user has limited access' do
       let(:reviewer) { FactoryGirl.create :user }
       let(:task) do
         FactoryGirl.create :cover_letter_task,
@@ -106,14 +106,14 @@ feature 'Viewing Versions:', js: true do
         login_as(reviewer, scope: :user)
       end
 
-      scenario 'A reviewer cannot see the cover letter task' do
+      scenario 'The user cannot see the cover letter task' do
         ensure_user_does_not_have_access_to_task(
           user: reviewer,
           task: task
         )
       end
 
-      scenario 'The reviewer cannot see cover letter task versions', selenium: true do
+      scenario 'The user cannot see cover letter task versions', selenium: true do
         SnapshotService.new(paper).snapshot!(task)
         FactoryGirl.create(:snapshot,
                            major_version: 0,

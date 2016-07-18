@@ -11,6 +11,7 @@ describe DecisionSerializer, serializer_test: true do
       .to include(
         author_response: decision.author_response,
         created_at: decision.created_at,
+        draft: decision.draft?,
         id: decision.id,
         initial: decision.initial?,
         invitation_ids: decision.invitation_ids,

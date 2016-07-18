@@ -1,6 +1,7 @@
 class DecisionSerializer < ActiveModel::Serializer
   attributes :author_response,
              :created_at,
+             :draft?,
              :id,
              :initial,
              :latest?,

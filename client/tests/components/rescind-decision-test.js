@@ -21,20 +21,38 @@ moduleForComponent(
   }
 });
 
-test('is hidden if the decision is not rescindable', function(assert) {
-  let decision = FactoryGuy.make('decision', { rescindable: false });
+test('is hidden if there is no decision', function(assert) {
+  setup(this, { decision: null });
+  assert.elementFound('.rescind-decision.hidden', 'the bar is hidden');
+});
+
+test('is hidden if the decision is a draft', function(assert) {
+  let decision = FactoryGuy.make('decision', { draft: true });
   setup(this, { decision });
   assert.elementFound('.rescind-decision.hidden', 'the bar is hidden');
 });
 
-test('is visible if the decision is rescindable', function(assert) {
-  let decision = FactoryGuy.make('decision', { registered: true });
+test('is hidden if the decision is rescinded', function(assert) {
+  let decision = FactoryGuy.make('decision', { rescinded: true });
   setup(this, { decision });
-  assert.elementFound('.rescind-decision:not(.hidden)', 'the bar is visible');
+  assert.elementFound('.rescind-decision.hidden', 'the bar is hidden');
+});
+
+test('button is missing if the decision is not rescindable', function(assert) {
+  let decision = FactoryGuy.make('decision', { rescindable: false });
+  setup(this, { decision });
+  assert.elementNotFound('button.rescind-decision-button', 'the button is hidden');
+});
+
+test('button is present if the decision is rescindable', function(assert) {
+  let decision = FactoryGuy.make('decision', { completed: true, rescindable: true  });
+  setup(this, { decision });
+  assert.elementFound('button.rescind-decision-button', 'the button is present');
 });
 
 test('rescind link is disabled if not editable', function(assert) {
-  setup(this, { isEditable: false });
+  let decision = FactoryGuy.make('decision', { completed: true, rescindable : true });
+  setup(this, { decision, isEditable: false });
   assert.elementFound('.rescind-decision-button:disabled', 'the button is disabled');
 });
 
@@ -59,7 +77,6 @@ test('rescind link, when clicked, calls restless to rescind', function(assert) {
 });
 
 function setup(context, {decision, isEditable, mockRestless}) {
-  decision = decision || FactoryGuy.make('decision', { rescindable: true });
   isEditable = (isEditable === false ? false : true); // default true, please
 
   context.set('decision', decision);

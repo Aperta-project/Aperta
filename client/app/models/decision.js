@@ -3,7 +3,10 @@ import Ember from 'ember';
 
 export default DS.Model.extend({
   authorResponse: DS.attr('string'),
+  // Draft is always != competed, so we only serialize one.
+  completed: Ember.computed.not('draft'),
   createdAt: DS.attr('date'),
+  draft: DS.attr('boolean'),
   initial: DS.attr('boolean'),
   invitations: DS.hasMany('invitation', { async: false }),
   latest: DS.attr('boolean'),

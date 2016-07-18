@@ -45,7 +45,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   publishable: computed.and('submitted', 'uncompleted'),
 
   applyTemplateReplacements(str) {
-    return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+    str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+    return str.replace(/\[LAST NAME\]/g, this.get('currentUser.lastName'));
   },
 
   triggerSave: Ember.observer('latestDecision.letter', function() {

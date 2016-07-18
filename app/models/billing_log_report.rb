@@ -9,9 +9,7 @@ class BillingLogReport < ActiveRecord::Base
   end
 
   def save_and_send_to_s3!
-    tmp_file = Tempfile.new(['billing-log', '.csv'])
-    tmp_file.write(csv.string)
-    update!(csv_file: tmp_file)
+    update!(csv_file: csv)
   end
 
   def papers?
@@ -20,6 +18,23 @@ class BillingLogReport < ActiveRecord::Base
 
   def csv
     @csv ||= create_csv
+  end
+
+  def create_csv
+    path = Tempfile.new(['billing-log', '.csv'])
+    CSV.open(path, 'w') do |new_csv|
+      if papers?
+        new_csv << billing_json(papers_to_process.first).keys
+        papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
+          billing_log = BillingLog.new(paper: paper).populate_attributes
+          billing_log.save
+          new_csv << billing_json(paper).values
+        end
+      else
+        new_csv << ['No accepted papers with completed billing']
+      end
+    end
+    path
   end
 
   def papers_to_process
@@ -42,20 +57,6 @@ class BillingLogReport < ActiveRecord::Base
                       type: PlosBilling::BillingTask.sti_name })
   end
 
-  def create_csv
-    new_csv = CSV.new ""
-    if papers?
-      new_csv << billing_json(papers_to_process.first).keys
-      papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
-        billing_log = BillingLog.new(paper: paper).populate_attributes
-        billing_log.save
-        new_csv << billing_json(paper).values
-      end
-    else
-      new_csv << ['No accepted papers with completed billing']
-    end
-    new_csv
-  end
 
   def billing_json(paper)
     JSON.parse(

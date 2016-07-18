@@ -33,6 +33,7 @@ describe BillingLogReport do
 
   context '#save_and_send_to_s3!' do
     let(:report) { BillingLogReport.new }
+    let(:csv_data) { CSV.read(report.csv) }
 
     context 'has paper to export' do
       let!(:paper) { create_paper_with_completed_billing }
@@ -49,11 +50,11 @@ describe BillingLogReport do
       end
 
       it 'adds a header row to the csv' do
-        expect(report.csv.string).to include(csv_headers.join(','))
+        expect(csv_data.first).to include(*csv_headers)
       end
 
       it 'includes paper data in csv file' do
-        expect(report.csv.string).to include(
+        expect(csv_data.last).to include(
           paper.title, paper.journal.name,
           paper.creator.email, paper.manuscript_id
         )
@@ -72,8 +73,8 @@ describe BillingLogReport do
       end
 
       it 'csv has line stating no data' do
-        expect(report.csv.string).to include(
-          'No accepted papers with completed billing'
+        expect(csv_data).to include(
+          ['No accepted papers with completed billing']
         )
       end
 

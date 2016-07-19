@@ -105,6 +105,7 @@ group :development do
   gem 'overcommit'
   gem 'rubocop'
   gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :staging do

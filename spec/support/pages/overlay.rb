@@ -26,6 +26,7 @@ class CardOverlay < Page
 
   def mark_as_complete
     find('.task-not-completed').click
+    expect_task_to_be_completed
   end
 
   def completed?
@@ -39,6 +40,10 @@ class CardOverlay < Page
   # of the waiting and retries which helps us avoid sleep calls in our code.
   def expect_task_to_be_incomplete
     expect(self).to have_selector('.task-not-completed')
+  end
+
+  def expect_task_to_be_completed
+    expect(self).to have_selector('.task-is-completed')
   end
 
   def view_paper

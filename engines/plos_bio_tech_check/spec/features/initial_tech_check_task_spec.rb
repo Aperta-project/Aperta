@@ -17,10 +17,7 @@ feature 'Initial Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
-    wait_for_ajax
-    overlay.expect_author_changes_saved
     overlay.mark_as_complete
-    overlay.expect_task_to_be_completed
     overlay.dismiss
     logout
 

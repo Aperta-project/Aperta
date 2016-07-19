@@ -42,10 +42,6 @@ class CardOverlay < Page
   # Capybara would return the checkbox right away since it is on the page.
   # By expecting the state in the checkbox selector Capybara handles all
   # of the waiting and retries which helps us avoid sleep calls in our code.
-  def expect_task_to_be_incomplete
-    expect(self).to have_selector('.task-not-completed')
-  end
-
   def expect_task_to_be_completed
     expect(self).to have_selector('.task-is-completed')
   end

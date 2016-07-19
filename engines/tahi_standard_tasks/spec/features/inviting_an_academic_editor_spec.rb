@@ -44,8 +44,7 @@ feature 'Invite Academic Editor', js: true do
     dashboard.view_invitations do |invitations|
       expect(invitations.count).to eq 1
       invitations.first.accept("Accept Academic Editor Invitation")
-      wait_for_ajax
-      expect(dashboard.pending_invitations.count).to eq 0
+      expect(dashboard).to have_no_pending_invitations
     end
     dashboard.reload
 

@@ -93,11 +93,11 @@ feature "Dashboard", js: true do
       dashboard.view_invitations do |invitations|
         expect(invitations.count).to eq 1
         invitations.first.reject
-        expect(dashboard.pending_invitations.count).to eq 0
+        expect(dashboard).to have_no_pending_invitations
       end
       dashboard.reload
 
-      expect(dashboard.pending_invitations.count).to eq 0
+      expect(dashboard).to have_no_pending_invitations
     end
   end
 

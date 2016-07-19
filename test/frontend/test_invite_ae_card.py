@@ -122,6 +122,7 @@ class InviteAECardTest(CommonTest):
     elif invite_response == 'Decline':
       assert not test_for_role
       # search for reply
+      # Note: This is working but pending on result of APERTA-7259
       reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions FROM '
           'invitations WHERE invitee_id = %s AND state=\'declined\' AND invitee_role '
           '=\'Academic Editor\' AND decline_reason LIKE %s AND reviewer_suggestions LIKE %s;',

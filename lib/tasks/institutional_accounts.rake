@@ -60,6 +60,7 @@ namespace :institutional_accounts do
     { id: 'University of St. Andrews', text: 'University of St. Andrews', nav_customer_number: 'C01197' },
     { id: 'University of Stirling', text: 'University of Stirling', nav_customer_number: 'C01310' },
     { id: 'University of Stuttgart', text: 'University of Stuttgart', nav_customer_number: 'C01066' },
+    { id: 'University of Szeged', text: 'University of Szeged', nav_customer_number: 'C01767/70' },
     { id: 'University of Warwick', text: 'University of Warwick', nav_customer_number: 'C01397' },
     { id: 'University of Western Sydney', text: 'University of Western Sydney', nav_customer_number: 'C01598' },
     { id: 'University of York', text: 'University of York', nav_customer_number: 'C01575' },

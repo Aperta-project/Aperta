@@ -185,6 +185,8 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason, withdrawn_by_user|
+        withdrawal_reason || fail(ArgumentError, "withdrawal_reason must be provided")
+        withdrawn_by_user || fail(ArgumentError, "withdrawn_by_user must be provided")
         update(active: false)
         withdrawals << {
           previous_publishing_state: publishing_state,
@@ -369,23 +371,9 @@ class Paper < ActiveRecord::Base
     answer ? answer.value : ''
   end
 
-  class Withdrawal
-    def initialize(attrs)
-      @attrs = attrs
-    end
-
-    def user
-      User.find @attrs['withdrawn_by_user_id']
-    end
-
-    def reason
-      @attrs['reason']
-    end
-  end
-
   def latest_withdrawal
     return unless withdrawals.present?
-    Withdrawal.new(withdrawals.last)
+    Withdrawal.new(withdrawals.last.with_indifferent_access)
   end
 
   def resubmitted?

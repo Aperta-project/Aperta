@@ -33,6 +33,10 @@ class CardOverlay < Page
     has_css?('.task-is-completed')
   end
 
+  def uncompleted?
+    has_css?('.task-not-completed')
+  end
+
   # This method takes advantage of Capybara's default wait time to ensure
   # that the checkbox is in the state we want. Without expecting the state
   # Capybara would return the checkbox right away since it is on the page.

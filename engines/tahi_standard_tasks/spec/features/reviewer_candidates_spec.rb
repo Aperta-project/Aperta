@@ -27,7 +27,6 @@ feature "User adding reviewer candidates", js: true do
 
     # Bringing up the new reviewer candidate form
     click_button "New Reviewer Candidate"
-    wait_for_ajax
     expect(page).to have_selector(".reviewer-form")
 
     # Clicking cancel hides the new reviewer form
@@ -37,7 +36,7 @@ feature "User adding reviewer candidates", js: true do
     expect(page).to have_no_selector(".reviewer-form")
 
     click_button "New Reviewer Candidate"
-    wait_for_ajax
+    expect(page).to have_selector(".reviewer-form")
 
     # Add a new reviewer
     within ".reviewer-form" do

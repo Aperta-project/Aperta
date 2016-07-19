@@ -223,11 +223,10 @@ describe UserMailer, redis: true do
     let!(:withdrawn_by_user) { FactoryGirl.create(:user) }
 
     before do
-      paper.update(
-        withdrawals: [{
-          reason: 'Needs more work',
-          withdrawn_by_user_id: withdrawn_by_user.id
-        }]
+      paper.withdrawals.create!(
+        reason: 'Needs more work',
+        withdrawn_by_user_id: withdrawn_by_user.id,
+        previous_publishing_state: 'unsubmitted'
       )
     end
 

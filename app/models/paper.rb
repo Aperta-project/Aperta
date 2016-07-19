@@ -46,6 +46,7 @@ class Paper < ActiveRecord::Base
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
+  has_many :withdrawals, dependent: :destroy
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -57,8 +58,6 @@ class Paper < ActiveRecord::Base
            source_type: "GroupAuthor",
            source: :author
   has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
-
-  serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
   validates :journal, presence: true
@@ -188,12 +187,12 @@ class Paper < ActiveRecord::Base
         withdrawal_reason || fail(ArgumentError, "withdrawal_reason must be provided")
         withdrawn_by_user || fail(ArgumentError, "withdrawn_by_user must be provided")
         update(active: false)
-        withdrawals << {
+        withdrawals.create!(
           previous_publishing_state: publishing_state,
           previous_editable: editable,
           reason: withdrawal_reason,
           withdrawn_by_user_id: withdrawn_by_user.id
-        }
+        )
       end
     end
 
@@ -372,8 +371,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_withdrawal
-    return unless withdrawals.present?
-    Withdrawal.new(withdrawals.last.with_indifferent_access)
+    withdrawals.most_recent
   end
 
   def resubmitted?

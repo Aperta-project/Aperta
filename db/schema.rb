@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719145127) do
+ActiveRecord::Schema.define(version: 20160719220517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -430,7 +430,6 @@ ActiveRecord::Schema.define(version: 20160719145127) do
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.jsonb    "withdrawals",              default: [],                 array: true
     t.boolean  "active",                   default: true
     t.boolean  "gradual_engagement",       default: false
     t.datetime "first_submitted_at"
@@ -752,6 +751,18 @@ ActiveRecord::Schema.define(version: 20160719145127) do
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
+
+  create_table "withdrawals", force: :cascade do |t|
+    t.string   "reason"
+    t.integer  "paper_id",                                 null: false
+    t.integer  "withdrawn_by_user_id"
+    t.string   "previous_publishing_state",                null: false
+    t.boolean  "previous_editable",         default: true, null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
+  add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "decisions", "papers"

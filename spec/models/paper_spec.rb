@@ -556,7 +556,7 @@ describe Paper do
       it 'returns the most recent withdrawal' do
         withdrawal = paper.latest_withdrawal
         expect(withdrawal).to be_kind_of(Withdrawal)
-        expect(withdrawal.user).to eq(sally)
+        expect(withdrawal.withdrawn_by_user).to eq(sally)
         expect(withdrawal.reason).to eq('reason 2')
       end
     end

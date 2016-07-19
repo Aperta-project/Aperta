@@ -104,6 +104,7 @@ group :development do
   gem 'hipchat'
   gem 'overcommit'
   gem 'rubocop'
+  gem 'spring'
 end
 
 group :staging do

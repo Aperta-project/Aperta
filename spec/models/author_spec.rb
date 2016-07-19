@@ -107,7 +107,15 @@ describe Author do
     end
   end
 
-  describe ".task-completed?" do
+  describe "#full_name" do
+    it "returns the author's first + last name" do
+      author.first_name = "Astronaut"
+      author.last_name = "Dog"
+      expect(author.full_name).to eq "Astronaut Dog"
+    end
+  end
+
+  describe "#task-completed?" do
     let(:authors_task) { FactoryGirl.create(:authors_task) }
     let(:author) { Author.create(paper: authors_task.paper) }
 

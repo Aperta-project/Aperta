@@ -88,7 +88,8 @@ class InviteAECard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert u'{0}, {1}'.format(creator_ln.decode('utf-8'), creator_fn.decode('utf-8')) in invite_text, invite_text
+    assert '{0}, {1}'.format(creator_ln.encode('utf-8'), creator_fn.encode('utf-8')) in \
+        invite_text.encode('utf-8'), invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
       # strip html, and remove whitespace
@@ -118,7 +119,7 @@ class InviteAECard(BaseCard):
         'Invited not found in {1}'.format([x.text for x in invitees])
     invitee.find_element(*self._invitee_revoke)
 
-  def validate_ae_response(self, ae, response):
+  def validate_ae_response(self, ae, response, reason='N/A', suggestions='N/A'):
     """
     This method invites the Academic Editor (AE) that is passed as parameter, verifying
       the composed email. It then checks the table of invited AE.
@@ -134,10 +135,18 @@ class InviteAECard(BaseCard):
     assert ae['name'] in pagefullname.text
     invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
+    assert response in ['Accept', 'Decline'], response
     if response == 'Accept':
       assert 'Accepted' in status.text, status.text
-    else:
-      assert 'Declined' in status.text, status.text
+    elif response == 'Decline':
+      assert 'Decline' in status.text, status.text
+      reason_text = self._get(self._reason).text
+      reason_text = self.normalize_spaces(reason_text)
+      assert reason in reason_text, '{0} not in {1}'.format(reason, reason_text)
+      suggestion_text = self._get(self._suggestions).text
+      suggestion_text = self.normalize_spaces(suggestion_text)
+      assert suggestions in suggestion_text, '{0} not in {1}'.format(reason,
+        suggestion_text)
 
   def check_style(self, user, paper_id):
     """

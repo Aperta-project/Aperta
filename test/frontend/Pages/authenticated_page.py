@@ -136,7 +136,7 @@ class AuthenticatedPage(PlosPage):
     self._final_tech_check_card = None
     self._initial_decision_card = None
     self._initial_tech_check_card = None
-    self._invite_academic_editors_card = None
+    self._invite_ae_card = None
     self._invite_reviewers_card = None
     self._production_metadata_card = None
     self._register_decision_card = None
@@ -494,7 +494,7 @@ class AuthenticatedPage(PlosPage):
     elif cardname.lower() == 'initial_decision':
       card_title = self._get(self._initial_decision_card)
     elif cardname.lower() == 'invite_academic_editor':
-      card_title = self._get(self._invite_academic_editors_card)
+      card_title = self._get(self._invite_ae_card)
     elif cardname.lower() == 'invite_reviewers':
       card_title = self._get(self._invite_reviewers_card)
     elif cardname.lower() == 'production_metadata':

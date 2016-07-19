@@ -167,7 +167,7 @@ class DashboardPage(AuthenticatedPage):
     :return: A tuple with the first element a string with the the decision and the second
     element there is a tuple with two elements and ID for reasons an ID for suggestions
     """
-    response = random.choice(['Accept', 'Reject'])
+    response = random.choice(['Accept', 'Decline'])
     logging.info(response)
     invite_listings = self._gets(self._view_invites_invite_listing)
     reasons = ''
@@ -177,21 +177,21 @@ class DashboardPage(AuthenticatedPage):
         if response == 'Accept':
           listing.find_element(*self._invite_yes_btn).click()
           time.sleep(2)
-          return response, (reasons, suggestions)
+          return 'Accept', (reasons, suggestions)
         else:
           listing.find_element(*self._invite_no_btn).click()
           time.sleep(1)
           self.validate_reviewer_invitation_response_styles(title)
           # Enter reason and suggestions
-          reasons = str(uuid.uuid4())
-          suggestions = str(uuid.uuid4())
-          self._get(self._rim_reasons).send_keys(reasons + generate_paragraph()[2])
-          self._get(self._rim_suggestions).send_keys(suggestions + generate_paragraph()[2])
+          reasons = generate_paragraph()[2]
+          suggestions = 'Name Lastname, email@domain.com, INSTITUTE'
+          self._get(self._rim_reasons).send_keys(reasons)
+          self._get(self._rim_suggestions).send_keys(suggestions)
           time.sleep(1)
           self._get(self._rim_send_fb_btn).click()
           # Time to get sure information is sent
           time.sleep(2)
-          return response, (reasons, suggestions)
+          return 'Decline', (reasons, suggestions)
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """

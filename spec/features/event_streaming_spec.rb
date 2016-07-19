@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
-
   context "as an admin" do
     let!(:admin) { FactoryGirl.create :user, :site_admin }
     let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
@@ -32,12 +31,10 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           old_role: "admin",
           paper: submission_phase.paper
         )
-        wait_for_ajax
         expect(page).to have_content "Wicked Awesome Card"
 
         # destroy
         deleted_task = submission_phase.tasks.first.destroy!
-        wait_for_ajax
         expect(page).to have_no_content deleted_task.title
       end
     end

@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Version] - {Date}
 ### Added
+- Cover Letter tasks are now versioned
 ### Changed
 ### Deprecated
 ### Removed

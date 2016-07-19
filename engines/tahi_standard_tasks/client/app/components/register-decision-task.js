@@ -5,6 +5,10 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 const { computed } = Ember;
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
+  init: function(){
+    this._super(...arguments);
+    this.get('task.paper.decisions').reload();
+  },
   restless: Ember.inject.service('restless'),
   paperState: computed.alias('task.paper.publishingState'),
   submitted: computed.equal('paperState', 'submitted'), 

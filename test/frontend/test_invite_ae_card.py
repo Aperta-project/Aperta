@@ -128,7 +128,7 @@ class InviteAECardTest(CommonTest):
           (ae_user_id, response_data[0]+'%', response_data[1]+'%'))[0]
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
-    workflow_page.logout()
+    dashboard_page.logout()
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
     self.cas_login(email=editorial_user['email'])
@@ -139,7 +139,7 @@ class InviteAECardTest(CommonTest):
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
     time.sleep(10)
-    workflow_page.click_invite_ae_card()
+    workflow_page.click_card('invite_academic_editor')
     time.sleep(3)
     invite_ae = InviteAECard(self.getDriver())
     invite_ae.validate_ae_response(academic_editor_login, invite_response,

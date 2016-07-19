@@ -41,6 +41,8 @@ class InviteAECard(BaseCard):
     self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
+    self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
+    self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestions')
 
   # POM Actions
   def invite_ae(self, user):

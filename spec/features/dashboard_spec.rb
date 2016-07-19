@@ -38,9 +38,9 @@ feature "Dashboard", js: true do
         expect(page).to have_content("Active Manuscripts (2)")
         expect(page).to have_content("Inactive Manuscript (1)")
         dashboard.toggle_active_papers_heading
-        expect(page).to have_no_content("Active Paper (1)")
+        expect(page).to_not have_content("Active Paper (1)")
         dashboard.toggle_inactive_papers_heading
-        expect(page).to have_no_content("Inactive Paper (1)")
+        expect(page).to_not have_content("Inactive Paper (1)")
         expect(dashboard.manuscript_list_visible?).to eq false
       end
     end

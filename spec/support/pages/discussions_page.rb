@@ -34,7 +34,7 @@ class DiscussionsPage < Page
   end
 
   def expect_no_create_button
-    expect(page).to have_no_css(create_topic_button)
+    expect(page).not_to have_css(create_topic_button)
   end
 
   def expect_no_at_mention_suggestions
@@ -93,13 +93,13 @@ class DiscussionsPage < Page
   end
 
   def expect_view_only_participants
-    expect(page).to have_no_css(add_participant_button)
+    expect(page).not_to have_css(add_participant_button)
     expect(page).to have_css('.participant-selector')
   end
 
   def expect_view_no_discussions
     expect(page).to have_css('.discussions-index-header')
-    expect(page).to have_no_css('.discussions-index-topic')
+    expect(page).not_to have_css('.discussions-index-topic')
   end
 
   private

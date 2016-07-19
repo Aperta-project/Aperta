@@ -44,7 +44,7 @@ feature 'Adhoc cards', js: true do
       overlay.upload_attachment('yeti.jpg')
       find('.file-link', text: 'yeti.jpg')
       find('.delete-attachment').click
-      expect(page).to have_no_css('.attachment-item')
+      expect(page).not_to have_css('.attachment-item')
     end
   end
 

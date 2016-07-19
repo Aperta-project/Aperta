@@ -33,7 +33,7 @@ feature "User adding reviewer candidates", js: true do
     within ".reviewer-form" do
       find("a", text: "cancel").click
     end
-    expect(page).to have_no_selector(".reviewer-form")
+    expect(page).to_not have_selector(".reviewer-form")
 
     click_button "New Reviewer Candidate"
     expect(page).to have_selector(".reviewer-form")
@@ -63,7 +63,7 @@ feature "User adding reviewer candidates", js: true do
     within ".reviewer-form" do
       find(".reviewer-form a.cancel").click
     end
-    expect(page).to have_no_selector(".reviewer-form")
+    expect(page).to_not have_selector(".reviewer-form")
 
     # We can edit the reviewer
     find(".qa-edit-reviewer-form").click

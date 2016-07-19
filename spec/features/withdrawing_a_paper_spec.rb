@@ -43,7 +43,7 @@ feature 'Withdrawing a paper', js: true do
     visit "/papers/#{paper.id}"
 
     page.find('.withdrawal-banner .reactivate').click
-    expect(page).to have_no_css('.withdrawal-banner')
+    expect(page).to_not have_css('.withdrawal-banner')
 
     expect(paper.reload.withdrawn?).to be(false)
 

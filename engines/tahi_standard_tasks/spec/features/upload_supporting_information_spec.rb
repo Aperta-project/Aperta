@@ -62,6 +62,6 @@ feature "Upload Supporting Information", js: true do
 
     # delete file
     task.delete_file
-    expect(task).to_not have_selector('.si-file')
+    expect(task).to have_no_selector('.si-file')
   end
 end

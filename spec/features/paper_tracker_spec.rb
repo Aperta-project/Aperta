@@ -17,8 +17,8 @@ feature 'Paper Tracker', js: true do
     visit '/paper_tracker'
     expect(find(search_controls)).to have_content('Page 1 of 1')
     within(search_controls) do
-      expect(page).to_not have_css('.btn.prev')
-      expect(page).to_not have_css('.btn.next')
+      expect(page).to have_no_css('.btn.prev')
+      expect(page).to have_no_css('.btn.next')
     end
   end
 
@@ -29,7 +29,7 @@ feature 'Paper Tracker', js: true do
     visit '/paper_tracker'
     expect(find(search_controls)).to have_content('Page 1 of 2')
     within(search_controls) do
-      expect(page).to_not have_css('.btn.prev')
+      expect(page).to have_no_css('.btn.prev')
       expect(page).to have_css('.btn.next')
     end
   end

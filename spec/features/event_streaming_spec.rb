@@ -38,7 +38,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         # destroy
         deleted_task = submission_phase.tasks.first.destroy!
         wait_for_ajax
-        expect(page).to_not have_content deleted_task.title
+        expect(page).to have_no_content deleted_task.title
       end
     end
 
@@ -55,7 +55,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         # removed as a collaborator
         collaborator_paper.remove_collaboration(admin)
         collaborator_paper.paper_roles.collaborators.where(user: admin).destroy_all
-        expect(page).to_not have_text(collaborator_paper.title)
+        expect(page).to have_no_text(collaborator_paper.title)
 
         # added as a task participant
         participant_paper.assignments.create!(
@@ -71,7 +71,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           role: participant_paper.journal.task_participant_role
         ).destroy
         participant_paper.paper_roles.participants.find_by(user: admin).destroy
-        expect(page).to_not have_text(participant_paper.title)
+        expect(page).to have_no_text(participant_paper.title)
       end
     end
   end

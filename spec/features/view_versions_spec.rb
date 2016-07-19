@@ -116,7 +116,7 @@ feature 'Viewing manuscript control bar', js: true do
     end
 
     scenario 'can not view the Go to Workflow link' do
-      expect(page).to_not have_css('#go-to-workflow')
+      expect(page).to have_no_css('#go-to-workflow')
     end
   end
 end

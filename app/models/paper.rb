@@ -184,11 +184,14 @@ class Paper < ActiveRecord::Base
     event(:withdraw) do
       transitions to: :withdrawn,
                   after: :prevent_edits!
-      before do |withdrawal_reason|
+      before do |withdrawal_reason, withdrawn_by_user|
         update(active: false)
-        withdrawals << { previous_publishing_state: publishing_state,
-                         previous_editable: editable,
-                         reason: withdrawal_reason }
+        withdrawals << {
+          previous_publishing_state: publishing_state,
+          previous_editable: editable,
+          reason: withdrawal_reason,
+          withdrawn_by_user_id: withdrawn_by_user.id
+        }
       end
     end
 
@@ -262,13 +265,18 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # Returns the corresponding authors. When there are no authors
+  # marked as corresponding then it defaults to the creator.
+  def corresponding_authors
+    corresponding_authors = authors.select { |au| au.corresponding? }
+    corresponding_authors << creator if corresponding_authors.empty?
+    corresponding_authors.compact
+  end
+
   # Returns the corresponding author emails. When there are no authors
   # marked as corresponding then it defaults to the creator's email address.
   def corresponding_author_emails
-    corresponding_authors = authors.select { |au| au.corresponding? }
-    emails = corresponding_authors.map { |author| author.email }.compact
-    emails = [creator.try(:email)] if emails.empty?
-    emails.compact
+    corresponding_authors.map(&:email)
   end
 
   # Public: Find `Role`s for the given user on this paper.
@@ -352,13 +360,32 @@ class Paper < ActiveRecord::Base
     users_with_role(journal.handling_editor_role)
   end
 
+  def reviewers
+    users_with_role(journal.reviewer_role)
+  end
+
   def short_title
     answer = answer_for('publishing_related_questions--short_title')
     answer ? answer.value : ''
   end
 
-  def latest_withdrawal_reason
-    withdrawals.last[:reason] if withdrawals.present?
+  class Withdrawal
+    def initialize(attrs)
+      @attrs = attrs
+    end
+
+    def user
+      User.find @attrs['withdrawn_by_user_id']
+    end
+
+    def reason
+      @attrs['reason']
+    end
+  end
+
+  def latest_withdrawal
+    return unless withdrawals.present?
+    Withdrawal.new(withdrawals.last)
   end
 
   def resubmitted?
@@ -444,7 +471,7 @@ class Paper < ActiveRecord::Base
     group_participants_by_role(participations)
   end
 
-  %w(admins reviewers).each do |relation|
+  %w(admins).each do |relation|
     ###
     # :method: <old_roles>
     # Public: Return user records by old_role in the paper.

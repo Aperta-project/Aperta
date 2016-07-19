@@ -120,6 +120,22 @@ class UserMailer < ActionMailer::Base
       subject: "Thank you for submitting to #{@journal.name}")
   end
 
+  def notify_staff_of_paper_withdrawal(paper_id)
+    @paper = Paper.find paper_id
+    @journal = @paper.journal
+    @withdrawal = @paper.latest_withdrawal
+    @authors = @paper.corresponding_authors
+
+    if @journal.staff_email.blank?
+      fail "Journal staff email is blank. Cannot sent notification."
+    end
+
+    mail(
+      to: @journal.staff_email,
+      subject: "#{@paper.doi} - Manuscript Withdrawn"
+    )
+  end
+
   def notify_mention_in_discussion(user_id, topic_id, reply_id = nil)
     @user = User.find(user_id)
     @reply = DiscussionReply.find(reply_id) if reply_id

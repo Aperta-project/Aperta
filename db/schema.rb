@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160714160516) do
+ActiveRecord::Schema.define(version: 20160719145127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -319,6 +319,7 @@ ActiveRecord::Schema.define(version: 20160714160516) do
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
+    t.string   "staff_email"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|

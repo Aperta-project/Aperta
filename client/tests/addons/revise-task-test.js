@@ -19,16 +19,14 @@ moduleForComponent('revise-task', 'Integration | Component | revise task', {
     this.task = Ember.Object.create({
       isSubmissionTask: true,
       paper: {
-        decisions: [{
+        latestRegisteredDecision: {
           majorVersion: 0,
           minorVersion: 0,
           registeredAt: 2,
           save() {
             return Ember.RSVP.resolve();
           }
-        }, {
-          registeredAt: 1
-        }]
+        }
       },
       body: ['hi'],
       save: function() {
@@ -51,11 +49,14 @@ test('validations work', function(assert) {
   `);
 
   this.$('#revise-task-save-button').click();
-  assert.equal(0, this.$('.error-message--hidden').length, 'Error message visible');
+  assert.equal(this.$('.error-message:not(.error-message--hidden)').length, 1,
+    'There should be an error message when there is no author response');
 
+  // set the author response
   this.$('#revise-task-edit-button').click();
-  $('.revise-overlay-response-field').html('beep').trigger('keyup')
+  $('.revise-overlay-response-field').html('beep').trigger('keyup');
   this.$('#revise-task-save-button').click();
 
-  assert.equal(1, this.$('.error-message--hidden').length, 'Error message not visible');
+  assert.equal(this.$('.error-message:not(.error-message--hidden)').length, 0,
+    'There should not be an error message when there is an author response');
 });

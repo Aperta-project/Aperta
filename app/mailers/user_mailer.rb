@@ -5,6 +5,9 @@ class UserMailer < ActionMailer::Base
   default from: Rails.configuration.from_email
   layout "mailer"
 
+  class Error < ::StandardError ; end
+  class DeliveryError < Error ; end
+
   after_action :prevent_delivery_to_invalid_recipient
 
   def add_collaborator(invitor_id, invitee_id, paper_id)
@@ -127,7 +130,10 @@ class UserMailer < ActionMailer::Base
     @authors = @paper.corresponding_authors
 
     if @journal.staff_email.blank?
-      fail "Journal staff email is blank. Cannot sent notification."
+      fail DeliveryError, <<-ERROR.strip_heredoc
+        Journal (id=#{@journal.id} name=#{@journal.name}) has no staff email configured.
+        The notify_staff_of_paper_withdrawal email cannot be sent.
+      ERROR
     end
 
     mail(

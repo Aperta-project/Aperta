@@ -26,7 +26,8 @@
 .reviewer-task-item-view {
   @include align-items(center);
   background: $tahi-grey-xlight;
-
+  /* Overriding overflow-y: scroll to remove scrollbars */
+  overflow: inherit;
   .flex-group {
     margin-left: 1rem;
   }
@@ -54,6 +55,11 @@
       color: #444;
     }
   }
+}
+
+ /* Overriding overflow-y: scroll to remove scrollbars */
+.reviewer-task-item-view .flex-group {
+  overflow-y: inherit;
 }
 
 .reviewer-overlay-item-delete {

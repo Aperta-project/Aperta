@@ -9,6 +9,13 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     this._super(...arguments);
     this.get('task.paper.decisions').reload();
   },
+  decidedDecision: null,
+  formattedDecidedDecision: computed('decidedDecision', function() {
+    let words = this.get('decidedDecision').split(/_/g);
+    return words.map(function(word) {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+  }),
   restless: Ember.inject.service('restless'),
   paperState: computed.alias('task.paper.publishingState'),
   submitted: computed.equal('paperState', 'submitted'), 
@@ -50,6 +57,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       const decidePath = `/api/register_decision/${id}/decide`;
 
       this.get('restless').post(decidePath).then(() => {
+        this.set('decidedDecision', this.get('latestDecision.verdict'));
         this.set('task.completed', true);
         this.get('task').save().then(() => {
           return this.get('latestDecision').save().then(() => {

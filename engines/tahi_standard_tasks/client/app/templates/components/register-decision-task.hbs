@@ -7,9 +7,9 @@
   {{error-message message=validationErrors.errors}}
 
   {{#if task.completed}}
-    {{#if finalDecision}}
+    {{#if decidedDecision}}
       <div class="alert alert-info">
-        A final decision of {{latestDecision.verdict}} has been registered.
+        A {{if finalDecision 'final'}} decision of {{formattedDecidedDecision}} has been registered.
       </div>
     {{/if}}
   {{else}}

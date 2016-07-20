@@ -23,3 +23,4 @@ export const namedComputedProperty = function(snapshotName, propertyName) {
     return property.value;
   });
 };
+

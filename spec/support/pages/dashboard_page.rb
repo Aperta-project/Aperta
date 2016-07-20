@@ -129,6 +129,14 @@ class DashboardPage < Page
     all '.pending-invitation'
   end
 
+  def has_pending_invitations?(count)
+    self.has_css? '.pending-invitation', count: count
+  end
+
+  def has_no_pending_invitations?
+    self.has_no_css? '.pending-invitation'
+  end
+
   def press_view_invitations_button
     click_button 'View invitations'
   end

@@ -4,19 +4,24 @@ class DiscussionsPage < Page
     wait_for_ajax
   end
 
-  def fill_in_topic
-    find('input.discussion-topic-title-field').set('Great Title')
-    find('.discussion-topic-comment-field').set('first!!')
+  def fill_in_topic(title: 'Great Title', comment: 'first!!')
+    find('input.discussion-topic-title-field').set(title)
+    find('.discussion-topic-comment-field').set(comment)
   end
 
-  def create_topic
+  def confirm_create_topic
     find('.discussions-show-content .button-primary').click
-    wait_for_ajax
+  end
+
+  def create_topic(as:, title: 'Great', comment: 'awesome')
+    new_topic
+    fill_in_topic(title: title, comment: comment)
+    confirm_create_topic
+    expect_topic_created_succesfully(as)
   end
 
   def click_topic
     find('a.discussions-index-topic').click
-    wait_for_ajax
   end
 
   def expect_topic_created_succesfully(user)

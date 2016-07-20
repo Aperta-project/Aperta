@@ -22,10 +22,7 @@ feature "Discussions", js: true, selenium: true do
 
       find('#nav-discussions').click
 
-      discussion_page.new_topic
-      discussion_page.fill_in_topic
-      discussion_page.create_topic
-      discussion_page.expect_topic_created_succesfully(admin)
+      discussion_page.create_topic(as: admin)
       discussion_page.expect_can_add_participant
       discussion_page.add_reply_mentioning_user(mentioned_user, fragment: 'char')
       discussion_page.expect_reply_count(2)
@@ -42,9 +39,7 @@ feature "Discussions", js: true, selenium: true do
     scenario 'can view paper, no discussions load' do
       login_as(user, scope: :user)
       visit "/papers/#{paper.id}"
-      wait_for_ajax
       find('#nav-discussions').click
-      wait_for_ajax
       discussion_page.expect_no_create_button
       discussion_page.expect_view_no_discussions
     end
@@ -66,7 +61,6 @@ feature "Discussions", js: true, selenium: true do
 
       discussion_page.expect_no_create_button
       discussion_page.click_topic
-      wait_for_ajax
 
       discussion_page.expect_view_topic
       discussion_page.expect_view_only_participants

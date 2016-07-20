@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Version] - {Date}
 ### Added
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.
+- Abstract included in APEX export.
 ### Changed
 ### Deprecated
 ### Removed

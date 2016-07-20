@@ -45,11 +45,48 @@
     {{/each}}
   </div>
 
+<div id='viewer'></div>
+<script type='text/javascript'>
+// when the DOM loads
+$(function() {
+    function loadMethylTransferase() {
+        // asynchronously load the PDB file for the dengue methyl transferase
+        // from the server and display it in the viewer.
+        // https://1132a47a-3fd7-4679-9f95-1d14c2ceaab0.s3-us-west-1.amazonaws.com/uploads/paper/3/figure/attachment/14/1r6a.pdb?X-Amz-Expires=600&X-Amz-Date=20160506T212129Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIRVIGHMRD2Y2WZNQ/20160506/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=ff739509fb937bae018d7ce58123359dd8504abb6f819327fe103c07653fcfe7
+       // 1r6a.pdb
+        pv.io.fetchPdb('1r6a.pdb', function (structure) {
+            // display the protein as cartoon, coloring the secondary structure
+            // elements in a rainbow gradient.
+            viewer.cartoon('protein', structure, {color: color.ssSuccession()});
+            // there are two ligands in the structure, the co-factor S-adenosyl
+            // homocysteine and the inhibitor ribavirin-5' triphosphate. They
+            //have
+            // the three-letter codes SAH and RVP, respectively. Let's display
+            //them
+            // with balls and sticks.
+            var ligands = structure.select({rnames: ['SAH', 'RVP']});
+            viewer.ballsAndSticks('ligands', ligands);
+            viewer.centerOn(structure);
+        });
+    }
+    //pv.pathPDBFolder(folder='/resource');
+    // override the default options with something less restrictive.
+    var options = {
+      width: 600,
+      height: 600,
+      antialias: true,
+      quality : 'medium'
+    };
+    // insert the viewer under the Dom element with id 'gl'.
+    var viewer = pv.Viewer($('#viewer').get(0), options);
+    loadMethylTransferase();
+});
+</script>
 
   <span class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"
-                    accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                    accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps, .pdb"
                     url=figureUploadUrl
                     filePrefix="paper/figures"
                     start="uploadStarted"

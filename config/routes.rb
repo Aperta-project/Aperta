@@ -29,7 +29,7 @@ Tahi::Application.routes.draw do
     get 'users/sign_out' => 'devise/sessions#destroy'
   end
 
-  get '/test_csv', to: 'attachments#test_csv'
+  get '/test_csv', to: 'adhoc_attachments#test_csv'
 
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'

@@ -1,27 +1,31 @@
+# Generic wrapper for Net::FTP
 class FtpUploaderService
   require 'net/ftp'
+  require 'uri'
   class FtpTransferError < StandardError; end;
   TRANSFER_COMPLETE = '226'
 
-  def initialize(host: ENV['FTP_HOST'], passive_mode: true,
-        user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'],
-        port: ENV['FTP_PORT'], file_io: nil, final_filename: nil,
-        directory: ENV['FTP_DIR'])
-    @host = host
-    @passive_mode = passive_mode
-    @user = user
-    @password = password
-    @port = port || 21
+  def initialize(
+    file_io: nil,
+    final_filename: nil,
+    passive_mode: true,
+    url: TahiEnv.apex_ftp_url
+  )
+
+    ftp_url = URI.parse(url)
+    @directory = ftp_url.path || 'packages'
     @file_io = file_io
     @final_filename = final_filename
-    @directory = directory || 'packages'
+    @host = ftp_url.host
+    @passive_mode = passive_mode
+    @password = ftp_url.password
+    @port = ftp_url.port || 21
+    @user = ftp_url.user
   end
 
   def upload
     fail FtpTransferError, 'file_io is required' if @file_io.blank?
-    if @final_filename.blank?
-      fail FtpTransferError, 'final_filename is required'
-    end
+    fail FtpTransferError, 'final_filename is required' if @final_filename.blank?
 
     begin
       @ftp = Net::FTP.new

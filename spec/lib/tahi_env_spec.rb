@@ -21,11 +21,7 @@ describe TahiEnv do
       PUSHER_SSL_VERIFY: 'true',
       FROM_EMAIL: 'no-reply@tahi-project.org',
       FTP_ENABLED: 'false',
-      FTP_HOST: 'ftp://foo.bar',
-      FTP_USER: 'the-oracle',
-      FTP_PASSWORD: 'tiny-green-characters',
-      FTP_PORT: '21',
-      FTP_DIR: 'where/the/wild/things/are',
+      FTP_URL: 'ftp://the-oracle:tiny-green-characters@foo.bar:21/where/the/wild/things/are',
       IHAT_URL: 'http://ihat.tahi-project.com',
       NED_CAS_APP_ID: 'ned123',
       NED_CAS_APP_PASSWORD: 'password',
@@ -67,6 +63,10 @@ describe TahiEnv do
   include_examples 'optional env var', var: 'PUSHER_SOCKET_URL'
   include_examples 'optional env var', var: 'REPORTING_EMAIL'
 
+  # Apex FTP
+  include_examples 'required boolean env var', var: 'APEX_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'APEX_FTP_URL', dependent_key: 'APEX_FTP_ENABLED'
+
   # Amazon S3
   include_examples 'required env var', var: 'S3_URL'
   include_examples 'required env var', var: 'S3_BUCKET'
@@ -81,11 +81,7 @@ describe TahiEnv do
 
   # Billing FTP
   include_examples 'required boolean env var', var: 'BILLING_FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'BILLING_FTP_DIR', dependent_key: 'BILLING_FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'BILLING_FTP_HOST', dependent_key: 'BILLING_FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'BILLING_FTP_PASSWORD', dependent_key: 'BILLING_FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'BILLING_FTP_PORT', dependent_key: 'BILLING_FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'BILLING_FTP_USER', dependent_key: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_URL', dependent_key: 'BILLING_FTP_ENABLED'
 
   # Bugsnag
   include_examples 'optional env var', var: 'BUGSNAG_API_KEY'
@@ -110,13 +106,6 @@ describe TahiEnv do
   include_examples 'required env var', var: 'EVENT_STREAM_WS_HOST'
   include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
 
-  # FTP
-  include_examples 'required boolean env var', var: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_DIR', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_HOST', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_PASSWORD', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_PORT', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_USER', dependent_key: 'FTP_ENABLED'
 
   # Heroku
   include_examples 'optional env var', var: 'HEROKU_APP_NAME'

@@ -720,16 +720,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Returns the DB paper ID from URL
     """
-    time.sleep(1)
+    time.sleep(5)
     paper_url = self.get_current_url()
     logging.info(paper_url)
     # Need to cover the first view case stripping the trailing garbage
     try:
       paper_id = int(paper_url.split('papers/')[1].split('?')[0])
     except IndexError:
-      time.sleep(5)
-      paper_id = int(paper_url.split('papers/')[1].split('?')[0])
-
+      raise ValueError('URL not in expected state: {0}'.format(paper_url))
     logging.info('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 

@@ -29,6 +29,7 @@ Author tasks:
 - [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
 - [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
 - [ ] If I created a data-migration task, I added copy-pastable instructions to run it on heroku to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
+- [ ] If I modified any environment variables, I made a pull request to change the files on the [molten repo](https://github.com/PLOS/molten/tree/dev/pillar/aperta)
 - [ ] If I made any UI changes, I've let QA know. 
 
 Reviewer tasks:

@@ -3,14 +3,11 @@ class TechCheckOverlay < CardOverlay
     click_send_changes_button
     fill_in 'author-changes-letter', with: 'First round author changes'
     click_send_changes_button
+    expect_author_changes_saved
   end
 
   def expect_author_changes_saved
     expect(page).to have_content('Author Changes Letter has been Saved')
-  end
-
-  def expect_task_to_be_completed
-    expect(page).to have_css('button.task-is-completed')
   end
 
   def display_letter

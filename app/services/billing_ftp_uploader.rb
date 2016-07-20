@@ -30,6 +30,7 @@ class BillingFTPUploader < FtpUploaderService
       "#{@billing_log_report.papers_to_process.count} papers with the"\
       "following IDs were not sent to billing: #{paper_ids}"
     Bugsnag.notify(transfer_error)
+    exit!
   end
 
   def paper_ids

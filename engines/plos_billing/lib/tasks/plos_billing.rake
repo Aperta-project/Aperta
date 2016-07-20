@@ -45,6 +45,7 @@ namespace :plos_billing do
     date = Time.zone.now.utc.days_ago(1).beginning_of_day
     report = BillingLogReport.create_report(from_date: date)
 
+    report.print unless Rails.env.test?
     report.save_and_send_to_s3!
     BillingFTPUploader.new(report).upload
   end

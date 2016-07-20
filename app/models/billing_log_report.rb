@@ -20,6 +20,17 @@ class BillingLogReport < ActiveRecord::Base
     @csv ||= create_csv
   end
 
+  def print
+    puts 'Outputting billing log file'
+    puts '**************'
+    File.open(csv, 'r') do |f|
+      while line = f.gets
+        puts line
+      end
+    end
+    puts '**************'
+  end
+
   def create_csv
     path = Tempfile.new(['billing-log', '.csv'])
     CSV.open(path, 'w') do |new_csv|
@@ -56,7 +67,6 @@ class BillingLogReport < ActiveRecord::Base
       .where(tasks: { completed: true,
                       type: PlosBilling::BillingTask.sti_name })
   end
-
 
   def billing_json(paper)
     JSON.parse(

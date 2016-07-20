@@ -53,10 +53,12 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
         this.set('task.completed', true);
         this.get('task').save().then(() => {
           return this.get('latestDecision').save().then(() => {
-            this.get('task.paper.decisions').reload();
-            this.get('task.paper.tasks').reload();
-            this.set('isSavingData', false);
-            this.clearAllValidationErrors();
+            const tasksPromise = this.get('task.paper.tasks').reload();
+            const decisionsPromise = this.get('task.paper.decisions').reload();
+            return Ember.RSVP.all([tasksPromise, decisionsPromise]).then(() => {
+              this.set('isSavingData', false);
+              this.clearAllValidationErrors();
+            });
           });
         });
       }, (response) => {

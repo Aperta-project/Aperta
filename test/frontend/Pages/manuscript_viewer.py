@@ -464,7 +464,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     more_btn.click()
     withdraw_link = self._get(self._tb_more_withdraw_link)
     withdraw_link.click()
-    self._get(self._wm_modal_textarea).send_keys('I am so bored with all this...')
+    self._get(self._wm_modal_textarea).send_keys('This a deployment test document...please ignore')
     self._get(self._wm_modal_yes).click()
     # Give a little time for the db transaction
     time.sleep(3)

@@ -118,6 +118,11 @@ describe Typesetter::MetadataSerializer do
     expect(output[:paper_title]).to eq('here is the title')
   end
 
+  it 'has abstract' do
+    paper.abstract = 'here is the abstract'
+    expect(output[:paper_abstract]).to eq('here is the abstract')
+  end
+
   describe 'publication_date' do
     let(:our_task) do
       paper.tasks.find_by(

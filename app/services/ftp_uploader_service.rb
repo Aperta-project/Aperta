@@ -25,7 +25,7 @@ class FtpUploaderService
     @passive_mode = passive_mode
     @password = ftp_url.password
     @port = ftp_url.port || 21
-    @user = ftp_url.user
+    @user = URI.unescape(ftp_url.user)
   end
 
   def upload
@@ -69,8 +69,10 @@ class FtpUploaderService
   end
 
   def connect_to_server
+    Rails.logger.info "FTP connecting to #{@host}: #{@port}"
     @ftp.connect(@host, @port)
     @ftp.passive = @passive_mode
+    Rails.logger.info "FTP logging in as #{@user}"
     @ftp.login(@user, @password)
   end
 

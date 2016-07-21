@@ -3,7 +3,7 @@ class BillingFTPUploader < FtpUploaderService
   def initialize(billing_log_report)
     @billing_log_report = billing_log_report
     super(
-      file_io: @billing_log_report.csv_file.url,
+      file_io: @billing_log_report.csv,
       final_filename: timestamped_filename,
       url: TahiEnv.billing_ftp_url
     )

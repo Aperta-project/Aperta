@@ -22,12 +22,12 @@ let createTask = function() {
         id: 1,
         text: 'RA Accept',
         templateDecision: 'accept',
-        letter: 'Dear Dr. [LAST_NAME], Sincerely Someone who Accepts' },
+        letter: 'Dear Dr. [LAST NAME], Sincerely Someone who Accepts' },
       {
         id: 2,
         text: 'Editor Reject',
         templateDecision: 'reject',
-        letter: 'Dear Dr. [LAST_NAME], Sincerely who Rejects' }],
+        letter: 'Dear Dr. [LAST NAME], Sincerely who Rejects' }],
     nestedQuestions: [
       { id: 1, ident: 'register_decision_questions--to-field' }]
   });
@@ -38,7 +38,10 @@ moduleForComponent(
   'Integration | Components | Tasks | Register Decision', {
   integration: true,
 
+
   beforeEach() {
+    // Mock out pusher
+    this.container.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
     manualSetup(this.container);
     Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
   }

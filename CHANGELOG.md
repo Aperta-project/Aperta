@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Version] - {Date}
 ### Added
+- Cover Letter tasks are now versioned
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.
 - Abstract included in APEX export.
 ### Changed
@@ -12,6 +13,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
+- Fix frontend code to allow for multiple rounds of revision
 ### Security
 
 ## [1.4.18] - {2016-07-06}

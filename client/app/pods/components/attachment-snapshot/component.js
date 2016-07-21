@@ -19,11 +19,7 @@ export default Ember.Component.extend({
     function() {
       var hash1 = this.get('attachment1.fileHash');
       var hash2 = this.get('attachment2.fileHash');
-      if (!hash1 || !hash2) {
-        return false;
-      } else {
-        return hash1 !== hash2;
-      }
+      return hash1 !== hash2;
     }
   )
 

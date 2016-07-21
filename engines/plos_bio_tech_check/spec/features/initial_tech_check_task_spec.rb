@@ -17,10 +17,7 @@ feature 'Initial Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
-    wait_for_ajax
-    overlay.expect_author_changes_saved
     overlay.mark_as_complete
-    overlay.expect_task_to_be_completed
     overlay.dismiss
     logout
 
@@ -30,13 +27,11 @@ feature 'Initial Tech Check', js: true do
     login_as(author, scope: :user)
     overlay = Page.view_task_overlay(paper, change_author_task)
     overlay.expect_to_see_change_list
-    wait_for_ajax
     overlay.click_changes_have_been_made
     overlay.dismiss
 
     # Creator cannot access initial tech check task
     visit "/papers/#{paper.id}/tasks/#{task.id}"
-    wait_for_ajax
     expect(page).to have_content("You don't have access to that content")
   end
 

@@ -40,11 +40,9 @@ feature "Register Decision", js: true do
         overlay = Page.view_task_overlay(paper, task)
 
         overlay.register_decision = "Reject"
-        wait_for_ajax
         overlay.radio_selected?
 
         visit current_path # Revisit
-        wait_for_ajax
         expect(find("input[value='reject']")).to be_checked
       end
     end

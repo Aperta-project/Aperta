@@ -29,11 +29,11 @@ feature 'Authors card', js: true do
       find('.author-title').send_keys('title')
       find('.author-department').send_keys('department')
       find_button('done').click
-      overlay.expect_task_to_be_incomplete
+      expect(overlay).to be_uncompleted
       overlay.dismiss
 
       overlay = Page.view_task_overlay(paper, paper.tasks.first)
-      overlay.expect_task_to_be_incomplete
+      expect(overlay).to be_uncompleted
     end
 
     scenario 'validates group authors on completion', selenium: true do
@@ -47,11 +47,11 @@ feature 'Authors card', js: true do
       find('.contact-last').send_keys('last')
       find('.contact-email').send_keys('email@email.email')
       find_button('done').click
-      overlay.expect_task_to_be_incomplete
+      expect(overlay).to be_uncompleted
       overlay.dismiss
 
       overlay = Page.view_task_overlay(paper, paper.tasks.first)
-      overlay.expect_task_to_be_incomplete
+      expect(overlay).to be_uncompleted
     end
   end
 end

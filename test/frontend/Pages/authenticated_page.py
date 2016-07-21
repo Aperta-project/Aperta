@@ -387,7 +387,10 @@ class AuthenticatedPage(PlosPage):
     else:
       error_msg_string = error_msg
     if error_msg:
-      raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
+        try:
+          raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg))
+        except UnicodeDecodeError:
+          logging.info(error_msg)
 
   def check_for_flash_success(self):
     """

@@ -77,8 +77,23 @@ FactoryGirl.define do
     # tests. We should make the state transitions behave gracefully when R&P
     # config doesn't exist
     trait(:submitted_lite) do
+      transient do
+        submitting_user { FactoryGirl.create(:user) }
+      end
       publishing_state :submitted
-      after :create, &:new_draft_decision!
+      editable false
+      # Time in { } to evaluate it later so that it works with Timecop
+      first_submitted_at { DateTime.current.utc }
+      submitted_at { DateTime.current.utc }
+      state_updated_at { DateTime.current.utc }
+      after :create do |paper, evaluator|
+        paper.new_draft_decision!
+        paper.versioned_texts.first.update!(
+          major_version: 0,
+          minor_version: 0,
+          submitting_user: evaluator.submitting_user
+        )
+      end
     end
 
     # TODO: reimplement this using actual AASM transitions. Like above.

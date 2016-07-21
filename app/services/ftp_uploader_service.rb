@@ -13,7 +13,12 @@ class FtpUploaderService
   )
 
     ftp_url = URI.parse(url)
-    @directory = ftp_url.path || 'packages'
+    if ftp_url.path.present?
+      @directory = ftp_url.path
+    else
+      @directory = 'packages'
+    end
+
     @file_io = file_io
     @final_filename = final_filename
     @host = ftp_url.host

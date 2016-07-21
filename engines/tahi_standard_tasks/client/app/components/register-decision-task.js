@@ -5,6 +5,17 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 const { computed } = Ember;
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
+  init: function(){
+    this._super(...arguments);
+    this.get('task.paper.decisions').reload();
+  },
+  decidedDecision: null,
+  formattedDecidedDecision: computed('decidedDecision', function() {
+    let words = this.get('decidedDecision').split(/_/g);
+    return words.map(function(word) {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+  }),
   restless: Ember.inject.service('restless'),
   paperState: computed.alias('task.paper.publishingState'),
   submitted: computed.equal('paperState', 'submitted'), 
@@ -46,11 +57,16 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       const decidePath = `/api/register_decision/${id}/decide`;
 
       this.get('restless').post(decidePath).then(() => {
+        this.set('decidedDecision', this.get('latestDecision.verdict'));
         this.set('task.completed', true);
         this.get('task').save().then(() => {
           return this.get('latestDecision').save().then(() => {
-            this.set('isSavingData', false);
-            this.clearAllValidationErrors();
+            const tasksPromise = this.get('task.paper.tasks').reload();
+            const decisionsPromise = this.get('task.paper.decisions').reload();
+            return Ember.RSVP.all([tasksPromise, decisionsPromise]).then(() => {
+              this.set('isSavingData', false);
+              this.clearAllValidationErrors();
+            });
           });
         });
       }, (response) => {

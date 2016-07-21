@@ -43,7 +43,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def success_state_message
-    find(".alert-info").text == "A final decision of accept has been registered."
+    find(".alert-info").text == "A final decision of Accept has been registered."
   end
 
   def invalid_state_message

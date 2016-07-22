@@ -4,9 +4,15 @@ Rake::Task["db:load"].clear
 
 namespace :db do
 
-  # rake db:import_prod[rc] will import in the rc environment instead
-  desc "Dumps slightly older prod database from internal network into development environment"
-  task :import_prod, [:env] => :environment do |t, args|
+  desc <<-DESC
+    Dumps slightly older prod database from internal network into development environment
+
+    This also optionally accepts a variable that will pull in different environments if they are hosted on Hector.
+    For example 'rake db:import_remote[rc]' will import in the rc environment instead,
+    while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
+    'dev_dump.tar.gz' exists in bighector.
+  DESC
+  task :import_remote, [:env] => :environment do |t, args|
     return unless Rails.env.development?
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'db'}_dump.tar.gz"
@@ -18,7 +24,7 @@ namespace :db do
       if result
         STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
       else
-        STDERR.puts("Restored #{env || prod} with errors or warnings")
+        STDERR.puts("Restored #{env || 'prod'} with errors or warnings")
       end
     end
   end

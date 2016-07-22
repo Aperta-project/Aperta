@@ -206,13 +206,20 @@ class ProfilePage(AuthenticatedPage):
     # Give some time to end AJAX call
     time.sleep(2)
     affiliations = self._gets(self._profile_affiliations)
-    assert affiliation['institution'] in affiliations[-1].text
-    assert affiliation['department'] in affiliations[-1].text
-    assert affiliation['title'] in affiliations[-1].text
-    assert affiliation['country'] in affiliations[-1].text
-    assert affiliation['start'][-4:] in affiliations[-1].text
-    assert affiliation['end'][-4:] in affiliations[-1].text
-    assert affiliation['email'] in affiliations[-1].text
+    assert affiliation['institution'] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['institution'], affiliations[-1].text)
+    assert affiliation['department'] in affiliations[-1].text,  '{0} not in {1}'.format(
+        affiliation['department'], affiliations[-1].text)
+    assert affiliation['title'] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['title'], affiliations[-1].text)
+    assert affiliation['country'] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['country'], affiliations[-1].text)
+    assert affiliation['start'][-4:] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['start'], affiliations[-1].text)
+    assert affiliation['end'][-4:] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['end'], affiliations[-1].text)
+    assert affiliation['email'] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['email'], affiliations[-1].text)
     remove_icons = self._gets(self._remove_affiliation_icon)
     remove_icons[-1].click()
     alert = self._driver.switch_to_alert()

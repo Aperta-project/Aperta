@@ -248,4 +248,43 @@ describe Invitation do
       end
     end
   end
+
+  describe "#email=" do
+    let(:invitation) { build :invitation }
+    let(:addr_spec) { "squirtle@gmail.com" }
+
+    context "the email is a normal addr-spec" do
+      it "sets the email as-is" do
+        invitation.email = addr_spec
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is a name-spec" do
+      let(:name_spec) { "Squirtle Pokémon <#{addr_spec}>" }
+
+      it "coerces the email into addr-spec" do
+        invitation.email = name_spec
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is surrounded by whitespace" do
+      let(:spacey_email) { " #{addr_spec} " }
+
+      it "strips surrounding whitespace" do
+        invitation.email = spacey_email
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is a name-spec with whitespace" do
+      let(:name_spec) { "Squirtle Pokémon < #{addr_spec}  >" }
+
+      it "coerces the email into addr-spec and removes whitespace" do
+        invitation.email = name_spec
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+  end
 end

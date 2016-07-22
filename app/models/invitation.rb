@@ -62,7 +62,13 @@ class Invitation < ActiveRecord::Base
   end
 
   def email=(new_email)
-    super(new_email.strip)
+    regexp = /
+      (?:.+<)     # name and open angle bracket
+      ([^>]+)     # the actual email address (addr-spec)
+      (?:>)       # closing bracket
+    /x
+    normalized = regexp =~ new_email ? Regexp.last_match(1) : new_email
+    super(normalized.strip)
   end
 
   def feedback_given?

@@ -288,4 +288,21 @@ describe Invitation do
       end
     end
   end
+
+  describe "email validation" do
+    let(:good_email) { "squirtle@pokemon.com" }
+    let(:bad_email) { "squirtlepokemon.com" }
+    let(:invitation) { build :invitation }
+
+    it "allows any string with an at-sign" do
+      expect do
+        invitation.update!(email: good_email)
+      end.to change { invitation.email }.to good_email
+    end
+    it "does not allow strings without an at-sign" do
+      expect do
+        invitation.update!(email: bad_email)
+      end.to raise_exception(ActiveRecord::RecordInvalid)
+    end
+  end
 end

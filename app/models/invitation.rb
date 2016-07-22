@@ -15,6 +15,7 @@ class Invitation < ActiveRecord::Base
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
+  validates :email, format: /.+@.+/
 
   aasm column: :state do
     state :pending, initial: true

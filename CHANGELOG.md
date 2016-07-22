@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [Version] - {Date}
+## [1.5.0] - {2016-07-20}
 ### Added
 - Cover Letter tasks are now versioned
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.

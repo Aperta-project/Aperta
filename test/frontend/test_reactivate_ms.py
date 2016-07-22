@@ -70,7 +70,7 @@ class WithdrawManuscriptTest(CommonTest):
     manuscript_page.close_modal()
     time.sleep(1)
     # Do some style and element validations
-    manuscript_page._check_more_btn(useremail=creator_user['email'])
+    manuscript_page._check_more_btn(user=creator_user)
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
                                                 'WHERE id = %s;', (paper_id,))[0][0]

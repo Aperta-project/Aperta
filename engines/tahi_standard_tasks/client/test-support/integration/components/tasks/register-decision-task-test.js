@@ -15,23 +15,32 @@ let createTask = function() {
       publishingState: 'submitted',
       decisions: [
         { id: 1 }
-      ]
+      ],
+      shortTitle: 'GREAT TITLE'
     },
     letterTemplates: [
       { 
         id: 1,
         text: 'RA Accept',
         templateDecision: 'accept',
-        letter: 'Dear Dr. [LAST NAME], Sincerely Someone who Accepts' },
+        letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely Someone who Accepts' },
       {
         id: 2,
         text: 'Editor Reject',
         templateDecision: 'reject',
-        letter: 'Dear Dr. [LAST NAME], Sincerely who Rejects' }],
+        letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
     nestedQuestions: [
       { id: 1, ident: 'register_decision_questions--to-field' }]
   });
 };
+
+let fakeUser = Factory.createRecord('User', {
+  id: 1,
+  fullName: 'Fake User',
+  lastName: 'Smith',
+  username: 'fakeuser',
+  email: 'fakeuser@example.com'
+});
 
 moduleForComponent(
   'register-decision-task',
@@ -47,10 +56,11 @@ moduleForComponent(
   }
 });
 
-let template = hbs`{{register-decision-task task=testTask}}`;
+let template = hbs`{{register-decision-task task=testTask currentUser=fakeUser}}`;
 
 test('it renders decision selections', function(assert) {
   let testTask = createTask();
+  this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
   assert.elementsFound('.decision-label', 4);
@@ -60,6 +70,7 @@ test('it renders decision selections', function(assert) {
 
 test('it switches the letter contents on change', function(assert) {
   let testTask = createTask();
+  this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
   this.$("input[type='radio']").last().click();
@@ -68,10 +79,31 @@ test('it switches the letter contents on change', function(assert) {
   assert.inputContains('.decision-letter-field', 'who Rejects');
 });
 
-test('it replaces template variables', function(assert) {
+test('it replaces [LAST NAME] with the authors last name', function(assert) {
   let testTask = createTask();
+  this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
   this.$("input[type='radio']").last().click();
   assert.inputContains('.decision-letter-field', 'Dear Dr. Smith');
 });
+
+test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
+  let testTask = createTask();
+  this.set('fakeUser', fakeUser);
+  this.set('testTask', testTask);
+  this.render(template);
+  this.$("input[type='radio']").last().click();
+  let journalName = testTask.get('paper.journal.name');
+  assert.inputContains('.decision-letter-field', journalName);
+});
+
+test('it replaces [PAPER TITLE] with the paper title', function(assert) {
+  let testTask = createTask();
+  this.set('fakeUser', fakeUser);
+  this.set('testTask', testTask);
+  this.render(template);
+  this.$("input[type='radio']").last().click();
+  assert.inputContains('.decision-letter-field', 'GREAT TITLE');
+});
+

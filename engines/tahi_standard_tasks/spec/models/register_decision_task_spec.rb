@@ -101,24 +101,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.major_revision_letter).to match(/www\.example\.com/)
       end
     end
-
-    describe "#reject_letter" do
-      it "returns the letter with the author's name filled in" do
-        expect(task.reject_letter).to match(/Mazur/)
-      end
-
-      it "returns the letter with a placeholder for the AE's name" do
-        expect(task.reject_letter).to match('[YOUR NAME]')
-      end
-
-      it "returns the letter with journal name filled in" do
-        expect(task.reject_letter).to match(/PLOS Yeti/)
-      end
-
-      it "returns the letter with paper title filled in" do
-        expect(task.reject_letter).to match(/Crazy stubbing tests on rats/)
-      end
-    end
   end
 
   describe "save and retrieve paper decision and decision letter" do

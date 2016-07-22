@@ -14,9 +14,8 @@ from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import affiliation, creator_login1, creator_login2, creator_login3, \
-    creator_login4, creator_login5, staff_admin_login, pub_svcs_login, internal_editor_login, \
-    super_admin_login
+from Base.Resources import affiliation, users, staff_admin_login, pub_svcs_login, \
+    internal_editor_login, super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask
@@ -135,11 +134,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
-  def validate_page_elements_styles_functions(self, useremail='', admin=''):
+  def validate_page_elements_styles_functions(self, user='', admin=''):
     """
     Main method to validate styles and basic functions for all elements
     in the page
-    :param useremail: String with the email whom the page is rendered to
+    :param user: String with the user whom the page is rendered to
     :param admin: Boolean to indicate if the page is rendered for an admin user
     """
     if admin:
@@ -149,8 +148,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_collaborator()
     self._check_download_btns()
     self._check_recent_activity()
-    self._check_discussion(useremail)
-    self._check_more_btn(useremail)
+    self._check_discussion(user)
+    self._check_more_btn(user)
 
   def validate_independent_scrolling(self):
     """Ensure both the manuscript and accordion panes scroll independently"""
@@ -404,27 +403,23 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
 
-  def _check_more_btn(self, useremail=''):
+  def _check_more_btn(self, user=''):
     """
     Check all options inside More button (Appeal and Withdraw).
     Note that Appeal is not implemented yet, so it is not tested.
     """
-    logging.info('Checking More Toolbar menu for {0}'.format(useremail))
+    logging.info('Checking More Toolbar menu for {0}'.format(user))
     more_btn = self._get(self._tb_more_link)
     more_btn.click()
     # For the time being, the appeals link is being removed for everybody.
     # self._get(self._tb_more_appeal_link)
     # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
-    if useremail in [creator_login1['email'],
-                     creator_login2['email'],
-                     creator_login3['email'],
-                     creator_login4['email'],
-                     creator_login5['email'],
-                     staff_admin_login['email'],
-                     pub_svcs_login['email'],
-                     internal_editor_login['email'],
-                     super_admin_login['email'],
-                     ]:
+    withdraw_users = users + [staff_admin_login['email'],
+                pub_svcs_login['email'],
+                internal_editor_login['email'],
+                super_admin_login['email'],
+                              ]
+    if user in withdraw_users:
       withdraw_link = self._get(self._tb_more_withdraw_link)
       withdraw_link.click()
       self._get(self._wm_modal)
@@ -462,9 +457,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     more_btn = self._get(self._tb_more_link)
     more_btn.click()
+    self._wait_for_element(self._get(self._tb_more_withdraw_link))
     withdraw_link = self._get(self._tb_more_withdraw_link)
     withdraw_link.click()
-    self._get(self._wm_modal_textarea).send_keys('I am so bored with all this...')
+    self._get(self._wm_modal_textarea).send_keys('This a deployment test document...please ignore')
     self._get(self._wm_modal_yes).click()
     # Give a little time for the db transaction
     time.sleep(3)

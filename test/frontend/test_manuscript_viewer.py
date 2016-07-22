@@ -85,11 +85,9 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_viewer.validate_independent_scrolling()
     manuscript_viewer.validate_nav_toolbar_elements(user)
     if user in (staff_admin_login, super_admin_login):
-      manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'],
-                                                                admin=True)
+      manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=True)
     else:
-      manuscript_viewer.validate_page_elements_styles_functions(useremail=user['email'],
-                                                                admin=False)
+      manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=False)
     return self
 
   def _test_role_aware_menus(self):

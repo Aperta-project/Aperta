@@ -284,7 +284,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     pdf_link.click()
     # This lengthy delay is here because the file must begin downloading before we can start
     #   to see if the download completes
-    time.sleep(15)
+    time.sleep(25)
     os.chdir('/tmp')
     files = filter(os.path.isfile, os.listdir('/tmp'))
     files = [os.path.join('/tmp', f) for f in files]  # add path to each file
@@ -298,7 +298,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       files.sort(key=lambda x: os.path.getmtime(x))
       newest_file = files[-1]
       logging.debug(newest_file.split('.')[-1])
-    logging.debug(newest_file)
+    logging.info('PDF to validate: {0}'.format(newest_file))
     pdf_valid = PdfUtil.validate_pdf(newest_file)
     os.remove(newest_file)
     os.chdir(original_dir)

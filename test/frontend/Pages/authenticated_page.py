@@ -1544,14 +1544,15 @@ class AuthenticatedPage(PlosPage):
     """
     Ensure consistency in rendering page, card and overlay input field labels across the application
     :param label: label to validate
+    NOTE: Updated 20160722 as per style guide at:
+    https://app.zeplin.io/project.html#pid=560d7bb83705520f4c7c0524&sid=56b239c60e93fc526ca02f8f
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '18px', \
+    assert label.value_of_css_property('font-size') == '14px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
-    # This color is not represented in the tahi palette
-    assert label.value_of_css_property('color') == aperta_black, \
+    assert label.value_of_css_property('color') == aperta_grey_dark, \
         label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '25.7167px', \
         label.value_of_css_property('line-height')

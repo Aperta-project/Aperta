@@ -301,27 +301,28 @@ class ManuscriptViewerTest(CommonTest):
     else:
       # create a new manuscript
       dashboard_page.click_create_new_submission_button()
-      # We recently became slow drawing this overlay (20151006)
-      time.sleep(.5)
+      dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
       # Temporary changing timeout
       dashboard_page.set_timeout(120)
       self.create_article(journal='PLOS Wombat',
                           type_='Images+InitialDecision',
                           random_bit=True,
                           )
-      # Time needed for iHat conversion. This is not quite enough time in all circumstances
-      time.sleep(5)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    # Need a seriously long pregnant pause to wait for URL to update - 10 seconds is too short
-    #   even 15s even fails sometimes - which is an embarrassment
-    time.sleep(15)
-    try:
-      logging.info('Paper for download tests is '
-                   'id: {0}'.format(manuscript_viewer.get_paper_db_id()))
-    except IndexError:
-      time.sleep(10)
-      logging.info(
-        'Paper for download tests is id: {0}'.format(manuscript_viewer.get_paper_db_id()))
+    # check for flash message
+    manuscript_viewer.validate_ihat_conversions_success(timeout=30)
+
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_viewer.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_viewer.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
     manuscript_viewer.validate_download_btn_actions()
 
 if __name__ == '__main__':

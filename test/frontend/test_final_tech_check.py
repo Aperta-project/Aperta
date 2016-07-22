@@ -38,37 +38,51 @@ class FTCCardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat',
                         type_='NoCards',
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
-    paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
-    paper_id = paper_canonical_url.split('/')[-1]
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    # check for flash message
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
+
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
+
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(2)
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._overlay_header_close))
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_canonical_url)
-    self._driver.get(paper_workflow_url)
+    dashboard_page._wait_for_element(
+      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(4)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+
     # Check if FTC card is there, if not, add it.
     if not workflow_page.is_card('Final Tech Check'):
       workflow_page.add_card('Final Tech Check')
@@ -88,7 +102,6 @@ class FTCCardTest(CommonTest):
         assert ftc_card.email_text[index] not in issues_text, \
             '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
                 index, issues_text)
-    time.sleep(2)
     ftc_card.click_send_changes_btn()
     all_success_messages = ftc_card.get_flash_success_messages()
     success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]

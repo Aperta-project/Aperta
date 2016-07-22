@@ -20,6 +20,23 @@ class Decision < ActiveRecord::Base
 
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
+  validate do
+    if author_response_changed? && !latest_registered? && persisted?
+      errors.add(
+        :author_response,
+        'Author response can only change on the latest registered decision')
+    end
+  end
+
+  validate do
+    if letter_changed? && completed? && persisted?
+      errors.add(:letter, 'Letter can only change on draft decisions')
+    end
+    if verdict_changed? && completed? && persisted?
+      errors.add(:verdict, 'Verdict can only change on draft decisions')
+    end
+  end
+
   def register!(originating_task)
     Decision.transaction do
       paper.public_send "#{verdict}!"

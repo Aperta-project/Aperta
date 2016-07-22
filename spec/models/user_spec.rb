@@ -144,8 +144,8 @@ describe User do
     end
 
     context 'invitation without a decision' do
-      let!(:task) { FactoryGirl.create :invitable_task }
-      let!(:invitation) { FactoryGirl.create :invitation, task: task, invitee: user }
+      let(:paper) { FactoryGirl.create :paper }
+      let(:invitation) { FactoryGirl.create :invitation, paper: paper, invitee: user, decision: nil }
 
       it 'returns invitations with decisions from the latest revision cycle' do
         expect(invitation.decision).to be_nil

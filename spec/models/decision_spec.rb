@@ -2,11 +2,14 @@ require 'rails_helper'
 require 'models/concerns/versioned_thing_shared_examples'
 
 describe Decision do
-  let!(:decision) do
-    paper = FactoryGirl.create :paper, :submitted_lite
-    paper.decisions.first
+  let(:paper) { FactoryGirl.build :paper, :submitted_lite }
+  subject(:decision) do
+    FactoryGirl.build(
+      :decision,
+      paper: paper,
+      major_version: nil,
+      minor_version: nil)
   end
-  let(:paper) { decision.paper }
 
   it_behaves_like 'a thing with major and minor versions', :decision
 
@@ -27,15 +30,8 @@ describe Decision do
   end
 
   describe '#rescind!' do
-    before do
-      decision.update!(verdict: "reject",
-                       major_version: 0,
-                       minor_version: 0,
-                       registered_at: DateTime.now.utc)
-      paper.update_columns(publishing_state: :rejected)
-    end
-
     it 'flags rescinded as true' do
+      allow(paper).to receive(:rescind!)
       expect { decision.rescind! }.to change { decision.rescinded }.to be(true)
     end
 
@@ -46,6 +42,8 @@ describe Decision do
   end
 
   describe '#latest?' do
+    let(:paper) { FactoryGirl.create :paper, :submitted_lite }
+
     it 'returns true if it is the latest decision' do
       paper.decisions.destroy_all
       early_decision = paper.decisions.create!(registered_at: DateTime.now.utc, minor_version: 0, major_version: 0)
@@ -97,7 +95,7 @@ describe Decision do
       expect(decision.terminal?).to be(true)
     end
 
-    it "is true for a revise decision" do
+    it "is false for a revise decision" do
       decision.verdict = "revise"
       expect(decision.terminal?).to be(false)
     end
@@ -106,54 +104,47 @@ describe Decision do
   describe 'rescindable?' do
     context 'when the decision is not registered' do
       it 'is not rescindable' do
-        decision.registered_at = nil
-        decision.save!
         expect(decision.rescindable?).to be(false)
       end
     end
 
     context 'when the decision has been rescinded' do
+      before do
+        allow(decision).to receive(:rescinded).and_return(true)
+      end
+
       it 'is not rescindable' do
-        decision.registered_at = DateTime.now.utc
-        decision.rescinded = true
-        decision.save!
         expect(decision.rescindable?).to be(false)
       end
     end
 
-    context 'when the decision has a verdict but is not the latest decision' do
+    context 'when the decision is not the latest decision' do
+      before do
+        allow(decision).to receive(:latest_registered?).and_return(false)
+      end
+
       it 'is not rescindable' do
-        paper.publishing_state = "in_revision"
-        decision.update!(verdict: "major_revision",
-                         major_version: 0,
-                         minor_version: 0,
-                         registered_at: DateTime.now.utc)
-        paper.decisions.create!(registered_at: DateTime.now.utc,
-                                major_version: 0,
-                                minor_version: 1)
-        paper.save!
         expect(decision.rescindable?).to be(false)
       end
     end
 
     context 'when the decision is the latest, has a verdict, but the paper has moved on in the process' do
+      before do
+        allow(decision).to receive(:paper_in_expected_state_given_verdict?).and_return(false)
+      end
+
       it 'is not rescindable' do
-        decision.update!(verdict: "accept",
-                         major_version: 0,
-                         minor_version: 0,
-                         registered_at: DateTime.now.utc)
-        paper.update!(publishing_state: "submitted")
         expect(decision.rescindable?).to be(false)
       end
     end
 
     context 'when the decision is the latest, has a verdict, and the paper is in the right state' do
+      before do
+        allow(decision).to receive(:paper_in_expected_state_given_verdict?).and_return(true)
+        allow(decision).to receive(:latest_registered?).and_return(true)
+      end
+
       it 'is rescindable' do
-        decision.update!(verdict: "accept",
-                         major_version: 0,
-                         minor_version: 0,
-                         registered_at: DateTime.now.utc)
-        paper.update!(publishing_state: "accepted")
         expect(decision.rescindable?).to be(true)
       end
     end
@@ -166,6 +157,69 @@ describe Decision do
 
     it 'has values which are all publishing states' do
       expect(Paper::STATES.map(&:to_s)).to include(*Decision::PUBLISHING_STATE_BY_VERDICT.values)
+    end
+  end
+
+  describe 'updating the author_response' do
+    context 'when the decision is not the latest registered_decision' do
+      before do
+        allow(decision).to receive(:latest_registered?).and_return(false)
+        allow(decision).to receive(:persisted?).and_return(true)
+      end
+
+      it 'does not validate' do
+        decision.update(author_response: Faker::Lorem.paragraph(2))
+        expect(decision.valid?).to be(false)
+      end
+    end
+
+    context 'when the decision is the latest registered_decision' do
+      before do
+        allow(decision).to receive(:latest_registered?).and_return(true)
+      end
+
+      it 'validates' do
+        decision.update(author_response: Faker::Lorem.paragraph(2))
+        expect(decision.valid?).to be(true)
+      end
+    end
+  end
+
+  describe 'updating the letter or verdict' do
+    before do
+      allow(decision).to receive(:persisted?).and_return(true)
+    end
+
+    context 'when the decision is not a draft' do
+      before do
+        allow(decision).to receive(:draft?).and_return(false)
+      end
+
+      it 'does not validate when updating the letter' do
+        decision.update(letter: Faker::Lorem.paragraph(2))
+        expect(decision.valid?).to be(false)
+      end
+
+      it 'does not validate when updating the verdict' do
+        decision.update(verdict: 'accept')
+        expect(decision.valid?).to be(false)
+      end
+    end
+
+    context 'when the decision is a draft' do
+      before do
+        allow(decision).to receive(:draft?).and_return(true)
+      end
+
+      it 'validates when updating the letter' do
+        decision.update(letter: Faker::Lorem.paragraph(2))
+        expect(decision.valid?).to be(true)
+      end
+
+      it 'validates when updating the verdict' do
+        decision.update(verdict: 'accept')
+        expect(decision.valid?).to be(true)
+      end
     end
   end
 end

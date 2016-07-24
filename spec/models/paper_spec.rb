@@ -1308,4 +1308,18 @@ describe Paper do
         .not_to change { paper.decisions.count }
     end
   end
+
+  describe '#last_of_task' do
+    let!(:revise_task) { create :revise_task, paper: paper }
+
+    it "returns the task instance" do
+      task = paper.last_of_task(TahiStandardTasks::ReviseTask)
+      expect(task).to eq revise_task
+    end
+
+    it "returns nil if their is no task of the correct type" do
+      task = paper.last_of_task(TahiStandardTasks::AuthorsTask)
+      expect(task).to be_nil
+    end
+  end
 end

@@ -2,24 +2,16 @@ require 'rails_helper'
 
 describe DecisionsController do
   let(:user) { FactoryGirl.build(:user) }
-
-  let(:paper) do
-    FactoryGirl.create(:paper, :submitted_lite)
-  end
+  let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
+  let!(:revise_manuscript_task) { create :revise_task, paper: paper }
 
   describe "#update" do
-    let(:new_letter) { "Positive Words in a Letter" }
-    let(:new_verdict) { "accept" }
     let(:decision) { paper.draft_decision }
-
     subject(:do_request) do
       put :update,
           format: :json,
           id: decision.id,
-          decision: {
-            letter: new_letter,
-            verdict: new_verdict
-          }
+          decision: {}
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -29,23 +21,114 @@ describe DecisionsController do
         stub_sign_in(user)
       end
 
-      it "updates the decision object" do
-        do_request
-        decision.reload
-        expect(decision.letter).to eq(new_letter)
-        expect(decision.verdict).to eq(new_verdict)
-      end
-
-      context "the decision is registered" do
-        before do
-          decision.update(registered_at: DateTime.now.utc)
+      context 'and has no permissions' do
+        let(:do_request) do
+          put :update,
+              format: :json,
+              id: decision.id
         end
 
-        it "Returns a 422" do
+        it 'returns a 403' do
           do_request
-          expect(response.status).to be(422)
-          expect(res_body['errors'][0])
-            .to eq("The decision has already been registered")
+          expect(response.status).to eq 403
+        end
+      end
+
+      describe "updating the author response" do
+        let(:author_response) { Faker::Lorem.paragraph(2) }
+        subject(:do_request) do
+          put :update,
+              format: :json,
+              id: decision.id,
+              decision: {
+                author_response: author_response
+              }
+        end
+
+        context "the decision has been registered" do
+          before do
+            decision.update(
+              registered_at: DateTime.now.utc, major_version: 0, minor_version: 0)
+          end
+
+          context "the user has the permission to edit the ReviseManuscriptTask" do
+            before do
+              allow(user).to receive(:can?).with(:register_decision, paper).and_return(false)
+              allow(user).to receive(:can?).with(:edit, revise_manuscript_task).and_return(true)
+            end
+
+            it "Updates the decision's author_response" do
+              expect do
+                do_request
+                expect(response.status).to eq 200
+              end.to change { decision.reload.author_response }.from(decision.author_response).to(author_response)
+            end
+          end
+
+          context "but the user does not have the permission to edit the ReviseManuscriptTask" do
+            it "does not update the author_response" do
+              expect do
+                do_request
+              end.not_to change { decision.reload.author_response }
+              expect(response.status).to eq 403
+            end
+          end
+        end
+      end
+
+      describe "updating the letter and verdict" do
+        let(:new_letter) { Faker::Lorem.paragraph(2) }
+        let(:new_verdict) { "accept" }
+        subject(:do_request) do
+          put :update,
+              format: :json,
+              id: decision.id,
+              decision: {
+                letter: new_letter,
+                verdict: new_verdict
+              }
+        end
+
+        context "the user has the permission to register a decision" do
+          before do
+            allow(user).to receive(:can?).with(:register_decision, paper).and_return(true)
+            allow(user).to receive(:can?).with(:edit, revise_manuscript_task).and_return(false)
+          end
+
+          context "the decision is not registered" do
+            it "updates the decision object" do
+              expect do
+                do_request
+                decision.reload
+              end.to change { [decision.letter, decision.verdict] }.to([new_letter, new_verdict])
+            end
+          end
+
+          context "the decision is registered" do
+            before do
+              decision.update(registered_at: DateTime.now.utc, major_version: 0, minor_version: 0)
+            end
+
+            it "Returns a 422 and doesn't update the model" do
+              expect do
+                do_request
+                decision.reload
+              end.not_to change { [decision.verdict, decision.letter] }
+              expect(response.status).to eq 422
+              expect(res_body).to have(1).errors_on(:letter)
+              expect(res_body).to have(1).errors_on(:verdict)
+            end
+          end
+        end
+
+        context "the user does not have the permission to register a decision" do
+          it "does not update the letter or verdict" do
+            expect do
+              do_request
+              decision.reload
+            end.not_to change { [decision.verdict, decision.letter] }
+            expect(response.status).to eq 403
+          end
         end
       end
     end

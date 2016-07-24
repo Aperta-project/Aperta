@@ -521,6 +521,10 @@ class Paper < ActiveRecord::Base
     TERMINAL_STATES.include? publishing_state.to_sym
   end
 
+  def last_of_task(klass)
+    tasks.where(type: klass.to_s).last
+  end
+
   private
 
   def remove_revise_task

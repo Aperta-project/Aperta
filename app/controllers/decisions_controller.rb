@@ -14,9 +14,17 @@ class DecisionsController < ApplicationController
   end
 
   def update
-    assert !decision.registered_at, "The decision has already been registered"
-
-    decision.update! decision_params
+    permitted = []
+    revise_task = decision.paper.last_of_task(TahiStandardTasks::ReviseTask)
+    if current_user.can?(:register_decision, decision.paper)
+      permitted += [:verdict, :letter]
+    elsif !revise_task.nil? && current_user.can?(:edit, revise_task)
+      # Only allow the creator to update the `author_response` column
+      permitted += [:author_response]
+    else
+      fail AuthorizationError
+    end
+    decision.update! params.require(:decision).permit(*permitted)
     render json: decision, serializer: DecisionSerializer, root: 'decision'
   end
 
@@ -55,9 +63,5 @@ class DecisionsController < ApplicationController
 
   def decision
     @decision ||= Decision.includes(:paper).find(params[:id])
-  end
-
-  def decision_params
-    params.require(:decision).permit(:verdict, :letter, :author_response)
   end
 end

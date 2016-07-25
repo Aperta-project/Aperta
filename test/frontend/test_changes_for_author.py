@@ -54,12 +54,21 @@ class CFACardTest(CommonTest):
                         random_bit=True,
                         )
     dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
+
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
-    paper_url = manuscript_page.get_current_url().split('?')[0]
-    paper_id = manuscript_page.get_paper_db_id()
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -74,11 +83,18 @@ class CFACardTest(CommonTest):
 
     # logout and enter as editor
     manuscript_page.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
@@ -129,9 +145,12 @@ class CFACardTest(CommonTest):
 
     # Now log back in as the creator user and access Changes for Author card from accordion view
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
-    self._driver.get(paper_url)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
     time.sleep(1)
@@ -162,12 +181,21 @@ class CFACardTest(CommonTest):
                         random_bit=True,
                         )
     dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
+
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
-    paper_url = manuscript_page.get_current_url().split('?')[0]
-    paper_id = manuscript_page.get_paper_db_id()
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -182,11 +210,19 @@ class CFACardTest(CommonTest):
 
     # logout and enter as editor
     manuscript_page.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
+
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
@@ -237,9 +273,12 @@ class CFACardTest(CommonTest):
 
     # Now log back in as the creator user and access Changes for Author card from accordion view
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
-    self._driver.get(paper_url)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
     time.sleep(1)
@@ -270,12 +309,20 @@ class CFACardTest(CommonTest):
                         random_bit=True,
                         )
     dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
-    paper_url = manuscript_page.get_current_url().split('?')[0]
-    paper_id = manuscript_page.get_paper_db_id()
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -290,11 +337,19 @@ class CFACardTest(CommonTest):
 
     # logout and enter as editor
     manuscript_page.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
+
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     # otherwise failures
@@ -345,9 +400,12 @@ class CFACardTest(CommonTest):
 
     # Now log back in as the creator user and access Changes for Author card from accordion view
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
-    self._driver.get(paper_url)
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
     time.sleep(1)

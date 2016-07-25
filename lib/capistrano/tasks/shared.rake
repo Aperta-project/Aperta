@@ -110,6 +110,46 @@ namespace :cleanup do
   end
 end
 
+namespace :check_status do
+  [{ name: :nginx,
+     pidfile: :nginx_pidfile
+   },
+   { name: :sidekiq,
+     pidfile: :sidekiq_pidfile
+   },
+   { name: :puma,
+     pidfile: :puma_pidfile
+   }].each do |config|
+    desc "Check the status of the #{config[:name]} process"
+    task config[:name] do
+      on roles(:web) do
+        pidfile = fetch(config[:pidfile])
+        if test("[ -s #{pidfile} ]") && test("ps -o pid= -p `< #{pidfile}`")
+          info "#{config[:name]} is running"
+        else
+          error "#{config[:name]} is NOT running"
+        end
+      end
+    end
+  end
+end
+
+namespace :deploy do
+  desc "Restart puma and sidekiq. Start nginx."
+  task :restart do
+    invoke 'puma:restart'
+    invoke 'sidekiq:restart'
+    invoke 'nginx:start'
+  end
+
+  desc "Check the status of puma, sidekiq, and nginx."
+  task :check_statuses do
+    invoke 'check_status:puma'
+    invoke 'check_status:sidekiq'
+    invoke 'check_status:nginx'
+  end
+end
+
 # Hack to fake a puma.rb config, which we do not have on a worker
 before 'deploy:check:linked_files', :remove_junk do
   on roles(:db, :worker) do
@@ -129,9 +169,7 @@ before 'deploy:migrate', :create_backup do
   end
 end
 
-after 'deploy:finished', 'puma:restart'
-
-after 'deploy:finished', 'sidekiq:restart'
-after 'deploy:finished', 'nginx:start'
+after 'deploy:publishing', 'deploy:restart'
+after 'deploy:restart', 'deploy:check_statuses'
 
 after 'deploy:finished', 'cleanup:tmp'

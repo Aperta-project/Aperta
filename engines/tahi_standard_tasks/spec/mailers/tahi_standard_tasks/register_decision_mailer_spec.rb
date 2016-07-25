@@ -20,7 +20,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:decision) {
     paper.decisions.create!(
-      letter: "Body text of a Decision Letter",
+      letter: "Body text of a Decision Letter << We Accept",
       verdict: "accept"
     )
   }
@@ -38,8 +38,8 @@ describe TahiStandardTasks::RegisterDecisionMailer do
       expect(email.subject).to eq "A decision has been registered on the manuscript, \"#{paper.title}\""
     end
 
-    it "email body is paper.decision_letter" do
-      expect(email.body.raw_source).to match(decision.letter)
+    it "email body is paper.decision_letter, html escaped" do
+      expect(email.body).to include "Body text of a Decision Letter &lt;&lt; We Accept"
     end
   end
 end

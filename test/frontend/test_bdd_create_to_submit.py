@@ -96,18 +96,29 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
-    time.sleep(2)
-    paper_id = manuscript_page.get_paper_db_id()
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
 
-    keep_waiting = True
-    while keep_waiting:
-      time.sleep(5)
+    count = 0
+    while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
       if 'full submit' in paper_title_from_page.encode('utf8'):
+        count += 1
+        time.sleep(1)
         continue
       else:
-        keep_waiting = False
+        break
+      logging.warning('Conversion never completed - still showing interim title')
 
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     # Allow time for submit button to attach to the DOM
@@ -200,19 +211,31 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
     time.sleep(5)
-    paper_url = manuscript_page.get_current_url()
-    paper_id = manuscript_page.get_paper_db_id()
+    # Need to wait for url to update
+    count = 0
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
 
-    keep_waiting = True
-    while keep_waiting:
-      time.sleep(5)
+    count = 0
+    while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
       if 'initial submit' in paper_title_from_page.encode('utf8'):
+        count += 1
+        time.sleep(1)
         continue
       else:
-        keep_waiting = False
+        break
+      logging.warning('Conversion never completed - still showing interim title')
+
 
     # Give a little time for the submit button to attach to the DOM
     time.sleep(5)
@@ -238,14 +261,18 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.logout()
 
     admin_user = random.choice(admin_users)
-    self.cas_login(email=admin_user['email'])
-    # Need time to finish initial redirect to dashboard page
-    time.sleep(3)
-    new_paper_url = paper_url + '/workflow'
-    self._driver.get(new_paper_url)
+    logging.info('Logging in as {0}'.format(admin_user['name']))
+    dashboard_page = self.cas_login(email=admin_user['email'])
+    dashboard_page._wait_for_element(
+      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
-    time.sleep(5)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('initial_decision')
     id_card = InitialDecisionCard(self.getDriver())
     id_card.validate_styles()
@@ -269,11 +296,10 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     workflow_page.logout()
 
     self.cas_login(email=creator_user['email'])
-    # Need time to finish initial redirect to dashboard page
-    time.sleep(3)
-    self._driver.get(paper_url)
+    dashboard_page._wait_for_element(
+      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
-    time.sleep(2)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     time.sleep(1)

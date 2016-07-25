@@ -3,6 +3,7 @@ require 'securerandom'
 FactoryGirl.define do
   factory :invitation do
     invitee_role 'Some Role'
+    email "email@example.com"
     token { SecureRandom.hex(10) }
     association(:task, factory: :invitable_task)
     association(:invitee, factory: :user)

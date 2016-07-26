@@ -62,12 +62,13 @@ class CommonTest(FrontEndTest):
     logins = (users + editorial_users + external_editorial_users)
     if not email:
       user = random.choice(logins)
+      email = user['email']
     # Login to Aperta
-    logging.info('Logging in as user: {0}'.format(user['email']))
+    logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.login_cas()
     cas_signin_page = AkitaLoginPage(self.getDriver())
-    cas_signin_page.enter_login_field(user['email'])
+    cas_signin_page.enter_login_field(email)
     cas_signin_page.enter_password_field(password)
     cas_signin_page.click_sign_in_button()
     return DashboardPage(self.getDriver())

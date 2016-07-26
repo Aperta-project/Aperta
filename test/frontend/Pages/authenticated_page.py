@@ -1543,7 +1543,8 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_input_field_inside_label_style(label):
     """
-    Ensure consistency in rendering page, card and overlay input field labels across the application
+    Ensure consistency in rendering page, card and overlay internal input field labels across the
+      application
     :param label: label to validate
     NOTE: Updated 20160722 as per style guide at:
     https://app.zeplin.io/project.html#pid=560d7bb83705520f4c7c0524&sid=56b239c60e93fc526ca02f8f
@@ -1554,6 +1555,26 @@ class AuthenticatedPage(PlosPage):
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
     assert label.value_of_css_property('color') == aperta_grey_dark, \
+        label.value_of_css_property('color')
+    assert label.value_of_css_property('line-height') == '25.7167px', \
+        label.value_of_css_property('line-height')
+
+  @staticmethod
+  def validate_input_field_external_label_style(label):
+    """
+    Ensure consistency in the rendering of page, card and overlay external input field labels across
+      the application
+    :param label: label to validate
+    NOTE: Not currently defined in the style guide at all - This definition is based on the
+      implementation of the Invite AE card.
+    """
+    assert application_typeface in label.value_of_css_property('font-family'), \
+        label.value_of_css_property('font-family')
+    assert label.value_of_css_property('font-size') == '18px', \
+        label.value_of_css_property('font-size')
+    assert label.value_of_css_property('font-weight') == '400', \
+        label.value_of_css_property('font-weight')
+    assert label.value_of_css_property('color') == aperta_black, \
         label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '25.7167px', \
         label.value_of_css_property('line-height')

@@ -27,7 +27,7 @@
 
         {{#if formatted}}
           {{format-input name=ident
-                         value=defaultAnswer
+                         value=model.answer.value
                          class=inputClassNames
                          placeholder=placeholder
                          displayBold=false
@@ -35,7 +35,7 @@
                          disabled=disabled}}
         {{else}}
           {{input name=ident
-                  value=defaultAnswer
+                  value=model.answer.value
                   class=inputClassNames
                   placeholder=placeholder
                   type=type

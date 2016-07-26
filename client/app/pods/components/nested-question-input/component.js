@@ -10,13 +10,6 @@ export default NestedQuestionComponent.extend({
   formatted: false,
   inputClassNames: ['form-control tall-text-field'],
   type: 'text',
-  setDefault: false,
-  defaultAnswer: Ember.computed('model.answer', function() {
-    if (this.get('setDefault')) {
-      this.get('model.answer.value') === undefined;
-      this.get('model.answer').save();
-    }
-  }),
   clearHiddenQuestions: Ember.observer('displayContent', function() {
     if (!this.get('displayContent')) {
       this.set('model.answer.value', '');

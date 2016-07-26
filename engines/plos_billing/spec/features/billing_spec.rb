@@ -34,7 +34,8 @@ feature 'Billing Task', js: true do
       idents.each do |ident|
         find("input[name*='#{ident}']").set 'foo'
         page.execute_script("$(\"input[name*='#{ident}']\").blur()")
-        expect(find("#error-for-#{ident}")).to have_content('Must be a number')
+        expect(page).to have_css("#error-for-#{ident}",
+          text: "Must be a number")
       end
     end
   end

@@ -11,9 +11,9 @@ namespace :data do
           letter = <<-TEXT.strip_heredoc
             ***EDIT THIS LETTER BEFORE SENDING****
 
-            Dear Dr. [Last Name],
+            Dear Dr. [LAST NAME],
 
-            Thank you very much for submitting your manuscript '[ARTICLE TITLE]' for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
+            Thank you very much for submitting your manuscript '[PAPER TITLE]' for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
 
             The reviews are attached, and we hope they may help you should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion. 
 
@@ -25,7 +25,8 @@ namespace :data do
             [EDITOR TITLE]
             PLOS Biology  
             TEXT
-          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'Editor Decision - Reject After Review CJs'
           letter = <<-TEXT.strip_heredoc
@@ -33,7 +34,7 @@ namespace :data do
 
             Dear Dr. [LAST NAME],
 
-            Thank you very much for submitting your manuscript entitled '[ARTICLE TITLE]' for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
+            Thank you very much for submitting your manuscript entitled '[PAPER TITLE]' for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
 
             The reviews are attached and we hope they may help you, should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion. 
 
@@ -56,7 +57,8 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'Editor Decision - Reject After Review ONE'
           letter = <<-TEXT.strip_heredoc
@@ -87,7 +89,8 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'Reject After Review ONE'
           letter = <<-TEXT.strip_heredoc
@@ -120,7 +123,8 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'Reject After Revision and Re-review ONE'
           letter = <<-TEXT.strip_heredoc
@@ -151,13 +155,14 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'reject', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'RA Major Revision'
           letter = <<-TEXT.strip_heredoc
             **choose appropriate first paragraph; attach prod reqs PDF - DELETE THIS***
 
-            Dear Dr. [Last Name],
+            Dear Dr. [LAST NAME],
 
             ***EITHER****
 
@@ -165,7 +170,7 @@ namespace :data do
 
             ****OR (if previous OPEN REJECT)****
 
-            Thank you very much for submitting a revised version of your manuscript "[ARTICLE TITLE]" for consideration at PLOS Biology. This revised version of your manuscript has been evaluated by the PLOS Biology editorial staff, an Academic Editor and reviewers. 
+            Thank you very much for submitting a revised version of your manuscript "[PAPER TITLE]" for consideration at PLOS Biology. This revised version of your manuscript has been evaluated by the PLOS Biology editorial staff, an Academic Editor and reviewers. 
 
             ****
 
@@ -199,7 +204,8 @@ namespace :data do
             Reviewer Notes:
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.where(template_decision: 'major_revision', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'major_revision', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'RA Minor Revision'
           letter = <<-TEXT.strip_heredoc
@@ -259,7 +265,8 @@ namespace :data do
 
             [REVIEWER COMMENTS]
             TEXT
-          LetterTemplate.where(template_decision: 'minor_revision', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'minor_revision', text: text, subject: 'Your [JOURNAL NAME] submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
 
           text   = 'RA Accept'
           letter = <<-TEXT.strip_heredoc
@@ -278,7 +285,8 @@ namespace :data do
             %{your_name}
             %{journal_name}
             TEXT
-          LetterTemplate.where(template_decision: 'accept', text: text, subject: 'Your %{journal_name} submission', journal: journal, letter: letter).first_or_create!
+          template = LetterTemplate.where(template_decision: 'accept', text: text, subject: 'Your %{journal_name} submission', journal: journal).first_or_create!
+          template.update_column(:letter, letter)
         end
       end
     end

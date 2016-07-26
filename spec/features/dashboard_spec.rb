@@ -63,7 +63,7 @@ feature "Dashboard", js: true do
 
   feature "displaying invitations" do
     let(:active_paper_count) { 1 }
-    let(:paper) { papers.first }
+    let(:paper) { FactoryGirl.create :paper_with_phases, :submitted_lite }
     let(:task) do
       FactoryGirl.create(
         :paper_editor_task,
@@ -73,7 +73,6 @@ feature "Dashboard", js: true do
     end
 
     before do
-      decision = paper.decisions.create!
       FactoryGirl.create_pair(:invitation, :invited, task: task, invitee: user)
     end
 
@@ -82,7 +81,9 @@ feature "Dashboard", js: true do
       visit "/"
 
       dashboard.expect_active_invitations_count(2)
-      decision = paper.decisions.create!
+      paper.draft_decision.update(verdict: 'major_revision')
+      paper.draft_decision.register! FactoryGirl.create(:register_decision_task)
+      paper.submit! user
       dashboard.reload
 
       dashboard.expect_active_invitations_count(0)

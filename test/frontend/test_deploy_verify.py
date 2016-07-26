@@ -69,7 +69,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
     time.sleep(2)
-    paper_id = manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_id_from_url()
 
     keep_waiting = True
     while keep_waiting:

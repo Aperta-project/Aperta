@@ -55,7 +55,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_id_from_url()
     time.sleep(2)
     # figures
     manuscript_page.click_task('review_candidates')
@@ -107,7 +107,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_id_from_url()
     time.sleep(2)
     # figures
     manuscript_page.click_task('review_candidates')
@@ -161,7 +161,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_id_from_url()
     time.sleep(2)
     # figures
     manuscript_page.click_task('review_candidates')
@@ -237,7 +237,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_id_from_url()
     time.sleep(2)
     # complete reviewer_candidates
     manuscript_page.complete_task('Reviewer Candidates')

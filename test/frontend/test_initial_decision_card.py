@@ -72,7 +72,7 @@ class InitialDecisionCardTest(CommonTest):
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
-    paper_id = manuscript_page.get_paper_db_id()
+    paper_id = manuscript_page.get_paper_id_from_url()
 
     # Get paper version for AC 6
     version_before = Decimal(manuscript_page.get_manuscript_version()[1:])

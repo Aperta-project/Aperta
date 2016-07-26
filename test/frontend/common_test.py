@@ -59,15 +59,15 @@ class CommonTest(FrontEndTest):
     :param password: pw for user
     :return: DashboardPage
     """
-    logins = [users + editorial_users + external_editorial_users]
+    logins = (users + editorial_users + external_editorial_users)
     if not email:
-      email = random.choice(logins)['email']
+      user = random.choice(logins)
     # Login to Aperta
-    logging.info('Logging in as user: {0}'.format(email))
+    logging.info('Logging in as user: {0}'.format(user['email']))
     login_page = LoginPage(self.getDriver())
     login_page.login_cas()
     cas_signin_page = AkitaLoginPage(self.getDriver())
-    cas_signin_page.enter_login_field(email)
+    cas_signin_page.enter_login_field(user['email'])
     cas_signin_page.enter_password_field(password)
     cas_signin_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
@@ -78,7 +78,7 @@ class CommonTest(FrontEndTest):
     A method for selecting a single CAS user when needed to track which user was chosen
     :return: selected user dictionary
     """
-    cas_users = [users, editorial_users, external_editorial_users]
+    cas_users = (users, editorial_users, external_editorial_users)
     user = random.choice(cas_users)
     return user
 

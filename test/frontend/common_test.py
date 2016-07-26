@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-
+POM Definition for the Tests common to all (or most) pages
 """
 
 import logging
@@ -9,13 +9,12 @@ import os
 import random
 import time
 
+from selenium.common.exceptions import TimeoutException
+
 from Base.FrontEndTest import FrontEndTest
 from Base.PostgreSQL import PgSQL
-from Base.Resources import login_valid_pw, docs, creator_login1, creator_login2, creator_login3, \
-    creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-    internal_editor_login, staff_admin_login, pub_svcs_login, super_admin_login, \
-    cover_editor_login, prod_staff_login, au_login, co_login, rv_login, ae_login, he_login, \
-    fm_login, oa_login
+from Base.Resources import login_valid_pw, docs, users, editorial_users, external_editorial_users, \
+    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.dashboard import DashboardPage
@@ -60,23 +59,10 @@ class CommonTest(FrontEndTest):
     :param password: pw for user
     :return: DashboardPage
     """
-    logins = (creator_login1['email'],
-              creator_login2['email'],
-              creator_login3['email'],
-              creator_login4['email'],
-              creator_login5['email'],
-              reviewer_login['email'],
-              handling_editor_login['email'],
-              cover_editor_login['email'],
-              academic_editor_login['email'],
-              internal_editor_login['email'],
-              staff_admin_login['email'],
-              pub_svcs_login['email'],
-              prod_staff_login['email'],
-              super_admin_login['email'],
-              )
+    logins = (users + editorial_users + external_editorial_users)
     if not email:
-      email = random.choice(logins)
+      user = random.choice(logins)
+      email = user['email']
     # Login to Aperta
     logging.info('Logging in as user: {0}'.format(email))
     login_page = LoginPage(self.getDriver())
@@ -93,22 +79,8 @@ class CommonTest(FrontEndTest):
     A method for selecting a single CAS user when needed to track which user was chosen
     :return: selected user dictionary
     """
-    users = (creator_login1,
-             creator_login2,
-             creator_login3,
-             creator_login4,
-             creator_login5,
-             reviewer_login,
-             handling_editor_login,
-             cover_editor_login,
-             academic_editor_login,
-             internal_editor_login,
-             staff_admin_login,
-             pub_svcs_login,
-             prod_staff_login,
-             super_admin_login,
-             )
-    user = random.choice(users)
+    cas_users = (users, editorial_users, external_editorial_users)
+    user = random.choice(cas_users)
     return user
 
   def select_preexisting_article(self, title='Hendrik', first=False):

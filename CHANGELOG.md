@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
 - Fix frontend code to allow for multiple rounds of revision
+- Emails with html-like text ( <, >, etc) will no longer be truncated
 ### Security
 
 ## [1.4.18] - {2016-07-06}

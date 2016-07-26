@@ -192,7 +192,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Retrieves journal id
     :return: Int with journal_id
     """
-    paper_id = self.get_paper_db_id()
+    paper_id = self.get_paper_id_from_url()
     print paper_id
     journal_id = PgSQL().query('SELECT papers.journal_id '
                                'FROM papers '
@@ -632,8 +632,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def click_submit_btn(self):
     """Press the submit button"""
-    # Must allow time for the overlay to animate
-    time.sleep(.5)
+    self._wait_for_element(self._get(self._submit_button))
     self._get(self._submit_button).click()
 
   def confirm_submit_btn(self):
@@ -654,6 +653,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def click_workflow_link(self):
     """Click workflow button"""
+    self._wait_for_element(self._get(self._tb_workflow_link))
     self._get(self._tb_workflow_link).click()
 
   def click_question_mark(self):
@@ -712,19 +712,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     return self._get(self._title).text
 
-  def get_paper_db_id(self):
+  def get_paper_id_from_url(self):
     """
-    Returns the DB paper ID from URL
+    Returns the database paper ID (not the Manuscript ID) from URL
     """
-    time.sleep(5)
-    paper_url = self.get_current_url()
-    logging.info(paper_url)
-    # Need to cover the first view case stripping the trailing garbage
-    try:
-      paper_id = int(paper_url.split('papers/')[1].split('?')[0])
-    except IndexError:
-      raise ValueError('URL not in expected state: {0}'.format(paper_url))
-    logging.info('The paper DB ID is: {0}'.format(paper_id))
+    # Need to wait for url to update
+    count = 0
+    paper_id = self.get_current_url().split('/')[-1]
+    while not paper_id:
+      if count > 60:
+        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+      time.sleep(1)
+      paper_id = self.get_current_url().split('/')[-1]
+      count += 1
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
+    logging.info("Assigned paper id: {0}".format(paper_id))
     return paper_id
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):

@@ -120,7 +120,7 @@ class ManuscriptViewerTest(CommonTest):
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         time.sleep(3)  # needed to give time to retrieve new menu items
         if user['user'] == academic_editor_login['user']:
-          paper_id = manuscript_viewer.get_paper_db_id()
+          paper_id = manuscript_viewer.get_paper_id_from_url()
           permissions = PgSQL().query('SELECT paper_roles.old_role FROM paper_roles '
                                       'WHERE user_id = %s AND paper_id = %s;', (uid, paper_id))
           for x in permissions:

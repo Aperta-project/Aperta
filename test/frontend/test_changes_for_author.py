@@ -57,23 +57,10 @@ class CFACardTest(CommonTest):
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    # Need to wait for url to update
-    count = 0
-    paper_id = manuscript_page.get_current_url().split('/')[-1]
-    while not paper_id:
-      if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
-      time.sleep(1)
-      paper_id = manuscript_page.get_current_url().split('/')[-1]
-      count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
+    paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-    # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
-    time.sleep(2)
+
     manuscript_page.close_modal()
     # Paper MUST be in submitted state to continue
     db_submission_data = manuscript_page.get_db_submission_data(paper_id)
@@ -92,13 +79,11 @@ class CFACardTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(4)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     # add card ITC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Initial Tech Check'):
@@ -108,6 +93,7 @@ class CFACardTest(CommonTest):
     workflow_page.click_initial_tech_check_card()
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
+    # TODO: Figure out a way to eliminate this explicit wait
     time.sleep(2)
     issues_text = itc_card.get_issues_text()
     for index, checked in enumerate(data):
@@ -153,7 +139,7 @@ class CFACardTest(CommonTest):
     manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
-    time.sleep(1)
+    cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
     cfa_task.validate_styles()
     cfa_task.complete_cfa_card()
     cfa_task.check_flash_messages('Thank you. Your changes have been sent to PLOS Wombat.')
@@ -184,23 +170,10 @@ class CFACardTest(CommonTest):
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    # Need to wait for url to update
-    count = 0
-    paper_id = manuscript_page.get_current_url().split('/')[-1]
-    while not paper_id:
-      if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
-      time.sleep(1)
-      paper_id = manuscript_page.get_current_url().split('/')[-1]
-      count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
+    paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-    # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
-    time.sleep(2)
+
     manuscript_page.close_modal()
     # Paper MUST be in submitted state to continue
     db_submission_data = manuscript_page.get_db_submission_data(paper_id)
@@ -219,14 +192,11 @@ class CFACardTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
     paper_viewer.click_workflow_link()
 
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(4)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     # add card RTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Revision Tech Check'):
@@ -236,6 +206,7 @@ class CFACardTest(CommonTest):
     workflow_page.click_revision_tech_check_card()
     data = rtc_card.complete_card()
     rtc_card.click_autogenerate_btn()
+    # TODO: Figure out a way to eliminate this explicit wait
     time.sleep(2)
     issues_text = rtc_card.get_issues_text()
     for index, checked in enumerate(data):
@@ -281,7 +252,7 @@ class CFACardTest(CommonTest):
     manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
-    time.sleep(1)
+    cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
     cfa_task.validate_styles()
     cfa_task.complete_cfa_card()
     cfa_task.check_flash_messages('Thank you. Your changes have been sent to PLOS Wombat.')
@@ -311,23 +282,10 @@ class CFACardTest(CommonTest):
     dashboard_page.restore_timeout()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=30)
-    # Need to wait for url to update
-    count = 0
-    paper_id = manuscript_page.get_current_url().split('/')[-1]
-    while not paper_id:
-      if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
-      time.sleep(1)
-      paper_id = manuscript_page.get_current_url().split('/')[-1]
-      count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
+    paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-    # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
-    time.sleep(2)
+
     manuscript_page.close_modal()
     # Paper MUST be in submitted state to continue
     db_submission_data = manuscript_page.get_db_submission_data(paper_id)
@@ -346,14 +304,11 @@ class CFACardTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
     paper_viewer.click_workflow_link()
 
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(4)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     # add card FTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Final Tech Check'):
@@ -363,6 +318,7 @@ class CFACardTest(CommonTest):
     workflow_page.click_final_tech_check_card()
     data = ftc_card.complete_card()
     ftc_card.click_autogenerate_btn()
+    # TODO: Figure out a way to eliminate this explicit wait
     time.sleep(2)
     issues_text = ftc_card.get_issues_text()
     for index, checked in enumerate(data):
@@ -408,7 +364,7 @@ class CFACardTest(CommonTest):
     manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
-    time.sleep(1)
+    cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
     cfa_task.validate_styles()
     cfa_task.complete_cfa_card()
     cfa_task.check_flash_messages('Thank you. Your changes have been sent to PLOS Wombat.')

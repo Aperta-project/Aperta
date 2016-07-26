@@ -420,6 +420,7 @@ class AuthenticatedPage(PlosPage):
     Close any type of modal
     :return: None
     """
+    self._wait_for_element(self._get(self._overlay_header_close))
     self._get(self._overlay_header_close).click()
 
   @staticmethod

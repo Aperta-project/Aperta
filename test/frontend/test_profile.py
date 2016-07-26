@@ -31,6 +31,7 @@ class ApertaProfileTest(CommonTest):
     :return: void function
     """
     profile_user = self.select_cas_user()
+    logging.info(profile_user)
     dashboard = self.cas_login(email=profile_user['email'])
     dashboard.click_profile_link()
     profile_page = ProfilePage(self.getDriver())

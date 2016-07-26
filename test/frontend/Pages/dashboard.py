@@ -570,6 +570,7 @@ class DashboardPage(AuthenticatedPage):
 
   def click_create_new_submission_button(self):
     """Click Create new submission button"""
+    self._wait_for_element(self._get(self._dashboard_create_new_submission_btn))
     self._get(self._dashboard_create_new_submission_btn).click()
     return self
 
@@ -670,8 +671,8 @@ class DashboardPage(AuthenticatedPage):
 
   def click_view_invites_button(self):
     """Click View Invitations button"""
+    self._wait_for_element(self._get(self._dashboard_view_invitations_btn))
     self._get(self._dashboard_view_invitations_btn).click()
-    return self
 
   @staticmethod
   def is_invite_stanza_present(username):

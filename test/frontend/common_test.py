@@ -79,7 +79,7 @@ class CommonTest(FrontEndTest):
     A method for selecting a single CAS user when needed to track which user was chosen
     :return: selected user dictionary
     """
-    cas_users = (users, editorial_users, external_editorial_users)
+    cas_users = (users + editorial_users + external_editorial_users)
     user = random.choice(cas_users)
     return user
 

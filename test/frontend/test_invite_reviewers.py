@@ -48,21 +48,11 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviate the timeout for conversion success message
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success(timeout=30)
     # Note: Request title to make sure the required page is loaded
-    paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1]
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Giving just a little extra time here so the title on the paper gets updated
-    # What I notice is that if we submit before iHat is done updating, the paper title
-    # reverts to the temporary title specified on the CNS overlay (5s is too short)
-    # APERTA-6514
-    time.sleep(15)
+    paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-    # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
-    time.sleep(2)
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
@@ -73,15 +63,17 @@ class InviteReviewersCardTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
-    # go to card
+    dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
-    time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.validate_card_elements_styles(paper_id)
     logging.info('Paper id is: {0}.'.format(paper_id))
@@ -102,11 +94,10 @@ class InviteReviewersCardTest(CommonTest):
     logging.info('Revoking invite for {0}'.format(prod_staff_login['name']))
     invite_reviewers.revoke_invitee(prod_staff_login, 'Reviewer')
     invite_reviewers.click_close_button()
-    time.sleep(.5)
     workflow_page.logout()
+
     # login as reviewer respond to invite
-    self.cas_login(email=reviewer_login['email'])
-    time.sleep(2)
+    dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
@@ -138,16 +129,20 @@ class InviteReviewersCardTest(CommonTest):
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
     workflow_page.logout()
+
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
-    self.cas_login(email=editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_url)
-    self._driver.get(paper_workflow_url)
-    # go to card
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page._wait_for_element(
+      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(paper_id)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())

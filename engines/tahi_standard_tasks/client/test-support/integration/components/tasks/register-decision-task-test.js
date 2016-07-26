@@ -23,14 +23,17 @@ let createTask = function() {
         id: 1,
         text: 'RA Accept',
         templateDecision: 'accept',
+        subject: 'Your [JOURNAL NAME] Submission',
         letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely Someone who Accepts' },
       {
         id: 2,
         text: 'Editor Reject',
         templateDecision: 'reject',
+        subject: 'Your [JOURNAL NAME] Submission',
         letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
     nestedQuestions: [
-      { id: 1, ident: 'register_decision_questions--to-field' }]
+      { id: 1, ident: 'register_decision_questions--to-field' },
+      { id: 2, ident: 'register_decision_questions--subject-field' }]
   });
 };
 

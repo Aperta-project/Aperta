@@ -29,7 +29,7 @@
       disabled=disabled
       displayQuestionText=false
       placeholder='someone@example.edu'
-      defaultAnswer=authorEmail
+      answer=authorEmail
     }}
   </div>
 
@@ -37,12 +37,15 @@
     <div class='input-group-addon email-header'>
       Subject:
     </div>
-  {{input name=ident
-        value=subjectLine
-        class=inputClassNames
+    {{nested-question-input
+        ident="register_decision_questions--subject-field"
+        answer=subjectLine
+        owner=task
+        inputClassNames='form-control'
         disabled=disabled
-        placeholder=placeholder
-        type=type}}
+        displayQuestionText=false
+        placeholder='Enter your subject here'
+        }}
   </div>
 
   {{textarea onEvent="false"

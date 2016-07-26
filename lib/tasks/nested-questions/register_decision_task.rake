@@ -18,8 +18,17 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::RegisterDecisionTask.name,
       ident: "register_decision_questions--to-field",
       value_type: "text",
-      text: "someone@example.com",
-      position: 1
+      text: "Enter the email here",
+      position: 2
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: TahiStandardTasks::RegisterDecisionTask.name,
+      ident: "register_decision_questions--subject-field",
+      value_type: "text",
+      text: "Enter the subject here",
+      position: 3
     }
 
     NestedQuestion.where(

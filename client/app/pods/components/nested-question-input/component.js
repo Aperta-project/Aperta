@@ -6,6 +6,13 @@ export default NestedQuestionComponent.extend({
     ':nested-question',
     'errorPresent:error' // errorPresent defined in NestedQuestionComponent
   ],
+  answer: null,
+  setAnswer: Ember.observer('answer', 'init',
+      function() {
+        if (this.get('answer')) {
+          this.set('model.answer.value', this.get('answer'));
+        }
+      }.on('init')),
   displayContent: true,
   formatted: false,
   inputClassNames: ['form-control tall-text-field'],

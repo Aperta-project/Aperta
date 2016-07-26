@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :invitation do
     invitee_role 'Some Role'
-    paper { build(:paper) }
-    task { build(:invitable_task, paper: paper) }
+    paper { create(:paper) }
+    task { create(:invitable_task, paper: paper) }
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
-    decision { build(:decision, paper: paper) }
+    decision { paper.draft_decision || paper.new_draft_decision! }
 
     after(:build) do |invitation, evaluator|
       if evaluator.invitee && invitation.email.nil?

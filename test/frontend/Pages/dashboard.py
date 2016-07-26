@@ -346,14 +346,17 @@ class DashboardPage(AuthenticatedPage):
     logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
     if active_manuscripts > 1:
       assert 'Hi, {0}. You have {1} active manuscripts.'.format(first_name, active_manuscripts) \
-             in welcome_msg.text, welcome_msg.text + str(active_manuscripts)
+             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscripts.'.\
+                format(first_name, active_manuscripts), welcome_msg.text.encode('utf-8'))
     elif active_manuscripts == 1:
       assert 'Hi, {0}. You have {1} active manuscript.'.format(first_name, active_manuscripts) \
-             in welcome_msg.text, welcome_msg.text + str(active_manuscripts)
+             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscript.'.\
+                format(first_name, active_manuscripts), welcome_msg.text.encode('utf-8'))
     else:
       active_manuscripts = 0
       assert 'Hi, {0}. You have no manuscripts.'.format(first_name) \
-             in welcome_msg.text, welcome_msg.text
+             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
+                format(first_name), welcome_msg.text.encode('utf-8'))
     self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
 

@@ -161,7 +161,9 @@ class InviteAECard(BaseCard):
     self.validate_application_title_style(card_title)
     invite_text = self._get(self._invite_text)
     assert invite_text.text == 'Academic Editor'
-    self.validate_input_field_inside_label_style(invite_text)
+    # There is no definition of this external label style in the style guide. APERTA-7311
+    #   currently, a new style validator has been implemented to match this UI
+    self.validate_input_field_external_label_style(invite_text)
     ae_input = self._get(self._invite_box)
     assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
         ae_input.get_attribute('placeholder')

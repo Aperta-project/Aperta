@@ -12,9 +12,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login, \
-    super_admin_login, academic_editor_login
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.production_metadata_card import ProductionMedataCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -22,19 +20,6 @@ from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-
-editorial_users = [internal_editor_login,
-                   staff_admin_login,
-                   super_admin_login,
-                   prod_staff_login,
-                   pub_svcs_login,
-                   ]
 
 @MultiBrowserFixture
 class ProductionMetadataCardTest(CommonTest):
@@ -103,14 +88,14 @@ class ProductionMetadataCardTest(CommonTest):
         (paper_id,'Production Metadata'))[0][0]
     nested_queston = PgSQL().query(
         'SELECT nested_question_id, value from nested_question_answers '
-        'WHERE owner_id = %s and owner_type=%s;', (task_id,'Task'))
-    answers_in_db = [x[1].replace('\n','') for  x in nested_queston]
+        'WHERE owner_id = %s and owner_type=%s;', (task_id, 'Task'))
+    answers_in_db = [x[1].replace('\n','') for x in nested_queston]
     logging.info('nested_queston {0}'.format(nested_queston))
     logging.info('answers in DB {0}'.format(answers_in_db))
     logging.info('data {0}'.format(data))
     for item in data.values():
       # TODO: Find a way to save other fields in a consistent way
-      if 2<len(item)<12:
+      if 2 < len(item) < 12:
         assert item in answers_in_db,  (item, answers_in_db)
     workflow_page.logout()
 

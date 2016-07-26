@@ -235,6 +235,7 @@ class BaseCard(AuthenticatedPage):
     :param paper_id: id of paper - needed to validate the card header elements
     :return void function
     """
+    self._wait_for_element(self._get(self._header_title_link))
     self._get(self._header_title_link)
     self.validate_card_header(paper_id)
     # Close btn
@@ -269,6 +270,7 @@ class BaseCard(AuthenticatedPage):
     # Check footer
     following_label = self._get(self._following_label)
     assert following_label.text == 'Following:', following_label.text
+    self._wait_for_element(self._get(self._add_participant_btn))
     add_participant_btn = self._get(self._add_participant_btn)
     self.validate_plus_style(add_participant_btn)
     bottom_close_btn = self._get(self._bottom_close_button)

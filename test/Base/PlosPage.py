@@ -149,7 +149,7 @@ class PlosPage(object):
 
   def _wait_for_element(self, element):
     # For this method, we want to give an exaggerated amount of time compared to the normal timeout
-    self.set_timeout(120)
+    self.set_timeout(150)
     self._wait.until(CustomExpectedConditions.ElementToBeClickable(element))
     self.restore_timeout()
 
@@ -160,7 +160,7 @@ class PlosPage(object):
   def normalize_spaces(text):
     """
     Helper method to leave strings with only one space between each word
-    Used for string comparison when at least one string cames from an HTML document
+    Used for string comparison when at least one string came from an HTML document
     :text: string
     :return: string
     """

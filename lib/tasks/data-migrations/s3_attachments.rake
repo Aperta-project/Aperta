@@ -71,6 +71,16 @@ namespace :data do
         end
       end
 
+      desc "Populates resource tokens with old s3 locations to not break links while we're migrating"
+
+      task populate_old_links: :environment do
+        # copy attachment source_url logic from above, but use it to populate resource_tokens
+        # e.g.
+        # 1. grab the source_url for the default url
+        # 2. grab the source_urls for the versions, put into hash
+        # 3. save default and versions to a ResourceToken in the appropriate fields, associate the token with the attachment
+      end
+
       desc <<-DESC.strip_heredoc
         Performs migration of S3 attachments.
       DESC

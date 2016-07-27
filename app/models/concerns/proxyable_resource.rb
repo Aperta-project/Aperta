@@ -49,6 +49,7 @@ module ProxyableResource
     return create_resource_token(resource) unless resource_token
     urls = urls_for_resource(resource)
 
+                                                              # these checks need to be removed as we'll be populating the urls with old locations now
     resource_token.update!(default_url: urls[:default_url]) if resource_token.default_url.blank?
     resource_token.update!(version_urls: urls[:version_urls]) if resource_token.version_urls.blank?
   end

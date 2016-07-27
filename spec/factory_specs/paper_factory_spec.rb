@@ -48,4 +48,13 @@ describe 'PaperFactory' do
         .to mostly_eq_ar(reference_paper.versioned_texts).except(*ignore)
     end
   end
+
+  describe "ready_for_export trait" do
+    subject(:paper) { create :paper, :ready_for_export }
+
+    it "creates a paper ready for export" do
+      expect(paper).to be
+      expect(paper.publishing_state).to eq "accepted"
+    end
+  end
 end

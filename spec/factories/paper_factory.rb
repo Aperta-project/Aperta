@@ -217,8 +217,11 @@ FactoryGirl.define do
       end
     end
 
-    factory :paper_ready_for_export do
+    trait :ready_for_export do
       doi "blah/journal.yetijour.123334"
+      publishing_state "accepted"
+
+      with_integration_journal
 
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)

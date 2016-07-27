@@ -10,7 +10,7 @@ class CreateLetterTemplates < ActiveRecord::Migration
       t.timestamps
     end
 
-    Rake::Task['data:migrate:letter_templates:populate'].invoke
+    Rake::Task['seed:letter_templates:populate'].invoke
   end
 
   def down

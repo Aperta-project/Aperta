@@ -18,8 +18,7 @@ class ReviewerReportCard(BaseCard):
   Page Object Model for Reviewer Report Card
   """
   def __init__(self, driver):
-    super(ReviewerReportCard(, self).__init__(driver)
-
+    super(ReviewerReportCard, self).__init__(driver)
     # Locators - Instance members
 
 

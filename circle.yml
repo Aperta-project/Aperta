@@ -5,7 +5,7 @@ machine:
 
   ruby:
     version:
-      2.2.3 # when changing ruby versions, also update the cache_directory path below
+      2.2.4 # when changing ruby versions, also update the cache_directory path below
   node:
     version: 4.2.4
 
@@ -16,7 +16,7 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "~/.rvm/gems/ruby-2.2.3@tahi"
+    - "~/.rvm/gems/ruby-2.2.4@tahi"
     - "client/node_modules"
     - "client/bower_components"
 

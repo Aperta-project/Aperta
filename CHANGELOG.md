@@ -32,6 +32,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 editability down the line.
 - Registering a decision removes existing reviewers and open reviewer invitations
 ### Changed
+- Upgrade to ruby 2.2.4
 ### Deprecated
 ### Removed
 ### Fixed

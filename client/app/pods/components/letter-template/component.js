@@ -3,9 +3,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNameBindings: ['templateDecision:letter-template'],
-  firstDecisionTemplate: Ember.computed('decisionTemplates', function() {
-    return this.get('decisionTemplates.firstObject');
-  }),
+  firstDecisionTemplate: Ember.computed.reads('decisionTemplates.firstObject'),
   //passed-in stuff
   templateDecision: null,
   letterValue: null,
@@ -28,10 +26,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
           };
         });
   }),
-  decisionTemplateCount: Ember.computed('decisionTemplates.length', function() {
-    return this.get('decisionTemplates.length');
-  }),
-  showDropdowns: Ember.computed.gt('decisionTemplateCount', 1),
+  showDropdowns: Ember.computed.gt('decisionTemplates.length', 1),
   inputClassNames: ['form-control']
 });
 

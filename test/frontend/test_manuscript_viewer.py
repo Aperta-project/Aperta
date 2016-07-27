@@ -310,7 +310,7 @@ class ManuscriptViewerTest(CommonTest):
                           )
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    manuscript_viewer.validate_ihat_conversions_success(timeout=30)
+    manuscript_viewer.validate_ihat_conversions_success(timeout=45)
 
     # Need to wait for url to update
     count = 0

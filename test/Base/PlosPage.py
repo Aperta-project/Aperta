@@ -147,9 +147,16 @@ class PlosPage(object):
     finally:
       self.restore_timeout()
 
-  def _wait_for_element(self, element):
-    # For this method, we want to give an exaggerated amount of time compared to the normal timeout
-    self.set_timeout(150)
+  def _wait_for_element(self, element, multiplier=5):
+    """
+    We need a method that can be used to determine whether a page comprised of dynamic elements has
+      fully loaded, or loaded enough to expose element.
+    :param element: the item on a dynamic page we want to wait for
+    :param multiplier: a multiplier, default (5) applied against the base wait_timeout to wait for
+      element
+    """
+    timeout = Config.wait_timeout * multiplier
+    self.set_timeout(timeout)
     self._wait.until(CustomExpectedConditions.ElementToBeClickable(element))
     self.restore_timeout()
 

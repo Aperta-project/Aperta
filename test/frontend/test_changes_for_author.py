@@ -56,7 +56,7 @@ class CFACardTest(CommonTest):
     dashboard_page.restore_timeout()
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -169,7 +169,7 @@ class CFACardTest(CommonTest):
     dashboard_page.restore_timeout()
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -281,7 +281,7 @@ class CFACardTest(CommonTest):
                         )
     dashboard_page.restore_timeout()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()

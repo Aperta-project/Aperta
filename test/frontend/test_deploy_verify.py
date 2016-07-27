@@ -67,7 +67,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     time.sleep(2)
     paper_id = manuscript_page.get_paper_id_from_url()
 
@@ -82,7 +82,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
 
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=15)
+    paper_viewer.validate_ihat_conversions_success(timeout=45)
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))

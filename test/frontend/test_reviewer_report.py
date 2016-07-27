@@ -95,12 +95,9 @@ class ReviewerReportCardTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
-    paper_viewer.click_workflow_link()
-    workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
-    workflow_page.click_card('reviewer_report')
-    reviewer_report_card = ReviewerReportCard(self.getDriver())
-    reviewer_report_card.validate_card_elements_styles()
+    paper_viewer.click_task('reviewer_report')
+    reviewer_report_task = ReviewerReportTask(self.getDriver())
+    reviewer_report_task.validate_card_elements_styles()
 
 
 if __name__ == '__main__':

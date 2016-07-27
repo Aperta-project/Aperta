@@ -25,8 +25,9 @@ namespace :seed do
           PLOS Biology  
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'reject', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'Editor Decision - Reject After Review CJs'
         letter = <<-TEXT.strip_heredoc
@@ -58,8 +59,9 @@ namespace :seed do
           [REVIEWER COMMENTS]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'reject', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'Editor Decision - Reject After Review ONE'
         letter = <<-TEXT.strip_heredoc
@@ -91,8 +93,9 @@ namespace :seed do
           [REVIEWER COMMENTS]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'reject', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'Reject After Review ONE'
         letter = <<-TEXT.strip_heredoc
@@ -126,8 +129,9 @@ namespace :seed do
           [REVIEWER COMMENTS]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'reject', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'Reject After Revision and Re-review ONE'
         letter = <<-TEXT.strip_heredoc
@@ -159,8 +163,9 @@ namespace :seed do
           [REVIEWER COMMENTS]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'reject', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'RA Major Revision'
         letter = <<-TEXT.strip_heredoc
@@ -209,8 +214,9 @@ namespace :seed do
           [REVIEWER COMMENTS]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'major_revision', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'RA Minor Revision'
         letter = <<-TEXT.strip_heredoc
@@ -271,8 +277,9 @@ namespace :seed do
           [REVIEWER COMMENTS]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'minor_revision', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
 
         text   = 'RA Accept'
         letter = <<-TEXT.strip_heredoc
@@ -292,8 +299,9 @@ namespace :seed do
           [JOURNAL NAME]
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
+        to_field = '[AUTHOR EMAIL]'
         template = LetterTemplate.where(template_decision: 'accept', text: text, journal: journal).first_or_create!
-        template.update_attributes(letter: letter, subject: subject)
+        template.update_attributes(to: to_field, subject: subject, letter: letter)
       end
     end
   end

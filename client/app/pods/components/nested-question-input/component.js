@@ -6,11 +6,11 @@ export default NestedQuestionComponent.extend({
     ':nested-question',
     'errorPresent:error' // errorPresent defined in NestedQuestionComponent
   ],
-  answer: null,
+  defaultAnswer: null,
   setAnswer: Ember.observer('answer', 'init',
       function() {
-        if (this.get('answer')) {
-          this.set('model.answer.value', this.get('answer'));
+        if (this.get('defaultAnswer')) {
+          this.set('model.answer.value', this.get('defaultAnswer'));
         }
       }.on('init')),
   displayContent: true,

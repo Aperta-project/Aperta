@@ -9,7 +9,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   letterValue: null,
   templateSelected: null, //action
 
-  authorEmail: Ember.computed.alias('task.paper.creator.email'),
   decisionTemplates: Ember.computed('task.letterTemplates.[]',
                                     'templateDecision', function() {
                                       return this.get('task.letterTemplates'

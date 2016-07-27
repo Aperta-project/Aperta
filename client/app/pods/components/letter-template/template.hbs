@@ -25,11 +25,11 @@
     {{nested-question-input
       ident="register_decision_questions--to-field"
       owner=task
-      inputClassNames='form-control'
+      inputClassNames='form-control to-field'
       disabled=disabled
       displayQuestionText=false
       placeholder='someone@example.edu'
-      answer=authorEmail
+      defaultAnswer=toField
     }}
   </div>
 
@@ -39,9 +39,9 @@
     </div>
     {{nested-question-input
         ident="register_decision_questions--subject-field"
-        answer=subjectLine
+        defaultAnswer=subjectLine
         owner=task
-        inputClassNames='form-control'
+        inputClassNames='form-control subject-field'
         disabled=disabled
         displayQuestionText=false
         placeholder='Enter your subject here'

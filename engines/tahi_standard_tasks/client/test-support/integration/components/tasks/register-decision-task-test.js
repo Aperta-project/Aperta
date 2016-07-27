@@ -19,7 +19,8 @@ let createTask = function() {
       shortTitle: 'GREAT TITLE',
       creator: {
         id: 5,
-        lastName: 'Jones'
+        lastName: 'Jones',
+        email: 'author@example.com'
       }
     },
     letterTemplates: [
@@ -27,12 +28,14 @@ let createTask = function() {
         id: 1,
         text: 'RA Accept',
         templateDecision: 'accept',
+        to: '[AUTHOR EMAIL]',
         subject: 'Your [JOURNAL NAME] Submission',
         letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely Someone who Accepts' },
       {
         id: 2,
         text: 'Editor Reject',
         templateDecision: 'reject',
+        to: '[AUTHOR EMAIL]',
         subject: 'Your [JOURNAL NAME] Submission',
         letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
     nestedQuestions: [
@@ -114,3 +117,11 @@ test('it replaces [PAPER TITLE] with the paper title', function(assert) {
   assert.inputContains('.decision-letter-field', 'GREAT TITLE');
 });
 
+test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
+  let testTask = createTask();
+  this.set('fakeUser', fakeUser);
+  this.set('testTask', testTask);
+  this.render(template);
+  this.$("input[type='radio']").last().click();
+  assert.inputContains('.to-field', 'author@example.com');
+});

@@ -25,6 +25,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');
   }),
+  toField: null,
   subjectLine: null,
   revisionNumberDesc: ['revisionNumber:desc'],
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
@@ -42,6 +43,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
   applyTemplateReplacements(str) {
     str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+    str = str.replace(/\[AUTHOR EMAIL\]/g, this.get('task.paper.creator.email'));
     str = str.replace(/\[PAPER TITLE\]/g, this.get('task.paper.shortTitle'));
     str = str.replace(/\[JOURNAL NAME\]/g, this.get('task.paper.journal.name'));
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
@@ -81,7 +83,9 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
     templateSelected(template) {
       const letter = this.applyTemplateReplacements(template.letter);
+      const to = this.applyTemplateReplacements(template.to);
       const subject = this.applyTemplateReplacements(template.subject);
+      this.set('toField', to);
       this.set('subjectLine', subject);
       this.get('latestDecision').set('verdict', template.templateDecision);
       this.get('latestDecision').set('letter', letter); // will trigger save

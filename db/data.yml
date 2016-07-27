@@ -4017,7 +4017,7 @@ letter_templates:
   - - '1'
     - Editor Decision - Reject After Review
     - reject
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME],\n\nThank you
       very much for submitting your manuscript '[PAPER TITLE]' for review by PLOS
@@ -4034,11 +4034,11 @@ letter_templates:
       \ \n"
     - '1'
     - '2016-07-27 23:15:11.046668'
-    - '2016-07-27 23:15:11.048457'
+    - '2016-07-27 23:34:44.778098'
   - - '2'
     - Editor Decision - Reject After Review CJs
     - reject
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME],\n\nThank you
       very much for submitting your manuscript entitled '[PAPER TITLE]' for review
@@ -4066,11 +4066,11 @@ letter_templates:
       notes:\n\n[REVIEWER COMMENTS]\n"
     - '1'
     - '2016-07-27 23:15:11.055264'
-    - '2016-07-27 23:15:11.06338'
+    - '2016-07-27 23:34:44.782761'
   - - '3'
     - Editor Decision - Reject After Review ONE
     - reject
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - |
       ***EDIT THIS LETTER BEFORE SENDING****
@@ -4101,11 +4101,11 @@ letter_templates:
       [REVIEWER COMMENTS]
     - '1'
     - '2016-07-27 23:15:11.066037'
-    - '2016-07-27 23:15:11.067148'
+    - '2016-07-27 23:34:44.785637'
   - - '4'
     - Reject After Review ONE
     - reject
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - "**IF THE MANUSCRIPT HAS NOT BEEN RE-REVIEWED, EDIT THE FIRST PARAGRAPH AS APPROPRIATE**\n\nDear
       Dr. [LAST NAME],\n\nThank you very much for submitting your revised manuscript
@@ -4147,11 +4147,11 @@ letter_templates:
       Biology\n\n\nReviewer notes:\n\n[REVIEWER COMMENTS]\n"
     - '1'
     - '2016-07-27 23:15:11.069469'
-    - '2016-07-27 23:15:11.070601'
+    - '2016-07-27 23:34:44.789368'
   - - '5'
     - Reject After Revision and Re-review ONE
     - reject
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - "Dear Dr. [LAST NAME],\n\nThank you very much for submitting your revised manuscript
       entitled [PAPER TITLE] for review by PLOS Biology. As with all papers reviewed
@@ -4192,11 +4192,11 @@ letter_templates:
       Biology\n\n\nReviewer notes:\n\n[REVIEWER COMMENTS]\n"
     - '1'
     - '2016-07-27 23:15:11.072758'
-    - '2016-07-27 23:15:11.073656'
+    - '2016-07-27 23:34:44.792776'
   - - '6'
     - RA Major Revision
     - major_revision
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - "**choose appropriate first paragraph; attach prod reqs PDF - DELETE THIS***\n\nDear
       Dr. [LAST NAME],\n\n***EITHER****\n\nThank you very much for submitting your
@@ -4260,11 +4260,11 @@ letter_templates:
       Notes:\n[REVIEWER COMMENTS]\n"
     - '1'
     - '2016-07-27 23:15:11.075635'
-    - '2016-07-27 23:15:11.076572'
+    - '2016-07-27 23:34:44.796083'
   - - '7'
     - RA Minor Revision
     - minor_revision
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - "** CHOOSE BETWEEN NUMBERED PARAGRAPHS BELOW\n**REMOVE THIS TEXT BEFORE SENDING**\n\nDear
       Dr. [LAST NAME],\n\n[1] \nThank you very much for submitting your manuscript
@@ -4330,11 +4330,11 @@ letter_templates:
       remarks:\n\n[REVIEWER COMMENTS]\n"
     - '1'
     - '2016-07-27 23:15:11.08016'
-    - '2016-07-27 23:15:11.081175'
+    - '2016-07-27 23:34:44.802099'
   - - '8'
     - RA Accept
     - accept
-    - 
+    - "[AUTHOR EMAIL]"
     - Your [JOURNAL NAME] submission
     - |
       Dear Dr. [LAST NAME],
@@ -4353,7 +4353,7 @@ letter_templates:
       [JOURNAL NAME]
     - '1'
     - '2016-07-27 23:15:11.082989'
-    - '2016-07-27 23:15:11.083849'
+    - '2016-07-27 23:34:44.805461'
 
 ---
 manuscript_manager_templates:

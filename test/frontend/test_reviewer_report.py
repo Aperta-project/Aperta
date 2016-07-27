@@ -15,7 +15,7 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
-from Cards.reviewer_report_card import ReviewerReportCard
+from Task.reviewer_report_task import ReviewerReportTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -23,7 +23,7 @@ __author__ = 'sbassi@plos.org'
 
 
 @MultiBrowserFixture
-class ReviewerReportCardTest(CommonTest):
+class ReviewerReportTest(CommonTest):
   """
   Validate the elements, styles, functions of the Reviewer Report card
   """
@@ -93,7 +93,7 @@ class ReviewerReportCardTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    #paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
     paper_viewer.click_task('reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())

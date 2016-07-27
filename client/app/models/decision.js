@@ -42,4 +42,8 @@ export default DS.Model.extend({
       });
     });
   },
+
+  revisionNumber: Ember.computed('minorVersion', 'majorVersion', function() {
+    return `${this.get('majorVersion')}.${this.get('minorVersion')}`;
+  })
 });

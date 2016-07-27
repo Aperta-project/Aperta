@@ -39,3 +39,16 @@ test("rescind() uses restless to touch the rescind endpoint", function(assert) {
     [`/api/decisions/${decision.id}/rescind`],
     'Calls restless with rescind endpoint');
 });
+
+test('revisionNumber', function(assert) {
+  const [majorVersion, minorVersion] = [1, 2];
+  const decision = FactoryGuy.make('decision', {
+    majorVersion,
+    minorVersion
+  });
+
+  assert.equal(
+    decision.get('revisionNumber'),
+    `${majorVersion}.${minorVersion}`
+  );
+});

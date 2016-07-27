@@ -5,6 +5,7 @@ FactoryGuy.define('decision', {
     latest: true,
     verdict: null,
     letter: null,
-    revisionNumber: null
+    minorVersion: null,
+    majorVersion: null
   }
 });

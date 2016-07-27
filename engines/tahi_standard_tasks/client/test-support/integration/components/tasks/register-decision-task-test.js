@@ -16,7 +16,11 @@ let createTask = function() {
       decisions: [
         { id: 1 }
       ],
-      shortTitle: 'GREAT TITLE'
+      shortTitle: 'GREAT TITLE',
+      creator: {
+        id: 5,
+        lastName: 'Jones'
+      }
     },
     letterTemplates: [
       { 
@@ -88,7 +92,7 @@ test('it replaces [LAST NAME] with the authors last name', function(assert) {
   this.set('testTask', testTask);
   this.render(template);
   this.$("input[type='radio']").last().click();
-  assert.inputContains('.decision-letter-field', 'Dear Dr. Smith');
+  assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
 });
 
 test('it replaces [JOURNAL NAME] with the journal name', function(assert) {

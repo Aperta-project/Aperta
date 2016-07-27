@@ -1,6 +1,6 @@
 RSpec.shared_examples_for 'a reviewer report task' do |factory:|
-  let(:task) { FactoryGirl.create(factory) }
-  let(:paper) { task.paper }
+  let(:paper) { create :paper, :submitted_lite }
+  let(:task) { FactoryGirl.create(factory, paper: paper) }
 
   describe "#body" do
     context "when it has a custom value" do
@@ -19,8 +19,6 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
   end
 
   describe '#create' do
-    let(:task) { FactoryGirl.build(:reviewer_report_task) }
-
     before do
       expect(task.paper.draft_decision).to be
     end

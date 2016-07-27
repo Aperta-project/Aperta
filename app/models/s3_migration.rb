@@ -38,6 +38,8 @@ class S3Migration < ActiveRecord::Base
   include AASM
 
   def self.migrate!
+    # update to sort by attachment updated_at date, prioritizing newer attachments first
+    # ready.all.sort { |sm| sm.attachment.updated_at }
     ready.all.each do |migration|
       transaction do
         migration.migrate!

@@ -69,10 +69,6 @@ FactoryGirl.define do
       end
     end
 
-    # TODO: get rid of this in favor of using :submitted. At the moment
-    # :submitted requires a full R&P setup which makes it fail in most unit
-    # tests. We should make the state transitions behave gracefully when R&P
-    # config doesn't exist
     trait(:submitted_lite) do
       transient do
         submitting_user { FactoryGirl.create(:user) }
@@ -91,6 +87,11 @@ FactoryGirl.define do
           submitting_user: evaluator.submitting_user
         )
       end
+    end
+
+    trait(:initially_submitted_lite) do
+      submitted_lite
+      publishing_state :initially_submitted
     end
 
     # TODO: reimplement this using actual AASM transitions. Like above.

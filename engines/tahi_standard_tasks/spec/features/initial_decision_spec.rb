@@ -5,7 +5,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
   given(:paper) do
     FactoryGirl.create :paper_with_task,
                        :with_integration_journal,
-                       publishing_state: 'initially_submitted',
+                       :initially_submitted_lite,
                        task_params: {
                          title: 'Initial Decision',
                          type: 'TahiStandardTasks::InitialDecisionTask',

@@ -595,6 +595,11 @@ describe Paper do
         paper.withdraw! "Some reason", withdrawn_by_user
         expect(paper).to_not be_editable
       end
+
+      it "unassigns reviewers" do
+        expect(paper).to receive(:unassign_reviewers!)
+        paper.withdraw!
+      end
     end
 
     describe '#invite_full_submission' do
@@ -728,6 +733,11 @@ describe Paper do
           paper.reject!
           expect(paper.rejected?).to be true
         end
+
+        it "unassigns reviewers" do
+          expect(paper).to receive(:unassign_reviewers!)
+          paper.reject!
+        end
       end
 
       context 'paper is initially_submitted' do
@@ -746,6 +756,11 @@ describe Paper do
           paper.reject!
           expect(paper.rejected?).to be true
         end
+
+        it "unassigns reviewers" do
+          expect(paper).to receive(:unassign_reviewers!)
+          paper.reject!
+        end
       end
     end
 
@@ -760,6 +775,11 @@ describe Paper do
       it "marks the paper uneditable" do
         paper.publish!
         expect(paper.published_at).to be_truthy
+      end
+
+      it "unassigns reviewers" do
+        expect(paper).to receive(:unassign_reviewers!)
+        paper.publish!
       end
     end
   end
@@ -783,12 +803,25 @@ describe Paper do
         paper.make_decision decision
         expect(paper.accepted_at.utc).to be_within(1.second).of Time.zone.now
       end
+
+      it "unassigns reviewers" do
+        expect(paper).to receive(:unassign_reviewers!)
+        paper.make_decision decision
+      end
     end
 
     context "rejection" do
+      let(:decision) do
+        instance_double('Decision', verdict: 'reject')
+      end
+
       it 'rejects the paper' do
-        decision = instance_double('Decision', verdict: 'reject')
         expect(paper).to receive(:reject!)
+        paper.make_decision decision
+      end
+
+      it "unassigns reviewers" do
+        expect(paper).to receive(:unassign_reviewers!)
         paper.make_decision decision
       end
     end
@@ -810,6 +843,11 @@ describe Paper do
         expect(paper.latest_version.major_version).to be(1)
         expect(paper.latest_version.minor_version).to be(0)
       end
+
+      it "unassigns reviewers" do
+        expect(paper).to receive(:unassign_reviewers!)
+        paper.make_decision decision
+      end
     end
 
     context "minor revision" do
@@ -828,6 +866,11 @@ describe Paper do
         paper.make_decision decision
         expect(paper.latest_version.major_version).to be(1)
         expect(paper.latest_version.minor_version).to be(0)
+      end
+
+      it "unassigns reviewers" do
+        expect(paper).to receive(:unassign_reviewers!)
+        paper.make_decision decision
       end
     end
   end

@@ -9,8 +9,6 @@ class CreateLetterTemplates < ActiveRecord::Migration
       t.integer :journal_id
       t.timestamps
     end
-
-    Rake::Task['seed:letter_templates:populate'].invoke
   end
 
   def down

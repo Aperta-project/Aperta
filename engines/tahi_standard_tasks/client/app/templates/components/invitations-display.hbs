@@ -26,7 +26,7 @@
 
   {{#each previousDecisionsWithFilteredInvitations as |decision|}}
   <tr class='revision-human-number'>
-    <td colspan=5>Round {{decision.revisionNumber}}</td>
+    <td colspan=5>Round {{decision.majorVersion}}</td>
   </tr>
   <tbody class='expired-invitations'>
     {{#each decision.filteredInvitations as |invitation|}}

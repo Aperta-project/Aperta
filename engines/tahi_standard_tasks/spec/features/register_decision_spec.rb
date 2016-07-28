@@ -55,22 +55,19 @@ feature "Register Decision", js: true, sidekiq: :inline! do
   end
 
   context "With previous decision history" do
+    let(:letter) { Faker::Lorem.paragraph(3) }
     before do
-      paper.decisions.first.update!(
-        verdict: "accept",
-        letter: "Please revise the manuscript.\nAfter line break",
-        registered: true)
-      paper.decisions.create!
-      paper.reload
+      paper.draft_decision.update!(letter: letter)
+      register_paper_decision(paper, 'accept')
     end
 
     scenario "User checks previous decision history" do
       overlay = Page.view_task_overlay(paper, task)
       expect(overlay.previous_decisions).to_not be_empty
-      expect(overlay.previous_decisions.first.revision_number).to eq("0.")
+      expect(overlay.previous_decisions.first.revision_number).to eq("0.0")
       overlay.previous_decisions.first.open
       expect(overlay.previous_decisions.first.letter)
-        .to eq("Please revise the manuscript. After line break")
+        .to eq(letter)
       expect(overlay.previous_decisions.first.letter).to_not include "<br>"
     end
   end
@@ -90,22 +87,19 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
   context "when rescinding a decision" do
     before do
-      paper.decisions.first.update!(
-        letter: "Please revise the manuscript.\nAfter line break",
-        registered: true,
-        verdict: "accept")
-      paper.accept!
-      paper.decisions.create!
+      paper.draft_decision.update!(
+        letter: Faker::Lorem.paragraph(3))
+      register_paper_decision(paper, 'accept')
       paper.reload
     end
 
     scenario "user rescinds a decision" do
       overlay = Page.view_task_overlay(paper, task)
+      overlay.mark_as_incomplete
       expect(overlay.rescind_button).to_not be_disabled
       overlay.rescind_button.click
       overlay.rescind_confirm_button.click
-      wait_for_ajax
-      expect(overlay.previous_decisions.first.revision_number).to eq("0.1")
+      expect(overlay.previous_decisions.first.revision_number).to eq("0.0")
       expect(overlay.previous_decisions.first.rescinded?).to be(true)
     end
   end

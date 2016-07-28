@@ -28,6 +28,10 @@ class CardOverlay < Page
     find('.task-not-completed').click
   end
 
+  def mark_as_incomplete
+    find('.task-completed').click
+  end
+
   def completed?
     has_css?('.task-is-completed')
   end

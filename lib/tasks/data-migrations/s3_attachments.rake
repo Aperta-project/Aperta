@@ -8,7 +8,7 @@ namespace :data do
       DESC
       task prepare: :environment do
         Attachment.transaction do
-          Attachment.all.each do |attachment|
+          Attachment.find_each do |attachment|
             # if there are attachment(s) that failed during processing
             # then they won't have a file path, so skip them
             next unless attachment.file.path
@@ -76,7 +76,7 @@ namespace :data do
       task populate_old_links: :environment do
 
         Attachment.transaction do
-          Attachment.all.each do |attachment|
+          Attachment.find_each do |attachment|
             # if there are attachment(s) that failed during processing
             # then they won't have a file path, so skip them
             next unless attachment.file.path

@@ -36,7 +36,7 @@ feature 'Withdrawing a paper', js: true do
   end
 
   scenario 'Staff reactivating a withdrawn paper' do
-    paper.withdraw! 'Because the sky is green and the sea is purple.'
+    paper.withdraw! 'Because the sky is green and the sea is purple.', creator
 
     login_as(journal_admin, scope: :user)
 

@@ -1,12 +1,13 @@
 .paper-submission-process {
   #submission-process {
-    visibility: hidden;
-    @include position(absolute, 60px 0px auto 0px);
+    display: none;
+    position: relative;
+    top: 60px;
     z-index: z('submission-process');
   }
 
   &.show-process #submission-process {
-    visibility: visible;
+    display: inline-block;;
   }
 }
 

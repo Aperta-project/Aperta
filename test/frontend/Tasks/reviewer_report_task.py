@@ -74,3 +74,4 @@ class ReviewerReportTask(BaseTask):
     submit_button = self._get(self._submit_button)
     assert submit_button.text == u'SUBMIT THIS REPORT', submit_button.text
     self.validate_primary_big_green_button_style(submit_button)
+    # TODO: Check options when APERTA-7321 is ready

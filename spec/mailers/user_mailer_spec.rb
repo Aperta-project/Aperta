@@ -236,7 +236,7 @@ describe UserMailer, redis: true do
     end
 
     it 'includes a link to the withdrawn paper' do
-      expect(links_in_email(email)).to include paper_url(paper)
+      expect(links_in_email(email)).to include client_paper_url(paper)
     end
 
     context 'and the journal does not have a staff email configured' do

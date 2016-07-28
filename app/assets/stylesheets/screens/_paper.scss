@@ -1,7 +1,6 @@
 // CSS here meant to style paper view page, and paper body
 .paper-container {
-  @include position(fixed, 0px 0px 0px 0px);
-  margin-top: 42px;
+  @include position(relative, 0px 0px 0px 0px);
   top: 60px;
   z-index: z('paper-container');
 

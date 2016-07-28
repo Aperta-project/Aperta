@@ -8,6 +8,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.
 - Abstract included in APEX export.
 - Email staff when a paper is withdrawn
+- Register Decision Task can now select from multiple letter templates.
+  Adds a consistent way to handle variables in letter templates to support
+editability down the line.
 ### Changed
 ### Deprecated
 ### Removed
@@ -54,7 +57,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Institutional accounts are not pulled from a static list for easier updating
 ### Deprecated
 ### Removed
-- Notification when an invitation was recended
+- Notification when an invitation was recinded
 ### Fixed
 - Ad-hoc cards on manuscript manager templates can be edited
 - Figures placement improvements

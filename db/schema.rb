@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720010120) do
+ActiveRecord::Schema.define(version: 20160728180001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
@@ -320,6 +321,17 @@ ActiveRecord::Schema.define(version: 20160720010120) do
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
     t.string   "staff_email"
+  end
+
+  create_table "letter_templates", force: :cascade do |t|
+    t.string   "text"
+    t.string   "template_decision"
+    t.string   "to"
+    t.string   "subject"
+    t.text     "letter"
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|

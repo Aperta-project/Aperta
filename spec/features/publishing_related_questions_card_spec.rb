@@ -29,11 +29,12 @@ feature 'Publishing Related Questions Card', js: true do
       # <br> tags are only added when the space key is hit. So we clear the
       content_editable.set('T')
       content_editable.send_keys('his is a short title', :tab)
-
-      wait_for_condition do
-        paper.reload
-        !paper.short_title.blank?
-      end
+      # we need to have the field save after pressing the tab key
+      # but there is no DOM change in the browser that we can use to determine
+      # that, so we resort to wait_for_ajax.  it's a more stable option than
+      # checking on the database end
+      wait_for_ajax
+      paper.reload
 
       expect(paper.short_title).not_to include('<br')
       expect(paper.short_title).to eq('This is a short title')

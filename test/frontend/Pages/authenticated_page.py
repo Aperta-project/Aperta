@@ -1121,8 +1121,8 @@ class AuthenticatedPage(PlosPage):
 @staticmethod
 def validate_secondary_small_green_button_task_style(button):
   """
-  Ensure consistency in rendering page and overlay small white-backed, green text buttons across the application
-  NOTE: This takes into account the fact that the text in buttons inside tasks are not uppercase.
+  Ensure consistency in rendering page and overlay small white-backed, green text validations buttons
+  across the application
   :param button: button to validate
   """
   assert application_typeface in button.value_of_css_property('font-family'), \

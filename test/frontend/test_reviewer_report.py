@@ -15,7 +15,7 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
-from Task.reviewer_report_task import ReviewerReportTask
+from Tasks.reviewer_report_task import ReviewerReportTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -95,10 +95,9 @@ class ReviewerReportTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     #paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     # go to wf
-    paper_viewer.click_task('reviewer_report')
+    assert paper_viewer.click_task('reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_card_elements_styles()
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

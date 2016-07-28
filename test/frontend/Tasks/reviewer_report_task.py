@@ -21,14 +21,15 @@ class ReviewerReportTask(BaseTask):
     super(ReviewerReportTask, self).__init__(driver)
     # Locators - Instance members
 
-
-    self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
-    self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
-    self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
-    self._edit_invite_text_send_invite_button = (By.CSS_SELECTOR, 'button.invite-reviewer-button')
-
-    self._invitees_table = (By.CLASS_NAME, 'invitees')
-
+    self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
+    self._questions = (By.CLASS_NAME, 'question-text')
+    self._questions_help = (By.CLASS_NAME, 'question-help')
+    self._q2_form = (By.CLASS_NAME, 'reviewer_report--competing_interests--detail')
+    self._q3_form = (By.CLASS_NAME, 'reviewer_report--identity')
+    self._q4_form = (By.CLASS_NAME, 'reviewer_report--comments_for_author')
+    self._q5_form = (By.CLASS_NAME, 'reviewer_report--additional_comments')
+    self._q6_form = (By.CLASS_NAME, 'reviewer_report--suitable_for_another_journal--journal')
+    self._submit_button = (By.CLASS_NAME, 'button-primary')
 
   # POM Actions
   def validate_card_elements_styles(self):
@@ -37,11 +38,6 @@ class ReviewerReportTask(BaseTask):
     :return void function
     """
     self.validate_common_elements_styles()
-    import pdb; pdb.set_trace()
-
-
-
-
 
   def validate_reviewer_report(self):
     """
@@ -55,47 +51,41 @@ class ReviewerReportTask(BaseTask):
     :return void function
     """
     time.sleep(.5)
-    self._get(self._recipient_field).send_keys(reviewer['email'] + Keys.ENTER)
-    self._get(self._compose_invitation_button).click()
-    time.sleep(2)
-    invite_heading = self._get(self._edit_invite_heading).text
-    # Since the reviewer is potentially off system, we can only validate email
-    assert reviewer['email'] in invite_heading, invite_heading
-    invite_text = self._get(self._edit_invite_textarea).text
-    # Always remember that our ember text always normalizes whitespaces down to one
-    #  Painful lesson
-    title = re.sub(r'[ \t\f\v]+', ' ', title)
-    # and need to scrub latin-1 non-breaking spaces
-    title = re.sub(u'\xa0', u' ', title)
-    assert title in invite_text, \
-        title + '\nNot found in \n' +invite_text
-    assert 'PLOS Wombat' in invite_text, invite_text
-    assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
-    creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert '{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
-    abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
-    if abstract is not None:
-      # strip html, and remove whitespace
-      # NOTA BENE: BeautifulSoup4 inherently handles str to unicode conversion
-      abstract = self.get_text(abstract).strip()
-    if abstract is not None:
-      # Always remember that our ember text always normalizes whitespaces down to one
-      #  Painful lesson
-      abstract = re.sub(r'[ \t\f\v]+', ' ', abstract)
-      # It also removes trailing spaces
-      abstract = re.sub(r'[ \t\f\v]+\n', r'\n', abstract)
-      # and need to scrub latin-1 non-breaking spaces
-      abstract = re.sub(u'\xa0', u' ', abstract)
-      assert abstract in invite_text, abstract + '\nNot equal to\n' + invite_text
-    else:
-      assert 'Abstract is not available' in invite_text, invite_text
-    self._get(self._edit_invite_text_send_invite_button).click()
-    time.sleep(1)
-    invitee = self._get(self._invitee_listing)
-    invitee.find_element(*self._invitee_avatar)
-    invitee.find_element(*self._invitee_full_name)
-    invitee.find_element(*self._invitee_updated_at)
-    status = invitee.find_element(*self._invitee_state)
-    invitee.find_element(*self._invitee_revoke)
-    self.validate_invitation(reviewer, 'Reviewer')
-    assert 'Invited' in status.text, status.text
+    review_note = self._get(self._review_note)
+
+    assert u'Please refer to our referee guidelines for detailed instructions.' in \
+        review_note.text
+    assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-'\
+        'for-publication">referee</a>' in review_note.get_attribute('innerHTML')
+    question_list = self._gets(self._questions)
+    q1, q2, q3, q4, q5, q6 = question_list
+    assert q1.text == u'Please provide your publication recommendation:', q1.text
+    assert q2.text == u'Do you have any potential or perceived competing interests that may '\
+        'influence your review?', q2.text
+    # Disabled due to APERTA-7321
+    #assert q3.text == u"If you'd like your identity to be revealed to the authors, please '\
+    #    'include your name here.", q3.text
+    assert q4.text == u'Add your comments to authors below.', q4.text
+    # Disabled due to APERTA-7321
+    #assert q5.text == u'If you have any additional confidential comments to the editor, '\
+    #    'please add them below.', q5.text
+    assert q6.text == u'If the manuscript does not meet the standards of PLOS Biology, do you '\
+        'think it is suitable for another PLOS journal?', q6.text
+    qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
+    assert qh2.text == u'Please review our Competing Interests policy and declare any potential'\
+        ' interests that you feel the Editor should be aware of when considering your review.', \
+        qh2.text
+    assert qh3.text == u'Your name and review will not be published with the manuscript.', \
+        qh3.text
+    assert qh4.text == u'These comments will be transmitted to the author.', qh4.text
+    assert qh5.text == u'Additional comments may include concerns about dual publication, '\
+        'research or publication ethics.\n\nThese comments will not be transmitted to the '\
+        'authors.', qh5.text
+    assert qh6.text == u'If so, please specify which journal and whether you will be willing'\
+        ' to continue there as reviewer. PLOS Biology is committed to facilitate the transfer'\
+        ' between journals of suitable manuscripts to reduce redundant review cycles, and we '\
+        'appreciate your support.', qh6.text
+    submit_button = self._get(self._submit_button)
+    assert submit_button.text == u'SUBMIT THIS REPORT', submit_button.text
+    self.validate_primary_big_green_button_style(submit_button)
+    #  NOTE:  APERTA-7321

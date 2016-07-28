@@ -24,7 +24,7 @@
       <strong>With the explanation</strong>:<br />
       <blockquote>
         <% if @withdrawal.reason.present? %>
-          <%= simple_format @withdrawal.reason %>
+          <%= simple_format h(@withdrawal.reason) %>
           </p>
         <% else %>
           <em>No withdrawl reason was provided</em>

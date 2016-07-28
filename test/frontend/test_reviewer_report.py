@@ -25,18 +25,19 @@ __author__ = 'sbassi@plos.org'
 @MultiBrowserFixture
 class ReviewerReportTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Reviewer Report card
+  Validate the elements, styles, functions of the Reviewer Report task
   """
 
   def test_reviewer_report_actions(self):
     """
-    test_reviewer_report_card: Validates the elements, styles, roles and functions of invite
+    test_reviewer_report_task: Validates the elements, styles, roles and functions of invite
       reviewers from new document creation through inviting reviewer, validation of the invite on
       the invitees dashboard, acceptance and rejections
-    :return: void function
+    :return: None
     """
     # Users logs in and make a submission
     creator_user = random.choice(users)
+    logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
@@ -57,10 +58,6 @@ class ReviewerReportTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
-    # Set up a handling editor, academic editor and cover editor for this paper
-
-    # self.set_editors_in_db(paper_id)
-    # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
@@ -76,7 +73,6 @@ class ReviewerReportTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    ##invite_reviewers.validate_card_elements_styles(paper_id)
     logging.info('Paper id is: {0}.'.format(paper_id))
     invite_reviewers.invite_reviewer(reviewer_login)
     invite_reviewers.click_close_button()
@@ -94,10 +90,11 @@ class ReviewerReportTest(CommonTest):
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     #paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
-    # go to wf
     assert paper_viewer.click_task('reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
-    reviewer_report_task.validate_card_elements_styles()
+    reviewer_report_task.validate_task_elements_styles()
+    reviewer_report_task.validate_reviewer_report()
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

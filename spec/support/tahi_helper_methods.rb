@@ -86,4 +86,12 @@ module TahiHelperMethods
     old_test_credentials.each {|k,v| ENV[k] = v} #reset to dummy creds
   end
 
+  def register_paper_decision(paper, verdict)
+    decision = paper.draft_decision
+    task = paper.last_of_task(TahiStandardTasks::RegisterDecisionTask) ||
+      create(:register_decision_task, paper: paper)
+
+    decision.update! verdict: verdict
+    decision.register!(task)
+  end
 end

@@ -13,7 +13,16 @@ export default {
       Ember.onerror = function(error) {
         if (ENV.environment === 'production') {
           if (typeof Bugsnag !== 'undefined' && Bugsnag && Bugsnag.notifyException) {
-            return Bugsnag.notifyException(error, 'Uncaught Ember Error');
+            if (error.errors && error.errors.length) {
+              let meta = {
+                metaData: {
+                  error_info: error.errors[0]
+                }
+              };
+              Bugsnag.notifyException(error, 'Uncaught Ember Error', meta);
+            } else {
+              Bugsnag.notifyException(error, 'Uncaught Ember Error');
+            }
           }
         } else {
           flash.displayMessage('error', error);

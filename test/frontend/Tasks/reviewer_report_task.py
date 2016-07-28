@@ -11,7 +11,7 @@ __author__ = 'sbassi@plos.org'
 
 class ReviewerReportTask(BaseTask):
   """
-  Page Object Model for Reviewer Report Card
+  Page Object Model for Reviewer Report Task
   """
   def __init__(self, driver):
     super(ReviewerReportTask, self).__init__(driver)
@@ -29,7 +29,7 @@ class ReviewerReportTask(BaseTask):
   # POM Actions
   def validate_task_elements_styles(self):
     """
-    This method validates the styles of the task elements including the common card elements
+    This method validates the styles of the task elements including the common tasks elements
     :return void function
     """
     self.validate_common_elements_styles()

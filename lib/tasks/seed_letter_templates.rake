@@ -12,17 +12,17 @@ namespace :seed do
 
           Dear Dr. [LAST NAME],
 
-          Thank you very much for submitting your manuscript '[PAPER TITLE]' for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
+          Thank you very much for submitting your manuscript '[PAPER TITLE]' for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
 
           The reviews are attached, and we hope they may help you should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion. 
 
-          I hope you appreciate the reasons for this decision and will consider PLOS Biology for other submissions in the future. Thank you for your support of PLOS and of open access publishing.
+          I hope you appreciate the reasons for this decision and will consider [JOURNAL NAME] for other submissions in the future. Thank you for your support of PLOS and of open access publishing.
 
           Sincerely,
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology  
+          [JOURNAL NAME]  
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
         to_field = '[AUTHOR EMAIL]'
@@ -35,13 +35,13 @@ namespace :seed do
 
           Dear Dr. [LAST NAME],
 
-          Thank you very much for submitting your manuscript entitled '[PAPER TITLE]' for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
+          Thank you very much for submitting your manuscript entitled '[PAPER TITLE]' for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
 
           The reviews are attached and we hope they may help you, should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion. 
 
-          While we cannot consider your manuscript for publication in PLOS Biology, we very much appreciate your wish to present your work in one of PLOS's open access publications, and we would like to suggest that you consider submitting it to PLOS [**INSERT CJ JOURNAL NAME**]. If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details on all journals and links to submission sites can be found at http://www.plos.org/journals/). Please note that the journals are editorially independent and we cannot submit your article on your behalf.
+          While we cannot consider your manuscript for publication in [JOURNAL NAME], we very much appreciate your wish to present your work in one of PLOS's open access publications, and we would like to suggest that you consider submitting it to PLOS [**INSERT CJ JOURNAL NAME**]. If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details on all journals and links to submission sites can be found at http://www.plos.org/journals/). Please note that the journals are editorially independent and we cannot submit your article on your behalf.
 
-          Please indicate in your cover letter to the selected journal that the full paper was submitted to and reviewed at PLOS Biology. 
+          Please indicate in your cover letter to the selected journal that the full paper was submitted to and reviewed at [JOURNAL NAME]. 
 
           Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks.   
 
@@ -51,7 +51,7 @@ namespace :seed do
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology
+          [JOURNAL NAME]
 
 
           Reviewer notes:
@@ -69,15 +69,15 @@ namespace :seed do
 
           Dear Dr. [LAST NAME],
 
-          Thank you very much for submitting your manuscript entitled “[PAPER TITLE]” for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
+          Thank you very much for submitting your manuscript entitled “[PAPER TITLE]” for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
 
           The reviews are attached, and we hope they may help you should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion.
 
-          While we cannot consider your manuscript further for publication in PLOS Biology, we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org).
+          While we cannot consider your manuscript further for publication in [JOURNAL NAME], we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org).
 
           PLOS ONE is a peer-reviewed journal that accepts scientifically sound primary research. The review process at PLOS ONE differs from other PLOS journals in that it does not judge the perceived impact of the work or whether this falls within a particular area of research. Rather, it focuses on whether the study has been performed and reported to high scientific and ethical standards, and whether the data support the conclusions. This approach helps to eliminate the rejection cycles that authors commonly encounter when submitting to one journal after another, ultimately speeding the path to publication.
 
-          If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the PLOS Biology decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
+          If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the [JOURNAL NAME] decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
 
           I hope you have found this review process constructive and that you will consider publishing your work in PLOS ONE.  Thank you for your support of PLOS and of Open Access publishing.
 
@@ -85,7 +85,7 @@ namespace :seed do
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology
+          [JOURNAL NAME]
 
 
           Reviewer notes:
@@ -103,15 +103,15 @@ namespace :seed do
 
           Dear Dr. [LAST NAME],
 
-          Thank you very much for submitting your revised manuscript entitled “[PAPER TITLE]” for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by the Academic Editor who saw the original version [EDIT HERE if not re-reviewed: and by several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal. As you will see, the reviewers continue to have concerns about [...EDIT HERE....].] These seem to us sufficiently serious that we cannot encourage you to revise the manuscript further. 
+          Thank you very much for submitting your revised manuscript entitled “[PAPER TITLE]” for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors. In this case, your article was also assessed by the Academic Editor who saw the original version [EDIT HERE if not re-reviewed: and by several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal. As you will see, the reviewers continue to have concerns about [...EDIT HERE....].] These seem to us sufficiently serious that we cannot encourage you to revise the manuscript further. 
 
           The reviews are attached, and we hope they may help you should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion. 
 
-          [ADD THE FOLLOWING IF APPROPRIATE AND ONLY IF THE PAPER IS NOT CLEARLY FLAWED:  While we cannot consider your manuscript further for publication in PLOS Biology, we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org). 
+          [ADD THE FOLLOWING IF APPROPRIATE AND ONLY IF THE PAPER IS NOT CLEARLY FLAWED:  While we cannot consider your manuscript further for publication in [JOURNAL NAME], we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org). 
 
           PLOS ONE is a peer-reviewed journal that accepts scientifically sound primary research. The review process at PLOS ONE differs from other PLOS journals in that it does not judge the perceived impact of the work or whether this falls within a particular area of research. Rather, it focuses on whether the study has been performed and reported to high scientific and ethical standards, and whether the data support the conclusions. This approach helps to eliminate the rejection cycles that authors commonly encounter when submitting to one journal after another, ultimately speeding the path to publication.
 
-          If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the PLOS Biology decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
+          If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the [JOURNAL NAME] decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
 
           I hope you have found this review process constructive and that you will consider publishing your work in PLOS ONE.]  
 
@@ -121,7 +121,7 @@ namespace :seed do
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology
+          [JOURNAL NAME]
 
 
           Reviewer notes:
@@ -135,17 +135,19 @@ namespace :seed do
 
         text   = 'Reject After Revision and Re-review ONE'
         letter = <<-TEXT.strip_heredoc
+          ***EDIT THIS LETTER BEFORE SENDING****
+
           Dear Dr. [LAST NAME],
 
-          Thank you very much for submitting your revised manuscript entitled [PAPER TITLE] for review by PLOS Biology. As with all papers reviewed by the journal, yours was assessed and discussed by the PLOS Biology editors. In this case, your article was also assessed by the Academic Editor who saw the original version and by several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal. As you will see, the reviewers continue to have concerns about [...EDIT HERE....]. These seem to us sufficiently serious that we cannot encourage you to revise the manuscript further.  
+          Thank you very much for submitting your revised manuscript entitled [PAPER TITLE] for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors. In this case, your article was also assessed by the Academic Editor who saw the original version and by several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal. As you will see, the reviewers continue to have concerns about [...EDIT HERE....]. These seem to us sufficiently serious that we cannot encourage you to revise the manuscript further.  
 
           The reviews are attached, and we hope they may help you should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion. 
 
-          [ADD THE FOLLOWING IF APPROPRIATE AND ONLY IF THE PAPER IS NOT CLEARLY FLAWED:  While we cannot consider your manuscript further for publication in PLOS Biology, we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org). 
+          [ADD THE FOLLOWING IF APPROPRIATE AND ONLY IF THE PAPER IS NOT CLEARLY FLAWED:  While we cannot consider your manuscript further for publication in [JOURNAL NAME], we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org). 
 
           PLOS ONE is a peer-reviewed journal that accepts scientifically sound primary research. The review process at PLOS ONE differs from other PLOS journals in that it does not judge the perceived impact of the work or whether this falls within a particular area of research. Rather, it focuses on whether the study has been performed and reported to high scientific and ethical standards, and whether the data support the conclusions. This approach helps to eliminate the rejection cycles that authors commonly encounter when submitting to one journal after another, ultimately speeding the path to publication.
 
-          If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the PLOS Biology decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
+          If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the [JOURNAL NAME] decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
 
           I hope you have found this review process constructive and that you will consider publishing your work in PLOS ONE.]  
 
@@ -155,7 +157,7 @@ namespace :seed do
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology
+          [JOURNAL NAME]
 
 
           Reviewer notes:
@@ -175,11 +177,11 @@ namespace :seed do
 
           ***EITHER****
 
-          Thank you very much for submitting your manuscript “[PAPER TITLE]” for consideration at PLOS Biology. Your manuscript has been evaluated by the PLOS Biology editorial staff, by an Academic Editor with relevant expertise, and by several independent reviewers.
+          Thank you very much for submitting your manuscript “[PAPER TITLE]” for consideration at [JOURNAL NAME]. Your manuscript has been evaluated by the [JOURNAL NAME] editorial staff, by an Academic Editor with relevant expertise, and by several independent reviewers.
 
           ****OR (if previous OPEN REJECT)****
 
-          Thank you very much for submitting a revised version of your manuscript "[PAPER TITLE]" for consideration at PLOS Biology. This revised version of your manuscript has been evaluated by the PLOS Biology editorial staff, an Academic Editor and reviewers. 
+          Thank you very much for submitting a revised version of your manuscript "[PAPER TITLE]" for consideration at [JOURNAL NAME]. This revised version of your manuscript has been evaluated by the [JOURNAL NAME] editorial staff, an Academic Editor and reviewers. 
 
           ****
 
@@ -193,9 +195,9 @@ namespace :seed do
 
           We expect to receive your revised manuscript within two months. Please email us (plosbiology@plos.org) to discuss this if you have any questions or concerns, or would like to request an extension. 
 
-          At this stage, your manuscript remains formally under active consideration at our journal. Please note that unless we receive the revised manuscript within this timeframe, your submission may be closed and the manuscript would no longer be ‘under consideration’ at PLOS Biology. We will of course be in touch before this action is taken. Please rest assured that this is merely an administrative step - you may still submit your revised submission after your file is closed, but will need to do so as a new submission, referencing the previous tracking number.
+          At this stage, your manuscript remains formally under active consideration at our journal. Please note that unless we receive the revised manuscript within this timeframe, your submission may be closed and the manuscript would no longer be ‘under consideration’ at [JOURNAL NAME]. We will of course be in touch before this action is taken. Please rest assured that this is merely an administrative step - you may still submit your revised submission after your file is closed, but will need to do so as a new submission, referencing the previous tracking number.
 
-          Please notify us by email if you do not wish to revise your manuscript for PLOS Biology and instead wish to pursue publication elsewhere, so that we may end consideration of the manuscript at PLOS Biology.
+          Please notify us by email if you do not wish to revise your manuscript for [JOURNAL NAME] and instead wish to pursue publication elsewhere, so that we may end consideration of the manuscript at [JOURNAL NAME].
 
           If you do still intend to submit a revised version of your manuscript, please log in at http://www.aperta.tech.  On the ‘Your Manuscripts’ page, click the title of your manuscript to access and edit your submission.
 
@@ -206,7 +208,7 @@ namespace :seed do
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology
+          [JOURNAL NAME]
 
           ------------------------------------------------------------------------
 
@@ -226,10 +228,10 @@ namespace :seed do
           Dear Dr. [LAST NAME],
 
           [1] 
-          Thank you very much for submitting your manuscript "[PAPER TITLE]" for review by PLOS Biology. As with all papers reviewed by the journal, yours was seen by the PLOS editorial staff as well as by an Academic Editor with relevant expertise. In this case, your article was also evaluated by independent reviewers. The reviewers appreciated the attention to an important topic. Based on the reviews, we will probably accept this manuscript for publication, providing that you are willing and able to modify the manuscript according to the review recommendations.
+          Thank you very much for submitting your manuscript "[PAPER TITLE]" for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was seen by the PLOS editorial staff as well as by an Academic Editor with relevant expertise. In this case, your article was also evaluated by independent reviewers. The reviewers appreciated the attention to an important topic. Based on the reviews, we will probably accept this manuscript for publication, providing that you are willing and able to modify the manuscript according to the review recommendations.
 
           [2] 
-          Thank you for submitting your revised manuscript entitled "[PAPER TITLE]" for publication in PLOS Biology. I have now obtained advice from the original reviewers and have discussed their comments with the Academic Editor. 
+          Thank you for submitting your revised manuscript entitled "[PAPER TITLE]" for publication in [JOURNAL NAME]. I have now obtained advice from the original reviewers and have discussed their comments with the Academic Editor. 
 
           *******
           DELETE AS APPROPRIATE – TWO LARGE SECTIONS TO CHOOSE BETWEEN
@@ -253,7 +255,7 @@ namespace :seed do
 
           [EDITOR NAME]
           [EDITOR TITLE]
-          PLOS Biology
+          [JOURNAL NAME]
 
           ------------------------------------------------------------------------
 
@@ -283,20 +285,32 @@ namespace :seed do
 
         text   = 'RA Accept'
         letter = <<-TEXT.strip_heredoc
-          Dear Dr. [LAST NAME],
+          ***EDIT THIS LETTER BEFORE SENDING****
 
-          I am pleased to inform you that your manuscript, [PAPER TITLE], has been deemed suitable for publication in [JOURNAL NAME]. Congratulations!
+          Dear Dr. [LAST NAME]
 
-          Your manuscript will now be passed on to our Production staff, who will check your files for correct formatting and completeness. During this process, you may be contacted to make necessary alterations to your manuscript, though not all manuscripts require this.
-
-          If you or your institution will be preparing press materials for this manuscript, you must inform our press team in advance. Your manuscript will remain under a strict press embargo until the publication date and time.
-
-          Please contact me if you have any other questions or concerns. Thank you for submitting your work to [JOURNAL NAME].
-
-          With kind regards,
-
-          [YOUR NAME]
+          On behalf of my colleagues and the Academic Editor, [*INSERT AE'S NAME*], I am pleased to inform you that we will be delighted to publish your manuscript in PLOS Biology.  
+          
+          Please note that since your article will appear in the magazine section of the journal you will not be charged for publication.
+          
+          The files will now enter our production system. In one-two weeks' time, you should receive a copyedited version of the manuscript, along with your figures for a final review. You will be given two business days to review and approve the copyedit. Then, within a week, you will receive a PDF proof of your typeset article. You will have two days to review the PDF and make any final corrections. If there is a chance that you'll be unavailable during the copy editing/proof review period, please provide us with contact details of one of the other authors whom you nominate to handle these stages on your behalf. This will ensure that any requested corrections reach the production department in time for publication.
+          
+          PRESS 
+          
+          We frequently collaborate with communication and public information offices. If your institution is planning to promote your findings, we would be grateful if they could coordinate with biologypress@plos.org.
+          
+          We also ask that you take this opportunity to read our Embargo Policy regarding the discussion, promotion and media coverage of work that is yet to be published by PLOS. As your manuscript is not yet published, it is bound by the conditions of our Embargo Policy. Please be aware that this policy is in place both to ensure that any press coverage of your article is fully substantiated and to provide a direct link between such coverage and the published work. For full details of our Embargo Policy, please visit http://www.plos.org/about/media-inquiries/embargo-policy/.
+          Please don't hesitate to contact me should you have any questions.   
+          Kind regards,              
+                       
+          [*INSERT NAME*]
+          Publications Assistant
           [JOURNAL NAME]
+
+          On Behalf of
+          [*HANDLING EDITOR*]
+          [*HANDLING EDITOR POSITION*]
+          [JOURNAL NAME] 
           TEXT
         subject = 'Your [JOURNAL NAME] submission'
         to_field = '[AUTHOR EMAIL]'

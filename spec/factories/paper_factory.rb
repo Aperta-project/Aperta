@@ -19,9 +19,6 @@ FactoryGirl.define do
         unless paper.creator
           paper.update!(creator: FactoryGirl.create(:user))
         end
-
-        paper.save!
-        paper.body = "I am the very model of a modern journal article"
       end
     end
 

@@ -1118,27 +1118,27 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-bottom') == '1px', button.value_of_css_property('padding-bottom')
     assert button.value_of_css_property('padding-left') == '5px', button.value_of_css_property('padding-left')
 
-@staticmethod
-def validate_secondary_small_green_button_task_style(button):
-  """
-  Ensure consistency in rendering page and overlay small white-backed, green text validations buttons
-  across the application
-  :param button: button to validate
-  """
-  assert application_typeface in button.value_of_css_property('font-family'), \
-      button.value_of_css_property('font-family')
-  assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-  assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-  assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
-  assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-  assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
-  assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-  assert button.value_of_css_property('background-color') == white, \
-      button.value_of_css_property('background-color')
-  assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-  assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
-  assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-  assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
+  @staticmethod
+  def validate_secondary_small_green_button_task_style(button):
+    """
+    Ensure consistency in rendering page and overlay small white-backed, green text validations buttons
+    across the application
+    :param button: button to validate
+    """
+    assert application_typeface in button.value_of_css_property('font-family'), \
+        button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
+    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('background-color') == white, \
+        button.value_of_css_property('background-color')
+    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_link_small_green_button_style(button):

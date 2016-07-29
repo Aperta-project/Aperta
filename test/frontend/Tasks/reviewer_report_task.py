@@ -50,8 +50,8 @@ class ReviewerReportTask(BaseTask):
     assert q1.text == u'Please provide your publication recommendation:', q1.text
     assert q2.text == u'Do you have any potential or perceived competing interests that may '\
         'influence your review?', q2.text
-    assert q3.text == u"(Optional) If you'd like your identity to be revealed to the authors, please '\
-        'include your name here.", q3.text
+    assert q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
+        'please include your name here.', q3.text
     assert q4.text == u'Add your comments to authors below.', q4.text
     assert q5.text == u'(Optional) If you have any additional confidential comments to the editor, '\
         'please add them below.', q5.text

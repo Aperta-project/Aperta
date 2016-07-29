@@ -69,7 +69,7 @@ class BaseTask(AuthenticatedPage):
     """Validate styles from elements common to all cards"""
     completed_btn = self._get(self._completion_button)
     assert 'I am done with this task' in completed_btn.text, completed_btn.text
-    AuthenticatedPage.validate_secondary_small_green_button_task_style(completed_btn)
+    self.validate_secondary_small_green_button_task_style(completed_btn)
 
   def is_versioned_view(self):
     """

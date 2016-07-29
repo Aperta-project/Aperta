@@ -42,7 +42,7 @@
     <label class="decision-label">
       {{radio-button value="minor_revision"
                      selection=latestDecision.verdict
-                     disabled=task.completed
+                     disabled=nonPublishable
                      name="decision"
                      action=(action "setDecisionTemplate")}}
       Minor Revision

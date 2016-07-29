@@ -38,7 +38,7 @@ class S3Migration < ActiveRecord::Base
   include AASM
 
   def self.migrate!
-    ready.all.each do |migration|
+    ready.find_each do |migration|
       transaction do
         migration.migrate!
         puts "\e[32m.\e[0m"
@@ -192,7 +192,7 @@ class S3Migration < ActiveRecord::Base
   # updating that reference to point to the new_file_hash, then returning
   # that Snapshot. Returns nil if not snapshot.
   def find_and_update_task_snapshot(previous_file_hash, new_file_hash)
-    ::Snapshot.all.each do |snapshot|
+    ::Snapshot.find_each do |snapshot|
       child = find_child_with_file_hash previous_file_hash, snapshot.contents
       if child
         # update snapshot to use new_file_hash instead of the previous_file_hash

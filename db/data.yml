@@ -14729,132 +14729,145 @@ resource_tokens:
   records: 
   - - '1'
     - '2015-10-30 18:09:55.844755'
-    - '2015-10-30 18:09:55.844755'
+    - '2016-07-28 15:42:09.414033'
     - '1'
     - Attachment
     - 4JRhTr616NQ4JW3AnmutrWPX
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/1/figure/attachment/1/detail_cover_image.jpg", "preview":
+      "uploads/paper/1/figure/attachment/1/preview_cover_image.jpg"}'
+    - uploads/paper/1/figure/attachment/1/cover_image.jpg
   - - '2'
     - '2015-10-30 19:45:16.1553'
-    - '2015-10-30 19:45:16.1553'
+    - '2016-07-28 15:42:09.418116'
     - '2'
     - Attachment
     - 7MzbAxAuoAK8h91VEBkrGaHd
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/2/figure/attachment/2/detail_cover_image.jpg", "preview":
+      "uploads/paper/2/figure/attachment/2/preview_cover_image.jpg"}'
+    - uploads/paper/2/figure/attachment/2/cover_image.jpg
   - - '3'
     - '2015-10-30 19:58:30.783132'
-    - '2015-10-30 19:58:30.783132'
+    - '2016-07-28 15:42:09.42108'
     - '3'
     - Attachment
     - 7n1aAGioTqC1ApA8Ld2eYkbu
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/2/figure/attachment/3/detail_cat2.jpg", "preview":
+      "uploads/paper/2/figure/attachment/3/preview_cat2.jpg"}'
+    - uploads/paper/2/figure/attachment/3/cat2.jpg
   - - '4'
     - '2015-11-02 14:08:05.496311'
-    - '2015-11-02 14:08:05.496311'
+    - '2016-07-28 15:42:09.42398'
     - '4'
     - Attachment
     - w3qHf38vMDCqKFXfcrCZE2LK
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/3/figure/attachment/4/detail_cover_image.jpg", "preview":
+      "uploads/paper/3/figure/attachment/4/preview_cover_image.jpg"}'
+    - uploads/paper/3/figure/attachment/4/cover_image.jpg
   - - '5'
     - '2015-11-02 14:15:51.668637'
-    - '2015-11-02 14:15:51.668637'
+    - '2016-07-28 15:42:09.426794'
     - '5'
     - Attachment
     - ajxQpM7BWyqje3rdUEjtpMTb
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/3/figure/attachment/5/detail_quad-cat.jpg", "preview":
+      "uploads/paper/3/figure/attachment/5/preview_quad-cat.jpg"}'
+    - uploads/paper/3/figure/attachment/5/quad-cat.jpg
   - - '6'
     - '2015-11-02 15:08:10.833865'
-    - '2015-11-02 15:08:10.833865'
+    - '2016-07-28 15:42:09.429546'
     - '6'
     - Attachment
     - qt3FhbrR5Q4KNM1F35DXTHNx
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/4/figure/attachment/6/detail_cover_image.jpg", "preview":
+      "uploads/paper/4/figure/attachment/6/preview_cover_image.jpg"}'
+    - uploads/paper/4/figure/attachment/6/cover_image.jpg
   - - '7'
     - '2015-11-02 15:10:35.531229'
-    - '2015-11-02 15:10:35.531229'
+    - '2016-07-28 15:42:09.432299'
     - '7'
     - Attachment
     - 2vM873Fqxyfm22GtB5VDqEND
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/4/figure/attachment/7/detail_cat2.jpg", "preview":
+      "uploads/paper/4/figure/attachment/7/preview_cat2.jpg"}'
+    - uploads/paper/4/figure/attachment/7/cat2.jpg
   - - '8'
     - '2016-04-12 18:52:36.083488'
-    - '2016-04-12 18:52:36.083488'
+    - '2016-07-28 15:42:09.434969'
     - '8'
     - Attachment
     - UF91o1Sp2kVzQ2fMRYGUVLkU
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/12/figure/attachment/12/detail_139.jpg", "preview":
+      "uploads/paper/12/figure/attachment/12/preview_139.jpg"}'
+    - uploads/paper/12/figure/attachment/12/139.jpg
   - - '9'
     - '2016-04-12 18:52:49.614331'
-    - '2016-04-12 18:52:49.614331'
+    - '2016-07-28 15:42:09.437622'
     - '9'
     - Attachment
     - yEUYk9R5AnnMdHu37FBfC5fw
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/12/figure/attachment/13/detail_140.jpg", "preview":
+      "uploads/paper/12/figure/attachment/13/preview_140.jpg"}'
+    - uploads/paper/12/figure/attachment/13/140.jpg
   - - '10'
     - '2015-10-30 19:52:32.177953'
-    - '2015-10-30 19:52:32.177953'
+    - '2016-07-28 15:42:09.475186'
     - '10'
     - Attachment
     - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/2/supporting_information_file/attachment/1/detail_sample.doc",
+      "preview": "uploads/paper/2/supporting_information_file/attachment/1/preview_sample.doc"}'
+    - uploads/attachments/1/supporting_information_file/attachment/1/sample.doc
   - - '11'
     - '2015-11-02 14:13:19.427337'
-    - '2015-11-02 14:13:19.427337'
+    - '2016-07-28 15:42:09.479694'
     - '11'
     - Attachment
     - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/3/supporting_information_file/attachment/2/detail_turtles-are-amazing.docx",
+      "preview": "uploads/paper/3/supporting_information_file/attachment/2/preview_turtles-are-amazing.docx"}'
+    - uploads/attachments/2/supporting_information_file/attachment/2/turtles-are-amazing.docx
   - - '12'
     - '2015-11-02 15:09:02.825204'
-    - '2015-11-02 15:09:02.825204'
+    - '2016-07-28 15:42:09.484217'
     - '12'
     - Attachment
     - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/4/supporting_information_file/attachment/3/detail_turtles-are-amazing.docx",
+      "preview": "uploads/paper/4/supporting_information_file/attachment/3/preview_turtles-are-amazing.docx"}'
+    - uploads/attachments/3/supporting_information_file/attachment/3/turtles-are-amazing.docx
   - - '13'
     - '2016-04-12 18:44:51.665146'
-    - '2016-04-12 18:44:51.665146'
+    - '2016-07-28 15:42:09.488715'
     - '13'
     - Attachment
     - EXxRBJ9WzLn3KTQLjm5Nc6dC
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/12/supporting_information_file/attachment/5/detail_140.jpg",
+      "preview": "uploads/paper/12/supporting_information_file/attachment/5/preview_140.jpg"}'
+    - uploads/attachments/5/supporting_information_file/attachment/5/140.jpg
   - - '14'
     - '2015-11-02 14:16:35.584565'
-    - '2015-11-02 14:16:35.584565'
+    - '2016-07-28 15:42:09.491341'
     - '14'
     - Attachment
     - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
     - "{}"
-    - 
+    - uploads/question/78/question_attachment/1/turtles-are-amazing.docx
   - - '15'
     - '2015-11-02 14:18:02.598388'
-    - '2015-11-02 14:18:02.598388'
+    - '2016-07-28 15:42:09.493926'
     - '15'
     - Attachment
     - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
     - "{}"
-    - 
+    - uploads/question/88/question_attachment/2/turtles-are-amazing.docx
   - - '16'
     - '2015-11-02 15:12:01.338942'
-    - '2015-11-02 15:12:01.338942'
+    - '2016-07-28 15:42:09.496633'
     - '16'
     - Attachment
     - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
     - "{}"
-    - 
+    - uploads/question/126/question_attachment/3/manuscript+_281_29.docx
 
 ---
 roles:

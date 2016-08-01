@@ -7,7 +7,7 @@ feature "Dashboard", js: true do
   let(:active_paper_count) { 1 }
   let!(:papers) do
     inactive_paper_count.times.map do |number|
-      FactoryGirl.create :paper, :inactive, :with_tasks, journal: journal, creator: user,
+      FactoryGirl.create :paper, :withdrawn_lite, :with_tasks, journal: journal, creator: user,
                          title: "Inactive Paper (#{number + 1})"
     end
     active_paper_count.times.map do |number|
@@ -26,7 +26,7 @@ feature "Dashboard", js: true do
         login_as(user, scope: :user)
         visit "/"
 
-        expect(Paper.count).to eq(3)
+        expect(Paper.count).to eq(active_paper_count + inactive_paper_count)
         expect(dashboard.total_active_paper_count).to eq(active_paper_count)
       end
 

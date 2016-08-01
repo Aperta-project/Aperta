@@ -3,6 +3,7 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     journal
+    paper_type { journal.paper_types.first || "research" }
 
     uses_research_article_reviewer_report true
 
@@ -30,8 +31,25 @@ FactoryGirl.define do
       # noop
     end
 
-    trait(:inactive) do
-      after(:create, &:withdraw!)
+    trait(:withdrawn_lite) do
+      transient do
+        reason nil
+        withdrawn_by_user { build(:user) }
+      end
+
+      active false
+      editable false
+      state_updated_at { DateTime.current.utc }
+      publishing_state "withdrawn"
+
+      after(:build) do |paper, evaluator|
+        paper.withdrawals = build_list(
+          :withdrawal,
+          1,
+          paper: paper,
+          reason: evaluator.reason,
+          withdrawn_by_user: evaluator.withdrawn_by_user)
+      end
     end
 
     trait(:checking) do
@@ -178,10 +196,6 @@ FactoryGirl.define do
         paper.body = evaluator.second_version_body
         paper.save!
       end
-    end
-
-    after(:build) do |paper|
-      paper.paper_type ||= paper.journal.paper_types.first
     end
 
     after(:create) do |paper, evaluator|

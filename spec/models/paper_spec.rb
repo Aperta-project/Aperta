@@ -636,6 +636,14 @@ describe Paper do
         expect(paper).to receive(:unassign_reviewers!)
         paper.withdraw!
       end
+
+      it "broadcasts 'paper:withdrawn' event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:withdrawn")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        paper.withdraw!
+      end
     end
 
     describe '#invite_full_submission' do
@@ -774,6 +782,14 @@ describe Paper do
           expect(paper).to receive(:unassign_reviewers!)
           paper.reject!
         end
+
+        it "broadcasts 'paper:rejected' event" do
+          allow(Notifier).to receive(:notify)
+          expect(Notifier).to receive(:notify).with(hash_including(event: "paper:rejected")) do |args|
+            expect(args[:data][:record]).to eq(paper)
+          end
+          paper.reject!
+        end
       end
 
       context 'paper is initially_submitted' do
@@ -844,6 +860,14 @@ describe Paper do
         expect(paper).to receive(:unassign_reviewers!)
         paper.make_decision decision
       end
+
+      it "broadcasts 'paper:accepted' event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:accepted")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        paper.make_decision decision
+      end
     end
 
     context "rejection" do
@@ -882,6 +906,14 @@ describe Paper do
 
       it "unassigns reviewers" do
         expect(paper).to receive(:unassign_reviewers!)
+        paper.make_decision decision
+      end
+
+      it "broadcasts 'paper:in_revision'" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:in_revision")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
         paper.make_decision decision
       end
     end

@@ -405,6 +405,10 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  def remove_pending_reviewer_invites
+    ReviewerReportTask
+  end
+
   def creator
     User.assigned_to(self, role: journal.creator_role).first
   end

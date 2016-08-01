@@ -1,21 +1,17 @@
 RSpec::Matchers.define :mostly_eq do |expected|
-  match do |actual|
-    @actual = actual.attributes.except(*@ignore)
-    @expected = expected.attributes.except(*@ignore)
-    expect(@actual).to eq(@expected)
-    # actual.reflections.keys.each do |rel|
-  end
+  diffable
 
-  chain :except do |*ignore|
-    @ignore = ignore
-  end
-end
-
-RSpec::Matchers.define :mostly_eq_ar do |expected|
   match do |actual|
-    actual.to_a.zip(expected.to_a).each do |a, e|
-      expect(a).to mostly_eq(e).except(*@ignore)
-    end
+    actual = actual.respond_to?(:to_a) ? actual.to_a : [actual]
+    actual.map! { |member| member.attributes.except(*@ignore) }
+    expected = expected.respond_to?(:to_a) ? expected.to_a : [expected]
+    expected.map! { |member| member.attributes.except(*@ignore) }
+
+    # set instance variables for nice-looking diff
+    @actual = actual
+    @expected_as_array = [expected]
+
+    values_match? expected, actual
   end
 
   chain :except do |*ignore|

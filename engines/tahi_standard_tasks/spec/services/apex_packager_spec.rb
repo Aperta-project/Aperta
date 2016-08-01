@@ -145,7 +145,7 @@ describe ApexPackager do
         :figure,
         title: 'a figure',
         caption: 'a caption',
-        attachment: File.open(Rails.root.join('spec/fixtures/yeti.jpg'))
+        file: File.open(Rails.root.join('spec/fixtures/yeti.jpg'))
       )
     end
 
@@ -212,7 +212,7 @@ describe ApexPackager do
         :supporting_information_file,
         title: 'a file',
         caption: 'a caption',
-        attachment: File.open(
+        file: File.open(
           Rails.root.join('spec/fixtures/about_turtles.docx')
         )
       )
@@ -280,7 +280,7 @@ describe ApexPackager do
                  caption: 'a caption',
                  paper: paper,
                  filename: 'yeti1.jpg',
-                 attachment: attachment1)
+                 file: attachment1)
     end
 
     let(:figure) do
@@ -289,7 +289,7 @@ describe ApexPackager do
                  caption: 'a caption',
                  paper: paper,
                  filename: 'yeti2.jpg',
-                 attachment: attachment2)
+                 file: attachment2)
     end
 
     before do

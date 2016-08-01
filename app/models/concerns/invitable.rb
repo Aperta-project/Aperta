@@ -5,26 +5,29 @@ module Invitable
     has_many :invitations, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
   end
 
-  # Public: after transition hook for custom task behavior upon transitioning to "invited" state
+  # Public: after transition hook for custom task behavior upon
+  #         transitioning to "invited" state
   #
   # _invitation - the invitation
   #
   # Examples
   #
-  #   Use this method to send an invitation email a user can accept/reject
+  #   Use this method to send an invitation email a user can accept/decline
   #
   # Returns true, is a noop if unimplemented
   def invitation_invited(_invitation)
     true
   end
 
-  # Public: after transition hook for custom task behavior upon transitioning to "accepted" state
+  # Public: after transition hook for custom task behavior upon
+  #         transitioning to "accepted" state
   #
   # _invitation - the invitation
   #
   # Examples
   #
-  #   Implement this hook to create the association between the accepting user and the paper
+  #   Implement this hook to create the association between the accepting
+  #   user and the paper
   #
   # Returns true, is a noop if unimplemented
   def invitation_accepted(_invitation)
@@ -44,20 +47,23 @@ module Invitable
     true
   end
 
-  # Public: after transition hook for custom task behavior upon transitioning to "rejected" state
+  # Public: after transition hook for custom task behavior upon
+  #         transitioning to "declined" state
   #
   # _invitation - the invitation
   #
   # Examples
   #
-  #   Implement this hook to notify the next person in the queue of people to invite
+  #   Implement this hook to notify the next person in the queue of
+  #   people to invite
   #
   # Returns true, is a noop if unimplemented
-  def invitation_rejected(_invitation)
+  def invitation_declined(_invitation)
     true
   end
 
-  # Public: guard for custom task behavior before transitioning to "invited" state
+  # Public: guard for custom task behavior before transitioning
+  #         to "invited" state
   #
   # _invitation - the invitation
   #
@@ -66,7 +72,8 @@ module Invitable
     true
   end
 
-  # Public: guard for custom task behavior before transitioning to "accepted" state
+  # Public: guard for custom task behavior before transitioning
+  #         to "accepted" state
   #
   # _invitation - the invitation
   #
@@ -80,16 +87,18 @@ module Invitable
     true
   end
 
-  # Public: guard for custom task behavior before transitioning to "rejected" state
+  # Public: guard for custom task behavior before transitioning
+  #         to "declined" state
   #
   # _invitation - the invitation
   #
   # Returns true, is a noop if unimplemented
-  def reject_allowed?(_invitation)
+  def decline_allowed?(_invitation)
     true
   end
 
   def invitee_role
-    raise NotImplementedError, 'Please implement #invitee_role in the task model'
+    fail NotImplementedError,
+         'Please implement #invitee_role in the task model'
   end
 end

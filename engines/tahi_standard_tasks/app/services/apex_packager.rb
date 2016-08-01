@@ -56,7 +56,7 @@ class ApexPackager
     return unless @paper.striking_image
     add_file_to_package package,
                         attachment_apex_filename(@paper.striking_image),
-                        @paper.striking_image.attachment.read
+                        @paper.striking_image.file.read
   end
 
   def add_figures(package)
@@ -64,7 +64,7 @@ class ApexPackager
       next if @paper.striking_image == figure
       add_file_to_package package,
                           attachment_apex_filename(figure),
-                          figure.attachment.read
+                          figure.file.read
     end
   end
 
@@ -80,7 +80,7 @@ class ApexPackager
       next unless file.publishable?
       add_file_to_package package,
                           file.filename,
-                          file.attachment.read
+                          file.file.read
     end
   end
 

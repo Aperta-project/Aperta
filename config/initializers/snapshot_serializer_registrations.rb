@@ -8,12 +8,16 @@
 # `config.cache_classes = false`. For environments where
 # config.cache_classes is set to true this will only fire once.
 #
+# rubocop:disable Metrics/LineLength
 ActionDispatch::Reloader.to_prepare do
   if SnapshotService.registry.empty?
     SnapshotService.configure do
+      serialize AdhocAttachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
+      serialize Figure, with: Snapshot::AttachmentSerializer
       serialize NestedQuestion, with: Snapshot::NestedQuestionSerializer
-      serialize QuestionAttachment, with: Snapshot::QuestionAttachmentSerializer
+      serialize QuestionAttachment, with: Snapshot::AttachmentSerializer
+      serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 
       serialize TahiStandardTasks::AuthorsTask, with: Snapshot::AuthorTaskSerializer
       serialize TahiStandardTasks::CompetingInterestsTask, with: Snapshot::CompetingInterestsTaskSerializer
@@ -29,6 +33,8 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
       serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
       serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer
+      serialize TahiStandardTasks::CoverLetterTask, with: Snapshot::CoverLetterTaskSerializer
     end
   end
 end
+# rubocop:enable Metrics/LineLength

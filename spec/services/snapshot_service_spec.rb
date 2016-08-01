@@ -16,9 +16,24 @@ describe SnapshotService do
   let(:registry) { SnapshotService::Registry.new }
   let(:things_to_snapshot) { FactoryGirl.create_list(:task, 3) }
   let(:snapshots) { Snapshot.all.order('id') }
+  let(:adhoc_attachment) do
+    FactoryGirl.create(:adhoc_attachment, :with_task, paper: paper)
+  end
 
   before do
     registry.serialize things_to_snapshot[0].class, with: ExampleSnapshotSerializer
+    registry.serialize adhoc_attachment.class, with: ExampleSnapshotSerializer
+  end
+
+  describe '.snapshot_paper!' do
+    it 'snapshots the snapshottable things on the paper' do
+      allow(paper).to receive(:snapshottable_things).and_return [
+        things_to_snapshot.first, adhoc_attachment
+      ]
+      expect do
+        SnapshotService.snapshot_paper!(paper, registry)
+      end.to change { Snapshot.where(paper_id: paper.id).count }.by(2)
+    end
   end
 
   describe '#snapshot!' do

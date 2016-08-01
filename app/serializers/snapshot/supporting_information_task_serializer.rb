@@ -5,8 +5,8 @@ class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseSerializer
   private
 
   def snapshot_properties
-    model.paper.supporting_information_files.order(:id).map do |file|
-      Snapshot::SupportingInformationFileSerializer.new(file).as_json
+    model.supporting_information_files.order(:id).map do |file|
+      Snapshot::AttachmentSerializer.new(file).as_json
     end
   end
 end

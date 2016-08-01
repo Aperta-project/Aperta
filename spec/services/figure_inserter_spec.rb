@@ -20,7 +20,7 @@ describe FigureInserter do
     let(:figure1) do
       figure = create :figure, title: "1"
       allow(figure).to receive(:detail_src).and_return('/an/image1.png')
-      allow(figure).to receive(:attachment?).and_return(true)
+      allow(figure).to receive(:file?).and_return(true)
       figure
     end
 
@@ -158,7 +158,7 @@ describe FigureInserter do
       let(:rankless_figure) do
         figure = create :figure, title: "some title that won't create a rank"
         allow(figure).to receive(:detail_src).and_return('/an/image3.png')
-        allow(figure).to receive(:attachment?).and_return(true)
+        allow(figure).to receive(:file?).and_return(true)
         figure
       end
       let(:figures) { [rankless_figure] }
@@ -186,7 +186,7 @@ describe FigureInserter do
       let(:figure11) do
         figure = create :figure, title: "11"
         allow(figure).to receive(:detail_src).and_return('/an/image2.png')
-        allow(figure).to receive(:attachment?).and_return(true)
+        allow(figure).to receive(:file?).and_return(true)
         figure
       end
 
@@ -243,7 +243,7 @@ describe FigureInserter do
         let(:unattached_figure2) do
           figure = create :figure, title: "2"
           allow(figure).to receive(:detail_src).and_return('/an/image2.png')
-          allow(figure).to receive(:attachment?).and_return(false)
+          allow(figure).to receive(:file?).and_return(false)
           figure
         end
 

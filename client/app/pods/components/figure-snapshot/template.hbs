@@ -4,7 +4,8 @@
 <td class="figure-snapshot-item-file">
   {{#if fileHashChanged}}
     {{! If the file contents changed, still show a diff on the file name }}
-    <span class="removed">{{figure2.file}}</span><span class="added">{{figure1.file}}</span>
+    <a class="removed" href="{{figure2.url}}">{{figure2.file}}</a>
+    <a class="added" href="{{figure1.url}}">{{figure1.file}}</a>
   {{else}}
     {{text-diff viewingText=figure1.file comparisonText=figure2.file}}
   {{/if}}

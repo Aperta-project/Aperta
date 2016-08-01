@@ -22,39 +22,37 @@ class Invitation < ActiveRecord::Base
       validates :invitee, presence: true
     end
     state :accepted
-    state :rejected
+    state :declined
 
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite,
-          after: :associate_existing_user,
-          after_commit: :notify_invitation_invited) do
+    event(:invite, {
+      after: [:generate_token, :associate_existing_user],
+      after_commit: :notify_invitation_invited
+    }) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
-    event(:accept, {
-      after_commit: :notify_invitation_accepted
-    }) do
+    event(:accept,
+          after_commit: :notify_invitation_accepted) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
-    event(:reject, {
-      after_commit: :notify_invitation_rejected
-    }) do
-      transitions from: :invited, to: :rejected, guards: :reject_allowed?
+    event(:decline,
+          after_commit: :notify_invitation_declined) do
+      transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
   end
 
   def self.find_uninvited_users_for_paper(possible_users, paper)
     invited_users = where(
       decision_id: paper.draft_decision.id,
-      state: ["invited", "accepted", "rejected"]
+      state: ["invited", "accepted", "declined"]
     ).includes(:invitee).map(&:invitee)
     possible_users - invited_users
   end
 
   def recipient_name
-    return invitee.full_name if invitee
-    email
+    invitee.try(:full_name) || email
   end
 
   def rescind!
@@ -67,6 +65,18 @@ class Invitation < ActiveRecord::Base
     super(new_email.strip)
   end
 
+  def feedback_given?
+    self[:decline_reason].present? || self[:reviewer_suggestions].present?
+  end
+
+  def decline_reason
+    self[:decline_reason].present? ? self[:decline_reason] : 'n/a'
+  end
+
+  def reviewer_suggestions
+    self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'n/a'
+  end
+
   private
 
   def assign_to_draft_decision
@@ -76,8 +86,7 @@ class Invitation < ActiveRecord::Base
   def add_authors_to_information(invitation)
     authors_list = TahiStandardTasks::AuthorsList.authors_list(paper)
     return unless authors_list.present?
-    invitation.update! information:
-      "Here are the authors on the paper:\n\n#{authors_list}"
+    invitation.update! information: authors_list
   end
 
   def notify_invitation_invited
@@ -89,12 +98,16 @@ class Invitation < ActiveRecord::Base
     task.invitation_accepted(self)
   end
 
-  def notify_invitation_rejected
-    task.invitation_rejected(self)
+  def notify_invitation_declined
+    task.invitation_declined(self)
   end
 
   def associate_existing_user
     update(invitee: User.find_by(email: email))
+  end
+
+  def generate_token
+    self.token ||= SecureRandom.hex(10)
   end
 
   def invite_allowed?
@@ -105,8 +118,8 @@ class Invitation < ActiveRecord::Base
     task.accept_allowed?(self)
   end
 
-  def reject_allowed?
-    task.reject_allowed?(self)
+  def decline_allowed?
+    task.decline_allowed?(self)
   end
 
   def event_stream_serializer(user: nil)

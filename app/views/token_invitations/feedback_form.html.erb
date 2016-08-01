@@ -1,0 +1,21 @@
+<%= render layout: 'container' do %>
+  <div class='message'>
+    <span class='bold'>You've successfully declined the invitation to
+      review</span> "<%= @paper.title.html_safe %>". We're always trying to improve our
+    invitation process and would appreciate your feedback below.
+  </div>
+  <div>
+    <%= form_for @invitation, url: post_feedback_path(@invitation.token), method: 'post'  do |f| %>
+      <%= f.label :decline_reason, "Please give your reasons for declining this invitation."%>
+      <%= f.text_area :decline_reason %>
+      <%= f.label :reviewer_suggestions,
+        "We would value your suggestions of alternative reviewers for this manuscript. "%>
+      <%= f.text_area :reviewer_suggestions,
+        placeholder: "Please provide reviewers' names, institutions, and email addresses if known."%>
+      <div class='flex-bar'>
+        <%= link_to "No thank you", invitation_thank_you_path(@invitation.token), class: 'flex-item' %>
+        <%= f.submit value: 'Send Feedback', class: 'button-secondary button--green flex-item' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

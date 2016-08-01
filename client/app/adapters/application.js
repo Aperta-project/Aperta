@@ -20,5 +20,30 @@ export default ActiveModelAdapter.extend({
     if (status === 403 || event.status === 403) { return; }
 
     return this._super(...arguments);
+  },
+
+
+  // These hooks are described in the ember data 1.13 release post
+  // http://emberjs.com/blog/2015/06/18/ember-data-1-13-released.html#toc_new-adapter-hooks-for-better-caching
+
+  shouldReloadRecord () {
+    return false;
+  },
+
+  // defaults to true in ember-data 2.0,
+  // TODO: investigate returning `true` as part of #2466
+  shouldBackgroundReloadRecord() {
+    return false;
+  },
+
+  // pre-2.0 behavior is to reload records on a `findAll` call
+  shouldReloadAll () {
+    return true;
+  },
+
+  // defaults to true in ember-data 2.0,
+  // TODO: investigate returning `true` as part of #2466
+  shouldBackgroundReloadAll() {
+    return false;
   }
 });

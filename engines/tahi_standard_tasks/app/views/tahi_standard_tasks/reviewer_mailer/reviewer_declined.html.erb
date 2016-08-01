@@ -8,6 +8,15 @@
     </p>
   </div>
   <hr>
+  <div class='decline-feedback'>
+    <p class="decline_reason">
+      <strong>Reason: </strong><%= simple_format h(@invitation.decline_reason) %>
+    </p>
+    <p class="reviewer_suggestions">
+      <strong>Reviewer Suggestions: </strong><%= simple_format h(@invitation.reviewer_suggestions) %>
+    </p>
+  </div>
+  <hr>
   <div class="paper-info">
     <div class="journal-info">
       <% if @paper.journal.logo_url %>

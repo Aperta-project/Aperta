@@ -32,17 +32,9 @@
         {{/if}}
       </div>
 
-      {{#each snapshot1.value.attachments as |attachment| }}
-        {{#if attachment}}
-          {{attachment-snapshot snapshot=attachment}}
-        {{/if}}
-      {{/each}}
-
-      {{#each snapshot2.value.attachments as |attachment| }}
-        {{#if attachment}}
-          {{attachment-snapshot snapshot=attachment}}
-        {{/if}}
-      {{/each}}
+      {{attachments-snapshot
+        attachments1=snapshot1.value.attachments
+        attachments2=snapshot2.value.attachments }}
     </li>
   {{/if}}
 
@@ -63,6 +55,10 @@
 
   {{#if authorsTask}}
     {{author-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
+  {{/if}}
+
+  {{#if coverLetterTask}}
+    {{cover-letter-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
   {{/if}}
 
   {{#if supportingInfo}}

@@ -131,10 +131,10 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.invitation_rejected!(invitation, user:)
+  def self.invitation_declined!(invitation, user:)
     create(
       feed_name: "workflow",
-      activity_key: "invitation.rejected",
+      activity_key: "invitation.declined",
       subject: invitation.paper,
       user: user,
       message: "#{invitation.recipient_name} declined invitation as #{invitation.invitee_role.capitalize}"

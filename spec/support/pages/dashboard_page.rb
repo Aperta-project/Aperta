@@ -1,3 +1,5 @@
+# rubocop:disable Style/PredicateName
+# Represents the main page of the app
 class DashboardPage < Page
   path :root
   text_assertions :welcome_message, '.welcome-message'
@@ -24,6 +26,10 @@ class DashboardPage < Page
 
   def has_submission?(submission_name)
     has_css?('.dashboard-paper-title', text: submission_name)
+  end
+
+  def has_no_submission?(submission_name)
+    has_no_css?('.dashboard-paper-title', text: submission_name)
   end
 
   def view_submitted_paper(paper)
@@ -123,7 +129,16 @@ class DashboardPage < Page
     all '.pending-invitation'
   end
 
+  def has_pending_invitations?(count)
+    self.has_css? '.pending-invitation', count: count
+  end
+
+  def has_no_pending_invitations?
+    self.has_no_css? '.pending-invitation'
+  end
+
   def press_view_invitations_button
     click_button 'View invitations'
   end
 end
+# rubocop:enable Style/PredicateName

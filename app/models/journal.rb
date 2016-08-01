@@ -4,6 +4,7 @@ class Journal < ActiveRecord::Base
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
   has_many :discussion_topics, through: :papers, inverse_of: :journal
+  has_many :letter_templates
 
   # Old Roles and Permissions
   has_many :old_roles, inverse_of: :journal
@@ -70,7 +71,11 @@ class Journal < ActiveRecord::Base
   end
 
   def logo_url
-    logo.thumbnail.url if logo
+    if logo
+      logo.thumbnail.url
+    else
+      '/images/plos_logo.png'
+    end
   end
 
   def paper_types

@@ -422,8 +422,8 @@ describe Paper do
   context 'State Machine' do
     describe '#initial_submit' do
       subject { paper.initial_submit! }
-
-      include_examples "transitions save state_updated_at", :initial_submit!
+      include_examples "transitions save state_updated_at",
+        initial_submit: proc { paper.initial_submit! }
 
       it 'transitions to initially_submitted' do
         paper.initial_submit!
@@ -459,7 +459,7 @@ describe Paper do
 
       it 'snapshots metadata' do
         Subscriptions.reload
-        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
+        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
         paper.initial_submit!
       end
 
@@ -473,8 +473,8 @@ describe Paper do
 
     describe '#submit!' do
       subject { paper.submit! user }
-
-      include_examples "transitions save state_updated_at", :submit!
+      include_examples "transitions save state_updated_at",
+        submit: proc { paper.submit!(paper.creator) }
 
       it 'does not transition when metadata tasks are incomplete' do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
@@ -548,7 +548,7 @@ describe Paper do
 
       it 'snapshots metadata' do
         Subscriptions.reload
-        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
+        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
         paper.submit! user
       end
 
@@ -597,32 +597,63 @@ describe Paper do
       end
     end
 
+    describe '#latest_withdrawal' do
+      let!(:joe) { FactoryGirl.create(:user) }
+      let!(:sally) { FactoryGirl.create(:user) }
+
+      before do
+        paper.withdraw!('reason 1', joe)
+        paper.reload.reactivate!
+        paper.withdraw!('reason 2', sally)
+      end
+
+      it 'returns the most recent withdrawal' do
+        withdrawal = paper.latest_withdrawal
+        expect(withdrawal).to be_kind_of(Withdrawal)
+        expect(withdrawal.withdrawn_by_user).to eq(sally)
+        expect(withdrawal.reason).to eq('reason 2')
+      end
+    end
+
     describe '#withdraw!' do
-      include_examples "transitions save state_updated_at", :withdraw!
+      let(:withdrawn_by_user) { FactoryGirl.build_stubbed(:user) }
+
+      include_examples "transitions save state_updated_at",
+        withdraw: proc { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
-      it "transitions to withdrawn without a reason" do
-        paper.withdraw!
+      it "raises an error when withdrawing without a reason and withdrawn_by_user" do
+        expect do
+          paper.withdraw!
+        end.to raise_error(ArgumentError, 'withdrawal_reason must be provided')
+
+        expect do
+          paper.withdraw! 'reason, but no user'
+        end.to raise_error(ArgumentError, 'withdrawn_by_user must be provided')
+      end
+
+      it 'withdraws the paper' do
+        paper.withdraw! 'reason', withdrawn_by_user
         expect(paper).to be_withdrawn
       end
 
       it "transitions to withdrawn with a reason" do
-        paper.withdraw! "Don't want to."
+        paper.withdraw! "Don't want to.", withdrawn_by_user
         expect(paper.withdrawn?).to eq true
       end
 
       it "marks the paper not editable" do
-        paper.withdraw!
+        paper.withdraw! "Some reason", withdrawn_by_user
         expect(paper).to_not be_editable
       end
     end
 
     describe '#invite_full_submission' do
       include_examples "transitions save state_updated_at",
-                       :invite_full_submission!
+        invite_full_submission: proc { paper.invite_full_submission! }
 
       let(:paper) do
         FactoryGirl.create(:paper, :initially_submitted, journal: journal)
@@ -640,7 +671,8 @@ describe Paper do
     end
 
     describe '#reactivate!' do
-      include_examples "transitions save state_updated_at", :reactivate!
+      include_examples "transitions save state_updated_at",
+        reactivate: proc { paper.reactivate! }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -651,7 +683,7 @@ describe Paper do
       end
 
       before do
-        paper.withdraw!
+        paper.withdraw!('some reason', FactoryGirl.build_stubbed(:user))
       end
 
       it "transitions to the previous state" do
@@ -670,7 +702,7 @@ describe Paper do
       it "marks the paper with the previous editable state for unsubmitted papers" do
         paper = unsubmitted_paper
         expect(paper).to be_editable
-        paper.withdraw!
+        paper.withdraw!('some reason', FactoryGirl.build_stubbed(:user))
         expect(paper).to_not be_editable
         paper.reload.reactivate!
         expect(paper).to be_editable
@@ -679,7 +711,8 @@ describe Paper do
     end
 
     describe '#minor_check!' do
-      include_examples "transitions save state_updated_at", :minor_check!
+      include_examples "transitions save state_updated_at",
+        minor_check: proc { paper.minor_check! }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -695,7 +728,7 @@ describe Paper do
       subject { paper.submit_minor_check! user }
 
       include_examples "transitions save state_updated_at",
-                       :submit_minor_check!
+        submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -736,7 +769,8 @@ describe Paper do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
-        include_examples "transitions save state_updated_at", :accept!
+        include_examples "transitions save state_updated_at",
+          accept: proc { paper.accept! }
 
         it 'transitions to accepted state from submitted' do
           paper.accept!
@@ -751,7 +785,8 @@ describe Paper do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
-        include_examples "transitions save state_updated_at", :reject!
+        include_examples "transitions save state_updated_at",
+          reject: proc { paper.reject! }
 
         it 'transitions to rejected state from submitted' do
           paper.reject!
@@ -768,7 +803,8 @@ describe Paper do
           )
         end
 
-        include_examples "transitions save state_updated_at", :reject!
+        include_examples "transitions save state_updated_at",
+          reject: proc { paper.reject! }
 
         it 'transitions to rejected state from initially_submitted' do
           paper.reject!
@@ -778,7 +814,8 @@ describe Paper do
     end
 
     describe '#publish!' do
-      include_examples "transitions save state_updated_at", :publish!
+      include_examples "transitions save state_updated_at",
+        publish: proc { paper.publish! }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -799,7 +836,7 @@ describe Paper do
           paper
         end
 
-        include_examples "transitions save state_updated_at", :rescind!
+        include_examples "transitions save state_updated_at", rescind: proc { paper.rescind! }
 
         it "transitions to submitted from rejected" do
           paper.rescind!
@@ -818,7 +855,7 @@ describe Paper do
           paper
         end
 
-        include_examples "transitions save state_updated_at", :rescind!
+        include_examples "transitions save state_updated_at", rescind: proc { paper.rescind! }
 
         it "transitions to initially_submitted from rejected" do
           paper.rescind!
@@ -1146,6 +1183,67 @@ describe Paper do
       expect(
         paper.role_descriptions_for(user: user)
       ).to contain_exactly('My Paper')
+    end
+  end
+
+  describe '#snapshottable_things' do
+    subject(:paper) { Paper.new }
+    let(:task) do
+      FactoryGirl.build_stubbed(:task, paper: paper, snapshottable: true)
+    end
+    let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
+    let(:si_file) do
+      FactoryGirl.build_stubbed(:supporting_information_file, paper: paper)
+    end
+    let(:adhoc_attachment) do
+      FactoryGirl.build_stubbed(:adhoc_attachment, paper: paper)
+    end
+    let(:question_attachment) do
+      FactoryGirl.build_stubbed(:question_attachment, paper: paper)
+    end
+
+    it 'returns the independently snapshottable things about a paper' do
+      expect(paper.snapshottable_things).to be_kind_of(Array)
+    end
+
+    it 'includes snapshottable tasks' do
+      paper.tasks.push task
+      expect(paper.snapshottable_things).to include(task)
+
+      task.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(task)
+    end
+
+    it 'includes snapshottable figures' do
+      paper.figures.push figure
+      expect(paper.snapshottable_things).to include(figure)
+
+      figure.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(figure)
+    end
+
+    it 'includes snapshottable supporting_information_files' do
+      paper.supporting_information_files.push si_file
+      expect(paper.snapshottable_things).to include(si_file)
+
+      si_file.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(si_file)
+    end
+
+    it 'includes snapshottable adhoc_attachments' do
+      paper.adhoc_attachments.push adhoc_attachment
+      expect(paper.snapshottable_things).to include(adhoc_attachment)
+
+      adhoc_attachment.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(adhoc_attachment)
+    end
+
+    it 'includes snapshottable question_attachments' do
+      paper.question_attachments.push question_attachment
+      expect(paper.snapshottable_things).to include(question_attachment)
+
+      question_attachment.snapshottable = false
+      expect(paper.snapshottable_things).to_not include(question_attachment)
     end
   end
 

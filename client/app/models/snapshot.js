@@ -1,13 +1,13 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
-
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', {
     async: true
   }),
-  source: DS.belongsTo('task', {
+  source: DS.belongsTo('snapshottable', {
     async: true,
+    inverse: 'snapshots',
     polymorphic:  true
   }),
   // We have sourceId here to allow comparing sources without

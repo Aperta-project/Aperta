@@ -95,29 +95,62 @@ describe Snapshot::NestedQuestionSerializer do
       )
     end
 
-    it 'serializes questions with attachments as answers' do
-      attachment = FactoryGirl.build(
-        :question_attachment,
-        :with_fake_attachment
-      )
-      nested_question.nested_question_answers << FactoryGirl.build(
-        :nested_question_answer,
-        owner: owner,
-        value: 'The man was diseased with garrulity.',
-        attachments: [attachment]
-      )
+    context 'when an answer has attachments' do
+      let(:attachments_json) { serializer.as_json[:value][:attachments] }
 
-      expect(serializer.as_json[:value][:attachments]).to eq([
-        name: 'question-attachment',
-        type: 'properties',
-        children: [
-          { name: 'id', type: 'integer', value: attachment.id },
-          { name: 'file', type: 'text', value: 'some-attachment.png' },
-          { name: 'title', type: 'text', value: nil },
-          { name: 'caption', type: 'text', value: nil },
-          { name: 'status', type: 'text', value: nil }
-        ]
-      ])
+      let(:attachment_1) do
+        FactoryGirl.create(
+          :question_attachment,
+          :with_resource_token,
+          status: QuestionAttachment::STATUS_DONE
+        )
+      end
+
+      let(:attachment_2) do
+        FactoryGirl.create(
+          :question_attachment,
+          :with_resource_token,
+          status: QuestionAttachment::STATUS_DONE
+        )
+      end
+
+      before do
+        nested_question.nested_question_answers << FactoryGirl.build(
+          :nested_question_answer,
+          owner: owner,
+          value: 'The man was diseased with garrulity.',
+          attachments: [attachment_1, attachment_2]
+        )
+      end
+
+      it 'serializes questions with attachments' do
+        expect(attachments_json.length).to eq 2
+
+        expect(attachments_json[0]).to match hash_including(
+          name: 'question-attachment',
+          type: 'properties'
+        )
+
+        expect(attachments_json[0][:children]).to include(
+          { name: 'id', type: 'integer', value: attachment_1.id },
+          { name: 'file', type: 'text', value: attachment_1.filename },
+          { name: 'title', type: 'text', value: attachment_1.title },
+          { name: 'caption', type: 'text', value: attachment_1.caption },
+          { name: 'status', type: 'text', value: attachment_1.status }
+        )
+
+        expect(attachments_json[1]).to match hash_including(
+          name: 'question-attachment',
+          type: 'properties'
+        )
+        expect(attachments_json[1][:children]).to include(
+          { name: 'id', type: 'integer', value: attachment_2.id },
+          { name: 'file', type: 'text', value: attachment_2.filename },
+          { name: 'title', type: 'text', value: attachment_2.title },
+          { name: 'caption', type: 'text', value: attachment_2.caption },
+          { name: 'status', type: 'text', value: attachment_2.status }
+        )
+      end
     end
   end
 end

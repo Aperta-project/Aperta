@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :invitation do
     invitee_role 'Some Role'
+    token { SecureRandom.hex(10) }
     paper { create(:paper) }
     task { create(:invitable_task, paper: paper) }
     association(:invitee, factory: :user)
@@ -8,9 +9,7 @@ FactoryGirl.define do
     decision { paper.draft_decision || paper.new_draft_decision! }
 
     after(:build) do |invitation, evaluator|
-      if evaluator.invitee && invitation.email.nil?
-        invitation.email = evaluator.invitee.email
-      end
+      invitation.email = evaluator.invitee.email if evaluator.invitee
       invitation.body = "You've been invited to"
     end
 
@@ -29,8 +28,8 @@ FactoryGirl.define do
       state "accepted"
     end
 
-    trait :rejected do
-      state "rejected"
+    trait :declined do
+      state "declined"
     end
   end
 end

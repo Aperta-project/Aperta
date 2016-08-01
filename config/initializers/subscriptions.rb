@@ -11,10 +11,10 @@ Subscriptions.configure do
   add 'paper:submitted', \
       Paper::Submitted::EmailCreator,
       Paper::Submitted::EmailAdmins,
-      Paper::Submitted::SnapshotMetadata
+      Paper::Submitted::SnapshotPaper
 
   add 'paper:initially_submitted', \
-      Paper::Submitted::SnapshotMetadata,
+      Paper::Submitted::SnapshotPaper,
       Paper::Submitted::EmailCreator
 
   add 'paper:updated', \

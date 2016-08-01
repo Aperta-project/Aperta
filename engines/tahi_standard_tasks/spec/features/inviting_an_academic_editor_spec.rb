@@ -24,10 +24,9 @@ feature 'Invite Academic Editor', js: true do
 
   scenario 'Any user can be invited as an Academic Editor on a paper' do
     overlay = InviteEditorOverlay.new
-    expect(overlay).to_not be_completed
+    expect(overlay).to be_uncompleted
     overlay.paper_editors = [editor1]
     overlay.mark_as_complete
-    expect(overlay).to be_completed
     expect(overlay).to have_editor editor1
 
     # Already invited users don't show up again the search
@@ -47,8 +46,7 @@ feature 'Invite Academic Editor', js: true do
     dashboard.view_invitations do |invitations|
       expect(invitations.count).to eq 1
       invitations.first.accept("Accept Academic Editor Invitation")
-      wait_for_ajax
-      expect(dashboard.pending_invitations.count).to eq 0
+      expect(dashboard).to have_no_pending_invitations
     end
     dashboard.reload
 

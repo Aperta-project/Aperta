@@ -30,8 +30,7 @@ feature 'Viewing Versions:', js: true do
 
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
 
       page.select_viewing_version(version_1)
 
@@ -44,8 +43,7 @@ feature 'Viewing Versions:', js: true do
 
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
       page.select_viewing_version(version_0)
 
       page.select_comparison_version(version_1)
@@ -57,8 +55,7 @@ feature 'Viewing Versions:', js: true do
     scenario 'The user views an old version of a task', selenium: true do
       SnapshotService.new(paper).snapshot!(task)
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
       page.select_viewing_version(version_0)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
@@ -82,13 +79,46 @@ feature 'Viewing Versions:', js: true do
                          source: task)
 
       page = PaperPage.new
-      page.version_button.click
-      wait_for_ajax
+      page.view_versions
       page.select_viewing_version(version_0)
       page.select_comparison_version(version_1)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
         overlay.expect_versions('R0.0', '(draft)')
+      end
+    end
+
+    context 'The user has limited access' do
+      let(:reviewer) { FactoryGirl.create :user }
+      let(:task) do
+        FactoryGirl.create :cover_letter_task,
+                           paper: paper,
+                           phase: paper.phases.first
+      end
+
+      before do
+        assign_reviewer_role(paper, reviewer)
+
+        login_as(reviewer, scope: :user)
+      end
+
+      scenario 'The user cannot see the cover letter task' do
+        ensure_user_does_not_have_access_to_task(
+          user: reviewer,
+          task: task
+        )
+      end
+
+      scenario 'The user cannot see cover letter task versions', selenium: true do
+        SnapshotService.new(paper).snapshot!(task)
+        FactoryGirl.create(:snapshot,
+                           major_version: 0,
+                           minor_version: 0,
+                           source: task)
+        page = PaperPage.new
+        page.view_versions
+
+        expect(page).to_not have_content('Cover Letter')
       end
     end
   end

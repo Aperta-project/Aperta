@@ -5,6 +5,9 @@ class UserMailer < ActionMailer::Base
   default from: Rails.configuration.from_email
   layout "mailer"
 
+  class Error < ::StandardError ; end
+  class DeliveryError < Error ; end
+
   after_action :prevent_delivery_to_invalid_recipient
 
   def add_collaborator(invitor_id, invitee_id, paper_id)
@@ -118,6 +121,25 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @author.try(:email),
       subject: "Thank you for submitting to #{@journal.name}")
+  end
+
+  def notify_staff_of_paper_withdrawal(paper_id)
+    @paper = Paper.find paper_id
+    @journal = @paper.journal
+    @withdrawal = @paper.latest_withdrawal
+    @authors = @paper.corresponding_authors
+
+    if @journal.staff_email.blank?
+      fail DeliveryError, <<-ERROR.strip_heredoc
+        Journal (id=#{@journal.id} name=#{@journal.name}) has no staff email configured.
+        The notify_staff_of_paper_withdrawal email cannot be sent.
+      ERROR
+    end
+
+    mail(
+      to: @journal.staff_email,
+      subject: "#{@paper.doi} - Manuscript Withdrawn"
+    )
   end
 
   def notify_mention_in_discussion(user_id, topic_id, reply_id = nil)

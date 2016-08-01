@@ -85,6 +85,22 @@ export default function() {
       message || `should find no element at ${selector}`);
   };
 
+  QUnit.assert.inputContains = function(selector, expectedValue) {
+    selector = selector + ':input';
+
+    this.elementFound(selector);
+    var input  = Ember.$(selector);
+    let value  = input.val();
+    let result = value.indexOf(expectedValue) !== -1;
+
+    return this.push(
+      result,
+      value,
+      expectedValue,
+      `should find ${expectedValue} in input at ${selector}`);
+
+  };
+
   QUnit.assert.inputPresent = function(selector, value, message) {
     selector = selector + ':input';
     var input = Ember.$(selector);

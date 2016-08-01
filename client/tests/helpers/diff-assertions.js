@@ -11,10 +11,31 @@ export default function() {
   }
 
   QUnit.assert.diffPresent = function(oldText, newText) {
-    this.equal(Ember.$('.added').length, 1, 'Has 1 added diff spans');
-    this.equal(Ember.$('.removed').length, 1, 'Has 1 removed diff spans');
-    this.isGreen(newText);
-    this.isRed(oldText);
+    this.elementFound(`.added:contains(${newText})`, 'Has 1 added diff elements');
+    this.elementFound(`.removed:contains(${oldText})`, 'Has 1 removed diff elements');
+  }
+
+  QUnit.assert.linkDiffPresent = function(options){
+    let removed = options.removed,
+        added = options.added;
+
+    if (removed) {
+      let removedUrl = removed.url,
+        removedText = removed.text;
+        QUnit.assert.elementFound(
+          `a.removed[href='${removedUrl}']:contains(${removedText})`,
+          'The removed link was found on the page'
+        );
+    }
+
+    if (added) {
+      let addedUrl = added.url,
+        addedText = added.text;
+        QUnit.assert.elementFound(
+          `a.added[href='${addedUrl}']:contains(${addedText})`,
+          'The added link was found on the page'
+        );
+    }
   }
 
   QUnit.assert.notDiffed = function(text) {

@@ -11,12 +11,16 @@
     </div>
 
     <div class="custom-email">
-      <%= simple_format @invitation.body %>
+      <%= simple_format h(@invitation.body) %>
     </div>
 
     <p>
-      <a class="button" href="<%= client_dashboard_url %>" target="_blank">
-        View Invitation
+      <a class="button" href="<%= client_dashboard_url({ invitation_token: @invitation.token }) %>" target="_blank">
+        Accept Invitation
+      </a>
+      <span class="spacer">|</span>
+      <a class="button" href="<%= confirm_decline_invitation_url({ token: @invitation.token }) %>" target="_blank">
+        Decline
       </a>
     </p>
   </div>

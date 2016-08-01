@@ -6,7 +6,7 @@ describe SupportingInformationFilesController, redis: true do
     FactoryGirl.create(:paper, :with_integration_journal, creator: user)
   end
   let(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
-  let(:file) { FactoryGirl.create(:supporting_information_file, paper: paper) }
+  let(:file) { FactoryGirl.create(:supporting_information_file, paper: paper, owner: task) }
   before { sign_in user }
 
   describe 'DELETE #destroy' do
@@ -21,7 +21,7 @@ describe SupportingInformationFilesController, redis: true do
   describe 'POST #create' do
     it 'creates the supporting file' do
       url = 'http://someawesomeurl.com'
-      expect(DownloadSupportingInfoWorker).to receive(:perform_async)
+      expect(DownloadAttachmentWorker).to receive(:perform_async)
       post :create, format: 'json', task_id: task.id, url: url
       expect(response.status).to eq(201)
     end

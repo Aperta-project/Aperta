@@ -161,7 +161,8 @@ class PapersController < ApplicationController
 
   def withdraw
     requires_user_can :withdraw, paper
-    paper.withdraw! withdrawal_params[:reason]
+    paper.withdraw! withdrawal_params[:reason], current_user
+    UserMailer.delay.notify_staff_of_paper_withdrawal(@paper.id)
     Activity.paper_withdrawn! paper, user: current_user
     render json: paper, status: :ok
   end

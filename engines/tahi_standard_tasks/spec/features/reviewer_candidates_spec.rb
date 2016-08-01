@@ -27,7 +27,6 @@ feature "User adding reviewer candidates", js: true do
 
     # Bringing up the new reviewer candidate form
     click_button "New Reviewer Candidate"
-    wait_for_ajax
     expect(page).to have_selector(".reviewer-form")
 
     # Clicking cancel hides the new reviewer form
@@ -37,7 +36,7 @@ feature "User adding reviewer candidates", js: true do
     expect(page).to_not have_selector(".reviewer-form")
 
     click_button "New Reviewer Candidate"
-    wait_for_ajax
+    expect(page).to have_selector(".reviewer-form")
 
     # Add a new reviewer
     within ".reviewer-form" do
@@ -58,7 +57,7 @@ feature "User adding reviewer candidates", js: true do
     end
 
     # Edit the reviewer
-    find(".author-task-item-view-text").click
+    find(".qa-edit-reviewer-form").click
 
     # We can cancel the edit
     within ".reviewer-form" do
@@ -67,7 +66,7 @@ feature "User adding reviewer candidates", js: true do
     expect(page).to_not have_selector(".reviewer-form")
 
     # We can edit the reviewer
-    find(".author-task-item-view-text").click
+    find(".qa-edit-reviewer-form").click
     within ".reviewer-form" do
       first_name_input = find(".first-name input[type=text]")
       expect(first_name_input.value).to eq("Barb")

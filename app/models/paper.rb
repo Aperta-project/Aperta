@@ -15,12 +15,17 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :striking_image, polymorphic: true
 
-  has_many :figures, dependent: :destroy
+  # Attachment-related things
+  has_many :figures, as: :owner, dependent: :destroy
+  has_many :question_attachments, dependent: :destroy
+  has_many :supporting_information_files, dependent: :destroy
+  has_many :adhoc_attachments, dependent: :destroy
+
+  # Everything else
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
-  has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, dependent: :destroy
   has_many :users, -> { uniq }, through: :paper_roles
   has_many :old_assigned_users, -> { uniq }, through: :paper_roles, source: :user
@@ -41,6 +46,7 @@ class Paper < ActiveRecord::Base
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
+  has_many :withdrawals, dependent: :destroy
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -52,8 +58,6 @@ class Paper < ActiveRecord::Base
            source_type: "GroupAuthor",
            source: :author
   has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
-  has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
-  serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
   validates :journal, presence: true
@@ -187,11 +191,16 @@ class Paper < ActiveRecord::Base
     event(:withdraw) do
       transitions to: :withdrawn,
                   after: :prevent_edits!
-      before do |withdrawal_reason|
+      before do |withdrawal_reason, withdrawn_by_user|
+        withdrawal_reason || fail(ArgumentError, "withdrawal_reason must be provided")
+        withdrawn_by_user || fail(ArgumentError, "withdrawn_by_user must be provided")
         update(active: false)
-        withdrawals << { previous_publishing_state: publishing_state,
-                         previous_editable: editable,
-                         reason: withdrawal_reason }
+        withdrawals.create!(
+          previous_publishing_state: publishing_state,
+          previous_editable: editable,
+          reason: withdrawal_reason,
+          withdrawn_by_user_id: withdrawn_by_user.id
+        )
       end
     end
 
@@ -250,6 +259,15 @@ class Paper < ActiveRecord::Base
     new_minor_version!
   end
 
+  def snapshottable_things
+    [].concat(tasks)
+      .concat(figures)
+      .concat(supporting_information_files)
+      .concat(adhoc_attachments)
+      .concat(question_attachments)
+      .select(&:snapshottable?)
+  end
+
   def users_with_role(role)
     User.joins(:assignments).where(
       'assignments.role_id' => role.id,
@@ -286,13 +304,18 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # Returns the corresponding authors. When there are no authors
+  # marked as corresponding then it defaults to the creator.
+  def corresponding_authors
+    corresponding_authors = authors.select { |au| au.corresponding? }
+    corresponding_authors << creator if corresponding_authors.empty?
+    corresponding_authors.compact
+  end
+
   # Returns the corresponding author emails. When there are no authors
   # marked as corresponding then it defaults to the creator's email address.
   def corresponding_author_emails
-    corresponding_authors = authors.select { |au| au.corresponding? }
-    emails = corresponding_authors.map { |author| author.email }.compact
-    emails = [creator.try(:email)] if emails.empty?
-    emails.compact
+    corresponding_authors.map(&:email)
   end
 
   # Public: Find `Role`s for the given user on this paper.
@@ -376,13 +399,17 @@ class Paper < ActiveRecord::Base
     users_with_role(journal.handling_editor_role)
   end
 
+  def reviewers
+    users_with_role(journal.reviewer_role)
+  end
+
   def short_title
     answer = answer_for('publishing_related_questions--short_title')
     answer ? answer.value : ''
   end
 
-  def latest_withdrawal_reason
-    withdrawals.last[:reason] if withdrawals.present?
+  def latest_withdrawal
+    withdrawals.most_recent
   end
 
   # Accepts any args the state transition accepts
@@ -464,7 +491,7 @@ class Paper < ActiveRecord::Base
     group_participants_by_role(participations)
   end
 
-  %w(admins reviewers).each do |relation|
+  %w(admins).each do |relation|
     ###
     # :method: <old_roles>
     # Public: Return user records by old_role in the paper.

@@ -1,4 +1,5 @@
 class AttachmentUploader < CarrierWave::Uploader::Base
+  require 'mini_magick'
   include CarrierWave::MiniMagick
   include CarrierWave::MimeTypes
 
@@ -8,13 +9,15 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/paper/#{model.paper.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    model.try(:s3_dir) || generate_new_store_dir
+  end
+
+  def generate_new_store_dir
+    "uploads/paper/#{model.paper_id}/attachment/#{model.id}/#{model.file_hash}"
   end
 
   version :detail do
-    process :set_srgb_colorspace, if: :needs_transcoding?
-    process resize_to_limit: [986, -1], if: :image?
-    process :convert_to_png, if: :needs_transcoding?
+    process convert_image: ["984x-1>"], if: :image?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -22,9 +25,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process :set_srgb_colorspace, if: :needs_transcoding?
-    process resize_to_limit: [475, 220], if: :image?
-    process :convert_to_png, if: :needs_transcoding?
+    process convert_image: ["475x220"], if: :image?
 
     def full_filename(orig_file)
       full_name(orig_file)
@@ -33,20 +34,30 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   private
 
-  def set_srgb_colorspace
-    manipulate! do |image|
-      image.colorspace("sRGB")
+  # rubocop:disable Metrics/AbcSize
+  def convert_image(size)
+    extension = needs_transcoding?(file) ? ".png" : ".#{format}"
+    temp_file = MiniMagick::Utilities.tempfile(extension)
+
+    MiniMagick::Tool::Convert.new do |convert|
+      convert.merge! density_arguments
+      convert.merge! colorspace_arguments
+      convert.merge! ["-resize", size]
+      convert << current_path
+      convert.merge! ["-colorspace", "sRGB"]
+      convert << temp_file.path
     end
+
+    FileUtils.cp(temp_file.path, current_path)
+    file.content_type = MiniMagick::Image.open(current_path).mime_type
   end
 
-  def convert_to_png
-    manipulate! do |image|
-      image.format("png")
-    end
-    file.content_type = "image/png"
+  def image
+    @image ||= MiniMagick::Image.open(current_path)
   end
 
   def full_name(orig_file)
+    orig_file = model.filename unless orig_file
     if needs_transcoding?(orig_file)
       "#{version_name}_#{File.basename(orig_file, '.*')}.png"
     else
@@ -54,7 +65,23 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     end
   end
 
+  def density_arguments
+    return [] unless image.details['Total ink density']
+    ['-density', image.details['Total ink density']]
+  end
+
+  def colorspace_arguments
+    return [] unless image.details['Colorspace']
+    ['-colorspace', image.details['Colorspace']]
+  end
+
+  def format
+    fail 'Cannot identify image format' unless image.details['Base filename']
+    image.details['Base filename'].split('.').last
+  end
+
   def needs_transcoding?(file)
+    return false unless file
     # On direct upload, the file's content_type is application/octet-stream, so
     # we also need to check the filename
     if file.respond_to?('content_type')

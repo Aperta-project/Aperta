@@ -6,7 +6,6 @@
       {{progress-spinner visible=true size="large" center=true}}
     </div>
   {{/if}}
-  {{error-message message=validationErrors.errors}}
 
   {{rescind-decision
     decision=latestRegisteredDecision
@@ -28,18 +27,17 @@
     {{/each}}
   </div>
 
-  <p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
+  {{error-message message=validationErrors.errors}}
 
-  {{textarea focus-out="saveLatestDecision"
-             onEvent="false"
-             class="decision-letter-field"
-             placeholder="A boilerplate decision letter will appear here"
-             disabled=nonPublishableOrUnselected
-             value=latestDecision.letter}}
-
-  <button class="button-primary button--green send-email-action" disabled={{nonPublishable}} {{action "registerDecision"}}>
-    Register Decision and Email the Author
-  </button>
+  {{letter-template disabled=nonPublishableOrUnselected
+                    letterValue=latestDecision.letter
+                    toField=toField
+                    subjectLine=subjectLine
+                    task=task
+                    templateDecision=latestDecision.verdict
+                    templateSelected=(action 'templateSelected')
+                    registerDecision=(action 'registerDecision')
+  }}
 
   {{#if previousDecisions}}
     <hr>

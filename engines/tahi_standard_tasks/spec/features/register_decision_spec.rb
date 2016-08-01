@@ -8,11 +8,15 @@ feature "Register Decision", js: true, sidekiq: :inline! do
   let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
+  let(:accept_template) { FactoryGirl.create(:letter_template, :accept) }
+  let(:reject_template) { FactoryGirl.create(:letter_template, :reject) }
 
   before do
     allow(PlosBilling::SalesforceManuscriptUpdateWorker)
       .to receive(:perform_async).and_return(true)
     task.add_participant(user)
+    paper.journal.letter_templates << accept_template
+    paper.journal.letter_templates << reject_template
     assign_journal_role paper.journal, user, :editor
     login_as(user, scope: :user)
     visit "/"
@@ -44,11 +48,9 @@ feature "Register Decision", js: true, sidekiq: :inline! do
         overlay = Page.view_task_overlay(paper, task)
 
         overlay.register_decision = "Reject"
-        wait_for_ajax
         overlay.radio_selected?
 
         visit current_path # Revisit
-        wait_for_ajax
         expect(find("input[value='reject']")).to be_checked
       end
     end
@@ -80,8 +82,8 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
     scenario "Participant cannot register a decision on the paper" do
       overlay = Page.view_task_overlay(paper, task)
-      wait_for_ajax
-      expect(overlay).to be_disabled
+      expect(overlay.invalid_state_message).to be true
+      expect(overlay).to have_content("No decision has been registered")
     end
   end
 

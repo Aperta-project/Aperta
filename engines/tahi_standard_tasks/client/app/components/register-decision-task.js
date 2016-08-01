@@ -5,6 +5,17 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 const { computed } = Ember;
 
 export default TaskComponent.extend(ValidationErrorsMixin, {
+  init: function(){
+    this._super(...arguments);
+    this.get('task.paper.decisions').reload();
+  },
+  decidedDecision: null,
+  formattedDecidedDecision: computed('decidedDecision', function() {
+    let words = this.get('decidedDecision').split(/_/g);
+    return words.map(function(word) {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+  }),
   restless: Ember.inject.service('restless'),
   paper: computed.alias('task.paper'),
   submitted: computed.equal('paper.publishingState', 'submitted'),
@@ -17,6 +28,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');
   }),
 
+  toField: null,
+  subjectLine: null,
   latestDecision: computed.alias('paper.latestDecision'),
   latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
   previousDecisions: computed.alias('paper.previousDecisions'),
@@ -29,8 +42,19 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   verdicts: ['reject', 'accept', 'major_revision', 'minor_revision'],
 
   applyTemplateReplacements(str) {
-    return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+    str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+    str = str.replace(/\[AUTHOR EMAIL\]/g, this.get('task.paper.creator.email'));
+    str = str.replace(/\[PAPER TITLE\]/g, this.get('task.paper.shortTitle'));
+    str = str.replace(/\[JOURNAL NAME\]/g, this.get('task.paper.journal.name'));
+    return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
+
+  triggerSave: Ember.observer('latestDecision.letter', function() {
+    let latestDecision = this.get('latestDecision');
+    if (latestDecision) {
+      Ember.run.debounce(latestDecision, latestDecision.save, 500);
+    }
+  }),
 
   actions: {
     registerDecision() {
@@ -40,13 +64,24 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
       this.get('latestDecision').register(task)
         .then(() => {
-          this.clearAllValidationErrors();
-        })
-        .catch((response) => {
-          this.displayValidationErrorsFromResponse(response.responseJSON);
-        })
-        .finally(() => {
-          this.set('isSavingData', false);
+          this.set('decidedDecision', this.get('latestDecision.verdict'));
+          this.set('task.completed', true);
+          this.get('task').save().then(() => {
+            return this.get('latestDecision').save().then(() => {
+              const tasksPromise = this.get('task.paper.tasks').reload();
+              const decisionsPromise = this.get('task.paper.decisions').reload();
+              return Ember.RSVP.all([tasksPromise, decisionsPromise]).then(() => {
+                this.set('isSavingData', false);
+                this.clearAllValidationErrors();
+              });
+            });
+          })
+          .catch((response) => {
+            this.displayValidationErrorsFromResponse(response.responseJSON);
+          })
+          .finally(() => {
+            this.set('isSavingData', false);
+          });
         });
     },
 
@@ -58,19 +93,21 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       this.set('isSavingData', false);
     },
 
-    saveLatestDecision() {
-      this.set('isSavingData', true);
-      this.get('latestDecision').save().then(() => {
-        this.set('isSavingData', false);
-      });
+    templateSelected(template) {
+      const letter = this.applyTemplateReplacements(template.letter);
+      const to = this.applyTemplateReplacements(template.to);
+      const subject = this.applyTemplateReplacements(template.subject);
+      this.set('toField', to);
+      this.set('subjectLine', subject);
+      this.get('latestDecision').set('verdict', template.templateDecision);
+      this.get('latestDecision').set('letter', letter); // will trigger save
+      return template;
     },
 
     setDecisionTemplate(decision) {
-      const template = this.get(`task.${decision.camelize()}LetterTemplate`);
-      const letter = this.applyTemplateReplacements(template);
-      this.get('latestDecision').set('verdict', decision);
-      this.get('latestDecision').set('letter', letter);
-      this.send('saveLatestDecision');
+      const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
+      const template = templates.get('firstObject');
+      this.send('templateSelected', template.toJSON());
     }
   }
 });

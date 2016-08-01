@@ -786,7 +786,7 @@ http_interactions:
         5U5nZvvEmmUp60x2AZJ+lTRMyrnoaYq7Ruz1p+47QKpEsm+0SMRljVqK9O0J
         IMrVHtSuccCqEbFukZnV4/yq1eKUJIHWueineM5U4rZ0+8Nxcok67kBHApqV
         hSVyIgHocCmZwTzXq91pminQEZbIiQrndxXAXOmwneUyoFaKpcz5T//Z
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:51:58 GMT
 - request:
     method: put
@@ -1576,8 +1576,75 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
+- request:
+    method: get
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - Ur62TDOPuTarpxEma/aMvchpf18gx3I3ePwRDLyMd63WtuFHSlXZOPtMV08Le3qw
+      X-Amz-Request-Id:
+      - 08BB5B212EC8C9EB
+      Date:
+      - Thu, 10 Jul 2014 18:51:59 GMT
+      Last-Modified:
+      - Mon, 09 Jun 2014 20:20:38 GMT
+      Etag:
+      - '"8c199f5eefa30aa97312825f206d51a2"'
+      Accept-Ranges:
+      - bytes
+      Content-Type:
+      - image/jpeg
+      Content-Length:
+      - '1168'
+      Server:
+      - AmazonS3
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        /9j/4AAQSkZJRgABAQAAZABkAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMD
+        AwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/
+        2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM
+        DAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAoACUDAREAAhEBAxEB/8QA
+        HAABAAEEAwAAAAAAAAAAAAAABwgAAwQFAgYJ/8QALBAAAgEDAwMEAQMFAAAA
+        AAAAAQIDBAURAAYSBxMhCCIxQTIVUpEWI1Fhgf/EABkBAAIDAQAAAAAAAAAA
+        AAAAAAIEAAEDBf/EACIRAAICAQQCAwEAAAAAAAAAAAECAAMRBBIhMSJBE2Fx
+        Uf/aAAwDAQACEQMRAD8A9/NSSauv3hb7f4aojZv2gjJ/n50QQmAbFEuUW4oa
+        /HaKyH74nOBqFcSw2epsNDClakkPPUJ1AOzduCGOoMEtSpzw/Mr941vQm45i
+        2pt2jEF7NJS3u20F3vN0q6yKtnnp6aljrWpxS9l0WR2EcckrueZIVQFGFz+e
+        QVthVtq8TKilXQM3Mw7lue4dNN911vtF5q6imhcNFJUALKFPkBgMAMMfQGQV
+        OATjW9WLFywi15NT4Qxv6JdWaneMK0ldiWpUH+58FsfPjS91QXkRzT3luDEj
+        S8bkcfVlcK+r3PweLt0lJGI4mVvfIXPjx8/R+M6f0wG2crWklvqGe3obvt2z
+        V1wtt7udlgerFvcUVT2mnqC6xFct7FWMsFeZg3EqVVWK51VrK54HXuXQj1gZ
+        Pfqdp2d0QtW66aYw7nqaSupkV2qXcVdJUSN893uRRy8yfdyDgt7vAxjWSXOO
+        F6jFmmrPL9zltlbx0o6gQpcIhTyxyKW4PzjcZYLIjeOUbhTg4B8MrAEed94s
+        U/2KmtqXB9GSsppxUwK48cgDjPx/rXPnVBgp6rbFUpdbVd8sKKABC6jPbkDE
+        gn+c/wDDpvTEYK+4hrV8g56gpbepNkn6fTbXpLZd6u607CoEVLGJI4QFXumq
+        VxxWMFjn93LKk/Oi2FQMQRYrlg37mMe9qilufpPv0qRU1MI7FU1MSxKsPFwj
+        8WAUeCJAuDg5I+D8azPi/E2Uh6+YLWm/7nrr3abfdBbJrbZ5XZZ4mkNTWFwm
+        YmQ+2JVZOXtLAk+AvnTWzktEfkBUL9yaG2D3bNFKJElWozMrLGI/DHIBA+xn
+        XNbuddOsy5frYt5s9RTNFTzCZCoWdS0ZOPGQPOM/486gJByIRAIwZGrb/px6
+        qbRulzprjcNl7itVzhIhezW6WzSU0jFkYSJNU1AdFiZgvEg8pGJHga2F5JBb
+        1FjplCkJxmZ9j9O3Vymi3VbazcWx6vbV6kH6TQzUM7T2KFSGSMyhuNQQwVjy
+        jQHGAACSaLKTkk5hBGHiAMfs2lh9Il/uddFUbm3dTpLTTvOn9O0H6dHMGYHt
+        zpI0vdXGR8r+ROM4Ij256JlV0YPIEe4YUp4VjRVREHFVAwFH0NYxkCf/2Q==
+    http_version:
+  recorded_at: Thu, 10 Jul 2014 18:51:58 GMT
 - request:
     method: put
     uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/detail_bill_ted1.jpg
@@ -2349,7 +2416,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
@@ -2679,7 +2746,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:01 GMT
 - request:
     method: put
@@ -3469,7 +3536,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
@@ -4242,7 +4309,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
@@ -4572,7 +4639,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:01 GMT
 - request:
     method: put
@@ -5362,7 +5429,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
@@ -6135,7 +6202,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
@@ -6465,7 +6532,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 10 Jul 2014 18:52:01 GMT
 - request:
     method: put
@@ -7255,7 +7322,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 25 Nov 2014 01:32:33 GMT
 - request:
     method: put
@@ -8028,7 +8095,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 25 Nov 2014 01:32:34 GMT
 - request:
     method: put
@@ -8358,6 +8425,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 25 Nov 2014 01:32:34 GMT
 recorded_with: VCR 2.9.2

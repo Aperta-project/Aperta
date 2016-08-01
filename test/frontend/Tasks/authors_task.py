@@ -453,9 +453,12 @@ class AuthorsTask(BaseTask):
     time.sleep(3)
     authors = self._gets(self._author_items)
     all_auth_data = [x.text for x in authors]
-    assert [x for x in all_auth_data if author['first'] in x]
-    assert [x for x in all_auth_data if author['last'] in x]
-    assert [x for x in all_auth_data if author['email'] in x]
+    assert [x for x in all_auth_data if author['first'] in x], u'{0} not in {1}'.format(
+        author['first'], all_auth_data)
+    assert [x for x in all_auth_data if author['last'] in x], u'{0} not in {1}'.format(
+        author['last'], all_auth_data)
+    assert [x for x in all_auth_data if author['email'] in x], u'{0} not in {1}'.format(
+        author['email'], all_auth_data)
 
   def add_group_author_task_action(self):
     """Validate working of Author Card. Adds new group author"""

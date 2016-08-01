@@ -39,7 +39,7 @@ class ReviewerReportTask(BaseTask):
     Validates content of Reviewer Report task.
     :return None
     """
-    time.sleep(.5)
+    self._wait_for_element(self._get(self._review_note))
     review_note = self._get(self._review_note)
     assert u'Please refer to our referee guidelines for detailed instructions.' in \
         review_note.text

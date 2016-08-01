@@ -86,6 +86,8 @@ class ReviewerReportTest(CommonTest):
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
     time.sleep(3)
+    dashboard_page._wait_for_element(dashboard_page._get(
+        dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -94,7 +96,6 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report()
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

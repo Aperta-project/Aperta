@@ -50,10 +50,8 @@ class ProductionMetadataCardTest(CommonTest):
     # Give more time since successful status is needed for next step
     manuscript_page.validate_ihat_conversions_success(timeout=60)
     paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1]
+    paper_id = manuscript_page.get_paper_id_from_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    if not paper_id:
-      raise ValueError('Manuscript is in unexpected state')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

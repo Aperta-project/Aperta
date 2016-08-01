@@ -85,7 +85,6 @@ class ReviewerReportTest(CommonTest):
     ms_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
-    time.sleep(3)
     dashboard_page._wait_for_element(dashboard_page._get(
         dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(paper_id)

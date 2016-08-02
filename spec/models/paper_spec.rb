@@ -6,6 +6,55 @@ describe Paper do
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:user) { FactoryGirl.create :user }
 
+  shared_examples_for "submission" do
+    it 'should be unsubmitted' do
+      expect(paper.publishing_state).to eq("unsubmitted")
+    end
+
+    it 'marks the paper not editable' do
+      subject
+      expect(paper).to_not be_editable
+    end
+
+    it 'sets the updated_at of the initial version' do
+      Timecop.freeze(Time.current.utc) do
+        subject
+        expect(paper.submitted_at).to eq(Time.current.utc)
+      end
+    end
+
+    it 'sets the submitted_at' do
+      Timecop.freeze(Time.current.utc) do
+        subject
+        expect(paper.submitted_at).to eq(Time.current.utc)
+      end
+    end
+
+    it 'sets the first_submitted_at' do
+      Timecop.freeze(Time.current.utc) do
+        subject
+        expect(paper.first_submitted_at).to eq(Time.current.utc)
+      end
+    end
+
+    it "sets the submitting_user of the latest version" do
+      draft = paper.draft
+      expect { subject }.to change { draft.reload.submitting_user }.from(nil).to(user)
+    end
+
+    it 'snapshots metadata' do
+      Subscriptions.reload
+      expect(Paper::Submitted::SnapshotPaper).to receive(:call)
+      subject
+    end
+
+    it 'sets the version numbers of the draft to 0.0' do
+      expect { subject }
+        .to change { paper.major_version }.from(nil).to(0)
+        .and change { paper.minor_version }.from(nil).to(0)
+    end
+  end
+
   describe 'constants' do
     describe 'STATES' do
       it 'includes all possible states' do
@@ -421,53 +470,16 @@ describe Paper do
 
   context 'State Machine' do
     describe '#initial_submit' do
-      subject { paper.initial_submit! }
+      subject { paper.initial_submit! user }
+
       include_examples "transitions save state_updated_at",
-        initial_submit: proc { paper.initial_submit! }
+        initial_submit: proc { paper.initial_submit! user }
+      include_examples 'creates a new draft decision'
+      include_examples 'submission'
 
       it 'transitions to initially_submitted' do
-        paper.initial_submit!
+        subject
         expect(paper).to be_initially_submitted
-      end
-
-      it 'marks the paper not editable' do
-        paper.initial_submit!
-        expect(paper).to_not be_editable
-      end
-      include_examples 'creates a new draft decision'
-
-      it 'sets the updated_at of the initial version' do
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.submitted_at).to eq(Time.current.utc)
-        end
-      end
-
-      it 'sets the submitted_at' do
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.submitted_at).to eq(Time.current.utc)
-        end
-      end
-
-      it 'sets the first_submitted_at' do
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.first_submitted_at).to eq(Time.current.utc)
-        end
-      end
-
-      it 'snapshots metadata' do
-        Subscriptions.reload
-        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
-        paper.initial_submit!
-      end
-
-      it 'increments the minor version' do
-        paper.save!
-        paper.initial_submit!(user)
-        expect(paper.major_version).to be(0)
-        expect(paper.minor_version).to be(0)
       end
     end
 
@@ -475,59 +487,34 @@ describe Paper do
       subject { paper.submit! user }
       include_examples "transitions save state_updated_at",
         submit: proc { paper.submit!(paper.creator) }
-
-      it 'does not transition when metadata tasks are incomplete' do
-        expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
-        expect{ paper.submit! user }.to raise_error(AASM::InvalidTransition)
-      end
-
-      it "transitions to submitted" do
-        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
-        paper.submit! user
-        expect(paper).to be_submitted
-      end
-
       include_examples 'creates a new draft decision'
-
-      it "sets the submitting_user of the latest version" do
-        paper.submit! user
-        expect(paper.latest_version.submitting_user).to eq(user)
-      end
-
-      it "sets the updated_at of the latest version" do
-        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
-        paper.submit! user
-        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
-      end
-
-      it 'sets the submitted_at' do
-        Timecop.freeze do
-          paper.submit! user
-          expect(paper.submitted_at).to eq(Time.current)
-        end
-      end
-
-      it 'sets the first_submitted_at' do
-        Timecop.freeze do
-          paper.submit! user
-          expect(paper.first_submitted_at).to eq(Time.current)
-        end
-      end
+      include_examples 'submission'
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
         paper.update(publishing_state: 'in_revision',
                      first_submitted_at: original_now)
         Timecop.travel(1.day.from_now) do
-          paper.submit! user
+          subject
           expect(paper.first_submitted_at).to eq(original_now)
         end
+      end
+
+      it 'does not transition when metadata tasks are incomplete' do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
+        expect { subject }.to raise_error(AASM::InvalidTransition)
+      end
+
+      it "transitions to submitted" do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
+        subject
+        expect(paper).to be_submitted
       end
 
       it 'sets submitted at to the latest time' do
         first_submitted_at = Time.current.utc
         Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
+          paper.initial_submit! user
           expect(paper.first_submitted_at).to eq(paper.submitted_at)
           first_submitted_at = paper.first_submitted_at
         end
@@ -546,38 +533,18 @@ describe Paper do
         paper.submit! user
       end
 
-      it 'snapshots metadata' do
-        Subscriptions.reload
-        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
-        paper.submit! user
-      end
-
-      context 'called on an unsubmitted paper' do
-        before do
-          expect(paper.publishing_state).to eq("unsubmitted")
-        end
-
-        it 'sets the version to 0.0' do
-          expect(paper.minor_version).to be(nil)
-          expect(paper.major_version).to be(nil)
-          paper.submit! user
-          expect(paper.minor_version).to be(0)
-          expect(paper.major_version).to be(0)
-        end
-      end
-
       context 'called on a paper invited for full submission' do
         before do
-          paper.initial_submit!
+          paper.initial_submit! user
           paper.invite_full_submission!
         end
 
-        it 'sets the version to 0.0' do
-          expect(paper.major_version).to be(0)
-          expect(paper.minor_version).to be(0)
-          paper.submit! user
-          expect(paper.major_version).to be(0)
-          expect(paper.minor_version).to be(1)
+        it 'increments the minor version' do
+          expect { subject }.to change { paper.minor_version }.from(0).to(1)
+        end
+
+        it 'keeps the major version' do
+          expect { subject }.not_to change { paper.major_version }
         end
       end
 

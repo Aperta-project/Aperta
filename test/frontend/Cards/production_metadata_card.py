@@ -39,7 +39,6 @@ class ProductionMedataCard(BaseCard):
   def check_style(self, paper_id):
     """
     Style check for the card
-    :return: None
     """
     self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
@@ -82,15 +81,14 @@ class ProductionMedataCard(BaseCard):
     done_btn.click()
     time.sleep(1)
     volume_field = self._get(self._volume_number_field)
-    assert 'Must be a whole number' in volume_field.text
+    assert 'Must be a whole number' in volume_field.text, volume_field.text
     issue_field = self._get(self._issue_number_field)
-    assert 'Must be a whole number' in issue_field.text
+    assert 'Must be a whole number' in issue_field.text, issue_field.text
     # Style validation commented out due to bug APERTA-6901
     #self.validate_error_field_style(volume_field)
     #self.validate_error_msg_field_style(volume_field)
     #self.validate_error_field_style(issue_field)
     #self.validate_error_msg_field_style(issue_field)
-    return None
 
   def complete_card(self, data=None):
     """

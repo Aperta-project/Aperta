@@ -56,7 +56,7 @@ class ReviseManuscriptTest(CommonTest):
                         )
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=15)
+    paper_viewer.validate_ihat_conversions_success(timeout=45)
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))

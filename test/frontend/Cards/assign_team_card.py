@@ -7,7 +7,6 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from Base.PostgreSQL import PgSQL
 from frontend.Cards.basecard import BaseCard
 
 
@@ -50,12 +49,13 @@ class AssignTeamCard(BaseCard):
     self._assignee_revoke = (By.CSS_SELECTOR, 'span.assignment-remove')
 
   # POM Actions
-  def validate_card_elements_styles(self):
+  def validate_card_elements_styles(self, paper_id):
     """
     This method validates the styles of the card elements including the common card elements
+    :param paper_id: ID of paper for passing through to validate_common_elements_styles()
     :return void function
     """
-    self.validate_common_elements_styles()
+    self.validate_common_elements_styles(paper_id)
     title = self._get(self._card_heading)
     assert 'Assign Team' in title.text, title.text
     # self.validate_card_header(title)
@@ -77,7 +77,7 @@ class AssignTeamCard(BaseCard):
     user_input = self._get(self.assign_team_user_search_field)
     user_input.send_keys(person['email'])
     # Need time for the lookup to complete
-    time.sleep(2)
+    time.sleep(4)
     # once more with feeling to commit the selection
     user_input.send_keys(Keys.ENTER)
     time.sleep(1)

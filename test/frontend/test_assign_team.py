@@ -11,14 +11,10 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, internal_editor_login, handling_editor_login, \
-    cover_editor_login, prod_staff_login, pub_svcs_login, super_admin_login, \
+from Base.Resources import users, editorial_users, handling_editor_login, cover_editor_login, \
     reviewer_login, academic_editor_login
 from frontend.common_test import CommonTest
 from Cards.assign_team_card import AssignTeamCard
-from Cards.basecard import users, editorial_users, external_editorial_users
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -52,10 +48,10 @@ class AssignTeamCardTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviating the timeout for success message
-    manuscript_page.validate_ihat_conversions_success(timeout=15)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
-    manuscript_page.get_paper_id_from_url()
+    paper_id = manuscript_page.get_paper_id_from_url()
 
     # Giving just a little extra time here so the title on the paper gets updated
     # What I notice is that if we submit before iHat is done updating, the paper title
@@ -70,6 +66,7 @@ class AssignTeamCardTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
+
     # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
@@ -84,7 +81,7 @@ class AssignTeamCardTest(CommonTest):
     workflow_page.click_card('assign_team')
     time.sleep(3)
     assign_team = AssignTeamCard(self.getDriver())
-    assign_team.validate_card_elements_styles()
+    assign_team.validate_card_elements_styles(paper_id)
     assign_team.assign_role(academic_editor_login, 'Academic Editor')
     assign_team.assign_role(cover_editor_login, 'Cover Editor')
     assign_team.assign_role(handling_editor_login, 'Handling Editor')

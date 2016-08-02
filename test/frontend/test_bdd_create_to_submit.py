@@ -96,7 +96,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Need to wait for url to update
     count = 0
     paper_id = manuscript_page.get_current_url().split('/')[-1]
@@ -211,7 +211,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     time.sleep(5)
     # Need to wait for url to update
     count = 0

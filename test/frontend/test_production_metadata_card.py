@@ -47,7 +47,6 @@ class ProductionMetadataCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Give more time since successful status is needed for next step
     manuscript_page.validate_ihat_conversions_success(timeout=60)
     paper_url = manuscript_page.get_current_url()
     paper_id = manuscript_page.get_paper_id_from_url()

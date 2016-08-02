@@ -45,7 +45,7 @@ class FTCCardTest(CommonTest):
                         )
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
 
     # Need to wait for url to update
     count = 0

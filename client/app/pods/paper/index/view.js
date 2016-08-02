@@ -1,9 +1,8 @@
 import Ember from 'ember';
-import PaperIndexMixin from 'tahi/mixins/views/paper-index';
 import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
 import ENV from 'tahi/config/environment';
 
-export default Ember.View.extend(PaperIndexMixin, {
+export default Ember.View.extend({
   didRender: function() {
     this.refreshEquations();
   }.observes('controller.model.body'),

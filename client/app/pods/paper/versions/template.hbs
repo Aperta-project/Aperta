@@ -22,13 +22,13 @@
       {{#split-pane-element class="manuscript-pane"}}
         <div class="manuscript-container">
           {{flash-messages}}
-          <div class="manuscript">
+          {{#rendered-manuscript paper=paper}}
             <div id="paper-body">
               {{html-diff default=model.body
                           comparisonText=comparisonVersion.text
                           viewingText=viewingVersion.text}}
             </div>
-          </div>
+          {{/rendered-manuscript}}
         </div>
       {{/split-pane-element}}
 

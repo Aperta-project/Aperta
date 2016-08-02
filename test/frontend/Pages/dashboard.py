@@ -38,12 +38,12 @@ class DashboardPage(AuthenticatedPage):
     self._dashboard_top_menu_paper_tracker = (By.ID, 'nav-paper-tracker')
     self._dashboard_logo = (By.CLASS_NAME, 'dashboard-plos-logo')
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
-    self._dashboard_view_invitations_btn = \
-        (By.CSS_SELECTOR, 'section.dashboard-section button.button-primary.button--green')
-    self._dashboard_my_subs_title = \
-        (By.CSS_SELECTOR, 'section#dashboard-my-submissions h2.welcome-message')
-    self._dashboard_create_new_submission_btn = \
-        (By.CSS_SELECTOR, 'section#dashboard-my-submissions button.button-primary.button--green')
+    self._dashboard_view_invitations_btn = (By.CSS_SELECTOR,
+        'section.dashboard-section button.button-primary.button--green')
+    self._dashboard_my_subs_title = (By.CSS_SELECTOR,
+        'section#dashboard-my-submissions h2.welcome-message')
+    self._dashboard_create_new_submission_btn = (By.CSS_SELECTOR,
+        'section#dashboard-my-submissions button.button-primary.button--green')
     self._dash_active_section_title = (By.CSS_SELECTOR, 'thead.active-papers tr th')
     self._dash_active_role_th = (By.XPATH,
                                  "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
@@ -149,16 +149,9 @@ class DashboardPage(AuthenticatedPage):
     """
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
-      try:
-        # Remember to use single quotes outside to ensure you don't run afoul of
-        #  a single quote in the title - More often, double-quotes in titles are
-        #  rendered as smart quotes (unicode) so don't as often cause problems.
-        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'.format(title))
-      except UnicodeEncodeError:
-        self._driver.find_element_by_xpath('//*[contains(text(), "{0}")]'
-                                           .format(title.encode('utf8')))
-      yes_btn = listing.find_element(*self._invite_yes_btn)
-      yes_btn.click()
+      if title in listing.text:
+        yes_btn = listing.find_element(*self._invite_yes_btn)
+        yes_btn.click()
 
   def accept_or_reject_invitation(self, title):
     """

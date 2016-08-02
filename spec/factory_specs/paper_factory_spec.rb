@@ -126,7 +126,7 @@ describe 'PaperFactory' do
             title: title,
             journal: journal,
             reason: reason,
-            withdrawn_by_user: creator)
+            withdrawn_by_user: creator).reload
         end
       end
 

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { manualSetup, make } from 'ember-data-factory-guy';
+import { manualSetup, make, mockReload } from 'ember-data-factory-guy';
 import wait from 'ember-test-helpers/wait';
 import registerCustomAssertions from '../../../helpers/custom-assertions';
 import Factory from '../../../helpers/factory';
@@ -14,7 +14,10 @@ let createTask = function() {
       },
       publishingState: 'submitted',
       decisions: [
-        { id: 1 }
+        {
+          id: 1,
+          latest: true
+        }
       ],
       shortTitle: 'GREAT TITLE',
       creator: {
@@ -63,6 +66,11 @@ moduleForComponent(
     this.container.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
     manualSetup(this.container);
     Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
+    mockReload('decision', 1);
+
+    this.selectDecision = function(decision) {
+      this.$(`label:contains('${decision}') input[type='radio']`).first().click();
+    };
   }
 });
 
@@ -74,7 +82,7 @@ test('it renders decision selections', function(assert) {
   this.set('testTask', testTask);
   this.render(template);
   assert.elementsFound('.decision-label', 4);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'Dear');
 });
 
@@ -83,9 +91,9 @@ test('it switches the letter contents on change', function(assert) {
   this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'who Accepts');
-  this.$("input[type='radio']").first().click();
+  this.selectDecision('Reject');
   assert.inputContains('.decision-letter-field', 'who Rejects');
 });
 
@@ -94,7 +102,7 @@ test('it replaces [LAST NAME] with the authors last name', function(assert) {
   this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
 });
 
@@ -103,7 +111,7 @@ test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
   this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   let journalName = testTask.get('paper.journal.name');
   assert.inputContains('.decision-letter-field', journalName);
 });
@@ -113,7 +121,7 @@ test('it replaces [PAPER TITLE] with the paper title', function(assert) {
   this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'GREAT TITLE');
 });
 
@@ -122,6 +130,6 @@ test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
   this.set('fakeUser', fakeUser);
   this.set('testTask', testTask);
   this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.to-field', 'author@example.com');
 });

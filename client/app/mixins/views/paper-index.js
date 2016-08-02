@@ -3,8 +3,6 @@ import Ember from 'ember';
 const { on } = Ember;
 
 export default Ember.Mixin.create({
-  classNames: ['edit-paper'],
-
   editable: Ember.computed.alias('controller.model.editable'),
   supportedDownloadFormats: Ember.computed.alias('controller.supportedDownloadFormats'),
 

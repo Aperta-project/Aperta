@@ -39,7 +39,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       this.get('latestDecision.verdict') === 'reject';
   }),
 
-  verdicts: ['reject', 'accept', 'major_revision', 'minor_revision'],
+  verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 
   applyTemplateReplacements(str) {
     str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));

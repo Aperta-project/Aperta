@@ -52,3 +52,10 @@ test('revisionNumber', function(assert) {
     `${majorVersion}.${minorVersion}`
   );
 });
+
+test('terminal', function(assert) {
+  assert.ok(FactoryGuy.make('decision', { verdict: 'accept' }).get('terminal'));
+  assert.ok(FactoryGuy.make('decision', { verdict: 'reject' }).get('terminal'));
+  assert.notOk(FactoryGuy.make('decision', { verdict: 'major_revision' }).get('terminal'));
+  assert.notOk(FactoryGuy.make('decision', { verdict: 'minor_revision' }).get('terminal'));
+});

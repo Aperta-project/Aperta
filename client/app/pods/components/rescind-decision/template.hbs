@@ -1,6 +1,6 @@
 <div class="rescind-decision-container">
 
-A decision of <span class="rescind-decision-verdict">{{humanize decision.verdict}}</span> has been made.
+A {{if decision.terminal 'final'}} decision of <span class="rescind-decision-verdict">{{humanize decision.verdict}}</span> has been registered.
 
 {{#if decision.rescindable}}
 <button disabled={{not isEditable}}

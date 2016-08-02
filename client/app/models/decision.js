@@ -21,6 +21,8 @@ export default DS.Model.extend({
   rescinded: DS.attr('boolean'),
   verdict: DS.attr('string'),
 
+  terminal: Ember.computed.match('verdict', /^(accept|reject)$/),
+
   restless: Ember.inject.service('restless'),
   rescind() {
     return this.get('restless')

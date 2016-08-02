@@ -10,12 +10,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     this.get('task.paper.decisions').reload();
   },
   decidedDecision: null,
-  formattedDecidedDecision: computed('decidedDecision', function() {
-    let words = this.get('decidedDecision').split(/_/g);
-    return words.map(function(word) {
-      return (word.charAt(0).toUpperCase() + word.slice(1));
-    }).join(' ');
-  }),
   restless: Ember.inject.service('restless'),
   paper: computed.alias('task.paper'),
   submitted: computed.equal('paper.publishingState', 'submitted'),
@@ -33,11 +27,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   latestDecision: computed.alias('paper.latestDecision'),
   latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
   previousDecisions: computed.alias('paper.previousDecisions'),
-
-  finalDecision: computed('latestDecision.verdict', function() {
-    return this.get('latestDecision.verdict') === 'accept' ||
-      this.get('latestDecision.verdict') === 'reject';
-  }),
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 

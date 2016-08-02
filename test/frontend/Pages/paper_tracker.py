@@ -326,6 +326,9 @@ class PaperTrackerPage(AuthenticatedPage):
       papers = self._get_paper_list(journal_ids)
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       for count, row in enumerate(table_rows):
+        if not db_papers[count][3]:
+          logging.info(db_papers[count])
+          raise ValueError('Paper without Date Submitted')
         logging.info('Validating Row: {0}'.format(count + 1))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (
@@ -364,8 +367,7 @@ class PaperTrackerPage(AuthenticatedPage):
             page_title = page_title.split()
             logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title,
                                                                     page_title,
-                                                                    count + 1)
-                         )
+                                                                    count + 1))
             assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
                                                                                        page_title,
                                                                                        count + 1)

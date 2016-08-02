@@ -13,6 +13,13 @@
     beforeRescind=(action "showSpinner")
     afterRescind=(action "hideSpinner")}}
 
+  {{#if (eq paper.publishingState 'unsubmitted')}}
+    <div class="alert alert-warning">
+      A decision cannot be registered at this time. The manuscript is
+      unsubmitted.
+    </div>
+  {{/if}}
+
   <div class="decision-selections">
     {{#each verdicts as |verdict|}}
       <label class="decision-label">

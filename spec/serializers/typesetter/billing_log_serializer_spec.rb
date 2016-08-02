@@ -73,7 +73,7 @@ describe Typesetter::BillingLogSerializer do
   end
 
   it 'has first_submitted_at' do
-    paper.initial_submit!
+    paper.initial_submit! paper.creator
     expect(output[:original_submission_start_date]).to eq(paper.first_submitted_at)
   end
 

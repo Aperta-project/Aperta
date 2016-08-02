@@ -106,7 +106,8 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
-                  after: [:set_submitted_at!,
+                  after: [:set_submitting_user_and_touch!,
+                          :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
                           :new_minor_version!]

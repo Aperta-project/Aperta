@@ -77,7 +77,10 @@ FactoryGirl.define do
     end
 
     trait(:initially_submitted) do
-      after(:create, &:initial_submit!)
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.initial_submit! paper.creator
+      end
     end
 
     trait(:submitted) do

@@ -1,0 +1,395 @@
+[ {"id":1,"text":"Clinical Trial","value_type":"boolean","ident":"reporting_guidelines--clinical_trial","parent_id":null,"lft":1,"rgt":2,"position":1,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":2,"text":"Systematic Reviews","value_type":"boolean","ident":"reporting_guidelines--systematic_reviews","parent_id":null,"lft":3,"rgt":6,"position":2,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":3,"text":"Provide a completed PRISMA checklist as supporting information.  You can \u003ca href='http://www.prisma-statement.org/' target='_blank'\u003edownload it here\u003c/a\u003e.","value_type":"attachment","ident":"reporting_guidelines--systematic_reviews--checklist","parent_id":2,"lft":4,"rgt":5,"position":1,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":4,"text":"Meta-analyses","value_type":"boolean","ident":"reporting_guidelines--meta_analyses","parent_id":null,"lft":7,"rgt":10,"position":3,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":5,"text":"Provide a completed PRISMA checklist as supporting information.  You can \u003ca href='http://www.prisma-statement.org/' target='_blank'\u003edownload it here\u003c/a\u003e.","value_type":"attachment","ident":"reporting_guidelines--meta_analyses--checklist","parent_id":4,"lft":8,"rgt":9,"position":1,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":6,"text":"Diagnostic studies","value_type":"boolean","ident":"reporting_guidelines--diagnostic_studies","parent_id":null,"lft":11,"rgt":12,"position":4,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":7,"text":"Epidemiological studies","value_type":"boolean","ident":"reporting_guidelines--epidemiological_studies","parent_id":null,"lft":13,"rgt":14,"position":5,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":8,"text":"Microarray studies","value_type":"boolean","ident":"reporting_guidelines--microarray_studies","parent_id":null,"lft":15,"rgt":16,"position":6,"owner_type":"TahiStandardTasks::ReportingGuidelinesTask","owner_id":null},
+
+{"id":9,"text":"Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?","value_type":"boolean","ident":"publishing_related_questions--published_elsewhere","parent_id":null,"lft":17,"rgt":22,"position":1,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":10,"text":"Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.","value_type":"text","ident":"publishing_related_questions--published_elsewhere--taken_from_manuscripts","parent_id":9,"lft":18,"rgt":19,"position":1,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":11,"text":"Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions.","value_type":"attachment","ident":"publishing_related_questions--published_elsewhere--upload_related_work","parent_id":9,"lft":20,"rgt":21,"position":2,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":12,"text":"Is this manuscript being submitted in conjunction with another submission?","value_type":"boolean","ident":"publishing_related_questions--submitted_in_conjunction","parent_id":null,"lft":23,"rgt":32,"position":2,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":13,"text":"Title","value_type":"text","ident":"publishing_related_questions--submitted_in_conjunction--corresponding_title","parent_id":12,"lft":24,"rgt":25,"position":1,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":14,"text":"Corresponding author","value_type":"text","ident":"publishing_related_questions--submitted_in_conjunction--corresponding_author","parent_id":12,"lft":26,"rgt":27,"position":2,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":15,"text":"I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal.","value_type":"boolean","ident":"publishing_related_questions--previous_interactions_with_this_manuscript","parent_id":null,"lft":33,"rgt":36,"position":3,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":16,"text":"Please enter manuscript number and editor name, if known","value_type":"text","ident":"publishing_related_questions--previous_interactions_with_this_manuscript--submission_details","parent_id":15,"lft":34,"rgt":35,"position":1,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":17,"text":"I submitted a presubmission inquiry for this manuscript.","value_type":"boolean","ident":"publishing_related_questions--presubmission_inquiry","parent_id":null,"lft":37,"rgt":42,"position":4,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":18,"text":"Please enter manuscript number and editor name, if known","value_type":"text","ident":"publishing_related_questions--presubmission_inquiry--submission_details","parent_id":17,"lft":40,"rgt":41,"position":1,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":20,"text":"This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission.","value_type":"boolean","ident":"publishing_related_questions--other_journal_submission","parent_id":null,"lft":38,"rgt":44,"position":5,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":21,"text":"Please enter manuscript number and editor name, if known","value_type":"text","ident":"publishing_related_questions--other_journal_submission--submission_details","parent_id":20,"lft":39,"rgt":43,"position":1,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":23,"text":"One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal.","value_type":"boolean","ident":"publishing_related_questions--author_was_previous_journal_editor","parent_id":null,"lft":45,"rgt":46,"position":6,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":24,"text":"If your submission is intended for a \u003ca target='_blank' href='http://collections.plos.org/'\u003ePLOS Collection\u003c/a\u003e, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.","value_type":"text","ident":"publishing_related_questions--intended_collection","parent_id":null,"lft":47,"rgt":48,"position":7,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":27,"text":"Did any of the authors receive specific funding for this work?","value_type":"boolean","ident":"financial_disclosures--author_received_funding","parent_id":null,"lft":49,"rgt":50,"position":1,"owner_type":"TahiStandardTasks::FinancialDisclosureTask","owner_id":null},
+
+{"id":28,"text":"Yes - I confirm our figures comply with the guidelines.","value_type":"boolean","ident":"figures--complies","parent_id":null,"lft":51,"rgt":52,"position":1,"owner_type":"TahiStandardTasks::FigureTask","owner_id":null},
+
+{"id":30,"text":"Does your study involve human participants and/or tissue?","value_type":"boolean","ident":"ethics--human_subjects","parent_id":null,"lft":55,"rgt":60,"position":1,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":31,"text":"Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research.","value_type":"text","ident":"ethics--human_subjects--participants","parent_id":30,"lft":58,"rgt":59,"position":1,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":33,"text":"Does your study involve animal research (vertebrate animals, embryos or tissues)?","value_type":"boolean","ident":"ethics--animal_subjects","parent_id":null,"lft":56,"rgt":64,"position":2,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":34,"text":"Please enter your statement below:","value_type":"text","ident":"ethics--animal_subjects--field_permit","parent_id":33,"lft":57,"rgt":61,"position":1,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":36,"text":"Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?","value_type":"boolean","ident":"data_availability--data_fully_available","parent_id":null,"lft":65,"rgt":66,"position":1,"owner_type":"TahiStandardTasks::DataAvailabilityTask","owner_id":null},
+
+{"id":37,"text":"Please describe where your data may be found, writing in full sentences.","value_type":"text","ident":"data_availability--data_location","parent_id":null,"lft":67,"rgt":68,"position":2,"owner_type":"TahiStandardTasks::DataAvailabilityTask","owner_id":null},
+
+{"id":38,"text":"Do any authors of this manuscript have competing interests (as described in the \u003ca target='_blank' href='http://journals.plos.org/plosbiology/s/competing-interests'\u003ePLOS Policy on Declaration and Evaluation of Competing Interests\u003c/a\u003e)?","value_type":"boolean","ident":"competing_interests--has_competing_interests","parent_id":null,"lft":69,"rgt":72,"position":1,"owner_type":"TahiStandardTasks::CompetingInterestsTask","owner_id":null},
+
+{"id":39,"text":"Please provide details about any and all competing interests in the box below. Your response should begin with this statement: \"I have read the journal's policy and the authors of this manuscript have the following competing interests.\"","value_type":"text","ident":"competing_interests--statement","parent_id":38,"lft":70,"rgt":71,"position":2,"owner_type":"TahiStandardTasks::CompetingInterestsTask","owner_id":null},
+
+{"id":42,"text":"First Name","value_type":"text","ident":"plos_billing--first_name","parent_id":null,"lft":77,"rgt":78,"position":1,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":43,"text":"Last Name","value_type":"text","ident":"plos_billing--last_name","parent_id":null,"lft":79,"rgt":80,"position":2,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":44,"text":"Title","value_type":"text","ident":"plos_billing--title","parent_id":null,"lft":81,"rgt":82,"position":3,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":45,"text":"Department","value_type":"text","ident":"plos_billing--department","parent_id":null,"lft":83,"rgt":84,"position":4,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":46,"text":"Phone","value_type":"text","ident":"plos_billing--phone_number","parent_id":null,"lft":85,"rgt":86,"position":5,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":48,"text":"Email","value_type":"text","ident":"plos_billing--email","parent_id":null,"lft":87,"rgt":88,"position":6,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":50,"text":"Address Line 1","value_type":"text","ident":"plos_billing--address1","parent_id":null,"lft":89,"rgt":90,"position":7,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":52,"text":"Address Line 2 (optional)","value_type":"text","ident":"plos_billing--address2","parent_id":null,"lft":91,"rgt":92,"position":8,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":54,"text":"City","value_type":"text","ident":"plos_billing--city","parent_id":null,"lft":93,"rgt":94,"position":9,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":56,"text":"State or Province","value_type":"text","ident":"plos_billing--state","parent_id":null,"lft":95,"rgt":96,"position":10,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":58,"text":"ZIP or Postal Code","value_type":"text","ident":"plos_billing--postal_code","parent_id":null,"lft":97,"rgt":98,"position":11,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":60,"text":"Country","value_type":"text","ident":"plos_billing--country","parent_id":null,"lft":99,"rgt":100,"position":12,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":62,"text":"Affiliation #1","value_type":"text","ident":"plos_billing--affiliation1","parent_id":null,"lft":101,"rgt":102,"position":13,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":64,"text":"Affiliation #2","value_type":"text","ident":"plos_billing--affiliation2","parent_id":null,"lft":103,"rgt":104,"position":14,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":66,"text":"How would you like to pay?","value_type":"text","ident":"plos_billing--payment_method","parent_id":null,"lft":105,"rgt":106,"position":15,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":68,"text":"Have you investigated if funding is available from your co-authors' institutions to pay the publication fee?","value_type":"boolean","ident":"plos_billing--pfa_question_1","parent_id":null,"lft":107,"rgt":108,"position":16,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":70,"text":"If your co-authors' institutions will not provide any funding to publish the article, indicate why.","value_type":"text","ident":"plos_billing--pfa_question_1a","parent_id":null,"lft":109,"rgt":110,"position":17,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":72,"text":"If your coauthors' institutions will provide partial funding to publish the article, indicate the amount they will pay towards your publication fee (in USD).","value_type":"text","ident":"plos_billing--pfa_question_1b","parent_id":null,"lft":111,"rgt":112,"position":18,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":74,"text":"Have you investigated if funding is available from your institution to pay the publication fee?","value_type":"boolean","ident":"plos_billing--pfa_question_2","parent_id":null,"lft":113,"rgt":114,"position":19,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":76,"text":"If your institution cannot provide any funding to publish the article, indicate why.","value_type":"text","ident":"plos_billing--pfa_question_2a","parent_id":null,"lft":115,"rgt":116,"position":20,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":78,"text":"If your institution will provide partial funding to publish the article, indicate the amount it will pay toward your publication fee (in USD).","value_type":"text","ident":"plos_billing--pfa_question_2b","parent_id":null,"lft":117,"rgt":118,"position":21,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":80,"text":"Do your co-authors have any other sources of funding that can be used towards the publication fee?","value_type":"boolean","ident":"plos_billing--pfa_question_3","parent_id":null,"lft":119,"rgt":120,"position":22,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":82,"text":"Indicate the amount that they can pay (in USD).","value_type":"text","ident":"plos_billing--pfa_question_3a","parent_id":null,"lft":121,"rgt":122,"position":23,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":84,"text":"Do you have any other sources of funding that can be used towards the publication fee?","value_type":"boolean","ident":"plos_billing--pfa_question_4","parent_id":null,"lft":123,"rgt":124,"position":24,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":86,"text":"Indicate the amount that they can pay (in USD).","value_type":"text","ident":"plos_billing--pfa_question_4a","parent_id":null,"lft":125,"rgt":126,"position":25,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":88,"text":"Given your answers to the above questions on your funding availability, what is the amount that you and your co-authors can jointly pay for publication? (Specify in USD.)","value_type":"text","ident":"plos_billing--pfa_amount_to_pay","parent_id":null,"lft":127,"rgt":128,"position":28,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":90,"text":"If you would like to provide documents to assist in demonstrating your request, you will have the opportunity to do so. After PLOS has received the completed application, the confirmation email will provide direction on where to send supplemental documents. Do you intend to supply supplemental documents?","value_type":"boolean","ident":"plos_billing--pfa_supporting_docs","parent_id":null,"lft":129,"rgt":130,"position":27,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":92,"text":"If you wish to make additional comments to support your request, provide them below. If you have no additional comments, enter \"None\" in the box.","value_type":"text","ident":"plos_billing--pfa_additional_comments","parent_id":null,"lft":131,"rgt":132,"position":29,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":94,"text":"You are acknowledging that you have read and agree to the following statement: I affirm that the information provided in this application is true and complete.","value_type":"boolean","ident":"plos_billing--affirm_true_and_complete","parent_id":null,"lft":133,"rgt":134,"position":30,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":96,"text":"I have read and agree to the Terms of Submission to PLOS Collections","value_type":"boolean","ident":"plos_billing--agree_to_collections","parent_id":null,"lft":135,"rgt":136,"position":31,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":98,"text":"Global Participation Initiative Country","value_type":"text","ident":"plos_billing--gpi_country","parent_id":null,"lft":139,"rgt":140,"position":32,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":99,"text":"Ringgold Institution","value_type":"text","ident":"plos_billing--ringgold_institution","parent_id":null,"lft":141,"rgt":142,"position":33,"owner_type":"PlosBilling::BillingTask","owner_id":null},
+
+{"id":101,"text":"This person should be identified as corresponding author on the published article","value_type":"boolean","ident":"author--published_as_corresponding_author","parent_id":null,"lft":143,"rgt":144,"position":1,"owner_type":"Author","owner_id":null},
+
+{"id":102,"text":"This person is deceased","value_type":"boolean","ident":"author--deceased","parent_id":null,"lft":145,"rgt":146,"position":2,"owner_type":"Author","owner_id":null},
+
+{"id":104,"text":"Author Contributions","value_type":"question-set","ident":"author--contributions","parent_id":null,"lft":147,"rgt":188,"position":3,"owner_type":"Author","owner_id":null},
+
+{"id":118,"text":"Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?","value_type":"boolean","ident":"funder--had_influence","parent_id":null,"lft":189,"rgt":192,"position":1,"owner_type":"TahiStandardTasks::Funder","owner_id":null},
+
+{"id":119,"text":"Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.","value_type":"text","ident":"funder--had_influence--role_description","parent_id":118,"lft":190,"rgt":191,"position":1,"owner_type":"TahiStandardTasks::Funder","owner_id":null},
+
+{"id":120,"text":"Publication Date","value_type":"text","ident":"production_metadata--publication_date","parent_id":null,"lft":193,"rgt":194,"position":1,"owner_type":"TahiStandardTasks::ProductionMetadataTask","owner_id":null},
+
+{"id":121,"text":"Volume Number","value_type":"text","ident":"production_metadata--volume_number","parent_id":null,"lft":195,"rgt":196,"position":2,"owner_type":"TahiStandardTasks::ProductionMetadataTask","owner_id":null},
+
+{"id":122,"text":"Issue Number","value_type":"text","ident":"production_metadata--issue_number","parent_id":null,"lft":197,"rgt":198,"position":3,"owner_type":"TahiStandardTasks::ProductionMetadataTask","owner_id":null},
+
+{"id":123,"text":"Production Notes","value_type":"text","ident":"production_metadata--production_notes","parent_id":null,"lft":199,"rgt":200,"position":4,"owner_type":"TahiStandardTasks::ProductionMetadataTask","owner_id":null},
+
+{"id":124,"text":"Do you have any potential or perceived competing interests that may influence your review?","value_type":"boolean","ident":"reviewer_report--competing_interests","parent_id":null,"lft":201,"rgt":204,"position":2,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":131,"text":"(Optional) If you have any additional confidential comments to the editor, please add them below.","value_type":"text","ident":"reviewer_report--additional_comments","parent_id":null,"lft":205,"rgt":206,"position":5,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":132,"text":"(Optional) If you'd like your identity to be revealed to the authors, please include your name here.","value_type":"text","ident":"reviewer_report--identity","parent_id":null,"lft":207,"rgt":208,"position":3,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":133,"text":"Does this manuscript describe a new zoological taxon name?","value_type":"boolean","ident":"taxon--zoological","parent_id":null,"lft":209,"rgt":212,"position":1,"owner_type":"TahiStandardTasks::TaxonTask","owner_id":null},
+
+{"id":134,"text":"All authors comply with the Policies Regarding Submission of a new Taxon Name","value_type":"boolean","ident":"taxon--zoological--complies","parent_id":133,"lft":210,"rgt":211,"position":1,"owner_type":"TahiStandardTasks::TaxonTask","owner_id":null},
+
+{"id":135,"text":"Does this manuscript describe a new botanical taxon name?","value_type":"boolean","ident":"taxon--botanical","parent_id":null,"lft":213,"rgt":216,"position":2,"owner_type":"TahiStandardTasks::TaxonTask","owner_id":null},
+
+{"id":136,"text":"All authors comply with the Policies Regarding Submission of a new Taxon Name","value_type":"boolean","ident":"taxon--botanical--complies","parent_id":135,"lft":214,"rgt":215,"position":1,"owner_type":"TahiStandardTasks::TaxonTask","owner_id":null},
+
+{"id":137,"text":"Are you recommending or opposing this reviewer?","value_type":"boolean","ident":"reviewer_recommendations--recommend_or_oppose","parent_id":null,"lft":217,"rgt":218,"position":1,"owner_type":"TahiStandardTasks::ReviewerRecommendation","owner_id":null},
+
+{"id":138,"text":"Optional: reason for recommending or opposing this reviewer","value_type":"text","ident":"reviewer_recommendations--reason","parent_id":null,"lft":219,"rgt":220,"position":2,"owner_type":"TahiStandardTasks::ReviewerRecommendation","owner_id":null},
+
+{"id":145,"text":"Check that the Financial Disclosure card has been filled out correctly. Ensure the authors have provided a description of the roles of the funder, if they responded Yes to our standard statement.","value_type":"boolean","ident":"plos_bio_initial_tech_check--financial_disclosure","parent_id":null,"lft":221,"rgt":222,"position":9,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":146,"text":" If the Financial Disclosure Statement includes any companies from the Tobacco Industry, start a 'MetaData' discussion and ping the handling editor. See \u003ca href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'\u003ethis list\u003c/a\u003e.","value_type":"boolean","ident":"plos_bio_initial_tech_check--tobacco","parent_id":null,"lft":223,"rgt":224,"position":10,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":151,"text":"Make sure the ethics statement looks complete. If the authors have responded Yes to any question, but have not provided approval information, please request this from them.","value_type":"boolean","ident":"plos_bio_initial_tech_check--ethics_statement","parent_id":null,"lft":225,"rgt":226,"position":1,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":152,"text":"Check Section Headings of all new submissions (including Open Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure Legends.","value_type":"boolean","ident":"plos_bio_revision_tech_check--open_rejects","parent_id":null,"lft":227,"rgt":228,"position":1,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":153,"text":"Check the ethics statement - does it mention Human Participants? If so, flag this with the editor in the discussion below.","value_type":"boolean","ident":"plos_bio_revision_tech_check--human_subjects","parent_id":null,"lft":229,"rgt":230,"position":2,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":154,"text":"Check if there are any obvious ethical flags (mentions of animal/human work in the title/abstract), check that there's an ethics statement. If not, ask the authors about this.","value_type":"boolean","ident":"plos_bio_revision_tech_check--ethics_needed","parent_id":null,"lft":231,"rgt":232,"position":3,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":155,"text":"Is the data available? If not, or it's only available by contacting an author or the institution, make a note in the discussion below.","value_type":"boolean","ident":"plos_bio_revision_tech_check--data_available","parent_id":null,"lft":233,"rgt":234,"position":4,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":156,"text":"If author indicates the data is available in Supporting Information, check to make sure there are Supporting Information files in the submission (don't need to check for specifics at this stage).","value_type":"boolean","ident":"plos_bio_revision_tech_check--supporting_information","parent_id":null,"lft":235,"rgt":236,"position":5,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":157,"text":"If the author has mentioned Dryad in their Data statement, check that they've included the Dryad reviewer URL. If not, make a note in the discussion below.","value_type":"boolean","ident":"plos_bio_revision_tech_check--dryad_url","parent_id":null,"lft":237,"rgt":238,"position":6,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":158,"text":"Check that the Financial Disclosure card has been filled out correctly. Ensure the authors have provided a description of the roles of the funder, if they responded Yes to our standard statement.","value_type":"boolean","ident":"plos_bio_revision_tech_check--financial_disclosure","parent_id":null,"lft":239,"rgt":240,"position":7,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":159,"text":"If the Financial Disclosure Statement includes any companies from the Tobacco Industry, start a 'MetaData' discussion and ping the handling editor. See \u003ca href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'\u003ethis list\u003c/a\u003e.","value_type":"boolean","ident":"plos_bio_revision_tech_check--tobacco","parent_id":null,"lft":241,"rgt":242,"position":8,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":160,"text":"If any figures are completely illegible, contact the author.","value_type":"boolean","ident":"plos_bio_revision_tech_check--figures_legible","parent_id":null,"lft":243,"rgt":244,"position":9,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":161,"text":"If any files or figures are cited but not included in the submission, message the author.","value_type":"boolean","ident":"plos_bio_revision_tech_check--cited","parent_id":null,"lft":245,"rgt":246,"position":10,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":162,"text":"Have the authors asked any questions in the cover letter? If yes, contact the editor/journal team.","value_type":"boolean","ident":"plos_bio_revision_tech_check--cover_letter","parent_id":null,"lft":247,"rgt":248,"position":11,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":163,"text":"Have the authors mentioned any billing information in the cover letter? If yes, contact the editor/journal team.","value_type":"boolean","ident":"plos_bio_revision_tech_check--billing_inquiries","parent_id":null,"lft":249,"rgt":250,"position":12,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":164,"text":"Make sure the ethics statement looks complete. If the authors have responded Yes to any question, but have not provided approval information, please request this from them.","value_type":"boolean","ident":"plos_bio_revision_tech_check--ethics_statement","parent_id":null,"lft":251,"rgt":252,"position":13,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":165,"text":"Check Section Headings of all new submissions (including Open Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure Legends.","value_type":"boolean","ident":"plos_bio_final_tech_check--open_rejects","parent_id":null,"lft":253,"rgt":254,"position":1,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":166,"text":"Check the ethics statement - does it mention Human Participants? If so, flag this with the editor in the discussion below.","value_type":"boolean","ident":"plos_bio_final_tech_check--human_subjects","parent_id":null,"lft":255,"rgt":256,"position":2,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":167,"text":"Check if there are any obvious ethical flags (mentions of animal/human work in the title/abstract), check that there's an ethics statement. If not, ask the authors about this.","value_type":"boolean","ident":"plos_bio_final_tech_check--ethics_needed","parent_id":null,"lft":257,"rgt":258,"position":3,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":168,"text":"Is the data available? If not, or it's only available by contacting an author or the institution, make a note in the discussion below.","value_type":"boolean","ident":"plos_bio_final_tech_check--data_available","parent_id":null,"lft":259,"rgt":260,"position":4,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":169,"text":"If author indicates the data is available in Supporting Information, check to make sure there are Supporting Information files in the submission (don't need to check for specifics at this stage).","value_type":"boolean","ident":"plos_bio_final_tech_check--supporting_information","parent_id":null,"lft":261,"rgt":262,"position":5,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":170,"text":"If the author has mentioned Dryad in their Data statement, check that they've included the Dryad reviewer URL. If not, make a note in the discussion below.","value_type":"boolean","ident":"plos_bio_final_tech_check--dryad_url","parent_id":null,"lft":263,"rgt":264,"position":6,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":171,"text":"If Financial Disclosure Statement is not complete (they've written N/A or something similar), message author.","value_type":"boolean","ident":"plos_bio_final_tech_check--financial_disclosure","parent_id":null,"lft":265,"rgt":266,"position":7,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":172,"text":"If the Financial Disclosure Statement includes any companies from the Tobacco Industry, make a note in the discussion below.","value_type":"boolean","ident":"plos_bio_final_tech_check--tobacco","parent_id":null,"lft":267,"rgt":268,"position":8,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":173,"text":"If any figures are completely illegible, contact the author.","value_type":"boolean","ident":"plos_bio_final_tech_check--figures_legible","parent_id":null,"lft":269,"rgt":270,"position":9,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":174,"text":"If any files or figures are cited but not included in the submission, message the author.","value_type":"boolean","ident":"plos_bio_final_tech_check--cited","parent_id":null,"lft":271,"rgt":272,"position":10,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":175,"text":"Have the authors asked any questions in the cover letter? If yes, contact the editor/journal team.","value_type":"boolean","ident":"plos_bio_final_tech_check--cover_letter","parent_id":null,"lft":273,"rgt":274,"position":11,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":176,"text":"Have the authors mentioned any billing information in the cover letter? If yes, contact the editor/journal team.","value_type":"boolean","ident":"plos_bio_final_tech_check--billing_inquiries","parent_id":null,"lft":275,"rgt":276,"position":12,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":177,"text":"If an Ethics Statement is present, make a note in the discussion below.","value_type":"boolean","ident":"plos_bio_final_tech_check--ethics_statement","parent_id":null,"lft":277,"rgt":278,"position":13,"owner_type":"PlosBioTechCheck::FinalTechCheckTask","owner_id":null},
+
+{"id":178,"text":"Please provide your field permit number and indicate the institution or relevant body that granted permission for use of the land or materials collected.","value_type":"text","ident":"ethics--field_study--field_permit_number","parent_id":179,"lft":278,"rgt":279,"position":1,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":179,"text":"Is this a field study, or does it involve collection of plant, animal, or other materials collected from a natural setting?","value_type":"boolean","ident":"ethics--field_study","parent_id":null,"lft":277,"rgt":280,"position":3,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":180,"text":"Corresponding journal","value_type":"text","ident":"publishing_related_questions--submitted_in_conjunction--corresponding_journal","parent_id":12,"lft":28,"rgt":29,"position":3,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":181,"text":"This submission and the manuscript I'm submitting should be handled together","value_type":"boolean","ident":"publishing_related_questions--submitted_in_conjunction--handled_together","parent_id":12,"lft":30,"rgt":31,"position":4,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":182,"text":"Please provide your publication recommendation:","value_type":"text","ident":"reviewer_report--decision_term","parent_id":null,"lft":277,"rgt":278,"position":1,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":183,"text":"ARRIVE checklist","value_type":"attachment","ident":"ethics--animal_subjects--field_arrive","parent_id":33,"lft":62,"rgt":63,"position":2,"owner_type":"TahiStandardTasks::EthicsTask","owner_id":null},
+
+{"id":184,"text":"Please give your paper a short title. Short titles are used as the running header on published PDFs.","value_type":"text","ident":"publishing_related_questions--short_title","parent_id":null,"lft":281,"rgt":282,"position":8,"owner_type":"TahiStandardTasks::PublishingRelatedQuestionsTask","owner_id":null},
+
+{"id":185,"text":"Conceptualization","value_type":"boolean","ident":"author--contributions--conceptualization","parent_id":104,"lft":160,"rgt":161,"position":1,"owner_type":"Author","owner_id":null},
+
+{"id":186,"text":"Investigation","value_type":"boolean","ident":"author--contributions--investigation","parent_id":104,"lft":162,"rgt":163,"position":2,"owner_type":"Author","owner_id":null},
+
+{"id":187,"text":"Visualization","value_type":"boolean","ident":"author--contributions--visualization","parent_id":104,"lft":164,"rgt":165,"position":3,"owner_type":"Author","owner_id":null},
+
+{"id":188,"text":"Methodology","value_type":"boolean","ident":"author--contributions--methodology","parent_id":104,"lft":166,"rgt":167,"position":4,"owner_type":"Author","owner_id":null},
+
+{"id":189,"text":"Resources","value_type":"boolean","ident":"author--contributions--resources","parent_id":104,"lft":168,"rgt":169,"position":5,"owner_type":"Author","owner_id":null},
+
+{"id":190,"text":"Supervision","value_type":"boolean","ident":"author--contributions--supervision","parent_id":104,"lft":170,"rgt":171,"position":6,"owner_type":"Author","owner_id":null},
+
+{"id":191,"text":"Software","value_type":"boolean","ident":"author--contributions--software","parent_id":104,"lft":172,"rgt":173,"position":7,"owner_type":"Author","owner_id":null},
+
+{"id":192,"text":"Data Curation","value_type":"boolean","ident":"author--contributions--data-curation","parent_id":104,"lft":174,"rgt":175,"position":8,"owner_type":"Author","owner_id":null},
+
+{"id":193,"text":"Project Administration","value_type":"boolean","ident":"author--contributions--project-administration","parent_id":104,"lft":176,"rgt":177,"position":9,"owner_type":"Author","owner_id":null},
+
+{"id":194,"text":"Validation","value_type":"boolean","ident":"author--contributions--validation","parent_id":104,"lft":178,"rgt":179,"position":10,"owner_type":"Author","owner_id":null},
+
+{"id":195,"text":"Writing - Original Draft","value_type":"boolean","ident":"author--contributions--writing-original-draft","parent_id":104,"lft":180,"rgt":181,"position":11,"owner_type":"Author","owner_id":null},
+
+{"id":196,"text":"Writing - Review and Editing","value_type":"boolean","ident":"author--contributions--writing-review-and-editing","parent_id":104,"lft":182,"rgt":183,"position":12,"owner_type":"Author","owner_id":null},
+
+{"id":197,"text":"Funding Acquisition","value_type":"boolean","ident":"author--contributions--funding-acquisition","parent_id":104,"lft":184,"rgt":185,"position":13,"owner_type":"Author","owner_id":null},
+
+{"id":198,"text":"Formal Analysis","value_type":"boolean","ident":"author--contributions--formal-analysis","parent_id":104,"lft":186,"rgt":187,"position":14,"owner_type":"Author","owner_id":null},
+
+{"id":199,"text":"Is this author an employee of the United States Government?","value_type":"boolean","ident":"author--government-employee","parent_id":null,"lft":283,"rgt":284,"position":4,"owner_type":"Author","owner_id":null},
+
+{"id":200,"text":"Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.","value_type":"boolean","ident":"authors--persons_agreed_to_be_named","parent_id":null,"lft":285,"rgt":286,"position":1,"owner_type":"TahiStandardTasks::AuthorsTask","owner_id":null},
+
+{"id":201,"text":"All authors have read, and confirm, that they meet, \u003ca href=\"http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html\" target=\"_blank\"\u003eICMJE\u003c/a\u003e criteria for authorship.","value_type":"boolean","ident":"authors--authors_confirm_icmje_criteria","parent_id":null,"lft":287,"rgt":288,"position":2,"owner_type":"TahiStandardTasks::AuthorsTask","owner_id":null},
+
+{"id":202,"text":"All contributing authors are aware of and agree to the submission of this manuscript.","value_type":"boolean","ident":"authors--authors_agree_to_submission","parent_id":null,"lft":289,"rgt":290,"position":3,"owner_type":"TahiStandardTasks::AuthorsTask","owner_id":null},
+
+{"id":203,"text":"Conceptualization","value_type":"boolean","ident":"group-author--contributions--conceptualization","parent_id":217,"lft":292,"rgt":293,"position":1,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":204,"text":"Investigation","value_type":"boolean","ident":"group-author--contributions--investigation","parent_id":217,"lft":294,"rgt":295,"position":2,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":205,"text":"Visualization","value_type":"boolean","ident":"group-author--contributions--visualization","parent_id":217,"lft":296,"rgt":297,"position":3,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":206,"text":"Methodology","value_type":"boolean","ident":"group-author--contributions--methodology","parent_id":217,"lft":298,"rgt":299,"position":4,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":207,"text":"Resources","value_type":"boolean","ident":"group-author--contributions--resources","parent_id":217,"lft":300,"rgt":301,"position":5,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":208,"text":"Supervision","value_type":"boolean","ident":"group-author--contributions--supervision","parent_id":217,"lft":302,"rgt":303,"position":6,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":209,"text":"Software","value_type":"boolean","ident":"group-author--contributions--software","parent_id":217,"lft":304,"rgt":305,"position":7,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":210,"text":"Data Curation","value_type":"boolean","ident":"group-author--contributions--data-curation","parent_id":217,"lft":306,"rgt":307,"position":8,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":211,"text":"Project Administration","value_type":"boolean","ident":"group-author--contributions--project-administration","parent_id":217,"lft":308,"rgt":309,"position":9,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":212,"text":"Validation","value_type":"boolean","ident":"group-author--contributions--validation","parent_id":217,"lft":310,"rgt":311,"position":10,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":213,"text":"Writing - Original Draft","value_type":"boolean","ident":"group-author--contributions--writing-original-draft","parent_id":217,"lft":312,"rgt":313,"position":11,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":214,"text":"Writing - Review and Editing","value_type":"boolean","ident":"group-author--contributions--writing-review-and-editing","parent_id":217,"lft":314,"rgt":315,"position":12,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":215,"text":"Funding Acquisition","value_type":"boolean","ident":"group-author--contributions--funding-acquisition","parent_id":217,"lft":316,"rgt":317,"position":13,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":216,"text":"Formal Analysis","value_type":"boolean","ident":"group-author--contributions--formal-analysis","parent_id":217,"lft":318,"rgt":319,"position":14,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":217,"text":"Author Contributions","value_type":"question-set","ident":"group-author--contributions","parent_id":null,"lft":291,"rgt":320,"position":1,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":218,"text":"Is this group a United States Government agency, department or organization?","value_type":"boolean","ident":"group-author--government-employee","parent_id":null,"lft":321,"rgt":322,"position":2,"owner_type":"GroupAuthor","owner_id":null},
+
+{"id":219,"text":"In the Data Availability card, if the answer to Q1 is 'No' or if the answer to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX' or 'Data are available from the XXX Institutional Data Access/ Ethics Committee for researchers who meet the criteria for access to confidential data', start a 'MetaData' discussion and ping the handling editor.","value_type":"boolean","ident":"plos_bio_initial_tech_check--data_availability_confidential","parent_id":null,"lft":323,"rgt":324,"position":2,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":220,"text":"In the Data Availability card, if the authors have not selected one of the reasons listed in Q2 and pasted it into the text box, please request that they complete this section.","value_type":"boolean","ident":"plos_bio_initial_tech_check--data_availability_blank","parent_id":null,"lft":325,"rgt":326,"position":3,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":221,"text":"In the Data Availability card, if the authors have mentioned data submitted to Dryad, check that the author has provided the Dryad reviewer URL and if not, request it from them. ","value_type":"boolean","ident":"plos_bio_initial_tech_check--data_availability_dryad","parent_id":null,"lft":327,"rgt":328,"position":4,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":222,"text":"Compare the author list between the manuscript file and the Authors card. If the author list does not match, request the authors to update whichever section is missing information. Ignore omissions of middle initials.","value_type":"boolean","ident":"plos_bio_initial_tech_check--authors_match","parent_id":null,"lft":329,"rgt":330,"position":5,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":223,"text":"If we don't have unique email addresses for all authors, send it back.","value_type":"boolean","ident":"plos_bio_initial_tech_check--author_emails","parent_id":null,"lft":331,"rgt":332,"position":6,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":224,"text":"If the author list has changed between initial and full submission, pass it through if an author was added and flag it to the editor/initiate our COPE process if an author was removed.","value_type":"boolean","ident":"plos_bio_initial_tech_check--author_removed","parent_id":null,"lft":333,"rgt":334,"position":7,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":225,"text":"Check that the Competing Interest card has been filled out correctly. If the authors have selected Yes and not provided an explanation, send it back.","value_type":"boolean","ident":"plos_bio_initial_tech_check--competing_interests","parent_id":null,"lft":335,"rgt":336,"position":8,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":226,"text":"If the authors mention submitting their paper to a collection in the cover letter or Additional Information card, alert Jenni Horsley by pinging her through the discussion of the ITC card.","value_type":"boolean","ident":"plos_bio_initial_tech_check--collection","parent_id":null,"lft":337,"rgt":338,"position":11,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":227,"text":"Make sure you can view and download all files uploaded to your Figures card. Check against figure citations in the manuscript to ensure there are no missing figures.","value_type":"boolean","ident":"plos_bio_initial_tech_check--figures_viewable","parent_id":null,"lft":339,"rgt":340,"position":12,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":228,"text":"If main figures or supporting information captions are only available in the file itself (and not in the manuscript), request that the author remove the captions from the file and instead place them in the manuscript file.","value_type":"boolean","ident":"plos_bio_initial_tech_check--embedded_captions","parent_id":null,"lft":341,"rgt":342,"position":13,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":229,"text":"If main figures or supporting information captions are missing entirely, ask the author to provide them in the manuscript file.","value_type":"boolean","ident":"plos_bio_initial_tech_check--captions_missing","parent_id":null,"lft":343,"rgt":344,"position":14,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":230,"text":"If any files or figures are cited in the manuscript but not included in the Figures or Supporting Information cards, ask the author to provide the missing information. (Search Fig, Table, Text, Movie and check that they are in the file inventory).","value_type":"boolean","ident":"plos_bio_initial_tech_check--figures_missing","parent_id":null,"lft":345,"rgt":346,"position":15,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":231,"text":"For any resubmissions after an Open Reject decision, ensure the authors have uploaded A 'Response to Reviewer's document. If this information is provided in the cover letter or another part of the submission, ask the authors to upload it as a new file and if this information is not present, request the file from author.","value_type":"boolean","ident":"plos_bio_initial_tech_check--open_reject","parent_id":null,"lft":347,"rgt":348,"position":16,"owner_type":"PlosBioTechCheck::InitialTechCheckTask","owner_id":null},
+
+{"id":232,"text":null,"value_type":"text","ident":"cover_letter--text","parent_id":null,"lft":349,"rgt":350,"position":1,"owner_type":"TahiStandardTasks::CoverLetterTask","owner_id":null},
+
+{"id":233,"text":null,"value_type":"attachment","ident":"cover_letter--attachment","parent_id":null,"lft":351,"rgt":352,"position":2,"owner_type":"TahiStandardTasks::CoverLetterTask","owner_id":null},
+
+{"id":234,"text":"Provenance","value_type":"text","ident":"production_metadata--provenance","parent_id":null,"lft":199,"rgt":200,"position":3,"owner_type":"TahiStandardTasks::ProductionMetadataTask","owner_id":null},
+
+{"id":235,"text":"Special Handling Instructions","value_type":"text","ident":"production_metadata--special_handling_instructions","parent_id":null,"lft":199,"rgt":200,"position":5,"owner_type":"TahiStandardTasks::ProductionMetadataTask","owner_id":null},
+
+{"id":236,"text":"Tick here if the URLs/accession numbers/DOIs will be available only after acceptance of the manuscript for publication so that we can ensure their inclusion before publication.","value_type":"boolean","ident":"data_availability--additional_information_doi","parent_id":null,"lft":353,"rgt":354,"position":3,"owner_type":"TahiStandardTasks::DataAvailabilityTask","owner_id":null},
+
+{"id":237,"text":"Tick here if your circumstances are not covered by the questions above and you need the journal’s help to make your data available.","value_type":"boolean","ident":"data_availability--additional_information_other","parent_id":null,"lft":355,"rgt":356,"position":4,"owner_type":"TahiStandardTasks::DataAvailabilityTask","owner_id":null},
+
+{"id":240,"text":"In the Data Availability card, if the answer to Q1 is 'No' or if the answer to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX' or 'Data are available from the XXX Institutional Data Access/ Ethics Committee for researchers who meet the criteria for access to confidential data', start a 'MetaData' discussion and ping the handling editor.","value_type":"boolean","ident":"plos_bio_revision_tech_check--data_availability_confidential","parent_id":null,"lft":323,"rgt":324,"position":2,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":241,"text":"In the Data Availability card, if the authors have not selected one of the reasons listed in Q2 and pasted it into the text box, please request that they complete this section.","value_type":"boolean","ident":"plos_bio_revision_tech_check--data_availability_blank","parent_id":null,"lft":325,"rgt":326,"position":3,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":242,"text":"In the Data Availability card, if the authors have mentioned data submitted to Dryad, check that the author has provided the Dryad reviewer URL and if not, request it from them.","value_type":"boolean","ident":"plos_bio_revision_tech_check--data_availability_dryad","parent_id":null,"lft":327,"rgt":328,"position":4,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":243,"text":"Compare the author list between the manuscript file and the Authors card. If the author list does not match, request the authors to update whichever section is missing information. Ignore omissions of middle initials.","value_type":"boolean","ident":"plos_bio_revision_tech_check--authors_match","parent_id":null,"lft":329,"rgt":330,"position":5,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":244,"text":"If the author list has changed (author(s) being added or removed), flag it to the editor/initiate our COPE process if an author was removed.","value_type":"boolean","ident":"plos_bio_revision_tech_check--author_removed","parent_id":null,"lft":333,"rgt":334,"position":7,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":245,"text":"If any competing interests are listed, please add a manuscript note. ex: 'Initials Date: Note to Editor - COI statement present, please see COI field.'","value_type":"boolean","ident":"plos_bio_revision_tech_check--competing_interests","parent_id":null,"lft":335,"rgt":336,"position":8,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":246,"text":"If the authors mention submitting their paper to a collection in the cover letter or Additional Information card, alert Jenni Horsley by pinging her through the discussion of the ITC card.","value_type":"boolean","ident":"plos_bio_revision_tech_check--collection","parent_id":null,"lft":337,"rgt":338,"position":11,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":247,"text":"Make sure you can view and download all files uploaded to your Figures card. Check against figure citations in the manuscript to ensure there are no missing figures.","value_type":"boolean","ident":"plos_bio_revision_tech_check--figures_viewable","parent_id":null,"lft":339,"rgt":340,"position":12,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":248,"text":"If main figures or supporting information captions are only available in the file itself (and not in the manuscript), request that the author remove the captions from the file and instead place them in the manuscript file.","value_type":"boolean","ident":"plos_bio_revision_tech_check--embedded_captions","parent_id":null,"lft":341,"rgt":342,"position":13,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":249,"text":"If main figures or supporting information captions are missing entirely, ask the author to provide them in the manuscript file.","value_type":"boolean","ident":"plos_bio_revision_tech_check--captions_missing","parent_id":null,"lft":343,"rgt":344,"position":14,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":250,"text":"If any files or figures are cited in the manuscript but not included in the Figures or Supporting Information cards, ask the author to provide the missing information. (Search Fig, Table, Text, Movie and check that they are in the file inventory).","value_type":"boolean","ident":"plos_bio_revision_tech_check--figures_missing","parent_id":null,"lft":345,"rgt":346,"position":15,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":251,"text":"For any resubmissions that have previously gone through review, ensure the authors have responded to the reviewer comments in the Revision Details box of the Revise Manuscript card. If this information is not present, request it from author.","value_type":"boolean","ident":"plos_bio_revision_tech_check--response_to_reviewers","parent_id":null,"lft":345,"rgt":346,"position":15,"owner_type":"PlosBioTechCheck::RevisionTechCheckTask","owner_id":null},
+
+{"id":252,"text":"Please provide your publication recommendation:","value_type":"text","ident":"front_matter_reviewer_report--decision_term","parent_id":null,"lft":357,"rgt":358,"position":1,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":253,"text":"Do you have any potential or perceived competing interests that may influence your review?","value_type":"text","ident":"front_matter_reviewer_report--competing_interests","parent_id":null,"lft":359,"rgt":360,"position":2,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":254,"text":"Suitable Comment","value_type":"text","ident":"front_matter_reviewer_report--suitable--comment","parent_id":255,"lft":362,"rgt":363,"position":1,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":255,"text":"Is this manuscript suitable in principle for the magazine section of \u003cem\u003ePLOS Biology\u003c/em\u003e?","value_type":"boolean","ident":"front_matter_reviewer_report--suitable","parent_id":null,"lft":361,"rgt":364,"position":3,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":256,"text":"Includes Published Data Explanation","value_type":"text","ident":"front_matter_reviewer_report--includes_unpublished_data--explanation","parent_id":257,"lft":366,"rgt":367,"position":1,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":257,"text":"If previously unpublished data are included to support the conclusions, please note in the box below whether:","value_type":"boolean","ident":"front_matter_reviewer_report--includes_unpublished_data","parent_id":null,"lft":365,"rgt":368,"position":4,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":258,"text":"(Optional) Please offer any additional confidential comments to the editor","value_type":"text","ident":"front_matter_reviewer_report--additional_comments","parent_id":null,"lft":369,"rgt":370,"position":5,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":259,"text":"(Optional) If you'd like your identity to be revealed to the authors, please include your name here.","value_type":"text","ident":"front_matter_reviewer_report--identity","parent_id":null,"lft":371,"rgt":372,"position":6,"owner_type":"TahiStandardTasks::FrontMatterReviewerReportTask","owner_id":null},
+
+{"id":260,"text":"Comment","value_type":"text","ident":"reviewer_report--competing_interests--detail","parent_id":124,"lft":202,"rgt":203,"position":1,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":261,"text":"Add your comments to authors below.","value_type":"text","ident":"reviewer_report--comments_for_author","parent_id":null,"lft":373,"rgt":374,"position":4,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":262,"text":"Other Journal","value_type":"text","ident":"reviewer_report--suitable_for_another_journal--journal","parent_id":263,"lft":376,"rgt":377,"position":1,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":263,"text":"If the manuscript does not meet the standards of \u003cem\u003ePLOS Biology\u003c/em\u003e, do you think it is suitable for another \u003ca href='https://www.plos.org/publications'\u003e\u003cem\u003ePLOS\u003c/em\u003e journal\u003c/a\u003e?","value_type":"boolean","ident":"reviewer_report--suitable_for_another_journal","parent_id":null,"lft":375,"rgt":378,"position":6,"owner_type":"TahiStandardTasks::ReviewerReportTask","owner_id":null},
+
+{"id":264,"text":"Please select a template.","value_type":"text","ident":"register_decision_questions--selected-template","parent_id":null,"lft":379,"rgt":380,"position":1,"owner_type":"TahiStandardTasks::RegisterDecisionTask","owner_id":null},
+
+{"id":265,"text":"Enter the email here","value_type":"text","ident":"register_decision_questions--to-field","parent_id":null,"lft":381,"rgt":382,"position":2,"owner_type":"TahiStandardTasks::RegisterDecisionTask","owner_id":null},
+
+{"id":266,"text":"Enter the subject here","value_type":"text","ident":"register_decision_questions--subject-field","parent_id":null,"lft":383,"rgt":384,"position":3,"owner_type":"TahiStandardTasks::RegisterDecisionTask","owner_id":null} ]

@@ -31,7 +31,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def disabled?
-    !find(".send-email-action:disabled").nil?
+    first("input[name=decision]:disabled")
   end
 
   def click_send_email_button

@@ -25,8 +25,8 @@ describe Paper do
       Timecop.freeze(Time.current.utc) do |now|
         expect { subject }
           .to change { paper.latest_version.reload.updated_at }
-          .from(within(db_precision_limit).of frozen_time)
-          .to(within(db_precision_limit).of now)
+          .from(within_db_precision.of frozen_time)
+          .to(within_db_precision.of now)
       end
     end
 
@@ -35,7 +35,7 @@ describe Paper do
         expect { subject }
           .to change { paper.submitted_at }
           .from(nil)
-          .to(within(db_precision_limit).of now)
+          .to(within_db_precision.of now)
       end
     end
 
@@ -44,7 +44,7 @@ describe Paper do
         expect { subject }
           .to change { paper.first_submitted_at }
           .from(nil)
-          .to(within(db_precision_limit).of now)
+          .to(within_db_precision.of now)
       end
     end
 
@@ -58,7 +58,7 @@ describe Paper do
       Timecop.freeze(1.day.from_now) do |time|
         expect { subject }
           .to change { draft.reload.updated_at }
-          .to(within(db_precision_limit).of time)
+          .to(within_db_precision.of time)
       end
     end
 
@@ -554,18 +554,18 @@ describe Paper do
           expect { paper.initial_submit! user }
             .to change { paper.submitted_at }
             .from(nil)
-            .to(within(db_precision_limit).of(frozen_time))
+            .to(within_db_precision.of(frozen_time))
             .and change { paper.first_submitted_at }
             .from(nil)
-            .to(within(db_precision_limit).of(frozen_time))
+            .to(within_db_precision.of(frozen_time))
         end
 
         paper.invite_full_submission!
         Timecop.freeze do |now|
           expect { paper.submit! user }
             .to change { paper.submitted_at }
-            .from(within(db_precision_limit).of(frozen_time))
-            .to(within(db_precision_limit).of(now))
+            .from(within_db_precision.of(frozen_time))
+            .to(within_db_precision.of(now))
         end
       end
 
@@ -749,7 +749,7 @@ describe Paper do
         Timecop.freeze do |now|
           subject
           expect(paper.latest_submitted_version.updated_at.utc)
-            .to be_within(db_precision_limit).of(now)
+            .to be_within_db_precision.of(now)
         end
       end
 
@@ -895,7 +895,7 @@ describe Paper do
       it "sets accepted_at" do
         Timecop.freeze do |now|
           paper.accept!
-          expect(paper.accepted_at.utc).to be_within(db_precision_limit).of now
+          expect(paper.accepted_at.utc).to be_within_db_precision.of now
         end
       end
     end

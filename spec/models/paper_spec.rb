@@ -827,55 +827,68 @@ describe Paper do
     end
 
     describe '#rescind!' do
-      context 'when rejected after full submission' do
-        let(:paper) do
-          paper = FactoryGirl.create(:paper, :submitted, journal: journal)
-          paper.draft_decision.update(verdict: 'reject', letter: 'it stinks')
-          paper.draft_decision.register! FactoryGirl.create(:register_decision_task)
-          paper
-        end
+      subject { paper.rescind! }
 
-        it_behaves_like "transitions save state_updated_at", rescind: proc { paper.rescind! }
-
-        it "transitions to submitted from rejected" do
-          paper.rescind!
-          expect(paper.publishing_state).to eq("submitted")
-        end
-
-        it "creates a new decision for terminal states" do
-          expect { paper.rescind! }.to change { paper.decisions.count }.by(1)
-        end
-      end
-
-      context 'when rejected after initial submission' do
-        let(:paper) do
-          paper = FactoryGirl.create(:paper, publishing_state: :initially_submitted, journal: journal)
-          paper.reject!
-          paper
-        end
-
-        it_behaves_like "transitions save state_updated_at", rescind: proc { paper.rescind! }
-
-        it "transitions to initially_submitted from rejected" do
-          paper.rescind!
-          expect(paper.publishing_state).to eq("initially_submitted")
-        end
-      end
-
-      context 'after a request for revision' do
-        let(:paper) do
-          paper = FactoryGirl.create(:paper, :submitted, journal: journal)
-          paper.major_revision!
-          paper
+      shared_examples_for 'rescinding from a non-initial decision' do
+        it "creates a new decision" do
+          expect { subject }.to change { paper.decisions.count }.by(1)
         end
 
         it "transitions to submitted" do
-          paper.rescind!
-          expect(paper.publishing_state).to eq("submitted")
+          expect { subject }.to change { paper.publishing_state }.to("submitted")
+        end
+      end
+
+      context 'after full submission' do
+        let(:paper) do
+          create(:paper, :submitted_lite, journal: journal).tap do |p|
+            p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
+            p.draft_decision.register! FactoryGirl.create(:register_decision_task)
+          end
         end
 
-        it "does not creates a new decision" do
-          expect { paper.rescind! }.to_not change { paper.decisions.count }
+        context 'when the last decision is Rejected' do
+          let(:verdict) { 'reject' }
+
+          it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+          it_behaves_like "rescinding from a non-initial decision"
+        end
+
+        context 'when the last decision is Accepted' do
+          let(:verdict) { 'accept' }
+
+          it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+          it_behaves_like "rescinding from a non-initial decision"
+        end
+
+        context 'when the last decision is Major revision' do
+          let(:verdict) { "major_revision" }
+
+          it_behaves_like "rescinding from a non-initial decision"
+        end
+
+        context 'when the last decision is Minor revision' do
+          let(:verdict) { "minor_revision" }
+
+          it_behaves_like "rescinding from a non-initial decision"
+        end
+      end
+
+      context 'after initial submission' do
+        let(:paper) do
+          create(:paper, publishing_state: :initially_submitted, journal: journal).tap(&:reject!)
+        end
+
+        context 'when the last decision is Rejected' do
+          it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+
+          it "transitions to initially_submitted from rejected" do
+            expect { subject }.to change { paper.publishing_state }.to("initially_submitted")
+          end
+
+          it "creates a new decision" do
+            expect { subject }.to change { paper.decisions.count }.by(1)
+          end
         end
       end
     end

@@ -736,26 +736,29 @@ describe Paper do
       end
 
       it "marks the paper uneditable" do
-        expect { paper.submit_minor_check! user }
-          .to change { paper.editable }.to(false)
+        expect { subject }.to change { paper.editable }.to(false)
       end
 
       it "sets the submitting_user of the latest version" do
-        paper.submit_minor_check! user
+        subject
         expect(paper.latest_submitted_version.submitting_user).to eq(user)
       end
 
       it "sets the updated_at of the latest version" do
         paper.latest_version.update!(updated_at: 10.days.ago)
         Timecop.freeze do |now|
-          paper.submit_minor_check! user
+          subject
           expect(paper.latest_submitted_version.updated_at.utc)
             .to be_within(db_precision_limit).of(now)
         end
       end
 
       it 'increments the minor version' do
-        expect { paper.submit_minor_check!(user) }.to change { paper.minor_version }.by(1)
+        expect { subject }.to change { paper.minor_version }.by(1)
+      end
+
+      it 'does not change the major version' do
+        expect { subject }.not_to change { paper.major_version }
       end
     end
 

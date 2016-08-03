@@ -74,6 +74,15 @@ RSpec.configure do |config|
   config.include EmailSpec::Matchers
   config.include HTMLHelpers
 
+  # This is a little weird, but is apparently the easiest way to add a globally
+  # available let binding.
+  module DbPrecision
+    extend RSpec::SharedContext
+    # postgresql supports microsecond (10e-6) precision only
+    let(:db_precision_limit) { (1e-6).second }
+  end
+  config.include DbPrecision
+
   config.before(:suite) do
     Warden.test_mode!
   end

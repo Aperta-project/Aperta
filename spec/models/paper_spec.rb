@@ -3,8 +3,13 @@ require 'support/shared_examples/paper_state_transition_shared_examples'
 
 describe Paper do
   let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
-  let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:paper) do
+    Timecop.freeze(frozen_time) do
+      FactoryGirl.create :paper, :with_creator, journal: journal
+    end
+  end
   let(:user) { FactoryGirl.create :user }
+  let(:frozen_time) { 1.day.ago }
 
   shared_examples_for "submission" do
     it 'should be unsubmitted' do
@@ -16,24 +21,30 @@ describe Paper do
       expect(paper).to_not be_editable
     end
 
-    it 'sets the updated_at of the initial version' do
-      Timecop.freeze(Time.current.utc) do
-        subject
-        expect(paper.submitted_at).to eq(Time.current.utc)
+    it 'sets the updated_at of the latest version' do
+      Timecop.freeze(Time.current.utc) do |now|
+        expect { subject }
+          .to change { paper.latest_version.reload.updated_at }
+          .from(within(db_precision_limit).of frozen_time)
+          .to(within(db_precision_limit).of now)
       end
     end
 
     it 'sets the submitted_at' do
-      Timecop.freeze(Time.current.utc) do
-        subject
-        expect(paper.submitted_at).to eq(Time.current.utc)
+      Timecop.freeze do |now|
+        expect { subject }
+          .to change { paper.submitted_at }
+          .from(nil)
+          .to(within(db_precision_limit).of now)
       end
     end
 
     it 'sets the first_submitted_at' do
-      Timecop.freeze(Time.current.utc) do
-        subject
-        expect(paper.first_submitted_at).to eq(Time.current.utc)
+      Timecop.freeze do |now|
+        expect { subject }
+          .to change { paper.first_submitted_at }
+          .from(nil)
+          .to(within(db_precision_limit).of now)
       end
     end
 
@@ -511,18 +522,24 @@ describe Paper do
         expect(paper).to be_submitted
       end
 
-      it 'sets submitted at to the latest time' do
-        first_submitted_at = Time.current.utc
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit! user
-          expect(paper.first_submitted_at).to eq(paper.submitted_at)
-          first_submitted_at = paper.first_submitted_at
+      it 'sets submitted at to the latest time and sets first_submitted_at initially' do
+        Timecop.freeze(frozen_time) do
+          expect { paper.initial_submit! user }
+            .to change { paper.submitted_at }
+            .from(nil)
+            .to(within(db_precision_limit).of(frozen_time))
+            .and change { paper.first_submitted_at }
+            .from(nil)
+            .to(within(db_precision_limit).of(frozen_time))
         end
 
         paper.invite_full_submission!
-        paper.submit! user
-        expect(paper.first_submitted_at).to eq(first_submitted_at)
-        expect(paper.submitted_at).to_not eq(first_submitted_at)
+        Timecop.freeze do |now|
+          expect { paper.submit! user }
+            .to change { paper.submitted_at }
+            .from(within(db_precision_limit).of(frozen_time))
+            .to(within(db_precision_limit).of(now))
+        end
       end
 
       it "broadcasts 'paper:submitted' event" do
@@ -720,9 +737,12 @@ describe Paper do
       end
 
       it "sets the updated_at of the latest version" do
-        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
-        paper.submit_minor_check! user
-        expect(paper.latest_submitted_version.updated_at.utc).to be_within(1.second).of Time.zone.now
+        paper.latest_version.update!(updated_at: 10.days.ago)
+        Timecop.freeze do |now|
+          paper.submit_minor_check! user
+          expect(paper.latest_submitted_version.updated_at.utc)
+            .to be_within(db_precision_limit).of(now)
+        end
       end
 
       it 'increments the minor version' do
@@ -861,8 +881,10 @@ describe Paper do
       end
 
       it "sets accepted_at" do
-        paper.accept!
-        expect(paper.accepted_at.utc).to be_within(1.second).of Time.zone.now
+        Timecop.freeze do |now|
+          paper.accept!
+          expect(paper.accepted_at.utc).to be_within(db_precision_limit).of now
+        end
       end
     end
 

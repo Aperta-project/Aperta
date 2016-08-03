@@ -510,10 +510,10 @@ describe Paper do
     describe '#initial_submit' do
       subject { paper.initial_submit! user }
 
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         initial_submit: proc { paper.initial_submit! user }
-      include_examples 'creates a new draft decision'
-      include_examples 'submission'
+      it_behaves_like 'creates a new draft decision'
+      it_behaves_like 'submission'
 
       it 'transitions to initially_submitted' do
         subject
@@ -523,10 +523,10 @@ describe Paper do
 
     describe '#submit!' do
       subject { paper.submit! user }
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         submit: proc { paper.submit!(paper.creator) }
-      include_examples 'creates a new draft decision'
-      include_examples 'submission'
+      it_behaves_like 'creates a new draft decision'
+      it_behaves_like 'submission'
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
@@ -611,7 +611,7 @@ describe Paper do
     describe '#withdraw!' do
       let(:withdrawn_by_user) { FactoryGirl.build_stubbed(:user) }
 
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         withdraw: proc { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
 
       let(:paper) do
@@ -645,7 +645,7 @@ describe Paper do
     end
 
     describe '#invite_full_submission' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         invite_full_submission: proc { paper.invite_full_submission! }
 
       let(:paper) do
@@ -664,7 +664,7 @@ describe Paper do
     end
 
     describe '#reactivate!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         reactivate: proc { paper.reactivate! }
 
       let(:paper) do
@@ -704,7 +704,7 @@ describe Paper do
     end
 
     describe '#minor_check!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         minor_check: proc { paper.minor_check! }
 
       let(:paper) do
@@ -720,7 +720,7 @@ describe Paper do
     describe '#submit_minor_check!' do
       subject { paper.submit_minor_check! user }
 
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
 
       let(:paper) do
@@ -768,7 +768,7 @@ describe Paper do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
-        include_examples "transitions save state_updated_at",
+        it_behaves_like "transitions save state_updated_at",
           accept: proc { paper.accept! }
 
         it 'transitions to accepted state from submitted' do
@@ -784,7 +784,7 @@ describe Paper do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
-        include_examples "transitions save state_updated_at",
+        it_behaves_like "transitions save state_updated_at",
           reject: proc { paper.reject! }
 
         it 'transitions to rejected state from submitted' do
@@ -802,7 +802,7 @@ describe Paper do
           )
         end
 
-        include_examples "transitions save state_updated_at",
+        it_behaves_like "transitions save state_updated_at",
           reject: proc { paper.reject! }
 
         it 'transitions to rejected state from initially_submitted' do
@@ -813,7 +813,7 @@ describe Paper do
     end
 
     describe '#publish!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         publish: proc { paper.publish! }
 
       let(:paper) do
@@ -835,7 +835,7 @@ describe Paper do
           paper
         end
 
-        include_examples "transitions save state_updated_at", rescind: proc { paper.rescind! }
+        it_behaves_like "transitions save state_updated_at", rescind: proc { paper.rescind! }
 
         it "transitions to submitted from rejected" do
           paper.rescind!
@@ -854,7 +854,7 @@ describe Paper do
           paper
         end
 
-        include_examples "transitions save state_updated_at", rescind: proc { paper.rescind! }
+        it_behaves_like "transitions save state_updated_at", rescind: proc { paper.rescind! }
 
         it "transitions to initially_submitted from rejected" do
           paper.rescind!

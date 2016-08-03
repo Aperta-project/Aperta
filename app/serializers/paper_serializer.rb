@@ -19,6 +19,7 @@ class PaperSerializer < LitePaperSerializer
   has_one :creator,
     embed: :id,
     include: true,
+    key: :users,
     serializer: SensitiveInformationUserSerializer
 
   def paper_task_types

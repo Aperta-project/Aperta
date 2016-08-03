@@ -8,6 +8,12 @@ class PaperSerializer < LitePaperSerializer
     has_many relation, embed: :ids, include: true
   end
 
+  has_one :creator,
+    embed: :id,
+    include: true,
+    root: :users,
+    serializer: SensitiveInformationUserSerializer
+
   has_many :collaborations,
            embed: :ids,
            include: true,
@@ -15,12 +21,6 @@ class PaperSerializer < LitePaperSerializer
 
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
-
-  has_one :creator,
-    embed: :id,
-    include: true,
-    key: :users,
-    serializer: SensitiveInformationUserSerializer
 
   def paper_task_types
     paper.journal.journal_task_types

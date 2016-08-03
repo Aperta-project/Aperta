@@ -150,29 +150,25 @@ class Paper < ActiveRecord::Base
                           # needs MINOR revision but we use a MAJOR
                           # version to track all papers send back
                           # after peer review.
-                          :new_major_version!,
-                          :unassign_reviewers!]
+                          :new_major_version!]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
                   after: [:allow_edits!,
-                          :new_major_version!,
-                          :unassign_reviewers!]
+                          :new_major_version!]
     end
 
     event(:accept) do
       transitions from: :submitted,
                   to: :accepted,
-                  after: [:set_accepted_at!,
-                          :unassign_reviewers!]
+                  after: [:set_accepted_at!]
     end
 
     event(:reject) do
       transitions from: [:initially_submitted, :submitted],
-                  to: :rejected,
-                  after: [:unassign_reviewers!]
+                  to: :rejected
       before do
         update(active: false)
       end
@@ -181,8 +177,7 @@ class Paper < ActiveRecord::Base
     event(:publish) do
       transitions from: :submitted,
                   to: :published,
-                  after: [:set_published_at!,
-                          :unassign_reviewers!]
+                  after: [:set_published_at!]
     end
 
     event(:withdraw) do
@@ -398,15 +393,12 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  def unassign_reviewers!
-    reviewer_role = Role.find_by(name: Role::REVIEWER_ROLE)
-    reviewers.each do |r|
-      r.resign_from!(assigned_to: self, role: reviewer_role)
-    end
+  def reviewer_role
+    @reviewer_role ||= Role.find_by(name: Role::REVIEWER_ROLE)
   end
 
-  def remove_pending_reviewer_invites
-    ReviewerReportTask
+  def unassign_reviewer(reviewer)
+    reviewer.resign_from!(assigned_to: self, role: reviewer_role)
   end
 
   def creator

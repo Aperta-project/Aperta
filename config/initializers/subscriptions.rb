@@ -4,6 +4,7 @@
 # For event stream subscriptions, check out event_stream_subscribers.rb
 #
 
+unassign_reviewers = Paper::DecisionMade::UnassignReviewers
 Subscriptions.configure do
   add '.*', \
       EventLogger
@@ -30,4 +31,10 @@ Subscriptions.configure do
 
   add 'discussion_participant:destroyed', \
       Notification::Unbadger
+
+  add 'paper:in_revision', unassign_reviewers
+  add 'paper:accepted', unassign_reviewers
+  add 'paper:rejected', unassign_reviewers
+  add 'paper:withdrawn', unassign_reviewers
+
 end

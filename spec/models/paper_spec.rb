@@ -227,7 +227,7 @@ describe Paper do
     end
   end
 
-  describe '#unassign_reviewers!' do
+  describe '#unassign_reviewer' do
     let!(:journal) do
       FactoryGirl.create :journal,
         :with_reviewer_role,
@@ -250,12 +250,12 @@ describe Paper do
 
     it "unassigns all reviewers" do
       expect(paper.reviewers).to eq([reviewer])
-      paper.unassign_reviewers!
+      paper.unassign_reviewer reviewer
       expect(paper.reviewers).to eq([])
     end
 
     it "doesn't remove reviewers access to report tasks" do
-      paper.unassign_reviewers!
+      paper.unassign_reviewer reviewer
       expect(reviewer.assignments.joins(:role)
         .where(roles: { name: "Reviewer Report Owner" }).count).to eq(1)
       expect(reviewer.assignments.joins(:role)
@@ -632,17 +632,12 @@ describe Paper do
         expect(paper).to_not be_editable
       end
 
-      it "unassigns reviewers" do
-        expect(paper).to receive(:unassign_reviewers!)
-        paper.withdraw!
-      end
-
       it "broadcasts 'paper:withdrawn' event" do
         allow(Notifier).to receive(:notify)
         expect(Notifier).to receive(:notify).with(hash_including(event: "paper:withdrawn")) do |args|
           expect(args[:data][:record]).to eq(paper)
         end
-        paper.withdraw!
+        paper.withdraw! 'reason', withdrawn_by_user
       end
     end
 
@@ -778,11 +773,6 @@ describe Paper do
           expect(paper.rejected?).to be true
         end
 
-        it "unassigns reviewers" do
-          expect(paper).to receive(:unassign_reviewers!)
-          paper.reject!
-        end
-
         it "broadcasts 'paper:rejected' event" do
           allow(Notifier).to receive(:notify)
           expect(Notifier).to receive(:notify).with(hash_including(event: "paper:rejected")) do |args|
@@ -808,11 +798,6 @@ describe Paper do
           paper.reject!
           expect(paper.rejected?).to be true
         end
-
-        it "unassigns reviewers" do
-          expect(paper).to receive(:unassign_reviewers!)
-          paper.reject!
-        end
       end
     end
 
@@ -827,11 +812,6 @@ describe Paper do
       it "marks the paper uneditable" do
         paper.publish!
         expect(paper.published_at).to be_truthy
-      end
-
-      it "unassigns reviewers" do
-        expect(paper).to receive(:unassign_reviewers!)
-        paper.publish!
       end
     end
   end
@@ -856,11 +836,6 @@ describe Paper do
         expect(paper.accepted_at.utc).to be_within(1.second).of Time.zone.now
       end
 
-      it "unassigns reviewers" do
-        expect(paper).to receive(:unassign_reviewers!)
-        paper.make_decision decision
-      end
-
       it "broadcasts 'paper:accepted' event" do
         allow(Notifier).to receive(:notify)
         expect(Notifier).to receive(:notify).with(hash_including(event: "paper:accepted")) do |args|
@@ -877,11 +852,6 @@ describe Paper do
 
       it 'rejects the paper' do
         expect(paper).to receive(:reject!)
-        paper.make_decision decision
-      end
-
-      it "unassigns reviewers" do
-        expect(paper).to receive(:unassign_reviewers!)
         paper.make_decision decision
       end
     end
@@ -902,11 +872,6 @@ describe Paper do
         paper.make_decision decision
         expect(paper.latest_version.major_version).to be(1)
         expect(paper.latest_version.minor_version).to be(0)
-      end
-
-      it "unassigns reviewers" do
-        expect(paper).to receive(:unassign_reviewers!)
-        paper.make_decision decision
       end
 
       it "broadcasts 'paper:in_revision'" do
@@ -934,11 +899,6 @@ describe Paper do
         paper.make_decision decision
         expect(paper.latest_version.major_version).to be(1)
         expect(paper.latest_version.minor_version).to be(0)
-      end
-
-      it "unassigns reviewers" do
-        expect(paper).to receive(:unassign_reviewers!)
-        paper.make_decision decision
       end
     end
   end

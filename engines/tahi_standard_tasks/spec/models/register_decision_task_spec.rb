@@ -137,5 +137,21 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.participants).to_not include paper.creator
       end
     end
+
+    describe "#send_email" do
+      let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
+      let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper) }
+      let!(:decision_pending) { FactoryGirl.create(:decision, :pending, paper: paper) }
+
+      it "will email using latest non-pending decision" do
+        author_email = paper.creator.email
+        subject = 'Your paper'
+        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(
+          decision_id: decision_one,
+          to_field: author_email,
+          subject_field: subject)
+        task.send_email(to_field: author_email, subject_field: subject)
+      end
+    end
   end
 end

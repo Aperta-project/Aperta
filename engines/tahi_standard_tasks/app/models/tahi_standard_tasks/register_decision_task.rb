@@ -17,10 +17,17 @@ module TahiStandardTasks
 
     def after_register(decision)
       ReviseTask.setup_new_revision(paper, phase) if decision.revision?
-      RegisterDecisionMailer.delay.notify_author_email(
-        decision_id: decision.id
-      )
       complete!
+    end
+
+    def send_email(to_field:, subject_field:)
+      RegisterDecisionMailer.delay.notify_author_email(
+        to_field: EmailService.new(email: to_field).valid_email_or_nil,
+        subject_field: subject_field,
+        decision_id: paper.decisions.completed.latest)
+    end
+
+    def send_emails
     end
 
     private

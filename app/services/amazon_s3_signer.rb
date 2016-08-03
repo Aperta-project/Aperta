@@ -1,4 +1,4 @@
-# This Service class help us to generate the appropiate params required
+# This Service class help us to generate the appropriate params required
 # for a direct upload to Amazon S3
 class AmazonS3Signer
   def initialize(file_name:, file_path:, content_type:)

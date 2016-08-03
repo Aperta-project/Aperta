@@ -48,10 +48,10 @@ describe VersionedText do
     it "Increments the minor version each time it is called" do
       paper.draft.be_minor_version!
       expect(paper.minor_version).to be(0)
-      paper.send(:new_draft!)
+      paper.new_draft!
       paper.draft.be_minor_version!
       expect(paper.minor_version).to be(1)
-      paper.send(:new_draft!)
+      paper.new_draft!
       paper.draft.be_minor_version!
       expect(paper.minor_version).to be(2)
 
@@ -71,10 +71,10 @@ describe VersionedText do
     it "increments the major version each time it is called" do
       paper.draft.be_major_version!
       expect(paper.major_version).to be(0)
-      paper.send(:new_draft!)
+      paper.new_draft!
       paper.draft.be_major_version!
       expect(paper.major_version).to be(1)
-      paper.send(:new_draft!)
+      paper.new_draft!
       paper.draft.be_major_version!
       expect(paper.major_version).to be(2)
 

@@ -523,6 +523,11 @@ class Paper < ActiveRecord::Base
     versioned_texts.completed.version_desc.first
   end
 
+  def new_draft!
+    fail StandardError, 'Draft already exists' unless draft.nil?
+    latest_version.new_draft!
+  end
+
   def new_draft_decision!
     decisions.create unless draft_decision
   end
@@ -561,11 +566,6 @@ class Paper < ActiveRecord::Base
     # but I don't know how to resolve it peacefully without larger
     # architectural changes. See APERTA-6750.
     tasks.where(title: 'Revise Manuscript').destroy_all
-  end
-
-  def new_draft!
-    fail StandardError, 'Draft already exists' unless draft.nil?
-    latest_version.new_draft!
   end
 
   def new_major_version!

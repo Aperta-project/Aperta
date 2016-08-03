@@ -40,10 +40,9 @@ class RegisterDecisionOverlay < CardOverlay
     find(".decision-bar-verdict")
   end
 
-  def success_state_message(decision: "Accept")
-    banner_text = find(".rescind-decision-container").text
-    match = banner_text =~ /A decision of #{decision} has been made./
-    !match.nil?
+  def has_success_state_message?(decision: "accept")
+    has_css?(".rescind-decision-container",
+      text: /decision of #{decision} has been registered/i)
   end
 
   def invalid_state_message

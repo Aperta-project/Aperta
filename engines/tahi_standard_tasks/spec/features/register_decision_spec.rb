@@ -40,7 +40,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
         overlay.click_send_email_button
         wait_for_ajax
         expect(task.reload.completed?).to be true
-        expect(overlay.success_state_message).to be true
+        expect(overlay).to have_success_state_message
         expect(overlay).to be_disabled
       end
 

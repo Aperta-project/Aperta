@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160714160516) do
+ActiveRecord::Schema.define(version: 20160728180001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
@@ -319,6 +320,18 @@ ActiveRecord::Schema.define(version: 20160714160516) do
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
+    t.string   "staff_email"
+  end
+
+  create_table "letter_templates", force: :cascade do |t|
+    t.string   "text"
+    t.string   "template_decision"
+    t.string   "to"
+    t.string   "subject"
+    t.text     "letter"
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
@@ -429,7 +442,6 @@ ActiveRecord::Schema.define(version: 20160714160516) do
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.jsonb    "withdrawals",              default: [],                 array: true
     t.boolean  "active",                   default: true
     t.boolean  "gradual_engagement",       default: false
     t.datetime "first_submitted_at"
@@ -751,6 +763,18 @@ ActiveRecord::Schema.define(version: 20160714160516) do
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
+
+  create_table "withdrawals", force: :cascade do |t|
+    t.string   "reason"
+    t.integer  "paper_id",                                 null: false
+    t.integer  "withdrawn_by_user_id"
+    t.string   "previous_publishing_state",                null: false
+    t.boolean  "previous_editable",         default: true, null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
+  add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "decisions", "papers"

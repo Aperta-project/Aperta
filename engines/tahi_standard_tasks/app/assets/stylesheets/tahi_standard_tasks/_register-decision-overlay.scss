@@ -1,14 +1,15 @@
 .decision-selections {
+  margin-bottom: 15px;
   .form-group {
     display: inline-block;
     &:first-child { margin-left: 10px; }
   }
 
   label {
-    margin-right: 60px;
+    margin-right: 15px;
     padding-left: 10px;
-    font-size: 24px;
-    font-weight: normal;
+    font-size: 20px;
+    font-weight: bold;
     vertical-align: -4px;
   }
 }
@@ -26,6 +27,7 @@
 }
 
 .decision-letter-field {
+  border: none;
   width: 100%;
   height: 25rem;
 }

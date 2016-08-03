@@ -195,4 +195,150 @@ describe UserMailer, redis: true do
       expect(email.body).to include paper.journal.name
     end
   end
+
+  describe '#notify_staff_of_paper_withdrawal' do
+    include EmailSpec::Helpers
+    include EmailSpec::Matchers
+
+    subject(:email) { UserMailer.notify_staff_of_paper_withdrawal(paper.id) }
+    let(:journal) do
+      FactoryGirl.create(
+        :journal,
+        :with_creator_role,
+        :with_academic_editor_role,
+        :with_cover_editor_role,
+        :with_handling_editor_role,
+        :with_reviewer_role,
+        staff_email: 'plos-people@example.com'
+      )
+    end
+    let(:paper) do
+      FactoryGirl.create(
+        :paper,
+        :with_creator,
+        :submitted,
+        journal: journal
+      )
+    end
+    let!(:withdrawn_by_user) { FactoryGirl.create(:user) }
+
+    before do
+      paper.withdrawals.create!(
+        reason: 'Needs more work',
+        withdrawn_by_user_id: withdrawn_by_user.id,
+        previous_publishing_state: 'unsubmitted'
+      )
+    end
+
+    it "sends the email to the staff email for the paper's journal" do
+      expect(email.to).to contain_exactly('plos-people@example.com')
+      expect(email.subject).to eq "#{paper.doi} - Manuscript Withdrawn"
+    end
+
+    it 'includes a link to the withdrawn paper' do
+      expect(links_in_email(email)).to include client_paper_url(paper)
+    end
+
+    context 'and the journal does not have a staff email configured' do
+      before { journal.update(staff_email: nil) }
+
+      it 'raises a DeliveryError' do
+        error_message = [
+          "Journal (id=#{journal.id} name=#{journal.name}) has no staff email configured.",
+          "The notify_staff_of_paper_withdrawal email cannot be sent.\n"
+        ].join("\n")
+        expect do
+          email.to
+        end.to raise_error(UserMailer::DeliveryError, error_message)
+      end
+    end
+
+    it 'includes important messaging about the withdrawal in the body' do
+      expect(email).to have_body_text "This manuscript has been withdrawn by #{withdrawn_by_user.full_name}"
+      expect(email).to have_body_text /MS #:.*#{Regexp.escape(paper.doi)}/
+      expect(email).to have_body_text /Title:.*#{Regexp.escape(paper.title)}/
+      expect(email).to have_body_text paper.latest_withdrawal.reason
+    end
+
+    it 'includes the paper creator in the body' do
+      expect(email).to have_body_text /Author:.*#{Regexp.escape(paper.creator.full_name)}.*\(#{Regexp.escape(paper.creator.email)}\)/
+    end
+
+    context 'and there are no editors or reviewers assigned' do
+      it 'includes this infromation in the body' do
+        expect(email).to have_body_text /Academic Editor:.*No assigned academic editors/
+        expect(email).to have_body_text /Cover Editor:.*No assigned cover editors/
+        expect(email).to have_body_text /Handling Editor:.*No assigned handling editors/
+        expect(email).to have_body_text /Reviewer:.*No assigned reviewers/
+      end
+    end
+
+    context 'and there is one of each kind of editor and reviewer assigned' do
+      let(:academic_editor) { FactoryGirl.create(:user) }
+      let(:cover_editor) { FactoryGirl.create(:user) }
+      let(:handling_editor) { FactoryGirl.create(:user) }
+      let(:reviewer) { FactoryGirl.create(:user) }
+
+      before do
+        academic_editor.assign_to!(assigned_to: paper, role: journal.academic_editor_role)
+        cover_editor.assign_to!(assigned_to: paper, role: journal.cover_editor_role)
+        handling_editor.assign_to!(assigned_to: paper, role: journal.handling_editor_role)
+        reviewer.assign_to!(assigned_to: paper, role: journal.reviewer_role)
+      end
+
+      it 'includes this infromation in the body' do
+        expect(email).to have_body_text /Academic Editor:.*#{Regexp.escape(academic_editor.full_name)}.*\(#{Regexp.escape(academic_editor.email)}\)/
+        expect(email).to have_body_text /Cover Editor:.*#{Regexp.escape(cover_editor.full_name)}.*\(#{Regexp.escape(cover_editor.email)}\)/
+        expect(email).to have_body_text /Handling Editor:.*#{Regexp.escape(handling_editor.full_name)}.*\(#{Regexp.escape(handling_editor.email)}\)/
+        expect(email).to have_body_text /Reviewer:.*#{Regexp.escape(reviewer.full_name)}.*\(#{Regexp.escape(reviewer.email)}\)/
+      end
+    end
+
+    context 'and there are multiple of each kind of editor and reviewer assigned' do
+      let(:academic_editor_1) { FactoryGirl.create(:user) }
+      let(:academic_editor_2) { FactoryGirl.create(:user) }
+
+      let(:cover_editor_1) { FactoryGirl.create(:user) }
+      let(:cover_editor_2) { FactoryGirl.create(:user) }
+
+      let(:handling_editor_1) { FactoryGirl.create(:user) }
+      let(:handling_editor_2) { FactoryGirl.create(:user) }
+
+      let(:reviewer_1) { FactoryGirl.create(:user) }
+      let(:reviewer_2) { FactoryGirl.create(:user) }
+
+      before do
+        academic_editor_1.assign_to!(assigned_to: paper, role: journal.academic_editor_role)
+        academic_editor_2.assign_to!(assigned_to: paper, role: journal.academic_editor_role)
+
+        cover_editor_1.assign_to!(assigned_to: paper, role: journal.cover_editor_role)
+        cover_editor_2.assign_to!(assigned_to: paper, role: journal.cover_editor_role)
+
+        handling_editor_1.assign_to!(assigned_to: paper, role: journal.handling_editor_role)
+        handling_editor_2.assign_to!(assigned_to: paper, role: journal.handling_editor_role)
+
+        reviewer_1.assign_to!(assigned_to: paper, role: journal.reviewer_role)
+        reviewer_2.assign_to!(assigned_to: paper, role: journal.reviewer_role)
+      end
+
+      it 'includes this infromation in the body' do
+        expect(email).to have_body_text /Academic Editors:/
+        expect(email).to have_body_text /#{Regexp.escape(academic_editor_1.full_name)}.*\(#{Regexp.escape(academic_editor_1.email)}\)/
+        expect(email).to have_body_text /#{Regexp.escape(academic_editor_2.full_name)}.*\(#{Regexp.escape(academic_editor_2.email)}\)/
+
+        expect(email).to have_body_text /Cover Editors:/
+        expect(email).to have_body_text /#{Regexp.escape(cover_editor_1.full_name)}.*\(#{Regexp.escape(cover_editor_1.email)}\)/
+        expect(email).to have_body_text /#{Regexp.escape(cover_editor_2.full_name)}.*\(#{Regexp.escape(cover_editor_2.email)}\)/
+
+        expect(email).to have_body_text /Handling Editors:/
+        expect(email).to have_body_text /#{Regexp.escape(handling_editor_1.full_name)}.*\(#{Regexp.escape(handling_editor_1.email)}\)/
+        expect(email).to have_body_text /#{Regexp.escape(handling_editor_2.full_name)}.*\(#{Regexp.escape(handling_editor_2.email)}\)/
+
+        expect(email).to have_body_text /Reviewers:/
+        expect(email).to have_body_text /#{Regexp.escape(reviewer_1.full_name)}.*\(#{Regexp.escape(reviewer_1.email)}\)/
+        expect(email).to have_body_text /#{Regexp.escape(reviewer_2.full_name)}.*\(#{Regexp.escape(reviewer_2.email)}\)/
+      end
+    end
+  end
+
 end

@@ -1,0 +1,65 @@
+{{#if templateDecision}}
+  {{#if showDropdowns }}
+    {{#unless disabled }}
+      <p>Please select the template letter and then edit further.</p>
+    {{/unless}}
+
+    {{nested-question-select ident="register_decision_questions--selected-template"
+                      class='letter-select2'
+                      owner=task
+                      selectionSelected=templateSelected
+                      displayQuestionText=false
+                      defaultSelection=firstDecisionTemplate
+                      placeholder="Please select the letter template"
+                      source=decisionTemplates
+                      readOnly=disabled
+                      noResponseText=nil
+                      width="300"}}
+
+  {{/if}}
+
+  <div class='input-group'>
+    <div class='input-group-addon email-header'>
+      To:
+    </div>
+    {{nested-question-input
+      ident="register_decision_questions--to-field"
+      owner=task
+      inputClassNames='form-control to-field'
+      disabled=disabled
+      displayQuestionText=false
+      placeholder='someone@example.edu'
+      defaultAnswer=toField
+    }}
+  </div>
+
+  <div class='input-group'>
+    <div class='input-group-addon email-header'>
+      Subject:
+    </div>
+    {{nested-question-input
+        ident="register_decision_questions--subject-field"
+        defaultAnswer=subjectLine
+        owner=task
+        inputClassNames='form-control subject-field'
+        disabled=disabled
+        displayQuestionText=false
+        placeholder='Enter your subject here'
+        }}
+  </div>
+
+  {{textarea onEvent="false"
+             class="decision-letter-field"
+             placeholder="A boilerplate decision letter will appear here"
+             disabled=disabled
+             value=letterValue}}
+
+  {{#unless disabled}}
+    <button class="button-primary button--green send-email-action"
+   {{action registerDecision}}>
+      Register Decision and Email the Author
+    </button>
+  {{/unless}}
+{{else}}
+  <p>No decision has been registered.</p>
+{{/if}}

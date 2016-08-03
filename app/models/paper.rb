@@ -106,7 +106,7 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
-                  after: [:set_submitting_user_and_touch!,
+                  after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
@@ -121,7 +121,7 @@ class Paper < ActiveRecord::Base
       transitions from: [:in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-                  after: [:set_submitting_user_and_touch!,
+                  after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
@@ -130,7 +130,7 @@ class Paper < ActiveRecord::Base
                          :invited_for_full_submission],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-                  after: [:set_submitting_user_and_touch!,
+                  after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
@@ -152,7 +152,7 @@ class Paper < ActiveRecord::Base
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
-                  after: [:set_submitting_user_and_touch!,
+                  after: [:assign_submitting_user!,
                           :prevent_edits!,
                           :new_minor_version!]
     end
@@ -606,9 +606,8 @@ class Paper < ActiveRecord::Base
     activities.where(activity_key: "paper.state_changed.submitted").exists?
   end
 
-  def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
+  def assign_submitting_user!(submitting_user)
     draft.update!(submitting_user: submitting_user)
-    draft.touch
   end
 
   def assign_doi!

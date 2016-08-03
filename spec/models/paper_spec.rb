@@ -53,6 +53,15 @@ describe Paper do
       expect { subject }.to change { draft.reload.submitting_user }.from(nil).to(user)
     end
 
+    it "touches the latest version" do
+      draft = paper.draft
+      Timecop.freeze(1.day.from_now) do |time|
+        expect { subject }
+          .to change { draft.reload.updated_at }
+          .to(within(db_precision_limit).of time)
+      end
+    end
+
     it 'snapshots metadata' do
       Subscriptions.reload
       expect(Paper::Submitted::SnapshotPaper).to receive(:call)

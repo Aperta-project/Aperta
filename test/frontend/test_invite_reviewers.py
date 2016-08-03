@@ -12,7 +12,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users
+from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users, creator_login12
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -35,7 +35,8 @@ class InviteReviewersCardTest(CommonTest):
     :return: void function
     """
     # Users logs in and make a submission
-    creator_user = random.choice(users)
+    ##creator_user = random.choice(users)
+    creator_user = creator_login12
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()

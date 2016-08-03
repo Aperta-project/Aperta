@@ -1,11 +1,9 @@
 <td>{{model.username}}</td>
 <td>{{model.firstName}}</td>
 <td>{{model.lastName}}</td>
-<!-- Disable Role Selector for now since it uses the old role structure -->
-<!-- <td>
-  {{!--user-role-selector journalRoles=selectableJournalRoles
-                       userJournalRoles=selectableUserJournalRoles
-                       selected="assignOldRole"
-                       removed="removeOldRole"--}}
+<td>
+  {{user-role-selector journalRoles=selectableJournalRoles
+                       userJournalRoles=model.adminJournalRoles
+                       selected=(action "noOp")
+                       removed=(action "noOp")}}
 </td>
- -->

@@ -1,10 +1,10 @@
 {{select-2-multiple class="add-role-input"
                     name="add_role"
                     dropdownClosed="dropdownClosed"
-                    selectionSelected=selected
-                    selectionRemoved=removed
-                    source=journalRoles
-                    selectedData=userJournalRoles
+                    selectionSelected=attrs.selected
+                    selectionRemoved=attrs.removed
+                    source=selectOptions
+                    selectedData=selectSelected
                     closeOnSelect=true
                     allowClear=false
                     minimumInputLength=1

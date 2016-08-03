@@ -60,7 +60,7 @@ describe Invitation do
   end
 
   describe '#create' do
-    it "belongs to the paper's latest decision" do
+    it "belongs to the paper's draft decision" do
       invitation.save!
       expect(paper.draft_decision.invitations).to include invitation
     end
@@ -68,7 +68,8 @@ describe Invitation do
     context 'when there is more than one decision' do
       let!(:completed_decision) { FactoryGirl.create :decision, paper: paper }
       let(:draft_decision) { paper.draft_decision }
-      it 'is associated with the latest decision' do
+
+      it 'the new invitation belongs to the draft decision' do
         expect(paper.decisions.count).to eq 2
         invitation.save!
         expect(invitation.decision).to eq draft_decision

@@ -49,6 +49,16 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
 
   let(:versions) { paper.send(@things) }
 
+  describe '#draft?' do
+    it 'is true when the major version is nil' do
+      expect(draft).to be_draft
+    end
+
+    it 'is false when the major version is not nil' do
+      expect(version_0_0).to_not be_draft
+    end
+  end
+
   describe '#version_desc' do
     it 'should return the versioned things in descending version order' do
       expect(versions.completed.version_desc.to_a)

@@ -52,11 +52,11 @@ test("forceValidHTML adds pairs of elements to `tokens`", function(assert) {
 );
 
 test("unForceValidHTML replaces fake- elts with real ones", function(assert) {
-  var fakes = "<fake-open-p></fake-open-p>abc<fake-close-p></fake-close-p>";
+  var fakes = "<fake-open-p></fake-open-p>abc<fake-close-p></fake-close-p><fake-open-p></fake-open-p>def<fake-close-p></fake-close-p>";
 
   assert.equal(
     this.component.unForceValidHTML(fakes),
-    "<p>abc</p>"
+    "<p>abc</p><p>def</p>"
   );
 });
 

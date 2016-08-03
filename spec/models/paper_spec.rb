@@ -488,6 +488,24 @@ describe Paper do
     end
   end
 
+  describe '#latest_withdrawal' do
+    let!(:joe) { FactoryGirl.create(:user) }
+    let!(:sally) { FactoryGirl.create(:user) }
+
+    before do
+      paper.withdraw!('reason 1', joe)
+      paper.reload.reactivate!
+      paper.withdraw!('reason 2', sally)
+    end
+
+    it 'returns the most recent withdrawal' do
+      withdrawal = paper.latest_withdrawal
+      expect(withdrawal).to be_kind_of(Withdrawal)
+      expect(withdrawal.withdrawn_by_user).to eq(sally)
+      expect(withdrawal.reason).to eq('reason 2')
+    end
+  end
+
   context 'State Machine' do
     describe '#initial_submit' do
       subject { paper.initial_submit! user }
@@ -587,24 +605,6 @@ describe Paper do
         it 'does not change the minor version' do
           expect { paper.submit!(user) }.to_not change { paper.minor_version }
         end
-      end
-    end
-
-    describe '#latest_withdrawal' do
-      let!(:joe) { FactoryGirl.create(:user) }
-      let!(:sally) { FactoryGirl.create(:user) }
-
-      before do
-        paper.withdraw!('reason 1', joe)
-        paper.reload.reactivate!
-        paper.withdraw!('reason 2', sally)
-      end
-
-      it 'returns the most recent withdrawal' do
-        withdrawal = paper.latest_withdrawal
-        expect(withdrawal).to be_kind_of(Withdrawal)
-        expect(withdrawal.withdrawn_by_user).to eq(sally)
-        expect(withdrawal.reason).to eq('reason 2')
       end
     end
 

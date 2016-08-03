@@ -5,6 +5,7 @@ class Paper::DecisionMade::InvalidateReviewerInvitations
 
     invitations = Invitation.joins(:task).where(
       'tasks.paper_id' => paper.id,
+      'tasks.type' => 'TahiStandardTasks::PaperReviewerTask',
       'invitations.state' => 'invited')
 
     invitations.each(&:rescind!)

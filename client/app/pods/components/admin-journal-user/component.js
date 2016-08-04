@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   tagName: 'tr',
   classNames: ['user-row'],
 
-  journalRoles: null,
+  journalRoles: null, //passed-in
   userJournalRoles: Ember.computed.mapBy('model.userRoles', 'oldRole'),
 
   actions: {

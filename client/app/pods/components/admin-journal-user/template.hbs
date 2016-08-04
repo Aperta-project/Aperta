@@ -2,7 +2,7 @@
 <td>{{model.firstName}}</td>
 <td>{{model.lastName}}</td>
 <td>
-  {{user-role-selector journalRoles=selectableJournalRoles
+  {{user-role-selector journalRoles=journalRoles
                        userJournalRoles=model.adminJournalRoles
                        selected=(action "noOp")
                        removed=(action "noOp")}}

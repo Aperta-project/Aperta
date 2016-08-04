@@ -18,8 +18,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
   end
 
   def admin_journal_roles
-    object.roles.where(participates_in_papers: false,
-                       participates_in_tasks: false)
+    object.roles.where(assigned_to_type_hint: "Journal")
   end
 
   def journal_task_types

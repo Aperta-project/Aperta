@@ -23,7 +23,7 @@
       <p>
       Body:
       <br>
-      <%= simple_format @feedback[:remarks] %>
+      <%= simple_format h(@feedback[:remarks]) %>
       </p>
 
       <% if @feedback[:screenshots] %>

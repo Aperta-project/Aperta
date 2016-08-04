@@ -19,7 +19,6 @@ feature 'Revision Tech Check', js: true do
     overlay.create_author_changes_card
     overlay.expect_author_changes_saved
     overlay.mark_as_complete
-    overlay.expect_task_to_be_completed
     overlay.dismiss
     logout
 
@@ -34,7 +33,6 @@ feature 'Revision Tech Check', js: true do
 
     # creator cannot access revision tech check task
     visit "/papers/#{paper.id}/tasks/#{task.id}"
-    wait_for_ajax
     expect(page).to have_content("You don't have access to that content")
   end
 

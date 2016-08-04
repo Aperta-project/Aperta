@@ -38,13 +38,13 @@ class S3Migration < ActiveRecord::Base
   include AASM
 
   def self.migrate!
-    ready.all.each do |migration|
-      puts "Performing migration: #{migration.inspect}"
-      migration.migrate!
+    ready.find_each do |migration|
+      transaction do
+        migration.migrate!
+        puts "\e[32m.\e[0m"
+      end
     end
   end
-
-  scope :ready, ->{ where(state: 'ready') }
 
   belongs_to :attachment, polymorphic: true
 
@@ -106,10 +106,20 @@ class S3Migration < ActiveRecord::Base
     if attachment.is_a?(Figure)
       if attachment.paper.nil?
         puts "Paper is nil. Attachment (id=#{attachment.id}) is an orphan. :("
+        update_attributes!(
+          error_message: "Orphaned figure, paper is nil",
+          errored_at: Time.zone.now
+        )
+        failed!
         return
       end
     elsif attachment.owner.nil? && attachment.paper.nil?
+      update_attributes!(
+        error_message: "Orphaned attachment, owner and paper are both nil",
+        errored_at: Time.zone.now
+      )
       puts "Owner and Paper are nil. Attachment (id=#{attachment.id}) is an orphan. :("
+      failed!
       return
     end
 
@@ -127,7 +137,6 @@ class S3Migration < ActiveRecord::Base
       attachment.update_column :previous_file_hash, previous_file_hash
       attachment.update_column :file_hash, new_file_hash
     end
-
 
     # only backfill an attachment snapshot if we found an existing
     # task snapshot for this attachment
@@ -183,13 +192,15 @@ class S3Migration < ActiveRecord::Base
   # updating that reference to point to the new_file_hash, then returning
   # that Snapshot. Returns nil if not snapshot.
   def find_and_update_task_snapshot(previous_file_hash, new_file_hash)
-    ::Snapshot.all.each do |snapshot|
+    ::Snapshot.find_each do |snapshot|
       child = find_child_with_file_hash previous_file_hash, snapshot.contents
       if child
         # update snapshot to use new_file_hash instead of the previous_file_hash
         child['value'] = new_file_hash
-        child.save!
-        snapshot
+
+        # we're updating the internals contents of the snaphot above so
+        # be sure to save the snapshot
+        snapshot.save!
       end
     end
   end

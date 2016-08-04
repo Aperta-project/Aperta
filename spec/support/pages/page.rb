@@ -11,6 +11,7 @@ class PageFragment
   extend WaitForAjax
   include WaitForAjax
   include Capybara::Select2
+  include Capybara::RSpecMatchers
 
   attr_reader :element
 

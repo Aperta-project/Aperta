@@ -4,12 +4,11 @@
   <div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
     {{progress-spinner visible=true size="large" center=true}}
   </div>
-  {{error-message message=validationErrors.errors}}
 
   {{#if task.completed}}
-    {{#if finalDecision}}
+    {{#if decidedDecision}}
       <div class="alert alert-info">
-        A final decision of {{latestDecision.verdict}} has been registered.
+        A {{if finalDecision 'final'}} decision of {{formattedDecidedDecision}} has been registered.
       </div>
     {{/if}}
   {{else}}
@@ -22,15 +21,6 @@
   {{/if}}
 
   <div class="decision-selections">
-    <label class="decision-label">
-      {{radio-button value="accept"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Accept
-    </label>
-
     <label class="decision-label">
       {{radio-button value="reject"
                      selection=latestDecision.verdict
@@ -57,19 +47,28 @@
                      action=(action "setDecisionTemplate")}}
       Minor Revision
     </label>
+
+    <label class="decision-label">
+      {{radio-button value="accept"
+                     selection=latestDecision.verdict
+                     disabled=nonPublishable
+                     name="decision"
+                     action=(action "setDecisionTemplate")}}
+      Accept
+    </label>
   </div>
 
-  <p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
+  {{error-message message=validationErrors.errors}}
 
-  {{textarea onEvent="false"
-             class="decision-letter-field"
-             placeholder="A boilerplate decision letter will appear here"
-             disabled=nonPublishableOrUnselected
-             value=latestDecision.letter}}
-
-  <button class="button-primary button--green send-email-action" disabled={{nonPublishable}} {{action "registerDecision"}}>
-    Register Decision and Email the Author
-  </button>
+  {{letter-template disabled=nonPublishableOrUnselected
+                    letterValue=latestDecision.letter
+                    toField=toField
+                    subjectLine=subjectLine
+                    task=task
+                    templateDecision=latestDecision.verdict
+                    templateSelected=(action 'templateSelected')
+                    registerDecision=(action 'registerDecision')
+  }}
 
   {{#if previousDecisions}}
     <hr>

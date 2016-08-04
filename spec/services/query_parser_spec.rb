@@ -4,6 +4,11 @@
 
 require 'rails_helper'
 
+module QueryParserSpec
+  class FictionalReport < TahiStandardTasks::ReviewerReportTask
+  end
+end
+
 describe QueryParser do
   describe '#parse' do
     describe 'paper metadata queries' do
@@ -209,17 +214,34 @@ describe QueryParser do
     end
 
     describe 'review queries' do
+      let(:reviewer_report_types) do
+        [TahiStandardTasks::ReviewerReportTask,
+         TahiStandardTasks::FrontMatterReviewerReportTask,
+         QueryParserSpec::FictionalReport
+        ]
+      end
+
+      let(:reviewer_report_sql) { reviewer_report_types.map{ |r| "'#{r}'" }.join(', ') }
+
+      it 'includes FictionalReport in the query (NOT) ALL REVIEWS COMPLETE query' do
+        all_reviews_parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
+        not_all_reviews_parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
+
+        expect(all_reviews_parse.to_sql).to include('QueryParserSpec::FictionalReport')
+        expect(not_all_reviews_parse.to_sql).to include('QueryParserSpec::FictionalReport')
+      end
+
       it 'parses ALL REVIEWS COMPLETE' do
         parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks"."completed" = 'f') AND "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask'
+          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."type" IN (#{reviewer_report_sql}) AND "tasks"."completed" = 'f') AND "tasks_0"."type" IN (#{reviewer_report_sql})
         SQL
       end
 
       it 'parses NOT ALL REVIEWS COMPLETE' do
         parse = QueryParser.new.parse 'NOT ALL REVIEWS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks_0"."type" = 'TahiStandardTasks::ReviewerReportTask' AND "tasks_0"."completed" = 'f'
+          "tasks_0"."type" IN (#{reviewer_report_sql}) AND "tasks_0"."completed" = 'f'
         SQL
       end
     end

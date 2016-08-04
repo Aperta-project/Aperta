@@ -10,6 +10,7 @@ module Typesetter
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
+    attribute :abstract, key: :paper_abstract
 
     has_one :competing_interests,
             serializer: Typesetter::CompetingInterestsSerializer

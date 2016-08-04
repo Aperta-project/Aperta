@@ -3985,6 +3985,7 @@ journals:
   - doi_publisher_prefix
   - doi_journal_prefix
   - last_doi_issued
+  - staff_email
   records: 
   - - '1'
     - PLOS Yeti
@@ -3998,6 +3999,375 @@ journals:
     - yetipub
     - journal.yetijour
     - '1000002'
+    - plos-yeti-staff@example.com
+
+---
+letter_templates:
+  columns:
+  - id
+  - text
+  - template_decision
+  - to
+  - subject
+  - letter
+  - journal_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - Editor Decision - Reject After Review
+    - reject
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME],\n\nThank you
+      very much for submitting your manuscript '[PAPER TITLE]' for review by [JOURNAL
+      NAME]. As with all papers reviewed by the journal, yours was assessed and discussed
+      by the [JOURNAL NAME] editors. In this case, your article was also assessed
+      by an Academic Editor with relevant expertise and several independent reviewers.
+      Based on the reviews, I regret that we will not be able to accept this manuscript
+      for publication in the journal.\n\nThe reviews are attached, and we hope they
+      may help you should you decide to revise the manuscript for submission elsewhere.
+      I am sorry that we cannot be more positive on this occasion. \n\nI hope you
+      appreciate the reasons for this decision and will consider [JOURNAL NAME] for
+      other submissions in the future. Thank you for your support of PLOS and of open
+      access publishing.\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\n[JOURNAL
+      NAME]  \n"
+    - '1'
+    - '2016-07-28 18:22:30.390577'
+    - '2016-07-28 18:22:30.392703'
+  - - '2'
+    - Editor Decision - Reject After Review CJs
+    - reject
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME],\n\nThank you
+      very much for submitting your manuscript entitled '[PAPER TITLE]' for review
+      by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed
+      and discussed by the [JOURNAL NAME] editors. In this case, your article was
+      also assessed by an Academic Editor with relevant expertise and several independent
+      reviewers. Based on the reviews, I regret that we will not be able to accept
+      this manuscript for publication in the journal.\n\nThe reviews are attached
+      and we hope they may help you, should you decide to revise the manuscript for
+      submission elsewhere. I am sorry that we cannot be more positive on this occasion.
+      \n\nWhile we cannot consider your manuscript for publication in [JOURNAL NAME],
+      we very much appreciate your wish to present your work in one of PLOS's open
+      access publications, and we would like to suggest that you consider submitting
+      it to PLOS [**INSERT CJ JOURNAL NAME**]. If you would like the editors of this
+      journal to consider your work please login at the relevant journal submission
+      site (details on all journals and links to submission sites can be found at
+      http://www.plos.org/journals/). Please note that the journals are editorially
+      independent and we cannot submit your article on your behalf.\n\nPlease indicate
+      in your cover letter to the selected journal that the full paper was submitted
+      to and reviewed at [JOURNAL NAME]. \n\nOnce at the relevant submission site,
+      log in and choose 'Submit Manuscript' from the list of Author Tasks.   \n\nI
+      hope you have found this review process constructive and that you will consider
+      publishing your work in PLOS in future.  Thank you for your support of PLOS
+      and of Open Access publishing.\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\n[JOURNAL
+      NAME]\n\n\nReviewer notes:\n\n[REVIEWER COMMENTS]\n"
+    - '1'
+    - '2016-07-28 18:22:30.395609'
+    - '2016-07-28 18:22:30.396653'
+  - - '3'
+    - Editor Decision - Reject After Review ONE
+    - reject
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - |
+      ***EDIT THIS LETTER BEFORE SENDING****
+
+      Dear Dr. [LAST NAME],
+
+      Thank you very much for submitting your manuscript entitled “[PAPER TITLE]” for review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.
+
+      The reviews are attached, and we hope they may help you should you decide to revise the manuscript for submission elsewhere. I am sorry that we cannot be more positive on this occasion.
+
+      While we cannot consider your manuscript further for publication in [JOURNAL NAME], we very much appreciate your wish to present your work in an Open Access publication and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org).
+
+      PLOS ONE is a peer-reviewed journal that accepts scientifically sound primary research. The review process at PLOS ONE differs from other PLOS journals in that it does not judge the perceived impact of the work or whether this falls within a particular area of research. Rather, it focuses on whether the study has been performed and reported to high scientific and ethical standards, and whether the data support the conclusions. This approach helps to eliminate the rejection cycles that authors commonly encounter when submitting to one journal after another, ultimately speeding the path to publication.
+
+      If you would like the editors of this journal to consider your work please login at the relevant journal submission site (details about the journal and a link to the submission site can be found at http://journals.plos.org/plosone/s/submit-now). Please note that the journals are editorially independent and we cannot submit your article on your behalf. Once at the relevant submission site, log in and choose 'Submit Manuscript' from the list of Author Tasks, selecting the article type 'Research Article'. Please include the [JOURNAL NAME] decision letter, including all editorial and reviewer comments, in your submission. This letter can be uploaded as an “Other” file in the file inventory of your submission form and will assist the PLOS ONE editors to assess your manuscript as quickly as possible.
+
+      I hope you have found this review process constructive and that you will consider publishing your work in PLOS ONE.  Thank you for your support of PLOS and of Open Access publishing.
+
+      Sincerely,
+
+      [EDITOR NAME]
+      [EDITOR TITLE]
+      [JOURNAL NAME]
+
+
+      Reviewer notes:
+
+      [REVIEWER COMMENTS]
+    - '1'
+    - '2016-07-28 18:22:30.399636'
+    - '2016-07-28 18:22:30.400901'
+  - - '4'
+    - Reject After Review ONE
+    - reject
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "**IF THE MANUSCRIPT HAS NOT BEEN RE-REVIEWED, EDIT THE FIRST PARAGRAPH AS APPROPRIATE**\n\nDear
+      Dr. [LAST NAME],\n\nThank you very much for submitting your revised manuscript
+      entitled “[PAPER TITLE]” for review by [JOURNAL NAME]. As with all papers reviewed
+      by the journal, yours was assessed and discussed by the [JOURNAL NAME] editors.
+      In this case, your article was also assessed by the Academic Editor who saw
+      the original version [EDIT HERE if not re-reviewed: and by several independent
+      reviewers. Based on the reviews, I regret that we will not be able to accept
+      this manuscript for publication in the journal. As you will see, the reviewers
+      continue to have concerns about [...EDIT HERE....].] These seem to us sufficiently
+      serious that we cannot encourage you to revise the manuscript further. \n\nThe
+      reviews are attached, and we hope they may help you should you decide to revise
+      the manuscript for submission elsewhere. I am sorry that we cannot be more positive
+      on this occasion. \n\n[ADD THE FOLLOWING IF APPROPRIATE AND ONLY IF THE PAPER
+      IS NOT CLEARLY FLAWED:  While we cannot consider your manuscript further for
+      publication in [JOURNAL NAME], we very much appreciate your wish to present
+      your work in an Open Access publication and so suggest, as an alternative, submitting
+      to PLOS ONE (www.plosone.org). \n\nPLOS ONE is a peer-reviewed journal that
+      accepts scientifically sound primary research. The review process at PLOS ONE
+      differs from other PLOS journals in that it does not judge the perceived impact
+      of the work or whether this falls within a particular area of research. Rather,
+      it focuses on whether the study has been performed and reported to high scientific
+      and ethical standards, and whether the data support the conclusions. This approach
+      helps to eliminate the rejection cycles that authors commonly encounter when
+      submitting to one journal after another, ultimately speeding the path to publication.\n\nIf
+      you would like the editors of this journal to consider your work please login
+      at the relevant journal submission site (details about the journal and a link
+      to the submission site can be found at http://journals.plos.org/plosone/s/submit-now).
+      Please note that the journals are editorially independent and we cannot submit
+      your article on your behalf. Once at the relevant submission site, log in and
+      choose 'Submit Manuscript' from the list of Author Tasks, selecting the article
+      type 'Research Article'. Please include the [JOURNAL NAME] decision letter,
+      including all editorial and reviewer comments, in your submission. This letter
+      can be uploaded as an “Other” file in the file inventory of your submission
+      form and will assist the PLOS ONE editors to assess your manuscript as quickly
+      as possible.\n\nI hope you have found this review process constructive and that
+      you will consider publishing your work in PLOS ONE.]  \n\nThank you for your
+      support of PLOS and of Open Access publishing.\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR
+      TITLE]\n[JOURNAL NAME]\n\n\nReviewer notes:\n\n[REVIEWER COMMENTS]\n"
+    - '1'
+    - '2016-07-28 18:22:30.403331'
+    - '2016-07-28 18:22:30.404428'
+  - - '5'
+    - Reject After Revision and Re-review ONE
+    - reject
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME],\n\nThank you
+      very much for submitting your revised manuscript entitled [PAPER TITLE] for
+      review by [JOURNAL NAME]. As with all papers reviewed by the journal, yours
+      was assessed and discussed by the [JOURNAL NAME] editors. In this case, your
+      article was also assessed by the Academic Editor who saw the original version
+      and by several independent reviewers. Based on the reviews, I regret that we
+      will not be able to accept this manuscript for publication in the journal. As
+      you will see, the reviewers continue to have concerns about [...EDIT HERE....].
+      These seem to us sufficiently serious that we cannot encourage you to revise
+      the manuscript further.  \n\nThe reviews are attached, and we hope they may
+      help you should you decide to revise the manuscript for submission elsewhere.
+      I am sorry that we cannot be more positive on this occasion. \n\n[ADD THE FOLLOWING
+      IF APPROPRIATE AND ONLY IF THE PAPER IS NOT CLEARLY FLAWED:  While we cannot
+      consider your manuscript further for publication in [JOURNAL NAME], we very
+      much appreciate your wish to present your work in an Open Access publication
+      and so suggest, as an alternative, submitting to PLOS ONE (www.plosone.org).
+      \n\nPLOS ONE is a peer-reviewed journal that accepts scientifically sound primary
+      research. The review process at PLOS ONE differs from other PLOS journals in
+      that it does not judge the perceived impact of the work or whether this falls
+      within a particular area of research. Rather, it focuses on whether the study
+      has been performed and reported to high scientific and ethical standards, and
+      whether the data support the conclusions. This approach helps to eliminate the
+      rejection cycles that authors commonly encounter when submitting to one journal
+      after another, ultimately speeding the path to publication.\n\nIf you would
+      like the editors of this journal to consider your work please login at the relevant
+      journal submission site (details about the journal and a link to the submission
+      site can be found at http://journals.plos.org/plosone/s/submit-now). Please
+      note that the journals are editorially independent and we cannot submit your
+      article on your behalf. Once at the relevant submission site, log in and choose
+      'Submit Manuscript' from the list of Author Tasks, selecting the article type
+      'Research Article'. Please include the [JOURNAL NAME] decision letter, including
+      all editorial and reviewer comments, in your submission. This letter can be
+      uploaded as an “Other” file in the file inventory of your submission form and
+      will assist the PLOS ONE editors to assess your manuscript as quickly as possible.\n\nI
+      hope you have found this review process constructive and that you will consider
+      publishing your work in PLOS ONE.]  \n\nThank you for your support of PLOS and
+      of Open Access publishing.\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\n[JOURNAL
+      NAME]\n\n\nReviewer notes:\n\n[REVIEWER COMMENTS]\n"
+    - '1'
+    - '2016-07-28 18:22:30.407003'
+    - '2016-07-28 18:22:30.408158'
+  - - '6'
+    - RA Major Revision
+    - major_revision
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "**choose appropriate first paragraph; attach prod reqs PDF - DELETE THIS***\n\nDear
+      Dr. [LAST NAME],\n\n***EITHER****\n\nThank you very much for submitting your
+      manuscript “[PAPER TITLE]” for consideration at [JOURNAL NAME]. Your manuscript
+      has been evaluated by the [JOURNAL NAME] editorial staff, by an Academic Editor
+      with relevant expertise, and by several independent reviewers.\n\n****OR (if
+      previous OPEN REJECT)****\n\nThank you very much for submitting a revised version
+      of your manuscript \"[PAPER TITLE]\" for consideration at [JOURNAL NAME]. This
+      revised version of your manuscript has been evaluated by the [JOURNAL NAME]
+      editorial staff, an Academic Editor and reviewers. \n\n****\n\nIn light of the
+      reviews, we will not be able to accept the current version of the manuscript,
+      but we would welcome resubmission of a much-revised version that takes into
+      account the reviewers' comments. We cannot make any decision about publication
+      until we have seen the revised manuscript and your response to the reviewers'
+      comments. Your revised manuscript is also likely to be sent for further evaluation
+      by the reviewers. \n\nYour revisions should address the specific points made
+      by each reviewer. Please also submit a cover letter and a point-by-point response
+      to all of the reviewers' comments that indicates the changes you have made to
+      the manuscript. You should also cite any additional relevant literature that
+      has been published since the original submission and mention any additional
+      citations in your response. \n\nPlease note that as a condition of publication
+      PLOS’ data policy requires that you make available all data used to draw conclusions
+      in papers published in PLOS journals. If you have not already done so, you must
+      include any data used in your manuscript either in appropriate repositories,
+      within the body of the manuscript, or as supporting information (NB this includes
+      any numerical values that were used to generate graphs, histograms etc.). For
+      an example see here: http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5.\n\nUpon
+      resubmission, the editors will assess the advance your revised manuscript represents
+      over work published prior to its resubmission in reaching a decision regarding
+      further consideration. The editors also will assess the revisions you have made
+      and decide whether to consult further with an Academic Editor. If the editors
+      and Academic Editor feel that the revised manuscript remains appropriate for
+      the journal and that the revisions are sufficient to warrant further consideration,
+      we generally will send the manuscript for re-review. We aim to consult the same
+      Academic Editor and reviewers for revised manuscripts but may consult others
+      if needed.\n\nWe expect to receive your revised manuscript within two months.
+      Please email us (plosbiology@plos.org) to discuss this if you have any questions
+      or concerns, or would like to request an extension. \n\nAt this stage, your
+      manuscript remains formally under active consideration at our journal. Please
+      note that unless we receive the revised manuscript within this timeframe, your
+      submission may be closed and the manuscript would no longer be ‘under consideration’
+      at [JOURNAL NAME]. We will of course be in touch before this action is taken.
+      Please rest assured that this is merely an administrative step - you may still
+      submit your revised submission after your file is closed, but will need to do
+      so as a new submission, referencing the previous tracking number.\n\nPlease
+      notify us by email if you do not wish to revise your manuscript for [JOURNAL
+      NAME] and instead wish to pursue publication elsewhere, so that we may end consideration
+      of the manuscript at [JOURNAL NAME].\n\nIf you do still intend to submit a revised
+      version of your manuscript, please log in at http://www.aperta.tech.  On the
+      ‘Your Manuscripts’ page, click the title of your manuscript to access and edit
+      your submission.\n\nBefore you revise your manuscript, we ask that you please
+      review the following PLOS policy and formatting requirements checklist PDF:
+      https://drive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=sharing.
+      It’s helpful for you to take a look through this at this stage, and to align
+      your revision with our requirements; should your paper be eventually accepted,
+      this will save everyone time at the acceptance stage. \n\nThank you again for
+      your submission to our journal. We hope that our editorial process has been
+      constructive thus far, and we welcome your feedback at any time. Please don't
+      hesitate to contact us if you have any questions or comments. \nSincerely,\n\n[EDITOR
+      NAME]\n[EDITOR TITLE]\n[JOURNAL NAME]\n\n------------------------------------------------------------------------\n\nReviewer
+      Notes:\n[REVIEWER COMMENTS]\n"
+    - '1'
+    - '2016-07-28 18:22:30.410529'
+    - '2016-07-28 18:22:30.411451'
+  - - '7'
+    - RA Minor Revision
+    - minor_revision
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "** CHOOSE BETWEEN NUMBERED PARAGRAPHS BELOW\n**REMOVE THIS TEXT BEFORE SENDING**\n\nDear
+      Dr. [LAST NAME],\n\n[1] \nThank you very much for submitting your manuscript
+      \"[PAPER TITLE]\" for review by [JOURNAL NAME]. As with all papers reviewed
+      by the journal, yours was seen by the PLOS editorial staff as well as by an
+      Academic Editor with relevant expertise. In this case, your article was also
+      evaluated by independent reviewers. The reviewers appreciated the attention
+      to an important topic. Based on the reviews, we will probably accept this manuscript
+      for publication, providing that you are willing and able to modify the manuscript
+      according to the review recommendations.\n\n[2] \nThank you for submitting your
+      revised manuscript entitled \"[PAPER TITLE]\" for publication in [JOURNAL NAME].
+      I have now obtained advice from the original reviewers and have discussed their
+      comments with the Academic Editor. \n\n*******\nDELETE AS APPROPRIATE – TWO
+      LARGE SECTIONS TO CHOOSE BETWEEN\n\nEITHER [3]:\nBased on the reviews, we will
+      probably accept this manuscript for publication, assuming that you are willing
+      and able to modify the manuscript to address the remaining concerns raised by
+      the reviewers.\n\n***Insert Editorial Requirements and INCLUDE DATA REQUIREMENTS
+      AS NECESSARY***\n\nWe expect to receive your revised manuscript within two weeks.
+      Your revisions should address the specific points made by each reviewer.\n\nIn
+      addition to the remaining revisions and before we will be able to formally accept
+      your manuscript and consider it \"in press\", we also need to ensure that your
+      article conforms to our guidelines. A member of our team will be in touch shortly
+      with a set of requests regarding the manuscript files. As we can’t proceed until
+      these requirements are met, your swift response will help prevent delays to
+      publication.\nOR [4]:\nWe’re delighted to let you know that we’re now editorially
+      satisfied with your manuscript, however before we can formally accept your manuscript
+      and consider it \"in press\", we also need to ensure that your article conforms
+      to our guidelines. A member of our team will be in touch shortly with a set
+      of requests regarding the manuscript files. As we can’t proceed until these
+      requirements are met, your swift response will help prevent delays to publication.
+      \n******* \nUpon acceptance of your article, your final files will be copyedited
+      and typeset into the final PDF. While you will have an opportunity to review
+      these files as proofs, PLOS will only permit corrections to spelling or significant
+      scientific errors. Therefore, please take this final revision time to assess
+      and make any remaining major changes to your manuscript.\nTo submit your revision,
+      please log in at http://www.aperta.tech.  Click the title of your manuscript
+      from the Your Manuscripts page to access and edit your submission. Your revised
+      submission must include a cover letter, and a Response to Reviewers that provides
+      a detailed response to the reviewers' comments (if applicable) and indication
+      of any changes that you have made to the manuscript. \nPlease do not hesitate
+      to contact me should you have any questions.\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR
+      TITLE]\n[JOURNAL NAME]\n\n------------------------------------------------------------------------\n\nDATA
+      POLICY:\nYou may be aware of the PLOS Data Policy, which requires that all data
+      be made available without restriction: http://journals.plos.org/plosbiology/s/data-availability.
+      For more information, please also see this editorial: http://dx.doi.org/10.1371/journal.pbio.1001797\n\nNote
+      that we do not require all raw data. Rather, we ask that all individual quantitative
+      observations that underlie the data summarized in the figures and results of
+      your paper be made available in one of the following forms:\n\n1) Supplementary
+      files (e.g., excel). Please ensure that all data files are uploaded as 'Supporting
+      Information' and are invariably referred to (in the manuscript, figure legends,
+      and the Description field when uploading your files) using the following format
+      verbatim: S1 Data, S2 Data, etc. Multiple panels of a single or even several
+      figures can be included as multiple sheets in one excel file that is saved using
+      exactly the following convention: S1_Data.xlsx (using an underscore).\n\n2)
+      Deposition in a publicly available repository. Please also provide the accession
+      code or a reviewer link so that we may view your data before publication. \n\nRegardless
+      of the method selected, please ensure that you provide the individual numerical
+      values that underlie the summary data displayed in the following figure panels:
+      (e.g. Figs. ....), as they are essential for readers to assess your analysis
+      and to reproduce it. Please also ensure that figure legends in your manuscript
+      include information on where the underlying data can be found.\n\nPlease ensure
+      that your Data Availability card in the submission system accurately describes
+      where your data can be found.\n\n------------------------------------------------------------------------\n\nReviewer
+      remarks:\n\n[REVIEWER COMMENTS]\n"
+    - '1'
+    - '2016-07-28 18:22:30.413472'
+    - '2016-07-28 18:22:30.414394'
+  - - '8'
+    - RA Accept
+    - accept
+    - "[AUTHOR EMAIL]"
+    - Your [JOURNAL NAME] submission
+    - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME]\n\nOn behalf
+      of my colleagues and the Academic Editor, [*INSERT AE'S NAME*], I am pleased
+      to inform you that we will be delighted to publish your manuscript in PLOS Biology.
+      \ \n\nPlease note that since your article will appear in the magazine section
+      of the journal you will not be charged for publication.\n\nThe files will now
+      enter our production system. In one-two weeks' time, you should receive a copyedited
+      version of the manuscript, along with your figures for a final review. You will
+      be given two business days to review and approve the copyedit. Then, within
+      a week, you will receive a PDF proof of your typeset article. You will have
+      two days to review the PDF and make any final corrections. If there is a chance
+      that you'll be unavailable during the copy editing/proof review period, please
+      provide us with contact details of one of the other authors whom you nominate
+      to handle these stages on your behalf. This will ensure that any requested corrections
+      reach the production department in time for publication.\n\nPRESS \n\nWe frequently
+      collaborate with communication and public information offices. If your institution
+      is planning to promote your findings, we would be grateful if they could coordinate
+      with biologypress@plos.org.\n\nWe also ask that you take this opportunity to
+      read our Embargo Policy regarding the discussion, promotion and media coverage
+      of work that is yet to be published by PLOS. As your manuscript is not yet published,
+      it is bound by the conditions of our Embargo Policy. Please be aware that this
+      policy is in place both to ensure that any press coverage of your article is
+      fully substantiated and to provide a direct link between such coverage and the
+      published work. For full details of our Embargo Policy, please visit http://www.plos.org/about/media-inquiries/embargo-policy/.\nPlease
+      don't hesitate to contact me should you have any questions.   \nKind regards,
+      \             \n             \n[*INSERT NAME*]\nPublications Assistant\n[JOURNAL
+      NAME]\n\nOn Behalf of\n[*HANDLING EDITOR*]\n[*HANDLING EDITOR POSITION*]\n[JOURNAL
+      NAME] \n"
+    - '1'
+    - '2016-07-28 18:22:30.416805'
+    - '2016-07-28 18:22:30.417809'
 
 ---
 manuscript_manager_templates:
@@ -6613,7 +6983,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-07-11 19:05:34.450735'
+    - '2016-07-28 18:23:32.430974'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -8377,6 +8747,42 @@ nested_questions:
     - '2016-06-23 16:58:01.166221'
     - TahiStandardTasks::ReviewerReportTask
     - 
+  - - '264'
+    - Please select a template.
+    - text
+    - register_decision_questions--selected-template
+    - 
+    - '379'
+    - '380'
+    - '1'
+    - '2016-07-28 18:23:32.554795'
+    - '2016-07-28 18:23:32.554795'
+    - TahiStandardTasks::RegisterDecisionTask
+    - 
+  - - '265'
+    - Enter the email here
+    - text
+    - register_decision_questions--to-field
+    - 
+    - '381'
+    - '382'
+    - '2'
+    - '2016-07-28 18:23:32.563654'
+    - '2016-07-28 18:23:32.563654'
+    - TahiStandardTasks::RegisterDecisionTask
+    - 
+  - - '266'
+    - Enter the subject here
+    - text
+    - register_decision_questions--subject-field
+    - 
+    - '383'
+    - '384'
+    - '3'
+    - '2016-07-28 18:23:32.569432'
+    - '2016-07-28 18:23:32.569432'
+    - TahiStandardTasks::RegisterDecisionTask
+    - 
 
 ---
 old_roles:
@@ -8575,7 +8981,6 @@ papers:
   - publishing_state
   - submitted_at
   - salesforce_manuscript_id
-  - withdrawals
   - active
   - gradual_engagement
   - first_submitted_at
@@ -8601,7 +9006,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8626,7 +9030,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8651,7 +9054,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8676,7 +9078,6 @@ papers:
     - submitted
     - '2015-11-02 15:14:05.576249'
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8701,7 +9102,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8726,7 +9126,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8751,7 +9150,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -8787,7 +9185,6 @@ papers:
     - submitted
     - '2016-04-12 19:05:53.748887'
     - 
-    - "{}"
     - true
     - false
     - '2016-04-12 18:55:56.960225'
@@ -8812,7 +9209,6 @@ papers:
     - unsubmitted
     - 
     - 
-    - "{}"
     - true
     - false
     - 
@@ -14309,11 +14705,13 @@ reference_jsons:
       of Stirling\", \"text\": \"University of Stirling\", \"nav_customer_number\":
       \"C01310\"}","{\"id\": \"University of Stuttgart\", \"text\": \"University of
       Stuttgart\", \"nav_customer_number\": \"C01066\"}","{\"id\": \"University of
-      Warwick\", \"text\": \"University of Warwick\", \"nav_customer_number\": \"C01397\"}","{\"id\":
-      \"University of Western Sydney\", \"text\": \"University of Western Sydney\",
-      \"nav_customer_number\": \"C01598\"}","{\"id\": \"University of York\", \"text\":
-      \"University of York\", \"nav_customer_number\": \"C01575\"}","{\"id\": \"Victoria
-      University\", \"text\": \"Victoria University\", \"nav_customer_number\": \"C01702\"}"}'
+      Szeged\", \"text\": \"University of Szeged\", \"nav_customer_number\": \"C01767/70\"}","{\"id\":
+      \"University of Warwick\", \"text\": \"University of Warwick\", \"nav_customer_number\":
+      \"C01397\"}","{\"id\": \"University of Western Sydney\", \"text\": \"University
+      of Western Sydney\", \"nav_customer_number\": \"C01598\"}","{\"id\": \"University
+      of York\", \"text\": \"University of York\", \"nav_customer_number\": \"C01575\"}","{\"id\":
+      \"Victoria University\", \"text\": \"Victoria University\", \"nav_customer_number\":
+      \"C01702\"}"}'
     - '2016-06-08 17:18:45.881733'
     - '2016-06-08 17:18:45.881733'
 
@@ -14331,132 +14729,145 @@ resource_tokens:
   records: 
   - - '1'
     - '2015-10-30 18:09:55.844755'
-    - '2015-10-30 18:09:55.844755'
+    - '2016-07-28 15:42:09.414033'
     - '1'
     - Attachment
     - 4JRhTr616NQ4JW3AnmutrWPX
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/1/figure/attachment/1/detail_cover_image.jpg", "preview":
+      "uploads/paper/1/figure/attachment/1/preview_cover_image.jpg"}'
+    - uploads/paper/1/figure/attachment/1/cover_image.jpg
   - - '2'
     - '2015-10-30 19:45:16.1553'
-    - '2015-10-30 19:45:16.1553'
+    - '2016-07-28 15:42:09.418116'
     - '2'
     - Attachment
     - 7MzbAxAuoAK8h91VEBkrGaHd
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/2/figure/attachment/2/detail_cover_image.jpg", "preview":
+      "uploads/paper/2/figure/attachment/2/preview_cover_image.jpg"}'
+    - uploads/paper/2/figure/attachment/2/cover_image.jpg
   - - '3'
     - '2015-10-30 19:58:30.783132'
-    - '2015-10-30 19:58:30.783132'
+    - '2016-07-28 15:42:09.42108'
     - '3'
     - Attachment
     - 7n1aAGioTqC1ApA8Ld2eYkbu
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/2/figure/attachment/3/detail_cat2.jpg", "preview":
+      "uploads/paper/2/figure/attachment/3/preview_cat2.jpg"}'
+    - uploads/paper/2/figure/attachment/3/cat2.jpg
   - - '4'
     - '2015-11-02 14:08:05.496311'
-    - '2015-11-02 14:08:05.496311'
+    - '2016-07-28 15:42:09.42398'
     - '4'
     - Attachment
     - w3qHf38vMDCqKFXfcrCZE2LK
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/3/figure/attachment/4/detail_cover_image.jpg", "preview":
+      "uploads/paper/3/figure/attachment/4/preview_cover_image.jpg"}'
+    - uploads/paper/3/figure/attachment/4/cover_image.jpg
   - - '5'
     - '2015-11-02 14:15:51.668637'
-    - '2015-11-02 14:15:51.668637'
+    - '2016-07-28 15:42:09.426794'
     - '5'
     - Attachment
     - ajxQpM7BWyqje3rdUEjtpMTb
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/3/figure/attachment/5/detail_quad-cat.jpg", "preview":
+      "uploads/paper/3/figure/attachment/5/preview_quad-cat.jpg"}'
+    - uploads/paper/3/figure/attachment/5/quad-cat.jpg
   - - '6'
     - '2015-11-02 15:08:10.833865'
-    - '2015-11-02 15:08:10.833865'
+    - '2016-07-28 15:42:09.429546'
     - '6'
     - Attachment
     - qt3FhbrR5Q4KNM1F35DXTHNx
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/4/figure/attachment/6/detail_cover_image.jpg", "preview":
+      "uploads/paper/4/figure/attachment/6/preview_cover_image.jpg"}'
+    - uploads/paper/4/figure/attachment/6/cover_image.jpg
   - - '7'
     - '2015-11-02 15:10:35.531229'
-    - '2015-11-02 15:10:35.531229'
+    - '2016-07-28 15:42:09.432299'
     - '7'
     - Attachment
     - 2vM873Fqxyfm22GtB5VDqEND
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/4/figure/attachment/7/detail_cat2.jpg", "preview":
+      "uploads/paper/4/figure/attachment/7/preview_cat2.jpg"}'
+    - uploads/paper/4/figure/attachment/7/cat2.jpg
   - - '8'
     - '2016-04-12 18:52:36.083488'
-    - '2016-04-12 18:52:36.083488'
+    - '2016-07-28 15:42:09.434969'
     - '8'
     - Attachment
     - UF91o1Sp2kVzQ2fMRYGUVLkU
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/12/figure/attachment/12/detail_139.jpg", "preview":
+      "uploads/paper/12/figure/attachment/12/preview_139.jpg"}'
+    - uploads/paper/12/figure/attachment/12/139.jpg
   - - '9'
     - '2016-04-12 18:52:49.614331'
-    - '2016-04-12 18:52:49.614331'
+    - '2016-07-28 15:42:09.437622'
     - '9'
     - Attachment
     - yEUYk9R5AnnMdHu37FBfC5fw
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/12/figure/attachment/13/detail_140.jpg", "preview":
+      "uploads/paper/12/figure/attachment/13/preview_140.jpg"}'
+    - uploads/paper/12/figure/attachment/13/140.jpg
   - - '10'
     - '2015-10-30 19:52:32.177953'
-    - '2015-10-30 19:52:32.177953'
+    - '2016-07-28 15:42:09.475186'
     - '10'
     - Attachment
     - 3c79fda7e29159a4c8e50c36818de39f3d10ce42d845b1a1
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/2/supporting_information_file/attachment/1/detail_sample.doc",
+      "preview": "uploads/paper/2/supporting_information_file/attachment/1/preview_sample.doc"}'
+    - uploads/attachments/1/supporting_information_file/attachment/1/sample.doc
   - - '11'
     - '2015-11-02 14:13:19.427337'
-    - '2015-11-02 14:13:19.427337'
+    - '2016-07-28 15:42:09.479694'
     - '11'
     - Attachment
     - 8025d11c97401368fd5e17b4021774b98b58d204439c7a48
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/3/supporting_information_file/attachment/2/detail_turtles-are-amazing.docx",
+      "preview": "uploads/paper/3/supporting_information_file/attachment/2/preview_turtles-are-amazing.docx"}'
+    - uploads/attachments/2/supporting_information_file/attachment/2/turtles-are-amazing.docx
   - - '12'
     - '2015-11-02 15:09:02.825204'
-    - '2015-11-02 15:09:02.825204'
+    - '2016-07-28 15:42:09.484217'
     - '12'
     - Attachment
     - 42cb1d5acdbc37547be64d61f4d0d21d410d2fa05c72bbf3
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/4/supporting_information_file/attachment/3/detail_turtles-are-amazing.docx",
+      "preview": "uploads/paper/4/supporting_information_file/attachment/3/preview_turtles-are-amazing.docx"}'
+    - uploads/attachments/3/supporting_information_file/attachment/3/turtles-are-amazing.docx
   - - '13'
     - '2016-04-12 18:44:51.665146'
-    - '2016-04-12 18:44:51.665146'
+    - '2016-07-28 15:42:09.488715'
     - '13'
     - Attachment
     - EXxRBJ9WzLn3KTQLjm5Nc6dC
-    - "{}"
-    - 
+    - '{"detail": "uploads/paper/12/supporting_information_file/attachment/5/detail_140.jpg",
+      "preview": "uploads/paper/12/supporting_information_file/attachment/5/preview_140.jpg"}'
+    - uploads/attachments/5/supporting_information_file/attachment/5/140.jpg
   - - '14'
     - '2015-11-02 14:16:35.584565'
-    - '2015-11-02 14:16:35.584565'
+    - '2016-07-28 15:42:09.491341'
     - '14'
     - Attachment
     - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
     - "{}"
-    - 
+    - uploads/question/78/question_attachment/1/turtles-are-amazing.docx
   - - '15'
     - '2015-11-02 14:18:02.598388'
-    - '2015-11-02 14:18:02.598388'
+    - '2016-07-28 15:42:09.493926'
     - '15'
     - Attachment
     - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
     - "{}"
-    - 
+    - uploads/question/88/question_attachment/2/turtles-are-amazing.docx
   - - '16'
     - '2015-11-02 15:12:01.338942'
-    - '2015-11-02 15:12:01.338942'
+    - '2016-07-28 15:42:09.496633'
     - '16'
     - Attachment
     - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
     - "{}"
-    - 
+    - uploads/question/126/question_attachment/3/manuscript+_281_29.docx
 
 ---
 roles:

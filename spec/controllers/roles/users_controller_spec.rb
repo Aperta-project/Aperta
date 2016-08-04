@@ -20,6 +20,7 @@ describe OldRoles::UsersController do
         "id" => admin.id,
         "full_name" => admin.full_name,
         "first_name" => admin.first_name,
+        "last_name" => admin.last_name,
         "avatar_url" => admin.avatar.url,
         "username" => admin.username
       }

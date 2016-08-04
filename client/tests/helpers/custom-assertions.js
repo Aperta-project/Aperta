@@ -80,8 +80,8 @@ export default function() {
     const matches = Ember.$('#ember-testing ' + selector).length;
     return this.push(
       matches === 0,
-      `'${selector}' not found`,
       `'${selector}' found`,
+      `'${selector}' not found`,
       message || `should find no element at ${selector}`);
   };
 

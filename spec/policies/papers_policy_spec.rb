@@ -8,7 +8,7 @@ describe PapersPolicy do
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "administrator for paper"
+    it_behaves_like "administrator for paper"
   end
 
   context "authors" do
@@ -16,7 +16,7 @@ describe PapersPolicy do
       FactoryGirl.create(:paper, :with_integration_journal, creator: user)
     end
 
-    include_examples "author for paper"
+    it_behaves_like "author for paper"
   end
 
   context "paper admins" do
@@ -24,7 +24,7 @@ describe PapersPolicy do
       create(:paper_role, :admin, user: user, paper: paper)
     end
 
-    include_examples "author for paper"
+    it_behaves_like "author for paper"
   end
 
   context "paper editors" do
@@ -32,7 +32,7 @@ describe PapersPolicy do
       create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    include_examples "author for paper"
+    it_behaves_like "author for paper"
   end
 
   context "paper reviewers" do
@@ -40,7 +40,7 @@ describe PapersPolicy do
       create(:paper_role, :reviewer, user: user, paper: paper)
     end
 
-    include_examples "author for paper"
+    it_behaves_like "author for paper"
   end
 
   context "paper participant" do
@@ -48,7 +48,7 @@ describe PapersPolicy do
       create(:paper_role, :participant, user: user, paper: paper)
     end
 
-    include_examples "author for paper"
+    it_behaves_like "author for paper"
   end
 
   context "paper collaborators" do
@@ -56,11 +56,11 @@ describe PapersPolicy do
       create(:paper_role, :collaborator, user: user, paper: paper)
     end
 
-    include_examples "author for paper"
+    it_behaves_like "author for paper"
   end
 
   context "non-associated user" do
-    include_examples "person who cannot see a paper"
+    it_behaves_like "person who cannot see a paper"
   end
 
   context "user with can_view_all_manuscript_managers on this paper's journal" do
@@ -100,6 +100,6 @@ describe PapersPolicy do
       )
     end
 
-    include_examples "person who cannot see a paper"
+    it_behaves_like "person who cannot see a paper"
   end
 end

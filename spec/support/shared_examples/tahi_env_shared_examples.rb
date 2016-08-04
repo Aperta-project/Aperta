@@ -91,7 +91,7 @@ end
 
 shared_examples_for 'dependent required boolean env var' do |var:, dependent_key:|
   describe "Dependent required booelan env var: #{var}" do
-    include_examples 'dependent required env var', var: var, dependent_key: dependent_key
+    it_behaves_like 'dependent required env var', var: var, dependent_key: dependent_key
 
     describe 'dependent_key is true' do
       around do |example|
@@ -102,7 +102,7 @@ shared_examples_for 'dependent required boolean env var' do |var:, dependent_key
         end
       end
 
-      include_examples 'required boolean env var', var: var
+      it_behaves_like 'required boolean env var', var: var
     end
   end
 end

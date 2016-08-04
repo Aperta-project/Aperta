@@ -53,124 +53,124 @@ describe TahiEnv do
   end
 
   # App
-  include_examples 'required env var', var: 'APP_NAME'
-  include_examples 'required env var', var: 'ADMIN_EMAIL'
-  include_examples 'required boolean env var', var: 'PASSWORD_AUTH_ENABLED'
-  include_examples 'required env var', var: 'RAILS_ENV'
-  include_examples 'dependent required env var', var: 'RAILS_ASSET_HOST', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
-  include_examples 'required env var', var: 'RAILS_SECRET_TOKEN'
-  include_examples 'required env var', var: 'DEFAULT_MAILER_URL'
-  include_examples 'optional boolean env var', var: 'FORCE_SSL', default_value: true
-  include_examples 'required env var', var: 'FROM_EMAIL'
-  include_examples 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
-  include_examples 'optional env var', var: 'PING_URL'
-  include_examples 'optional env var', var: 'PUSHER_SOCKET_URL'
-  include_examples 'optional env var', var: 'REPORTING_EMAIL'
+  it_behaves_like 'required env var', var: 'APP_NAME'
+  it_behaves_like 'required env var', var: 'ADMIN_EMAIL'
+  it_behaves_like 'required boolean env var', var: 'PASSWORD_AUTH_ENABLED'
+  it_behaves_like 'required env var', var: 'RAILS_ENV'
+  it_behaves_like 'dependent required env var', var: 'RAILS_ASSET_HOST', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
+  it_behaves_like 'required env var', var: 'RAILS_SECRET_TOKEN'
+  it_behaves_like 'required env var', var: 'DEFAULT_MAILER_URL'
+  it_behaves_like 'optional boolean env var', var: 'FORCE_SSL', default_value: true
+  it_behaves_like 'required env var', var: 'FROM_EMAIL'
+  it_behaves_like 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
+  it_behaves_like 'optional env var', var: 'PING_URL'
+  it_behaves_like 'optional env var', var: 'PUSHER_SOCKET_URL'
+  it_behaves_like 'optional env var', var: 'REPORTING_EMAIL'
 
   # Amazon S3
-  include_examples 'required env var', var: 'S3_URL'
-  include_examples 'required env var', var: 'S3_BUCKET'
-  include_examples 'required env var', var: 'AWS_ACCESS_KEY_ID'
-  include_examples 'required env var', var: 'AWS_SECRET_ACCESS_KEY'
-  include_examples 'required env var', var: 'AWS_REGION'
+  it_behaves_like 'required env var', var: 'S3_URL'
+  it_behaves_like 'required env var', var: 'S3_BUCKET'
+  it_behaves_like 'required env var', var: 'AWS_ACCESS_KEY_ID'
+  it_behaves_like 'required env var', var: 'AWS_SECRET_ACCESS_KEY'
+  it_behaves_like 'required env var', var: 'AWS_REGION'
 
   # Basic Auth
-  include_examples 'optional boolean env var', var: 'BASIC_AUTH_REQUIRED', default_value: false
-  include_examples 'dependent required env var', var: 'BASIC_HTTP_USERNAME', dependent_key: 'BASIC_AUTH_REQUIRED'
-  include_examples 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
+  it_behaves_like 'optional boolean env var', var: 'BASIC_AUTH_REQUIRED', default_value: false
+  it_behaves_like 'dependent required env var', var: 'BASIC_HTTP_USERNAME', dependent_key: 'BASIC_AUTH_REQUIRED'
+  it_behaves_like 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
 
   # Bugsnag
-  include_examples 'optional env var', var: 'BUGSNAG_API_KEY'
-  include_examples 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
+  it_behaves_like 'optional env var', var: 'BUGSNAG_API_KEY'
+  it_behaves_like 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
 
   # CAS
-  include_examples 'required boolean env var', var: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_SIGNUP_URL', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required boolean env var', var: 'CAS_SSL_VERIFY', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_HOST', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_LOGIN_URL', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_LOGOUT_URL', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_PORT', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required env var', var: 'CAS_SERVICE_VALIDATE_URL', dependent_key: 'CAS_ENABLED'
-  include_examples 'dependent required boolean env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
-  include_examples 'optional env var', var: 'CAS_CALLBACK_URL'
+  it_behaves_like 'required boolean env var', var: 'CAS_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'CAS_SIGNUP_URL', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required boolean env var', var: 'CAS_SSL_VERIFY', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'CAS_HOST', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'CAS_LOGIN_URL', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'CAS_LOGOUT_URL', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'CAS_PORT', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'CAS_SERVICE_VALIDATE_URL', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'dependent required boolean env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
+  it_behaves_like 'optional env var', var: 'CAS_CALLBACK_URL'
 
   # EM / Editorial Manager
-  include_examples 'optional env var', var: 'EM_DATABASE'
+  it_behaves_like 'optional env var', var: 'EM_DATABASE'
 
   # Event Stream
-  include_examples 'required env var', var: 'EVENT_STREAM_WS_HOST'
-  include_examples 'required env var', var: 'EVENT_STREAM_WS_PORT'
+  it_behaves_like 'required env var', var: 'EVENT_STREAM_WS_HOST'
+  it_behaves_like 'required env var', var: 'EVENT_STREAM_WS_PORT'
 
   # FTP
-  include_examples 'required boolean env var', var: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_DIR', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_HOST', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_PASSWORD', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_PORT', dependent_key: 'FTP_ENABLED'
-  include_examples 'dependent required env var', var: 'FTP_USER', dependent_key: 'FTP_ENABLED'
+  it_behaves_like 'required boolean env var', var: 'FTP_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'FTP_DIR', dependent_key: 'FTP_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'FTP_HOST', dependent_key: 'FTP_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'FTP_PASSWORD', dependent_key: 'FTP_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'FTP_PORT', dependent_key: 'FTP_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'FTP_USER', dependent_key: 'FTP_ENABLED'
 
   # Heroku
-  include_examples 'optional env var', var: 'HEROKU_APP_NAME'
-  include_examples 'optional env var', var: 'HEROKU_PARENT_APP_NAME'
+  it_behaves_like 'optional env var', var: 'HEROKU_APP_NAME'
+  it_behaves_like 'optional env var', var: 'HEROKU_PARENT_APP_NAME'
 
   # Hipchat
-  include_examples 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
+  it_behaves_like 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
 
   # iHat
-  include_examples 'required env var', var: 'IHAT_URL'
-  include_examples 'optional env var', var: 'IHAT_CALLBACK_HOST'
-  include_examples 'optional env var', var: 'IHAT_CALLBACK_PORT'
+  it_behaves_like 'required env var', var: 'IHAT_URL'
+  it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_HOST'
+  it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_PORT'
 
   # Mailsafe
-  include_examples 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
+  it_behaves_like 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
 
   # NED
-  include_examples 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
-  include_examples 'required env var', var: 'NED_CAS_APP_ID'
-  include_examples 'required env var', var: 'NED_CAS_APP_PASSWORD'
-  include_examples 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
-  include_examples 'required boolean env var', var: 'USE_NED_INSTITUTIONS'
+  it_behaves_like 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
+  it_behaves_like 'required env var', var: 'NED_CAS_APP_ID'
+  it_behaves_like 'required env var', var: 'NED_CAS_APP_PASSWORD'
+  it_behaves_like 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
+  it_behaves_like 'required boolean env var', var: 'USE_NED_INSTITUTIONS'
 
   # Newrelic
-  include_examples 'optional env var', var: 'NEWRELIC_KEY'
-  include_examples 'optional env var', var: 'NEWRELIC_APP_NAME'
+  it_behaves_like 'optional env var', var: 'NEWRELIC_KEY'
+  it_behaves_like 'optional env var', var: 'NEWRELIC_APP_NAME'
 
   # Orcid
-  include_examples 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
-  include_examples 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
-  include_examples 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
-  include_examples 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_ENABLED'
-  include_examples 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
+  it_behaves_like 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_ENABLED'
 
   # Puma
-  include_examples 'optional env var', var: 'PUMA_WORKERS'
-  include_examples 'optional env var', var: 'MAX_THREADS'
-  include_examples 'optional env var', var: 'PORT'
-  include_examples 'optional env var', var: 'RACK_ENV'
+  it_behaves_like 'optional env var', var: 'PUMA_WORKERS'
+  it_behaves_like 'optional env var', var: 'MAX_THREADS'
+  it_behaves_like 'optional env var', var: 'PORT'
+  it_behaves_like 'optional env var', var: 'RACK_ENV'
 
   # Pusher / Slanger
-  include_examples 'required env var', var: 'PUSHER_URL'
-  include_examples 'required boolean env var', var: 'PUSHER_SSL_VERIFY'
-  include_examples 'required boolean env var', var: 'PUSHER_VERBOSE_LOGGING'
+  it_behaves_like 'required env var', var: 'PUSHER_URL'
+  it_behaves_like 'required boolean env var', var: 'PUSHER_SSL_VERIFY'
+  it_behaves_like 'required boolean env var', var: 'PUSHER_VERBOSE_LOGGING'
 
   # Salesforce
-  include_examples 'optional boolean env var', var: 'SALESFORCE_ENABLED', default_value: true
-  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_HOST', dependent_key: 'SALESFORCE_ENABLED'
-  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_ID', dependent_key: 'SALESFORCE_ENABLED'
-  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_SECRET', dependent_key: 'SALESFORCE_ENABLED'
-  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_USERNAME', dependent_key: 'SALESFORCE_ENABLED'
-  include_examples 'dependent required env var', var: 'DATABASEDOTCOM_PASSWORD', dependent_key: 'SALESFORCE_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'SALESFORCE_ENABLED', default_value: true
+  it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_HOST', dependent_key: 'SALESFORCE_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_ID', dependent_key: 'SALESFORCE_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_SECRET', dependent_key: 'SALESFORCE_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_USERNAME', dependent_key: 'SALESFORCE_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_PASSWORD', dependent_key: 'SALESFORCE_ENABLED'
 
   # Segment IO
-  include_examples 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
+  it_behaves_like 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
 
   # Sendgrid
-  include_examples 'required env var', var: 'SENDGRID_USERNAME'
-  include_examples 'required env var', var: 'SENDGRID_PASSWORD'
+  it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
+  it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'
 
   # Sidekiq
-  include_examples 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
+  it_behaves_like 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
 
   describe 'when no authentication is enabled' do
     it 'is not valid' do

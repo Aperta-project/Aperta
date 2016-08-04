@@ -227,42 +227,6 @@ describe Paper do
     end
   end
 
-  describe '#unassign_reviewer' do
-    let!(:journal) do
-      FactoryGirl.create :journal,
-        :with_reviewer_role,
-        :with_reviewer_report_owner_role,
-        :with_task_participant_role
-    end
-    let(:paper) { FactoryGirl.create :paper, journal: journal }
-    let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
-    let!(:reviewer) { create :user }
-    let!(:reviewer_report_task) do
-      ReviewerReportTaskCreator.new(
-        originating_task: task,
-        assignee_id: reviewer.id
-      ).process
-    end
-
-    before do
-      assign_reviewer_role paper, reviewer
-    end
-
-    it "unassigns all reviewers" do
-      expect(paper.reviewers).to eq([reviewer])
-      paper.unassign_reviewer reviewer
-      expect(paper.reviewers).to eq([])
-    end
-
-    it "doesn't remove reviewers access to report tasks" do
-      paper.unassign_reviewer reviewer
-      expect(reviewer.assignments.joins(:role)
-        .where(roles: { name: "Reviewer Report Owner" }).count).to eq(1)
-      expect(reviewer.assignments.joins(:role)
-        .where(roles: { name: "Reviewer" }).count).to eq(0)
-    end
-  end
-
   context 'collaboration' do
     let(:user) { FactoryGirl.create(:user) }
 

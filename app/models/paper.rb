@@ -393,14 +393,6 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  def reviewer_role
-    @reviewer_role ||= Role.find_by(name: Role::REVIEWER_ROLE)
-  end
-
-  def unassign_reviewer(reviewer)
-    reviewer.resign_from!(assigned_to: self, role: reviewer_role)
-  end
-
   def creator
     User.assigned_to(self, role: journal.creator_role).first
   end

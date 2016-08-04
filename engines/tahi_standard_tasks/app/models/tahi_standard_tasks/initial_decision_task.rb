@@ -16,10 +16,12 @@ module TahiStandardTasks
       paper.update_column(:gradual_engagement, true)
     end
 
+    def before_register(decision)
+      decision.initial = true
+    end
+
     def after_register(decision)
       InitialDecisionMailer.delay.notify decision_id: decision.id
-      decision.initial = true
-      decision.save!
       complete!
     end
   end

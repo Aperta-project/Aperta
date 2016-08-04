@@ -39,11 +39,12 @@ class Decision < ActiveRecord::Base
 
   def register!(originating_task)
     Decision.transaction do
+      originating_task.try(:before_register, self)
       paper.public_send "#{verdict}!"
       update! major_version: paper.major_version,
               minor_version: paper.minor_version,
               registered_at: DateTime.now.utc
-      originating_task.after_register self
+      originating_task.try(:after_register, self)
     end
   end
 

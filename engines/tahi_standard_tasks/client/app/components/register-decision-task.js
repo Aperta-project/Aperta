@@ -85,8 +85,12 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       const letter = this.applyTemplateReplacements(template.letter);
       const to = this.applyTemplateReplacements(template.to);
       const subject = this.applyTemplateReplacements(template.subject);
-      this.set('toField', to);
-      this.set('subjectLine', subject);
+      const toQuestion = this.get('task').findQuestion('register_decision_questions--to-field');
+      const toAnswer = toQuestion.answerForOwner(this.get('task'));
+      const subjectQuestion = this.get('task').findQuestion('register_decision_questions--subject-field');
+      const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
+      toAnswer.set('value', to);
+      subjectAnswer.set('value', subject);
       this.get('latestDecision').set('verdict', template.templateDecision);
       this.get('latestDecision').set('letter', letter); // will trigger save
       return template;

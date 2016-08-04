@@ -6,7 +6,6 @@ export default Ember.Object.extend({
     this.allowedPermissions = {};
   },
 
-  // every body gets permission by default
   can(permission, resource){
     return new Ember.RSVP.Promise( (resolve, reject) => {
       resolve(this.allowedPermissions[permission] === resource);

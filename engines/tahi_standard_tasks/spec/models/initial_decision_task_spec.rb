@@ -38,4 +38,13 @@ describe TahiStandardTasks::InitialDecisionTask do
       task.after_register decision
     end
   end
+
+  describe '#register_decision with a InitialDecisionTask`' do
+    # This is somewhat duplicative of the test for `#before_register`, but this
+    # ensures that the change to `initial` is saved.
+    it 'sets the decision to be initial' do
+      expect { decision.register! task }
+        .to change { decision.reload.initial }.from(false).to(true)
+    end
+  end
 end

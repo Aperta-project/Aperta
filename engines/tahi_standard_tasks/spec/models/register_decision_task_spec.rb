@@ -93,13 +93,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
         task.after_register decision
       end
     end
-
-    it "sends an email to the author" do
-      expect(TahiStandardTasks::RegisterDecisionMailer)
-        .to receive_message_chain(:delay, :notify_author_email)
-        .with(decision_id: decision.id)
-      task.after_register decision
-    end
   end
 
   describe "#after_update" do

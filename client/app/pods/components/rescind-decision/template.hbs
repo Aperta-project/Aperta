@@ -3,12 +3,14 @@
 A {{if decision.terminal 'final'}} decision of <span class="rescind-decision-verdict">{{humanize decision.verdict}}</span> has been registered.
 
 {{#if decision.rescindable}}
-<button disabled={{not isEditable}}
-                    {{action "confirmRescind"}}
-                    class="rescind-decision-button">
-  <i class="fa fa-undo"></i>
-  Rescind
-</button>
+  {{#if canRescind}}
+    <button disabled={{not isEditable}}
+            {{action "confirmRescind"}}
+            class="rescind-decision-button">
+      <i class="fa fa-undo"></i>
+      Rescind
+    </button>
+  {{/if}}
 {{/if}}
 
 {{#if confirmingRescind}}

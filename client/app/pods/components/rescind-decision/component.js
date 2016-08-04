@@ -16,6 +16,13 @@ export default Ember.Component.extend({
   hidden: Ember.computed.or(
     'notDecision', 'decision.draft', 'decision.rescinded'),
 
+  init() {
+    this._super(...arguments);
+    this.get('can').can('rescind_decision', this.get('decision.paper')).then((result)=>{
+      this.set('canRescind', result);
+    });
+  },
+
   actions: {
     cancel() {
       this.set('confirmingRescind', false);

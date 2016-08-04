@@ -37,6 +37,11 @@ describe TahiStandardTasks::InitialDecisionTask do
         .with(decision_id: decision.id)
       task.after_register decision
     end
+
+    it "marks the task complete" do
+      expect(task).to receive(:complete!)
+      task.after_register decision
+    end
   end
 
   describe '#register_decision with a InitialDecisionTask`' do

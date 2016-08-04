@@ -7,7 +7,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       :with_academic_editor_role,
       :with_creator_role,
       :with_task_participant_role,
-      name: 'PLOS Yeti'
+      name: "#{Faker::Company.profession} Studies"
     )
   end
   let!(:paper) do
@@ -16,7 +16,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       :with_creator,
       :submitted_lite,
       journal: journal,
-      title: 'Crazy stubbing tests on rats'
+      title: Faker::Lorem.paragraph
     )
   end
   let!(:task) do
@@ -27,6 +27,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       phase: paper.phases.first
     )
   end
+  let(:decision) { paper.draft_decision }
 
   describe '.restore_defaults' do
     include_examples '<Task class>.restore_defaults update title to the default'
@@ -44,10 +45,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
         decision_letter: "Lorem Ipsum"
       )
     end
-
-    let(:decision) {
-      paper.decisions.first
-    }
 
     let(:task) {
       TahiStandardTasks::RegisterDecisionTask.create(
@@ -75,13 +72,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe "#after_register" do
-    let(:decision) { paper.draft_decision }
-
-    before do
-      paper.update(publishing_state: :submitted)
-      task.reload
-    end
-
     context "decision is a revision" do
       before do
         allow(decision).to receive(:revision?).and_return(true)
@@ -92,58 +82,28 @@ describe TahiStandardTasks::RegisterDecisionTask do
           .to receive(:setup_new_revision).with(task.paper, task.phase)
         task.after_register decision
       end
+
+      it "marks the task complete" do
+        expect(task).to receive(:complete!)
+        task.after_register decision
+      end
     end
   end
 
-  describe "#after_update" do
-    before do
-      allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
-      task.paper.draft_decision.update_attribute(:verdict, 'major_revision')
-    end
+  describe "#send_email" do
+    let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
+    let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper, major_version: 0, minor_version: 0) }
 
-    context "when the decision is 'Major Revision' and task is incomplete" do
-      it "does not create a new task for the paper" do
-        expect {
-          task.save!
-        }.to_not change { task.paper.tasks.size }
-      end
-    end
-
-    context "when the decision is 'Major Revision' and task is completed" do
-      let(:revise_task) do
-        task.paper.tasks.detect do |paper_task|
-          paper_task.type == "TahiStandardTasks::ReviseTask"
-        end
-      end
-
-      before do
-        task.save!
-        task.update_attributes completed: true
-        task.after_update
-      end
-
-      it "task has no participants" do
-        expect(task.participants).to be_empty
-      end
-
-      it "task participants does not include author" do
-        expect(task.participants).to_not include paper.creator
-      end
-    end
-
-    describe "#send_email" do
-      let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
-      let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper, major_version: 0, minor_version: 0) }
-
-      it "will email using last completed decision" do
-        author_email = paper.creator.email
-        subject = 'Your paper'
-        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(
+    it "will email using last completed decision" do
+      author_email = paper.creator.email
+      subject = 'Your paper'
+      expect(TahiStandardTasks::RegisterDecisionMailer)
+        .to receive_message_chain(:delay, :notify_author_email)
+        .with(
           decision_id: decision_one,
           to_field: author_email,
           subject_field: subject)
-        task.send_email(to_field: author_email, subject_field: subject)
-      end
+      task.send_email(to_field: author_email, subject_field: subject)
     end
   end
 end

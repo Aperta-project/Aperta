@@ -27,14 +27,7 @@ module TahiStandardTasks
         decision_id: paper.decisions.completed.last)
     end
 
-    def send_emails
-    end
-
     private
-
-    def journal_name
-      @journal_name ||= paper.journal.name
-    end
 
     def template_data
       {

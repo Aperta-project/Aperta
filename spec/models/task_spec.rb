@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Task do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
-  include_examples 'is not snapshottable'
+  it_behaves_like 'is not snapshottable'
 
   describe '.restore_defaults' do
-    include_examples '<Task class>.restore_defaults does not update title'
-    include_examples '<Task class>.restore_defaults does not update old_role'
+    it_behaves_like '<Task class>.restore_defaults does not update title'
+    it_behaves_like '<Task class>.restore_defaults does not update old_role'
   end
 
   describe ".without" do

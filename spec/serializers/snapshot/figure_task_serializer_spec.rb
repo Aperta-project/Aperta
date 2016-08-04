@@ -67,7 +67,7 @@ describe Snapshot::FigureTaskSerializer do
     end
 
     context 'serializing related nested questions' do
-      include_examples 'snapshot serializes related nested questions', resource: :task
+      it_behaves_like 'snapshot serializes related nested questions', resource: :task
     end
   end
 end

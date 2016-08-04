@@ -28,8 +28,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe '.restore_defaults' do
-    include_examples '<Task class>.restore_defaults update title to the default'
-    include_examples '<Task class>.restore_defaults update old_role to the default'
+    it_behaves_like '<Task class>.restore_defaults update title to the default'
+    it_behaves_like '<Task class>.restore_defaults update old_role to the default'
   end
 
   describe "save and retrieve paper decision and decision letter" do
@@ -130,8 +130,13 @@ describe TahiStandardTasks::RegisterDecisionTask do
       let!(:decision_pending) { FactoryGirl.create(:decision, :pending, paper: paper) }
 
       it "will email using latest non-pending decision" do
-        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(decision_id: decision_one)
-        task.send_email
+        author_email = paper.creator.email
+        subject = 'Your paper'
+        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(
+          decision_id: decision_one,
+          to_field: author_email,
+          subject_field: subject)
+        task.send_email(to_field: author_email, subject_field: subject)
       end
     end
 

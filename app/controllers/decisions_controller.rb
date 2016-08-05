@@ -18,12 +18,12 @@ class DecisionsController < ApplicationController
     revise_task = decision.paper.last_of_task(TahiStandardTasks::ReviseTask)
     if current_user.can?(:register_decision, decision.paper)
       permitted += [:verdict, :letter]
-    elsif !revise_task.nil? && current_user.can?(:edit, revise_task)
+    end
+    if !revise_task.nil? && current_user.can?(:edit, revise_task)
       # Only allow the creator to update the `author_response` column
       permitted += [:author_response]
-    else
-      fail AuthorizationError
     end
+    fail AuthorizationError if permitted.empty?
     decision.update! params.require(:decision).permit(*permitted)
     render json: decision, serializer: DecisionSerializer, root: 'decision'
   end

@@ -51,17 +51,30 @@ describe DecisionsController do
               registered_at: DateTime.now.utc, major_version: 0, minor_version: 0)
           end
 
+          shared_examples_for "the author response is editable" do
+            it "Updates the decision's author_response" do
+              expect do
+                do_request
+                expect(response.status).to eq 200
+              end.to change { decision.reload.author_response }.from(decision.author_response).to(author_response)
+            end
+          end
+
           context "the user has the permission to edit the ReviseManuscriptTask" do
             before do
               allow(user).to receive(:can?).with(:register_decision, paper).and_return(false)
               allow(user).to receive(:can?).with(:edit, revise_manuscript_task).and_return(true)
             end
 
-            it "Updates the decision's author_response" do
-              expect do
-                do_request
-                expect(response.status).to eq 200
-              end.to change { decision.reload.author_response }.from(decision.author_response).to(author_response)
+            it_behaves_like "the author response is editable"
+
+            # Testing this case because of the additive nature of permission granting in DecisionsController#update
+            context "the user also has the permission to register a decision" do
+              before do
+                allow(user).to receive(:can?).with(:register_decision, paper).and_return(true)
+              end
+
+              it_behaves_like "the author response is editable"
             end
           end
 

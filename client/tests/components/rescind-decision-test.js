@@ -50,30 +50,28 @@ test('button is missing if the decision is not rescindable', function(assert) {
 });
 
 test('button is present if the decision is rescindable', function(assert) {
-  setup(this, function({ can, paper }) {
-    can.allowPermission('rescind_decision', paper);
-  });
+  setup(this);
   assert.elementFound('button.rescind-decision-button', 'the button is present');
 });
 
 test('button is missing if the user does not have permissions', function(assert) {
-  setup(this);
+  setup(this, function({ can }) {
+    can.rejectPermission('rescind_decision');
+  });
   assert.elementNotFound('button.rescind-decision-button', 'the button is hidden');
 });
 
 test('rescind link is disabled if not editable', function(assert) {
-  setup(this, function({ can, context, paper }) {
+  setup(this, function({context}) {
     context.set('isEditable', false);
-    can.allowPermission('rescind_decision', paper);
   });
   assert.elementFound('.rescind-decision-button:disabled', 'the button is disabled');
 });
 
 test('rescind link, when clicked, calls restless to rescind', function(assert) {
-  let { decision } = setup(this, function({ decision, can, paper }) {
+  let { decision } = setup(this, function({ decision }) {
     decision.rescind = sinon.stub();
     decision.rescind.returns({ then: () => {} });
-    can.allowPermission('rescind_decision', paper);
   });
 
   Ember.run(() => {
@@ -91,21 +89,20 @@ test('rescind link, when clicked, calls restless to rescind', function(assert) {
 });
 
 function setup(context, callback) {
-  let paper = make('paper');
-  let decision = make('decision', { paper: paper, rescindable: true });
-  let can = FakeCanService.create();
+  const paper = make('paper');
+  const decision = make('decision', { paper: paper, rescindable: true });
+  const can = FakeCanService.create();
+  can.allowPermission('rescind_decision', paper);
   context.set('decision', decision);
   context.set('isEditable', true);
   context.set('mockRestless', false);
-  context.set('can', can);
-  let vals = { context, can, decision, paper };
+  const vals = { context, decision, paper, can };
   if (callback) { callback(vals); }
 
   let template = hbs`{{rescind-decision decision=decision
                                         isEditable=isEditable
-                                        restless=mockRestless
-                                        can=can}}`;
-
+                                        restless=mockRestless}}`;
+  context.register('service:can', can.asService());
   context.render(template);
   return vals;
 }

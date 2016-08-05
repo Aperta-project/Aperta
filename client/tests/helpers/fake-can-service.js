@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Object.extend({
+const FakeCanService = Ember.Object.extend({
   init: function(){
     this._super(...arguments);
     this.allowedPermissions = {};
@@ -28,8 +28,22 @@ export default Ember.Object.extend({
     return this;
   },
 
-  rejectPermission(permission, resource){
+  rejectPermission(permission){
     delete this.allowedPermissions[permission];
     return this;
+  },
+
+  asService() {
+    const allowedPermissions = this.allowedPermissions;
+    return FakeCanService.extend({
+      init() {
+        this._super(...arguments);
+        this.allowedPermissions = allowedPermissions;
+      }
+    });
   }
 });
+
+export default FakeCanService;
+
+

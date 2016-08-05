@@ -2,17 +2,13 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
-import FactoryGuy from 'ember-data-factory-guy';
+import { manualSetup, make } from 'ember-data-factory-guy';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import customAssertions from '../helpers/custom-assertions';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
 import sinon from 'sinon';
-import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import FakeCanService from '../helpers/fake-can-service';
-
-var app;
 
 moduleForComponent(
   'rescind-decision',
@@ -21,81 +17,64 @@ moduleForComponent(
     beforeEach() {
       initTruthHelpers();
       customAssertions();
-      FactoryGuy.setStore(this.container.lookup('store:main'));
-      // Mock out pusher
-      this.container.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-      app = startApp();
-      return TestHelper.setup(app);
-    },
-    afterEach: function() {
-      Ember.run(function() {
-        return TestHelper.teardown();
-      });
-      return Ember.run(app, 'destroy');
+      manualSetup(this.container);
     }
   });
 
 test('is hidden if there is no decision', function(assert) {
-  setup(this, { decision: null });
+  setup(this, function({ context }) {
+    context.set('decision', null);
+  });
   assert.elementFound('.rescind-decision.hidden', 'the bar is hidden');
 });
 
 test('is hidden if the decision is a draft', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, draft: true });
-  setup(this, { decision });
+  setup(this, function({ decision }) {
+    decision.draft = true;
+  });
   assert.elementFound('.rescind-decision.hidden', 'the bar is hidden');
 });
 
 test('is hidden if the decision is rescinded', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, rescinded: true });
-  setup(this, { decision });
+  setup(this, function({ decision }) {
+    decision.rescinded = true;
+  });
   assert.elementFound('.rescind-decision.hidden', 'the bar is hidden');
 });
 
 test('button is missing if the decision is not rescindable', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, rescindable: false });
-  setup(this, { decision });
+  setup(this, function({ decision }) {
+    decision.rescindable = false;
+  });
   assert.elementNotFound('button.rescind-decision-button', 'the button is hidden');
 });
 
 test('button is present if the decision is rescindable', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, completed: true, rescindable: true  });
-  let can = FakeCanService.create();
-  can.allowPermission('rescind_decision', paper);
-  setup(this, { decision, can });
+  setup(this, function({ can, paper }) {
+    can.allowPermission('rescind_decision', paper);
+  });
   assert.elementFound('button.rescind-decision-button', 'the button is present');
 });
 
 test('button is missing if the user does not have permissions', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, rescindable: true });
-  let can = FakeCanService.create();
-  can.rejectPermission('rescind_decision', paper);
-  setup(this, { decision, isEditable: true, can });
+  setup(this);
   assert.elementNotFound('button.rescind-decision-button', 'the button is hidden');
 });
 
 test('rescind link is disabled if not editable', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, completed: true, rescindable : true });
-  let can = FakeCanService.create();
-  can.allowPermission('rescind_decision', paper);
-  setup(this, { decision, isEditable: false, can });
+  setup(this, function({ can, context, paper }) {
+    context.set('isEditable', false);
+    can.allowPermission('rescind_decision', paper);
+  });
   assert.elementFound('.rescind-decision-button:disabled', 'the button is disabled');
 });
 
 test('rescind link, when clicked, calls restless to rescind', function(assert) {
-  let paper = FactoryGuy.make('paper');
-  let decision = FactoryGuy.make('decision', { paper, rescindable: true });
-  decision.rescind = sinon.stub();
-  decision.rescind.returns({ then: () => {} });
-  let can = FakeCanService.create();
-  can.allowPermission('rescind_decision', paper);
-  setup(this, { decision, can });
+  let { decision } = setup(this, function({ decision, can, paper }) {
+    decision.rescind = sinon.stub();
+    decision.rescind.returns({ then: () => {} });
+    can.allowPermission('rescind_decision', paper);
+  });
 
   Ember.run(() => {
     // Ask to rescind.
@@ -111,13 +90,16 @@ test('rescind link, when clicked, calls restless to rescind', function(assert) {
   assert.spyCalled(decision.rescind, 'decision was rescinded');
 });
 
-function setup(context, {decision, isEditable, mockRestless, can}) {
-  isEditable = (isEditable === false ? false : true); // default true, please
-
+function setup(context, callback) {
+  let paper = make('paper');
+  let decision = make('decision', { paper: paper, rescindable: true });
+  let can = FakeCanService.create();
   context.set('decision', decision);
-  context.set('isEditable', isEditable);
-  context.set('mockRestless', mockRestless);
-  context.set('can', can || FakeCanService.create());
+  context.set('isEditable', true);
+  context.set('mockRestless', false);
+  context.set('can', can);
+  let vals = { context, can, decision, paper };
+  if (callback) { callback(vals); }
 
   let template = hbs`{{rescind-decision decision=decision
                                         isEditable=isEditable
@@ -125,4 +107,5 @@ function setup(context, {decision, isEditable, mockRestless, can}) {
                                         can=can}}`;
 
   context.render(template);
+  return vals;
 }

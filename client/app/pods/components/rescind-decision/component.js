@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   decision: null, // pass in an ember-data Decision
   isEditable: true, // pass in false to disable the rescind button
-  can: Ember.inject.service('can'),
 
   beforeRescind: null,
   afterRescind: null,
@@ -19,9 +18,6 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.get('can').can('rescind_decision', this.get('decision.paper')).then((result)=>{
-      this.set('canRescind', result);
-    });
   },
 
   actions: {

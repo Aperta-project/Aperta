@@ -3,7 +3,7 @@
 A {{if decision.terminal 'final'}} decision of <span class="rescind-decision-verdict">{{humanize decision.verdict}}</span> has been registered.
 
 {{#if decision.rescindable}}
-  {{#if canRescind}}
+  {{#if (can 'rescind_decision' decision.paper)}}
     <button disabled={{not isEditable}}
             {{action "confirmRescind"}}
             class="rescind-decision-button">

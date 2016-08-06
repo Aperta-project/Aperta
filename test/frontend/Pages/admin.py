@@ -73,6 +73,7 @@ class AdminPage(AuthenticatedPage):
     self._ud_overlay_lname_field = (By.ID, 'user-detail-last-name')
     self._ud_overlay_reset_pw_btn = (By.CSS_SELECTOR, 'div.reset-password a')
     self._ud_overlay_reset_pw_success_msg = (By.CLASS_NAME, 'success')
+    self._users = (By.CLASS_NAME, 'user-row')
 
   # POM Actions
   def validate_page_elements_styles(self, username):
@@ -325,6 +326,27 @@ class AdminPage(AuthenticatedPage):
       assert cancel_link.text == 'Cancel'
       cancel_link.click()
 
+  def validate_edit_journal(self, username):
+    """
+    Validates the edit function of the statically named_journal
+    :param username: needs to be asuperadm, otherwise a no-op
+    :return: void function
+    """
+    named_journal = 'PLOS Wombat'
+    if username == 'asuperadm':
+      logging.info('Validating editing journal block for Super Admin user')
+      journal_count = self.select_named_journal(named_journal)
+      logging.info(journal_count)
+      self._base_admin_journal_block_edit_icon = (
+          By.XPATH, "//div[@class='ember-view journal-thumbnail'][%s]\
+          /div/div[@class='fa fa-pencil edit-icon']" % str(journal_count))
+      edit_journal = self._get(self._base_admin_journal_block_edit_icon)
+      edit_journal.click()
+      upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
+      assert upload_button.text == 'UPLOAD NEW'
+
+
+
   def validate_search_edit_user(self, username):
     """
     Validates the styling and output of the base admin user search
@@ -412,6 +434,32 @@ class AdminPage(AuthenticatedPage):
         return count + 1
       count += 1
     return False
+
+  def go_to_journal(self, journal_id):
+    """
+    Go to a given journal from the admin page
+    :param journal_id: Journal id
+    :return: None
+    """
+    url = '{0}/{1}'.format(self._driver.current_url, journal_id)
+    self._driver.get(url)
+
+
+  def validate_user_roles(self):
+    """
+    """
+    users = self._gets(self._users)
+    for user in users:
+      username = user.text.split(' ')[0]
+      #print username
+      #import pdb; pdb.set_trace()
+
+
+
+
+
+
+
 
   # TODO: Create method to create journal PLOS Wombat if !exist
 

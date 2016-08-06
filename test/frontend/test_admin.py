@@ -7,7 +7,7 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, \
     creator_login2, creator_login3, creator_login4, creator_login5, reviewer_login, \
     academic_editor_login, handling_editor_login, cover_editor_login, internal_editor_login, \
-    pub_svcs_login
+    pub_svcs_login, review_app_admin
 from Pages.admin import AdminPage
 from frontend.common_test import CommonTest
 
@@ -21,20 +21,7 @@ users = [staff_admin_login,
          super_admin_login,
          ]
 
-all_users = [super_admin_login,
-             staff_admin_login,
-             creator_login1,
-             creator_login2,
-             creator_login3,
-             creator_login4,
-             creator_login5,
-             reviewer_login,
-             academic_editor_login,
-             handling_editor_login,
-             cover_editor_login,
-             internal_editor_login,
-             pub_svcs_login,
-             ]
+users = [review_app_admin]
 
 user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
 
@@ -52,7 +39,7 @@ class ApertaAdminTest(CommonTest):
      Validate Add New Journal
      Validate Edit existing journal
   """
-  def test_validate_components_styles(self):
+  def _test_validate_components_styles(self):
     """
     test_admin: Validate elements and styles for the base Admin page
     :return: void function
@@ -68,7 +55,7 @@ class ApertaAdminTest(CommonTest):
     adm_page.validate_journal_block_display(user_type['user'])
     adm_page.validate_nav_toolbar_elements(user_type)
 
-  def test_validate_user_search(self):
+  def _test_validate_user_search(self):
     """
     test_admin: Validate the function of the base Admin page user search function
     :return: void function
@@ -79,9 +66,31 @@ class ApertaAdminTest(CommonTest):
     dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
-    adm_page.validate_search_edit_user(random.choice(user_search))
+    user = random.choice(user_search)
+    logging.info('Searching user: {0}'.format(user))
+    adm_page.validate_search_edit_user(user)
 
-  def test_validate_add_new_journal(self):
+  def test_validate_user_roles_display(self):
+    """
+    test_admin: Validate the function of the base Admin page user search function
+    :return: void function
+    """
+    logging.info('Validating base admin page user search function')
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard_page = self.login(email=user_type['user'], password=user_type['password'])
+    dashboard_page.click_admin_link()
+    adm_page = AdminPage(self.getDriver())
+    journal_id = adm_page.select_named_journal('PLOS Yeti')
+    adm_page.go_to_journal(journal_id)
+    adm_page.validate_user_roles()
+
+    # /admin/journals/1
+
+    ######
+
+
+  def _test_validate_add_new_journal(self):
     """
     test_admin: Validate the elements, styles and process of adding a new journal.
     This test stops short of creating a new journal
@@ -95,7 +104,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
 
-  def test_validate_edit_journal(self):
+  def _test_validate_edit_journal(self):
     """
     test_admin: Validates the edit journal function, form elements and styles.
     :return: void function

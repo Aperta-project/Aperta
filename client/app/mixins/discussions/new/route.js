@@ -9,7 +9,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
       if (!value){
         return this.handleUnauthorizedRequest(transition);
       }
-    })
+    });
   },
 
   model() {
@@ -22,36 +22,17 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   // TODO: Remove this when we have routeable components.
   // Controllers are currently singletons and this property sticks around
   setupController(controller, model) {
-    let discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
+    const discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
     const discussionModel = this.modelFor(discussionRouteName);
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('replyText', '');
     return this._super(controller, model);
   },
 
-  createReply(replyText, topic) {
-    topic.get('discussionReplies').createRecord({
-      discussionTopic: topic,
-      replier: this.get('currentUser'),
-      body: replyText
-    }).save();
-  },
-
-
   actions: {
     cancel(topic) {
       topic.deleteRecord();
       this.transitionTo(this.get('topicsIndexPath'));
-    },
-
-    save(topic, replyText) {
-      topic.save().then(()=> {
-        if(!Ember.isEmpty(replyText)) {
-          this.createReply(replyText, topic);
-        }
-
-        this.transitionTo(this.get('topicsShowPath'), topic);
-      });
     }
   }
 });

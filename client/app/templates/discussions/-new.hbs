@@ -25,5 +25,13 @@
     {{/expanding-textarea}}
   </div>
 
-  <button class="button-primary button--green" {{action "save" model replyText}}>Create Topic</button>
+  <div class="discussion-post-actions">
+    {{#if topicCreation.isIdle}}
+      <button class="button-primary button--green" {{action "save" model replyText}}>Create Topic</button>
+    {{else}}
+      <button class="button-primary button--disabled">Create Topic</button>
+      {{progress-spinner visible=true
+                         size="small"}}
+    {{/if}}
+  </div>
 </div>

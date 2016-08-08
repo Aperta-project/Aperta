@@ -157,10 +157,12 @@ describe DecisionsController do
 
     let(:decision) { paper.draft_decision }
     let(:task) do
-      dub = double("Task", id: 3, paper: paper)
-      allow(dub).to receive(:after_register)
-      allow(dub).to receive(:notify_requester=)
-      dub
+      double("Task", id: 3, paper: paper).tap do |t|
+        allow(t).to receive(:after_register)
+        allow(t).to receive(:notify_requester=)
+        allow(t).to receive(:answer_for)
+        allow(t).to receive(:send_email)
+      end
     end
 
     before do
@@ -224,6 +226,22 @@ describe DecisionsController do
         expect(Activity).to receive(:create).with hash_including(expected_activity_2)
         expect(Activity).to receive(:create).with hash_including(expected_activity_3)
         do_request
+      end
+
+      describe "email" do
+        let(:to_field) { double }
+        let(:subject_field) { double }
+        let(:email) { Faker::Internet.safe_email }
+        let(:subject) { Faker::Lorem.sentence }
+
+        it "is sent" do
+          expect(to_field).to receive(:value).and_return(email)
+          expect(subject_field).to receive(:value).and_return(subject)
+          expect(task).to receive(:answer_for).with('register_decision_questions--to-field').and_return(to_field)
+          expect(task).to receive(:answer_for).with('register_decision_questions--subject-field').and_return(subject_field)
+          expect(task).to receive(:send_email).with(hash_including(to_field: email, subject_field: subject))
+          do_request
+        end
       end
 
       context "the paper is unsubmitted" do

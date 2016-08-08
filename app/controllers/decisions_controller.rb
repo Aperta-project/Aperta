@@ -38,6 +38,12 @@ class DecisionsController < ApplicationController
     # without having to serialize the task along with the decision
     decision.register!(task)
 
+    to_field = task.answer_for(
+      'register_decision_questions--to-field').try(:value)
+    subject = task.answer_for(
+      'register_decision_questions--subject-field').try(:value)
+    task.send_email(to_field: to_field, subject_field: subject)
+
     Activity.decision_made! decision, user: current_user
 
     render json: decision.paper.decisions,

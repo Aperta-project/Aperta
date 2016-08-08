@@ -13,8 +13,13 @@ class Admin::JournalUsersController < ApplicationController
     journal = Journal.find(journal_user_params[:journal_id])
     requires_user_can(:administer, journal)
     user = User.find(params[:id])
-    user.assign_to!(assigned_to: journal,
-                    role: journal_user_params[:journal_role_name])
+    if journal_user_params[:modify_action] == 'add-role'
+      user.assign_to!(assigned_to: journal,
+                      role: journal_user_params[:journal_role_name])
+    elsif journal_user_params[:modify_action] == 'remove-role'
+      user.resign_from!(assigned_to: journal,
+                        role: journal_user_params[:journal_role_name])
+    end
     respond_with user, serializer: AdminJournalUserSerializer
   end
 
@@ -24,6 +29,7 @@ class Admin::JournalUsersController < ApplicationController
         :last_name,
         :username,
         :journal_id,
-        :journal_role_name)
+        :journal_role_name,
+        :modify_action)
   end
 end

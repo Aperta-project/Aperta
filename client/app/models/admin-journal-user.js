@@ -6,5 +6,6 @@ export default DS.Model.extend({
   username:  DS.attr('string'),
   journalId: DS.attr('number'),
   journalRoleName: DS.attr('string'),
+  modifyAction: DS.attr('string'),
   adminJournalRoles: DS.hasMany('admin-journal-role')
 });

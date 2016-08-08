@@ -11,8 +11,7 @@
     {{rescind-decision
       decision=initialDecision
       isEditable=isEditable
-      beforeRescind=(action "showSpinner")
-      afterRescind=(action "hideSpinner")}}
+      busyWhile=(action busyWhile)}}
   {{else if (eq task.paper.publishingState "unsubmitted")}}
     <div class="alert alert-warning">
       A decision cannot be registered at this time. The manuscript is

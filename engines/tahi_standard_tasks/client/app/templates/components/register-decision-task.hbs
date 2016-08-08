@@ -1,7 +1,7 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if isSavingData}}
+  {{#if busy}}
     <div class="register-decision-saving-cover">
       {{progress-spinner visible=true size="large" center=true}}
     </div>
@@ -10,8 +10,7 @@
   {{rescind-decision
     decision=latestRegisteredDecision
     isEditable=isEditable
-    beforeRescind=(action "showSpinner")
-    afterRescind=(action "hideSpinner")}}
+    busyWhile=(action busyWhile)}}
 
   {{#if (eq paper.publishingState 'unsubmitted')}}
     <div class="alert alert-warning">

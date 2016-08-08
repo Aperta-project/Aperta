@@ -36,8 +36,6 @@ class DecisionsController < ApplicationController
     task = Task.find(params[:task_id])
     # These lines let us update the task/paper in the requester's browser
     # without having to serialize the task along with the decision
-    task.notify_requester = true
-    task.paper.notify_requester = true
     decision.register!(task)
 
     Activity.decision_made! decision, user: current_user

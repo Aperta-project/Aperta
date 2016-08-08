@@ -4,8 +4,7 @@ export default Ember.Component.extend({
   decision: null, // pass in an ember-data Decision
   isEditable: true, // pass in false to disable the rescind button
 
-  beforeRescind: null,
-  afterRescind: null,
+  busyWhile: null,
 
   // States:
   confirmingRescind: false,
@@ -31,11 +30,12 @@ export default Ember.Component.extend({
 
     rescind() {
       this.set('confirmingRescind', false);
-
-      Ember.tryInvoke(this, 'beforeRescind');
-      this.get('decision').rescind().then(() => {
+      const promise = this.get('decision').rescind().then(() => {
         Ember.tryInvoke(this, 'afterRescind');
       });
+      if (typeof this.attrs.busyWhile === 'function') {
+        this.attrs.busyWhile(promise);
+      }
     }
   }
 });

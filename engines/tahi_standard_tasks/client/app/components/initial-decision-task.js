@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import HasBusyStateMixin from 'tahi/mixins/has-busy-state';
 
 const { computed } = Ember;
 const {
@@ -11,9 +12,9 @@ const {
   or
 } = computed;
 
-export default TaskComponent.extend({
+export default TaskComponent.extend(HasBusyStateMixin, {
   restless: Ember.inject.service(),
-  isSavingData: false,
+  busy: false,
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
@@ -31,23 +32,12 @@ export default TaskComponent.extend({
                              'isTaskCompleted'),
   actions: {
     registerDecision() {
-      this.set('isSavingData', true);
-      this.get('initialDecision').register(this.get('task'))
-        .finally(() => {
-          this.set('isSavingData', false);
-      });
+      this.busyWhile(
+        this.get('initialDecision').register(this.get('task')));
     },
 
     setInitialDecisionVerdict(decision) {
       this.get('initialDecision').set('verdict', decision);
-    },
-
-    showSpinner() {
-      this.set('isSavingData', true);
-    },
-
-    hideSpinner() {
-      this.set('isSavingData', false);
-    },
+    }
   }
 });

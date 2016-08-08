@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import HasBusyStateMixin from 'tahi/mixins/has-busy-state';
 
 const { computed } = Ember;
 
-export default TaskComponent.extend(ValidationErrorsMixin, {
+export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   init: function(){
     this._super(...arguments);
     this.get('task.paper.decisions').reload();
@@ -27,6 +28,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   latestDecision: computed.alias('paper.latestDecision'),
   latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
   previousDecisions: computed.alias('paper.previousDecisions'),
+  isLoading: computed.oneWay('isBusy'),
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 
@@ -49,37 +51,20 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     registerDecision() {
       let task = this.get('task');
 
-      this.set('isSavingData', true);
+      this.set('decidedDecision', this.get('latestDecision.verdict'));
 
-      this.get('latestDecision').register(task)
-        .then(() => {
-          this.set('decidedDecision', this.get('latestDecision.verdict'));
-          this.set('task.completed', true);
-          this.get('task').save().then(() => {
-            return this.get('latestDecision').save().then(() => {
-              const tasksPromise = this.get('task.paper.tasks').reload();
-              const decisionsPromise = this.get('task.paper.decisions').reload();
-              return Ember.RSVP.all([tasksPromise, decisionsPromise]).then(() => {
-                this.set('isSavingData', false);
-                this.clearAllValidationErrors();
-              });
-            });
-          })
-          .catch((response) => {
+      this.busyWhile(
+        this.get('latestDecision').register(task)
+          .then(() => {
+            // reload to pick up completed flag on current task and possibly new
+            // Revise Manuscript task
+            return this.get('task.paper.tasks').reload();
+          }).then(() => {
+            this.clearAllValidationErrors();
+          }).catch((response) => {
             this.displayValidationErrorsFromResponse(response.responseJSON);
           })
-          .finally(() => {
-            this.set('isSavingData', false);
-          });
-        });
-    },
-
-    showSpinner() {
-      this.set('isSavingData', true);
-    },
-
-    hideSpinner() {
-      this.set('isSavingData', false);
+      );
     },
 
     templateSelected(template) {

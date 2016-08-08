@@ -98,10 +98,10 @@ function setup(context, callback) {
   context.set('mockRestless', false);
   const vals = { context, decision, paper, can };
   if (callback) { callback(vals); }
-
   let template = hbs`{{rescind-decision decision=decision
                                         isEditable=isEditable
-                                        restless=mockRestless}}`;
+                                        restless=mockRestless
+                                        busyWhile=identity}}`;
   context.register('service:can', can.asService());
   context.render(template);
   return vals;

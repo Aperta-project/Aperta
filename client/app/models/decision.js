@@ -36,12 +36,10 @@ export default DS.Model.extend({
   register(task) {
     const registerPath = `/api/decisions/${this.get('id')}/register`;
     return this.save().then(() => {
-      return this.get('restless')
-        .put(registerPath, {task_id: task.get('id')})
-        .then((data) => {
-        this.get('store').pushPayload(data);
-        return this;
-      });
+      return this.get('restless').put(registerPath, {task_id: task.get('id')});
+    }).then((data) => {
+      this.get('store').pushPayload(data);
+      return this;
     });
   },
 

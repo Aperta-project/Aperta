@@ -11,6 +11,7 @@ export default DS.Model.extend({
   avatarUrl: DS.attr('string'),
   email: DS.attr('string'),
   firstName: DS.attr('string'),
+  lastName: DS.attr('string'),
   fullName: DS.attr('string'),
   siteAdmin: DS.attr('boolean'),
   username: DS.attr('string'),

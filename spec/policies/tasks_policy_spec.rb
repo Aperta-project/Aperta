@@ -11,7 +11,7 @@ describe TasksPolicy do
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "administrator for task"
+    it_behaves_like "administrator for task"
   end
 
   context "paper collaborator" do
@@ -22,14 +22,14 @@ describe TasksPolicy do
       allow(task).to receive(:submission_task?).and_return true
     end
 
-    include_examples "person who can edit but not create a task"
+    it_behaves_like "person who can edit but not create a task"
 
     context "on a non metadata task" do
       before do
         allow(task).to receive(:submission_task?).and_return false
       end
 
-      include_examples "person who cannot see a task"
+      it_behaves_like "person who cannot see a task"
     end
   end
 
@@ -42,12 +42,12 @@ describe TasksPolicy do
       )
     end
 
-    include_examples "administrator for task"
+    it_behaves_like "administrator for task"
   end
 
   context "user no old_role" do
     let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-    include_examples "person who cannot see a task"
+    it_behaves_like "person who cannot see a task"
   end
 
   context "user with old_role on different journal" do
@@ -62,7 +62,7 @@ describe TasksPolicy do
       )
       end
 
-    include_examples "person who cannot see a task"
+    it_behaves_like "person who cannot see a task"
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
@@ -77,7 +77,7 @@ describe TasksPolicy do
       FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    include_examples "administrator for task"
+    it_behaves_like "administrator for task"
   end
 
   context "task participant" do
@@ -87,6 +87,6 @@ describe TasksPolicy do
       task.add_participant user
     end
 
-    include_examples "person who can edit but not create a task"
+    it_behaves_like "person who can edit but not create a task"
   end
 end

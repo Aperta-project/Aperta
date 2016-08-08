@@ -20,13 +20,13 @@ describe QuestionAttachment do
   describe '#download!', vcr: { cassette_name: 'attachment' } do
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
-    include_examples 'attachment#download! raises exception when it fails'
-    include_examples 'attachment#download! stores the file'
-    include_examples 'attachment#download! caches the s3 store_dir'
-    include_examples 'attachment#download! sets the file_hash'
-    include_examples 'attachment#download! sets the status'
-    include_examples 'attachment#download! knows when to keep and remove s3 files'
-    include_examples 'attachment#download! manages resource tokens'
+    it_behaves_like 'attachment#download! raises exception when it fails'
+    it_behaves_like 'attachment#download! stores the file'
+    it_behaves_like 'attachment#download! caches the s3 store_dir'
+    it_behaves_like 'attachment#download! sets the file_hash'
+    it_behaves_like 'attachment#download! sets the status'
+    it_behaves_like 'attachment#download! knows when to keep and remove s3 files'
+    it_behaves_like 'attachment#download! manages resource tokens'
   end
 
   describe '#paper' do

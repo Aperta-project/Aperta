@@ -4,17 +4,27 @@ Rake::Task["db:load"].clear
 
 namespace :db do
 
-  desc "Dumps slightly older prod database from internal network into development environment"
-  task import_prod: :environment do
+  desc <<-DESC
+    Dumps slightly older prod database from internal network into development environment
+
+    This also optionally accepts a variable that will pull in different environments if they are hosted on Hector.
+    For example 'rake db:import_remote[rc]' will import in the rc environment instead,
+    while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
+    'dev_dump.tar.gz' exists in bighector.
+  DESC
+  task :import_remote, [:env] => :environment do |t, args|
     return unless Rails.env.development?
+    env = args[:env]
+    location = "http://bighector.plos.org/aperta/#{env || 'db'}_dump.tar.gz"
+
     with_config do |app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s
-      cmd = "(curl -sH 'Accept-encoding: gzip' 'http://bighector.plos.org/aperta/db_dump.tar.gz' | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)
       if result
-        STDERR.puts("Successfully restored prod database by running \n #{cmd}")
+        STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
       else
-        STDERR.puts("Command failed to restore database")
+        STDERR.puts("Restored #{env || 'prod'} with errors or warnings")
       end
     end
   end

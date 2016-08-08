@@ -2,10 +2,27 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [Version] - {Date}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Fix frontend code to allow for multiple rounds of revision
+- Emails with html-like text ( <, >, etc) will no longer be truncated
+- Display of initial decision infobox after creating paper and click of question mark icon
+
+### Security
+
 ## [1.5.0] - {2016-07-20}
 ### Added
 - Cover Letter tasks are now versioned
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.
+- Abstract included in APEX export.
+- Email staff when a paper is withdrawn
+- Register Decision Task can now select from multiple letter templates.
+  Adds a consistent way to handle variables in letter templates to support
+editability down the line.
 ### Changed
 ### Deprecated
 ### Removed
@@ -13,6 +30,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
 - Attachments ( Figures, SI files, etc. ) will be available without downtime during deploy.
+
 ### Security
 
 ## [1.4.18] - {2016-07-06}
@@ -51,7 +69,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Institutional accounts are not pulled from a static list for easier updating
 ### Deprecated
 ### Removed
-- Notification when an invitation was recended
+- Notification when an invitation was recinded
 ### Fixed
 - Ad-hoc cards on manuscript manager templates can be edited
 - Figures placement improvements

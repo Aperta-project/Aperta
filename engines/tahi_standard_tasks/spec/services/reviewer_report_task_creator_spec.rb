@@ -30,7 +30,7 @@ describe ReviewerReportTaskCreator do
       expect(task).to be_kind_of(TahiStandardTasks::ReviewerReportTask)
     end
 
-    include_examples 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::ReviewerReportTask
+    it_behaves_like 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::ReviewerReportTask
   end
 
   context "when the paper is not configured to use the research reviewer report" do
@@ -43,6 +43,6 @@ describe ReviewerReportTaskCreator do
       expect(task).to be_kind_of(TahiStandardTasks::FrontMatterReviewerReportTask)
     end
 
-    include_examples 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::FrontMatterReviewerReportTask
+    it_behaves_like 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::FrontMatterReviewerReportTask
   end
 end

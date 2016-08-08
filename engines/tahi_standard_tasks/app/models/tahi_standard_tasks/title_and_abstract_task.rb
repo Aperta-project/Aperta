@@ -29,7 +29,7 @@ module TahiStandardTasks
 
     def update_paper
       paper.title = paper_title
-      paper.abstract = paper_abstract
+      paper.abstract = (paper_abstract.blank? ? nil : paper_abstract)
 
       paper.save!
     end

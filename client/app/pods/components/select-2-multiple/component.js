@@ -7,3 +7,4 @@ export default Select2Component.extend({
     this.$().select2('val', (this.get('selectedData') || []).mapBy('id'));
   })
 });
+

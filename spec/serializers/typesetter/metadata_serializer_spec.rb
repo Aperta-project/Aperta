@@ -118,6 +118,11 @@ describe Typesetter::MetadataSerializer do
     expect(output[:paper_title]).to eq('here is the title')
   end
 
+  it 'has abstract' do
+    paper.abstract = 'here is the abstract'
+    expect(output[:paper_abstract]).to eq('here is the abstract')
+  end
+
   describe 'publication_date' do
     let(:our_task) do
       paper.tasks.find_by(
@@ -249,7 +254,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   context 'academic_editors' do
-    include_examples(
+    it_behaves_like(
       'serializes :has_many property',
       property: :academic_editors,
       factory: :user,
@@ -259,7 +264,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   context 'competing_interests' do
-    include_examples(
+    it_behaves_like(
       'serializes :has_one paper task',
       factory: :competing_interests_task,
       serializer: Typesetter::CompetingInterestsSerializer,
@@ -268,7 +273,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   context 'data_availability' do
-    include_examples(
+    it_behaves_like(
       'serializes :has_one paper task',
       factory: :data_availability_task,
       serializer: Typesetter::DataAvailabilitySerializer,
@@ -277,7 +282,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   context 'financial_disclosure' do
-    include_examples(
+    it_behaves_like(
       'serializes :has_one paper task',
       factory: :financial_disclosure_task,
       serializer: Typesetter::FinancialDisclosureSerializer,
@@ -286,7 +291,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   context 'authors' do
-    include_examples(
+    it_behaves_like(
       'serializes :has_many property',
       property: :author_list_items,
       factory: :author,
@@ -296,7 +301,7 @@ describe Typesetter::MetadataSerializer do
   end
 
   context 'supporting_information_files' do
-    include_examples(
+    it_behaves_like(
       'serializes :has_many property',
       property: :supporting_information_files,
       message_chain: 'supporting_information_files.publishable',

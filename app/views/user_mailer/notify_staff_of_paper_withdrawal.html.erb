@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="greeting">
+    <p class="message">
+      This manuscript has been withdrawn by <%= @withdrawal.withdrawn_by_user.full_name %>
+    </p>
+  </div>
+  <hr>
+  <div class="paper-info">
+    <p>
+      <strong>MS #:</strong> <%= @paper.doi %><br/>
+      <strong>Title:</strong> <%= @paper.display_title(sanitized: false) %><br />
+
+      <% if @authors.length == 1 %>
+        <strong>Author:</strong> <%= @authors.first.full_name %> (<%= @authors.first.email %>)<br />
+      <% else %>
+        <strong>Authors:</strong><br />
+        <% @authors.each do |author| %>
+          &nbsp;&nbsp;&nbsp;&nbsp;<%= author.full_name %> (<%= author.email %>)<br />
+        <% end %>
+      <% end %>
+    </p>
+
+    <p class="message">
+      <strong>With the explanation</strong>:<br />
+      <blockquote>
+        <% if @withdrawal.reason.present? %>
+          <%= simple_format h(@withdrawal.reason) %>
+          </p>
+        <% else %>
+          <em>No withdrawl reason was provided</em>
+        <% end %>
+      </blockquote>
+    </p>
+
+    <% if @paper.handling_editors.length == 0 %>
+      <strong>Handling Editor:</strong> <em>No assigned handling editors</em><br />
+    <% elsif @paper.handling_editors.length == 1 %>
+      <strong>Handling Editor:</strong> <%= @paper.handling_editors.first.full_name %> (<%= @paper.handling_editors.first.email %>)<br />
+    <% else %>
+      <strong>Handling Editors:</strong><br />
+      <% @paper.handling_editors.each do |editor| %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= editor.full_name %> (<%= editor.email %>)<br />
+      <% end %>
+      <br />
+    <% end %>
+
+    <% if @paper.cover_editors.length == 0 %>
+      <strong>Cover Editor:</strong> <em>No assigned cover editors</em><br />
+    <% elsif @paper.cover_editors.length == 1 %>
+      <strong>Cover Editor:</strong> <%= @paper.cover_editors.first.full_name %> (<%= @paper.cover_editors.first.email %>)<br />
+    <% else %>
+      <strong>Cover Editors:</strong><br />
+      <% @paper.cover_editors.each do |editor| %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= editor.full_name %> (<%= editor.email %>)<br />
+      <% end %>
+      <br />
+    <% end %>
+
+    <% if @paper.academic_editors.length == 0 %>
+      <strong>Academic Editor:</strong> <em>No assigned academic editors</em><br />
+    <% elsif @paper.academic_editors.length == 1 %>
+      <strong>Academic Editor:</strong> <%= @paper.academic_editors.first.full_name %> (<%= @paper.academic_editors.first.email %>)<br />
+    <% else %>
+      <strong>Academic Editors:</strong><br />
+      <% @paper.academic_editors.each do |editor| %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= editor.full_name %> (<%= editor.email %>)<br />
+      <% end %>
+      <br />
+    <% end %>
+
+    <% if @paper.reviewers.length == 0 %>
+      <strong>Reviewer:</strong> <em>No assigned reviewers</em><br />
+    <% elsif @paper.reviewers.length == 1 %>
+      <strong>Reviewer:</strong> <%= @paper.reviewers.first.full_name %> (<%= @paper.reviewers.first.email %>)<br />
+    <% else %>
+      <strong>Reviewers:</strong><br />
+      <% @paper.reviewers.each do |reviewer| %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= reviewer.full_name %> (<%= reviewer.email %>)<br />
+      <% end %>
+      <br />
+    <% end %>
+
+    <div>
+      <p>
+        You can view the withdrawn manuscript by clicking <%= link_to "here", client_paper_url(@paper) %>.
+      </p>
+    </div>
+  </div>
+</div>

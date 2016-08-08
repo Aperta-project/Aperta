@@ -172,7 +172,8 @@ class AuthorsTask(BaseTask):
     assert 'Add Individual Author' in add_ind_link.text, add_ind_link.text
     add_grp_link = self._get(self._add_group_author_link)
     assert 'Add Group Author' in add_grp_link.text, add_grp_link.text
-    # Close the menu back up after validating elements
+    completion_btn = self._get(self._completion_button)
+    self._actions.move_to_element(completion_btn).perform()
     add_new_author_btn.click()
     self.validate_individual_author_form_styles(add_new_author_btn, add_ind_link)
     self.validate_group_author_form_styles(add_new_author_btn, add_grp_link)
@@ -306,6 +307,8 @@ class AuthorsTask(BaseTask):
     assert auth_criteria_link.get_attribute('href') == url
     assert agree2submit_lbl.text == 'All contributing authors are aware of and agree to the ' \
                                     'submission of this manuscript.', agree2submit_lbl.text
+    govt_div = self._get(self._govt_employee_div)
+    self._actions.move_to_element(govt_div).perform()
     add_author_cancel_lnk.click()
 
   def validate_group_author_form_styles(self, add_new_author_btn, add_grp_link):
@@ -442,6 +445,8 @@ class AuthorsTask(BaseTask):
 
     govt_choice = random.choice(['Yes', 'No'])
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
+    govt_div = self._get(self._govt_employee_div)
+    self._actions.move_to_element(govt_div).perform()
     if govt_choice == 'Yes':
       govt_yes.click()
     else:
@@ -487,6 +492,8 @@ class AuthorsTask(BaseTask):
 
     govt_choice = random.choice(['Yes', 'No'])
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
+    govt_div = self._get(self._govt_employee_div)
+    self._actions.move_to_element(govt_div).perform()
     if govt_choice == 'Yes':
       govt_yes.click()
     else:

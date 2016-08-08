@@ -24,6 +24,79 @@ class RegisterDecisionCard(BaseCard):
     self._register_decision_button = (By.CLASS_NAME, 'send-email-action')
 
    # POM Actions
+  def validate_styles(self):
+    """
+    Validate the elements and styles of the Register Decision card
+    :return: void function
+    """
+    title = self._get(self._overlay_header_title)
+    assert title.text == 'Register Decision', title.text
+    self.validate_application_title_style(title)
+    expected_labels = ('Accept', 'Reject', 'Major Revision', 'Minor Revision')
+    decision_labels = self._gets(self._decision_labels)
+    for label in decision_labels:
+      assert label.text in decision_labels, label.text
+
+
+    title_label = self._get(self._title_label)
+    abstract_label = self._get(self._abstract_label)
+    assert title_label.text == 'Title', title_label.text
+    assert abstract_label.text == 'Abstract', abstract_label.text
+    title_input = self._get(self._title_input)
+    abstract_input = self._get(self._abstract_input)
+    self.validate_application_h3_style(title_label)
+    self.validate_application_h3_style(abstract_label)
+    title_textarea = self._get(self._title_textarea)
+    title_textarea.find_element(*self._textarea_bold_icon)
+    title_textarea.find_element(*self._textarea_italic_icon)
+    title_textarea.find_element(*self._textarea_superscript_icon)
+    title_textarea.find_element(*self._textarea_subscript_icon)
+    self.set_timeout(3)
+    try:
+      self._get(self._active_title_textarea)
+    except ElementDoesNotExistAssertionError:
+      pass
+    finally:
+      self.restore_timeout()
+    title_input.click()
+    time.sleep(1)
+    self.set_timeout(4)
+    try:
+      self._get(self._active_title_textarea)
+    except ElementDoesNotExistAssertionError:
+      logging.warning('Programmatic isolation of this element in active form often fails due to '
+                      'a kind of Heisenberg uncertainty principle that we click into the field '
+                      'to set it active, but on trying to isolate the element in the DOM seems to '
+                      'remove focus from the field, thus removing the --active part of the '
+                      'locator. This needs to be validated manually.')
+    finally:
+      self.restore_timeout()
+    abstract_textarea = self._get(self._abstract_textarea)
+    abstract_textarea.find_element(*self._textarea_bold_icon)
+    abstract_textarea.find_element(*self._textarea_italic_icon)
+    abstract_textarea.find_element(*self._textarea_superscript_icon)
+    abstract_textarea.find_element(*self._textarea_subscript_icon)
+    self.set_timeout(4)
+    try:
+      self._get(self._active_abstract_textarea)
+    except ElementDoesNotExistAssertionError:
+      pass
+    finally:
+      self.restore_timeout()
+    abstract_input.click()
+    time.sleep(1)
+    self.set_timeout(4)
+    try:
+      self._get(self._active_abstract_textarea)
+    except ElementDoesNotExistAssertionError:
+      logging.warning('Programmatic isolation of this element in active form often fails due to '
+                      'a kind of Heisenberg uncertainty principle that we click into the field '
+                      'to set it active, but on trying to isolate the element in the DOM seems to '
+                      'remove focus from the field, thus removing the --active part of the '
+                      'locator. This needs to be validated manually.')
+    finally:
+      self.restore_timeout()
+
   def register_decision(self, decision):
     """
     Register decision on publishing manuscript

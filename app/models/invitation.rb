@@ -8,6 +8,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
+  has_many :attachments, as: :owner, class_name: 'InvitationAttachment'
   before_create :assign_to_latest_decision
 
   scope :where_email_matches,

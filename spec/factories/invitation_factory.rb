@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :invitation do
     invitee_role 'Some Role'
+    email "email@example.com"
     token { SecureRandom.hex(10) }
     paper { create(:paper) }
     task { create(:invitable_task, paper: paper) }

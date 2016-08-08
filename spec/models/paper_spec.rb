@@ -523,6 +523,7 @@ describe Paper do
 
     describe '#submit!' do
       subject { paper.submit! user }
+
       it_behaves_like "transitions save state_updated_at",
         submit: proc { paper.submit!(paper.creator) }
       it_behaves_like 'creates a new draft decision'

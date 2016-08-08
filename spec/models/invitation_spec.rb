@@ -251,4 +251,61 @@ describe Invitation do
       end
     end
   end
+
+  # Explanation of terminology: https://tools.ietf.org/html/rfc2822#section-3.4
+  describe "#email=" do
+    let(:invitation) { build :invitation }
+    let(:addr_spec) { "squirtle@gmail.com" }
+
+    context "the email is a normal addr-spec" do
+      it "sets the email as-is" do
+        invitation.email = addr_spec
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is a angle-addr" do
+      let(:angle_addr) { "Squirtle Pokémon <#{addr_spec}>" }
+
+      it "coerces the email into addr-spec" do
+        invitation.email = angle_addr
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is surrounded by whitespace" do
+      let(:spacey_email) { " #{addr_spec} " }
+
+      it "strips surrounding whitespace" do
+        invitation.email = spacey_email
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is a angle-addr with whitespace" do
+      let(:angle_addr) { "Squirtle Pokémon < #{addr_spec}  >" }
+
+      it "coerces the email into addr-spec and removes whitespace" do
+        invitation.email = angle_addr
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+  end
+
+  describe "email validation" do
+    let(:good_email) { "squirtle@pokemon.com" }
+    let(:bad_email) { "squirtlepokemon.com" }
+    let(:invitation) { build :invitation }
+
+    it "allows any string with an at-sign" do
+      expect do
+        invitation.update!(email: good_email)
+      end.to change { invitation.email }.to good_email
+    end
+    it "does not allow strings without an at-sign" do
+      expect do
+        invitation.update!(email: bad_email)
+      end.to raise_exception(ActiveRecord::RecordInvalid)
+    end
+  end
 end

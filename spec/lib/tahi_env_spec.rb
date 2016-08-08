@@ -21,11 +21,7 @@ describe TahiEnv do
       PUSHER_SSL_VERIFY: 'true',
       FROM_EMAIL: 'no-reply@tahi-project.org',
       FTP_ENABLED: 'false',
-      FTP_HOST: 'ftp://foo.bar',
-      FTP_USER: 'the-oracle',
-      FTP_PASSWORD: 'tiny-green-characters',
-      FTP_PORT: '21',
-      FTP_DIR: 'where/the/wild/things/are',
+      FTP_URL: 'ftp://the-oracle:tiny-green-characters@foo.bar:21/where/the/wild/things/are',
       IHAT_URL: 'http://ihat.tahi-project.com',
       NED_CAS_APP_ID: 'ned123',
       NED_CAS_APP_PASSWORD: 'password',
@@ -67,6 +63,10 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'PUSHER_SOCKET_URL'
   it_behaves_like 'optional env var', var: 'REPORTING_EMAIL'
 
+  # Apex FTP
+  include_examples 'required boolean env var', var: 'APEX_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'APEX_FTP_URL', dependent_key: 'APEX_FTP_ENABLED'
+
   # Amazon S3
   it_behaves_like 'required env var', var: 'S3_URL'
   it_behaves_like 'required env var', var: 'S3_BUCKET'
@@ -78,6 +78,10 @@ describe TahiEnv do
   it_behaves_like 'optional boolean env var', var: 'BASIC_AUTH_REQUIRED', default_value: false
   it_behaves_like 'dependent required env var', var: 'BASIC_HTTP_USERNAME', dependent_key: 'BASIC_AUTH_REQUIRED'
   it_behaves_like 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
+
+  # Billing FTP
+  include_examples 'required boolean env var', var: 'BILLING_FTP_ENABLED'
+  include_examples 'dependent required env var', var: 'BILLING_FTP_URL', dependent_key: 'BILLING_FTP_ENABLED'
 
   # Bugsnag
   it_behaves_like 'optional env var', var: 'BUGSNAG_API_KEY'
@@ -101,14 +105,6 @@ describe TahiEnv do
   # Event Stream
   it_behaves_like 'required env var', var: 'EVENT_STREAM_WS_HOST'
   it_behaves_like 'required env var', var: 'EVENT_STREAM_WS_PORT'
-
-  # FTP
-  it_behaves_like 'required boolean env var', var: 'FTP_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'FTP_DIR', dependent_key: 'FTP_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'FTP_HOST', dependent_key: 'FTP_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'FTP_PASSWORD', dependent_key: 'FTP_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'FTP_PORT', dependent_key: 'FTP_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'FTP_USER', dependent_key: 'FTP_ENABLED'
 
   # Heroku
   it_behaves_like 'optional env var', var: 'HEROKU_APP_NAME'

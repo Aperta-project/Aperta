@@ -61,11 +61,7 @@ FactoryGirl.define do
     end
 
     trait(:accepted) do
-      after(:create) do |paper|
-        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
-        paper.submit! paper.creator
-        paper.accept!
-      end
+      publishing_state "accepted"
     end
 
     # TODO: find all cases where this trait is used and change to trait of 'submitted'

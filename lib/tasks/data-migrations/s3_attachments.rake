@@ -167,6 +167,14 @@ namespace :data do
           sleep 3
         end
       end
+
+      desc <<-DESC.strip_heredoc
+        Retries failed migrations of S3 attachments.
+      DESC
+      task remigrate_failed: :environment do
+        ::AttachmentUploader.include S3Migration::UploaderOverrides
+        S3Migration.failed.all.map(&:remigrate!)
+      end
     end
   end
 end

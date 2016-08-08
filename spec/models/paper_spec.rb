@@ -417,7 +417,7 @@ describe Paper do
 
   context 'State Machine' do
     describe '#initial_submit' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         initial_submit: proc { paper.initial_submit! }
 
       it 'transitions to initially_submitted' do
@@ -459,7 +459,7 @@ describe Paper do
     end
 
     describe '#submit!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         submit: proc { paper.submit!(paper.creator) }
 
       it 'does not transition when metadata tasks are incomplete' do
@@ -564,7 +564,7 @@ describe Paper do
     describe '#withdraw!' do
       let(:withdrawn_by_user) { FactoryGirl.build_stubbed(:user) }
 
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         withdraw: proc { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
 
       let(:paper) do
@@ -606,7 +606,7 @@ describe Paper do
     end
 
     describe '#invite_full_submission' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         invite_full_submission: proc { paper.invite_full_submission! }
 
       let(:paper) do
@@ -633,7 +633,7 @@ describe Paper do
     end
 
     describe '#reactivate!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         reactivate: proc { paper.reactivate! }
 
       let(:paper) do
@@ -673,7 +673,7 @@ describe Paper do
     end
 
     describe '#minor_check!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         minor_check: proc { paper.minor_check! }
 
       let(:paper) do
@@ -695,7 +695,7 @@ describe Paper do
     end
 
     describe '#submit_minor_check!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
 
       let(:paper) do
@@ -729,7 +729,7 @@ describe Paper do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
-        include_examples "transitions save state_updated_at",
+        it_behaves_like "transitions save state_updated_at",
           reject: proc { paper.reject! }
 
         it 'transitions to rejected state from submitted' do
@@ -755,7 +755,7 @@ describe Paper do
           )
         end
 
-        include_examples "transitions save state_updated_at",
+        it_behaves_like "transitions save state_updated_at",
           reject: proc { paper.reject! }
 
         it 'transitions to rejected state from initially_submitted' do
@@ -766,7 +766,7 @@ describe Paper do
     end
 
     describe '#publish!' do
-      include_examples "transitions save state_updated_at",
+      it_behaves_like "transitions save state_updated_at",
         publish: proc { paper.publish! }
 
       let(:paper) do

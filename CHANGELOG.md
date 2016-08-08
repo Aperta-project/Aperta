@@ -4,6 +4,19 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Version] - {Date}
 ### Added
+- Daily export of billing log
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Fix frontend code to allow for multiple rounds of revision
+- Emails with html-like text ( <, >, etc) will no longer be truncated
+- Display of initial decision infobox after creating paper and click of question mark icon
+
+### Security
+
+## [1.5.0] - {2016-07-20}
+### Added
 - Cover Letter tasks are now versioned
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.
 - Abstract included in APEX export.
@@ -18,10 +31,8 @@ editability down the line.
 ### Fixed
 - Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
-- Fix frontend code to allow for multiple rounds of revision
-- Emails with html-like text ( <, >, etc) will no longer be truncated
-- Display of initial decision infobox after creating paper and click of question mark icon
 - Attachments ( Figures, SI files, etc. ) will be available without downtime during deploy.
+
 ### Security
 
 ## [1.4.18] - {2016-07-06}

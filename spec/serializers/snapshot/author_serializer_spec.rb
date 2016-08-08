@@ -44,6 +44,6 @@ describe Snapshot::AuthorSerializer do
       )
     end
 
-    include_examples "snapshot serializes related nested questions", resource: :author
+    it_behaves_like "snapshot serializes related nested questions", resource: :author
   end
 end

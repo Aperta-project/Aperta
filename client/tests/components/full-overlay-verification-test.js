@@ -40,13 +40,6 @@ test('the cancel button', function(assert) {
   this.$('.full-overlay-verification-cancel').click();
 });
 
-test('the cancel button when no cancel action is set', function(assert) {
-  setup(this, {});
-
-  this.$('.full-overlay-verification-cancel').click();
-  assert.ok(true, 'Nothing happens');
-});
-
 test('the escape key cancels', function(assert) {
   assert.expect(1);
   setup(this, {
@@ -80,9 +73,9 @@ test('the confirm button', function(assert) {
 function setup(context, {question, cancel, cancelText, confirm, confirmText}) {
   question = question || 'Are you sure?';
   let template = hbs`{{#full-overlay-verification cancelText=cancelText
-                                                  cancel=cancel
+                                                  cancel=(action cancel)
                                                   confirmText=confirmText
-                                                  confirm=confirm}}
+                                                  confirm=(action confirm)}}
                        {{question}}
                      {{/full-overlay-verification}}`;
   context.set('question', question);

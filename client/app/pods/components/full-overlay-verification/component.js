@@ -34,20 +34,6 @@ export default Ember.Component.extend({
 
   tearDownEscapeListener: Ember.on('willDestroyElement', function() {
     Ember.$('body').off(this.eventName());
-  }),
+  })
 
-  actions: {
-    // Is this even how this works?
-    cancel: function() {
-      let cancel = this.get('cancel');
-      if (!cancel) { return; }
-      cancel();
-    },
-
-    confirm: function() {
-      let confirm = this.get('confirm');
-      if (!confirm) { return; }
-      confirm();
-    }
-  }
 });

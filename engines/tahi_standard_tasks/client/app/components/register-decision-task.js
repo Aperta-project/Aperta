@@ -40,9 +40,9 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
 
-  triggerSave: Ember.observer('latestDecision.letter', function() {
+  onDecisionLetterUpdate: Ember.observer('latestDecision.letter', function() {
     let latestDecision = this.get('latestDecision');
-    if (latestDecision) {
+    if (latestDecision && latestDecision.get('hasDirtyAttributes')) {
       Ember.run.debounce(latestDecision, latestDecision.save, 500);
     }
   }),

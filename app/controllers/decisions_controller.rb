@@ -55,7 +55,6 @@ class DecisionsController < ApplicationController
     requires_user_can(:rescind_decision, decision.paper)
     assert decision.rescindable?, "That decision is not rescindable"
 
-    decision.paper.notify_requester = true
     decision.rescind!
 
     render json: decision.paper.decisions,

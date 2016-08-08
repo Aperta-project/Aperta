@@ -10,9 +10,9 @@ class Admin::JournalUsersController < ApplicationController
   end
 
   def update # Updates role
-    requires_user_can(:administer, Journal)
-    user = User.find(params[:id])
     journal = Journal.find(journal_user_params[:journal_id])
+    requires_user_can(:administer, journal)
+    user = User.find(params[:id])
     user.assign_to!(assigned_to: journal,
                     role: journal_user_params[:journal_role_name])
     respond_with user, serializer: AdminJournalUserSerializer

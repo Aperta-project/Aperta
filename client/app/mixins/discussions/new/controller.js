@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 import { task } from 'ember-concurrency';
+import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
-const { isEmpty } = Ember;
+const { Mixin, isEmpty } = Ember;
 
-export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
+export default Mixin.create(DiscussionsRoutePathsMixin, {
   replyText: '',
 
   topicCreation: task(function * (topic, replyText) {
@@ -26,6 +26,11 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   actions: {
     save(topic, replyText) {
+      if(isEmpty(this.get('model.title'))) {
+        this.set('validationErrors.title', 'This field is required');
+        return;
+      }
+
       this.get('topicCreation').perform(topic, replyText);
     }
   }

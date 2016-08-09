@@ -26,6 +26,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     const discussionModel = this.modelFor(discussionRouteName);
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('replyText', '');
+    controller.set('validationErrors', {});
     return this._super(controller, model);
   },
 

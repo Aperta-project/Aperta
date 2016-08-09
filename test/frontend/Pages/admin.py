@@ -445,18 +445,6 @@ class AdminPage(AuthenticatedPage):
     self._driver.get(url)
 
 
-  def validate_user_roles(self):
-    """
-    """
-    users = self._gets(self._users)
-    for user in users:
-      username = user.text.split(' ')[0]
-      #print username
-      #import pdb; pdb.set_trace()
-
-
-
-
 
 
 

@@ -50,13 +50,13 @@ class JournalAdminPage(AdminPage):
                                                    'tr.user-row td div div ul li.select2-search-field input')
     self._journal_admin_user_row_role_search_result_item = (By. CSS_SELECTOR, 'ul.select2-results li div')
 
-    # self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
-    # self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
-    # self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
-    # self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header')
-    # self._journal_admin_roles_permission_heading = (By.CSS_SELECTOR,
-    #                                                 'div.admin-roles div.admin-roles-header + div.admin-roles-header')
-    # self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
+    self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
+    self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
+    self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
+    self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header')
+    self._journal_admin_roles_permission_heading = (By.CSS_SELECTOR,
+                                                     'div.admin-roles div.admin-roles-header + div.admin-roles-header')
+    self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
 
     self._journal_admin_avail_task_types_div = (By.XPATH, '//div[@class="admin-section"][1]')
     self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
@@ -176,6 +176,17 @@ class JournalAdminPage(AdminPage):
     delete_role = self._get(self._journal_admin_user_row_role_delete)
     delete_role.click()
 
+
+
+  def validate_user_roles(self):
+    """
+    """
+    users = self._gets(self._users)
+    for user in users:
+      username = user.text.split(' ')[0]
+      #print username
+      #import pdb; pdb.set_trace()
+
   def validate_roles_section(self):
     """
     Validate the elements and function of the Roles section of the journal admin page
@@ -185,16 +196,60 @@ class JournalAdminPage(AdminPage):
     self._actions.move_to_element(roles_title).perform()
     self.validate_application_h2_style(roles_title)
     self._get(self._journal_admin_roles_add_new_role_btn)
-    self._get(self._journal_admin_roles_role_table)
-    role_rows = self._gets(self._journal_admin_roles_role_listing_row)
+    #self._get(self._journal_admin_roles_role_table)
+    ##role_rows = self._gets(self._journal_admin_roles_role_listing_row)
+    role_rows = self._gets(self._journal_admin_user_search_results_row)
+    # default time
+    self.set_timeout(3)
+    for row in role_rows:
+      logging.info(row.text)
+      row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
+      #print len(row_elements)
+      username, first_name, last_name, roles = row_elements
+      username = username.text
+      print username
+      role_elements = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
+      role_elements = [x.text for x in role_elements]
+      # search for roles in DB
+      db_journals = PgSQL().query('SELECT journals.name,journals.description,count(papers.id)'
+                                        'FROM journals LEFT JOIN papers '
+                                        'ON journals.id = papers.journal_id '
+                                        'GROUP BY journals.id;')
+      uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+      journals = []
+      journals.append(PgSQL().query('SELECT assigned_to_id '
+                                          'FROM assignments '
+                                          'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
+                                          (uid,))[0][0])
+
+
+      print "==="
+    self.restore_timeout()
+
+
+
+
+  def _validate_roles_section(self):
+    """
+    Validate the elements and function of the Roles section of the journal admin page
+    :return: void function
+    """
+    roles_title = self._get(self._journal_admin_roles_title)
+    self._actions.move_to_element(roles_title).perform()
+    self.validate_application_h2_style(roles_title)
+    self._get(self._journal_admin_roles_add_new_role_btn)
+    #self._get(self._journal_admin_roles_role_table)
+    ##role_rows = self._gets(self._journal_admin_roles_role_listing_row)
+    role_rows = self._gets(self._journal_admin_user_search_results_row)
+
     count = 1
     for row in role_rows:
       logging.info(row.text)
-      self._role_edit_icon = \
-          (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{0}]\
-              /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
-      self._get(self._role_edit_icon)
+      #self._role_edit_icon = \
+      #      (By.XPATH,
+      #       "//div[@class='ember-view admin-role not-editing'][{0}]\
+      #          /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
+      #self._get(self._role_edit_icon)
       self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{0}]\
           /div/span".format(count))
       role_name = self._get(self._role_name)

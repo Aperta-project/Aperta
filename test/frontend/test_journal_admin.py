@@ -5,7 +5,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
+from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, review_app_admin
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
 from frontend.common_test import CommonTest
@@ -38,7 +38,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def test_validate_journal_admin_components_styles(self):
+  def _test_validate_journal_admin_components_styles(self):
     """
     test_journal_admin: Validate toolbar presentation for journal admin
     Validates the presence of the following elements:
@@ -57,7 +57,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_nav_toolbar_elements(user_type)
 
-  def test_validate_journal_admin_user_search_display_function(self):
+  def _test_validate_journal_admin_user_search_display_function(self):
     """
     test_journal_admin: Validate the function of user search in the journal_admin page for a random
       journal
@@ -77,7 +77,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def rest_validate_journal_admin_roles_display_function(self):
+  def test_validate_journal_admin_roles_display_function(self):
     """
     NOTA BENE: This section has been temporarily suppressed in the interface per APERTA-6134
     test_journal_admin: validate the display of the admin user role display section
@@ -87,9 +87,11 @@ class ApertaJournalAdminTest(CommonTest):
       permission display per role
     """
     logging.info('Validating journal role display and function')
-    user_type = random.choice(users)
+    #user_type = random.choice(users)
+    user_type = review_app_admin
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    #dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['user'], password=user_type['password'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -98,7 +100,8 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_roles_section()
 
-  def test_validate_task_types_display_function(self):
+
+  def _test_validate_task_types_display_function(self):
     """
     test_journal_admin: validate the display of the journal admin task type section and overlay
     Validates the presence of the following elements:
@@ -127,7 +130,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_task_types_section(journal)
 
-  def test_validate_mmt_display_function(self):
+  def _test_validate_mmt_display_function(self):
     """
     test_journal_admin: validate the mmt section display and functions of adding/editing an MMT
     Validates the presence of the following elements:
@@ -151,7 +154,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
 
-  def test_validate_add_delete_mmt_function(self):
+  def _test_validate_add_delete_mmt_function(self):
     """
     test_journal_admin: validate addition and deletion of an MMT from the journal_admin page.
     Validates Add new Template
@@ -175,7 +178,7 @@ class ApertaJournalAdminTest(CommonTest):
     time.sleep(1)
     ja_page.delete_new_mmt_template()
 
-  def test_validate_style_settings_display_function(self):
+  def _test_validate_style_settings_display_function(self):
     """
     test_journal_admin: Validate styling & functions of  journal admin page style settings section
     Validates the presence of the following elements:

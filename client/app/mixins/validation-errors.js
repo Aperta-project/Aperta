@@ -232,10 +232,11 @@ export default Mixin.create({
 
   validationErrorsPresent() {
     let errorFound = false;
-    const spelunk = function(obj) {
+
+    const deepSearchForErrorMessage = function(obj) {
       Object.keys(obj).forEach(function(key) {
         if(typeof obj[key] === 'object') {
-          spelunk(obj[key]);
+          deepSearchForErrorMessage(obj[key]);
           return;
         }
 
@@ -245,7 +246,7 @@ export default Mixin.create({
       });
     };
 
-    spelunk(this.get('validationErrors'));
+    deepSearchForErrorMessage(this.get('validationErrors'));
 
     return errorFound;
   },

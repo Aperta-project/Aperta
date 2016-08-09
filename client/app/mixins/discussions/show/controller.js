@@ -16,7 +16,11 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   actions: {
     saveTopic() {
-      this.get('model').save();
+      const model = this.get('model');
+
+      model.save().catch(()=> {
+        model.rollback();
+      });
     },
 
     postReply(body) {

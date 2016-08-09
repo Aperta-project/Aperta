@@ -20,7 +20,12 @@ module TahiStandardTasks
       complete!
     end
 
-    def send_email(to_field:, subject_field:)
+    def send_email
+      to_field = answer_for(
+        'register_decision_questions--to-field').try(:value)
+      subject_field = answer_for(
+        'register_decision_questions--subject-field').try(:value)
+
       RegisterDecisionMailer.delay.notify_author_email(
         to_field: EmailService.new(email: to_field).valid_email_or_nil,
         subject_field: subject_field,

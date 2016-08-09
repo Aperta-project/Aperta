@@ -91,19 +91,24 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe "#send_email" do
-    let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
     let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper, major_version: 0, minor_version: 0) }
+    let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
+    let(:subject_field) { double(value: Faker::Lorem.sentence) }
+    let(:to_field) { double(value: Faker::Internet.safe_email) }
+
+    before do
+      expect(task).to receive(:answer_for).with('register_decision_questions--to-field').and_return(to_field)
+      expect(task).to receive(:answer_for).with('register_decision_questions--subject-field').and_return(subject_field)
+    end
 
     it "will email using last completed decision" do
-      author_email = paper.creator.email
-      subject = 'Your paper'
       expect(TahiStandardTasks::RegisterDecisionMailer)
         .to receive_message_chain(:delay, :notify_author_email)
         .with(
           decision_id: decision_one,
-          to_field: author_email,
-          subject_field: subject)
-      task.send_email(to_field: author_email, subject_field: subject)
+          to_field: to_field.value,
+          subject_field: subject_field.value)
+      task.send_email
     end
   end
 end

@@ -32,7 +32,7 @@ editability down the line.
 - Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
 - Attachments ( Figures, SI files, etc. ) will be available without downtime during deploy.
-
+- Fixed comparing versions to highlight sentence changes instead of entire document
 ### Security
 
 ## [1.4.18] - {2016-07-06}

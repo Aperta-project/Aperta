@@ -52,13 +52,27 @@ test("forceValidHTML adds pairs of elements to `tokens`", function(assert) {
 );
 
 test("unForceValidHTML replaces fake- elts with real ones", function(assert) {
-  var fakes = "<fake-open-p></fake-open-p>abc<fake-close-p></fake-close-p>";
+  var fakes = "<fake-open-p></fake-open-p>abc<fake-close-p></fake-close-p><fake-open-p></fake-open-p>def<fake-close-p></fake-close-p>";
 
   assert.equal(
     this.component.unForceValidHTML(fakes),
-    "<p>abc</p>"
+    "<p>abc</p><p>def</p>"
   );
 });
+
+test("unForceValidHTML replaces different fake- elts with real ones", function(assert) {
+  var fakes = "<fake-open-p></fake-open-p>abc<fake-close-p></fake-close-p>" +
+              "<fake-open-div></fake-open-div>def<fake-close-div></fake-close-div>" +
+              "<fake-open-p></fake-open-p>ghi" +
+              "<fake-open-div></fake-open-div>jkl<fake-close-div></fake-close-div>" + 
+              "<fake-close-p></fake-close-p>";
+
+  assert.equal(
+    this.component.unForceValidHTML(fakes),
+    "<p>abc</p><div>def</div><p>ghi<div>jkl</div></p>"
+  );
+});
+
 
 test("shouldRecurseInto is true if the node is a <p>", function(assert) {
   assert.equal(

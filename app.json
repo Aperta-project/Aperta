@@ -37,6 +37,12 @@
     "BASIC_HTTP_USERNAME": {
       "required": true
     },
+    "BILLING_FTP_ENABLED": {
+      "required": true
+    },
+    "BILLING_FTP_URL": {
+      "required": true
+    },
     "BUGSNAG_API_KEY": {
       "required": true
     },

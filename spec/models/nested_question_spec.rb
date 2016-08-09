@@ -58,10 +58,10 @@ describe NestedQuestion do
 
     let(:scope) { NestedQuestion.where(owner: owner) }
 
-    it 'deletes any idents that are missing' do
+    it 'does not delete any idents that are missing' do
       expect(scope.count).to be(2)
       scope.update_all_exactly!([{ ident: nested_question_a.ident }])
-      expect(scope.count).to be(1)
+      expect(scope.count).to be(2)
     end
 
     it 'creates new questions for new idents' do
@@ -107,6 +107,48 @@ describe NestedQuestion do
         }])
       expect(scope.count).to be(3)
       expect(nested_question_a.reload.children.count).to be(1)
+    end
+  end
+
+  describe "question seeds" do
+    before(:context) do
+      Rake::Task['nested-questions:seed'].reenable
+      Rake::Task['nested-questions:seed'].invoke
+    end
+
+    def questions_file
+      "#{Rails.root}/lib/tasks/nested-questions/expected_questions.json"
+    end
+
+    def read_expected_questions
+      expected_questions_file = File.read(questions_file)
+      JSON.parse(expected_questions_file)
+    end
+
+    it 'has all of the expected questions' do
+      expected_questions = read_expected_questions
+      expected_questions.each do |expected|
+        actual = NestedQuestion.find_by(ident: expected["ident"])
+        expect(actual).to_not be_nil, "Question #{expected["ident"]} was removed"
+      end
+    end
+
+    it 'does not have any new questions' do
+      expected_questions = read_expected_questions
+      NestedQuestion.all.each do |actual|
+        expected = expected_questions.find { |q| q["ident"] == actual.ident }
+        expect(expected).to_not be_nil, "Question #{actual.ident} was added"
+      end
+    end
+
+    it 'does not have any modified questions' do
+      expected_questions = read_expected_questions
+      expected_questions.each do |expected|
+        actual = NestedQuestion.find_by(ident: expected["ident"])
+        expect(expected["text"]).to eq(actual.text)
+        expect(expected["value_type"]).to eq(actual.value_type)
+        expect(expected["owner_type"]).to eq(actual.owner_type)
+      end
     end
   end
 end

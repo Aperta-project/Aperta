@@ -32,9 +32,6 @@ class NestedQuestion < ActiveRecord::Base
     # property hashes. Each hash represents a single question, and
     # must have at least an `ident` field.
     #
-    # ANY QUESTIONS IN SCOPE WITHOUT HASHES IN THIS LIST WILL BE
-    # DESTROYED.
-    #
     # Any questions with hashes but not in scope will be created.
 
     updated_idents = []
@@ -43,8 +40,6 @@ class NestedQuestion < ActiveRecord::Base
     update_nested!(question_hashes, updated_idents)
 
     existing_idents = all.map(&:ident)
-    for_deletion = existing_idents - updated_idents
-    where(ident: for_deletion).destroy_all
   end
 
   def attachment?

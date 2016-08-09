@@ -6,7 +6,7 @@ export default DS.Model.extend({
   }),
   oldRoles: DS.hasMany('old-role', { async: false }),
   journalTaskTypes: DS.hasMany('journal-task-type', { async: false }),
-
+  adminJournalRoles: DS.hasMany('admin-journal-role'),
   createdAt: DS.attr('date'),
   description: DS.attr('string'),
   logoUrl: DS.attr('string'),

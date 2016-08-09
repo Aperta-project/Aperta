@@ -2,12 +2,15 @@ import Ember from 'ember';
 
 /**
  *  task-load ensures the task and other required data is loaded
- *  before rendering a child content. While data is loading, a loading
- *  partial is displayed.
+ *  before rendering child content. While the promise is unfulfilled,
+ *  the task-load template yields to the parent to allow for the display
+ *  of a loading spinner.
  *
  *  @example
  *    {{#task-load task=task}}
  *      {{super-important-task task=task}}
+ *    {{else}}
+ *      Loading...
  *    {{/task-load}}
  *
  *  @class TaskLoadComponent

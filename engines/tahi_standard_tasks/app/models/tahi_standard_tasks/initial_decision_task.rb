@@ -21,8 +21,11 @@ module TahiStandardTasks
     end
 
     def after_register(decision)
-      InitialDecisionMailer.delay.notify decision_id: decision.id
       complete!
+    end
+
+    def send_email
+      InitialDecisionMailer.delay.notify decision_id: initial_decision.id
     end
   end
 end

@@ -31,13 +31,6 @@ describe TahiStandardTasks::InitialDecisionTask do
   end
 
   describe '#after_register' do
-    it "sends an email to the author" do
-      expect(TahiStandardTasks::InitialDecisionMailer)
-        .to receive_message_chain(:delay, :notify)
-        .with(decision_id: decision.id)
-      task.after_register decision
-    end
-
     it "marks the task complete" do
       expect(task).to receive(:complete!)
       task.after_register decision
@@ -50,6 +43,24 @@ describe TahiStandardTasks::InitialDecisionTask do
     it 'sets the decision to be initial' do
       expect { decision.register! task }
         .to change { decision.reload.initial }.from(false).to(true)
+    end
+  end
+
+  describe "#send_email" do
+    let!(:decision_one) do
+      FactoryGirl.create(
+        :decision,
+        verdict: 'invite_full_submission',
+        paper: paper,
+        major_version: 0,
+        minor_version: 0)
+    end
+
+    it "will email using last completed decision" do
+      expect(TahiStandardTasks::InitialDecisionMailer)
+        .to receive_message_chain(:delay, :notify)
+        .with(decision_id: decision_one.id)
+      task.send_email
     end
   end
 end

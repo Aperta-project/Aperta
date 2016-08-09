@@ -124,7 +124,19 @@ class S3Migration < ActiveRecord::Base
     end
 
     previous_file_hash = attachment.previous_file_hash || s3object.data[:headers]['ETag'].gsub('"', '')
-    new_file_hash = Digest::SHA256.hexdigest(s3object.data[:body])
+    begin
+      new_file_hash = Digest::SHA256.hexdigest(s3object.data[:body])
+    rescue Exception => ex
+
+      # Some versions are missing from S3. This re-creates them.
+      if version?
+        puts "Recreating versions for source_url #{source_url}"
+        recreate_versions!
+        recreated_missing_version = true
+      else
+        raise ex
+      end
+    end
     # new_file_hash = SecureRandom.uuid # <-- this value is used for manual testing
 
     # Do not modify the file hashes if we're migrating a version (e.g detail,
@@ -151,7 +163,7 @@ class S3Migration < ActiveRecord::Base
     )
 
     # Move the old file to the new S3 location
-    if source_url == destination_url
+    if (source_url == destination_url) || recreated_missing_version
       msg = "Skipping S3 migration on id=#{id} because source_url is the same as destination_url."
       puts msg
       Rails.logger.info msg

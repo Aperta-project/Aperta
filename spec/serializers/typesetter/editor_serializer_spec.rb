@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.shared_examples 'editor fields' do
+describe Typesetter::EditorSerializer do
   let!(:academic_editor) do
     FactoryGirl.create(
       :user,
@@ -8,34 +8,33 @@ RSpec.shared_examples 'editor fields' do
       email: email
     )
   end
-
   let(:first_name) { 'Bob' }
   let(:last_name) { 'Ross' }
   let(:email) { 'happytrees@example.com' }
 
-  describe 'first_name' do
-    it "is the editor's first_name" do
-      expect(output[:first_name]).to eq(first_name)
+  shared_examples 'editor fields' do
+    describe 'first_name' do
+      it "is the editor's first_name" do
+        expect(output[:first_name]).to eq(first_name)
+      end
+    end
+    describe 'last_name' do
+      it "is the editor's last_name" do
+        expect(output[:last_name]).to eq(last_name)
+      end
+    end
+    describe 'email' do
+      it "is the editor's email" do
+        expect(output[:email]).to eq(email)
+      end
     end
   end
-  describe 'last_name' do
-    it "is the editor's last_name" do
-      expect(output[:last_name]).to eq(last_name)
-    end
-  end
-  describe 'email' do
-    it "is the editor's email" do
-      expect(output[:email]).to eq(email)
-    end
-  end
-end
 
-describe Typesetter::EditorSerializer do
   subject(:serializer) { described_class.new(academic_editor) }
   let(:output) { serializer.serializable_hash }
 
   context 'no affiliation' do
-    include_examples 'editor fields'
+    it_behaves_like 'editor fields'
 
     it 'has nil values for fields related to affiliation' do
       %w(department title organization).each do |field_name|
@@ -45,7 +44,7 @@ describe Typesetter::EditorSerializer do
   end
 
   context 'with affiliation' do
-    include_examples 'editor fields'
+    it_behaves_like 'editor fields'
     let!(:affiliation) do
       FactoryGirl.create(
         :affiliation,

@@ -30,8 +30,10 @@ module TahiStandardTasks
       DecisionReviser.new(self, decision).process! if decision.revision?
     end
 
-    def send_email
+    def send_email(to_field:, subject_field:)
       RegisterDecisionMailer.delay.notify_author_email(
+        to_field: EmailService.new(email: to_field).valid_email_or_nil,
+        subject_field: subject_field,
         decision_id: paper.decisions.completed.latest)
     end
 

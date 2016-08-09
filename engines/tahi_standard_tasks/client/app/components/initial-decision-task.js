@@ -32,8 +32,15 @@ export default TaskComponent.extend(HasBusyStateMixin, {
                              'isTaskCompleted'),
   actions: {
     registerDecision() {
+      const task = this.get('task');
+
       this.busyWhile(
-        this.get('initialDecision').register(this.get('task')));
+        this.get('initialDecision').register(task)
+          .then(() => {
+            // reload to pick up completed flag on current task
+            return task.reload();
+          })
+      );
     },
 
     setInitialDecisionVerdict(decision) {

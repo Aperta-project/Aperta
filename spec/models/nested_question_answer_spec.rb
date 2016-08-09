@@ -62,6 +62,16 @@ describe NestedQuestionAnswer do
     end
   end
 
+  describe "#destroy" do
+    let!(:nested_question_answer) { FactoryGirl.build(:nested_question_answer) }
+
+    it 'soft deletes nested questions answers' do
+      nested_question_answer.destroy
+
+      expect(nested_question_answer.deleted_at).to_not be_nil
+    end
+  end
+
   describe '#task' do
     context 'and the owner is a Task' do
       let(:task) { Task.new }

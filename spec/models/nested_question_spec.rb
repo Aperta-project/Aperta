@@ -45,6 +45,15 @@ describe NestedQuestion do
     end
   end
 
+  describe "#destroy" do
+    subject(:nested_question) { FactoryGirl.build(:nested_question) }
+    it 'soft deletes nested questions' do
+      nested_question.destroy
+
+      expect(nested_question.deleted_at).to_not be_nil
+    end
+  end
+
   describe '#update_all_exactly!' do
     let(:owner) { FactoryGirl.create(:task) }
 
@@ -58,10 +67,17 @@ describe NestedQuestion do
 
     let(:scope) { NestedQuestion.where(owner: owner) }
 
-    it 'deletes any idents that are missing' do
+    it 'soft deletes any idents that are missing' do
       expect(scope.count).to be(2)
       scope.update_all_exactly!([{ ident: nested_question_a.ident }])
       expect(scope.count).to be(1)
+    end
+
+    it 'retains soft deleted idents' do
+      expect(scope.count).to be(2)
+      scope.update_all_exactly!([{ ident: nested_question_a.ident }])
+      expect(NestedQuestion.only_deleted.count).to eq(1)
+      expect(NestedQuestion.only_deleted.first).to eq(nested_question_b)
     end
 
     it 'creates new questions for new idents' do

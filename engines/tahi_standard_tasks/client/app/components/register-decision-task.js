@@ -15,7 +15,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   paper: computed.alias('task.paper'),
   submitted: computed.equal('paper.publishingState', 'submitted'),
   uncompleted: computed.equal('task.completed', false),
-  isNotEditable: false, // This task has custom editability behavior
 
   publishable: computed.and('submitted', 'uncompleted'),
   nonPublishable: computed.not('publishable'),

@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Version] - {Date}
 ### Added
 - Daily export of billing log
+- Admins can view journal roles assigned to users
 ### Changed
 ### Deprecated
 ### Removed

@@ -231,7 +231,23 @@ export default Mixin.create({
   */
 
   validationErrorsPresent() {
-    return !isEmpty(this.currentValidationErrors());
+    let errorFound = false;
+    const spelunk = function(obj) {
+      Object.keys(obj).forEach(function(key) {
+        if(typeof obj[key] === 'object') {
+          spelunk(obj[key]);
+          return;
+        }
+
+        if(!isEmpty(obj[key])) {
+          errorFound = true;
+        }
+      });
+    };
+
+    spelunk(this.get('validationErrors'));
+
+    return errorFound;
   },
 
   /**
@@ -243,24 +259,19 @@ export default Mixin.create({
     return !isEmpty(this.get('validationErrors')[key]);
   },
 
-  /**
-    @method currentValidationErrors
-    @return {Array} array of key/value(error message) pairs
-  */
-
-  currentValidationErrors() {
-    const errors = this.get('validationErrors');
-
-    return _.compact(
-      _.map(_.keys(errors), key => {
-        if(isEmpty(errors[key]) || Ember.keys(errors[key]).length === 0) {
-          return false;
-        }
-
-        let hash = {};
-        hash[key] = errors[key];
-        return hash;
-      })
-    );
-  }
+  // currentValidationErrors() {
+  //   const errors = this.get('validationErrors');
+  //
+  //   return _.compact(
+  //     _.map(_.keys(errors), key => {
+  //       if(isEmpty(errors[key]) || Ember.keys(errors[key]).length === 0) {
+  //         return false;
+  //       }
+  //
+  //       let hash = {};
+  //       hash[key] = errors[key];
+  //       return hash;
+  //     })
+  //   );
+  // }
 });

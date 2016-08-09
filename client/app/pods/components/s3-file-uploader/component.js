@@ -21,6 +21,9 @@
  *                  addingFileFailed=(action "addingFileFailed")
  *                  fileAdded=(action "fileAdded")}}
  *  ```
+ *
+ *  Note that `filePath` is merely a part of the temporary file path
+ *  that rails will create for the new file
 **/
 
 import Ember from 'ember';

@@ -29,6 +29,8 @@ export default Ember.Component.extend({
   buttonText: 'Upload File',
   fileUploads: [],
   multiple: false,
+  showDescription: true,
+
   uploadInProgress: Ember.computed.notEmpty('fileUploads'),
   hasAttachments: Ember.computed.notEmpty('attachments'),
   noAttachments: Ember.computed.not('hasAttachments'),

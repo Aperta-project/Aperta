@@ -22,7 +22,7 @@
       {{#split-pane-element class="manuscript-pane"}}
         <div class="manuscript-container">
           {{flash-messages}}
-          {{#rendered-manuscript paper=paper}}
+          {{#rendered-manuscript paper=model}}
             <div id="paper-body">
               {{html-diff default=model.body
                           comparisonText=comparisonVersion.text

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
-import { build, make } from 'ember-data-factory-guy';
+import { make } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
@@ -26,12 +26,12 @@ module('Integration: Discussions', {
       { paperId: paper.id, title: 'Hipster Ipsum Dolor' });
 
     $.mockjax({
-      url: "/api/at_mentionable_users",
+      url: '/api/at_mentionable_users',
       type: 'GET',
       status: 200,
-      contentType: "application/json",
+      contentType: 'application/json',
       responseText: {
-        users: [{id: 1, full_name: "Charmander", email: "fire@oak.edu"}]
+        users: [{id: 1, full_name: 'Charmander', email: 'fire@oak.edu'}]
       }
     });
 
@@ -42,7 +42,7 @@ module('Integration: Discussions', {
     mockFind('paper').returns({ model: paper });
     TestHelper.handleFindAll('discussion-topic', 1);
 
-    Factory.createPermission('Paper', paper.id, ['manage_workflow']);
+    Factory.createPermission('Paper', paper.id, ['manage_workflow', 'start_discussion']);
 
     const restless = App.__container__.lookup('service:restless');
     restless['delete'] = function() {
@@ -60,6 +60,19 @@ test('can see a list of topics', function(assert) {
     andThen(function() {
       const firstTopic = find('.discussions-index-topic:first');
       assert.ok(firstTopic.length, 'Topic is found: ' + firstTopic.text());
+    });
+  });
+});
+
+test('cannot create discussion without title', function(assert) {
+  Ember.run(function() {
+    mockFind('discussion-topic').returns({ model: topic });
+    visit('/papers/' + paper.id + '/workflow/discussions/new');
+    click('#create-topic-button');
+
+    andThen(function() {
+      const titleFieldContainer = find('#topic-title-field').parent();
+      assert.ok(titleFieldContainer.hasClass('error'), 'Error is displayed');
     });
   });
 });

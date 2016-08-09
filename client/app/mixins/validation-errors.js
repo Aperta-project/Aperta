@@ -257,21 +257,5 @@ export default Mixin.create({
 
   validationErrorsPresentForKey(key) {
     return !isEmpty(this.get('validationErrors')[key]);
-  },
-
-  // currentValidationErrors() {
-  //   const errors = this.get('validationErrors');
-  //
-  //   return _.compact(
-  //     _.map(_.keys(errors), key => {
-  //       if(isEmpty(errors[key]) || Ember.keys(errors[key]).length === 0) {
-  //         return false;
-  //       }
-  //
-  //       let hash = {};
-  //       hash[key] = errors[key];
-  //       return hash;
-  //     })
-  //   );
-  // }
+  }
 });

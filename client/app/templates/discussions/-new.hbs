@@ -11,7 +11,11 @@
 
   <div class="inset-form-control required {{if validationErrors.title "error"}}">
     <label class="inset-form-control-text">Topic Title</label>
-    {{input type="text" value=model.title class="inset-form-control-input discussion-topic-title-field" placeholder="Tech Check Discussion"}}
+    {{input id="topic-title-field"
+            type="text"
+            value=model.title
+            class="inset-form-control-input discussion-topic-title-field"
+            placeholder="Tech Check Discussion"}}
   </div>
 
   <div class="inset-form-control">
@@ -27,7 +31,11 @@
 
   <div class="discussion-post-actions">
     {{#if topicCreation.isIdle}}
-      <button class="button-primary button--green" {{action "save" model replyText}}>Create Topic</button>
+      <button id="create-topic-button"
+              class="button-primary button--green"
+              {{action "save" model replyText}}>
+        Create Topic
+      </button>
     {{else}}
       <button class="button-primary button--disabled">Create Topic</button>
       {{progress-spinner visible=true

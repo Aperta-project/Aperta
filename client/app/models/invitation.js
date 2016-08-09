@@ -3,6 +3,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   abstract: DS.attr('string'),
+  attachments: DS.hasMany('attachment', { polymorphic: true, async: true }),
   body: DS.attr('string'),
   createdAt: DS.attr('date'),
   declineReason: DS.attr('string'),
@@ -27,7 +28,8 @@ export default DS.Model.extend({
     function() {
       return Ember.isBlank(this.get('reviewerSuggestions')) &&
         Ember.isBlank(this.get('declineReason'));
-  }),
+    }
+  ),
 
   invited: Ember.computed.equal('state', 'invited'),
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
@@ -37,9 +39,9 @@ export default DS.Model.extend({
     this.set('state', 'declined');
   },
 
- restless: Ember.inject.service('restless'),
- rescind() {
-   return this.get('restless')
+  restless: Ember.inject.service('restless'),
+  rescind() {
+    return this.get('restless')
     .put(`/api/invitations/${this.get('id')}/rescind`)
     .then((data) => {
       this.unloadRecord();

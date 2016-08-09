@@ -1,8 +1,10 @@
-<p class="description">
-  {{#unless disabled}}
-    {{{description}}}
-  {{/unless}}
-</p>
+{{#if showDescription}}
+  <p class="description">
+    {{#unless disabled}}
+      {{{description}}}
+    {{/unless}}
+  </p>
+{{/if}}
 
 {{#each attachments as |attachment|}}
   {{attachment-item accept=accept

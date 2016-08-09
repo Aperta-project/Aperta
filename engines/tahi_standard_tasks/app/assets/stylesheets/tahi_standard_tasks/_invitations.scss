@@ -28,10 +28,14 @@
     font-weight: bold;
     margin-bottom: 0px;
   }
-  
+
   p, h3 {
     margin-bottom: 20px;
   }
+}
+
+.standard-invite-text .fileinput-button {
+  float: left;
 }
 
 .invitees, .assignments {

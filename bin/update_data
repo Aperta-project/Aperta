@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# quit immediately on any non-zero exit code
+set -xe
+
+git checkout master
+bundle exec rake db:reset
+git checkout -
+bundle exec rake db:migrate
+bundle exec rake nested-questions:seed
+bundle exec rake roles-and-permissions:seed
+bundle exec rake db:data:dump
+

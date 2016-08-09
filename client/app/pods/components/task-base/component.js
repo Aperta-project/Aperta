@@ -83,7 +83,7 @@ export default Component.extend(ValidationErrorsMixin, {
     if(isEmpty(this.get('questionValidations'))) { return; }
 
     const nestedQuestionAnswers = this.get('task.nestedQuestions')
-                                      .mapProperty('answers');
+                                      .mapBy('answers');
 
     // NOTE: nested-questions.answers is hasMany relationship
     // so we need to flatten

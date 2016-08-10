@@ -5,6 +5,7 @@ class Admin::JournalUsersController < ApplicationController
   def index
     requires_user_can(:administer, Journal)
     users = User.search_users(query: params[:query], assigned_users_in_journal_id: params[:journal_id])
+    users = users.reorder("last_name") if params[:query].blank?
     journal = Journal.find(params[:journal_id]) if params[:journal_id]
     respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users', journal: journal
   end

@@ -1,0 +1,30 @@
+<div class="invite-editor-edit-invite">
+  <h3 class="invite-to">
+    Invitation to
+    {{#if selectedUser.fullName}}
+      {{selectedUser.full_name}}
+    {{/if}}
+    [{{selectedUser.email}}]
+  </h3>
+
+  {{content-editable value=invitationBody
+                     class="form-control taller-textarea"}}
+
+
+  <div class="flex-container">
+    {{attachment-manager filePath="invitation"
+                         attachments=invitation.attachments
+                         multiple=true
+                         hasCaption=true
+                         accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
+                         captionChanged=(action "updateAttachmentCaption")
+                         deleteFile=(action "deleteAttachment")
+                         uploadFinished=(action "createAttachment")
+                         updateAttachment=(action "updateAttachment") }}
+
+    <div class="invite-editor-cta">
+      <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
+      <button class="button-primary button--green invite-editor-button" {{action "inviteEditor"}}>Send Invitation</button>
+    </div>
+ </div>
+</div>

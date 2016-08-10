@@ -132,3 +132,25 @@ test('can see an editable topic with edit permissions', function(assert) {
     });
   });
 });
+
+test('cannot persist empty title', function(assert) {
+  Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
+
+  Ember.run(function() {
+    mockFind('discussion-topic').returns({ model: topic });
+    visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
+
+    andThen(function() {
+      const titleField = find('.discussions-show-title input');
+      const titleFieldContainer = find('.discussions-show-title');
+
+      titleField.focus();
+      titleField.val('');
+      titleField.blur();
+
+      triggerEvent(titleField, 'blur').then(()=> {
+        assert.ok(titleFieldContainer.hasClass('error'), 'Error is displayed on title');
+      });
+    });
+  });
+});

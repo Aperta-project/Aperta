@@ -51,12 +51,14 @@ describe Typesetter::EditorSerializer do
         user: academic_editor,
         name: affiliation_name,
         title: affiliation_title,
-        department: affiliation_department
+        department: affiliation_department,
+        country: affiliation_country
       )
     end
     let(:affiliation_name) { 'PBS' }
     let(:affiliation_title) { 'Artist' }
     let(:affiliation_department) { 'Art' }
+    let(:affiliation_country) { 'USA' }
 
     describe 'organization' do
       it "is the editor's organization" do
@@ -73,6 +75,12 @@ describe Typesetter::EditorSerializer do
     describe 'department' do
       it "is the editor's department" do
         expect(output[:department]).to eq(affiliation_department)
+      end
+    end
+
+    describe 'country' do
+      it "is the editor's country" do
+        expect(output[:organization_country]).to eq(affiliation_country)
       end
     end
   end

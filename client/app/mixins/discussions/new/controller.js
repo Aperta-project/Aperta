@@ -24,12 +24,26 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
     }).save();
   },
 
+  validateTitle() {
+    if(this.titleIsValid()) {
+      this.set('validationErrors.title', '');
+    } else {
+      this.set('validationErrors.title', 'This field is required');
+    }
+  },
+
+  titleIsValid() {
+    return !isEmpty(this.get('model.title'));
+  },
+
   actions: {
+    validateTitle() {
+      this.validateTitle();
+    },
+
     save(topic, replyText) {
-      if(isEmpty(this.get('model.title'))) {
-        this.set('validationErrors.title', 'This field is required');
-        return;
-      }
+      this.validateTitle();
+      if(!this.titleIsValid()) { return; }
 
       this.get('topicCreation').perform(topic, replyText);
     }

@@ -16,11 +16,13 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   actions: {
     saveTopic() {
-      const model = this.get('model');
+      if(Ember.isEmpty(this.get('model.title'))) {
+        this.set('validationErrors.title', 'This field is required');
+        return;
+      }
 
-      model.save().catch(()=> {
-        model.rollback();
-      });
+      this.get('model').save();
+      this.set('validationErrors', {});
     },
 
     postReply(body) {

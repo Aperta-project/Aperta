@@ -32,6 +32,7 @@
     width: 87%;
     text-align: center;
     border: 1px solid transparent;
+    color: #333;
     background: transparent;
 
     &:focus,
@@ -44,6 +45,11 @@
       border-color: #ddd;
       background: #fff;
     }
+  }
+
+  &.error input:hover,
+  &.error input:focus {
+    border-color: $tahi-error-red;
   }
 }
 

@@ -42,20 +42,13 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
     find('.send-email-action').click
     expect(page).to have_selector('.rescind-decision', text: 'A decision of')
     expect(page).to have_selector(".task-is-completed")
-    expect(first('.decision-letter-field')).to be_disabled
-    expect(first('input[type=radio]')).to be_disabled
-  end
 
-  scenario 'Persist the decision radio button' do
-    allow(TahiStandardTasks::InitialDecisionMailer)
-      .to receive_message_chain(:delay, :notify)
-    choose('Invite for full submission')
-    find('.decision-letter-field').set('Accepting this because I can')
-    find('.send-email-action').click
+    # Expect the radio button to persist across reload
+    visit current_path
+    expect(find('input[value=invite_full_submission]')).to be_checked
     expect(page).to have_selector('.rescind-decision', text: 'A decision of')
 
-    visit current_path # Revisit
-
-    expect(find('input[value=invite_full_submission]')).to be_checked
+    expect(first('.decision-letter-field')).to be_disabled
+    expect(first('input[type=radio]')).to be_disabled
   end
 end

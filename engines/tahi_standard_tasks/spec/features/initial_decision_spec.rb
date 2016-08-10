@@ -27,7 +27,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
                            old_role: 'editor' }
     end
 
-    scenario 'Participant cannot registes a decision on the paper' do
+    scenario 'Participant cannot register a decision on the paper' do
       expect(page).to have_selector(
         '.button--disabled',
         text: 'REGISTER DECISION AND EMAIL THE AUTHOR')

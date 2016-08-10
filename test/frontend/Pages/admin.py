@@ -402,7 +402,7 @@ class AdminPage(AuthenticatedPage):
     """
     For all the blocks presented on the page, opens the journal specific admin page for a random
     choice
-    :return: void function
+    :return: Name of selected journal
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))

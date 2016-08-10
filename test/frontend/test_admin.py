@@ -7,7 +7,7 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, \
     creator_login2, creator_login3, creator_login4, creator_login5, reviewer_login, \
     academic_editor_login, handling_editor_login, cover_editor_login, internal_editor_login, \
-    pub_svcs_login, review_app_admin
+    pub_svcs_login
 from Pages.admin import AdminPage
 from frontend.common_test import CommonTest
 
@@ -69,26 +69,6 @@ class ApertaAdminTest(CommonTest):
     user = random.choice(user_search)
     logging.info('Searching user: {0}'.format(user))
     adm_page.validate_search_edit_user(user)
-
-  def test_validate_user_roles_display(self):
-    """
-    test_admin: Validate the function of the base Admin page user search function
-    :return: void function
-    """
-    logging.info('Validating base admin page user search function')
-    user_type = random.choice(users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=user_type['password'])
-    dashboard_page.click_admin_link()
-    adm_page = AdminPage(self.getDriver())
-    journal_id = adm_page.select_named_journal('PLOS Yeti')
-    adm_page.go_to_journal(journal_id)
-    adm_page.validate_user_roles()
-
-    # /admin/journals/1
-
-    ######
-
 
   def _test_validate_add_new_journal(self):
     """

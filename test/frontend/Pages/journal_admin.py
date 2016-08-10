@@ -187,7 +187,7 @@ class JournalAdminPage(AdminPage):
       #print username
       #import pdb; pdb.set_trace()
 
-  def validate_roles_section(self):
+  def validate_roles_section(self, journal):
     """
     Validate the elements and function of the Roles section of the journal admin page
     :return: void function
@@ -201,32 +201,33 @@ class JournalAdminPage(AdminPage):
     role_rows = self._gets(self._journal_admin_user_search_results_row)
     # default time
     self.set_timeout(3)
+    journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;',
+        (journal,))[0][0]
+    print 'journal_id', journal_id
     for row in role_rows:
       logging.info(row.text)
       row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
       #print len(row_elements)
       username, first_name, last_name, roles = row_elements
       username = username.text
-      print username
-      role_elements = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
-      role_elements = [x.text for x in role_elements]
+      roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
+      roles = [x.text for x in roles]
       # search for roles in DB
-      db_journals = PgSQL().query('SELECT journals.name,journals.description,count(papers.id)'
-                                        'FROM journals LEFT JOIN papers '
-                                        'ON journals.id = papers.journal_id '
-                                        'GROUP BY journals.id;')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      journals = []
-      journals.append(PgSQL().query('SELECT assigned_to_id '
-                                          'FROM assignments '
-                                          'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
-                                          (uid,))[0][0])
+      try:
+        roles_id = PgSQL().query('SELECT role_id FROM assignments '
+                               'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
+                                (uid,))[0]
+
+        db_roles = []
+        for role_id in roles_id:
+          db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',(role_id,))[0][0])
+        assert set(roles) == set(db_roles), (roles, db_roles)
+      except IndexError:
+        assert roles == []
 
 
-      print "==="
     self.restore_timeout()
-
-
 
 
   def _validate_roles_section(self):

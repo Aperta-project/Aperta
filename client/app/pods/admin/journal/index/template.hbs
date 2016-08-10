@@ -38,10 +38,11 @@
           <th>Username</th>
           <th>First Name</th>
           <th>Last Name</th>
+          <th>Roles</th>
         </tr>
         {{#each adminJournalUsers as |user|}}
           {{admin-journal-user model=user
-                               journalRoles=model.oldRoles
+                               journalRoles=model.adminJournalRoles
                                assignOldRole="assignOldRoleToUser"}}
         {{/each}}
       </table>

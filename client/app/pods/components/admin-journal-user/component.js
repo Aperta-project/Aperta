@@ -11,16 +11,20 @@ export default Ember.Component.extend({
   actions: {
     addRole(journalRole) {
       var user = this.get('user');
-      user.set('journalRoleName', journalRole.text);
-      user.set('modifyAction', 'add-role');
-      user.set('journalId', this.get('journal.id'));
+      user.setProperties({
+        journalRoleName: journalRole.text,
+        modifyAction: 'add-role',
+        journalId: this.get('journal.id')
+      });
       user.save();
     },
     removeRole(journalRole) {
       var user = this.get('user');
-      user.set('journalRoleName', journalRole.text);
-      user.set('modifyAction', 'remove-role');
-      user.set('journalId', this.get('journal.id'));
+      user.setProperties({
+        journalRoleName: journalRole.text,
+        modifyAction: 'remove-role',
+        journalId: this.get('journal.id')
+      });
       user.save();
     }
   }

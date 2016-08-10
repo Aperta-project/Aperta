@@ -249,8 +249,6 @@ class Paper < ActiveRecord::Base
   # This is a faux state transition, it dynamically picks which
   # state transition to use when rescinding.
   def rescind!
-    remove_revise_task if in_revision?
-
     if been_fully_submitted?
       __rescind_decision!
     else
@@ -559,14 +557,6 @@ class Paper < ActiveRecord::Base
   end
 
   private
-
-  def remove_revise_task
-    # Do it by title, because different journals, etc may have different
-    # classes. This method a violation of the engine/core boundary,
-    # but I don't know how to resolve it peacefully without larger
-    # architectural changes. See APERTA-6750.
-    tasks.where(title: 'Revise Manuscript').destroy_all
-  end
 
   def new_major_version!
     draft.be_major_version!

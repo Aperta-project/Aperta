@@ -35,7 +35,7 @@ export default Ember.Component.extend({
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),
-      this.get('store').findRecord('task', task.get('id')) // see "NOTE: task find"
+      this.get('store').findRecord('task', task.get('id'), {reload: true}) // see "NOTE: task find"
     ]));
   }
 });

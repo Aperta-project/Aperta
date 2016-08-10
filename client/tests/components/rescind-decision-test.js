@@ -68,41 +68,54 @@ test('rescind link is disabled if not editable', function(assert) {
   assert.elementFound('.rescind-decision-button:disabled', 'the button is disabled');
 });
 
-test('rescind link, when clicked, calls restless to rescind', function(assert) {
-  let { decision } = setup(this, function({ decision }) {
-    decision.rescind = sinon.stub();
-    decision.rescind.returns({ then: () => {} });
+test('rescind link, when clicked calls rescind method', function(assert) {
+  let { decision } = setup(this);
+
+  clickThroughRescind(this, assert);
+
+  assert.spyCalled(decision.rescind, '#rescind method was called on decision');
+});
+
+test('busyWhile is called', function(assert) {
+  const busyWhile = sinon.stub();
+  setup(this, function({ context }) {
+    context.set('busyWhile', busyWhile);
   });
 
-  Ember.run(() => {
-    // Ask to rescind.
-    this.$('.rescind-decision-button').click();
+  clickThroughRescind(this, assert);
 
-    // Confirm request to rescind
-    assert.elementFound(
-      '.full-overlay-verification-confirm',
-      'Confirm dialog appears');
-    this.$('.full-overlay-verification-confirm').click();
-  });
-
-  assert.spyCalled(decision.rescind, 'decision was rescinded');
+  assert.spyCalled(busyWhile);
 });
 
 function setup(context, callback) {
   const paper = make('paper');
   const decision = make('decision', { paper: paper, rescindable: true });
+  decision.rescind = sinon.stub().returns({ then: () => {} });
   const can = FakeCanService.create();
   can.allowPermission('rescind_decision', paper);
   context.set('decision', decision);
   context.set('isEditable', true);
   context.set('mockRestless', false);
+  context.set('busyWhile', ()=>{});
   const vals = { context, decision, paper, can };
   if (callback) { callback(vals); }
   let template = hbs`{{rescind-decision decision=decision
                                         isEditable=isEditable
                                         restless=mockRestless
-                                        busyWhile=identity}}`;
+                                        busyWhile=(action busyWhile)}}`;
   context.register('service:can', can.asService());
   context.render(template);
   return vals;
+}
+
+function clickThroughRescind(context, assert) {
+  // Ask to rescind.
+  context.$('.rescind-decision-button').click();
+
+  assert.elementFound(
+    '.full-overlay-verification-confirm',
+    'Confirm dialog appears');
+
+  // Confirm request to rescind
+  context.$('.full-overlay-verification-confirm').click();
 }

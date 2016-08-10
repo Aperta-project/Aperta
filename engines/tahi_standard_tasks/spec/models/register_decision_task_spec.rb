@@ -77,7 +77,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
         allow(decision).to receive(:revision?).and_return(true)
       end
 
-      it "invokes DecisionReviser" do
+      it "calls #setup_new_revision with proper arguments" do
         expect(TahiStandardTasks::ReviseTask)
           .to receive(:setup_new_revision).with(task.paper, task.phase)
         task.after_register decision

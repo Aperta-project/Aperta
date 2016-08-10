@@ -25,22 +25,16 @@ describe Admin::JournalUsersController, redis: true do
     it_behaves_like "an unauthenticated json request"
 
     context 'when the user has access' do
-      before do
-        stub_sign_in journal_admin
-      end
-
       it "renders status 2xx and the user is a journal admin" do
+        stub_sign_in journal_admin
         do_request
         expect(response.status).to eq 200
       end
     end
 
     context "when the user is unauthorized" do
-      before do
-        stub_sign_in user
-      end
-
       it "renders status 403" do
+        stub_sign_in user
         do_request
         expect(response.status).to eq 403
       end

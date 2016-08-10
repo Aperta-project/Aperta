@@ -35,6 +35,7 @@ export default Ember.Component.extend({
   },
 
   refreshEquations:  function() {
+    if(this.get('isDestroying')) { return; }
     if (!window.MathJax) { this.loadMathJax(); return; }
     else if (!window.MathJax.Hub) { return; }
 

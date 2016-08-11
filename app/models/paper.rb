@@ -177,7 +177,7 @@ class Paper < ActiveRecord::Base
     event(:publish) do
       transitions from: :submitted,
                   to: :published,
-                  after: :set_published_at!
+                  after: [:set_published_at!]
     end
 
     event(:withdraw) do
@@ -231,6 +231,7 @@ class Paper < ActiveRecord::Base
   end
 
   def users_with_role(role)
+    return User.none unless role
     User.joins(:assignments).where(
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,

@@ -4,7 +4,9 @@ module UserHelper
 
   included do
     has_many :assignments
-    has_many :roles, through: :assignments
+    has_many :roles,
+      -> { uniq },
+      through: :assignments
   end
 
   class_methods do

@@ -3,7 +3,7 @@ module Typesetter
   # Expects an editor as its object to serialize.
   class EditorSerializer < ActiveModel::Serializer
     attributes :first_name, :last_name, :email, :department, :title,
-               :organization
+      :organization, :organization_country
 
     private
 
@@ -24,6 +24,11 @@ module Typesetter
     def organization
       return unless affiliation
       affiliation.name
+    end
+
+    def organization_country
+      return unless affiliation
+      affiliation.country
     end
   end
 end

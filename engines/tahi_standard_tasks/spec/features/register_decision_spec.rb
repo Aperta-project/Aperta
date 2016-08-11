@@ -49,6 +49,43 @@ feature "Register Decision", js: true do
         visit current_path # Revisit
         expect(find("input[value='reject']")).to be_checked
       end
+
+      context "With assigned and invited reviewers" do
+        let(:reviewer_task) do
+          FactoryGirl.create :paper_reviewer_task, paper: paper
+        end
+        let!(:invitation) do
+          FactoryGirl.create(:invitation, :invited, task: reviewer_task)
+        end
+        let!(:assigned_reviewer) { create :user }
+
+        before do
+          assign_reviewer_role paper, assigned_reviewer
+        end
+
+        scenario "Remove assigned and invited reviewers" do
+          expect(
+            reviewer_task.invitations
+            .where(state: "invited")
+            .count
+          ).to eq(1)
+          expect(paper.reviewers.count).to eq(1)
+
+          overlay = Page.view_task_overlay(paper, task)
+          overlay.register_decision = "Accept"
+          overlay.decision_letter = "Accepting this because I can"
+          overlay.click_send_email_button
+          wait_for_ajax
+
+          reviewer_task.reload
+          expect(
+            reviewer_task.invitations
+            .where(state: "invited")
+            .count
+          ).to eq(0)
+          expect(paper.reviewers.count).to eq(0)
+        end
+      end
     end
   end
 

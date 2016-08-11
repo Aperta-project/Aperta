@@ -11290,6 +11290,11 @@ permission_states_permissions:
     - '2'
     - '2016-06-22 18:55:43.093464'
     - '2016-06-22 18:55:43.093464'
+  - - '292'
+    - '230'
+    - '2'
+    - '2016-08-04 20:43:31.137681'
+    - '2016-08-04 20:43:31.137681'
 
 ---
 permissions:
@@ -12410,6 +12415,11 @@ permissions:
     - DiscussionTopic
     - '2016-06-22 18:55:43.079088'
     - '2016-06-22 18:55:43.079088'
+  - - '230'
+    - edit
+    - TahiStandardTasks::TitleAndAbstractTask
+    - '2016-08-04 20:43:31.119618'
+    - '2016-08-04 20:43:31.119618'
 
 ---
 permissions_roles:
@@ -14260,6 +14270,21 @@ permissions_roles:
     - '18'
     - '2016-06-22 18:55:44.166894'
     - '2016-06-22 18:55:44.166894'
+  - - '657'
+    - '230'
+    - '21'
+    - '2016-08-04 20:43:31.14415'
+    - '2016-08-04 20:43:31.14415'
+  - - '658'
+    - '45'
+    - '23'
+    - '2016-08-04 20:43:31.297453'
+    - '2016-08-04 20:43:31.297453'
+  - - '659'
+    - '230'
+    - '15'
+    - '2016-08-04 20:43:31.63983'
+    - '2016-08-04 20:43:31.63983'
 
 ---
 phase_templates:
@@ -14879,6 +14904,7 @@ roles:
   - participates_in_tasks
   - created_at
   - updated_at
+  - assigned_to_type_hint
   records: 
   - - '7'
     - User
@@ -14887,6 +14913,7 @@ roles:
     - false
     - '2016-01-28 17:12:41.755784'
     - '2016-01-28 17:12:41.755784'
+    - User
   - - '8'
     - Creator
     - '1'
@@ -14894,6 +14921,7 @@ roles:
     - true
     - '2016-01-28 17:12:41.881702'
     - '2016-01-28 17:12:41.886783'
+    - Paper
   - - '9'
     - Reviewer
     - '1'
@@ -14901,6 +14929,7 @@ roles:
     - true
     - '2016-01-28 17:12:41.926508'
     - '2016-01-28 17:12:41.930242'
+    - Paper
   - - '10'
     - Staff Admin
     - '1'
@@ -14908,6 +14937,7 @@ roles:
     - false
     - '2016-01-28 17:12:41.947065'
     - '2016-01-28 17:12:41.947065'
+    - Journal
   - - '11'
     - Internal Editor
     - '1'
@@ -14915,6 +14945,7 @@ roles:
     - false
     - '2016-01-30 23:30:43.414744'
     - '2016-01-30 23:30:43.414744'
+    - Journal
   - - '12'
     - Publishing Services and Production Staff
     - '1'
@@ -14922,6 +14953,7 @@ roles:
     - false
     - '2016-02-01 15:50:31.460619'
     - '2016-02-01 15:50:31.460619'
+    - 
   - - '14'
     - Collaborator
     - '1'
@@ -14929,6 +14961,7 @@ roles:
     - false
     - '2016-02-06 17:54:33.706685'
     - '2016-02-06 17:54:33.708493'
+    - Paper
   - - '15'
     - Handling Editor
     - '1'
@@ -14936,6 +14969,7 @@ roles:
     - false
     - '2016-02-06 17:54:33.775752'
     - '2016-02-06 17:54:33.778976'
+    - Paper
   - - '16'
     - Participant
     - '1'
@@ -14943,6 +14977,7 @@ roles:
     - true
     - '2016-02-06 17:54:33.839325'
     - '2016-02-06 17:54:33.841543'
+    - Task
   - - '17'
     - Academic Editor
     - '1'
@@ -14950,6 +14985,7 @@ roles:
     - false
     - '2016-02-15 17:20:27.219929'
     - '2016-02-15 17:20:27.221948'
+    - Paper
   - - '18'
     - Discussion Participant
     - '1'
@@ -14957,6 +14993,7 @@ roles:
     - false
     - '2016-02-18 15:48:30.934346'
     - '2016-02-18 15:48:30.934346'
+    - DiscussionTopic
   - - '19'
     - Publishing Services
     - '1'
@@ -14964,6 +15001,7 @@ roles:
     - false
     - '2016-03-03 15:42:39.533802'
     - '2016-03-03 15:42:39.533802'
+    - Journal
   - - '20'
     - Production Staff
     - '1'
@@ -14971,6 +15009,7 @@ roles:
     - false
     - '2016-03-03 15:42:39.713159'
     - '2016-03-03 15:42:39.713159'
+    - Journal
   - - '21'
     - Cover Editor
     - '1'
@@ -14978,6 +15017,7 @@ roles:
     - false
     - '2016-03-04 17:09:29.405597'
     - '2016-03-04 17:09:29.409043'
+    - Paper
   - - '22'
     - Freelance Editor
     - '1'
@@ -14985,6 +15025,7 @@ roles:
     - false
     - '2016-04-28 02:39:22.82607'
     - '2016-04-28 02:39:22.82607'
+    - Journal
   - - '23'
     - Reviewer Report Owner
     - '1'
@@ -14992,6 +15033,7 @@ roles:
     - true
     - '2016-05-04 16:08:06.796217'
     - '2016-05-04 16:08:06.810033'
+    - Task
 
 ---
 snapshots:
@@ -20344,7 +20386,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:43:34.658877'
     - '2016-04-12 18:55:56.956915'
-    - pone.0059469-source.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20477,7 +20519,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:57:25.902462'
     - '2016-04-12 19:00:19.837324'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20610,7 +20652,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:00:39.194254'
     - '2016-04-12 19:02:46.35803'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20743,7 +20785,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:03:39.925701'
     - '2016-04-12 19:05:53.747659'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>

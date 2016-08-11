@@ -9,7 +9,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     return this.store.findRecord('discussion-topic', params.topic_id);
   },
 
-  redirect(model, transition) {
+  redirect(model) {
     var paperId = this.modelFor('paper').get('id');
 
     if (model.get('paperId') !== paperId) {
@@ -43,6 +43,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     let discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
     const discussionModel = this.modelFor(discussionRouteName);
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
+    controller.set('validationErrors', {});
     this._super(controller, model);
     model.reload();
   },

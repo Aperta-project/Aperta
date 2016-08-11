@@ -9,9 +9,14 @@
     <h1 class="discussions-show-title">Create New Topic</h1>
   </div>
 
-  <div class="inset-form-control required">
+  <div class="inset-form-control required {{if validationErrors.title "error"}}">
     <label class="inset-form-control-text">Topic Title</label>
-    {{input type="text" value=model.title class="inset-form-control-input discussion-topic-title-field" placeholder="Tech Check Discussion"}}
+    {{input id="topic-title-field"
+            type="text"
+            value=model.title
+            focus-out="validateTitle"
+            class="inset-form-control-input discussion-topic-title-field"
+            placeholder="Tech Check Discussion"}}
   </div>
 
   <div class="inset-form-control">
@@ -25,5 +30,17 @@
     {{/expanding-textarea}}
   </div>
 
-  <button class="button-primary button--green" {{action "save" model replyText}}>Create Topic</button>
+  <div class="discussion-post-actions">
+    {{#if topicCreation.isIdle}}
+      <button id="create-topic-button"
+              class="button-primary button--green"
+              {{action "save" model replyText}}>
+        Create Topic
+      </button>
+    {{else}}
+      <button class="button-primary button--disabled">Create Topic</button>
+      {{progress-spinner visible=true
+                         size="small"}}
+    {{/if}}
+  </div>
 </div>

@@ -94,54 +94,70 @@ class Rescind < ActiveRecord::Migration
 
     reversible do |direction|
       direction.up do
-        Decision.find_each do |decision|
-          if decision.latest_on_paper?
-            if decision.verdict
-              if decision.paper.non_terminal_publishing_state?
-                # paper isn't in a terminal publishing state. These are
-                # assumed to be decisions that are in the process of being
-                # authored (the editor has selected a decision but hasn't
-                # clicked the register button yet).
-                decision.be_draft!
+        say_with_time("Initializing some Decisions as drafts") do
+          Decision.find_each do |decision|
+            if decision.latest_on_paper?
+              if decision.verdict
+                if decision.paper.non_terminal_publishing_state?
+                  # paper isn't in a terminal publishing state. These are
+                  # assumed to be decisions that are in the process of being
+                  # authored (the editor has selected a decision but hasn't
+                  # clicked the register button yet).
+                  decision.be_draft!
+                else
+                  # assume last decision is complete if the paper is in a
+                  # terminal publishing state and the decision has a verdict
+                  decision.be_complete!
+                end
               else
-                # assume last decision is complete if the paper is in a
-                # terminal publishing state and the decision has a verdict
-                decision.be_complete!
+                # decision has no verdict, so it can't be complete
+                decision.be_draft!
               end
             else
-              # decision has no verdict, so it can't be complete
-              decision.be_draft!
+              # decision is not latest on paper, so it must be complete
+              decision.be_complete!
             end
-          else
-            # decision is not latest on paper, so it must be complete
-            decision.be_complete!
           end
+          Decision.count # returned for logging
         end
 
-        VersionedText.find_each do |versioned_text|
-          paper = versioned_text.paper
-          if versioned_text.latest_on_paper? && paper.draft_state?
-            versioned_text.be_draft!
+        say_with_time("Initializing some VersionedTexts as drafts") do
+          count = 0
+          VersionedText.find_each do |versioned_text|
+            paper = versioned_text.paper
+            if versioned_text.latest_on_paper? && paper.draft_state?
+              versioned_text.be_draft!
+              count += 1
+            end
           end
+          count # returned for logging
         end
       end
 
       direction.down do
-        Decision.find_each do |decision|
-          if decision.major_version.present?
-            decision.update! revision_number: decision.major_version
-          else
-            last_decision_index = decision.paper.decisions.count - 1
-            decision.update!(revision_number: last_decision_index)
+        say_with_time("Removing draft status from Decisions") do
+          Decision.find_each do |decision|
+            if decision.major_version.present?
+              decision.update! revision_number: decision.major_version
+            else
+              last_decision_index = decision.paper.decisions.count - 1
+              decision.update!(revision_number: last_decision_index)
+            end
           end
+          Decision.count # returned for logging
         end
 
-        VersionedText.where(major_version: nil).find_each do |versioned_text|
-          if paper.minor_version_state?
-            versioned_text.be_minor_version!
-          else
-            versioned_text.be_major_version!
+        say_with_time("Removing draft status from VersionedTexts") do
+          draft_texts = VersionedText.where(major_version: nil)
+          count = draft_texts.count
+          draft_texts.find_each do |versioned_text|
+            if versioned_text.paper.minor_version_state?
+              versioned_text.be_minor_version!
+            else
+              versioned_text.be_major_version!
+            end
           end
+          count # returned for logging
         end
       end
     end

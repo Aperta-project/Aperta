@@ -946,10 +946,15 @@ describe Paper do
       end
     end
 
-    describe "#major_revision!" do
+    shared_examples "a major or minor revision" do
       it "puts the paper in_revision" do
-        paper.major_revision!
-        expect(paper.publishing_state).to eq("in_revision")
+        expect { subject }.to change { paper.publishing_state }
+          .to("in_revision")
+      end
+
+      it "creates a new versioned text" do
+        expect(paper).to receive(:new_draft!).once
+        subject
       end
 
       it "broadcasts 'paper:in_revision'" do
@@ -957,15 +962,18 @@ describe Paper do
         expect(Notifier).to receive(:notify).with(hash_including(event: "paper:in_revision")) do |args|
           expect(args[:data][:record]).to eq(paper)
         end
-        paper.major_revision!
+        subject
       end
     end
 
+    describe "#major_revision!" do
+      subject { paper.major_revision! }
+      it_behaves_like "a major or minor revision"
+    end
+
     describe "#minor_revision!" do
-      it "puts the paper in_revision" do
-        paper.minor_revision!
-        expect(paper.publishing_state).to eq("in_revision")
-      end
+      subject { paper.minor_revision! }
+      it_behaves_like "a major or minor revision"
     end
   end
 

@@ -938,14 +938,6 @@ describe Paper do
       end
     end
 
-    context "rejection" do
-      it 'rejects the paper' do
-        decision = instance_double('Decision', verdict: 'reject')
-        expect(paper).to receive(:reject!)
-        paper.make_decision decision
-      end
-    end
-
     shared_examples "a major or minor revision" do
       it "puts the paper in_revision" do
         expect { subject }.to change { paper.publishing_state }

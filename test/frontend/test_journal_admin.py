@@ -87,11 +87,12 @@ class ApertaJournalAdminTest(CommonTest):
       permission display per role
     """
     logging.info('Validating journal role display and function')
-    #user_type = random.choice(users)
-    user_type = review_app_admin
+    user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    #dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
-    dashboard_page = self.login(email=user_type['user'], password=user_type['password'])
+    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    #For review app use only. This should stay here untill all funcionality is implemented
+    #user_type = review_app_admin
+    #dashboard_page = self.login(email=user_type['user'], password=user_type['password'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())

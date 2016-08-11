@@ -21,12 +21,18 @@ class InvitationsController < ApplicationController
       invitation_params.merge(inviter: current_user)
     )
     if invitation_params[:state] == 'pending'
+      invitation.associate_existing_user
       invitation.save
     else
       invitation.invite!
       Activity.invitation_created!(invitation, user: current_user)
     end
     respond_with(invitation)
+  end
+
+  def details
+    requires_user_can(:manage_invitations, invitation.task)
+    respond_with invitation, serializer: InvitationSerializer, include_body: true
   end
 
   def rescind

@@ -21,6 +21,7 @@ export default DS.Model.extend({
   pendingFeedback: false,
 
   accepted: Ember.computed.equal('state', 'accepted'),
+  pending: Ember.computed.equal('state', 'pending'),
 
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',
@@ -62,6 +63,14 @@ export default DS.Model.extend({
      .then((data) => {
        this.feedbackSent();
        return this;
+     });
+  },
+
+  fetchDetails() {
+    return this.get('restless')
+     .get(`/api/invitations/${this.get('id')}/details`)
+     .then((details) => {
+       this.get('store').pushPayload(details);
      });
   },
 

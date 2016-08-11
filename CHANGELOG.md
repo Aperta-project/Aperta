@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Version] - {Date}
 ### Added
 - Daily export of billing log
-- Admins can view journal roles assigned to users
+- Admins can view and edit journal roles assigned to users
 - AE country is included in Apex export
 - Discussion Topic title validation
 ### Changed

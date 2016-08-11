@@ -1,9 +1,9 @@
-<td class='username'>{{model.username}}</td>
-<td class='first-name'>{{model.firstName}}</td>
-<td class='last-name'>{{model.lastName}}</td>
-<td>
+<td class='username'>{{user.username}}</td>
+<td class='first-name'>{{user.firstName}}</td>
+<td class='last-name'>{{user.lastName}}</td>
+<td class='user-role'>
   {{user-role-selector journalRoles=journalRoles
-                       userJournalRoles=model.adminJournalRoles
-                       selected=(action "noOp")
-                       removed=(action "noOp")}}
+                       userJournalRoles=user.adminJournalRoles
+                       selected=(action "addRole")
+                       removed=(action "removeRole")}}
 </td>

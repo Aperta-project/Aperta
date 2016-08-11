@@ -42,10 +42,6 @@ login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
 
-# Need this for login into review app as administrator
-review_app_admin = {'user': 'admin', 'name': 'Adam Administrator', 'email': 'admin@example.com',
-                    'password': 'password'}
-
 au_login = {'user': 'jgray_author',
             'name': ''}
 co_login = {'user': 'jgray_collab',

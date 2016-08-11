@@ -326,25 +326,6 @@ class AdminPage(AuthenticatedPage):
       assert cancel_link.text == 'Cancel'
       cancel_link.click()
 
-  def validate_edit_journal(self, username):
-    """
-    Validates the edit function of the statically named_journal
-    :param username: needs to be asuperadm, otherwise a no-op
-    :return: void function
-    """
-    named_journal = 'PLOS Wombat'
-    if username == 'asuperadm':
-      logging.info('Validating editing journal block for Super Admin user')
-      journal_count = self.select_named_journal(named_journal)
-      logging.info(journal_count)
-      self._base_admin_journal_block_edit_icon = (
-          By.XPATH, "//div[@class='ember-view journal-thumbnail'][%s]\
-          /div/div[@class='fa fa-pencil edit-icon']" % str(journal_count))
-      edit_journal = self._get(self._base_admin_journal_block_edit_icon)
-      edit_journal.click()
-      upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
-      assert upload_button.text == 'UPLOAD NEW'
-
   def validate_search_edit_user(self, username):
     """
     Validates the styling and output of the base admin user search

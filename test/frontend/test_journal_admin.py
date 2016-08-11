@@ -5,7 +5,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, review_app_admin
+from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
 from frontend.common_test import CommonTest

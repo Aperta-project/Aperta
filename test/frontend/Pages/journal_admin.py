@@ -176,8 +176,6 @@ class JournalAdminPage(AdminPage):
     delete_role = self._get(self._journal_admin_user_row_role_delete)
     delete_role.click()
 
-
-
   def validate_user_roles(self):
     """
     """

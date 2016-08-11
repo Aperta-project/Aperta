@@ -196,20 +196,20 @@ class JournalAdminPage(AdminPage):
     self._actions.move_to_element(roles_title).perform()
     self.validate_application_h2_style(roles_title)
     self._get(self._journal_admin_roles_add_new_role_btn)
-    #self._get(self._journal_admin_roles_role_table)
-    ##role_rows = self._gets(self._journal_admin_roles_role_listing_row)
     role_rows = self._gets(self._journal_admin_user_search_results_row)
-    # default time
     self.set_timeout(3)
     journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;',
         (journal,))[0][0]
     print 'journal_id', journal_id
-    for row in role_rows:
+    for counter, row in enumerate(role_rows):
       logging.info(row.text)
+      if counter>0:
+        old_username = username
       row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
-      #print len(row_elements)
       username, first_name, last_name, roles = row_elements
       username = username.text
+      if counter>0:
+        assert username.lower()>old_username.lower(), (username.lower(), old_username.lower())
       roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
       roles = [x.text for x in roles]
       # search for roles in DB
@@ -218,66 +218,14 @@ class JournalAdminPage(AdminPage):
         roles_id = PgSQL().query('SELECT role_id FROM assignments '
                                'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
                                 (uid,))[0]
-
         db_roles = []
         for role_id in roles_id:
           db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',(role_id,))[0][0])
         assert set(roles) == set(db_roles), (roles, db_roles)
       except IndexError:
-        assert roles == []
-
-
+        logging.warning('No permissions found for user {0}'.format(username))
+        assert not roles, roles
     self.restore_timeout()
-
-
-  def _validate_roles_section(self):
-    """
-    Validate the elements and function of the Roles section of the journal admin page
-    :return: void function
-    """
-    roles_title = self._get(self._journal_admin_roles_title)
-    self._actions.move_to_element(roles_title).perform()
-    self.validate_application_h2_style(roles_title)
-    self._get(self._journal_admin_roles_add_new_role_btn)
-    #self._get(self._journal_admin_roles_role_table)
-    ##role_rows = self._gets(self._journal_admin_roles_role_listing_row)
-    role_rows = self._gets(self._journal_admin_user_search_results_row)
-
-    count = 1
-    for row in role_rows:
-      logging.info(row.text)
-      #self._role_edit_icon = \
-      #      (By.XPATH,
-      #       "//div[@class='ember-view admin-role not-editing'][{0}]\
-      #          /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
-      #self._get(self._role_edit_icon)
-      self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{0}]\
-          /div/span".format(count))
-      role_name = self._get(self._role_name)
-      logging.info(role_name.text)
-      # Note that the role Journal Admin is a PLOS Yeti special snowflake - fet!
-      if role_name.text not in ('Admin', 'Flow Manager', 'Editor', 'Journal Admin'):
-        self._role_delete_icon = (By.XPATH,
-            "//div[@class='ember-view admin-role not-editing'][{0}]\
-            /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
-        self._get(self._role_delete_icon)
-      self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing']\
-          [{0}]/div[@class='admin-role-permissions']".format(count))
-      self._get(self._role_permissions_div)
-      self._role_assigned_permission = (By.XPATH,
-                                        "//div[@class='ember-view admin-role not-editing'][{0}]\
-                                        /div[@class='admin-role-permissions']/label".format(count))
-      self.set_timeout(1)
-      try:
-        self._gets(self._role_assigned_permission)
-      except ElementDoesNotExistAssertionError:
-        logging.warning('No permissions found for role {0}'.format(role_name.text))
-      try:
-        self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
-      except ElementDoesNotExistAssertionError:
-        logging.warning('No permissions found for role: {0}'.format(role_name.text))
-      self.restore_timeout()
-      count += 1
 
   def validate_task_types_section(self, journal):
     """

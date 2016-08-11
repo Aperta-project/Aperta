@@ -11290,6 +11290,11 @@ permission_states_permissions:
     - '2'
     - '2016-06-22 18:55:43.093464'
     - '2016-06-22 18:55:43.093464'
+  - - '292'
+    - '230'
+    - '2'
+    - '2016-08-04 20:43:31.137681'
+    - '2016-08-04 20:43:31.137681'
 
 ---
 permissions:
@@ -12410,6 +12415,11 @@ permissions:
     - DiscussionTopic
     - '2016-06-22 18:55:43.079088'
     - '2016-06-22 18:55:43.079088'
+  - - '230'
+    - edit
+    - TahiStandardTasks::TitleAndAbstractTask
+    - '2016-08-04 20:43:31.119618'
+    - '2016-08-04 20:43:31.119618'
 
 ---
 permissions_roles:
@@ -14260,6 +14270,21 @@ permissions_roles:
     - '18'
     - '2016-06-22 18:55:44.166894'
     - '2016-06-22 18:55:44.166894'
+  - - '657'
+    - '230'
+    - '21'
+    - '2016-08-04 20:43:31.14415'
+    - '2016-08-04 20:43:31.14415'
+  - - '658'
+    - '45'
+    - '23'
+    - '2016-08-04 20:43:31.297453'
+    - '2016-08-04 20:43:31.297453'
+  - - '659'
+    - '230'
+    - '15'
+    - '2016-08-04 20:43:31.63983'
+    - '2016-08-04 20:43:31.63983'
 
 ---
 phase_templates:
@@ -20361,7 +20386,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:43:34.658877'
     - '2016-04-12 18:55:56.956915'
-    - pone.0059469-source.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20494,7 +20519,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:57:25.902462'
     - '2016-04-12 19:00:19.837324'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20627,7 +20652,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:00:39.194254'
     - '2016-04-12 19:02:46.35803'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20760,7 +20785,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:03:39.925701'
     - '2016-04-12 19:05:53.747659'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>

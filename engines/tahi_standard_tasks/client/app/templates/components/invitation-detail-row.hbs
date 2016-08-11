@@ -19,10 +19,13 @@
 </td>
 <td>
   <span class='invitation-state'>
-    {{invitation.state}}
+    {{if (eq invitation.state "pending") "draft" invitation.state}}
   </span>
 </td>
 <td>
+  {{#if displayEdit}}
+    <span class='fa fa-edit invite-edit' {{action editAction invitation}}></span>
+  {{/if}}
   {{#if displayDestroy}}
     <span class='fa fa-trash invite-remove' {{action destroyAction invitation}}></span>
   {{/if}}

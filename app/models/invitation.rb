@@ -78,6 +78,10 @@ class Invitation < ActiveRecord::Base
     self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'n/a'
   end
 
+  def associate_existing_user
+    update(invitee: User.find_by(email: email))
+  end
+
   private
 
   def assign_to_latest_decision
@@ -101,10 +105,6 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_declined
     task.invitation_declined(self)
-  end
-
-  def associate_existing_user
-    update(invitee: User.find_by(email: email))
   end
 
   def generate_token

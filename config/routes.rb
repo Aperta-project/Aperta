@@ -75,6 +75,7 @@ Tahi::Application.routes.draw do
       put :accept, on: :member
       put :decline, on: :member
       put :rescind, on: :member
+      get :details, on: :member
     end
     resources :journals, only: [:index, :show] do
       resources :old_roles, only: :index, shallow: true do

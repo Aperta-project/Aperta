@@ -1,14 +1,16 @@
 import Ember from 'ember';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   tagName: 'tr',
   classNames: 'invitation',
-  invitation: null,
-  destroyAction: null,
+  propTypes: {
+    invitation: PropTypes.EmberObject.isRequired,
+    destroyAction: PropTypes.func.isRequired,
+    editAction: PropTypes.func
+  },
 
   invitee: Ember.computed.alias('invitation.invitee'),
-
-  canDestroy: Ember.computed.notEmpty('destroyAction'),
-  invitationNotAccepted: Ember.computed.not('invitation.accepted'),
-  displayDestroy: Ember.computed.and('canDestroy', 'invitationNotAccepted')
+  displayDestroy: Ember.computed.not('invitation.accepted'),
+  displayEdit: Ember.computed.and('invitation.pending', 'editAction')
 });

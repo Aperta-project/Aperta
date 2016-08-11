@@ -1,6 +1,7 @@
 {{#each invitations as |invitation|}}
   {{invitation-detail-row
       invitation=invitation
+      editAction=editAction
       destroyAction=destroyAction}}
 
   {{#if invitation.declined}}

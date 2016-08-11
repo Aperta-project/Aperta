@@ -59,7 +59,7 @@ export default TaskComponent.extend({
   actions: {
     cancelAction() {
       this.set('selectedUser', null);
-      return this.set('composingEmail', false);
+      this.set('invitationToEdit', null);
     },
 
     composeInvite() {
@@ -85,6 +85,17 @@ export default TaskComponent.extend({
 
     didSelectUser(selectedUser) {
       return this.set('selectedUser', selectedUser);
+    },
+
+    editInvitation(invitation) {
+      invitation.fetchDetails().then(() => {
+        this.set('selectedUser',
+          {
+            full_name: invitation.get('invitee.fullName'),
+            email: invitation.get('email')
+          });
+        this.set('invitationToEdit', invitation);
+      });
     },
 
     inviteEditor() {

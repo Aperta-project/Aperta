@@ -1,5 +1,6 @@
 class InvitationSerializer < ActiveModel::Serializer
   attributes :id,
+             :body,
              :created_at,
              :decline_reason,
              :email,
@@ -10,4 +11,8 @@ class InvitationSerializer < ActiveModel::Serializer
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true
+
+  def include_body?
+    @options[:include_body] == true
+  end
 end

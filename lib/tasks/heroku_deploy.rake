@@ -10,11 +10,11 @@ namespace :heroku do
     The first command will deploy to tahi-lean-workflow and tahi-sandbox with version 1.5.11
     The second command will deploy only to tahi-lean-workflow with version 1.5.11
     DESC
+
   task :deploy, [:version, :app] => [:environment] do |_, args|
-    # DEPLOYING_APPS = ['tahi-lean-workflow', 'tahi-sandbox01']
-    DEPLOYING_APPS = ['ciagent-stage-pr-2527', 'ciagent-stage-pr-2528']
+    DEPLOYING_APPS = ['tahi-lean-workflow', 'tahi-sandbox01']
     DEPLOYING_APPS = [args[:app]] if args[:app].present?
-    puts "Deploying #{DEPLOYING_APPS.join(', ')}..."
+    STDERR.puts "Deploying #{DEPLOYING_APPS.join(', ')}..."
     fail "Please enter a version number. i.e. rake 'heroku:deploy[1.1.1]'" if args[:version].blank?
     threads = []
     DEPLOYING_APPS.each do |app|
@@ -32,6 +32,6 @@ namespace :heroku do
       end
     end
     threads.map(&:join)
-    puts "Deployment task complete"
+    STDERR.puts "Deployment task complete"
   end
 end

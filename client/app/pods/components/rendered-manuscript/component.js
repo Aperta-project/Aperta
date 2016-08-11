@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     //paper's journal is async
     this.get('paper.journal').then((journal) => {
       const style = journal.get('manuscriptCss');
-      this.$('.manuscript').attr('style', style);
+      this.$().attr('style', style);
     });
   },
 

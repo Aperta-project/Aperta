@@ -79,10 +79,6 @@ export default TaskComponent.extend({
       });
     },
 
-    destroyInvitation(invitation) {
-      return invitation.rescind();
-    },
-
     didSelectUser(selectedUser) {
       return this.set('selectedUser', selectedUser);
     },

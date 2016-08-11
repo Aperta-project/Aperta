@@ -26,5 +26,9 @@
     "select2": "3.5.1",
     "sinon": "http://sinonjs.org/releases/sinon-1.12.1.js",
     "underscore": "1.7.0"
+  },
+
+  "resolutions": {
+    "ember": "2.0.2"
   }
 }

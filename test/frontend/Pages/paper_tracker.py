@@ -328,7 +328,7 @@ class PaperTrackerPage(AuthenticatedPage):
       for count, row in enumerate(table_rows):
         if not db_papers[count][3]:
           logging.info(db_papers[count])
-          raise ValueError('Paper without Date Submitted')
+          raise ValueError('Paper without Date Submitted: id {0}'.format(db_papers[count][0]))
         logging.info('Validating Row: {0}'.format(count + 1))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (

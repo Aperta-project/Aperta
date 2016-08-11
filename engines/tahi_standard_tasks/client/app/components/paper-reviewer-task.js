@@ -66,10 +66,6 @@ export default TaskComponent.extend({
       return this.set('composingEmail', true);
     },
 
-    destroyInvitation(invitation) {
-      return invitation.rescind();
-    },
-
     didSelectReviewer(selectedReviewer) {
       return this.set('selectedReviewer', selectedReviewer);
     },

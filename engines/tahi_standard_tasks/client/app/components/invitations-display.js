@@ -43,7 +43,7 @@ export default Ember.Component.extend({
 
   actions: {
     destroyInvitation(invitation) {
-      return this.sendAction('onDestroyInvitation', invitation);
+      invitation.rescind();
     }
   }
 });

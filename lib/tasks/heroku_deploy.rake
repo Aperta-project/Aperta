@@ -24,11 +24,17 @@ namespace :heroku do
       commands << "git push -f git@heroku.com:#{app}.git release/#{args[:version]}:master" # Deploy
       # Migrations
       commands << "heroku run bundle exec rake db:migrate nested-questions:seed roles-and-permissions:seed --app #{app}"
-      # Maintenance off
-      commands << "heroku maintenance:off --app #{app}"
 
       threads << Thread.new do
-        system(commands.join(' &&'))
+        begin
+          if system(commands.join(' &&'))
+            STDERR.puts "Deployed to #{app}"
+          else
+            STDERR.puts "Errors deploying to #{app}"
+          end
+        ensure
+          system("heroku maintenance:off --app #{app}")
+        end
       end
     end
     threads.map(&:join)

@@ -21,7 +21,7 @@ namespace :heroku do
       commands = []
       commands << "heroku maintenance:on --app #{app}"     # Maintenance on
       commands << "heroku pg:backups capture --app #{app}" # Backup database
-      commands << "git push -f git@heroku.com:#{app}.git release/#{args[:version]}:master" # Deploy
+      commands << "git push -f https://git.heroku.com/#{app}.git release/#{args[:version]}:master" # Deploy
       # Migrations
       commands << "heroku run bundle exec rake db:migrate nested-questions:seed roles-and-permissions:seed --app #{app}"
 

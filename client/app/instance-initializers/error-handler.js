@@ -18,12 +18,8 @@ export default {
           if (typeof Bugsnag !== 'undefined' && Bugsnag && Bugsnag.notifyException) {
             if (error.errors && error.errors.length) {
               let meta = {
-                metaData: {}
+                errorInfo: {'error.errors': error.errors}
               };
-
-              error.errors.forEach((err, i) => {
-                meta.metaData[`error_info_${i + 1}`] = err;
-              });
 
               Bugsnag.notifyException(error, 'Uncaught Ember Error', meta);
             } else {

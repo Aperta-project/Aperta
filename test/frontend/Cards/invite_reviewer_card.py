@@ -100,7 +100,8 @@ class InviteReviewersCard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert '{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
+    assert '{0}, {1}'.format(creator_ln.encode('utf-8'), creator_fn.encode('utf-8')) in \
+        invite_text.encode('utf-8'), invite_text.encode('utf-8')
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
       # strip html, and remove whitespace

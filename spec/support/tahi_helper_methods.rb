@@ -27,6 +27,10 @@ module TahiHelperMethods
     creator.assign_to!(assigned_to: paper, role: paper.journal.creator_role)
   end
 
+  def assign_task_participant_role(task, participant)
+    participant.assign_to!(assigned_to: task, role: task.paper.journal.task_participant_role)
+  end
+
   def assign_reviewer_role(paper, reviewer)
     reviewer.assign_to!(assigned_to: paper, role: paper.journal.reviewer_role)
   end

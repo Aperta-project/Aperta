@@ -5,7 +5,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Version] - {Date}
 ### Added
 - Daily export of billing log
-- Admins can view journal roles assigned to users
+- Admins can view and edit journal roles assigned to users
+- AE country is included in Apex export
 ### Changed
 ### Deprecated
 ### Removed
@@ -25,6 +26,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Register Decision Task can now select from multiple letter templates.
   Adds a consistent way to handle variables in letter templates to support
 editability down the line.
+- Registering a decision removes existing reviewers and open reviewer invitations
 ### Changed
 ### Deprecated
 ### Removed

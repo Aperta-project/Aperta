@@ -10,8 +10,8 @@ node_modules
 # Assets
 doc/*.svg
 doc/*.csv
-doc/dependencies.*
-doc/ux
+doc/rdoc/
+doc/yuidoc/
 public/uploads
 public/assets
 

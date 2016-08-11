@@ -48,7 +48,9 @@ describe NestedQuestion do
   describe "#destroy" do
     subject(:nested_question) { FactoryGirl.build(:nested_question) }
     it 'soft deletes nested questions' do
+      nested_question.save
       nested_question.destroy
+      nested_question.reload
 
       expect(nested_question.deleted_at).to_not be_nil
     end

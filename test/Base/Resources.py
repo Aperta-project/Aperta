@@ -42,6 +42,7 @@ login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
 
+# Need this for login into review app as administrator
 review_app_admin = {'user': 'admin', 'name': 'Adam Administrator', 'email': 'admin@example.com',
                     'password': 'password'}
 
@@ -111,7 +112,6 @@ creator_login22 = {'user': 'aauthor22',
 creator_login23 = {'user': u'민성', 'name': u'민준 성', 'email': 'sealresq+1031@gmail.com'}
 creator_login24 = {'user': u'志張', 'name': u'志明 張', 'email': 'sealresq+1032@gmail.com'}
 creator_login25 = {'user': u'文孙', 'name': u'文 孙', 'email': 'sealresq+1033@gmail.com'}
-
 
 reviewer_login = {'user': 'areviewer',
                   'name': 'atest reviewer',

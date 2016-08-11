@@ -345,8 +345,6 @@ class AdminPage(AuthenticatedPage):
       upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
       assert upload_button.text == 'UPLOAD NEW'
 
-
-
   def validate_search_edit_user(self, username):
     """
     Validates the styling and output of the base admin user search
@@ -443,10 +441,6 @@ class AdminPage(AuthenticatedPage):
     """
     url = '{0}/{1}'.format(self._driver.current_url, journal_id)
     self._driver.get(url)
-
-
-
-
 
 
   # TODO: Create method to create journal PLOS Wombat if !exist

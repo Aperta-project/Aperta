@@ -1,4 +1,4 @@
-<tr class='invitation' {{action 'showDetails' invitation}}>
+<tr class='invitation' {{action 'toggleDetails' invitation}}>
   <td>
     <span>
       {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
@@ -40,9 +40,18 @@
 {{#if showDetails}}
   <tr>
     <td colspan="4">
-      {{content-editable value=invitation.body
-                         class="invitation-body"
-                         disabled=true}}
+      <div>
+        {{content-editable value=invitation.body
+                           class="edit-invitation-body"
+                           disabled=(eq detailState 'show')}}
+
+        {{#if (eq detailState 'edit')}}
+          <div class="invite-edit-buttons">
+            <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
+            <button class="button-primary button--green invite-editor-button" {{action "save" invitation}}>Save</button>
+          </div>
+        {{/if}}
+      </div>
     </td>
   </tr>
 {{/if}}

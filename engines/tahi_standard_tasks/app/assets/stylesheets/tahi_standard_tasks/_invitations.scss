@@ -38,6 +38,11 @@
   float: left;
 }
 
+.edit-invitation-body {
+  max-height: 300px;
+  overflow: auto;
+}
+
 .invitees, .assignments {
   width: $message-body-width;
   margin-top: 36px;

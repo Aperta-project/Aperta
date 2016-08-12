@@ -28,6 +28,11 @@
   }
 }
 
+.edit-invitation-body {
+  max-height: 300px;
+  overflow: auto;
+}
+
 .invitation {
   background: rgba(255,255,255, 0.95);
   width: 860px;

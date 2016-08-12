@@ -13,16 +13,33 @@ export default Ember.Component.extend({
   displayEdit: Ember.computed.and('invitation.pending', 'showDetails', 'editAction'),
 
   showDetails: false,
+  detailState: 'show',
 
   actions: {
-    editInvitation(invitation) {
-      invitation.fetchDetails().then(() => {
-        this.set('showDetails', true);
-      });
+    editInvitation() {
+      this.set('detailState', 'edit');
     },
-    showDetails(invitation) {
-      invitation.fetchDetails().then(() => {
-        this.set('showDetails', true);
+
+    toggleDetails(invitation) {
+      if (!this.get('showDetails')) {
+        invitation.fetchDetails().then(() => {
+          this.set('showDetails', true);
+        });
+      } else {
+        if (this.get('detailState') === 'show') {
+          this.set('showDetails', false);
+        }
+      }
+    },
+
+    cancelEdit(invitation) {
+      invitation.rollbackAttributes();
+      this.set('detailState', 'show');
+    },
+
+    save(invitation) {
+      invitation.save().then(() => {
+        this.set('detailState', 'show');
       });
     }
   }

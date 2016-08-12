@@ -1,5 +1,14 @@
 # Prepare our data model for rescinded decisions
 class Rescind < ActiveRecord::Migration
+  # We need to manually reset the columns because our local class definitions
+  # interfere somehow with the migrations column resetting.
+  def reset_columns
+    say("Manually resetting column information")
+    [::Decision, ::VersionedText, ::Paper].each do |m|
+      m.reset_column_information
+    end
+  end
+
   # Redundantly define class for future-proofing
   class Decision < ActiveRecord::Base
     belongs_to :paper
@@ -85,6 +94,12 @@ class Rescind < ActiveRecord::Migration
 
   # rubocop:disable Metrics/MethodLength
   def change
+    reversible do |direction|
+      direction.down do
+        reset_columns
+      end
+    end
+
     change_column_null :versioned_texts, :major_version, true
     change_column_null :versioned_texts, :minor_version, true
 
@@ -173,5 +188,11 @@ class Rescind < ActiveRecord::Migration
       [:minor_version, :major_version, :paper_id],
       name: 'unique_decision_version',
       unique: true)
+
+    reversible do |direction|
+      direction.up do
+        reset_columns
+      end
+    end
   end
 end

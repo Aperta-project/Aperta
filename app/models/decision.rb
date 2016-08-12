@@ -52,7 +52,11 @@ class Decision < ActiveRecord::Base
   # decision was made, they rescind that choice.
   def rescind!
     Decision.transaction do
-      paper.rescind!
+      if initial
+        paper.rescind_initial_decision!
+      else
+        paper.rescind_decision!
+      end
       update! rescinded: true
     end
   end

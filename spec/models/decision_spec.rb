@@ -30,14 +30,46 @@ describe Decision do
   end
 
   describe '#rescind!' do
-    it 'flags rescinded as true' do
-      allow(paper).to receive(:rescind!)
-      expect { decision.rescind! }.to change { decision.rescinded }.to be(true)
+    context 'when the decision is not initial' do
+      subject(:decision) do
+        FactoryGirl.build(
+          :decision,
+          initial: false,
+          paper: paper,
+          major_version: nil,
+          minor_version: nil)
+      end
+
+      it 'flags rescinded as true' do
+        allow(paper).to receive(:rescind_decision!)
+        expect { decision.rescind! }.to change { decision.rescinded }.to be(true)
+      end
+
+      it 'calls paper.rescind_decision!' do
+        expect(paper).to receive(:rescind_decision!)
+        decision.rescind!
+      end
     end
 
-    it 'calls paper.rescind!' do
-      expect(paper).to receive(:rescind!)
-      decision.rescind!
+    context 'when the decision is initial' do
+      subject(:decision) do
+        FactoryGirl.build(
+          :decision,
+          paper: paper,
+          initial: true,
+          major_version: nil,
+          minor_version: nil)
+      end
+
+      it 'flags rescinded as true' do
+        allow(paper).to receive(:rescind_initial_decision!)
+        expect { decision.rescind! }.to change { decision.rescinded }.to be(true)
+      end
+
+      it 'calls paper.rescind_initial_decision!' do
+        expect(paper).to receive(:rescind_initial_decision!)
+        decision.rescind!
+      end
     end
   end
 

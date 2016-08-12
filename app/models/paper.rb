@@ -216,20 +216,24 @@ class Paper < ActiveRecord::Base
       end
     end
 
-    # Please use rescind! instead of these __'d methods. It will
-    # choose the right state for you to end up in. Thanks!
-    event(:__rescind_initial_decision) do
+    event(:rescind_initial_decision) do
       transitions to: :initially_submitted,
-                  from: [:rejected, :invited_for_full_submission]
+                  guard: -> { last_completed_decision.initial },
+                  from: [:rejected,
+                         :invited_for_full_submission],
+                  after: [:new_draft!,
+                          :new_minor_version!]
     end
 
-    event(:__rescind_decision) do
+    event(:rescind_decision) do
       transitions to: :submitted,
-                  from: [:rejected, :accepted, :in_revision]
+                  guard: -> { !last_completed_decision.initial },
+                  from: [:rejected, :accepted,
+                         :in_revision],
+                  after: [:new_draft!,
+                          :new_minor_version!]
     end
   end
-
-  private :__rescind_initial_decision!, :__rescind_decision!
 
   # All known paper states
   STATES = aasm.states.map(&:name)
@@ -245,18 +249,6 @@ class Paper < ActiveRecord::Base
   REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
 
   TERMINAL_STATES = [:accepted, :rejected]
-
-  # This is a faux state transition, it dynamically picks which
-  # state transition to use when rescinding.
-  def rescind!
-    if been_fully_submitted?
-      __rescind_decision!
-    else
-      __rescind_initial_decision!
-    end
-    new_draft! if draft.nil?
-    new_minor_version!
-  end
 
   def snapshottable_things
     [].concat(tasks)
@@ -523,8 +515,7 @@ class Paper < ActiveRecord::Base
   end
 
   def new_draft!
-    fail StandardError, 'Draft already exists' unless draft.nil?
-    latest_version.new_draft!
+    latest_version.new_draft! unless draft
   end
 
   def new_draft_decision!
@@ -537,6 +528,10 @@ class Paper < ActiveRecord::Base
 
   def draft_decision
     decisions.drafts.first
+  end
+
+  def last_completed_decision
+    decisions.completed.version_asc.last
   end
 
   def insert_figures!
@@ -591,10 +586,6 @@ class Paper < ActiveRecord::Base
   def set_state_updated!
     update!(state_updated_at: Time.current.utc)
     Activity.state_changed! self, to: publishing_state
-  end
-
-  def been_fully_submitted?
-    activities.where(activity_key: "paper.state_changed.submitted").exists?
   end
 
   def assign_submitting_user!(submitting_user)

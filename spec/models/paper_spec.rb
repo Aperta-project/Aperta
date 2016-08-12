@@ -843,8 +843,12 @@ describe Paper do
       end
     end
 
-    describe '#rescind!' do
-      subject { paper.rescind! }
+    describe '#rescind_decision!' do
+      subject { paper.rescind_decision! }
+
+      before do
+        allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(false)
+      end
 
       shared_examples_for 'rescinding from a non-initial decision' do
         it "creates a new decision" do
@@ -856,56 +860,80 @@ describe Paper do
         end
       end
 
-      context 'after full submission' do
-        let(:paper) do
-          create(:paper, :submitted_lite, journal: journal).tap do |p|
-            p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
-            p.draft_decision.register! FactoryGirl.create(:register_decision_task)
-          end
+      let(:paper) do
+        create(:paper, :submitted_lite, journal: journal).tap do |p|
+          p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
+          p.draft_decision.register! FactoryGirl.create(:register_decision_task)
+        end
+      end
+      let(:verdict) { 'reject' }
+
+      context 'when the last decision is Rejected' do
+        let(:verdict) { 'reject' }
+
+        it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision is Accepted' do
+        let(:verdict) { 'accept' }
+
+        it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision is Major revision' do
+        let(:verdict) { "major_revision" }
+
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision is Minor revision' do
+        let(:verdict) { "minor_revision" }
+
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision was initial' do
+        before do
+          allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(true)
         end
 
-        context 'when the last decision is Rejected' do
-          let(:verdict) { 'reject' }
+        it 'raises AASM::InvalidTransition' do
+          expect { subject }.to raise_exception(AASM::InvalidTransition)
+        end
+      end
+    end
 
-          it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
-          it_behaves_like "rescinding from a non-initial decision"
+    describe '#rescind_initial_submission!' do
+      subject { paper.rescind_initial_decision! }
+
+      let(:paper) do
+        create(:paper, publishing_state: :initially_submitted, journal: journal).tap(&:reject!)
+      end
+      before do
+        allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(true)
+      end
+
+      context 'when the last decision is Rejected' do
+        it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+
+        it "transitions to initially_submitted from rejected" do
+          expect { subject }.to change { paper.publishing_state }.to("initially_submitted")
         end
 
-        context 'when the last decision is Accepted' do
-          let(:verdict) { 'accept' }
-
-          it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
-          it_behaves_like "rescinding from a non-initial decision"
-        end
-
-        context 'when the last decision is Major revision' do
-          let(:verdict) { "major_revision" }
-
-          it_behaves_like "rescinding from a non-initial decision"
-        end
-
-        context 'when the last decision is Minor revision' do
-          let(:verdict) { "minor_revision" }
-
-          it_behaves_like "rescinding from a non-initial decision"
+        it "creates a new decision" do
+          expect { subject }.to change { paper.decisions.count }.by(1)
         end
       end
 
-      context 'after initial submission' do
-        let(:paper) do
-          create(:paper, publishing_state: :initially_submitted, journal: journal).tap(&:reject!)
+      context 'when the last decision was not initial' do
+        before do
+          allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(false)
         end
 
-        context 'when the last decision is Rejected' do
-          it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
-
-          it "transitions to initially_submitted from rejected" do
-            expect { subject }.to change { paper.publishing_state }.to("initially_submitted")
-          end
-
-          it "creates a new decision" do
-            expect { subject }.to change { paper.decisions.count }.by(1)
-          end
+        it 'raises AASM::InvalidTransition' do
+          expect { subject }.to raise_exception(AASM::InvalidTransition)
         end
       end
     end

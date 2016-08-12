@@ -1,79 +1,66 @@
-<tr class='invitation' {{action 'toggleDetails' invitation}}>
-  <td>
-    <span>
-      {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
-    </span>
-  </td>
-  <td>
-    <span class='invitee-full-name'>
-      {{#if invitee}}
-        {{invitee.fullName}}
-      {{else}}
-        {{invitation.email}}
-      {{/if}}
-    </span>
-  </td>
-  <td>
-    <span class='invitation-updated-at'>
-      {{format-date invitation.updatedAt format='LLL'}}
-    </span>
-  </td>
-  <td>
-    <span class='invitation-state'>
-      {{if (eq invitation.state "pending") "draft" invitation.state}}
-    </span>
-  </td>
-  <td>
+<div class='invitation-item-header flex-group' {{action 'toggleDetails' invitation}}>
+  <div class="flex-element invitation-item-full-name">
+    {{#if invitee}}
+      {{invitee.fullName}}
+    {{else}}
+      {{invitation.email}}
+    {{/if}}
+  </div>
+  <div class="flex-element invitation-item-updated-at">
+    <span class="invitation-item-state">{{capitalize (if (eq invitation.state "pending") "draft" invitation.state)}}</span>
+    <span class="invitation-item-date">{{format-date invitation.updatedAt format='LLL'}}</span>
+  </div>
+  <div class="flex-element invitation-item-actions">
     {{#if displayEdit}}
-      <span {{action 'editInvitation' invitation bubbles=false}}>
-        <span class='fa fa-edit invite-edit'></span>
+      <span class="invitation-item-action" {{action "editInvitation" invitation bubbles=false}}>
+        <span class="fa fa-pencil invite-edit"></span>
+        <span class="invitation-item-action-text">Edit</span>
+      </span>
+    {{/if}}
+    {{#if displaySend}}
+      <span class="invitation-item-action">
+        <span class="fa fa-send invite-send"></span>
+        <span class="invitation-item-action-text">Send</span>
       </span>
     {{/if}}
     {{#if displayDestroy}}
-      <span {{action destroyAction invitation bubbles=false}}>
-        <span class='fa fa-trash invite-remove' ></span>
+      <span class="invitation-item-action" {{action destroyAction invitation bubbles=false}}>
+        <span class="fa fa-trash invite-remove" ></span>
+        <span class="invitation-item-action-text">Delete</span>
       </span>
     {{/if}}
-  </td>
-</tr>
+  </div>
+</div>
 
-{{#if showDetails}}
-  <tr>
-    <td colspan="4">
-      <div>
-        {{content-editable value=invitation.body
-                           class="edit-invitation-body"
-                           disabled=(eq detailState 'show')}}
+{{#if (eq detailState 'show')}}
+  <div class="invitation-item-details">
+    <div class="invitation-show-body">
+      {{{invitation.body}}}
+    </div>
+  </div>
+{{/if}}
 
-        {{#if (eq detailState 'edit')}}
-          <div class="invite-edit-buttons">
-            <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
-            <button class="button-primary button--green invite-editor-button" {{action "save" invitation}}>Save</button>
-          </div>
-        {{/if}}
-      </div>
-    </td>
-  </tr>
+{{#if (eq detailState 'edit')}}
+  <div class="invitation-item-details">
+    {{content-editable value=invitation.body
+                       class="invitation-edit-body"}}
+    <div class="invite-edit-buttons">
+      <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
+      <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
+    </div>
+  </div>
 {{/if}}
 
 {{#if invitation.declined}}
-  <tr class='invitation-decline-reason'>
-    <td></td>
-    <td colspan=4>
-      <span>
-        <strong>Reasons: </strong>
-        {{break-to-tag invitation.declineReason}}
-      </span>
-    </td>
-  </tr>
+  <div class="invitation-decline-info">
+    <div class='invitation-decline-reason'>
+      <strong>Reasons: </strong>
+      {{break-to-tag invitation.declineReason}}
+    </div>
 
-  <tr class='invitation-reviewer-suggestions'>
-    <td></td>
-    <td colspan=4>
-      <span>
-        <strong>Reviewer Suggestions: </strong>
-        {{break-to-tag invitation.reviewerSuggestions}}
-      </span>
-    </td>
-  </tr>
+    <div class='invitation-reviewer-suggestions'>
+      <strong>Reviewer Suggestions: </strong>
+      {{break-to-tag invitation.reviewerSuggestions}}
+    </div>
+  </div>
 {{/if}}

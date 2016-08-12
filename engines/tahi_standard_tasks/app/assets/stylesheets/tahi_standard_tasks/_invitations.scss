@@ -1,3 +1,8 @@
+$invite-padding-vertical: 1rem;
+$invite-padding-horizontal: 2rem;
+$invite-padding: $invite-padding-vertical $invite-padding-horizontal;
+
+// this goes somewhere else:
 .dashboard-open-invitations {
   list-style-type: none;
   padding: 0;
@@ -38,9 +43,22 @@
   float: left;
 }
 
-.edit-invitation-body {
-  max-height: 300px;
+.invitation-show-body,
+.invitation-edit-body {
   overflow: auto;
+  max-height: 300px;
+  padding: 0.75rem 1.5rem;
+  white-space: pre-wrap;
+}
+
+.invitation-edit-body {
+  border: 1px solid $tahi-grey-light;
+  border-radius: 4px;
+}
+
+.invitation-show-body {
+  // override default in _content-editable.scss
+  background: transparent;
 }
 
 .invitees, .assignments {
@@ -52,11 +70,6 @@
   .assignment-updated-at {
     font-size: 14px;
     text-transform: capitalize;
-  }
-
-  .invitation-decline-reason span,
-  .invitation-reviewer-suggestions span {
-    font-size: 14px;
   }
 
   .revision-human-number {
@@ -89,4 +102,94 @@
       cursor: pointer;
     }
   }
+}
+
+.invitation-email-entry {
+  padding: $invite-padding;
+  background: #ddd;
+
+  .auto-suggest-border {
+    width: 400px;
+    display: inline-block;
+  }
+}
+
+.invitation-compose-button {
+  margin-left: 20px;
+}
+
+.invitation-item {
+  border-bottom: 1px solid $tahi-grey-light;
+}
+
+.invitation-item--closed {
+  &:hover .invitation-item-header { cursor: pointer; }
+
+  .invitation-item-action-text { display: none; }
+}
+
+.invitation-item--show {
+  &:hover .invitation-item-header { cursor: pointer; }
+
+  .invitation-item-header,
+  .invitation-item-details {
+    background-color: $tahi-grey-xlight;
+  }
+}
+
+.invitation-item--edit {
+  .invitation-item-header,
+  .invitation-item-details {
+    background-color: $tahi-grey-light;
+  }
+}
+
+.invitation-decline-info {
+  padding: 0 $invite-padding-horizontal 1rem $invite-padding-horizontal;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.invitation-item-header {
+  padding: $invite-padding;
+}
+
+.invitation-item-header {
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+.invitation-item-full-name {
+  width: 30%;
+  flex-grow: 0;
+}
+
+.invitation-item-updated-at {
+  flex-grow: 2;
+}
+
+.invitation-item-actions {
+  text-align: right;
+}
+
+.invitation-item-action {
+  margin-left: 2rem;
+  color: $tahi-grey;
+
+  .fa {
+    font-size: 1.7rem;
+  }
+}
+
+.invitation-item-details {
+  padding: 0 2rem 2rem 2rem;
+}
+
+.invitation-item-state {
+  margin-right: 0.25rem;
+}
+
+.invite-edit-buttons {
+  padding-top: $invite-padding-vertical;
+  text-align: right;
 }

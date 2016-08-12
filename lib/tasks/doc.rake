@@ -21,6 +21,7 @@ namespace :doc do
   Rake::Task['doc:app'].comment = "Generate docs for Tahi"
   Rake::Task['doc:app'].enhance do
     # generate js docs
-    system("cd client && node_modules/.bin/yuidoc . -x tmp,bower_components -o ../doc/yuidoc/")
+    # See `client/yuidoc.json` for options
+    system("cd client && node_modules/.bin/yuidoc .")
   end
 end

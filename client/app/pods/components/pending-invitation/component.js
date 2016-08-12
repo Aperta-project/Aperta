@@ -9,7 +9,11 @@ export default Ember.Component.extend({
   classNames: ['invite-editor-edit-invite'],
 
   actions: {
-    nope() { console.log('This is a no-op in pending-invitation/component.js'); },
-    sendInvitation() { console.log('Send it on');},
+    nope() { alert('This is a no-op in pending-invitation/component.js'); },
+    sendInvitation(invitation) {
+      invitation.send().then(() => {
+        this.get('closeAction')();
+      });
+    }
   }
 });

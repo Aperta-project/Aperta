@@ -15,6 +15,19 @@ class InvitationsController < ApplicationController
     respond_with invitation
   end
 
+  def update
+    requires_user_can(:manage_invitations, invitation.task)
+    invitation.update_attributes(invitation_update_params)
+    respond_with invitation
+  end
+
+  def send_invite
+    requires_user_can(:manage_invitations, invitation.task)
+    invitation.invite!
+    Activity.invitation_sent!(invitation, user: current_user)
+    render json: invitation
+  end
+
   def create
     requires_user_can(:manage_invitations, task)
     invitation = task.invitations.build(
@@ -75,6 +88,12 @@ class InvitationsController < ApplicationController
         :state,
         :reviewer_suggestions,
         :task_id)
+  end
+
+  def invitation_update_params
+    params
+      .require(:invitation)
+      .permit(:body, :email)
   end
 
   def task

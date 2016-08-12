@@ -1,32 +1,70 @@
-<td>
-  <span>
-    {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
-  </span>
-</td>
-<td>
-  <span class='invitee-full-name'>
-    {{#if invitee}}
-      {{invitee.fullName}}
-    {{else}}
-      {{invitation.email}}
+<tr class='invitation' {{action 'showDetails' invitation}}>
+  <td>
+    <span>
+      {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
+    </span>
+  </td>
+  <td>
+    <span class='invitee-full-name'>
+      {{#if invitee}}
+        {{invitee.fullName}}
+      {{else}}
+        {{invitation.email}}
+      {{/if}}
+    </span>
+  </td>
+  <td>
+    <span class='invitation-updated-at'>
+      {{format-date invitation.updatedAt format='LLL'}}
+    </span>
+  </td>
+  <td>
+    <span class='invitation-state'>
+      {{if (eq invitation.state "pending") "draft" invitation.state}}
+    </span>
+  </td>
+  <td>
+    {{#if displayEdit}}
+      <span {{action 'editInvitation' invitation bubbles=false}}>
+        <span class='fa fa-edit invite-edit'></span>
+      </span>
     {{/if}}
-  </span>
-</td>
-<td>
-  <span class='invitation-updated-at'>
-    {{format-date invitation.updatedAt format='LLL'}}
-  </span>
-</td>
-<td>
-  <span class='invitation-state'>
-    {{if (eq invitation.state "pending") "draft" invitation.state}}
-  </span>
-</td>
-<td>
-  {{#if displayEdit}}
-    <span class='fa fa-edit invite-edit' {{action editAction invitation}}></span>
-  {{/if}}
-  {{#if displayDestroy}}
-    <span class='fa fa-trash invite-remove' {{action destroyAction invitation}}></span>
-  {{/if}}
-</td>
+    {{#if displayDestroy}}
+      <span {{action destroyAction invitation bubbles=false}}>
+        <span class='fa fa-trash invite-remove' ></span>
+      </span>
+    {{/if}}
+  </td>
+</tr>
+
+{{#if showDetails}}
+  <tr>
+    <td colspan="4">
+      {{content-editable value=invitation.body
+                         class="invitation-body"
+                         disabled=true}}
+    </td>
+  </tr>
+{{/if}}
+
+{{#if invitation.declined}}
+  <tr class='invitation-decline-reason'>
+    <td></td>
+    <td colspan=4>
+      <span>
+        <strong>Reasons: </strong>
+        {{break-to-tag invitation.declineReason}}
+      </span>
+    </td>
+  </tr>
+
+  <tr class='invitation-reviewer-suggestions'>
+    <td></td>
+    <td colspan=4>
+      <span>
+        <strong>Reviewer Suggestions: </strong>
+        {{break-to-tag invitation.reviewerSuggestions}}
+      </span>
+    </td>
+  </tr>
+{{/if}}

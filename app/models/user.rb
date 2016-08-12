@@ -153,6 +153,7 @@ class User < ActiveRecord::Base
     elsif assigned_users_in_journal_id
       User.joins(user_roles: :old_role)
         .where('old_roles.journal_id = ?', assigned_users_in_journal_id)
+        .reorder("last_name")
         .uniq
     end
   end

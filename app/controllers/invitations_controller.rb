@@ -20,8 +20,12 @@ class InvitationsController < ApplicationController
     invitation = task.invitations.build(
       invitation_params.merge(inviter: current_user)
     )
-    invitation.invite!
-    Activity.invitation_created!(invitation, user: current_user)
+    if invitation_params[:state] == 'pending'
+      invitation.save
+    else
+      invitation.invite!
+      Activity.invitation_created!(invitation, user: current_user)
+    end
     respond_with(invitation)
   end
 
@@ -62,6 +66,7 @@ class InvitationsController < ApplicationController
         :body,
         :decline_reason,
         :email,
+        :state,
         :reviewer_suggestions,
         :task_id)
   end

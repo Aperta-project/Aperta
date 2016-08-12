@@ -12,6 +12,7 @@ class Attachment < ActiveRecord::Base
   self.snapshottable = true
 
   STATUS_DONE = 'done'
+  IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif pdb}
 
   mount_snapshottable_uploader :file, AttachmentUploader
 

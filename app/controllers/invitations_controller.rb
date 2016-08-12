@@ -25,7 +25,7 @@ class InvitationsController < ApplicationController
       invitation.save
     else
       invitation.invite!
-      Activity.invitation_created!(invitation, user: current_user)
+      Activity.invitation_sent!(invitation, user: current_user)
     end
     respond_with(invitation)
   end

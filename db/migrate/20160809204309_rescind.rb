@@ -25,10 +25,20 @@ class Rescind < ActiveRecord::Migration
     end
 
     def be_complete!
+      (major_version, minor_version) =
+        paper.decidable_versions.fetch(revision_number)
       update!(
-        major_version: revision_number,
-        minor_version: 0,
+        major_version: major_version,
+        minor_version: minor_version,
         registered_at: created_at)
+      # Sanity check: every decision should have a versioned text that it
+      # corresponds to
+      fail "Trying to set the version on decision #{id} to #{major_version}, \
+#{minor_version}, but there is no VersionedText with that version" \
+        unless paper.versioned_texts.where(
+          major_version: major_version,
+          minor_version: minor_version
+        ).count == 1
     end
   end
 
@@ -64,6 +74,17 @@ class Rescind < ActiveRecord::Migration
   class Paper < ActiveRecord::Base
     has_many :decisions
     has_many :versioned_texts
+
+    # Generate a list of versions (as [major, minor]) that should have decisions
+    # corresponding to them
+    def decidable_versions
+      retval = []
+      retval << [0, 0] if gradual_engagement
+      retval += versioned_texts.pluck(:major_version, :minor_version)
+        .group_by { |p| p[0] }
+        .map { |_, v| v.sort_by { |p| p[1] }.last } - [0, 0]
+      retval.uniq # remove dup [0,0] entries
+    end
 
     # States that come before a final decision has been made
     def non_terminal_publishing_state?

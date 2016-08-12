@@ -6,5 +6,11 @@ export default Ember.Component.extend({
     user: PropTypes.object.isRequired,
     invitation: PropTypes.object.isRequired
   },
-  classNames: ['invite-editor-edit-invite']
+  classNames: ['invite-editor-edit-invite'],
+
+  actions: {
+    nope() { console.log('This is a no-op in pending-invitation/component.js'); },
+    sendInvitation() { console.log('Send it on');},
+    cancelAction() { console.log('Delete pending invitation');}
+  }
 });

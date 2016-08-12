@@ -18,8 +18,11 @@ export default TaskComponent.extend(HasBusyStateMixin, {
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
-  initialDecisions: computed.filterBy(
+  initialDecisionsAscending: computed.filterBy(
     'task.paper.sortedDecisions', 'initial', true),
+  initialDecisions: computed('initialDecisionsAscending.[]', function() {
+    return this.get('initialDecisionsAscending').reverse();
+  }),
   initialDecision: computed.alias('task.paper.initialDecision'),
   nonPublishable: not('publishable'),
   hasNoLetter: empty('initialDecision.letter'),

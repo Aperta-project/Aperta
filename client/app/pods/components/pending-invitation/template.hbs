@@ -11,18 +11,20 @@
 
 
 <div class="flex-container">
-  {{attachment-manager filePath="invitation"
-                       attachments=invitation.attachments
-                       multiple=true
-                       hasCaption=true
-                       accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
-                       captionChanged=(action "nope")
-                       deleteFile=(action "nope")
-                       uploadFinished=(action "nope")
-                       updateAttachment=(action "nope") }}
+  {{#if allowAttachments}}
+    {{attachment-manager filePath="invitation"
+                         attachments=invitation.attachments
+                         multiple=true
+                         hasCaption=true
+                         accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
+                         captionChanged=(action "nope")
+                         deleteFile=(action "nope")
+                         uploadFinished=(action "nope")
+                         updateAttachment=(action "nope") }}
+  {{/if}}
 
   <div class="invite-editor-cta">
     <button class="button-link button--green cancel" {{action attrs.closeAction}}>close</button>
-    <button class="button-primary button--green invite-editor-button" {{action "sendInvitation"}}>Send Invitation</button>
+    <button class="button-primary button--green invite-editor-button" {{action "sendInvitation" invitation}}>Send Invitation</button>
   </div>
 </div>

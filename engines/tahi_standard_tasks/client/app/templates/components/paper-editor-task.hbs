@@ -3,7 +3,11 @@
 <div class="task-main-content">
   <div class="invite-editor-text">
     {{#if invitationToEdit}}
-      {{pending-invitation user=selectedUser invitation=invitationToEdit closeAction=(action "cancelAction")}}
+      {{pending-invitation
+          user=selectedUser
+          allowAttachments=true
+          invitation=invitationToEdit
+          closeAction=(action "cancelAction")}}
     {{else}}
       <div class="invite-editors">
         <label for="invitation-recipient">Academic Editor</label>

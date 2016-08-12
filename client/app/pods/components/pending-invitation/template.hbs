@@ -1,30 +1,28 @@
-<div class="invite-editor-edit-invite">
-  <h3 class="invite-to">
-    Invitation to
-    {{#if selectedUser.fullName}}
-      {{selectedUser.full_name}}
-    {{/if}}
-    [{{selectedUser.email}}]
-  </h3>
+<h3 class="invite-to">
+  Invitation to
+  {{#if user.full_name}}
+    {{user.full_name}}
+  {{/if}}
+  [{{user.email}}]
+</h3>
 
-  {{content-editable value=invitationBody
-                     class="form-control taller-textarea"}}
+{{content-editable value=invitation.body
+                   class="form-control taller-textarea"}}
 
 
-  <div class="flex-container">
-    {{attachment-manager filePath="invitation"
-                         attachments=invitation.attachments
-                         multiple=true
-                         hasCaption=true
-                         accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
-                         captionChanged=(action "updateAttachmentCaption")
-                         deleteFile=(action "deleteAttachment")
-                         uploadFinished=(action "createAttachment")
-                         updateAttachment=(action "updateAttachment") }}
+<div class="flex-container">
+  {{attachment-manager filePath="invitation"
+                       attachments=invitation.attachments
+                       multiple=true
+                       hasCaption=true
+                       accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
+                       captionChanged=(action "nope")
+                       deleteFile=(action "nope")
+                       uploadFinished=(action "nope")
+                       updateAttachment=(action "nope") }}
 
-    <div class="invite-editor-cta">
-      <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
-      <button class="button-primary button--green invite-editor-button" {{action "inviteEditor"}}>Send Invitation</button>
-    </div>
- </div>
+  <div class="invite-editor-cta">
+    <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
+    <button class="button-primary button--green invite-editor-button" {{action "sendInvitation"}}>Send Invitation</button>
+  </div>
 </div>

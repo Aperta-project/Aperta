@@ -46,7 +46,7 @@ export default TaskComponent.extend({
   displayUserSelected(user) {
     return user.full_name + ' <' + user.email + '>';
   },
-  
+
   attachmentsRequest(path, method, s3Url, file) {
     const store = this.get('store');
     const restless = this.get('restless');
@@ -67,7 +67,16 @@ export default TaskComponent.extend({
         return;
       }
       this.setLetterTemplate();
-      return this.set('composingEmail', true);
+      this.get('store').createRecord('invitation', {
+        task: this.get('task'),
+        email: this.get('selectedUser.email'),
+        body: this.get('invitationBody'),
+        state: 'pending'
+      }).save().then((invitation) => {
+        this.setProperties({
+          invitationToEdit: invitation
+        });
+      });
     },
 
     destroyInvitation(invitation) {
@@ -116,10 +125,6 @@ export default TaskComponent.extend({
     updateAttachmentCaption(caption, attachment) {
       attachment.set('caption', caption);
       attachment.save();
-    },
-
-    uploadFailed(reason) {
-      console.log(reason);
     }
   }
 });

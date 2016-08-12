@@ -147,7 +147,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search_users(query: nil, assigned_users_in_journal_id: nil)
-    if query
+    if query.present?
       sanitized_query = connection.quote_string(query.to_s.downcase) + '%'
       User.fuzzy_search sanitized_query
     elsif assigned_users_in_journal_id

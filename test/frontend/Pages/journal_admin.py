@@ -194,36 +194,48 @@ class JournalAdminPage(AdminPage):
     self._actions.move_to_element(roles_title).perform()
     self.validate_application_h2_style(roles_title)
     self._get(self._journal_admin_roles_add_new_role_btn)
-    role_rows = self._gets(self._journal_admin_user_search_results_row)
-    self.set_timeout(3)
     journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;',
         (journal,))[0][0]
-    print 'journal_id', journal_id
-    for counter, row in enumerate(role_rows):
-      logging.info(row.text)
-      if counter>0:
-        old_username = username
-      row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
-      username, first_name, last_name, roles = row_elements
-      username = username.text
-      if counter>0:
-        assert username.lower()>old_username.lower(), (username.lower(), old_username.lower())
-      roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
-      roles = [x.text for x in roles]
-      # search for roles in DB
-      uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      try:
-        roles_id = PgSQL().query('SELECT role_id FROM assignments '
-                               'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
-                                (uid,))[0]
-        db_roles = []
-        for role_id in roles_id:
-          db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',(role_id,))[0][0])
-        assert set(roles) == set(db_roles), (roles, db_roles)
-      except IndexError:
-        logging.warning('No permissions found for user {0}'.format(username))
-        assert not roles, roles
-    self.restore_timeout()
+    print 'jid', journal_id
+    #    'assigned_to_id = %s AND assigned_to_type=\'Journal\';',(journal_id,))
+    #users = PgSQL().query('SELECT user_id, role_id FROM assignments WHERE '
+
+    users = PgSQL().query('SELECT * from assignments WHERE role_id in (26, 27, 29, 30, 48) AND assigned_to_id = %s AND assigned_to_type=\'Journal\';',(journal_id,))
+
+
+    print 'users', users
+    import pdb; pdb.set_trace()
+
+    #Check if there are users with journal roles
+    if users:
+      role_rows = self._gets(self._journal_admin_user_search_results_row)
+      self.set_timeout(3)
+      for counter, row in enumerate(role_rows):
+        logging.info(row.text)
+        if counter>0:
+          old_username = username
+        row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
+        username, first_name, last_name, roles = row_elements
+        username = username.text
+        if counter>0:
+          assert username.lower()>old_username.lower(), 'Not in alphabetical order {0} is \
+              showed before {1}'.format(username.lower(), old_username.lower())
+        roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
+        roles = [x.text for x in roles]
+        # search for roles in DB
+        uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+        try:
+          roles_id = PgSQL().query('SELECT role_id FROM assignments '
+                                 'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
+                                  (uid,))[0]
+          db_roles = []
+          for role_id in roles_id:
+            db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',(role_id,))[0][0])
+          assert set(roles) == set(db_roles), (roles, db_roles)
+        except IndexError:
+          logging.warning('No permissions found for user {0}'.format(username))
+          assert not roles, roles
+      self.restore_timeout()
 
   def validate_task_types_section(self, journal):
     """

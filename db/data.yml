@@ -3568,7 +3568,7 @@ decisions:
       PLOS Yeti
     - major_revision
     - '2016-04-12 18:43:34.68423'
-    - '2016-08-11 18:46:54.178172'
+    - '2016-08-12 16:47:34.930251'
     - Revisions made.
     - '2016-04-12 18:43:34.68423'
     - '0'
@@ -3606,7 +3606,7 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 18:57:26.981107'
-    - '2016-08-11 18:46:54.18414'
+    - '2016-08-12 16:47:34.93367'
     - Revised!
     - '2016-04-12 18:57:26.981107'
     - '0'
@@ -3644,7 +3644,7 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 19:00:40.408544'
-    - '2016-08-11 18:46:54.188372'
+    - '2016-08-12 16:47:34.935982'
     - Last revisions.
     - '2016-04-12 19:00:40.408544'
     - '0'
@@ -7258,7 +7258,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-08-11 18:47:08.043797'
+    - '2016-08-12 16:47:41.709894'
     - PlosBilling::BillingTask
     - 
     - 
@@ -11714,13 +11714,13 @@ permission_states_permissions:
   - - '293'
     - '231'
     - '2'
-    - '2016-08-11 18:47:23.106231'
-    - '2016-08-11 18:47:23.106231'
+    - '2016-08-12 16:47:49.348471'
+    - '2016-08-12 16:47:49.348471'
   - - '294'
     - '232'
     - '2'
-    - '2016-08-11 18:47:23.530271'
-    - '2016-08-11 18:47:23.530271'
+    - '2016-08-12 16:47:49.598342'
+    - '2016-08-12 16:47:49.598342'
 
 ---
 permissions:
@@ -12849,13 +12849,13 @@ permissions:
   - - '231'
     - register_decision
     - Paper
-    - '2016-08-11 18:47:23.092333'
-    - '2016-08-11 18:47:23.092333'
+    - '2016-08-12 16:47:49.334097'
+    - '2016-08-12 16:47:49.334097'
   - - '232'
     - rescind_decision
     - Paper
-    - '2016-08-11 18:47:23.525775'
-    - '2016-08-11 18:47:23.525775'
+    - '2016-08-12 16:47:49.593928'
+    - '2016-08-12 16:47:49.593928'
 
 ---
 permissions_roles:
@@ -14694,58 +14694,58 @@ permissions_roles:
   - - '660'
     - '231'
     - '21'
-    - '2016-08-11 18:47:23.131724'
-    - '2016-08-11 18:47:23.131724'
+    - '2016-08-12 16:47:49.355807'
+    - '2016-08-12 16:47:49.355807'
   - - '661'
     - '231'
     - '10'
-    - '2016-08-11 18:47:23.520181'
-    - '2016-08-11 18:47:23.520181'
+    - '2016-08-12 16:47:49.588665'
+    - '2016-08-12 16:47:49.588665'
   - - '662'
     - '232'
     - '10'
-    - '2016-08-11 18:47:23.53579'
-    - '2016-08-11 18:47:23.53579'
+    - '2016-08-12 16:47:49.603278'
+    - '2016-08-12 16:47:49.603278'
   - - '663'
     - '231'
     - '11'
-    - '2016-08-11 18:47:23.746854'
-    - '2016-08-11 18:47:23.746854'
+    - '2016-08-12 16:47:49.737318'
+    - '2016-08-12 16:47:49.737318'
   - - '664'
     - '232'
     - '11'
-    - '2016-08-11 18:47:23.756582'
-    - '2016-08-11 18:47:23.756582'
+    - '2016-08-12 16:47:49.749358'
+    - '2016-08-12 16:47:49.749358'
   - - '665'
     - '231'
     - '15'
-    - '2016-08-11 18:47:23.960902'
-    - '2016-08-11 18:47:23.960902'
+    - '2016-08-12 16:47:49.869512'
+    - '2016-08-12 16:47:49.869512'
   - - '666'
     - '232'
     - '15'
-    - '2016-08-11 18:47:23.974169'
-    - '2016-08-11 18:47:23.974169'
+    - '2016-08-12 16:47:49.889554'
+    - '2016-08-12 16:47:49.889554'
   - - '667'
     - '231'
     - '20'
-    - '2016-08-11 18:47:24.182166'
-    - '2016-08-11 18:47:24.182166'
+    - '2016-08-12 16:47:50.037161'
+    - '2016-08-12 16:47:50.037161'
   - - '668'
     - '232'
     - '20'
-    - '2016-08-11 18:47:24.191762'
-    - '2016-08-11 18:47:24.191762'
+    - '2016-08-12 16:47:50.044779'
+    - '2016-08-12 16:47:50.044779'
   - - '669'
     - '231'
     - '19'
-    - '2016-08-11 18:47:24.400521'
-    - '2016-08-11 18:47:24.400521'
+    - '2016-08-12 16:47:50.175588'
+    - '2016-08-12 16:47:50.175588'
   - - '670'
     - '232'
     - '19'
-    - '2016-08-11 18:47:24.410715'
-    - '2016-08-11 18:47:24.410715'
+    - '2016-08-12 16:47:50.183183'
+    - '2016-08-12 16:47:50.183183'
 
 ---
 phase_templates:
@@ -19418,8 +19418,8 @@ versioned_texts:
   - - '1'
     - 
     - '1'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19514,7 +19514,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="1" data-figure-rank="" src="/resource_proxy/figures/4JRhTr616NQ4JW3AnmutrWPX/detail">
     - '2015-10-29 20:16:37.381749'
-    - '2016-03-07 19:17:17.945327'
+    - '2016-08-12 16:47:34.954268'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19612,8 +19612,8 @@ versioned_texts:
   - - '2'
     - 
     - '2'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19709,7 +19709,7 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="2" data-figure-rank="" src="/resource_proxy/figures/7MzbAxAuoAK8h91VEBkrGaHd/detail">
             <img class="paper-body-figure" data-figure-id="3" data-figure-rank="" src="/resource_proxy/figures/7n1aAGioTqC1ApA8Ld2eYkbu/detail">
     - '2015-10-30 19:43:28.478909'
-    - '2016-03-07 19:17:17.972507'
+    - '2016-08-12 16:47:34.977993'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19807,8 +19807,8 @@ versioned_texts:
   - - '3'
     - 
     - '3'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19904,7 +19904,7 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="4" data-figure-rank="" src="/resource_proxy/figures/w3qHf38vMDCqKFXfcrCZE2LK/detail">
             <img class="paper-body-figure" data-figure-id="5" data-figure-rank="" src="/resource_proxy/figures/ajxQpM7BWyqje3rdUEjtpMTb/detail">
     - '2015-11-02 14:04:02.881043'
-    - '2016-03-07 19:17:17.997639'
+    - '2016-08-12 16:47:34.982977'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20197,8 +20197,8 @@ versioned_texts:
   - - '8'
     - 
     - '8'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20293,7 +20293,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-03 22:59:20.951303'
-    - '2016-03-07 19:17:18.029873'
+    - '2016-08-12 16:47:34.987398'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20391,8 +20391,8 @@ versioned_texts:
   - - '9'
     - 
     - '9'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20487,7 +20487,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-03 23:02:06.811068'
-    - '2016-03-07 19:17:18.037035'
+    - '2016-08-12 16:47:34.990027'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20585,8 +20585,8 @@ versioned_texts:
   - - '10'
     - 
     - '10'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20681,7 +20681,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-10 22:27:27.140473'
-    - '2016-03-07 19:17:18.043672'
+    - '2016-08-12 16:47:34.992717'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -21311,8 +21311,8 @@ versioned_texts:
   - - '18'
     - 
     - '13'
-    - '0'
-    - '0'
+    - 
+    - 
     - "<!--TEI front--><!--TEI body--><div class=\"teidiv0\" id=\"effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game\">\n<h2><span
       class=\"head\">NON-RESEARCH PAPER for Effect of Heterogeneous Investments on
       the Evolution of Cooperation in Spatial Public Goods Game</span></h2>\n<div
@@ -21581,7 +21581,7 @@ versioned_texts:
       The dataset of Figure 4.</p>\n<p>S5_Dataset.xlsx. The dataset of Figure 5.</p>\n</div>\n</div>\n</div><!--TEI
       back-->      \n      \n"
     - '2016-06-02 13:43:23.183174'
-    - '2016-06-02 13:53:56.274782'
+    - '2016-08-12 16:47:35.001828'
     - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">

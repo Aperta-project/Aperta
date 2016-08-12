@@ -383,6 +383,8 @@ class AdminPage(AuthenticatedPage):
     choice
     :return: Name of selected journal
     """
+    # Give time to populate journal block (without this the random pick ups the first element)
+    time.sleep(3)
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
     self._base_admin_journal_block_name = (

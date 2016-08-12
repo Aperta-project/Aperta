@@ -176,15 +176,6 @@ class JournalAdminPage(AdminPage):
     delete_role = self._get(self._journal_admin_user_row_role_delete)
     delete_role.click()
 
-  def validate_user_roles(self):
-    """
-    """
-    users = self._gets(self._users)
-    for user in users:
-      username = user.text.split(' ')[0]
-      #print username
-      #import pdb; pdb.set_trace()
-
   def validate_roles_section(self, journal):
     """
     Validate the elements and function of the Roles section of the journal admin page
@@ -196,20 +187,22 @@ class JournalAdminPage(AdminPage):
     self._get(self._journal_admin_roles_add_new_role_btn)
     journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;',
         (journal,))[0][0]
-    print 'jid', journal_id
-    #    'assigned_to_id = %s AND assigned_to_type=\'Journal\';',(journal_id,))
-    #users = PgSQL().query('SELECT user_id, role_id FROM assignments WHERE '
-
-    users = PgSQL().query('SELECT * from assignments WHERE role_id in (26, 27, 29, 30, 48) AND assigned_to_id = %s AND assigned_to_type=\'Journal\';',(journal_id,))
-
-
-    print 'users', users
-    import pdb; pdb.set_trace()
-
+    # Get list of roles that should be displayed
+    journal_roles = PgSQL().query('SELECT id from roles WHERE journal_id = %s AND name in '
+        '(\'Staff Admin\', \'Internal Editor\', \'Production Staff\', \'Publishing Services\','
+        ' \'Freelance Editors\');',(journal_id,))
+    journal_roles = tuple([x[0] for x in journal_roles])
+    users_db = PgSQL().query('SELECT user_id from assignments WHERE role_id in %s AND '
+        'assigned_to_id = %s AND assigned_to_type=\'Journal\';',(journal_roles, journal_id))
+    users_db = set([x[0] for x in users_db])
+    users_db = tuple(users_db)
     #Check if there are users with journal roles
-    if users:
+    usernames_db = PgSQL().query('SELECT username FROM users WHERE id in %s;', (users_db,))
+    usernames_db = [x[0] for x in usernames_db]
+    self.set_timeout(3)
+    if users_db:
+      usernames = []
       role_rows = self._gets(self._journal_admin_user_search_results_row)
-      self.set_timeout(3)
       for counter, row in enumerate(role_rows):
         logging.info(row.text)
         if counter>0:
@@ -217,6 +210,9 @@ class JournalAdminPage(AdminPage):
         row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
         username, first_name, last_name, roles = row_elements
         username = username.text
+        usernames.append(username)
+        # This username should be in the list of user names from the DB
+        assert username in usernames_db, (username, usernames_db)
         if counter>0:
           assert username.lower()>old_username.lower(), 'Not in alphabetical order {0} is \
               showed before {1}'.format(username.lower(), old_username.lower())
@@ -230,12 +226,24 @@ class JournalAdminPage(AdminPage):
                                   (uid,))[0]
           db_roles = []
           for role_id in roles_id:
-            db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',(role_id,))[0][0])
+            db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',
+                (role_id,))[0][0])
           assert set(roles) == set(db_roles), (roles, db_roles)
         except IndexError:
           logging.warning('No permissions found for user {0}'.format(username))
           assert not roles, roles
-      self.restore_timeout()
+      assert set(usernames) == set(usernames_db)
+    else:
+      # If there is no users in the DB, there should not be in the UI
+      self.set_timeout(3)
+      try:
+        role_rows = self._gets(self._journal_admin_user_search_results_row)
+        users = [row.find_elements(*(By.TAG_NAME, 'td')) for row in role_rows]
+        raise ValueError('There are users in the site that are not in the DB: {0}', users)
+      except ElementDoesNotExistAssertionError:
+        assert True
+    self.restore_timeout()
+
 
   def validate_task_types_section(self, journal):
     """

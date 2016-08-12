@@ -3,9 +3,6 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default Ember.Component.extend({
-  tagName: 'table',
-  classNames: ['invitees'],
-
   groupByDecision: true,
 
   invitations: [],

@@ -1,37 +1,33 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="invite-editor-text">
-    {{#if invitationToEdit}}
-      {{edit-invitation
-          user=selectedUser
-          allowAttachments=true
-          invitation=invitationToEdit
-          closeAction=(action "cancelAction")}}
-    {{else}}
-      <div class="invite-editors">
-        <label for="invitation-recipient">Academic Editor</label>
+  {{#if invitationToEdit}}
+    {{edit-invitation
+        user=selectedUser
+        allowAttachments=true
+        invitation=invitationToEdit
+        closeAction=(action "cancelAction")}}
+  {{else}}
+    {{invitations-display groupByDecision=false
+                          invitations=task.invitations
+                          editInvitation=(action 'editInvitation')}}
+    <div class="invitation-email-entry">
+      {{#auto-suggest endpoint=autoSuggestSourceUrl
+                  queryParameter="query"
+                  inputId="invitation-recipient"
+                  placeholder="Invite Academic Editor by name or email"
+                  parseResponseFunction=parseUserSearchResponse
+                  itemSelected="didSelectUser"
+                  inputChanged="inputChanged"
+                  itemDisplayTextFunction=displayUserSelected
+                  as |user|}}
+        {{user.full_name}} [{{user.email}}]
+      {{/auto-suggest}}
 
-        {{#auto-suggest endpoint=autoSuggestSourceUrl
-                    queryParameter="query"
-                    inputId="invitation-recipient"
-                    placeholder="Invite Academic Editor by name or email"
-                    parseResponseFunction=parseUserSearchResponse
-                    itemSelected="didSelectUser"
-                    inputChanged="inputChanged"
-                    itemDisplayTextFunction=displayUserSelected
-                    as |user|}}
-          {{user.full_name}} [{{user.email}}]
-        {{/auto-suggest}}
-
-        <button class="button-primary button--green compose-invite-button {{unless selectedUser 'button--disabled'}}" {{action 'composeInvite'}}>
-          Compose Invite
-        </button>
-      </div>
-
-      {{invitations-display groupByDecision=false
-                            invitations=task.invitations
-                            editInvitation=(action 'editInvitation')}}
-    {{/if}}
-  </div>
+      <button class="button-secondary button--green compose-invite-button {{unless selectedUser 'button--disabled'}}"
+              {{action "composeInvite"}}>
+        Compose Invite
+      </button>
+    </div>
+  {{/if}}
 </div>

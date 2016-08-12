@@ -1,19 +1,30 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
-export default Ember.Component.extend({
-  tagName: '',
+const {
+  Component,
+  computed,
+  computed: { alias, and, equal, not }
+} = Ember;
+
+export default Component.extend({
+  classNameBindings: [':invitation-item', 'uiStateClass'],
+
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired,
     destroyAction: PropTypes.func.isRequired
   },
 
-  invitee: Ember.computed.alias('invitation.invitee'),
-  displayDestroy: Ember.computed.not('invitation.accepted'),
-  displayEdit: Ember.computed.and('invitation.pending', 'showDetails', 'editAction'),
+  invitee: alias('invitation.invitee'),
+  displayDestroy: not('invitation.accepted'),
+  displayEdit: and('invitation.pending', 'editAction', 'notClosedState'),
 
-  showDetails: false,
-  detailState: 'show',
+  detailState: 'closed',
+  closedState: equal('detailState', 'closed'),
+  notClosedState: not('closedState'),
+  uiStateClass: computed('detailState', function() {
+    return 'invitation-item--' + this.get('detailState');
+  }),
 
   actions: {
     editInvitation() {
@@ -21,15 +32,15 @@ export default Ember.Component.extend({
     },
 
     toggleDetails(invitation) {
-      if (!this.get('showDetails')) {
+      if (this.get('detailState') === 'closed') {
         invitation.fetchDetails().then(() => {
-          this.set('showDetails', true);
+          this.set('detailState', 'show');
         });
-      } else {
-        if (this.get('detailState') === 'show') {
-          this.set('showDetails', false);
-        }
+
+        return;
       }
+
+      this.set('detailState', 'closed');
     },
 
     cancelEdit(invitation) {

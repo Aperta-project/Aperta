@@ -15,11 +15,14 @@
 
 .invite-reviewer-button,
 .compose-invite-button {
-  @extend .invite-editor-button;
+  margin-left: 20px;
 }
 
 .invite-reviewer-text {
-  @extend .invite-editor-text;
+  position: relative;
+  padding: 0 45px 0 1rem;
+  font-size: 18px;
+
   .invitee-thumbnail {
     width: 37px;
     height: 37px;

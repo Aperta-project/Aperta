@@ -1,27 +1,35 @@
 {{#if groupByDecision}}
-
-  {{invitation-detail-tbody
-      invitations=latestDecisionInvitations
-      classNames='active-invitations'
-      destroyAction=(action 'destroyInvitation')}}
+  <div class="active-invitations">
+    {{#each latestDecisionInvitations as |invitation|}}
+      {{invitation-detail-row invitation=invitation
+                              editAction=attrs.editInvitation
+                              destroyAction=(action 'destroyInvitation')}}
+    {{/each}}
+  </div>
 
   {{#each previousDecisionsWithFilteredInvitations as |decision|}}
-    <tr class='revision-human-number'>
-      <td colspan=5>Round {{decision.revisionNumber}}</td>
-    </tr>
+    <div class='revision-human-number'>
+      Round {{decision.revisionNumber}}
+    </div>
 
-    {{invitation-detail-tbody
-        invitations=decision.filteredInvitations
-        classNames='expired-invitations'
-        destroyAction=(action 'destroyInvitation')}}
+    <div class="expired-invitations">
+      {{#each decision.filteredInvitations as |invitation|}}
+        {{invitation-detail-row invitation=invitation
+                                editAction=attrs.editInvitation
+                                destroyAction=(action 'destroyInvitation')}}
+      {{/each}}
+    </div>
+
   {{/each}}
 
 {{else}}
 
-  {{invitation-detail-tbody
-      invitations=invitations
-      classNames='active-invitations'
-      editAction=attrs.editInvitation
-      destroyAction=(action 'destroyInvitation')}}
+  <div class="active-invitations">
+    {{#each invitations as |invitation|}}
+      {{invitation-detail-row invitation=invitation
+                              editAction=attrs.editInvitation
+                              destroyAction=(action 'destroyInvitation')}}
+    {{/each}}
+  </div>
 
 {{/if}}

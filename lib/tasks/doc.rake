@@ -11,8 +11,8 @@ namespace :doc do
     rdoc.options << '--format=sdoc'
     rdoc.options << '--github'
     rdoc.template = 'rails'
-    rdoc.rdoc_dir = 'doc/rdoc'
-    rdoc.title = 'Tahi Documentation'
+    rdoc.rdoc_dir = 'doc/api'
+    rdoc.title = 'Tahi API Documentation'
     rdoc.rdoc_files.include('app/**/*.rb')
     rdoc.rdoc_files.include('lib/**/*.rb')
     rdoc.rdoc_files.include('README.md')

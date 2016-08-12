@@ -291,8 +291,8 @@ To generate documentation, run the following command from the application root:
 rake doc:app
 ```
 
-Open the generated documentation from `doc/rdoc/index.html` or
-`doc/yuidoc/index.html` (javascript) in your browser.
+Open the generated documentation from `doc/api/index.html` or
+`doc/client/index.html` (javascript) in your browser.
 
 Please document Ruby code with
 [rdoc](http://docs.seattlerb.org/rdoc/RDoc/Markup.html) and Javascript with

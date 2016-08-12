@@ -21,8 +21,6 @@ users = [staff_admin_login,
          super_admin_login,
          ]
 
-users = [review_app_admin]
-
 user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
 
 

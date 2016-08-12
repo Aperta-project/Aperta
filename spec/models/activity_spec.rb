@@ -108,14 +108,14 @@ describe Activity do
       )}
   end
 
-  describe "#invitation_created!" do
-    subject(:activity) { Activity.invitation_created!(invitation, user: user) }
+  describe "#invitation_sent!" do
+    subject(:activity) { Activity.invitation_sent!(invitation, user: user) }
     let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
     it {
       is_expected.to have_attributes(
         feed_name: "workflow",
-        activity_key: "invitation.created",
+        activity_key: "invitation.sent",
         subject: invitation.paper,
         user: user,
         message: "#{invitation.recipient_name} was invited as #{invitation.invitee_role.capitalize}"

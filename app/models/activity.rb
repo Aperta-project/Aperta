@@ -102,10 +102,10 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.invitation_created!(invitation, user:)
+  def self.invitation_sent!(invitation, user:)
     create(
       feed_name: "workflow",
-      activity_key: "invitation.created",
+      activity_key: "invitation.sent",
       subject: invitation.paper,
       user: user,
       message: "#{invitation.recipient_name} was invited as #{invitation.invitee_role.capitalize}"

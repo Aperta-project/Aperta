@@ -357,6 +357,7 @@ ActiveRecord::Schema.define(version: 20160809204309) do
     t.json     "additional_data"
     t.integer  "decision_id"
     t.integer  "paper_id"
+    t.datetime "deleted_at"
   end
 
   add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
@@ -374,6 +375,7 @@ ActiveRecord::Schema.define(version: 20160809204309) do
     t.datetime "updated_at", null: false
     t.string   "owner_type"
     t.integer  "owner_id"
+    t.datetime "deleted_at"
   end
 
   add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree

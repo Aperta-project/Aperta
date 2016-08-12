@@ -10,30 +10,6 @@ module('unit: ValidationErrorsMixin', {
   }
 });
 
-// #currentValidationErrors -----------------------------------------
-
-test('#currentValidationErrors with error', function(assert) {
-  this.object.set('validationErrors', {
-    'key':  'error',
-    'key2': ''
-  });
-
-  const errors = this.object.currentValidationErrors();
-
-  assert.equal(errors.length, 1, 'error found');
-});
-
-test('#currentValidationErrors empty', function(assert) {
-  this.object.set('validationErrors', {
-    'key':  '',
-    'key2': ''
-  });
-
-  const errors = this.object.currentValidationErrors();
-
-  assert.equal(errors.length, 0, 'no errors found');
-});
-
 
 // #validationErrorsPresent -----------------------------------------
 
@@ -51,6 +27,32 @@ test('#validationErrorsPresent with error', function(assert) {
 test('#validationErrorsPresent empty', function(assert) {
   this.object.set('validationErrors', {
     'key':  '',
+    'key2': ''
+  });
+
+  const errors = this.object.validationErrorsPresent();
+
+  assert.equal(errors, false, 'no errors');
+});
+
+test('#validationErrorsPresent with error in nested hash', function(assert) {
+  this.object.set('validationErrors', {
+    'key': {
+      'nestedKey': 'error'
+    },
+    'key2': ''
+  });
+
+  const errors = this.object.validationErrorsPresent();
+
+  assert.equal(errors, true, 'error found');
+});
+
+test('#validationErrorsPresent empty in nested hash', function(assert) {
+  this.object.set('validationErrors', {
+    'key': {
+      'nestedKey': ''
+    },
     'key2': ''
   });
 

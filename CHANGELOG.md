@@ -7,7 +7,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Daily export of billing log
 - Admins can view and edit journal roles assigned to users
 - AE country is included in Apex export
+- Discussion Topic title validation
 ### Changed
+- Soft deleting questions and answers. Answers are retained even when questions are marked
+  as deleted
 ### Deprecated
 ### Removed
 ### Fixed

@@ -21,6 +21,7 @@
     },
 
     "globals": {
+      "alert": true,
       "document": true,
       "window": true,
       "-Promise": true,

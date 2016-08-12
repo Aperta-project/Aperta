@@ -44,7 +44,7 @@ export default DS.Model.extend({
   rescind() {
     return this.get('restless')
     .put(`/api/invitations/${this.get('id')}/rescind`)
-    .then((data) => {
+    .then(() => {
       this.unloadRecord();
       return this;
     });
@@ -60,10 +60,14 @@ export default DS.Model.extend({
 
     return this.get('restless')
      .put(`/api/invitations/${this.get('id')}/decline`, data)
-     .then((data) => {
+     .then(() => {
        this.feedbackSent();
        return this;
      });
+  },
+
+  send() {
+    return this.get('restless').putUpdate(this, '/send_invite');
   },
 
   fetchDetails() {

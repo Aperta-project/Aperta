@@ -38,7 +38,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def _test_validate_journal_admin_components_styles(self):
+  def test_validate_journal_admin_components_styles(self):
     """
     test_journal_admin: Validate toolbar presentation for journal admin
     Validates the presence of the following elements:
@@ -57,7 +57,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_nav_toolbar_elements(user_type)
 
-  def _test_validate_journal_admin_user_search_display_function(self):
+  def test_validate_journal_admin_user_search_display_function(self):
     """
     test_journal_admin: Validate the function of user search in the journal_admin page for a random
       journal
@@ -99,7 +99,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page.validate_roles_section(journal)
 
 
-  def _test_validate_task_types_display_function(self):
+  def test_validate_task_types_display_function(self):
     """
     test_journal_admin: validate the display of the journal admin task type section and overlay
     Validates the presence of the following elements:
@@ -128,7 +128,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_task_types_section(journal)
 
-  def _test_validate_mmt_display_function(self):
+  def test_validate_mmt_display_function(self):
     """
     test_journal_admin: validate the mmt section display and functions of adding/editing an MMT
     Validates the presence of the following elements:
@@ -152,7 +152,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
 
-  def _test_validate_add_delete_mmt_function(self):
+  def test_validate_add_delete_mmt_function(self):
     """
     test_journal_admin: validate addition and deletion of an MMT from the journal_admin page.
     Validates Add new Template
@@ -176,7 +176,7 @@ class ApertaJournalAdminTest(CommonTest):
     time.sleep(1)
     ja_page.delete_new_mmt_template()
 
-  def _test_validate_style_settings_display_function(self):
+  def test_validate_style_settings_display_function(self):
     """
     test_journal_admin: Validate styling & functions of  journal admin page style settings section
     Validates the presence of the following elements:

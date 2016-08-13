@@ -119,21 +119,21 @@ class JournalAdminPage(AdminPage):
       self._get(self._journal_admin_user_search_results_table_fname_header)
       self._get(self._journal_admin_user_search_results_table_lname_header)
       # Aperta-6134 - Temporarily commenting out adjusting user roles
-      # self._get(self._journal_admin_user_search_results_table_rname_header)
+      self._get(self._journal_admin_user_search_results_table_rname_header)
       self._get(self._journal_admin_user_search_results_table)
       page_user_list = self._gets(self._journal_admin_user_search_results_row)
       for user in page_user_list:
         print(user.text)
         print('\n')
     # Aperta-6134 - Temporarily commenting out adjusting user roles
-    # else:
-    #   logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
-      # self._add_user_with_role('atest author3', 'Flow Manager')
-      # logging.info('Verifying added user')
-      # self._validate_user_with_role('atest author3', 'Flow Manager')
-      # logging.info('Deleting newly added user')
-      # self._delete_user_with_role()
-      # time.sleep(3)
+    else:
+      logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
+      self._add_user_with_role('atest author3', 'Flow Manager')
+      logging.info('Verifying added user')
+      self._validate_user_with_role('atest author3', 'Flow Manager')
+      logging.info('Deleting newly added user')
+      self._delete_user_with_role()
+      time.sleep(3)
 
   def _add_user_with_role(self, user, role):
     """

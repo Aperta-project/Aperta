@@ -129,6 +129,10 @@ Dir.chdir APP_ROOT do
   system 'gem install bundler --conservative'
   system 'bundle install'
 
+  # Adding slanger to the Gemfile is not recommended: https://github.com/stevegraham/slanger#slanger
+  header 'Installing Slanger gem'
+  system 'gem install slanger'
+
   header 'Installing javascript dependencies (output logged to setup.log)'
   system 'npm install >> setup.log'
   system 'bundle exec rake ember-cli:install_dependencies'
@@ -147,10 +151,6 @@ Dir.chdir APP_ROOT do
   header 'Copying sample files'
   copy_template 'config/database.yml.sample', 'config/database.yml'
   copy_template 'Procfile.template', 'Procfile.local'
-
-  # required for db setup
-  header 'Cloning tahi-slanger event server repo'
-  setup_slanger
 
   create_config_file('.env.development') do |f|
     f.puts "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"

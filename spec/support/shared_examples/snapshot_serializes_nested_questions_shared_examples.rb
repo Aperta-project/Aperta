@@ -9,7 +9,7 @@
 #     # Must be provided
 #     subject(:serializer){ SomeSerializer.new }
 #     let(:task){ Task.new }
-#     include_examples "snapshot serializes related nested questions", resource: :task
+#     it_behaves_like "snapshot serializes related nested questions", resource: :task
 #   end
 #
 # The :resource is passed in as symbol because it tells the shared examples

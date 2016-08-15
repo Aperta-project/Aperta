@@ -10,6 +10,8 @@ class DiscussionTopic < ActiveRecord::Base
   has_many :assignments, as: :assigned_to
   has_one :journal, through: :paper
 
+  validates_presence_of :title
+
   def has_participant?(user)
     participants.include? user
   end

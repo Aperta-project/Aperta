@@ -1,5 +1,4 @@
 import { module, test } from 'qunit';
-import Ember from 'ember';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 module('ObjectProxyWithValidationErrors');
@@ -17,8 +16,7 @@ test('#validateProperty with error', function(assert) {
 
   proxyObject.validateProperty('key');
 
-  const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 1, 'errors found');
+  assert.equal(proxyObject.validationErrorsPresent(), true, 'errors found');
 });
 
 test('#validateProperty without error', function(assert) {
@@ -34,8 +32,7 @@ test('#validateProperty without error', function(assert) {
 
   proxyObject.validateProperty('key');
 
-  const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 0, 'no error found');
+  assert.equal(proxyObject.validationErrorsPresent(), false, 'no error found');
   assert.equal(
     proxyObject.get('errorsPresent'),
     false,
@@ -56,8 +53,7 @@ test('#validateProperty with error', function(assert) {
 
   proxyObject.validateProperty('key');
 
-  const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 1, 'errors found');
+  assert.equal(proxyObject.validationErrorsPresent(), true, 'errors found');
   assert.equal(
     proxyObject.get('errorsPresent'),
     true,
@@ -89,8 +85,7 @@ test('#validateAll without error', function(assert) {
 
   proxyObject.validateAll();
 
-  const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 0, 'no error found');
+  assert.equal(proxyObject.validationErrorsPresent(), false, 'no error found');
   assert.equal(
     proxyObject.get('errorsPresent'),
     false,
@@ -121,8 +116,8 @@ test('#validateAll with error', function(assert) {
 
   proxyObject.validateAll();
 
-  const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 5, 'errors found');
+  const errors = proxyObject.validationErrorsPresent();
+  assert.equal(proxyObject.validationErrorsPresent(), true, 'errors found');
   assert.equal(
     proxyObject.get('errorsPresent'),
     true,

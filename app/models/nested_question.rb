@@ -3,8 +3,11 @@ class NestedQuestion < ActiveRecord::Base
   VALUE_REQUIRED_FOR_TYPES = %w(boolean question-set text)
 
   acts_as_nested_set order_column: :position
+  acts_as_paranoid
+
   belongs_to :owner, polymorphic: true
-  has_many :nested_question_answers, dependent: :destroy, inverse_of: :nested_question
+  has_many :nested_question_answers, dependent: :destroy,
+                                     inverse_of: :nested_question
 
   validates :ident, presence: true, uniqueness: true
   validates :owner_type, presence: true

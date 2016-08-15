@@ -152,9 +152,18 @@ export default Mixin.create({
   */
 
   displayValidationErrorsFromResponse(response, options) {
+    var errors = null;
+    // only use prepareResponseErrors if the errors have a json-api
+    // format (ie, getting a 422 when saving an ember-data model).
+    // for all other cases assume standard Rails-formatted errors
+    if (Ember.isArray(response.errors)) {
+      errors = prepareResponseErrors(response.errors, options);
+    } else {
+      errors = response.errors;
+    }
     this.set(
       'validationErrors',
-      prepareResponseErrors(response.errors, options)
+      errors
     );
   },
 
@@ -222,7 +231,24 @@ export default Mixin.create({
   */
 
   validationErrorsPresent() {
-    return !isEmpty(this.currentValidationErrors());
+    let errorFound = false;
+
+    const deepSearchForErrorMessage = function(obj) {
+      Object.keys(obj).forEach(function(key) {
+        if(typeof obj[key] === 'object') {
+          deepSearchForErrorMessage(obj[key]);
+          return;
+        }
+
+        if(!isEmpty(obj[key])) {
+          errorFound = true;
+        }
+      });
+    };
+
+    deepSearchForErrorMessage(this.get('validationErrors'));
+
+    return errorFound;
   },
 
   /**
@@ -232,26 +258,5 @@ export default Mixin.create({
 
   validationErrorsPresentForKey(key) {
     return !isEmpty(this.get('validationErrors')[key]);
-  },
-
-  /**
-    @method currentValidationErrors
-    @return {Array} array of key/value(error message) pairs
-  */
-
-  currentValidationErrors() {
-    const errors = this.get('validationErrors');
-
-    return _.compact(
-      _.map(_.keys(errors), key => {
-        if(isEmpty(errors[key]) || Ember.keys(errors[key]).length === 0) {
-          return false;
-        }
-
-        let hash = {};
-        hash[key] = errors[key];
-        return hash;
-      })
-    );
   }
 });

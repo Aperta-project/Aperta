@@ -6,9 +6,13 @@ feature "Register Decision", js: true do
   let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
+  let(:accept_template) { FactoryGirl.create(:letter_template, :accept) }
+  let(:reject_template) { FactoryGirl.create(:letter_template, :reject) }
 
   before do
     task.add_participant(user)
+    paper.journal.letter_templates << accept_template
+    paper.journal.letter_templates << reject_template
     assign_journal_role paper.journal, user, :editor
     login_as(user, scope: :user)
     visit "/"
@@ -40,12 +44,47 @@ feature "Register Decision", js: true do
         overlay = Page.view_task_overlay(paper, task)
 
         overlay.register_decision = "Reject"
-        wait_for_ajax
         overlay.radio_selected?
 
         visit current_path # Revisit
-        wait_for_ajax
         expect(find("input[value='reject']")).to be_checked
+      end
+
+      context "With assigned and invited reviewers" do
+        let(:reviewer_task) do
+          FactoryGirl.create :paper_reviewer_task, paper: paper
+        end
+        let!(:invitation) do
+          FactoryGirl.create(:invitation, :invited, task: reviewer_task)
+        end
+        let!(:assigned_reviewer) { create :user }
+
+        before do
+          assign_reviewer_role paper, assigned_reviewer
+        end
+
+        scenario "Remove assigned and invited reviewers" do
+          expect(
+            reviewer_task.invitations
+            .where(state: "invited")
+            .count
+          ).to eq(1)
+          expect(paper.reviewers.count).to eq(1)
+
+          overlay = Page.view_task_overlay(paper, task)
+          overlay.register_decision = "Accept"
+          overlay.decision_letter = "Accepting this because I can"
+          overlay.click_send_email_button
+          wait_for_ajax
+
+          reviewer_task.reload
+          expect(
+            reviewer_task.invitations
+            .where(state: "invited")
+            .count
+          ).to eq(0)
+          expect(paper.reviewers.count).to eq(0)
+        end
       end
     end
   end
@@ -77,7 +116,7 @@ feature "Register Decision", js: true do
     scenario "Participant cannot register a decision on the paper" do
       overlay = Page.view_task_overlay(paper, task)
       expect(overlay.invalid_state_message).to be true
-      expect(overlay).to be_disabled
+      expect(overlay).to have_content("No decision has been registered")
     end
   end
 end

@@ -28,97 +28,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe '.restore_defaults' do
-    include_examples '<Task class>.restore_defaults update title to the default'
-    include_examples '<Task class>.restore_defaults update old_role to the default'
-  end
-
-  context "letters" do
-    before do
-      user = double(:last_name, last_name: 'Mazur')
-      allow(paper).to receive(:creator).and_return(user)
-    end
-
-    describe "#accept_letter" do
-      it "returns the letter with the author's name filled in" do
-        expect(task.accept_letter).to match(/Mazur/)
-      end
-
-      it "returns the letter with a placeholder for the AE's name" do
-        expect(task.accept_letter).to match('[YOUR NAME]')
-      end
-
-      it "returns the letter with journal name filled in" do
-        expect(task.accept_letter).to match(/PLOS Yeti/)
-      end
-
-      it "returns the letter with paper title filled in" do
-        expect(task.accept_letter).to match(/Crazy stubbing tests on rats/)
-      end
-    end
-
-    describe "#minor_revision_letter" do
-      it "returns the letter with the author's name filled in" do
-        expect(task.minor_revision_letter).to match(/Mazur/)
-      end
-
-      it "returns the letter with a placeholder for the AE's name" do
-        expect(task.minor_revision_letter).to match('[YOUR NAME]')
-      end
-
-      it "returns the letter with journal name filled in" do
-        expect(task.minor_revision_letter).to match(/PLOS Yeti/)
-      end
-
-      it "returns the letter with paper title filled in" do
-        expect(task.minor_revision_letter).to match(/Crazy stubbing tests on rats/)
-      end
-
-      it "returns the letter with current environment" do
-        expect(Rails.configuration.action_mailer.default_url_options[:host]).to eq("www.example.com")
-        expect(task.minor_revision_letter).to match(/www\.example\.com/)
-      end
-    end
-
-    describe "#major_revision_letter" do
-      it "returns the letter with the author's name filled in" do
-        expect(task.major_revision_letter).to match(/Mazur/)
-      end
-
-      it "returns the letter with a placeholder for the AE's name" do
-        expect(task.major_revision_letter).to match('[YOUR NAME]')
-      end
-
-      it "returns the letter with journal name filled in" do
-        expect(task.major_revision_letter).to match(/PLOS Yeti/)
-      end
-
-      it "returns the letter with paper title filled in" do
-        expect(task.major_revision_letter).to match(/Crazy stubbing tests on rats/)
-      end
-
-      it "returns the letter with current environment" do
-        expect(Rails.configuration.action_mailer.default_url_options[:host]).to eq("www.example.com")
-        expect(task.major_revision_letter).to match(/www\.example\.com/)
-      end
-    end
-
-    describe "#reject_letter" do
-      it "returns the letter with the author's name filled in" do
-        expect(task.reject_letter).to match(/Mazur/)
-      end
-
-      it "returns the letter with a placeholder for the AE's name" do
-        expect(task.reject_letter).to match('[YOUR NAME]')
-      end
-
-      it "returns the letter with journal name filled in" do
-        expect(task.reject_letter).to match(/PLOS Yeti/)
-      end
-
-      it "returns the letter with paper title filled in" do
-        expect(task.reject_letter).to match(/Crazy stubbing tests on rats/)
-      end
-    end
+    it_behaves_like '<Task class>.restore_defaults update title to the default'
+    it_behaves_like '<Task class>.restore_defaults update old_role to the default'
   end
 
   describe "save and retrieve paper decision and decision letter" do
@@ -219,8 +130,13 @@ describe TahiStandardTasks::RegisterDecisionTask do
       let!(:decision_pending) { FactoryGirl.create(:decision, :pending, paper: paper) }
 
       it "will email using latest non-pending decision" do
-        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(decision_id: decision_one)
-        task.send_email
+        author_email = paper.creator.email
+        subject = 'Your paper'
+        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(
+          decision_id: decision_one,
+          to_field: author_email,
+          subject_field: subject)
+        task.send_email(to_field: author_email, subject_field: subject)
       end
     end
 

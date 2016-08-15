@@ -74,6 +74,14 @@ class TahiEnv
   required :BASIC_HTTP_USERNAME, if: :basic_auth_required?
   required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
 
+  # Apex FTP
+  required :APEX_FTP_ENABLED, :boolean
+  required :APEX_FTP_URL, if: :apex_ftp_enabled?
+
+  # Billing FTP
+  required :BILLING_FTP_ENABLED, :boolean
+  required :BILLING_FTP_URL, if: :billing_ftp_enabled?
+
   # Bugsnag
   optional :BUGSNAG_API_KEY
   optional :BUGSNAG_JAVASCRIPT_API_KEY
@@ -96,14 +104,6 @@ class TahiEnv
   # Event Stream
   required :EVENT_STREAM_WS_HOST
   required :EVENT_STREAM_WS_PORT
-
-  # FTP
-  required :FTP_ENABLED, :boolean
-  required :FTP_HOST, if: :ftp_enabled?
-  required :FTP_USER, if: :ftp_enabled?
-  required :FTP_PASSWORD, if: :ftp_enabled?
-  required :FTP_PORT, if: :ftp_enabled?
-  required :FTP_DIR, if: :ftp_enabled?
 
   # Hipchat
   optional :HIPCHAT_AUTH_TOKEN

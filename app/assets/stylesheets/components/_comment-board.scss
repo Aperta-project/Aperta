@@ -40,6 +40,10 @@ $comments-animation-speed: 0.3s;
   padding: 5px;
 }
 
+.edit-comment-title-field {
+  border-radius: 4px;
+}
+
 .message-comment-buttons {
   overflow: hidden;
   @include position(absolute, auto 0px 20px 0px);

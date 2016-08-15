@@ -2,6 +2,13 @@ import Ember from 'ember';
 import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
 
 export default NestedQuestionComponent.extend({
+  defaultAnswer: null,
+  setAnswer: Ember.on('init',
+      function() {
+        if (this.get('defaultAnswer')) {
+          this.set('model.answer.value', this.get('defaultAnswer'));
+        }
+      }),
   classNameBindings: [
     ':nested-question',
     'errorPresent:error' // errorPresent defined in NestedQuestionComponent

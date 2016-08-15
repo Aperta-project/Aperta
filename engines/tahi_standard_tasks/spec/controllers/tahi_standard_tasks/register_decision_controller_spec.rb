@@ -109,7 +109,7 @@ describe TahiStandardTasks::RegisterDecisionController do
 
       it "returns an error" do
         do_request
-        expect(res_body["errors"]).to eq "errors" => ["Invalid Task and/or Paper"]
+        expect(res_body["errors"]).to eq "errors" => ["Paper is not submitted"]
       end
     end
   end

@@ -10,6 +10,12 @@
     "ADMIN_EMAIL": {
       "required": true
     },
+    "APEX_FTP_ENABLED": {
+      "required": true
+    },
+    "APEX_FTP_URL": {
+      "required": true
+    },
     "APP_NAME": {
       "required": true
     },
@@ -29,6 +35,12 @@
       "required": true
     },
     "BASIC_HTTP_USERNAME": {
+      "required": true
+    },
+    "BILLING_FTP_ENABLED": {
+      "required": true
+    },
+    "BILLING_FTP_URL": {
       "required": true
     },
     "BUGSNAG_API_KEY": {
@@ -98,24 +110,6 @@
       "required": true
     },
     "FROM_EMAIL": {
-      "required": true
-    },
-    "FTP_ENABLED": {
-      "required": true
-    },
-    "FTP_USER": {
-      "required": true
-    },
-    "FTP_HOST": {
-      "required": true
-    },
-    "FTP_PASSWORD": {
-      "required": true
-    },
-    "FTP_PORT": {
-      "required": true
-    },
-    "FTP_DIR": {
       "required": true
     },
     "HEROKU_APP_NAME": {

@@ -103,6 +103,10 @@ class PaperPage < Page
     find('#paper-body')
   end
 
+  def view_versions
+    version_button.click
+  end
+
   def select_viewing_version(version)
     within "select[name='view_version']" do
       find("option[value='#{version.id}']").click

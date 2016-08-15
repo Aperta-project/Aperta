@@ -7,10 +7,10 @@
     },
 
     "rules": {
-      "camelcase": "error",
+      "camelcase": "warn",
       "indent": ["error", 2],
       "eqeqeq": "error",
-      "max-len": ["error", 80],
+      "max-len": ["warn", 110],
       "semi": ["error", "always"],
       "quotes": [
         "error",
@@ -22,6 +22,7 @@
 
     "globals": {
       "document": true,
+      "alert": true,
       "window": true,
       "-Promise": true,
       "Spinner": true,

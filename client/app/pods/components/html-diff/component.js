@@ -15,7 +15,7 @@ export default Ember.Component.extend({
   default: null,
 
   // These are elements that contain sentences worth diffing individually.
-  tokenizeInsideElements: ['p'],
+  tokenizeInsideElements: ['div', 'p'],
 
   renderEquations: true,
 
@@ -97,13 +97,13 @@ export default Ember.Component.extend({
     // Remove the fake tag pairs
     _.each(this.tokenizeInsideElements, (elt) => {
       value = value.replace(
-        (new RegExp("<fake-open-" + elt + ".*?>")), "<" + elt + ">");
+        (new RegExp('<fake-open-' + elt + '.*?>', 'g')), '<' + elt + '>');
       value = value.replace(
-        (new RegExp("<fake-close-" + elt + ".*?>")), "</" + elt + ">");
+        (new RegExp('<fake-close-' + elt + '.*?>', 'g')), '</' + elt + '>');
       value = value.replace(
-        (new RegExp("</fake-open-" + elt + ">")), "");
+        (new RegExp('</fake-open-' + elt + '>', 'g')), '');
       value = value.replace(
-        (new RegExp("</fake-close-" + elt + ">")), "");
+        (new RegExp('</fake-close-' + elt + '>', 'g')), '');
     });
     return value;
   },

@@ -46,7 +46,7 @@ gem 'pg_search'
 gem 'puma'
 gem 'pusher'
 gem 'rack-timeout'
-gem 'rails', '~>4.2.4'
+gem 'rails', '~>4.2.7'
 gem 'rbtrace'
 gem 'render_anywhere', require: nil
 gem 'request_store'

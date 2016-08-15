@@ -146,16 +146,17 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.search_users(query: nil, assigned_users_in_journal_id: nil)
-    if query.present?
-      sanitized_query = connection.quote_string(query.to_s.downcase) + '%'
-      User.fuzzy_search sanitized_query
-    elsif assigned_users_in_journal_id
-      User.joins(user_roles: :old_role)
-        .where('old_roles.journal_id = ?', assigned_users_in_journal_id)
-        .reorder("last_name")
-        .uniq
-    end
+  def self.assigned_to_journal(journal_id)
+    joins(:assignments)
+      .where("assignments.assigned_to_type = 'Journal'")
+      .where('assignments.assigned_to_id = ?', journal_id)
+      .reorder("last_name", "first_name")
+      .uniq
+  end
+
+  def self.search_users(query)
+    sanitized_query = connection.quote_string(query.to_s.downcase) + '%'
+    User.fuzzy_search sanitized_query
   end
 
   def add_user_role!

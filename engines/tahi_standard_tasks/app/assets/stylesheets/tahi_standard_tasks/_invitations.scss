@@ -47,18 +47,16 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-edit-body {
   overflow: auto;
   max-height: 300px;
+  border: 1px solid #bababa;
+  border-radius: 5px;
   padding: 0.75rem 1.5rem;
   white-space: pre-wrap;
 }
 
-.invitation-edit-body {
-  border: 1px solid $tahi-grey-light;
-  border-radius: 4px;
-}
-
 .invitation-show-body {
+  color: #666;
   // override default in _content-editable.scss
-  background: transparent;
+  background: rgba(255,255,255, 0.6);
 }
 
 .invitees, .assignments {
@@ -66,7 +64,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   margin-top: 36px;
 
   .invitation-updated-at,
-  .invitation-state,
   .assignment-updated-at {
     font-size: 14px;
     text-transform: capitalize;
@@ -106,7 +103,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-email-entry {
   padding: $invite-padding;
-  background: #ddd;
+  background: $tahi-grey-light;
 
   .auto-suggest-border {
     width: 400px;
@@ -120,20 +117,21 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item {
   border-bottom: 1px solid $tahi-grey-light;
+
+  &:last-child {
+    margin-bottom: 1px;
+    border-bottom: none;
+  }
 }
 
 .invitation-item--closed {
-  &:hover .invitation-item-header { cursor: pointer; }
-
   .invitation-item-action-text { display: none; }
 }
 
 .invitation-item--show {
-  &:hover .invitation-item-header { cursor: pointer; }
-
   .invitation-item-header,
   .invitation-item-details {
-    background-color: $tahi-grey-xlight;
+    background-color: $tahi-grey-light;
   }
 }
 
@@ -151,34 +149,47 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-header {
-  padding: $invite-padding;
-}
-
-.invitation-item-header {
   width: 100%;
   font-size: 1.4rem;
+}
+
+.invitation-item-header > * {
+  padding: $invite-padding-vertical 0;
 }
 
 .invitation-item-full-name {
   width: 30%;
   flex-grow: 0;
+  padding-left: $invite-padding-horizontal;
+  cursor: pointer;
+}
+
+.invitation-state--accepted .invitation-item-full-name {
+  font-weight: bold;
 }
 
 .invitation-item-updated-at {
   flex-grow: 2;
+  cursor: pointer;
+}
+
+.invitation-state--accepted .invitation-item-updated-at {
+  font-weight: bold;
 }
 
 .invitation-item-actions {
+  padding: 0 $invite-padding-horizontal 0 0;
   text-align: right;
 }
 
 .invitation-item-action {
+  display: inline-block;
   margin-left: 2rem;
+  padding: $invite-padding-vertical 0;
   color: $tahi-grey;
+  cursor: pointer;
 
-  .fa {
-    font-size: 1.7rem;
-  }
+  .fa { font-size: 1.7rem; }
 }
 
 .invitation-item-details {

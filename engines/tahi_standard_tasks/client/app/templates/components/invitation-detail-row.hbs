@@ -1,18 +1,19 @@
-<div class='invitation-item-header flex-group' {{action 'toggleDetails' invitation}}>
-  <div class="flex-element invitation-item-full-name">
+<div class="invitation-item-header flex-group">
+  <div class="flex-element invitation-item-full-name" {{action "toggleDetails" invitation}}>
     {{#if invitee}}
       {{invitee.fullName}}
+      {{#if invitee.email}}[{{invitee.email}}]{{/if}}
     {{else}}
       {{invitation.email}}
     {{/if}}
   </div>
-  <div class="flex-element invitation-item-updated-at">
-    <span class="invitation-item-state">{{capitalize (if (eq invitation.state "pending") "draft" invitation.state)}}</span>
+  <div class="flex-element invitation-item-updated-at" {{action "toggleDetails" invitation}}>
+    <span class="invitation-item-state">{{if (eq invitation.state "pending") "draft" invitation.state}}</span>
     <span class="invitation-item-date">{{format-date invitation.updatedAt format='LLL'}}</span>
   </div>
   <div class="flex-element invitation-item-actions">
     {{#if displayEdit}}
-      <span class="invitation-item-action" {{action "editInvitation" invitation bubbles=false}}>
+      <span class="invitation-item-action" {{action "editInvitation" invitation}}>
         <span class="fa fa-pencil invite-edit"></span>
         <span class="invitation-item-action-text">Edit</span>
       </span>
@@ -24,7 +25,7 @@
       </span>
     {{/if}}
     {{#if displayDestroy}}
-      <span class="invitation-item-action" {{action destroyAction invitation bubbles=false}}>
+      <span class="invitation-item-action" {{action destroyAction invitation}}>
         <span class="fa fa-trash invite-remove" ></span>
         <span class="invitation-item-action-text">Delete</span>
       </span>
@@ -37,6 +38,9 @@
     <div class="invitation-show-body">
       {{{invitation.body}}}
     </div>
+    <div class="invite-edit-buttons">
+      <button class="button-secondary knockout button--green" {{action "toggleDetails"}}>Close</button>
+    </div>
   </div>
 {{/if}}
 
@@ -46,7 +50,7 @@
                        class="invitation-edit-body"}}
     <div class="invite-edit-buttons">
       <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
-      <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
+      <button class="button-secondary knockout button--green invitation-save-button" {{action "save" invitation}}>Save</button>
     </div>
   </div>
 {{/if}}

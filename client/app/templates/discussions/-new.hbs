@@ -10,7 +10,12 @@
   </div>
 
   <div class="inset-form-control required {{if validationErrors.title "error"}}">
-    <label class="inset-form-control-text">Topic Title</label>
+    <div class="inset-form-control-text">
+      <label>Topic Title</label>
+      {{error-message message=validationErrors.title
+                      displayIcon=true
+                      displayText=false}}
+    </div>
     {{input id="topic-title-field"
             type="text"
             value=model.title

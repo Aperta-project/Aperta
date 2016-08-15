@@ -6,7 +6,10 @@
   <div class="discussions-show-header">
     <h1 class="discussions-show-title {{if validationErrors.title "error"}}">
       {{#if (can 'edit' model)}}
-        {{input value=model.title focus-out="saveTopic"}}
+        {{error-message message=validationErrors.title
+                        displayIcon=true
+                        displayText=false}}
+        {{input value=model.title class="edit-comment-title-field" focus-out="saveTopic"}}
       {{else}}
         {{model.title}}
       {{/if}}

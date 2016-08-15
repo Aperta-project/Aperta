@@ -52,6 +52,13 @@ class Invitation < ActiveRecord::Base
     possible_users - invited_users
   end
 
+  # Yes, this is purposefully a little weird to call attention to it.
+  # Can we replace this with a new R&P check?
+  def can_be_viewed_by?(user)
+    user == invitation.invitee ||
+      user.can?(:manage_invitations, invitation.task)
+  end
+
   def recipient_name
     invitee.try(:full_name) || email
   end

@@ -12,15 +12,7 @@
 
 <div class="flex-container">
   {{#if allowAttachments}}
-    {{attachment-manager filePath="invitation"
-                         attachments=invitation.attachments
-                         multiple=true
-                         hasCaption=true
-                         accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
-                         captionChanged=(action "nope")
-                         deleteFile=(action "nope")
-                         uploadFinished=(action "nope")
-                         updateAttachment=(action "nope") }}
+    {{invitation-attachment-manager invitation=invitation}}
   {{/if}}
 
   <div class="invite-editor-cta">

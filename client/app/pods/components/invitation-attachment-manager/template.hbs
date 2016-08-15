@@ -1,0 +1,8 @@
+{{attachment-manager filePath="invitation"
+                     attachments=invitation.attachments
+                     multiple=true
+                     hasCaption=true
+                     captionChanged=(action "updateAttachmentCaption")
+                     deleteFile=(action "deleteAttachment")
+                     uploadFinished=(action "updateAttachment")
+                     updateAttachment=(action "updateAttachment") }}

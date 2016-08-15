@@ -307,7 +307,7 @@ describe DecisionsController do
 
         it "rescinds the latest decision" do
           do_request
-          expect(paper.reload.publishing_state).to eq("initially_submitted")
+          expect(paper.reload.publishing_state).to eq("submitted")
           expect(decision.reload.rescinded).to be(true)
         end
       end

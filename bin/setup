@@ -173,6 +173,9 @@ Dir.chdir APP_ROOT do
   system 'rm -f log/**/*'
   system 'rm -rf tmp/cache'
 
+  header 'Preparing tmp/pids'
+  system 'mkdir tmp/pids'
+
   header 'setting up overcommit'
   system 'overcommit --install'
 

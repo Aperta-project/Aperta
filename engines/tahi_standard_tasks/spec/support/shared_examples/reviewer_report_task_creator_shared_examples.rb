@@ -77,6 +77,17 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
       }.to change { reviewer_report_type.count }.by(0)
     end
 
+    context "if the user has been previously removed from the task's participants" do
+      before do
+        assignee.resign_from!(assigned_to: reviewer_report_type.first, role: 'Participant')
+      end
+      it "adds the user as a participant to the task" do
+        subject.process
+        task = paper.tasks_for_type(reviewer_report_type.name).first
+        expect(task.participants).to match_array([assignee])
+      end
+    end
+
     it "uncompletes and unsubmits the task" do
       ReviewerReportTaskCreator.new(
         originating_task: originating_task,

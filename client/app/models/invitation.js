@@ -3,7 +3,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   abstract: DS.attr('string'),
-  attachments: DS.hasMany('attachment', { polymorphic: true, async: true }),
+  attachments: DS.hasMany('invitation-attachment', { async: true }),
   body: DS.attr('string'),
   createdAt: DS.attr('date'),
   declineReason: DS.attr('string'),

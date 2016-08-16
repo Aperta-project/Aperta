@@ -8,7 +8,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
-  has_many :attachments, as: :owner, class_name: 'InvitationAttachment'
+  has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   before_create :assign_to_latest_decision
 
   scope :where_email_matches,
@@ -55,8 +55,8 @@ class Invitation < ActiveRecord::Base
   # Yes, this is purposefully a little weird to call attention to it.
   # Can we replace this with a new R&P check?
   def can_be_viewed_by?(user)
-    user == invitation.invitee ||
-      user.can?(:manage_invitations, invitation.task)
+    user == invitee ||
+      user.can?(:manage_invitations, task)
   end
 
   def recipient_name

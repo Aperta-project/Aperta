@@ -52,6 +52,6 @@ class InvitationAttachmentsController < ApplicationController
   end
 
   def attachment_params
-    params.require(:attachment).permit(:title, :caption, :kind)
+    params.require(:invitation_attachment).permit(:title, :caption, :kind)
   end
 end

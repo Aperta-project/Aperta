@@ -205,10 +205,12 @@ describe NestedQuestionAnswersController do
         expect do
           do_request
         end.to change(NestedQuestionAnswer, :count).by(-1)
+      end
 
-        expect do
-          nested_question_answer.reload
-        end.to raise_error(ActiveRecord::RecordNotFound)
+      it "sets deleted_at" do
+        do_request
+        nested_question_answer.reload
+        expect(nested_question_answer.deleted_at).to_not be_nil
       end
 
       it "responds with 200 OK" do

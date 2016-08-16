@@ -27,19 +27,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
     },
 
-    assignOldRoleToUser(oldRoleID, user) {
-      const oldRole = this.store.peekRecord('old-role', oldRoleID);
-
-      return this.store.createRecord('user-role', {
-        user: user,
-        oldRole: oldRole
-      }).save();
-    },
-
-    addRole() {
-      this.get('model.oldRoles').addObject(this.store.createRecord('old-role'));
-    },
-
     addMMTemplate() {
       this.transitionTo('admin.journal.manuscript_manager_template.new');
     },
@@ -71,22 +58,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         pdfCssSaveStatus: '',
         manuscriptCssSaveStatus: ''
       });
-    },
-
-    assignOldRole(oldRoleID, user) {
-      const userRole = this.store.createRecord('user-role', {
-        user: user,
-        oldRole: this.store.peekRecord('old-role', oldRoleID)
-      });
-
-      return userRole.save()['catch'](function() {
-        userRole.transitionTo('created.uncommitted');
-        return userRole.deleteRecord();
-      });
-    },
-
-    removeOldRole(userRoleId) {
-      return this.store.peekRecord('user-role', userRoleId).destroyRecord();
     },
 
     showEditTaskTypesOverlay() {

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'pathname'
+require 'securerandom'
 
 SLANGER_REPO = "git@github.com:Tahi-project/tahi-slanger.git"
 
@@ -133,9 +134,9 @@ Dir.chdir APP_ROOT do
   header 'Installing Slanger gem'
   system 'gem install slanger'
 
-  header 'Installing javascript dependencies (output logged to setup.log)'
-  system 'npm install >> setup.log'
-  system 'bundle exec rake ember-cli:install_dependencies'
+  create_config_file('.env.development') do |f|
+    f.puts "RAILS_SECRET_TOKEN=#{SecureRandom.hex(64)}"
+  end
 
   header 'Ensuring PostgreSQL tahi role exists'
   # NOTE rolname is not a typo
@@ -152,22 +153,21 @@ Dir.chdir APP_ROOT do
   copy_template 'config/database.yml.sample', 'config/database.yml'
   copy_template 'Procfile.template', 'Procfile.local'
 
-  create_config_file('.env.development') do |f|
-    f.puts "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"
-  end
-
   create_config_file('.foreman') do |f|
     f.puts "port: 5000"
     f.puts "procfile: Procfile.local"
     f.puts "env: ''"
   end
 
-
   header 'Preparing development database (output logged to setup.log)'
   system 'bin/rake db:setup >> setup.log'
 
   header 'Preparing testing database (output logged to setup.log)'
   system 'bin/rake db:setup RAILS_ENV=test >> setup.log'
+
+  header 'Installing javascript dependencies (output logged to setup.log)'
+  system 'npm install >> setup.log'
+  system 'bundle exec rake ember:install'
 
   header 'Removing old logs and tempfiles'
   system 'rm -f log/**/*'

@@ -15,6 +15,8 @@ export default Component.extend({
     destroyAction: PropTypes.func.isRequired
   },
 
+  allowAttachments: true,
+
   invitee: alias('invitation.invitee'),
   displayDestroy: not('invitation.accepted'),
   displayEdit: and('invitation.pending', 'editAction', 'notClosedState'),

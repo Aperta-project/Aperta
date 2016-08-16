@@ -38,7 +38,10 @@
     <div class="invitation-show-body">
       {{{invitation.body}}}
     </div>
-    <div class="invite-edit-buttons">
+    <div class="invite-edit-buttons flex-container">
+      {{#if allowAttachments}}
+        {{invitation-attachment-manager invitation=invitation}}
+      {{/if}}
       <button class="button-secondary knockout button--green" {{action "toggleDetails"}}>Close</button>
     </div>
   </div>

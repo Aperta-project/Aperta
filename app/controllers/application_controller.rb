@@ -18,6 +18,20 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
+  # This is an error we use to allow assertions of the form:
+  # `assert test?, "Error message", status_code: 422`
+  # in controllers. See #assert, below.
+  class AssertionError < StandardError
+    attr_reader :message, :status_code
+
+    def initialize(message, status_code)
+      @message = message
+      @status_code = status_code
+    end
+  end
+
+  rescue_from AssertionError, with: :render_assertion_error
+
   protected
 
   def configure_permitted_parameters
@@ -42,7 +56,15 @@ class ApplicationController < ActionController::Base
   private
 
   def render_errors(e)
-    render status: 422, json: {errors: e.record.errors}
+    render status: 422, json: { errors: e.record.errors }
+  end
+
+  def assert(test, message, status_code: 422)
+    fail AssertionError.new(message, status_code) unless test
+  end
+
+  def render_assertion_error(e)
+    render status: e.status_code, json: { errors: [e.message] }
   end
 
   def render_404

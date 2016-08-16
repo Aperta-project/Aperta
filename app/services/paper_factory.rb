@@ -25,7 +25,6 @@ class PaperFactory
           # TODO: This requires roles & permissions tables to exist. It should
           # be possible to create a paper for testing without them.
           add_creator_assignment!
-          add_decision
           add_phases_and_tasks
           add_creator_as_author!
         else
@@ -73,9 +72,5 @@ class PaperFactory
 
   def add_creator_as_author!
     DefaultAuthorCreator.new(paper, creator).create!
-  end
-
-  def add_decision
-    paper.decisions.create!
   end
 end

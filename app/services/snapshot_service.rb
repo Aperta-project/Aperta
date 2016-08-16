@@ -18,7 +18,12 @@ class SnapshotService
   end
 
   def snapshot!(*things_to_snapshot)
-    preview(*things_to_snapshot).each(&:save!)
+    snapshots = preview(*things_to_snapshot)
+    snapshots.each do |snapshot|
+      snapshot.major_version = @paper.major_version
+      snapshot.minor_version = @paper.minor_version
+      snapshot.save!
+    end
   end
 
   def preview(*things_to_snapshot)
@@ -29,8 +34,8 @@ class SnapshotService
         source: thing,
         contents: json,
         paper: @paper,
-        major_version: @paper.major_version,
-        minor_version: @paper.minor_version)
+        major_version: nil,
+        minor_version: nil)
     end
   end
 end

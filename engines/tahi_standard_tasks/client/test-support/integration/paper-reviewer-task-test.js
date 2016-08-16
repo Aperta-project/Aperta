@@ -86,7 +86,7 @@ var newTask = function() {
 
     ],
     decisions: [
-      {id: 2, isLatest: true}
+      {id: 2, latest: true}
     ]
   };
 };

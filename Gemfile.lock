@@ -246,6 +246,8 @@ GEM
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     fake_ftp (0.1.1)
+    faker (1.6.5)
+      i18n (~> 0.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
@@ -706,6 +708,7 @@ DEPENDENCIES
   equivalent-xml
   factory_girl_rails
   fake_ftp
+  faker
   faraday_middleware
   fog (~> 1.36.0)
   foreman

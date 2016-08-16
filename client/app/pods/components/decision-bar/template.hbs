@@ -1,0 +1,34 @@
+<div class="decision-bar-bar"
+     id="decision-{{unbound decision.id}}"
+     {{action "fold"}}>
+  <h4 class="decision-bar-verdict">
+    <div class="decision-bar-revision-number">
+      {{decision.revisionNumber}}
+    </div>
+    {{humanize decision.verdict}}
+  </h4>
+
+  {{#if decision.rescinded}}
+    <div class="decision-bar-rescinded status-tag">Rescinded</div>
+  {{/if}}
+</div>
+
+{{#unless folded}}
+  <div class="decision-bar-contents">
+    <h4>
+      Letter sent to Author:
+    </h4>
+    <div class="decision-bar-letter">
+      {{break-to-tag decision.letter}}
+    </div>
+
+    {{#if decision.authorResponse}}
+      <h4>
+        Revision Notes from Author:
+      </h4>
+      <div class="decision-bar-author-response">
+        {{{decision.authorResponse}}}
+      </div>
+    {{/if}}
+  </div>
+{{/unless}}

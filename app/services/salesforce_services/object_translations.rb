@@ -12,7 +12,7 @@ module SalesforceServices
         hash = {
           "RecordTypeId"               => "012U0000000E4ASIA0",
           "Editorial_Status_Date__c"   => editorial[:date],
-          "Revision__c"                => @paper.decisions.latest.revision_number,
+          "Revision__c"                => @paper.major_version,
           "Title__c"                   => @paper.title,
           "DOI__c"                     => @paper.doi,
           "Name"                       => @paper.manuscript_id,

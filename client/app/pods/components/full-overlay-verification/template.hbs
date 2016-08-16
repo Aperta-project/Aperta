@@ -1,0 +1,17 @@
+<div class="full-overlay-verification-content">
+  <div class="full-overlay-verification-question">
+    {{yield}}
+  </div>
+
+  <div class="full-overlay-verification-buttons">
+    <button {{action cancel}}
+      class="button button-primary button--white full-overlay-verification-cancel">
+      {{cancelText}}
+    </button>
+
+    <button {{action confirm}}
+      class="button button-primary button--white full-overlay-verification-confirm">
+      {{confirmText}}
+    </button>
+  </div>
+</div>

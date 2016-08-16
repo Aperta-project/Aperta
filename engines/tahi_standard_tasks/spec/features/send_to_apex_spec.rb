@@ -5,9 +5,8 @@ feature 'Send to Apex task', js: true do
 
   let!(:paper) do
     FactoryGirl.create(
-      :paper_ready_for_export,
-      :accepted,
-      :with_integration_journal
+      :paper,
+      :ready_for_export
     )
   end
   let!(:task) do

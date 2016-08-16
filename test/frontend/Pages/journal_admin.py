@@ -170,7 +170,8 @@ class JournalAdminPage(AdminPage):
     :return: void function
     """
     user_role_pill = self._get(self._journal_admin_user_row_roles)
-    # For whatever reason, using action chains move_to_element() is failing here so doing a simple click
+    # For whatever reason, using action chains move_to_element() is failing here
+    # so doing a simple click
     user_role_pill.click()
     delete_role = self._get(self._journal_admin_user_row_role_delete)
     delete_role.click()
@@ -185,14 +186,16 @@ class JournalAdminPage(AdminPage):
     self.validate_application_h2_style(roles_title)
     self._get(self._journal_admin_roles_add_new_role_btn)
     journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;',
-        (journal,))[0][0]
+                               (journal,))[0][0]
     # Get list of roles that should be displayed
     journal_roles = PgSQL().query('SELECT id from roles WHERE journal_id = %s AND name in '
-        '(\'Staff Admin\', \'Internal Editor\', \'Production Staff\', \'Publishing Services\','
-        ' \'Freelance Editors\');',(journal_id,))
+                                  '(\'Staff Admin\', \'Internal Editor\', \'Production Staff\','
+                                  '\'Publishing Services\', \'Freelance Editors\');',
+                                  (journal_id,))
     journal_roles = tuple([x[0] for x in journal_roles])
     users_db = PgSQL().query('SELECT user_id from assignments WHERE role_id in %s AND '
-        'assigned_to_id = %s AND assigned_to_type=\'Journal\';',(journal_roles, journal_id))
+                             'assigned_to_id = %s AND assigned_to_type=\'Journal\';',
+                             (journal_roles, journal_id))
     users_db = set([x[0] for x in users_db])
     users_db = tuple(users_db)
     #Check if there are users with journal roles
@@ -204,7 +207,7 @@ class JournalAdminPage(AdminPage):
       role_rows = self._gets(self._journal_admin_user_search_results_row)
       for counter, row in enumerate(role_rows):
         logging.info(row.text)
-        if counter>0:
+        if counter > 0:
           old_last_name = last_name
         row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
         username, first_name, last_name, roles = row_elements
@@ -212,7 +215,7 @@ class JournalAdminPage(AdminPage):
         usernames.append(username)
         # This username should be in the list of user names from the DB
         assert username in usernames_db, (username, usernames_db)
-        if counter>0:
+        if counter > 0:
           assert last_name.lower() > old_last_name.lower(), 'Not in alphabetical order {0} is \
               showed before {1}'.format(last_name.lower(), old_last_name.lower())
         roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
@@ -221,12 +224,12 @@ class JournalAdminPage(AdminPage):
         uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
         try:
           roles_id = PgSQL().query('SELECT role_id FROM assignments '
-                                 'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
-                                  (uid,))[0]
+                                   'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
+                                   (uid,))[0]
           db_roles = []
           for role_id in roles_id:
             db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',
-                (role_id,))[0][0])
+                            (role_id,))[0][0])
           assert set(roles) == set(db_roles), (roles, db_roles)
         except IndexError:
           logging.warning('No permissions found for user {0}'.format(username))
@@ -242,7 +245,6 @@ class JournalAdminPage(AdminPage):
       except ElementDoesNotExistAssertionError:
         assert True
     self.restore_timeout()
-
 
   def validate_task_types_section(self, journal):
     """
@@ -342,7 +344,8 @@ class JournalAdminPage(AdminPage):
 
   def validate_style_settings_section(self):
     """
-    Validate the Roles section elements and permission assignment functions of the journal admin page
+    Validate the Roles section elements and permission assignment functions of the
+    journal admin page
     :return: void function
     """
     styles_title = self._get(self._journal_admin_style_settings_title)
@@ -356,7 +359,8 @@ class JournalAdminPage(AdminPage):
     title = self._get(self._overlay_header_title)
     assert 'PDF CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
-    assert label.text == 'Enter or edit CSS to format the PDF output for this journal\'s papers.', label.text
+    assert label.text == 'Enter or edit CSS to format the PDF output for this '\
+        'journal\'s papers.', label.text
     self._get(self._journal_styles_css_overlay_field)
     cancel = self._get(self._journal_styles_css_overlay_cancel)
     self._get(self._journal_styles_css_overlay_save)
@@ -370,7 +374,8 @@ class JournalAdminPage(AdminPage):
     title = self._get(self._overlay_header_title)
     assert 'Manuscript CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
-    assert label.text == 'Enter or edit CSS to format the manuscript editor and output for this journal.', label.text
+    assert label.text == 'Enter or edit CSS to format the manuscript editor and output for '\
+        'this journal.', label.text
     self._get(self._journal_styles_css_overlay_field)
     self._get(self._journal_styles_css_overlay_cancel)
     save = self._get(self._journal_styles_css_overlay_save)
@@ -383,7 +388,8 @@ class JournalAdminPage(AdminPage):
     """
     template_field = self._get(self._mmt_template_name_field)
     # The default name should be Research
-    assert 'Research' in template_field.get_attribute('value'), template_field.get_attribute('value')
+    assert 'Research' in template_field.get_attribute('value'), \
+        template_field.get_attribute('value')
     self._get(self._mmt_template_save_button)
     template_cancel = self._get(self._mmt_template_cancel_link)
     self._gets(self._mmt_template_add_phase_icons)
@@ -401,8 +407,10 @@ class JournalAdminPage(AdminPage):
       time.sleep(1)
       self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
       column.find_element(*self._mmt_template_column_delete)
-      self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')
-      self._mmt_template_column_title_edit_save_btn = (By.CSS_SELECTOR, 'button.column-header-update-save')
+      self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR,
+                                                         'button.column-header-update-cancel')
+      self._mmt_template_column_title_edit_save_btn = (By.CSS_SELECTOR,
+                                                       'button.column-header-update-save')
       col_cancel = column.find_element(*self._mmt_template_column_title_edit_cancel_btn)
       column.find_element(*self._mmt_template_column_title_edit_save_btn)
       # Commenting out until APERTA-6407 is resolved

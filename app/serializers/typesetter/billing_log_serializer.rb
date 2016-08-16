@@ -132,7 +132,7 @@ module Typesetter
     end
 
     def final_dispo_accept
-      final_tech_check_task.try(:completed_at)
+      object.accepted_at
     end
 
     def category

@@ -17,7 +17,8 @@ describe Typesetter::BillingLogSerializer do
       :with_short_title,
       :with_creator,
       journal: journal,
-      short_title: 'my paper short'
+      short_title: 'my paper short',
+      accepted_at: Time.now.utc
     )
   end
 
@@ -181,10 +182,10 @@ describe Typesetter::BillingLogSerializer do
     expect(output[:fundRef]).to eq(financial_disclosure_task.funding_statement)
   end
 
-  it 'has final_dispo_accept which is date FTC was completed' do
+  it 'has final_dispo_accept which is date the paper was accepted' do
     final_tech_check_task.completed = true
     final_tech_check_task.save
-    expect(output[:final_dispo_accept].utc.to_s).to eq(final_tech_check_task.completed_at.utc.to_s)
+    expect(output[:final_dispo_accept].utc.to_s).to eq(paper.accepted_at.utc.to_s)
   end
 
   it 'has category' do

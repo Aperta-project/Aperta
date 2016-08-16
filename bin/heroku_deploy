@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+heroku pg:backups capture --app $1 &&
+git push -f https://git.heroku.com/$1.git release/$2:master &&
+heroku run bundle exec rake db:migrate nested-questions:seed roles-and-permissions:seed --app $1

@@ -73,7 +73,7 @@ class ApertaJournalAdminTest(CommonTest):
 
     adm_page = AdminPage(self.getDriver())
     journal = adm_page.select_random_journal()
-
+    logging.info('Journal: {0}'.format(journal))
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 

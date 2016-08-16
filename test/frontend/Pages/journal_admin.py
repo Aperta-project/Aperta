@@ -110,7 +110,7 @@ class JournalAdminPage(AdminPage):
     roles_count = 0
     for role in role_list:
       rcount = PgSQL().query('SELECT count(user_id) from user_roles WHERE old_role_id in (%s);', (role[0],))[0][0]
-      roles_count = roles_count + rcount
+      roles_count += rcount
     logging.debug(roles_count)
     self._get(self._journal_admin_user_search_field)
     self._get(self._journal_admin_user_search_button)
@@ -128,9 +128,9 @@ class JournalAdminPage(AdminPage):
     # Aperta-6134 - Temporarily commenting out adjusting user roles
     else:
       logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
-      self._add_user_with_role('atest author3', 'Flow Manager')
+      self._add_user_with_role('atest author3', 'Staff Admin')
       logging.info('Verifying added user')
-      self._validate_user_with_role('atest author3', 'Flow Manager')
+      self._validate_user_with_role('atest author3', 'Staff Admin')
       logging.info('Deleting newly added user')
       self._delete_user_with_role()
       time.sleep(3)
@@ -206,7 +206,7 @@ class JournalAdminPage(AdminPage):
       for counter, row in enumerate(role_rows):
         logging.info(row.text)
         if counter>0:
-          old_username = username
+          old_last_name = last_name
         row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
         username, first_name, last_name, roles = row_elements
         username = username.text
@@ -214,8 +214,8 @@ class JournalAdminPage(AdminPage):
         # This username should be in the list of user names from the DB
         assert username in usernames_db, (username, usernames_db)
         if counter>0:
-          assert username.lower()>old_username.lower(), 'Not in alphabetical order {0} is \
-              showed before {1}'.format(username.lower(), old_username.lower())
+          assert last_name.lower() > old_last_name.lower(), 'Not in alphabetical order {0} is \
+              showed before {1}'.format(last_name.lower(), old_last_name.lower())
         roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
         roles = [x.text for x in roles]
         # search for roles in DB

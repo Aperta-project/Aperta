@@ -118,7 +118,6 @@ class JournalAdminPage(AdminPage):
       self._get(self._journal_admin_user_search_results_table_uname_header)
       self._get(self._journal_admin_user_search_results_table_fname_header)
       self._get(self._journal_admin_user_search_results_table_lname_header)
-      # Aperta-6134 - Temporarily commenting out adjusting user roles
       self._get(self._journal_admin_user_search_results_table_rname_header)
       self._get(self._journal_admin_user_search_results_table)
       page_user_list = self._gets(self._journal_admin_user_search_results_row)

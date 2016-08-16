@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [Version] - {Date}
+## [1.23.0] - {2016-08-16}
 ### Added
 - Daily export of billing log
 - Admins can view and edit journal roles assigned to users

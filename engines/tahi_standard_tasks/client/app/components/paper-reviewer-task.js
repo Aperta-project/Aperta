@@ -2,27 +2,25 @@ import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
 
-const { computed } = Ember;
+const {
+  computed,
+  computed: {alias},
+  isEmpty
+} = Ember;
 
 export default TaskComponent.extend({
-  autoSuggestSourceUrl: computed('task.id', function() {
-    return eligibleUsersPath(this.get('task.id'), 'reviewers');
-  }),
-
-  selectedReviewer: null,
-  composingEmail: false,
-  decisions: computed.alias('task.decisions'),
-
-  customEmail: 'test@lvh.me',
+  invitationToEdit: null,
+  selectedUser: null,
+  decisions: alias('task.decisions'),
 
   latestDecision: computed('decisions', 'decisions.@each.latest', function() {
     return this.get('decisions').findBy('latest', true);
   }),
 
   applyTemplateReplacements(str) {
-    let reviewerName = this.get('selectedReviewer.full_name');
-    if (reviewerName) {
-      str = str.replace(/\[REVIEWER NAME\]/g, reviewerName);
+    const name = this.get('selectedUser.full_name');
+    if (name) {
+      str = str.replace(/\[REVIEWER NAME\]/g, name);
     }
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
@@ -30,7 +28,7 @@ export default TaskComponent.extend({
   setLetterTemplate() {
     let body, salutation, template;
     template = this.get('task.invitationTemplate');
-    if (template.salutation && this.get('selectedReviewer.full_name')) {
+    if (template.salutation && this.get('selectedUser.full_name')) {
       salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
     } else {
       salutation = '';
@@ -44,49 +42,60 @@ export default TaskComponent.extend({
     return this.set('invitationBody', '' + salutation + body);
   },
 
+  // auto-suggest
+  autoSuggestSourceUrl: computed('task.id', function() {
+    return eligibleUsersPath(this.get('task.id'), 'reviewers');
+  }),
+
+  // auto-suggest
   parseUserSearchResponse(response) {
     return response.users;
   },
 
+  // auto-suggest
   displayUserSelected(user) {
     return user.full_name + ' <' + user.email + '>';
   },
 
   actions: {
     cancelAction() {
-      this.set('selectedReviewer', null);
-      return this.set('composingEmail', false);
+      this.set('selectedUser', null);
+      this.set('invitationToEdit', null);
     },
 
     composeInvite() {
-      if (!this.get('selectedReviewer')) {
-        return;
-      }
+      if (isEmpty(this.get('selectedUser'))) { return; }
+
       this.setLetterTemplate();
-      return this.set('composingEmail', true);
-    },
 
-    didSelectReviewer(selectedReviewer) {
-      return this.set('selectedReviewer', selectedReviewer);
-    },
-
-    inviteReviewer() {
-      if (!this.get('selectedReviewer')) {
-        return;
-      }
-      return this.get('store').createRecord('invitation', {
+      this.get('store').createRecord('invitation', {
         task: this.get('task'),
-        email: this.get('selectedReviewer.email'),
-        body: this.get('invitationBody')
+        email: this.get('selectedUser.email'),
+        body: this.get('invitationBody'),
+        state: 'pending'
       }).save().then((invitation) => {
         this.get('latestDecision.invitations').addObject(invitation);
-        this.set('composingEmail', false);
-        return this.set('selectedReviewer', null);
+
+        this.setProperties({
+          invitationToEdit: invitation,
+          selectedUser: null
+        });
       });
     },
 
+    // auto-suggest action
+    didSelectReviewer(selectedUser) {
+      this.set('selectedUser', selectedUser);
+    },
+
+    // auto-suggest action
     inputChanged(val) {
-      return this.set('selectedReviewer', {
+      if(isEmpty(val)) {
+        this.set('selectedUser', null);
+        return;
+      }
+
+      this.set('selectedUser', {
         email: val
       });
     }

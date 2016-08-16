@@ -9,23 +9,23 @@
   </div>
   <div class="flex-element invitation-item-updated-at" {{action "toggleDetails" invitation}}>
     <span class="invitation-item-state">{{if (eq invitation.state "pending") "draft" invitation.state}}</span>
-    <span class="invitation-item-date">{{format-date invitation.updatedAt format='LLL'}}</span>
+    <span class="invitation-item-date">{{format-date invitation.updatedAt format="LLL"}}</span>
   </div>
   <div class="flex-element invitation-item-actions">
-    {{#if displayEdit}}
+    {{#if displayEditButton}}
       <span class="invitation-item-action" {{action "editInvitation" invitation}}>
         <span class="fa fa-pencil invite-edit"></span>
         <span class="invitation-item-action-text">Edit</span>
       </span>
     {{/if}}
-    {{#if displaySend}}
+    {{#if displaySendButton}}
       <span class="invitation-item-action">
         <span class="fa fa-send invite-send"></span>
         <span class="invitation-item-action-text">Send</span>
       </span>
     {{/if}}
-    {{#if displayDestroy}}
-      <span class="invitation-item-action" {{action destroyAction invitation}}>
+    {{#if displayDestroyButton}}
+      <span class="invitation-item-action" {{action "confirmDeleteInvitation"}}>
         <span class="fa fa-trash invite-remove" ></span>
         <span class="invitation-item-action-text">Delete</span>
       </span>
@@ -33,36 +33,52 @@
   </div>
 </div>
 
-{{#if (eq detailState 'show')}}
+{{#if (eq uiState "show")}}
   <div class="invitation-item-details">
     <div class="invitation-show-body">
       {{{invitation.body}}}
     </div>
     <div class="invite-edit-buttons">
-      <button class="button-secondary knockout button--green" {{action "toggleDetails"}}>Close</button>
+      <button class="button-secondary button--green" {{action "toggleDetails"}}>Close</button>
     </div>
   </div>
 {{/if}}
 
-{{#if (eq detailState 'edit')}}
+{{#if (eq uiState "edit")}}
   <div class="invitation-item-details">
     {{content-editable value=invitation.body
-                       class="invitation-edit-body"}}
+                       class="invitation-edit-body"
+                       key-up=(action "saveDuringType")}}
     <div class="invite-edit-buttons">
+      {{#if templateSaved.isRunning}}
+        <span class="invite-edit-save-confirmation">Your changes have been automatically saved.</span>
+      {{/if}}
       <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
-      <button class="button-secondary knockout button--green invitation-save-button" {{action "save" invitation}}>Save</button>
+      <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
     </div>
   </div>
 {{/if}}
 
-{{#if invitation.declined}}
+{{#if (eq uiState "delete")}}
+  <div class="invitation-item-delete-confirmation">
+    <h3>Are you sure you want to permanently delete this invitation?</h3>
+    <button class="button-link button--green" {{action "toggleDetails"}}>
+      Cancel
+    </button>
+    <button class="button-secondary button--green" {{action destroyAction invitation}}>
+      Delete
+    </button>
+  </div>
+{{/if}}
+
+{{#if (and invitation.declined closedState)}}
   <div class="invitation-decline-info">
-    <div class='invitation-decline-reason'>
+    <div class="invitation-decline-reason">
       <strong>Reasons: </strong>
       {{break-to-tag invitation.declineReason}}
     </div>
 
-    <div class='invitation-reviewer-suggestions'>
+    <div class="invitation-reviewer-suggestions">
       <strong>Reviewer Suggestions: </strong>
       {{break-to-tag invitation.reviewerSuggestions}}
     </div>

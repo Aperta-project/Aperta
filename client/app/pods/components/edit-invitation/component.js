@@ -3,10 +3,13 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   propTypes: {
-    user: PropTypes.object.isRequired,
-    invitation: PropTypes.EmberObject.isRequired
+    invitation: PropTypes.EmberObject.isRequired,
+    allowAttachments: PropTypes.bool
   },
-  classNames: ['invite-editor-edit-invite'],
+
+  classNames: ['edit-invitation'],
+
+  allowAttachments: false,
 
   actions: {
     nope() { alert('This is a no-op in pending-invitation/component.js'); },

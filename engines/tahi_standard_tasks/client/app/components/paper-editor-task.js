@@ -2,22 +2,23 @@ import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
 
-const { computed } = Ember;
+const {
+  computed,
+  inject,
+  isEmpty
+} = Ember;
 
 export default TaskComponent.extend({
-  restless: Ember.inject.service('restless'),
+  restless: inject.service(),
 
-  autoSuggestSourceUrl: computed('task.id', function(){
-    return eligibleUsersPath(this.get('task.id'), 'academic_editors');
-  }),
-
+  invitationToEdit: null,
   selectedUser: null,
   composingEmail: false,
 
   applyTemplateReplacements(str) {
-    let editorName = this.get('selectedUser.full_name');
-    if (editorName) {
-      str = str.replace(/\[EDITOR NAME\]/g, editorName);
+    const name = this.get('selectedUser.full_name');
+    if (name) {
+      str = str.replace(/\[EDITOR NAME\]/g, name);
     }
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
@@ -39,10 +40,17 @@ export default TaskComponent.extend({
     return this.set('invitationBody', '' + salutation + body);
   },
 
+  // auto-suggest
+  autoSuggestSourceUrl: computed('task.id', function(){
+    return eligibleUsersPath(this.get('task.id'), 'academic_editors');
+  }),
+
+  // auto-suggest
   parseUserSearchResponse(response) {
     return response.users;
   },
 
+  // auto-suggest
   displayUserSelected(user) {
     return user.full_name + ' <' + user.email + '>';
   },
@@ -63,10 +71,10 @@ export default TaskComponent.extend({
     },
 
     composeInvite() {
-      if (!this.get('selectedUser')) {
-        return;
-      }
+      if (isEmpty(this.get('selectedUser'))) { return; }
+
       this.setLetterTemplate();
+
       this.get('store').createRecord('invitation', {
         task: this.get('task'),
         email: this.get('selectedUser.email'),
@@ -74,43 +82,25 @@ export default TaskComponent.extend({
         state: 'pending'
       }).save().then((invitation) => {
         this.setProperties({
-          invitationToEdit: invitation
+          invitationToEdit: invitation,
+          selectedUser: null
         });
       });
     },
 
+    // auto-suggest action
     didSelectUser(selectedUser) {
-      return this.set('selectedUser', selectedUser);
+      this.set('selectedUser', selectedUser);
     },
 
-    editInvitation(invitation) {
-      invitation.fetchDetails().then(() => {
-        this.set('selectedUser',
-          {
-            full_name: invitation.get('invitee.fullName'),
-            email: invitation.get('email')
-          });
-        this.set('invitationToEdit', invitation);
-      });
-    },
-
-    inviteEditor() {
-      if (!this.get('selectedUser')) {
+    // auto-suggest action
+    inputChanged(val) {
+      if(isEmpty(val)) {
+        this.set('selectedUser', null);
         return;
       }
-      this.get('store').createRecord('invitation', {
-        task: this.get('task'),
-        email: this.get('selectedUser.email'),
-        body: this.get('invitationBody')
-      }).save().then((invitation) => {
-        this.get('task.invitations').addObject(invitation);
-        this.set('composingEmail', false);
-        this.set('selectedUser', null);
-      });
-    },
 
-    inputChanged(val) {
-      return this.set('selectedUser', {
+      this.set('selectedUser', {
         email: val
       });
     },

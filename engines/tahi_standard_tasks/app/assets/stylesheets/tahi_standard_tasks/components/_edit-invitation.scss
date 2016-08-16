@@ -1,0 +1,20 @@
+.edit-invitation {
+  .attachment-manager {
+    // override default
+    margin-bottom: 0;
+  }
+}
+
+.edit-invitation-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.edit-invitation-body {
+  overflow: auto;
+  white-space: pre-line;
+  height: 265px;
+  margin: 20px 0;
+}

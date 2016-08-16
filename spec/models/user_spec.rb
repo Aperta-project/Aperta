@@ -188,6 +188,32 @@ describe User do
     end
   end
 
+  describe '.assigned_to_journal' do
+    let(:journal) { create(:journal, :with_staff_admin_role) }
+    it 'finds users who are assigned to the journal, ordered by name' do
+      [['A', 'B'], ['B', 'A'], ['A', 'A']].map do |(first_name, last_name)|
+        create(:user, first_name: first_name, last_name: last_name).tap do |user|
+          assign_journal_role(journal, user, :admin)
+        end
+      end
+
+      expect(User.assigned_to_journal(journal.id)
+        .pluck(:first_name, :last_name)).to match_array(
+          [['A', 'A'], ['B', 'A'], ['A', 'B']]
+        )
+    end
+
+    it "doesn't return users who aren't assigned to that journal" do
+      create(:user, first_name: "not", last_name: "assigned")
+
+      other_journal = create(:journal, :with_staff_admin_role)
+      create(:user, first_name: "John", last_name: "Doe").tap do |user|
+        assign_journal_role(other_journal, user, :admin)
+      end
+
+      expect(User.assigned_to_journal(journal.id)).to eq([])
+    end
+  end
 
   describe ".fuzzy_search" do
     it "searches by user's first_name and last_name" do

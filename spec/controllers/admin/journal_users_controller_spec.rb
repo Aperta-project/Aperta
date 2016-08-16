@@ -146,7 +146,7 @@ describe Admin::JournalUsersController, redis: true do
 
           context "removing a role" do
             it "removes the role specified" do
-              expect(fake_user).to receive(:resign_from!)
+              expect(fake_user).to receive(:resign_from!).with(assigned_to: journal, role: 'Staff Admin')
               do_request
             end
           end

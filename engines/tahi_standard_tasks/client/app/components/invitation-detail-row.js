@@ -8,7 +8,7 @@ const {
 } = Ember;
 
 export default Component.extend({
-  classNameBindings: [':invitation-item', 'uiStateClass'],
+  classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass'],
 
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired,
@@ -18,12 +18,17 @@ export default Component.extend({
   invitee: alias('invitation.invitee'),
   displayDestroy: not('invitation.accepted'),
   displayEdit: and('invitation.pending', 'editAction', 'notClosedState'),
+  displaySend: and('invitation.pending', 'editState'),
 
   detailState: 'closed',
   closedState: equal('detailState', 'closed'),
+  editState: equal('detailState', 'edit'),
   notClosedState: not('closedState'),
   uiStateClass: computed('detailState', function() {
     return 'invitation-item--' + this.get('detailState');
+  }),
+  invitationStateClass: computed('invitation.state', function() {
+    return 'invitation-state--' + this.get('invitation.state');
   }),
 
   actions: {

@@ -1,16 +1,25 @@
-<h3 class="invite-to">
+<h3>
   Invitation to
-  {{#if user.full_name}}
-    {{user.full_name}}
+  {{#if invitation.email}}
+    {{invitation.email}}
   {{/if}}
-  [{{user.email}}]
 </h3>
 
 {{content-editable value=invitation.body
-                   class="form-control taller-textarea"}}
+                   class="form-control edit-invitation-body"}}
 
+<div class="edit-invitation-actions">
+  <div>
+    <button class="button-link button--green cancel"
+            {{action attrs.closeAction}}>
+      close
+    </button>
+    <button class="button-primary button--green send-invitation-button"
+            {{action "sendInvitation" invitation}}>
+      Send Invitation
+    </button>
+  </div>
 
-<div class="flex-container">
   {{#if allowAttachments}}
     {{attachment-manager filePath="invitation"
                          attachments=invitation.attachments
@@ -22,9 +31,4 @@
                          uploadFinished=(action "nope")
                          updateAttachment=(action "nope") }}
   {{/if}}
-
-  <div class="invite-editor-cta">
-    <button class="button-link button--green cancel" {{action attrs.closeAction}}>close</button>
-    <button class="button-primary button--green invite-editor-button" {{action "sendInvitation" invitation}}>Send Invitation</button>
-  </div>
 </div>

@@ -21,17 +21,31 @@ describe InstitutionalAccountsManager do
 
   describe "#seed!" do
     subject(:seed!) { manager.seed! }
-    it "seeds" do
+    it "seeds some initial institutions" do
       expect { seed! }.to change { account_list.reload.items.size }
         .from(0).to(InstitutionalAccountsManager::ITEMS.size)
+    end
+
+    it "adds the institutions in alphabetical order" do
+      seed!
+      sorted = account_list.items.sort_by! { |i| i["text"] }
+      expect(account_list.items).to eq sorted
     end
   end
 
   describe "#add!" do
     subject(:add!) { manager.add!(**institution) }
 
+    before { manager.seed! }
+
     it "adds one institution" do
       expect { add! }.to change { account_list.reload.items.size }.by(1)
+    end
+
+    it "keeps the institution list in alphabetical order" do
+      add!
+      sorted = account_list.items.sort_by! { |i| i["text"] }
+      expect(account_list.items).to eq sorted
     end
   end
 

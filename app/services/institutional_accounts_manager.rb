@@ -71,7 +71,9 @@ class InstitutionalAccountsManager
   end
 
   def seed!
-    @account_list.update!(items: ITEMS)
+    @account_list.items = ITEMS
+    alphabetize
+    @account_list.save!
   end
 
   def add!(id:, text:, nav_customer_number:)
@@ -80,6 +82,7 @@ class InstitutionalAccountsManager
       "text" => text,
       "nav_customer_number" => nav_customer_number }
     @account_list.items << institution
+    alphabetize
     @account_list.save!
   end
 
@@ -94,5 +97,9 @@ class InstitutionalAccountsManager
     @account_list.items.find do |item|
       item["nav_customer_number"] == nav_customer_number
     end
+  end
+
+  def alphabetize
+    @account_list.items.sort_by! { |i| i["text"] }
   end
 end

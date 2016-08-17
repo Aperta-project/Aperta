@@ -24,7 +24,8 @@ export default Ember.Mixin.create({
     let position = blocks.indexOf(block);
 
     if (position !== -1) {
-      Ember.EnumerableUtils.replace(blocks, position, 1, [otherBlock]);
+      blocks.replace(position, 1, [otherBlock]);
+      blocks.enumerableContentDidChange();
     }
   },
 

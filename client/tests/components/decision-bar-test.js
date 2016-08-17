@@ -3,19 +3,20 @@ import {
   test
 } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
+import { manualSetup }  from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import customAssertions from '../helpers/custom-assertions';
-
 
 moduleForComponent(
   'decision-bar',
   'Integration | Component | decision bar', {
-  integration: true,
-  beforeEach() {
-    customAssertions();
-    FactoryGuy.setStore(this.container.lookup('store:main'));
+    integration: true,
+    beforeEach() {
+      customAssertions();
+      manualSetup(this.container);
+    }
   }
-});
+);
 
 test('shows the decision verdict when closed', function(assert) {
   let decision = FactoryGuy.make('decision', { verdict: 'major_revision' });

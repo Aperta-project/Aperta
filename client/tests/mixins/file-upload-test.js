@@ -4,7 +4,8 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 
 module('FileUploadMixin', {
   beforeEach() {
-    this.cntrl = Ember.Object.createWithMixins(FileUploadMixin, {});
+    const ExtendedObject = Ember.Object.extend(FileUploadMixin, {});
+    this.cntrl = ExtendedObject.create();
   }
 });
 

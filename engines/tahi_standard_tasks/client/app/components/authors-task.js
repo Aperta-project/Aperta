@@ -68,9 +68,15 @@ export default TaskComponent.extend({
     }
   ),
 
-  sortedSavedAuthorsWithErrors: computed.filterBy(
-    'sortedAuthorsWithErrors',
-    'object.isNew', false),
+  sortedSavedAuthorsWithErrors: computed(
+    'sortedAuthorsWithErrors.@each.object.isNew',
+    'sentinal',
+    function() {
+      return this.get('sortedAuthorsWithErrors').filter((a)=> {
+        return !a.get('object.isNew');
+      });
+    }
+  ),
 
   shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();
@@ -86,6 +92,7 @@ export default TaskComponent.extend({
     },
 
     saveNewAuthorSuccess() {
+      this.notifyPropertyChange('sentinal');
       this.set('newAuthorFormVisible', false);
     },
 

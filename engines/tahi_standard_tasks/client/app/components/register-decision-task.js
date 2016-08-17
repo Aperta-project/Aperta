@@ -24,10 +24,16 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
   toField: null,
   subjectLine: null,
-  latestDecision: computed.alias('paper.latestDecision'),
-  latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
-  previousDecisions: computed.alias('paper.previousDecisions'),
   isLoading: computed.oneWay('isBusy'),
+  revisionNumberDesc: ['revisionNumber:desc'],
+
+  decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
+  // was `alias('decisions.firstObject')` but blows the call stack - Jerry (ember 2.0.2)
+  latestDecision: computed('decisions.[]', function() {
+    return this.get('decisions.firstObject');
+  }),
+  previousDecisions: computed.alias('paper.previousDecisions'),
+  latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 

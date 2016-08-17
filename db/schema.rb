@@ -772,6 +772,17 @@ ActiveRecord::Schema.define(version: 20160823140447) do
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
 
+  create_table "versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+
   create_table "withdrawals", force: :cascade do |t|
     t.string   "reason"
     t.integer  "paper_id",                                 null: false

@@ -456,6 +456,9 @@ GEM
     overcommit (0.28.0)
       childprocess (~> 0.5.6)
       iniparse (~> 1.4)
+    paper_trail (3.0.7)
+      activerecord (>= 3.0, < 5.0)
+      activesupport (>= 3.0, < 5.0)
     parser (2.2.3.0)
       ast (>= 1.1, < 3.0)
     pdfkit (0.8.2)
@@ -733,6 +736,7 @@ DEPENDENCIES
   omniauth-oauth2
   ordinalize
   overcommit
+  paper_trail
   pdfkit
   pg
   pg_search

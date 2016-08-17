@@ -57,7 +57,7 @@ moduleForComponent(
 
     beforeEach() {
       // Mock out pusher
-      this.container.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
       manualSetup(this.container);
       // FactoryGuy.setStore(this.container.lookup("store:main"));
       Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);

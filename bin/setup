@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'pathname'
+require 'securerandom'
 
 SLANGER_REPO = "git@github.com:Tahi-project/tahi-slanger.git"
 
@@ -129,9 +130,13 @@ Dir.chdir APP_ROOT do
   system 'gem install bundler --conservative'
   system 'bundle install'
 
-  header 'Installing javascript dependencies (output logged to setup.log)'
-  system 'npm install >> setup.log'
-  system 'bundle exec rake ember-cli:install_dependencies'
+  # Adding slanger to the Gemfile is not recommended: https://github.com/stevegraham/slanger#slanger
+  header 'Installing Slanger gem'
+  system 'gem install slanger'
+
+  create_config_file('.env.development') do |f|
+    f.puts "RAILS_SECRET_TOKEN=#{SecureRandom.hex(64)}"
+  end
 
   header 'Ensuring PostgreSQL tahi role exists'
   # NOTE rolname is not a typo
@@ -148,20 +153,11 @@ Dir.chdir APP_ROOT do
   copy_template 'config/database.yml.sample', 'config/database.yml'
   copy_template 'Procfile.template', 'Procfile.local'
 
-  # required for db setup
-  header 'Cloning tahi-slanger event server repo'
-  setup_slanger
-
-  create_config_file('.env.development') do |f|
-    f.puts "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"
-  end
-
   create_config_file('.foreman') do |f|
     f.puts "port: 5000"
     f.puts "procfile: Procfile.local"
     f.puts "env: ''"
   end
-
 
   header 'Preparing development database (output logged to setup.log)'
   system 'bin/rake db:setup >> setup.log'
@@ -169,9 +165,16 @@ Dir.chdir APP_ROOT do
   header 'Preparing testing database (output logged to setup.log)'
   system 'bin/rake db:setup RAILS_ENV=test >> setup.log'
 
+  header 'Installing javascript dependencies (output logged to setup.log)'
+  system 'npm install >> setup.log'
+  system 'bundle exec rake ember:install'
+
   header 'Removing old logs and tempfiles'
   system 'rm -f log/**/*'
   system 'rm -rf tmp/cache'
+
+  header 'Preparing tmp/pids'
+  system 'mkdir tmp/pids'
 
   header 'setting up overcommit'
   system 'overcommit --install'

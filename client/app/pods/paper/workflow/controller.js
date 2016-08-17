@@ -42,10 +42,8 @@ export default Ember.Controller.extend({
     viewCard(task) {
       const r = this.get('routing.router.router');
       r.updateURL(r.generate('paper.task', task.get('id')));
-      task.reload().then(() => {
-        this.set('taskToDisplay', task);
-        this.set('showTaskOverlay', true);
-      });
+      this.set('taskToDisplay', task);
+      this.set('showTaskOverlay', true);
     },
 
     hideTaskOverlay() {

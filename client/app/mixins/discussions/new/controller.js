@@ -13,7 +13,7 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
       yield this.createReply(replyText, topic);
     }
 
-    this.transitionTo(this.get('topicsShowPath'), topic);
+    this.transitionToRoute(this.get('topicsShowPath'), topic);
   }),
 
   createReply(replyText, topic) {

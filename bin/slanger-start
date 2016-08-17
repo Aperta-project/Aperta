@@ -3,14 +3,6 @@ require "bundler"
 require "dotenv"
 require 'uri'
 
-SLANGER_DIR = "../tahi-slanger"
-
-def validate_slanger!
-  unless Dir.exist?(SLANGER_DIR)
-    raise "The slanger repository was expected, but not found here: #{SLANGER_DIR}.  Please clone this repository first."
-  end
-end
-
 def validate_event_stream_config!
   return unless ENV['PUSHER_URL'].nil?
   fail "PUSHER_URL was not set in your .env.#{ENV['RAILS_ENV']} and is required to start slanger."
@@ -22,11 +14,13 @@ end
 
 Bundler.with_clean_env do
   Dotenv.load
-  validate_slanger!
   validate_event_stream_config!
   verbose = "-v" if rails_env == "development"
   url = URI.parse(ENV['PUSHER_URL'])
-  Dir.chdir(SLANGER_DIR) do
-    exec("bin/slanger --app_key #{url.user} --secret #{url.password} #{verbose} -w #{ENV.fetch('EVENT_STREAM_WS_HOST')}:#{ENV.fetch('EVENT_STREAM_WS_PORT')}")
+  begin
+    exec("slanger --app_key #{url.user} --secret #{url.password} #{verbose} -w #{ENV.fetch('EVENT_STREAM_WS_HOST')}:#{ENV.fetch('EVENT_STREAM_WS_PORT')}")
+  rescue => e
+    puts "Slanger failed to start. Are you sure it's installed? `gem install slanger`"
+    raise e
   end
 end

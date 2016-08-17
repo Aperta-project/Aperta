@@ -22,7 +22,7 @@ test('Shows the submit button when the paper is ready to submit and the user is 
   let paper = Ember.Object.create({isReadyForSubmission: true});
   this.set('paper', paper);
 
-  this.container.register('service:can', FakeCanService);
+  this.registry.register('service:can', FakeCanService);
   let fake = this.container.lookup('service:can');
   fake.allowPermission('submit', paper);
 

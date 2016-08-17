@@ -55,6 +55,7 @@ gem 'rsec'
 gem 'ruby_dig'
 gem 'rubyzip', require: 'zip'
 gem 'sass-rails'
+gem 'sdoc'
 gem 'sidekiq'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'

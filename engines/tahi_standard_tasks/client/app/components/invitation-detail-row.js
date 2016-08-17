@@ -1,11 +1,16 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import { task, timeout } from 'ember-concurrency';
 
 const {
   Component,
   computed,
   computed: { alias, and, equal, not }
 } = Ember;
+
+/*
+ * UI States: closed, show, edit, delete
+ */
 
 export default Component.extend({
   classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass'],
@@ -18,47 +23,63 @@ export default Component.extend({
   allowAttachments: true,
 
   invitee: alias('invitation.invitee'),
-  displayDestroy: not('invitation.accepted'),
-  displayEdit: and('invitation.pending', 'editAction', 'notClosedState'),
-  displaySend: and('invitation.pending', 'editState'),
 
-  detailState: 'closed',
-  closedState: equal('detailState', 'closed'),
-  editState: equal('detailState', 'edit'),
+  displayDestroyButton: not('invitation.accepted'),
+  displayEditButton: and('invitation.pending', 'notClosedState'),
+  displaySendButton: and('invitation.pending', 'notClosedState'),
+
+  uiState: 'closed',
+  closedState: equal('uiState', 'closed'),
+  editState: equal('uiState', 'edit'),
   notClosedState: not('closedState'),
-  uiStateClass: computed('detailState', function() {
-    return 'invitation-item--' + this.get('detailState');
+
+  uiStateClass: computed('uiState', function() {
+    return 'invitation-item--' + this.get('uiState');
   }),
+
   invitationStateClass: computed('invitation.state', function() {
     return 'invitation-state--' + this.get('invitation.state');
   }),
 
+  templateSaved: task(function * () {
+    yield timeout(2000);
+  }).keepLatest(),
+
   actions: {
     editInvitation() {
-      this.set('detailState', 'edit');
+      this.set('uiState', 'edit');
     },
 
     toggleDetails(invitation) {
-      if (this.get('detailState') === 'closed') {
+      if (this.get('uiState') === 'closed') {
         invitation.fetchDetails().then(() => {
-          this.set('detailState', 'show');
+          this.set('uiState', 'show');
         });
 
         return;
       }
 
-      this.set('detailState', 'closed');
+      this.set('uiState', 'closed');
     },
 
     cancelEdit(invitation) {
       invitation.rollbackAttributes();
-      this.set('detailState', 'show');
+      this.set('uiState', 'show');
+    },
+
+    saveDuringType() {
+      // TODO: save
+      this.get('templateSaved').perform();
     },
 
     save(invitation) {
       invitation.save().then(() => {
-        this.set('detailState', 'show');
+        this.set('uiState', 'show');
       });
+    },
+
+    confirmDeleteInvitation() {
+      this.set('uiState', 'delete');
     }
   }
 });

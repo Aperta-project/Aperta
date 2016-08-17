@@ -2,21 +2,8 @@ $invite-padding-vertical: 1rem;
 $invite-padding-horizontal: 2rem;
 $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
-// this goes somewhere else:
-.dashboard-open-invitations {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 30px;
-
-  .badge {
-    position: relative;
-    top: -6px;
-    padding: 2px 5px;
-  }
-
-  .button-primary {
-    margin-right: 6px;
-  }
+.compose-invite-button {
+  margin-left: 20px;
 }
 
 .pending-invitation {
@@ -103,12 +90,8 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-email-entry {
   padding: $invite-padding;
+  display: flex;
   background: $tahi-grey-light;
-
-  .auto-suggest-border {
-    width: 400px;
-    display: inline-block;
-  }
 }
 
 .invitation-compose-button {
@@ -125,6 +108,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item--closed {
+  &:hover {
+    background: $tahi-grey-xlight;
+  }
+
   .invitation-item-action-text { display: none; }
 }
 
@@ -140,6 +127,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   .invitation-item-details {
     background-color: $tahi-grey-light;
   }
+}
+
+.invitation-item--delete {
+  box-shadow: 0px 0px 15px rgba(0,0,0, 0.1);
 }
 
 .invitation-decline-info {
@@ -170,6 +161,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item-updated-at {
   flex-grow: 2;
+  padding-left: $invite-padding-horizontal;
   cursor: pointer;
 }
 
@@ -202,14 +194,29 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invite-edit-buttons {
   padding-top: $invite-padding-vertical;
-  text-align: right;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  // #TODO: here's what we had before jerry
+  // text-align: right;
+  // display: flex;
+  // align-items: flex-end;
+  // justify-content: space-between;
 
   .attachment-manager {
       margin-bottom: 0px;
   }
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.invitation-item-delete-confirmation {
+  padding: $invite-padding;
+}
+
+.invite-edit-save-confirmation {
+  margin-right: 30px;;
+  color: $tahi-grey-dark;
+  font-size: 1.4rem;
 }
 
 .flex-container {

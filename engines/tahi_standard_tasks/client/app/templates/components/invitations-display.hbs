@@ -2,8 +2,7 @@
   <div class="active-invitations">
     {{#each latestDecisionInvitations as |invitation|}}
       {{invitation-detail-row invitation=invitation
-                              editAction=attrs.editInvitation
-                              destroyAction=(action 'destroyInvitation')}}
+                              destroyAction=(action "destroyInvitation")}}
     {{/each}}
   </div>
 
@@ -15,7 +14,6 @@
     <div class="expired-invitations">
       {{#each decision.filteredInvitations as |invitation|}}
         {{invitation-detail-row invitation=invitation
-                                editAction=attrs.editInvitation
                                 destroyAction=(action 'destroyInvitation')}}
       {{/each}}
     </div>
@@ -27,7 +25,6 @@
   <div class="active-invitations">
     {{#each invitations as |invitation|}}
       {{invitation-detail-row invitation=invitation
-                              editAction=attrs.editInvitation
                               destroyAction=(action 'destroyInvitation')}}
     {{/each}}
   </div>

@@ -11,12 +11,24 @@ class AffiliationsController < ApplicationController
     render json: institutions, root: :institutions
   end
 
-  def create
-    affiliation = current_user.affiliations.create!(affiliation_params)
+  def for_user
+    current_user_or_user_can(:manage_users, Journal)
+    render json: Affiliation.where(user_id: params[:user_id])
+  end
+
+  def show
+    current_user_or_user_can(:manage_users, Journal)
     render json: affiliation
   end
 
+  def create
+    current_user_or_user_can(:manage_users, Journal)
+    new_affiliation = user.affiliations.create!(affiliation_params)
+    render json: new_affiliation
+  end
+
   def destroy
+    current_user == affiliation.user || requires_user_can(:manage_users, Journal)
     if affiliation.try(:destroy)
       render json: true
     else
@@ -26,11 +38,19 @@ class AffiliationsController < ApplicationController
 
   private
 
+  def current_user_or_user_can(action, object)
+    current_user == user || requires_user_can(action, object)
+  end
+
+  def user
+    User.find(params[:user_id] || affiliation_params[:user_id])
+  end
+
   def affiliation
-    current_user.affiliations.find(params[:id])
+    Affiliation.find(params[:id])
   end
 
   def affiliation_params
-    params.require(:affiliation).permit(:name, :start_date, :end_date, :email, :department, :title, :country, :ringgold_id)
+    params.require(:affiliation).permit(:name, :start_date, :end_date, :email, :department, :title, :country, :ringgold_id, :user_id)
   end
 end

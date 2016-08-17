@@ -41,8 +41,7 @@ Metrics/LineLength:
 
     # The it 'some string' line of specs should be allowed to be as
     # long as neccessary to describe the test.
-    - 'spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
+    - '**/spec/**/*'
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.
@@ -64,3 +63,7 @@ Style/WordArray:
   # forced to use %w means being forced to rewrite the whole array as
   # soon as one entry becomes two words
   Enabled: false
+
+Style/PredicateName:
+  Exclude:
+    - '**/spec/**/*'

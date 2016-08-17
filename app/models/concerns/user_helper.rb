@@ -33,6 +33,15 @@ module UserHelper
     ).all
   end
 
+  def assigned_to?(assigned_to:, role:)
+    role = get_role_for_thing(assigned_to, role)
+    Assignment.where(
+      user: self,
+      role: role,
+      assigned_to: assigned_to
+    ).exists?
+  end
+
   def assign_to!(assigned_to:, role:)
     role = get_role_for_thing(assigned_to, role)
     Assignment.where(

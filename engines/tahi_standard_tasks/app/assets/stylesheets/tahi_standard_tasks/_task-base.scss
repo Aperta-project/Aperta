@@ -1,6 +1,8 @@
 .task.read-only {
   button, .button {
-    display: none;
+    &:not(.display-while-disabled) {
+      display: none;
+    }
   }
 
   .task-completed-section {

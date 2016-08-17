@@ -2,6 +2,10 @@ import FactoryGuy from 'ember-data-factory-guy';
 
 FactoryGuy.define('decision', {
   default: {
-    isLatest: true
+    latest: true,
+    verdict: null,
+    letter: null,
+    minorVersion: null,
+    majorVersion: null
   }
 });

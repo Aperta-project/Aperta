@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Admins can view and edit journal roles assigned to users
 - AE country is included in Apex export
 - Discussion Topic title validation
+- Decisions can be rescinded
 ### Changed
 - Soft deleting questions and answers. Answers are retained even when questions are marked
   as deleted

@@ -56,7 +56,10 @@
   {{#if previousDecisions}}
     <hr>
     <h3>Decision History</h3>
+    <div class="previous-decisions">
+      {{#each previousDecisions as |decision|}}
+        {{decision-bar decision=decision}}
+      {{/each}}
+    </div>
   {{/if}}
-
-  {{partial "overlays/partials/decision-list"}}
 </div>

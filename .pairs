@@ -23,7 +23,13 @@ pairs:
   jd: John Davison; john.davison
   ww: Willa Wang; willa.wang
   kc: Kristin Chan; kristin.chan
+  eh: Erik Hetzner
+  jl: Jack LaBarba
+
+email_addresses:
+  eh: ehetzner@plos.org
+  jl: jlabarba@plos.org
 
 email:
   prefix: pair
-  domain: neo.com
+  domain: plos.org

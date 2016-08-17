@@ -14,8 +14,15 @@ export default DS.Model.extend({
     'minorVersion',
     'updatedAt',
     function() {
+      let version;
       let date = formatDate(this.get('updatedAt'), {format: 'MMM DD, YYYY'});
-      let version = `R${this.get('majorVersion')}.${this.get('minorVersion')}`;
+
+      if (Ember.isEmpty(this.get('majorVersion'))) {
+        version = '(draft)';
+      } else {
+        version = `R${this.get('majorVersion')}.${this.get('minorVersion')}`;
+      }
+
       return `${version} - ${date}`;
     }
   )

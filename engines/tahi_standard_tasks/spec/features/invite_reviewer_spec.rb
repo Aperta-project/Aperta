@@ -2,7 +2,10 @@ require 'rails_helper'
 
 feature "Invite Reviewer", js: true do
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
-  let(:paper) { FactoryGirl.create :paper, journal: journal }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper, :submitted_lite, :with_creator, journal: journal)
+  end
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
   let(:editor) { create :user }
@@ -38,7 +41,8 @@ feature "Invite Reviewer", js: true do
     overlay.paper_reviewers = [reviewer1]
     expect(overlay.active_invitations_count(1)).to be true
 
-    paper.decisions.create!
+    register_paper_decision(paper, 'minor_revision')
+    paper.submit! paper.creator
 
     overlay.reload
     overlay = Page.view_task_overlay(paper, task)

@@ -27,13 +27,13 @@ echo $TARGET_ENV
 # Can't use -i as have to stay in checkout directory
 # Need to set any needed vars in Parameters as env vars
 eval `ssh-agent -s`
-fail_unless_env_var $SSH_AGENT_PID
+fail_unless_env_var SSH_AGENT_PID
 ssh-add /home/aperta/.ssh/id_rsa
 ssh-add -l
 source /usr/share/chruby/chruby.sh
 cat .ruby-version
 chruby `cat .ruby-version` || exit 1
-fail_unless_env_var $TARGET_ENV
+fail_unless_env_var TARGET_ENV
 gem install bundler && bundle install && bundle exec cap $TARGET_ENV deploy || exit 1
 EOF
 

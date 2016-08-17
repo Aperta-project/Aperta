@@ -203,4 +203,17 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invite-edit-buttons {
   padding-top: $invite-padding-vertical;
   text-align: right;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  .attachment-manager {
+      margin-bottom: 0px;
+  }
+}
+
+.flex-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 }

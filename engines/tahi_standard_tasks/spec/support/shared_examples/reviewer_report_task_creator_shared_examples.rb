@@ -81,6 +81,7 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
       before do
         assignee.resign_from!(assigned_to: reviewer_report_type.first, role: 'Participant')
       end
+
       it "adds the user as a participant to the task" do
         subject.process
         task = paper.tasks_for_type(reviewer_report_type.name).first

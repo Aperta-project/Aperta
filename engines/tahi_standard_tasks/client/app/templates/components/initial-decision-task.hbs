@@ -2,26 +2,22 @@
 
 <div class="task-main-content">
   {{#if isSavingData}}
-    <div class="register-decision-saving-cover is-saving-data">
+    <div class="register-decision-saving-cover">
       {{progress-spinner visible=true size="large" center=true}}
     </div>
   {{/if}}
 
-  {{#if isTaskCompleted}}
-    <div class="alert alert-info">
-      An initial decision of '{{humanize initialDecision.verdict}}' decision has been made.
+  {{#if initialDecisions}}
+    {{rescind-decision
+      decision=initialDecision
+      isEditable=isEditable
+      busyWhile=(action busyWhile)}}
+  {{else if (eq task.paper.publishingState "unsubmitted")}}
+    <div class="alert alert-warning">
+      A decision cannot be registered at this time. The manuscript is
+      unsubmitted.
     </div>
-  {{else}}
-
-    {{#if nonPublishable}}
-      <div class="alert alert-warning">
-        A decision cannot be registered at this time.
-        The manuscript is not in a submitted state.
-      </div>
-    {{/if}}
-
   {{/if}}
-
 
   <div class="decision-selections">
     <label class="decision-label">
@@ -52,4 +48,14 @@
           disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>
     Register Decision and Email the Author
   </button>
+
+  {{#if initialDecisions}}
+    <hr>
+    <h3>Decision History</h3>
+    <div class="previous-decisions">
+      {{#each initialDecisions as |decision|}}
+        {{decision-bar decision=decision}}
+      {{/each}}
+    </div>
+  {{/if}}
 </div>

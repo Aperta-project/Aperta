@@ -12,26 +12,23 @@ describe SnapshotService do
   end
 
   subject(:service) { described_class.new(paper, registry) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_creator, :submitted) }
   let(:registry) { SnapshotService::Registry.new }
-
-  let(:things_to_snapshot) { [task_1, task_2, task_3] }
-  let(:task_1) { FactoryGirl.create(:task) }
-  let(:task_2) { FactoryGirl.create(:task) }
-  let(:task_3) { FactoryGirl.create(:task) }
+  let(:things_to_snapshot) { FactoryGirl.create_list(:task, 3) }
+  let(:snapshots) { Snapshot.all.order('id') }
   let(:adhoc_attachment) do
     FactoryGirl.create(:adhoc_attachment, :with_task, paper: paper)
   end
 
   before do
-    registry.serialize task_1.class, with: ExampleSnapshotSerializer
+    registry.serialize things_to_snapshot[0].class, with: ExampleSnapshotSerializer
     registry.serialize adhoc_attachment.class, with: ExampleSnapshotSerializer
   end
 
   describe '.snapshot_paper!' do
     it 'snapshots the snapshottable things on the paper' do
       allow(paper).to receive(:snapshottable_things).and_return [
-        task_1, adhoc_attachment
+        things_to_snapshot.first, adhoc_attachment
       ]
       expect do
         SnapshotService.snapshot_paper!(paper, registry)
@@ -39,57 +36,56 @@ describe SnapshotService do
     end
   end
 
-  describe '#preview' do
-    context "each snapshot" do
-      let(:snapshots) { Snapshot.all.order('id') }
+  describe '#snapshot!' do
+    it "sets the source of each snapshot to the thing snapshotted" do
+      service.snapshot!(things_to_snapshot)
 
-      it "sets the source of each snapshot to the thing snapshotted" do
-        service.snapshot!(things_to_snapshot)
-
-        expect(snapshots[0].source).to eq(task_1)
-        expect(snapshots[1].source).to eq(task_2)
-        expect(snapshots[2].source).to eq(task_3)
-      end
-
-      it "sets the contents of each snapshot to the JSON returned by the snapshot serializer" do
-        service.snapshot!(things_to_snapshot)
-
-        expect(snapshots[0].contents).to eq(task_1.as_json.except("created_at", "updated_at"))
-        expect(snapshots[1].contents).to eq(task_2.as_json.except("created_at", "updated_at"))
-        expect(snapshots[2].contents).to eq(task_3.as_json.except("created_at", "updated_at"))
-      end
-
-      it "ties each snapshot back to the paper" do
-        service.snapshot!(things_to_snapshot)
-
-        expect(snapshots[0].paper).to eq(paper)
-        expect(snapshots[1].paper).to eq(paper)
-        expect(snapshots[2].paper).to eq(paper)
-      end
-
-      it "saves the major and minor version of the paper" do
-        allow(paper).to receive(:major_version).and_return 4
-        allow(paper).to receive(:minor_version).and_return 1
-
-        service.snapshot!(things_to_snapshot)
-
-        expect(snapshots[0].major_version).to eq(4)
-        expect(snapshots[0].minor_version).to eq(1)
-
-        expect(snapshots[1].major_version).to eq(4)
-        expect(snapshots[1].minor_version).to eq(1)
-
-        expect(snapshots[2].major_version).to eq(4)
-        expect(snapshots[2].minor_version).to eq(1)
+      snapshots.zip(things_to_snapshot) do |snapshot, thing|
+        expect(snapshot.source).to eq(thing)
       end
     end
-  end
 
-  describe '#snapshot!' do
+    it "sets the contents of each snapshot to the JSON returned by the snapshot serializer" do
+      service.snapshot!(things_to_snapshot)
+
+      snapshots.zip(things_to_snapshot) do |snapshot, thing|
+        expect(snapshot.contents).to eq(thing.as_json.except("created_at", "updated_at"))
+      end
+    end
+
+    it "ties each snapshot back to the paper" do
+      service.snapshot!(things_to_snapshot)
+
+      snapshots.each do |snapshot|
+        expect(snapshot.paper).to eq(paper)
+      end
+    end
+
+    it "saves the major and minor version of the paper" do
+      allow(paper).to receive(:major_version).and_return 4
+      allow(paper).to receive(:minor_version).and_return 1
+
+      service.snapshot!(things_to_snapshot)
+
+      snapshots.each do |snapshot|
+        expect(snapshot.major_version).to eq(4)
+        expect(snapshot.minor_version).to eq(1)
+      end
+    end
+
     it 'creates a snapshot for each thing provided' do
       expect do
         service.snapshot!(things_to_snapshot)
       end.to change(Snapshot, :count).by(things_to_snapshot.length)
+    end
+  end
+
+  describe '#preview' do
+    it "does not set the major and minor version of the paper" do
+      service.preview(things_to_snapshot).each do |snapshot|
+        expect(snapshot.major_version).to be_nil
+        expect(snapshot.minor_version).to be_nil
+      end
     end
   end
 end

@@ -21,10 +21,20 @@ export default DS.Model.extend({
     return `${this.get('majorVersion')}.${this.get('minorVersion')}`;
   }),
 
-  versionString: Ember.computed(
-    'fullVersion', 'createdAt',
+  createdAtOrNow: Ember.computed(
+    'createdAt',
     function() {
-      return `R${this.get('fullVersion')}`;
+      return (this.get('createdAt') || new Date());
+    }),
+
+  versionString: Ember.computed(
+    'majorVersion', 'minorVersion',
+    function() {
+      if (Ember.isEmpty(this.get('majorVersion'))) {
+        return '(draft)';
+      } else {
+        return `R${this.get('majorVersion')}.${this.get('minorVersion')}`;
+      }
     }),
 
   hasDiff(otherSnapshot) {

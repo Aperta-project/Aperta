@@ -7,7 +7,7 @@
     "ember": "2.0.2",
     "ember-cli-shims": "0.0.6",
     "ember-cli-test-loader": "0.2.1",
-    "ember-data": "1.13.12",
+    "ember-data": "2.0.1",
     "ember-pusher": "ivanvotti/ember-pusher-component#0.1.0",
     "ember-qunit-notifications": "0.1.0",
     "ember-resolver": "0.1.21",

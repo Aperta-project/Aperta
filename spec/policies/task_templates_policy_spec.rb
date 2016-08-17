@@ -10,13 +10,13 @@ describe TaskTemplatesPolicy do
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "person who can administer task templates"
+    it_behaves_like "person who can administer task templates"
   end
 
   context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
 
-    include_examples "person who cannot administer task templates"
+    it_behaves_like "person who cannot administer task templates"
   end
 
   context "user who administers the journal" do
@@ -27,6 +27,6 @@ describe TaskTemplatesPolicy do
       assign_journal_role(journal, user, :admin)
     end
 
-    include_examples "person who can administer task templates"
+    it_behaves_like "person who can administer task templates"
   end
 end

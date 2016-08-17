@@ -39,7 +39,7 @@ module TahiStandardTasks
         phase: task.phase,
         title: "Revise Manuscript",
         old_role: "author",
-        body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter") }]],
+        body: [[{ type: 'text', value: task.latest_decision.letter }]],
         completed: false
       )
     end

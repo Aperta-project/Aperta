@@ -17,6 +17,8 @@ gem 'active_model_serializers', '0.8.3'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'activerecord-sqlserver-adapter'
 gem 'acts_as_list'
+gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid',
+                        ref: 'c2db19554ddaedcac0a2b8d6a0563dea83c972c5'
 gem 'american_date'
 gem 'awesome_nested_set'
 gem 'bootstrap-sass'
@@ -104,6 +106,8 @@ group :development do
   gem 'hipchat'
   gem 'overcommit'
   gem 'rubocop'
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :staging do

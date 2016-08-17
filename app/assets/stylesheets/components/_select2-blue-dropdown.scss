@@ -1,0 +1,23 @@
+.select2-container .select2-choice {
+  padding: 1px 10px;
+  height: auto;
+  width: auto;
+  font-size: .9em;
+}
+
+.select2-container .select2-choice .select2-arrow {
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#4A90E2), to(#4A90E2));
+  background-image: -moz-linear-gradient(top, #4A90E2, #4A90E2);
+  background-image: -ms-linear-gradient(top, #4A90E2, #4A90E2);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4A90E2), color-stop(100%, #4A90E2));
+  background-image: -webkit-linear-gradient(top, #4A90E2, #4A90E2);
+  background-image: -o-linear-gradient(top, #4A90E2, #4A90E2);
+  background-image: linear-gradient(#4A90E2, #4A90E2);
+  border-radius: 0px;
+  color: #FFFFFF;
+  font-size: 1.3em;
+  padding: 1px 18px 1px 5px;
+  .fa-angle-down {
+    padding: 1px;
+  }
+}

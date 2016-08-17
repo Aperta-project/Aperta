@@ -16,20 +16,27 @@ export default function() {
   }
 
   QUnit.assert.linkDiffPresent = function(options){
-    let removedUrl = options.removed.url,
-      removedText = options.removed.text,
-      addedUrl = options.added.url,
-      addedText = options.added.text;
+    let removed = options.removed,
+        added = options.added;
 
-    QUnit.assert.elementFound(
-      `a.removed[href='${removedUrl}']:contains(${removedText})`,
-      'The removed link was found on the page'
-    );
-    QUnit.assert.elementFound(
-      `a.added[href='${addedUrl}']:contains(${addedText})`,
-      'The added link was found on the page'
-    );
-  },
+    if (removed) {
+      let removedUrl = removed.url,
+        removedText = removed.text;
+        QUnit.assert.elementFound(
+          `a.removed[href='${removedUrl}']:contains(${removedText})`,
+          'The removed link was found on the page'
+        );
+    }
+
+    if (added) {
+      let addedUrl = added.url,
+        addedText = added.text;
+        QUnit.assert.elementFound(
+          `a.added[href='${addedUrl}']:contains(${addedText})`,
+          'The added link was found on the page'
+        );
+    }
+  }
 
   QUnit.assert.notDiffed = function(text) {
     this.ok(!addedTextIncludes(text), `New text is not diffed`);

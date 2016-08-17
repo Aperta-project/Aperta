@@ -797,7 +797,15 @@ describe PapersController do
       end
 
       it 'withdraws the paper' do
-        expect(paper).to receive(:withdraw!).with(withdrawal_reason)
+        expect(paper).to receive(:withdraw!).with(withdrawal_reason, user)
+        do_request
+      end
+
+      it 'queues up an email that notifies the staff of paper withdrawal' do
+        expect(UserMailer).to receive_message_chain(
+          :delay,
+          :notify_staff_of_paper_withdrawal
+        ).with paper.id
         do_request
       end
 

@@ -2,6 +2,8 @@
 .user-role-selector {
   .select2-container-multi.select2-container-active .select2-choices { border: none;}
 
+  ul.select2-choices { box-shadow: none; }
+
   .select2-choices {
     border: none;
     background-image: none;
@@ -84,7 +86,6 @@
   @include size(25px 30px);
   display: inline-block;
   position: relative;
-  margin: 0 0 0 3px;
   vertical-align: top;
   line-height: 12px;
   border: 1px solid $tahi-blue;

@@ -20,6 +20,35 @@ class Role < ActiveRecord::Base
   USER_ROLE = 'User'
   REVIEWER_REPORT_OWNER_ROLE = "Reviewer Report Owner"
 
+  # These roles (user, discussion topic, task) are automatically
+  # assigned by the system
+  USER_ROLES = [USER_ROLE]
+
+  DISCUSSION_TOPIC_ROLES = [DISCUSSION_PARTICIPANT]
+
+  TASK_ROLES = [
+    REVIEWER_REPORT_OWNER_ROLE,
+    TASK_PARTICIPANT_ROLE
+  ]
+
+  # Paper and Journal roles are set explicitly
+  PAPER_ROLES = [
+    ACADEMIC_EDITOR_ROLE,
+    COLLABORATOR_ROLE,
+    COVER_EDITOR_ROLE,
+    CREATOR_ROLE,
+    HANDLING_EDITOR_ROLE,
+    REVIEWER_ROLE
+  ]
+
+  JOURNAL_ROLES = [
+    FREELANCE_EDITOR_ROLE,
+    INTERNAL_EDITOR_ROLE,
+    PRODUCTION_STAFF_ROLE,
+    PUBLISHING_SERVICES_ROLE,
+    STAFF_ADMIN_ROLE
+  ]
+
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
     case old_role
     when /^admin$/i then paper.journal.staff_admin_role

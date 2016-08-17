@@ -15,6 +15,7 @@ class Invitation < ActiveRecord::Base
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
+  validates :email, format: /.+@.+/
 
   aasm column: :state do
     state :pending, initial: true
@@ -61,8 +62,21 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  # Normalize emails to addr-spec
+  #
+  # we currently receive emails that take the form of an
+  #   * addr-spec (what we want)
+  #   * angle-addr = [CFWS] "<" addr-spec ">" [CFWS] / obs-angle-addr
+  # this setter will normalize angle-addr to addr-spec
+  # https://tools.ietf.org/html/rfc2822 for more info
   def email=(new_email)
-    super(new_email.strip)
+    regexp = /
+      (?:.+<)     # name and open angle bracket
+      ([^>]+)     # the actual email address (addr-spec)
+      (?:>)       # closing bracket
+    /x
+    normalized = regexp =~ new_email ? Regexp.last_match(1) : new_email
+    super(normalized.strip)
   end
 
   def feedback_given?

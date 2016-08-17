@@ -111,6 +111,8 @@ class JournalFactory
         applies_to: TahiStandardTasks::ReviewerReportTask,
         states: Paper::REVIEWABLE_STATES
       )
+
+      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|

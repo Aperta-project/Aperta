@@ -27,7 +27,7 @@ describe TahiStandardTasks::FundersPolicy do
   context "A super admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "person who can manage funders"
+    it_behaves_like "person who can manage funders"
   end
 
   context "Journal Admin" do
@@ -38,18 +38,18 @@ describe TahiStandardTasks::FundersPolicy do
       user
     end
 
-    include_examples "person who can manage funders"
+    it_behaves_like "person who can manage funders"
   end
 
   context "An author" do
     let(:user) { paper.creator }
 
-    include_examples "person who can manage funders"
+    it_behaves_like "person who can manage funders"
   end
 
   context "some schmuck" do
     let(:user) { FactoryGirl.create(:user) }
 
-    include_examples "person who cannot manage funders"
+    it_behaves_like "person who cannot manage funders"
   end
 end

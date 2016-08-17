@@ -1,14 +1,17 @@
 #!/bin/bash
 # TeamCity build script for prod, rc, stage and vagrant deploys
 # current_author = jgray@plos.org
-#   with env_var check function by zdennis@mutuallyhuman.com
+#   with fail_unless_env_var check function by zdennis@mutuallyhuman.com
 
 sudo -u aperta -i /bin/bash << "EOF"
 # It is necessary to define an environment var TARGET_ENV
-#  that is one of vagrant, production, rc, ci or stage
+#  that is one of dev, qa, stage or prod
 function fail_unless_env_var {
-  if [ -z "$1" ]; then
-    echo "Need to set $1"
+  # use variable indirection to perform variable expansion on the value of $1
+  var_name=$1
+  val="${!var_name}"
+  if [ -z $val ]; then
+    echo "Need to set $var_name"
     exit 1
   fi
 }

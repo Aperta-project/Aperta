@@ -30,15 +30,9 @@ export default TaskComponent.extend({
     return this.get('editingAuthorResponse') && this.get('isEditable');
   }),
 
-  latestDecision: computed('task.paper.decisions.[]', function() {
-    return this.get('task.paper.decisions')
-               .sortBy('revisionNumber').reverse()[1];
-  }),
+  latestDecision: computed.alias('task.paper.latestRegisteredDecision'),
 
-  previousDecisions: computed('task.paper.decisions.[]', function() {
-    return this.get('task.paper.decisions')
-               .sortBy('revisionNumber').reverse().slice(2);
-  }),
+  previousDecisions: computed.alias('task.paper.previousDecisions'),
 
   editingAuthorResponse: false,
 

@@ -15,36 +15,24 @@ module TahiStandardTasks
       super + [:paper_decision_letter]
     end
 
-    def latest_decision
-      paper.decisions.latest
+    def after_register(decision)
+      ReviseTask.setup_new_revision(paper, phase) if decision.revision?
+      complete!
     end
 
-    def latest_decision_ready?
-      latest_decision.present? && latest_decision.verdict.present?
-    end
+    def send_email
+      to_field = answer_for(
+        'register_decision_questions--to-field').try(:value)
+      subject_field = answer_for(
+        'register_decision_questions--subject-field').try(:value)
 
-    def complete_decision
-      decision = latest_decision
-      paper.make_decision decision
-      # If it's a revise decision, prepare a new decision task.
-      DecisionReviser.new(self, decision).process! if decision.revision?
-    end
-
-    def send_email(to_field:, subject_field:)
       RegisterDecisionMailer.delay.notify_author_email(
         to_field: EmailService.new(email: to_field).valid_email_or_nil,
         subject_field: subject_field,
-        decision_id: paper.decisions.completed.latest)
-    end
-
-    def send_emails
+        decision_id: paper.decisions.completed.last)
     end
 
     private
-
-    def journal_name
-      @journal_name ||= paper.journal.name
-    end
 
     def template_data
       {

@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 describe BillingLogReport do
+  def accepted_paper_with_completed_billing(accepted_date: Date.new(2015, 1, 1))
+    FactoryGirl.create(
+      :paper_with_task,
+      :accepted,
+      :with_creator,
+      accepted_at: accepted_date,
+      task_params: {
+        title: "Billing",
+        type: "PlosBilling::BillingTask",
+        completed: true }
+    )
+  end
+
   context '.create_paper' do
     context 'has from_date parameter' do
       it 'returns new BillingLogReport with given from date' do
@@ -36,7 +49,7 @@ describe BillingLogReport do
     let(:csv_data) { CSV.read(report.csv) }
 
     context 'has paper to export' do
-      let!(:paper) { create_paper_with_completed_billing }
+      let!(:paper) { accepted_paper_with_completed_billing }
       let(:csv_headers) do
         [
           'ned_id', 'corresponding_author_ned_id',
@@ -90,7 +103,7 @@ describe BillingLogReport do
     end
 
     it 'returns true when paper(s) do meet criteria for report' do
-      create_paper_with_completed_billing
+      accepted_paper_with_completed_billing
       expect(BillingLogReport.new.papers?).to be true
     end
   end
@@ -100,21 +113,20 @@ describe BillingLogReport do
       expect(BillingLogReport.new.papers_to_process.count).to eq(0)
     end
 
-    it 'returns accepted paper with completed billing' do
-      paper = create_paper_with_completed_billing
-      expect(BillingLogReport.new.papers_to_process).to eq([paper])
+    it 'returns all accepted papers that have a completed billing task' do
+      FactoryGirl.create :paper, :accepted
+      valid_paper = accepted_paper_with_completed_billing
+      expect(BillingLogReport.new.papers_to_process).to eq([valid_paper])
     end
-  end
 
-  def create_paper_with_completed_billing
-    FactoryGirl.create(
-      :paper_with_task,
-      :accepted,
-      :with_creator,
-      task_params: {
-        title: "Billing",
-        type: "PlosBilling::BillingTask",
-        completed: true }
-    )
+    context 'with a from_date' do
+      it 'returns all accepted papers whose accepted_at is after from_date, and have a completed billing task' do
+        today = Time.zone.today
+        accepted_paper_with_completed_billing
+        new_paper = accepted_paper_with_completed_billing(accepted_date: today)
+        report = BillingLogReport.new(from_date: today - 1.day)
+        expect(report.papers_to_process).to eq([new_paper])
+      end
+    end
   end
 end

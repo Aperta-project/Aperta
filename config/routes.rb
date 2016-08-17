@@ -51,7 +51,10 @@ Tahi::Application.routes.draw do
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :show, :destroy]
-    resources :decisions, only: [:create, :update, :show]
+    resources :decisions, only: [:create, :update, :show] do
+      put :rescind, on: :member
+      put :register, on: :member
+    end
     resources :discussion_topics, only: [:index, :show, :create, :update] do
       get :users, on: :member
     end

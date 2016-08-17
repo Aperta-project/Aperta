@@ -24,9 +24,6 @@ feature "Submitting a paper", js: true do
     click_link paper.title
     paper_page = PaperPage.new
 
-    snapshotted_major_version = paper.major_version
-    snapshotted_minor_version = paper.minor_version
-
     paper_page.submit do |submission_overlay|
       submission_overlay.submit
     end
@@ -34,7 +31,7 @@ feature "Submitting a paper", js: true do
     snapshot = Snapshot.where(source: competing_interests_task).first
     expect(snapshot).to be
     expect(snapshot.paper).to eq(paper)
-    expect(snapshot.major_version).to eq(snapshotted_major_version)
-    expect(snapshot.minor_version).to eq(snapshotted_minor_version)
+    expect(snapshot.major_version).to eq(0)
+    expect(snapshot.minor_version).to eq(0)
   end
 end

@@ -1,61 +1,36 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
-    {{progress-spinner visible=true size="large" center=true}}
-  </div>
+  {{#if busy}}
+    <div class="register-decision-saving-cover">
+      {{progress-spinner visible=true size="large" center=true}}
+    </div>
+  {{/if}}
 
-  {{#if task.completed}}
-    {{#if decidedDecision}}
-      <div class="alert alert-info">
-        A {{if finalDecision 'final'}} decision of {{formattedDecidedDecision}} has been registered.
-      </div>
-    {{/if}}
-  {{else}}
-    {{#unless publishable}}
-      <div class="alert alert-warning">
-        A decision cannot be registered at this time.
-        The manuscript is not in a submitted state.
-      </div>
-    {{/unless}}
+  {{rescind-decision
+    decision=latestRegisteredDecision
+    isEditable=isEditable
+    busyWhile=(action busyWhile)}}
+
+  {{#if (eq paper.publishingState 'unsubmitted')}}
+    <div class="alert alert-warning">
+      A decision cannot be registered at this time. The manuscript is
+      unsubmitted.
+    </div>
   {{/if}}
 
   <div class="decision-selections">
-    <label class="decision-label">
-      {{radio-button value="reject"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Reject
-    </label>
-
-    <label class="decision-label">
-      {{radio-button value="major_revision"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Major Revision
-    </label>
-
-    <label class="decision-label">
-      {{radio-button value="minor_revision"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Minor Revision
-    </label>
-
-    <label class="decision-label">
-      {{radio-button value="accept"
-                     selection=latestDecision.verdict
-                     disabled=nonPublishable
-                     name="decision"
-                     action=(action "setDecisionTemplate")}}
-      Accept
-    </label>
+    {{#each verdicts as |verdict|}}
+      <label class="decision-label">
+        {{radio-button
+          value=verdict
+          selection=latestDecision.verdict
+          disabled=nonPublishable
+          name="decision"
+          action=(action "setDecisionTemplate")}}
+        {{humanize verdict}}
+      </label>
+    {{/each}}
   </div>
 
   {{error-message message=validationErrors.errors}}
@@ -74,6 +49,10 @@
   {{#if previousDecisions}}
     <hr>
     <h3>Decision History</h3>
-    {{partial "overlays/partials/decision-list"}}
+    <div class="previous-decisions">
+      {{#each previousDecisions as |decision|}}
+        {{decision-bar decision=decision}}
+      {{/each}}
+    </div>
   {{/if}}
 </div>

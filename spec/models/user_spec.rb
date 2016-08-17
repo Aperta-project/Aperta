@@ -116,35 +116,39 @@ describe User do
 
   describe '#invitations_from_latest_revision' do
     let(:user) { FactoryGirl.create(:user) }
-    before do
-      paper = FactoryGirl.create :paper
-      paper.decisions.create!
+    let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
+    let(:decision) { paper.draft_decision }
+    let(:task) { FactoryGirl.create :invitable_task, paper: paper }
+    let(:another_task) { FactoryGirl.create :invitable_task, paper: paper }
+    let(:inv1) { FactoryGirl.create :invitation, task: task, invitee: user, decision: decision }
+    let(:inv2) { FactoryGirl.create :invitation, task: task, invitee: user, decision: decision }
+    let(:another_task_invitation) { FactoryGirl.create :invitation, task: task, invitee: user, decision: decision }
+
+    it 'returns invitiations from multiple tasks' do
+      inv1.invite!
+      another_task_invitation.invite!
+      expect(user.invitations_from_latest_revision)
+        .to contain_exactly(inv1, another_task_invitation)
     end
 
     it 'returns invitations from the latest revision cycle' do
-      paper = FactoryGirl.create :paper
-      decision = paper.decisions.create!
-      task = FactoryGirl.create :invitable_task, paper: paper
-      inv1 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
-      inv2 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
       inv1.invite!
+      expect(user.invitations_from_latest_revision).to contain_exactly(inv1)
+
+      # complete the old decision and create a new one
+      decision.update!(major_version: 0, minor_version: 0)
+      paper.new_draft_decision!
+
       inv2.invite!
-      expect(user.invitations_from_latest_revision).to match_array [inv1, inv2]
-      decision = paper.decisions.create!
-      inv3 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
-      inv3.invite!
-      expect(user.reload.invitations_from_latest_revision).to match_array [inv3]
+      expect(user.reload.invitations_from_latest_revision).to contain_exactly(inv2)
     end
 
     context 'invitation without a decision' do
-      before do
-        task = FactoryGirl.create :invitable_task
-        invitation = FactoryGirl.create :invitation, task: task, invitee: user
-        # force-delete the decision
-        invitation.decision.destroy!
-      end
+      let(:paper) { FactoryGirl.create :paper }
+      let(:invitation) { FactoryGirl.create :invitation, paper: paper, invitee: user, decision: nil }
 
       it 'returns invitations with decisions from the latest revision cycle' do
+        expect(invitation.decision).to be_nil
         expect(user.invitations_from_latest_revision).to be_empty
       end
     end
@@ -188,6 +192,32 @@ describe User do
     end
   end
 
+  describe '.assigned_to_journal' do
+    let(:journal) { create(:journal, :with_staff_admin_role) }
+    it 'finds users who are assigned to the journal, ordered by name' do
+      [['A', 'B'], ['B', 'A'], ['A', 'A']].map do |(first_name, last_name)|
+        create(:user, first_name: first_name, last_name: last_name).tap do |user|
+          assign_journal_role(journal, user, :admin)
+        end
+      end
+
+      expect(User.assigned_to_journal(journal.id)
+        .pluck(:first_name, :last_name)).to match_array(
+          [['A', 'A'], ['B', 'A'], ['A', 'B']]
+        )
+    end
+
+    it "doesn't return users who aren't assigned to that journal" do
+      create(:user, first_name: "not", last_name: "assigned")
+
+      other_journal = create(:journal, :with_staff_admin_role)
+      create(:user, first_name: "John", last_name: "Doe").tap do |user|
+        assign_journal_role(other_journal, user, :admin)
+      end
+
+      expect(User.assigned_to_journal(journal.id)).to eq([])
+    end
+  end
 
   describe ".fuzzy_search" do
     it "searches by user's first_name and last_name" do

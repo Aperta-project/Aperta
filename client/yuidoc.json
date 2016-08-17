@@ -1,0 +1,8 @@
+{
+    "name": "Tahi Client Documentation",
+    "url": "http://github.com/tahi-project/tahi/",
+    "options": {
+      "outdir": "../doc/client",
+      "exclude": "tmp,bower_components"
+    }
+}

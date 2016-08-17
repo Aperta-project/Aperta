@@ -14,7 +14,7 @@ describe TaskFactory do
 
   it "Sets the default title and old_role if is not indicated" do
     task = TaskFactory.create(klass, paper: paper, phase: phase)
-    expect(task.title).to eq('Revise Task')
+    expect(task.title).to eq('Revise Manuscript')
     expect(task.old_role).to eq('author')
   end
 

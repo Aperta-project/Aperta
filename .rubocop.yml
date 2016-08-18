@@ -43,6 +43,22 @@ Metrics/LineLength:
     # long as neccessary to describe the test.
     - 'spec/**/*'
     - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/plos_billing/spec/**/*'
+    - 'engines/tahi_standard_tasks/spec/**/*'
+    - 'engines/plos_bio_internal_review/spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/tahi-assign_team/spec/**/*'
+
+Style/PredicateName:
+  Exclude:
+    # has_foo? is idiomatic usage in page objects
+    - 'spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/plos_billing/spec/**/*'
+    - 'engines/tahi_standard_tasks/spec/**/*'
+    - 'engines/plos_bio_internal_review/spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/tahi-assign_team/spec/**/*'
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.

@@ -55,15 +55,6 @@ export default TaskComponent.extend({
     return user.full_name + ' [' + user.email + ']';
   },
 
-  attachmentsRequest(path, method, s3Url, file) {
-    const store = this.get('store');
-    const restless = this.get('restless');
-    restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name;
-      store.pushPayload(response);
-    });
-  },
-
   actions: {
     cancelAction() {
       this.set('selectedUser', null);
@@ -103,25 +94,6 @@ export default TaskComponent.extend({
       this.set('selectedUser', {
         email: val
       });
-    },
-
-    // These methods are needed by the attachment-manager
-    updateAttachment(s3Url, file, attachment) {
-      const path = `${this.get('attachmentsPath')}/${attachment.id}/update_attachment`;
-      this.attachmentsRequest(path, 'PUT', s3Url, file);
-    },
-
-    createAttachment(s3Url, file) {
-      this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
-    },
-
-    deleteAttachment(attachment) {
-      attachment.destroyRecord();
-    },
-
-    updateAttachmentCaption(caption, attachment) {
-      attachment.set('caption', caption);
-      attachment.save();
     }
   }
 });

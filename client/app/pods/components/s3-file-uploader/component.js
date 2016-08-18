@@ -23,7 +23,7 @@
  *  ```
  *
  *  Note that `filePath` is merely a part of the temporary file path
- *  that rails will create for the new file
+ *  on s3 where the file will sit before the server downloads and processes it.
 **/
 
 import Ember from 'ember';

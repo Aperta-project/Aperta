@@ -35,9 +35,6 @@ spec/tmp
 *.csr
 *.key
 
-# ember-analyzer
-client/.ember-analyzer
-
 # bin/setup's log file
 setup.log
 

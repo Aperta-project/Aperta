@@ -37,10 +37,6 @@ export default Ember.Component.extend({
 
     deleteAttachment(attachment) {
       attachment.destroyRecord();
-    },
-
-    uploadFailed(reason) {
-      console.log(reason);
     }
   }
 });

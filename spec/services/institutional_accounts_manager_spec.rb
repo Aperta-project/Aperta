@@ -21,6 +21,7 @@ describe InstitutionalAccountsManager do
 
   describe "#seed!" do
     subject(:seed!) { manager.seed! }
+
     it "seeds some initial institutions" do
       expect { seed! }.to change { account_list.reload.items.size }
         .from(0).to(InstitutionalAccountsManager::ITEMS.size)
@@ -35,7 +36,6 @@ describe InstitutionalAccountsManager do
 
   describe "#add!" do
     subject(:add!) { manager.add!(**institution) }
-
     before { manager.seed! }
 
     it "adds one institution" do

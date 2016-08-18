@@ -1,6 +1,7 @@
 {{attachment-manager filePath="invitation"
                      attachments=invitation.attachments
                      multiple=true
+                     disabled=(eq invitation.state 'invited')
                      hasCaption=false
                      deleteFile=(action "deleteAttachment")
                      uploadFinished=(action "createAttachment")

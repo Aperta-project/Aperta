@@ -13,8 +13,6 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
-  mount_uploader :source, SourceUploader # CarrierWave obj
-
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
 

@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe ApexPackager do
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let!(:latest_version) do
-    FactoryGirl.create(:versioned_text,
-                       paper: paper,
-                       major_version: 0,
-                       minor_version: 1)
-  end
-  let!(:source) { double(File) }
+  # let!(:latest_version) do
+  #   FactoryGirl.create(:versioned_text,
+  #                      paper: paper,
+  #                      major_version: 0,
+  #                      minor_version: 1)
+  # end
+  let!(:manuscript_file) { double(File) }
   let(:zip_file) { Tempfile.new('zip') }
   let(:archive_filename) { 'test.0001.zip' }
 
@@ -37,13 +37,12 @@ describe ApexPackager do
   end
 
   before do
-    allow(paper).to receive(:latest_version).and_return(latest_version)
+    allow(paper).to receive(:file).and_return(manuscript_file)
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
-    allow(latest_version).to receive(:source_url).and_return(
+    allow(manuscript_file).to receive(:url).and_return(
       Rails.root.join('spec/fixtures/about_turtles.docx'))
-    allow(latest_version).to receive(:source).and_return(
-      source)
-    allow(source).to receive(:path).and_return('about_turtles.docx')
+    allow(paper).to receive(:file).and_return(manuscript_file)
+    allow(manuscript_file).to receive(:path).and_return('about_turtles.docx')
 
     metadata_serializer = instance_double('Typesetter::MetadataSerializer')
     allow(metadata_serializer).to receive(:to_json).and_return('json')

@@ -44,11 +44,11 @@ class ApexPackager
   def add_manuscript(package)
     add_file_to_package package,
                         manuscript_filename,
-                        open(@paper.latest_version.source_url, &:read)
+                        open(@paper.file.url, &:read)
   end
 
   def manuscript_filename
-    extension = @paper.latest_version.source.path.split('.').last
+    extension = @paper.file.path.split('.').last
     "#{@paper.manuscript_id}.#{extension}"
   end
 

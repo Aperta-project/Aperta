@@ -20,6 +20,8 @@ class Paper < ActiveRecord::Base
   has_many :question_attachments, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :adhoc_attachments, dependent: :destroy
+  has_one :file, as: :owner, dependent: :destroy,
+    class_name: 'ManuscriptAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
@@ -589,7 +591,8 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_submitting_user!(submitting_user)
-    draft.update!(submitting_user: submitting_user)
+    draft.submitting_user = submitting_user
+    # draft.update!(submitting_user: submitting_user)
   end
 
   def assign_doi!

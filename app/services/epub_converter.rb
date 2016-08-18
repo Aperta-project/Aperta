@@ -123,11 +123,15 @@ class EpubConverter
   end
 
   def manuscript_source
-    paper.latest_version.source
+    paper.file
   end
 
   def manuscript_contents
-    manuscript_source.download!(manuscript_source.url)
+    manuscript_source.file.download!(manuscript_source.url)
     manuscript_source.file.read
+
+    # paper.latest_version.contents # raw_contents, read, file_contents
+    # manuscript_source.download!(manuscript_source.url)
+    # manuscript_source.file.read
   end
 end

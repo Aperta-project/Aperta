@@ -16,16 +16,16 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     "uploads/paper/#{model.paper_id}/attachment/#{model.id}/#{model.file_hash}"
   end
 
-  version :detail do
-    process convert_image: ["984x-1>"], if: :image?
+  version :detail, if: :image? do
+    process convert_image: ["984x-1>"]
 
     def full_filename(orig_file)
       full_name(orig_file)
     end
   end
 
-  version :preview do
-    process convert_image: ["475x220"], if: :image?
+  version :preview, if: :image? do
+    process convert_image: ["475x220"]
 
     def full_filename(orig_file)
       full_name(orig_file)

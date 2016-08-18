@@ -111,10 +111,10 @@ class PapersController < ApplicationController
     requires_user_can(:view, paper)
     respond_to do |format|
       format.docx do
-        if paper.latest_version.source_url.blank?
+        if paper.file.blank? || paper.file.url.blank?
           render status: :not_found, nothing: true
         else
-          redirect_to paper.latest_version.source_url
+          redirect_to paper.file.url
         end
       end
 

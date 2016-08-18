@@ -59,10 +59,13 @@ class DownloadManuscriptWorker
   private
 
   def download_manuscript(paper, url)
-    latest_version = paper.latest_version
-    latest_version.source.download!(url)
+    attachment = paper.file || paper.create_file
+
+    # download needs to ensure the attachment is saved first
+    attachment.download!(url)
+
     # This will upload the content to the desired location in S3
-    latest_version.save!
+    # latest_version.save!
   end
 
   def get_epub(paper)

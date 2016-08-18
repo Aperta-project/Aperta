@@ -38,7 +38,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def test_validate_journal_admin_components_styles(self):
+  def _test_validate_journal_admin_components_styles(self):
     """
     test_journal_admin: Validate toolbar presentation for journal admin
     Validates the presence of the following elements:
@@ -57,7 +57,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_nav_toolbar_elements(user_type)
 
-  def test_validate_journal_admin_user_search_display_function(self):
+  def _test_validate_journal_admin_user_search_display_function(self):
     """
     test_journal_admin: Validate the function of user search in the journal_admin page for a random
       journal
@@ -77,9 +77,8 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def _test_validate_journal_admin_roles_display_function(self):
+  def test_validate_journal_admin_roles_display_function(self):
     """
-    NOTE: Disabled due to APERTA-7319
     test_journal_admin: validate the display of the admin user role display section
     Validates the presence of the following elements:
       role section heading
@@ -100,7 +99,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page.validate_roles_section(journal)
 
 
-  def test_validate_task_types_display_function(self):
+  def _test_validate_task_types_display_function(self):
     """
     test_journal_admin: validate the display of the journal admin task type section and overlay
     Validates the presence of the following elements:
@@ -179,7 +178,7 @@ class ApertaJournalAdminTest(CommonTest):
     time.sleep(1)
     ja_page.delete_new_mmt_template()
 
-  def test_validate_style_settings_display_function(self):
+  def _test_validate_style_settings_display_function(self):
     """
     test_journal_admin: Validate styling & functions of  journal admin page style settings section
     Validates the presence of the following elements:

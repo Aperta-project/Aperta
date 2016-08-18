@@ -229,8 +229,8 @@ class JournalAdminPage(AdminPage):
         uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
         try:
           roles_id = PgSQL().query('SELECT role_id FROM assignments '
-                                   'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
-                                   (uid,))
+                                   'WHERE user_id = %s AND assigned_to_type=\'Journal\' '
+                                   'AND assigned_to_id = %s;', (uid, journal_id))
           roles_id = tuple([x[0] for x in roles_id])
           named_db_roles = PgSQL().query('SELECT name FROM roles WHERE id in %s;', (roles_id,))
           named_db_roles = set([x[0] for x in named_db_roles])

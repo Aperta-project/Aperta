@@ -27,6 +27,12 @@
               {{action "composeInvite"}}>
         Compose Invite
       </button>
+
+      {{#if createInvitation.isRunning}}
+        <div class="invitation-compose-progress">
+          {{progress-spinner visible=true size="small"}}
+        </div>
+      {{/if}}
     </div>
   {{/if}}
 </div>

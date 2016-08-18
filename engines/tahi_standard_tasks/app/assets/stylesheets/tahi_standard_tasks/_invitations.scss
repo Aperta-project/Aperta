@@ -91,11 +91,16 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-email-entry {
   padding: $invite-padding;
   display: flex;
+  align-items: center;
   background: $tahi-grey-light;
 }
 
 .invitation-compose-button {
   margin-left: 20px;
+}
+
+.invitation-compose-progress {
+  margin-left: 8px;
 }
 
 .invitation-item {

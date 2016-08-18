@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
+import { task } from 'ember-concurrency';
 
 const {
   computed,
@@ -25,21 +26,19 @@ export default TaskComponent.extend({
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
 
-  setLetterTemplate() {
-    let body, salutation, template;
-    template = this.get('task.invitationTemplate');
+  buildInvitationBody() {
+    const template = this.get('task.invitationTemplate');
+    let body, salutation = '';
+
     if (template.salutation && this.get('selectedUser.full_name')) {
       salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
-    } else {
-      salutation = '';
     }
 
     if (template.body) {
       body = this.applyTemplateReplacements(template.body);
-    } else {
-      body = '';
     }
-    return this.set('invitationBody', '' + salutation + body);
+
+    return '' + salutation + body;
   },
 
   // auto-suggest
@@ -57,6 +56,20 @@ export default TaskComponent.extend({
     return user.full_name + ' <' + user.email + '>';
   },
 
+  createInvitation: task(function * (props) {
+    const promise = this.get('store').createRecord('invitation', props).save();
+    yield promise;
+
+    promise.then((invitation)=> {
+      this.get('latestDecision.invitations').addObject(invitation);
+
+      this.setProperties({
+        invitationToEdit: invitation,
+        selectedUser: null
+      });
+    });
+  }),
+
   actions: {
     cancelAction() {
       this.set('selectedUser', null);
@@ -66,20 +79,11 @@ export default TaskComponent.extend({
     composeInvite() {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
-      this.setLetterTemplate();
-
-      this.get('store').createRecord('invitation', {
+      this.get('createInvitation').perform({
         task: this.get('task'),
         email: this.get('selectedUser.email'),
-        body: this.get('invitationBody'),
+        body: this.buildInvitationBody(),
         state: 'pending'
-      }).save().then((invitation) => {
-        this.get('latestDecision.invitations').addObject(invitation);
-
-        this.setProperties({
-          invitationToEdit: invitation,
-          selectedUser: null
-        });
       });
     },
 

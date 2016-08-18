@@ -5,23 +5,24 @@ import Ember from 'ember';
 // Pretend like you're in client/tests
 import FakeCanService from '../helpers/fake-can-service';
 
-var app, sandbox;
+let app;
 
 moduleForComponent(
   'paper-reviewer-task',
   'Integration | Components | Tasks | Invite Reviewer', {
-  integration: true,
-  setup: function() {
-    //startApp is only here to give us access to the
-    //async test helpers (fillIn, click, etc) that
-    //we're used to having in the full-app acceptance tests
-    app = startApp();
-  },
+    integration: true,
+    setup() {
+      //startApp is only here to give us access to the
+      //async test helpers (fillIn, click, etc) that
+      //we're used to having in the full-app acceptance tests
+      app = startApp();
+    },
 
-  teardown: function() {
-    return Ember.run(app, app.destroy);
+    teardown() {
+      Ember.run(app, app.destroy);
+    }
   }
-});
+);
 
 
 test('User can add a new reviewer after tweaking the email of an exiting user',

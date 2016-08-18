@@ -23,12 +23,13 @@ feature 'Invite Academic Editor', js: true do
   scenario 'Any user can be invited as an Academic Editor on a paper' do
     overlay = InviteEditorOverlay.new
     expect(overlay).to be_uncompleted
-    overlay.paper_editors = [editor1]
+    overlay.create_invite_for(editor1, send_now: true)
+
     overlay.mark_as_complete
-    expect(overlay).to have_editor editor1
+    expect(overlay).to have_invite_for editor1
 
     # Already invited users don't show up again the search
-    overlay.fill_in 'Editor', with: 'Ste'
+    overlay.fill_in 'invitation-recipient', with: 'Ste'
     expect(page).to have_no_css('.auto-suggest-item', text: editor1.full_name)
 
     # But, users who have not been invited should still be suggested
@@ -50,6 +51,15 @@ feature 'Invite Academic Editor', js: true do
 
     within('.active-paper-table-row') do
       expect(page).to have_content('Academic Editor')
+    end
+  end
+
+  scenario 'attaching files to invitations' do
+    overlay = InviteEditorOverlay.new
+    overlay.create_invite_for(editor1, send_now: false)
+    ActiveInvitation.for_user(editor1) do |invite|
+      invite.show_details
+      invite.upload_attachment('yeti.jpg')
     end
   end
 end

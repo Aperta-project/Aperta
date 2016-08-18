@@ -79,7 +79,8 @@ export default TaskComponent.extend({
   ),
 
   shiftAuthorPositions(author, newPosition) {
-    author.set('position', newPosition).save();
+    author.set('position', newPosition);
+    author.save();
   },
 
   actions: {

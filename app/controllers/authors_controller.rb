@@ -14,7 +14,7 @@ class AuthorsController < ApplicationController
     author.save!
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
+    render json: author_list_payload(author)
   end
 
   def update
@@ -22,7 +22,7 @@ class AuthorsController < ApplicationController
     author.update!(author_params)
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
+    render json: author_list_payload(author)
   end
 
   def destroy
@@ -30,13 +30,20 @@ class AuthorsController < ApplicationController
     author.destroy!
 
     # render all authors, since position is controlled by acts_as_list
-    render json: author.paper, serializer: PaperAuthorSerializer, root: 'paper'
+    render json: author_list_payload(author)
   end
 
   private
 
   def author
     @author ||= Author.includes(:author_list_item).find(params[:id])
+  end
+
+  def author_list_payload(author)
+    serializer = PaperAuthorSerializer.new(author.paper, root: 'paper')
+    hash = serializer.as_json
+    hash.delete("paper")
+    hash
   end
 
   def author_params

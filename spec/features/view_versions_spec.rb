@@ -65,7 +65,7 @@ feature 'Viewing Versions:', js: true do
       page.select_viewing_version(version_1)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
-        overlay.expect_version('R1.0')
+        overlay.expect_version('(draft)')
       end
     end
 
@@ -84,7 +84,7 @@ feature 'Viewing Versions:', js: true do
       page.select_comparison_version(version_1)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
-        overlay.expect_versions('R0.0', 'R1.0')
+        overlay.expect_versions('R0.0', '(draft)')
       end
     end
 

@@ -1,6 +1,7 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
-import TestHelper, { mockSetup, mockTeardown } from 'ember-data-factory-guy/factory-guy-test-helper';
+import { module } from 'qunit';
+import { test } from 'ember-qunit';
+import TestHelper, { mockTeardown } from 'ember-data-factory-guy/factory-guy-test-helper';
 import Factory from '../helpers/factory';
 import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
@@ -9,8 +10,8 @@ import {
 } from '../helpers/setups';
 
 let App      = null;
-let paper    = null;
 let fakeUser = null;
+let server   = null;
 let paperId  = null;
 const taskId = 90210;
 
@@ -22,13 +23,14 @@ const openNewAuthorForm = function() {
 module('Integration: adding an author', {
   afterEach() {
     server.restore();
+    mockTeardown();
     Ember.run(App, 'destroy');
   },
 
   beforeEach() {
     App      = startApp();
-    server   = setupMockServer();
     fakeUser = window.currentUserData.user;
+    server   = setupMockServer();
 
     const records = paperWithTask('AuthorsTask', {
       id: taskId,
@@ -126,7 +128,7 @@ module('Integration: adding an author', {
     server.respondWith('POST', '/api/authors', [
       200, {
         'Content-Type': 'application/json'
-      }, JSON.stringify({authors: [{id: 5}]})
+      }, JSON.stringify({authors: [{id: 5, first_name: 'James', paper_id: paperId}]})
     ]);
 
     server.respondWith('GET', '/api/countries', [
@@ -138,57 +140,48 @@ module('Integration: adding an author', {
 });
 
 test('can add a new author', function(assert) {
-    const firstName = 'James';
-    TestHelper.mockCreate('author');
+  const firstName = 'James';
 
-    visit(`/papers/${paperId}/tasks/${taskId}`);
-    openNewAuthorForm();
-    fillIn('.author-first', firstName);
-    click('.author-form-buttons .button-secondary:contains("done")');
+  visit(`/papers/${paperId}/tasks/${taskId}`);
+  openNewAuthorForm();
+  fillIn('.author-first', firstName);
+  click('.author-form-buttons .button-secondary:contains("done")');
 
-    andThen(function() {
-      assert.ok(
-        find(`.author-task-item .author-name:contains('${firstName}')`).length,
-            'New author item displays author name'
-      );
-    });
+  andThen(function() {
+    assert.ok(
+      find(`.author-task-item .author-name:contains('${firstName}')`).length,
+          'New author item displays author name'
+    );
+  });
 });
 
 test('validation works', function(assert) {
-  Ember.run(function() {
-    TestHelper.mockCreate('author');
+  visit(`/papers/${paperId}/tasks/${taskId}`);
+  openNewAuthorForm();
+  click('.author-form-buttons .button-secondary:contains("done")');
+  click('.author-task-item-view-text');
+  click('.author-form-buttons .button-secondary:contains("done")');
 
-    visit(`/papers/${paperId}/tasks/${taskId}`);
-    openNewAuthorForm();
-    click('.author-form-buttons .button-secondary:contains("done")');
-    click('.author-task-item-view-text');
-    click('.author-form-buttons .button-secondary:contains("done")');
-
-    andThen(function() {
-      assert.elementFound(
-        '[data-test-id="author-first-name"].error',
-        'presence error on first name'
-      );
-      assert.elementFound(
-        '[data-test-id="author-last-name"].error',
-        'presence error on last name'
-      );
-      assert.elementFound(
-        '[data-test-id="author-initial"].error',
-        'presence error on initial'
-      );
-      assert.elementFound(
-        '[data-test-id="author-email"].error',
-        'presence error on email'
-      );
-      assert.elementFound(
-        '[data-test-id="author-affiliation"].error',
-        'presence error on affiliation'
-      );
-      assert.elementFound(
-        '[data-test-id="author-government"] .error-message:visible',
-        'presence error on government'
-      );
-    });
+  andThen(function() {
+    assert.elementFound(
+      '[data-test-id="author-last-name"].error',
+      'presence error on last name'
+    );
+    assert.elementFound(
+      '[data-test-id="author-initial"].error',
+      'presence error on initial'
+    );
+    assert.elementFound(
+      '[data-test-id="author-email"].error',
+      'presence error on email'
+    );
+    assert.elementFound(
+      '[data-test-id="author-affiliation"].error',
+      'presence error on affiliation'
+    );
+    assert.elementFound(
+      '[data-test-id="author-government"] .error-message:visible',
+      'presence error on government'
+    );
   });
 });

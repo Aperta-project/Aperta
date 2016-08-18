@@ -157,23 +157,6 @@ describe TasksController, redis: true do
         end
       end
 
-      context "when the task responds to send_emails" do
-        let!(:task) do
-          TahiStandardTasks::RegisterDecisionTask.create!(
-            title: "Reviewer Report",
-            old_role: "reviewer",
-            phase: paper.phases.first,
-            paper: paper,
-            completed: false
-          )
-        end
-
-        it "calls the send_emails method" do
-          expect_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:send_emails)
-          xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: true } }
-        end
-      end
-
       context "when the user cannot edit the task" do
         subject(:do_unauthorized_request) do
           xhr :patch, :update, {

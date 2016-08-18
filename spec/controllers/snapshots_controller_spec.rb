@@ -4,7 +4,7 @@ describe SnapshotsController do
   let(:owner) { FactoryGirl.create(:user) }
   let(:other_user) { FactoryGirl.create(:user) }
   let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
-  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:paper) { FactoryGirl.create(:paper, :with_creator, :submitted, journal: journal) }
   let(:task) do
     FactoryGirl.create(:ethics_task, paper: paper, participants: [owner])
   end

@@ -29,6 +29,10 @@ class CardOverlay < Page
     expect(self).to be_completed
   end
 
+  def mark_as_incomplete
+    find('.task-completed').click
+  end
+
   def completed?
     has_css?('.task-is-completed')
   end

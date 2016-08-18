@@ -5,6 +5,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   let(:paper) do
     FactoryGirl.create \
       :paper_with_phases,
+      :submitted_lite,
       :with_creator,
       journal: journal,
       uses_research_article_reviewer_report: true
@@ -49,6 +50,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   scenario 'A review can see their previous rounds of review' do
     # Revision 0
     visit "/papers/#{paper.id}"
+
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'answer for round 0'
@@ -57,8 +59,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t.ensure_no_review_history
 
     # Revision 1
-    decision_revision_1 = FactoryGirl.create(:decision, paper: paper)
-    reviewer_report_task.update!(decision: decision_revision_1)
+    register_paper_decision(paper, "minor_revision")
+    paper.submit! paper.creator
+    reviewer_report_task.update!(decision: paper.draft_decision)
+
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}",
                              ReviewerReportTaskOverlay)
@@ -70,8 +74,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     )
 
     # Revision 2
-    decision_revision_2 = FactoryGirl.create(:decision, paper: paper)
-    reviewer_report_task.update!(decision: decision_revision_2)
+    register_paper_decision(paper, "minor_revision")
+    paper.submit! paper.creator
+    reviewer_report_task.update!(decision: paper.draft_decision)
+
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
@@ -83,8 +89,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
-    decision_revision_3 = FactoryGirl.create(:decision, paper: paper)
-    reviewer_report_task.update!(decision: decision_revision_3)
+    register_paper_decision(paper, "minor_revision")
+    paper.submit! paper.creator
+    reviewer_report_task.update!(decision: paper.draft_decision)
+
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 

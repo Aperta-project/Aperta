@@ -43,7 +43,7 @@ describe Typesetter::MetadataSerializer do
 
   it 'serializes authors in order' do
     paper = FactoryGirl.create(
-      :paper_ready_for_export,
+      :paper,
       :accepted,
       journal: journal
     )

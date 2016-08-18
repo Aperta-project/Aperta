@@ -33,6 +33,8 @@ class ReviewerReportTaskCreator
                                 paper_id: paper.id)
       task
     else
+      assignee.assign_to!(assigned_to: existing_reviewer_report_task,
+                          role: paper.journal.task_participant_role)
       existing_reviewer_report_task.tap(&:incomplete!)
     end
   end

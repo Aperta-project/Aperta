@@ -13,7 +13,7 @@ export default TaskComponent.extend({
 
   newFunderQuestions: on('init', function(){
     const queryParams = { type: 'Funder' };
-    const results = this.get('store').findQuery('nested-question', queryParams);
+    const results = this.get('store').query('nested-question', queryParams);
 
     results.then( (nestedQuestions) => {
       this.set('nestedQuestionsForNewFunder', nestedQuestions);

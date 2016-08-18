@@ -17,7 +17,7 @@ export default TaskComponent.extend({
 
   newRecommendationQuestions: Ember.on('init', function() {
     const queryParams = { type: 'ReviewerRecommendation' };
-    this.get('store').findQuery('nested-question', queryParams).then( (questions) => {
+    this.get('store').query('nested-question', queryParams).then( (questions) => {
       this.set('nestedQuestionsForNewRecommendation', questions);
     });
   }),

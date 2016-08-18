@@ -3,13 +3,17 @@ class DecisionsController < ApplicationController
   respond_to :json
 
   def index
-    decisions = Decision.where(paper_id: params[:paper_id])
+    paper = Paper.find(params[:paper_id])
+    requires_user_can(:view, paper)
 
-    render json: decisions, each_serializer: DecisionSerializer, root: 'decisions'
+    render json: paper.decisions,
+           each_serializer: DecisionSerializer,
+           root: 'decisions'
   end
 
   def show
-    render json: Decision.find(params[:id]),
+    requires_user_can(:view, decision.paper)
+    render json: decision,
            serializer: DecisionSerializer, root: 'decision'
   end
 

@@ -1,5 +1,5 @@
-# The InvitationAttachmentsController provides end-points for interacting with and
-# retrieving an invitation's Attachment(s).
+# The InvitationAttachmentsController provides end-points for interacting with
+# and retrieving an invitation's Attachment(s).
 class InvitationAttachmentsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
@@ -16,9 +16,9 @@ class InvitationAttachmentsController < ApplicationController
 
   def create
     requires_user_can(:manage_invitations, invitation.task)
-    attachment = invitation.attachments.create
-    DownloadAttachmentWorker.perform_async(attachment.id, params[:url])
-    render json: attachment, root: 'attachment'
+    new_attachment = invitation.attachments.create
+    DownloadAttachmentWorker.perform_async(new_attachment.id, params[:url])
+    render json: new_attachment, root: 'attachment'
   end
 
   def destroy
@@ -48,7 +48,7 @@ class InvitationAttachmentsController < ApplicationController
   end
 
   def attachment
-    @attachment ||= Attachment.find(params[:id])
+    @attachment ||= invitation.attachments.find(params[:id])
   end
 
   def attachment_params

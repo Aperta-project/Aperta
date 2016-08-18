@@ -77,8 +77,9 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def test_validate_journal_admin_roles_display_function(self):
+  def _test_validate_journal_admin_roles_display_function(self):
     """
+    NOTE: Disabled due to APERTA-7319
     test_journal_admin: validate the display of the admin user role display section
     Validates the presence of the following elements:
       role section heading
@@ -128,7 +129,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_task_types_section(journal)
 
-  def test_validate_mmt_display_function(self):
+  def _test_validate_mmt_display_function(self):
     """
     test_journal_admin: validate the mmt section display and functions of adding/editing an MMT
     Validates the presence of the following elements:
@@ -139,6 +140,7 @@ class ApertaJournalAdminTest(CommonTest):
       Add new Template button
     Validates Editing extant MMT
     :return: void function
+    NOTE: Disabled due to APERTA-7465
     """
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
@@ -152,12 +154,13 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section()
 
-  def test_validate_add_delete_mmt_function(self):
+  def _test_validate_add_delete_mmt_function(self):
     """
     test_journal_admin: validate addition and deletion of an MMT from the journal_admin page.
     Validates Add new Template
     Validates Delete new Template
     :return: void function
+    NOTE: Disabled due to APERTA-7465
     """
     logging.info('Validating journal add mmt (paper type) function')
     user_type = random.choice(users)

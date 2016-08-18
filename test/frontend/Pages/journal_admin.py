@@ -103,28 +103,26 @@ class JournalAdminPage(AdminPage):
     """
     users_title = self._get(self._journal_admin_users_title)
     self.validate_application_h2_style(users_title)
-    jid = PgSQL().query('SELECT id FROM journals WHERE name = %s;', (journal,))[0][0]
-    logging.debug(jid)
-    role_list = PgSQL().query('SELECT * FROM old_roles WHERE journal_id = %s;', (jid,)) or []
-    logging.debug(role_list)
-    roles_count = 0
-    for role in role_list:
-      rcount = PgSQL().query('SELECT count(user_id) from user_roles WHERE old_role_id in (%s);', (role[0],))[0][0]
-      roles_count += rcount
-    logging.debug(roles_count)
+    journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;', (journal,))[0][0]
+    logging.debug(journal_id)
+    journal_roles = PgSQL().query('SELECT id from roles WHERE journal_id = %s AND name in '
+                                  '(\'Staff Admin\', \'Internal Editor\', \'Production Staff\','
+                                  '\'Publishing Services\', \'Freelance Editors\');',
+                                  (journal_id,))
+    journal_roles = tuple([x[0] for x in journal_roles])
+    users_db = PgSQL().query('SELECT user_id from assignments WHERE role_id in %s AND '
+                             'assigned_to_id = %s AND assigned_to_type=\'Journal\';',
+                             (journal_roles, journal_id))
+    users_db = set([x[0] for x in users_db])
     self._get(self._journal_admin_user_search_field)
     self._get(self._journal_admin_user_search_button)
-    if roles_count > 0:
+    if users_db:
       self._get(self._journal_admin_user_search_results_table_uname_header)
       self._get(self._journal_admin_user_search_results_table_fname_header)
       self._get(self._journal_admin_user_search_results_table_lname_header)
       self._get(self._journal_admin_user_search_results_table_rname_header)
       self._get(self._journal_admin_user_search_results_table)
       page_user_list = self._gets(self._journal_admin_user_search_results_row)
-      for user in page_user_list:
-        print(user.text)
-        print('\n')
-    # Aperta-6134 - Temporarily commenting out adjusting user roles
     else:
       logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
       self._add_user_with_role('atest author3', 'Staff Admin')
@@ -190,7 +188,7 @@ class JournalAdminPage(AdminPage):
     # Get list of roles that should be displayed
     journal_roles = PgSQL().query('SELECT id from roles WHERE journal_id = %s AND name in '
                                   '(\'Staff Admin\', \'Internal Editor\', \'Production Staff\','
-                                  '\'Publishing Services\', \'Freelance Editors\');',
+                                  '\'Publishing Services\', \'Freelance Editor\');',
                                   (journal_id,))
     journal_roles = tuple([x[0] for x in journal_roles])
     users_db = PgSQL().query('SELECT user_id from assignments WHERE role_id in %s AND '
@@ -201,18 +199,25 @@ class JournalAdminPage(AdminPage):
     #Check if there are users with journal roles
     usernames_db = PgSQL().query('SELECT username FROM users WHERE id in %s;', (users_db,))
     usernames_db = [x[0] for x in usernames_db]
+    #For each user, get first and last name
+    lastnames_db = []
+    for username in usernames_db:
+      lastnames_db.append(PgSQL().query(
+                         'SELECT last_name FROM users WHERE username = %s;', (username,)
+                         )[0][0])
     self.set_timeout(3)
     if users_db:
-      usernames = []
+      last_names = []
       role_rows = self._gets(self._journal_admin_user_search_results_row)
       for counter, row in enumerate(role_rows):
         logging.info(row.text)
         if counter > 0:
           old_last_name = last_name
         row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
-        username, first_name, last_name, roles = row_elements
+        last_name, first_name, username, roles = row_elements
+        last_name = last_name.text
+        last_names.append(last_name)
         username = username.text
-        usernames.append(username)
         # This username should be in the list of user names from the DB
         assert username in usernames_db, (username, usernames_db)
         if counter > 0:
@@ -225,12 +230,11 @@ class JournalAdminPage(AdminPage):
         try:
           roles_id = PgSQL().query('SELECT role_id FROM assignments '
                                    'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
-                                   (uid,))[0]
-          db_roles = []
-          for role_id in roles_id:
-            db_roles.append(PgSQL().query('SELECT name FROM roles WHERE id = %s;',
-                            (role_id,))[0][0])
-          assert set(roles) == set(db_roles), (roles, db_roles)
+                                   (uid,))
+          roles_id = tuple([x[0] for x in roles_id])
+          named_db_roles = PgSQL().query('SELECT name FROM roles WHERE id in %s;', (roles_id,))
+          named_db_roles = set([x[0] for x in named_db_roles])
+          assert set(roles).issuperset(set(named_db_roles)), (roles, named_db_roles)
         except IndexError:
           logging.warning('No permissions found for user {0}'.format(username))
           assert not roles, roles

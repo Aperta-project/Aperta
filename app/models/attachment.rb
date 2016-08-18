@@ -102,10 +102,9 @@ class Attachment < ActiveRecord::Base
     end
   end
 
+  # TODO: could we move this into the serializers?
   def task
-    if owner_type == 'Task'
-      owner
-    end
+    owner if owner_type == 'Task'
   end
 
   # These methods were pulled up from Attachment subclasses

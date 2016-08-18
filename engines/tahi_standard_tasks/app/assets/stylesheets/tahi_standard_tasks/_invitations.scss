@@ -194,19 +194,13 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invite-edit-buttons {
   padding-top: $invite-padding-vertical;
-  // #TODO: here's what we had before jerry
-  // text-align: right;
-  // display: flex;
-  // align-items: flex-end;
-  // justify-content: space-between;
-
   .attachment-manager {
       margin-bottom: 0px;
   }
 
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
 .invitation-item-delete-confirmation {
@@ -217,10 +211,4 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   margin-right: 30px;;
   color: $tahi-grey-dark;
   font-size: 1.4rem;
-}
-
-.flex-container {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
 }

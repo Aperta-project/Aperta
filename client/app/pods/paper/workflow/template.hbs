@@ -34,7 +34,7 @@
 
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
-<div class="columns">
+{{#autosized-column-headers columns=sortedPhases}}
   {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
   {{#each sortedPhases as |phase|}}
     {{phase-column phase=phase
@@ -52,7 +52,7 @@
                    chooseNewCardTypeOverlay="showChooseNewCardOverlay"
                    changePhaseForTask="changePhaseForTask"}}
   {{/each}}
-</div>
+{{/autosized-column-headers}}
 
 {{outlet}}
 

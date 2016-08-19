@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
-import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
-export default Ember.Component.extend(EscapeListenerMixin, {
+export default Ember.Component.extend({
   feedbackSubmitted: false,
   isUploading: false,
   classNames: ['feedback-form'],
@@ -43,6 +41,5 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     removeScreenshot(screenshot) {
       this.get('screenshots').removeObject(screenshot);
     }
-
   }
 });

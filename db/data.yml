@@ -3443,72 +3443,103 @@ decisions:
   columns:
   - id
   - paper_id
-  - revision_number
   - letter
   - verdict
   - created_at
   - updated_at
   - author_response
+  - registered_at
+  - minor_version
+  - major_version
+  - initial
+  - rescinded
   records: 
   - - '8'
     - '1'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:20.944099'
     - '2016-02-09 22:27:20.944099'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '9'
     - '2'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:20.970925'
     - '2016-02-09 22:27:20.970925'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '10'
     - '3'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:20.984125'
     - '2016-02-09 22:27:20.984125'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '11'
     - '4'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.000114'
     - '2016-02-09 22:27:21.000114'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '12'
     - '8'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.016533'
     - '2016-02-09 22:27:21.016533'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '13'
     - '9'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.037868'
     - '2016-02-09 22:27:21.037868'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '14'
     - '10'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.05455'
     - '2016-02-09 22:27:21.05455'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '18'
     - '12'
-    - '0'
     - |
       Dear Dr. Author,
 
@@ -3537,11 +3568,15 @@ decisions:
       PLOS Yeti
     - major_revision
     - '2016-04-12 18:43:34.68423'
-    - '2016-04-12 19:00:13.24579'
+    - '2016-08-12 16:47:34.930251'
     - Revisions made.
+    - '2016-04-12 18:43:34.68423'
+    - '0'
+    - '0'
+    - false
+    - false
   - - '19'
     - '12'
-    - '1'
     - |
       THIS IS THE MINOR REVISION
       Dear Dr. Author,
@@ -3571,11 +3606,15 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 18:57:26.981107'
-    - '2016-04-12 19:02:39.419468'
+    - '2016-08-12 16:47:34.93367'
     - Revised!
+    - '2016-04-12 18:57:26.981107'
+    - '0'
+    - '1'
+    - false
+    - false
   - - '20'
     - '12'
-    - '2'
     - |
       THIS IS THE MINOR REVISION
       Dear Dr. Author,
@@ -3605,24 +3644,37 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 19:00:40.408544'
-    - '2016-04-12 19:05:48.677806'
+    - '2016-08-12 16:47:34.935982'
     - Last revisions.
+    - '2016-04-12 19:00:40.408544'
+    - '0'
+    - '2'
+    - false
+    - false
   - - '21'
     - '12'
-    - '3'
     - 
     - 
     - '2016-04-12 19:03:40.743898'
     - '2016-04-12 19:03:40.743898'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '22'
     - '13'
-    - '0'
     - 
     - 
     - '2016-06-02 13:43:23.198268'
     - '2016-06-02 13:43:23.198268'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
 
 ---
 group_authors:
@@ -4385,6 +4437,14 @@ manuscript_manager_templates:
     - Non-Research
     - '1'
     - false
+  - - '3'
+    - No Author Tasks (Gradual Engagement)
+    - '1'
+    - false
+  - - '4'
+    - No Author Tasks
+    - '1'
+    - false
 
 ---
 nested_question_answers:
@@ -4400,6 +4460,7 @@ nested_question_answers:
   - additional_data
   - decision_id
   - paper_id
+  - deleted_at
   records: 
   - - '1'
     - '42'
@@ -4412,6 +4473,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '2'
     - '43'
     - '25'
@@ -4423,6 +4485,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '3'
     - '44'
     - '25'
@@ -4434,6 +4497,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '4'
     - '45'
     - '25'
@@ -4445,6 +4509,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '5'
     - '62'
     - '25'
@@ -4457,6 +4522,7 @@ nested_question_answers:
       of Florida","state":"FL","type":"academic"}}'
     - 
     - '2'
+    - 
   - - '6'
     - '64'
     - '25'
@@ -4469,6 +4535,7 @@ nested_question_answers:
       of New Mexico","state":"NM","type":"academic"}}'
     - 
     - '2'
+    - 
   - - '7'
     - '46'
     - '25'
@@ -4480,6 +4547,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '8'
     - '48'
     - '25'
@@ -4491,6 +4559,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '9'
     - '50'
     - '25'
@@ -4502,6 +4571,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '10'
     - '52'
     - '25'
@@ -4513,6 +4583,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '11'
     - '54'
     - '25'
@@ -4524,6 +4595,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '12'
     - '56'
     - '25'
@@ -4535,6 +4607,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '13'
     - '58'
     - '25'
@@ -4546,6 +4619,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '14'
     - '66'
     - '25'
@@ -4557,6 +4631,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '15'
     - '99'
     - '25'
@@ -4568,6 +4643,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '16'
     - '101'
     - '2'
@@ -4579,6 +4655,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '22'
     - '39'
     - '26'
@@ -4590,6 +4667,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '23'
     - '38'
     - '26'
@@ -4601,6 +4679,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '24'
     - '36'
     - '28'
@@ -4612,6 +4691,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '25'
     - '37'
     - '28'
@@ -4623,6 +4703,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '26'
     - '30'
     - '29'
@@ -4634,6 +4715,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '27'
     - '34'
     - '29'
@@ -4645,6 +4727,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '28'
     - '31'
     - '29'
@@ -4657,6 +4740,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '29'
     - '33'
     - '29'
@@ -4668,6 +4752,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '30'
     - '28'
     - '30'
@@ -4679,6 +4764,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '31'
     - '27'
     - '31'
@@ -4690,6 +4776,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '32'
     - '119'
     - '1'
@@ -4701,6 +4788,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '33'
     - '118'
     - '1'
@@ -4712,6 +4800,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '34'
     - '119'
     - '2'
@@ -4723,6 +4812,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '35'
     - '118'
     - '2'
@@ -4734,6 +4824,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '36'
     - '9'
     - '32'
@@ -4745,6 +4836,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '37'
     - '10'
     - '32'
@@ -4756,6 +4848,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '38'
     - '12'
     - '32'
@@ -4767,6 +4860,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '39'
     - '15'
     - '32'
@@ -4778,6 +4872,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '40'
     - '16'
     - '32'
@@ -4789,6 +4884,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '41'
     - '24'
     - '32'
@@ -4800,6 +4896,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '43'
     - '1'
     - '33'
@@ -4811,6 +4908,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '46'
     - '8'
     - '33'
@@ -4822,6 +4920,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '47'
     - '42'
     - '46'
@@ -4833,6 +4932,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '48'
     - '43'
     - '46'
@@ -4844,6 +4944,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '49'
     - '44'
     - '46'
@@ -4855,6 +4956,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '50'
     - '45'
     - '46'
@@ -4866,6 +4968,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '51'
     - '62'
     - '46'
@@ -4878,6 +4981,7 @@ nested_question_answers:
       Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
     - 
     - '3'
+    - 
   - - '52'
     - '64'
     - '46'
@@ -4890,6 +4994,7 @@ nested_question_answers:
       A\u0026M University","state":"AL","type":"academic"}}'
     - 
     - '3'
+    - 
   - - '53'
     - '46'
     - '46'
@@ -4901,6 +5006,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '54'
     - '48'
     - '46'
@@ -4912,6 +5018,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '55'
     - '50'
     - '46'
@@ -4923,6 +5030,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '56'
     - '54'
     - '46'
@@ -4934,6 +5042,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '57'
     - '56'
     - '46'
@@ -4945,6 +5054,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '58'
     - '58'
     - '46'
@@ -4956,6 +5066,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '59'
     - '66'
     - '46'
@@ -4967,6 +5078,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '60'
     - '99'
     - '46'
@@ -4978,6 +5090,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '61'
     - '101'
     - '4'
@@ -4989,6 +5102,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '67'
     - '39'
     - '47'
@@ -5007,6 +5121,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '68'
     - '38'
     - '47'
@@ -5018,6 +5133,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '69'
     - '36'
     - '49'
@@ -5029,6 +5145,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '70'
     - '37'
     - '49'
@@ -5047,6 +5164,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '71'
     - '30'
     - '50'
@@ -5058,6 +5176,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '72'
     - '34'
     - '50'
@@ -5069,6 +5188,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '73'
     - '31'
     - '50'
@@ -5087,6 +5207,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '74'
     - '33'
     - '50'
@@ -5098,6 +5219,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '75'
     - '27'
     - '52'
@@ -5109,6 +5231,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '76'
     - '9'
     - '53'
@@ -5120,6 +5243,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '77'
     - '10'
     - '53'
@@ -5131,6 +5255,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '78'
     - '11'
     - '53'
@@ -5142,6 +5267,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '79'
     - '12'
     - '53'
@@ -5153,6 +5279,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '80'
     - '15'
     - '53'
@@ -5164,6 +5291,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '81'
     - '16'
     - '53'
@@ -5175,6 +5303,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '82'
     - '23'
     - '53'
@@ -5186,6 +5315,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '83'
     - '24'
     - '53'
@@ -5197,6 +5327,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '85'
     - '20'
     - '53'
@@ -5208,6 +5339,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '86'
     - '1'
     - '54'
@@ -5219,6 +5351,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '87'
     - '2'
     - '54'
@@ -5230,6 +5363,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '88'
     - '3'
     - '54'
@@ -5241,6 +5375,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '89'
     - '8'
     - '54'
@@ -5252,6 +5387,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '90'
     - '39'
     - '68'
@@ -5264,6 +5400,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '91'
     - '38'
     - '68'
@@ -5275,6 +5412,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '92'
     - '42'
     - '67'
@@ -5286,6 +5424,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '93'
     - '43'
     - '67'
@@ -5297,6 +5436,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '94'
     - '44'
     - '67'
@@ -5308,6 +5448,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '95'
     - '45'
     - '67'
@@ -5319,6 +5460,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '96'
     - '62'
     - '67'
@@ -5331,6 +5473,7 @@ nested_question_answers:
       Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
     - 
     - '4'
+    - 
   - - '97'
     - '64'
     - '67'
@@ -5343,6 +5486,7 @@ nested_question_answers:
       Francisco","country":"US","name":"Academy of Art University","state":"CA","type":"academic"}}'
     - 
     - '4'
+    - 
   - - '98'
     - '46'
     - '67'
@@ -5354,6 +5498,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '99'
     - '48'
     - '67'
@@ -5365,6 +5510,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '100'
     - '50'
     - '67'
@@ -5376,6 +5522,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '101'
     - '54'
     - '67'
@@ -5387,6 +5534,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '102'
     - '56'
     - '67'
@@ -5398,6 +5546,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '103'
     - '58'
     - '67'
@@ -5409,6 +5558,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '104'
     - '66'
     - '67'
@@ -5420,6 +5570,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '105'
     - '99'
     - '67'
@@ -5431,6 +5582,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '106'
     - '101'
     - '6'
@@ -5442,6 +5594,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '108'
     - '36'
     - '70'
@@ -5453,6 +5606,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '109'
     - '37'
     - '70'
@@ -5464,6 +5618,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '110'
     - '31'
     - '71'
@@ -5475,6 +5630,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '111'
     - '30'
     - '71'
@@ -5486,6 +5642,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '112'
     - '33'
     - '71'
@@ -5497,6 +5654,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '113'
     - '34'
     - '71'
@@ -5515,6 +5673,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '114'
     - '27'
     - '73'
@@ -5526,6 +5685,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '115'
     - '9'
     - '74'
@@ -5537,6 +5697,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '116'
     - '10'
     - '74'
@@ -5548,6 +5709,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '117'
     - '12'
     - '74'
@@ -5559,6 +5721,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '118'
     - '13'
     - '74'
@@ -5570,6 +5733,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '119'
     - '14'
     - '74'
@@ -5581,6 +5745,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '120'
     - '15'
     - '74'
@@ -5592,6 +5757,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '121'
     - '16'
     - '74'
@@ -5603,6 +5769,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '122'
     - '24'
     - '74'
@@ -5614,6 +5781,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '124'
     - '1'
     - '75'
@@ -5625,6 +5793,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '125'
     - '4'
     - '75'
@@ -5636,6 +5805,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '126'
     - '5'
     - '75'
@@ -5647,6 +5817,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '127'
     - '184'
     - '11'
@@ -5658,6 +5829,7 @@ nested_question_answers:
     - 
     - 
     - '1'
+    - 
   - - '128'
     - '184'
     - '32'
@@ -5671,6 +5843,7 @@ nested_question_answers:
     - 
     - 
     - '2'
+    - 
   - - '129'
     - '184'
     - '53'
@@ -5682,6 +5855,7 @@ nested_question_answers:
     - 
     - 
     - '3'
+    - 
   - - '130'
     - '184'
     - '74'
@@ -5693,6 +5867,7 @@ nested_question_answers:
     - 
     - 
     - '4'
+    - 
   - - '131'
     - '184'
     - '95'
@@ -5704,6 +5879,7 @@ nested_question_answers:
     - 
     - 
     - '8'
+    - 
   - - '132'
     - '184'
     - '116'
@@ -5715,6 +5891,7 @@ nested_question_answers:
     - 
     - 
     - '9'
+    - 
   - - '133'
     - '184'
     - '137'
@@ -5726,6 +5903,7 @@ nested_question_answers:
     - 
     - 
     - '10'
+    - 
   - - '189'
     - '101'
     - '11'
@@ -5737,6 +5915,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '190'
     - '195'
     - '11'
@@ -5748,6 +5927,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '191'
     - '199'
     - '11'
@@ -5759,6 +5939,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '192'
     - '204'
     - '2'
@@ -5770,6 +5951,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '193'
     - '218'
     - '2'
@@ -5781,6 +5963,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '194'
     - '200'
     - '171'
@@ -5792,6 +5975,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '195'
     - '201'
     - '171'
@@ -5803,6 +5987,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '196'
     - '202'
     - '171'
@@ -5814,6 +5999,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '197'
     - '189'
     - '12'
@@ -5825,6 +6011,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '198'
     - '199'
     - '12'
@@ -5836,6 +6023,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '199'
     - '42'
     - '173'
@@ -5847,6 +6035,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '200'
     - '43'
     - '173'
@@ -5858,6 +6047,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '201'
     - '44'
     - '173'
@@ -5869,6 +6059,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '202'
     - '45'
     - '173'
@@ -5880,6 +6071,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '203'
     - '46'
     - '173'
@@ -5891,6 +6083,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '204'
     - '48'
     - '173'
@@ -5902,6 +6095,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '205'
     - '50'
     - '173'
@@ -5913,6 +6107,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '206'
     - '54'
     - '173'
@@ -5924,6 +6119,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '207'
     - '58'
     - '173'
@@ -5935,6 +6131,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '208'
     - '66'
     - '173'
@@ -5946,6 +6143,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '209'
     - '39'
     - '174'
@@ -5957,6 +6155,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '210'
     - '38'
     - '174'
@@ -5968,6 +6167,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '211'
     - '232'
     - '175'
@@ -5979,6 +6179,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '212'
     - '36'
     - '176'
@@ -5990,6 +6191,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '213'
     - '37'
     - '176'
@@ -6001,6 +6203,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '214'
     - '31'
     - '177'
@@ -6012,6 +6215,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '215'
     - '30'
     - '177'
@@ -6023,6 +6227,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '216'
     - '33'
     - '177'
@@ -6034,6 +6239,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '217'
     - '179'
     - '177'
@@ -6045,6 +6251,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '218'
     - '28'
     - '178'
@@ -6056,6 +6263,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '219'
     - '27'
     - '179'
@@ -6067,6 +6275,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '220'
     - '119'
     - '5'
@@ -6078,6 +6287,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '221'
     - '118'
     - '5'
@@ -6089,6 +6299,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '222'
     - '16'
     - '180'
@@ -6100,6 +6311,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '223'
     - '18'
     - '180'
@@ -6111,6 +6323,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '224'
     - '21'
     - '180'
@@ -6122,6 +6335,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '225'
     - '9'
     - '180'
@@ -6133,6 +6347,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '226'
     - '12'
     - '180'
@@ -6144,6 +6359,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '227'
     - '23'
     - '180'
@@ -6155,6 +6371,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '228'
     - '184'
     - '180'
@@ -6166,6 +6383,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '229'
     - '7'
     - '181'
@@ -6177,6 +6395,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '230'
     - '8'
     - '181'
@@ -6188,6 +6407,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '231'
     - '137'
     - '9'
@@ -6199,6 +6419,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '232'
     - '138'
     - '9'
@@ -6210,6 +6431,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '233'
     - '137'
     - '10'
@@ -6221,6 +6443,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '234'
     - '138'
     - '10'
@@ -6232,6 +6455,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
   - - '235'
     - '102'
     - '12'
@@ -6243,6 +6467,7 @@ nested_question_answers:
     - 
     - 
     - '12'
+    - 
 
 ---
 nested_questions:
@@ -6259,6 +6484,7 @@ nested_questions:
   - updated_at
   - owner_type
   - owner_id
+  - deleted_at
   records: 
   - - '1'
     - Clinical Trial
@@ -6272,6 +6498,7 @@ nested_questions:
     - '2015-12-15 15:54:23.16653'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
+    - 
   - - '2'
     - Systematic Reviews
     - boolean
@@ -6283,6 +6510,7 @@ nested_questions:
     - '2015-10-29 20:16:37.938852'
     - '2015-12-15 15:54:23.169471'
     - TahiStandardTasks::ReportingGuidelinesTask
+    - 
     - 
   - - '3'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
@@ -6297,6 +6525,7 @@ nested_questions:
     - '2015-12-15 15:54:23.172619'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
+    - 
   - - '4'
     - Meta-analyses
     - boolean
@@ -6308,6 +6537,7 @@ nested_questions:
     - '2015-10-29 20:16:37.958963'
     - '2015-12-15 15:54:23.175276'
     - TahiStandardTasks::ReportingGuidelinesTask
+    - 
     - 
   - - '5'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
@@ -6322,6 +6552,7 @@ nested_questions:
     - '2015-12-15 15:54:23.178171'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
+    - 
   - - '6'
     - Diagnostic studies
     - boolean
@@ -6333,6 +6564,7 @@ nested_questions:
     - '2015-10-29 20:16:37.97752'
     - '2015-12-15 15:54:23.180888'
     - TahiStandardTasks::ReportingGuidelinesTask
+    - 
     - 
   - - '7'
     - Epidemiological studies
@@ -6346,6 +6578,7 @@ nested_questions:
     - '2015-12-15 15:54:23.183622'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
+    - 
   - - '8'
     - Microarray studies
     - boolean
@@ -6357,6 +6590,7 @@ nested_questions:
     - '2015-10-29 20:16:38.010316'
     - '2015-12-15 15:54:23.186469'
     - TahiStandardTasks::ReportingGuidelinesTask
+    - 
     - 
   - - '9'
     - Have the results, data, or figures in this manuscript been published elsewhere?
@@ -6370,6 +6604,7 @@ nested_questions:
     - '2015-10-29 20:16:38.047215'
     - '2015-12-15 15:54:23.125043'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '10'
     - Please identify which results, data, or figures have been taken from other published
@@ -6385,6 +6620,7 @@ nested_questions:
     - '2015-12-15 15:54:23.128102'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '11'
     - Please also upload a copy of the related work with your submission as a 'Related
       Manuscript' item. Note that reviewers may be asked to comment on the overlap
@@ -6399,6 +6635,7 @@ nested_questions:
     - '2015-12-15 15:54:23.13079'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '12'
     - Is this manuscript being submitted in conjunction with another submission?
     - boolean
@@ -6410,6 +6647,7 @@ nested_questions:
     - '2015-10-29 20:16:38.076166'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '13'
     - Title
@@ -6423,6 +6661,7 @@ nested_questions:
     - '2015-12-15 15:54:23.136459'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '14'
     - Corresponding author
     - text
@@ -6434,6 +6673,7 @@ nested_questions:
     - '2015-10-29 20:16:38.090158'
     - '2015-12-15 15:54:23.139157'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '15'
     - I have had previous interactions about this manuscript with a staff editor or
@@ -6448,6 +6688,7 @@ nested_questions:
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '16'
     - Please enter manuscript number and editor name, if known
     - text
@@ -6459,6 +6700,7 @@ nested_questions:
     - '2015-10-29 20:16:38.106897'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '17'
     - I submitted a presubmission inquiry for this manuscript.
@@ -6472,6 +6714,7 @@ nested_questions:
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '18'
     - Please enter manuscript number and editor name, if known
     - text
@@ -6483,6 +6726,7 @@ nested_questions:
     - '2015-10-29 20:16:38.150193'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '20'
     - This manuscript was previously submitted to a different PLOS journal as either
@@ -6497,6 +6741,7 @@ nested_questions:
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '21'
     - Please enter manuscript number and editor name, if known
     - text
@@ -6508,6 +6753,7 @@ nested_questions:
     - '2015-10-29 20:16:38.167053'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '23'
     - One or more of the authors (including myself) currently serve, or have previously
@@ -6521,6 +6767,7 @@ nested_questions:
     - '2015-10-29 20:16:38.180646'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '24'
     - If your submission is intended for a <a target='_blank' href='http://collections.plos.org/'>PLOS
@@ -6536,6 +6783,7 @@ nested_questions:
     - '2015-12-17 21:19:25.158156'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '27'
     - Did any of the authors receive specific funding for this work?
     - boolean
@@ -6547,6 +6795,7 @@ nested_questions:
     - '2015-10-29 20:16:38.228326'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::FinancialDisclosureTask
+    - 
     - 
   - - '28'
     - Yes - I confirm our figures comply with the guidelines.
@@ -6560,6 +6809,7 @@ nested_questions:
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::FigureTask
     - 
+    - 
   - - '30'
     - Does your study involve human participants and/or tissue?
     - boolean
@@ -6571,6 +6821,7 @@ nested_questions:
     - '2015-10-29 20:16:38.264507'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::EthicsTask
+    - 
     - 
   - - '31'
     - Please enter the name of the IRB or Ethics Committee that approved this study
@@ -6586,6 +6837,7 @@ nested_questions:
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::EthicsTask
     - 
+    - 
   - - '33'
     - Does your study involve animal research (vertebrate animals, embryos or tissues)?
     - boolean
@@ -6598,6 +6850,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
     - 
+    - 
   - - '34'
     - 'Please enter your statement below:'
     - text
@@ -6609,6 +6862,7 @@ nested_questions:
     - '2015-10-29 20:16:38.281644'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::EthicsTask
+    - 
     - 
   - - '36'
     - Do the authors confirm that all the data underlying the findings described in
@@ -6623,6 +6877,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::DataAvailabilityTask
     - 
+    - 
   - - '37'
     - Please describe where your data may be found, writing in full sentences.
     - text
@@ -6634,6 +6889,7 @@ nested_questions:
     - '2015-10-29 20:16:38.311531'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::DataAvailabilityTask
+    - 
     - 
   - - '38'
     - Do any authors of this manuscript have competing interests (as described in
@@ -6649,6 +6905,7 @@ nested_questions:
     - '2016-03-02 18:04:17.807273'
     - TahiStandardTasks::CompetingInterestsTask
     - 
+    - 
   - - '39'
     - 'Please provide details about any and all competing interests in the box below.
       Your response should begin with this statement: "I have read the journal''s
@@ -6663,6 +6920,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::CompetingInterestsTask
     - 
+    - 
   - - '42'
     - First Name
     - text
@@ -6674,6 +6932,7 @@ nested_questions:
     - '2015-10-29 20:16:38.364376'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '43'
     - Last Name
@@ -6687,6 +6946,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '44'
     - Title
     - text
@@ -6698,6 +6958,7 @@ nested_questions:
     - '2015-10-29 20:16:38.374389'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '45'
     - Department
@@ -6711,6 +6972,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '46'
     - Phone
     - text
@@ -6722,6 +6984,7 @@ nested_questions:
     - '2015-10-29 20:16:38.384534'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '48'
     - Email
@@ -6735,6 +6998,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '50'
     - Address Line 1
     - text
@@ -6746,6 +7010,7 @@ nested_questions:
     - '2015-10-29 20:16:38.396858'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '52'
     - Address Line 2 (optional)
@@ -6759,6 +7024,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '54'
     - City
     - text
@@ -6770,6 +7036,7 @@ nested_questions:
     - '2015-10-29 20:16:38.409232'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '56'
     - State or Province
@@ -6783,6 +7050,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '58'
     - ZIP or Postal Code
     - text
@@ -6794,6 +7062,7 @@ nested_questions:
     - '2015-10-29 20:16:38.422462'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '60'
     - Country
@@ -6807,6 +7076,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '62'
     - 'Affiliation #1'
     - text
@@ -6818,6 +7088,7 @@ nested_questions:
     - '2015-10-29 20:16:38.435351'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '64'
     - 'Affiliation #2'
@@ -6831,6 +7102,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '66'
     - How would you like to pay?
     - text
@@ -6842,6 +7114,7 @@ nested_questions:
     - '2015-10-29 20:16:38.448591'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '68'
     - Have you investigated if funding is available from your co-authors' institutions
@@ -6856,6 +7129,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '70'
     - If your co-authors' institutions will not provide any funding to publish the
       article, indicate why.
@@ -6868,6 +7142,7 @@ nested_questions:
     - '2015-10-29 20:16:38.461795'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '72'
     - If your coauthors' institutions will provide partial funding to publish the
@@ -6883,6 +7158,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '74'
     - Have you investigated if funding is available from your institution to pay the
       publication fee?
@@ -6895,6 +7171,7 @@ nested_questions:
     - '2015-10-29 20:16:38.474299'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '76'
     - If your institution cannot provide any funding to publish the article, indicate
@@ -6909,6 +7186,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '78'
     - If your institution will provide partial funding to publish the article, indicate
       the amount it will pay toward your publication fee (in USD).
@@ -6921,6 +7199,7 @@ nested_questions:
     - '2015-10-29 20:16:38.487319'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '80'
     - Do your co-authors have any other sources of funding that can be used towards
@@ -6935,6 +7214,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '82'
     - Indicate the amount that they can pay (in USD).
     - text
@@ -6946,6 +7226,7 @@ nested_questions:
     - '2015-10-29 20:16:38.500687'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '84'
     - Do you have any other sources of funding that can be used towards the publication
@@ -6960,6 +7241,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '86'
     - Indicate the amount that they can pay (in USD).
     - text
@@ -6972,6 +7254,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '88'
     - Given your answers to the above questions on your funding availability, what
       is the amount that you and your co-authors can jointly pay for publication?
@@ -6983,8 +7266,9 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-07-28 18:23:32.430974'
+    - '2016-08-12 16:47:41.709894'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '90'
     - If you would like to provide documents to assist in demonstrating your request,
@@ -7001,6 +7285,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '92'
     - If you wish to make additional comments to support your request, provide them
       below. If you have no additional comments, enter "None" in the box.
@@ -7013,6 +7298,7 @@ nested_questions:
     - '2015-10-29 20:16:38.532891'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '94'
     - 'You are acknowledging that you have read and agree to the following statement:
@@ -7027,6 +7313,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '96'
     - I have read and agree to the Terms of Submission to PLOS Collections
     - boolean
@@ -7038,6 +7325,7 @@ nested_questions:
     - '2015-10-29 20:16:38.545463'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '98'
     - Global Participation Initiative Country
@@ -7051,6 +7339,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
+    - 
   - - '99'
     - Ringgold Institution
     - text
@@ -7062,6 +7351,7 @@ nested_questions:
     - '2015-10-29 20:16:38.561639'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
+    - 
     - 
   - - '101'
     - This person should be identified as corresponding author on the published article
@@ -7075,6 +7365,7 @@ nested_questions:
     - '2016-03-10 19:55:37.873771'
     - Author
     - 
+    - 
   - - '102'
     - This person is deceased
     - boolean
@@ -7087,6 +7378,7 @@ nested_questions:
     - '2016-01-15 18:04:22.865691'
     - Author
     - 
+    - 
   - - '104'
     - Author Contributions
     - question-set
@@ -7098,6 +7390,7 @@ nested_questions:
     - '2015-10-29 20:16:38.687781'
     - '2016-03-10 19:55:38.108421'
     - Author
+    - 
     - 
   - - '118'
     - Did the funder have a role in study design, data collection and analysis, decision
@@ -7112,6 +7405,7 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::Funder
     - 
+    - 
   - - '119'
     - Describe the role of any sponsors or funders in the study design, data collection
       and analysis, decision to publish, or preparation of the manuscript.
@@ -7125,6 +7419,7 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::Funder
     - 
+    - 
   - - '120'
     - Publication Date
     - text
@@ -7136,6 +7431,7 @@ nested_questions:
     - '2015-10-30 19:51:03.462062'
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ProductionMetadataTask
+    - 
     - 
   - - '121'
     - Volume Number
@@ -7149,6 +7445,7 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ProductionMetadataTask
     - 
+    - 
   - - '122'
     - Issue Number
     - text
@@ -7161,6 +7458,7 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ProductionMetadataTask
     - 
+    - 
   - - '123'
     - Production Notes
     - text
@@ -7172,6 +7470,7 @@ nested_questions:
     - '2015-10-30 19:51:03.473215'
     - '2016-03-10 19:55:38.108421'
     - TahiStandardTasks::ProductionMetadataTask
+    - 
     - 
   - - '124'
     - Do you have any potential or perceived competing interests that may influence
@@ -7186,6 +7485,7 @@ nested_questions:
     - '2016-06-23 16:58:01.130209'
     - TahiStandardTasks::ReviewerReportTask
     - 
+    - 
   - - '131'
     - "(Optional) If you have any additional confidential comments to the editor,
       please add them below."
@@ -7198,6 +7498,7 @@ nested_questions:
     - '2015-10-30 19:51:03.531234'
     - '2016-06-23 16:58:01.146664'
     - TahiStandardTasks::ReviewerReportTask
+    - 
     - 
   - - '132'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
@@ -7212,6 +7513,7 @@ nested_questions:
     - '2016-06-23 16:58:01.136552'
     - TahiStandardTasks::ReviewerReportTask
     - 
+    - 
   - - '133'
     - Does this manuscript describe a new zoological taxon name?
     - boolean
@@ -7223,6 +7525,7 @@ nested_questions:
     - '2015-10-30 19:51:03.541213'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
+    - 
     - 
   - - '134'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
@@ -7236,6 +7539,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
     - 
+    - 
   - - '135'
     - Does this manuscript describe a new botanical taxon name?
     - boolean
@@ -7247,6 +7551,7 @@ nested_questions:
     - '2015-10-30 19:51:03.55182'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
+    - 
     - 
   - - '136'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
@@ -7260,6 +7565,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::TaxonTask
     - 
+    - 
   - - '137'
     - Are you recommending or opposing this reviewer?
     - boolean
@@ -7272,6 +7578,7 @@ nested_questions:
     - '2016-07-11 19:05:34.63917'
     - TahiStandardTasks::ReviewerRecommendation
     - 
+    - 
   - - '138'
     - 'Optional: reason for recommending or opposing this reviewer'
     - text
@@ -7283,6 +7590,7 @@ nested_questions:
     - '2015-11-02 13:38:26.280143'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::ReviewerRecommendation
+    - 
     - 
   - - '145'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
@@ -7297,6 +7605,7 @@ nested_questions:
     - '2015-11-02 13:38:26.319212'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '146'
     - " If the Financial Disclosure Statement includes any companies from the Tobacco
@@ -7313,6 +7622,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '151'
     - Make sure the ethics statement looks complete. If the authors have responded
       Yes to any question, but have not provided approval information, please request
@@ -7326,6 +7636,7 @@ nested_questions:
     - '2015-11-02 13:38:26.340953'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '152'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
@@ -7342,6 +7653,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '153'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
@@ -7354,6 +7666,7 @@ nested_questions:
     - '2015-11-02 13:38:26.350087'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '154'
     - Check if there are any obvious ethical flags (mentions of animal/human work
@@ -7369,6 +7682,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '155'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
@@ -7381,6 +7695,7 @@ nested_questions:
     - '2015-11-02 13:38:26.359242'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '156'
     - If author indicates the data is available in Supporting Information, check to
@@ -7396,6 +7711,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '157'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
@@ -7408,6 +7724,7 @@ nested_questions:
     - '2015-11-02 13:38:26.366706'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '158'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
@@ -7422,6 +7739,7 @@ nested_questions:
     - '2015-11-02 13:38:26.370339'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '159'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
@@ -7438,6 +7756,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '160'
     - If any figures are completely illegible, contact the author.
     - boolean
@@ -7449,6 +7768,7 @@ nested_questions:
     - '2015-11-02 13:38:26.37734'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '161'
     - If any files or figures are cited but not included in the submission, message
@@ -7463,6 +7783,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '162'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
@@ -7475,6 +7796,7 @@ nested_questions:
     - '2015-11-02 13:38:26.384466'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '163'
     - Have the authors mentioned any billing information in the cover letter? If yes,
@@ -7489,6 +7811,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '164'
     - Make sure the ethics statement looks complete. If the authors have responded
       Yes to any question, but have not provided approval information, please request
@@ -7502,6 +7825,7 @@ nested_questions:
     - '2015-11-02 13:38:26.39145'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '165'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
@@ -7518,6 +7842,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '166'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
@@ -7530,6 +7855,7 @@ nested_questions:
     - '2015-11-02 13:38:26.400512'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
     - 
   - - '167'
     - Check if there are any obvious ethical flags (mentions of animal/human work
@@ -7545,6 +7871,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '168'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
@@ -7557,6 +7884,7 @@ nested_questions:
     - '2015-11-02 13:38:26.407564'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
     - 
   - - '169'
     - If author indicates the data is available in Supporting Information, check to
@@ -7572,6 +7900,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '170'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
@@ -7584,6 +7913,7 @@ nested_questions:
     - '2015-11-02 13:38:26.415031'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
     - 
   - - '171'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
@@ -7598,6 +7928,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '172'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
@@ -7611,6 +7942,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '173'
     - If any figures are completely illegible, contact the author.
     - boolean
@@ -7622,6 +7954,7 @@ nested_questions:
     - '2015-11-02 13:38:26.425661'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
     - 
   - - '174'
     - If any files or figures are cited but not included in the submission, message
@@ -7636,6 +7969,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '175'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
@@ -7648,6 +7982,7 @@ nested_questions:
     - '2015-11-02 13:38:26.433036'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
     - 
   - - '176'
     - Have the authors mentioned any billing information in the cover letter? If yes,
@@ -7662,6 +7997,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
+    - 
   - - '177'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
@@ -7673,6 +8009,7 @@ nested_questions:
     - '2015-11-02 13:38:26.440221'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
     - 
   - - '178'
     - Please provide your field permit number and indicate the institution or relevant
@@ -7687,6 +8024,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::EthicsTask
     - 
+    - 
   - - '179'
     - Is this a field study, or does it involve collection of plant, animal, or other
       materials collected from a natural setting?
@@ -7700,6 +8038,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::EthicsTask
     - 
+    - 
   - - '180'
     - Corresponding journal
     - text
@@ -7711,6 +8050,7 @@ nested_questions:
     - '2015-12-17 21:19:25.045724'
     - '2015-12-17 21:19:25.073212'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
     - 
   - - '181'
     - This submission and the manuscript I'm submitting should be handled together
@@ -7724,6 +8064,7 @@ nested_questions:
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '182'
     - 'Please provide your publication recommendation:'
     - text
@@ -7736,6 +8077,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::ReviewerReportTask
     - 
+    - 
   - - '183'
     - ARRIVE checklist
     - attachment
@@ -7747,6 +8089,7 @@ nested_questions:
     - '2016-01-15 18:04:22.842134'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
+    - 
     - 
   - - '184'
     - Please give your paper a short title. Short titles are used as the running header
@@ -7761,6 +8104,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
+    - 
   - - '185'
     - Conceptualization
     - boolean
@@ -7772,6 +8116,7 @@ nested_questions:
     - '2016-03-10 19:55:37.883745'
     - '2016-03-10 19:55:37.973685'
     - Author
+    - 
     - 
   - - '186'
     - Investigation
@@ -7785,6 +8130,7 @@ nested_questions:
     - '2016-03-10 19:55:37.985611'
     - Author
     - 
+    - 
   - - '187'
     - Visualization
     - boolean
@@ -7796,6 +8142,7 @@ nested_questions:
     - '2016-03-10 19:55:37.89593'
     - '2016-03-10 19:55:37.995901'
     - Author
+    - 
     - 
   - - '188'
     - Methodology
@@ -7809,6 +8156,7 @@ nested_questions:
     - '2016-03-10 19:55:38.005836'
     - Author
     - 
+    - 
   - - '189'
     - Resources
     - boolean
@@ -7820,6 +8168,7 @@ nested_questions:
     - '2016-03-10 19:55:37.906714'
     - '2016-03-10 19:55:38.015508'
     - Author
+    - 
     - 
   - - '190'
     - Supervision
@@ -7833,6 +8182,7 @@ nested_questions:
     - '2016-03-10 19:55:38.025507'
     - Author
     - 
+    - 
   - - '191'
     - Software
     - boolean
@@ -7844,6 +8194,7 @@ nested_questions:
     - '2016-03-10 19:55:37.917657'
     - '2016-03-10 19:55:38.035181'
     - Author
+    - 
     - 
   - - '192'
     - Data Curation
@@ -7857,6 +8208,7 @@ nested_questions:
     - '2016-03-10 19:55:38.045003'
     - Author
     - 
+    - 
   - - '193'
     - Project Administration
     - boolean
@@ -7868,6 +8220,7 @@ nested_questions:
     - '2016-03-10 19:55:37.928883'
     - '2016-03-10 19:55:38.054828'
     - Author
+    - 
     - 
   - - '194'
     - Validation
@@ -7881,6 +8234,7 @@ nested_questions:
     - '2016-03-10 19:55:38.065419'
     - Author
     - 
+    - 
   - - '195'
     - Writing - Original Draft
     - boolean
@@ -7892,6 +8246,7 @@ nested_questions:
     - '2016-03-10 19:55:37.940588'
     - '2016-03-10 19:55:38.075451'
     - Author
+    - 
     - 
   - - '196'
     - Writing - Review and Editing
@@ -7905,6 +8260,7 @@ nested_questions:
     - '2016-03-10 19:55:38.087079'
     - Author
     - 
+    - 
   - - '197'
     - Funding Acquisition
     - boolean
@@ -7916,6 +8272,7 @@ nested_questions:
     - '2016-03-10 19:55:37.951864'
     - '2016-03-10 19:55:38.098179'
     - Author
+    - 
     - 
   - - '198'
     - Formal Analysis
@@ -7929,6 +8286,7 @@ nested_questions:
     - '2016-03-10 19:55:38.108421'
     - Author
     - 
+    - 
   - - '199'
     - Is this author an employee of the United States Government?
     - boolean
@@ -7940,6 +8298,7 @@ nested_questions:
     - '2016-03-10 19:55:38.12136'
     - '2016-06-23 16:58:01.120896'
     - Author
+    - 
     - 
   - - '200'
     - Any persons named in the Acknowledgements section of the manuscript, or referred
@@ -7954,6 +8313,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::AuthorsTask
     - 
+    - 
   - - '201'
     - All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html"
       target="_blank">ICMJE</a> criteria for authorship.
@@ -7967,6 +8327,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::AuthorsTask
     - 
+    - 
   - - '202'
     - All contributing authors are aware of and agree to the submission of this manuscript.
     - boolean
@@ -7978,6 +8339,7 @@ nested_questions:
     - '2016-03-10 19:55:38.253569'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::AuthorsTask
+    - 
     - 
   - - '203'
     - Conceptualization
@@ -7991,6 +8353,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '204'
     - Investigation
     - boolean
@@ -8002,6 +8365,7 @@ nested_questions:
     - '2016-03-22 14:32:48.217167'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '205'
     - Visualization
@@ -8015,6 +8379,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '206'
     - Methodology
     - boolean
@@ -8026,6 +8391,7 @@ nested_questions:
     - '2016-03-22 14:32:48.241637'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '207'
     - Resources
@@ -8039,6 +8405,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '208'
     - Supervision
     - boolean
@@ -8050,6 +8417,7 @@ nested_questions:
     - '2016-03-22 14:32:48.266474'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '209'
     - Software
@@ -8063,6 +8431,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '210'
     - Data Curation
     - boolean
@@ -8074,6 +8443,7 @@ nested_questions:
     - '2016-03-22 14:32:48.290615'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '211'
     - Project Administration
@@ -8087,6 +8457,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '212'
     - Validation
     - boolean
@@ -8098,6 +8469,7 @@ nested_questions:
     - '2016-03-22 14:32:48.31193'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '213'
     - Writing - Original Draft
@@ -8111,6 +8483,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '214'
     - Writing - Review and Editing
     - boolean
@@ -8122,6 +8495,7 @@ nested_questions:
     - '2016-03-22 14:32:48.337572'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '215'
     - Funding Acquisition
@@ -8135,6 +8509,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '216'
     - Formal Analysis
     - boolean
@@ -8146,6 +8521,7 @@ nested_questions:
     - '2016-03-22 14:32:48.360903'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '217'
     - Author Contributions
@@ -8159,6 +8535,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
     - 
+    - 
   - - '218'
     - Is this group a United States Government agency, department or organization?
     - boolean
@@ -8170,6 +8547,7 @@ nested_questions:
     - '2016-03-22 14:32:48.669691'
     - '2016-06-23 16:58:01.120896'
     - GroupAuthor
+    - 
     - 
   - - '219'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
@@ -8187,6 +8565,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '220'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
@@ -8200,6 +8579,7 @@ nested_questions:
     - '2016-03-22 15:09:05.675633'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '221'
     - 'In the Data Availability card, if the authors have mentioned data submitted
@@ -8215,6 +8595,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '222'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
@@ -8229,6 +8610,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '223'
     - If we don't have unique email addresses for all authors, send it back.
     - boolean
@@ -8240,6 +8622,7 @@ nested_questions:
     - '2016-03-22 15:09:05.70232'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '224'
     - If the author list has changed between initial and full submission, pass it
@@ -8255,6 +8638,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '225'
     - Check that the Competing Interest card has been filled out correctly. If the
       authors have selected Yes and not provided an explanation, send it back.
@@ -8267,6 +8651,7 @@ nested_questions:
     - '2016-03-22 15:09:05.726444'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '226'
     - If the authors mention submitting their paper to a collection in the cover letter
@@ -8282,6 +8667,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '227'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
@@ -8295,6 +8681,7 @@ nested_questions:
     - '2016-03-22 15:09:05.765773'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '228'
     - If main figures or supporting information captions are only available in the
@@ -8310,6 +8697,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '229'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
@@ -8322,6 +8710,7 @@ nested_questions:
     - '2016-03-22 15:09:05.788747'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '230'
     - If any files or figures are cited in the manuscript but not included in the
@@ -8337,6 +8726,7 @@ nested_questions:
     - '2016-03-22 15:09:05.801946'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
     - 
   - - '231'
     - For any resubmissions after an Open Reject decision, ensure the authors have
@@ -8354,6 +8744,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
+    - 
   - - '232'
     - 
     - text
@@ -8365,6 +8756,7 @@ nested_questions:
     - '2016-03-29 20:28:06.743537'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::CoverLetterTask
+    - 
     - 
   - - '233'
     - 
@@ -8378,6 +8770,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::CoverLetterTask
     - 
+    - 
   - - '234'
     - Provenance
     - text
@@ -8390,6 +8783,7 @@ nested_questions:
     - '2016-04-18 23:09:30.454792'
     - TahiStandardTasks::ProductionMetadataTask
     - 
+    - 
   - - '235'
     - Special Handling Instructions
     - text
@@ -8401,6 +8795,7 @@ nested_questions:
     - '2015-10-30 19:51:03.473215'
     - '2016-04-18 23:09:30.476549'
     - TahiStandardTasks::ProductionMetadataTask
+    - 
     - 
   - - '236'
     - Tick here if the URLs/accession numbers/DOIs will be available only after acceptance
@@ -8416,6 +8811,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::DataAvailabilityTask
     - 
+    - 
   - - '237'
     - Tick here if your circumstances are not covered by the questions above and you
       need the journal’s help to make your data available.
@@ -8428,6 +8824,7 @@ nested_questions:
     - '2016-04-18 23:09:30.20367'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::DataAvailabilityTask
+    - 
     - 
   - - '240'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
@@ -8445,6 +8842,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '241'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
@@ -8458,6 +8856,7 @@ nested_questions:
     - '2016-03-22 15:09:05.675633'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '242'
     - In the Data Availability card, if the authors have mentioned data submitted
@@ -8473,6 +8872,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '243'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
@@ -8487,6 +8887,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '244'
     - If the author list has changed (author(s) being added or removed), flag it to
       the editor/initiate our COPE process if an author was removed.
@@ -8500,6 +8901,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '245'
     - 'If any competing interests are listed, please add a manuscript note. ex: ''Initials
       Date: Note to Editor - COI statement present, please see COI field.'''
@@ -8512,6 +8914,7 @@ nested_questions:
     - '2016-03-22 15:09:05.726444'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '246'
     - If the authors mention submitting their paper to a collection in the cover letter
@@ -8527,6 +8930,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '247'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
@@ -8540,6 +8944,7 @@ nested_questions:
     - '2016-03-22 15:09:05.765773'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '248'
     - If main figures or supporting information captions are only available in the
@@ -8555,6 +8960,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '249'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
@@ -8567,6 +8973,7 @@ nested_questions:
     - '2016-03-22 15:09:05.788747'
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
     - 
   - - '250'
     - If any files or figures are cited in the manuscript but not included in the
@@ -8583,6 +8990,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '251'
     - For any resubmissions that have previously gone through review, ensure the authors
       have responded to the reviewer comments in the Revision Details box of the Revise
@@ -8597,6 +9005,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
+    - 
   - - '252'
     - 'Please provide your publication recommendation:'
     - text
@@ -8608,6 +9017,7 @@ nested_questions:
     - '2016-06-06 20:37:56.611509'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
     - 
   - - '253'
     - Do you have any potential or perceived competing interests that may influence
@@ -8622,6 +9032,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
+    - 
   - - '254'
     - Suitable Comment
     - text
@@ -8633,6 +9044,7 @@ nested_questions:
     - '2016-06-06 20:37:56.625332'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
     - 
   - - '255'
     - Is this manuscript suitable in principle for the magazine section of <em>PLOS
@@ -8647,6 +9059,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
+    - 
   - - '256'
     - Includes Published Data Explanation
     - text
@@ -8658,6 +9071,7 @@ nested_questions:
     - '2016-06-06 20:37:56.652954'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
     - 
   - - '257'
     - 'If previously unpublished data are included to support the conclusions, please
@@ -8672,6 +9086,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
+    - 
   - - '258'
     - "(Optional) Please offer any additional confidential comments to the editor"
     - text
@@ -8683,6 +9098,7 @@ nested_questions:
     - '2016-06-06 20:37:56.67712'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
     - 
   - - '259'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
@@ -8697,6 +9113,7 @@ nested_questions:
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - 
+    - 
   - - '260'
     - Comment
     - text
@@ -8708,6 +9125,7 @@ nested_questions:
     - '2016-06-23 16:58:01.107308'
     - '2016-06-23 16:58:01.120896'
     - TahiStandardTasks::ReviewerReportTask
+    - 
     - 
   - - '261'
     - Add your comments to authors below.
@@ -8721,6 +9139,7 @@ nested_questions:
     - '2016-06-23 16:58:01.140458'
     - TahiStandardTasks::ReviewerReportTask
     - 
+    - 
   - - '262'
     - Other Journal
     - text
@@ -8732,6 +9151,7 @@ nested_questions:
     - '2016-06-23 16:58:01.150799'
     - '2016-06-23 16:58:01.166221'
     - TahiStandardTasks::ReviewerReportTask
+    - 
     - 
   - - '263'
     - If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you
@@ -8747,6 +9167,7 @@ nested_questions:
     - '2016-06-23 16:58:01.166221'
     - TahiStandardTasks::ReviewerReportTask
     - 
+    - 
   - - '264'
     - Please select a template.
     - text
@@ -8758,6 +9179,7 @@ nested_questions:
     - '2016-07-28 18:23:32.554795'
     - '2016-07-28 18:23:32.554795'
     - TahiStandardTasks::RegisterDecisionTask
+    - 
     - 
   - - '265'
     - Enter the email here
@@ -8771,6 +9193,7 @@ nested_questions:
     - '2016-07-28 18:23:32.563654'
     - TahiStandardTasks::RegisterDecisionTask
     - 
+    - 
   - - '266'
     - Enter the subject here
     - text
@@ -8782,6 +9205,7 @@ nested_questions:
     - '2016-07-28 18:23:32.569432'
     - '2016-07-28 18:23:32.569432'
     - TahiStandardTasks::RegisterDecisionTask
+    - 
     - 
 
 ---
@@ -11290,6 +11714,21 @@ permission_states_permissions:
     - '2'
     - '2016-06-22 18:55:43.093464'
     - '2016-06-22 18:55:43.093464'
+  - - '292'
+    - '230'
+    - '2'
+    - '2016-08-04 20:43:31.137681'
+    - '2016-08-04 20:43:31.137681'
+  - - '293'
+    - '231'
+    - '2'
+    - '2016-08-12 16:47:49.348471'
+    - '2016-08-12 16:47:49.348471'
+  - - '294'
+    - '232'
+    - '2'
+    - '2016-08-12 16:47:49.598342'
+    - '2016-08-12 16:47:49.598342'
 
 ---
 permissions:
@@ -12410,6 +12849,21 @@ permissions:
     - DiscussionTopic
     - '2016-06-22 18:55:43.079088'
     - '2016-06-22 18:55:43.079088'
+  - - '230'
+    - edit
+    - TahiStandardTasks::TitleAndAbstractTask
+    - '2016-08-04 20:43:31.119618'
+    - '2016-08-04 20:43:31.119618'
+  - - '231'
+    - register_decision
+    - Paper
+    - '2016-08-12 16:47:49.334097'
+    - '2016-08-12 16:47:49.334097'
+  - - '232'
+    - rescind_decision
+    - Paper
+    - '2016-08-12 16:47:49.593928'
+    - '2016-08-12 16:47:49.593928'
 
 ---
 permissions_roles:
@@ -13500,36 +13954,6 @@ permissions_roles:
     - '19'
     - '2016-03-07 22:38:35.385029'
     - '2016-03-07 22:38:35.385029'
-  - - '475'
-    - '169'
-    - '10'
-    - '2016-03-07 23:31:04.101965'
-    - '2016-03-07 23:31:04.101965'
-  - - '476'
-    - '169'
-    - '11'
-    - '2016-03-07 23:31:04.228573'
-    - '2016-03-07 23:31:04.228573'
-  - - '477'
-    - '169'
-    - '20'
-    - '2016-03-07 23:31:04.416953'
-    - '2016-03-07 23:31:04.416953'
-  - - '478'
-    - '169'
-    - '19'
-    - '2016-03-07 23:31:04.530234'
-    - '2016-03-07 23:31:04.530234'
-  - - '479'
-    - '169'
-    - '21'
-    - '2016-03-07 23:33:43.684525'
-    - '2016-03-07 23:33:43.684525'
-  - - '480'
-    - '169'
-    - '15'
-    - '2016-03-07 23:33:44.116492'
-    - '2016-03-07 23:33:44.116492'
   - - '481'
     - '170'
     - '8'
@@ -14260,6 +14684,76 @@ permissions_roles:
     - '18'
     - '2016-06-22 18:55:44.166894'
     - '2016-06-22 18:55:44.166894'
+  - - '657'
+    - '230'
+    - '21'
+    - '2016-08-04 20:43:31.14415'
+    - '2016-08-04 20:43:31.14415'
+  - - '658'
+    - '45'
+    - '23'
+    - '2016-08-04 20:43:31.297453'
+    - '2016-08-04 20:43:31.297453'
+  - - '659'
+    - '230'
+    - '15'
+    - '2016-08-04 20:43:31.63983'
+    - '2016-08-04 20:43:31.63983'
+  - - '660'
+    - '231'
+    - '21'
+    - '2016-08-12 16:47:49.355807'
+    - '2016-08-12 16:47:49.355807'
+  - - '661'
+    - '231'
+    - '10'
+    - '2016-08-12 16:47:49.588665'
+    - '2016-08-12 16:47:49.588665'
+  - - '662'
+    - '232'
+    - '10'
+    - '2016-08-12 16:47:49.603278'
+    - '2016-08-12 16:47:49.603278'
+  - - '663'
+    - '231'
+    - '11'
+    - '2016-08-12 16:47:49.737318'
+    - '2016-08-12 16:47:49.737318'
+  - - '664'
+    - '232'
+    - '11'
+    - '2016-08-12 16:47:49.749358'
+    - '2016-08-12 16:47:49.749358'
+  - - '665'
+    - '231'
+    - '15'
+    - '2016-08-12 16:47:49.869512'
+    - '2016-08-12 16:47:49.869512'
+  - - '666'
+    - '232'
+    - '15'
+    - '2016-08-12 16:47:49.889554'
+    - '2016-08-12 16:47:49.889554'
+  - - '667'
+    - '231'
+    - '20'
+    - '2016-08-12 16:47:50.037161'
+    - '2016-08-12 16:47:50.037161'
+  - - '668'
+    - '232'
+    - '20'
+    - '2016-08-12 16:47:50.044779'
+    - '2016-08-12 16:47:50.044779'
+  - - '669'
+    - '231'
+    - '19'
+    - '2016-08-12 16:47:50.175588'
+    - '2016-08-12 16:47:50.175588'
+  - - '670'
+    - '232'
+    - '19'
+    - '2016-08-12 16:47:50.183183'
+    - '2016-08-12 16:47:50.183183'
 
 ---
 phase_templates:
@@ -14331,6 +14825,18 @@ phase_templates:
     - '2016-06-02 13:40:41.582947'
     - '2016-06-02 13:40:41.582947'
     - '5'
+  - - '74'
+    - Phase 1
+    - '3'
+    - '2016-08-16 14:10:21.595802'
+    - '2016-08-16 14:10:21.595802'
+    - '1'
+  - - '75'
+    - Phase 1
+    - '4'
+    - '2016-08-16 14:10:56.046532'
+    - '2016-08-16 14:10:56.046532'
+    - '1'
 
 ---
 phases:
@@ -14879,6 +15385,7 @@ roles:
   - participates_in_tasks
   - created_at
   - updated_at
+  - assigned_to_type_hint
   records: 
   - - '7'
     - User
@@ -14887,6 +15394,7 @@ roles:
     - false
     - '2016-01-28 17:12:41.755784'
     - '2016-01-28 17:12:41.755784'
+    - User
   - - '8'
     - Creator
     - '1'
@@ -14894,6 +15402,7 @@ roles:
     - true
     - '2016-01-28 17:12:41.881702'
     - '2016-01-28 17:12:41.886783'
+    - Paper
   - - '9'
     - Reviewer
     - '1'
@@ -14901,6 +15410,7 @@ roles:
     - true
     - '2016-01-28 17:12:41.926508'
     - '2016-01-28 17:12:41.930242'
+    - Paper
   - - '10'
     - Staff Admin
     - '1'
@@ -14908,6 +15418,7 @@ roles:
     - false
     - '2016-01-28 17:12:41.947065'
     - '2016-01-28 17:12:41.947065'
+    - Journal
   - - '11'
     - Internal Editor
     - '1'
@@ -14915,6 +15426,7 @@ roles:
     - false
     - '2016-01-30 23:30:43.414744'
     - '2016-01-30 23:30:43.414744'
+    - Journal
   - - '12'
     - Publishing Services and Production Staff
     - '1'
@@ -14922,6 +15434,7 @@ roles:
     - false
     - '2016-02-01 15:50:31.460619'
     - '2016-02-01 15:50:31.460619'
+    - 
   - - '14'
     - Collaborator
     - '1'
@@ -14929,6 +15442,7 @@ roles:
     - false
     - '2016-02-06 17:54:33.706685'
     - '2016-02-06 17:54:33.708493'
+    - Paper
   - - '15'
     - Handling Editor
     - '1'
@@ -14936,6 +15450,7 @@ roles:
     - false
     - '2016-02-06 17:54:33.775752'
     - '2016-02-06 17:54:33.778976'
+    - Paper
   - - '16'
     - Participant
     - '1'
@@ -14943,6 +15458,7 @@ roles:
     - true
     - '2016-02-06 17:54:33.839325'
     - '2016-02-06 17:54:33.841543'
+    - Task
   - - '17'
     - Academic Editor
     - '1'
@@ -14950,6 +15466,7 @@ roles:
     - false
     - '2016-02-15 17:20:27.219929'
     - '2016-02-15 17:20:27.221948'
+    - Paper
   - - '18'
     - Discussion Participant
     - '1'
@@ -14957,6 +15474,7 @@ roles:
     - false
     - '2016-02-18 15:48:30.934346'
     - '2016-02-18 15:48:30.934346'
+    - DiscussionTopic
   - - '19'
     - Publishing Services
     - '1'
@@ -14964,6 +15482,7 @@ roles:
     - false
     - '2016-03-03 15:42:39.533802'
     - '2016-03-03 15:42:39.533802'
+    - Journal
   - - '20'
     - Production Staff
     - '1'
@@ -14971,6 +15490,7 @@ roles:
     - false
     - '2016-03-03 15:42:39.713159'
     - '2016-03-03 15:42:39.713159'
+    - Journal
   - - '21'
     - Cover Editor
     - '1'
@@ -14978,6 +15498,7 @@ roles:
     - false
     - '2016-03-04 17:09:29.405597'
     - '2016-03-04 17:09:29.409043'
+    - Paper
   - - '22'
     - Freelance Editor
     - '1'
@@ -14985,6 +15506,7 @@ roles:
     - false
     - '2016-04-28 02:39:22.82607'
     - '2016-04-28 02:39:22.82607'
+    - Journal
   - - '23'
     - Reviewer Report Owner
     - '1'
@@ -14992,6 +15514,7 @@ roles:
     - true
     - '2016-05-04 16:08:06.796217'
     - '2016-05-04 16:08:06.810033'
+    - Task
 
 ---
 snapshots:
@@ -16271,6 +16794,132 @@ task_templates:
     - Register Decision
     - "[]"
     - '1'
+  - - '230'
+    - '14'
+    - '74'
+    - Register Decision
+    - "[]"
+    - '1'
+  - - '231'
+    - '9'
+    - '74'
+    - Assign Admin
+    - "[]"
+    - '2'
+  - - '232'
+    - '28'
+    - '74'
+    - Assign Team
+    - "[]"
+    - '3'
+  - - '233'
+    - '23'
+    - '74'
+    - Final Tech Check
+    - "[]"
+    - '4'
+  - - '234'
+    - '30'
+    - '74'
+    - Initial Decision
+    - "[]"
+    - '5'
+  - - '235'
+    - '24'
+    - '74'
+    - Initial Tech Check
+    - "[]"
+    - '6'
+  - - '236'
+    - '25'
+    - '74'
+    - Revision Tech Check
+    - "[]"
+    - '7'
+  - - '237'
+    - '31'
+    - '74'
+    - Send to Apex
+    - "[]"
+    - '8'
+  - - '238'
+    - '33'
+    - '74'
+    - Title And Abstract
+    - "[]"
+    - '9'
+  - - '239'
+    - '10'
+    - '74'
+    - Invite Academic Editor
+    - "[]"
+    - '10'
+  - - '240'
+    - '11'
+    - '74'
+    - Invite Reviewers
+    - "[]"
+    - '11'
+  - - '241'
+    - '14'
+    - '75'
+    - Register Decision
+    - "[]"
+    - '1'
+  - - '242'
+    - '9'
+    - '75'
+    - Assign Admin
+    - "[]"
+    - '2'
+  - - '243'
+    - '28'
+    - '75'
+    - Assign Team
+    - "[]"
+    - '3'
+  - - '244'
+    - '23'
+    - '75'
+    - Final Tech Check
+    - "[]"
+    - '4'
+  - - '245'
+    - '24'
+    - '75'
+    - Initial Tech Check
+    - "[]"
+    - '5'
+  - - '246'
+    - '10'
+    - '75'
+    - Invite Academic Editor
+    - "[]"
+    - '6'
+  - - '247'
+    - '11'
+    - '75'
+    - Invite Reviewers
+    - "[]"
+    - '7'
+  - - '248'
+    - '25'
+    - '75'
+    - Revision Tech Check
+    - "[]"
+    - '8'
+  - - '249'
+    - '33'
+    - '75'
+    - Title And Abstract
+    - "[]"
+    - '9'
+  - - '250'
+    - '31'
+    - '75'
+    - Send to Apex
+    - "[]"
+    - '10'
 
 ---
 tasks:
@@ -18915,8 +19564,8 @@ versioned_texts:
   - - '1'
     - 
     - '1'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19011,7 +19660,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="1" data-figure-rank="" src="/resource_proxy/figures/4JRhTr616NQ4JW3AnmutrWPX/detail">
     - '2015-10-29 20:16:37.381749'
-    - '2016-03-07 19:17:17.945327'
+    - '2016-08-12 16:47:34.954268'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19109,8 +19758,8 @@ versioned_texts:
   - - '2'
     - 
     - '2'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19206,7 +19855,7 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="2" data-figure-rank="" src="/resource_proxy/figures/7MzbAxAuoAK8h91VEBkrGaHd/detail">
             <img class="paper-body-figure" data-figure-id="3" data-figure-rank="" src="/resource_proxy/figures/7n1aAGioTqC1ApA8Ld2eYkbu/detail">
     - '2015-10-30 19:43:28.478909'
-    - '2016-03-07 19:17:17.972507'
+    - '2016-08-12 16:47:34.977993'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19304,8 +19953,8 @@ versioned_texts:
   - - '3'
     - 
     - '3'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19401,7 +20050,7 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="4" data-figure-rank="" src="/resource_proxy/figures/w3qHf38vMDCqKFXfcrCZE2LK/detail">
             <img class="paper-body-figure" data-figure-id="5" data-figure-rank="" src="/resource_proxy/figures/ajxQpM7BWyqje3rdUEjtpMTb/detail">
     - '2015-11-02 14:04:02.881043'
-    - '2016-03-07 19:17:17.997639'
+    - '2016-08-12 16:47:34.982977'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19694,8 +20343,8 @@ versioned_texts:
   - - '8'
     - 
     - '8'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19790,7 +20439,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-03 22:59:20.951303'
-    - '2016-03-07 19:17:18.029873'
+    - '2016-08-12 16:47:34.987398'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19888,8 +20537,8 @@ versioned_texts:
   - - '9'
     - 
     - '9'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19984,7 +20633,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-03 23:02:06.811068'
-    - '2016-03-07 19:17:18.037035'
+    - '2016-08-12 16:47:34.990027'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20082,8 +20731,8 @@ versioned_texts:
   - - '10'
     - 
     - '10'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20178,7 +20827,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-10 22:27:27.140473'
-    - '2016-03-07 19:17:18.043672'
+    - '2016-08-12 16:47:34.992717'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20344,7 +20993,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:43:34.658877'
     - '2016-04-12 18:55:56.956915'
-    - pone.0059469-source.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20477,7 +21126,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:57:25.902462'
     - '2016-04-12 19:00:19.837324'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20610,7 +21259,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:00:39.194254'
     - '2016-04-12 19:02:46.35803'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20743,7 +21392,7 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:03:39.925701'
     - '2016-04-12 19:05:53.747659'
-    - pone.0059469-simple-edits.docx
+    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -20808,8 +21457,8 @@ versioned_texts:
   - - '18'
     - 
     - '13'
-    - '0'
-    - '0'
+    - 
+    - 
     - "<!--TEI front--><!--TEI body--><div class=\"teidiv0\" id=\"effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game\">\n<h2><span
       class=\"head\">NON-RESEARCH PAPER for Effect of Heterogeneous Investments on
       the Evolution of Cooperation in Spatial Public Goods Game</span></h2>\n<div
@@ -21078,7 +21727,7 @@ versioned_texts:
       The dataset of Figure 4.</p>\n<p>S5_Dataset.xlsx. The dataset of Figure 5.</p>\n</div>\n</div>\n</div><!--TEI
       back-->      \n      \n"
     - '2016-06-02 13:43:23.183174'
-    - '2016-06-02 13:53:56.274782'
+    - '2016-08-12 16:47:35.001828'
     - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">

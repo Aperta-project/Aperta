@@ -90,6 +90,10 @@
   &.button--blue  { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey  { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
   &.button--red   { @include button-primary-modifier($tahi-error-red, $tahi-error-red); }
+  &.button--white {
+    @include button-primary-modifier($tahi-white, $tahi-green-light);
+    color: $tahi-green-dark;
+  }
 }
 
 .button-secondary {
@@ -120,7 +124,7 @@
 
 
 // .button modifier
-.button--disabled {
+.button:disabled, .button--disabled {
   color: #eee;
   background-color: $tahi-grey-light;
   cursor: not-allowed;

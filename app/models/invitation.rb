@@ -9,13 +9,14 @@ class Invitation < ActiveRecord::Base
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
   has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
-  before_create :assign_to_latest_decision
+  before_create :assign_to_draft_decision
 
   scope :where_email_matches,
         ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
+  validates :email, format: /.+@.+/
 
   aasm column: :state do
     state :pending, initial: true
@@ -46,7 +47,7 @@ class Invitation < ActiveRecord::Base
 
   def self.find_uninvited_users_for_paper(possible_users, paper)
     invited_users = where(
-      decision_id: paper.decisions.latest.id,
+      decision_id: paper.draft_decision.id,
       state: ["invited", "accepted", "declined"]
     ).includes(:invitee).map(&:invitee)
     possible_users - invited_users
@@ -69,8 +70,21 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  # Normalize emails to addr-spec
+  #
+  # we currently receive emails that take the form of an
+  #   * addr-spec (what we want)
+  #   * angle-addr = [CFWS] "<" addr-spec ">" [CFWS] / obs-angle-addr
+  # this setter will normalize angle-addr to addr-spec
+  # https://tools.ietf.org/html/rfc2822 for more info
   def email=(new_email)
-    super(new_email.strip)
+    regexp = /
+      (?:.+<)     # name and open angle bracket
+      ([^>]+)     # the actual email address (addr-spec)
+      (?:>)       # closing bracket
+    /x
+    normalized = regexp =~ new_email ? Regexp.last_match(1) : new_email
+    super(normalized.strip)
   end
 
   def feedback_given?
@@ -91,8 +105,8 @@ class Invitation < ActiveRecord::Base
 
   private
 
-  def assign_to_latest_decision
-    self.decision = paper.decisions.latest
+  def assign_to_draft_decision
+    self.decision = paper.draft_decision
   end
 
   def add_authors_to_information(invitation)

@@ -4,7 +4,9 @@ module UserHelper
 
   included do
     has_many :assignments
-    has_many :roles, through: :assignments
+    has_many :roles,
+      -> { uniq },
+      through: :assignments
   end
 
   class_methods do
@@ -29,6 +31,15 @@ module UserHelper
       user: self,
       participations_only: participations_only
     ).all
+  end
+
+  def assigned_to?(assigned_to:, role:)
+    role = get_role_for_thing(assigned_to, role)
+    Assignment.where(
+      user: self,
+      role: role,
+      assigned_to: assigned_to
+    ).exists?
   end
 
   def assign_to!(assigned_to:, role:)

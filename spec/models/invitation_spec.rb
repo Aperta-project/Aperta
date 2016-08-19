@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Invitation do
   subject(:invitation) { FactoryGirl.build :invitation, task: task }
-  let(:paper) { FactoryGirl.create(:paper, :with_author) }
+  let(:paper) { FactoryGirl.create(:paper, :submitted_lite, :with_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
 
   describe ".invited" do
@@ -60,19 +60,19 @@ describe Invitation do
   end
 
   describe '#create' do
-    it "belongs to the paper's latest decision" do
+    it "belongs to the paper's draft decision" do
       invitation.save!
-      expect(paper.decisions.latest.invitations).to include invitation
+      expect(paper.draft_decision.invitations).to include invitation
     end
 
     context 'when there is more than one decision' do
-      it 'is associated with the latest decision' do
-        latest_decision = FactoryGirl.create :decision, paper: paper
+      let!(:completed_decision) { FactoryGirl.create :decision, paper: paper }
+      let(:draft_decision) { paper.draft_decision }
+
+      it 'the new invitation belongs to the draft decision' do
+        expect(paper.decisions.count).to eq 2
         invitation.save!
-        latest_revision_number = (paper.decisions.pluck :revision_number).max
-        expect(invitation.decision).to eq latest_decision
-        expect(invitation.decision).to eq paper.decisions.latest
-        expect(invitation.decision.revision_number).to eq latest_revision_number
+        expect(invitation.decision).to eq draft_decision
       end
     end
 
@@ -183,7 +183,7 @@ describe Invitation do
   end
 
   describe 'Invitation.find_uninvited_users_for_paper' do
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
     let(:task) { FactoryGirl.create :invitable_task, paper: paper }
     let(:no_invite_user) { FactoryGirl.create(:user) }
     let(:pending_invite_user) { FactoryGirl.create(:user) }
@@ -219,6 +219,9 @@ describe Invitation do
 
       context "When invites belong to a previous decision" do
         before do
+          paper.draft_decision.update registered_at: DateTime.now.utc,
+                                      major_version: 0,
+                                      minor_version: 0
           paper.decisions.create!
         end
         it "doesn't filter users based on the old invites" do
@@ -246,6 +249,63 @@ describe Invitation do
         expect(Invitation.count).to eq 4
         expect(invitations.map(&:id)).to contain_exactly(invitation_1.id, invitation_2.id, invitation_4.id)
       end
+    end
+  end
+
+  # Explanation of terminology: https://tools.ietf.org/html/rfc2822#section-3.4
+  describe "#email=" do
+    let(:invitation) { build :invitation }
+    let(:addr_spec) { "squirtle@gmail.com" }
+
+    context "the email is a normal addr-spec" do
+      it "sets the email as-is" do
+        invitation.email = addr_spec
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is a angle-addr" do
+      let(:angle_addr) { "Squirtle Pokémon <#{addr_spec}>" }
+
+      it "coerces the email into addr-spec" do
+        invitation.email = angle_addr
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is surrounded by whitespace" do
+      let(:spacey_email) { " #{addr_spec} " }
+
+      it "strips surrounding whitespace" do
+        invitation.email = spacey_email
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+
+    context "the email is a angle-addr with whitespace" do
+      let(:angle_addr) { "Squirtle Pokémon < #{addr_spec}  >" }
+
+      it "coerces the email into addr-spec and removes whitespace" do
+        invitation.email = angle_addr
+        expect(invitation.email).to eq addr_spec
+      end
+    end
+  end
+
+  describe "email validation" do
+    let(:good_email) { "squirtle@pokemon.com" }
+    let(:bad_email) { "squirtlepokemon.com" }
+    let(:invitation) { build :invitation }
+
+    it "allows any string with an at-sign" do
+      expect do
+        invitation.update!(email: good_email)
+      end.to change { invitation.email }.to good_email
+    end
+    it "does not allow strings without an at-sign" do
+      expect do
+        invitation.update!(email: bad_email)
+      end.to raise_exception(ActiveRecord::RecordInvalid)
     end
   end
 end

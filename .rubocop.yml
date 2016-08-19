@@ -80,3 +80,7 @@ Style/WordArray:
   # forced to use %w means being forced to rewrite the whole array as
   # soon as one entry becomes two words
   Enabled: false
+
+Style/PredicateName:
+  Exclude:
+    - '**/spec/**/*'

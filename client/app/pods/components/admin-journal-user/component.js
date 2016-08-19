@@ -3,35 +3,29 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'tr',
   classNames: ['user-row'],
+  journal: null, //passed in
 
-  journalRoles: null,
-  userJournalRoles: Ember.computed.mapBy('model.userRoles', 'oldRole'),
-
-  selectableJournalRoles: Ember.computed('journalRoles.[]', function() {
-    return this.get('journalRoles').map(function(jr) {
-      return {
-        id: jr.get('id'),
-        text: jr.get('name')
-      };
-    });
-  }),
-
-  selectableUserJournalRoles: Ember.computed('userJournalRoles.[]', function() {
-    return this.get('userJournalRoles').map(function(jr) {
-      return {
-        id: jr.get('id'),
-        text: jr.get('name')
-      };
-    });
-  }),
+  journalRoles: null, //passed-in
+  userJournalRoles: Ember.computed.mapBy('user.userRoles', 'oldRole'),
 
   actions: {
-    removeOldRole(oldRoleObj) {
-      this.get('model.userRoles').findBy('oldRole.id', oldRoleObj.id).destroyRecord();
+    addRole(journalRole) {
+      var user = this.get('user');
+      user.setProperties({
+        journalRoleName: journalRole.text,
+        modifyAction: 'add-role',
+        journalId: this.get('journal.id')
+      });
+      user.save();
     },
-
-    assignOldRole(oldRoleObj) {
-      this.sendAction('assignOldRole', oldRoleObj.id, this.get('model'));
+    removeRole(journalRole) {
+      var user = this.get('user');
+      user.setProperties({
+        journalRoleName: journalRole.text,
+        modifyAction: 'remove-role',
+        journalId: this.get('journal.id')
+      });
+      user.save();
     }
   }
 });

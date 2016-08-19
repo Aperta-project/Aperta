@@ -61,7 +61,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
@@ -111,6 +111,8 @@ class JournalFactory
         applies_to: TahiStandardTasks::ReviewerReportTask,
         states: Paper::REVIEWABLE_STATES
       )
+
+      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
@@ -125,7 +127,8 @@ class JournalFactory
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:register_decision, applies_to: Paper)
+      role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
@@ -167,7 +170,8 @@ class JournalFactory
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:register_decision, applies_to: Paper)
+      role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
@@ -202,7 +206,8 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:register_decision, applies_to: Paper)
+      role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
@@ -241,7 +246,8 @@ class JournalFactory
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:register_decision, applies_to: Paper)
+      role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
@@ -283,7 +289,8 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:register_decision, applies_to: Paper)
+      role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)

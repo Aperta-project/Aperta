@@ -1,8 +1,11 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  userRoles: DS.hasMany('user-role', { async: false }),
   firstName: DS.attr('string'),
   lastName:  DS.attr('string'),
-  username:  DS.attr('string')
+  username:  DS.attr('string'),
+  journalId: DS.attr('number'),
+  journalRoleName: DS.attr('string'),
+  modifyAction: DS.attr('string'),
+  adminJournalRoles: DS.hasMany('admin-journal-role')
 });

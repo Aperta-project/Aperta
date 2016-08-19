@@ -71,7 +71,9 @@ class PapersController < ApplicationController
 
   def versioned_texts
     requires_user_can(:view, paper)
-    versions = paper.versioned_texts.includes(:submitting_user).order(updated_at: :desc)
+    versions = paper.versioned_texts
+      .includes(:submitting_user)
+      .order(updated_at: :desc)
     respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'
   end
 
@@ -141,7 +143,7 @@ class PapersController < ApplicationController
   def submit
     requires_user_can(:submit, paper)
     if paper.gradual_engagement? && paper.unsubmitted?
-      paper.initial_submit!
+      paper.initial_submit! current_user
       Activity.paper_initially_submitted! paper, user: current_user
     else
       paper.submit! current_user

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import HasBusyStateMixin from 'tahi/mixins/has-busy-state';
 
 const { computed } = Ember;
 const {
@@ -11,12 +12,18 @@ const {
   or
 } = computed;
 
-export default TaskComponent.extend({
+export default TaskComponent.extend(HasBusyStateMixin, {
   restless: Ember.inject.service(),
-  isSavingData: false,
+  busy: false,
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
+  initialDecisionsAscending: computed.filterBy(
+    'task.paper.sortedDecisions', 'initial', true),
+  initialDecisions: computed('initialDecisionsAscending.[]', function() {
+    return this.get('initialDecisionsAscending').reverse();
+  }),
+  initialDecision: computed.alias('task.paper.initialDecision'),
   nonPublishable: not('publishable'),
   hasNoLetter: empty('initialDecision.letter'),
   hasNoVerdict: none('initialDecision.verdict'),
@@ -26,23 +33,17 @@ export default TaskComponent.extend({
   cannotRegisterDecision: or('hasNoLetter',
                              'hasNoVerdict',
                              'isTaskCompleted'),
-
-  initialDecision: computed('task.paper.decisions.[]', function() {
-    return this.get('task.paper.decisions').findBy('revisionNumber', 0);
-  }),
-
   actions: {
     registerDecision() {
-      this.set('isSavingData', true);
-      this.get('initialDecision').save().then(() => {
-        const path = `/api/initial_decision/${this.get('task.id')}`;
-        return this.get('restless').post(path);
-      }).then(() => {
-        this.set('task.completed', true);
-        return this.get('task').save();
-      }).then(() => {
-        this.set('isSavingData', false);
-      });
+      const task = this.get('task');
+
+      this.busyWhile(
+        this.get('initialDecision').register(task)
+          .then(() => {
+            // reload to pick up completed flag on current task
+            return task.reload();
+          })
+      );
     },
 
     setInitialDecisionVerdict(decision) {

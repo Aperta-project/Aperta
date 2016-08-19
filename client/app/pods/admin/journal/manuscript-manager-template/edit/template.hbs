@@ -19,7 +19,11 @@
 
     <div>
       <label class="uses-research-article-reviewer-report">
-        {{input checked=usesResearchArticleReviewerReport type="checkbox" class="uses-research-article-reviewer-report"}}
+      <input type="checkbox" 
+             checked={{model.usesResearchArticleReviewerReport}} 
+             onclick={{action "toggleResearchArticleReviewerReport" value="target.checked"}}
+             class="uses-research-article-reviewer-report">
+
         Uses research article reviewer report
       </label>
     </div>

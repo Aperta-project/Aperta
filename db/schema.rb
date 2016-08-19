@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728180001) do
+ActiveRecord::Schema.define(version: 20160811231351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20160728180001) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
-    t.string   "status",     default: "processing"
+    t.string   "status",             default: "processing"
     t.string   "kind"
     t.text     "s3_dir"
     t.string   "type"
@@ -223,15 +223,19 @@ ActiveRecord::Schema.define(version: 20160728180001) do
 
   create_table "decisions", force: :cascade do |t|
     t.integer  "paper_id"
-    t.integer  "revision_number", default: 0
     t.text     "letter"
     t.string   "verdict"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "author_response"
+    t.datetime "registered_at"
+    t.integer  "minor_version"
+    t.integer  "major_version"
+    t.boolean  "initial",         default: false, null: false
+    t.boolean  "rescinded",       default: false
   end
 
-  add_index "decisions", ["paper_id", "revision_number"], name: "index_decisions_on_paper_id_and_revision_number", unique: true, using: :btree
+  add_index "decisions", ["minor_version", "major_version", "paper_id"], name: "unique_decision_version", unique: true, using: :btree
   add_index "decisions", ["paper_id"], name: "index_decisions_on_paper_id", using: :btree
 
   create_table "discussion_participants", force: :cascade do |t|
@@ -281,13 +285,13 @@ ActiveRecord::Schema.define(version: 20160728180001) do
     t.integer  "invitee_id"
     t.integer  "actor_id"
     t.string   "state"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.integer  "decision_id"
     t.string   "information"
     t.text     "body"
     t.integer  "inviter_id"
-    t.string   "invitee_role", null: false
+    t.string   "invitee_role",         null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
     t.string   "token"
@@ -353,6 +357,7 @@ ActiveRecord::Schema.define(version: 20160728180001) do
     t.json     "additional_data"
     t.integer  "decision_id"
     t.integer  "paper_id"
+    t.datetime "deleted_at"
   end
 
   add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
@@ -370,6 +375,7 @@ ActiveRecord::Schema.define(version: 20160728180001) do
     t.datetime "updated_at", null: false
     t.string   "owner_type"
     t.integer  "owner_id"
+    t.datetime "deleted_at"
   end
 
   add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
@@ -427,28 +433,28 @@ ActiveRecord::Schema.define(version: 20160728180001) do
   end
 
   create_table "papers", force: :cascade do |t|
-    t.text     "abstract",                 default: ""
-    t.text     "title",                                    null: false
+    t.text     "abstract",                              default: ""
+    t.text     "title",                                                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.integer  "journal_id",                               null: false
+    t.integer  "journal_id",                                            null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "striking_image_id"
-    t.boolean  "editable",                 default: true
+    t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.boolean  "active",                   default: true
-    t.boolean  "gradual_engagement",       default: false
+    t.boolean  "active",                                default: true
+    t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
     t.string   "striking_image_type"
     t.datetime "state_updated_at"
-    t.boolean  "processing",               default: false
+    t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
   end
 
@@ -574,8 +580,10 @@ ActiveRecord::Schema.define(version: 20160728180001) do
     t.boolean  "participates_in_tasks",  default: false, null: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.string   "assigned_to_type_hint"
   end
 
+  add_index "roles", ["assigned_to_type_hint"], name: "index_roles_on_assigned_to_type_hint", using: :btree
   add_index "roles", ["journal_id", "name"], name: "index_roles_on_journal_id_and_name", unique: true, using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
@@ -753,8 +761,8 @@ ActiveRecord::Schema.define(version: 20160728180001) do
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
     t.integer  "paper_id",                        null: false
-    t.integer  "major_version",                   null: false
-    t.integer  "minor_version",                   null: false
+    t.integer  "major_version"
+    t.integer  "minor_version"
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"

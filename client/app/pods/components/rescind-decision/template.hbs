@@ -1,0 +1,25 @@
+<div class="rescind-decision-container">
+
+A {{if decision.terminal 'final'}} decision of <span class="rescind-decision-verdict">{{humanize decision.verdict}}</span> has been registered.
+
+{{#if decision.rescindable}}
+  {{#if (can 'rescind_decision' decision.paper)}}
+    <button disabled={{not isEditable}}
+            {{action "confirmRescind"}}
+            class="rescind-decision-button display-while-disabled">
+      <i class="fa fa-undo"></i>
+      Rescind
+    </button>
+  {{/if}}
+{{/if}}
+
+{{#if confirmingRescind}}
+  {{#full-overlay-verification confirmText="Rescind decision"
+                               confirm=(action "rescind")
+                               cancel=(action "cancel")}}
+    "This will rescind the decision of
+    <span class="rescind-decision-verdict">{{humanize decision.verdict}}</span>.
+    Are you sure?"
+  {{/full-overlay-verification}}
+{{/if}}
+</div>

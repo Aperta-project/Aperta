@@ -17,13 +17,10 @@ describe FtpUploaderService do
       filepath = Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
       File.open(filepath) do |file_io|
         FtpUploaderService.new(
-          host: '127.0.0.1',
           passive_mode: true,
-          user: 'user',
-          password: 'password',
-          port: 21_212,
           file_io: file_io,
-          final_filename: final_filename
+          final_filename: final_filename,
+          url: 'ftp://user:password@127.0.0.1:21212/my_dir'
         ).upload
       end
       expect(@server.files).to include(final_filename)
@@ -33,11 +30,8 @@ describe FtpUploaderService do
       final_filename = 'test.jpg'
       expect do
         FtpUploaderService.new(
-          host: '127.0.0.1',
           passive_mode: false,
-          user: 'user',
-          password: 'password',
-          port: 21_212,
+          url: 'ftp://user:password@127.0.0.1:21212/my_dir',
           final_filename: final_filename
         ).upload
       end.to raise_error(StandardError, 'file_io is required')
@@ -50,11 +44,8 @@ describe FtpUploaderService do
       expect do
         File.open(filepath) do |file_io|
           FtpUploaderService.new(
-            host: '127.0.0.1',
             passive_mode: true,
-            user: 'user',
-            password: 'password',
-            port: 21_212,
+            url: 'ftp://user:password@127.0.0.1:21212/my_dir',
             file_io: file_io
           ).upload
         end

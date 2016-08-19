@@ -53,6 +53,10 @@ export default Ember.Component.extend({
     cancel() { this.clear(); },
 
     save() {
+      if(Ember.isEmpty(this.get('comment'))) {
+        return;
+      }
+
       this.sendAction('save', this.get('comment'));
       this.clear();
     }

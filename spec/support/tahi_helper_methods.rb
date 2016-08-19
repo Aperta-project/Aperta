@@ -27,6 +27,10 @@ module TahiHelperMethods
     creator.assign_to!(assigned_to: paper, role: paper.journal.creator_role)
   end
 
+  def assign_task_participant_role(task, participant)
+    participant.assign_to!(assigned_to: task, role: task.paper.journal.task_participant_role)
+  end
+
   def assign_reviewer_role(paper, reviewer)
     reviewer.assign_to!(assigned_to: paper, role: paper.journal.reviewer_role)
   end
@@ -86,4 +90,12 @@ module TahiHelperMethods
     old_test_credentials.each {|k,v| ENV[k] = v} #reset to dummy creds
   end
 
+  def register_paper_decision(paper, verdict)
+    decision = paper.draft_decision
+    task = paper.last_of_task(TahiStandardTasks::RegisterDecisionTask) ||
+      create(:register_decision_task, paper: paper)
+
+    decision.update! verdict: verdict
+    decision.register!(task)
+  end
 end

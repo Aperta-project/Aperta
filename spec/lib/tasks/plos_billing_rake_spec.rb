@@ -12,13 +12,19 @@ describe "plos_billing namespace rake task" do
       :with_academic_editor_user,
       :with_short_title,
       :with_creator,
+      :accepted,
       journal: journal,
       short_title: 'my paper short'
     )
   end
 
   let(:billing_task) do
-    FactoryGirl.create(:billing_task, :with_nested_question_answers, paper: paper)
+    FactoryGirl.create(
+      :billing_task,
+      :with_nested_question_answers,
+      completed: true,
+      paper: paper
+    )
   end
 
   let(:financial_disclosure_task) do
@@ -50,6 +56,14 @@ describe "plos_billing namespace rake task" do
     it "should run " do
       Rake::Task['plos_billing:generate_billing_log'].reenable
       Rake.application.invoke_task "plos_billing:generate_billing_log"
+    end
+  end
+
+  describe 'plos_billing:generate_billing_log' do
+    it 'creates BillingLogReport and FTPs resulting csv' do
+      BillingLogReport.any_instance.should_receive :save_and_send_to_s3!
+      BillingFTPUploader.any_instance.should_receive :upload
+      Rake.application.invoke_task "plos_billing:daily_billing_log_export"
     end
   end
 end

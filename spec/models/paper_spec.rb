@@ -3,8 +3,77 @@ require 'support/shared_examples/paper_state_transition_shared_examples'
 
 describe Paper do
   let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
-  let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:paper) do
+    Timecop.freeze(frozen_time) do
+      FactoryGirl.create :paper, :with_creator, journal: journal
+    end
+  end
   let(:user) { FactoryGirl.create :user }
+  let(:frozen_time) { 1.day.ago }
+
+  shared_examples_for "submission" do
+    it 'should be unsubmitted' do
+      expect(paper.publishing_state).to eq("unsubmitted")
+    end
+
+    it 'marks the paper not editable' do
+      subject
+      expect(paper).to_not be_editable
+    end
+
+    it 'sets the updated_at of the latest version' do
+      Timecop.freeze(Time.current.utc) do |now|
+        expect { subject }
+          .to change { paper.latest_version.reload.updated_at }
+          .from(within_db_precision.of frozen_time)
+          .to(within_db_precision.of now)
+      end
+    end
+
+    it 'sets the submitted_at' do
+      Timecop.freeze do |now|
+        expect { subject }
+          .to change { paper.submitted_at }
+          .from(nil)
+          .to(within_db_precision.of now)
+      end
+    end
+
+    it 'sets the first_submitted_at' do
+      Timecop.freeze do |now|
+        expect { subject }
+          .to change { paper.first_submitted_at }
+          .from(nil)
+          .to(within_db_precision.of now)
+      end
+    end
+
+    it "sets the submitting_user of the latest version" do
+      draft = paper.draft
+      expect { subject }.to change { draft.reload.submitting_user }.from(nil).to(user)
+    end
+
+    it "touches the latest version" do
+      draft = paper.draft
+      Timecop.freeze(1.day.from_now) do |time|
+        expect { subject }
+          .to change { draft.reload.updated_at }
+          .to(within_db_precision.of time)
+      end
+    end
+
+    it 'snapshots metadata' do
+      Subscriptions.reload
+      expect(Paper::Submitted::SnapshotPaper).to receive(:call)
+      subject
+    end
+
+    it 'sets the version numbers of the draft to 0.0' do
+      expect { subject }
+        .to change { paper.major_version }.from(nil).to(0)
+        .and change { paper.minor_version }.from(nil).to(0)
+    end
+  end
 
   describe 'constants' do
     describe 'STATES' do
@@ -59,6 +128,15 @@ describe Paper do
         )
       end
     end
+
+    describe 'TERMINAL_STATES' do
+      it 'defines the paper states for when a paper has exited the workflow' do
+        expect(Paper::TERMINAL_STATES).to contain_exactly(
+          :accepted,
+          :rejected
+        )
+      end
+    end
   end
 
   describe 'validations' do
@@ -75,11 +153,6 @@ describe Paper do
   end
 
   context "#create" do
-    it "also create Decision" do
-      expect(paper.decisions.length).to eq 1
-      expect(paper.decisions.first.class).to eq Decision
-    end
-
     describe "after_create doi callback" do
       it "the doi is not set coming from factory girl before create" do
         unsaved_paper_from_factory_girl = FactoryGirl.build :paper
@@ -415,117 +488,86 @@ describe Paper do
     end
   end
 
+  describe '#latest_withdrawal' do
+    let!(:joe) { FactoryGirl.create(:user) }
+    let!(:sally) { FactoryGirl.create(:user) }
+
+    before do
+      paper.withdraw!('reason 1', joe)
+      paper.reload.reactivate!
+      paper.withdraw!('reason 2', sally)
+    end
+
+    it 'returns the most recent withdrawal' do
+      withdrawal = paper.latest_withdrawal
+      expect(withdrawal).to be_kind_of(Withdrawal)
+      expect(withdrawal.withdrawn_by_user).to eq(sally)
+      expect(withdrawal.reason).to eq('reason 2')
+    end
+  end
+
   context 'State Machine' do
     describe '#initial_submit' do
+      subject { paper.initial_submit! user }
+
       it_behaves_like "transitions save state_updated_at",
-        initial_submit: proc { paper.initial_submit! }
+        initial_submit: proc { paper.initial_submit! user }
+      it_behaves_like 'creates a new draft decision'
+      it_behaves_like 'submission'
 
       it 'transitions to initially_submitted' do
-        paper.initial_submit!
+        subject
         expect(paper).to be_initially_submitted
-      end
-
-      it 'marks the paper not editable' do
-        paper.initial_submit!
-        expect(paper).to_not be_editable
-      end
-
-      it 'sets the updated_at of the initial version' do
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.submitted_at).to eq(Time.current.utc)
-        end
-      end
-
-      it 'sets the submitted_at' do
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.submitted_at).to eq(Time.current.utc)
-        end
-      end
-
-      it 'sets the first_submitted_at' do
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.first_submitted_at).to eq(Time.current.utc)
-        end
-      end
-
-      it 'snapshots metadata' do
-        Subscriptions.reload
-        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
-        paper.initial_submit!
       end
     end
 
     describe '#submit!' do
+      subject { paper.submit! user }
+
       it_behaves_like "transitions save state_updated_at",
         submit: proc { paper.submit!(paper.creator) }
-
-      it 'does not transition when metadata tasks are incomplete' do
-        expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
-        expect{ paper.submit! user }.to raise_error(AASM::InvalidTransition)
-      end
-
-      it "transitions to submitted" do
-        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
-        paper.submit! user
-        expect(paper).to be_submitted
-      end
-
-      it "marks the paper not editable" do
-        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
-        paper.submit! user
-        expect(paper).to_not be_editable
-      end
-
-      it "sets the submitting_user of the latest version" do
-        paper.submit! user
-        expect(paper.latest_version.submitting_user).to eq(user)
-      end
-
-      it "sets the updated_at of the latest version" do
-        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
-        paper.submit! user
-        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
-      end
-
-      it 'sets the submitted_at' do
-        Timecop.freeze do
-          paper.submit! user
-          expect(paper.submitted_at).to eq(Time.current)
-        end
-      end
-
-      it 'sets the first_submitted_at' do
-        Timecop.freeze do
-          paper.submit! user
-          expect(paper.first_submitted_at).to eq(Time.current)
-        end
-      end
+      it_behaves_like 'creates a new draft decision'
+      it_behaves_like 'submission'
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
         paper.update(publishing_state: 'in_revision',
                      first_submitted_at: original_now)
         Timecop.travel(1.day.from_now) do
-          paper.submit! user
+          subject
           expect(paper.first_submitted_at).to eq(original_now)
         end
       end
 
-      it 'sets submitted at to the latest time' do
-        first_submitted_at = Time.current.utc
-        Timecop.freeze(Time.current.utc) do
-          paper.initial_submit!
-          expect(paper.first_submitted_at).to eq(paper.submitted_at)
-          first_submitted_at = paper.first_submitted_at
+      it 'does not transition when metadata tasks are incomplete' do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
+        expect { subject }.to raise_error(AASM::InvalidTransition)
+      end
+
+      it "transitions to submitted" do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
+        subject
+        expect(paper).to be_submitted
+      end
+
+      it 'sets submitted at to the latest time and sets first_submitted_at initially' do
+        Timecop.freeze(frozen_time) do
+          expect { paper.initial_submit! user }
+            .to change { paper.submitted_at }
+            .from(nil)
+            .to(within_db_precision.of(frozen_time))
+            .and change { paper.first_submitted_at }
+            .from(nil)
+            .to(within_db_precision.of(frozen_time))
         end
 
         paper.invite_full_submission!
-        paper.submit! user
-        expect(paper.first_submitted_at).to eq(first_submitted_at)
-        expect(paper.submitted_at).to_not eq(first_submitted_at)
+        Timecop.freeze do |now|
+          expect { paper.submit! user }
+            .to change { paper.submitted_at }
+            .from(within_db_precision.of(frozen_time))
+            .to(within_db_precision.of(now))
+        end
       end
 
       it "broadcasts 'paper:submitted' event" do
@@ -536,28 +578,34 @@ describe Paper do
         paper.submit! user
       end
 
-      it 'snapshots metadata' do
-        Subscriptions.reload
-        expect(Paper::Submitted::SnapshotPaper).to receive(:call)
-        paper.submit! user
-      end
-    end
+      context 'called on a paper invited for full submission' do
+        before do
+          paper.initial_submit! user
+          paper.invite_full_submission!
+        end
 
-    describe '#latest_withdrawal' do
-      let!(:joe) { FactoryGirl.create(:user) }
-      let!(:sally) { FactoryGirl.create(:user) }
+        it 'increments the minor version' do
+          expect { subject }.to change { paper.minor_version }.from(0).to(1)
+        end
 
-      before do
-        paper.withdraw!('reason 1', joe)
-        paper.reload.reactivate!
-        paper.withdraw!('reason 2', sally)
+        it 'keeps the major version' do
+          expect { subject }.not_to change { paper.major_version }
+        end
       end
 
-      it 'returns the most recent withdrawal' do
-        withdrawal = paper.latest_withdrawal
-        expect(withdrawal).to be_kind_of(Withdrawal)
-        expect(withdrawal.withdrawn_by_user).to eq(sally)
-        expect(withdrawal.reason).to eq('reason 2')
+      context 'called on a paper in revision' do
+        before do
+          paper.submit! user
+          paper.major_revision!
+        end
+
+        it 'increments the major version' do
+          expect { paper.submit!(user) }.to change { paper.major_version }.by(1)
+        end
+
+        it 'does not change the minor version' do
+          expect { paper.submit!(user) }.to_not change { paper.minor_version }
+        end
       end
     end
 
@@ -595,6 +643,14 @@ describe Paper do
         paper.withdraw! "Some reason", withdrawn_by_user
         expect(paper).to_not be_editable
       end
+
+      it "broadcasts 'paper:withdrawn' event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:withdrawn")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        paper.withdraw! 'reason', withdrawn_by_user
+      end
     end
 
     describe '#invite_full_submission' do
@@ -613,14 +669,6 @@ describe Paper do
       it 'marks the paper editable' do
         paper.invite_full_submission!
         expect(paper).to be_editable
-      end
-
-      it 'sets a new minor version' do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.invite_full_submission!
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(1)
       end
     end
 
@@ -676,17 +724,11 @@ describe Paper do
         paper.minor_check!
         expect(paper).to be_editable
       end
-
-      it "creates a new minor version" do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.minor_check!
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(1)
-      end
     end
 
     describe '#submit_minor_check!' do
+      subject { paper.submit_minor_check! user }
+
       it_behaves_like "transitions save state_updated_at",
         submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
 
@@ -698,20 +740,50 @@ describe Paper do
         paper.minor_check!
       end
 
+      it "keeps the draft decision from before" do
+        expect { subject }.to_not change { paper.draft_decision }
+      end
+
       it "marks the paper uneditable" do
-        paper.submit_minor_check! user
-        expect(paper).to_not be_editable
+        expect { subject }.to change { paper.editable }.to(false)
       end
 
       it "sets the submitting_user of the latest version" do
-        paper.submit_minor_check! user
-        expect(paper.latest_version.submitting_user).to eq(user)
+        subject
+        expect(paper.latest_submitted_version.submitting_user).to eq(user)
       end
 
       it "sets the updated_at of the latest version" do
-        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
-        paper.submit_minor_check! user
-        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
+        paper.latest_version.update!(updated_at: 10.days.ago)
+        Timecop.freeze do |now|
+          subject
+          expect(paper.latest_submitted_version.updated_at.utc)
+            .to be_within_db_precision.of(now)
+        end
+      end
+
+      it 'increments the minor version' do
+        expect { subject }.to change { paper.minor_version }.by(1)
+      end
+
+      it 'does not change the major version' do
+        expect { subject }.not_to change { paper.major_version }
+      end
+    end
+
+    describe '#accept' do
+      context 'paper is submitted' do
+        let(:paper) do
+          FactoryGirl.create(:paper, :submitted, journal: journal)
+        end
+
+        it_behaves_like "transitions save state_updated_at",
+          accept: proc { paper.accept! }
+
+        it 'transitions to accepted state from submitted' do
+          paper.accept!
+          expect(paper.accepted?).to be true
+        end
       end
     end
 
@@ -727,6 +799,14 @@ describe Paper do
         it 'transitions to rejected state from submitted' do
           paper.reject!
           expect(paper.rejected?).to be true
+        end
+
+        it "broadcasts 'paper:rejected' event" do
+          allow(Notifier).to receive(:notify)
+          expect(Notifier).to receive(:notify).with(hash_including(event: "paper:rejected")) do |args|
+            expect(args[:data][:record]).to eq(paper)
+          end
+          paper.reject!
         end
       end
 
@@ -762,81 +842,170 @@ describe Paper do
         expect(paper.published_at).to be_truthy
       end
     end
+
+    describe '#rescind_decision!' do
+      subject { paper.rescind_decision! }
+
+      before do
+        allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(false)
+      end
+
+      shared_examples_for 'rescinding from a non-initial decision' do
+        it "creates a new decision" do
+          expect { subject }.to change { paper.decisions.count }.by(1)
+        end
+
+        it "transitions to submitted" do
+          expect { subject }.to change { paper.publishing_state }.to("submitted")
+        end
+      end
+
+      let(:paper) do
+        create(:paper, :submitted_lite, journal: journal).tap do |p|
+          p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
+          p.draft_decision.register! FactoryGirl.create(:register_decision_task)
+        end
+      end
+      let(:verdict) { 'reject' }
+
+      context 'when the last decision is Rejected' do
+        let(:verdict) { 'reject' }
+
+        it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision is Accepted' do
+        let(:verdict) { 'accept' }
+
+        it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision is Major revision' do
+        let(:verdict) { "major_revision" }
+
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision is Minor revision' do
+        let(:verdict) { "minor_revision" }
+
+        it_behaves_like "rescinding from a non-initial decision"
+      end
+
+      context 'when the last decision was initial' do
+        before do
+          allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(true)
+        end
+
+        it 'raises AASM::InvalidTransition' do
+          expect { subject }.to raise_exception(AASM::InvalidTransition)
+        end
+      end
+    end
+
+    describe '#rescind_initial_submission!' do
+      subject { paper.rescind_initial_decision! }
+
+      let(:paper) do
+        create(:paper, publishing_state: :initially_submitted, journal: journal).tap(&:reject!)
+      end
+      before do
+        allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(true)
+      end
+
+      context 'when the last decision is Rejected' do
+        it_behaves_like "transitions save state_updated_at", rescind: proc { subject }
+
+        it "transitions to initially_submitted from rejected" do
+          expect { subject }.to change { paper.publishing_state }.to("initially_submitted")
+        end
+
+        it "creates a new decision" do
+          expect { subject }.to change { paper.decisions.count }.by(1)
+        end
+      end
+
+      context 'when the last decision was not initial' do
+        before do
+          allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(false)
+        end
+
+        it 'raises AASM::InvalidTransition' do
+          expect { subject }.to raise_exception(AASM::InvalidTransition)
+        end
+      end
+    end
   end
 
-  describe "#make_decision" do
+  describe "transitions from submitted" do
     let(:paper) do
       FactoryGirl.create(:paper, :submitted, journal: journal)
     end
 
-    context "acceptance" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accept")
-      end
-
+    describe "#accept!" do
       it "accepts the paper" do
-        paper.make_decision decision
+        paper.accept!
         expect(paper.publishing_state).to eq("accepted")
       end
 
-      it 'sets accepted_at!' do
-        paper.make_decision decision
-        expect(paper.accepted_at.utc).to be_within(1.second).of Time.zone.now
+      it "sets accepted_at" do
+        Timecop.freeze do |now|
+          paper.accept!
+          expect(paper.accepted_at.utc).to be_within_db_precision.of now
+        end
+      end
+
+      it "broadcasts 'paper:accepted' event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:accepted")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        paper.accept!
       end
     end
 
-    context "rejection" do
-      it 'rejects the paper' do
-        decision = instance_double('Decision', verdict: 'reject')
-        expect(paper).to receive(:reject!)
-        paper.make_decision decision
-      end
-    end
-
-    context "major revision" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "major_revision")
-      end
-
+    shared_examples "a major or minor revision" do
       it "puts the paper in_revision" do
-        paper.make_decision decision
-        expect(paper.publishing_state).to eq("in_revision")
+        expect { subject }.to change { paper.publishing_state }
+          .to("in_revision")
       end
 
-      it "creates a new major version" do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.make_decision decision
-        expect(paper.latest_version.major_version).to be(1)
-        expect(paper.latest_version.minor_version).to be(0)
+      it "creates a new versioned text" do
+        expect(paper).to receive(:new_draft!).once
+        subject
+      end
+
+      it "broadcasts 'paper:in_revision'" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:in_revision")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        subject
       end
     end
 
-    context "minor revision" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "minor_revision")
-      end
+    describe "#major_revision!" do
+      subject { paper.major_revision! }
+      it_behaves_like "a major or minor revision"
+    end
 
-      it "puts the paper in_revision" do
-        paper.make_decision decision
-        expect(paper.publishing_state).to eq("in_revision")
-      end
-
-      it "creates a new major version" do
-        expect(paper.latest_version.major_version).to be(0)
-        expect(paper.latest_version.minor_version).to be(0)
-        paper.make_decision decision
-        expect(paper.latest_version.major_version).to be(1)
-        expect(paper.latest_version.minor_version).to be(0)
-      end
+    describe "#minor_revision!" do
+      subject { paper.minor_revision! }
+      it_behaves_like "a major or minor revision"
     end
   end
 
   describe "#major_version" do
-    before { expect(paper.latest_version).to be }
+    context "when there are versions" do
+      before do
+        paper.submit! user
+      end
 
-    it "returns the latest version's major_version" do
-      expect(paper.major_version).to eq(paper.latest_version.major_version)
+      it "returns the latest version's major_version" do
+        expect(paper.major_version).to eq(paper.latest_submitted_version.major_version)
+      end
     end
 
     context "when there is no latest_version" do
@@ -852,10 +1021,14 @@ describe Paper do
   end
 
   describe "#minor_version" do
-    before { expect(paper.latest_version).to be }
+    context "when there are versions" do
+      before do
+        paper.submit! user
+      end
 
-    it "returns the latest version's minor_version" do
-      expect(paper.major_version).to eq(paper.latest_version.minor_version)
+      it "returns the latest version's minor_version" do
+        expect(paper.major_version).to eq(paper.latest_submitted_version.minor_version)
+      end
     end
 
     context "when there is no latest_version" do
@@ -1179,9 +1352,32 @@ describe Paper do
     end
   end
 
+  describe "#latest_submitted_version" do
+    before do
+      # create a bunch of old minor versions
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
+    end
+    let!(:latest) do
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+    end
+
+    it "returns the latest version" do
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
+      expect(paper.latest_submitted_version).to eq(versioned_text)
+    end
+
+    it "does not return a draft even if there is one" do
+      expect(paper.draft).to be_present
+      expect(paper.latest_submitted_version).to eq(latest)
+    end
+  end
+
   describe "#latest_version" do
     before do
       # create a bunch of old minor versions
+      paper.versioned_texts = []
+      paper.save!
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
@@ -1191,33 +1387,40 @@ describe Paper do
       versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect(paper.latest_version).to eq(versioned_text)
     end
+
+    it "returns a draft if there is one" do
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: nil, minor_version: nil)
+      expect(paper.latest_version).to eq(versioned_text)
+    end
   end
 
-  describe "#resubmitted?" do
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-
-    context "with pending decisions" do
-      before do
-        paper.decisions.first.update!(verdict: nil)
-      end
-
-      specify { expect(paper.resubmitted?).to eq(true) }
+  describe "#draft" do
+    it "returns a VersionedText with no version" do
+      draft = paper.draft
+      expect(draft.major_version).to be_nil
+      expect(draft.minor_version).to be_nil
     end
 
-    context "with non-pending decisions" do
-      before do
-        paper.decisions.first.update!(verdict: "accept")
+    context 'when there is no draft' do
+      let(:paper) { FactoryGirl.create :paper, :submitted, journal: journal }
+      it 'returns nil' do
+        expect(paper.draft).to be_nil
       end
-
-      specify { expect(paper.resubmitted?).to eq(false) }
     end
+  end
 
-    context "with no decisions" do
-      before do
-        paper.decisions.destroy_all
-      end
-
-      specify { expect(paper.resubmitted?).to eq(false) }
+  describe "#awaiting_decision?" do
+    it "is true when the paper is submitted" do
+      paper = FactoryGirl.build(:paper, publishing_state: "submitted")
+      expect(paper.awaiting_decision?).to be(true)
+    end
+    it "is true when the paper is initially submitted" do
+      paper = FactoryGirl.build(:paper, publishing_state: "initially_submitted")
+      expect(paper.awaiting_decision?).to be(true)
+    end
+    it "is not true otherwise" do
+      paper = FactoryGirl.build(:paper, publishing_state: "rejected")
+      expect(paper.awaiting_decision?).to be(false)
     end
   end
 
@@ -1271,6 +1474,33 @@ describe Paper do
     it 'editable + uneditable should be ALL the states' do
       expect(Paper::EDITABLE_STATES + Paper::UNEDITABLE_STATES)
         .to contain_exactly(*Paper.aasm.states.map(&:name))
+    end
+  end
+
+  describe '#new_draft_decision!' do
+    it 'creates a new decision' do
+      expect { paper.send(:new_draft_decision!) }
+        .to change { paper.decisions.count }.from(0).to(1)
+    end
+
+    it 'noops if a draft decision exists' do
+      paper.send(:new_draft_decision!)
+      expect { paper.send(:new_draft_decision!) }
+        .not_to change { paper.decisions.count }
+    end
+  end
+
+  describe '#last_of_task' do
+    let!(:revise_task) { create :revise_task, paper: paper }
+
+    it "returns the task instance" do
+      task = paper.last_of_task(TahiStandardTasks::ReviseTask)
+      expect(task).to eq revise_task
+    end
+
+    it "returns nil if their is no task of the correct type" do
+      task = paper.last_of_task(TahiStandardTasks::AuthorsTask)
+      expect(task).to be_nil
     end
   end
 end

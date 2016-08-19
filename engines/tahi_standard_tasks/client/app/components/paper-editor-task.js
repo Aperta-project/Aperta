@@ -52,7 +52,7 @@ export default TaskComponent.extend({
 
   // auto-suggest
   displayUserSelected(user) {
-    return user.full_name + ' [' + user.email + ']';
+    return user.full_name + ' <' + user.email + '>';
   },
 
   actions: {

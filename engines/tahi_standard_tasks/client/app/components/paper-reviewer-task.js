@@ -13,8 +13,8 @@ export default TaskComponent.extend({
   selectedUser: null,
   decisions: alias('task.decisions'),
 
-  latestDecision: computed('decisions', 'decisions.@each.isLatest', function() {
-    return this.get('decisions').findBy('isLatest', true);
+  latestDecision: computed('decisions', 'decisions.@each.latest', function() {
+    return this.get('decisions').findBy('latest', true);
   }),
 
   applyTemplateReplacements(str) {

@@ -7,10 +7,14 @@ class NestedQuestionAnswer < ActiveRecord::Base
   NO = "No"
 
   class_attribute :disable_owner_verification
+  acts_as_paranoid
 
   belongs_to :paper
   belongs_to :decision
-  belongs_to :nested_question, inverse_of: :nested_question_answers
+  belongs_to :nested_question,
+    inverse_of: :nested_question_answers,
+    class_name: 'NestedQuestion', foreign_key: 'nested_question_id',
+    with_deleted: true
   belongs_to :owner, polymorphic: true
   has_many :attachments, -> { order('id ASC') }, dependent: :destroy, as: :owner, class_name: 'QuestionAttachment'
 

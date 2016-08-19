@@ -23,6 +23,7 @@
     "globals": {
       "alert": true,
       "document": true,
+      "alert": true,
       "window": true,
       "-Promise": true,
       "Spinner": true,

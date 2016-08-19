@@ -58,7 +58,8 @@ class Decision < ActiveRecord::Base
   end
 
   def draft?
-    %w(submitted initially_submitted).include?(paper.publishing_state)
+    draft_states = %w(submitted initially_submitted)
+    latest? && draft_states.include?(paper.publishing_state)
   end
 
   def completed?

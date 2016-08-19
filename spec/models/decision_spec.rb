@@ -109,19 +109,32 @@ describe Decision do
     let(:paper) { create :paper }
     subject { decision.completed? }
 
-    context "the decision's paper is submitted" do
-      let(:paper) { create :paper, publishing_state: :submitted }
-      it { is_expected.to eq false }
+    context "the decision is the paper's last decision" do
+      before { allow(decision).to receive(:latest?).and_return(true) }
+
+      context "the decision's paper is submitted" do
+        let(:paper) { create :paper, publishing_state: :submitted }
+        it { is_expected.to eq false }
+      end
+
+      context "the decision's paper is initially_submitted" do
+        let(:paper) { create :paper, publishing_state: :initially_submitted }
+        it { is_expected.to eq false }
+      end
+
+      context "the decision's paper is not submitted or initially_submitted" do
+        let(:paper) { create :paper, publishing_state: :accepted }
+        it { is_expected.to eq true }
+      end
     end
 
-    context "the decision's paper is initially_submitted" do
-      let(:paper) { create :paper, publishing_state: :submitted }
-      it { is_expected.to eq false }
-    end
+    context "the decision is not the paper's last decision" do
+      before { allow(decision).to receive(:latest?).and_return(false) }
 
-    context "the decision's paper is not submitted or initially_submitted" do
-      let(:paper) { create :paper, publishing_state: :accepted }
-      it { is_expected.to eq true }
+      it "is true regardless of the paper's publishing_status" do
+        expect(paper).to_not receive(:publishing_state)
+        is_expected.to eq true
+      end
     end
   end
 

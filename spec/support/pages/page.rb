@@ -53,12 +53,15 @@ class Page < PageFragment
 
   def view_task_overlay(paper, task)
     visit "/papers/#{paper.id}/tasks/#{task.id}"
+    class_name =
+      (task.title.split(' ')
+      .map(&:capitalize)
+      .join(' ').delete(' ') + "Overlay")
     overlay_class ||= begin
-                      (task.title.tr(' ', '_').classify + "Overlay")
-                        .constantize
-                    rescue NameError
-                      CardOverlay
-                    end
+                        class_name.constantize
+                      rescue NameError
+                        CardOverlay
+                      end
     overlay_class.new session.find(".overlay")
   end
 

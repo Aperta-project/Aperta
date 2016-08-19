@@ -20,7 +20,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:decision) {
     paper.decisions.create!(
-      letter: "Body text of a Decision Letter << We Accept",
+      letter: "Body text of a Decision Letter",
       verdict: "accept"
     )
   }
@@ -55,6 +55,9 @@ describe TahiStandardTasks::RegisterDecisionMailer do
       it "sends email with a custom subject" do
         expect(email_to_arbitrary.subject).to eq 'Your Submission'
       end
+
+    it "email body is paper.decision_letter" do
+      expect(email.body.raw_source).to match(decision.letter)
     end
   end
 end

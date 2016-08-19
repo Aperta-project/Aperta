@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::RegisterDecisionMailer do
-
   let(:paper) {
     FactoryGirl.create(:paper,
                        :with_integration_journal,
@@ -56,8 +55,9 @@ describe TahiStandardTasks::RegisterDecisionMailer do
         expect(email_to_arbitrary.subject).to eq 'Your Submission'
       end
 
-    it "email body is paper.decision_letter" do
-      expect(email.body.raw_source).to match(decision.letter)
+      it "email body is paper.decision_letter" do
+        expect(email.body.raw_source).to match(decision.letter)
+      end
     end
   end
 end

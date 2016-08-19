@@ -207,8 +207,8 @@ class JournalAdminPage(AdminPage):
                          )[0][0])
     self.set_timeout(3)
     if users_db:
-      last_names = []
       role_rows = self._gets(self._journal_admin_user_search_results_row)
+      usernames = []
       for counter, row in enumerate(role_rows):
         logging.info(row.text)
         if counter > 0:
@@ -216,13 +216,13 @@ class JournalAdminPage(AdminPage):
         row_elements = row.find_elements(*(By.TAG_NAME, 'td'))
         last_name, first_name, username, roles = row_elements
         last_name = last_name.text
-        last_names.append(last_name)
         username = username.text
+        usernames.append(username)
         # This username should be in the list of user names from the DB
         assert username in usernames_db, (username, usernames_db)
         if counter > 0:
-          assert last_name.lower() > old_last_name.lower(), 'Not in alphabetical order {0} is \
-              showed before {1}'.format(last_name.lower(), old_last_name.lower())
+          assert last_name.lower() >= old_last_name.lower(), 'Not in alphabetical order {0} is'\
+              ' showed before {1}'.format(last_name.lower(), old_last_name.lower())
         roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
         roles = [x.text for x in roles]
         # search for roles in DB

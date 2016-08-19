@@ -1229,11 +1229,11 @@ describe Paper do
   end
 
   describe "#resubmitted?" do
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal, publishing_state: 'submitted') }
 
     context "with pending decisions" do
       before do
-        paper.decisions.first.update!(verdict: nil)
+        paper.decisions.last.update!(verdict: nil)
       end
 
       specify { expect(paper.resubmitted?).to eq(true) }
@@ -1241,7 +1241,7 @@ describe Paper do
 
     context "with non-pending decisions" do
       before do
-        paper.decisions.first.update!(verdict: "accept")
+        paper.decisions.last.update!(verdict: "accept")
       end
 
       specify { expect(paper.resubmitted?).to eq(false) }

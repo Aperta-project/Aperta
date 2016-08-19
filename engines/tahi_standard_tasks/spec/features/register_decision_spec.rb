@@ -20,19 +20,12 @@ feature "Register Decision", js: true do
 
   context "Registering a decision on a paper" do
     context "with a submitted Paper" do
-      scenario "Participant registers a decision on the paper" do
-        overlay = Page.view_task_overlay(paper, task)
-        overlay.register_decision = "Accept"
-        overlay.decision_letter = "Accepting this because I can"
-        overlay.click_send_email_button
-        wait_for_ajax
-        expect(task.reload.completed?).to be true
-      end
 
       scenario "Disable inputs upon card completion" do
         overlay = Page.view_task_overlay(paper, task)
         overlay.register_decision = "Accept"
         overlay.decision_letter = "Accepting this because I can"
+        sleep 1 # letter saves on a debounce
         overlay.click_send_email_button
         wait_for_ajax
         expect(task.reload.completed?).to be true
@@ -74,6 +67,7 @@ feature "Register Decision", js: true do
           overlay = Page.view_task_overlay(paper, task)
           overlay.register_decision = "Accept"
           overlay.decision_letter = "Accepting this because I can"
+          sleep 1 # letter saves on a debounce
           overlay.click_send_email_button
           wait_for_ajax
 

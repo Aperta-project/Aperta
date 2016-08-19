@@ -20,13 +20,13 @@ describe PlosBioTechCheck::ChangesForAuthorMailer do
   context "with line breaks in body .json content" do
     before do
       task.update_attribute(:body, {
-        initialTechCheckBody: "with\nline\nbreaks and << content"
+        initialTechCheckBody: "with\nline\nbreaks"
       })
     end
 
     it "replace line breaks with html breaks" do
       expect(email.body).to_not include "with\nline\nbreaks"
-      expect(email.body).to include "<p>with\n<br />line\n<br />breaks and &lt;&lt; content</p>"
+      expect(email.body).to include "<p>with\n<br />line\n<br />breaks</p>"
     end
   end
 end

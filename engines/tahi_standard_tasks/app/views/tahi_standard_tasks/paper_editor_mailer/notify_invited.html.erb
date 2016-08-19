@@ -10,7 +10,7 @@
       <% end %>
     </div>
     <div class="paper-abstract">
-      <%= simple_format h(@invitation.body) %>
+      <%= simple_format @invitation.body %>
     </div>
     <p>
       <a class="button" href="<%= client_dashboard_url({ invitation_token: @invitation.token }) %> target="_blank">

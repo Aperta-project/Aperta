@@ -16,6 +16,15 @@ class Decision < ActiveRecord::Base
   validates :revision_number, uniqueness: { scope: :paper_id }
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
+  validate do
+    if letter_changed? && completed? && persisted?
+      errors.add(:letter, 'Letter can only change on draft decisions')
+    end
+    if verdict_changed? && completed? && persisted?
+      errors.add(:verdict, 'Verdict can only change on draft decisions')
+    end
+  end
+
   def self.recent_ordered
     order(revision_number: :desc)
   end
@@ -46,5 +55,13 @@ class Decision < ActiveRecord::Base
     if latest_revision_number = paper.decisions.maximum(:revision_number)
       self.revision_number = latest_revision_number + 1
     end
+  end
+
+  def draft?
+    %w(submitted initially_submitted).include?(paper.publishing_state)
+  end
+
+  def completed?
+    !draft?
   end
 end

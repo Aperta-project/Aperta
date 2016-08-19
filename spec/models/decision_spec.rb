@@ -103,4 +103,73 @@ describe Decision do
       end
     end
   end
+
+  describe "#completed?" do
+    let(:decision) { create :decision, paper: paper }
+    let(:paper) { create :paper }
+    subject { decision.completed? }
+
+    context "the decision's paper is submitted" do
+      let(:paper) { create :paper, publishing_state: :submitted }
+      it { is_expected.to eq false }
+    end
+
+    context "the decision's paper is initially_submitted" do
+      let(:paper) { create :paper, publishing_state: :submitted }
+      it { is_expected.to eq false }
+    end
+
+    context "the decision's paper is not submitted or initially_submitted" do
+      let(:paper) { create :paper, publishing_state: :accepted }
+      it { is_expected.to eq true }
+    end
+  end
+
+  describe "validations" do
+    let!(:decision) { create :decision }
+
+    context "the decision is completed" do
+      before { allow(decision).to receive(:completed?).and_return(true) }
+
+      it "disallows updating the letter" do
+        expect do
+          decision.update! letter: "Erik Erik bo Berik"
+        end.to raise_exception(ActiveRecord::RecordInvalid)
+      end
+
+      it "disallows updating the verdict" do
+        expect do
+          decision.update! verdict: "reject"
+        end.to raise_exception(ActiveRecord::RecordInvalid)
+      end
+
+      it "allows updating the author response" do
+        expect do
+          decision.update! author_response: "banana fanna fo Ferik"
+        end.to change { decision.author_response }
+      end
+    end
+
+    context "the decision is not completed" do
+      before { allow(decision).to receive(:completed?).and_return(false) }
+
+      it "allows updating the letter" do
+        expect do
+          decision.update! letter: "Erik Erik bo Berik"
+        end.to change { decision.letter }
+      end
+
+      it "allows updating the verdict" do
+        expect do
+          decision.update! verdict: "reject"
+        end.to change { decision.verdict }
+      end
+
+      it "allows updating the author response" do
+        expect do
+          decision.update! author_response: "banana fanna fo Ferik"
+        end.to change { decision.author_response }
+      end
+    end
+  end
 end

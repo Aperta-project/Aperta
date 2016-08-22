@@ -312,6 +312,12 @@ class Paper < ActiveRecord::Base
     corresponding_authors.map(&:email)
   end
 
+  # Downloads the manuscript from the given URL.
+  def download_manuscript!(url)
+    attachment = file || create_file
+    attachment.download!(url)
+  end
+
   # Public: Find `Role`s for the given user on this paper.
   #
   # Examples

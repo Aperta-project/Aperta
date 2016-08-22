@@ -44,7 +44,7 @@ class DownloadManuscriptWorker
   # instead when calling from application code.
   def perform(paper_id, download_url, callback_url, metadata)
     paper = Paper.find(paper_id)
-    download_manuscript(paper, download_url)
+    paper.download_manuscript!(download_url)
     epub_stream = get_epub(paper)
 
     TahiEpub::Tempfile.create epub_stream, delete: true do |file|
@@ -57,16 +57,6 @@ class DownloadManuscriptWorker
   end
 
   private
-
-  def download_manuscript(paper, url)
-    attachment = paper.file || paper.create_file
-
-    # download needs to ensure the attachment is saved first
-    attachment.download!(url)
-
-    # This will upload the content to the desired location in S3
-    # latest_version.save!
-  end
 
   def get_epub(paper)
     converter = EpubConverter.new(

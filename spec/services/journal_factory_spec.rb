@@ -244,6 +244,7 @@ describe JournalFactory do
               'start_discussion',
               'submit',
               'view',
+              'view_decision',
               'view_user_role_eligibility_on_paper'
             ]
           end
@@ -409,6 +410,7 @@ describe JournalFactory do
               'start_discussion',
               'submit',
               'view',
+              'view_decision',
               'view_user_role_eligibility_on_paper'
             ]
           end
@@ -529,6 +531,7 @@ describe JournalFactory do
               'start_discussion',
               'submit',
               'view',
+              'view_decision',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -642,6 +645,7 @@ describe JournalFactory do
               'start_discussion',
               'submit',
               'view',
+              'view_decision',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -759,6 +763,7 @@ describe JournalFactory do
               'start_discussion',
               'submit',
               'view',
+              'view_decision',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -950,6 +955,7 @@ describe JournalFactory do
               'start_discussion',
               'submit',
               'view',
+              'view_decision',
               'withdraw'
             ]
           end

@@ -13,6 +13,7 @@ namespace :heroku do
     DESC
 
   task :deploy, [:version, :app] => [:environment] do |_, args|
+    include Spinner
     DEPLOYING_APPS = ['tahi-lean-workflow', 'tahi-sandbox01']
     DEPLOYING_APPS = [args[:app]] if args[:app].present?
     fail "Please enter a version number. i.e. rake 'heroku:deploy[1.1.1]'" if args[:version].blank?
@@ -21,13 +22,13 @@ namespace :heroku do
       thread = Thread.new do
         begin
           system("heroku maintenance:on --app #{app}")
-          tmp_directory = "tmp/#{app}.stdout.log"
-          STDERR.puts "\r Deploying #{app} (outputting to #{tmp_directory})...\n"
+          log_file = "tmp/#{app}.stdout.log"
+          STDERR.puts "\r Deploying #{app} (outputting to #{log_file})...\n"
 
-          if system("bin/heroku_deploy #{app} #{args[:version]} &> #{tmp_directory}")
+          if system("bin/heroku_deploy #{app} #{args[:version]} &> #{log_file}")
             STDERR.puts "\r \e[32m Successfully deployed to #{app}!\e[0m"
           else
-            STDERR.puts "\r \e[31m Errors deploying to #{app} \n See the deploy log file for more information: #{tmp_directory}\e[0m"
+            STDERR.puts "\r \e[31m Errors deploying to #{app} \n See the deploy log file for more information: #{log_file}\e[0m"
           end
         ensure
           system("heroku maintenance:off --app #{app}")
@@ -39,15 +40,5 @@ namespace :heroku do
     end
     threads.map(&:join)
     STDERR.puts "Deployment task complete"
-  end
-end
-
-def spin_it(times)
-  pinwheel = %w(| / - \\)
-  times.times do
-    print "\r"
-    print "\b" + "\e[32m" + pinwheel.rotate!.first + "\e[0m"
-    sleep(0.1)
-    print "\r"
   end
 end

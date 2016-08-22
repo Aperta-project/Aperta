@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   before_action :set_pusher_socket
   before_action :set_current_user_id
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :store_location_for_login_redirect, unless: :devise_controller?
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -74,6 +75,12 @@ class ApplicationController < ActionController::Base
   # customize devise signout path
   def after_sign_out_path_for(resource_or_scope)
     cas_logout_url || new_user_session_path
+  end
+
+  # to redirect a user to the requested page after login
+  def store_location_for_login_redirect
+    return unless request.url != "/"
+    store_location_for(:user, request.url) if session["user_return_to"].blank?
   end
 
   def cas_logout_url

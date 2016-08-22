@@ -22,23 +22,24 @@ namespace :heroku do
       thread = Thread.new do
         begin
           system("heroku maintenance:on --app #{app}")
-          log_file = "tmp/#{app}.stdout.log"
-          STDERR.puts "\r Deploying #{app} (outputting to #{log_file})...\n"
+          log_file = "log/#{app}.log"
+          # \r adds a carriage return so that the spinner does not appear with the message
+          STDOUT.puts "\r Deploying #{app} (outputting to #{log_file})...\n"
 
           if system("bin/heroku_deploy #{app} #{args[:version]} &> #{log_file}")
-            STDERR.puts "\r \e[32m Successfully deployed to #{app}!\e[0m"
+            STDOUT.puts "\r \e[32m Successfully deployed to #{app}!\e[0m"
           else
             STDERR.puts "\r \e[31m Errors deploying to #{app} \n See the deploy log file for more information: #{log_file}\e[0m"
           end
         ensure
           system("heroku maintenance:off --app #{app}")
-          STDERR.puts " "
+          STDOUT.puts " "
         end
       end
       threads << thread
     end
     spin_it(10) while threads.select(&:alive?).any?
     threads.map(&:join)
-    STDERR.puts "Deployment task complete"
+    STDOUT.puts "Deployment task complete"
   end
 end

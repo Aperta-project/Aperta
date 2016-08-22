@@ -77,3 +77,13 @@ test('does not display remove icon if invite accepted and no destroyAction',
     assert.elementNotFound('.invite-remove');
   }
 );
+
+test('displays decline feedback when declined', function(assert){
+  this.set('invitation.declined', true);
+  this.set('invitation.declineReason', 'No current availability');
+  this.set('invitation.reviewerSuggestions', 'Jane McReviewer');
+  this.render(template);
+
+  assert.textPresent('.invitation-decline-reason', 'No current availability');
+  assert.textPresent('.invitation-reviewer-suggestions', 'Jane McReviewer');
+});

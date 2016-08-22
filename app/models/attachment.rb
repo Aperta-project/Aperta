@@ -83,6 +83,14 @@ class Attachment < ActiveRecord::Base
     self[:file]
   end
 
+  # This returns the a local File object referencing the manuscript source
+  # file. It will download the file from the a remote location if it is not
+  # already locally cached.
+  def to_local_file
+    file.download!(url) unless file.cached?
+    File.new(file.path)
+  end
+
   def done?
     status == STATUS_DONE
   end

@@ -53,6 +53,8 @@ class DecisionsController < ApplicationController
 
     decision.rescind!
 
+    Activity.decision_rescinded! decision, user: current_user
+
     render json: decision.paper.decisions,
            each_serializer: DecisionSerializer,
            root: 'decisions'

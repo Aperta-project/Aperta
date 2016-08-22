@@ -111,6 +111,16 @@ class Activity < ActiveRecord::Base
     ]
   end
 
+  def self.decision_rescinded!(decision, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "decision.rescinded",
+      subject: decision.paper,
+      user: user,
+      message: "A decision was rescinded"
+    )
+  end
+
   def self.invitation_created!(invitation, user:)
     create(
       feed_name: "workflow",

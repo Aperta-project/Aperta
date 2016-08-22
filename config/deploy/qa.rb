@@ -9,5 +9,5 @@ ask :branch, proc {
     .last
 }
 
-server 'tahi-worker-201.sfo.plos.org', user: 'aperta', roles: %w(cron db worker)
-server 'aperta-frontend-201.sfo.plos.org', user: 'aperta', roles: %w(web app)
+server 'tahi-worker-301.sfo.plos.org', user: 'aperta', roles: %w(cron db worker)
+server 'aperta-frontend-301.sfo.plos.org', user: 'aperta', roles: %w(web app)

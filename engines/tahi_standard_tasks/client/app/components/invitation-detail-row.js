@@ -5,7 +5,7 @@ import { task, timeout } from 'ember-concurrency';
 const {
   Component,
   computed,
-  computed: { alias, and, equal, not, reads }
+  computed: { and, equal, not, reads }
 } = Ember;
 
 /*
@@ -22,7 +22,7 @@ export default Component.extend({
 
   allowAttachments: true,
 
-  invitee: alias('invitation.invitee'),
+  invitee: reads('invitation.invitee'),
 
   displayDestroyButton: not('invitation.accepted'),
   displayEditButton: and('invitation.pending', 'notClosedState'),

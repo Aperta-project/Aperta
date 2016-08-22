@@ -3,10 +3,8 @@ class UsersController < ApplicationController
   respond_to :json
 
   def show
-    user = User.find(params[:id])
-
     requires_user_can(:manage_user, Journal)
-    render json: user
+    render json: User.find(params[:id])
   end
 
   def update_avatar

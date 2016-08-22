@@ -35,9 +35,9 @@ namespace :heroku do
           STDERR.puts " "
         end
       end
-      spin_it(10) while thread.alive?
       threads << thread
     end
+    spin_it(10) while threads.select(&:alive?).any?
     threads.map(&:join)
     STDERR.puts "Deployment task complete"
   end

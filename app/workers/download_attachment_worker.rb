@@ -4,8 +4,6 @@ class DownloadAttachmentWorker
   include Sidekiq::Worker
 
   def perform attachment_id, url
-    Attachment.transaction do
-      Attachment.find(attachment_id).download!(url)
-    end
+    Attachment.find(attachment_id).download!(url)
   end
 end

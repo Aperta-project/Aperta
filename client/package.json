@@ -62,7 +62,7 @@
     "ember-wormhole": "0.3.4",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "liquid-fire": "0.21.2",
+    "liquid-fire": "^0.23.0",
     "loader.js": "^4.0.0"
   },
   "ember-addon": {

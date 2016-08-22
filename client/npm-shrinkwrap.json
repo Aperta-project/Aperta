@@ -18,9 +18,9 @@
       "resolved": "https://registry.npmjs.org/acorn/-/acorn-1.2.2.tgz"
     },
     "active-model-adapter": {
-      "version": "1.13.6",
-      "from": "active-model-adapter@1.13.6",
-      "resolved": "https://registry.npmjs.org/active-model-adapter/-/active-model-adapter-1.13.6.tgz"
+      "version": "2.0.3",
+      "from": "active-model-adapter@2.0.3",
+      "resolved": "https://registry.npmjs.org/active-model-adapter/-/active-model-adapter-2.0.3.tgz"
     },
     "after": {
       "version": "0.8.1",

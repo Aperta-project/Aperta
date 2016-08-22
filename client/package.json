@@ -26,7 +26,7 @@
     "yuidocjs": "^0.10.2"
   },
   "dependencies": {
-    "active-model-adapter": "1.13.6",
+    "active-model-adapter": "2.0.3",
     "bower": "^1.7.7",
     "broccoli-asset-rev": "^2.2.0",
     "broccoli-funnel": "0.2.3",

@@ -90,7 +90,7 @@ test('can rescind the invitation', function(assert) {
       let msgEl = find(`.invitation-item:contains('${invitation.get('email')}')`);
       assert.ok(msgEl[0] !== undefined, 'has pending invitation');
 
-      TestHelper.handleDelete('invitation', invitation.id);
+      TestHelper.mockDelete('invitation', invitation.id);
       click('.invite-remove');
 
       andThen(function() {

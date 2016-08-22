@@ -18,6 +18,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Fix frontend code to allow for multiple rounds of revision
 - Emails with html-like text ( <, >, etc) will no longer be truncated
 - Display of initial decision infobox after creating paper and click of question mark icon
+- New billing institutions will now be added in alphabetical order
 
 ### Security
 

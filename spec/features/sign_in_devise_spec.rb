@@ -31,6 +31,16 @@ feature "Devise signing in", js: true do
     dashboard_page.sign_out
     expect(page.current_path).to eq new_user_session_path
   end
+
+  scenario "User is redirected after login" do
+    sign_in_page = SignInPage.visit
+    dashboard_page = sign_in_page.sign_in user, user.username
+    expect(page.current_path).to eq(root_path)
+    dashboard_page.sign_out
+    visit "/profile"
+    sign_in_page.sign_in user, user.username
+    expect(page.current_path).to eq "/profile"
+  end
 end
 
 feature "Devise resetting password", js: true do

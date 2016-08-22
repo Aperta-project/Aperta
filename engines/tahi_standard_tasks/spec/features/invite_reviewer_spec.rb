@@ -28,7 +28,7 @@ feature "Invite Reviewer", js: true do
     expect(overlay).to have_reviewers reviewer1.full_name
 
     # Already invited users don't show up again the search
-    overlay.fill_in 'Reviewer', with: 'Hen'
+    overlay.fill_in 'invitation-recipient', with: 'Hen'
     expect(page).to have_no_css('.auto-suggest-item', text: reviewer1.full_name)
 
     # But, users who have not been invited should still be suggested

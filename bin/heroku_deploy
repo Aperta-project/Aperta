@@ -1,5 +1,31 @@
 #!/usr/bin/env sh
 
-heroku pg:backups capture --app $1 &&
-git push -f https://git.heroku.com/$1.git release/$2:master &&
-heroku run bundle exec rake db:migrate nested-questions:seed roles-and-permissions:seed --app $1
+heroku_app_name=$1
+version=$2
+
+function print_usage {
+  echo "Usage:  $0 <heroku-app-name> <version>"
+  echo 
+  echo "$0 is for deploying a release branch to tahi. It does not deploy from a tag since it may not exist at the time of deploy."
+  echo
+  echo "Example:"
+  echo "  $0 tahi-lean-workflow 1.5.0"
+}
+
+if [ -z $heroku_app_name ] ; then
+  echo "Heroku app name must be provided!" 1>&2
+  echo
+  print_usage
+  exit 1
+fi
+
+if [ -z $version ] ; then
+  echo "Version to deploy must be provided!" 1>&2
+  echo
+  print_usage
+  exit 2
+fi
+
+heroku pg:backups capture --app heroku_app_name &&
+git push -f https://git.heroku.com/heroku_app_name.git release/version:master &&
+heroku run bundle exec rake db:migrate nested-questions:seed roles-and-permissions:seed --app heroku_app_name

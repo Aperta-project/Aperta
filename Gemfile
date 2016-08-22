@@ -100,6 +100,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'aws-sdk', '~> 2'
   gem 'bullet'
   gem 'capistrano-chruby'
   gem 'capistrano-rails'

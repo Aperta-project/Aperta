@@ -310,6 +310,13 @@ describe DecisionsController do
           expect(paper.reload.publishing_state).to eq("submitted")
           expect(decision.reload.rescinded).to be(true)
         end
+
+        it "posts to the activity stream" do
+          expect(Activity)
+            .to(receive(:decision_rescinded!))
+            .with(decision, user: user)
+          do_request
+        end
       end
 
       context "the decision is not rescindable" do

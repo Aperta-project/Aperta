@@ -11,6 +11,9 @@ class Paper < ActiveRecord::Base
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
   include Assignable::Model
+  include Snapshottable
+
+  self.snapshottable = true
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :striking_image, polymorphic: true
@@ -253,7 +256,7 @@ class Paper < ActiveRecord::Base
   TERMINAL_STATES = [:accepted, :rejected]
 
   def snapshottable_things
-    [].concat(tasks)
+    [self].concat(tasks)
       .concat(figures)
       .concat(supporting_information_files)
       .concat(adhoc_attachments)

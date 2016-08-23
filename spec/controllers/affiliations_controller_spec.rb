@@ -48,7 +48,7 @@ describe AffiliationsController do
       it_behaves_like 'a forbidden json request'
     end end
 
-  describe "#destroy" do
+  describe '#destroy' do
     let!(:affiliation) { FactoryGirl.create(:affiliation, user: user) }
     subject(:do_request) do
       delete :destroy, id: affiliation.id
@@ -62,6 +62,37 @@ describe AffiliationsController do
       expect do
         do_request
       end.to change { Affiliation.count }.by(-1)
+    end
+  end
+
+  describe '#for_user' do
+    subject(:do_request) do
+      get :for_user, format: 'json', user_id: user_id
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'signed in without permissions' do
+      before do
+        stub_sign_in user
+      end
+
+      it_behaves_like "a forbidden json request"
+    end
+
+    context 'signed in with permissions' do
+      let!(:affiliation) { FactoryGirl.create(:affiliation, user: other_user) }
+
+      before do
+        stub_sign_in user
+        allow_any_instance_of(AffiliationsController).to receive(:requires_user_can).with(:manage_users, Journal) { true }
+      end
+
+      it 'succeeds in responding' do
+        do_request
+        expect(response.status).to eq(200)
+        expect(res_body).to include('affiliations')
+      end
     end
   end
 end

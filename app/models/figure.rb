@@ -4,6 +4,8 @@
 class Figure < Attachment
   include CanBeStrikingImage
 
+  self.public_resource = true
+  
   default_scope { order(:id) }
 
   after_save :insert_figures!, if: :should_insert_figures?
@@ -31,6 +33,10 @@ class Figure < Attachment
 
   def on_download_complete
     insert_figures! if all_figures_done?
+  end
+
+  def make_resource_token
+    true
   end
 
   protected

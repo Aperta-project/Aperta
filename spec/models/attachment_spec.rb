@@ -76,6 +76,7 @@ describe Attachment do
       let(:url_2) { 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg' }
 
       before do
+        subject.public_resource = true
         subject.download!(url_1)
         FactoryGirl.create(:resource_token, owner: subject)
         FactoryGirl.create(:snapshot, source: subject)

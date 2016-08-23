@@ -11,10 +11,28 @@ class Attachment < ActiveRecord::Base
   include Snapshottable
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
+  STATUS_DONE = 'done'
+
+  class_attribute :public_resource
+
+  def public_resource
+    value = @public_resource
+    value = self.class.public_resource if @public_resource.nil?
+
+    if value.nil?
+      fail NotImplementedError, <<-ERROR.strip_heredoc
+        #{self.class.name} did not declare whether it was a public or private
+        resource. Please set this after careful consideration in
+        #{self.class.name}. Here's what that might need to look like:
+
+            self.public_resource = true|false
+      ERROR
+    end
+
+    value
+  end
 
   self.snapshottable = true
-
-  STATUS_DONE = 'done'
 
   # +snapshottable_uploader+ will prevent carrierwave from removing a
   # mounted file/attachment if the including model has been snapshotted.
@@ -62,7 +80,7 @@ class Attachment < ActiveRecord::Base
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!
-      refresh_resource_token!(file)
+      refresh_resource_token!(file) if public_resource
       @downloading = false
       on_download_complete
     end

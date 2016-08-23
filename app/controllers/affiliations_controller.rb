@@ -12,17 +12,17 @@ class AffiliationsController < ApplicationController
   end
 
   def for_user
-    current_user_or_user_can(:manage_users, Journal)
+    require_current_user_or_user_can(:manage_users, Journal)
     render json: Affiliation.where(user_id: params[:user_id])
   end
 
   def show
-    current_user_or_user_can(:manage_users, Journal)
+    require_current_user_or_user_can(:manage_users, Journal)
     render json: affiliation
   end
 
   def create
-    current_user_or_user_can(:manage_users, Journal)
+    require_current_user_or_user_can(:manage_users, Journal)
     new_affiliation = user.affiliations.create!(affiliation_params)
     render json: new_affiliation
   end
@@ -38,7 +38,7 @@ class AffiliationsController < ApplicationController
 
   private
 
-  def current_user_or_user_can(action, object)
+  def require_current_user_or_user_can(action, object)
     current_user == user || requires_user_can(action, object)
   end
 

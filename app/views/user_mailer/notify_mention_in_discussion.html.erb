@@ -1,24 +1,26 @@
-<div class="container">
-  <div class="greeting">
-    You've been mentioned on the manuscript, <%= @paper.title %>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <p>
-    Hello <%= @user.first_name %> <%= @user.last_name %>,
-    </p>
-    <p>
-      You've been mentioned on the topic <%= @topic.title %> for the manuscript
-      "<%= @paper.title %>"
-    </p>
-    <p>
-    <%= if @reply
-          simple_format(@reply.body)
-        end %>
-    </p>
-    <p>
-    View the message here: <a href="<%= client_discussion_url(@topic, @paper) %>">
-      <%= client_discussion_url(@topic, @paper) %></a>
-    </p>
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<h1>
+  You've been mentioned on the manuscript, <%= @paper.title %>
+</h1>
+
+<hr>
+
+<p>Hello <%= @user.first_name %> <%= @user.last_name %>,</p>
+
+<p>
+  You've been mentioned on the topic <%= @topic.title %> for the manuscript
+  "<%= @paper.title %>"
+</p>
+
+<% if @reply %>
+  <p>
+    <%= simple_format(strip_tags(@reply.body)) %>
+  </p>
+<% end %>
+
+<%= render partial: 'email/button', locals: {
+  href: client_discussion_url(@topic, @paper),
+  text: 'View Discussion'
+} %>

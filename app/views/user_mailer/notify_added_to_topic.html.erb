@@ -1,20 +1,11 @@
-<div class="container">
-  <div class="greeting">
-    You've been added to a conversation on the manuscript, <%= @paper.title %>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <p>
-    Hello <%= @user.first_name %> <%= @user.last_name %>,
-    </p>
-    <p>
-    You have been added to a conversation in Aperta
-    for the manuscript "<%= @paper.title %>"
-    </p>
-    <p>
-      Visit this link to view the conversation, and post your comment:
-      <a href="<%= client_discussion_url(@topic, @paper) %>">
-        <%= client_discussion_url(@topic, @paper) %></a>
-    </p>
-  </div>
-</div>
+<p>Hello <%= @user.first_name %> <%= @user.last_name %>,</p>
+
+<p>
+  You have been added to a conversation in Aperta
+  for the manuscript "<%= @paper.title %>"
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_discussion_url(@topic, @paper),
+  text: 'View Conversation'
+} %>

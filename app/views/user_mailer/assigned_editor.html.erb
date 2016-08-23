@@ -1,29 +1,22 @@
-<div class="container">
-  <div class="greeting">
-    <h3 class="user-name">
-      Hello <%= @editor_name %>
-    </h3>
-    <p class="message">
-      You've been assigned as an Editor on a Manuscript
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="paper-abstract">
-      <p>
-        You've been assigned as an Editor on a Manuscript titled
-        "<%= @paper.display_title(sanitized: false) %>".
-      </p>
-      <p>
-        Visit this link to view the paper:
-        <%= client_paper_url(@paper) %>
-      </p>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-    Sincerely,
-    <br>
-    <%= @journal.name %> Team
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<h1>
+  You've been assigned as an Editor on a Manuscript
+</h1>
+
+<hr>
+
+<p>Hello <%= @editor_name %></p>
+
+<p>
+  You've been assigned as an Editor on a Manuscript titled
+  "<%= @paper.display_title(sanitized: false) %>".
+</p>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@paper),
+  text: 'View Paper'
+} %>

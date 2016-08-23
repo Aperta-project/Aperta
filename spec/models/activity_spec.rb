@@ -116,6 +116,21 @@ describe Activity do
     end
   end
 
+  describe "#decision_rescinded!" do
+    subject(:activities) { Activity.decision_rescinded!(decision, user: user) }
+    let(:decision) { FactoryGirl.build_stubbed(:decision) }
+
+    it do
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "decision.rescinded",
+        subject: decision.paper,
+        user: user,
+        message: "A decision was rescinded"
+      )
+    end
+  end
+
   describe "#invitation_sent!" do
     subject(:activity) { Activity.invitation_sent!(invitation, user: user) }
     let(:invitation) { FactoryGirl.build_stubbed(:invitation) }

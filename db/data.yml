@@ -1501,7 +1501,7 @@ activities:
     - workflow
     - '13'
     - Paper
-    - invitation.created
+    - invitation.sent
     - Reviewer User was invited as Reviewer
     - '1'
     - '2016-06-02 13:47:43.374893'
@@ -1510,7 +1510,7 @@ activities:
     - workflow
     - '12'
     - Paper
-    - invitation.created
+    - invitation.sent
     - Edith Editor was invited as Reviewer
     - '1'
     - '2016-06-13 13:33:37.401749'

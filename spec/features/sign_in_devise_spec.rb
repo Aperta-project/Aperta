@@ -34,12 +34,9 @@ feature "Devise signing in", js: true do
 
   scenario "User is redirected after login" do
     sign_in_page = SignInPage.visit
-    dashboard_page = sign_in_page.sign_in user, user.username
-    expect(page.current_path).to eq(root_path)
-    dashboard_page.sign_out
-    visit "/profile"
+    page.execute_script("document.location.href='/profile'")
     sign_in_page.sign_in user, user.username
-    expect(page.current_path).to eq "/profile"
+    expect(page.current_path).to eq '/profile'
   end
 end
 

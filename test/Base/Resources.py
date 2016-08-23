@@ -109,7 +109,6 @@ creator_login23 = {'user': u'민성', 'name': u'민준 성', 'email': 'sealresq+
 creator_login24 = {'user': u'志張', 'name': u'志明 張', 'email': 'sealresq+1032@gmail.com'}
 creator_login25 = {'user': u'文孙', 'name': u'文 孙', 'email': 'sealresq+1033@gmail.com'}
 
-
 reviewer_login = {'user': 'areviewer',
                   'name': 'atest reviewer',
                   'email': 'sealresq+1005@gmail.com'}

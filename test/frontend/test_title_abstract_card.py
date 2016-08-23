@@ -47,7 +47,7 @@ class TitleAbstractTest(CommonTest):
                         )
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=30)
+    paper_viewer.validate_ihat_conversions_success(timeout=45)
     # Need to wait for url to update
     count = 0
     paper_id = paper_viewer.get_current_url().split('/')[-1]
@@ -105,7 +105,7 @@ class TitleAbstractTest(CommonTest):
                         )
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=30)
+    paper_viewer.validate_ihat_conversions_success(timeout=45)
     # Need to wait for url to update
     count = 0
     paper_id = paper_viewer.get_current_url().split('/')[-1]
@@ -155,7 +155,7 @@ class TitleAbstractTest(CommonTest):
     upms.click_completion_button()
     upms._wait_for_element(upms._get(upms._upload_manuscript_btn))
     upms.upload_manuscript()
-    upms.validate_ihat_conversions_success(timeout=30)
+    upms.validate_ihat_conversions_success(timeout=45)
     upms.check_for_flash_error()
     upms.logout()
 

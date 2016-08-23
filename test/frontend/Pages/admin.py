@@ -73,6 +73,7 @@ class AdminPage(AuthenticatedPage):
     self._ud_overlay_lname_field = (By.ID, 'user-detail-last-name')
     self._ud_overlay_reset_pw_btn = (By.CSS_SELECTOR, 'div.reset-password a')
     self._ud_overlay_reset_pw_success_msg = (By.CLASS_NAME, 'success')
+    self._users = (By.CLASS_NAME, 'user-row')
 
   # POM Actions
   def validate_page_elements_styles(self, username):
@@ -380,7 +381,7 @@ class AdminPage(AuthenticatedPage):
     """
     For all the blocks presented on the page, opens the journal specific admin page for a random
     choice
-    :return: void function
+    :return: Name of selected journal
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     selected_journal_index = random.randint(1, len(journal_blocks))
@@ -412,6 +413,16 @@ class AdminPage(AuthenticatedPage):
         return count + 1
       count += 1
     return False
+
+  def go_to_journal(self, journal_id):
+    """
+    Go to a given journal from the admin page
+    :param journal_id: Journal id
+    :return: None
+    """
+    url = '{0}/{1}'.format(self._driver.current_url, journal_id)
+    self._driver.get(url)
+
 
   # TODO: Create method to create journal PLOS Wombat if !exist
 

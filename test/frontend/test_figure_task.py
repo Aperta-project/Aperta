@@ -52,7 +52,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
     # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
@@ -91,7 +91,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
     # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
@@ -140,7 +140,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
     # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
@@ -174,7 +174,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
     # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
@@ -205,7 +205,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
     # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
@@ -237,7 +237,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
     # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')

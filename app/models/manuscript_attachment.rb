@@ -3,5 +3,8 @@
 class ManuscriptAttachment < Attachment
   has_paper_trail
 
-  mount_uploader :file, AttachmentUploader
+  # Never ever delete manuscripts, always keep them. Safe. Sound.
+  def keep_file_when_replaced?
+    true
+  end
 end

@@ -16,7 +16,18 @@ class Attachment < ActiveRecord::Base
 
   STATUS_DONE = 'done'
 
-  mount_snapshottable_uploader :file, AttachmentUploader
+  # +snapshottable_uploader+ will prevent carrierwave from removing a
+  # mounted file/attachment if the including model has been snapshotted.
+  def self.mount_uploader(mounted_as, uploader_class)
+    super mounted_as, uploader_class
+    carrierwave_removal_method_on_save = "remove_previously_stored_#{mounted_as}".to_sym
+    skip_callback :save, :after, carrierwave_removal_method_on_save, if: -> { keep_file_when_replaced? }
+
+    carrierwave_removal_method_on_destroy = "remove_#{mounted_as}!".to_sym
+    skip_callback :commit, :after, carrierwave_removal_method_on_destroy, if: -> { keep_file_when_replaced? }
+  end
+
+  mount_uploader :file, AttachmentUploader
 
   def self.authenticated_url_for_key(key)
     uploader = new.file
@@ -35,6 +46,10 @@ class Attachment < ActiveRecord::Base
   # set_paper is required when creating attachments thru associations
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
+
+  def keep_file_when_replaced?
+    snapshotted?
+  end
 
   def download!(url)
     Attachment.transaction do
@@ -55,6 +70,10 @@ class Attachment < ActiveRecord::Base
     on_download_failed(ex)
   ensure
     @downloading = false
+  end
+
+  def public_url(*args)
+    non_expiring_proxy_url(*args) if public_resource
   end
 
   def destroy_resource_token!

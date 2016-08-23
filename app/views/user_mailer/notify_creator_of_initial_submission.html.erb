@@ -1,50 +1,36 @@
-<div class="container">
-  <div class="greeting">
-    <p class="message">
-      Thank you for submitting your manuscript,
-      <%= @title %>, to <%= @journal.name %>.
-      Our staff will be in touch with next steps.
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @journal.logo_url %>
-        <img class="journal-logo" src="<%= @journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @journal.name %>
-        </div>
-      <% end %>
-    </div>
-    <p>
-      Dear <%= @author.full_name %>,
-    </p>
-    <p class="message">
-      Thank you for your submission to <%= @journal.name %>, which will now be assessed
-      by the editors to determine whether your manuscript meets the criteria
-      for peer review. We may seek advice from an Academic Editor with relevant
-      expertise.
-    </p>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @journal } %>
+<br><br>
 
-    <p>
-      If our initial evaluation is positive, we will contact you to request
-      statements relating to ethical approval, funding, data and competing
-      interests ahead of initiating peer review. This additional information is
-      required to satisfy PLOS’ policies and will be made available to editors
-      and reviewers. If you anticipate that you will be unavailable during the
-      next week or two, please provide us with an additional person of contact by
-      return email.
-    </p>
+<h1>
+  Thank you for submitting your manuscript,
+  <%= @title %>, to <%= @journal.name %>.
+  Our staff will be in touch with next steps.
+</h1>
 
-    <p>
-      You can access your manuscript and its associated files by logging in here:
-      <%= link_to client_dashboard_url, client_dashboard_url %>.
-    </p>
-  </div>
-  <hr>
-  <div class="footer">
-    With best wishes,
-    The <%= @journal.name %> Team
-  </div>
-</div>
+<hr>
+
+<p>Dear <%= @author.full_name %>,</p>
+
+<p>
+  Thank you for your submission to <%= @journal.name %>, which will now be assessed
+  by the editors to determine whether your manuscript meets the criteria
+  for peer review. We may seek advice from an Academic Editor with relevant
+  expertise.
+</p>
+
+<p>
+  If our initial evaluation is positive, we will contact you to request
+  statements relating to ethical approval, funding, data and competing
+  interests ahead of initiating peer review. This additional information is
+  required to satisfy PLOS’ policies and will be made available to editors
+  and reviewers. If you anticipate that you will be unavailable during the
+  next week or two, please provide us with an additional person of contact by
+  return email.
+</p>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @journal } %>
+
+<%= render partial: 'email/button', locals: {
+  href: client_dashboard_url,
+  text: 'View Manuscript'
+} %>

@@ -1,12 +1,116 @@
 <!DOCTYPE html>
-<html class="outer-wrapper">
+<html>
   <head>
-    <style>.outer-wrapper{height:100%;width:100%;background:#d5d5d5}.inner-wrapper{font-family:helvetica, sans-serif;width:100%;background:#d5d5d5;padding-top:20px}.inner-wrapper .container{width:470px;margin:0 auto}.mailer{width:600px;background:#fff;border:thin solid #fff;margin:20px auto;padding:30px 0}.greeting,.user-name{text-align:center}.greeting{width:400px;margin:40px auto 30px auto}.greeting .user-name{margin:0}.spacer{margin-left:15px;margin-right:15px}.greeting .message{margin-top:5px;margin-bottom:-10px;font-size:1.2em}hr{border-top-color:#f5f5f5}.paper-info .journal-info .journal-name,.paper-info .journal-info .journal-logo{margin:20px 0 10px 0}.paper-info .paper-name{font-weight:600}.paper-info .paper-abstract{margin-bottom:40px}.paper-info .paper-abstract .abstract-title{margin-bottom:5px}.paper-info .paper-abstract .abstract-text{font-size:0.8em}.paper-info .warning{background:red;color:white;padding:50px}.footer{margin-top:30px;margin-bottom:30px;text-align:center}.footer .paper-title{margin:20px auto}.footer .paper-abstract{text-align:left}.footer .button{margin:0 auto 20px auto;display:inline-block;border:1px solid transparent;border-radius:4px;padding:9px 25px;font-size:0.8em;font-weight:normal;line-height:1.428571429;text-align:center;text-decoration:none;text-transform:uppercase;vertical-align:middle;white-space:nowrap;cursor:pointer;-webkit-font-smoothing:antialiased;background:#39a329;color:#fff}.footer .button:hover{text-decoration:none}.footer .signature{text-align:left}
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/assets/email.css" />
+    <style>
+      /* Responsive : PRESERVE THESE STYLES IN THE HEAD
+      ----------------------------------------------------------------------- */
+
+      @media only screen and (max-width: 620px) {
+        table[class=body] h1 {
+          margin-bottom: 10px !important;
+          font-size: 21px !important;
+        }
+
+        table[class=body] p,
+        table[class=body] ul,
+        table[class=body] ol,
+        table[class=body] td,
+        table[class=body] span,
+        table[class=body] a {
+          font-size: 16px !important;
+        }
+
+        table[class=body] .wrapper {
+          padding: 20px !important;
+        }
+
+        table[class=body] .content {
+          padding: 0 !important;
+        }
+
+        table[class=body] .container {
+          width: 100% !important;
+          padding: 0 !important;
+        }
+
+        table[class=body] .main {
+          border-left-width: 0 !important;
+          border-radius: 0 !important;
+          border-right-width: 0 !important;
+        }
+
+        table[class=body] .btn table { width: 100% !important; }
+        table[class=body] .btn a { width: 100% !important; }
+        table[class=body] .img-responsive {
+          width: auto !important;
+          max-width: 100% !important;
+          height: auto !important;
+        }
+      }
+
+
+      /* Outlook.com / Hotmail / Apple specific
+         PRESERVE THESE STYLES IN THE HEAD
+      ----------------------------------------------------------------------- */
+
+      @media all {
+        /* Outlook.com / Hotmail
+           Styles present in the email are appended with .ExternalClass */
+        .ExternalClass {
+          width: 100%;
+        }
+
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%;
+        }
+
+        /* iOS : For auto formatted phone numbers, addresses, and dates */
+        .apple-link a {
+          color: inherit !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+          text-decoration: none !important;
+        }
+      }
     </style>
   </head>
-  <body class="inner-wrapper">
-    <div class="mailer">
-      <%= yield %>
-    </div>
+  <body class="">
+    <table border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <!-- START CENTERED WHITE CONTAINER -->
+          <div class="content">
+            <!-- START MAIN CONTENT AREA -->
+            <table class="main">
+              <tr>
+                <td class="wrapper">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td>
+                        <%= yield %>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <!-- END MAIN CONTENT AREA -->
+          </div>
+          <!-- END CENTERED WHITE CONTAINER -->
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
   </body>
 </html>

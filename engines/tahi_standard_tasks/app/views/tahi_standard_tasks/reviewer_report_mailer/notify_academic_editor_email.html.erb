@@ -1,33 +1,15 @@
-<div class="container">
-  <hr>
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @paper.journal.logo_url %>
-        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @paper.journal.name %>
-        </div>
-      <% end %>
-    </div>
-    <p>
-      Hello <%= @recipient.full_name %>,
-    </p>
-    <p class="message">
-      A review of "<%= @paper.display_title(sanitized: false) %>" has been completed.
-  </div>
-  <div class="footer">
-    <a class="button" href="<%= client_paper_task_url(@paper, @task) %>" target="_blank">
-      View Reviewer Report in <%= app_name %>
-    </a>
-    <div class="signature">
-      <p>
-        Sincerely,
-      </p>
-      <p>
-        <%= @paper.journal.name %> Team
-      </p>
-    </div>
-  </div>
-  <hr>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<p>Hello <%= @recipient.full_name %>,</p>
+
+<p>
+  A review of "<%= @paper.display_title(sanitized: false) %>" has been completed.
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_task_url(@paper, @task),
+  text: 'View Report'
+} %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

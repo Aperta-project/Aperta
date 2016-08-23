@@ -73,13 +73,12 @@ class ApertaJournalAdminTest(CommonTest):
 
     adm_page = AdminPage(self.getDriver())
     journal = adm_page.select_random_journal()
-
+    logging.info('Journal: {0}'.format(journal))
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def rest_validate_journal_admin_roles_display_function(self):
+  def test_validate_journal_admin_roles_display_function(self):
     """
-    NOTA BENE: This section has been temporarily suppressed in the interface per APERTA-6134
     test_journal_admin: validate the display of the admin user role display section
     Validates the presence of the following elements:
       role section heading
@@ -93,10 +92,12 @@ class ApertaJournalAdminTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.select_random_journal()
+    journal = adm_page.select_random_journal()
+    logging.info('Journal: {0}'.format(journal))
 
     ja_page = JournalAdminPage(self.getDriver())
-    ja_page.validate_roles_section()
+    ja_page.validate_roles_section(journal)
+
 
   def test_validate_task_types_display_function(self):
     """
@@ -123,7 +124,7 @@ class ApertaJournalAdminTest(CommonTest):
 
     adm_page = AdminPage(self.getDriver())
     journal = adm_page.select_random_journal()
-
+    logging.info('Journal: {0}'.format(journal))
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_task_types_section(journal)
 
@@ -138,6 +139,7 @@ class ApertaJournalAdminTest(CommonTest):
       Add new Template button
     Validates Editing extant MMT
     :return: void function
+    NOTE: Not working due to APERTA-7465
     """
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
@@ -157,6 +159,7 @@ class ApertaJournalAdminTest(CommonTest):
     Validates Add new Template
     Validates Delete new Template
     :return: void function
+    NOTE: Not working due to APERTA-7465
     """
     logging.info('Validating journal add mmt (paper type) function')
     user_type = random.choice(users)

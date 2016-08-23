@@ -4,7 +4,7 @@ import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, \
+from Base.Resources import staff_admin_login, super_admin_login, creator_login1, \
     creator_login2, creator_login3, creator_login4, creator_login5, reviewer_login, \
     academic_editor_login, handling_editor_login, cover_editor_login, internal_editor_login, \
     pub_svcs_login
@@ -17,27 +17,12 @@ This test case validates the Aperta Admin page.
 
 __author__ = 'jgray@plos.org'
 
-users = [staff_admin_login,
-         super_admin_login,
-         ]
-
-all_users = [super_admin_login,
-             staff_admin_login,
-             creator_login1,
-             creator_login2,
-             creator_login3,
-             creator_login4,
-             creator_login5,
-             reviewer_login,
-             academic_editor_login,
-             handling_editor_login,
-             cover_editor_login,
-             internal_editor_login,
-             pub_svcs_login,
-             ]
-
+admin_users = [staff_admin_login, super_admin_login]
+non_admin_users = [creator_login1, creator_login2, creator_login3, creator_login4,
+                   creator_login5, reviewer_login, academic_editor_login, handling_editor_login,
+                   cover_editor_login, internal_editor_login, pub_svcs_login]
 user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
-
+all_users = admin_users + non_admin_users + user_search
 
 @MultiBrowserFixture
 class ApertaAdminTest(CommonTest):
@@ -58,7 +43,7 @@ class ApertaAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Validating Admin page components and styles')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -68,18 +53,29 @@ class ApertaAdminTest(CommonTest):
     adm_page.validate_journal_block_display(user_type['user'])
     adm_page.validate_nav_toolbar_elements(user_type)
 
+  def _test_negative_permission(self):
+    """
+    test_admin: Validate if non authorized user can see Admin panel
+    :return: void function
+    """
+    # TODO
+
   def test_validate_user_search(self):
     """
     test_admin: Validate the function of the base Admin page user search function
     :return: void function
     """
     logging.info('Validating base admin page user search function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
-    adm_page.validate_search_edit_user(random.choice(user_search))
+    # TODO: Validate following case with other users
+    user = random.choice(user_search)
+    logging.info('Searching user: {0}'.format(user))
+    adm_page.validate_search_edit_user(user)
+
 
   def test_validate_add_new_journal(self):
     """
@@ -90,7 +86,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating add new journal function')
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
@@ -103,7 +99,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating edit journal function')
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_edit_journal(user_type['user'])

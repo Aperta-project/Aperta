@@ -37,6 +37,18 @@ FactoryGirl.define do
       end
     end
 
+    # This is a kluge.  For some reason the wildcard state is being deleted sometimes
+    # between test runs, but the permission itself exists.  This fixes that scenario.
+    # I'm open to better ideas.
+    trait :with_view_profile do
+      after(:create) do |user|
+        view_profile_permission = Permission.find_by(action: "view_profile")
+        if view_profile_permission.states.empty?
+          view_profile_permission.states << PermissionState.find_by(name: "*")
+        end
+      end
+    end
+
     trait :orcid do
       credentials { [create(:orcid_credential)] }
     end

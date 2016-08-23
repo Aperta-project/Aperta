@@ -31,11 +31,15 @@ feature "Devise signing in", js: true do
     dashboard_page.sign_out
     expect(page.current_path).to eq new_user_session_path
   end
+end
 
+feature "Devise redirect", js: true do
+  let!(:user) { FactoryGirl.create :user, :with_view_profile }
   scenario "User is redirected after login" do
-    sign_in_page = SignInPage.visit
-    page.execute_script("document.location.href='/profile'")
-    sign_in_page.sign_in user, user.username
+    page.visit_without_waiting '/profile'
+    fill_in('Login', with: user.username)
+    fill_in('Password', with: 'password')
+    click_on "Sign in"
     expect(page.current_path).to eq '/profile'
   end
 end

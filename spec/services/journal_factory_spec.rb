@@ -434,7 +434,10 @@ describe JournalFactory do
           end
 
           it 'has no additional paper permissions' do
-            expect(permissions_on_paper.map(&:action) - paper_actions - editable_paper_actions).to eq([])
+            all_paper_actions = paper_actions + editable_paper_actions
+            expect(
+              permissions.where(applies_to: 'Paper').map(&:action) - all_paper_actions
+            ).to eq([])
           end
         end
 

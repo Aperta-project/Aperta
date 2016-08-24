@@ -37,7 +37,7 @@ If I modified any environment variables:
 If I need to migrate production data:
 
 - [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
-- [ ] If I created a data-migration task, I added copy-pastable instructions to run it on heroku to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
+- [ ] If there are steps to take outside of `rake db:migrate` for Heroku or other environments, I added copy-pastable instructions to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
 - [ ] I verified the data-migration's results on a copy of production data
 - [ ] I've talked through the ramifications of the data-migration with Product Owners in regards to deployment timing
 

@@ -196,7 +196,7 @@ class RegisterDecisionCard(BaseCard):
       else:
         assert template_letters['Reject-RARAR-ONE'] in letter_text, letter_text
 
-  def register_decision(self, decision='', commit=True):
+  def register_decision(self, decision='', reject_template='', commit=True):
     """
     Register decision on publishing manuscript
     :param commit: boolean, default to True - determines whether to commit the decision by emailing
@@ -205,6 +205,12 @@ class RegisterDecisionCard(BaseCard):
     'Accept', 'Reject', 'Major Revision' and 'Minor Revision' if no decision, will be generated
     returns: decision (For the case where a random decision was specified) and reject_selection
         (if decision == 'Reject')
+    :param reject_template: if you would like to specify an explicit template, pass it here.
+      Valid selections are: 'Editor Decision - Reject After Review',
+                            'Editor Decision - Reject After Review CJs',
+                            'Editor Decision - Reject After Review ONE',
+                            'Reject After Review ONE',
+                            'Reject After Revision and Re-review ONE'
     """
     reject_selection = ''
     # APERTA-7502 This alert no longer exists, but it should
@@ -216,7 +222,7 @@ class RegisterDecisionCard(BaseCard):
     # except ElementDoesNotExistAssertionError:
     #   logging.info('Manuscript is in submitted state.')
     if not decision:
-      decision = self._make_a_decision(decision=False)
+      decision = self._make_a_decision()
     logging.info('Decision is {0}.'.format(decision))
     decision_d = {'Reject': 0, 'Major Revision': 1, 'Minor Revision': 2, 'Accept': 3}
     decision_labels = self._gets(self._decision_labels)
@@ -230,8 +236,11 @@ class RegisterDecisionCard(BaseCard):
     if decision == 'Reject':
       default_selection = self._get(self._letter_template_reject_selected)
       assert 'Editor Decision - Reject After Review' in default_selection.text, \
-        default_selection.text
-      reject_selection = random.choice(expected_reject_selections)
+          default_selection.text
+      if not reject_template:
+        reject_selection = random.choice(expected_reject_selections)
+      else:
+        reject_selection = reject_template
       logging.info('Rejection template selection is {0}'.format(reject_selection))
       template_selector = self._get(self._letter_template_reject_selector)
       template_selector.click()
@@ -249,16 +258,15 @@ class RegisterDecisionCard(BaseCard):
     return decision, reject_selection
 
   @staticmethod
-  def _make_a_decision(decision):
+  def _make_a_decision():
     """
-    Return a decision to make
-    :return: decision
+    Return a random publishing decision
+    :return: decision - one of Reject, Major Revision, Minor Revision or Accept - weighted equally
     """
     decisions = ['Reject',
                  'Major Revision',
                  'Minor Revision',
                  'Accept'
                  ]
-    if not decision:
-      decision = random.choice(decisions)
+    decision = random.choice(decisions)
     return decision

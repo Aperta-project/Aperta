@@ -187,28 +187,17 @@ There is no problem in committing and pushing `package.json`, the ember-addons o
 
 ## Configuring S3 direct uploads
 
-Get access to S3 and make a new IAM user, for security reasons. Then take these
-keys and use them. (If someone has already set this up, reuse their keys).
+To set up a new test bucket for your own use, run:
 
-Ensure that the following environment variables are set:
-
-```
-S3_URL=http://your-s3-bucket.amazonaws.com
-S3_BUCKET=your-s3-bucket
-AWS_ACCESS_KEY=your-aws-access-key-id
-AWS_SECRET_KEY=your-aws-secret-key
-AWS_REGION=us-west-1 or us-east-2, etc.
+```bash
+rake s3:create_bucket
 ```
 
-Then, you need to configure your s3 bucket for CORS:
+You will be prompted for an AWS key/secret key pair. You can ask a team member
+for these: they should only be used to bootstrap your new settings.
 
-1. Download the AWS cli:
-  - Darwin: `brew install awscli`
-  - Linux: `sudo pip install awscli`
-2. Run the following command from the app's root directory:
-  ```
-  aws s3api put-bucket-cors --bucket <your s3 bucket> --cors-configuration file://config/services/s3.cors.development.json
-  ```
+Your new settings will be printed to stdout, and you can copy these settings
+into your `.env.development` file.
 
 ## Load testing
 

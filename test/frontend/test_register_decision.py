@@ -37,7 +37,7 @@ class RegisterDecisionCardTest(CommonTest):
 
   def test_smoke_register_decision_style(self):
     """
-    test_title_abstract_card: Validate components and styles of the Title and Abstract card
+    test_register_decision: Validate components and styles of the Register Decision card
     :return: void function
     """
     creator = random.choice(users)

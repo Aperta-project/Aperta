@@ -9,18 +9,18 @@ class DownloadManuscriptWorker
 
 
   UrlHelpers = Rails.application.routes.url_helpers
+
   # +build_ihat_callback_url+ is a utility method for use in a controller
   # context.  By default it builds the url using the request object's host and port,
   # but it can be overriden by the `IHAT_CALLBACK_URL` environment variable
   def self.build_ihat_callback_url(rack_request)
-    protocol, host, port = if ENV['IHAT_CALLBACK_URL']
-            uri = URI.parse(ENV['IHAT_CALLBACK_URL'])
-            [uri.scheme, uri.host, uri.port]
-          else
-            [rack_request.protocol, rack_request.host, rack_request.port]
-          end
+    url = ENV.fetch('IHAT_CALLBACK_URL', UrlHelpers.root_url)
+    uri = URI.parse(url)
 
-    UrlHelpers.ihat_jobs_url(protocol: protocol, host: host, port: port)
+    UrlHelpers.ihat_jobs_url(
+      protocol: uri.scheme,
+      host: uri.host,
+      port: uri.port)
   end
 
   # +download_manuscript+ schedules a background job to download the paper's

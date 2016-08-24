@@ -26,6 +26,7 @@ if [ -z $version ] ; then
   exit 2
 fi
 
+echo "Starting Heroku deploy"
 heroku pg:backups capture --app $heroku_app_name &&
-git push -f https://git.heroku.com/$heroku_app_name.git release/$version:master &&
+git push -f https://git.heroku.com/$heroku_app_name.git origin/release/$version:master &&
 heroku run bundle exec rake db:migrate nested-questions:seed roles-and-permissions:seed --app $heroku_app_name

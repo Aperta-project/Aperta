@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160823140447) do
+ActiveRecord::Schema.define(version: 20160824141728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20160823140447) do
     t.boolean  "publishable"
     t.string   "file_hash"
     t.string   "previous_file_hash"
+    t.integer  "uploaded_by_id"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree

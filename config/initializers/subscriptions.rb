@@ -4,6 +4,7 @@
 # For event stream subscriptions, check out event_stream_subscribers.rb
 #
 
+# rubocop:disable Style/AlignParameters
 Subscriptions.configure do
   add '.*', \
       EventLogger
@@ -30,4 +31,11 @@ Subscriptions.configure do
 
   add 'discussion_participant:destroyed', \
       Notification::Unbadger
+
+  add 'manuscript_attachment:created', \
+      ManuscriptAttachment::SendManuscriptToIhat
+
+  add 'manuscript_attachment:updated', \
+      ManuscriptAttachment::SendManuscriptToIhat
 end
+# rubocop:enable Style/AlignParameters

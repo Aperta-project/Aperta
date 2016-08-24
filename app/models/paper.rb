@@ -316,9 +316,9 @@ class Paper < ActiveRecord::Base
   end
 
   # Downloads the manuscript from the given URL.
-  def download_manuscript!(url)
+  def download_manuscript!(url, uploaded_by:)
     attachment = file || create_file
-    attachment.download!(url)
+    attachment.download!(url, uploaded_by: uploaded_by)
   end
 
   # Public: Find `Role`s for the given user on this paper.

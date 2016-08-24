@@ -40,8 +40,7 @@ class PapersController < ApplicationController
         DownloadManuscriptWorker.download_manuscript(
           paper,
           url,
-          current_user,
-          DownloadManuscriptWorker.build_ihat_callback_url(request)
+          current_user
         )
       end
     end

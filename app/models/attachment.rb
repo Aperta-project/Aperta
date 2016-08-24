@@ -56,6 +56,7 @@ class Attachment < ActiveRecord::Base
     ).url
   end
 
+  belongs_to :uploaded_by, class_name: "User"
   belongs_to :owner, polymorphic: true
   belongs_to :paper
 
@@ -69,7 +70,8 @@ class Attachment < ActiveRecord::Base
     snapshotted?
   end
 
-  def download!(url)
+  # rubocop:disable Metrics/AbcSize
+  def download!(url, uploaded_by: nil)
     Attachment.transaction do
       @downloading = true
       file.download! url
@@ -77,6 +79,7 @@ class Attachment < ActiveRecord::Base
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
       self.status = STATUS_DONE
+      self.uploaded_by = uploaded_by
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!
@@ -89,6 +92,7 @@ class Attachment < ActiveRecord::Base
   ensure
     @downloading = false
   end
+  # rubocop:enable Metrics/AbcSize
 
   def public_url(*args)
     non_expiring_proxy_url(*args) if public_resource
@@ -118,6 +122,10 @@ class Attachment < ActiveRecord::Base
 
   def filename
     self[:file]
+  end
+
+  def did_file_change?
+    previous_changes.include?('file_hash') && file_hash.present?
   end
 
   # This returns the a local File object referencing the manuscript source

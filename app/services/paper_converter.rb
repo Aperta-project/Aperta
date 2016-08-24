@@ -24,6 +24,7 @@ class PaperConverter
   #
   # @return [IhatJobResponse]
   def self.post_ihat_job(req)
+    # req.content_type could replace hardoced type below
     input = Faraday::UploadIO.new(req.file, 'application/epub+zip')
     response = connection.post('/jobs', job: {
                                  input: input,

@@ -30,6 +30,24 @@ class IhatJobRequest
     end
   end
 
+  def self.request_for_epub(epub:, source_url:, metadata: {})
+    callback_url = DownloadManuscriptWorker.build_ihat_callback_url(nil)
+
+    TahiEpub::Tempfile.create epub, delete: true do |file|
+      request = IhatJobRequest.new(
+        file: file,
+        recipe_name: ihat_recipe_name(source_url),
+        callback_url: callback_url,
+        metadata: metadata)
+      PaperConverter.post_ihat_job(request)
+    end
+  end
+
+  def self.ihat_recipe_name(url)
+    kind = Pathname.new(URI.parse(url).path).extname.delete(".")
+    IhatJobRequest.recipe_name(from_format: kind, to_format: 'html')
+  end
+
   private
 
   def encrypted_payload

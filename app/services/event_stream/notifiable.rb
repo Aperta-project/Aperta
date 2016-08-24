@@ -12,9 +12,16 @@ module EventStream::Notifiable
     attr_accessor :notify_requester
 
     def notify(action: nil, payload: nil)
-      name = event_name(action: action)
       payload ||= event_payload(action: action)
-      Notifier.notify(event: name, data: payload)
+
+      klasses = self.class.ancestors.select do |ancestor|
+        ancestor <= self.class.base_class
+      end
+
+      klasses.each do |klass|
+        name = event_name(action: action, klass: klass)
+        Notifier.notify(event: name, data: payload)
+      end
     end
 
     def event_payload(action: nil)
@@ -29,13 +36,9 @@ module EventStream::Notifiable
 
     private
 
-    def event_name(action: nil)
+    def event_name(action: nil, klass:)
       action ||= event_action
-      "#{klass_name}:#{action}"
-    end
-
-    def klass_name
-      self.class.base_class.name.underscore
+      "#{klass.name.underscore}:#{action}"
     end
 
     def changes_committed?

@@ -5,6 +5,7 @@ Page Object Model for the Admin Page. Validates global and dynamic elements and 
 """
 
 import logging
+import os
 import random
 import time
 
@@ -49,6 +50,7 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_journals_edit_logo_upload_btn = (By.CLASS_NAME, 'fileinput-button')
     self._base_admin_journals_edit_logo_upload_note = (By.CLASS_NAME,
                                                        'journal-thumbnail-logo-upload-note')
+    self._base_admin_journals_edit_logo_input_field = (By.ID, 'journal-logo-null')
     self._base_admin_journals_edit_title_label = (By.XPATH,
                                                   '//div[@class="inset-form-control-text"]/label')
     self._base_admin_journals_edit_title_field = (
@@ -160,19 +162,28 @@ class AdminPage(AuthenticatedPage):
       assert journal_t in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
       count += 1
 
-  def validate_add_new_journal(self, username):
+  def validate_add_new_journal(self, username,
+                               journal_name='',
+                               journal_desc='',
+                               logo='',
+                               commit=False):
     """
     Note this currently doesn't actually create the journal, it merely calls the create form up and
     validates the
     components of that form. Because we don't have a means of deleting a journal, even an empty one,
     it is prohibitive
     to test this in an automated fashion as we would end up with hundreds of journals over time.
+    :param journal_name: An optional journal_name to create
+    :param journal_desc: An optional description for the journal being created
+    :param logo: A filename representing the journal logo - should be a valid file in assets/imgs/
+    :param commit: Boolean, default False. If true, commit creation of the journal
     :param username: Must be asuperadm or this is a no-op.
     :return: void function
     """
     # The elements of this page attach to the DOM in a haphazard way. A little rest seems to smooth
     # things over.
     time.sleep(1)
+    logging.info('Validating Add new journals for ')
     if username == 'asuperadm':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
@@ -286,10 +297,22 @@ class AdminPage(AuthenticatedPage):
       time.sleep(.5)
       assert cancel_link.value_of_css_property('text-decoration') == 'underline', \
           cancel_link.value_of_css_property('text-decoration')
-      self._actions.move_to_element(cancel_link).perform()
-      cancel_link.click()
-      page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
-      assert len(page_tertiary_journal_count) == db_initial_journal_count
+      if commit:
+        logging.info('Committing new journal: {0}'.format(journal_name))
+        journal_title_field.send_keys(journal_name)
+        journal_desc_field.send_keys(journal_desc)
+        logo_input = self._iget(self._base_admin_journals_edit_logo_input_field)
+        current_path = os.getcwd()
+        logo_path = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(logo))
+        logo_input.send_keys(logo_path)
+        save_button.click()
+        page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
+        assert len(page_tertiary_journal_count) == db_initial_journal_count + 1
+      else:
+        self._actions.move_to_element(cancel_link).perform()
+        cancel_link.click()
+        page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
+        assert len(page_tertiary_journal_count) == db_initial_journal_count
 
   def validate_edit_journal(self, username):
     """

@@ -1,15 +1,24 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+
 import logging
 import random
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'sbassi@plos.org'
+
+expected_reject_selections = ['Editor Decision - Reject After Review',
+                              'Editor Decision - Reject After Review CJs',
+                              'Editor Decision - Reject After Review ONE',
+                              'Reject After Review ONE',
+                              'Reject After Revision and Re-review ONE'
+                              ]
 
 
 class RegisterDecisionCard(BaseCard):
@@ -38,8 +47,10 @@ class RegisterDecisionCard(BaseCard):
     self._letter_template_placeholder_div = (By.CSS_SELECTOR, 'div.letter-template-paceholder')
     self._letter_template_placeholder_paragraph = (By.CSS_SELECTOR,
                                                    'div.letter-template-placeholder > p')
-    self._letter_template_reject_selector = (By.CLASS_NAME, 'letter-select2')
-    self._letter_template_reject_search_input = (By.CSS_SELECTOR, 'div.select2-input')
+    self._letter_template_reject_selector = (By.CSS_SELECTOR,
+                                             'div.task-main-content div.select2-container')
+    self._letter_template_reject_search_input = (By.CSS_SELECTOR,
+                                                 'div.select2-search input.select2-input')
     self._letter_template_reject_selection = (By.CSS_SELECTOR, 'li > div.select2-result-label')
     self._letter_template_reject_selected = (By.CSS_SELECTOR, 'span.select2-chosen')
 
@@ -50,7 +61,6 @@ class RegisterDecisionCard(BaseCard):
     self._letter_template_subject_display_field = (By.CSS_SELECTOR, 'input.subject-field')
     self._letter_template_decision_letter_field = (By.CSS_SELECTOR,
                                                    'textarea.decision-letter-field')
-
 
     # POM Actions
   def validate_styles(self):
@@ -65,10 +75,12 @@ class RegisterDecisionCard(BaseCard):
     self.validate_application_title_style(title)
     # This div will be present if the paper in question is an initial decision paper, it will not be
     #   present for full decision papers.
+    self.set_timeout(5)
     try:
       decision_div = self._get(self._decision_alert)
     except ElementDoesNotExistAssertionError:
       logging.info('No pre-existing decision registered for paper')
+    self.restore_timeout()
     if decision_div:
       current_verdict = self._get(self._decision_verdict)
       self.validate_rescind_decision_success_style(current_verdict)
@@ -81,7 +93,7 @@ class RegisterDecisionCard(BaseCard):
     assert 'No decision has been registered.' in letter_template.text, letter_template.text
     self.validate_application_ptext(letter_template)
     # The decision history elements are conditional on their being a decision history
-    self.set_timeout(3)
+    self.set_timeout(1)
     try:
       decision_history_head = self._get(self._decision_history_heading)
     except ElementDoesNotExistAssertionError:
@@ -91,7 +103,7 @@ class RegisterDecisionCard(BaseCard):
       assert 'Decision History' in decision_history_head.text, decision_history_head.text
       self.validate_manuscript_h3_style(decision_history_head)
       previous_decisions = self._gets(self._previous_decision_history_item)
-      for decision in previous_decisions:
+      for previous_decision in previous_decisions:
         verdict = self._get(self._decision_bar_verdict)
         self.validate_rescind_decision_info_style(verdict)
         revision = self._get(self._decision_bar_version)
@@ -104,36 +116,18 @@ class RegisterDecisionCard(BaseCard):
           assert 'Rescinded' in rescinded.text, rescinded.text
           self.validate_rescind_decision_info_rescinded_flag(rescinded)
         # Expand the decision and check contents
-        decision.click()
-        decision_preamble = decision.find_element(*self._decision_bar_contents_preamble)
+        previous_decision.click()
+        decision_preamble = previous_decision.find_element(*self._decision_bar_contents_preamble)
         assert 'Letter sent to Author:' in decision_preamble.text, decision_preamble.text
         self.validate_manuscript_h4_style(decision_preamble)
-        decision_letter = decision.find_element(*self._decision_bar_contents_letter)
+        decision_letter = previous_decision.find_element(*self._decision_bar_contents_letter)
         self.validate_application_ptext(decision_letter)
-        decision.click()
-    decision = self.register_decision(decision=False, commit=False)
-    logging.info('Decision is {0}.'.format(decision))
+        previous_decision.click()
+    decision, reject_selection = self.register_decision(decision=False, commit=False)
     if decision == 'Reject':
       letter_template = self._get(self._letter_template_placeholder_paragraph)
       assert 'Please select the template letter and then edit further.' in letter_template.text, \
           letter_template.text
-      template_selector = self._get(self._letter_template_reject_selector)
-      default_selection = self._get(self._letter_template_reject_selected)
-      assert 'Editor Decision - Reject After Review' in default_selection.text, \
-          default_selection.text
-      template_selector.click()
-      expected_reject_selections = ['Editor Decision - Reject After Review',
-                                    'Editor Decision - Reject After Review CJs',
-                                    'Editor Decision - Reject After Review ONE',
-                                    'Reject After Review ONE',
-                                    'Reject After Revision and Re-review ONE']
-      reject_selections = self._gets(self._letter_template_reject_selections)
-      for selection in reject_selections:
-        assert selection.text in expected_reject_selections, selection.text
-      reject_selection = random.choice(expected_reject_selections)
-      logging.info('Rejection template selection is {0}'.format(reject_selection))
-      template_selector_input = self._get(self._letter_template_reject_search_input)
-      template_selector_input.send_keys(reject_selection + Keys.ENTER)
     to_label = self._get(self._letter_template_to_field_label)
     assert 'To:' in to_label.text, to_label.text
     self._letter_template_to_display_field = (By.CSS_SELECTOR, 'input.to-field')
@@ -159,22 +153,20 @@ class RegisterDecisionCard(BaseCard):
                                              'your wish to present your work in an Open Access '
                                              'publication and so suggest, as an alternative, '
                                              'submitting to PLOS ONE (www.plosone.org).',
-                        'Reject-RAR-ONE': '[ADD THE FOLLOWING IF APPROPRIATE AND ONLY IF THE PAPER '
-                                          'IS NOT CLEARLY FLAWED:  While we cannot consider your '
-                                          'manuscript further for publication in PLOS Wombat, we '
-                                          'very much appreciate your wish to present your work in '
-                                          'an Open Access publication and so suggest, as an '
-                                          'alternative, submitting to PLOS ONE (www.plosone.org).',
-                        'Reject-RARAR-ONE': ' In this case, your article was also assessed by the '
-                                            'Academic Editor who saw the original version [EDIT '
-                                            'HERE if not re-reviewed: and by several independent '
-                                            'reviewers. Based on the reviews, I regret that we '
-                                            'will not be able to accept this manuscript for '
-                                            'publication in the journal. As you will see, the '
-                                            'reviewers continue to have concerns about [...EDIT '
-                                            'HERE....].] These seem to us sufficiently serious '
-                                            'that we cannot encourage you to revise the manuscript '
-                                            'further.',
+                        'Reject-RAR-ONE': 'While we cannot consider your manuscript further for '
+                                          'publication in PLOS Wombat, we very much appreciate '
+                                          'your wish to present your work in an Open Access '
+                                          'publication and so suggest, as an alternative, '
+                                          'submitting to PLOS ONE (www.plosone.org).',
+                        'Reject-RARAR-ONE': 'In this case, your article was also assessed by the '
+                                            'Academic Editor who saw the original version and by '
+                                            'several independent reviewers. Based on the reviews, '
+                                            'I regret that we will not be able to accept this '
+                                            'manuscript for publication in the journal. As you '
+                                            'will see, the reviewers continue to have concerns '
+                                            'about [...EDIT HERE....]. These seem to us '
+                                            'sufficiently serious that we cannot encourage you to '
+                                            'revise the manuscript further.',
                         'MajorRev': "In light of the reviews, we will not be able to accept the "
                                     "current version of the manuscript, but we would welcome "
                                     "resubmission of a much-revised version that takes into "
@@ -203,7 +195,6 @@ class RegisterDecisionCard(BaseCard):
         assert template_letters['Reject-RAR-ONE'] in letter_text, letter_text
       else:
         assert template_letters['Reject-RARAR-ONE'] in letter_text, letter_text
-  time.sleep(5)
 
   def register_decision(self, decision='', commit=True):
     """
@@ -211,7 +202,10 @@ class RegisterDecisionCard(BaseCard):
     :param commit:
     :param decision: decision to mark, accepted values:
     'Accept', 'Reject', 'Major Revision' and 'Minor Revision' if no decision, will be generated
+    returns: decision (For the case where a random decision was specified) and reject_selection
+        (if decision == 'Reject')
     """
+    reject_selection = ''
     # APERTA-7502 This alert no longer exists, but it should
     # try:
     #   alert = self._get(self._status_alert)
@@ -222,6 +216,7 @@ class RegisterDecisionCard(BaseCard):
     #   logging.info('Manuscript is in submitted state.')
     if not decision:
       decision = self._make_a_decision(decision=False)
+    logging.info('Decision is {0}.'.format(decision))
     decision_d = {'Reject': 0, 'Major Revision': 1, 'Minor Revision': 2, 'Accept': 3}
     decision_labels = self._gets(self._decision_labels)
     # There needs to be a delay on load of the card, or the selection will not trigger the
@@ -231,19 +226,38 @@ class RegisterDecisionCard(BaseCard):
     # Apparently there is some background work here that can put a spinner in the way
     # adding sleep to give it time
     time.sleep(3)
+    if decision == 'Reject':
+      default_selection = self._get(self._letter_template_reject_selected)
+      assert 'Editor Decision - Reject After Review' in default_selection.text, \
+        default_selection.text
+      reject_selection = random.choice(expected_reject_selections)
+      logging.info('Rejection template selection is {0}'.format(reject_selection))
+      template_selector = self._get(self._letter_template_reject_selector)
+      template_selector.click()
+      reject_selections = self._gets(self._letter_template_reject_selection)
+      for selection in reject_selections:
+          assert selection.text in expected_reject_selections, selection.text
+      template_selector_input = self._get(self._letter_template_reject_search_input)
+      template_selector_input.send_keys(reject_selection + Keys.ENTER)
     if commit:
       # click on register decision and email the author
       self._get(self._register_decision_button).click()
       # give some time to allow complete to check automatically
       time.sleep(2)
       self.click_close_button()
+    return decision, reject_selection
 
-  def _make_a_decision(self, decision):
+  @staticmethod
+  def _make_a_decision(decision):
     """
     Return a decision to make
     :return: decision
     """
-    decisions = ['Reject', 'Major Revision', 'Minor Revision', 'Accept']
+    decisions = ['Reject',
+                 'Major Revision',
+                 'Minor Revision',
+                 'Accept'
+                 ]
     if not decision:
       decision = random.choice(decisions)
-    return(decision)
+    return decision

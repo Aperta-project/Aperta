@@ -15,7 +15,7 @@ from Base.Resources import users, editorial_users, staff_admin_login
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Cards.register_decision_card import RegisterDecisionCard
-from Pages.dashboard import DashboardPage
+
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -31,6 +31,8 @@ class RegisterDecisionCardTest(CommonTest):
   4. Email should be sent to creating author/corresponding author
   5. The publishing_state should be updated accordingly
   6. The version should be updated accordingly
+  TODO: Modify the template, without registering the decision, close, open, validate presence of
+          edits.
   """
 
   def test_smoke_register_decision_style(self):
@@ -85,7 +87,7 @@ class RegisterDecisionCardTest(CommonTest):
     regdec.validate_card_header(paper_id)
     regdec.validate_styles()
 
-  def test_register_decision_actions(self):
+  def test_core_register_decision_actions(self):
     """
     test_register_decision: Validates the elements, styles and functions of the register decision
       card from new document creation through initial_decision, resubmission and then registering a
@@ -108,7 +110,8 @@ class RegisterDecisionCardTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
     paper_id = manuscript_page.get_paper_id_from_url()
-    time.sleep(2)
+    manuscript_page._wait_for_element(manuscript_page._get(
+        manuscript_page._manuscript_viewer_status_area))
     # figures
     manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Figures')
@@ -133,7 +136,6 @@ class RegisterDecisionCardTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page._wait_for_element(workflow_page._get(workflow_page._initial_decision_card))
     workflow_page.click_card('initial_decision')
-    # time.sleep(3)
     initial_decision = InitialDecisionCard(self.getDriver())
     assert initial_decision._get(initial_decision._decision_letter_textarea).text == ''
     initial_decision.execute_decision('invite')
@@ -144,10 +146,9 @@ class RegisterDecisionCardTest(CommonTest):
     self.cas_login(email=creator_user['email'])
     self._driver.get(paper_url)
     self._driver.navigated = True
-    time.sleep(2)
     keep_waiting = True
     while keep_waiting:
-      time.sleep(5)
+      time.sleep(1)
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
       if 'full submit' in paper_title_from_page.encode('utf8'):
         continue
@@ -168,14 +169,10 @@ class RegisterDecisionCardTest(CommonTest):
     self._driver.get(paper_workflow_url)
     # go to card
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the elements to attach to DOM, otherwise failures
-    time.sleep(2)
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._register_decision_card))
     workflow_page.click_card('register_decision')
-    # time.sleep(3)
     register_decision = RegisterDecisionCard(self.getDriver())
-    decisions = ('Accept', 'Reject', 'Major Revision', 'Minor Revision')
-    decision = random.choice(decisions)
-    register_decision.register_decision(decision)
+    register_decision.register_decision()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

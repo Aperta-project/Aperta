@@ -22,7 +22,7 @@ set :sidekiq_pidfile, '/var/www/tahi/current/tmp/pids/sidekiq.pid'
 set :rails_env, 'production'
 set :rack_env, 'production'
 # Teamcity sets BRANCH_NAME
-set :branch, ENV['BRANCH_NAME'] || 'master'
+set :branch, ENV['BRANCH_NAME'] or fail 'Please set $BRANCH_NAME'
 
 # Load from an env file managed by salt.
 fetch(:bundle_bins).each do |command|

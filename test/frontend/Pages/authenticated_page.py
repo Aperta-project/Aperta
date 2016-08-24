@@ -1843,6 +1843,71 @@ class AuthenticatedPage(PlosPage):
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
 
+  def validate_rescind_decision_success_style(msg):
+    """
+    Ensure consistency in rendering success alerts for rescind decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('line-height') == '20px', \
+        msg.value_of_css_property('line-height')
+
+
+  def validate_rescind_decision_info_style(msg):
+    """
+    Ensure consistency in rendering informational alerts for rescind decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('background-color') == aperta_grey_xlight, \
+        msg.value_of_css_property('background-color')
+    assert msg.value_of_css_property('line-height') == '19.8px', \
+        msg.value_of_css_property('line-height')
+
+  def validate_rescind_decision_info_revision_style(msg):
+    """
+    Ensure consistency in rendering revision information in informational alerts for rescind
+      decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('line-height') == '19.8px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('font-weight') == 700, msg.value_of_css_property('font-weight')
+
+  def validate_rescind_decision_info_rescinded_flag(msg):
+    """
+    Ensure consistency in rendering rescinded information in informational alerts for rescind
+      decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+      msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('background-color') == 'rgba(108, 108, 108, 1)', \
+      msg.value_of_css_property('background-color')
+    assert msg.value_of_css_property('line-height') == '19.8px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('font-weight') == 700, msg.value_of_css_property('font-weight')
+
   # Avatar Styles =============================
   @staticmethod
   def validate_large_avatar_style(avatar):

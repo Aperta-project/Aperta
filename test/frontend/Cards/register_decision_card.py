@@ -199,7 +199,8 @@ class RegisterDecisionCard(BaseCard):
   def register_decision(self, decision='', commit=True):
     """
     Register decision on publishing manuscript
-    :param commit:
+    :param commit: boolean, default to True - determines whether to commit the decision by emailing
+      the author, if false, just selects a draft.
     :param decision: decision to mark, accepted values:
     'Accept', 'Reject', 'Major Revision' and 'Minor Revision' if no decision, will be generated
     returns: decision (For the case where a random decision was specified) and reject_selection

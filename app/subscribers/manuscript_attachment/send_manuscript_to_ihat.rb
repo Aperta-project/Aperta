@@ -5,6 +5,8 @@ class ManuscriptAttachment::SendManuscriptToIhat
 
     if manuscript_attachment.did_file_change?
       ProcessManuscriptWorker.perform_async(manuscript_attachment.id)
+    else
+      manuscript_attachment.paper.update!(processing: false)
     end
   end
 end

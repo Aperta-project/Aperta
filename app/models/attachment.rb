@@ -80,6 +80,7 @@ class Attachment < ActiveRecord::Base
       self.title = build_title
       self.status = STATUS_DONE
       self.uploaded_by = uploaded_by
+      self.updated_at = Time.zone.now
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!

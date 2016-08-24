@@ -15,7 +15,7 @@ shared_examples_for "an unauthenticated json request" do
 end
 
 shared_examples_for "a forbidden json request" do
-  it "returns 401" do
+  it "returns 403" do
     do_request
     expect(response.status).to eq(403)
   end

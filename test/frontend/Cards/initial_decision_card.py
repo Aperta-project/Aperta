@@ -25,9 +25,9 @@ class InitialDecisionCard(BaseCard):
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
-    # TODO: Find out why class_name and tag_name locator not working here
-    # self._register_decision_btn = (By.CLASS_NAME, 'button-primary')
-    self._alert_info = (By.CLASS_NAME, 'alert-info')
+    self._decision_alert = (By.CLASS_NAME, 'rescind-decision-container')
+    self._decision_verdict = (By.CLASS_NAME, 'rescind-decision-verdict')
+    self._rescind_button = (By.CLASS_NAME, 'rescind-decision-button')
 
    # POM Actions
   def validate_styles(self):
@@ -75,12 +75,11 @@ class InitialDecisionCard(BaseCard):
     self._get(self._register_decision_btn).click()
     time.sleep(5)
     # look for alert info
-    alert_msg = self._get(self._alert_info)
+    decision_msg = self._get(self._decision_alert)
     if choice != 'reject':
-      assert "An initial decision of 'Invite full submission' decision has been made." in \
-          alert_msg.text, alert_msg.text
+      assert "A decision of Invite full submission has been registered." in \
+          decision_msg.text, decision_msg.text
     else:
-      assert "An initial decision of 'Reject' decision has been made." in alert_msg.text, alert_msg.text
+      assert "A final decision of Reject has been registered." in alert_msg.text, alert_msg.text
     self.click_close_button()
-    time.sleep(.5)
     return choice

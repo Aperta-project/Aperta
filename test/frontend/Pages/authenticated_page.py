@@ -227,7 +227,7 @@ class AuthenticatedPage(PlosPage):
     # The following block needs to be moved into a standardized style validation in authenticated_page.py
     # Further a bug should be filed to note the lack of any definition of these elements in a style_guide of any kind
     # assert editable.value_of_css_property('font-size') == '10px'
-    # assert editable.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert editable.value_of_css_property('color') == aperta_green
     # assert editable.value_of_css_property('font-weight') == '700'
     # assert application_typeface in editable.value_of_css_property('font-family')
     # assert editable.value_of_css_property('text-transform') == 'uppercase'
@@ -247,12 +247,12 @@ class AuthenticatedPage(PlosPage):
     #             'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
     #             '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
     #             '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
-    # assert recent_activity_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert recent_activity_icon.value_of_css_property('color') == aperta_green
     recent_activity_text = self._get(self._recent_activity_label)
     assert recent_activity_text
     assert 'Recent Activity' in recent_activity_text.text, recent_activity_text.text
     # assert recent_activity_text.value_of_css_property('font-size') == '10px'
-    # assert recent_activity_text.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert recent_activity_text.value_of_css_property('color') == aperta_green
     # assert recent_activity_text.value_of_css_property('font-weight') == '700'
     # assert application_typeface in recent_activity_text.value_of_css_property('font-family')
     # assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
@@ -262,7 +262,7 @@ class AuthenticatedPage(PlosPage):
     assert discussions_icon
     # assert discussions_icon.value_of_css_property('font-family') == 'FontAwesome'
     # assert discussions_icon.value_of_css_property('font-size') == '16px'
-    # assert discussions_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert discussions_icon.value_of_css_property('color') == aperta_green
     # assert discussions_icon.value_of_css_property('font-weight') == '400'
     # assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
     # assert discussions_icon.value_of_css_property('font-style') == 'normal'
@@ -669,7 +669,7 @@ class AuthenticatedPage(PlosPage):
     :return: Void function
     """
     # This color is not represented in the tahi palette
-    assert border.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', border.value_of_css_property('color')
+    assert border.value_of_css_property('color') == aperta_black, border.value_of_css_property('color')
 
   # Heading Styles ===========================
   @staticmethod
@@ -685,7 +685,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-size') == '48px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '52.8px', title.value_of_css_property('line-height')
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_h2_style(title):
@@ -699,7 +699,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_h3_style(title):
@@ -713,7 +713,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '26.4px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_h4_style(title):
@@ -727,7 +727,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '19.8px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h1_style(title):
@@ -741,7 +741,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '39.6px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h2_style(title):
@@ -755,7 +755,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h3_style(title):
@@ -769,7 +769,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '26.4px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   @staticmethod
   def validate_label_style(label):
@@ -782,7 +782,7 @@ class AuthenticatedPage(PlosPage):
     assert label.value_of_css_property('font-size') == '18px', label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
     assert label.value_of_css_property('line-height') == '25.7167px', label.value_of_css_property('line-height')
-    assert label.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', label.value_of_css_property('color')
+    assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h4_style(title):
@@ -796,7 +796,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '19.8px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   # This seems out of bounds - this should conform to one of the above styles - report as a bug
   @staticmethod
@@ -817,7 +817,7 @@ class AuthenticatedPage(PlosPage):
   # This method is out of bounds and should not be here
   @staticmethod
   def validate_modal_title_style(title, font_size='14px', font_weight='400',
-                                 line_height='20px', color='rgba(51, 51, 51, 1)'):
+                                 line_height='20px', color=aperta_black):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
@@ -850,7 +850,7 @@ class AuthenticatedPage(PlosPage):
         title.value_of_css_property('line-height')
     assert title.value_of_css_property('font-weight') == '400', \
         title.value_of_css_property('font-weight')
-    assert title.value_of_css_property('color') == 'rgba(135, 135, 135, 1)', \
+    assert title.value_of_css_property('color') == aperta_grey_dark, \
         title.value_of_css_property('color')
 
   @staticmethod
@@ -864,7 +864,7 @@ class AuthenticatedPage(PlosPage):
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('line-height') == '40px', title.value_of_css_property('line-height')
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
   # Ordinary Text Styles ============================
   @staticmethod
@@ -880,7 +880,7 @@ class AuthenticatedPage(PlosPage):
     assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert paragraph.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', paragraph.value_of_css_property('color')
+    assert paragraph.value_of_css_property('color') == aperta_black, paragraph.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_ptext(paragraph):
@@ -895,7 +895,7 @@ class AuthenticatedPage(PlosPage):
     assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert paragraph.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', paragraph.value_of_css_property('color')
+    assert paragraph.value_of_css_property('color') == aperta_black, paragraph.value_of_css_property('color')
 
   # Link Styles ==============================
   @staticmethod
@@ -982,7 +982,7 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
     # This color is not represented in the tahi palette
-    assert link.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == aperta_black, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   # List Styles ==============================
@@ -997,7 +997,7 @@ class AuthenticatedPage(PlosPage):
     assert olul.value_of_css_property('font-size') == '14px', olul.value_of_css_property('font-size')
     assert olul.value_of_css_property('line-height') == '20px', olul.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert olul.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', olul.value_of_css_property('color')
+    assert olul.value_of_css_property('color') == aperta_black, olul.value_of_css_property('color')
 
   # Button Styles ============================
   @staticmethod
@@ -1632,7 +1632,7 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
         field.value_of_css_property('font-weight')
-    assert field.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
+    assert field.value_of_css_property('color') == aperta_black, \
         field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '18px', \
         field.value_of_css_property('line-height')
@@ -1654,7 +1654,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in field.value_of_css_property('font-family')
     assert field.value_of_css_property('font-size') == '14px', field.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert field.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', field.value_of_css_property('color')
+    assert field.value_of_css_property('color') == aperta_black, field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '20px', field.value_of_css_property('line-height')
     assert field.value_of_css_property('text-overflow') == 'ellipsis', field.value_of_css_property('text-overflow')
     assert field.value_of_css_property('margin-right') == '26px', field.value_of_css_property('margin-right')
@@ -1719,7 +1719,7 @@ class AuthenticatedPage(PlosPage):
     assert checkbox.value_of_css_property('font-weight') == '400', checkbox.value_of_css_property('font-weight')
     assert checkbox.value_of_css_property('font-style') == 'normal', checkbox.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert checkbox.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', checkbox.value_of_css_property('color')
+    assert checkbox.value_of_css_property('color') == aperta_black, checkbox.value_of_css_property('color')
     assert checkbox.value_of_css_property('line-height') == '20px', checkbox.value_of_css_property('line-height')
     assert checkbox.value_of_css_property('margin-right') == '20px', checkbox.value_of_css_property('margin-right')
     assert checkbox.value_of_css_property('margin-bottom') == '5px', checkbox.value_of_css_property('margin-bottom')
@@ -1735,7 +1735,7 @@ class AuthenticatedPage(PlosPage):
     assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
     assert label.value_of_css_property('vertical-align') == 'middle', label.value_of_css_property('vertical-align')
     # This color is not represented in the style guide
-    assert label.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', label.value_of_css_property('color')
+    assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
     assert label.value_of_css_property('margin-right') == '20px', label.value_of_css_property('margin-right')
 
@@ -1752,7 +1752,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the tahi palette
-    assert msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == aperta_black, msg.value_of_css_property('color')
     assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
     assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
@@ -1767,7 +1767,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     # assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide as a color and is not the color of the actual implementation
-    # assert msg.value_of_css_property('color') == 'rgba(122, 51, 78, 1)', msg.value_of_css_property('color')
+    # assert msg.value_of_css_property('color') == aperta_flash_error, msg.value_of_css_property('color')
     # This color is not represented in the style guide
     # assert msg.value_of_css_property('background-color') == 'rgba(247, 239, 233, 1)', \
     #    msg.value_of_css_property('background-color')
@@ -1786,7 +1786,7 @@ class AuthenticatedPage(PlosPage):
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     assert msg.value_of_css_property('color') == aperta_green, msg.value_of_css_property('color')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
+    assert msg.value_of_css_property('background-color') == aperta_flash_success_bkgrnd, \
         msg.value_of_css_property('background-color')
     assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
@@ -1802,9 +1802,9 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('color') == 'rgba(146, 139, 113, 1)', msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == aperta_flash_info, msg.value_of_css_property('color')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == 'rgba(242, 242, 213, 1)', \
+    assert msg.value_of_css_property('background-color') == aperta_flash_info_bkgrnd, \
         msg.value_of_css_property('background-color')
     assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
@@ -1843,6 +1843,70 @@ class AuthenticatedPage(PlosPage):
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
 
+  def validate_rescind_decision_success_style(msg):
+    """
+    Ensure consistency in rendering success alerts for rescind decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == aperta_black, \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('line-height') == '20px', \
+        msg.value_of_css_property('line-height')
+
+
+  def validate_rescind_decision_info_style(msg):
+    """
+    Ensure consistency in rendering informational alerts for rescind decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == aperta_black, \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('background-color') == aperta_grey_xlight, \
+        msg.value_of_css_property('background-color')
+    assert msg.value_of_css_property('line-height') == '19.8px', \
+        msg.value_of_css_property('line-height')
+
+  def validate_rescind_decision_info_revision_style(msg):
+    """
+    Ensure consistency in rendering revision information in informational alerts for rescind
+      decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
+    assert msg.value_of_css_property('color') == aperta_black, \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('line-height') == '19.8px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('font-weight') == 700, msg.value_of_css_property('font-weight')
+
+  def validate_rescind_decision_info_rescinded_flag(msg):
+    """
+    Ensure consistency in rendering rescinded information in informational alerts for rescind
+      decision elements
+    :param msg: alert message to validate
+    """
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+      msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    # This color is not represented in the tahi palette
+    assert msg.value_of_css_property('color') == aperta_black, \
+        msg.value_of_css_property('color')
+    assert msg.value_of_css_property('background-color') == 'rgba(108, 108, 108, 1)', \
+      msg.value_of_css_property('background-color')
+    assert msg.value_of_css_property('line-height') == '19.8px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('font-weight') == 700, msg.value_of_css_property('font-weight')
+
   # Avatar Styles =============================
   @staticmethod
   def validate_large_avatar_style(avatar):
@@ -1854,7 +1918,7 @@ class AuthenticatedPage(PlosPage):
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert avatar.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('color') == aperta_black, avatar.value_of_css_property('color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
     assert avatar.value_of_css_property('width') == '160px', avatar.value_of_css_property('width')
@@ -1870,8 +1934,8 @@ class AuthenticatedPage(PlosPage):
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert avatar.value_of_css_property('color') == 'rgba(15, 116, 0, 1)', avatar.value_of_css_property('color')
-    assert avatar.value_of_css_property('background-color') == 'rgba(142, 203, 135, 1)', \
+    assert avatar.value_of_css_property('color') == aperta_green_dark, avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('background-color') == aperta_green_light, \
         avatar.value_of_css_property('background-color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
@@ -1886,7 +1950,7 @@ class AuthenticatedPage(PlosPage):
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert avatar.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('color') == aperta_black, avatar.value_of_css_property('color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
     assert avatar.value_of_css_property('width') == '32px', avatar.value_of_css_property('width')
@@ -1902,7 +1966,7 @@ class AuthenticatedPage(PlosPage):
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert avatar.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('color') == aperta_black, avatar.value_of_css_property('color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
     assert avatar.value_of_css_property('width') == '25px', avatar.value_of_css_property('width')
@@ -1919,7 +1983,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in msg.value_of_css_property('font-size'), msg.value_of_css_property('font-size')
     assert msg.value_of_css_property('font-size') == '17px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('line-height') == 'rgba(51, 51, 51, 1)', msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('line-height') == aperta_black, msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('line-height') == '24.2833px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('padding-top') == '0px', msg.value_of_css_property('padding-top')
     assert msg.value_of_css_property('padding-right') == '15px', msg.value_of_css_property('padding-right')
@@ -1936,7 +2000,7 @@ class AuthenticatedPage(PlosPage):
         timestamp.value_of_css_property('font-size')
     assert timestamp.value_of_css_property('font-size') == '14px', timestamp.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert timestamp.value_of_css_property('line-height') == 'rgba(51, 51, 51, 1)', \
+    assert timestamp.value_of_css_property('line-height') == aperta_black, \
         timestamp.value_of_css_property('line-height')
     assert timestamp.value_of_css_property('line-height') == '20px', timestamp.value_of_css_property('line-height')
     assert timestamp.value_of_css_property('padding-top') == '0px', timestamp.value_of_css_property('padding-top')
@@ -1956,7 +2020,7 @@ class AuthenticatedPage(PlosPage):
         spinner.value_of_css_property('font-family')
     assert spinner.value_of_css_property('font-size') == '14px', spinner.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert spinner.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', spinner.value_of_css_property('color')
+    assert spinner.value_of_css_property('color') == aperta_black, spinner.value_of_css_property('color')
     assert spinner.value_of_css_property('line-height') == '20px', spinner.value_of_css_property('line-height')
     assert spinner.value_of_css_property('width') == '50px', spinner.value_of_css_property('width')
     assert spinner.value_of_css_property('height') == '50px', spinner.value_of_css_property('height')
@@ -1974,6 +2038,6 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('font-weight') == '700', th.value_of_css_property('font-weight')
     assert th.value_of_css_property('line-height') == '20px', th.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert th.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', th.value_of_css_property('color')
+    assert th.value_of_css_property('color') == aperta_black, th.value_of_css_property('color')
     assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
     assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')

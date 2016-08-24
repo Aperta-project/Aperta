@@ -5,9 +5,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, super_admin_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, \
-    handling_editor_login, internal_editor_login, pub_svcs_login
+from Base.Resources import users
 from frontend.Tasks.authors_task import AuthorsTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
@@ -16,20 +14,6 @@ from frontend.common_test import CommonTest
 This test case validates the Authors Task.
 """
 __author__ = 'sbassi@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         reviewer_login,
-         handling_editor_login,
-         academic_editor_login,
-         internal_editor_login,
-         staff_admin_login,
-         pub_svcs_login,
-         super_admin_login,
-         ]
 
 
 @MultiBrowserFixture
@@ -41,11 +25,12 @@ class AuthorsTaskTest(CommonTest):
      - validate trying to close a task without completing author profile
   """
 
-  def test_validate_components(self):
+  def test_smoke_validate_components_styles(self):
     """
     test_authors_task: Validates the elements, styles and functions for the author task
     :return: void function
     """
+    logging.info('test_smoke_validate_components_styles')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -58,11 +43,12 @@ class AuthorsTaskTest(CommonTest):
     authors_task = AuthorsTask(self.getDriver())
     authors_task.validate_styles()
 
-  def test_validate_add_delete_individual_author(self):
+  def test_core_add_delete_individual_author(self):
     """
     test_authors_task: Validates add and delete individual author functions for the author task
     :return: void function
     """
+    logging.info('test_core_add_delete_individual_author')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -92,11 +78,12 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_completion_error()
     return self
 
-  def test_validate_add_delete_group_author(self):
+  def test_core_add_delete_group_author(self):
     """
     test_authors_task: Validates add and delete group author functions for the author task
     :return: void function
     """
+    logging.info('test_core_add_delete_group_author')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])

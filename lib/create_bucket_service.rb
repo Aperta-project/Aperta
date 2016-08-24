@@ -4,8 +4,9 @@ class CreateBucketService
   PREFIX = 'tahi-user-dev'
 
   def initialize(name: nil)
+    @region = 'us-west-1' # northern california
     Aws.config.update(
-      region: 'us-west-1' # northern california
+      region: @region
     )
     @name = name
   end
@@ -15,8 +16,8 @@ class CreateBucketService
     create_user
     create_policy
     create_access_keys
-    print_access_keys
-    print_bucket_name
+    set_cors
+    print_env
   end
 
   private
@@ -44,13 +45,27 @@ class CreateBucketService
     @key_pair = @user.create_access_key_pair
   end
 
-  def print_access_keys
-    puts "AWS_ACCESS_KEY_ID=#{@key_pair.access_key_id}"
-    puts "AWS_SECRET_ACCESS_KEY=#{@key_pair.secret}"
+  def set_cors
+    Aws::S3::BucketCors.new(@name).put(
+      cors_configuration: {
+        cors_rules: [
+          {
+            allowed_headers: ["*"],
+            allowed_origins: ["*"], # required
+            allowed_methods: ['PUT', 'POST'],
+            max_age_seconds: 3600
+          }
+        ]
+      }
+    )
   end
 
-  def print_bucket_name
-    puts "S3_BUCKET=#{name}"
+  def print_env
+    puts "AWS_ACCESS_KEY_ID=#{@key_pair.access_key_id}"
+    puts "AWS_SECRET_ACCESS_KEY=#{@key_pair.secret}"
+    puts "AWS_REGION=#{@region}"
+    puts "S3_BUCKET=#{@name}"
+    puts "S3_URL=https://#{@name}.s3-#{@region}.amazonaws.com/"
   end
 
   def policy_document

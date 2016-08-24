@@ -5,8 +5,15 @@ class CreateBucketService
 
   def initialize(name: nil)
     @region = 'us-west-1' # northern california
+    STDOUT.write("Please enter the AWS access key of a user with permissions \
+to set up a new bucket: ")
+    access_key_id = STDIN.gets.chomp
+    STDOUT.write("Please enter the AWS **secret** key of a the same user: ")
+    secret_access_key = STDIN.gets.chomp
     Aws.config.update(
-      region: @region
+      region: @region,
+      access_key_id: access_key_id,
+      secret_access_key: secret_access_key
     )
     @name = name
   end

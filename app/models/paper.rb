@@ -256,7 +256,7 @@ class Paper < ActiveRecord::Base
   TERMINAL_STATES = [:accepted, :rejected]
 
   def snapshottable_things
-    [self].concat(tasks)
+    [].concat(tasks)
       .concat(figures)
       .concat(supporting_information_files)
       .concat(adhoc_attachments)

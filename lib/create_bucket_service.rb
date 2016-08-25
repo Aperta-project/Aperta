@@ -8,8 +8,15 @@ class CreateBucketService
     STDOUT.write("Please enter an AWS access key of a user with permissions \
 to set up a new bucket: ")
     access_key_id = STDIN.gets.chomp
+
     STDOUT.write("Please enter the SECRET key of the same access key: ")
     secret_access_key = STDIN.gets.chomp
+
+    STDOUT.write("Please enter the domain that will be accessing this bucket \
+(enter for wildcard *): ")
+    @allowed_origins = STDIN.gets.chomp
+    @allowed_origins = '*' if @allowed_origins.blank?
+
     Aws.config.update(
       region: @region,
       access_key_id: access_key_id,
@@ -61,7 +68,7 @@ to set up a new bucket: ")
         cors_rules: [
           {
             allowed_headers: ["*"],
-            allowed_origins: ["*"], # required
+            allowed_origins: [@allowed_origins],
             allowed_methods: ['PUT', 'POST'],
             max_age_seconds: 3600
           }

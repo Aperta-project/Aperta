@@ -48,6 +48,15 @@ module('Integration: Authorized Profile View', {
         JSON.stringify({"countries":["doesntmatter"]})
       ]
     );
+    server.respondWith(
+      'GET',
+      '/api/affiliations/user/1',
+      [
+        200,
+        { 'content-type': 'application/json'},
+        JSON.stringify({})
+      ]
+    );
     server.respondWith('GET',
                        '/api/journals',
                        [

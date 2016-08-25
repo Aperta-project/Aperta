@@ -180,14 +180,20 @@ external_editorial_users = [cover_editor_login,
 
 # Define connector information for Aperta's Tahi component postgres instance
 # NOTA BENE: Production data should NEVER be included in this file.
-# Staging data (Heroku CI)
-psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-83-5-30.compute-1.amazonaws.com')
-psql_port = getenv('APERTA_PSQL_PORT', '6262')
-psql_uname = getenv('APERTA_PSQL_USER', 'u2kgbfse1i57n')
+# DEV/CI
+psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
+psql_port = getenv('APERTA_PSQL_PORT', '5432')
+psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
 psql_pw = getenv('APERTA_PSQL_PW', '')
-psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
-# Release Candidate data (SFO)
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
+# QA/RC
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.sfo.plos.org')
+# psql_port = getenv('APERTA_PSQL_PORT', '5432')
+# psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
+# psql_pw = getenv('APERTA_PSQL_PW', '')
+# psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
+# Stage
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-401.sfo.plos.org')
 # psql_port = getenv('APERTA_PSQL_PORT', '5432')
 # psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
 # psql_pw = getenv('APERTA_PSQL_PW', '')

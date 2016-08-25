@@ -157,9 +157,6 @@ class TahiEnv
   required :DATABASEDOTCOM_USERNAME, if: :salesforce_enabled?
   required :DATABASEDOTCOM_PASSWORD, if: :salesforce_enabled?
 
-  # Segment IO
-  optional :SEGMENT_IO_WRITE_KEY
-
   # Sendgrid
   required :SENDGRID_USERNAME
   required :SENDGRID_PASSWORD

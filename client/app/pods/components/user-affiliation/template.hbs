@@ -1,29 +1,33 @@
-<div class="profile-section">
+<div class="user-affiliation">
 
   <h1>Affiliations:</h1>
-  {{#each model.affiliations as |affiliation|}}
-    <div class="profile-affiliation">
+  {{#each affiliations as |affiliation|}}
+    <div class="affiliation-existing">
       <div class="profile-affiliation-name">{{affiliation.name}}</div>
-      <div class="fa fa-times-circle-o profile-remove-affiliation" {{action "removeAffiliation" affiliation}}></div>
+      <div class="fa fa-times-circle-o affiliation-remove" {{action "removeAffiliation" affiliation}}></div>
       <div>
-      <div>
-        {{affiliation.department}}
-      </div>
-      <div>
-        {{affiliation.title}}
-      </div>
-      <div>
-        {{affiliation.country}}
-      </div>
-        {{format-date affiliation.startDate format="ll"}} -
-        {{#if affiliation.isCurrent}}
-          Current
-        {{else}}
-          {{format-date affiliation.endDate format="ll"}}
-        {{/if}}
+        <div>
+          {{affiliation.department}}
+        </div>
+        <div>
+          {{affiliation.title}}
+        </div>
+        <div>
+          {{affiliation.country}}
+        </div>
+          {{#if affiliation.startDate }}
+            {{format-date affiliation.startDate format="ll"}} -
+            {{#if affiliation.isCurrent}}
+              Present
+            {{else}}
+              {{format-date affiliation.endDate format="ll"}}
+            {{/if}}
+          {{/if}}
       </div>
       <div>{{affiliation.email}}</div>
     </div>
+  {{else}}
+    <div> No affiations yet </div>
   {{/each}}
 
   <a class="button-secondary button--green" {{action "showNewAffiliationForm"}}>
@@ -32,12 +36,15 @@
   </a>
 
   {{#if showAffiliationForm}}
-    <div class="profile-affiliations-form animation-fade-in">
+    <div class="affiliations-form animation-fade-in">
       <h3>
         New Affiliation
       </h3>
+      <p>
+        Enter most recent affiliations first
+      </p>
       {{institution-search
-        class="profile-affiliation-field"
+        class="affiliation-field-institution"
         institutionSelected="institutionSelected"
         placeholder="Institution"}}
       {{error-message message=validationErrors.name}}
@@ -45,15 +52,15 @@
       {{input type="text"
               value=newAffiliation.department
               placeholder="Department"
-              class="profile-affiliation-field form-control"}}
+              class="affiliation-field form-control"}}
 
       {{input type="text"
               value=newAffiliation.title
               placeholder="Title"
-              class="profile-affiliation-field form-control"}}
+              class="affiliation-field form-control"}}
 
       {{#if countries.loaded}}
-        {{select-2-single class="profile-affiliation-field"
+        {{select-2-single class="affiliation-field"
                           placeholder="Country"
                           source=formattedCountries
                           selectionSelected="countrySelected"}}
@@ -86,7 +93,7 @@
         {{input type="text"
                 value=newAffiliation.email
                 placeholder="Email Address"
-                class="profile-affiliation-field form-control"}}
+                class="affiliation-field form-control"}}
       </div>
 
       <button class="button-secondary button--green" {{action "commitAffiliation" newAffiliation}}>done</button>

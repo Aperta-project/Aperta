@@ -34,15 +34,18 @@ to set up a new bucket: ")
   end
 
   def create_bucket
-    @bucket = Aws::S3::Bucket.new(name).tap(&:create)
+    @bucket = Aws::S3::Bucket.new(name)
+    @bucket.create unless @bucket.exists?
   end
 
   def create_user
-    @user = Aws::IAM::User.new(name).tap(&:create)
+    @user = Aws::IAM::User.new(name)
+    @user.create unless @user.exists?
   end
 
   def create_policy
-    @user.create_policy(
+    Aws::IAM::Client.new.put_user_policy(
+      user_name: @user.name,
       policy_name: name,
       policy_document: policy_document
     )

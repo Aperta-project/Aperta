@@ -20,6 +20,8 @@ describe Snapshot::AttachmentSerializer do
   let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
   describe '#as_json' do
+    before { attachment.public_resource = true }
+
     it 'serializes to JSON' do
       expect(serializer.as_json).to match hash_including(
         name: 'attachment',

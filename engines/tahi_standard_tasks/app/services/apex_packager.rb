@@ -48,7 +48,7 @@ class ApexPackager
   end
 
   def manuscript_filename
-    extension = @paper.file.path.split('.').last
+    extension = @paper.file.filename.split('.').last
     "#{@paper.manuscript_id}.#{extension}"
   end
 

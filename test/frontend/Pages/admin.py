@@ -183,7 +183,6 @@ class AdminPage(AuthenticatedPage):
     # The elements of this page attach to the DOM in a haphazard way. A little rest seems to smooth
     # things over.
     time.sleep(1)
-    logging.info('Validating Add new journals for ')
     if username == 'asuperadm':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
@@ -307,12 +306,14 @@ class AdminPage(AuthenticatedPage):
         logo_input.send_keys(logo_path)
         save_button.click()
         page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
-        assert len(page_tertiary_journal_count) == db_initial_journal_count + 1
+        assert len(page_tertiary_journal_count) == db_initial_journal_count + 1, \
+            db_initial_journal_count + 1
       else:
         self._actions.move_to_element(cancel_link).perform()
         cancel_link.click()
         page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
-        assert len(page_tertiary_journal_count) == db_initial_journal_count
+        assert len(page_tertiary_journal_count) == db_initial_journal_count, \
+            db_initial_journal_count
 
   def validate_edit_journal(self, username):
     """

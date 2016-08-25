@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - AE country is included in Apex export
 - Discussion Topic title validation
 - Decisions can be rescinded
+- Heroku deploys are quicker now with a single line command
 ### Changed
 - Soft deleting questions and answers. Answers are retained even when questions are marked
   as deleted

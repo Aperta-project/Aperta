@@ -5,11 +5,11 @@ import { task, timeout } from 'ember-concurrency';
 const {
   Component,
   computed,
-  computed: { alias, and, equal, not }
+  computed: { alias, equal, not }
 } = Ember;
 
 /*
- * UI States: closed, show, edit, delete
+ * UI States: closed, show, edit
  */
 
 export default Component.extend({
@@ -20,23 +20,29 @@ export default Component.extend({
     destroyAction: PropTypes.func.isRequired
   },
 
-  invitee: alias('invitation.invitee'),
-
-  displayDestroyButton: not('invitation.accepted'),
-  displayEditButton: and('invitation.pending', 'notClosedState'),
-  displaySendButton: and('invitation.pending', 'notClosedState'),
-
-  uiState: 'closed',
-  closedState: equal('uiState', 'closed'),
-  editState: equal('uiState', 'edit'),
-  notClosedState: not('closedState'),
-
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
   }),
 
   invitationStateClass: computed('invitation.state', function() {
     return 'invitation-state--' + this.get('invitation.state');
+  }),
+
+  invitee: alias('invitation.invitee'),
+
+  displayDestroyButton: computed('invitation.accepted', 'closedState', function() {
+    return !this.get('invitation.accepted') && this.get('notClosedState');
+  }),
+
+  uiState: 'closed',
+  closedState: equal('uiState', 'closed'),
+  notClosedState: not('closedState'),
+  editState: equal('uiState', 'edit'),
+
+  fetchDetails: task(function * (invitation) {
+    const promise = invitation.fetchDetails();
+    yield promise;
+    return promise;
   }),
 
   templateSaved: task(function * () {
@@ -49,8 +55,8 @@ export default Component.extend({
     },
 
     toggleDetails(invitation) {
-      if (this.get('uiState') === 'closed') {
-        invitation.fetchDetails().then(() => {
+      if (this.get('closedState')) {
+        this.get('fetchDetails').perform(invitation).then(()=> {
           this.set('uiState', 'show');
         });
 
@@ -74,10 +80,6 @@ export default Component.extend({
       invitation.save().then(() => {
         this.set('uiState', 'show');
       });
-    },
-
-    confirmDeleteInvitation() {
-      this.set('uiState', 'delete');
     }
   }
 });

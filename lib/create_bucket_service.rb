@@ -42,6 +42,7 @@ to set up a new bucket: ")
 
   def create_bucket
     @bucket = Aws::S3::Bucket.new(name)
+    @updating = @bucket.exists?
     @bucket.create unless @bucket.exists?
   end
 
@@ -59,6 +60,12 @@ to set up a new bucket: ")
   end
 
   def create_access_keys
+    if @updating
+      STDOUT.write("Updating an existing bucket.\n")
+      STDOUT.write("Do you want to create a new access key? (y/n [default])? ")
+      new_bucket = STDIN.gets.chomp
+      return unless new_bucket.downcase[0] == 'y'
+    end
     @key_pair = @user.create_access_key_pair
   end
 
@@ -78,8 +85,10 @@ to set up a new bucket: ")
   end
 
   def print_env
-    puts "AWS_ACCESS_KEY_ID=#{@key_pair.access_key_id}"
-    puts "AWS_SECRET_ACCESS_KEY=#{@key_pair.secret}"
+    if @key_pair.present?
+      puts "AWS_ACCESS_KEY_ID=#{@key_pair.access_key_id}"
+      puts "AWS_SECRET_ACCESS_KEY=#{@key_pair.secret}"
+    end
     puts "AWS_REGION=#{@region}"
     puts "S3_BUCKET=#{@name}"
     puts "S3_URL=https://#{@name}.s3-#{@region}.amazonaws.com/"

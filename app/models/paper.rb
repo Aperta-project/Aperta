@@ -600,8 +600,7 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_submitting_user!(submitting_user)
-    draft.submitting_user = submitting_user
-    # draft.update!(submitting_user: submitting_user)
+    draft.update!(submitting_user: submitting_user)
   end
 
   def assign_doi!

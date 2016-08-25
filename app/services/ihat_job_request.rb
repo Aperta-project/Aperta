@@ -31,7 +31,7 @@ class IhatJobRequest
   end
 
   def self.request_for_epub(epub:, source_url:, metadata: {})
-    callback_url = DownloadManuscriptWorker.build_ihat_callback_url(nil)
+    callback_url = build_ihat_callback_url
 
     TahiEpub::Tempfile.create epub, delete: true do |file|
       request = IhatJobRequest.new(
@@ -46,6 +46,22 @@ class IhatJobRequest
   def self.ihat_recipe_name(url)
     kind = Pathname.new(URI.parse(url).path).extname.delete(".")
     IhatJobRequest.recipe_name(from_format: kind, to_format: 'html')
+  end
+
+  UrlHelpers = Rails.application.routes.url_helpers
+
+  # +build_ihat_callback_url+ is a utility method for use in a controller
+  # context. By default it builds the url using the request object's host and
+  # port, but it can be overriden by the `IHAT_CALLBACK_URL` environment
+  # variable
+  def self.build_ihat_callback_url
+    url = ENV.fetch('IHAT_CALLBACK_URL', UrlHelpers.root_url)
+    uri = URI.parse(url)
+
+    UrlHelpers.ihat_jobs_url(
+      protocol: uri.scheme,
+      host: uri.host,
+      port: uri.port)
   end
 
   private

@@ -1,7 +1,6 @@
-
 namespace :heroku do
   desc <<-DESC.strip_heredoc
-    This deploys to our Heroku environments, tahi-lean-workflow, tahi-sandbox01
+    This deploys to our Heroku environments (defaults to tahi-lean-workflow and tahi-sandbox01).
 
     This optionally takes an app name if one wishes to deploy to a single Heroku environment.
     Examples:
@@ -10,8 +9,9 @@ namespace :heroku do
 
     The first command will deploy to tahi-lean-workflow and tahi-sandbox with version 1.5.1
     The second command will deploy only to tahi-lean-workflow with version 1.5.1
-    DESC
 
+    Note: This will deploy from a release branch on origin, not from a local release branch.
+  DESC
   task :deploy, [:version, :app] => [:environment] do |_, args|
     include Spinner
     DEPLOYING_APPS = ['tahi-lean-workflow', 'tahi-sandbox01']

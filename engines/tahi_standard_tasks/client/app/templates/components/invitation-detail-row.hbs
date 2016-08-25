@@ -9,7 +9,7 @@
       {{/if}}
     </div>
     <div class="invitation-item-body-preview" {{action "toggleDetails" invitation}}>
-      Helloo Bob, lorem ipsum dolor sit amet Helloo Bob, lorem ipsum dolor sit amet Helloo Bob, lorem ipsum dolor sit amet
+      {{strip-html invitation.body}}
     </div>
     <div class="invitation-item-actions">
       {{#if (and invitation.pending notClosedState)}}
@@ -71,12 +71,16 @@
     {{content-editable value=invitation.body
                        class="invitation-edit-body"
                        key-up=(action "saveDuringType")}}
-    <div class="invite-edit-buttons">
-      {{#if templateSaved.isRunning}}
-        <span class="invite-edit-save-message">Your changes have been automatically saved.</span>
-      {{/if}}
-      <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
-      <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
+     <div class="invite-edit-buttons">
+       <div class="invitation-link-alternate">
+        <span class="fa fa-link" aria-hidden="true"></span> Link as an alternate to:
+       </div>
+       <div class="spacer"></div>
+       {{#if templateSaved.isRunning}}
+         <span class="invite-edit-save-message">Your changes have been automatically saved.</span>
+       {{/if}}
+       <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
+       <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
     </div>
   </div>
 {{/if}}

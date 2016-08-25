@@ -234,6 +234,8 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  .spacer { flex-grow: 1; }
 }
 
 .invite-edit-save-message {

@@ -2,8 +2,15 @@ import Ember from 'ember';
 import VEMixin from 'tahi/mixins/validation-errors';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
-export default Ember.Component.extend(VEMixin, EscapeListenerMixin, {
+export default Ember.Component.extend(VEMixin,
+  EscapeListenerMixin, {
+  classNames: ["user-details"],
+
   actions: {
+    showNewAffiliationForm() {
+      this.sendAction('showNewAffiliationForm');
+    },
+
     saveUser() {
       this.get('model').save().then(()=> {
         this.attrs.close();

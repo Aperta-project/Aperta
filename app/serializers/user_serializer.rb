@@ -5,4 +5,6 @@ class UserSerializer < ActiveModel::Serializer
     :full_name,
     :last_name,
     :username
+
+  has_many :affiliations, embed: :id
 end

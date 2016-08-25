@@ -34,7 +34,7 @@ feature "Devise signing in", js: true do
 end
 
 feature "Devise redirect", js: true do
-  let!(:user) { FactoryGirl.create :user, :with_view_profile }
+  let!(:user) { FactoryGirl.create :user }
   scenario "User is redirected after login" do
     page.visit_without_waiting '/profile'
     fill_in('Login', with: user.username)

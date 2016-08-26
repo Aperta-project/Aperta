@@ -47,6 +47,8 @@ test('viewing papers', function(assert) {
   let record   = payload.papers[0];
   let roleName = record.related_users[0].name;
   let lastName = record.related_users[0].users[0].last_name;
+  let submittedDate = record.submittedDate;
+  let firstSubmittedDate = record.firstSubmitted;
 
   visit('/paper_tracker');
   andThen(function() {
@@ -70,6 +72,22 @@ test('viewing papers', function(assert) {
         .trim()
         .match(lastName),
       'User name is displayed'
+    );
+
+    assert.ok(
+      find('.paper-tracker-date-column .paper-version-date')
+        .text()
+        .trim()
+        .match(submittedDate),
+      'Version date is displayed'
+    );
+
+    assert.ok(
+      find('.paper-tracker-date-column .paper-submission-date')
+        .text()
+        .trim()
+        .match(firstSubmittedDate),
+      'Submission date is displayed'
     );
   });
 });

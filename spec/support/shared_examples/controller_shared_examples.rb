@@ -14,6 +14,13 @@ shared_examples_for "an unauthenticated json request" do
   end
 end
 
+shared_examples_for "a forbidden json request" do
+  it "returns 403" do
+    do_request
+    expect(response.status).to eq(403)
+  end
+end
+
 shared_examples_for "a controller rendering an invalid model" do
   it "returns 422 and the model's errors" do
     do_request

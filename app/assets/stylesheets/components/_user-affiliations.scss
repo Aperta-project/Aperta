@@ -1,0 +1,48 @@
+.user-details {
+  .user-affiliation {
+    padding: 250px 0 0px 250px;
+  }
+}
+
+.user-affiliation{
+  margin: 20px 0;
+
+  h1 {
+    margin: 5px 0;
+    color: #999;
+    font-size: 14px;
+  }
+
+  h2 { @include ellipsis; }
+
+  .affiliation-remove {
+    position: absolute;
+    top: 2px;
+    left: -24px;
+    cursor: pointer;
+  }
+
+  .affiliation-existing {
+    position: relative;
+    margin: 5px 0 20px 0;
+    font-size: 18px;
+  }
+
+  .affiliations-form {
+    margin-top: 40px;
+
+    input {
+      margin: 15px 0;
+    }
+    .affiliation-field-institution {
+      width: 251px;
+      input {
+        margin: 0 0;
+      }
+    }
+  }
+
+  .affiliation-field {
+    width: 250px;
+  }
+}

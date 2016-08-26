@@ -59,8 +59,16 @@
               }}
             </th>
             <th class="paper-tracker-date-column">
-              {{sort-link text="Date Submitted"
+              {{sort-link text="Version Date"
                           orderBy="submitted_at"
+                          activeOrderBy=orderBy
+                          activeOrderDir=orderDir
+                          sortAction=(action "sort")
+              }}
+            </th>
+            <th class="paper-tracker-date-column">
+              {{sort-link text="Submission Date"
+                          orderBy="first_submitted_at"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
                           sortAction=(action "sort")

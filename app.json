@@ -192,9 +192,6 @@
     "S3_URL": {
       "required": true
     },
-    "SEGMENT_IO_WRITE_KEY": {
-      "required": true
-    },
     "USE_NED_INSTITUTIONS": {
       "required": true
     }

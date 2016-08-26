@@ -1,7 +1,3 @@
-require 'securerandom'
-require 'aws-sdk'
-require 'create_bucket_service'
-
 namespace :s3 do
   desc <<-DESC.strip_heredoc
           Creates a new S3 bucket, a new AWS user account, and a new policy
@@ -13,6 +9,8 @@ namespace :s3 do
              `tahi-user-dev-\#{uuid}`
        DESC
   task :create_bucket, [:bucket_name] => :environment do |t, args|
+    require 'create_bucket_service'
+
     CreateBucketService.new(name: args[:bucket_name]).call
   end
 end

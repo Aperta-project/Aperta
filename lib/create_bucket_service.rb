@@ -1,3 +1,5 @@
+require 'securerandom'
+require 'aws-sdk'
 
 # rubocop:disable Rails/Output
 class CreateBucketService

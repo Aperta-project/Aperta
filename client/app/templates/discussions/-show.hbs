@@ -19,13 +19,18 @@
                            url=discussionParticipantUrl
                            label="Participants:"
                            displayEmails=true
-                           canManage=(can 'manage_participant' model)
+                           canManage=(can "manage_participant" model)
                            onRemove=(action "removeParticipantByUserId")
                            onSelect=(action "saveNewParticipant")}}
   </div>
 
   <div class="discussions-show-form">
-    {{comment-board-form save="postReply" participants=participants atMentionableStaffUsers=atMentionableStaffUsers}}
+    {{comment-board-form save=(action "postReply")
+                         onChange=(action "commentDidChange")
+                         onCancel=(action "commentDidCancel")
+                         comment=inProgressComment
+                         participants=participants
+                         atMentionableStaffUsers=atMentionableStaffUsers}}
   </div>
 
   <br>

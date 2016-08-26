@@ -3,10 +3,11 @@ import { PropTypes } from 'ember-prop-types';
 
 const {
   computed,
+  Component,
   isEmpty
 } = Ember;
 
-export default Ember.Component.extend({
+export default Component.extend({
   propTypes: {
     participants: PropTypes.array,
     atMentionableStaffUsers: PropTypes.array

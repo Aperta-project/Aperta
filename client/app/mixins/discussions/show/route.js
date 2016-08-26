@@ -45,7 +45,20 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('validationErrors', {});
     this._super(controller, model);
+    this._setupInProgressComment(controller, model);
     model.reload();
+  },
+
+  _setupInProgressComment(controller, model) {
+    window.lscache.setBucket('aperta');
+    const comment = window.lscache.get(
+      'discussion:' + model.get('id')
+    );
+
+    controller.set(
+      'inProgressComment',
+      (Ember.isEmpty(comment) ? '' : comment)
+    );
   },
 
   _pusherEventsId() {

@@ -384,17 +384,11 @@ GEM
     hashie (3.4.2)
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
-    hipchat (1.5.3)
-      httparty
-      mimemagic
     hitimes (1.2.3)
     html_page (0.1.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
-    httparty (0.13.7)
-      json (~> 1.8)
-      multi_xml (>= 0.5.2)
     httpclient (2.6.0.1)
     humanize (1.1.0)
     i18n (0.7.0)
@@ -424,7 +418,6 @@ GEM
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
     mime-types (2.99.2)
-    mimemagic (0.3.1)
     mini_magick (4.3.3)
     mini_portile (0.6.2)
     mini_portile2 (2.1.0)
@@ -729,7 +722,6 @@ DEPENDENCIES
   gepub (~> 0.7.0beta1)
   has_secure_token
   heroku-deflater
-  hipchat
   kaminari
   lograge
   mail_safe

@@ -19,6 +19,21 @@ class InvitationsController < ApplicationController
     respond_with invitation
   end
 
+  def destroy
+    requires_user_can(:manage_invitations, invitation.task)
+    unless invitation.pending?
+      invitation.errors.add(
+        :invited,
+        "This invitation has been sent and must be rescinded."
+      )
+      fail ActiveRecord::RecordInvalid, invitation
+    end
+
+    invitation.destroy!
+
+    respond_with invitation
+  end
+
   def send_invite
     requires_user_can(:manage_invitations, invitation.task)
     send_and_notify(invitation)

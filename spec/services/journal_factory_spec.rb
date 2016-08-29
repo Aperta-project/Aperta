@@ -314,7 +314,7 @@ describe JournalFactory do
             discussion_topic_actions.each do |action|
               expect(permissions).to include(
                 permissions_on_discussion_topic.find_by(action: action)
-              )
+              ), action
             end
           end
         end
@@ -456,7 +456,7 @@ describe JournalFactory do
             task_actions.each do |action|
               expect(permissions).to include(
                 permissions_on_task.find_by(action: action)
-              )
+              ), action
             end
           end
 

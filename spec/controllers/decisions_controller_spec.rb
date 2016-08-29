@@ -294,21 +294,12 @@ describe DecisionsController do
       end
 
       it "posts to the activity stream" do
-        expected_activity_1 = {
-          message: "A decision was sent to the author",
-          feed_name: "manuscript"
-        }
-        expected_activity_2 = {
+        expect(Activity).to receive(:create).with hash_including(
           message: "A decision was made: Accept",
-          feed_name: "workflow"
-        }
-        expected_activity_3 = {
+          feed_name: "manuscript")
+        expect(Activity).to receive(:create).with hash_including(
           message: "Paper state changed to submitted",
-          feed_name: "forensic"
-        }
-        expect(Activity).to receive(:create).with hash_including(expected_activity_1)
-        expect(Activity).to receive(:create).with hash_including(expected_activity_2)
-        expect(Activity).to receive(:create).with hash_including(expected_activity_3)
+          feed_name: "forensic")
         do_request
       end
 

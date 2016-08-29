@@ -70,7 +70,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view_decision, applies_to: Paper)
+      role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
 
       # Tasks
@@ -140,7 +140,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view_decision, applies_to: Paper)
+      role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
@@ -187,7 +187,7 @@ class JournalFactory
       role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view_decision, applies_to: Paper)
+      role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
@@ -223,7 +223,7 @@ class JournalFactory
       role.ensure_permission_exists(:search_reviewers, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view_decision, applies_to: Paper)
+      role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
 
       # Tasks
@@ -264,7 +264,7 @@ class JournalFactory
       role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view_decision, applies_to: Paper)
+      role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
@@ -312,7 +312,7 @@ class JournalFactory
       role.ensure_permission_exists(:send_to_apex, applies_to: Paper)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view_decision, applies_to: Paper)
+      role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 

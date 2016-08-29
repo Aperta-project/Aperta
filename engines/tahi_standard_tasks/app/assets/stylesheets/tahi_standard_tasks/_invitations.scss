@@ -282,10 +282,13 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invite-edit-buttons {
   padding-top: $invite-padding-vertical;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-end;
 
   .spacer { flex-grow: 1; }
+
+  .attachment-manager {
+    margin-bottom: 0;
+  }
 }
 
 .invite-edit-save-message {
@@ -310,7 +313,15 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invite-edit-save-confirmation {
-  margin-right: 30px;;
+  margin-right: 30px;
   color: $tahi-grey-dark;
   font-size: 1.4rem;
+}
+
+
+/* Invitation Link Alternate
+---------------------------------------------------------------------------- */
+
+.invitation-link-alternate {
+  margin-top: 15px;
 }

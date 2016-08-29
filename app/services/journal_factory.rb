@@ -157,6 +157,9 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
+
+      # Users
+      role.ensure_permission_exists(:manage_users, applies_to: Journal)
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
@@ -275,6 +278,9 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
+
+      # Users
+      role.ensure_permission_exists(:manage_users, applies_to: Journal)
     end
 
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
@@ -317,6 +323,9 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
+
+      # Users
+      role.ensure_permission_exists(:manage_users, applies_to: Journal)
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|

@@ -37,18 +37,20 @@ class Attachment < ActiveRecord::Base
   after_initialize :set_paper, if: :new_record?
 
   def download!(url)
-    @downloading = true
-    file.download! url
-    self.file_hash = Digest::SHA256.hexdigest(file.file.read)
-    self.s3_dir = file.generate_new_store_dir
-    self.title = build_title
-    self.status = STATUS_DONE
-    # Using save! instead of update_attributes because the above are not the
-    # only attributes that have been updated. We want to persist all changes
-    save!
-    refresh_resource_token!(file)
-    @downloading = false
-    on_download_complete
+    Attachment.transaction do
+      @downloading = true
+      file.download! url
+      self.file_hash = Digest::SHA256.hexdigest(file.file.read)
+      self.s3_dir = file.generate_new_store_dir
+      self.title = build_title
+      self.status = STATUS_DONE
+      # Using save! instead of update_attributes because the above are not the
+      # only attributes that have been updated. We want to persist all changes
+      save!
+      refresh_resource_token!(file)
+      @downloading = false
+      on_download_complete
+    end
   rescue Exception => ex
     on_download_failed(ex)
   ensure

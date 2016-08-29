@@ -49,6 +49,7 @@ export default DS.Model.extend({
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
   eventName: attr('string'),
+  firstSubmittedAt: attr('date'),
   gradualEngagement: attr('boolean'),
   handlingEditors: attr(),
   manuscript_id: attr('string'),

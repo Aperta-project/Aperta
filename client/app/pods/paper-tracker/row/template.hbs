@@ -12,9 +12,13 @@
   <td class="paper-tracker-paper-id-column">
     {{link-to paper.manuscript_id "paper.index" paper.id}}
   </td>
-  <td class="paper-tracker-date-column">
+  <td class="paper-tracker-date-column paper-version-date">
     {{format-date paper.submittedAt}}<br>
     {{relative-time time=paper.submittedAt}}
+  </td>
+  <td class="paper-tracker-date-column paper-submission-date">
+    {{format-date paper.firstSubmittedAt}}<br>
+    {{relative-time time=paper.firstSubmittedAt}}
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
   <td class="paper-tracker-status-column">{{humanize paper.publishingState}}</td>

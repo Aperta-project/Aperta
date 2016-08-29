@@ -158,9 +158,6 @@ describe TahiEnv do
   it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_USERNAME', dependent_key: 'SALESFORCE_ENABLED'
   it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_PASSWORD', dependent_key: 'SALESFORCE_ENABLED'
 
-  # Segment IO
-  it_behaves_like 'optional env var', var: 'SEGMENT_IO_WRITE_KEY'
-
   # Sendgrid
   it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
   it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'

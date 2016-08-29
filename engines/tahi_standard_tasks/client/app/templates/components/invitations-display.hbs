@@ -22,7 +22,7 @@
 {{else}}
 
   <div class="active-invitations">
-    {{#each invitations as |invitation|}}
+    {{#each persistedInvitations as |invitation|}}
       {{invitation-detail-row invitation=invitation
                               destroyAction=(action 'destroyInvitation')}}
     {{/each}}

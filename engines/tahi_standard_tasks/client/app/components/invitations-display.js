@@ -5,10 +5,13 @@ const { computed } = Ember;
 export default Ember.Component.extend({
   groupByDecision: true,
 
-  //TODO: make this a CP
-  invitations: [],
-
+  invitations: null,
   latestDecision: null,
+
+  persistedInvitations: computed('invitations.@each.isNew', function() {
+    return this.get('invitations').rejectBy('isNew');
+  }),
+
   latestDecisionInvitations: computed(
     'latestDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');

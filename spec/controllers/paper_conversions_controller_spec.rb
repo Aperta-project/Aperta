@@ -3,9 +3,15 @@ require 'rails_helper'
 describe PaperConversionsController, type: :controller do
   include Rails.application.routes.url_helpers
 
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { instance_double(Paper, id: 99, file: nil, to_param: '99') }
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
   let(:user) { FactoryGirl.create :user }
+
+  before do
+    allow(Paper).to receive(:find)
+      .with(paper.to_param)
+      .and_return paper
+  end
 
   describe 'GET export' do
     subject(:do_request) do
@@ -15,14 +21,15 @@ describe PaperConversionsController, type: :controller do
     it_behaves_like 'an unauthenticated json request'
 
     context 'as a user with access to a paper' do
+      let(:manuscript_attachment) do
+        FactoryGirl.build_stubbed(:manuscript_attachment)
+      end
+
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return true
-        allow(Paper).to receive(:find)
-          .with(paper.to_param)
-          .and_return paper
       end
 
       context 'with a paper that needs conversion' do
@@ -34,8 +41,8 @@ describe PaperConversionsController, type: :controller do
 
         before do
           # no source URL, needs conversion
-          allow(paper).to receive_message_chain('latest_version.source_url')
-            .and_return nil
+          allow(paper).to receive(:file).and_return manuscript_attachment
+          expect(paper.file.url).to be(nil)
 
           allow(PaperConverter).to receive(:export)
             .and_return double('job', job_id: job_id)
@@ -59,10 +66,12 @@ describe PaperConversionsController, type: :controller do
 
       context 'with a docx that the user uploaded' do
         let(:docx_url) { 'http://example.com/source.docx' }
+        let(:manuscript_attachment) do
+          FactoryGirl.build_stubbed(:manuscript_attachment, :with_filename)
+        end
 
         before do
-          allow(paper).to receive_message_chain('latest_version.source_url')
-            .and_return docx_url
+          allow(paper).to receive(:file).and_return manuscript_attachment
         end
 
         it 'returns a url to check later' do

@@ -54,7 +54,7 @@ class Invitation < ActiveRecord::Base
   end
 
   # Yes, this is purposefully a little weird to call attention to it.
-  # Can we replace this with a new R&P check?
+  # We've created APERTA-7529 to investigate making a new permission.
   def can_be_viewed_by?(user)
     user == invitee ||
       user.can?(:manage_invitations, task)

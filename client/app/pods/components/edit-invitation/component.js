@@ -12,7 +12,6 @@ export default Ember.Component.extend({
   allowAttachments: false,
 
   actions: {
-    nope() { alert('This is a no-op in pending-invitation/component.js'); },
     sendInvitation(invitation) {
       invitation.send().then(() => {
         this.get('closeAction')();

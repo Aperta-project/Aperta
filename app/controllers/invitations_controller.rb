@@ -9,9 +9,7 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    fail AuthorizationError unless current_user == invitation.invitee ||
-        current_user.can?(:manage_invitations,
-          invitation.task)
+    fail AuthorizationError unless invitation.can_be_viewed_by?(current_user)
     respond_with invitation
   end
 
@@ -23,8 +21,7 @@ class InvitationsController < ApplicationController
 
   def send_invite
     requires_user_can(:manage_invitations, invitation.task)
-    invitation.invite!
-    Activity.invitation_sent!(invitation, user: current_user)
+    send_and_notify(invitation)
     render json: invitation
   end
 
@@ -37,8 +34,7 @@ class InvitationsController < ApplicationController
       invitation.associate_existing_user
       invitation.save
     else
-      invitation.invite!
-      Activity.invitation_sent!(invitation, user: current_user)
+      send_and_notify(invitation)
     end
     respond_with(invitation)
   end
@@ -77,6 +73,11 @@ class InvitationsController < ApplicationController
   end
 
   private
+
+  def send_and_notify(invitation)
+    invitation.invite!
+    Activity.invitation_sent!(invitation, user: current_user)
+  end
 
   def invitation_params
     params

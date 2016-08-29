@@ -5,6 +5,7 @@ const { computed } = Ember;
 export default Ember.Component.extend({
   groupByDecision: true,
 
+  //TODO: make this a CP
   invitations: [],
 
   latestDecision: null,

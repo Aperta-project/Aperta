@@ -1,9 +1,13 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 
+let currentState = function(stateName) {
+  return Ember.computed.equal('state', stateName);
+};
+
 export default DS.Model.extend({
   abstract: DS.attr('string'),
-  attachments: DS.hasMany('attachment', { polymorphic: true, async: true }),
+  attachments: DS.hasMany('invitation-attachment', { async: true }),
   body: DS.attr('string'),
   createdAt: DS.attr('date'),
   declineReason: DS.attr('string'),
@@ -20,8 +24,12 @@ export default DS.Model.extend({
 
   pendingFeedback: false,
 
-  accepted: Ember.computed.equal('state', 'accepted'),
-  pending: Ember.computed.equal('state', 'pending'),
+  restless: Ember.inject.service('restless'),
+
+  accepted: currentState('accepted'),
+  pending: currentState('pending'),
+  invited: currentState('invited'),
+  declined: currentState('declined'),
 
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',
@@ -32,15 +40,12 @@ export default DS.Model.extend({
     }
   ),
 
-  invited: Ember.computed.equal('state', 'invited'),
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
-  declined: Ember.computed.equal('state', 'declined'),
 
   setDeclined() {
     this.set('state', 'declined');
   },
 
-  restless: Ember.inject.service('restless'),
   rescind() {
     return this.get('restless')
     .put(`/api/invitations/${this.get('id')}/rescind`)

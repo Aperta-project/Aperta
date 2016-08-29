@@ -30,25 +30,24 @@ let template = hbs`{{invitation-detail-row
 test('displays invitation information', function(assert){
   this.render(template);
 
-  assert.textPresent('.invitation-updated-at',
+  assert.textPresent('.invitation-item-updated-at',
                      moment(this.get('update-date')).format('LLL'));
-  assert.textPresent('.invitation-state', 'pending');
+  assert.textPresent('.invitation-item-state', 'draft');
 });
 
 test('displays invitee information when present', function(assert){
   this.render(template);
 
-  assert.elementFound('.invitee-thumbnail');
-  assert.textPresent('.invitee-full-name', 'Jane McEdits');
-  assert.textNotPresent('.invitee-full-name', 'jane@example.com');
+  assert.textPresent('.invitation-item-full-name', 'Jane McEdits');
+  assert.textNotPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
 test('displays invitation email when no invitee present', function(assert){
   this.set('invitation.invitee', null);
   this.render(template);
 
-  assert.textNotPresent('.invitee-full-name', 'Jane McEdits');
-  assert.textPresent('.invitee-full-name', 'jane@example.com');
+  assert.textNotPresent('.invitation-item-full-name', 'Jane McEdits');
+  assert.textPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
 test('displays remove icon if invite not accepted and given destroyAction',
@@ -79,12 +78,12 @@ test('does not display remove icon if invite accepted and no destroyAction',
   }
 );
 
-test('does not display remove icon if invite not accepted and no destroyAction',
-  function(assert){
-    this.set('invitation.accepted', false);
-    this.set('destroyAction', null);
-    this.render(template);
+test('displays decline feedback when declined', function(assert){
+  this.set('invitation.declined', true);
+  this.set('invitation.declineReason', 'No current availability');
+  this.set('invitation.reviewerSuggestions', 'Jane McReviewer');
+  this.render(template);
 
-    assert.elementNotFound('.invite-remove');
-  }
-);
+  assert.textPresent('.invitation-decline-reason', 'No current availability');
+  assert.textPresent('.invitation-reviewer-suggestions', 'Jane McReviewer');
+});

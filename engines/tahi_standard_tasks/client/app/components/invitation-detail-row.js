@@ -24,6 +24,7 @@ export default Component.extend({
     destroyAction: PropTypes.func.isRequired
   },
 
+  allowAttachments: true,
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
   }),
@@ -35,11 +36,14 @@ export default Component.extend({
   invitee: alias('invitation.invitee'),
   invitationBodyStateBeforeEdit: null,
 
+  displayEditButton: and('invitation.pending', 'notClosedState'),
+  displaySendButton: reads('invitation.pending'),
   displayDestroyButton: computed('invitation.accepted', 'closedState', function() {
     return !this.get('invitation.accepted') && this.get('notClosedState');
   }),
 
   uiState: 'closed',
+
   closedState: equal('uiState', 'closed'),
   notClosedState: not('closedState'),
   editState: equal('uiState', 'edit'),
@@ -64,6 +68,9 @@ export default Component.extend({
     return promise;
   }),
 
+  invitee: reads('invitation.invitee'),
+
+
   templateSaved: task(function * () {
     yield timeout(2000);
   }).keepLatest(),
@@ -86,10 +93,9 @@ export default Component.extend({
     toggleDetails(invitation) {
       if (this.get('closedState')) {
         this.openRow(invitation);
-        return;
+      } else {
+        this.set('uiState', 'closed');
       }
-
-      this.set('uiState', 'closed');
     },
 
     cancelEdit(invitation) {
@@ -108,6 +114,10 @@ export default Component.extend({
       invitation.save().then(() => {
         this.set('uiState', 'show');
       });
+    },
+
+    sendInvitation(invitation) {
+      invitation.send();
     }
   }
 });

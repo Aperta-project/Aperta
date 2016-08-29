@@ -84,6 +84,9 @@ Tahi::Application.routes.draw do
       put :rescind, on: :member
       put :send_invite, on: :member
       get :details, on: :member
+      resources :attachments, only: [:index, :create, :update, :destroy, :show], controller: 'invitation_attachments' do
+        put :update_attachment, on: :member
+      end
     end
     resources :journals, only: [:index, :show] do
       resources :old_roles, only: :index, shallow: true do

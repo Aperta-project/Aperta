@@ -104,9 +104,37 @@ class Attachment < ActiveRecord::Base
     end
   end
 
+  # TODO: could we move this into the serializers?
   def task
-    if owner_type == 'Task'
-      owner
+    owner if owner_type == 'Task'
+  end
+
+  # These methods were pulled up from Attachment subclasses
+  def src
+    non_expiring_proxy_url if done?
+  end
+
+  def access_details
+    { filename: filename, alt: alt, id: id, src: src }
+  end
+
+  def detail_src(**opts)
+    return unless image?
+
+    non_expiring_proxy_url(version: :detail, **opts) if done?
+  end
+
+  def preview_src
+    return unless image?
+
+    non_expiring_proxy_url(version: :preview) if done?
+  end
+
+  def image?
+    if file.file
+      IMAGE_TYPES.include? file.file.extension
+    else
+      false
     end
   end
 

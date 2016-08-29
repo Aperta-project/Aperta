@@ -9,16 +9,16 @@ let app;
 
 moduleForComponent(
   'paper-reviewer-task',
-  'Integration | Components | Tasks | Invite Reviewer', {
+  'Integration | Components | Tasks | Paper Reviewer Task', {
     integration: true,
-    setup() {
+    setup: function() {
       //startApp is only here to give us access to the
       //async test helpers (fillIn, click, etc) that
       //we're used to having in the full-app acceptance tests
       app = startApp();
     },
 
-    teardown() {
+    teardown: function() {
       Ember.run(app, app.destroy);
     }
   }
@@ -40,7 +40,7 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
       assert.equal(
         properties.email, 'Foo Magoo <foo@example.com>',
         'Has a well-formatted email');
-      return newInvitation();
+      return newInvitation(properties.email);
     }, this);
 
     setupEditableTask(this);
@@ -55,7 +55,7 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
     });
 
     click('.compose-invite-button');
-    click('.invite-reviewer-button');
+    click('.send-invitation-button');
   }
 );
 
@@ -66,7 +66,8 @@ var newInvitation = function(email) {
     state: 'pending',
     email: email,
     body: 'Hello',
-    save() { return { then() {} }; }
+    save() { return Ember.RSVP.resolve(this); },
+    send() { return Ember.RSVP.resolve(this); }
   };
 };
 
@@ -83,11 +84,9 @@ var newTask = function() {
       salutation: 'Hi!',
       body: 'You are invited!'
     },
-    invitations: [
 
-    ],
     decisions: [
-      {id: 2, latest: true}
+      {id: 2, latest: true, invitations: []}
     ]
   };
 };

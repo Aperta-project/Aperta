@@ -72,6 +72,9 @@
                        class="invitation-edit-body"
                        key-up=(action "saveDuringType")}}
      <div class="invite-edit-buttons">
+      {{#if allowAttachments}}
+        {{invitation-attachment-manager invitation=invitation}}
+      {{/if}}
        <div class="invitation-link-alternate">
         <span class="fa fa-link" aria-hidden="true"></span> Link as an alternate to:
        </div>

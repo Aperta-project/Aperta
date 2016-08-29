@@ -98,13 +98,14 @@ class InvitationsController < ApplicationController
         :email,
         :state,
         :reviewer_suggestions,
-        :task_id)
+        :task_id,
+        :primary_id)
   end
 
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:body, :email)
+      .permit(:body, :email, :primary_id)
   end
 
   def task

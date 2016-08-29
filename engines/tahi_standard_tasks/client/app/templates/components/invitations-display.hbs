@@ -1,43 +1,32 @@
 {{#if groupByDecision}}
-  <div class="active-invitations">
-    {{#each latestDecisionInvitations as |invitation|}}
-      {{invitation-detail-row
-          setRowState=(action attrs.toggleActiveInvitation invitation)
-          deleteOnCancel=(eq invitation composedInvitation)
-          invitation=invitation
-          activeInvitation=activeInvitation
-          activeInvitationState=activeInvitationState}}
-    {{/each}}
-  </div>
+  {{invitation-group invitations=latestDecisionInvitations
+                     activeInvitation=activeInvitation
+                     activeInvitationState=activeInvitationState
+                     composedInvitation=composedInvitation
+                     setRowState=(action attrs.toggleActiveInvitation)
+                     toggleActiveInvitation=attrs.toggleActiveInvitation
+                     class='active-invitations'}}
 
   {{#each previousDecisionsWithFilteredInvitations as |decision|}}
     <div class='revision-human-number'>
       Round {{decision.majorVersion}}
     </div>
-
-    <div class="expired-invitations">
-      {{#each decision.filteredInvitations as |invitation|}}
-        {{invitation-detail-row
-            setRowState=(action attrs.toggleActiveInvitation invitation)
-            deleteOnCancel=(eq invitation composedInvitation)
-            invitation=invitation
-            activeInvitation=activeInvitation
-            activeInvitationState=activeInvitationState
-            allowDestroy=false
-            allowSend=false}}
-      {{/each}}
-    </div>
+    {{invitation-group invitations=decision.filteredInvitations
+                       activeInvitation=activeInvitation
+                       activeInvitationState=activeInvitationState
+                       composedInvitation=composedInvitation
+                       toggleActiveInvitation=attrs.toggleActiveInvitation
+                       setRowState=(action attrs.toggleActiveInvitation)
+                       class='expired-invitations'}}
   {{/each}}
 
 {{else}}
-  <div class="active-invitations">
-    {{#each persistedInvitations as |invitation|}}
-      {{invitation-detail-row
-          setRowState=(action attrs.toggleActiveInvitation invitation)
-          deleteOnCancel=(eq invitation composedInvitation)
-          invitation=invitation
-          activeInvitation=activeInvitation
-          activeInvitationState=activeInvitationState}}
-    {{/each}}
-  </div>
+  {{invitation-group  invitations=persistedInvitations
+                      activeInvitation=activeInvitation
+                      activeInvitationState=activeInvitationState
+                      composedInvitation=composedInvitation
+                      setRowState=(action attrs.toggleActiveInvitation)
+                      toggleActiveInvitation=attrs.toggleActiveInvitation
+                      class='active-invitations'}}
 {{/if}}
+

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
-import { task, timeout } from 'ember-concurrency';
 
 const {
   Component,
@@ -12,12 +11,11 @@ const {
 /*
  * UI States: closed, show, edit
  *
- * EventBus is for closing all rows when one is opened
  */
 
 export default Component.extend({
-  eventBus: service('event-bus'),
-  classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass'],
+  classNameBindings: [':invitation-item', 'invitationStateClass',
+    'uiStateClass', 'alternate:invitation-item--alternate'],
 
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired
@@ -60,18 +58,6 @@ export default Component.extend({
   closedState: equal('uiState', 'closed'),
   editState: equal('uiState', 'edit'),
 
-  save: task(function * (invitation, delay=0) {
-    yield timeout(delay);
-    const promise = invitation.save();
-    yield promise;
-    this.get('templateSaved').perform();
-    return promise;
-  }).restartable(),
-
-  templateSaved: task(function * () {
-    yield timeout(3000);
-  }).keepLatest(),
-
   actions: {
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
@@ -79,6 +65,10 @@ export default Component.extend({
       } else {
         this.get('setRowState')('closed');
       }
+    },
+
+    primarySelected(primary) {
+      this.set('potentialPrimary', primary);
     },
 
     editInvitation(invitation) {
@@ -89,6 +79,7 @@ export default Component.extend({
     },
 
     cancelEdit(invitation) {
+      this.set('potentialPrimary', null);
       if (this.get('deleteOnCancel') && invitation.get('pending')) {
         invitation.destroyRecord();
       } else {
@@ -110,13 +101,25 @@ export default Component.extend({
     },
 
     saveDuringType(invitation) {
-      this.get('save').perform(invitation, 1000);
+      Ember.run.debounce(invitation, 'save', 500);
     },
 
     save(invitation) {
-      this.get('save').perform(invitation).then(() => {
+      const potentialPrimary = this.get('potentialPrimary');
+
+      if(potentialPrimary) {
+        invitation.set('primary', potentialPrimary);
+      }
+
+      invitation.save().then( ()=>{
         this.get('setRowState')('show');
       });
+    },
+
+    destroyInvitation(invitation) {
+      if (invitation.get('pending')) {
+        invitation.destroyRecord();
+      }
     },
 
     sendInvitation(invitation) {

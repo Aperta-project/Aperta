@@ -101,6 +101,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 }
 
+.invitation-item--alternate {
+  border-top: 1px dashed $tahi-grey-light;
+}
+
 /* Invitation Item Header
    .invitation-item-header
      .invitation-item-full-name
@@ -170,6 +174,15 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--closed {
   .invitation-item-body-preview {
     display: block;
+  }
+}
+
+.invitation-item--alternate {
+  .invitation-item-full-name {
+    padding-left: 3rem;
+    .alternate-link-icon {
+     padding-right: .3rem;
+    }
   }
 }
 
@@ -332,10 +345,17 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-size: 1.4rem;
 }
 
-
 /* Invitation Link Alternate
 ---------------------------------------------------------------------------- */
 
+.invitation-alternates-info {
+  padding-bottom: 1.5rem;
+}
 .invitation-link-alternate {
-  margin-top: 15px;
+  padding-top: 1.5rem;
+}
+
+.alternate-text {
+  display: inline-block;
+  margin: 0 3px 0 3px;
 }

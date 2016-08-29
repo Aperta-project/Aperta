@@ -1,6 +1,9 @@
 {{#unless (eq uiState "edit")}}
   <div class="invitation-item-header">
     <div class="invitation-item-full-name" {{action "toggleDetails"}}>
+      {{#if alternate}}
+        <i class="fa fa-link alternate-link-icon"i aria-hidden="true"></i>
+      {{/if}}
       {{#if invitee}}
         {{invitee.fullName}}
         &lt;{{invitation.email}}&gt;
@@ -36,10 +39,17 @@
         </span>
       {{/if}}
       {{#if displaySendButton}}
-        <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
-          <span class="fa fa-send invite-send"></span>
-          <span class="invitation-item-action-text">Send</span>
-        </span>
+        {{#if sendDisabled}}
+          <span class="invitation-item-action invitation-item-action-send invitation-item-action--disabled">
+            <span class="fa fa-send invite-send"></span>
+            <span class="invitation-item-action-text">Send</span>
+          </span>
+        {{else}}
+          <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
+            <span class="fa fa-send invite-send"></span>
+            <span class="invitation-item-action-text">Send</span>
+          </span>
+        {{/if}}
       {{/if}}
     </div>
   </div>
@@ -83,14 +93,17 @@
                        class="invitation-edit-body"
                        key-up=(action "saveDuringType" invitation)}}
 
+    {{link-alternate
+      invitation=invitation
+      invitations=invitations
+      primarySelected=(action "primarySelected")
+    }}
+
     <div class="invite-edit-buttons">
       {{#if allowAttachments}}
         {{invitation-attachment-manager invitation=invitation}}
       {{/if}}
        <div class="spacer"></div>
-       {{#if templateSaved.isRunning}}
-         <span class="invite-edit-save-message animation-fade-in">Your changes have been automatically saved.</span>
-       {{/if}}
        <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
        <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
     </div>

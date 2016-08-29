@@ -9,6 +9,8 @@ class Invitation < ActiveRecord::Base
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
   has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
+  has_many :alternates, class_name: 'Invitation', foreign_key: 'primary_id'
+  belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
 
   scope :where_email_matches,

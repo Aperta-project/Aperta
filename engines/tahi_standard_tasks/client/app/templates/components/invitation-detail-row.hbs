@@ -23,6 +23,11 @@
           <span class="fa fa-send invite-send"></span>
           <span class="invitation-item-action-text">Send</span>
         </span>
+      {{else}}
+        <span class="invitation-item-action invitation-item-action--disabled" title="Invited {{format-date invitation.updatedAt format="MMMM Do YYYY"}}">
+          <span class="fa fa-send invite-send"></span>
+          <span class="invitation-item-action-text">Send</span>
+        </span>
       {{/if}}
       {{#if displayDestroyButton}}
         <span class="invitation-item-action" {{action destroyAction invitation}}>

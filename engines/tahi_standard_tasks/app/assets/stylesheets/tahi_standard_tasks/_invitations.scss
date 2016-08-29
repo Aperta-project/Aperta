@@ -230,6 +230,15 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   .fa { color: $tahi-green; }
 }
 
+.invitation-item-action.invitation-item-action--disabled {
+  cursor: default;
+  color: $tahi-grey-xlight;
+
+  &:hover { color: $tahi-grey-xlight; }
+
+  .fa { color: $tahi-grey-xlight; }
+}
+
 .invitation-item--closed {
   /* text next to action icons */
   .invitation-item-action-text { display: none; }

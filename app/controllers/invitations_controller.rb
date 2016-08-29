@@ -54,9 +54,10 @@ class InvitationsController < ApplicationController
     respond_with(invitation)
   end
 
+  # TODO: Remove me if everyone is cool with always serializing invitation bodies
   def details
     requires_user_can(:manage_invitations, invitation.task)
-    respond_with invitation, serializer: InvitationSerializer, include_body: true
+    respond_with invitation, serializer: InvitationSerializer
   end
 
   def rescind

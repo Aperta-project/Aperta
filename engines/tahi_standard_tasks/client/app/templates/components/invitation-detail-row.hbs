@@ -75,7 +75,7 @@
   <div class="invitation-item-details">
     {{content-editable value=invitation.body
                        class="invitation-edit-body"
-                       key-up=(action "saveDuringType")}}
+                       key-up=(action "saveDuringType" invitation)}}
 
     <div class="invitation-link-alternate">
       <span class="fa fa-link" aria-hidden="true"></span> Link as an alternate to:
@@ -87,7 +87,7 @@
       {{/if}}
        <div class="spacer"></div>
        {{#if templateSaved.isRunning}}
-         <span class="invite-edit-save-message">Your changes have been automatically saved.</span>
+         <span class="invite-edit-save-message animation-fade-in">Your changes have been automatically saved.</span>
        {{/if}}
        <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
        <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>

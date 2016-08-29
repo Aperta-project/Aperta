@@ -68,8 +68,16 @@ export default Component.extend({
     return promise;
   }),
 
+  save: task(function * (invitation, delay=0) {
+    yield timeout(delay);
+    const promise = invitation.save();
+    yield promise;
+    this.get('templateSaved').perform();
+    return promise;
+  }).restartable(),
+
   templateSaved: task(function * () {
-    yield timeout(2000);
+    yield timeout(3000);
   }).keepLatest(),
 
   openRow(invitation) {
@@ -102,13 +110,12 @@ export default Component.extend({
       this.set('uiState', 'show');
     },
 
-    saveDuringType() {
-      // TODO: save
-      this.get('templateSaved').perform();
+    saveDuringType(invitation) {
+      this.get('save').perform(invitation, 1000);
     },
 
     save(invitation) {
-      invitation.save().then(() => {
+      this.get('save').perform(invitation).then(() => {
         this.set('uiState', 'show');
       });
     },

@@ -63,6 +63,11 @@
     <div class="invitation-show-body">
       {{{invitation.body}}}
     </div>
+    <div class="invite-edit-buttons">
+      {{#if allowAttachments}}
+        {{invitation-attachment-manager invitation=invitation}}
+      {{/if}}
+    </div>
   </div>
 {{/if}}
 
@@ -71,13 +76,15 @@
     {{content-editable value=invitation.body
                        class="invitation-edit-body"
                        key-up=(action "saveDuringType")}}
-     <div class="invite-edit-buttons">
+
+    <div class="invitation-link-alternate">
+      <span class="fa fa-link" aria-hidden="true"></span> Link as an alternate to:
+    </div>
+
+    <div class="invite-edit-buttons">
       {{#if allowAttachments}}
         {{invitation-attachment-manager invitation=invitation}}
       {{/if}}
-       <div class="invitation-link-alternate">
-        <span class="fa fa-link" aria-hidden="true"></span> Link as an alternate to:
-       </div>
        <div class="spacer"></div>
        {{#if templateSaved.isRunning}}
          <span class="invite-edit-save-message">Your changes have been automatically saved.</span>

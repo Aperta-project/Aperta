@@ -1,4 +1,4 @@
-$invite-padding-vertical: 1rem;
+$invite-padding-vertical: 1.5rem;
 $invite-padding-horizontal: 2rem;
 $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
@@ -24,22 +24,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .standard-invite-text .fileinput-button {
   float: left;
-}
-
-.invitation-show-body,
-.invitation-edit-body {
-  overflow: auto;
-  max-height: 300px;
-  border: 1px solid #bababa;
-  border-radius: 5px;
-  padding: 0.75rem 1.5rem;
-  white-space: pre-wrap;
-}
-
-.invitation-show-body {
-  color: #666;
-  // override default in _content-editable.scss
-  background: rgba(255,255,255, 0.6);
 }
 
 .invitees, .assignments {
@@ -110,11 +94,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-item {
-  border-bottom: 1px solid $tahi-grey-light;
+  border-top: 2px solid $tahi-grey-light;
 
   &:last-child {
     margin-bottom: 1px;
-    border-bottom: none;
   }
 }
 

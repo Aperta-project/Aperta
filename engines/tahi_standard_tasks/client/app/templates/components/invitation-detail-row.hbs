@@ -19,7 +19,7 @@
         </span>
       {{/if}}
       {{#if invitation.pending}}
-        <span class="invitation-item-action">
+        <span class="invitation-item-action" {{action "sendInvitation" invitation}}>
           <span class="fa fa-send invite-send"></span>
           <span class="invitation-item-action-text">Send</span>
         </span>

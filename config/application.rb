@@ -19,6 +19,7 @@ module Tahi
     # config.paths['db/migrate'].push 'engines/tahi_standard_tasks/db/migrate'
 
     config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/lib/cli_utilities)
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.autoload_paths += %W(#{config.root}/app/subscribers)
 

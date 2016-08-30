@@ -40,6 +40,23 @@ test('displayTitle displays title if present', function(assert) {
   assert.equal(paper.get('displayTitle'), title);
 });
 
+test('previousDecisions returns decisions that have registeredAt set', function(assert){
+  var noVerdictDecision = FactoryGuy.make(
+    'decision', { registeredAt: null });
+  var acceptedDecision = FactoryGuy.make(
+    'decision', { registeredAt: new Date() });
+  var rejectedDecision = FactoryGuy.make(
+    'decision', { registeredAt: new Date() });
+
+  var paper = FactoryGuy.make('paper', {
+    decisions: [noVerdictDecision, acceptedDecision, rejectedDecision]
+  });
+
+  assert.arrayContainsExactly(
+    paper.get('previousDecisions'),
+    [acceptedDecision, rejectedDecision]
+  );
+});
 
 test('simplifiedRelatedUsers contains no collaborators', function(assert) {
   var title;

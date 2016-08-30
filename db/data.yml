@@ -3443,72 +3443,103 @@ decisions:
   columns:
   - id
   - paper_id
-  - revision_number
   - letter
   - verdict
   - created_at
   - updated_at
   - author_response
+  - registered_at
+  - minor_version
+  - major_version
+  - initial
+  - rescinded
   records: 
   - - '8'
     - '1'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:20.944099'
     - '2016-02-09 22:27:20.944099'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '9'
     - '2'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:20.970925'
     - '2016-02-09 22:27:20.970925'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '10'
     - '3'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:20.984125'
     - '2016-02-09 22:27:20.984125'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '11'
     - '4'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.000114'
     - '2016-02-09 22:27:21.000114'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '12'
     - '8'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.016533'
     - '2016-02-09 22:27:21.016533'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '13'
     - '9'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.037868'
     - '2016-02-09 22:27:21.037868'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '14'
     - '10'
-    - '0'
     - 
     - 
     - '2016-02-09 22:27:21.05455'
     - '2016-02-09 22:27:21.05455'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '18'
     - '12'
-    - '0'
     - |
       Dear Dr. Author,
 
@@ -3537,11 +3568,15 @@ decisions:
       PLOS Yeti
     - major_revision
     - '2016-04-12 18:43:34.68423'
-    - '2016-04-12 19:00:13.24579'
+    - '2016-08-12 16:47:34.930251'
     - Revisions made.
+    - '2016-04-12 18:43:34.68423'
+    - '0'
+    - '0'
+    - false
+    - false
   - - '19'
     - '12'
-    - '1'
     - |
       THIS IS THE MINOR REVISION
       Dear Dr. Author,
@@ -3571,11 +3606,15 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 18:57:26.981107'
-    - '2016-04-12 19:02:39.419468'
+    - '2016-08-12 16:47:34.93367'
     - Revised!
+    - '2016-04-12 18:57:26.981107'
+    - '0'
+    - '1'
+    - false
+    - false
   - - '20'
     - '12'
-    - '2'
     - |
       THIS IS THE MINOR REVISION
       Dear Dr. Author,
@@ -3605,24 +3644,37 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 19:00:40.408544'
-    - '2016-04-12 19:05:48.677806'
+    - '2016-08-12 16:47:34.935982'
     - Last revisions.
+    - '2016-04-12 19:00:40.408544'
+    - '0'
+    - '2'
+    - false
+    - false
   - - '21'
     - '12'
-    - '3'
     - 
     - 
     - '2016-04-12 19:03:40.743898'
     - '2016-04-12 19:03:40.743898'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
   - - '22'
     - '13'
-    - '0'
     - 
     - 
     - '2016-06-02 13:43:23.198268'
     - '2016-06-02 13:43:23.198268'
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
 
 ---
 group_authors:
@@ -4383,6 +4435,14 @@ manuscript_manager_templates:
     - true
   - - '2'
     - Non-Research
+    - '1'
+    - false
+  - - '3'
+    - No Author Tasks (Gradual Engagement)
+    - '1'
+    - false
+  - - '4'
+    - No Author Tasks
     - '1'
     - false
 
@@ -7206,7 +7266,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-07-28 18:23:32.430974'
+    - '2016-08-12 16:47:41.709894'
     - PlosBilling::BillingTask
     - 
     - 
@@ -9444,7 +9504,7 @@ papers:
     - 
     - true
     - false
-    - 
+    - '2015-08-02 15:14:05.576249'
     - 
     - 
     - '2015-11-02 15:14:05.576249'
@@ -11659,6 +11719,21 @@ permission_states_permissions:
     - '2'
     - '2016-08-04 20:43:31.137681'
     - '2016-08-04 20:43:31.137681'
+  - - '293'
+    - '231'
+    - '2'
+    - '2016-08-12 16:47:49.348471'
+    - '2016-08-12 16:47:49.348471'
+  - - '294'
+    - '232'
+    - '2'
+    - '2016-08-12 16:47:49.598342'
+    - '2016-08-12 16:47:49.598342'
+  - - '295'
+    - '233'
+    - '2'
+    - '2016-08-25 15:56:50.268353'
+    - '2016-08-25 15:56:50.268353'
 
 ---
 permissions:
@@ -12784,6 +12859,21 @@ permissions:
     - TahiStandardTasks::TitleAndAbstractTask
     - '2016-08-04 20:43:31.119618'
     - '2016-08-04 20:43:31.119618'
+  - - '231'
+    - register_decision
+    - Paper
+    - '2016-08-12 16:47:49.334097'
+    - '2016-08-12 16:47:49.334097'
+  - - '232'
+    - rescind_decision
+    - Paper
+    - '2016-08-12 16:47:49.593928'
+    - '2016-08-12 16:47:49.593928'
+  - - '233'
+    - manage_users
+    - Journal
+    - '2016-08-25 15:56:50.257107'
+    - '2016-08-25 15:56:50.257107'
 
 ---
 permissions_roles:
@@ -13874,36 +13964,6 @@ permissions_roles:
     - '19'
     - '2016-03-07 22:38:35.385029'
     - '2016-03-07 22:38:35.385029'
-  - - '475'
-    - '169'
-    - '10'
-    - '2016-03-07 23:31:04.101965'
-    - '2016-03-07 23:31:04.101965'
-  - - '476'
-    - '169'
-    - '11'
-    - '2016-03-07 23:31:04.228573'
-    - '2016-03-07 23:31:04.228573'
-  - - '477'
-    - '169'
-    - '20'
-    - '2016-03-07 23:31:04.416953'
-    - '2016-03-07 23:31:04.416953'
-  - - '478'
-    - '169'
-    - '19'
-    - '2016-03-07 23:31:04.530234'
-    - '2016-03-07 23:31:04.530234'
-  - - '479'
-    - '169'
-    - '21'
-    - '2016-03-07 23:33:43.684525'
-    - '2016-03-07 23:33:43.684525'
-  - - '480'
-    - '169'
-    - '15'
-    - '2016-03-07 23:33:44.116492'
-    - '2016-03-07 23:33:44.116492'
   - - '481'
     - '170'
     - '8'
@@ -14649,6 +14709,76 @@ permissions_roles:
     - '15'
     - '2016-08-04 20:43:31.63983'
     - '2016-08-04 20:43:31.63983'
+  - - '660'
+    - '231'
+    - '21'
+    - '2016-08-12 16:47:49.355807'
+    - '2016-08-12 16:47:49.355807'
+  - - '661'
+    - '231'
+    - '10'
+    - '2016-08-12 16:47:49.588665'
+    - '2016-08-12 16:47:49.588665'
+  - - '662'
+    - '232'
+    - '10'
+    - '2016-08-12 16:47:49.603278'
+    - '2016-08-12 16:47:49.603278'
+  - - '663'
+    - '231'
+    - '11'
+    - '2016-08-12 16:47:49.737318'
+    - '2016-08-12 16:47:49.737318'
+  - - '664'
+    - '232'
+    - '11'
+    - '2016-08-12 16:47:49.749358'
+    - '2016-08-12 16:47:49.749358'
+  - - '665'
+    - '231'
+    - '15'
+    - '2016-08-12 16:47:49.869512'
+    - '2016-08-12 16:47:49.869512'
+  - - '666'
+    - '232'
+    - '15'
+    - '2016-08-12 16:47:49.889554'
+    - '2016-08-12 16:47:49.889554'
+  - - '667'
+    - '231'
+    - '20'
+    - '2016-08-12 16:47:50.037161'
+    - '2016-08-12 16:47:50.037161'
+  - - '668'
+    - '232'
+    - '20'
+    - '2016-08-12 16:47:50.044779'
+    - '2016-08-12 16:47:50.044779'
+  - - '669'
+    - '231'
+    - '19'
+    - '2016-08-12 16:47:50.175588'
+    - '2016-08-12 16:47:50.175588'
+  - - '670'
+    - '232'
+    - '19'
+    - '2016-08-12 16:47:50.183183'
+    - '2016-08-12 16:47:50.183183'
+  - - '671'
+    - '233'
+    - '10'
+    - '2016-08-25 15:56:50.275805'
+    - '2016-08-25 15:56:50.275805'
+  - - '672'
+    - '233'
+    - '20'
+    - '2016-08-25 15:56:50.665703'
+    - '2016-08-25 15:56:50.665703'
+  - - '673'
+    - '233'
+    - '19'
+    - '2016-08-25 15:56:50.814243'
+    - '2016-08-25 15:56:50.814243'
 
 ---
 phase_templates:
@@ -14720,6 +14850,18 @@ phase_templates:
     - '2016-06-02 13:40:41.582947'
     - '2016-06-02 13:40:41.582947'
     - '5'
+  - - '74'
+    - Phase 1
+    - '3'
+    - '2016-08-16 14:10:21.595802'
+    - '2016-08-16 14:10:21.595802'
+    - '1'
+  - - '75'
+    - Phase 1
+    - '4'
+    - '2016-08-16 14:10:56.046532'
+    - '2016-08-16 14:10:56.046532'
+    - '1'
 
 ---
 phases:
@@ -16677,6 +16819,132 @@ task_templates:
     - Register Decision
     - "[]"
     - '1'
+  - - '230'
+    - '14'
+    - '74'
+    - Register Decision
+    - "[]"
+    - '1'
+  - - '231'
+    - '9'
+    - '74'
+    - Assign Admin
+    - "[]"
+    - '2'
+  - - '232'
+    - '28'
+    - '74'
+    - Assign Team
+    - "[]"
+    - '3'
+  - - '233'
+    - '23'
+    - '74'
+    - Final Tech Check
+    - "[]"
+    - '4'
+  - - '234'
+    - '30'
+    - '74'
+    - Initial Decision
+    - "[]"
+    - '5'
+  - - '235'
+    - '24'
+    - '74'
+    - Initial Tech Check
+    - "[]"
+    - '6'
+  - - '236'
+    - '25'
+    - '74'
+    - Revision Tech Check
+    - "[]"
+    - '7'
+  - - '237'
+    - '31'
+    - '74'
+    - Send to Apex
+    - "[]"
+    - '8'
+  - - '238'
+    - '33'
+    - '74'
+    - Title And Abstract
+    - "[]"
+    - '9'
+  - - '239'
+    - '10'
+    - '74'
+    - Invite Academic Editor
+    - "[]"
+    - '10'
+  - - '240'
+    - '11'
+    - '74'
+    - Invite Reviewers
+    - "[]"
+    - '11'
+  - - '241'
+    - '14'
+    - '75'
+    - Register Decision
+    - "[]"
+    - '1'
+  - - '242'
+    - '9'
+    - '75'
+    - Assign Admin
+    - "[]"
+    - '2'
+  - - '243'
+    - '28'
+    - '75'
+    - Assign Team
+    - "[]"
+    - '3'
+  - - '244'
+    - '23'
+    - '75'
+    - Final Tech Check
+    - "[]"
+    - '4'
+  - - '245'
+    - '24'
+    - '75'
+    - Initial Tech Check
+    - "[]"
+    - '5'
+  - - '246'
+    - '10'
+    - '75'
+    - Invite Academic Editor
+    - "[]"
+    - '6'
+  - - '247'
+    - '11'
+    - '75'
+    - Invite Reviewers
+    - "[]"
+    - '7'
+  - - '248'
+    - '25'
+    - '75'
+    - Revision Tech Check
+    - "[]"
+    - '8'
+  - - '249'
+    - '33'
+    - '75'
+    - Title And Abstract
+    - "[]"
+    - '9'
+  - - '250'
+    - '31'
+    - '75'
+    - Send to Apex
+    - "[]"
+    - '10'
 
 ---
 tasks:
@@ -19321,8 +19589,8 @@ versioned_texts:
   - - '1'
     - 
     - '1'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19417,7 +19685,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="1" data-figure-rank="" src="/resource_proxy/figures/4JRhTr616NQ4JW3AnmutrWPX/detail">
     - '2015-10-29 20:16:37.381749'
-    - '2016-03-07 19:17:17.945327'
+    - '2016-08-12 16:47:34.954268'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19515,8 +19783,8 @@ versioned_texts:
   - - '2'
     - 
     - '2'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19612,7 +19880,7 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="2" data-figure-rank="" src="/resource_proxy/figures/7MzbAxAuoAK8h91VEBkrGaHd/detail">
             <img class="paper-body-figure" data-figure-id="3" data-figure-rank="" src="/resource_proxy/figures/7n1aAGioTqC1ApA8Ld2eYkbu/detail">
     - '2015-10-30 19:43:28.478909'
-    - '2016-03-07 19:17:17.972507'
+    - '2016-08-12 16:47:34.977993'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -19710,8 +19978,8 @@ versioned_texts:
   - - '3'
     - 
     - '3'
-    - '0'
-    - '0'
+    - 
+    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -19807,7 +20075,7 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="4" data-figure-rank="" src="/resource_proxy/figures/w3qHf38vMDCqKFXfcrCZE2LK/detail">
             <img class="paper-body-figure" data-figure-id="5" data-figure-rank="" src="/resource_proxy/figures/ajxQpM7BWyqje3rdUEjtpMTb/detail">
     - '2015-11-02 14:04:02.881043'
-    - '2016-03-07 19:17:17.997639'
+    - '2016-08-12 16:47:34.982977'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20100,8 +20368,8 @@ versioned_texts:
   - - '8'
     - 
     - '8'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20196,7 +20464,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-03 22:59:20.951303'
-    - '2016-03-07 19:17:18.029873'
+    - '2016-08-12 16:47:34.987398'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20294,8 +20562,8 @@ versioned_texts:
   - - '9'
     - 
     - '9'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20390,7 +20658,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-03 23:02:06.811068'
-    - '2016-03-07 19:17:18.037035'
+    - '2016-08-12 16:47:34.990027'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -20488,8 +20756,8 @@ versioned_texts:
   - - '10'
     - 
     - '10'
-    - '0'
-    - '0'
+    - 
+    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20584,7 +20852,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - '2015-11-10 22:27:27.140473'
-    - '2016-03-07 19:17:18.043672'
+    - '2016-08-12 16:47:34.992717'
     - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
@@ -21214,8 +21482,8 @@ versioned_texts:
   - - '18'
     - 
     - '13'
-    - '0'
-    - '0'
+    - 
+    - 
     - "<!--TEI front--><!--TEI body--><div class=\"teidiv0\" id=\"effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game\">\n<h2><span
       class=\"head\">NON-RESEARCH PAPER for Effect of Heterogeneous Investments on
       the Evolution of Cooperation in Spatial Public Goods Game</span></h2>\n<div
@@ -21484,7 +21752,7 @@ versioned_texts:
       The dataset of Figure 4.</p>\n<p>S5_Dataset.xlsx. The dataset of Figure 5.</p>\n</div>\n</div>\n</div><!--TEI
       back-->      \n      \n"
     - '2016-06-02 13:43:23.183174'
-    - '2016-06-02 13:53:56.274782'
+    - '2016-08-12 16:47:35.001828'
     - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">

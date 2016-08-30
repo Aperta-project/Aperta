@@ -94,11 +94,21 @@ class Activity < ActiveRecord::Base
 
   def self.decision_made!(decision, user:)
     create(
-      feed_name: "workflow",
+      feed_name: "manuscript",
       activity_key: "decision.made",
       subject: decision.paper,
       user: user,
-      message: "#{decision.verdict.titleize} was sent to author"
+      message: "A decision was made: #{decision.verdict.titleize}"
+    )
+  end
+
+  def self.decision_rescinded!(decision, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "decision.rescinded",
+      subject: decision.paper,
+      user: user,
+      message: "A decision was rescinded"
     )
   end
 
@@ -256,5 +266,14 @@ class Activity < ActiveRecord::Base
       )
     end
     activity
+  end
+
+  def self.state_changed!(paper, to:)
+    create(
+      feed_name: 'forensic',
+      activity_key: "paper.state_changed.#{to}",
+      subject: paper,
+      message: "Paper state changed to #{to}"
+    )
   end
 end

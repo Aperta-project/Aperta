@@ -7,15 +7,16 @@ describe TahiStandardTasks::RegisterDecisionTask do
       :with_academic_editor_role,
       :with_creator_role,
       :with_task_participant_role,
-      name: 'PLOS Yeti'
+      name: "#{Faker::Company.profession} Studies"
     )
   end
   let!(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
       :with_creator,
+      :submitted_lite,
       journal: journal,
-      title: 'Crazy stubbing tests on rats'
+      title: Faker::Lorem.paragraph
     )
   end
   let!(:task) do
@@ -26,6 +27,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       phase: paper.phases.first
     )
   end
+  let(:decision) { paper.draft_decision }
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
@@ -43,10 +45,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
         decision_letter: "Lorem Ipsum"
       )
     end
-
-    let(:decision) {
-      paper.decisions.first
-    }
 
     let(:task) {
       TahiStandardTasks::RegisterDecisionTask.create(
@@ -73,95 +71,44 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
   end
 
-  describe "#complete_decision" do
-    before do
-      allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
-      task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
+  describe "#after_register" do
+    context "decision is a revision" do
+      before do
+        allow(decision).to receive(:revision?).and_return(true)
+      end
 
-      paper.update(publishing_state: :submitted)
-      task.reload
-    end
+      it "calls #setup_new_revision with proper arguments" do
+        expect(TahiStandardTasks::ReviseTask)
+          .to receive(:setup_new_revision).with(task.paper, task.phase)
+        task.after_register decision
+      end
 
-    it "invokes DecisionReviser" do
-      expect_any_instance_of(TahiStandardTasks::DecisionReviser).to receive(:process!)
-      task.complete_decision
+      it "marks the task complete" do
+        expect(task).to receive(:complete!)
+        task.after_register decision
+      end
     end
   end
 
-  describe "#after_update" do
+  describe "#send_email" do
+    let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper, major_version: 0, minor_version: 0) }
+    let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
+    let(:subject_field) { double(value: Faker::Lorem.sentence) }
+    let(:to_field) { double(value: Faker::Internet.safe_email) }
+
     before do
-      allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
-      task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
+      expect(task).to receive(:answer_for).with('register_decision_questions--to-field').and_return(to_field)
+      expect(task).to receive(:answer_for).with('register_decision_questions--subject-field').and_return(subject_field)
     end
 
-    context "when the decision is 'Major Revision' and task is incomplete" do
-      it "does not create a new task for the paper" do
-        expect {
-          task.save!
-        }.to_not change { task.paper.tasks.size }
-      end
-    end
-
-    context "when the decision is 'Major Revision' and task is completed" do
-      let(:revise_task) do
-        task.paper.tasks.detect do |paper_task|
-          paper_task.type == "TahiStandardTasks::ReviseTask"
-        end
-      end
-
-      before do
-        task.save!
-        task.update_attributes completed: true
-        task.after_update
-      end
-
-      it "task has no participants" do
-        expect(task.participants).to be_empty
-      end
-
-      it "task participants does not include author" do
-        expect(task.participants).to_not include paper.creator
-      end
-    end
-
-    describe "#send_email" do
-      let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
-      let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper) }
-      let!(:decision_pending) { FactoryGirl.create(:decision, :pending, paper: paper) }
-
-      it "will email using latest non-pending decision" do
-        author_email = paper.creator.email
-        subject = 'Your paper'
-        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(
+    it "will email using last completed decision" do
+      expect(TahiStandardTasks::RegisterDecisionMailer)
+        .to receive_message_chain(:delay, :notify_author_email)
+        .with(
           decision_id: decision_one,
-          to_field: author_email,
-          subject_field: subject)
-        task.send_email(to_field: author_email, subject_field: subject)
-      end
-    end
-
-    describe "#complete_decision" do
-      let(:decision) { paper.decisions.first }
-
-      before do
-        allow(task).to receive(:paper).and_return(paper)
-        allow(paper).to receive(:make_decision)
-        allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
-      end
-
-      it "saves the decision to paper" do
-        expect(paper).to receive(:make_decision).with(decision)
-        task.complete_decision
-      end
-
-      it "prepares a new revise task" do
-        paper.update(publishing_state: "submitted")
-
-        task_type = TahiStandardTasks::ReviseTask.name
-        expect {
-          task.complete_decision
-        }.to change { paper.tasks.where(type: task_type).count }.by(1)
-      end
+          to_field: to_field.value,
+          subject_field: subject_field.value)
+      task.send_email
     end
   end
 end

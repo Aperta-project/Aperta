@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Remember to also change circle.yml and .ruby-version when the
 # ruby version changes
-ruby '2.2.3'
+ruby '2.2.4'
 
 # Task Engines
 gem 'plos_billing', path: 'engines/plos_billing'
@@ -46,7 +46,7 @@ gem 'pg_search'
 gem 'puma'
 gem 'pusher'
 gem 'rack-timeout'
-gem 'rails', '~>4.2.4'
+gem 'rails', '~>4.2.7'
 gem 'rbtrace'
 gem 'render_anywhere', require: nil
 gem 'request_store'
@@ -55,6 +55,7 @@ gem 'rsec'
 gem 'ruby_dig'
 gem 'rubyzip', require: 'zip'
 gem 'sass-rails'
+gem 'sdoc'
 gem 'sidekiq'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
@@ -99,6 +100,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'aws-sdk', '~> 2'
   gem 'bullet'
   gem 'capistrano-chruby'
   gem 'capistrano-rails'
@@ -123,6 +125,7 @@ group :test do
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'
+  gem 'faker'
   gem 'fake_ftp'
   gem 'generator_spec'
   gem 'pusher-fake'

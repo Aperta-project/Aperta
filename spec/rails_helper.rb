@@ -90,7 +90,7 @@ RSpec.configure do |config|
     # Ensure this come after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
       except: %w(task_types nested_questions roles permissions
-                 permission_states permissions_states_permissions
+                 permission_states permission_states_permissions
                  permissions_roles) }
 
     # Fix to make sure this happens only once

@@ -80,7 +80,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
 test("can rescind the invitation", function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', { isLatest: true });
+    let decision = FactoryGuy.make('decision', { latest: true });
     task.set('decisions', [decision]);
 
     let invitation = FactoryGuy.make('invitation', {

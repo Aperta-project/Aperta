@@ -1,45 +1,41 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import HasBusyStateMixin from 'tahi/mixins/has-busy-state';
 
 const { computed } = Ember;
 
-export default TaskComponent.extend(ValidationErrorsMixin, {
+export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   init: function(){
     this._super(...arguments);
     this.get('task.paper.decisions').reload();
   },
   decidedDecision: null,
-  formattedDecidedDecision: computed('decidedDecision', function() {
-    let words = this.get('decidedDecision').split(/_/g);
-    return words.map(function(word) {
-      return (word.charAt(0).toUpperCase() + word.slice(1));
-    }).join(' ');
-  }),
   restless: Ember.inject.service('restless'),
-  paperState: computed.alias('task.paper.publishingState'),
-  submitted: computed.equal('paperState', 'submitted'), 
+  paper: computed.alias('task.paper'),
+  submitted: computed.equal('paper.publishingState', 'submitted'),
   uncompleted: computed.equal('task.completed', false),
-  isNotEditable: false, // This task has custom editability behavior
+
+  publishable: computed.and('submitted', 'uncompleted'),
   nonPublishable: computed.not('publishable'),
   nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
     return this.get('nonPublishable') || !this.get('latestDecision.verdict');
   }),
+
   toField: null,
   subjectLine: null,
+  isLoading: computed.oneWay('isBusy'),
   revisionNumberDesc: ['revisionNumber:desc'],
+
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
-  latestDecision: computed.alias('decisions.firstObject'),
-  previousDecisions: computed('decisions.[]', function() {
-    return this.get('decisions').slice(1);
+  // was `alias('decisions.firstObject')` but blows the call stack - Jerry (ember 2.0.2)
+  latestDecision: computed('decisions.[]', function() {
+    return this.get('decisions.firstObject');
   }),
+  previousDecisions: computed.alias('paper.previousDecisions'),
+  latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
 
-  finalDecision: computed('latestDecision.verdict', function() {
-    return this.get('latestDecision.verdict') === 'accept' ||
-      this.get('latestDecision.verdict') === 'reject';
-  }),
-
-  publishable: computed.and('submitted', 'uncompleted'),
+  verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 
   applyTemplateReplacements(str) {
     str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
@@ -49,36 +45,31 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
 
-  triggerSave: Ember.observer('latestDecision.letter', function() {
+  onDecisionLetterUpdate: Ember.observer('latestDecision.letter', function() {
     let latestDecision = this.get('latestDecision');
-    if (latestDecision) {
+    if (latestDecision && latestDecision.get('hasDirtyAttributes')) {
       Ember.run.debounce(latestDecision, latestDecision.save, 500);
     }
   }),
 
   actions: {
     registerDecision() {
-      const id = this.get('task.id');
-      this.set('isSavingData', true);
-      const decidePath = `/api/register_decision/${id}/decide`;
+      let task = this.get('task');
 
-      this.get('restless').post(decidePath).then(() => {
-        this.set('decidedDecision', this.get('latestDecision.verdict'));
-        this.set('task.completed', true);
-        this.get('task').save().then(() => {
-          return this.get('latestDecision').save().then(() => {
-            const tasksPromise = this.get('task.paper.tasks').reload();
-            const decisionsPromise = this.get('task.paper.decisions').reload();
-            return Ember.RSVP.all([tasksPromise, decisionsPromise]).then(() => {
-              this.set('isSavingData', false);
-              this.clearAllValidationErrors();
-            });
-          });
-        });
-      }, (response) => {
-        this.set('isSavingData', false);
-        this.displayValidationErrorsFromResponse(response.responseJSON);
-      });
+      this.set('decidedDecision', this.get('latestDecision.verdict'));
+
+      this.busyWhile(
+        this.get('latestDecision').register(task)
+          .then(() => {
+            // reload to pick up completed flag on current task and possibly new
+            // Revise Manuscript task
+            return this.get('task.paper.tasks').reload();
+          }).then(() => {
+            this.clearAllValidationErrors();
+          }).catch((response) => {
+            this.displayValidationErrorsFromResponse(response.responseJSON);
+          })
+      );
     },
 
     templateSelected(template) {

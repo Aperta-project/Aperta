@@ -14,9 +14,24 @@ class ApplicationController < ActionController::Base
   before_action :set_pusher_socket
   before_action :set_current_user_id
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :store_location_for_login_redirect, unless: :devise_controller?
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
+  # This is an error we use to allow assertions of the form:
+  # `assert test?, "Error message", status_code: 422`
+  # in controllers. See #assert, below.
+  class AssertionError < StandardError
+    attr_reader :message, :status_code
+
+    def initialize(message, status_code)
+      @message = message
+      @status_code = status_code
+    end
+  end
+
+  rescue_from AssertionError, with: :render_assertion_error
 
   protected
 
@@ -42,7 +57,15 @@ class ApplicationController < ActionController::Base
   private
 
   def render_errors(e)
-    render status: 422, json: {errors: e.record.errors}
+    render status: 422, json: { errors: e.record.errors }
+  end
+
+  def assert(test, message, status_code: 422)
+    fail AssertionError.new(message, status_code) unless test
+  end
+
+  def render_assertion_error(e)
+    render status: e.status_code, json: { errors: [e.message] }
   end
 
   def render_404
@@ -52,6 +75,11 @@ class ApplicationController < ActionController::Base
   # customize devise signout path
   def after_sign_out_path_for(resource_or_scope)
     cas_logout_url || new_user_session_path
+  end
+
+  # to redirect a user to the requested page after login
+  def store_location_for_login_redirect
+    store_location_for(:user, request.url) if session["user_return_to"].blank?
   end
 
   def cas_logout_url

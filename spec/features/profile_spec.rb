@@ -32,9 +32,9 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
     end
 
     it "hides the form" do
-      expect(page).to have_css(".profile-affiliations-form")
+      expect(page).to have_css(".affiliations-form")
       find("a", text: "cancel").click
-      expect(page).to have_no_css(".profile-affiliations-form")
+      expect(page).to have_no_css(".affiliations-form")
     end
 
     it "clears the form" do

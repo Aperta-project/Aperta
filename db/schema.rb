@@ -223,15 +223,19 @@ ActiveRecord::Schema.define(version: 20160819150432) do
 
   create_table "decisions", force: :cascade do |t|
     t.integer  "paper_id"
-    t.integer  "revision_number", default: 0
     t.text     "letter"
     t.string   "verdict"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "author_response"
+    t.datetime "registered_at"
+    t.integer  "minor_version"
+    t.integer  "major_version"
+    t.boolean  "initial",         default: false, null: false
+    t.boolean  "rescinded",       default: false
   end
 
-  add_index "decisions", ["paper_id", "revision_number"], name: "index_decisions_on_paper_id_and_revision_number", unique: true, using: :btree
+  add_index "decisions", ["minor_version", "major_version", "paper_id"], name: "unique_decision_version", unique: true, using: :btree
   add_index "decisions", ["paper_id"], name: "index_decisions_on_paper_id", using: :btree
 
   create_table "discussion_participants", force: :cascade do |t|
@@ -757,8 +761,8 @@ ActiveRecord::Schema.define(version: 20160819150432) do
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
     t.integer  "paper_id",                        null: false
-    t.integer  "major_version",                   null: false
-    t.integer  "minor_version",                   null: false
+    t.integer  "major_version"
+    t.integer  "minor_version"
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"

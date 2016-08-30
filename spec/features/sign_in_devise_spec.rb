@@ -33,6 +33,17 @@ feature "Devise signing in", js: true do
   end
 end
 
+feature "Devise redirect", js: true do
+  let!(:user) { FactoryGirl.create :user }
+  scenario "User is redirected after login" do
+    page.visit_without_waiting '/profile'
+    fill_in('Login', with: user.username)
+    fill_in('Password', with: 'password')
+    click_on "Sign in"
+    expect(page.current_path).to eq '/profile'
+  end
+end
+
 feature "Devise resetting password", js: true do
   let!(:user) { create :user }
   scenario "User can reset their password" do

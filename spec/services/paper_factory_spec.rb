@@ -76,8 +76,8 @@ describe PaperFactory do
       expect(subject.creator).to eq(user)
     end
 
-    it "creates a Decision" do
-      expect(subject.decisions.length).to eq 1
+    it "does not create a decision" do
+      expect(subject.decisions).to be_empty
     end
 
     it "applies the template" do

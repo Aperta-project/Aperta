@@ -1,74 +1,76 @@
-{{paper-control-bar paper=model
-                    showActivity="showActivityOverlay"
-                    addContributors="showCollaboratorsOverlay"
-                    exportDocument="exportDocument"
-                    showWithdrawOverlay="showWithdrawOverlay"
-                    topicsIndexPath=topicsIndexPath
-                    supportedDownloadFormats=supportedDownloadFormats
-                    versioningMode=versioningMode
-                    versionsVisible=versioningMode}}
+<div class="edit-paper">
+  {{paper-control-bar paper=model
+                      showActivity="showActivityOverlay"
+                      addContributors="showCollaboratorsOverlay"
+                      exportDocument="exportDocument"
+                      showWithdrawOverlay="showWithdrawOverlay"
+                      topicsIndexPath=topicsIndexPath
+                      supportedDownloadFormats=supportedDownloadFormats
+                      versioningMode=versioningMode
+                      versionsVisible=versioningMode}}
 
 
-{{#paper-submission-process showProcess=showSubmissionProcess
-                            paper=model
-                            toggle=(action "toggleSubmissionProcess")}}
-  <div class="paper-container">
-    {{withdrawal-banner paper=model}}
+  {{#paper-submission-process showProcess=showSubmissionProcess
+                              paper=model
+                              toggle=(action "toggleSubmissionProcess")}}
+    <div class="paper-container">
+      {{withdrawal-banner paper=model}}
 
-    {{#split-pane handleClass="manuscript-handle"}}
-      {{#split-pane-element class="manuscript-pane"}}
-        <div class="manuscript-container">
-          {{flash-messages}}
-          {{paper-display paper=model}}
-        </div>
-      {{/split-pane-element}}
+      {{#split-pane handleClass="manuscript-handle"}}
+        {{#split-pane-element class="manuscript-pane"}}
+          <div class="manuscript-container">
+            {{flash-messages}}
+            {{paper-display paper=model}}
+          </div>
+        {{/split-pane-element}}
 
-      {{#split-pane-element}}
-        {{paper-sidebar paper=model
-                        user=currentUser
-                        showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
-                        toggleSubmissionProcess=(action "toggleSubmissionProcess")}}
-      {{/split-pane-element}}
-    {{/split-pane}}
-  </div>
-{{/paper-submission-process}}
+        {{#split-pane-element}}
+          {{paper-sidebar paper=model
+                          user=currentUser
+                          showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
+                          toggleSubmissionProcess=(action "toggleSubmissionProcess")}}
+        {{/split-pane-element}}
+      {{/split-pane}}
+    </div>
+  {{/paper-submission-process}}
 
-{{outlet}}
+  {{outlet}}
 
-{{#overlay-fullscreen visible=showActivityOverlay
-                      outAnimationComplete=(action "hideActivityOverlay")
-                      title="Recent Activity"
-                      overlayClass="activity-overlay"
-                      as |overlay|}}
-    {{paper-activity isLoading=activityIsLoading
-                     model=activityFeed
+  {{#overlay-fullscreen visible=showActivityOverlay
+                        outAnimationComplete=(action "hideActivityOverlay")
+                        title="Recent Activity"
+                        overlayClass="activity-overlay"
+                        as |overlay|}}
+      {{paper-activity isLoading=activityIsLoading
+                       model=activityFeed
+                       close=(action overlay.animateOut)}}
+  {{/overlay-fullscreen}}
+
+
+  {{#overlay-fullscreen visible=showCollaboratorsOverlay
+                        outAnimationComplete=(action "hideCollaboratorsOverlay")
+                        title="Who can collaborate on this manuscript?"
+                        overlayClass="show-collaborators-overlay"
+                        as |overlay|}}
+      {{paper-collaborators paper=model
+                            close=(action overlay.animateOut)}}
+  {{/overlay-fullscreen}}
+
+
+  {{#overlay-fullscreen visible=showWithdrawOverlay
+                        outAnimationComplete=(action "hideWithdrawOverlay")
+                        overlayClass="overlay--grey paper-withdraw-overlay"
+                        as |overlay|}}
+      {{paper-withdraw model=model
+                       close=(action overlay.animateOut)}}
+  {{/overlay-fullscreen}}
+
+
+  {{#overlay-fullscreen visible=showPaperSubmitOverlay
+                        outAnimationComplete=(action "hidePaperSubmitOverlay")
+                        overlayClass="overlay--green paper-submit-overlay"
+                        as |overlay|}}
+      {{paper-submit model=model
                      close=(action overlay.animateOut)}}
-{{/overlay-fullscreen}}
-
-
-{{#overlay-fullscreen visible=showCollaboratorsOverlay
-                      outAnimationComplete=(action "hideCollaboratorsOverlay")
-                      title="Who can collaborate on this manuscript?"
-                      overlayClass="show-collaborators-overlay"
-                      as |overlay|}}
-    {{paper-collaborators paper=model
-                          close=(action overlay.animateOut)}}
-{{/overlay-fullscreen}}
-
-
-{{#overlay-fullscreen visible=showWithdrawOverlay
-                      outAnimationComplete=(action "hideWithdrawOverlay")
-                      overlayClass="overlay--grey paper-withdraw-overlay"
-                      as |overlay|}}
-    {{paper-withdraw model=model
-                     close=(action overlay.animateOut)}}
-{{/overlay-fullscreen}}
-
-
-{{#overlay-fullscreen visible=showPaperSubmitOverlay
-                      outAnimationComplete=(action "hidePaperSubmitOverlay")
-                      overlayClass="overlay--green paper-submit-overlay"
-                      as |overlay|}}
-    {{paper-submit model=model
-                   close=(action overlay.animateOut)}}
-{{/overlay-fullscreen}}
+  {{/overlay-fullscreen}}
+</div>

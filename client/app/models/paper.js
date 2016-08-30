@@ -49,6 +49,7 @@ export default DS.Model.extend({
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
   eventName: attr('string'),
+  firstSubmittedAt: attr('date'),
   gradualEngagement: attr('boolean'),
   handlingEditors: attr(),
   manuscript_id: attr('string'),
@@ -87,7 +88,7 @@ export default DS.Model.extend({
     return this.get('title') || this.get('shortTitle');
   }),
 
-  collaborators: computed('collaborations.[]', function() {
+  collaborators: computed('collaborations.@each.user', function() {
     return this.get('collaborations').mapBy('user');
   }),
 
@@ -95,8 +96,21 @@ export default DS.Model.extend({
     return this.get('oldRoles').sort().join(', ');
   }),
 
-  latestDecision: computed('decisions.[]', function() {
-    return this.get('decisions').findBy('isLatest', true);
+  latestDecision: computed('decisions.@each.latest', function() {
+    return this.get('decisions').findBy('latest', true);
+  }),
+
+  latestRegisteredDecision: computed(
+    'decisions.@each.latestRegistered',
+    function() {
+      return this.get('decisions').findBy('latestRegistered', true);
+  }),
+
+  previousDecisions: computed('decisions.@each.registeredAt', function() {
+    return this.get('decisions')
+      .filterBy('registeredAt')
+      .sortBy('registeredAt')
+      .reverseObjects();
   }),
 
   textForVersion(versionString) {
@@ -164,7 +178,6 @@ export default DS.Model.extend({
   isInitialSubmission: computed.and('gradualEngagement', 'isUnsubmitted'),
   isFullSubmission: computed.and('gradualEngagement', 'invitedForFullSubmission'),
 
-
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {
       return "initial";
@@ -180,6 +193,39 @@ export default DS.Model.extend({
     }
     return true;
   }),
+
+  sortedDecisions: computed('decisions.@each.registeredAt', function() {
+    return this.get('decisions').sortBy('registeredAt');
+  }),
+
+  initialDecision: computed(
+    'decisions.@each.registeredAt',
+    'decisions.@each.rescinded',
+    function() {
+      let decisions = this.get('sortedDecisions');
+      let latestInitial = this.get('decisions')
+                              .filterBy('initial')
+                              .filterBy('rescinded', false)
+                              .get('lastObject');
+      // If there's already been a full decision
+      // then just return the most recent initial decision.
+      let fullDecisions = decisions.filterBy('registeredAt')
+                                   .filterBy('initial', false);
+      if (fullDecisions.get('length') > 0) {
+        return latestInitial;
+      }
+
+      // If all other decisions have been rescinded,
+      // return the latest, unmade decision
+      let prevCount = decisions.filter((d) => {
+        return d.get('registeredAt') && !d.get('rescinded');
+      }).get('length');
+      if (prevCount === 0) {
+        return decisions.findBy('registeredAt', null);
+      }
+
+      return latestInitial;
+    }),
 
   restless: Ember.inject.service(),
 

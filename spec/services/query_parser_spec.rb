@@ -26,29 +26,29 @@ describe QueryParser do
         SQL
       end
 
-      it 'parses decision queries' do
+      it 'parses decision queries when the decision IS' do
         parse = QueryParser.new.parse 'DECISION IS major revision'
         expect(parse.to_sql).to eq(<<-SQL.strip_heredoc.chomp)
-        "papers"."id" IN (SELECT decisions_0.paper_id from (SELECT paper_id, MAX("decisions"."revision_number") AS revision_number FROM "decisions" WHERE "decisions"."verdict" IS NOT NULL GROUP BY paper_id)
-            AS decisions_0
-        INNER JOIN decisions ON
-            decisions.paper_id = decisions_0.paper_id
-            AND decisions.revision_number = decisions_0.revision_number
-        WHERE
-        "decisions"."verdict" = 'major_revision')
+          "papers"."id" IN (SELECT decisions_0.paper_id from (SELECT paper_id, MAX("decisions"."registered_at") AS registered_at FROM "decisions" WHERE "decisions"."registered_at" IS NOT NULL AND "decisions"."rescinded" != 't' GROUP BY paper_id)
+              AS decisions_0
+          INNER JOIN decisions ON
+              decisions.paper_id = decisions_0.paper_id
+              AND decisions.registered_at = decisions_0.registered_at
+          WHERE
+          "decisions"."verdict" = 'major_revision')
         SQL
       end
 
-      it 'parses decision queries' do
+      it 'parses decision queries when the decision IS NOT' do
         parse = QueryParser.new.parse 'DECISION IS NOT major revision'
         expect(parse.to_sql).to eq(<<-SQL.strip_heredoc.chomp)
-        "papers"."id" IN (SELECT decisions_0.paper_id from (SELECT paper_id, MAX("decisions"."revision_number") AS revision_number FROM "decisions" WHERE "decisions"."verdict" IS NOT NULL GROUP BY paper_id)
-            AS decisions_0
-        INNER JOIN decisions ON
-            decisions.paper_id = decisions_0.paper_id
-            AND decisions.revision_number = decisions_0.revision_number
-        WHERE
-        "decisions"."verdict" != 'major_revision')
+          "papers"."id" IN (SELECT decisions_0.paper_id from (SELECT paper_id, MAX("decisions"."registered_at") AS registered_at FROM "decisions" WHERE "decisions"."registered_at" IS NOT NULL AND "decisions"."rescinded" != 't' GROUP BY paper_id)
+              AS decisions_0
+          INNER JOIN decisions ON
+              decisions.paper_id = decisions_0.paper_id
+              AND decisions.registered_at = decisions_0.registered_at
+          WHERE
+          "decisions"."verdict" != 'major_revision')
         SQL
       end
 
@@ -265,6 +265,28 @@ describe QueryParser do
           parse = QueryParser.new.parse 'SUBMITTED < 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)
             "papers"."submitted_at" >= '#{start_time}'
+          SQL
+        end
+      end
+
+      it 'parses FIRST SUBMITTED < mm/dd/yy' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse "FIRST SUBMITTED > #{start_time}"
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."first_submitted_at" >= '#{start_time}'
+          SQL
+        end
+      end
+
+      it 'parses FIRST SUBMITTED > mm/dd/yy' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse "FIRST SUBMITTED < #{start_time}"
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."first_submitted_at" < '#{start_time}'
           SQL
         end
       end

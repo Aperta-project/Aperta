@@ -1,10 +1,9 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
-import { manualSetup, make } from 'ember-data-factory-guy';
-import wait from 'ember-test-helpers/wait';
-import registerCustomAssertions from '../../../helpers/custom-assertions';
 import Factory from '../../../helpers/factory';
+import hbs from 'htmlbars-inline-precompile';
+import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
+import { manualSetup, make, mockReload } from 'ember-data-factory-guy';
+import { moduleForComponent, test } from 'ember-qunit';
 
 let createTask = function() {
   return make('register-decision-task', {
@@ -14,7 +13,14 @@ let createTask = function() {
       },
       publishingState: 'submitted',
       decisions: [
-        { id: 1 }
+        {
+          id: 1,
+          latest: true
+        },
+        { id: 2,
+          verdict: 'accept', registeredAt: new Date()},
+        { id: 3,
+          verdict: 'minor_revision', registeredAt: new Date()}
       ],
       shortTitle: 'GREAT TITLE',
       creator: {
@@ -24,7 +30,7 @@ let createTask = function() {
       }
     },
     letterTemplates: [
-      { 
+      {
         id: 1,
         text: 'RA Accept',
         templateDecision: 'accept',
@@ -44,84 +50,82 @@ let createTask = function() {
   });
 };
 
-let fakeUser = Factory.createRecord('User', {
-  id: 1,
-  fullName: 'Fake User',
-  lastName: 'Smith',
-  username: 'fakeuser',
-  email: 'fakeuser@example.com'
-});
-
 moduleForComponent(
   'register-decision-task',
   'Integration | Components | Tasks | Register Decision', {
-  integration: true,
+    integration: true,
 
+    beforeEach() {
+      // Mock out pusher
+      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      manualSetup(this.container);
+      // FactoryGuy.setStore(this.container.lookup("store:main"));
+      Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
+      initTruthHelpers();
+      const task = createTask();
 
-  beforeEach() {
-    // Mock out pusher
-    this.container.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-    manualSetup(this.container);
-    Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
+      this.setProperties({
+        task: task
+      });
+
+      this.task.get('decisions').forEach(function (decision) {
+        mockReload('decision', decision.get('id'));
+      });
+      this.render(template);
+      this.selectDecision = function(decision) {
+        this.$(`label:contains('${decision}') input[type='radio']`).first().click();
+      };
+    }
   }
-});
+);
 
-let template = hbs`{{register-decision-task task=testTask currentUser=fakeUser}}`;
+const template = hbs`{{register-decision-task task=task container=container}}`;
 
 test('it renders decision selections', function(assert) {
-  let testTask = createTask();
-  this.set('fakeUser', fakeUser);
-  this.set('testTask', testTask);
-  this.render(template);
   assert.elementsFound('.decision-label', 4);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'Dear');
 });
 
 test('it switches the letter contents on change', function(assert) {
-  let testTask = createTask();
-  this.set('fakeUser', fakeUser);
-  this.set('testTask', testTask);
-  this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'who Accepts');
-  this.$("input[type='radio']").first().click();
+  this.selectDecision('Reject');
   assert.inputContains('.decision-letter-field', 'who Rejects');
 });
 
 test('it replaces [LAST NAME] with the authors last name', function(assert) {
-  let testTask = createTask();
-  this.set('fakeUser', fakeUser);
-  this.set('testTask', testTask);
-  this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
 });
 
 test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
-  let testTask = createTask();
-  this.set('fakeUser', fakeUser);
-  this.set('testTask', testTask);
-  this.render(template);
-  this.$("input[type='radio']").last().click();
-  let journalName = testTask.get('paper.journal.name');
+  this.selectDecision('Accept');
+  let journalName = this.task.get('paper.journal.name');
   assert.inputContains('.decision-letter-field', journalName);
 });
 
 test('it replaces [PAPER TITLE] with the paper title', function(assert) {
-  let testTask = createTask();
-  this.set('fakeUser', fakeUser);
-  this.set('testTask', testTask);
-  this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.decision-letter-field', 'GREAT TITLE');
 });
 
 test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
-  let testTask = createTask();
-  this.set('fakeUser', fakeUser);
-  this.set('testTask', testTask);
-  this.render(template);
-  this.$("input[type='radio']").last().click();
+  this.selectDecision('Accept');
   assert.inputContains('.to-field', 'author@example.com');
+});
+
+test('User has the ability to rescind', function(assert){
+  assert.elementFound(
+    '.rescind-decision',
+    'User sees the rescind decision bar'
+  );
+});
+
+test('User can see the decision history', function(assert){
+  assert.nElementsFound(
+    '.decision-bar',
+    2,
+    'User sees only completed decisions'
+  );
 });

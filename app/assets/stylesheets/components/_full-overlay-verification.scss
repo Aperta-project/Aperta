@@ -1,0 +1,21 @@
+.full-overlay-verification {
+  z-index: z('overlay-verification');
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0px;
+  right: 0px;
+  background-color: $tahi-green;
+  text-align: center;
+  color: $tahi-white;
+  font-size: 2rem;
+
+  .full-overlay-verification-question {
+    margin-top: 200px;
+    margin-bottom: 20px;
+  }
+
+  .button {
+    margin: 0 5px;
+  }
+}

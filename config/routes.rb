@@ -44,14 +44,21 @@ Tahi::Application.routes.draw do
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
-    resources :affiliations, only: [:index, :create, :destroy]
+    resources :affiliations, only: [:index, :create, :destroy] do
+      collection do
+        get '/user/:user_id', to: 'affiliations#for_user'
+      end
+    end
     resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments'
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :show, :destroy]
-    resources :decisions, only: [:create, :update, :show]
+    resources :decisions, only: [:create, :update, :show] do
+      put :rescind, on: :member
+      put :register, on: :member
+    end
     resources :discussion_topics, only: [:index, :show, :create, :update] do
       get :users, on: :member
     end

@@ -8,6 +8,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Admins can view and edit journal roles assigned to users
 - AE country is included in Apex export
 - Discussion Topic title validation
+- Decisions can be rescinded
+- Heroku deploys are quicker now with a single line command
+- Add permission to view decisions
 ### Changed
 - Soft deleting questions and answers. Answers are retained even when questions are marked
   as deleted
@@ -17,6 +20,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Fix frontend code to allow for multiple rounds of revision
 - Emails with html-like text ( <, >, etc) will no longer be truncated
 - Display of initial decision infobox after creating paper and click of question mark icon
+- New billing institutions will now be added in alphabetical order
+- Fixed race condition between creating a token, and requesting it when creating or replacing attachments.
 
 ### Security
 
@@ -31,6 +36,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 editability down the line.
 - Registering a decision removes existing reviewers and open reviewer invitations
 ### Changed
+- Upgrade to ruby 2.2.4
 ### Deprecated
 ### Removed
 ### Fixed

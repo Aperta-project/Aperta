@@ -53,7 +53,7 @@ class BillingLogReport < ActiveRecord::Base
       papers = accepted_papers_with_completed_billing_tasks
 
       if from_date
-        papers.where('tasks.completed_at > ?', from_date)
+        papers.where('accepted_at > ?', from_date)
       else
         papers
       end

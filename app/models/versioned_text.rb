@@ -5,6 +5,7 @@
 # major versions for full revisions (after a revise decision).
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
+  include Versioned
 
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
@@ -12,23 +13,26 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
-  scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
-
   mount_uploader :source, SourceUploader # CarrierWave obj
 
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
 
-  validates :paper, :major_version, :minor_version, presence: true
+  validates :paper, presence: true
+  validate :only_version_once
 
-  # Make a copy of the text and give it a new MAJOR version.
-  def new_major_version!
-    new_version!(major_version + 1, 0)
+  # Give the text a new MAJOR version.
+  def be_major_version!
+    update!(
+      major_version: (paper.major_version || -1) + 1,
+      minor_version: 0)
   end
 
-  # Make a copy of the text and give it a new MINOR version
-  def new_minor_version!
-    new_version!(major_version, minor_version + 1)
+  # Give the text a new MINOR version
+  def be_minor_version!
+    update!(
+      major_version: (paper.major_version || 0),
+      minor_version: (paper.minor_version || -1) + 1)
   end
 
   def submitted?
@@ -48,18 +52,24 @@ class VersionedText < ActiveRecord::Base
     save!
   end
 
-  private
-
-  def creator_name
-    submitting_user ? submitting_user.full_name : "(draft)"
+  def new_draft!
+    dup.tap do |d|
+      d.update!(
+        major_version: nil,
+        minor_version: nil,
+        submitting_user: nil,
+        source: source) # makes duplicate of S3 file
+    end
   end
 
-  def new_version!(new_major_version, new_minor_version)
-    dup.update!(
-      major_version: new_major_version,
-      minor_version: new_minor_version,
-      submitting_user: nil,
-      source: source # makes duplicate of S3 file
-    )
+  private
+
+  def only_version_once
+    version_changed = (major_version_changed? || minor_version_changed?)
+    return unless version_changed
+    return if major_version_was.nil?
+    errors.add(
+      :major_version,
+      "This versioned_text is not a draft. You may not change its version.")
   end
 end

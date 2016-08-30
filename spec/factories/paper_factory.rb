@@ -3,6 +3,7 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     journal
+    paper_type { journal.paper_types.first || "research" }
 
     uses_research_article_reviewer_report true
 
@@ -19,9 +20,6 @@ FactoryGirl.define do
         unless paper.creator
           paper.update!(creator: FactoryGirl.create(:user))
         end
-
-        paper.save!
-        paper.body = "I am the very model of a modern journal article"
       end
     end
 
@@ -30,13 +28,28 @@ FactoryGirl.define do
     end
 
     trait(:active) do
-      publishing_state "unsubmitted"
-      active true
+      # noop
     end
 
-    trait(:inactive) do
-      publishing_state "withdrawn"
+    trait(:withdrawn_lite) do
+      transient do
+        reason nil
+        withdrawn_by_user { build(:user) }
+      end
+
       active false
+      editable false
+      state_updated_at { DateTime.current.utc }
+      publishing_state "withdrawn"
+
+      after(:build) do |paper, evaluator|
+        paper.withdrawals = build_list(
+          :withdrawal,
+          1,
+          paper: paper,
+          reason: evaluator.reason,
+          withdrawn_by_user: evaluator.withdrawn_by_user)
+      end
     end
 
     trait(:checking) do
@@ -53,11 +66,17 @@ FactoryGirl.define do
 
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
-      publishing_state "submitted"
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.submit! paper.creator
+      end
     end
 
     trait(:initially_submitted) do
-      publishing_state 'initially_submitted'
+      after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
+        paper.initial_submit! paper.creator
+      end
     end
 
     trait(:submitted) do
@@ -67,11 +86,41 @@ FactoryGirl.define do
       end
     end
 
-    trait(:unsubmitted) do
-      after(:create) do |paper|
-        paper.update_column(:publishing_state, 'unsubmitted')
-        paper.update_column(:editable, true)
+    trait(:submitted_lite) do
+      transient do
+        submitting_user { FactoryGirl.create(:user) }
       end
+      publishing_state :submitted
+      editable false
+      # Time in { } to evaluate it later so that it works with Timecop
+      first_submitted_at { DateTime.current.utc }
+      submitted_at { DateTime.current.utc }
+      state_updated_at { DateTime.current.utc }
+      after :create do |paper, evaluator|
+        paper.new_draft_decision!
+        paper.versioned_texts.first.update!(
+          major_version: 0,
+          minor_version: 0,
+          submitting_user: evaluator.submitting_user
+        )
+      end
+    end
+
+    trait(:initially_submitted_lite) do
+      submitted_lite
+      publishing_state :initially_submitted
+    end
+
+    # TODO: reimplement this using actual AASM transitions. Like above.
+    trait(:rejected_lite) do
+      publishing_state :rejected
+      after :create do |paper|
+        paper.decisions.completed.create!(verdict: "reject")
+      end
+    end
+
+    trait(:unsubmitted) do
+      # noop
     end
 
     trait(:with_tasks) do
@@ -148,13 +197,7 @@ FactoryGirl.define do
       end
     end
 
-    after(:build) do |paper|
-      paper.paper_type ||= paper.journal.paper_types.first
-    end
-
     after(:create) do |paper, evaluator|
-      paper.decisions.create!
-
       paper.body = evaluator.body
     end
 
@@ -185,8 +228,11 @@ FactoryGirl.define do
       end
     end
 
-    factory :paper_ready_for_export do
+    trait :ready_for_export do
       doi "blah/journal.yetijour.123334"
+      publishing_state "accepted"
+
+      with_integration_journal
 
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)

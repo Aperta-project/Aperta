@@ -112,17 +112,20 @@ end
 
 namespace :check_status do
   [{ name: :nginx,
-     pidfile: :nginx_pidfile
+     pidfile: :nginx_pidfile,
+     role: :web
    },
    { name: :sidekiq,
-     pidfile: :sidekiq_pidfile
+     pidfile: :sidekiq_pidfile,
+     role: :worker
    },
    { name: :puma,
-     pidfile: :puma_pidfile
+     pidfile: :puma_pidfile,
+     role: :web
    }].each do |config|
     desc "Check the status of the #{config[:name]} process"
     task config[:name] do
-      on roles(:web) do
+      on roles(config[:role]) do
         pidfile = fetch(config[:pidfile])
         if test("[ -s #{pidfile} ]") && test("ps -o pid= -p `< #{pidfile}`")
           info "#{config[:name]} is running"

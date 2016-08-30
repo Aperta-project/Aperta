@@ -27,12 +27,12 @@ let template = hbs`{{invitation-detail-row
                       invitation=invitation
                       destroyAction=destroyAction}}`;
 
-test('displays invitation information', function(assert){
+test('displays invitation information if the invite.invited is true', function(assert){
+  this.set('invitation.invited', true);
   this.render(template);
 
-  assert.textPresent('.invitation-item-updated-at',
-                     moment(this.get('update-date')).format('LLL'));
-  assert.textPresent('.invitation-item-state', 'draft');
+  assert.textPresent('.invitation-item-status',
+                     `Invited ${moment(this.get('update-date')).format('MMM D, YYYY')}`);
 });
 
 test('displays invitee information when present', function(assert){
@@ -50,29 +50,27 @@ test('displays invitation email when no invitee present', function(assert){
   assert.textPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
-test('displays remove icon if invite not accepted and given destroyAction',
+test('displays remove icon if invite not accepted and the row is in the show or edit state',
   function(assert){
     this.set('invitation.accepted', false);
-    this.render(template);
+    let openTemplate = hbs`{{invitation-detail-row
+                          invitation=invitation
+                          uiState='show'
+                          destroyAction=destroyAction}}`;
+    this.render(openTemplate);
 
     assert.elementFound('.invite-remove');
   }
 );
 
-test('does not display remove icon if invite accepted',
+test('does not display remove icon if invite accepted, even if in the show state',
   function(assert){
     this.set('invitation.accepted', true);
-    this.render(template);
-
-    assert.elementNotFound('.invite-remove');
-  }
-);
-
-test('does not display remove icon if invite accepted and no destroyAction',
-  function(assert){
-    this.set('invitation.accepted', true);
-    this.set('destroyAction', null);
-    this.render(template);
+    let openTemplate = hbs`{{invitation-detail-row
+                          invitation=invitation
+                          uiState='show'
+                          destroyAction=destroyAction}}`;
+    this.render(openTemplate);
 
     assert.elementNotFound('.invite-remove');
   }

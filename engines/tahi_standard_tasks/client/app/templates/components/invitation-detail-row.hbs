@@ -8,34 +8,35 @@
         {{unbound invitation.email}}
       {{/if}}
     </div>
-    <div class="invitation-item-status">
+    <div class="invitation-item-status" {{action "toggleDetails" invitation}}>
       {{#if (and (eq uiState 'closed') invitation.invited)}}
-          <span>Invited {{format-date invitation.updatedAt format='MMM D, YYYY'}}</span>
+          <span>Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
       {{/if}}
     </div>
     <div class="invitation-item-body-preview" {{action "toggleDetails" invitation}}>
       {{strip-html invitation.body}}
     </div>
     <div class="invitation-item-actions">
-      {{#if (and invitation.pending notClosedState)}}
-        <span class="invitation-item-action" {{action "editInvitation" invitation}}>
+      {{#if displayEditButton}}
+        <span class="invitation-item-action invitation-item-action-edit" {{action "editInvitation" invitation}}>
           <span class="fa fa-pencil invite-edit"></span>
           <span class="invitation-item-action-text">Edit</span>
         </span>
       {{/if}}
       {{#if invitation.pending}}
-        <span class="invitation-item-action" {{action "sendInvitation" invitation}}>
+        <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
           <span class="fa fa-send invite-send"></span>
           <span class="invitation-item-action-text">Send</span>
         </span>
       {{else}}
-        <span class="invitation-item-action invitation-item-action--disabled" title="Invited {{format-date invitation.updatedAt format="MMMM Do YYYY"}}">
+        <span class="invitation-item-action invitation-item-action-send invitation-item-action--disabled"
+              title="Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}">
           <span class="fa fa-send invite-send"></span>
           <span class="invitation-item-action-text">Send</span>
         </span>
       {{/if}}
       {{#if displayDestroyButton}}
-        <span class="invitation-item-action" {{action destroyAction invitation}}>
+        <span class="invitation-item-action invitation-item-action-delete" {{action destroyAction invitation}}>
           <span class="fa fa-trash invite-remove" ></span>
           <span class="invitation-item-action-text">Delete</span>
         </span>

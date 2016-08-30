@@ -24,7 +24,6 @@ moduleForComponent(
   }
 );
 
-
 test('User can add a new reviewer after tweaking the email of an exiting user',
   function(assert){
     assert.expect(2);
@@ -54,12 +53,10 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
       this.$('#invitation-recipient').val(current).keyup();
     });
 
-    click('.compose-invite-button');
-    click('.send-invitation-button');
+    click('.invitation-email-entry-button');
+    click('.invitation-save-button');
   }
 );
-
-
 
 var newInvitation = function(email) {
   return {

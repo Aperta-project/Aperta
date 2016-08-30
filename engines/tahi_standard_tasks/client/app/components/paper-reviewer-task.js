@@ -9,6 +9,9 @@ const {
   isEmpty
 } = Ember;
 
+//Note: This is component is strikingly similar to the paper-editor-task component,
+//but we didn't feel that combining the two was worth the time as part of APERTA-5588.
+//Please take a look a the `paper-editor-task` as you make changes here.
 export default TaskComponent.extend({
   invitationToEdit: null,
   selectedUser: null,

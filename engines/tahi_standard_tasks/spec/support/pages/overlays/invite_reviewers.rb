@@ -9,7 +9,7 @@ class InviteReviewersOverlay < CardOverlay
       find(".auto-suggest-item", text: "#{reviewer.full_name} [#{reviewer.email}]").click
 
       # Invite
-      find('.compose-invite-button').click
+      find('.invitation-email-entry-button').click
       find('.send-invitation-button').click
 
       # Make sure we see they were invited
@@ -20,7 +20,7 @@ class InviteReviewersOverlay < CardOverlay
 
   def invite_new_reviewer(email)
     fill_in "invitation-recipient", with: email
-    find('.compose-invite-button').click
+    find('.invitation-email-entry-button').click
     find('.send-invitation-button').click
     find('.active-invitations .invitation-item-full-name', text: email)
   end

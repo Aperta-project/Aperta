@@ -58,7 +58,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
     andThen(function(){
       assert.elementFound(
-        '.compose-invite-button.button--disabled',
+        '.invitation-email-entry-button.button--disabled',
         'Expected to find Compose Invite button disabled'
       );
 
@@ -71,7 +71,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
     andThen(function(){
       assert.elementFound(
-        '.compose-invite-button:not(.button--disabled)',
+        '.invitation-email-entry-button:not(.button--disabled)',
         'Expected to find Compose Invite button enabled'
       );
     });
@@ -89,7 +89,9 @@ test('can rescind the invitation', function(assert) {
       state: 'invited'
     });
     decision.set('invitations', [invitation]);
+
     TestHelper.mockFind('task').returns({model: task});
+    TestHelper.mockDelete('invitation', invitation.id);
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
@@ -97,14 +99,13 @@ test('can rescind the invitation', function(assert) {
     andThen(function() {
       let msgEl = find(`.invitation-item:contains('${invitation.get('email')}')`);
       assert.ok(msgEl[0] !== undefined, 'has pending invitation');
-
-      TestHelper.mockDelete('invitation', invitation.id);
-      click('.invite-remove');
-
-      andThen(function() {
-        assert.equal(task.get('invitation'), null);
-      });
     });
 
+    click('.invitation-item-full-name');
+    click('.invitation-item-action-delete');
+
+    andThen(function() {
+      assert.equal(task.get('invitation'), null, 'invitation deleted');
+    });
   });
 });

@@ -5,7 +5,7 @@ import { task, timeout } from 'ember-concurrency';
 const {
   Component,
   computed,
-  computed: { equal, not, and, reads },
+  computed: { equal, reads },
   inject: { service }
 } = Ember;
 
@@ -36,16 +36,19 @@ export default Component.extend({
   invitee: reads('invitation.invitee'),
   invitationBodyStateBeforeEdit: null,
 
-  displayEditButton: and('invitation.pending', 'notClosedState'),
+  displayEditButton: computed('invitation.pending', 'closedState', function() {
+    return this.get('invitation.pending') && !this.get('closedState');
+  }),
+
   displaySendButton: reads('invitation.pending'),
+
   displayDestroyButton: computed('invitation.accepted', 'closedState', function() {
-    return !this.get('invitation.accepted') && this.get('notClosedState');
+    return !this.get('invitation.accepted') && !this.get('closedState');
   }),
 
   uiState: 'closed',
 
   closedState: equal('uiState', 'closed'),
-  notClosedState: not('closedState'),
   editState: equal('uiState', 'edit'),
 
   didInsertElement() {

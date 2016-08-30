@@ -14,16 +14,16 @@ class InviteEditorOverlay < CardOverlay
       fill_in "invitation-recipient", with: editor
     end
 
+    invitee_text = editor.full_name || editor
     # Invite
-    find('.compose-invite-button').click
+    find('.invitation-email-entry-button').click
+    find('.invitation-save-button').click
     if send_now
-      find('.send-invitation-button').click
-    else
-      find('.cancel').click
+      row = find('.active-invitations .invitation-item-header', text: invitee_text)
+      row.find('.invite-send').click
     end
 
     # Make sure we see they were invited
-    invitee_text = editor.full_name || editor
     expect(page).to have_css('.active-invitations .invitation-item-full-name', text: invitee_text)
   end
 

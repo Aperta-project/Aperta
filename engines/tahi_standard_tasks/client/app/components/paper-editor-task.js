@@ -54,12 +54,17 @@ export default TaskComponent.extend({
   },
 
   createInvitation: task(function * (props) {
-    const invitation = yield this.get('store').createRecord('invitation', props).save();
+    try {
+      let invitation =  yield this.get('store').createRecord('invitation', props).save();
 
-    this.setProperties({
-      invitationToEdit: invitation,
-      selectedUser: null
-    });
+      this.setProperties({
+        invitationToEdit: invitation,
+        selectedUser: null
+      });
+    } catch(error) {
+      // In order to properly throw an ajax error (which allows ember-data
+      // to do its thing) we have to wrap the ajax request in a try-catch block
+    }
   }),
 
   actions: {

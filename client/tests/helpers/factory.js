@@ -604,7 +604,6 @@ FactoryAttributes.FinancialDisclosureTask = {
   paper_title: "Test",
   participation_ids: [],
   phase_id: null,
-  nested_question_ids: [],
   question_ids: [],
   old_role: "author",
   title: "Financial Disclosure",

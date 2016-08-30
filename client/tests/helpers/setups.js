@@ -82,8 +82,6 @@ export function paperWithRoles(id, oldRoles) {
 }
 
 export function addNestedQuestionsToTask(nestedQuestions, task){
-  const ids = nestedQuestions.map( (question) => { return question.id; });
-  Factory.mergeArrays(task, 'nested_question_ids', ids);
   nestedQuestions.forEach( (question) => {
     question.owner = { owner_id: task.id, owner_type: "Task" };
   });

@@ -8,6 +8,11 @@
         {{unbound invitation.email}}
       {{/if}}
     </div>
+    <div class="invitation-item-status">
+      {{#if (and (eq uiState 'closed') invitation.invited)}}
+          <span>Invited {{format-date invitation.updatedAt format='MMM D, YYYY'}}</span>
+      {{/if}}
+    </div>
     <div class="invitation-item-body-preview" {{action "toggleDetails" invitation}}>
       {{strip-html invitation.body}}
     </div>

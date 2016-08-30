@@ -155,11 +155,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-size: 1.2rem;
 }
 
-.invitation-item-full-name {
-  width: 40%;
-  cursor: pointer;
-}
-
 .invitation-item--edit {
   .invitation-item-full-name {
     cursor: default;
@@ -207,6 +202,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-state--accepted .invitation-item-updated-at {
   font-weight: bold;
+}
+
+.invitation-item-status {
+  width: 15%;
 }
 
 .invitation-item-actions {

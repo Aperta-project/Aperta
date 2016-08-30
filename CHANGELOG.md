@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [Version] - {Date}
+## [1.24.0] - {2016-08-30}
 ### Added
 - Decisions can be rescinded
 - Heroku deploys are quicker now with a single line command

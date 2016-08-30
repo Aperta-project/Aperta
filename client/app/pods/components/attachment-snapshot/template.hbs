@@ -1,3 +1,21 @@
+{{#if (or attachment1.image attachment2.image)}}
+  <div>
+    <label>Image:</label>
+    <span class="attachment-snapshot-image">
+      {{#if fileHashChanged}}
+        {{#if attachment2.image}}
+          <img class="removed" src="{{attachment2.url}}" />
+        {{/if}}
+        {{#if attachment1.image}}
+          <img class="added" src="{{attachment1.url}}" />
+        {{/if}}
+      {{else}}
+        <img src="{{attachment1.url}}" />
+      {{/if}}
+    </span>
+  </div>
+{{/if}}
+
 {{#if (or attachment1.file attachment2.file)}}
   <div>
     <label>File:</label>

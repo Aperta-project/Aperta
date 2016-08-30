@@ -16,5 +16,8 @@ export default Ember.Object.extend({
   status: namedComputedProperty('attachment', 'status'),
   strikingImage: namedComputedProperty('attachment', 'striking_image'),
   title: namedComputedProperty('attachment', 'title'),
-  url: namedComputedProperty('attachment', 'url')
+  url: namedComputedProperty('attachment', 'url'),
+  image: Ember.computed('file', function() {
+    return (/\.(gif|jpg|jpeg|tiff|png)$/i).test(this.get('file'));
+  })
 });

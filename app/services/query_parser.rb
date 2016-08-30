@@ -159,6 +159,14 @@ class QueryParser < QueryLanguageParser
     paper_table[:submitted_at].gteq(start_time)
   end
 
+  add_simple_expression('FIRST SUBMITTED <') do |start_date|
+    paper_table[:first_submitted_at].lt(start_date)
+  end
+
+  add_simple_expression('FIRST SUBMITTED >') do |start_date|
+    paper_table[:first_submitted_at].gteq(start_date)
+  end
+
   add_statement(/^\d+/.r) do |doi|
     paper_table[:doi].matches("%#{doi}%")
   end

@@ -5,6 +5,90 @@ describe DecisionsController do
   let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
   let!(:revise_manuscript_task) { create :revise_task, paper: paper }
 
+  describe '#index' do
+    subject(:do_request) do
+      xhr :get, :index, format: :json, paper_id: paper.id
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user is authorized' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view_decisions, paper)
+          .and_return true
+        do_request
+      end
+
+      it 'returns decision fields' do
+        expect(response.status).to eq(200)
+
+        data = res_body.with_indifferent_access
+        expect(data).to have_key(:decisions)
+
+        decision_json = data[:decisions][0]
+        expect(decision_json).to have_key(:author_response)
+        expect(decision_json).to have_key(:draft)
+        expect(decision_json).to have_key(:major_version)
+      end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view_decisions, paper)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
+  describe '#show' do
+    let(:decision) { paper.draft_decision }
+
+    subject(:do_request) do
+      xhr :get, :show, format: :json, id: decision.id
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user is authorized' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view_decisions, paper)
+          .and_return true
+        do_request
+      end
+
+      it 'returns decision fields' do
+        expect(response.status).to eq(200)
+
+        data = res_body.with_indifferent_access
+        expect(data).to have_key(:decision)
+
+        decision_json = data[:decision]
+        expect(decision_json).to have_key(:author_response)
+        expect(decision_json).to have_key(:draft)
+        expect(decision_json).to have_key(:major_version)
+      end
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view_decisions, paper)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
   describe "#update" do
     let(:decision) { paper.draft_decision }
     subject(:do_request) do
@@ -210,21 +294,12 @@ describe DecisionsController do
       end
 
       it "posts to the activity stream" do
-        expected_activity_1 = {
-          message: "A decision was sent to the author",
-          feed_name: "manuscript"
-        }
-        expected_activity_2 = {
+        expect(Activity).to receive(:create).with hash_including(
           message: "A decision was made: Accept",
-          feed_name: "workflow"
-        }
-        expected_activity_3 = {
+          feed_name: "manuscript")
+        expect(Activity).to receive(:create).with hash_including(
           message: "Paper state changed to submitted",
-          feed_name: "forensic"
-        }
-        expect(Activity).to receive(:create).with hash_including(expected_activity_1)
-        expect(Activity).to receive(:create).with hash_including(expected_activity_2)
-        expect(Activity).to receive(:create).with hash_including(expected_activity_3)
+          feed_name: "forensic")
         do_request
       end
 

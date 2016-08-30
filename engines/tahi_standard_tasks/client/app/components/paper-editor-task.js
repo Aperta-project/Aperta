@@ -1,19 +1,16 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
+import { task } from 'ember-concurrency';
 
 const {
   computed,
-  inject,
   isEmpty
 } = Ember;
 
 export default TaskComponent.extend({
-  restless: inject.service(),
-
   invitationToEdit: null,
   selectedUser: null,
-  composingEmail: false,
 
   applyTemplateReplacements(str) {
     const name = this.get('selectedUser.full_name');
@@ -23,21 +20,19 @@ export default TaskComponent.extend({
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
 
-  setLetterTemplate: function() {
-    let body, salutation, template;
-    template = this.get('task.invitationTemplate');
+  buildInvitationBody() {
+    const template = this.get('task.invitationTemplate');
+    let body, salutation = '';
+
     if (template.salutation && this.get('selectedUser.full_name')) {
       salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
-    } else {
-      salutation = '';
     }
 
     if (template.body) {
       body = this.applyTemplateReplacements(template.body);
-    } else {
-      body = '';
     }
-    return this.set('invitationBody', '' + salutation + body);
+
+    return '' + salutation + body;
   },
 
   // auto-suggest
@@ -55,14 +50,14 @@ export default TaskComponent.extend({
     return user.full_name + ' <' + user.email + '>';
   },
 
-  attachmentsRequest(path, method, s3Url, file) {
-    const store = this.get('store');
-    const restless = this.get('restless');
-    restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name;
-      store.pushPayload(response);
+  createInvitation: task(function * (props) {
+    const invitation = yield this.get('store').createRecord('invitation', props).save();
+
+    this.setProperties({
+      invitationToEdit: invitation,
+      selectedUser: null
     });
-  },
+  }),
 
   actions: {
     cancelAction() {
@@ -73,18 +68,11 @@ export default TaskComponent.extend({
     composeInvite() {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
-      this.setLetterTemplate();
-
-      this.get('store').createRecord('invitation', {
+      this.get('createInvitation').perform({
         task: this.get('task'),
         email: this.get('selectedUser.email'),
-        body: this.get('invitationBody'),
+        body: this.buildInvitationBody(),
         state: 'pending'
-      }).save().then((invitation) => {
-        this.setProperties({
-          invitationToEdit: invitation,
-          selectedUser: null
-        });
       });
     },
 
@@ -103,25 +91,6 @@ export default TaskComponent.extend({
       this.set('selectedUser', {
         email: val
       });
-    },
-
-    // These methods are needed by the attachment-manager
-    updateAttachment(s3Url, file, attachment) {
-      const path = `${this.get('attachmentsPath')}/${attachment.id}/update_attachment`;
-      this.attachmentsRequest(path, 'PUT', s3Url, file);
-    },
-
-    createAttachment(s3Url, file) {
-      this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
-    },
-
-    deleteAttachment(attachment) {
-      attachment.destroyRecord();
-    },
-
-    updateAttachmentCaption(caption, attachment) {
-      attachment.set('caption', caption);
-      attachment.save();
     }
   }
 });

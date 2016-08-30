@@ -57,16 +57,12 @@ export default TaskComponent.extend({
   },
 
   createInvitation: task(function * (props) {
-    const promise = this.get('store').createRecord('invitation', props).save();
-    yield promise;
+    const invitation = yield this.get('store').createRecord('invitation', props).save();
+    this.get('latestDecision.invitations').addObject(invitation);
 
-    promise.then((invitation)=> {
-      this.get('latestDecision.invitations').addObject(invitation);
-
-      this.setProperties({
-        invitationToEdit: invitation,
-        selectedUser: null
-      });
+    this.setProperties({
+      invitationToEdit: invitation,
+      selectedUser: null
     });
   }),
 
@@ -88,7 +84,7 @@ export default TaskComponent.extend({
     },
 
     // auto-suggest action
-    didSelectReviewer(selectedUser) {
+    didSelectUser(selectedUser) {
       this.set('selectedUser', selectedUser);
     },
 

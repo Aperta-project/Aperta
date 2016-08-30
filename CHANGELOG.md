@@ -4,46 +4,52 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Version] - {Date}
 ### Added
+- Decisions can be rescinded
+- Heroku deploys are quicker now with a single line command
+- Add permission to view decisions
+### Changed
+- Upgrade to ruby 2.2.4
+### Deprecated
+### Removed
+### Fixed
+- New billing institutions will now be added in alphabetical order
+- Fixed race condition between creating a token, and requesting it when creating or replacing attachments.
+### Security
+
+## [1.23.0] - {2016-08-16}
+### Added
+- Abstract included in APEX export.
+- Email staff when a paper is withdrawn
+- Register Decision Task can now select from multiple letter templates.
+- Adds a consistent way to handle variables in letter templates to support editability down the line.
+- Registering a decision removes existing reviewers and open reviewer invitations
 - Daily export of billing log
 - Admins can view and edit journal roles assigned to users
 - AE country is included in Apex export
 - Discussion Topic title validation
-- Decisions can be rescinded
-- Heroku deploys are quicker now with a single line command
-- Add permission to view decisions
 ### Changed
 - Soft deleting questions and answers. Answers are retained even when questions are marked
   as deleted
 ### Deprecated
 ### Removed
 ### Fixed
+- Attachments ( Figures, SI files, etc. ) will be available without downtime during deploy.
+- Fixed comparing versions to highlight sentence changes instead of entire document
 - Fix frontend code to allow for multiple rounds of revision
 - Emails with html-like text ( <, >, etc) will no longer be truncated
 - Display of initial decision infobox after creating paper and click of question mark icon
-- New billing institutions will now be added in alphabetical order
-- Fixed race condition between creating a token, and requesting it when creating or replacing attachments.
-
 ### Security
 
 ## [1.5.0] - {2016-07-20}
 ### Added
 - Cover Letter tasks are now versioned
 - Front matter reviewer reports are included in "ALL REVIEWS COMPLETE" paper tracker queries.
-- Abstract included in APEX export.
-- Email staff when a paper is withdrawn
-- Register Decision Task can now select from multiple letter templates.
-  Adds a consistent way to handle variables in letter templates to support
-editability down the line.
-- Registering a decision removes existing reviewers and open reviewer invitations
 ### Changed
-- Upgrade to ruby 2.2.4
 ### Deprecated
 ### Removed
 ### Fixed
 - Require only a single click to register a decision
 - Reviewer recommendations display full reason in accordion and workflow view.
-- Attachments ( Figures, SI files, etc. ) will be available without downtime during deploy.
-- Fixed comparing versions to highlight sentence changes instead of entire document
 ### Security
 
 ## [1.4.18] - {2016-07-06}

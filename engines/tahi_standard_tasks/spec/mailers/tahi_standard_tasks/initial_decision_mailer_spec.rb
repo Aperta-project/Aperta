@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::InitialDecisionMailer do
+
   let(:paper) do
     FactoryGirl.create(
       :paper,
@@ -18,7 +19,7 @@ describe TahiStandardTasks::InitialDecisionMailer do
 
   let(:decision) do
     paper.decisions.create!(
-      letter: "Body text of a Decision Letter, with > < characters",
+      letter: "Body text of a Decision Letter",
       verdict: "reject"
     )
   end
@@ -36,8 +37,8 @@ describe TahiStandardTasks::InitialDecisionMailer do
       expect(email.subject).to eq "A decision has been registered on the manuscript, \"Paper Title\""
     end
 
-    it "email body is html_escaped paper.decision_letter" do
-      expect(email.body.raw_source).to include "Body text of a Decision Letter, with &gt; &lt; characters"
+    it "email body is paper.decision_letter" do
+      expect(email.body.raw_source).to match(decision.letter)
     end
   end
 end

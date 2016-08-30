@@ -16,7 +16,7 @@
     </p>
 
     <blockquote>
-      <%= simple_format h(@task.body["initialTechCheckBody"]) if @task.body["initialTechCheckBody"].present? %>
+      <%= simple_format @task.body["initialTechCheckBody"] if @task.body["initialTechCheckBody"].present? %>
     </blockquote>
 
     <p>

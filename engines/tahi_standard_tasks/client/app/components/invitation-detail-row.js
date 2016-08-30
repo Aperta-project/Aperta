@@ -62,12 +62,6 @@ export default Component.extend({
     this.get('eventBus').unsubscribe('invitation-row-toggle', this);
   },
 
-  fetchDetails: task(function * (invitation) {
-    const promise = invitation.fetchDetails();
-    yield promise;
-    return promise;
-  }),
-
   save: task(function * (invitation, delay=0) {
     yield timeout(delay);
     const promise = invitation.save();
@@ -81,10 +75,8 @@ export default Component.extend({
   }).keepLatest(),
 
   openRow(invitation) {
-    this.get('fetchDetails').perform(invitation).then(()=> {
-      this.get('eventBus').publish('invitation-row-toggle', invitation.id);
-      this.set('uiState', 'show');
-    });
+    this.get('eventBus').publish('invitation-row-toggle', invitation.id);
+    this.set('uiState', 'show');
   },
 
   actions: {

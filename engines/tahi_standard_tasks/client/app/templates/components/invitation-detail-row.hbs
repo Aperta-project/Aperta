@@ -53,12 +53,6 @@
   </div>
 {{/if}}
 
-{{#if fetchDetails.isRunning}}
-  <div class="invitation-item-details-loading animation-fade-in">
-    {{progress-spinner visible=true}}
-  </div>
-{{/if}}
-
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
     <div class="invitation-item-state-and-date">

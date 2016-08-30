@@ -9,17 +9,10 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
   restless: Ember.inject.service(),
   store: Ember.inject.service(),
 
-  countries: Ember.inject.service(),
-
   showAffiliationForm: false,
   affiliations: Ember.computed(function() { return []; }),
-  today: new Date(),
 
   newAffiliation: null,
-
-  _fetchCountries: Ember.on('init', function() {
-    this.get('countries').fetch();
-  }),
 
   didInsertElement() {
     this._super(...arguments);
@@ -36,12 +29,6 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       );
     });
   },
-
-  formattedCountries: Ember.computed('countries.data', function() {
-    return this.get('countries.data').map(function(c) {
-      return { id: c, text: c };
-    });
-  }),
 
   actions: {
     hideNewAffiliationForm() {
@@ -65,7 +52,6 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     },
 
     commitAffiliation(affiliation) {
-
       this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
         user.get('affiliations').addObject(affiliation);
         this.clearAllValidationErrors();
@@ -89,4 +75,4 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       this.set('newAffiliation.country', country.text);
     },
   }
-})
+});

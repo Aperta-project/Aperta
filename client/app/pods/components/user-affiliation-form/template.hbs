@@ -1,0 +1,56 @@
+
+{{institution-search
+  class="affiliation-field-institution"
+  institutionSelected="institutionSelected"
+  placeholder="Institution"}}
+{{error-message message=validationErrors.name}}
+
+{{input type="text"
+        value=newAffiliation.department
+        placeholder="Department"
+        class="affiliation-field form-control"}}
+
+{{input type="text"
+        value=newAffiliation.title
+        placeholder="Title"
+        class="affiliation-field form-control"}}
+
+{{#if countries.loaded}}
+  {{select-2-single class="affiliation-field"
+                    placeholder="Country"
+                    source=formattedCountries
+                    selectionSelected="countrySelected"}}
+{{/if}}
+{{#if countries.loading}}
+  {{progress-spinner visible=true size="mini"}}
+  Loading countries
+{{/if}}
+{{#if countries.error}}
+  <i class="fa fa-exclamation-triangle"></i>
+  Error loading countries
+{{/if}}
+
+<div class="form-group">
+  {{#date-picker-group as |group|}}
+    {{date-picker group=group
+                  type="text"
+                  role="startPicker"
+                  date=newAffiliation.startDate
+                  endDate=today
+                  placeholder="Start Date"}}
+
+    {{date-picker group=group
+                  type="text"
+                  role="endPicker"
+                  date=newAffiliation.endDate
+                  placeholder="End Date"}}
+  {{/date-picker-group}}
+
+  {{input type="text"
+          value=newAffiliation.email
+          placeholder="Email Address"
+          class="affiliation-field form-control"}}
+</div>
+
+<button class="button-secondary button--green" {{action "commitAffiliation" newAffiliation}}>done</button>
+<a class="button-link author-cancel" {{action "hideNewAffiliationForm"}}>cancel</a>

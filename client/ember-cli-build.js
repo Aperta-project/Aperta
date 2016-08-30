@@ -13,6 +13,9 @@ module.exports = function(defaults) {
     sourcemaps: {
       enabled: true,
       extensions: ['js']
+    },
+    babel: {
+      includePolyfill: true
     }
   };
 

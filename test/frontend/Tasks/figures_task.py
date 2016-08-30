@@ -188,6 +188,7 @@ class FiguresTask(BaseTask):
       time.sleep(1)
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
       add_new_figures_btn = self._get(self._add_new_figures_btn)
+      self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
       add_new_figures_btn.click()
       figure_candidates_list.remove(figure)
       # Time needed for script execution per photo for upload, storing, preview generation, and
@@ -219,12 +220,11 @@ class FiguresTask(BaseTask):
     time.sleep(5)
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_input.send_keys(fn)
-    try:
-      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
-    except StaleElementReferenceException:
-      time.sleep(5)
-      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
-
+    replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+    # except StaleElementReferenceException:
+    #   time.sleep(1)
+    #   replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+    self.scroll_element_into_view_below_toolbar(replace_btn)
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
     #   stale reference error

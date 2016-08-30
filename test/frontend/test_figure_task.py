@@ -40,7 +40,7 @@ class FigureTaskTest(CommonTest):
   Validate the elements, styles, functions of the Figures Card
   """
 
-  def test_smoke_figures_task_styles(self):
+  def rest_smoke_figures_task_styles(self):
     """
     test_figure_task: Validates the elements and styles of the figures task
     :return: void function
@@ -79,7 +79,7 @@ class FigureTaskTest(CommonTest):
     figures_task.validate_styles()
     figures_task.logout()
 
-  def test_core_figures_task_upload(self):
+  def rest_core_figures_task_upload(self):
     """
     test_figure_task: Validates the upload function of the figures task
     :return: void function
@@ -93,7 +93,7 @@ class FigureTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
-    # manuscript_page.close_infobox()
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -128,7 +128,7 @@ class FigureTaskTest(CommonTest):
     figures_card.validate_figure_presence(figures_list)
     figures_card.logout()
 
-  def test_core_figures_task_replace(self):
+  def rest_core_figures_task_replace(self):
     """
     test_figure_task: Validates the replacement function of the figures task
     :return: void function
@@ -152,11 +152,11 @@ class FigureTaskTest(CommonTest):
     #   the completion button.
     time.sleep(5)
     figures_task.check_question()
-    figures_list = figures_task.upload_figure()
+    figures_list = figures_task.upload_figure('figure1_tiff_lzw.tiff')
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 22s
     time.sleep(25)
-    figures_list = figures_task.replace_figure(figures_list)
+    figures_list = figures_task.replace_figure('figure2_tiff_lzw.tiff')
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)
     time.sleep(5)
@@ -193,7 +193,7 @@ class FigureTaskTest(CommonTest):
     figures_task.delete_figure(figures_list)
     figures_task.validate_figure_not_present(figures_list)
 
-  def test_core_figures_task_download(self):
+  def rest_core_figures_task_download(self):
     """
     test_figure_task: Validates the download function of the figures task
     :return: void function
@@ -225,7 +225,7 @@ class FigureTaskTest(CommonTest):
     # Need to do some sort of validation on the downloaded file.
     time.sleep(5)
 
-  def test_core_figures_task_edit_reorder(self):
+  def rest_core_figures_task_edit_reorder(self):
     """
     test_figure_task: Validates the edit function of the figures task, including re-ordering
     :return: void function

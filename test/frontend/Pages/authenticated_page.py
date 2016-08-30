@@ -647,6 +647,20 @@ class AuthenticatedPage(PlosPage):
     self._get(post_message_btn).click()
     return None
 
+  def scroll_element_into_view_below_toolbar(self, element):
+    """
+    Because the Manuscript toolbar obscures content, we need a method specifically to scroll an
+      element to the top and then down below the toolbar.
+    :param element: webelement to scroll to
+    :return: void function
+    """
+    self._driver.execute_script("javascript:arguments[0].scrollIntoView()", element)
+    # This delay seems to be needed for the second call to succeed
+    time.sleep(1)
+    # using 2x the height of the toolbar as for items like images, the positioning can "receded"
+    self._driver.execute_script("javascript:scrollBy(0,-120)")
+    time.sleep(1)
+
   # Style Validations
   # Divider and Border Styles ===========================
   @staticmethod

@@ -65,7 +65,6 @@ describe PaperConversionsController, type: :controller do
       end
 
       context 'with a docx that the user uploaded' do
-        let(:docx_url) { 'http://example.com/source.docx' }
         let(:manuscript_attachment) do
           FactoryGirl.build_stubbed(:manuscript_attachment, :with_filename)
         end
@@ -109,18 +108,17 @@ describe PaperConversionsController, type: :controller do
     it_behaves_like 'an unauthenticated json request'
 
     context "when the user has access" do
-      let(:docx_url) { 'http://example.com/source.docx' }
+      let(:manuscript_attachment) do
+        FactoryGirl.build_stubbed(:manuscript_attachment, :with_filename)
+      end
 
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return true
-        allow(Paper).to receive(:find)
-          .with(paper.to_param)
-          .and_return paper
-        allow(paper).to receive_message_chain('latest_version.source_url')
-          .and_return docx_url
+        allow(paper).to receive(:file).and_return manuscript_attachment
+        expect(paper.file.url).to_not be(nil)
       end
 
       it 'returns 202 when still processing' do
@@ -133,7 +131,7 @@ describe PaperConversionsController, type: :controller do
       it 'returns the download url when the status is checked' do
         get :status, id: paper.id, job_id: 'source', export_format: 'docx', format: :json
         expect(response.status).to eq(200)
-        expect(res_body['url']).to eq(docx_url)
+        expect(res_body['url']).to eq(manuscript_attachment.url)
       end
     end
 

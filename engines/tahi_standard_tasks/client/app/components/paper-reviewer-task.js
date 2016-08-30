@@ -60,13 +60,16 @@ export default TaskComponent.extend({
   },
 
   createInvitation: task(function * (props) {
+    let invitation = this.get('store').createRecord('invitation', props);
+    this.set('pendingInvitation', invitation);
     try {
-      let invitation =  yield this.get('store').createRecord('invitation', props).save();
+      yield invitation.save();
       this.get('latestDecision.invitations').addObject(invitation);
 
       this.setProperties({
         invitationToEdit: invitation,
-        selectedUser: null
+        selectedUser: null,
+        pendingInvitation: null
       });
     } catch(error) {
       // In order to properly throw an ajax error (which allows ember-data

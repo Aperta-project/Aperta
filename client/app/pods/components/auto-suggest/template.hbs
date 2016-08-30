@@ -1,4 +1,7 @@
 {{input id=inputId value=resultText bubbles=true placeholder=placeholder name=inputName class="auto-suggest-no-border"}}
+{{error-message message=errorMessage
+                displayIcon=true
+                displayText=false}}
 
 {{#if searching}}
   {{progress-spinner visible=true size="small"}}

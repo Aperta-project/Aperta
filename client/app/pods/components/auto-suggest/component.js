@@ -28,6 +28,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   restless: Ember.inject.service('restless'),
   classNames: ['form-control', 'auto-suggest-border'],
+  classNameBindings: ['errorMessage:error'],
 
   // -- attrs:
 

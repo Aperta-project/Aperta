@@ -15,6 +15,7 @@
                       queryParameter="query"
                       inputId="invitation-recipient"
                       placeholder="Invite reviewer by name or email"
+                      errorMessage=pendingInvitation.errors.email.firstObject.message
                       parseResponseFunction=parseUserSearchResponse
                       itemSelected="didSelectUser"
                       inputChanged="inputChanged"

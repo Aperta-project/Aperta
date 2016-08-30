@@ -4,7 +4,7 @@ describe SalesforceServices::API do
   let(:paper) { FactoryGirl.create(:paper) }
 
   around do |example|
-    ClimateControl.modify SALESFORCE_ENABLED: 'true' do
+    ClimateControl.modify SALESFORCE_ENABLED: 'true', SALESFORCE_HOST: 'salesforce.local' do
       example.run
     end
   end

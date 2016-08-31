@@ -87,16 +87,16 @@ describe TahiStandardTasks::ReviewerMailer do
       context 'invitee entered decline reason and reviewer suggestions' do
         before do
           invitation.update_attributes(
-            decline_reason: 'Unable to review << this paper is bad',
-            reviewer_suggestions: "Jane is available, <em>she's great</em>")
+            decline_reason: 'Unable to review',
+            reviewer_suggestions: 'Jane is available')
         end
 
-        it 'contains the decline reason, html escaped' do
-          expect(email.body).to include "Unable to review &lt;&lt; this paper is bad"
+        it 'contains the decline reason' do
+          expect(email.body).to match(invitation.decline_reason)
         end
 
-        it 'contains the reviewer suggestions, html escaped' do
-          expect(email.body).to include "Jane is available, &lt;em&gt;she's great&lt;/em&gt;"
+        it 'contains the reviewer suggestions' do
+          expect(email.body).to match(invitation.reviewer_suggestions)
         end
       end
     end

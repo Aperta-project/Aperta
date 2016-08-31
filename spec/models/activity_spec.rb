@@ -95,23 +95,16 @@ describe Activity do
   end
 
   describe "#decision_made!" do
-    subject(:activities) { Activity.decision_made!(decision, user: user) }
+    subject(:activity) { Activity.decision_made!(decision, user: user) }
     let(:decision) { FactoryGirl.build_stubbed(:decision) }
 
-    it "creates two activities" do
-      expect(activities[0]).to have_attributes(
-        feed_name: "workflow",
+    it do
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
         activity_key: "decision.made",
         subject: decision.paper,
         user: user,
         message: "A decision was made: #{decision.verdict.titleize}"
-      )
-      expect(activities[1]).to have_attributes(
-        feed_name: "manuscript",
-        activity_key: "decision.sent",
-        subject: decision.paper,
-        user: user,
-        message: "A decision was sent to the author"
       )
     end
   end

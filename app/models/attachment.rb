@@ -126,7 +126,16 @@ class Attachment < ActiveRecord::Base
   end
 
   def did_file_change?
-    previous_changes.include?('file_hash') && file_hash.present?
+    # check to see if the file changed in a way that recognizes reverting to
+    # an old MS version (pre file_hash)
+    did_file_change_pre_file_hash = file_hash.blank? &&
+      (changes.include?('file') || previous_changes.include?('file'))
+
+    # This is the modern way
+    did_file_change = file_hash.present? &&
+      (changes.include?('file_hash') || previous_changes.include?('file_hash'))
+
+    did_file_change_pre_file_hash || did_file_change
   end
 
   # This returns the a local File object referencing the manuscript source

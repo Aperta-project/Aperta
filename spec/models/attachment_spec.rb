@@ -25,6 +25,67 @@ describe Attachment do
     end
   end
 
+  describe '#did_file_change?' do
+    subject(:attachment) { FactoryGirl.create(:attachment) }
+
+    it 'returns false when the file has not changed' do
+      attachment.reload
+      expect(attachment.did_file_change?).to eq false
+    end
+
+    context 'changes that are not yet saved' do
+      context 'and the file_hash has changed' do
+        it 'returns true' do
+          attachment.file_hash = 'asdf1234'
+          expect(attachment.did_file_change?).to eq true
+        end
+      end
+
+      context 'and the file has changed, but not the file_hash' do
+        it 'returns false' do
+          attachment['file'] = 'foo.docx'
+          attachment.save!
+          expect(attachment.did_file_change?).to eq false
+        end
+      end
+
+      context 'and the file has changed and there is no file hash' do
+        it 'returns true' do
+          attachment['file'] = 'foo.docx'
+          attachment.file_hash = nil
+          expect(attachment.did_file_change?).to eq true
+        end
+      end
+    end
+
+    context 'changes that were just saved' do
+      context 'and the file_hash had changed' do
+        it 'returns true' do
+          attachment.update!(file_hash: 'asdf1234')
+          expect(attachment.did_file_change?).to eq true
+        end
+      end
+
+      context 'and the file had changed, but not the file_hash' do
+        it 'returns false' do
+          attachment['file'] = 'foo.docx'
+          attachment.save!
+          expect(attachment.did_file_change?).to eq false
+        end
+      end
+
+      context 'and the file had changed and there is no file_hash' do
+        it 'returns false' do
+          attachment['file'] = 'foo.docx'
+          attachment.file_hash = nil
+          attachment.save!
+          expect(attachment.did_file_change?).to eq true
+        end
+      end
+    end
+  end
+
+
   describe 'setting #paper' do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:task) { FactoryGirl.create(:task, paper: paper) }

@@ -3,7 +3,7 @@
 
 <h1>
   Thank you for submitting your manuscript,
-  <%= @title %>, to <%= @journal.name %>.
+  <%= @title.html_safe %>, to <%= @journal.name %>.
   Our staff will be in touch with next steps.
 </h1>
 

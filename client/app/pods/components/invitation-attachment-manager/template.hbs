@@ -3,6 +3,8 @@
                      multiple=true
                      disabled=(eq invitation.state 'invited')
                      hasCaption=false
+                     buttonText="Attach File"
+                     showDescription=false
                      deleteFile=(action "deleteAttachment")
                      uploadFinished=(action "createAttachment")
                      updateAttachment=(action "updateAttachment") }}

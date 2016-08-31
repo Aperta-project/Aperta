@@ -21,7 +21,7 @@
                       inputChanged="inputChanged"
                       itemDisplayTextFunction=displayUserSelected
                       as |user|}}
-        {{user.full_name}} [{{user.email}}]
+        {{user.full_name}} &lt;{{user.email}}&gt;
       {{/auto-suggest}}
 
       <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"

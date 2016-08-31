@@ -23,22 +23,16 @@
           <span class="invitation-item-action-text">Edit</span>
         </span>
       {{/if}}
-      {{#if invitation.pending}}
-        <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
-          <span class="fa fa-send invite-send"></span>
-          <span class="invitation-item-action-text">Send</span>
-        </span>
-      {{else}}
-        <span class="invitation-item-action invitation-item-action-send invitation-item-action--disabled"
-              title="Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}">
-          <span class="fa fa-send invite-send"></span>
-          <span class="invitation-item-action-text">Send</span>
-        </span>
-      {{/if}}
       {{#if displayDestroyButton}}
         <span class="invitation-item-action invitation-item-action-delete" {{action destroyAction invitation}}>
           <span class="fa fa-trash invite-remove" ></span>
           <span class="invitation-item-action-text">Delete</span>
+        </span>
+      {{/if}}
+      {{#if invitation.pending}}
+        <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
+          <span class="fa fa-send invite-send"></span>
+          <span class="invitation-item-action-text">Send</span>
         </span>
       {{/if}}
     </div>
@@ -65,12 +59,12 @@
       {{capitalize (if (eq invitation.state "pending") "draft last updated" invitation.state)}}
       {{format-date invitation.updatedAt format="LLL"}}
     </div>
-    <div class="invitation-show-body">
-      {{{invitation.body}}}
-    </div>
+{{!-- Leave weird indentation --}}
+<div class="invitation-show-body">{{{invitation.body}}}</div>
     <div class="invite-edit-buttons">
       {{#if allowAttachments}}
-        {{invitation-attachment-manager invitation=invitation}}
+        {{invitation-attachment-manager invitation=invitation
+                                        showAddButton=false}}
       {{/if}}
     </div>
   </div>

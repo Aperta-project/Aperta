@@ -4,13 +4,13 @@
     <span class="attachment-snapshot-image">
       {{#if fileHashChanged}}
         {{#if attachment2.image}}
-          <img class="removed" src="{{attachment2.url}}" />
+          <img class="removed" src="{{attachment2.url}}/preview" />
         {{/if}}
         {{#if attachment1.image}}
-          <img class="added" src="{{attachment1.url}}" />
+          <img class="added" src="{{attachment1.url}}/preview" />
         {{/if}}
       {{else}}
-        <img src="{{attachment1.url}}" />
+        <img src="{{attachment1.url}}/preview" />
       {{/if}}
     </span>
   </div>

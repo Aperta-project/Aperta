@@ -2,10 +2,10 @@
   <div class="invitation-item-full-name">
     <b>Compose invitation to: </b>
     {{#if invitee}}
-      {{unbound invitee.fullName}}
-      {{#if invitee.email}}[{{unbound invitee.email}}]{{/if}}
+      {{invitee.fullName}}
+      &lt;{{invitation.email}}&gt;
     {{else}}
-      {{unbound invitation.email}}
+      {{invitation.email}}
     {{/if}}
   </div>
 </div>

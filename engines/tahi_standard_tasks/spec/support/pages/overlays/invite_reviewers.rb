@@ -6,7 +6,7 @@ class InviteReviewersOverlay < CardOverlay
     reviewers.each do |reviewer|
       # Find thru auto-suggest
       fill_in "invitation-recipient", with: reviewer.email
-      find(".auto-suggest-item", text: "#{reviewer.full_name} [#{reviewer.email}]").click
+      find(".auto-suggest-item", text: "#{reviewer.full_name} <#{reviewer.email}>").click
 
       # Invite
       find('.invitation-email-entry-button').click

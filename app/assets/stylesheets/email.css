@@ -1,0 +1,231 @@
+/*
+ * Yes, the margins have capital 'M's. Outlook is weird.
+ */
+
+
+/* Resets
+----------------------------------------------------------------------- */
+
+img {
+  max-width: 100%;
+  border: none;
+  -ms-interpolation-mode: bicubic;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  background-color: #f7f7f7;
+  -webkit-font-smoothing: antialiased;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  mso-table-lspace: 0pt;
+  mso-table-rspace: 0pt;
+}
+
+table td {
+  font-family: sans-serif;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+hr {
+  Margin: 20px 0;
+  border: 0;
+  border-bottom: 1px solid #dddddd;
+}
+
+
+/* Body and Container
+----------------------------------------------------------------------- */
+
+.body { width: 100%; }
+
+/* Set a max-width, and make it display block so it will automatically
+   stretch to that width, but will also shrink down on a phone */
+.container {
+  display: block;
+  Margin: 0 auto !important;
+  max-width: 600px;
+  padding: 10px;
+  width: 600px;
+}
+
+/* This should also be a block element,
+   so that it will fill 100% of the .container */
+.content {
+  box-sizing: border-box;
+  display: block;
+  Margin: 0 auto;
+  max-width: 600px;
+  padding: 10px;
+  padding-top: 40px;
+}
+
+
+/* Header, Footer, Main
+----------------------------------------------------------------------- */
+
+.main {
+  width: 100%;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+.footer {
+  clear: both;
+  width: 100%;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.footer td,
+.footer p,
+.footer span,
+.footer a {
+  color: #999999;
+  font-size: 12px;
+  text-align: center;
+}
+
+
+/* Typography
+----------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  Margin-bottom: 35px;
+  color: #000000;
+  font-family: sans-serif;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: -0.025rem;
+}
+
+p, ul, ol {
+  margin: 0;
+  Margin-bottom: 15px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+p li,
+ul li,
+ol li {
+  list-style-position: inside;
+  margin-left: 5px;
+}
+
+a {
+  color: #39a329;
+  text-decoration: underline;
+}
+
+blockquote {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.warning {
+  color: #ff0000;
+}
+
+.no-margin {
+  margin-bottom: 0 !important;
+}
+
+
+/* Blockquote
+----------------------------------------------------------------------- */
+
+.blockquote {
+  padding-bottom: 15px;
+}
+
+.blockquote-border {
+  width: 20px;
+  border-left: 1px solid #ccc;
+}
+
+.blockquote-text {
+  color: #333;
+}
+
+
+/* Buttons
+----------------------------------------------------------------------- */
+
+.btn {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.btn > tbody > tr > td { padding-bottom: 15px; }
+
+.btn table { width: auto; }
+
+.btn table td {
+  border-radius: 5px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.btn a {
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  padding: 10px 30px;
+  border: solid 1px #39a329;
+  border-radius: 5px;
+  color: #39a329;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #ffffff;
+}
+
+.btn-primary table td {
+  background-color: #39a329;
+}
+
+.btn-primary a {
+  border-color: #39a329;
+  color: #ffffff;
+  background-color: #39a329;
+}
+
+
+/* Some clients will show this text as a preview */
+.preheader {
+  overflow: hidden;
+  display: none;
+  width: 0;
+  max-width: 0;
+  height: 0;
+  max-height: 0;
+  color: transparent;
+  opacity: 0;
+  mso-hide: all;
+  visibility: hidden;
+}

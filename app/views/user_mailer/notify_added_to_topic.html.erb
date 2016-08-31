@@ -2,7 +2,7 @@
 
 <p>
   You have been added to a conversation in Aperta
-  for the manuscript "<%= @paper.title %>"
+  for the manuscript "<%= @paper.display_title(sanitized: false) %>"
 </p>
 
 <%= render partial: 'email/button', locals: {

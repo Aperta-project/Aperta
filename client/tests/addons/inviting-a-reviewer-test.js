@@ -1,35 +1,35 @@
-import Ember from "ember";
-import { module, test } from "qunit";
-import startApp from "tahi/tests/helpers/start-app";
-import FactoryGuy from "ember-data-factory-guy";
+import Ember from 'ember';
+import { module, test } from 'qunit';
+import startApp from 'tahi/tests/helpers/start-app';
+import FactoryGuy from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
-import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App, paper, phase, task, inviteeEmail;
 
-module("Integration: Inviting a reviewer", {
+module('Integration: Inviting a reviewer', {
   afterEach() {
     Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, "destroy");
+    Ember.run(App, 'destroy');
   },
 
   beforeEach() {
     App = startApp();
     TestHelper.setup(App);
 
-    phase = FactoryGuy.make("phase");
-    task  = FactoryGuy.make("paper-reviewer-task", { phase: phase, letter: '"A letter"' });
-    paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
+    phase = FactoryGuy.make('phase');
+    task  = FactoryGuy.make('paper-reviewer-task', { phase: phase, letter: '"A letter"' });
+    paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     inviteeEmail = window.currentUserData.user.email;
 
     TestHelper.mockFind('paper').returns({model: paper});
-    TestHelper.handleFindAll("discussion-topic", 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
     Factory.createPermission('PaperReviewerTask', task.id, ['edit']);
 
-    $.mockjax({url: "/api/admin/journals/authorization", status: 204});
-    $.mockjax({url: "/api/formats", status: 200, responseText: {
+    $.mockjax({url: '/api/admin/journals/authorization', status: 204});
+    $.mockjax({url: '/api/formats', status: 200, responseText: {
       import_formats: [],
       export_formats: []
     }});
@@ -41,9 +41,9 @@ module("Integration: Inviting a reviewer", {
       url: /api\/tasks\/\d+\/eligible_users\/reviewers/,
       type: 'GET',
       status: 200,
-      contentType: "application/json",
+      contentType: 'application/json',
       responseText: {
-        users: [{ id: 1, full_name: "Aaron", email: inviteeEmail }]
+        users: [{ id: 1, full_name: 'Aaron', email: inviteeEmail }]
       }
     });
   }
@@ -78,7 +78,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
   });
 });
 
-test("can rescind the invitation", function(assert) {
+test('can rescind the invitation', function(assert) {
   Ember.run(function() {
     let decision = FactoryGuy.make('decision', { latest: true });
     task.set('decisions', [decision]);
@@ -95,10 +95,10 @@ test("can rescind the invitation", function(assert) {
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function() {
-      let msgEl = find(`.invitation:contains('${invitation.get("email")}')`);
-      assert.ok(msgEl[0] !== undefined, "has pending invitation");
+      let msgEl = find(`.invitation-item:contains('${invitation.get('email')}')`);
+      assert.ok(msgEl[0] !== undefined, 'has pending invitation');
 
-      TestHelper.handleDelete('invitation', invitation.id);
+      TestHelper.mockDelete('invitation', invitation.id);
       click('.invite-remove');
 
       andThen(function() {

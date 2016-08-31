@@ -9,10 +9,20 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    fail AuthorizationError unless current_user == invitation.invitee ||
-        current_user.can?(:manage_invitations,
-          invitation.task)
+    fail AuthorizationError unless invitation.can_be_viewed_by?(current_user)
     respond_with invitation
+  end
+
+  def update
+    requires_user_can(:manage_invitations, invitation.task)
+    invitation.update_attributes(invitation_update_params)
+    respond_with invitation
+  end
+
+  def send_invite
+    requires_user_can(:manage_invitations, invitation.task)
+    send_and_notify(invitation)
+    render json: invitation
   end
 
   def create
@@ -20,9 +30,18 @@ class InvitationsController < ApplicationController
     invitation = task.invitations.build(
       invitation_params.merge(inviter: current_user)
     )
-    invitation.invite!
-    Activity.invitation_created!(invitation, user: current_user)
+    if invitation_params[:state] == 'pending'
+      invitation.associate_existing_user
+      invitation.save
+    else
+      send_and_notify(invitation)
+    end
     respond_with(invitation)
+  end
+
+  def details
+    requires_user_can(:manage_invitations, invitation.task)
+    respond_with invitation, serializer: InvitationSerializer, include_body: true
   end
 
   def rescind
@@ -55,6 +74,11 @@ class InvitationsController < ApplicationController
 
   private
 
+  def send_and_notify(invitation)
+    invitation.invite!
+    Activity.invitation_sent!(invitation, user: current_user)
+  end
+
   def invitation_params
     params
       .require(:invitation)
@@ -62,8 +86,15 @@ class InvitationsController < ApplicationController
         :body,
         :decline_reason,
         :email,
+        :state,
         :reviewer_suggestions,
         :task_id)
+  end
+
+  def invitation_update_params
+    params
+      .require(:invitation)
+      .permit(:body, :email)
   end
 
   def task

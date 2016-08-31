@@ -244,6 +244,11 @@ class Task < ActiveRecord::Base
     previously_completed? && !completed
   end
 
+  # Needed for invitations.
+  def invitee_role
+    "Override me"
+  end
+
   private
 
   def on_card_completion?

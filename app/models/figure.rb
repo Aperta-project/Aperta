@@ -19,22 +19,6 @@ class Figure < Attachment
     filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end
 
-  def src
-    non_expiring_proxy_url if done?
-  end
-
-  def detail_src(**opts)
-    non_expiring_proxy_url(version: :detail, **opts) if done?
-  end
-
-  def preview_src
-    non_expiring_proxy_url(version: :preview) if done?
-  end
-
-  def access_details
-    { filename: filename, alt: alt, id: id, src: src }
-  end
-
   def rank
     return 0 unless title
     number_match = title.match /\d+/

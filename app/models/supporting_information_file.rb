@@ -12,8 +12,6 @@ class SupportingInformationFile < Attachment
 
   validates :category, :title, presence: true, if: :task_completed?
 
-  IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
-
   before_create :set_publishable
 
   def ensure_striking_image_category_is_figure
@@ -29,41 +27,11 @@ class SupportingInformationFile < Attachment
     end
   end
 
-  def src
-    non_expiring_proxy_url if done?
-  end
-
-  def access_details
-    { filename: filename, alt: alt, id: id, src: src }
-  end
-
-  def detail_src(**opts)
-    return unless image?
-
-    non_expiring_proxy_url(version: :detail, **opts) if done?
-  end
-
-  def preview_src
-    return unless image?
-
-    non_expiring_proxy_url(version: :preview) if done?
-  end
-
-  def image?
-    if file.file
-      IMAGE_TYPES.include? file.file.extension
-    else
-      false
-    end
-  end
-
   private
 
   # Default to true if unset
   def set_publishable
-    if publishable.nil?
-      self.publishable = true
-    end
+    self.publishable = true if publishable.nil?
   end
 
   def task_completed?

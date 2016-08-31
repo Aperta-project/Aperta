@@ -2,22 +2,23 @@ import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
 
-const { computed } = Ember;
+const {
+  computed,
+  inject,
+  isEmpty
+} = Ember;
 
 export default TaskComponent.extend({
-  restless: Ember.inject.service('restless'),
+  restless: inject.service(),
 
-  autoSuggestSourceUrl: computed('task.id', function(){
-    return eligibleUsersPath(this.get('task.id'), 'academic_editors');
-  }),
-
+  invitationToEdit: null,
   selectedUser: null,
   composingEmail: false,
 
   applyTemplateReplacements(str) {
-    let editorName = this.get('selectedUser.full_name');
-    if (editorName) {
-      str = str.replace(/\[EDITOR NAME\]/g, editorName);
+    const name = this.get('selectedUser.full_name');
+    if (name) {
+      str = str.replace(/\[EDITOR NAME\]/g, name);
     }
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
@@ -39,10 +40,17 @@ export default TaskComponent.extend({
     return this.set('invitationBody', '' + salutation + body);
   },
 
+  // auto-suggest
+  autoSuggestSourceUrl: computed('task.id', function(){
+    return eligibleUsersPath(this.get('task.id'), 'academic_editors');
+  }),
+
+  // auto-suggest
   parseUserSearchResponse(response) {
     return response.users;
   },
 
+  // auto-suggest
   displayUserSelected(user) {
     return user.full_name + ' <' + user.email + '>';
   },
@@ -50,42 +58,40 @@ export default TaskComponent.extend({
   actions: {
     cancelAction() {
       this.set('selectedUser', null);
-      return this.set('composingEmail', false);
+      this.set('invitationToEdit', null);
     },
 
     composeInvite() {
-      if (!this.get('selectedUser')) {
-        return;
-      }
+      if (isEmpty(this.get('selectedUser'))) { return; }
+
       this.setLetterTemplate();
-      return this.set('composingEmail', true);
-    },
 
-    destroyInvitation(invitation) {
-      return invitation.rescind();
-    },
-
-    didSelectUser(selectedUser) {
-      return this.set('selectedUser', selectedUser);
-    },
-
-    inviteEditor() {
-      if (!this.get('selectedUser')) {
-        return;
-      }
       this.get('store').createRecord('invitation', {
         task: this.get('task'),
         email: this.get('selectedUser.email'),
-        body: this.get('invitationBody')
+        body: this.get('invitationBody'),
+        state: 'pending'
       }).save().then((invitation) => {
-        this.get('task.invitations').addObject(invitation);
-        this.set('composingEmail', false);
-        this.set('selectedUser', null);
+        this.setProperties({
+          invitationToEdit: invitation,
+          selectedUser: null
+        });
       });
     },
 
+    // auto-suggest action
+    didSelectUser(selectedUser) {
+      this.set('selectedUser', selectedUser);
+    },
+
+    // auto-suggest action
     inputChanged(val) {
-      return this.set('selectedUser', {
+      if(isEmpty(val)) {
+        this.set('selectedUser', null);
+        return;
+      }
+
+      this.set('selectedUser', {
         email: val
       });
     }

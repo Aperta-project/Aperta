@@ -1,49 +1,31 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="invite-editor-text">
-    {{#if composingEmail}}
-      <div class="invite-editor-edit-invite">
-        <h3 class="invite-to">
-          Invitation to
-          {{#if selectedUser.fullName}}
-            {{selectedUser.full_name}}
-          {{/if}}
-          [{{selectedUser.email}}]
-        </h3>
+  {{#if invitationToEdit}}
+    {{edit-invitation allowAttachments=true
+                      invitation=invitationToEdit
+                      closeAction=(action "cancelAction")}}
+  {{else}}
+    {{invitations-display groupByDecision=false
+                          invitations=task.invitations}}
 
-        {{content-editable value=invitationBody
-                           class="form-control taller-textarea"}}
+    <div class="invitation-email-entry">
+      {{#auto-suggest endpoint=autoSuggestSourceUrl
+                      queryParameter="query"
+                      inputId="invitation-recipient"
+                      placeholder="Invite Academic Editor by name or email"
+                      parseResponseFunction=parseUserSearchResponse
+                      itemSelected="didSelectUser"
+                      inputChanged="inputChanged"
+                      itemDisplayTextFunction=displayUserSelected
+                      as |user|}}
+        {{user.full_name}} [{{user.email}}]
+      {{/auto-suggest}}
 
-        <div class="invite-editor-cta">
-          <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
-          <button class="button-primary button--green invite-editor-button" {{action "inviteEditor"}}>Send Invitation</button>
-        </div>
-     </div>
-    {{else}}
-      <div class="invite-editors">
-        <label for="invitation-recipient">Academic Editor</label>
-
-        {{#auto-suggest endpoint=autoSuggestSourceUrl
-                    queryParameter="query"
-                    inputId="invitation-recipient"
-                    placeholder="Invite Academic Editor by name or email"
-                    parseResponseFunction=parseUserSearchResponse
-                    itemSelected="didSelectUser"
-                    inputChanged="inputChanged"
-                    itemDisplayTextFunction=displayUserSelected
-                    as |user|}}
-          {{user.full_name}} [{{user.email}}]
-        {{/auto-suggest}}
-
-        <button class="button-primary button--green compose-invite-button {{unless selectedUser 'button--disabled'}}" {{action "composeInvite"}}>
-          Compose Invite
-        </button>
-      </div>
-
-      {{invitations-display groupByDecision=false
-                            invitations=task.invitations
-                            onDestroyInvitation='destroyInvitation'}}
-    {{/if}}
-  </div>
+      <button class="button-secondary button--green compose-invite-button {{unless selectedUser "button--disabled"}}"
+              {{action "composeInvite"}}>
+        Compose Invite
+      </button>
+    </div>
+  {{/if}}
 </div>

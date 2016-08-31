@@ -1,13 +1,16 @@
 # Attachment represents a generic file/resource. It is intended to be used
 # as a base-class.
 #
-# Note: the subclass(es) should mount the uploader as :file and keep any
-# custom processing/version logic with it. Only generic aspects of an
-# attachment should be pushed up to this base-class.
+# Attachment mounts its file using the AttachmentUploader class, which has
+# provisions for creating preview and detail versions of uploaded images.
+# For the time being any subclass of Attachment will use the AttachmentUploader
+# as well.
 class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable
+
+  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
 
   self.snapshottable = true
 
@@ -101,9 +104,37 @@ class Attachment < ActiveRecord::Base
     end
   end
 
+  # TODO: could we move this into the serializers?
   def task
-    if owner_type == 'Task'
-      owner
+    owner if owner_type == 'Task'
+  end
+
+  # These methods were pulled up from Attachment subclasses
+  def src
+    non_expiring_proxy_url if done?
+  end
+
+  def access_details
+    { filename: filename, alt: alt, id: id, src: src }
+  end
+
+  def detail_src(**opts)
+    return unless image?
+
+    non_expiring_proxy_url(version: :detail, **opts) if done?
+  end
+
+  def preview_src
+    return unless image?
+
+    non_expiring_proxy_url(version: :preview) if done?
+  end
+
+  def image?
+    if file.file
+      IMAGE_TYPES.include? file.file.extension
+    else
+      false
     end
   end
 

@@ -42,8 +42,8 @@ export default Component.extend({
 
   displaySendButton: reads('invitation.pending'),
 
-  displayDestroyButton: computed('invitation.accepted', 'closedState', function() {
-    return !this.get('invitation.accepted') && !this.get('closedState');
+  displayDestroyButton: computed('invitation.pending', 'closedState', function() {
+    return this.get('invitation.pending') && !this.get('closedState');
   }),
 
   uiState: 'closed',

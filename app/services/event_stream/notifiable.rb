@@ -5,6 +5,9 @@ require_dependency 'notifier'
 module EventStream::Notifiable
   extend ActiveSupport::Concern
   included do
+    class_attribute :notifications_enabled
+    self.notifications_enabled = true
+
     after_commit :notify, if: :changes_committed?
 
     # if false (default), do not send event stream message to original requester
@@ -12,6 +15,8 @@ module EventStream::Notifiable
     attr_accessor :notify_requester
 
     def notify(action: nil, payload: nil)
+      return unless notifications_enabled?
+
       payload ||= event_payload(action: action)
 
       klasses = self.class.ancestors.select do |ancestor|

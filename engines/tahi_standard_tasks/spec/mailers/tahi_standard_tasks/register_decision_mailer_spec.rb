@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::RegisterDecisionMailer do
-
   let(:paper) {
     FactoryGirl.create(:paper,
                        :with_integration_journal,
@@ -20,7 +19,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:decision) {
     paper.decisions.create!(
-      letter: "Body text of a Decision Letter << We Accept",
+      letter: "Body text of a Decision Letter",
       verdict: "accept"
     )
   }
@@ -39,8 +38,8 @@ describe TahiStandardTasks::RegisterDecisionMailer do
         expect(email_with_no_fields_specified.subject).to eq "A decision has been registered on the manuscript, \"#{paper.title}\""
       end
 
-      it "email body is paper.decision_letter, html escaped" do
-        expect(email_with_no_fields_specified.body).to include "Body text of a Decision Letter &lt;&lt; We Accept"
+      it "email body is paper.decision_letter" do
+        expect(email_with_no_fields_specified.body.raw_source).to match(decision.letter)
       end
     end
 
@@ -54,6 +53,10 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
       it "sends email with a custom subject" do
         expect(email_to_arbitrary.subject).to eq 'Your Submission'
+      end
+
+      it "email body is paper.decision_letter" do
+        expect(email_to_arbitrary.body.raw_source).to match(decision.letter)
       end
     end
   end

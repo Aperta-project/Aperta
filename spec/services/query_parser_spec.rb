@@ -268,6 +268,28 @@ describe QueryParser do
           SQL
         end
       end
+
+      it 'parses FIRST SUBMITTED < mm/dd/yy' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse "FIRST SUBMITTED > #{start_time}"
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."first_submitted_at" >= '#{start_time}'
+          SQL
+        end
+      end
+
+      it 'parses FIRST SUBMITTED > mm/dd/yy' do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+
+          parse = QueryParser.new.parse "FIRST SUBMITTED < #{start_time}"
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."first_submitted_at" < '#{start_time}'
+          SQL
+        end
+      end
     end
 
     describe 'people queries' do

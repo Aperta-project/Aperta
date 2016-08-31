@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import DS from 'ember-data';
 import startApp from '../helpers/start-app';
-import { test, moduleFor } from 'ember-qunit';
+import { test } from 'ember-qunit';
 var container, subject;
 
 subject = null;
@@ -42,18 +41,16 @@ test('normalizeTaskName denamespaces really deeply namespaced task types', funct
 });
 
 test('serializing a model that was originally namespaced will correctly re-namespace it', function(assert) {
-  return Ember.run((function(_this) {
-    return function() {
-      var json, snapshot, task;
-      task = getStore().createRecord('task', {
-        qualifiedType: 'Foo::BarTask'
-      });
-      snapshot = task._createSnapshot();
-      json = subject.serialize(snapshot);
-      assert.equal(json.type, 'Foo::BarTask');
-      return assert.equal(void 0, json.qualified_type, 'deletes qualified_type from the payload');
-    };
-  })(this));
+  return Ember.run(() => {
+    var json, snapshot, task;
+    task = getStore().createRecord('task', {
+      qualifiedType: 'Foo::BarTask'
+    });
+    snapshot = task._createSnapshot();
+    json = subject.serialize(snapshot);
+    assert.equal(json.type, 'Foo::BarTask');
+    return assert.equal(void 0, json.qualified_type, 'deletes qualified_type from the payload');
+  });
 });
 
 test('mungeTaskData', function(assert) {
@@ -609,7 +606,7 @@ test("normalizeArrayResponse works correctly even when no 'task' type tasks are 
   assert.deepEqual(result, expected, 'found adhoc-attachment in data')
 });
 
-test("normalizePayload reorganizes a JSON payload according to the items' types", function(assert) {
+test("normalizePayloadData reorganizes a JSON payload according to the items' types", function(assert) {
   var jsonHash, result, store;
   store = getStore();
   jsonHash = {
@@ -628,14 +625,13 @@ test("normalizePayload reorganizes a JSON payload according to the items' types"
     initial_tech_check_tasks: [ { id: '1', type: 'InitialTechCheckTask' } ],
     tasks: [{ id: '3'}]
   };
-  result = subject.normalizePayload(jsonHash);
+  result = subject.normalizePayloadData(jsonHash);
   assert.deepEqual(result, expectedOutput);
 });
 
-test("normalizePayload does nothing when payload is undefined (e.g. 204 NO CONTENT)", function(assert) {
-  var jsonHash, result, store;
-  store = getStore();
+test("normalizePayloadData does nothing when payload is undefined (e.g. 204 NO CONTENT)", function(assert) {
+  let store = getStore();
 
-  result = subject.normalizePayload(undefined);
+  result = subject.normalizePayloadData(undefined);
   assert.ok(true, 'did not blow up');
 });

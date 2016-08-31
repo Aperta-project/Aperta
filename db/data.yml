@@ -2745,6 +2745,7 @@ attachments:
   - publishable
   - file_hash
   - previous_file_hash
+  - uploaded_by_id
   records: 
   - - '1'
     - cover_image.jpg
@@ -2763,6 +2764,7 @@ attachments:
     - 
     - 
     - false
+    - 
     - 
     - 
   - - '2'
@@ -2784,6 +2786,7 @@ attachments:
     - false
     - 
     - 
+    - 
   - - '3'
     - cat2.jpg
     - '2'
@@ -2801,6 +2804,7 @@ attachments:
     - 
     - 
     - false
+    - 
     - 
     - 
   - - '4'
@@ -2822,6 +2826,7 @@ attachments:
     - false
     - 
     - 
+    - 
   - - '5'
     - quad-cat.jpg
     - '3'
@@ -2839,6 +2844,7 @@ attachments:
     - 
     - 
     - false
+    - 
     - 
     - 
   - - '6'
@@ -2860,6 +2866,7 @@ attachments:
     - false
     - 
     - 
+    - 
   - - '7'
     - cat2.jpg
     - '4'
@@ -2877,6 +2884,7 @@ attachments:
     - 
     - 
     - false
+    - 
     - 
     - 
   - - '8'
@@ -2898,6 +2906,7 @@ attachments:
     - false
     - 
     - 
+    - 
   - - '9'
     - 140.jpg
     - '12'
@@ -2915,6 +2924,7 @@ attachments:
     - 
     - 
     - false
+    - 
     - 
     - 
   - - '10'
@@ -2936,6 +2946,7 @@ attachments:
     - true
     - 
     - 
+    - 
   - - '11'
     - turtles-are-amazing.docx
     - '43'
@@ -2953,6 +2964,7 @@ attachments:
     - 
     - 
     - true
+    - 
     - 
     - 
   - - '12'
@@ -2974,6 +2986,7 @@ attachments:
     - true
     - 
     - 
+    - 
   - - '13'
     - 140.jpg
     - '170'
@@ -2991,6 +3004,7 @@ attachments:
     - Figure
     - 
     - true
+    - 
     - 
     - 
   - - '14'
@@ -3012,6 +3026,7 @@ attachments:
     - false
     - 
     - 
+    - 
   - - '15'
     - turtles-are-amazing.docx
     - '88'
@@ -3031,6 +3046,7 @@ attachments:
     - false
     - 
     - 
+    - 
   - - '16'
     - manuscript+_281_29.docx
     - '126'
@@ -3048,6 +3064,187 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+  - - '17'
+    - 
+    - '1'
+    - '2015-10-29 20:16:37.381749'
+    - '2016-08-12 16:47:34.954268'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/1
+    - ManuscriptAttachment
+    - '1'
+    - Paper
+    - '1'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - 
+  - - '18'
+    - 
+    - '2'
+    - '2015-10-30 19:43:28.478909'
+    - '2016-08-12 16:47:34.977993'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/2
+    - ManuscriptAttachment
+    - '2'
+    - Paper
+    - '2'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - 
+  - - '19'
+    - 
+    - '3'
+    - '2015-11-02 14:04:02.881043'
+    - '2016-08-12 16:47:34.982977'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/3
+    - ManuscriptAttachment
+    - '3'
+    - Paper
+    - '3'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - 
+  - - '20'
+    - 
+    - '4'
+    - '2015-11-02 14:46:23.785261'
+    - '2016-03-07 19:17:18.021178'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/4
+    - ManuscriptAttachment
+    - '4'
+    - Paper
+    - '4'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - '3'
+  - - '21'
+    - 
+    - '8'
+    - '2015-11-03 22:59:20.951303'
+    - '2016-08-12 16:47:34.987398'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/8
+    - ManuscriptAttachment
+    - '8'
+    - Paper
+    - '8'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - 
+  - - '22'
+    - 
+    - '9'
+    - '2015-11-03 23:02:06.811068'
+    - '2016-08-12 16:47:34.990027'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/9
+    - ManuscriptAttachment
+    - '9'
+    - Paper
+    - '9'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - 
+  - - '23'
+    - 
+    - '10'
+    - '2015-11-10 22:27:27.140473'
+    - '2016-08-12 16:47:34.992717'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/10
+    - ManuscriptAttachment
+    - '10'
+    - Paper
+    - '10'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - 
+  - - '24'
+    - 
+    - '12'
+    - '2016-04-12 19:03:39.925701'
+    - '2016-04-12 19:05:53.747659'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/17
+    - ManuscriptAttachment
+    - '17'
+    - Paper
+    - '12'
+    - 
+    - 
+    - false
+    - 
+    - 
+    - '3'
+  - - '25'
+    - 
+    - '13'
+    - '2016-06-02 13:43:23.183174'
+    - '2016-08-12 16:47:35.001828'
+    - 
+    - 
+    - processing
+    - 
+    - uploads/versioned_text/18
+    - ManuscriptAttachment
+    - '18'
+    - Paper
+    - '13'
+    - 
+    - 
+    - false
+    - 
     - 
     - 
 
@@ -21888,3 +22085,111 @@ versioned_texts:
       </div>
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="6" data-figure-rank="" src="/resource_proxy/figures/qt3FhbrR5Q4KNM1F35DXTHNx/detail">
             <img class="paper-body-figure" data-figure-id="7" data-figure-rank="" src="/resource_proxy/figures/2vM873Fqxyfm22GtB5VDqEND/detail">
+
+---
+versions:
+  columns:
+  - id
+  - item_type
+  - item_id
+  - event
+  - whodunnit
+  - object
+  - created_at
+  records: 
+  - - '1'
+    - Attachment
+    - '17'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.510466'
+  - - '2'
+    - Attachment
+    - '18'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.522276'
+  - - '3'
+    - Attachment
+    - '19'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.532731'
+  - - '4'
+    - Attachment
+    - '20'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.543196'
+  - - '5'
+    - Attachment
+    - '21'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.553866'
+  - - '6'
+    - Attachment
+    - '22'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.565896'
+  - - '7'
+    - Attachment
+    - '23'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.577738'
+  - - '8'
+    - Attachment
+    - '24'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.59185'
+  - - '9'
+    - Attachment
+    - '24'
+    - update
+    - 
+    - "---\nid: 24\nfile: \nowner_id: 12\ncreated_at: 2016-04-12 18:43:34.658877000
+      Z\nupdated_at: 2016-04-12 18:55:56.956915000 Z\ntitle: \ncaption: \nstatus:
+      processing\nkind: \ns3_dir: uploads/versioned_text/14\ntype: ManuscriptAttachment\nold_id:
+      14\nowner_type: Paper\npaper_id: 12\ncategory: \nlabel: \npublishable: \nfile_hash:
+      \nprevious_file_hash: \nuploaded_by_id: 3\n"
+    - '2016-08-31 21:36:17.59888'
+  - - '10'
+    - Attachment
+    - '24'
+    - update
+    - 
+    - "---\nid: 24\nfile: \nowner_id: 12\ncreated_at: 2016-04-12 18:57:25.902462000
+      Z\nupdated_at: 2016-04-12 19:00:19.837324000 Z\ntitle: \ncaption: \nstatus:
+      processing\nkind: \ns3_dir: uploads/versioned_text/15\ntype: ManuscriptAttachment\nold_id:
+      15\nowner_type: Paper\npaper_id: 12\ncategory: \nlabel: \npublishable: \nfile_hash:
+      \nprevious_file_hash: \nuploaded_by_id: 3\n"
+    - '2016-08-31 21:36:17.604948'
+  - - '11'
+    - Attachment
+    - '24'
+    - update
+    - 
+    - "---\nid: 24\nfile: \nowner_id: 12\ncreated_at: 2016-04-12 19:00:39.194254000
+      Z\nupdated_at: 2016-04-12 19:02:46.358030000 Z\ntitle: \ncaption: \nstatus:
+      processing\nkind: \ns3_dir: uploads/versioned_text/16\ntype: ManuscriptAttachment\nold_id:
+      16\nowner_type: Paper\npaper_id: 12\ncategory: \nlabel: \npublishable: \nfile_hash:
+      \nprevious_file_hash: \nuploaded_by_id: 3\n"
+    - '2016-08-31 21:36:17.610962'
+  - - '12'
+    - Attachment
+    - '25'
+    - create
+    - 
+    - 
+    - '2016-08-31 21:36:17.620696'

@@ -1,5 +1,5 @@
-{{#if isFulfilled}}
-  {{yield promiseProxy.content}}
+{{#if promiseTask.lastSuccessful.value}}
+  {{yield promiseTask.lastSuccessful.value}}
 {{else}}
   {{yield to="inverse"}}
 {{/if}}

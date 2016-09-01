@@ -1,6 +1,6 @@
-{{#util/promise-loader promise=taskLoad}}
+{{#util/promise-loader promiseTask=taskLoad as |content|}}
   <div class="animation-fade-in">
-    {{yield promiseProxy.content}}
+    {{yield content}}
   </div>
 {{else}}
   {{yield to="inverse"}}

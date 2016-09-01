@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task } from 'ember-concurrency';
 
 /**
  *  task-load ensures the task and other required data is loaded
@@ -21,21 +22,17 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
-  taskLoad: null,
 
-  init() {
-    this._super(...arguments);
+  task: null, //the aperta task
+
+  taskLoad: task(function * () {
     const task = this.get('task');
-
-    // Note: task find
-    // We were calling `task.reload()` but this caused issues
-    // when the task was in an invalid error state
-
-    this.set('taskLoad', Ember.RSVP.all([
+    return yield Ember.RSVP.all([
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),
       this.get('store').findRecord('task', task.get('id'), {reload: true}) // see "NOTE: task find"
-    ]));
-  }
+    ]);
+  }),
+
 });

@@ -1,16 +1,10 @@
 import Ember from 'ember';
-import DS from 'ember-data';
-
-const { computed, RSVP } = Ember;
 
 export default Ember.Component.extend({
-  promise: null,
+  promiseTask: null, // an ember-concurrency task
 
-  promiseProxy: computed('promise', function() {
-    return DS.PromiseObject.create({
-      promise: RSVP.cast(this.get('promise'))
-    });
-  }),
-
-  isFulfilled: computed.reads('promiseProxy.isFulfilled')
+  init() {
+    this._super(...arguments);
+    this.get('promiseTask').perform();
+  }
 });

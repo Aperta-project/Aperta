@@ -249,7 +249,7 @@ describe QueryParser do
     describe 'submission time queries' do
       it 'parses VERSION DATE > DAYS AGO' do
         Timecop.freeze do
-          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+          start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
           parse = QueryParser.new.parse 'VERSION DATE > 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -260,7 +260,7 @@ describe QueryParser do
 
       it 'parses VERSION DATE < DAYS AGO' do
         Timecop.freeze do
-          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+          start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
           parse = QueryParser.new.parse 'VERSION DATE < 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)

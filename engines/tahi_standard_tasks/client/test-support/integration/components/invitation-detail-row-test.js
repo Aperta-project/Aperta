@@ -33,11 +33,11 @@ test('displays invitation information if the invite.invited is true', function(a
                      `Invited ${moment(this.get('update-date')).format('MMM D, YYYY')}`);
 });
 
-test('displays invitee information when present', function(assert){
+test('displays invitee name and email when present', function(assert){
   this.render(template);
 
   assert.textPresent('.invitation-item-full-name', 'Jane McEdits');
-  assert.textNotPresent('.invitation-item-full-name', 'jane@example.com');
+  assert.textPresent('.invitation-item-full-name', '<jane@example.com>');
 });
 
 test('displays invitation email when no invitee present', function(assert){

@@ -19,9 +19,7 @@ FactoryGirl.define do
         attachment.build_resource_token(attachment.file)
       end
     end
-  end
 
-  factory :adhoc_attachment, parent: :attachment, class: 'AdhocAttachment' do
     trait :with_task do
       association :owner, factory: :task
     end

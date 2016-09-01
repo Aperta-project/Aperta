@@ -159,12 +159,12 @@ class QueryParser < QueryLanguageParser
     paper_table[:submitted_at].gteq(start_time)
   end
 
-  add_simple_expression('FIRST SUBMITTED <') do |start_date|
+  add_simple_expression('SUBMISSION DATE <') do |start_date|
     query_date = Date.parse(start_date).beginning_of_day.to_formatted_s(:db)
     paper_table[:first_submitted_at].lt(query_date)
   end
 
-  add_simple_expression('FIRST SUBMITTED >') do |start_date|
+  add_simple_expression('SUBMISSION DATE >') do |start_date|
     query_date = Date.parse(start_date).beginning_of_day.to_formatted_s(:db)
     paper_table[:first_submitted_at].gteq(query_date)
   end

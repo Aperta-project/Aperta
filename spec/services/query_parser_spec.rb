@@ -247,22 +247,22 @@ describe QueryParser do
     end
 
     describe 'submission time queries' do
-      it 'parses SUBMITTED > DAYS AGO' do
+      it 'parses VERSION DATE > DAYS AGO' do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
 
-          parse = QueryParser.new.parse 'SUBMITTED > 3 DAYS AGO'
+          parse = QueryParser.new.parse 'VERSION DATE > 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)
             "papers"."submitted_at" < '#{start_time}'
           SQL
         end
       end
 
-      it 'parses SUBMITTED < DAYS AGO' do
+      it 'parses VERSION DATE < DAYS AGO' do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
 
-          parse = QueryParser.new.parse 'SUBMITTED < 3 DAYS AGO'
+          parse = QueryParser.new.parse 'VERSION DATE < 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)
             "papers"."submitted_at" >= '#{start_time}'
           SQL

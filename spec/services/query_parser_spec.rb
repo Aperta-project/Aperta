@@ -270,23 +270,25 @@ describe QueryParser do
       end
 
       it 'parses FIRST SUBMITTED < mm/dd/yy' do
-        Timecop.freeze do
-          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+        Timecop.freeze do |now|
+          search_date = now.days_ago(3).strftime("%m/%d/%Y")
+          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
-          parse = QueryParser.new.parse "FIRST SUBMITTED > #{start_time}"
+          parse = QueryParser.new.parse "FIRST SUBMITTED > #{search_date}"
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."first_submitted_at" >= '#{start_time}'
+            "papers"."first_submitted_at" >= '#{search_date_db}'
           SQL
         end
       end
 
       it 'parses FIRST SUBMITTED > mm/dd/yy' do
-        Timecop.freeze do
-          start_time = Time.zone.now.utc.days_ago(3).to_formatted_s(:db)
+        Timecop.freeze do |now|
+          search_date = now.days_ago(3).strftime("%m/%d/%Y")
+          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
-          parse = QueryParser.new.parse "FIRST SUBMITTED < #{start_time}"
+          parse = QueryParser.new.parse "FIRST SUBMITTED < #{search_date}"
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."first_submitted_at" < '#{start_time}'
+            "papers"."first_submitted_at" < '#{search_date_db}'
           SQL
         end
       end

@@ -160,11 +160,13 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('FIRST SUBMITTED <') do |start_date|
-    paper_table[:first_submitted_at].lt(start_date)
+    query_date = Date.parse(start_date).beginning_of_day.to_formatted_s(:db)
+    paper_table[:first_submitted_at].lt(query_date)
   end
 
   add_simple_expression('FIRST SUBMITTED >') do |start_date|
-    paper_table[:first_submitted_at].gteq(start_date)
+    query_date = Date.parse(start_date).beginning_of_day.to_formatted_s(:db)
+    paper_table[:first_submitted_at].gteq(query_date)
   end
 
   add_statement(/^\d+/.r) do |doi|

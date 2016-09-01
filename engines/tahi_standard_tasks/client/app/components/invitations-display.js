@@ -40,15 +40,6 @@ export default Ember.Component.extend({
         return decision;
       });
     }
-  ),
+  )
 
-  actions: {
-    destroyInvitation(invitation) {
-      if (invitation.get('pending')) {
-        invitation.destroyRecord();
-      } else {
-        invitation.rescind();
-      }
-    }
-  }
 });

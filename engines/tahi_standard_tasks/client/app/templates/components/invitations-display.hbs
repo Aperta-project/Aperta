@@ -1,8 +1,7 @@
 {{#if groupByDecision}}
   <div class="active-invitations">
     {{#each latestDecisionInvitations as |invitation|}}
-      {{invitation-detail-row invitation=invitation
-                              destroyAction=(action "destroyInvitation")}}
+      {{invitation-detail-row invitation=invitation}}
     {{/each}}
   </div>
 
@@ -13,8 +12,7 @@
 
     <div class="expired-invitations">
       {{#each decision.filteredInvitations as |invitation|}}
-        {{invitation-detail-row invitation=invitation
-                                destroyAction=(action 'destroyInvitation')}}
+        {{invitation-detail-row invitation=invitation}}
       {{/each}}
     </div>
   {{/each}}
@@ -23,8 +21,7 @@
 
   <div class="active-invitations">
     {{#each persistedInvitations as |invitation|}}
-      {{invitation-detail-row invitation=invitation
-                              destroyAction=(action 'destroyInvitation')}}
+      {{invitation-detail-row invitation=invitation}}
     {{/each}}
   </div>
 

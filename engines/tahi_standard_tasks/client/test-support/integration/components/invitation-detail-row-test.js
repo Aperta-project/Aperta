@@ -7,7 +7,6 @@ moduleForComponent('invitation-detail-row',
                       integration: true,
                       beforeEach: function() {
                         this.set('update-date', new Date('January 01, 2016'));
-                        this.set('destroyAction', () => {return;});
                         this.set('invitation', Ember.Object.create({
                           declineReason: null,
                           declined: false,
@@ -24,8 +23,7 @@ moduleForComponent('invitation-detail-row',
                     });
 
 let template = hbs`{{invitation-detail-row
-                      invitation=invitation
-                      destroyAction=destroyAction}}`;
+                      invitation=invitation}}`;
 
 test('displays invitation information if the invite.invited is true', function(assert){
   this.set('invitation.invited', true);
@@ -55,8 +53,7 @@ test('displays remove icon if invite not accepted and the row is in the show or 
     this.set('invitation.accepted', false);
     let openTemplate = hbs`{{invitation-detail-row
                           invitation=invitation
-                          uiState='show'
-                          destroyAction=destroyAction}}`;
+                          uiState='show'}}`;
     this.render(openTemplate);
 
     assert.elementFound('.invite-remove');
@@ -68,8 +65,7 @@ test('does not display remove icon if invite accepted, even if in the show state
     this.set('invitation.accepted', true);
     let openTemplate = hbs`{{invitation-detail-row
                           invitation=invitation
-                          uiState='show'
-                          destroyAction=destroyAction}}`;
+                          uiState='show'}}`;
     this.render(openTemplate);
 
     assert.elementNotFound('.invite-remove');

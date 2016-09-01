@@ -20,8 +20,7 @@ export default Component.extend({
   classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass'],
 
   propTypes: {
-    invitation: PropTypes.EmberObject.isRequired,
-    destroyAction: PropTypes.func.isRequired
+    invitation: PropTypes.EmberObject.isRequired
   },
 
   allowAttachments: true,
@@ -103,6 +102,12 @@ export default Component.extend({
       invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
       invitation.save();
       this.set('uiState', 'show');
+    },
+
+    destroyInvitation(invitation) {
+      if (invitation.get('pending')) {
+        invitation.destroyRecord();
+      }
     },
 
     saveDuringType(invitation) {

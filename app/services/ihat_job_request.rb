@@ -1,12 +1,14 @@
 # Models a request for ihat.
 class IhatJobRequest
   attr_reader :file
+  attr_reader :content_type
 
-  def initialize(file:, recipe_name:, callback_url: nil, metadata: {})
+  def initialize(file:, recipe_name:, content_type:, callback_url: nil, metadata: {})
     @file = file
     @recipe_name = recipe_name
     @callback_url = callback_url
     @metadata = metadata
+    @content_type = content_type
   end
 
   def make_options
@@ -38,6 +40,7 @@ class IhatJobRequest
         file: file,
         recipe_name: ihat_recipe_name(source_url),
         callback_url: callback_url,
+        content_type: 'application/epub+zip',
         metadata: metadata)
       PaperConverter.post_ihat_job(request)
     end

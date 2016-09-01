@@ -14,12 +14,12 @@ class DownloadManuscriptWorker
     if url.blank?
       fail(ArgumentError, "Url must be provided (received a blank value)")
     end
+    paper.update_attribute(:processing, true)
     perform_async(
       paper.id,
       url,
       current_user.id
     )
-    paper.update_attribute(:processing, true)
   end
 
   # +perform+ should not be called directly, but by the background job

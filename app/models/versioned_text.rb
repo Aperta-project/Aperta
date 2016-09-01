@@ -55,8 +55,7 @@ class VersionedText < ActiveRecord::Base
       d.update!(
         major_version: nil,
         minor_version: nil,
-        submitting_user: nil,
-        source: source) # makes duplicate of S3 file
+        submitting_user: nil) # makes duplicate of S3 file
     end
   end
 

@@ -29,6 +29,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Add permission to view decisions
 ### Changed
 - Upgrade to ruby 2.2.4
+- Change paper tracker submitted search fields from SUBMITTED to VERSION DATE, and FIRST SUBMITTED to SUBMISISON DATE.
 ### Deprecated
 ### Removed
 ### Fixed

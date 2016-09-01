@@ -4,6 +4,10 @@ export default Ember.Component.extend({
   multiple: false,
   invitation: null,
 
+  enableEditingAttachments: true,
+
+  enabled: Ember.computed.and('enableEditingAttachments', 'invitation.pending'),
+
   store: Ember.inject.service(),
   restless: Ember.inject.service(),
 

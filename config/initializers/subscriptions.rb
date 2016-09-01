@@ -33,9 +33,9 @@ Subscriptions.configure do
       Notification::Unbadger
 
   add 'manuscript_attachment:created', \
-      ManuscriptAttachment::SendManuscriptToIhat
+      ManuscriptAttachment::ProcessManuscript
 
   add 'manuscript_attachment:updated', \
-      ManuscriptAttachment::SendManuscriptToIhat
+      ManuscriptAttachment::ProcessManuscript
 end
 # rubocop:enable Style/AlignParameters

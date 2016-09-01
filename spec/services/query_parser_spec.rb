@@ -269,7 +269,7 @@ describe QueryParser do
         end
       end
 
-      it 'parses SUBMISSION DATE < mm/dd/yy' do
+      it 'parses SUBMISSION DATE > mm/dd/yy' do
         Timecop.freeze do |now|
           search_date = now.days_ago(3).strftime("%m/%d/%Y")
           search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
@@ -281,7 +281,7 @@ describe QueryParser do
         end
       end
 
-      it 'parses SUBMISSION DATE > mm/dd/yy' do
+      it 'parses SUBMISSION DATE < mm/dd/yy' do
         Timecop.freeze do |now|
           search_date = now.days_ago(3).strftime("%m/%d/%Y")
           search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)

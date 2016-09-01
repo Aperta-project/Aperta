@@ -1,3 +1,4 @@
+# PaperTrail's versions table stores past model versions
 class CreateVersions < ActiveRecord::Migration
   def change
     create_table :versions do |t|

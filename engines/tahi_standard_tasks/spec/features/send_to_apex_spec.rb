@@ -24,6 +24,9 @@ feature 'Send to Apex task', js: true do
   let!(:server) { FakeFtp::Server.new(21212, 21213) }
 
   before do
+    # Here we are checking that the URLs have similar elements to be the 'same'
+    # request. If the URIs match the given patterns, we have a match and can
+    # use the associated cassette.
     @start_with_matcher = lambda do |app_request, vcr_request|
       # //tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/attachment/1/ea85b0d61253e1033eab985b8ab1097187216cd45bce749956630c5914758bb9/about_turtles.docx|
       matched = false

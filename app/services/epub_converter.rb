@@ -122,7 +122,7 @@ class EpubConverter
   end
 
   def manuscript_source
-    @manuscript_source ||= paper.file.to_local_file
+    @manuscript_source ||= paper.file.to_file
   end
 
   def manuscript_source_contents

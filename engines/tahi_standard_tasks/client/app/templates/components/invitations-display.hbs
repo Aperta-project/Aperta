@@ -12,7 +12,7 @@
 
     <div class="expired-invitations">
       {{#each decision.filteredInvitations as |invitation|}}
-        {{invitation-detail-row invitation=invitation}}
+        {{invitation-detail-row invitation=invitation allowDestroy=false}}
       {{/each}}
     </div>
   {{/each}}

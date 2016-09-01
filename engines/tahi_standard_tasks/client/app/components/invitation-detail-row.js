@@ -24,6 +24,7 @@ export default Component.extend({
   },
 
   allowAttachments: true,
+  allowDestroy: true,
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
   }),
@@ -41,8 +42,8 @@ export default Component.extend({
 
   displaySendButton: reads('invitation.pending'),
 
-  displayDestroyButton: computed('invitation.pending', 'closedState', function() {
-    return this.get('invitation.pending') && !this.get('closedState');
+  displayDestroyButton: computed('invitation.pending', 'closedState', 'allowDestroy', function() {
+    return this.get('allowDestroy') && this.get('invitation.pending') && !this.get('closedState');
   }),
 
   uiState: 'closed',

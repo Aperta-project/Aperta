@@ -48,29 +48,44 @@ test('displays invitation email when no invitee present', function(assert){
   assert.textPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
-test('displays remove icon if invite not accepted and the row is in the show or edit state',
+test('displays delete icon if invite is pending and the row is in the show state',
   function(assert){
-    this.set('invitation.accepted', false);
+    this.setProperties({
+      'invitation.pending': true,
+      allowDestroy: true,
+      uiState: 'show'
+    });
     let openTemplate = hbs`{{invitation-detail-row
+                          allowDestroy=allowDestroy
                           invitation=invitation
-                          uiState='show'}}`;
+                          uiState=uiState}}`;
     this.render(openTemplate);
 
-    assert.elementFound('.invite-remove');
+    assert.elementFound('.invite-remove', 'destroy button is found in show state with AllowDestroy');
+
+    this.setProperties({
+      'invitation.pending': true,
+      allowDestroy: false,
+      uiState: 'show'
+    });
+    assert.elementNotFound('.invite-remove', 'destroy button not shown if not allowed');
+
+    this.setProperties({
+      'invitation.pending': false,
+      allowDestroy: true,
+      uiState: 'show'
+    });
+    assert.elementNotFound('.invite-remove', 'destroy button not shown if invitation is not pending');
+
+    this.setProperties({
+      'invitation.pending': true,
+      allowDestroy: true,
+      uiState: 'closed'
+    });
+    assert.elementNotFound('.invite-remove', 'destroy button not shown if the row is closed');
   }
 );
 
-test('does not display remove icon if invite accepted, even if in the show state',
-  function(assert){
-    this.set('invitation.accepted', true);
-    let openTemplate = hbs`{{invitation-detail-row
-                          invitation=invitation
-                          uiState='show'}}`;
-    this.render(openTemplate);
-
-    assert.elementNotFound('.invite-remove');
-  }
-);
 
 test('displays decline feedback when declined', function(assert){
   this.set('invitation.declined', true);

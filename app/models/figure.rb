@@ -35,10 +35,6 @@ class Figure < Attachment
     insert_figures! if all_figures_done?
   end
 
-  def make_resource_token
-    true
-  end
-
   protected
 
   def build_title

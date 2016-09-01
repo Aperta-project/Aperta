@@ -29,7 +29,7 @@
           <span class="invitation-item-action-text">Delete</span>
         </span>
       {{/if}}
-      {{#if invitation.pending}}
+      {{#if displaySendButton}}
         <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
           <span class="fa fa-send invite-send"></span>
           <span class="invitation-item-action-text">Send</span>

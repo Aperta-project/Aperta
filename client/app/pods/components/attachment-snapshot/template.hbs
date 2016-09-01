@@ -1,16 +1,16 @@
-{{#if (or attachment1.image attachment2.image)}}
+{{#if (or attachment1.isImage attachment2.isImage)}}
   <div>
     <label>Image:</label>
     <span class="attachment-snapshot-image">
       {{#if fileHashChanged}}
-        {{#if attachment2.image}}
-          <img class="removed" src="{{attachment2.url}}/preview" />
+        {{#if attachment2.isImage}}
+          <img class="removed" src="{{attachment2.previewUrl}}" />
         {{/if}}
-        {{#if attachment1.image}}
-          <img class="added" src="{{attachment1.url}}/preview" />
+        {{#if attachment1.isImage}}
+          <img class="added" src="{{attachment1.previewUrl}}" />
         {{/if}}
       {{else}}
-        <img src="{{attachment1.url}}/preview" />
+        <img src="{{attachment1.previewUrl}}" />
       {{/if}}
     </span>
   </div>

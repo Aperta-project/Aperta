@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { task } from 'ember-concurrency';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 /**
  *  task-load ensures the task and other required data is loaded
@@ -25,9 +25,9 @@ export default Ember.Component.extend({
 
   task: null, //the aperta task
 
-  taskLoad: task(function * () {
+  taskLoad: concurrencyTask(function * () {
     const task = this.get('task');
-    return yield Ember.RSVP.all([
+    yield Ember.RSVP.all([
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),

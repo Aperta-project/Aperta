@@ -178,7 +178,14 @@ export default ActiveModelSerializer.extend({
     return {newModelName, payload: newPayload, isPolymorphic};
   },
 
-  normalizePayload(rawPayload){
+  pushPayload(store, payload) {
+    let normalized = this.normalizePayloadData(payload);
+
+    return this._super(store, normalized);
+
+  },
+
+  normalizePayloadData(rawPayload){
     if(!rawPayload){
       return;
     }

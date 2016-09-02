@@ -37,17 +37,27 @@ class Attachment < ActiveRecord::Base
   after_initialize :set_paper, if: :new_record?
 
   def download!(url)
+    # Wrap this in a transaction so the ActiveRecord after_commit lifecycle
+    # event isn't fired until the transaction completes and all of the work
+    # is finished.
     Attachment.transaction do
       @downloading = true
       file.download! url
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
-      self.status = STATUS_DONE
+
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!
       refresh_resource_token!(file)
+
+      # Do not mark as done until all of the steps that go into
+      # downloading a file, creating resource tokens, etc are completed. This
+      # is to avoid other parts of the system thinking the attachment is
+      # done downloading before it's fully realized/usable.
+      update_column :status, STATUS_DONE
+
       @downloading = false
       on_download_complete
     end

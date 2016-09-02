@@ -61,6 +61,7 @@ feature 'Invite Academic Editor', js: true do
     overlay.create_invite_for(editor1, send_now: false)
     ActiveInvitation.for_user(editor1) do |invite|
       invite.show_details
+      invite.edit
       invite.upload_attachment('yeti.jpg')
     end
   end

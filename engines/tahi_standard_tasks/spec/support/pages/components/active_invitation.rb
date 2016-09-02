@@ -2,7 +2,7 @@
 # reviewers, etc
 class ActiveInvitation < PageFragment
   def self.with_header(text)
-    el = Capybara.current_session.find('.active-invitations .invitation-item-full-name', text: text)
+    el = Capybara.current_session.find('.active-invitations .invitation-item', text: text)
     new(el)
   end
 
@@ -11,7 +11,11 @@ class ActiveInvitation < PageFragment
   end
 
   def show_details
-    element.click
+    find('.invitation-item-full-name').click
+  end
+
+  def edit
+    find('.invitation-item-action-edit').click
   end
 
   def upload_attachment(file_name)

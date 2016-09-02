@@ -543,7 +543,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
-          task.click()
+          self.click_covered_element(task)
           time.sleep(.5)
           break
         elif task.text == task_name and 'active' \
@@ -575,7 +575,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
       # complete_billing task
-      task.click()
+      self.click_covered_element(task)
       """
       if not base_task.completed_state():
         base_task.click_completion_button()
@@ -605,14 +605,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Check completed_check status
       if not base_task.completed_state():
         base_task.click_completion_button()
-      task.click()
+      self.click_covered_element(task)
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-      task.click()
+      self.click_covered_element(task)
       time.sleep(1)
     elif 'Review by ' in task_name:
       logging.info('Completing {0}'.format(task_name))

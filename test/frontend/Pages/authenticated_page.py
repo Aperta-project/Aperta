@@ -395,6 +395,18 @@ class AuthenticatedPage(PlosPage):
       # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
       logging.error('Error Message found: {0}'.format(error_msg_string))
 
+  def click_covered_element(self, element):
+    """
+    Because the Manuscript toolbar obscures content, we need a method specifically to click
+    on element without click on that is on top. This breaks Selenium prevision on not
+    clicking in elements that a regular user will not be able to click, so use it only for
+    non core test component. Consider this a Konami like cheatcode for development purposes.
+    :param element: webelement to receive the click
+    :return: None
+    """
+    self._driver.execute_script("javascript:arguments[0].click()", element)
+    return None
+
   def check_for_flash_success(self):
     """
     Check that any process (submit, save, send, etc) triggered a flash success message

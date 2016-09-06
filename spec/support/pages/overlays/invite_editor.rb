@@ -9,7 +9,7 @@ class InviteEditorOverlay < CardOverlay
   def create_invite_for(editor, send_now: false)
     if editor.full_name
       fill_in "invitation-recipient", with: editor.full_name
-      find(".auto-suggest-item", text: "#{editor.full_name} [#{editor.email}]").click
+      find(".auto-suggest-item", text: "#{editor.full_name} <#{editor.email}>").click
     else
       fill_in "invitation-recipient", with: editor
     end

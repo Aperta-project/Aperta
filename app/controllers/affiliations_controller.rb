@@ -1,5 +1,6 @@
 class AffiliationsController < ApplicationController
   before_action :authenticate_user!
+  respond_to :json
 
   def index
     query = params.dig(:query)
@@ -19,6 +20,12 @@ class AffiliationsController < ApplicationController
   def show
     require_current_user_or_user_can(:manage_users, Journal)
     render json: affiliation
+  end
+
+  def update
+    require_current_user_or_user_can(:manage_users, Journal)
+    affiliation.update_attributes! affiliation_params
+    respond_with affiliation
   end
 
   def create

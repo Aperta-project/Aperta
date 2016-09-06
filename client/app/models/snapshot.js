@@ -38,6 +38,10 @@ export default DS.Model.extend({
     }),
 
   hasDiff(otherSnapshot) {
+    if (typeof(otherSnapshot) === 'undefined') {
+      return true;
+    }
+
     let string1 = JSON.stringify(this.get('contents'));
     if(otherSnapshot){
       let string2 = JSON.stringify(otherSnapshot.get('contents'));

@@ -1,40 +1,9 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if activeInvitation}}
-    {{edit-invitation allowAttachments=false
-                      invitation=activeInvitation
-                      closeAction=(action "cancelAction")}}
-  {{else}}
-    {{invitations-display decisions=decisions
-                          groupByDecision=true
-                          activeInvitation=activeInvitation
-                          inviteeRole=task.inviteeRole
-                          latestDecision=latestDecision}}
-    <div class="invitation-email-entry">
-      {{#auto-suggest endpoint=autoSuggestSourceUrl
-                      queryParameter="query"
-                      inputId="invitation-recipient"
-                      placeholder="Invite reviewer by name or email"
-                      errorMessage=pendingInvitation.errors.email.firstObject.message
-                      parseResponseFunction=parseUserSearchResponse
-                      itemSelected="didSelectUser"
-                      inputChanged="inputChanged"
-                      itemDisplayTextFunction=displayUserSelected
-                      as |user|}}
-        {{user.full_name}} &lt;{{user.email}}&gt;
-      {{/auto-suggest}}
-
-      <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
-              {{action "composeInvite"}}>
-        Compose Invite
-      </button>
-
-      {{#if createInvitation.isRunning}}
-        <div class="invitation-email-entry-progress animation-fade-in">
-          {{progress-spinner visible=true size="small"}}
-        </div>
-      {{/if}}
-    </div>
-  {{/if}}
+  {{invitation-manager task=task
+                       replaceTargetName="REVIEWER NAME"
+                       groupByDecision=true
+                       endpoint="reviewers"
+                       placeholder="Invite reviewer by name or email"}}
 </div>

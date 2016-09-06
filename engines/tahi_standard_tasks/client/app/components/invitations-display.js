@@ -4,12 +4,13 @@ const { computed } = Ember;
 
 export default Ember.Component.extend({
   groupByDecision: true,
-
+  decisions: null,
   invitations: null,
   latestDecision: null,
 
   // externally set to allow editing a newly composed invitation
   activeInvitation: null,
+  activeInvitationState: null,
 
   persistedInvitations: computed('invitations.@each.isNew', function() {
     return this.get('invitations').rejectBy('isNew');

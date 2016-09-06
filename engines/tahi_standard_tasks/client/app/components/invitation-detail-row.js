@@ -47,24 +47,16 @@ export default Component.extend({
     return this.get('allowDestroy') && this.get('invitation.pending') && !this.get('closedState');
   }),
 
-  uiState: 'closed',
+  uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
+    if (this.get('invitation') !== this.get('activeInvitation')) {
+      return 'closed';
+    } else {
+      return this.get('activeInvitationState');
+    }
+  }),
 
   closedState: equal('uiState', 'closed'),
   editState: equal('uiState', 'edit'),
-
-  didInsertElement() {
-    this._super(...arguments);
-
-    this.get('eventBus').subscribe('invitation-row-toggle', this, function(id) {
-      if(id === this.get('invitation.id')) { return; }
-      this.set('uiState', 'closed');
-    });
-  },
-
-  willDestroyElement() {
-    this._super(...arguments);
-    this.get('eventBus').unsubscribe('invitation-row-toggle', this);
-  },
 
   save: task(function * (invitation, delay=0) {
     yield timeout(delay);
@@ -78,32 +70,27 @@ export default Component.extend({
     yield timeout(3000);
   }).keepLatest(),
 
-  openRow(invitation) {
-    this.get('eventBus').publish('invitation-row-toggle', invitation.id);
-    this.set('uiState', 'show');
-  },
-
   actions: {
-    editInvitation(invitation) {
-      this.setProperties({
-        invitationBodyStateBeforeEdit: invitation.get('body'),
-        uiState: 'edit'
-      });
+    toggleDetails() {
+      if (this.get('uiState') === 'closed') {
+        this.get('setRowState')('show');
+      } else {
+        this.get('setRowState')('closed');
+      }
     },
 
-    toggleDetails(invitation) {
-      if (this.get('closedState')) {
-        this.openRow(invitation);
-      } else {
-        this.set('uiState', 'closed');
-      }
+    editInvitation(invitation) {
+      this.setProperties({
+        invitationBodyStateBeforeEdit: invitation.get('body')
+      });
+      this.get('setRowState')('edit');
     },
 
     cancelEdit(invitation) {
       invitation.rollbackAttributes();
       invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
       invitation.save();
-      this.set('uiState', 'show');
+      this.get('setRowState')('show');
     },
 
     destroyInvitation(invitation) {
@@ -118,7 +105,7 @@ export default Component.extend({
 
     save(invitation) {
       this.get('save').perform(invitation).then(() => {
-        this.set('uiState', 'show');
+        this.get('setRowState')('show');
       });
     },
 

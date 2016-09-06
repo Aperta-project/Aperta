@@ -1,6 +1,6 @@
 {{#unless (eq uiState "edit")}}
   <div class="invitation-item-header">
-    <div class="invitation-item-full-name" {{action "toggleDetails" invitation}}>
+    <div class="invitation-item-full-name" {{action "toggleDetails"}}>
       {{#if invitee}}
         {{invitee.fullName}}
         &lt;{{invitation.email}}&gt;
@@ -8,12 +8,12 @@
         {{invitation.email}}
       {{/if}}
     </div>
-    <div class="invitation-item-status" {{action "toggleDetails" invitation}}>
+    <div class="invitation-item-status" {{action "toggleDetails"}}>
       {{#if (and (eq uiState 'closed') invitation.invited)}}
           <span>Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
       {{/if}}
     </div>
-    <div class="invitation-item-body-preview" {{action "toggleDetails" invitation}}>
+    <div class="invitation-item-body-preview" {{action "toggleDetails"}}>
       {{strip-html invitation.body}}
     </div>
     <div class="invitation-item-actions">

@@ -13,7 +13,7 @@ const {
 //but we didn't feel that combining the two was worth the time as part of APERTA-5588.
 //Please take a look a the `paper-editor-task` as you make changes here.
 export default TaskComponent.extend({
-  invitationToEdit: null,
+  activeInvitation: null,
   selectedUser: null,
   decisions: alias('task.decisions'),
 
@@ -67,7 +67,7 @@ export default TaskComponent.extend({
       this.get('latestDecision.invitations').addObject(invitation);
 
       this.setProperties({
-        invitationToEdit: invitation,
+        activeInvitation: invitation,
         selectedUser: null,
         pendingInvitation: null
       });
@@ -80,7 +80,7 @@ export default TaskComponent.extend({
   actions: {
     cancelAction() {
       this.set('selectedUser', null);
-      this.set('invitationToEdit', null);
+      this.set('activeInvitation', null);
     },
 
     composeInvite() {

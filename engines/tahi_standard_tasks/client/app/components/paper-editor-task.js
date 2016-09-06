@@ -12,7 +12,7 @@ const {
 //but we didn't feel that combining the two was worth the time as part of APERTA-5588.
 //Please take a look a the `paper-reviewer-task` as you make changes here.
 export default TaskComponent.extend({
-  invitationToEdit: null,
+  activeInvitation: null,
   selectedUser: null,
 
   applyTemplateReplacements(str) {
@@ -60,7 +60,7 @@ export default TaskComponent.extend({
       yield invitation.save();
 
       this.setProperties({
-        invitationToEdit: invitation,
+        activeInvitation: invitation,
         selectedUser: null,
         pendingInvitation: null
       });
@@ -73,7 +73,7 @@ export default TaskComponent.extend({
   actions: {
     cancelAction() {
       this.set('selectedUser', null);
-      this.set('invitationToEdit', null);
+      this.set('activeInvitation', null);
     },
 
     composeInvite() {

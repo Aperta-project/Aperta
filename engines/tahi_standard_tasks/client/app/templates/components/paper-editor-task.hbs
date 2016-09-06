@@ -1,9 +1,9 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if invitationToEdit}}
+  {{#if activeInvitation}}
     {{edit-invitation allowAttachments=true
-                      invitation=invitationToEdit
+                      invitation=activeInvitation
                       closeAction=(action "cancelAction")}}
   {{else}}
     {{invitations-display groupByDecision=false

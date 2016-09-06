@@ -1,13 +1,14 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if invitationToEdit}}
+  {{#if activeInvitation}}
     {{edit-invitation allowAttachments=false
-                      invitation=invitationToEdit
+                      invitation=activeInvitation
                       closeAction=(action "cancelAction")}}
   {{else}}
     {{invitations-display decisions=decisions
                           groupByDecision=true
+                          activeInvitation=activeInvitation
                           inviteeRole=task.inviteeRole
                           latestDecision=latestDecision}}
     <div class="invitation-email-entry">

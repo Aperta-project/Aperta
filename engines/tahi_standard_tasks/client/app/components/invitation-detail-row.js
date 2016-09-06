@@ -87,10 +87,14 @@ export default Component.extend({
     },
 
     cancelEdit(invitation) {
-      invitation.rollbackAttributes();
-      invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
-      invitation.save();
-      this.get('setRowState')('show');
+      if (this.get('deleteOnCancel') && invitation.get('pending')) {
+        invitation.destroyRecord();
+      } else {
+        invitation.rollbackAttributes();
+        invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
+        invitation.save();
+        this.get('setRowState')('show');
+      }
     },
 
     destroyInvitation(invitation) {

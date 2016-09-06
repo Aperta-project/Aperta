@@ -19,6 +19,7 @@ export default Ember.Component.extend({
   //internal stuff
   activeInvitation: null,
   activeInvitationState: 'closed',
+  composedInvitation: null,
   selectedUser: null,
   autoSuggestSelectedText: null,
 
@@ -77,6 +78,7 @@ export default Ember.Component.extend({
       this.setProperties({
         activeInvitation: invitation,
         activeInvitationState: 'edit',
+        composedInvitation: invitation,
         selectedUser: null,
         pendingInvitation: null,
         autoSuggestSelectedText: null

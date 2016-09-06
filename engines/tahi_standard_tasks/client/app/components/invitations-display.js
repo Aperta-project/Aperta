@@ -11,6 +11,8 @@ export default Ember.Component.extend({
   // externally set to allow editing a newly composed invitation
   activeInvitation: null,
   activeInvitationState: null,
+  composedInvitation: null, // this one allows the specific row to change its 'cancel' behavior
+                            // to delete the newly-saved invitation rather than just discarding
 
   persistedInvitations: computed('invitations.@each.isNew', function() {
     return this.get('invitations').rejectBy('isNew');

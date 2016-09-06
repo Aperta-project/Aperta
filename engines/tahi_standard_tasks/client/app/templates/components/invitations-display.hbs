@@ -3,6 +3,7 @@
     {{#each latestDecisionInvitations as |invitation|}}
       {{invitation-detail-row
           setRowState=(action attrs.toggleActiveInvitation invitation)
+          deleteOnCancel=(eq invitation composedInvitation)
           invitation=invitation
           activeInvitation=activeInvitation
           activeInvitationState=activeInvitationState}}
@@ -18,6 +19,7 @@
       {{#each decision.filteredInvitations as |invitation|}}
         {{invitation-detail-row
             setRowState=(action attrs.toggleActiveInvitation invitation)
+            deleteOnCancel=(eq invitation composedInvitation)
             invitation=invitation
             activeInvitation=activeInvitation
             activeInvitationState=activeInvitationState
@@ -32,6 +34,7 @@
     {{#each persistedInvitations as |invitation|}}
       {{invitation-detail-row
           setRowState=(action attrs.toggleActiveInvitation invitation)
+          deleteOnCancel=(eq invitation composedInvitation)
           invitation=invitation
           activeInvitation=activeInvitation
           activeInvitationState=activeInvitationState}}

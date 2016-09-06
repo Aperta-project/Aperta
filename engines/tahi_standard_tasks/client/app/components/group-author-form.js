@@ -22,7 +22,7 @@ export default Ember.Component.extend({
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'GroupAuthor' };
-    return this.get('store').findQuery('nested-question', q).then((nestedQuestions)=> {
+    return this.get('store').query('nested-question', q).then((nestedQuestions)=> {
       this.set('nestedQuestionsForNewAuthor', nestedQuestions);
     });
   },

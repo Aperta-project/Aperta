@@ -34,7 +34,7 @@ export default Component.extend({
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'Author' };
-    return this.get('store').findQuery('nested-question', q).then(
+    return this.get('store').query('nested-question', q).then(
       (nestedQuestions) => {
         this.set('nestedQuestionsForNewAuthor', nestedQuestions.toArray());
       });

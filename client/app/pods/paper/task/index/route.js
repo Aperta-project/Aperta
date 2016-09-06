@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
@@ -7,18 +6,10 @@ export default AuthorizedRoute.extend({
   },
 
   model(params) {
-    // Force the reload of the task when visiting the tasks' route.
-    const task = this.store.findTask(params.task_id);
-    if (task) {
-      return task.reload();
-    } else {
-      return this.store.findRecord('task', params.task_id).then(
-        (task) => { return task; },
-        () => {
-          this.handleUnauthorizedRequest(this.get('previousTransition'));
-        }
-      );
-    }
+    return this.store.findRecord('task', params.task_id)
+      .catch(() => {
+        this.handleUnauthorizedRequest(this.get('previousTransition'));
+      });
   },
 
   actions: {

@@ -182,11 +182,6 @@ HERE
       find('.withdraw-link', text: 'Withdraw Manuscript').click
     end
 
-    within '.control-bar' do
-      find('.control-bar-link', text: 'More').click
-      find('.withdraw-link', text: 'Withdraw Manuscript').click
-    end
-
     expect(page).to have_css('.paper-withdraw-wrapper')
     within '.paper-withdraw-wrapper' do
       find('textarea.withdraw-reason').set 'I really decided not to publish'

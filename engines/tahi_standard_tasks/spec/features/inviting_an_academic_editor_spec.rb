@@ -37,6 +37,7 @@ feature 'Invite Academic Editor', js: true do
     # But, users who have not been invited should still be suggested
     expect(page).to have_css('.auto-suggest-item', text: editor2.full_name)
     expect(page).to have_css('.auto-suggest-item', text: editor3.full_name)
+    overlay.dismiss
 
     overlay.sign_out
 

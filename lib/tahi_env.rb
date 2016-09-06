@@ -105,9 +105,6 @@ class TahiEnv
   required :EVENT_STREAM_WS_HOST
   required :EVENT_STREAM_WS_PORT
 
-  # Hipchat
-  optional :HIPCHAT_AUTH_TOKEN
-
   # Heroku
   optional :HEROKU_APP_NAME
   optional :HEROKU_PARENT_APP_NAME

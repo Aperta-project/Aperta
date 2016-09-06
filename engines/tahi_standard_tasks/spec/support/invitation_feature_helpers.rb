@@ -7,6 +7,7 @@ module InvitationFeatureHelpers
     overlay = Page.view_task_overlay(paper, task)
     overlay.invite_new_reviewer email
     expect(overlay).to have_reviewers email
+    overlay.dismiss
   end
 
   def ensure_email_got_sent_to(email)

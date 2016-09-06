@@ -110,9 +110,6 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'HEROKU_APP_NAME'
   it_behaves_like 'optional env var', var: 'HEROKU_PARENT_APP_NAME'
 
-  # Hipchat
-  it_behaves_like 'optional env var', var: 'HIPCHAT_AUTH_TOKEN'
-
   # iHat
   it_behaves_like 'required env var', var: 'IHAT_URL'
   it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_HOST'

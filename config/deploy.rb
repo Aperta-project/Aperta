@@ -5,11 +5,6 @@ set :application, 'tahi'
 set :assets_roles, [:web]
 set :chruby_exec, '/usr/bin/chruby-exec'
 set :chruby_ruby, File.read(File.expand_path('../../.ruby-version', __FILE__)).strip
-unless ENV['HIPCHAT_AUTH_TOKEN'].nil?
-  set :hipchat_room_name, '1777105'
-  set :hipchat_options, api_version: 'v2'
-  set :hipchat_token, ENV.fetch('HIPCHAT_AUTH_TOKEN')
-end
 set :linked_dirs, %w(log tmp/pids tmp/cache tmp/sockets vendor/bundle)
 set :linked_files, %w(env puma.rb)
 set :repo_url, 'git@github.com:Tahi-project/tahi.git'

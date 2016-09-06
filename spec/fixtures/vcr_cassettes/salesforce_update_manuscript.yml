@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://salesforce_host/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR
+    uri: https://salesforce.local/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR
     body:
       encoding: US-ASCII
       string: ''
@@ -45,7 +45,7 @@ http_interactions:
   recorded_at: Sat, 22 Aug 2015 02:48:22 GMT
 - request:
     method: patch
-    uri: https://salesforce_host/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR
+    uri: https://salesforce.local/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR
     body:
       encoding: UTF-8
       string: '{"RecordTypeId":"012U0000000E4ASIA0","OwnerId":"005U0000002AXTZIA4","Editorial_Process_Close__c":false,"Display_Technical_Notes__c":false,"CreatedByDeltaMigration__c":false,"Editorial_Status_Date__c":"2015-08-21T19:48:22.984-0700","Revision__c":"0.0"}'

@@ -6,7 +6,6 @@ require 'capistrano/chruby'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
-require 'hipchat/capistrano' unless ENV['HIPCHAT_AUTH_TOKEN'].nil?
 require "whenever/capistrano"
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined

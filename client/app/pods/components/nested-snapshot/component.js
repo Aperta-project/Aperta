@@ -55,6 +55,6 @@ export default Ember.Component.extend({
   }),
 
   incrementedNestedLevel: Ember.computed('nestedLevel', function(){
-    return this.incrementProperty('nestedLevel');
-  }),
+    return this.get('nestedLevel') + 1;
+  })
 });

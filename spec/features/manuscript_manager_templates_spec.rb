@@ -72,14 +72,12 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
       expect(task_manager_page).to have_css('.overlay', text: 'Staff task cards')
-      expect {
-        within '.overlay' do
-          find('label', text: 'Invite Reviewer').click
-          find('button', text: 'ADD').click
-        end
-      }.to change {
-        task_manager_page.card_count
-      }.by(1)
+      expect(task_manager_page).to have_css('.card', count: 9)
+      within '.overlay' do
+        find('label', text: 'Invite Reviewer').click
+        find('button', text: 'ADD').click
+      end
+      expect(task_manager_page).to have_css('.card', count: 10)
     end
 
     scenario 'Adding multiple Task Templates'do
@@ -88,15 +86,13 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
       expect(task_manager_page).to have_css('.overlay', text: 'Staff task cards')
-      expect {
-        within '.overlay' do
-          find('label', text: 'Invite Reviewer').click
-          find('label', text: 'Register Decision').click
-          find('button', text: 'ADD').click
-        end
-      }.to change {
-        task_manager_page.card_count
-      }.by(2)
+      expect(task_manager_page).to have_css('.card', count: 9)
+      within '.overlay' do
+        find('label', text: 'Invite Reviewer').click
+        find('label', text: 'Register Decision').click
+        find('button', text: 'ADD').click
+      end
+      expect(task_manager_page).to have_css('.card', count: 11)
     end
 
     scenario 'Adding a new Ad-Hoc Task Template'do
@@ -117,15 +113,13 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
     end
 
     scenario 'Removing a task' do
+      expect(task_manager_page).to have_css('.card', count: 9)
       phase = task_manager_page.phase 'Submission Data'
-      expect {
-        phase.remove_card('Upload Manuscript')
-        within '.overlay' do
-          find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
-        end
-      }.to change {
-        task_manager_page.card_count
-      }.by(-1)
+      phase.remove_card('Upload Manuscript')
+      within '.overlay' do
+        find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
+      end
+      expect(task_manager_page).to have_css('.card', count: 8)
     end
   end
 end

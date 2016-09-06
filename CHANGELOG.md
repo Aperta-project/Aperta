@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - New billing institutions will now be added in alphabetical order
 - Fixed race condition between creating a token, and requesting it when creating or replacing attachments.
+- Emails are not send when a decision is rescinded
 ### Security
 
 ## [1.23.0] - {2016-08-16}

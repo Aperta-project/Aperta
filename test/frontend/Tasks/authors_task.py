@@ -585,18 +585,19 @@ class AuthorsTask(BaseTask):
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
-      corresponding_chck.click()
+      self.click_covered_element(corresponding_chck)
     author_contribution_chck = self._get(self._designed_chkbx)
     if not author_contribution_chck.is_selected():
-      author_contribution_chck.click()
+      self.click_covered_element(author_contribution_chck)
     # Need to complete the remaining required elements to successfully complete this card.
     author_inits_input = self._get(self._author_inits_input)
     author_inits_input.send_keys(author_data['initials'])
     add_author_add_btn = self._get(self._add_author_add_btn)
-    add_author_add_btn.click()
+    self.click_covered_element(add_author_add_btn)
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
+      time.sleep(.5)
       self.click_completion_button()
       time.sleep(2)
       try:

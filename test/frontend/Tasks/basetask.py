@@ -37,10 +37,20 @@ class BaseTask(AuthenticatedPage):
   # Common actions for all tasks
   def click_completion_button(self):
     """Click completed button"""
+    #self._get(self._completion_button).send_keys(Keys.SPACE)
     try:
+      print 1
       self._get(self._completion_button).click()
+      print 2
     except WebDriverException:
-      self._get(self._completion_button).send_keys(Keys.SPACE)
+      print 3
+      #import pdb; pdb.set_trace()
+      time.sleep(3)
+      #import pdb
+      #pdb.post_mortem(self._get(self._completion_button).send_keys(Keys.SPACE))
+      self.click_covered_element(self._get(self._completion_button))
+      #self._get(self._completion_button).send_keys(Keys.SPACE)
+      print 4
 
   def completed_state(self):
     """Returns the selected state of the task completed button as a boolean"""

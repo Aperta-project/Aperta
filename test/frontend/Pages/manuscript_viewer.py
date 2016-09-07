@@ -194,7 +194,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: Int with journal_id
     """
     paper_id = self.get_paper_id_from_url()
-    print paper_id
+    logging.info(paper_id)
     journal_id = PgSQL().query('SELECT papers.journal_id '
                                'FROM papers '
                                'WHERE id = %s;', (paper_id,))[0][0]
@@ -574,16 +574,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Billing':
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
-      # complete_billing task
+      time.sleep(2)
+      tasks = self._gets(self._task_headings)
       self.click_covered_element(task)
-      """
-      if not base_task.completed_state():
-        base_task.click_completion_button()
-        manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
-        self._actions.move_to_element(manuscript_id_text).perform()
-        task.click()
-      """
-      time.sleep(1)
+      time.sleep(2)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()

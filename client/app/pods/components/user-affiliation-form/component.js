@@ -2,34 +2,61 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin,{
-  countries: Ember.inject.service(),
+
+  affiliation: null,
+  countries: null,
+  editAffiliation: false,
+
+
   today: new Date(),
 
-  _fetchCountries: Ember.on('init', function() {
-    this.get('countries').fetch();
-  }),
+  select2Helper: function(item) {
+    return { id: item, text: item };
+  },
 
   formattedCountries: Ember.computed('countries.data', function() {
-    return this.get('countries.data').map(function(c) {
-      return { id: c, text: c };
-    });
+    return this.get('countries.data').map(this.select2Helper);
+  }),
+
+  selectedCountry: Ember.computed('affiliation.country',function(){
+    if (!this.get('affiliation.country')) { return null; }
+    return this.select2Helper(this.get('affiliation.country'));
+  }),
+
+  institution: Ember.computed('affiliation.name', 'affiliation.ringgoldId', function() {
+    if (!this.get('affiliation.name')){ return null; }
+
+    return {
+      name: this.get('affiliation.name'),
+      'institution-id': this.get('affiliation.ringgoldId')
+    };
   }),
 
   actions:{
+    editAffiliation(affiliation) {
+      this.set('editAffiliation', true);
+    },
+
     institutionSelected(institution) {
-      this.set('newAffiliation.name', institution.name);
-      this.set('newAffiliation.ringgoldId', institution['institution-id']);
+      this.set('affiliation.name', institution.name);
+      this.set('affiliation.ringgoldId', institution['institution-id']);
     },
 
     countrySelected(country) {
-      this.set('newAffiliation.country', country.text);
+      this.set('affiliation.country', country.text);
     },
+
+    removeAffiliation(affiliation){
+      this.sendAction('removeAffiliation', affiliation);
+    },
+
     commitAffiliation(affiliation) {
-      console.log('committing affiliation');
+      this.set('editAffiliation', false);
       this.sendAction('commitAffiliation', affiliation);
     },
+
     hideNewAffiliationForm() {
-      console.log('hiding affiliation');
+      this.set('editAffiliation', false);
       this.sendAction('hideNewAffiliationForm');
     }
   }

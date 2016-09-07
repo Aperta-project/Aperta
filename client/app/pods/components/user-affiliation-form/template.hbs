@@ -1,56 +1,104 @@
+{{#unless editAffiliation}}
 
-{{institution-search
-  class="affiliation-field-institution"
-  institutionSelected="institutionSelected"
-  placeholder="Institution"}}
-{{error-message message=validationErrors.name}}
+  <div class="affiliation-existing">
+    <div class="profile-affiliation-name">{{affiliation.name}}
+      <span class="action-icons">
+        <span class="fa fa-trash" {{action "removeAffiliation" affiliation}}></span>
+        <span class="fa fa-pencil" {{action "editAffiliation" affiliation}}></span>
+      </span>
+    </div>
+    <div>
+      <div>
+        {{affiliation.department}}
+      </div>
 
-{{input type="text"
-        value=newAffiliation.department
-        placeholder="Department"
-        class="affiliation-field form-control"}}
+      <div>
+        {{affiliation.title}}
+      </div>
+      <div>
+        {{affiliation.country}}
+      </div>
+        {{#if affiliation.startDate }}
+          {{format-date affiliation.startDate format="ll"}} -
+          {{#if affiliation.isCurrent}}
+            Present
+          {{else}}
+            {{format-date affiliation.endDate format="ll"}}
+          {{/if}}
+        {{/if}}
+    </div>
+    <div>{{affiliation.email}}</div>
+  </div>
 
-{{input type="text"
-        value=newAffiliation.title
-        placeholder="Title"
-        class="affiliation-field form-control"}}
+{{else}}
+  <div class="affiliations-form animation-fade-in">
 
-{{#if countries.loaded}}
-  {{select-2-single class="affiliation-field"
-                    placeholder="Country"
-                    source=formattedCountries
-                    selectionSelected="countrySelected"}}
-{{/if}}
-{{#if countries.loading}}
-  {{progress-spinner visible=true size="mini"}}
-  Loading countries
-{{/if}}
-{{#if countries.error}}
-  <i class="fa fa-exclamation-triangle"></i>
-  Error loading countries
-{{/if}}
+    {{#if affiliation.isNew}}
+      <h3>New Affiliation</h3>
+      <p>Enter most recent affiliations first</p>
+    {{else}}
+      <h3>Edit Affiliation</h3>
+    {{/if}}
 
-<div class="form-group">
-  {{#date-picker-group as |group|}}
-    {{date-picker group=group
-                  type="text"
-                  role="startPicker"
-                  date=newAffiliation.startDate
-                  endDate=today
-                  placeholder="Start Date"}}
 
-    {{date-picker group=group
-                  type="text"
-                  role="endPicker"
-                  date=newAffiliation.endDate
-                  placeholder="End Date"}}
-  {{/date-picker-group}}
+    {{institution-search
+      class="affiliation-field-institution"
+      institutionSelected="institutionSelected"
+      placeholder="Institution"
+      value=institution
+    }}
+    {{error-message message=validationErrors.name}}
 
-  {{input type="text"
-          value=newAffiliation.email
-          placeholder="Email Address"
-          class="affiliation-field form-control"}}
-</div>
+    {{input type="text"
+            value=affiliation.department
+            placeholder="Department"
+            class="affiliation-field form-control"}}
 
-<button class="button-secondary button--green" {{action "commitAffiliation" newAffiliation}}>done</button>
-<a class="button-link author-cancel" {{action "hideNewAffiliationForm"}}>cancel</a>
+    {{input type="text"
+            value=affiliation.title
+            placeholder="Title"
+            class="affiliation-field form-control"}}
+
+    {{#if countries.loaded}}
+      <h1>country: {{country.text}}/id: {{country.id}}</h1>
+      {{select-2-single class="affiliation-field"
+                        placeholder="Country"
+                        source=formattedCountries
+                        selectedData=selectedCountry
+                        selectionSelected="countrySelected"}}
+    {{/if}}
+    {{#if countries.loading}}
+      {{progress-spinner visible=true size="mini"}}
+      Loading countries
+    {{/if}}
+    {{#if countries.error}}
+      <i class="fa fa-exclamation-triangle"></i>
+      Error loading countries
+    {{/if}}
+
+    <div class="form-group">
+      {{#date-picker-group as |group|}}
+        {{date-picker group=group
+                      type="text"
+                      role="startPicker"
+                      date=affiliation.startDate
+                      endDate=today
+                      placeholder="Start Date"}}
+
+        {{date-picker group=group
+                      type="text"
+                      role="endPicker"
+                      date=affiliation.endDate
+                      placeholder="End Date"}}
+      {{/date-picker-group}}
+
+      {{input type="text"
+              value=affiliation.email
+              placeholder="Email Address"
+              class="affiliation-field form-control"}}
+    </div>
+
+    <button class="button-secondary button--green" {{action "commitAffiliation" affiliation}}>done</button>
+    <a class="button-link author-cancel" {{action "hideNewAffiliationForm"}}>cancel</a>
+  </div>
+{{/unless}}

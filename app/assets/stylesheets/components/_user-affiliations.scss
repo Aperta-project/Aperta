@@ -15,6 +15,13 @@
 
   h2 { @include ellipsis; }
 
+  .action-icons {
+    margin-left: .25em;
+    &>span {
+      margin: 0 .12em
+    }
+  }
+
   .affiliation-remove {
     position: absolute;
     top: 2px;

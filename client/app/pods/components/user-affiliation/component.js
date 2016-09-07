@@ -8,11 +8,16 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
 
   restless: Ember.inject.service(),
   store: Ember.inject.service(),
+  countries: Ember.inject.service(),
 
   showAffiliationForm: false,
   affiliations: Ember.computed(function() { return []; }),
 
   newAffiliation: null,
+
+  _fetchCountries: Ember.on('init', function() {
+    this.get('countries').fetch();
+  }),
 
   didInsertElement() {
     this._super(...arguments);
@@ -55,10 +60,10 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
         user.get('affiliations').addObject(affiliation);
         this.clearAllValidationErrors();
-
+        var isNew = affiliation.get('isNew')
         affiliation.save().then(() => {
           this.send('hideNewAffiliationForm');
-          this.get('affiliations').pushObject(affiliation);
+          if (isNew) { this.get('affiliations').pushObject(affiliation); }
         }, (response) => {
           affiliation.set('user', null);
           this.displayValidationErrorsFromResponse(response);

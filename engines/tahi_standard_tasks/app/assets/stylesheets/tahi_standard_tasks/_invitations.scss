@@ -244,11 +244,11 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item-action.invitation-item-action--disabled {
   cursor: default;
-  color: $tahi-grey-xlight;
+  color: $tahi-grey-lighter;
 
-  &:hover { color: $tahi-grey-xlight; }
+  &:hover { color: $tahi-grey-lighter; }
 
-  .fa { color: $tahi-grey-xlight; }
+  .fa { color: $tahi-grey-lighter; }
 }
 
 .invitation-item--closed {

@@ -32,6 +32,10 @@ export default Component.extend({
     return 'invitation-state--' + this.get('invitation.state');
   }),
 
+  sendButtonClass: computed('sendDisabled', function() {
+    return this.get('sendDisabled') ? 'invitation-item-action--disabled' : '';
+  }),
+
   invitee: reads('invitation.invitee'),
   invitationBodyStateBeforeEdit: null,
 
@@ -123,6 +127,7 @@ export default Component.extend({
     },
 
     sendInvitation(invitation) {
+      if(this.get('sendDisabled')) { return; }
       invitation.send();
     }
   }

@@ -1,6 +1,6 @@
 {{#unless (eq uiState "edit")}}
-  <div class="invitation-item-header">
-    <div class="invitation-item-full-name" {{action "toggleDetails"}}>
+  <div class="invitation-item-header" {{action "toggleDetails"}}>
+    <div class="invitation-item-full-name">
       {{#if alternate}}
         <i class="fa fa-link alternate-link-icon"i aria-hidden="true"></i>
       {{/if}}
@@ -16,19 +16,21 @@
         <span>{{capitalize invitation.state}} {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
       {{/if}}
     </div>
-    <div class="invitation-item-body-preview" {{action "toggleDetails"}}>
+    <div class="invitation-item-body-preview">
       {{strip-html invitation.body}}
     </div>
     <div class="invitation-item-actions">
       {{#if displayEditButton}}
-        <span class="invitation-item-action invitation-item-action-edit" {{action "editInvitation" invitation}}>
+        <span class="invitation-item-action invitation-item-action-edit"
+{{action "editInvitation" invitation bubbles=false}}>
           <span class="fa fa-pencil invite-edit"></span>
           <span class="invitation-item-action-text">Edit</span>
         </span>
       {{/if}}
       {{#if displayDestroyButton}}
-        <span class="invitation-item-action invitation-item-action-delete" {{action "destroyInvitation" invitation}}>
-          <span class="fa fa-trash invite-remove"></span>
+        <span class="invitation-item-action invitation-item-action-delete"
+{{action "destroyInvitation" invitation bubbles=false}}>
+          <span class="fa fa-trash invite-remove" ></span>
           <span class="invitation-item-action-text">Delete</span>
         </span>
       {{/if}}
@@ -39,17 +41,11 @@
         </span>
       {{/if}}
       {{#if displaySendButton}}
-        {{#if sendDisabled}}
-          <span class="invitation-item-action invitation-item-action-send invitation-item-action--disabled">
-            <span class="fa fa-send invite-send"></span>
-            <span class="invitation-item-action-text">Send</span>
-          </span>
-        {{else}}
-          <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
-            <span class="fa fa-send invite-send"></span>
-            <span class="invitation-item-action-text">Send</span>
-          </span>
-        {{/if}}
+        <span class="invitation-item-action invitation-item-action-send {{sendButtonClass}}"
+{{action "sendInvitation" invitation bubbles=false}}>
+          <span class="fa fa-send invite-send"></span>
+          <span class="invitation-item-action-text">Send</span>
+        </span>
       {{/if}}
     </div>
   </div>

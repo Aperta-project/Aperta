@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Decisions can be rescinded
 - Heroku deploys are quicker now with a single line command
 - Add permission to view decisions
+- Keeps all uploaded manuscripts
 ### Changed
 - Upgrade to ruby 2.2.4
 ### Deprecated

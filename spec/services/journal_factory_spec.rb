@@ -115,7 +115,8 @@ describe JournalFactory do
                 Permission.joins(:states).where(
                   action: 'edit',
                   applies_to: klass.name,
-                  permission_states: { name: Paper::EDITABLE_STATES }).first
+                  permission_states: { name: Paper::EDITABLE_STATES }
+                ).first
               )
             end
 
@@ -125,7 +126,8 @@ describe JournalFactory do
                 Permission.joins(:states).where(
                   action: 'edit',
                   applies_to: klass.name,
-                  permission_states: { name: Paper::EDITABLE_STATES }).first
+                  permission_states: { name: Paper::EDITABLE_STATES }
+                ).first
               )
             end
           end
@@ -296,7 +298,8 @@ describe JournalFactory do
           it ':edit TitleAndAbstractTask regardless of paper state' do
             expect(permissions).to include(
               Permission.find_by(action: 'edit',
-                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask'))
+                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask')
+            )
           end
         end
 
@@ -472,7 +475,8 @@ describe JournalFactory do
           it ':edit TitleAndAbstractTask regardless of paper state' do
             expect(permissions).to include(
               Permission.find_by(action: 'edit',
-                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask'))
+                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask')
+            )
           end
         end
 
@@ -725,13 +729,10 @@ describe JournalFactory do
         end
 
         describe 'permission to PlosBilling::BillingTask' do
-          it ':view and :edit' do
-            expect(permissions).to include(
+          it 'cannot :view or :edit' do
+            expect(permissions).to_not include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.joins(:states).where(
-                action: 'edit',
-                applies_to: 'PlosBilling::BillingTask',
-                permission_states: { id: PermissionState.wildcard }).first
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -843,14 +844,10 @@ describe JournalFactory do
         end
 
         describe 'permission to PlosBilling::BillingTask' do
-          it ':view and :edit' do
-            expect(permissions).to include(
+          it 'cannot :view or :edit' do
+            expect(permissions).to_not include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.joins(:states).where(
-                action: 'edit',
-                applies_to: 'PlosBilling::BillingTask',
-                permission_states: { id: PermissionState.wildcard }
-              ).first
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -1039,14 +1036,23 @@ describe JournalFactory do
         end
 
         describe 'permission to PlosBilling::BillingTask' do
-          it ':view and :edit' do
+          it 'cannot :view or :edit' do
+            expect(permissions).to_not include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+            )
+          end
+        end
+      end
+
+      context 'Billing staff' do
+        let(:permissions) { journal.billing_role.permissions }
+
+        describe 'permission to PlosBilling::BillingTask' do
+          it 'can :view and :edit' do
             expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.joins(:states).where(
-                action: 'edit',
-                applies_to: 'PlosBilling::BillingTask',
-                permission_states: { id: PermissionState.wildcard }
-              ).first
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end

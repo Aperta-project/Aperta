@@ -9,7 +9,8 @@ feature 'Invite Academic Editor', js: true do
   let(:paper) do
     FactoryGirl.create(
       :paper, :submitted_lite,
-      :with_integration_journal, creator: creator)
+      :with_integration_journal, creator: creator
+    )
   end
   let!(:task) do
     FactoryGirl.create(:paper_editor_task, paper: paper)
@@ -61,7 +62,6 @@ feature 'Invite Academic Editor', js: true do
     overlay = InviteEditorOverlay.new
     overlay.create_invite_for(editor1, send_now: false)
     ActiveInvitation.for_user(editor1) do |invite|
-      invite.show_details
       invite.edit
       invite.upload_attachment('yeti.jpg')
     end

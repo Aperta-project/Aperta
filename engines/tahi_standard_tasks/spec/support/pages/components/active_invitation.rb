@@ -10,7 +10,7 @@ class ActiveInvitation < PageFragment
     yield with_header(user.full_name)
   end
 
-  def show_details
+  def toggle_details
     find('.invitation-item-full-name').click
   end
 

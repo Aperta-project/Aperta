@@ -146,15 +146,18 @@ export default Ember.Component.extend({
 
     this.get('restless').get(url, data).then((response) => {
       let results = this.get('parseResponseFunction')(response);
+      if (!this.get('resultText')) { return; }
       this.set('searchResults',  results);
-      this.decrementProperty('searching');
-    },
-    () => {
+    }).finally(() => {
       this.decrementProperty('searching');
     });
   },
 
   _resultTextChanged: Ember.observer('resultText', function() {
+    if (!this.get('resultText')) {
+      this.set('searchResults', null);
+    }
+
     if(this.get('searchAllowed')) {
       Ember.run.debounce(this, this.search, this.get('debounce'));
     }

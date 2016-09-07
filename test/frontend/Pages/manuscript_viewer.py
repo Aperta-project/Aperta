@@ -684,15 +684,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def close_infobox(self):
     """Close the infobox element, if present"""
     # Note due to APERTA-7210 the closer element is present but is z-ordered underneath
-    # another element and thus not visible or clickable at present.
+    # another element and thus not visible or click-able at present.
     time.sleep(1)
     try:
       infobox_closer = self._get(self._infobox_closer)
     except ElementDoesNotExistAssertionError:
       logging.info('No Initial Decision infobox shown yet, skipping close of infobox.')
       return
-    infobox_closer.click()
+    # self.scroll_element_into_view_below_toolbar(infobox_closer)
     time.sleep(1)
+    infobox_closer.click()
 
   def get_paper_doi_part(self):
     """

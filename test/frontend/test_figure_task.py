@@ -93,7 +93,7 @@ class FigureTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # APERTA-7210
-    # manuscript_page.close_infobox()
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -152,11 +152,11 @@ class FigureTaskTest(CommonTest):
     #   the completion button.
     time.sleep(5)
     figures_task.check_question()
-    figures_list = figures_task.upload_figure()
+    figures_list = figures_task.upload_figure('figure1_tiff_lzw.tiff')
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 22s
     time.sleep(25)
-    figures_list = figures_task.replace_figure(figures_list)
+    figures_list = figures_task.replace_figure('figure2_tiff_lzw.tiff')
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)
     time.sleep(5)

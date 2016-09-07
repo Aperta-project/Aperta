@@ -19820,7 +19820,6 @@ versioned_texts:
   - text
   - created_at
   - updated_at
-  - source
   - original_text
   records: 
   - - '1'
@@ -19923,7 +19922,6 @@ versioned_texts:
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="1" data-figure-rank="" src="/resource_proxy/figures/4JRhTr616NQ4JW3AnmutrWPX/detail">
     - '2015-10-29 20:16:37.381749'
     - '2016-08-12 16:47:34.954268'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20118,7 +20116,6 @@ versioned_texts:
             <img class="paper-body-figure" data-figure-id="3" data-figure-rank="" src="/resource_proxy/figures/7n1aAGioTqC1ApA8Ld2eYkbu/detail">
     - '2015-10-30 19:43:28.478909'
     - '2016-08-12 16:47:34.977993'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20313,7 +20310,6 @@ versioned_texts:
             <img class="paper-body-figure" data-figure-id="5" data-figure-rank="" src="/resource_proxy/figures/ajxQpM7BWyqje3rdUEjtpMTb/detail">
     - '2015-11-02 14:04:02.881043'
     - '2016-08-12 16:47:34.982977'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20508,7 +20504,6 @@ versioned_texts:
             <img class="paper-body-figure" data-figure-id="7" data-figure-rank="" src="/resource_proxy/figures/2vM873Fqxyfm22GtB5VDqEND/detail">
     - '2015-11-02 14:46:23.785261'
     - '2016-03-07 19:17:18.021178'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20702,7 +20697,6 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-03 22:59:20.951303'
     - '2016-08-12 16:47:34.987398'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -20896,7 +20890,6 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-03 23:02:06.811068'
     - '2016-08-12 16:47:34.990027'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -21090,7 +21083,6 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-10 22:27:27.140473'
     - '2016-08-12 16:47:34.992717'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
@@ -21255,7 +21247,6 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:43:34.658877'
     - '2016-04-12 18:55:56.956915'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -21388,7 +21379,6 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 18:57:25.902462'
     - '2016-04-12 19:00:19.837324'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -21521,7 +21511,6 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:00:39.194254'
     - '2016-04-12 19:02:46.35803'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -21654,7 +21643,6 @@ versioned_texts:
             <p class="paper-body-figure-caption">Figure 2.</p>
     - '2016-04-12 19:03:39.925701'
     - '2016-04-12 19:05:53.747659'
-    - 
     - |-
       <!--TEI front--><!--TEI body--><p class="Body A">
         <span style="font-weight:bold">Diffable Paper: </span>
@@ -21990,7 +21978,6 @@ versioned_texts:
       back-->      \n      \n"
     - '2016-06-02 13:43:23.183174'
     - '2016-08-12 16:47:35.001828'
-    - 
     - |
       <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
       <h2><span class="head">NON-RESEARCH PAPER for Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>

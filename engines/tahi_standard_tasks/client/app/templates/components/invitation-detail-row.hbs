@@ -54,7 +54,11 @@
 {{#if (eq uiState "edit")}}
   <div class="invitation-item-header">
     <div class="invitation-item-full-name">
-      <b>Edit invitation to: </b>
+     {{#unless (eq invitation composedInvitation)}}
+      <b>
+        Edit invitation to:
+      </b>
+     {{/unless}}
       {{#if invitee}}
         {{invitee.fullName}}
         &lt;{{invitation.email}}&gt;
@@ -101,7 +105,9 @@
       {{/if}}
        <div class="spacer"></div>
        <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
-       <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
+       <button class="button-secondary button--green invitation-save-button"
+{{action "save" invitation}}>{{if (eq invitation composedInvitation) "Add to
+Queue" "Save"}}</button>
     </div>
   </div>
 {{/if}}

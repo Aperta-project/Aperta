@@ -179,10 +179,33 @@ describe Paper do
   end
 
   describe "#body=" do
+    let(:version) { paper.latest_version }
+    let(:old_body) { Faker::Lorem.paragraph }
+    let(:new_body) { Faker::Lorem.paragraph }
+
     it "can set body on creation" do
       paper_new = FactoryGirl.create :paper, body: 'foo'
       expect(paper_new.body).to eq('foo')
       expect(paper_new.latest_version.text).to eq('foo')
+    end
+
+    context 'when the paper is submitted' do
+      subject(:paper) { create :paper, :submitted_lite, body: old_body }
+
+      it "sets the body on the latest_version" do
+        expect(paper.draft).to be_nil
+        expect { paper.update!(body: new_body) }.to change { version.reload.original_text }.from(old_body).to(new_body)
+      end
+    end
+
+    context 'when the paper is not submitted' do
+      subject(:paper) { create :paper, body: old_body }
+
+      it "sets the body on the latest_version" do
+        expect(paper.draft).to be_present
+        expect(paper.draft).to eq(paper.latest_version)
+        expect { paper.update!(body: new_body) }.to change { version.reload.original_text }.from(old_body).to(new_body)
+      end
     end
 
     it "can use body= before save" do

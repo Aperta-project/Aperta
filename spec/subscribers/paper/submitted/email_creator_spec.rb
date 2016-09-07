@@ -47,5 +47,15 @@ describe Paper::Submitted::EmailCreator do
       expect(mailer).to receive(:notify_creator_of_paper_submission).with(paper.id)
       described_class.call("tahi:paper:submitted", record: paper)
     end
+
+    it "does not send an email when the last decision was rescinded" do
+      allow(paper).to receive(:latest_decision_rescinded?).and_return(true)
+
+      expect(mailer).to_not receive(:notify_creator_of_paper_submission)
+      expect(mailer).to_not receive(:notify_creator_of_initial_submission)
+      expect(mailer).to_not receive(:notify_creator_of_revision_submission)
+      expect(mailer).to_not receive(:notify_creator_of_check_submission)
+      described_class.call("tahi:paper:submitted", record: paper)
+    end
   end
 end

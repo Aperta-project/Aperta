@@ -525,6 +525,11 @@ class Paper < ActiveRecord::Base
     versioned_texts.completed.version_desc.first
   end
 
+  def latest_decision_rescinded?
+    return false unless last_completed_decision
+    last_completed_decision.rescinded
+  end
+
   def new_draft!
     latest_version.new_draft! unless draft
   end

@@ -425,9 +425,22 @@ class JournalAdminPage(AdminPage):
     # Time to clear the overlay
     time.sleep(2)
 
-  def add_new_mmt_template(self):
+  def add_new_mmt_template(self, commit=False, mmt_name='', user_tasks=('upload_manuscript'),
+                           staff_tasks=('assign_team', 'editor_discussion', 'final_tech_check',
+                                        'initial_tech_check', 'invite_academic_editor',
+                                        'invite_reviewers', 'production_metadata',
+                                        'register_decision', 'related_articles',
+                                        'revision_tech_check', 'send_to_apex',
+                                        'title_and_abstract'), uses_research_reviewer_report=True):
     """
     A function to add a new mmt (paper type) template to a journal
+    :param commit: boolean, whether to commit the named mmt to the journal, defaults to False.
+      All other params are ignored if False
+    :param mmt_name: optional name for the new mmt
+    :param user_tasks: list of user facing tasks to add to the mmt
+    :param staff_tasks: list of staff facing tasks to add to the mmt
+    :param uses_research_reviewer_report: boolean, default true, specifies mmt type as research for
+      the purposes of reviewer report selection
     :return: void function
     """
     logging.info('Add New Template called')
@@ -440,27 +453,32 @@ class JournalAdminPage(AdminPage):
     template_field = self._get(self._mmt_template_name_field)
     save_template_button = self._get(self._mmt_template_save_button)
     template_field.click()
-    template_field.send_keys(Keys.ARROW_DOWN + '<-False')
-    time.sleep(1)
-    # If this mmt template already exists, this save should return an error and the name link won't exist
-    save_template_button.click()
-    time.sleep(1)
-    self.set_timeout(2)
-    try:
-      logging.info('The following message will only be found if there is a particular data state, it is not an error.')
-      msg = self._get(self._mmt_template_error_msg)
-    except ElementDoesNotExistAssertionError:
-      self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
-      self._get(self._mmt_template_name_link)
-      self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
-      back_btn = self._get(self._journal_admin_manu_mgr_back_link)
-      back_btn.click()
-      self.restore_timeout()
-      return
-    assert 'Has already been taken' in msg.text, msg.text
-    cancel = self._get(self._mmt_template_cancel_link)
-    cancel.click()
-    time.sleep(1)
+    if not commit:
+      template_field.send_keys(Keys.ARROW_DOWN + '<-False')
+      time.sleep(1)
+      # If this mmt template already exists, this save should return an error and the name link won't exist
+      save_template_button.click()
+      time.sleep(1)
+      self.set_timeout(2)
+      try:
+        logging.info('The following message will only be found if there is a particular data state, it is not an error.')
+        msg = self._get(self._mmt_template_error_msg)
+      except ElementDoesNotExistAssertionError:
+        self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
+        self._get(self._mmt_template_name_link)
+        self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
+        back_btn = self._get(self._journal_admin_manu_mgr_back_link)
+        back_btn.click()
+        self.restore_timeout()
+        return
+      assert 'Has already been taken' in msg.text, msg.text
+      cancel = self._get(self._mmt_template_cancel_link)
+      cancel.click()
+      time.sleep(1)
+    else:
+      template_field.send_keys(Keys.ARROW_UP + (Keys.DELETE * 8) + mmt_name)
+
+
 
   def delete_new_mmt_template(self):
     """

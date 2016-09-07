@@ -38,7 +38,7 @@ export default DS.Model.extend({
     }),
 
   hasDiff(otherSnapshot) {
-    if (typeof(otherSnapshot) === 'undefined') {
+    if (!otherSnapshot) {
       return true;
     }
 

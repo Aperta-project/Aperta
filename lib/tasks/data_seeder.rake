@@ -7,6 +7,25 @@ require 'fileutils'
 load 'lib/ext/yaml_db.rb' # Only load the patch when running a data:dump or data:load rake task
 
 namespace :data do
+  desc <<-DESC.strip_heredoc
+    Loads a minimal set of data for starting a production instance of Aperta. Note: This clears existing DB data.
+    This loads a single journal (with no papers) with all of the necessary application
+    data – e.g. roles, permissions, task types, questions, etc – to run the Aperta application.
+
+    Warning: this will clear any existing data in the DB.
+  DESC
+  task seed_production_instance: :environment do
+    Rake::Task['db:schema:load'].invoke
+    Journal.first_or_create!(name: 'PLOS Biology', logo: '', doi_publisher_prefix: "10.1371", doi_journal_prefix: "pbio", last_doi_issued: "0000001")
+
+    Rake::Task['roles-and-permissions:seed'].invoke
+    Rake::Task['data:update_journal_task_types'].invoke
+    Rake::Task['journal:create_default_templates'].invoke
+    Rake::Task['nested-questions:seed'].invoke
+
+    puts 'Tahi Production Seeds have been loaded successfully'
+  end
+
   namespace :dump do
     desc "Dump the current environment into a particular yaml file"
     task :scenario, [:scenario_name] => [:environment] do |t, args|

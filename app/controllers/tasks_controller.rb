@@ -74,8 +74,8 @@ class TasksController < ApplicationController
   private
 
   def paper
-    paper_id = params[:paper_id] || (params[:task] && params[:task][:paper_id])
-    paper_id = Task.find(params[:id] || params[:task_id]) unless paper_id.present?
+    paper_id = params[:paper_id] || params.dig(:task, :paper_id)
+    paper_id ||= Task.find(params[:id] || params[:task_id]).paper.id
     @paper ||= Paper.find(paper_id)
   end
 

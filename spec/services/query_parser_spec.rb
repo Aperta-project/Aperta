@@ -247,7 +247,7 @@ describe QueryParser do
     end
 
     describe 'submission time queries' do
-      it 'parses VERSION DATE > DAYS AGO' do
+      it 'parses VERSION DATE > n DAYS AGO' do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
@@ -258,7 +258,7 @@ describe QueryParser do
         end
       end
 
-      it 'parses VERSION DATE < DAYS AGO' do
+      it 'parses VERSION DATE < n DAYS AGO' do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
@@ -269,27 +269,55 @@ describe QueryParser do
         end
       end
 
-      it 'parses SUBMISSION DATE > mm/dd/yy' do
-        Timecop.freeze do |now|
-          search_date = now.days_ago(3).strftime("%m/%d/%Y")
-          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+      describe 'parses SUBMISSION DATE > date' do
+        it 'when date is in mm/dd/yy format' do
+          Timecop.freeze do |now|
+            search_date = now.days_ago(3).strftime("%m/%d/%Y")
+            search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
-          parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."first_submitted_at" >= '#{search_date_db}'
-          SQL
+            parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" >= '#{search_date_db}'
+            SQL
+          end
+        end
+
+        it 'when date is in yyyy-mm-dd format' do
+          Timecop.freeze do |now|
+            search_date = now.days_ago(3).strftime("%Y-%m-%d")
+            search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+
+            parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" >= '#{search_date_db}'
+            SQL
+          end
         end
       end
 
-      it 'parses SUBMISSION DATE < mm/dd/yy' do
-        Timecop.freeze do |now|
-          search_date = now.days_ago(3).strftime("%m/%d/%Y")
-          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+      describe 'parses SUBMISSION DATE < date' do
+        it 'when date is in mm/dd/yy format' do
+          Timecop.freeze do |now|
+            search_date = now.days_ago(3).strftime("%m/%d/%Y")
+            search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
 
-          parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."first_submitted_at" < '#{search_date_db}'
-          SQL
+            parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" < '#{search_date_db}'
+            SQL
+          end
+        end
+
+        it 'when date is in yyyy-mm-dd format' do
+          Timecop.freeze do |now|
+            search_date = now.days_ago(3).strftime("%Y-%m-%d")
+            search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+
+            parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" < '#{search_date_db}'
+            SQL
+          end
         end
       end
     end

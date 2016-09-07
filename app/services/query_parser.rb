@@ -150,22 +150,22 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('VERSION DATE >') do |days_ago|
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).beginning_of_day
+    start_time = Chronic.parse("#{days_ago.to_i} days ago").beginning_of_day
     paper_table[:submitted_at].lt(start_time.to_formatted_s(:db))
   end
 
   add_simple_expression('VERSION DATE <') do |days_ago|
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).beginning_of_day
+    start_time = Chronic.parse("#{days_ago.to_i} days ago").beginning_of_day
     paper_table[:submitted_at].gteq(start_time.to_formatted_s(:db))
   end
 
   add_simple_expression('SUBMISSION DATE <') do |start_date|
-    query_date = Date.parse(start_date).beginning_of_day
+    query_date = Chronic.parse(start_date).beginning_of_day
     paper_table[:first_submitted_at].lt(query_date.to_formatted_s(:db))
   end
 
   add_simple_expression('SUBMISSION DATE >') do |start_date|
-    query_date = Date.parse(start_date).beginning_of_day
+    query_date = Chronic.parse(start_date).beginning_of_day
     paper_table[:first_submitted_at].gteq(query_date.to_formatted_s(:db))
   end
 

@@ -13,12 +13,12 @@ test('strips html - complex case', function(assert) {
   assert.equal(result, 'Testing a more complex case is smart', 'strips HTML');
 });
 
-test('returns emptry string when given undefined value', function(assert) {
+test('returns empty string when given undefined value', function(assert) {
   let result = stripHtml(undefined);
   assert.equal(result, '', 'empty string when given undefined');
 });
 
-test('returns emptry string when given null value', function(assert) {
+test('returns empty string when given null value', function(assert) {
   let result = stripHtml(null);
   assert.equal(result, '', 'empty string when given null');
 });

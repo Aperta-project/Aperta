@@ -44,7 +44,7 @@ class MoveCarrierWaveCacheDirectory < ActiveRecord::Migration
         if [ $file_count -gt 0 ] ; then
           mv $OLD_UPLOADS_TMP_DIRECTORY/* /var/www/tahi/current/public/uploads/tmp/carrierwave/
         else
-          echo "There are no files in $OLD_UPLOADS_TMP_DIRECTORY/tmp/. Nothing to do. Skipping."
+          echo "There are no files in $OLD_UPLOADS_TMP_DIRECTORY/. Nothing to do. Skipping."
         fi
       else
         echo "Not on a system with /var/www/tahi. This migration is a no-op. Skipping."

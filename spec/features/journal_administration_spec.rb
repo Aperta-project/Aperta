@@ -65,4 +65,36 @@ feature "Journal Administration", js: true do
       end
     end
   end
+
+  describe 'roles' do
+    let!(:editor) do
+      FactoryGirl.create(:user).tap do |editor|
+        editor.assignments.create!(
+          assigned_to: journal,
+          role: journal.internal_editor_role
+        )
+      end
+    end
+
+    let!(:asignee) do
+      FactoryGirl.create(:user)
+    end
+
+    before do
+      admin_page.visit_journal(journal)
+    end
+
+    scenario 'add a role to a user' do
+      find('.admin-user-search-input').send_keys(asignee.last_name, :return)
+      find('.assign-role-button').click
+      find('.select2-focused').send_keys('publish', :return)
+      expect(page).to have_content('Publishing Services')
+    end
+
+    scenario 'remove a role from a user' do
+      find('.select2-container').click
+      find('.select2-search-choice-close').click
+      expect(page).to_not have_css('.select2-search-choice-close')
+    end
+  end
 end

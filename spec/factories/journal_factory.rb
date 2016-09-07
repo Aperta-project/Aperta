@@ -17,6 +17,7 @@ FactoryGirl.define do
     trait(:with_roles_and_permissions) do
       after(:create) do |journal|
         JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+        journal.roles.where(name: Role::JOURNAL_ROLES).update_all(assigned_to_type_hint: "Journal")
       end
     end
 
@@ -40,7 +41,8 @@ FactoryGirl.define do
           FactoryGirl.create(:assignment,
                              role: journal.send("#{role}_role".to_sym),
                              user: FactoryGirl.build(:user),
-                             assigned_to: journal)
+                             assigned_to: journal
+                            )
         end
       end
     end

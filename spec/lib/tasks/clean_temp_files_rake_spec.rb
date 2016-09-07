@@ -11,7 +11,9 @@ describe "rake clean:temp_files" do
   end
 
   describe 'clearing out CarrierWave files' do
-    let(:temp_path){ Pathname.new(CarrierWave.root).join('uploads/tmp') }
+    let(:temp_path) do
+      Pathname.new(CarrierWave.root).join('uploads/tmp/carrierwave')
+    end
 
     # Match carrierwave's temp directory pattern <time>-\d+-\d+
     # CarrierWave only looks at the first set of digits to determine the
@@ -23,7 +25,7 @@ describe "rake clean:temp_files" do
     end
 
     before do
-      FileUtils.mkdir directory
+      FileUtils.mkdir_p directory
     end
 
     after do

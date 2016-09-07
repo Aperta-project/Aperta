@@ -7,13 +7,19 @@ export default Ember.Component.extend({
     allowAttachments: PropTypes.bool
   },
 
-  classNames: ['edit-invitation'],
+  classNames: ['invitation-item', 'invitation-item--edit'],
 
   allowAttachments: false,
+  invitee: Ember.computed.reads('invitation.invitee'),
 
   actions: {
-    sendInvitation(invitation) {
-      invitation.send().then(() => {
+    save(invitation) {
+      invitation.save().then(() => {
+        this.get('closeAction')();
+      });
+    },
+    cancel(invitation) {
+      invitation.destroyRecord().then(() => {
         this.get('closeAction')();
       });
     }

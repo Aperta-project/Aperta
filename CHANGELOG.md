@@ -8,10 +8,12 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Heroku deploys are quicker now with a single line command
 - Add permission to view decisions
 - Email invitation changes can now be saved
+- Added billing role
 ### Changed
 - Upgrade to ruby 2.2.4
 ### Deprecated
 ### Removed
+- Production staff, publishing services, and staff admin can no longer view the billing card
 ### Fixed
 - New billing institutions will now be added in alphabetical order
 - Fixed race condition between creating a token, and requesting it when creating or replacing attachments.
@@ -594,3 +596,5 @@ _Changes too big to document, initial release_
 [1.1.0]: https://github.com/tahi-project/tahi/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/tahi-project/tahi/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Tahi-project/tahi/tree/v1.0.0
+
+

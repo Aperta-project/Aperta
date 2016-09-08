@@ -5,6 +5,7 @@ class Role < ActiveRecord::Base
   has_many :users, through: :assignments
 
   ACADEMIC_EDITOR_ROLE = 'Academic Editor'
+  BILLING_ROLE = 'Billing Staff'
   COLLABORATOR_ROLE = 'Collaborator'
   COVER_EDITOR_ROLE = 'Cover Editor'
   CREATOR_ROLE = 'Creator'
@@ -18,7 +19,7 @@ class Role < ActiveRecord::Base
   STAFF_ADMIN_ROLE = 'Staff Admin'
   TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'
-  REVIEWER_REPORT_OWNER_ROLE = "Reviewer Report Owner"
+  REVIEWER_REPORT_OWNER_ROLE = 'Reviewer Report Owner'
 
   # These roles (user, discussion topic, task) are automatically
   # assigned by the system

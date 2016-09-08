@@ -111,7 +111,11 @@ export default Component.extend({
       const potentialPrimary = this.get('potentialPrimary');
 
       if(potentialPrimary) {
-        invitation.set('primary', potentialPrimary);
+        if (potentialPrimary === 'cleared') {
+          invitation.set('primary', null);
+        } else {
+          invitation.set('primary', potentialPrimary);
+        }
       }
 
       invitation.save().then( ()=>{

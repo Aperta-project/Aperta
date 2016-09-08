@@ -50,6 +50,9 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    selectionCleared() {
+      this.get('primarySelected')('cleared');
+    },
     selectionSelected(selection) {
       this.get('primarySelected')(selection.id);
     }

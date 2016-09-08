@@ -5,6 +5,7 @@ import Ember from 'ember';
  *                 inputId="HTML input element id goes here"
  *                 inputName="HTML input element names goes here"
  *                 queryParameter="email"
+ *                 resultText=someBoundValue
  *                 placeholder="Search for user by email address"
  *                 parseResponseFunction=parseUserSearchResponse
  *                 itemDisplayTextFunction=something
@@ -28,6 +29,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   restless: Ember.inject.service('restless'),
   classNames: ['form-control', 'auto-suggest-border'],
+  classNameBindings: ['errorMessage:error'],
 
   // -- attrs:
 
@@ -114,13 +116,21 @@ export default Ember.Component.extend({
    *  @private
    **/
   positionNearSelector: function(){
-    return "#" + this.get('elementId');
-  }.property("elementId"),
+    return '#' + this.get('elementId');
+  }.property('elementId'),
+
+  /**
+   *  The string that's shown in the autosuggest input
+   *
+   *  @property resultText
+   *  @type String
+   *  @default null
+   **/
+  resultText: null,
 
   // -- props:
   debounce: 300,
   highlightedItem: null,
-  resultText: null,
   searchAllowed: true,
   searchResults: null,
   selectedItem: null,
@@ -136,27 +146,18 @@ export default Ember.Component.extend({
 
     this.get('restless').get(url, data).then((response) => {
       let results = this.get('parseResponseFunction')(response);
+      if (!this.get('resultText')) { return; }
       this.set('searchResults',  results);
-      this.decrementProperty('searching');
-    },
-    () => {
+    }).finally(() => {
       this.decrementProperty('searching');
     });
   },
 
-  /**
-   *  Unique documenet keyup event name for component instance.
-   *  Don't use this before the component is in the DOM
-   *
-   *  @method getKeyupEventName
-   *  @return {String}
-   *  @public
-  **/
-  getKeyupEventName() {
-    return 'keyup.autosuggest-' + this.$().id;
-  },
-
   _resultTextChanged: Ember.observer('resultText', function() {
+    if (!this.get('resultText')) {
+      this.set('searchResults', null);
+    }
+
     if(this.get('searchAllowed')) {
       Ember.run.debounce(this, this.search, this.get('debounce'));
     }
@@ -164,9 +165,30 @@ export default Ember.Component.extend({
     this.set('searchAllowed', true);
   }),
 
-  _setupKeybindings: Ember.on('didInsertElement', function() {
-    $(document).on(this.getKeyupEventName(), (event) => {
-      if (event.which === 27) {
+  selectItem(item) {
+    this.set('searchAllowed', false);
+    this.set('selectedItem', item);
+    this.sendAction('itemSelected', item);
+
+    if(this.itemDisplayTextFunction) {
+      let textForInput = this.itemDisplayTextFunction(item);
+      this.sendAction('inputChanged', textForInput);
+    }
+
+    this.set('searchResults', null);
+  },
+
+  actions: {
+    selectItem(item) {
+      this.selectItem(item);
+    },
+
+    valueChanged(e) {
+      this.sendAction('inputChanged', e.target.value);
+    },
+
+    keyUp(inputValue, event) {
+      if (event.which === 27) { // esc
         this.set('highlightedItem', null);
       }
 
@@ -181,31 +203,8 @@ export default Ember.Component.extend({
         this.set('highlightedItem', null);
         this.set('searchResults', null);
       } else {
-        this.sendAction('inputChanged', this.get('resultText'));
+        this.sendAction('inputChanged', inputValue);
       }
-    });
-  }),
-
-  _teardownKeybindings: Ember.on('willDestroyElement', function() {
-    $(document).off(this.getKeyupEventName());
-  }),
-
-  selectItem(item) {
-    this.set('searchAllowed', false);
-    this.set('selectedItem', item);
-    this.sendAction('itemSelected', item);
-
-    if(this.itemDisplayTextFunction) {
-      let textForInput = this.itemDisplayTextFunction(item);
-      this.set('resultText', textForInput);
-    }
-
-    this.set('searchResults', null);
-  },
-
-  actions: {
-    selectItem(item) {
-      this.selectItem(item);
     }
   }
 });

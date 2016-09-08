@@ -32,6 +32,8 @@ class Journal < ActiveRecord::Base
   # rubocop:disable Metrics/LineLength
   has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
           class_name: 'Role'
+  has_one :billing_role, -> { where(name: Role::BILLING_ROLE) },
+          class_name: 'Role'
   has_one :creator_role, -> { where(name: Role::CREATOR_ROLE) },
           class_name: 'Role'
   has_one :collaborator_role, -> { where(name: Role::COLLABORATOR_ROLE) },

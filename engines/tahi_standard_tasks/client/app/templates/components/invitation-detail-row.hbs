@@ -1,29 +1,106 @@
-<td>
-  <span>
-    {{user-thumbnail user=invitee classNames='invitee-thumbnail'}}
-  </span>
-</td>
-<td>
-  <span class='invitee-full-name'>
-    {{#if invitee}}
-      {{invitee.fullName}}
-    {{else}}
-      {{invitation.email}}
-    {{/if}}
-  </span>
-</td>
-<td>
-  <span class='invitation-updated-at'>
-    {{format-date invitation.updatedAt format='LLL'}}
-  </span>
-</td>
-<td>
-  <span class='invitation-state'>
-    {{invitation.state}}
-  </span>
-</td>
-<td>
-  {{#if displayDestroy}}
-    <span class='fa fa-trash invite-remove' {{action destroyAction invitation}}></span>
-  {{/if}}
-</td>
+{{#unless (eq uiState "edit")}}
+  <div class="invitation-item-header">
+    <div class="invitation-item-full-name" {{action "toggleDetails"}}>
+      {{#if invitee}}
+        {{invitee.fullName}}
+        &lt;{{invitation.email}}&gt;
+      {{else}}
+        {{invitation.email}}
+      {{/if}}
+    </div>
+    <div class="invitation-item-status" {{action "toggleDetails"}}>
+      {{#if (and (eq uiState 'closed') invitation.invited)}}
+          <span>Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
+      {{/if}}
+    </div>
+    <div class="invitation-item-body-preview" {{action "toggleDetails"}}>
+      {{strip-html invitation.body}}
+    </div>
+    <div class="invitation-item-actions">
+      {{#if displayEditButton}}
+        <span class="invitation-item-action invitation-item-action-edit" {{action "editInvitation" invitation}}>
+          <span class="fa fa-pencil invite-edit"></span>
+          <span class="invitation-item-action-text">Edit</span>
+        </span>
+      {{/if}}
+      {{#if displayDestroyButton}}
+        <span class="invitation-item-action invitation-item-action-delete" {{action "destroyInvitation" invitation}}>
+          <span class="fa fa-trash invite-remove" ></span>
+          <span class="invitation-item-action-text">Delete</span>
+        </span>
+      {{/if}}
+      {{#if displaySendButton}}
+        <span class="invitation-item-action invitation-item-action-send" {{action "sendInvitation" invitation}}>
+          <span class="fa fa-send invite-send"></span>
+          <span class="invitation-item-action-text">Send</span>
+        </span>
+      {{/if}}
+    </div>
+  </div>
+{{/unless}}
+
+{{#if (eq uiState "edit")}}
+  <div class="invitation-item-header">
+    <div class="invitation-item-full-name">
+      <b>Edit invitation to: </b>
+      {{#if invitee}}
+        {{invitee.fullName}}
+        &lt;{{invitation.email}}&gt;
+      {{else}}
+        {{invitation.email}}
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq uiState "show")}}
+  <div class="invitation-item-details">
+    <div class="invitation-item-state-and-date">
+      {{capitalize (if (eq invitation.state "pending") "draft last updated" invitation.state)}}
+      {{format-date invitation.updatedAt format="LLL"}}
+    </div>
+{{!-- Leave weird indentation --}}
+<div class="invitation-show-body">{{{invitation.body}}}</div>
+    <div class="invite-edit-buttons">
+      {{#if allowAttachments}}
+        {{invitation-attachment-manager invitation=invitation
+                                        enableEditingAttachments=false
+                                        showAddButton=false}}
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq uiState "edit")}}
+  <div class="invitation-item-details">
+    {{content-editable value=invitation.body
+                       class="invitation-edit-body"
+                       key-up=(action "saveDuringType" invitation)}}
+
+    <div class="invite-edit-buttons">
+      {{#if allowAttachments}}
+        {{invitation-attachment-manager invitation=invitation}}
+      {{/if}}
+       <div class="spacer"></div>
+       {{#if templateSaved.isRunning}}
+         <span class="invite-edit-save-message animation-fade-in">Your changes have been automatically saved.</span>
+       {{/if}}
+       <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
+       <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Save</button>
+    </div>
+  </div>
+{{/if}}
+
+{{#if (and invitation.declined closedState)}}
+  <div class="invitation-item-decline-info">
+    <div class="invitation-decline-reason">
+      <strong>Reasons: </strong>
+      {{unbound (break-to-tag invitation.declineReason)}}
+    </div>
+
+    <div class="invitation-reviewer-suggestions">
+      <strong>Reviewer Suggestions: </strong>
+      {{unbound (break-to-tag invitation.reviewerSuggestions)}}
+    </div>
+  </div>
+{{/if}}

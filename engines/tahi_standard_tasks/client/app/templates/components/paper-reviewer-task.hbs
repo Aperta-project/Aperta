@@ -1,51 +1,9 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="invite-reviewer-text">
-    {{#if composingEmail}}
-      <div class="invite-reviewer-edit-invite">
-        <h3 class="invite-to">
-          Invitation to
-          {{#if selectedReviewer.full_name}}
-            {{selectedReviewer.full_name}}
-          {{/if}}
-          [{{selectedReviewer.email}}]
-        </h3>
-
-        {{content-editable value=invitationBody
-                           class="form-control taller-textarea"}}
-
-        <div class="invite-reviewer-cta">
-          <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
-          <button class="button-primary button--green invite-reviewer-button" {{action "inviteReviewer"}}>Send Invitation</button>
-        </div>
-     </div>
-    {{else}}
-      <div class="invite-reviewers">
-        <label for="invitation-recipient">Reviewer</label>
-
-        {{#auto-suggest endpoint=autoSuggestSourceUrl
-                    queryParameter="query"
-                    inputId="invitation-recipient"
-                    placeholder="Invite reviewer by name or email"
-                    parseResponseFunction=parseUserSearchResponse
-                    itemSelected="didSelectReviewer"
-                    inputChanged="inputChanged"
-                    itemDisplayTextFunction=displayUserSelected
-                    as |user|}}
-          {{user.full_name}} [{{user.email}}]
-        {{/auto-suggest}}
-
-        <button class="button-primary button--green compose-invite-button {{unless selectedReviewer 'button--disabled'}}" {{action "composeInvite"}}>
-          Compose Invite
-        </button>
-      </div>
-
-      {{invitations-display decisions=decisions
-                            groupByDecision=true
-                            inviteeRole=task.inviteeRole
-                            latestDecision=latestDecision
-                            onDestroyInvitation='destroyInvitation'}}
-    {{/if}}
-  </div>
+  {{invitation-manager task=task
+                       replaceTargetName="REVIEWER NAME"
+                       groupByDecision=true
+                       endpoint="reviewers"
+                       placeholder="Invite reviewer by name or email"}}
 </div>

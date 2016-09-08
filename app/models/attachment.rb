@@ -1,13 +1,16 @@
 # Attachment represents a generic file/resource. It is intended to be used
 # as a base-class.
 #
-# Note: the subclass(es) should mount the uploader as :file and keep any
-# custom processing/version logic with it. Only generic aspects of an
-# attachment should be pushed up to this base-class.
+# Attachment mounts its file using the AttachmentUploader class, which has
+# provisions for creating preview and detail versions of uploaded images.
+# For the time being any subclass of Attachment will use the AttachmentUploader
+# as well.
 class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable
+
+  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
 
   self.snapshottable = true
 
@@ -34,17 +37,27 @@ class Attachment < ActiveRecord::Base
   after_initialize :set_paper, if: :new_record?
 
   def download!(url)
+    # Wrap this in a transaction so the ActiveRecord after_commit lifecycle
+    # event isn't fired until the transaction completes and all of the work
+    # is finished.
     Attachment.transaction do
       @downloading = true
       file.download! url
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
-      self.status = STATUS_DONE
+
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!
       refresh_resource_token!(file)
+
+      # Do not mark as done until all of the steps that go into
+      # downloading a file, creating resource tokens, etc are completed. This
+      # is to avoid other parts of the system thinking the attachment is
+      # done downloading before it's fully realized/usable.
+      update_column :status, STATUS_DONE
+
       @downloading = false
       on_download_complete
     end
@@ -101,9 +114,37 @@ class Attachment < ActiveRecord::Base
     end
   end
 
+  # TODO: could we move this into the serializers?
   def task
-    if owner_type == 'Task'
-      owner
+    owner if owner_type == 'Task'
+  end
+
+  # These methods were pulled up from Attachment subclasses
+  def src
+    non_expiring_proxy_url if done?
+  end
+
+  def access_details
+    { filename: filename, alt: alt, id: id, src: src }
+  end
+
+  def detail_src(**opts)
+    return unless image?
+
+    non_expiring_proxy_url(version: :detail, **opts) if done?
+  end
+
+  def preview_src
+    return unless image?
+
+    non_expiring_proxy_url(version: :preview) if done?
+  end
+
+  def image?
+    if file.file
+      IMAGE_TYPES.include? file.file.extension
+    else
+      false
     end
   end
 

@@ -1,0 +1,10 @@
+{{attachment-manager filePath="invitation"
+                     attachments=invitation.attachments
+                     multiple=true
+                     disabled=(not enabled)
+                     hasCaption=false
+                     buttonText="Attach File"
+                     showDescription=false
+                     deleteFile=(action "deleteAttachment")
+                     uploadFinished=(action "createAttachment")
+                     updateAttachment=(action "updateAttachment") }}

@@ -33,11 +33,13 @@ feature 'Publishing Related Questions Card', js: true do
       # but there is no DOM change in the browser that we can use to determine
       # that, so we resort to wait_for_ajax.  it's a more stable option than
       # checking on the database end
-      wait_for_ajax
-      paper.reload
-
-      expect(paper.short_title).not_to include('<br')
-      expect(paper.short_title).to eq('This is a short title')
+      # Hack to wait for change in db
+      10.times do
+        sleep 1
+        next unless paper.reload.short_title.match(/short title/)
+        expect(paper.short_title).not_to include('<br')
+        expect(paper.short_title).to eq('This is a short title')
+      end
     end
 
     scenario 'upload attachent' do

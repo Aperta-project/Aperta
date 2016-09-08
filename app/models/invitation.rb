@@ -8,6 +8,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
+  has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   before_create :assign_to_draft_decision
 
   scope :where_email_matches,
@@ -52,6 +53,13 @@ class Invitation < ActiveRecord::Base
     possible_users - invited_users
   end
 
+  # Yes, this is purposefully a little weird to call attention to it.
+  # We've created APERTA-7529 to investigate making a new permission.
+  def can_be_viewed_by?(user)
+    user == invitee ||
+      user.can?(:manage_invitations, task)
+  end
+
   def recipient_name
     invitee.try(:full_name) || email
   end
@@ -91,6 +99,10 @@ class Invitation < ActiveRecord::Base
     self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'n/a'
   end
 
+  def associate_existing_user
+    update(invitee: User.find_by(email: email))
+  end
+
   private
 
   def assign_to_draft_decision
@@ -114,10 +126,6 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_declined
     task.invitation_declined(self)
-  end
-
-  def associate_existing_user
-    update(invitee: User.find_by(email: email))
   end
 
   def generate_token

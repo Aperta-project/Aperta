@@ -1,26 +1,43 @@
 {{#if groupByDecision}}
-
-  {{invitation-detail-tbody
-      invitations=latestDecisionInvitations
-      classNames='active-invitations'
-      destroyAction=(action 'destroyInvitation')}}
+  <div class="active-invitations">
+    {{#each latestDecisionInvitations as |invitation|}}
+      {{invitation-detail-row
+          setRowState=(action attrs.toggleActiveInvitation invitation)
+          deleteOnCancel=(eq invitation composedInvitation)
+          invitation=invitation
+          activeInvitation=activeInvitation
+          activeInvitationState=activeInvitationState}}
+    {{/each}}
+  </div>
 
   {{#each previousDecisionsWithFilteredInvitations as |decision|}}
-    <tr class='revision-human-number'>
-      <td colspan=5>Round {{decision.majorVersion}}</td>
-    </tr>
+    <div class='revision-human-number'>
+      Round {{decision.majorVersion}}
+    </div>
 
-    {{invitation-detail-tbody
-        invitations=decision.filteredInvitations
-        classNames='expired-invitations'
-        destroyAction=(action 'destroyInvitation')}}
+    <div class="expired-invitations">
+      {{#each decision.filteredInvitations as |invitation|}}
+        {{invitation-detail-row
+            setRowState=(action attrs.toggleActiveInvitation invitation)
+            deleteOnCancel=(eq invitation composedInvitation)
+            invitation=invitation
+            activeInvitation=activeInvitation
+            activeInvitationState=activeInvitationState
+            allowDestroy=false
+            allowSend=false}}
+      {{/each}}
+    </div>
   {{/each}}
 
 {{else}}
-
-  {{invitation-detail-tbody
-      invitations=invitations
-      classNames='active-invitations'
-      destroyAction=(action 'destroyInvitation')}}
-
+  <div class="active-invitations">
+    {{#each persistedInvitations as |invitation|}}
+      {{invitation-detail-row
+          setRowState=(action attrs.toggleActiveInvitation invitation)
+          deleteOnCancel=(eq invitation composedInvitation)
+          invitation=invitation
+          activeInvitation=activeInvitation
+          activeInvitationState=activeInvitationState}}
+    {{/each}}
+  </div>
 {{/if}}

@@ -1,18 +1,6 @@
-.dashboard-open-invitations {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 30px;
-
-  .badge {
-    position: relative;
-    top: -6px;
-    padding: 2px 5px;
-  }
-
-  .button-primary {
-    margin-right: 6px;
-  }
-}
+$invite-padding-vertical: 1.5rem;
+$invite-padding-horizontal: 2rem;
+$invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .pending-invitation {
   .invitation-metadata {
@@ -28,10 +16,14 @@
     font-weight: bold;
     margin-bottom: 0px;
   }
-  
+
   p, h3 {
     margin-bottom: 20px;
   }
+}
+
+.standard-invite-text .fileinput-button {
+  float: left;
 }
 
 .invitees, .assignments {
@@ -39,15 +31,9 @@
   margin-top: 36px;
 
   .invitation-updated-at,
-  .invitation-state,
   .assignment-updated-at {
     font-size: 14px;
     text-transform: capitalize;
-  }
-
-  .invitation-decline-reason span,
-  .invitation-reviewer-suggestions span {
-    font-size: 14px;
   }
 
   .revision-human-number {
@@ -80,4 +66,272 @@
       cursor: pointer;
     }
   }
+}
+
+/* Invitation body content-editable
+---------------------------------------------------------------------------- */
+
+.invitation-show-body,
+.invitation-edit-body {
+  padding: 0.75rem 1.5rem;
+  white-space: pre-wrap;
+}
+
+.invitation-edit-body {
+  overflow: auto;
+  max-height: 300px;
+  border: 1px solid #bababa;
+  border-radius: 5px;
+}
+
+
+/* Invitation Item
+   .invitation-item
+     .invitation-item-header
+     .invitation-item-details-loading
+     .invitation-item-details
+     .invitation-item-decline-info
+---------------------------------------------------------------------------- */
+
+.invitation-item {
+  border-top: 2px solid $tahi-grey-light;
+
+  &:last-child {
+    margin-bottom: 1px;
+  }
+}
+
+/* Invitation Item Header
+   .invitation-item-header
+     .invitation-item-full-name
+     .invitation-item-body-preview
+     .invitation-item-actions
+---------------------------------------------------------------------------- */
+
+.invitation-item-header {
+  display: flex;
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+.invitation-item-header > * {
+  flex: 1 0 auto;
+  padding: $invite-padding-vertical 0;
+}
+
+.invitation-item-header > :first-child {
+  padding-left: $invite-padding-horizontal;
+}
+
+.invitation-item--closed {
+  &:hover {
+    background: $tahi-grey-xlight;
+  }
+
+  .invitation-item-action-text { display: none; }
+}
+
+.invitation-item--show {
+  .invitation-item-header,
+  .invitation-item-details {
+    background-color: $tahi-grey-light;
+  }
+}
+
+.invitation-item--edit {
+  .invitation-item-header,
+  .invitation-item-details {
+    background-color: $tahi-grey-light;
+  }
+}
+
+.invitation-item--delete {
+  box-shadow: 0px 0px 15px rgba(0,0,0, 0.1);
+}
+
+.invitation-decline-info {
+  padding: 0 $invite-padding-horizontal 1rem $invite-padding-horizontal;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.invitation-item--edit {
+  .invitation-item-full-name {
+    cursor: default;
+  }
+}
+
+.invitation-state--accepted {
+  .invitation-item-full-name {
+    font-weight: bold;
+  }
+}
+
+.invitation-item--closed {
+  .invitation-item-body-preview {
+    display: block;
+  }
+}
+
+.invitation-item-body-preview {
+  display: none;
+  overflow: hidden;
+  flex: 0 1 auto;
+  padding-left: $invite-padding-horizontal;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invitation-item-full-name {
+  width: 30%;
+  flex-grow: 0;
+  padding-left: $invite-padding-horizontal;
+  cursor: pointer;
+}
+
+.invitation-state--accepted .invitation-item-full-name {
+  font-weight: bold;
+}
+
+.invitation-item-updated-at {
+  flex-grow: 2;
+  padding-left: $invite-padding-horizontal;
+  cursor: pointer;
+}
+
+.invitation-state--accepted .invitation-item-updated-at {
+  font-weight: bold;
+}
+
+.invitation-item-status {
+  width: 15%;
+}
+
+.invitation-item-actions {
+  padding: 0 $invite-padding-horizontal 0 0;
+  text-align: right;
+}
+
+.invitation-item-action {
+  display: inline-block;
+  margin-left: 2rem;
+  padding: $invite-padding-vertical 0;
+  color: $tahi-grey;
+  cursor: pointer;
+
+  .fa { font-size: 1.7rem; }
+}
+
+.invitation-item-action:hover {
+  color: $tahi-green;
+
+  .fa { color: $tahi-green; }
+}
+
+.invitation-item-action.invitation-item-action--disabled {
+  cursor: default;
+  color: $tahi-grey-xlight;
+
+  &:hover { color: $tahi-grey-xlight; }
+
+  .fa { color: $tahi-grey-xlight; }
+}
+
+.invitation-item--closed {
+  /* text next to action icons */
+  .invitation-item-action-text { display: none; }
+}
+
+
+/* Invitation Item Header and Details state changes
+---------------------------------------------------------------------------- */
+
+.invitation-item--closed {
+  .invitation-item-header:hover {
+    background: $tahi-grey-xlight;
+  }
+}
+
+.invitation-item--show {
+  .invitation-item-header,
+  .invitation-item-details {
+    background-color: $tahi-grey-xlight;
+  }
+}
+
+.invitation-item--edit {
+  .invitation-item-header,
+  .invitation-item-details {
+    background-color: $tahi-grey-light;
+  }
+}
+
+.invitation-item--delete {
+  box-shadow: 0px 0px 15px rgba(0,0,0, 0.1);
+}
+
+
+/* Invitation Loading
+---------------------------------------------------------------------------- */
+
+.invitation-item-details-loading {
+  padding: 10px 0 10px $invite-padding-horizontal;
+}
+
+
+/* Invitation Item Details
+---------------------------------------------------------------------------- */
+
+.invitation-item-details {
+  padding: 0 2rem 2rem 2rem;
+}
+
+.invite-edit-buttons {
+  padding-top: $invite-padding-vertical;
+  display: flex;
+  align-items: flex-end;
+
+  .spacer { flex-grow: 1; }
+
+  .attachment-manager {
+    margin-bottom: 0;
+  }
+}
+
+.invite-edit-save-message {
+  margin-right: 30px;
+  padding-bottom: 0.75rem;
+  color: $tahi-grey-dark;
+  font-size: 1.4rem;
+}
+
+/* displayed when ui state is edit */
+.invitation-item-state-and-date {
+  padding-left: 1.5rem;
+  color: #aaa;
+}
+
+
+/* Invitation Decline Info
+---------------------------------------------------------------------------- */
+
+.invitation-item-decline-info {
+  padding: 0 $invite-padding-horizontal 1rem $invite-padding-horizontal;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.invite-edit-save-confirmation {
+  margin-right: 30px;
+  color: $tahi-grey-dark;
+  font-size: 1.4rem;
+}
+
+
+/* Invitation Link Alternate
+---------------------------------------------------------------------------- */
+
+.invitation-link-alternate {
+  margin-top: 15px;
 }

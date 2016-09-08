@@ -1,7 +1,6 @@
 /* global require, module */
 var EmberApp   = require('ember-cli/lib/broccoli/ember-app');
 var Funnel     = require('broccoli-funnel');
-var ENV = require('./config/environment.js');
 
 module.exports = function(defaults) {
   var args = {
@@ -16,7 +15,7 @@ module.exports = function(defaults) {
       extensions: ['js']
     },
     babel: {
-      includePolyfill: true,
+      includePolyfill: true
     }
   };
 

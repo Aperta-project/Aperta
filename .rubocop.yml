@@ -1,8 +1,10 @@
 AllCops:
-  RunRailsCops: true
   Exclude:
     - 'db/schema.rb'
     - 'lib/generators/tahi/task/templates/*'
+
+Rails:
+  Enabled: true
 
 Metrics/AbcSize:
   # This is a good metric; rails gives us a few more .'s per line
@@ -41,7 +43,24 @@ Metrics/LineLength:
 
     # The it 'some string' line of specs should be allowed to be as
     # long as neccessary to describe the test.
-    - '**/spec/**/*'
+    - 'spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/plos_billing/spec/**/*'
+    - 'engines/tahi_standard_tasks/spec/**/*'
+    - 'engines/plos_bio_internal_review/spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/tahi-assign_team/spec/**/*'
+
+Style/PredicateName:
+  Exclude:
+    # has_foo? is idiomatic usage in page objects
+    - 'spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/plos_billing/spec/**/*'
+    - 'engines/tahi_standard_tasks/spec/**/*'
+    - 'engines/plos_bio_internal_review/spec/**/*'
+    - 'engines/plos_bio_tech_check/spec/**/*'
+    - 'engines/tahi-assign_team/spec/**/*'
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.

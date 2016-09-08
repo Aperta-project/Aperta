@@ -25,10 +25,12 @@ export default Ember.Component.extend({
   classNameBindings: ['disabled:read-only'],
   description: 'Please select a file.',
   disabled: false,
-  notDisabled: Ember.computed.not('disable'),
+  notDisabled: Ember.computed.not('disabled'),
   buttonText: 'Upload File',
   fileUploads: [],
   multiple: false,
+  showDescription: true,
+
   uploadInProgress: Ember.computed.notEmpty('fileUploads'),
   hasAttachments: Ember.computed.notEmpty('attachments'),
   noAttachments: Ember.computed.not('hasAttachments'),

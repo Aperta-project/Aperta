@@ -5,24 +5,24 @@ import Ember from 'ember';
 // Pretend like you're in client/tests
 import FakeCanService from '../helpers/fake-can-service';
 
-var app, sandbox;
+let app;
 
 moduleForComponent(
   'paper-reviewer-task',
-  'Integration | Components | Tasks | Invite Reviewer', {
-  integration: true,
-  setup: function() {
-    //startApp is only here to give us access to the
-    //async test helpers (fillIn, click, etc) that
-    //we're used to having in the full-app acceptance tests
-    app = startApp();
-  },
+  'Integration | Components | Tasks | Paper Reviewer Task', {
+    integration: true,
+    setup: function() {
+      //startApp is only here to give us access to the
+      //async test helpers (fillIn, click, etc) that
+      //we're used to having in the full-app acceptance tests
+      app = startApp();
+    },
 
-  teardown: function() {
-    return Ember.run(app, app.destroy);
+    teardown: function() {
+      Ember.run(app, app.destroy);
+    }
   }
-});
-
+);
 
 test('User can add a new reviewer after tweaking the email of an exiting user',
   function(assert){
@@ -39,7 +39,7 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
       assert.equal(
         properties.email, 'Foo Magoo <foo@example.com>',
         'Has a well-formatted email');
-      return newInvitation();
+      return newInvitation(properties.email);
     }, this);
 
     setupEditableTask(this);
@@ -53,19 +53,18 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
       this.$('#invitation-recipient').val(current).keyup();
     });
 
-    click('.compose-invite-button');
-    click('.invite-reviewer-button');
+    click('.invitation-email-entry-button');
+    click('.invitation-save-button');
   }
 );
-
-
 
 var newInvitation = function(email) {
   return {
     state: 'pending',
     email: email,
     body: 'Hello',
-    save() { return { then() {} }; }
+    save() { return Ember.RSVP.resolve(this); },
+    send() { return Ember.RSVP.resolve(this); }
   };
 };
 
@@ -82,11 +81,9 @@ var newTask = function() {
       salutation: 'Hi!',
       body: 'You are invited!'
     },
-    invitations: [
 
-    ],
     decisions: [
-      {id: 2, latest: true}
+      {id: 2, latest: true, invitations: []}
     ]
   };
 };

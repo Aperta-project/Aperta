@@ -21,6 +21,9 @@
  *                  addingFileFailed=(action "addingFileFailed")
  *                  fileAdded=(action "fileAdded")}}
  *  ```
+ *
+ *  Note that `filePath` is merely a part of the temporary file path
+ *  on s3 where the file will sit before the server downloads and processes it.
 **/
 
 import Ember from 'ember';

@@ -1,6 +1,8 @@
 class Paper::Submitted::EmailCreator
   def self.call(_event_name, event_data)
     paper = event_data[:record]
+    return if paper.latest_decision_rescinded?
+
     previous_state = paper.previous_changes[:publishing_state][0]
 
     if previous_state == 'in_revision'

@@ -6,7 +6,7 @@ class TestTask < Task
   DEFAULT_TITLE = 'Test Task'
   DEFAULT_ROLE = 'user'
 
-  def invitation_rescinded(token:)
+  def invitation_rescinded(*)
     true
   end
 end
@@ -101,11 +101,13 @@ describe InvitationsController do
         invitation: {
           email: email_to_invite,
           task_id: task.id,
-          body: invitation_body
+          body: invitation_body,
+          state: invitation_state
         })
     end
 
     let(:email_to_invite) { invitee.email }
+    let(:invitation_state) { nil }
     let(:invitation_body) do
       'Hard to find a black cat in a dark room, especially if there is no cat.'
     end
@@ -119,52 +121,71 @@ describe InvitationsController do
           .with(:manage_invitations, task).and_return(true)
       end
 
-      context 'and the invitee already exists' do
-        before do
-          expect(invitee.id).to be
-        end
+      context 'when the invitation state is pending' do
+        let(:invitation_state) { 'pending' }
+        context 'with an email matching an existing user' do
+          it 'creates a pending invitation for that user' do
+            do_request
+            expect(response.status).to eq(201)
 
-        it 'creates a invited invitation' do
-          do_request
-          expect(response.status).to eq(201)
+            data = res_body.with_indifferent_access
+            invitation = Invitation.find(data[:invitation][:id])
 
-          data = res_body.with_indifferent_access
-          invitation = Invitation.find(data[:invitation][:id])
-
-          expect(invitation.invitee).to eq(invitee)
-          expect(invitation.email).to eq(invitee.email)
-          expect(invitation.token).to be_present
-          expect(invitation.actor).to be_nil
-          expect(invitation.state).to eq('invited')
-          expect(invitation.body).to eq(invitation_body)
+            expect(invitation.state).to eq('pending')
+            expect(invitation.invitee).to eq(invitee)
+            expect(invitation.email).to eq(invitee.email)
+          end
         end
       end
 
-      context 'and the invitee does not exist in the system' do
-        let(:email_to_invite) { 'custom-email@example.com' }
-        it 'creates an invitation for new user' do
-          do_request
+      context 'when the invitation state is blank' do
+        context 'and the invitee already exists' do
+          before do
+            expect(invitee.id).to be
+          end
 
-          expect(response.status).to eq 201
+          it 'creates a invited invitation' do
+            do_request
+            expect(response.status).to eq(201)
 
-          data = res_body.with_indifferent_access
-          invitation = Invitation.find(data[:invitation][:id])
+            data = res_body.with_indifferent_access
+            invitation = Invitation.find(data[:invitation][:id])
 
-          expect(invitation.invitee).to eq nil
-          expect(invitation.email).to eq(email_to_invite)
-          expect(invitation.token).to be_present
-          expect(invitation.actor).to be_nil
-          expect(invitation.state).to eq('invited')
+            expect(invitation.invitee).to eq(invitee)
+            expect(invitation.email).to eq(invitee.email)
+            expect(invitation.token).to be_present
+            expect(invitation.actor).to be_nil
+            expect(invitation.state).to eq('invited')
+            expect(invitation.body).to eq(invitation_body)
+          end
         end
-      end
 
-      it 'creates an Activity' do
-        expected_activity = {
-          message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
-          feed_name: "workflow"
-        }
-        expect(Activity).to receive(:create).with hash_including(expected_activity)
-        do_request
+        context 'and the invitee does not exist in the system' do
+          let(:email_to_invite) { 'custom-email@example.com' }
+          it 'creates an invitation for new user' do
+            do_request
+
+            expect(response.status).to eq 201
+
+            data = res_body.with_indifferent_access
+            invitation = Invitation.find(data[:invitation][:id])
+
+            expect(invitation.invitee).to eq nil
+            expect(invitation.email).to eq(email_to_invite)
+            expect(invitation.token).to be_present
+            expect(invitation.actor).to be_nil
+            expect(invitation.state).to eq('invited')
+          end
+        end
+
+        it 'creates an Activity' do
+          expected_activity = {
+            message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
+            feed_name: "workflow"
+          }
+          expect(Activity).to receive(:create).with hash_including(expected_activity)
+          do_request
+        end
       end
     end
 
@@ -177,6 +198,58 @@ describe InvitationsController do
       end
 
       it { is_expected.to responds_with(403) }
+    end
+  end
+
+  describe 'PUT /invitations/:id/send_invite' do
+    let!(:invitation) do
+      FactoryGirl.create(
+        :invitation,
+        state: 'pending',
+        invitee: invitee,
+        task: task
+      )
+    end
+    subject(:do_request) do
+      post(
+        :send_invite,
+        format: 'json',
+        id: invitation.to_param)
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'the user is signed in' do
+      before do
+        stub_sign_in user
+      end
+
+      context "when the user does not have access" do
+        it { is_expected.to responds_with(403) }
+      end
+
+      context "when the user has access" do
+        before do
+          allow(user).to receive(:can?).with(:manage_invitations, task)
+            .and_return(true)
+        end
+
+        it 'sends the invitation' do
+          do_request
+          data = res_body.with_indifferent_access
+          saved_invitation = Invitation.find(data[:invitation][:id])
+          expect(saved_invitation.state).to eq('invited')
+        end
+
+        it 'creates an activity' do
+          expected_activity = {
+            message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
+            feed_name: "workflow"
+          }
+          expect(Activity).to receive(:create).with hash_including(expected_activity)
+          do_request
+        end
+      end
     end
   end
 
@@ -214,7 +287,7 @@ describe InvitationsController do
         it "deletes the invitation" do
           expect do
             do_request
-          end.to change { task.invitations.count }.by -1
+          end.to change { task.invitations.count }.by(-1)
           expect(Invitation.exists?(id: invitation.id)).to be(false)
         end
 
@@ -230,7 +303,7 @@ describe InvitationsController do
         it "deletes the invitation" do
           expect do
             do_request
-          end.to change { task.invitations.count }.by -1
+          end.to change { task.invitations.count }.by(-1)
           expect(Invitation.exists?(id: invitation.id)).to be(false)
         end
 

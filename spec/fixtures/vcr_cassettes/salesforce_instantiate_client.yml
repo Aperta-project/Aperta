@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://salesforce_host/services/oauth2/token?client_id=salesforce_client_id&client_secret=salesforce_client_secret&grant_type=password&password=salesforce_pass&username=salesforce_user
+    uri: https://salesforce%5Fhost/services/oauth2/token?client_id=salesforce_client_id&client_secret=salesforce_client_secret&grant_type=password&password=salesforce_pass&username=salesforce_user
     body:
       encoding: UTF-8
       string: ''
@@ -41,12 +41,12 @@ http_interactions:
       - chunked
     body:
       encoding: ASCII-8BIT
-      string: '{"access_token":"00DK000000XN2av!ARcAQNtxYmqLYB9ZtkhRpNfdNl1wYtQYgU_FaEMmAtGP91YnGAbtNMwqVuZKrI1cAxO5nhUrzCd.3TY3AZT0ixvgcX2XrZV3","instance_url":"https://salesforce_host","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440211700550","signature":"4q6Vge/65id0ThhMOySBz0usgxKzn2aRg9GQU2tr3T4="}'
+      string: '{"access_token":"00DK000000XN2av!ARcAQNtxYmqLYB9ZtkhRpNfdNl1wYtQYgU_FaEMmAtGP91YnGAbtNMwqVuZKrI1cAxO5nhUrzCd.3TY3AZT0ixvgcX2XrZV3","instance_url":"https://salesforce.local","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440211700550","signature":"4q6Vge/65id0ThhMOySBz0usgxKzn2aRg9GQU2tr3T4="}'
     http_version:
   recorded_at: Mon, 15 Feb 2016 22:52:08 GMT
 - request:
     method: get
-    uri: https://salesforce_host/services/data/v22.0/sobjects/Manuscript__c/describe
+    uri: https://salesforce.local/services/data/v22.0/sobjects/Manuscript__c/describe
     body:
       encoding: US-ASCII
       string: ''
@@ -261,12 +261,12 @@ http_interactions:
         Reject\", Editorial_Status_Date__c + 28,\r\nnull)","caseSensitive":false,"controllerName":null,"createable":false,"custom":true,"defaultValue":null,"defaultValueFormula":null,"defaultedOnCreate":false,"dependentPicklist":false,"deprecatedAndHidden":false,"digits":0,"externalId":false,"filterable":true,"groupable":true,"htmlFormatted":false,"idLookup":false,"inlineHelpText":null,"label":"Author
         Survey Date","length":0,"name":"Author_Survey_Date__c","nameField":false,"namePointing":false,"nillable":true,"picklistValues":[],"precision":0,"referenceTo":[],"relationshipName":null,"relationshipOrder":null,"restrictedPicklist":false,"scale":0,"soapType":"xsd:date","sortable":true,"type":"date","unique":false,"updateable":false,"writeRequiresMasterRead":false},{"autoNumber":false,"byteLength":18,"calculated":false,"calculatedFormula":null,"caseSensitive":false,"controllerName":null,"createable":true,"custom":true,"defaultValue":null,"defaultValueFormula":null,"defaultedOnCreate":false,"dependentPicklist":false,"deprecatedAndHidden":false,"digits":0,"externalId":false,"filterable":true,"groupable":true,"htmlFormatted":false,"idLookup":false,"inlineHelpText":null,"label":"Corresponding
         Author","length":18,"name":"Corresponding_Author1__c","nameField":false,"namePointing":false,"nillable":true,"picklistValues":[],"precision":0,"referenceTo":["Account"],"relationshipName":"Corresponding_Author1__r","relationshipOrder":null,"restrictedPicklist":false,"scale":0,"soapType":"tns:ID","sortable":true,"type":"reference","unique":false,"updateable":true,"writeRequiresMasterRead":false}],"keyPrefix":"a06","label":"Manuscript","labelPlural":"Manuscripts","layoutable":true,"listviewable":null,"lookupLayoutable":null,"mergeable":false,"name":"Manuscript__c","queryable":true,"recordTypeInfos":[{"available":true,"defaultRecordTypeMapping":false,"name":"Currents","recordTypeId":"012U0000000E4ARIA0"},{"available":true,"defaultRecordTypeMapping":true,"name":"PLOS
-        Journals","recordTypeId":"012U0000000E4ASIA0"},{"available":true,"defaultRecordTypeMapping":false,"name":"Master","recordTypeId":"012000000000000AAA"}],"replicateable":true,"retrieveable":true,"searchLayoutable":null,"searchable":true,"triggerable":true,"undeletable":true,"updateable":true,"urls":{"rowTemplate":"/services/data/v22.0/sobjects/Manuscript__c/{ID}","uiDetailTemplate":"https://salesforce_host/{ID}","uiEditTemplate":"https://salesforce_host/{ID}/e","describe":"/services/data/v22.0/sobjects/Manuscript__c/describe","uiNewRecord":"https://salesforce_host/a06/e","sobject":"/services/data/v22.0/sobjects/Manuscript__c"}}'
+        Journals","recordTypeId":"012U0000000E4ASIA0"},{"available":true,"defaultRecordTypeMapping":false,"name":"Master","recordTypeId":"012000000000000AAA"}],"replicateable":true,"retrieveable":true,"searchLayoutable":null,"searchable":true,"triggerable":true,"undeletable":true,"updateable":true,"urls":{"rowTemplate":"/services/data/v22.0/sobjects/Manuscript__c/{ID}","uiDetailTemplate":"https://salesforce.local/{ID}","uiEditTemplate":"https://salesforce.local/{ID}/e","describe":"/services/data/v22.0/sobjects/Manuscript__c/describe","uiNewRecord":"https://salesforce.local/a06/e","sobject":"/services/data/v22.0/sobjects/Manuscript__c"}}'
     http_version:
   recorded_at: Mon, 15 Feb 2016 22:52:10 GMT
 - request:
     method: get
-    uri: https://salesforce_host/services/data/v22.0/sobjects/Case/describe
+    uri: https://salesforce.local/services/data/v22.0/sobjects/Case/describe
     body:
       encoding: US-ASCII
       string: ''

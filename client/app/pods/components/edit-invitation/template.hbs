@@ -1,0 +1,25 @@
+<div class="invitation-item-header">
+  <div class="invitation-item-full-name">
+    <b>Compose invitation to: </b>
+    {{#if invitee}}
+      {{invitee.fullName}}
+      &lt;{{invitation.email}}&gt;
+    {{else}}
+      {{invitation.email}}
+    {{/if}}
+  </div>
+</div>
+
+<div class="invitation-item-details">
+  {{content-editable value=invitation.body
+                     class="invitation-edit-body"}}
+
+  <div class="invite-edit-buttons">
+    {{#if allowAttachments}}
+      {{invitation-attachment-manager invitation=invitation}}
+    {{/if}}
+    <div class="spacer"></div>
+    <button class="button-link button--green cancel" {{action "cancel" invitation}}>cancel</button>
+    <button class="button-secondary button--green invitation-save-button" {{action "save" invitation}}>Add to Queue</button>
+  </div>
+</div>

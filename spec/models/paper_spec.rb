@@ -1526,4 +1526,29 @@ describe Paper do
       expect(task).to be_nil
     end
   end
+
+  describe "#latest_decision_rescinded?" do
+    it "returns false when there are no completed decisions" do
+      allow(paper).to receive(:last_completed_decision).and_return(nil)
+
+      expect(paper.latest_decision_rescinded?).to eq(false)
+    end
+
+    it "returns false when the last completed decision has not been rescinded" do
+      decision = FactoryGirl.create(:decision)
+      allow(paper).to receive(:last_completed_decision).and_return(decision)
+
+      expect(paper.latest_decision_rescinded?).to eq(false)
+
+    end
+
+    it "returns true when the last completed decision has been rescinded" do
+      decision = FactoryGirl.create(:decision, rescinded: true)
+      allow(paper).to receive(:last_completed_decision).and_return(decision)
+
+      expect(paper.latest_decision_rescinded?).to eq(true)
+
+    end
+  end
+
 end

@@ -13,10 +13,6 @@ class PhaseFragment < PageFragment
     container.find('.card-remove').click
   end
 
-  def card_count
-    find_all('.card').count
-  end
-
   def has_remove_icon?
     has_css? '.remove-icon', visible: false
   end

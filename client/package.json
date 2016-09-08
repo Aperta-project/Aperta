@@ -26,7 +26,7 @@
     "yuidocjs": "^0.10.2"
   },
   "dependencies": {
-    "active-model-adapter": "1.13.6",
+    "active-model-adapter": "2.0.3",
     "bower": "^1.7.7",
     "broccoli-asset-rev": "^2.2.0",
     "broccoli-funnel": "0.2.3",
@@ -47,8 +47,8 @@
     "ember-cli-rails-addon": "0.7.0",
     "ember-cli-release": "0.2.8",
     "ember-cli-sri": "^2.0.0",
-    "ember-concurrency": "0.5.17",
-    "ember-data": "1.13.12",
+    "ember-concurrency": "0.7.7",
+    "ember-data": "2.0.1",
     "ember-data-factory-guy": "2.4.2",
     "ember-data-filter": "1.13.0",
     "ember-disable-proxy-controllers": "^1.0.1",
@@ -62,7 +62,7 @@
     "ember-wormhole": "0.3.4",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "liquid-fire": "0.21.2",
+    "liquid-fire": "^0.23.0",
     "loader.js": "^4.0.0"
   },
   "ember-addon": {

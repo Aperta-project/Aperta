@@ -3,7 +3,7 @@ import Ember from 'ember';
 const { computed, observer, on } = Ember;
 
 export default Ember.Component.extend({
-  attributeBindings: ['contenteditable', 'placeholder'],
+  attributeBindings: ['contenteditable', 'placeholder', 'disabled'],
   editable: true,
   placeholder: '',
   plaintext: false,

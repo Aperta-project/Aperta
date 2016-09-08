@@ -12,6 +12,9 @@ module TahiStandardTasks
       @paper = @invitation.paper
       @journal = @paper.journal
       @task = @invitation.task
+      @invitation.attachments.each do |attachment|
+        attachments[attachment.filename] = attachment.file.read
+      end
       mail(
         to: @invitation.email,
         subject: "You've been invited as an editor for the manuscript, \"#{@paper.display_title}\""

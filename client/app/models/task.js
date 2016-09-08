@@ -31,6 +31,9 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, 
     inverse: 'source',
     async: true
   }),
+  invitations: DS.hasMany('invitation', {
+    async: false
+  }),
 
   body: DS.attr(),
   completed: DS.attr('boolean'),

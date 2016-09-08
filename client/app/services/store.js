@@ -11,7 +11,7 @@ export default DS.Store.extend({
 
   getPolymorphic(modelName, id) {
     var task = null;
-    if (modelName === "task" && (task = this.findTask(id))) {
+    if (modelName === 'task' && (task = this.findTask(id))) {
       return task;
     } else {
       return this.peekRecord(modelName, id);
@@ -35,7 +35,7 @@ export default DS.Store.extend({
     Ember.assert(modelData.id, 'Model Data must have an id');
 
     let stringId = modelData.id.toString();
-    var foundModel = this.getById(type, stringId);
+    var foundModel = this.peekRecord(type, stringId);
     if (foundModel) {
       return foundModel;
     } else {
@@ -44,7 +44,7 @@ export default DS.Store.extend({
       payload[typeKey] = modelData;
 
       this.pushPayload(type, payload);
-      let newModel = this.getById(type, stringId);
+      let newModel = this.peekRecord(type, stringId);
       Ember.assert(!!newModel, 'store.findOrPush must return a model of some kind');
       return newModel;
     }

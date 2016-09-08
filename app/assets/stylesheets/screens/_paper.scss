@@ -88,6 +88,11 @@
     border-spacing: 0;
     border-collapse: collapse;
     cursor: default;
+
+    caption {
+      &.above { caption-side: top; }
+      &.below { caption-side: bottom; }
+    }
   }
 
   img.paper-body-figure {

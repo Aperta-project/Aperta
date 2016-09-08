@@ -95,7 +95,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def decline_reason
-    self[:decline_reason].present? ? self[:decline_reason] : 'n/a'
+    self[:decline_reason].present? ? self[:decline_reason] : 'No feedback provided'
   end
 
   def reviewer_suggestions

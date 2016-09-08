@@ -48,8 +48,8 @@ class ProfilePage(AuthenticatedPage):
         By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/div/input[2]")
     self._email = (
         By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/input")
-    self._add_done_btn = (By.CSS_SELECTOR, 'div.affiliations-form button')
-    self._add_cancel_btn = (By.CSS_SELECTOR, 'div.affiliations-form a')
+    self._add_done_btn = (By.CSS_SELECTOR, 'button.button--green')
+    self._add_cancel_btn = (By.CSS_SELECTOR, 'a.author-cancel')
     self._profile_affiliations = (By.CLASS_NAME, 'affiliation-existing')
     self._remove_affiliation_icon = (By.CLASS_NAME, 'affiliation-remove')
     self._success_message = (By.CSS_SELECTOR, 'div.success')
@@ -119,7 +119,6 @@ class ProfilePage(AuthenticatedPage):
     Validate the error message for an invalid adding new affiliation.
     :return: None
     """
-    # self.click_left_nav()
     self.click_add_affiliation_button()
     add_done_btn = self._get(self._add_done_btn)
     add_done_btn.click()

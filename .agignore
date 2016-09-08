@@ -2,3 +2,7 @@ public/assets/
 log/
 tmp/
 tags
+client/dist/
+client/tmp/
+client/node_modules/
+client/bower_components

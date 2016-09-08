@@ -23,6 +23,9 @@ export default DS.Model.extend({
   task: DS.belongsTo('task', { polymorphic: true, async: true }),
   title: DS.attr('string'),
   updatedAt: DS.attr('date'),
+  acceptedAt: DS.attr('date'),
+  declinedAt: DS.attr('date'),
+  invitedAt: DS.attr('date'),
 
   pendingFeedback: false,
 

@@ -77,8 +77,8 @@
   <div class="invitation-item-details">
     {{#if invitation.declined}}
       <div class="invitation-item-state-and-date">
-        {{capitalize (if (eq invitation.state "pending") "draft last updated" invitation.state)}}
-        {{format-date invitation.updatedAt format="LLL"}}
+        Declined
+        {{format-date invitation.declinedAt format="LLL"}}
       </div>
       <div class="invitation-item-decline-info">
         <p>
@@ -91,6 +91,10 @@
         </p>
       </div>
     {{/if}}
+    <div class="invitation-item-state-and-date">
+      Invited
+      {{format-date invitation.invitedAt format="LLL"}}
+    </div>
 {{!-- Leave weird indentation --}}
 <div class="invitation-show-body">{{{invitation.body}}}</div>
     <div class="invite-edit-buttons">

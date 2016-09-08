@@ -7,7 +7,10 @@ class InvitationSerializer < ActiveModel::Serializer
              :invitee_role,
              :reviewer_suggestions,
              :state,
-             :updated_at
+             :updated_at,
+             :invited_at,
+             :declined_at,
+             :accepted_at
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true

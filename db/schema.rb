@@ -291,6 +291,9 @@ ActiveRecord::Schema.define(version: 20160916134145) do
     t.text     "reviewer_suggestions"
     t.string   "token"
     t.integer  "primary_id"
+    t.date     "invited_at"
+    t.date     "declined_at"
+    t.date     "accepted_at"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree

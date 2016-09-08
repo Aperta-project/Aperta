@@ -17,7 +17,11 @@
       {{/if}}
     </div>
     <div class="invitation-item-body-preview">
-      {{strip-html invitation.body}}
+      {{#if invitation.declined}}
+        {{strip-html invitation.declineReason}}
+      {{else}}
+        {{strip-html invitation.body}}
+      {{/if}}
     </div>
     <div class="invitation-item-actions">
       {{#if displayEditButton}}
@@ -71,10 +75,22 @@
 
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
-    <div class="invitation-item-state-and-date">
-      {{capitalize (if (eq invitation.state "pending") "draft last updated" invitation.state)}}
-      {{format-date invitation.updatedAt format="LLL"}}
-    </div>
+    {{#if invitation.declined}}
+      <div class="invitation-item-state-and-date">
+        {{capitalize (if (eq invitation.state "pending") "draft last updated" invitation.state)}}
+        {{format-date invitation.updatedAt format="LLL"}}
+      </div>
+      <div class="invitation-item-decline-info">
+        <p>
+          <div class="invitation-item-decline-title">Reasons</div>
+          {{unbound (break-to-tag invitation.declineReason)}}
+        </p>
+        <p>
+          <div class="invitation-item-decline-title">Reviewer Suggestions</div>
+          {{unbound (break-to-tag invitation.reviewerSuggestions)}}
+        </p>
+      </div>
+    {{/if}}
 {{!-- Leave weird indentation --}}
 <div class="invitation-show-body">{{{invitation.body}}}</div>
     <div class="invite-edit-buttons">
@@ -106,22 +122,9 @@
        <div class="spacer"></div>
        <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
        <button class="button-secondary button--green invitation-save-button"
-{{action "save" invitation}}>{{if (eq invitation composedInvitation) "Add to
-Queue" "Save"}}</button>
-    </div>
-  </div>
-{{/if}}
-
-{{#if (and invitation.declined closedState)}}
-  <div class="invitation-item-decline-info">
-    <div class="invitation-decline-reason">
-      <strong>Reasons: </strong>
-      {{unbound (break-to-tag invitation.declineReason)}}
-    </div>
-
-    <div class="invitation-reviewer-suggestions">
-      <strong>Reviewer Suggestions: </strong>
-      {{unbound (break-to-tag invitation.reviewerSuggestions)}}
+               {{action "save" invitation}}>
+         {{if (eq invitation composedInvitation) "Add to Queue" "Save"}}
+       </button>
     </div>
   </div>
 {{/if}}

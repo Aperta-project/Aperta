@@ -1,6 +1,7 @@
 {{#if alternateQueuing}}
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
+                          class="invitation-item--primary"
                           setRowState=(action attrs.setRowState invitation)
                           deleteOnCancel=(eq invitation composedInvitation)
                           composedInvitation=composedInvitation
@@ -11,6 +12,7 @@
   {{#each invitation.alternates as |alt|}}
     {{invitation-detail-row invitation=alt
                             invitations=invitations
+                            class="invitation-item--alternate"
                             setRowState=(action attrs.setRowState alt)
                             deleteOnCancel=(eq invitation composedInvitation)
                             composedInvitation=composedInvitation
@@ -21,3 +23,4 @@
                             sendDisabled=queueHasInvitedOrAccepted}}
   {{/each}}
 {{/if}}
+

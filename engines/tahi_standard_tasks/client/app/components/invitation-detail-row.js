@@ -14,8 +14,7 @@ const {
  */
 
 export default Component.extend({
-  classNameBindings: [':invitation-item', 'invitationStateClass',
-    'uiStateClass', 'alternate:invitation-item--alternate'],
+  classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass'],
 
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired

@@ -101,8 +101,23 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 }
 
+.invitation-item--primary {
+  border-top-color: $tahi-grey-dark;  
+}
+
 .invitation-item--alternate {
+  position: relative;
   border-top: 1px dashed $tahi-grey-light;
+
+  &:last-child:after {
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: $tahi-grey-dark;
+  }
 }
 
 /* Invitation Item Header

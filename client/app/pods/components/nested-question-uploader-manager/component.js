@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 export default NestedQuestionComponent.extend({
   multiple: false,
@@ -18,7 +18,18 @@ export default NestedQuestionComponent.extend({
     return false;
   },
 
+  cancelUpload: concurrencyTask(function * (attachment) {
+    yield attachment.cancelUpload();
+    yield timeout(5000);
+    attachment.unloadRecord();
+  }),
+
   actions: {
+
+    cancelUpload(attachment) {
+      this.get('cancelUpload').perform(attachment);
+    },
+
     updateAttachment(s3Url, file, attachment) {
       Ember.assert(s3Url, 'Must provide an s3Url');
       Ember.assert(file, 'Must provide a file');

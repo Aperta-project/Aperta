@@ -6,6 +6,13 @@
     min-height: 30px;
   }
 
+  .upload-cancel-button {
+    color: $tahi-green;
+    font-size: 30px;
+    cursor: pointer;
+    margin-left: 15px;
+  }
+
   p.description {
     font-style: italic;
   }

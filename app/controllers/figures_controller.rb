@@ -14,7 +14,7 @@ class FiguresController < ApplicationController
   end
 
   def create
-    figure.update_attributes(status: "processing")
+    figure.update_attributes(status: Attachment::STATUS_PROCESSING)
     DownloadAttachmentWorker.perform_async(figure.id, params[:url], current_user.id)
     respond_with figure
   end
@@ -25,9 +25,28 @@ class FiguresController < ApplicationController
   end
 
   def update_attachment
-    figure.update_attribute(:status, "processing")
+    figure.update_attribute(:status, Attachment::STATUS_PROCESSING)
     DownloadAttachmentWorker.perform_async(figure.id, params[:url], current_user.id)
     render json: figure
+  end
+
+  def cancel
+    case figure.status
+    when Attachment::STATUS_PROCESSING
+      # delete the figure and let sidekiq deal with it
+      #
+      # sidekiq still running
+      figure.destroy
+    when Attachment::STATUS_ERROR
+      # clean up from exception in sidekiq
+      #
+      # sidekiq not running due to exception
+      figure.destroy
+    when Attachment::STATUS_DONE
+      # sidekiq completely done, two ships passing in the night
+      # no-op
+    end
+    head :no_content
   end
 
   def destroy

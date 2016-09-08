@@ -30,6 +30,7 @@ export default Ember.Component.extend({
   hasCaption: false,
   fileUpload: null,
   caption: null,
+  isCanceled: false,
   isProcessing: Ember.computed.equal('attachment.status', 'processing'),
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
@@ -48,6 +49,11 @@ export default Ember.Component.extend({
       if (this.attrs.deleteFile) {
         this.attrs.deleteFile(this.get('attachment'));
       }
+    },
+
+    cancelUpload() {
+      this.set('isCanceled', true);
+      this.get('cancelUpload')(this.get('attachment'));
     },
 
     captionChanged() {
@@ -81,7 +87,7 @@ export default Ember.Component.extend({
     },
 
     uploadFailed(reason){
-     console.log('uploadFailed', reason);
+      throw new Ember.Error(`Upload from browser to s3 failed: ${reason}`);
     }
   }
 });

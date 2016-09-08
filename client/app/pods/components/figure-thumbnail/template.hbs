@@ -1,10 +1,15 @@
 <div class="figure-thumbnail" data-figure-id={{figure.id}}>
   <div class="outline {{if showSpinner 'loading'}}">
-    {{#if showSpinner}}
+    {{#if isCanceled}}
+      <div class="progress-text">
+        <h4>Upload canceled. Re-upload to try again</h4>
+      </div>
+    {{else if showSpinner}}
       {{progress-spinner visible=true size="large"}}
       <div class="progress-text">
         <h4>Figure Processing ... but you can continue working!</h4>
       </div>
+      <span class="upload-cancel-button" {{action "cancelUpload"}}>×</span>
     {{else}}
       <div class="left-column">
         <div class="thumbnail-preview">

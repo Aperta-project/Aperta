@@ -2,10 +2,14 @@
   {{upload-preview upload=fileUpload}}
 
 {{else}}
-
-  {{#if isProcessing}}
+  {{#if isCanceled}}
+    <div class="processing-attachment">
+      Upload canceled. Re-upload to try again
+    </div>
+  {{else if isProcessing}}
     <div class="processing-attachment">
       {{progress-spinner visible=true size="small"}} Processing {{attachment.filename}} ...
+      <span class="upload-cancel-button" {{action "cancelUpload"}}>×</span>
     </div>
   {{else}}
     <a href="{{attachment.src}}" class="file-link" target="_blank">

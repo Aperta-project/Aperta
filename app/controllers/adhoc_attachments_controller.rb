@@ -44,6 +44,26 @@ class AdhocAttachmentsController < ApplicationController
     render json: attachment, root: 'attachment'
   end
 
+  def cancel
+    attachment = Attachment.find(params[:id])
+    case attachment.status
+    when Attachment::STATUS_PROCESSING
+      # delete the figure and let sidekiq deal with it
+      #
+      # sidekiq still running
+      attachment.destroy
+    when Attachment::STATUS_ERROR
+      # clean up from exception in sidekiq
+      #
+      # sidekiq not running due to exception
+      attachment.destroy
+    when Attachment::STATUS_DONE
+      # sidekiq completely done, two ships passing in the night
+      # no-op
+    end
+    head :no_content
+  end
+
   private
 
   def task

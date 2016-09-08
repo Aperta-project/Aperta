@@ -11,7 +11,10 @@ class Attachment < ActiveRecord::Base
   include Snapshottable
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
-  STATUS_DONE = 'done'
+
+  STATUS_PROCESSING = 'processing'.freeze
+  STATUS_ERROR = 'error'.freeze
+  STATUS_DONE = 'done'.freeze
 
   class_attribute :public_resource
 
@@ -73,11 +76,12 @@ class Attachment < ActiveRecord::Base
   # rubocop:disable Metrics/AbcSize
   def download!(url, uploaded_by: nil)
     # Wrap this in a transaction so the ActiveRecord after_commit lifecycle
-    # event isn't fired until the transaction completes and all of the work
-    # is finished.
+    # event isn't fired until the transaction completes and all of the work is
+    # finished.
     Attachment.transaction do
       @downloading = true
       file.download! url
+
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
@@ -89,16 +93,17 @@ class Attachment < ActiveRecord::Base
       save!
       refresh_resource_token!(file) if public_resource
 
-      # Do not mark as done until all of the steps that go into
-      # downloading a file, creating resource tokens, etc are completed. This
-      # is to avoid other parts of the system thinking the attachment is
-      # done downloading before it's fully realized/usable.
+      # Do not mark as done until all of the steps that go into downloading a
+      # file, creating resource tokens, etc are completed. This is to avoid
+      # other parts of the system thinking the attachment is done downloading
+      # before it's fully realized/usable.
       update_column :status, STATUS_DONE
 
       @downloading = false
       on_download_complete
     end
   rescue Exception => ex
+    update_column :status, STATUS_ERROR
     on_download_failed(ex)
   ensure
     @downloading = false

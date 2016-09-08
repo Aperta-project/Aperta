@@ -47,6 +47,7 @@
                          attachments=task.attachments
                          multiple=true
                          description="Please select files to add attachment"
+                         cancelUpload=(action "cancelUpload")
                          disabled=(not canUploadAttachments)
                          deleteFile=(action "deleteAttachment")
                          uploadFinished=(action "createAttachment")

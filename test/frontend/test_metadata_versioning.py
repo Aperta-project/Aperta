@@ -62,27 +62,27 @@ class MetadataVersioningTest(CommonTest):
                         random_bit=True,
                         )
     dashboard_page.restore_timeout()
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=45)
-    paper_id = paper_viewer.get_current_url().split('/')[-1]
+    ms_viewer.validate_ihat_conversions_success(timeout=45)
+    paper_id = ms_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
-    paper_viewer.complete_task('Billing')
-    paper_viewer.complete_task('Cover Letter')
-    paper_viewer.complete_task('Figures')
-    paper_viewer.complete_task('Supporting Info')
-    paper_viewer.complete_task('Authors')
-    paper_viewer.complete_task('Financial Disclosure')
-    paper_viewer.complete_task('Additional Information')
+    ms_viewer.complete_task('Billing')
+    ms_viewer.complete_task('Cover Letter')
+    ms_viewer.complete_task('Figures')
+    ms_viewer.complete_task('Supporting Info')
+    ms_viewer.complete_task('Authors')
+    ms_viewer.complete_task('Financial Disclosure')
+    ms_viewer.complete_task('Additional Information')
     time.sleep(3)
 
     # make submission
-    paper_viewer.click_submit_btn()
-    paper_viewer.confirm_submit_btn()
-    paper_viewer.close_submit_overlay()
+    ms_viewer.click_submit_btn()
+    ms_viewer.confirm_submit_btn()
+    ms_viewer.close_submit_overlay()
     # logout
-    paper_viewer.logout()
+    ms_viewer.logout()
 
     # If this is an initial decision submission, admin has to invite
     if paper_type == 'Research w/Initial Decision Card':

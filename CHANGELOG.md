@@ -2,22 +2,34 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+- Email invitation changes can now be saved
+- Added billing role
+### Changed
+### Deprecated
+### Removed
+- Production staff, publishing services, and staff admin can no longer view the billing card
+### Fixed
+- Emails are not sent when a decision is rescinded
+### Security
+
+## [1.24.1] - {2016-09-08}
+### Fixed
+- Staff members can now upload a manuscript after a paper has been submitted
+
 ## [1.24.0] - {2016-08-30}
 ### Added
 - Decisions can be rescinded
 - Heroku deploys are quicker now with a single line command
 - Add permission to view decisions
-- Email invitation changes can now be saved
-- Added billing role
 ### Changed
 - Upgrade to ruby 2.2.4
 ### Deprecated
 ### Removed
-- Production staff, publishing services, and staff admin can no longer view the billing card
 ### Fixed
 - New billing institutions will now be added in alphabetical order
 - Fixed race condition between creating a token, and requesting it when creating or replacing attachments.
-- Emails are not send when a decision is rescinded
 ### Security
 
 ## [1.23.0] - {2016-08-16}

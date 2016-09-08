@@ -95,6 +95,12 @@
     }
   }
 
+  p.caption, caption {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #777777;
+  }
+
   img.paper-body-figure {
     display: block;
     margin: 20px auto;

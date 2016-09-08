@@ -99,7 +99,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def reviewer_suggestions
-    self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'n/a'
+    self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'None'
   end
 
   def associate_existing_user

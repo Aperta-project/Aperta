@@ -36,13 +36,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
     text-transform: capitalize;
   }
 
-  .revision-human-number {
-    border-bottom: 1px solid $tahi-grey-light;
-    td {
-      padding-top: 45px;
-      padding-bottom: 5px;
-    }
-  }
   .expired-invitations {
     &::before {
       content: '';
@@ -373,4 +366,15 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .alternate-text {
   display: inline-block;
   margin: 0 3px 0 3px;
+}
+
+
+.invitation-revision-round {
+  margin-top: 12px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  padding: 12px 20px;
+  color: $tahi-black;
+  font-size: 20px;
+  background: $tahi-grey-xlight;
 }

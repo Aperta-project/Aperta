@@ -1,13 +1,3 @@
-{{invitations-display decisions=decisions
-                      invitations=task.invitations
-                      groupByDecision=groupByDecision
-                      activeInvitation=activeInvitation
-                      activeInvitationState=activeInvitationState
-                      composedInvitation=composedInvitation
-                      toggleActiveInvitation=(action 'toggleActiveInvitation')
-                      inviteeRole=task.inviteeRole
-                      latestDecision=latestDecision}}
-
 <div class="invitation-email-entry">
   {{#auto-suggest endpoint=autoSuggestSourceUrl
                   queryParameter="query"
@@ -22,15 +12,23 @@
                   as |user|}}
     {{user.full_name}} &lt;{{user.email}}&gt;
   {{/auto-suggest}}
-
   <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
           {{action "composeInvite"}}>
     Compose Invite
   </button>
-
   {{#if createInvitation.isRunning}}
     <div class="invitation-email-entry-progress animation-fade-in">
       {{progress-spinner visible=true size="small"}}
     </div>
   {{/if}}
 </div>
+
+{{invitations-display decisions=decisions
+                      invitations=task.invitations
+                      groupByDecision=groupByDecision
+                      activeInvitation=activeInvitation
+                      activeInvitationState=activeInvitationState
+                      composedInvitation=composedInvitation
+                      toggleActiveInvitation=(action 'toggleActiveInvitation')
+                      inviteeRole=task.inviteeRole
+                      latestDecision=latestDecision}}

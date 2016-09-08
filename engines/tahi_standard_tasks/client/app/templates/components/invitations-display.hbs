@@ -8,8 +8,8 @@
                      class='active-invitations'}}
 
   {{#each previousDecisionsWithFilteredInvitations as |decision|}}
-    <div class='revision-human-number'>
-      Round {{decision.majorVersion}}
+    <div class='invitation-revision-round'>
+      v{{decision.revisionNumber}} {{humanize decision.verdict}}
     </div>
     {{invitation-group invitations=decision.filteredInvitations
                        activeInvitation=activeInvitation

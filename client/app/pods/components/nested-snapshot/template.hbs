@@ -38,20 +38,20 @@
     </li>
   {{/if}}
 
-  <ol class="snapshot-children">
-    {{#each children as |child|}}
-      {{nested-snapshot
-        snapshot1=child.[0]
-        snapshot2=child.[1]
-        nested-level=incrementedNestedLevel}}
-    {{/each}}
-  </ol>
-
-{{else}}
-
-  {{#if figure}}
-    {{figure-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
+  {{#if (or figure supportingInformationFile)}}
+    {{attachment-snapshot
+      attachment1=file1 attachment2=file2}}
+  {{else}}
+    <ol class="snapshot-children">
+      {{#each children as |child|}}
+        {{nested-snapshot
+          snapshot1=child.[0]
+          snapshot2=child.[1]
+          nested-level=incrementedNestedLevel}}
+      {{/each}}
+    </ol>
   {{/if}}
+{{else}}
 
   {{#if authorsTask}}
     {{author-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
@@ -59,10 +59,6 @@
 
   {{#if coverLetterTask}}
     {{cover-letter-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
-  {{/if}}
-
-  {{#if supportingInfo}}
-    {{supporting-information-task-snapshot snapshot1=snapshot1 snapshot2=snapshot2}}
   {{/if}}
 
   {{#if funder}}

@@ -9,7 +9,7 @@ describe EventStream::Notifiable do
 
   describe "#notify" do
     # a model with an event_stream_notifier included
-    let(:model) { FactoryGirl.build(:comment) }
+    let!(:model) { FactoryGirl.build(:comment) }
 
     before do
       allow(Notifier).to receive(:notify)
@@ -32,9 +32,22 @@ describe EventStream::Notifiable do
         event: "comment:custom-event",
         data: { custom: "data" }
       )
-      model.notify action: "custom-event", payload: { custom: "data"}
+      model.notify action: "custom-event", payload: { custom: "data" }
     end
 
+    context "when notifications are disabled" do
+      it "does not send notifications" do
+        expect(Notifier).to_not receive(:notify)
+        model.notifications_enabled = false
+        model.save!
+      end
+
+      it "does not send custom notifications" do
+        expect(Notifier).to_not receive(:notify)
+        model.notifications_enabled = false
+        model.notify action: "custom-event", payload: { custom: "data" }
+      end
+    end
   end
 
   describe "#event_payload without requester notification" do

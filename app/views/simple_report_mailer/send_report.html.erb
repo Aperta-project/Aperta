@@ -1,35 +1,31 @@
-<div class="container">
-  <div class="paper-info">
-    <div class="paper-abstract">
-      <% if @simple_report.in_process_balance != @simple_report.currently_sitting_sum %>
-        <h3 class="warning">
-          Warning: today's balance does not match workflow balances
-        </h3>
-        <hr>
-      <% end %>
+<% if @simple_report.in_process_balance != @simple_report.currently_sitting_sum %>
+  <h1 class="warning">
+    Warning: today's balance does not match workflow balances
+  </h1>
+  <hr>
+<% end %>
 
-      <h3>How many papers are in the system today?</h3>
+<h1 class="no-margin">How many papers are in the system today?</h1>
 
-      <p>
-        Yesterday's in process balance: <%= @simple_report.previous_in_process_balance %><br>
-        Today's new initial submissions: <%= @simple_report.new_initial_submissions %><br>
-        Today's accepted/withdrawn/rejected: <%= @simple_report.new_exiting_count %><br>
-        Today's in process balance: <%= @simple_report.in_process_balance %><br>
-      </p>
+<p>
+  Yesterday's in process balance: <%= @simple_report.previous_in_process_balance %><br>
+  Today's new initial submissions: <%= @simple_report.new_initial_submissions %><br>
+  Today's accepted/withdrawn/rejected: <%= @simple_report.new_exiting_count %><br>
+  Today's in process balance: <%= @simple_report.in_process_balance %><br>
+</p>
 
-      <h3>Where are papers currently sitting in the workflow?</h3>
+<h1 class="no-margin">Where are papers currently sitting in the workflow?</h1>
 
-      <p>
-        Initially submitted: <%= @simple_report.initially_submitted %><br>
-        Invited for full submission: <%= @simple_report.invited_for_full_submission %><br>
-        Fully submitted: <%= @simple_report.fully_submitted %><br>
-        Checking: <%= @simple_report.checking %><br>
-        In revision: <%= @simple_report.in_revision %><br>
-      </p>
-      <hr>
-      <p>
-        Draft: <%= @simple_report.unsubmitted %>
-      </p>
-    </div>
-  </div>
-</div>
+<p>
+  Initially submitted: <%= @simple_report.initially_submitted %><br>
+  Invited for full submission: <%= @simple_report.invited_for_full_submission %><br>
+  Fully submitted: <%= @simple_report.fully_submitted %><br>
+  Checking: <%= @simple_report.checking %><br>
+  In revision: <%= @simple_report.in_revision %><br>
+</p>
+
+<hr>
+
+<p>
+  Draft: <%= @simple_report.unsubmitted %>
+</p>

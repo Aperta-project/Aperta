@@ -6,6 +6,7 @@ import random
 import time
 
 from loremipsum import generate_paragraph
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -276,6 +277,7 @@ class ReviewerCandidatesTask(BaseTask):
     Fill out the New Candidate form with random data, then delete that entry
     :param user_object: dictionary for user whose data to use in filling out the recommendation
     """
+    intro_text = self._get(self._intro_text)
     new_cand_btn = self._get(self._new_candidate_btn)
     new_cand_btn.click()
     fn = user_object['name'].split(' ')[0]
@@ -297,11 +299,21 @@ class ReviewerCandidatesTask(BaseTask):
     inst = 'Southern Connecticut State University'
     inst_input = self._get(self._cand_inst_input)
     inst_input.send_keys(inst + Keys.ENTER)
+    self._actions.move_to_element(intro_text).perform()
+    time.sleep(1)
     choice = random.choice(['recommend', 'oppose'])
     if choice == 'recommend':
-      self._get(self._cand_recc_radio_btn).click()
+      recc_btn = self._get(self._cand_recc_radio_btn)
+      try:
+        recc_btn.click()
+      except WebDriverException:
+        self.click_covered_element(recc_btn)
     else:
-      self._get(self._cand_opp_radio_btn).click()
+      opp_btn = self._get(self._cand_opp_radio_btn)
+      try:
+        opp_btn.click()
+      except WebDriverException:
+        self.click_covered_element(opp_btn)
     reason = generate_paragraph(start_with_lorem=True)[2]
     opt_reason_field = self._get(self._cand_reason)
     opt_reason_field.send_keys(reason)
@@ -309,7 +321,6 @@ class ReviewerCandidatesTask(BaseTask):
     save_button.click()
     self.check_for_flash_error()
     time.sleep(2)
-
     entry = self._get(self._cand_entry_view)
     full_name = entry.find_element(*self._cand_view_full_name)
     self._actions.move_to_element(full_name).perform()
@@ -317,10 +328,17 @@ class ReviewerCandidatesTask(BaseTask):
     time.sleep(.5)
     self._actions.move_to_element(delete_recommendation).perform()
     time.sleep(.5)
-    delete_recommendation.click()
+    try:
+      delete_recommendation.click()
+    except WebDriverException:
+      self.click_covered_element(delete_recommendation)
     confirm_delete = self._get(self._cand_view_delete_confirm_delete)
-    confirm_delete.click()
-    time.sleep(1)
+    time.sleep(2)
+    try:
+      confirm_delete.click()
+    except WebDriverException:
+      self.click_covered_element(confirm_delete)
+    time.sleep(3)
     try:
       self._get(self._cand_entry_view)
     except ElementDoesNotExistAssertionError:

@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Email invitation changes can now be saved
 - Added billing role
+- Keeps all uploaded manuscripts
 ### Changed
 ### Deprecated
 ### Removed
@@ -23,7 +24,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Decisions can be rescinded
 - Heroku deploys are quicker now with a single line command
 - Add permission to view decisions
-- Keeps all uploaded manuscripts
+- Email invitation changes can now be saved
+- Added billing role
+- Can view old versions of figures and supporting information
 ### Changed
 - Upgrade to ruby 2.2.4
 ### Deprecated

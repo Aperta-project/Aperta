@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://tahi-test.s3.amazonaws.com/temp/about_equations.docx
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/attachment/1/66d6f7241c8ef1fd7877f8cf4799a89574bfb10b04b9c9a81e411b31b54420ae/about_equations.docx
     body:
       encoding: US-ASCII
       string: ''

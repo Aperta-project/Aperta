@@ -11,12 +11,41 @@ class Attachment < ActiveRecord::Base
   include Snapshottable
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
+  STATUS_DONE = 'done'
+
+  class_attribute :public_resource
+
+  def public_resource
+    value = @public_resource
+    value = self.class.public_resource if @public_resource.nil?
+
+    if value.nil?
+      fail NotImplementedError, <<-ERROR.strip_heredoc
+        #{self.class.name} did not declare whether it was a public or private
+        resource. Please set this after careful consideration in
+        #{self.class.name}. Here's what that might need to look like:
+
+            self.public_resource = true|false
+      ERROR
+    end
+
+    value
+  end
 
   self.snapshottable = true
 
-  STATUS_DONE = 'done'
+  # +snapshottable_uploader+ will prevent carrierwave from removing a
+  # mounted file/attachment if the including model has been snapshotted.
+  def self.mount_uploader(mounted_as, uploader_class)
+    super mounted_as, uploader_class
+    carrierwave_removal_method_on_save = "remove_previously_stored_#{mounted_as}".to_sym
+    skip_callback :save, :after, carrierwave_removal_method_on_save, if: -> { keep_file_when_replaced? }
 
-  mount_snapshottable_uploader :file, AttachmentUploader
+    carrierwave_removal_method_on_destroy = "remove_#{mounted_as}!".to_sym
+    skip_callback :commit, :after, carrierwave_removal_method_on_destroy, if: -> { keep_file_when_replaced? }
+  end
+
+  mount_uploader :file, AttachmentUploader
 
   def self.authenticated_url_for_key(key)
     uploader = new.file
@@ -27,6 +56,7 @@ class Attachment < ActiveRecord::Base
     ).url
   end
 
+  belongs_to :uploaded_by, class_name: "User"
   belongs_to :owner, polymorphic: true
   belongs_to :paper
 
@@ -36,7 +66,12 @@ class Attachment < ActiveRecord::Base
   # where the owner is the paper, it bypasses the owner= method.
   after_initialize :set_paper, if: :new_record?
 
-  def download!(url)
+  def keep_file_when_replaced?
+    snapshotted?
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def download!(url, uploaded_by: nil)
     # Wrap this in a transaction so the ActiveRecord after_commit lifecycle
     # event isn't fired until the transaction completes and all of the work
     # is finished.
@@ -46,11 +81,13 @@ class Attachment < ActiveRecord::Base
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
+      self.uploaded_by = uploaded_by
+      self.updated_at = Time.zone.now
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!
-      refresh_resource_token!(file)
+      refresh_resource_token!(file) if public_resource
 
       # Do not mark as done until all of the steps that go into
       # downloading a file, creating resource tokens, etc are completed. This
@@ -65,6 +102,11 @@ class Attachment < ActiveRecord::Base
     on_download_failed(ex)
   ensure
     @downloading = false
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def public_url(*args)
+    non_expiring_proxy_url(*args) if public_resource
   end
 
   def destroy_resource_token!
@@ -91,6 +133,27 @@ class Attachment < ActiveRecord::Base
 
   def filename
     self[:file]
+  end
+
+  def did_file_change?
+    # check to see if the file changed in a way that recognizes reverting to
+    # an old MS version (pre file_hash)
+    did_file_change_pre_file_hash = file_hash.blank? &&
+      (changes.include?('file') || previous_changes.include?('file'))
+
+    # This is the modern way
+    did_file_change = file_hash.present? &&
+      (changes.include?('file_hash') || previous_changes.include?('file_hash'))
+
+    did_file_change_pre_file_hash || did_file_change
+  end
+
+  # This returns the a local File object referencing the manuscript source
+  # file. It will download the file from the a remote location if it is not
+  # already locally cached.
+  def to_file
+    file.download!(url) unless file.cached?
+    File.new(file.path)
   end
 
   def done?

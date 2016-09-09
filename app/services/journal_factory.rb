@@ -152,9 +152,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
 
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
-
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
@@ -276,9 +273,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
 
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
-
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
@@ -323,9 +317,6 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
-
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -374,5 +365,10 @@ class JournalFactory
     end
 
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
+
+    Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
+      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
+    end
   end
 end

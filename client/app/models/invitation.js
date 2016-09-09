@@ -75,14 +75,6 @@ export default DS.Model.extend({
     return this.get('restless').putUpdate(this, '/send_invite');
   },
 
-  fetchDetails() {
-    return this.get('restless')
-     .get(`/api/invitations/${this.get('id')}/details`)
-     .then((details) => {
-       this.get('store').pushPayload(details);
-     });
-  },
-
   feedbackSent() {
     this.set('pendingFeedback', false);
   },

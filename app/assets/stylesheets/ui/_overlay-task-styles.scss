@@ -24,8 +24,11 @@
     }
 
     li + li:before {
+      position: relative;
+      top: -2px;
       content: " | ";
       padding: 0 5px;
+      color: #999;
     }
   }
 }

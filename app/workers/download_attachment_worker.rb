@@ -3,7 +3,8 @@
 class DownloadAttachmentWorker
   include Sidekiq::Worker
 
-  def perform attachment_id, url
-    Attachment.find(attachment_id).download!(url)
+  def perform(attachment_id, url, uploaded_by_user_id)
+    user = User.find(uploaded_by_user_id)
+    Attachment.find(attachment_id).download!(url, uploaded_by: user)
   end
 end

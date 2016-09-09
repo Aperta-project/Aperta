@@ -21,7 +21,7 @@ class Snapshot::AttachmentSerializer < Snapshot::BaseSerializer
       snapshot_property('publishable', 'boolean', model.publishable),
       snapshot_property('status', 'text', model.status),
       snapshot_property('title',  'text', model.title),
-      snapshot_property('url', 'url', model.non_expiring_proxy_url)
+      snapshot_property('url', 'url', model.public_url)
     ]
     if model.respond_to?(:striking_image)
       properties << snapshot_property('striking_image', 'boolean', model.striking_image)

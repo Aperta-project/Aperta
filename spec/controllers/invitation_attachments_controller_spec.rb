@@ -206,7 +206,8 @@ describe InvitationAttachmentsController do
         end
 
         it 'calls DownloadAttachmentWorker' do
-          expect(DownloadAttachmentWorker).to receive(:perform_async).with(attachment.id, url)
+          expect(DownloadAttachmentWorker).to receive(:perform_async)
+            .with(attachment.id, url, user.id)
           do_request
           expect(response).to be_success
         end

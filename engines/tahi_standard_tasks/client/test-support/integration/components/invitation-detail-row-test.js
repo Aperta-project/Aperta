@@ -7,7 +7,6 @@ moduleForComponent('invitation-detail-row',
                       integration: true,
                       beforeEach: function() {
                         this.set('update-date', new Date('January 01, 2016'));
-                        this.set('destroyAction', () => {return;});
                         this.set('invitation', Ember.Object.create({
                           declineReason: null,
                           declined: false,
@@ -24,22 +23,21 @@ moduleForComponent('invitation-detail-row',
                     });
 
 let template = hbs`{{invitation-detail-row
-                      invitation=invitation
-                      destroyAction=destroyAction}}`;
+                      invitation=invitation}}`;
 
-test('displays invitation information', function(assert){
+test('displays invitation information if the invite.invited is true', function(assert){
+  this.set('invitation.invited', true);
   this.render(template);
 
-  assert.textPresent('.invitation-item-updated-at',
-                     moment(this.get('update-date')).format('LLL'));
-  assert.textPresent('.invitation-item-state', 'draft');
+  assert.textPresent('.invitation-item-status',
+                     `Invited ${moment(this.get('update-date')).format('MMM D, YYYY')}`);
 });
 
-test('displays invitee information when present', function(assert){
+test('displays invitee name and email when present', function(assert){
   this.render(template);
 
   assert.textPresent('.invitation-item-full-name', 'Jane McEdits');
-  assert.textNotPresent('.invitation-item-full-name', 'jane@example.com');
+  assert.textPresent('.invitation-item-full-name', '<jane@example.com>');
 });
 
 test('displays invitation email when no invitee present', function(assert){
@@ -50,33 +48,44 @@ test('displays invitation email when no invitee present', function(assert){
   assert.textPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
-test('displays remove icon if invite not accepted and given destroyAction',
+test('displays delete icon if invite is pending and the row is in the show state',
   function(assert){
-    this.set('invitation.accepted', false);
-    this.render(template);
+    this.setProperties({
+      'invitation.pending': true,
+      allowDestroy: true,
+      uiState: 'show'
+    });
+    let openTemplate = hbs`{{invitation-detail-row
+                          allowDestroy=allowDestroy
+                          invitation=invitation
+                          uiState=uiState}}`;
+    this.render(openTemplate);
 
-    assert.elementFound('.invite-remove');
+    assert.elementFound('.invite-remove', 'destroy button is found in show state with AllowDestroy');
+
+    this.setProperties({
+      'invitation.pending': true,
+      allowDestroy: false,
+      uiState: 'show'
+    });
+    assert.elementNotFound('.invite-remove', 'destroy button not shown if not allowed');
+
+    this.setProperties({
+      'invitation.pending': false,
+      allowDestroy: true,
+      uiState: 'show'
+    });
+    assert.elementNotFound('.invite-remove', 'destroy button not shown if invitation is not pending');
+
+    this.setProperties({
+      'invitation.pending': true,
+      allowDestroy: true,
+      uiState: 'closed'
+    });
+    assert.elementNotFound('.invite-remove', 'destroy button not shown if the row is closed');
   }
 );
 
-test('does not display remove icon if invite accepted',
-  function(assert){
-    this.set('invitation.accepted', true);
-    this.render(template);
-
-    assert.elementNotFound('.invite-remove');
-  }
-);
-
-test('does not display remove icon if invite accepted and no destroyAction',
-  function(assert){
-    this.set('invitation.accepted', true);
-    this.set('destroyAction', null);
-    this.render(template);
-
-    assert.elementNotFound('.invite-remove');
-  }
-);
 
 test('displays decline feedback when declined', function(assert){
   this.set('invitation.declined', true);

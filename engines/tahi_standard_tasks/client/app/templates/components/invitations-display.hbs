@@ -1,8 +1,12 @@
 {{#if groupByDecision}}
   <div class="active-invitations">
     {{#each latestDecisionInvitations as |invitation|}}
-      {{invitation-detail-row invitation=invitation
-                              destroyAction=(action "destroyInvitation")}}
+      {{invitation-detail-row
+          setRowState=(action attrs.toggleActiveInvitation invitation)
+          deleteOnCancel=(eq invitation composedInvitation)
+          invitation=invitation
+          activeInvitation=activeInvitation
+          activeInvitationState=activeInvitationState}}
     {{/each}}
   </div>
 
@@ -13,20 +17,27 @@
 
     <div class="expired-invitations">
       {{#each decision.filteredInvitations as |invitation|}}
-        {{invitation-detail-row invitation=invitation
-                                destroyAction=(action 'destroyInvitation')}}
+        {{invitation-detail-row
+            setRowState=(action attrs.toggleActiveInvitation invitation)
+            deleteOnCancel=(eq invitation composedInvitation)
+            invitation=invitation
+            activeInvitation=activeInvitation
+            activeInvitationState=activeInvitationState
+            allowDestroy=false
+            allowSend=false}}
       {{/each}}
     </div>
-
   {{/each}}
 
 {{else}}
-
   <div class="active-invitations">
-    {{#each invitations as |invitation|}}
-      {{invitation-detail-row invitation=invitation
-                              destroyAction=(action 'destroyInvitation')}}
+    {{#each persistedInvitations as |invitation|}}
+      {{invitation-detail-row
+          setRowState=(action attrs.toggleActiveInvitation invitation)
+          deleteOnCancel=(eq invitation composedInvitation)
+          invitation=invitation
+          activeInvitation=activeInvitation
+          activeInvitationState=activeInvitationState}}
     {{/each}}
   </div>
-
 {{/if}}

@@ -91,7 +91,7 @@ describe FiguresController do
       before { stub_sign_in user }
 
       it "calls DownloadAttachmentWorker" do
-        expect(DownloadAttachmentWorker).to receive(:perform_async).with(figure.id, url)
+        expect(DownloadAttachmentWorker).to receive(:perform_async).with(figure.id, url, user.id)
         do_request
         expect(response).to be_success
       end

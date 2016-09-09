@@ -25,10 +25,10 @@ export default Ember.Component.extend({
 
   decisions: computed.alias('task.decisions'),
 
+  inviteeRole: computed.reads('task.inviteeRole'),
   latestDecision: computed('decisions', 'decisions.@each.latest', function() {
     return this.get('decisions').findBy('latest', true);
   }),
-
 
   applyTemplateReplacements(str) {
     const name = this.get('selectedUser.full_name');
@@ -88,6 +88,36 @@ export default Ember.Component.extend({
       // to do its thing) we have to wrap the ajax request in a try-catch block
     }
   }),
+
+  // Used to be invitations-display
+  persistedInvitations: computed('invitations.@each.isNew', function() {
+    return this.get('invitations').rejectBy('isNew');
+  }),
+  latestDecisionInvitations: computed(
+    'latestDecision.invitations.@each.inviteeRole', function() {
+      const type = this.get('inviteeRole');
+      if (this.get('latestDecision.invitations')) {
+        return this.get('latestDecision.invitations')
+                   .filterBy('inviteeRole', type);
+      }
+    }
+  ),
+  previousDecisions: computed('decisions', function() {
+    return this.get('decisions').without(this.get('latestDecision'));
+  }),
+  previousDecisionsWithFilteredInvitations: computed(
+    'previousDecisions.@each.inviteeRole', function() {
+      return this.get('previousDecisions').map(decision => {
+        const allInvitations = decision.get('invitations');
+        const type = this.get('inviteeRole');
+        decision.set(
+          'filteredInvitations',
+          allInvitations.filterBy('inviteeRole', type)
+        );
+        return decision;
+      });
+    }
+  ),
 
   actions: {
     cancelAction() {

@@ -42,7 +42,7 @@ class MoveCarrierWaveCacheDirectory < ActiveRecord::Migration
         # Move old temporary files (in case there are files that were processing when deploy happened)
         file_count=`ls -A $OLD_UPLOADS_TMP_DIRECTORY | wc -l`
         if [ $file_count -gt 0 ] ; then
-          mv $OLD_UPLOADS_TMP_DIRECTORY/* /var/www/tahi/current/public/uploads/tmp/carrierwave/
+          mv $OLD_UPLOADS_TMP_DIRECTORY/* $NEW_DIRECTORY
         else
           echo "There are no files in $OLD_UPLOADS_TMP_DIRECTORY/. Nothing to do. Skipping."
         fi

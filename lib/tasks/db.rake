@@ -58,12 +58,19 @@ namespace :db do
     end
   end
 
-  # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address or
-  # `rake db:import` for the tahi-staging db default
+  # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address
+  # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
   task :import_heroku, [:source_db_name] => [:environment] do |t, args|
     fail "This can only be run in a development environment" unless Rails.env.development?
-    source_db = args[:source_db_name].present? ? args[:source_db_name] : 'tahi-staging'
+    source_db = args[:source_db_name]
+    unless source_db
+      raise <<-MSG.strip_heredoc
+      You need to specify the heroku app you'd like to import from.
+      `rake db:import_heroku[SOURCEDB]`
+      where SOURCEDB is the name of the heroku app. (ie. 'tahi-lean-workflow')
+      MSG
+    end
     Rake::Task['db:drop'].invoke
     system("`(heroku pg:pull DATABASE_URL tahi_development --app #{source_db}) && rake db:reset_passwords`")
   end

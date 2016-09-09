@@ -291,9 +291,10 @@ ActiveRecord::Schema.define(version: 20160916134145) do
     t.text     "reviewer_suggestions"
     t.string   "token"
     t.integer  "primary_id"
-    t.date     "invited_at"
-    t.date     "declined_at"
-    t.date     "accepted_at"
+    t.datetime "invited_at"
+    t.datetime "declined_at"
+    t.datetime "accepted_at"
+    t.datetime "rescinded_at"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
@@ -738,8 +739,8 @@ ActiveRecord::Schema.define(version: 20160916134145) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
-    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
+    t.boolean  "site_admin",             default: false
     t.integer  "ned_id"
   end
 

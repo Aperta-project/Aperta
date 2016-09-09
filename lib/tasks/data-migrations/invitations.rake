@@ -19,6 +19,9 @@ namespace :data do
         Invitation.where(state: 'accepted').find_each do |invitation|
           invitation.update_column(:accepted_at, invitation.updated_at)
         end
+        Invitation.where(state: 'rescinded').find_each do |invitation|
+          invitation.update_column(:rescinded_at, invitation.updated_at)
+        end
       end
     end
   end

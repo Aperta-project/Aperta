@@ -91,10 +91,12 @@
         </p>
       </div>
     {{/if}}
-    <div class="invitation-item-state-and-date">
-      Invited
-      {{format-date invitation.invitedAt format="LLL"}}
-    </div>
+    {{#if invitation.invited}}
+      <div class="invitation-item-state-and-date">
+        Invited
+        {{format-date invitation.invitedAt format="LLL"}}
+      </div>
+    {{/if}}
 {{!-- Leave weird indentation --}}
 <div class="invitation-show-body">{{{invitation.body}}}</div>
     <div class="invite-edit-buttons">

@@ -33,7 +33,7 @@ class Invitation < ActiveRecord::Base
     # block a certain transition if desired.
 
     event(:invite, {
-      after: [:generate_token, :associate_existing_user],
+      after: [:generate_token, :associate_existing_user, :set_invited_at],
       after_commit: :notify_invitation_invited
     }) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
@@ -133,6 +133,10 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_rescinded
     task.invitation_rescinded(self)
+  end
+
+  def set_invited_at
+    update!(invited_at: Time.current.utc)
   end
 
   def generate_token

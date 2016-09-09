@@ -21,8 +21,7 @@ export default Component.extend({
   },
 
   allowAttachments: true,
-  allowDestroy: true,
-  allowSend: true,
+  currentRound: computed.not('previousRound'),
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
   }),
@@ -38,14 +37,14 @@ export default Component.extend({
   invitee: reads('invitation.invitee'),
   invitationBodyStateBeforeEdit: null,
 
-  displayEditButton: computed('invitation.pending', 'closedState', function() {
-    return this.get('invitation.pending') && !this.get('closedState');
+  displayEditButton: computed('invitation.pending', 'closedState', 'currentRound', function() {
+    return this.get('invitation.pending') && !this.get('closedState') && this.get('currentRound');
   }),
 
-  displaySendButton: and('invitation.pending', 'allowSend'),
+  displaySendButton: and('invitation.pending', 'currentRound'),
 
-  displayDestroyButton: computed('invitation.pending', 'closedState', 'allowDestroy', function() {
-    return this.get('allowDestroy') && this.get('invitation.pending') && !this.get('closedState');
+  displayDestroyButton: computed('invitation.pending', 'closedState', 'currentRound', function() {
+    return this.get('invitation.pending') && !this.get('closedState') && this.get('currentRound');
   }),
 
   displayRescindButton: or('invitation.invited', 'invitation.accepted'),

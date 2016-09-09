@@ -291,7 +291,7 @@ class Paper < ActiveRecord::Base
     if latest_version.nil?
       @new_body = new_body
     else
-      draft.update(original_text: new_body)
+      latest_version.update(original_text: new_body)
       notify(action: "updated") unless changed?
     end
   end

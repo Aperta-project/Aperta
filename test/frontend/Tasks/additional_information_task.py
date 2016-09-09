@@ -4,6 +4,7 @@ import logging
 import random
 import time
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from frontend.Tasks.basetask import BaseTask
@@ -109,7 +110,10 @@ class AITask(BaseTask):
       checkboxes = questions[2].find_elements_by_tag_name('input')
       for order, cbx in enumerate(q3ans):
         if cbx == 1:
-          checkboxes[order].click()
+          try:
+            checkboxes[order].click()
+          except WebDriverException:
+            self.click_covered_element(checkboxes[order])
           q3cans = random.choice(q3_child_answer)
           try:
             # This is a rather brute force method, but, I don't have time for filigree here

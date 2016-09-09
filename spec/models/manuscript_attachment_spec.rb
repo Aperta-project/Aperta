@@ -19,7 +19,7 @@ describe ManuscriptAttachment do
 
   describe '#src' do
     it 'returns nil' do
-      expect(attachment.src ).to be nil
+      expect(attachment.src).to be nil
     end
   end
 
@@ -34,5 +34,4 @@ describe ManuscriptAttachment do
       expect(attachment.detail_src).to be nil
     end
   end
-
 end

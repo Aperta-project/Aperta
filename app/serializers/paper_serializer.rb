@@ -4,7 +4,7 @@ class PaperSerializer < LitePaperSerializer
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement
 
-  %i(tables bibitems supporting_information_files).each do |relation|
+  %i(bibitems supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 

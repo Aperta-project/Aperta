@@ -20,7 +20,6 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
-      :tables,
       :bibitems,
       :journal
     ).find(params[:id])

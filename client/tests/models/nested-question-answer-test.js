@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { test, moduleForModel } from 'ember-qunit';
 moduleForModel('nested-question-answer', 'Unit: NestedQuestionAnswer Model', {
-  needs: ['model:author', 'model:user', 'model:figure', 'model:table', 'model:bibitem',
+  needs: ['model:author', 'model:user', 'model:figure', 'model:bibitem',
     'model:journal',
     'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
     'model:question-attachment', 'model:comment-look',

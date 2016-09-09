@@ -19,7 +19,13 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   previewState: false,
   editState: false,
   isProcessing: Ember.computed.equal('figure.status', 'processing'),
+  isError: Ember.computed.equal('figure.status', 'error'),
   showSpinner: Ember.computed.or('isProcessing', 'isUploading'),
+
+  uploadErrorMessage: Ember.computed('figure.filename', function() {
+    return `There was an error while processing ${this.get('figure.filename')}. Please try again
+    or contact Aperta staff.`;
+  }),
 
   validations: {
     'rank': [{

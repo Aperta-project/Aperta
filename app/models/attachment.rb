@@ -103,7 +103,7 @@ class Attachment < ActiveRecord::Base
       on_download_complete
     end
   rescue Exception => ex
-    update_column :status, STATUS_ERROR
+    update_attribute :status, STATUS_ERROR
     on_download_failed(ex)
   ensure
     @downloading = false

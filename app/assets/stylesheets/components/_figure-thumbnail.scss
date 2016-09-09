@@ -5,6 +5,10 @@
     margin-left: 0;
   }
 
+  .progress-error .error-message {
+    font-size: 14px;
+  }
+
   .upload-cancel-button {
     color: $tahi-green;
     font-size: 30px;

@@ -1,6 +1,13 @@
 <div class="figure-thumbnail" data-figure-id={{figure.id}}>
   <div class="outline {{if showSpinner 'loading'}}">
-    {{#if isCanceled}}
+    {{#if isError}}
+      <div class="progress-error">
+        {{error-message message=uploadErrorMessage
+                        displayIcon=true
+                        displayText=true}}
+        <span class="upload-cancel-button" {{action "destroyFigure"}}>×</span>
+      </div>
+    {{else if isCanceled}}
       <div class="progress-text">
         <h4>Upload canceled. Re-upload to try again</h4>
       </div>

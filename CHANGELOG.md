@@ -7,6 +7,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Email invitation changes can now be saved
 - Added billing role
 - Keeps all uploaded manuscripts
+- Can view old versions of figures and supporting information
+- Aperta is now configured to clean out temporary files every 24 hours on the backend.
 ### Changed
 ### Deprecated
 ### Removed
@@ -24,9 +26,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Decisions can be rescinded
 - Heroku deploys are quicker now with a single line command
 - Add permission to view decisions
-- Email invitation changes can now be saved
-- Added billing role
-- Can view old versions of figures and supporting information
 ### Changed
 - Upgrade to ruby 2.2.4
 ### Deprecated
@@ -612,5 +611,3 @@ _Changes too big to document, initial release_
 [1.1.0]: https://github.com/tahi-project/tahi/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/tahi-project/tahi/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Tahi-project/tahi/tree/v1.0.0
-
-

@@ -10,6 +10,7 @@ if ENV.has_key? 'AWS_ACCESS_KEY_ID'
     config.fog_public     = false
     config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}
     config.fog_authenticated_url_expiration = 1.week
+    config.cache_dir = Rails.root.join('public/uploads/tmp/carrierwave').to_s
   end
 else
   Rails.logger.warn "AWS_ACCESS_KEY_ID not found in ENV; CarrierWave is disabled."

@@ -165,7 +165,7 @@ describe EpubConverter do
 
       before do
         allow(converter).to receive(:manuscript_source).and_return(file)
-        allow(converter).to receive(:manuscript_contents).and_return(file.read)
+        allow(converter).to receive(:manuscript_source_contents).and_return(file.read)
         allow(converter).to receive(:_manuscript_source_path)
           .and_return(Pathname.new(file.path))
       end

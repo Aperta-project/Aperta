@@ -11,6 +11,9 @@ class Paper < ActiveRecord::Base
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
   include Assignable::Model
+  include Snapshottable
+
+  self.snapshottable = true
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :striking_image, polymorphic: true
@@ -20,6 +23,8 @@ class Paper < ActiveRecord::Base
   has_many :question_attachments, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :adhoc_attachments, dependent: :destroy
+  has_one :file, as: :owner, dependent: :destroy,
+    class_name: 'ManuscriptAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
@@ -308,6 +313,12 @@ class Paper < ActiveRecord::Base
   # marked as corresponding then it defaults to the creator's email address.
   def corresponding_author_emails
     corresponding_authors.map(&:email)
+  end
+
+  # Downloads the manuscript from the given URL.
+  def download_manuscript!(url, uploaded_by:)
+    attachment = file || create_file
+    attachment.download!(url, uploaded_by: uploaded_by)
   end
 
   # Public: Find `Role`s for the given user on this paper.

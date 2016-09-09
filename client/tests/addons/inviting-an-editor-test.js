@@ -41,7 +41,7 @@ module('Integration: Inviting an editor', {
     task  = FactoryGuy.make('paper-editor-task', { phase: phase, letter: '"A letter"' });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     TestHelper.mockFind('paper').returns({ model: paper });
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
     Factory.createPermission('PaperEditorTask', task.id, ['edit']);
@@ -57,7 +57,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
     andThen(function(){
       assert.elementFound(
-        '.compose-invite-button.button--disabled',
+        '.invitation-email-entry-button.button--disabled',
         'Expected to find Compose Invite button disabled'
       );
 
@@ -70,14 +70,38 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
     andThen(function(){
       assert.elementFound(
-        '.compose-invite-button:not(.button--disabled)',
+        '.invitation-email-entry-button:not(.button--disabled)',
         'Expected to find Compose Invite button enabled'
       );
     });
   });
 });
 
-test('can rescind the invitation', function(assert) {
+test('can delete a pending invitation', function(assert) {
+  Ember.run(function() {
+    let invitation = FactoryGuy.make('invitation', {email: 'foo@bar.com', state: 'pending'});
+    task.set('invitations', [invitation]);
+    TestHelper.mockFind('task').returns({model: task});
+    TestHelper.mockDelete('invitation', invitation.id);
+
+    visit(`/papers/${paper.id}/workflow`);
+    click(".card-content:contains('Invite Editor')");
+
+    andThen(function() {
+      assert.elementFound(`.invitation-item:contains('${invitation.get('email')}')`, 'has pending invitation');
+    });
+
+    click('.invitation-item-full-name');
+    click('.invitation-item-action-delete');
+
+    andThen(function() {
+      assert.equal(task.get('invitation'), null, 'invitation deleted');
+    });
+
+  });
+});
+
+test('can not delete an invited invitation', function(assert) {
   Ember.run(function() {
     let invitation = FactoryGuy.make('invitation', {email: 'foo@bar.com', state: 'invited'});
     task.set('invitations', [invitation]);
@@ -87,16 +111,12 @@ test('can rescind the invitation', function(assert) {
     click(".card-content:contains('Invite Editor')");
 
     andThen(function() {
-      let msgEl = find(`.invitation-item:contains('${invitation.get('email')}')`);
-      assert.ok(msgEl[0] !== undefined, 'has pending invitation');
-
-      TestHelper.mockDelete('invitation', invitation.id);
-      click('.invite-remove');
-
-      andThen(function() {
-        assert.equal(task.get('invitation'), null);
-      });
+      assert.elementFound(`.invitation-item:contains('${invitation.get('email')}')`, 'has pending invitation');
     });
 
+    click('.invitation-item-full-name');
+    andThen(function() {
+      assert.elementNotFound('.invitation-action-item-delete');
+    });
   });
 });

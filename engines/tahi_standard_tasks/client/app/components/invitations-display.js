@@ -4,10 +4,20 @@ const { computed } = Ember;
 
 export default Ember.Component.extend({
   groupByDecision: true,
-
-  invitations: [],
-
+  decisions: null,
+  invitations: null,
   latestDecision: null,
+
+  // externally set to allow editing a newly composed invitation
+  activeInvitation: null,
+  activeInvitationState: null,
+  composedInvitation: null, // this one allows the specific row to change its 'cancel' behavior
+                            // to delete the newly-saved invitation rather than just discarding
+
+  persistedInvitations: computed('invitations.@each.isNew', function() {
+    return this.get('invitations').rejectBy('isNew');
+  }),
+
   latestDecisionInvitations: computed(
     'latestDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');
@@ -36,11 +46,6 @@ export default Ember.Component.extend({
         return decision;
       });
     }
-  ),
+  )
 
-  actions: {
-    destroyInvitation(invitation) {
-      invitation.rescind();
-    }
-  }
 });

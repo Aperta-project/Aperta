@@ -58,7 +58,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
     andThen(function(){
       assert.elementFound(
-        '.compose-invite-button.button--disabled',
+        '.invitation-email-entry-button.button--disabled',
         'Expected to find Compose Invite button disabled'
       );
 
@@ -71,14 +71,14 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
     andThen(function(){
       assert.elementFound(
-        '.compose-invite-button:not(.button--disabled)',
+        '.invitation-email-entry-button:not(.button--disabled)',
         'Expected to find Compose Invite button enabled'
       );
     });
   });
 });
 
-test('can rescind the invitation', function(assert) {
+test('can delete a pending invitation', function(assert) {
   Ember.run(function() {
     let decision = FactoryGuy.make('decision', { latest: true });
     task.set('decisions', [decision]);
@@ -86,10 +86,12 @@ test('can rescind the invitation', function(assert) {
     let invitation = FactoryGuy.make('invitation', {
       email: 'foo@bar.com',
       inviteeRole: 'Reviewer',
-      state: 'invited'
+      state: 'pending'
     });
     decision.set('invitations', [invitation]);
+
     TestHelper.mockFind('task').returns({model: task});
+    TestHelper.mockDelete('invitation', invitation.id);
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
@@ -97,14 +99,44 @@ test('can rescind the invitation', function(assert) {
     andThen(function() {
       let msgEl = find(`.invitation-item:contains('${invitation.get('email')}')`);
       assert.ok(msgEl[0] !== undefined, 'has pending invitation');
-
-      TestHelper.mockDelete('invitation', invitation.id);
-      click('.invite-remove');
-
-      andThen(function() {
-        assert.equal(task.get('invitation'), null);
-      });
     });
 
+    click('.invitation-item-full-name');
+    click('.invitation-item-action-delete');
+
+    andThen(function() {
+      assert.equal(task.get('invitation'), null, 'invitation deleted');
+    });
+  });
+});
+
+test('can not send or delete a pending invitation from a previous round', function(assert) {
+  Ember.run(function() {
+    let decision = FactoryGuy.make('decision', { latest: true });
+    let oldDecision = FactoryGuy.make('decision', { latest: false });
+    task.set('decisions', [decision, oldDecision]);
+
+    let invitation = FactoryGuy.make('invitation', {
+      email: 'foo@bar.com',
+      inviteeRole: 'Reviewer',
+      state: 'pending'
+    });
+    oldDecision.set('invitations', [invitation]);
+
+    TestHelper.mockFind('task').returns({model: task});
+
+    visit(`/papers/${paper.id}/workflow`);
+    click(".card-content:contains('Invite Reviewers')");
+
+    andThen(function() {
+      assert.elementNotFound('.active-invitations .invitation-item', 'no active invitations');
+      assert.elementFound(`.expired-invitations .invitation-item:contains('${invitation.get('email')}')`, 'has an old pending invitation');
+    });
+
+    click('.invitation-item-full-name');
+    andThen(function() {
+      assert.elementNotFound('.invitation-item-action-delete');
+      assert.elementNotFound('.invitation-item-action-send');
+    });
   });
 });

@@ -6,11 +6,13 @@ class InviteReviewersOverlay < CardOverlay
     reviewers.each do |reviewer|
       # Find thru auto-suggest
       fill_in "invitation-recipient", with: reviewer.email
-      find(".auto-suggest-item", text: "#{reviewer.full_name} [#{reviewer.email}]").click
+      find(".auto-suggest-item", text: "#{reviewer.full_name} <#{reviewer.email}>").click
 
       # Invite
-      find('.compose-invite-button').click
-      find('.send-invitation-button').click
+      find('.invitation-email-entry-button').click
+      find('.invitation-save-button').click
+      row = find('.active-invitations .invitation-item-header', text: reviewer.full_name)
+      row.find('.invite-send').click
 
       # Make sure we see they were invited
       expect(page).to have_css('.active-invitations')
@@ -20,9 +22,10 @@ class InviteReviewersOverlay < CardOverlay
 
   def invite_new_reviewer(email)
     fill_in "invitation-recipient", with: email
-    find('.compose-invite-button').click
-    find('.send-invitation-button').click
-    find('.active-invitations .invitation-item-full-name', text: email)
+    find('.invitation-email-entry-button').click
+    find('.invitation-save-button').click
+    row = find('.active-invitations .invitation-item-header', text: email)
+    row.find('.invite-send').click
   end
 
   def paper_reviewers

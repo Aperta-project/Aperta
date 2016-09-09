@@ -1,31 +1,9 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if invitationToEdit}}
-    {{edit-invitation allowAttachments=true
-                      invitation=invitationToEdit
-                      closeAction=(action "cancelAction")}}
-  {{else}}
-    {{invitations-display groupByDecision=false
-                          invitations=task.invitations}}
-
-    <div class="invitation-email-entry">
-      {{#auto-suggest endpoint=autoSuggestSourceUrl
-                      queryParameter="query"
-                      inputId="invitation-recipient"
-                      placeholder="Invite Academic Editor by name or email"
-                      parseResponseFunction=parseUserSearchResponse
-                      itemSelected="didSelectUser"
-                      inputChanged="inputChanged"
-                      itemDisplayTextFunction=displayUserSelected
-                      as |user|}}
-        {{user.full_name}} [{{user.email}}]
-      {{/auto-suggest}}
-
-      <button class="button-secondary button--green compose-invite-button {{unless selectedUser "button--disabled"}}"
-              {{action "composeInvite"}}>
-        Compose Invite
-      </button>
-    </div>
-  {{/if}}
+  {{invitation-manager task=task
+                       replaceTargetName="EDITOR NAME"
+                       groupByDecision=false
+                       endpoint="academic_editors"
+                       placeholder="Invite editor by name or email"}}
 </div>

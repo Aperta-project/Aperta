@@ -184,7 +184,9 @@ class Attachment < ActiveRecord::Base
 
   # These methods were pulled up from Attachment subclasses
   def src
-    non_expiring_proxy_url if done?
+    return unless done?
+    return unless public_resource
+    non_expiring_proxy_url
   end
 
   def access_details
@@ -193,14 +195,18 @@ class Attachment < ActiveRecord::Base
 
   def detail_src(**opts)
     return unless image?
+    return unless done?
+    return unless public_resource
 
-    non_expiring_proxy_url(version: :detail, **opts) if done?
+    non_expiring_proxy_url(version: :detail, **opts)
   end
 
   def preview_src
     return unless image?
+    return unless done?
+    return unless public_resource
 
-    non_expiring_proxy_url(version: :preview) if done?
+    non_expiring_proxy_url(version: :preview)
   end
 
   def image?

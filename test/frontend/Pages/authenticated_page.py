@@ -396,18 +396,6 @@ class AuthenticatedPage(PlosPage):
       # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
       logging.error('Error Message found: {0}'.format(error_msg_string))
 
-  def click_covered_element(self, element):
-    """
-    Because the Manuscript toolbar obscures content, we need a method specifically to click
-    on element without click on that is on top. This breaks Selenium prevision on not
-    clicking in elements that a regular user will not be able to click, so use it only for
-    non core test component. Consider this a Konami like cheatcode for development purposes.
-    :param element: webelement to receive the click
-    :return: None
-    """
-    self._driver.execute_script("javascript:arguments[0].click()", element)
-    return None
-
   def check_for_flash_success(self):
     """
     Check that any process (submit, save, send, etc) triggered a flash success message
@@ -672,6 +660,26 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     # using 2x the height of the toolbar as for items like images, the positioning can "receded"
     self._driver.execute_script("javascript:scrollBy(0,-120)")
+    time.sleep(1)
+
+  def click_covered_element(self, element):
+    """
+    Because the Manuscript toolbar obscures content, we need a method specifically to click
+    on element without click on that is on top. This breaks Selenium prevision on not
+    clicking in elements that a regular user will not be able to click, so use it only for
+    non core test component. Consider this a Konami like cheatcode for development purposes.
+    :param element: webelement to receive the click
+    :return: None
+    """
+    self._driver.execute_script("javascript:arguments[0].click()", element)
+    return None
+
+  def scroll_by_pixels(self, pixels):
+    """
+    A generic method to scroll by x pixels (positive - down) or (negative - up)
+    :return: void function
+    """
+    self._driver.execute_script('javascript:scrollBy(0,{0})'.format(pixels))
     time.sleep(1)
 
   # Style Validations

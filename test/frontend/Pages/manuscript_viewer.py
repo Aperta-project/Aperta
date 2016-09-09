@@ -822,3 +822,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._paper_sidebar_state_information)
     logging.info(datetime.now())
     self.restore_timeout()
+
+  def reset_view_top_accordion(self):
+    """ Resets the view to the submission information section of the right hand column"""
+    sub_info = self._get(self._paper_sidebar_state_information)
+    self._actions.move_to_element(sub_info).perform()
+    time.sleep(.5)

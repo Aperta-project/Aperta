@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SnapshotAttachment from 'tahi/models/snapshot/attachment';
 
 export default Ember.Component.extend({
   snapshot1: null,
@@ -12,7 +13,7 @@ export default Ember.Component.extend({
   }),
   generalCase: Ember.computed.not('specialCase'),
   specialCase: Ember.computed.or(
-    'authorsTask', 'figure', 'supportingInfo', 'funder', 'coverLetterTask'),
+    'authorsTask', 'funder', 'coverLetterTask'),
 
   authorsTask: Ember.computed.equal('primarySnapshot.name', 'authors-task'),
   coverLetterTask: Ember.computed.equal('primarySnapshot.name', 'cover-letter-task'),
@@ -20,7 +21,14 @@ export default Ember.Component.extend({
   booleanQuestion: Ember.computed.equal(
     'primarySnapshot.value.answer_type',
     'boolean'),
-  figure: Ember.computed.equal('primarySnapshot.name', 'figure-task'),
+  figure: Ember.computed.equal('primarySnapshot.name', 'figure'),
+  supportingInformationFile: Ember.computed.equal('primarySnapshot.name', 'supporting-information-file'),
+  file1: Ember.computed('snapshot1', function() {
+    return SnapshotAttachment.create({attachment: this.get('snapshot1')});
+  }),
+  file2: Ember.computed('snapshot2', function() {
+    return SnapshotAttachment.create({attachment: this.get('snapshot2')});
+  }),
   funder: Ember.computed.equal('primarySnapshot.name', 'funder'),
   id: Ember.computed.equal('primarySnapshot.name', 'id'),
   integer: Ember.computed.equal('primarySnapshot.type', 'integer'),
@@ -55,6 +63,6 @@ export default Ember.Component.extend({
   }),
 
   incrementedNestedLevel: Ember.computed('nestedLevel', function(){
-    return this.get('nestedLevel') + 1;
+    return this.incrementProperty('nestedLevel');
   })
 });

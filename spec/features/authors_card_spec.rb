@@ -29,6 +29,7 @@ feature 'Authors card', js: true do
       find('.author-title').send_keys('title')
       find('.author-department').send_keys('department')
       find_button('done').click
+      expect(overlay).to have_css('.author-task-item-view .author-email', text: 'email@email.email')
       expect(overlay).to be_uncompleted
       overlay.dismiss
 
@@ -47,6 +48,7 @@ feature 'Authors card', js: true do
       find('.contact-last').send_keys('last')
       find('.contact-email').send_keys('email@email.email')
       find_button('done').click
+      expect(overlay).to have_css('.author-task-item-view .author-email', text: 'email@email.email')
       expect(overlay).to be_uncompleted
       overlay.dismiss
 

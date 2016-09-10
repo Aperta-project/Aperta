@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Component,
-  computed,
-  computed: { alias, and, not, or },
+  computed: { alias, and, not },
   inject: { service },
   isEmpty
 } = Ember;
@@ -39,6 +39,16 @@ export default Component.extend(ValidationErrorsMixin, {
 
   taskStateToggleable: alias('isEditableDueToPermissions'),
 
+  saveTask: concurrencyTask(function * () {
+    try {
+      yield this.get('task').save();
+      this.clearAllValidationErrors();
+    } catch (response) {
+      this.displayValidationErrorsFromResponse(response);
+      this.set('task.completed', false);
+    }
+  }),
+
   save() {
     this.set('validationErrors.completed', '');
     if(this.validateData) { this.validateData(); }
@@ -49,12 +59,7 @@ export default Component.extend(ValidationErrorsMixin, {
       return;
     }
 
-    return this.get('task').save().then(()=> {
-      this.clearAllValidationErrors();
-    }, (response) => {
-      this.displayValidationErrorsFromResponse(response);
-      this.set('task.completed', false);
-    });
+    return this.get('saveTask').perform();
   },
 
   validateAll() {

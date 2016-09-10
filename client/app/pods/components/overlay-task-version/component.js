@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   /**
@@ -11,17 +12,18 @@ export default Ember.Component.extend({
   **/
   outAnimationComplete: null,
 
+  selectedSnapshots: task(function * () {
+    yield this.fetchSnapshots();
+    const apertaTask = this.get('model');
+    return {
+      v1: apertaTask.getSnapshotForVersion(this.get('selectedVersion1')),
+      v2: apertaTask.getSnapshotForVersion(this.get('selectedVersion2'))
+    };
+  }),
+
   init() {
     this._super(...arguments);
     this._assertions();
-    const task = this.get('model');
-
-    this.set('selectedSnapshots', this.fetchSnapshots().then(()=> {
-      return {
-        v1: task.getSnapshotForVersion(this.get('selectedVersion1')),
-        v2: task.getSnapshotForVersion(this.get('selectedVersion2'))
-      };
-    }));
   },
 
   fetchSnapshots() {

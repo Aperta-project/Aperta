@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 - Production staff, publishing services, and staff admin can no longer view the billing card
 ### Fixed
+- Emails are properly displated in all clients
 - Emails are not sent when a decision is rescinded
 ### Security
 

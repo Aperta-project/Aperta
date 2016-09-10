@@ -1,25 +1,13 @@
-<div class="container">
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @journal.logo_url %>
-        <img class="journal-logo" src="<%= @journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @journal.name %>
-        </div>
-      <% end %>
-    </div>
-    <div class="paper-abstract">
-      <%= simple_format @invitation.body %>
-    </div>
-    <p>
-      <a class="button" href="<%= client_dashboard_url({ invitation_token: @invitation.token }) %> target="_blank">
-        View Invitation
-      </a>
-    </p>
-  </div>
-  <hr>
-  <div class="footer">
-    <%= @paper.journal.name %> Team
-  </div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<div>
+  <%= simple_format @invitation.body %>
 </div>
+
+<%= render partial: 'email/button', locals: {
+  href: client_dashboard_url({ invitation_token: @invitation.token }),
+  text: 'View Invitation'
+} %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

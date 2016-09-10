@@ -33,6 +33,7 @@ export default Ember.TextField.extend({
   railsMethod: 'POST',
 
   acceptFileTypes: Ember.computed('accept', function(){
+    if (!this.get('accept')) { return null; }
     return filetypeRegex(this.get('accept'));
   }),
 

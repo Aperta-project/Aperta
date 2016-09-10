@@ -36,6 +36,17 @@ export default Ember.TextField.extend({
     return filetypeRegex(this.get('accept'));
   }),
 
+  // get keys in order to make a successful request to S3
+  getS3Credentials(fileName, contentType) {
+    let requestPayload = {
+      file_path: this.get('filePrefix'),
+      file_name: fileName,
+      content_type: contentType
+    };
+
+    return Ember.$.getJSON('/api/s3/sign', requestPayload);
+  },
+
   setupUploader: (function() {
     let uploader = this.$();
     let params = this.getProperties('dataType', 'method', 'acceptFileTypes');
@@ -64,36 +75,25 @@ export default Ember.TextField.extend({
       }
 
       let self = this;
-      $.ajax({  // make get request to setup s3 keys for actual upload
-        url: '/api/s3/request_policy',
-        type: 'GET',
-        dataType: 'json',
-        data: {
-          file_prefix: this.get('filePrefix'),
-          content_type: file.type
-        }
-      }).then((data) => {
-        uploadData.url = encodeURI(data.url);
-        uploadData.formData = {
-          key: data.key + '/' + file.name,
-          policy: data.policy,
-          success_action_status: 201,
-          'Content-Type': file.type,
-          signature: data.signature,
-          AWSAccessKeyId: data.access_key_id,
-          acl: data.acl
-        };
+
+      let contentType = file.type;
+      this.getS3Credentials(fileName, contentType).then(({url, formData}) => {
+        uploadData.url = url;
+        uploadData.formData = formData;
+
         let uploadFunction = function() {
-          return uploadData.process().done(function(data) {
-            return self.sendAction('start', data, uploadData.submit());
+          uploadData.process().done(function(data) {
+            self.sendAction('start', data, uploadData.submit());
           });
         };
+
         if (self.get('uploadImmediately')) {
-          return uploadFunction();
+          uploadFunction();
         } else {
-          return self.sendAction('uploadReady', uploadFunction);
+          self.sendAction('uploadReady', uploadFunction);
         }
       });
+
     });
 
     uploader.on('fileuploaddone', (e, fileData) => {

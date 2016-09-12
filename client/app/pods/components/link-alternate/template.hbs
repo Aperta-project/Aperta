@@ -1,15 +1,15 @@
-<i class="fa fa-link"i aria-hidden="true"></i>
-<div class='alternate-text'>
-  Link as an alternate to:
-</div>
-{{select-2-single minimumResultsForSearch=10
-              allowClear=true
-              placeholder='Select a candidate (optional)...'
-              selectionCleared="selectionCleared"
-              selectionSelected="selectionSelected"
-              source=alternateCandidates
-              value=''
-              selectedData=selectedPrimary
-              dropdownCssClass='someClass'
-              width=250
-              enable=enable}}
+{{#if filteredAlternates.length}}
+  <i class="fa fa-link" aria-hidden="true"></i>
+  <div class="alternate-text">Link as an alternate to:</div>
+
+  {{select-2-single minimumResultsForSearch=10
+                    allowClear=true
+                    placeholder='Select a candidate (optional)...'
+                    selectionCleared="selectionCleared"
+                    selectionSelected="selectionSelected"
+                    source=alternateCandidates
+                    value=''
+                    selectedData=selectedPrimary
+                    width=250
+                    enable=enable}}
+{{/if}}

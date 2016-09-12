@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   invitation: null, // passed-in
-  classNames: [ 'invitation-link-alternate' ],
+  classNames: ['invitation-link-alternate'],
   filteredAlternates: Ember.computed.filter('invitations.@each.state', function(invitation) {
     if (invitation===this.get('invitation')) { // Reject suggested alternate if itself
       return false;

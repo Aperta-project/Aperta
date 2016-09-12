@@ -227,6 +227,58 @@ describe AdhocAttachmentsController do
     end
   end
 
+  describe 'PUT #cancel' do
+    subject(:do_request) do
+      put :cancel, format: 'json', id: attachment.id
+    end
+
+    let(:attachment) { task.attachments.create! }
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user is signed in' do
+      before { stub_sign_in user }
+
+      context 'when the user has access' do
+        before do
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return true
+        end
+
+        it 'cancels the download' do
+          allow(Attachment).to receive(:find).and_return(attachment)
+          expect(attachment).to receive(:cancel_download)
+          do_request
+        end
+
+        it 'returns success' do
+          do_request
+          expect(response).to be_success
+        end
+      end
+
+      context 'when the user does not have access' do
+        before do
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return false
+        end
+
+        it 'does not cancel anything' do
+          allow(Attachment).to receive(:find).and_return(attachment)
+          expect(attachment).to_not receive(:cancel_download)
+          do_request
+        end
+
+        it 'returns a 403' do
+          do_request
+          expect(response.status).to eq(403)
+        end
+      end
+    end
+  end
+
   describe 'PUT #update' do
     subject(:do_request) do
       patch :update,

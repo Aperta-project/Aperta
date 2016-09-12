@@ -98,6 +98,27 @@ describe FiguresController do
     end
   end
 
+  describe "PUT 'cancel'" do
+    subject(:do_request) do
+      put :cancel, format: "json", id: figure.id
+    end
+
+    let(:figure) { paper.figures.create! }
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is authenticated' do
+      before { stub_sign_in user }
+
+      it "calls cancel_download" do
+        allow(Figure).to receive(:find).and_return(figure)
+        expect(figure).to receive(:cancel_download)
+        do_request
+        expect(response).to be_success
+      end
+    end
+  end
+
   describe "PUT 'update'" do
     subject(:do_request) do
       put(

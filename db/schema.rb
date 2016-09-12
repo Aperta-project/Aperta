@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909192901) do
+ActiveRecord::Schema.define(version: 20160912141012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,16 +126,6 @@ ActiveRecord::Schema.define(version: 20160909192901) do
     t.string   "current_address_country"
     t.string   "current_address_postal"
   end
-
-  create_table "bibitems", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "format"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"

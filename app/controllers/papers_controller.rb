@@ -20,7 +20,6 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
-      :bibitems,
       :journal
     ).find(params[:id])
     requires_user_can(:view, paper)
@@ -181,9 +180,7 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: [],
-      table_ids: [],
-      bibitem_ids: []
+      figure_ids: []
     )
   end
 
@@ -198,9 +195,7 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: [],
-      table_ids: [],
-      bibitem_ids: []
+      figure_ids: []
     )
   end
 

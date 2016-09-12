@@ -270,7 +270,7 @@ describe QueryParser do
       end
 
       it 'parses VERSION DATE < mm/dd/yyyy' do
-        Timecop.freeze do |now|
+        Timecop.freeze do
           search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
           search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
 
@@ -282,7 +282,7 @@ describe QueryParser do
       end
 
       it 'parses VERSION DATE > mm/dd/yyyy' do
-        Timecop.freeze do |now|
+        Timecop.freeze do
           search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
           search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
 
@@ -330,7 +330,7 @@ describe QueryParser do
         end
 
         it 'when date is in mm/dd/yy format' do
-          Timecop.freeze do |now|
+          Timecop.freeze do
             search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
             search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
 
@@ -342,7 +342,7 @@ describe QueryParser do
         end
 
         it 'when date is in yyyy-mm-dd format' do
-          Timecop.freeze do |now|
+          Timecop.freeze do
             search_date = 3.days.ago.utc.strftime("%Y-%m-%d")
             search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
 
@@ -367,7 +367,7 @@ describe QueryParser do
 
       describe 'parses SUBMISSION DATE < date' do
         it 'when date is in mm/dd/yy format' do
-          Timecop.freeze do |now|
+          Timecop.freeze do
             search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
             search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
 
@@ -379,7 +379,7 @@ describe QueryParser do
         end
 
         it 'when date is in yyyy-mm-dd format' do
-          Timecop.freeze do |now|
+          Timecop.freeze do
             search_date = 3.days.ago.utc.strftime("%Y-%m-%d")
             search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
 
@@ -400,7 +400,6 @@ describe QueryParser do
             SQL
           end
         end
-
       end
     end
 

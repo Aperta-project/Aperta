@@ -1,0 +1,43 @@
+.select2-container .select2-choice {
+  padding: 1px 10px;
+  height: auto;
+  width: auto;
+  font-size: .9em;
+}
+
+.select2-container .select2-choice .select2-arrow {
+  background: $tahi-green;
+  border-radius: 0px;
+  color: #FFFFFF;
+  font-size: 1.3em;
+  padding: 1px 18px 1px 5px;
+
+  &:after {
+    content: '\f107';
+    font-family: FontAwesome;
+  }
+
+  b {
+    display: none;
+  }
+
+  .fa-angle-down {
+    padding: 1px;
+  }
+}
+
+.select2-results li.select2-highlighted {
+  background: $tahi-green;
+}
+
+.select2-drop-active {
+  border-color: $tahi-green;
+}
+
+.select2-container-active .select2-choice, .select2-container-active .select2-choices {
+  border-color: $tahi-green;
+}
+
+.select2-dropdown-open.select2-drop-above .select2-choice, .select2-dropdown-open.select2-drop-above .select2-choices {
+  border-color: $tahi-green;
+}

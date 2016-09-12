@@ -271,8 +271,8 @@ describe QueryParser do
 
       it 'parses VERSION DATE < mm/dd/yyyy' do
         Timecop.freeze do |now|
-          search_date = now.days_ago(3).strftime("%m/%d/%Y")
-          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+          search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
+          search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
 
           parse = QueryParser.new.parse "VERSION DATE < #{search_date}"
           expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -283,8 +283,8 @@ describe QueryParser do
 
       it 'parses VERSION DATE > mm/dd/yyyy' do
         Timecop.freeze do |now|
-          search_date = now.days_ago(3).strftime("%m/%d/%Y")
-          search_date_db = now.days_ago(3).end_of_day.to_formatted_s(:db)
+          search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
+          search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
 
           parse = QueryParser.new.parse "VERSION DATE > #{search_date}"
           expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -331,8 +331,8 @@ describe QueryParser do
 
         it 'when date is in mm/dd/yy format' do
           Timecop.freeze do |now|
-            search_date = now.days_ago(3).strftime("%m/%d/%Y")
-            search_date_db = now.days_ago(3).end_of_day.to_formatted_s(:db)
+            search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
+            search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
 
             parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -343,8 +343,8 @@ describe QueryParser do
 
         it 'when date is in yyyy-mm-dd format' do
           Timecop.freeze do |now|
-            search_date = now.days_ago(3).strftime("%Y-%m-%d")
-            search_date_db = now.days_ago(3).end_of_day.to_formatted_s(:db)
+            search_date = 3.days.ago.utc.strftime("%Y-%m-%d")
+            search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
 
             parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -368,8 +368,8 @@ describe QueryParser do
       describe 'parses SUBMISSION DATE < date' do
         it 'when date is in mm/dd/yy format' do
           Timecop.freeze do |now|
-            search_date = now.days_ago(3).strftime("%m/%d/%Y")
-            search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+            search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
+            search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
 
             parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -380,8 +380,8 @@ describe QueryParser do
 
         it 'when date is in yyyy-mm-dd format' do
           Timecop.freeze do |now|
-            search_date = now.days_ago(3).strftime("%Y-%m-%d")
-            search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+            search_date = 3.days.ago.utc.strftime("%Y-%m-%d")
+            search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
 
             parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)

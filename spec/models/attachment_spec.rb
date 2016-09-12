@@ -85,6 +85,22 @@ describe Attachment do
     end
   end
 
+  describe 'download!' do
+    # Many of the download examples are in attachment_shared_examples.rb
+    # Look there for more
+    subject(:attachment) { FactoryGirl.create(:attachment) }
+
+    it 'sets the error state on an exception' do
+      allow(subject.file).to receive(:download!)
+        .and_raise(Exception, "Download failed!")
+
+      begin
+        subject.download!('bogus url')
+      rescue Exception
+        expect(subject.status).to eq(Attachment::STATUS_ERROR)
+      end
+    end
+  end
 
   describe 'setting #paper' do
     let(:paper) { FactoryGirl.create(:paper) }

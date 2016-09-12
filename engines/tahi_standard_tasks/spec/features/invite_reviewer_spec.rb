@@ -51,4 +51,31 @@ feature "Invite Reviewer", js: true do
     expect(overlay.active_invitations_count(2)).to be true
     expect(overlay.total_invitations_count(3)).to be true
   end
+
+  scenario "links alternate candidates with other potential reviewers" do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.paper_reviewers = [reviewer1]
+    expect(overlay).to have_reviewers reviewer1.full_name
+
+    overlay.fill_in 'invitation-recipient', with: reviewer2.email
+    overlay.find('.invitation-email-entry-button').click
+
+    # Using the capybara-select2 helper here doesn't work because... not sure.
+    # I think we are using select2 strangely here.
+    within(".invitation-item--edit") do
+      find('.link-alternate-select.select2-container').click
+    end
+
+    find(".select2-highlighted").click
+    find(".invitation-save-button").click
+    expect(page.find('.alternate-link-icon')).to be_present
+  end
+  scenario "prevents invitations while a review is invited in the subqueue" do
+  end
+  scenario "does not disable other invitations in the main queue when another invitation is invited/accepted" do
+  end
+  scenario "edits an invitation" do
+  end
+  scenario "deletes only a pending invitation" do
+  end
 end

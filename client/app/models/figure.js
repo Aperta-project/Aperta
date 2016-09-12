@@ -23,13 +23,10 @@ export default DS.Model.extend(Snapshottable, {
     return Ember.run.debounce(this, this.save, 2000);
   },
 
-  reloadPaper() {
-    return this.get('paper').reload();
-  },
-
   save() {
+    let paper = this.get('paper');
     return this._super().then(() => {
-      return this.reloadPaper();
+      return paper.reload();
     });
   },
 

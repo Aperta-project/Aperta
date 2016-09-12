@@ -108,10 +108,9 @@ export default Ember.TextField.extend({
       let resourceUrl = this.get('url');
       let requestMethod = this.get('railsMethod');
 
-      // I can't really tell what 'case' this is. Clearly it's when a
-      // resourceUrl is not passed to the controller, which seems to mean
-      // that the resource will appear on s3, but not be realayed back
-      // to rails
+      // file-uploader will post data to the rails server itself if it's provided
+      // with a `resourceUrl`.  This is in contrast to the s3-file-uploader, which
+      // sends an action once the upload is complete.
       if (resourceUrl) { // tell rails server that upload to s3 finished
         let postData = Ember.merge({ url: uploadedS3Url }, this.get('dataParams'));
         $.ajax({
@@ -122,10 +121,9 @@ export default Ember.TextField.extend({
         }).then((data) => {
           this.sendAction('done', data, filename);
         });
-      } else { // allow custom behavior when s3 upload is finished
-      // This seems to be thea case where nothing is posted back to rails
-      // The done action is called, but it's not clear what should happen
-      // differently at that point
+      } else {
+      // without a resourceUrl pass the data up and allow the caller to
+      // decide what to do with it.
         this.sendAction('done', location, filename);
       }
     });

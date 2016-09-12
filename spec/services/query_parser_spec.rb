@@ -246,7 +246,7 @@ describe QueryParser do
       end
     end
 
-    describe 'submission time queries' do
+    describe 'VERSION DATE queries' do
       it 'parses VERSION DATE > n DAYS AGO' do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
@@ -269,7 +269,66 @@ describe QueryParser do
         end
       end
 
+      it 'parses VERSION DATE < mm/dd/yyyy' do
+        Timecop.freeze do |now|
+          search_date = now.days_ago(3).strftime("%m/%d/%Y")
+          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+
+          parse = QueryParser.new.parse "VERSION DATE < #{search_date}"
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" < '#{search_date_db}'
+          SQL
+        end
+      end
+
+      it 'parses VERSION DATE > mm/dd/yyyy' do
+        Timecop.freeze do |now|
+          search_date = now.days_ago(3).strftime("%m/%d/%Y")
+          search_date_db = now.days_ago(3).beginning_of_day.to_formatted_s(:db)
+
+          parse = QueryParser.new.parse "VERSION DATE > #{search_date}"
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" >= '#{search_date_db}'
+          SQL
+        end
+      end
+
+      it "falls back to today's date when given a bad input date" do
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.beginning_of_day.to_formatted_s(:db)
+
+          parse = QueryParser.new.parse 'VERSION DATE > bad date'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "papers"."submitted_at" >= '#{start_time}'
+          SQL
+        end
+      end
+    end
+
+    describe 'SUBMISSION DATE queries' do
       describe 'parses SUBMISSION DATE > date' do
+        it 'parses SUBMISSION DATE > n DAYS AGO' do
+          Timecop.freeze do
+            start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
+
+            parse = QueryParser.new.parse 'SUBMISSION DATE > 3 DAYS AGO'
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" < '#{start_time}'
+            SQL
+          end
+        end
+
+        it 'parses SUBMISSION DATE < n DAYS AGO' do
+          Timecop.freeze do
+            start_time = Time.zone.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
+
+            parse = QueryParser.new.parse 'SUBMISSION DATE < 3 DAYS AGO'
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" >= '#{start_time}'
+            SQL
+          end
+        end
+
         it 'when date is in mm/dd/yy format' do
           Timecop.freeze do |now|
             search_date = now.days_ago(3).strftime("%m/%d/%Y")
@@ -290,6 +349,17 @@ describe QueryParser do
             parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
               "papers"."first_submitted_at" >= '#{search_date_db}'
+            SQL
+          end
+        end
+
+        it "falls back to today's date when given a bad input date" do
+          Timecop.freeze do
+            start_time = Time.zone.now.utc.beginning_of_day.to_formatted_s(:db)
+
+            parse = QueryParser.new.parse 'SUBMISSION DATE > bad date'
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at" >= '#{start_time}'
             SQL
           end
         end
@@ -319,6 +389,18 @@ describe QueryParser do
             SQL
           end
         end
+
+        it "falls back to today's date when given a bad input date" do
+          Timecop.freeze do
+            start_time = Time.zone.now.utc.beginning_of_day.to_formatted_s(:db)
+
+            parse = QueryParser.new.parse 'SUBMISSION DATE > bad date'
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+              "papers"."first_submitted_at\" >= '#{start_time}'
+            SQL
+          end
+        end
+
       end
     end
 

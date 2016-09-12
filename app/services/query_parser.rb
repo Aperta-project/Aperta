@@ -149,24 +149,40 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
-  add_simple_expression('VERSION DATE >') do |days_ago|
-    start_time = Chronic.parse("#{days_ago.to_i} days ago").beginning_of_day
-    paper_table[:submitted_at].lt(start_time.to_formatted_s(:db))
+  add_simple_expression('VERSION DATE >') do |time_or_date_string|
+    time_query(
+      parse_utc_date(time_or_date_string).beginning_of_day,
+      field: paper_table[:submitted_at],
+      search_term: time_or_date_string,
+      default_comparison: :gteq
+    )
   end
 
-  add_simple_expression('VERSION DATE <') do |days_ago|
-    start_time = Chronic.parse("#{days_ago.to_i} days ago").beginning_of_day
-    paper_table[:submitted_at].gteq(start_time.to_formatted_s(:db))
+  add_simple_expression('VERSION DATE <') do |time_or_date_string|
+    time_query(
+      parse_utc_date(time_or_date_string).beginning_of_day,
+      field: paper_table[:submitted_at],
+      search_term: time_or_date_string,
+      default_comparison: :lt
+    )
   end
 
-  add_simple_expression('SUBMISSION DATE <') do |start_date|
-    query_date = Chronic.parse(start_date).beginning_of_day
-    paper_table[:first_submitted_at].lt(query_date.to_formatted_s(:db))
+  add_simple_expression('SUBMISSION DATE >') do |time_or_date_string|
+    time_query(
+      parse_utc_date(time_or_date_string).beginning_of_day,
+      field: paper_table[:first_submitted_at],
+      search_term: time_or_date_string,
+      default_comparison: :gteq
+    )
   end
 
-  add_simple_expression('SUBMISSION DATE >') do |start_date|
-    query_date = Chronic.parse(start_date).beginning_of_day
-    paper_table[:first_submitted_at].gteq(query_date.to_formatted_s(:db))
+  add_simple_expression('SUBMISSION DATE <') do |time_or_date_string|
+    time_query(
+      parse_utc_date(time_or_date_string).beginning_of_day,
+      field: paper_table[:first_submitted_at],
+      search_term: time_or_date_string,
+      default_comparison: :lt
+    )
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -220,6 +236,47 @@ class QueryParser < QueryLanguageParser
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)
+  end
+
+  # Parses the given string
+  def parse_utc_date(str)
+    Chronic.parse(str).try(:utc) || Time.now.utc
+  end
+
+  # Builds and adds a time query to the current query using the given arguments:
+  #
+  #  * time - the time to be used in the query, e.g. Time.zone.now.utc
+  #
+  #  * field: the AREL table field that should be used in the query, e.g. \
+  #    Paper.arel_table[:submitted_at]
+  #
+  #  * search_term: the user-provided search term string, e.g. "3 days ago". \
+  #    This is used to see if the default comparison should be used or if its \
+  #    inverse should be used, e.g. "3 DAYS AGO" indicates an inverse seach \
+  #    whereas "2016/09/01" indicates a normal search.
+  #
+  #  * default_comparison: the default comparison that the query should built \
+  #    for, e.g. :gteq or :lt.
+  def time_query(time, field:, search_term:, default_comparison: :gteq)
+    case default_comparison
+    when :gteq
+      if search_term =~ /ago/i
+        field.lt(time.to_formatted_s(:db))
+      else
+        field.gteq(time.to_formatted_s(:db))
+      end
+    when :lt
+      if search_term =~ /ago/i
+        field.gteq(time.to_formatted_s(:db))
+      else
+        field.lt(time.to_formatted_s(:db))
+      end
+    else
+      fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
+        Expected :comparison to be :gteq or :lt, but it was
+        #{comparison.inspect}
+      ERROR
+    end
   end
 
   def title_query(title)

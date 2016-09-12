@@ -30,6 +30,7 @@ export default Ember.Mixin.create({
   },
 
   uploadProgress(data) {
+    if (this.get('isDestroying') || !this.get('uploads')) { return; }
     let currentUpload = this.get('uploads').findBy('file', data.files[0]);
     if (!currentUpload) { return; }
 

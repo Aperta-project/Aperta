@@ -73,6 +73,24 @@ class Attachment < ActiveRecord::Base
     snapshotted?
   end
 
+  def cancel_download
+    case status
+    when STATUS_PROCESSING
+      # delete the attachment and let sidekiq deal with it
+      #
+      # sidekiq still running
+      destroy
+    when STATUS_ERROR
+      # clean up from exception in sidekiq
+      #
+      # sidekiq not running due to exception
+      destroy
+    when STATUS_DONE
+      # sidekiq completely done, two ships passing in the night
+      # no-op
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   def download!(url, uploaded_by: nil)
     # Wrap this in a transaction so the ActiveRecord after_commit lifecycle

@@ -85,6 +85,28 @@ describe Attachment do
     end
   end
 
+  describe 'cancel_download' do
+    subject(:attachment) { FactoryGirl.create(:attachment) }
+
+    it 'destroys the attachment if status is STATUS_PROCESSING' do
+      subject.status = Attachment::STATUS_PROCESSING
+      expect(subject).to receive(:destroy)
+      subject.cancel_download
+    end
+
+    it 'destroys the attachment if status is STATUS_ERROR' do
+      subject.status = Attachment::STATUS_ERROR
+      expect(subject).to receive(:destroy)
+      subject.cancel_download
+    end
+
+    it 'does nothing if status is STATUS_DONE' do
+      subject.status = Attachment::STATUS_DONE
+      expect(subject).to_not receive(:destroy)
+      subject.cancel_download
+    end
+  end
+
   describe 'download!' do
     # Many of the download examples are in attachment_shared_examples.rb
     # Look there for more

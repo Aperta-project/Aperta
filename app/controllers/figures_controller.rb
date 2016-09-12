@@ -31,21 +31,7 @@ class FiguresController < ApplicationController
   end
 
   def cancel
-    case figure.status
-    when Attachment::STATUS_PROCESSING
-      # delete the figure and let sidekiq deal with it
-      #
-      # sidekiq still running
-      figure.destroy
-    when Attachment::STATUS_ERROR
-      # clean up from exception in sidekiq
-      #
-      # sidekiq not running due to exception
-      figure.destroy
-    when Attachment::STATUS_DONE
-      # sidekiq completely done, two ships passing in the night
-      # no-op
-    end
+    figure.cancel_download
     head :no_content
   end
 

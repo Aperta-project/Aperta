@@ -149,6 +149,15 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
+  add_simple_expression('VERSION DATE =') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:submitted_at],
+      search_term: date_string,
+      default_comparison: :eq
+    )
+  end
+
   add_simple_expression('VERSION DATE >') do |date_string|
     date_query(
       parse_utc_date(date_string),
@@ -164,6 +173,15 @@ class QueryParser < QueryLanguageParser
       field: paper_table[:submitted_at],
       search_term: date_string,
       default_comparison: :lt
+    )
+  end
+
+  add_simple_expression('SUBMISSION DATE =') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:first_submitted_at],
+      search_term: date_string,
+      default_comparison: :eq
     )
   end
 
@@ -258,19 +276,26 @@ class QueryParser < QueryLanguageParser
   #  * default_comparison: the default comparison that the query should built \
   #    for, e.g. :gt or :lt.
   def date_query(date, field:, search_term:, default_comparison: :gt)
+    beginning_of_day_date = date.beginning_of_day.to_formatted_s(:db)
+    end_of_day_date = date.end_of_day.to_formatted_s(:db)
+
     case default_comparison
     when :gt
       if search_term =~ /ago/i
-        field.lt(date.beginning_of_day.to_formatted_s(:db))
+        field.lt(beginning_of_day_date)
       else
-        field.gt(date.end_of_day.to_formatted_s(:db))
+        field.gt(end_of_day_date)
       end
     when :lt
       if search_term =~ /ago/i
-        field.gt(date.end_of_day.to_formatted_s(:db))
+        field.gt(end_of_day_date)
       else
-        field.lt(date.beginning_of_day.to_formatted_s(:db))
+        field.lt(beginning_of_day_date)
       end
+    when :eq
+      # since the current fields are always datetime so we need to do a
+      # BETWEEN check between the beginning and end of the day
+      field.between(beginning_of_day_date..end_of_day_date)
     else
       fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
         Expected :comparison to be :gt or :lt, but it was

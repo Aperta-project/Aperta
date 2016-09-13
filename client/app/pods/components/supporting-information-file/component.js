@@ -77,7 +77,7 @@ export default Component.extend({
     },
 
     cancelEdit(){
-      this.get('file').rollback();
+      this.get('file').rollbackAttributes();
       this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 

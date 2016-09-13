@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     },
 
     cancelEdit: function() {
-      this.get('relatedArticle').rollback();
+      this.get('relatedArticle').rollbackAttributes();
       this.set('editState', false);
     },
 

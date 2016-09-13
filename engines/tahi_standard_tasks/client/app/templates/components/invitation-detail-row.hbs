@@ -27,14 +27,14 @@
     <div class="invitation-item-actions">
       {{#if displayEditButton}}
         <span class="invitation-item-action invitation-item-action-edit"
-{{action "editInvitation" invitation bubbles=false}}>
+              {{action "editInvitation" invitation bubbles=false}}>
           <span class="fa fa-pencil invite-edit"></span>
           <span class="invitation-item-action-text">Edit</span>
         </span>
       {{/if}}
       {{#if displayDestroyButton}}
         <span class="invitation-item-action invitation-item-action-delete"
-{{action "destroyInvitation" invitation bubbles=false}}>
+              {{action "destroyInvitation" invitation bubbles=false}}>
           <span class="fa fa-trash invite-remove" ></span>
           <span class="invitation-item-action-text">Delete</span>
         </span>
@@ -47,7 +47,7 @@
       {{/if}}
       {{#if displaySendButton}}
         <span class="invitation-item-action invitation-item-action-send {{sendButtonClass}}"
-{{action "sendInvitation" invitation bubbles=false}}>
+              {{action "sendInvitation" invitation bubbles=false}}>
           <span class="fa fa-send invite-send"></span>
           <span class="invitation-item-action-text">Send</span>
         </span>
@@ -76,6 +76,7 @@
 
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
+    declined? {{invitation.declined}} | state: {{invitation.state}}
     {{#if invitation.declined}}
       <div class="invitation-item-state-and-date">
         Declined

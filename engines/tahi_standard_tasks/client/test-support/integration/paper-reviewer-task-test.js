@@ -59,13 +59,14 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
 );
 
 var newInvitation = function(email) {
-  return {
+  return Ember.Object.create({
     state: 'pending',
     email: email,
     body: 'Hello',
+    alternates: [],
     save() { return Ember.RSVP.resolve(this); },
     send() { return Ember.RSVP.resolve(this); }
-  };
+  });
 };
 
 var newTask = function() {
@@ -80,6 +81,14 @@ var newTask = function() {
     invitationTemplate: {
       salutation: 'Hi!',
       body: 'You are invited!'
+    },
+
+    paper: {
+      decisions: {
+        reload() {
+          // noop
+        }
+      }
     },
 
     decisions: [

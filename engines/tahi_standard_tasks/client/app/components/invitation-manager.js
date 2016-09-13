@@ -24,6 +24,7 @@ export default Ember.Component.extend({
   autoSuggestSelectedText: null,
 
   decisions: computed.alias('task.decisions'),
+  invitations: computed.alias('task.invitations'),
 
   inviteeRole: computed.reads('task.inviteeRole'),
   latestDecision: computed('decisions', 'decisions.@each.latest', function() {
@@ -89,10 +90,15 @@ export default Ember.Component.extend({
     }
   }),
 
-  // Used to be invitations-display
   persistedInvitations: computed('invitations.@each.isNew', function() {
-    return this.get('invitations').rejectBy('isNew');
+    const invitations = this.get('invitations');
+    if(isEmpty(invitations)) {
+      return [];
+    }
+
+    return invitations.rejectBy('isNew');
   }),
+
   latestDecisionInvitations: computed(
     'latestDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');

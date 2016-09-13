@@ -16,7 +16,7 @@
 
 <% if @reply %>
   <p>
-    <%= simple_format(strip_tags(@reply.body)) %>
+    <%= @reply.sanitized_body.html_safe %>
   </p>
 <% end %>
 

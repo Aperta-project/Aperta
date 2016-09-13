@@ -1,16 +1,20 @@
 <div class="user-affiliation">
 
   <h1>Affiliations:</h1>
-  {{#each affiliations as |affiliation|}}
-    {{user-affiliation-form
-      affiliation=affiliation
-      countries=countries
-      commitAffiliation='commitAffiliation'
-      removeAffiliation='removeAffiliation'
-      hideNewAffiliationForm='hideNewAffiliationForm'}}
+  {{#if loading}}
+    <div>loading affiliations</div>
   {{else}}
-    <div> No affiations yet </div>
-  {{/each}}
+    {{#each affiliations as |affiliation|}}
+      {{user-affiliation-form
+        affiliation=affiliation
+        countries=countries
+        commitAffiliation='commitAffiliation'
+        removeAffiliation='removeAffiliation'
+        hideNewAffiliationForm='hideNewAffiliationForm'}}
+    {{else}}
+      <div> No affiations yet </div>
+    {{/each}}
+  {{/if}}
 
   {{#if showAffiliationForm}}
 

@@ -12,6 +12,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
 
   showAffiliationForm: false,
   affiliations: Ember.computed(function() { return []; }),
+  loading: true,
 
   newAffiliation: null,
 
@@ -32,6 +33,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
         'affiliations',
         store.peekAll('affiliation').filterBy('user.id', userId)
       );
+      this.set('loading', false);
     });
   },
 
@@ -56,17 +58,18 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       }
     },
 
-    commitAffiliation(affiliation) {
+    commitAffiliation(affiliation, component) {
       this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
         user.get('affiliations').addObject(affiliation);
         this.clearAllValidationErrors();
         var isNew = affiliation.get('isNew')
         affiliation.save().then(() => {
           this.send('hideNewAffiliationForm');
+          component.set('editAffiliation', false);
           if (isNew) { this.get('affiliations').pushObject(affiliation); }
         }, (response) => {
           affiliation.set('user', null);
-          this.displayValidationErrorsFromResponse(response);
+          component.displayValidationErrorsFromResponse(response);
         });
       });
     },

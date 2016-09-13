@@ -51,7 +51,7 @@ describe UsersController do
       end
 
       it "calls the users's serializer when rendering JSON" do
-        expect_any_instance_of(UsersController).to receive(:requires_user_can).with(:manage_user, Journal) { true }
+        expect_any_instance_of(UsersController).to receive(:requires_user_can).with(:manage_users, Journal) { true }
         do_request
         serializer = user.active_model_serializer.new(user, scope: user)
         expect(res_body.keys).to match_array(serializer.as_json.stringify_keys.keys)

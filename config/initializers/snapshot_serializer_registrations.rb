@@ -12,8 +12,6 @@
 ActionDispatch::Reloader.to_prepare do
   if SnapshotService.registry.empty?
     SnapshotService.configure do
-      serialize Paper, with: Snapshot::PaperSerializer
-
       serialize AdhocAttachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
       serialize Figure, with: Snapshot::AttachmentSerializer

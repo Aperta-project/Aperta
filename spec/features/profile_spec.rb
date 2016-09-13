@@ -45,6 +45,20 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
     end
   end
 
+  context "editing an affiliation" do
+    let(:admin) { create :user, :with_affiliation, :site_admin }
+    let(:affiliation) { admin.affiliations.last }
+    let(:department) { 'new department' }
+
+    scenario "user can edit an affiliation" do
+      find('.fa-pencil').click
+      find('[placeholder=Department]').send_keys(department)
+      click_button('done')
+      expect(page).to have_content(/#{department}/)
+      expect(Affiliation.find(affiliation.id).department).to eq(department)
+    end
+  end
+
   context "removing an affiliation" do
 
     let(:admin) { create :user, :with_affiliation, :site_admin }

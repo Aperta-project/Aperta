@@ -10,8 +10,6 @@ moduleForModel('figure', 'Unit | Model | figure', {
     'model:comment-look',
     'model:decision',
     'model:discussion-topic',
-    'model:table',
-    'model:bibitem',
     'model:journal',
     'model:phase',
     'model:supporting-information-file',

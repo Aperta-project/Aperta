@@ -15,16 +15,13 @@ feature "Invite Reviewer", js: true do
 
   before do
     assign_journal_role journal, editor, :editor
-    paper.paper_roles.create user: editor, old_role: PaperRole::COLLABORATOR
-    task.add_participant(editor)
-
     login_as(editor, scope: :user)
     visit "/"
   end
 
   scenario "Editor can invite any user as a reviewer to a paper" do
     overlay = Page.view_task_overlay(paper, task)
-    overlay.paper_reviewers = [reviewer1]
+    overlay.invited_users = [reviewer1]
     expect(overlay).to have_reviewers reviewer1.full_name
 
     # Already invited users don't show up again the search
@@ -38,7 +35,7 @@ feature "Invite Reviewer", js: true do
 
   scenario "displays invitations from the latest round of revisions" do
     overlay = Page.view_task_overlay(paper, task)
-    overlay.paper_reviewers = [reviewer1]
+    overlay.invited_users = [reviewer1]
     expect(overlay.active_invitations_count(1)).to be true
 
     register_paper_decision(paper, 'minor_revision')
@@ -46,7 +43,7 @@ feature "Invite Reviewer", js: true do
 
     overlay.reload
     overlay = Page.view_task_overlay(paper, task)
-    overlay.paper_reviewers = [reviewer3, reviewer2]
+    overlay.invited_users = [reviewer3, reviewer2]
     expect(overlay.expired_invitations_count(1)).to be true
     expect(overlay.active_invitations_count(2)).to be true
     expect(overlay.total_invitations_count(3)).to be true
@@ -54,7 +51,7 @@ feature "Invite Reviewer", js: true do
 
   scenario "links alternate candidates with other potential reviewers" do
     overlay = Page.view_task_overlay(paper, task)
-    overlay.paper_reviewers = [reviewer1]
+    overlay.invited_users = [reviewer1]
     expect(overlay).to have_reviewers reviewer1.full_name
 
     overlay.fill_in 'invitation-recipient', with: reviewer2.email

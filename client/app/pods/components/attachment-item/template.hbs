@@ -2,7 +2,15 @@
   {{upload-preview upload=fileUpload}}
 
 {{else}}
-  {{#if isCanceled}}
+  {{#if isError}}
+    <div class="processing-attachment">
+      {{error-message message=processingErrorMessage
+                      displayIcon=true
+                      displayText=true}}
+
+      <span class="upload-cancel-button" {{action "deleteFile"}}>×</span>
+    </div>
+  {{else if isCanceled}}
     <div class="processing-attachment">
       Upload canceled. Re-upload to try again
     </div>

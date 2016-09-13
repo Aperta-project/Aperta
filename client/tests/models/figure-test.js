@@ -1,5 +1,5 @@
 import { moduleForModel, test } from 'ember-qunit';
-import sinon from 'sinon';
+import Ember from 'ember';
 
 moduleForModel('figure', 'Unit | Model | figure', {
   needs: [
@@ -23,33 +23,30 @@ moduleForModel('figure', 'Unit | Model | figure', {
 });
 
 test('makes its paper reload when it is deleted', function(assert) {
-  const model = this.subject();
-  assert.ok(!!model);
-  const mock = sinon.mock(model);
-  const reload = mock.expects('reloadPaper');
-
+  assert.expect(1);
   const start = assert.async();
+  let mockPaper = {
+    reload() { assert.ok(true, 'reload called'); start();}
+  };
+  const model = this.subject();
+  model.paper = mockPaper;
   Ember.run(() => {
-    model.destroyRecord().then(() => {
-      assert.ok(reload.called, 'The paper\'s reload() should have been called');
-      start();
-    });
+    model.destroyRecord();
   });
 });
 
 test('makes its paper reload when it is saved', function(assert) {
+  assert.expect(1);
+  const start = assert.async();
+  let mockPaper = {
+    reload() { assert.ok(true, 'reload called'); start();}
+  };
   const model = this.subject();
-  assert.ok(!!model);
-  const mock = sinon.mock(model);
-  const reload = mock.expects('reloadPaper');
+  model.paper = mockPaper;
 
   $.mockjax({url: /figures/, type: 'POST', status: 204, responseText: {}});
 
-  const start = assert.async();
   Ember.run(() => {
-    model.save().then(() => {
-      assert.ok(reload.called, 'The paper\'s reload() should have been called');
-      start();
-    });
+    model.save();
   });
 });

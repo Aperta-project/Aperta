@@ -11,9 +11,14 @@ moduleForComponent('attachment-manager', 'Integration | Component | attachment m
   }
 });
 
-let template = hbs`{{attachment-manager filePath=filePath attachments=testAttachments cancelUpload=(action cancelUpload)}}`;
+let template = hbs`{{attachment-manager
+                      filePath=filePath
+                      attachments=attachments
+                      cancelUpload=(action cancelUpload)
+                      deleteFile=(action deleteFile)}}`;
 test('can cancel processing uploads', function(assert){
   let attachment = make('adhoc-attachment', {status: 'processing'});
+  assert.expect(2);
   this.set('filePath', 'test_file_path');
   this.set('attachments', [attachment]);
   this.set('cancelUpload', function() {
@@ -23,5 +28,20 @@ test('can cancel processing uploads', function(assert){
 
   this.$('.upload-cancel-button').click();
 
-  assert.textPresent('.progress-text','Upload canceled. Re-upload to try again', 'shows cancel message');
+  assert.textPresent('.processing-attachment', 'Upload canceled. Re-upload to try again', 'shows cancel message');
+});
+
+test('can delete uploads that have failed during processing', function(assert){
+  let attachment = make('adhoc-attachment', {status: 'error', filename: 'test file'});
+  assert.expect(2);
+  this.set('filePath', 'test_file_path');
+  this.set('attachments', [attachment]);
+  this.set('deleteFile', function() {
+    assert.ok(true, 'deleteFile action is invoked');
+  });
+  this.render(template);
+
+  this.$('.upload-cancel-button').click();
+
+  assert.textPresent('.processing-attachment .error-message', 'test file', 'shows error message with file name');
 });

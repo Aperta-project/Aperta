@@ -32,16 +32,23 @@ export default Ember.Component.extend({
   caption: null,
   isCanceled: false,
   isProcessing: Ember.computed.equal('attachment.status', 'processing'),
+  isError: Ember.computed.equal('attachment.status', 'error'),
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   fileTypeClass: Ember.computed('attachment.filename', function(){
     return fontAwesomeFiletypeClass(this.get('attachment.filename'));
   }),
 
+  processingErrorMessage: Ember.computed('attachment.filename', function() {
+    return `There was an error while processing ${this.get('attachment.filename')}. Please try again
+    or contact Aperta staff.`;
+  }),
+
   init() {
     this._super(...arguments);
     Ember.assert('Please provide filePath property', this.get('filePath'));
   },
+
 
   actions: {
 

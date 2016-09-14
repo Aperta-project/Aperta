@@ -14,8 +14,11 @@ namespace :db do
   DESC
   task :import_remote, [:env] => :environment do |t, args|
     return unless Rails.env.development?
+    args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'db'}_dump.tar.gz"
+    Rake::Task['db:drop'].invoke
+    Rake::Task['db:create'].invoke
 
     with_config do |app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s

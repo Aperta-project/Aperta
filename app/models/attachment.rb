@@ -205,6 +205,10 @@ class Attachment < ActiveRecord::Base
     owner if owner_type == 'Task'
   end
 
+  def invitation
+    owner if owner_type == 'Invitation'
+  end
+
   # These methods were pulled up from Attachment subclasses
   def src
     return unless done?

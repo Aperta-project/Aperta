@@ -46,7 +46,12 @@ class AdhocAttachmentsController < ApplicationController
 
   def cancel
     attachment = Attachment.find(params[:id])
-    requires_user_can :edit, attachment.task
+    if attachment.invitation
+      requires_user_can(:manage_invitations, attachment.invitation.task)
+    else
+      requires_user_can :edit, attachment.task
+    end
+
     attachment.cancel_download
 
     head :no_content

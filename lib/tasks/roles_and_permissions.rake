@@ -9,6 +9,10 @@ namespace :'roles-and-permissions' do
       )
     end
 
+    Role.ensure_exists(Role::SITE_ADMIN_ROLE) do |role|
+      role.ensure_permission_exists(:*, applies_to: 'System')
+    end
+
     Journal.all.each do |journal|
       # JournalFactory is used to set up new journals. Rather than
       # duplicate logic just expose the step that ensures journals are

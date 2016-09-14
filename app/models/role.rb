@@ -16,6 +16,7 @@ class Role < ActiveRecord::Base
   PRODUCTION_STAFF_ROLE = 'Production Staff'
   PUBLISHING_SERVICES_ROLE = 'Publishing Services'
   REVIEWER_ROLE = 'Reviewer'
+  SITE_ADMIN_ROLE = 'Site Admin'
   STAFF_ADMIN_ROLE = 'Staff Admin'
   TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'

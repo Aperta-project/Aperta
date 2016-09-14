@@ -5,6 +5,7 @@ POM for the dynamically generated Changes for Author Card
 """
 import time
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from frontend.Tasks.basetask import BaseTask
@@ -49,6 +50,8 @@ class ChangesForAuthorTask(BaseTask):
     change_detail = self._get(self._changes_requested_detail)
     self._actions.move_to_element(change_detail).perform()
     changes_made_btn = self._get(self._these_changes_have_been_made_btn)
-    changes_made_btn.click()
+    try:
+      changes_made_btn.click()
+    except WebDriverException:
+      self.click_covered_element(changes_made_btn)
     time.sleep(1)
-

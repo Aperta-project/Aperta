@@ -188,7 +188,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     time.sleep(2)
     workflow_page.click_card('reviewer_candidates')
-    time.sleep(10)
+    time.sleep(2)
     rcc = ReviewerCandidatesCard(self.getDriver())
     rcc.check_no_entry()
 

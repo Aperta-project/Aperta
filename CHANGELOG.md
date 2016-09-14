@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 - Production staff, publishing services, and staff admin can no longer view the billing card
 ### Fixed
+- Emails are properly displated in all clients
 - Emails are not sent when a decision is rescinded
 ### Security
 
@@ -28,6 +29,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Add permission to view decisions
 ### Changed
 - Upgrade to ruby 2.2.4
+- Change paper tracker submitted search fields from SUBMITTED to VERSION DATE, and FIRST SUBMITTED to SUBMISISON DATE.
 ### Deprecated
 ### Removed
 ### Fixed

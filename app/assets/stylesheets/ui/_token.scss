@@ -28,25 +28,19 @@
 }
 
 .token-remove {
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 1px;
-  width: 2.15rem;
-  line-height: 200%;
-  text-align: center;
   visibility: hidden;
+  display: inline-block;
+  @include position(absolute, 0 auto 0 1px);
+  width: 2.15rem;
+  font-family: 'FontAwesome';
+  line-height: 174%;
+  text-align: center;
   cursor: pointer;
 
-  &:before { content: "\e014"; }
-  &:hover  { text-decoration: none;
-  }
+  &:before { content: "\f00d"; }
+  &:hover  { text-decoration: none; }
 }
 
 .token--add {
   cursor: pointer;
-
-  .glyphicon { font-size: 12px; }
 }

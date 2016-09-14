@@ -33,10 +33,6 @@ export default DS.Model.extend({
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
   }),
-  tables: hasMany('table', {
-    inverse: 'paper',
-    async: false
-  }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
   versionedTexts: hasMany('versioned-text', { async: true }),
 

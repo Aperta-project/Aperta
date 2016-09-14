@@ -6,7 +6,7 @@ module InvitationFeatureHelpers
     dashboard_page.view_submitted_paper paper
     overlay = Page.view_task_overlay(paper, task)
     overlay.invite_new_user email
-    expect(overlay).to have_reviewers email
+    expect(overlay).to have_invitees email
     overlay.dismiss
   end
 

@@ -19,7 +19,7 @@ export default Ember.Component.extend({
 
   renderEquations: true,
 
-  sentenceDelimiter: /([.!?,;]\s*)/g,
+  sentenceDelimiter: /([.!?,;\s*])/g,
 
   manuscript: function() {
     if (!this.get('comparisonText')) {

@@ -3,9 +3,11 @@ import relativeTime from 'tahi/lib/relative-time';
 
 module('RelativeTime');
 
+let now = 'September 13, 2016 13:17:56 UTC';
+
 test('3 days ago, beginning of day', function(assert) {
-  const startOfDay = moment().utc().startOf('day');
-  const endOfDay = moment().utc().endOf('day');
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
 
   var date = new Date('September 10, 2016 00:00:09 UTC');
 
@@ -14,8 +16,8 @@ test('3 days ago, beginning of day', function(assert) {
 });
 
 test('3 days ago, noon time', function(assert) {
-  const startOfDay = moment().utc().startOf('day');
-  const endOfDay = moment().utc().endOf('day');
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
 
   var date = new Date('September 10, 2016 12:00:00 UTC');
 
@@ -24,8 +26,8 @@ test('3 days ago, noon time', function(assert) {
 });
 
 test('3 days ago, end of day', function(assert) {
-  const startOfDay = moment().utc().startOf('day');
-  const endOfDay = moment().utc().endOf('day');
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
 
   var date = new Date('September 10, 2016 23:59:59 UTC');
 
@@ -34,8 +36,8 @@ test('3 days ago, end of day', function(assert) {
 });
 
 test('61 days ago, beginning of day', function(assert) {
-  const startOfDay = moment().utc().startOf('day');
-  const endOfDay = moment().utc().endOf('day');
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
 
   var date = new Date('July 14, 2016 00:00:09 UTC');
 
@@ -44,8 +46,8 @@ test('61 days ago, beginning of day', function(assert) {
 });
 
 test('61 days ago, noon time', function(assert) {
-  const startOfDay = moment().utc().startOf('day');
-  const endOfDay = moment().utc().endOf('day');
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
 
   var date = new Date('July 14, 2016 12:00:00 UTC');
 
@@ -54,8 +56,8 @@ test('61 days ago, noon time', function(assert) {
 });
 
 test('61 days ago, end of day', function(assert) {
-  const startOfDay = moment().utc().startOf('day');
-  const endOfDay = moment().utc().endOf('day');
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
 
   var date = new Date('July 14, 2016 23:59:59 UTC');
 

@@ -149,22 +149,58 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
-  add_simple_expression('SUBMITTED >') do |days_ago|
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    paper_table[:submitted_at].lt(start_time)
+  add_simple_expression('VERSION DATE =') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:submitted_at],
+      search_term: date_string,
+      default_comparison: :eq
+    )
   end
 
-  add_simple_expression('SUBMITTED <') do |days_ago|
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    paper_table[:submitted_at].gteq(start_time)
+  add_simple_expression('VERSION DATE >') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:submitted_at],
+      search_term: date_string,
+      default_comparison: :gt
+    )
   end
 
-  add_simple_expression('FIRST SUBMITTED <') do |start_date|
-    paper_table[:first_submitted_at].lt(start_date)
+  add_simple_expression('VERSION DATE <') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:submitted_at],
+      search_term: date_string,
+      default_comparison: :lt
+    )
   end
 
-  add_simple_expression('FIRST SUBMITTED >') do |start_date|
-    paper_table[:first_submitted_at].gteq(start_date)
+  add_simple_expression('SUBMISSION DATE =') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:first_submitted_at],
+      search_term: date_string,
+      default_comparison: :eq
+    )
+  end
+
+  add_simple_expression('SUBMISSION DATE >') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:first_submitted_at],
+      search_term: date_string,
+      default_comparison: :gt
+    )
+  end
+
+  add_simple_expression('SUBMISSION DATE <') do |date_string|
+    date_query(
+      parse_utc_date(date_string),
+      field: paper_table[:first_submitted_at],
+      search_term: date_string,
+      default_comparison: :lt
+    )
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -218,6 +254,54 @@ class QueryParser < QueryLanguageParser
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)
+  end
+
+  # Parses the given string
+  def parse_utc_date(str)
+    (Chronic.parse(str).try(:utc) || Time.now.utc).to_date
+  end
+
+  # Builds and adds a time query to the current query using the given arguments:
+  #
+  #  * time - the time to be used in the query, e.g. Time.zone.now.utc
+  #
+  #  * field: the AREL table field that should be used in the query, e.g. \
+  #    Paper.arel_table[:submitted_at]
+  #
+  #  * search_term: the user-provided search term string, e.g. "3 days ago". \
+  #    This is used to see if the default comparison should be used or if its \
+  #    inverse should be used, e.g. "3 DAYS AGO" indicates an inverse seach \
+  #    whereas "2016/09/01" indicates a normal search.
+  #
+  #  * default_comparison: the default comparison that the query should built \
+  #    for, e.g. :gt or :lt.
+  def date_query(date, field:, search_term:, default_comparison: :gt)
+    beginning_of_day_date = date.beginning_of_day.to_formatted_s(:db)
+    end_of_day_date = date.end_of_day.to_formatted_s(:db)
+
+    case default_comparison
+    when :gt
+      if search_term =~ /ago/i
+        field.lt(beginning_of_day_date)
+      else
+        field.gt(end_of_day_date)
+      end
+    when :lt
+      if search_term =~ /ago/i
+        field.gt(end_of_day_date)
+      else
+        field.lt(beginning_of_day_date)
+      end
+    when :eq
+      # since the current fields are always datetime so we need to do a
+      # BETWEEN check between the beginning and end of the day
+      field.between(beginning_of_day_date..end_of_day_date)
+    else
+      fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
+        Expected :comparison to be :gt or :lt, but it was
+        #{comparison.inspect}
+      ERROR
+    end
   end
 
   def title_query(title)

@@ -28,9 +28,9 @@ class BaseInviteUsersOverlay < CardOverlay
     row.find('.invite-send').click
   end
 
-  def add_to_queue(reviewer)
-    fill_in "invitation-recipient", with: reviewer.email
-    find(".auto-suggest-item", text: "#{reviewer.full_name} <#{reviewer.email}>").click
+  def add_to_queue(invitee)
+    fill_in "invitation-recipient", with: invitee.email
+    find(".auto-suggest-item", text: "#{invitee.full_name} <#{invitee.email}>").click
 
     # compose invite button
     find('.invitation-email-entry-button').click
@@ -57,9 +57,9 @@ class BaseInviteUsersOverlay < CardOverlay
     }
   end
 
-  def has_invitees?(*invitees)
-    invitees.all? do |user|
-      has_invitee?(user)
+  def has_invitees?(*invitee_names)
+    invitee_names.all? do |name|
+      page.has_css?('.invitation-item-full-name', text: name)
     end
   end
 

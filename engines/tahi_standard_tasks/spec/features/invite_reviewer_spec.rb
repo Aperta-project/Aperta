@@ -57,21 +57,34 @@ feature "Invite Reviewer", js: true do
     overlay.fill_in 'invitation-recipient', with: reviewer2.email
     overlay.find('.invitation-email-entry-button').click
 
-    # Using the capybara-select2 helper here doesn't work because... not sure.
-    # I think we are using select2 strangely here.
-    within(".invitation-item--edit") do
-      find('.link-alternate-select.select2-container').click
-    end
-
-    find(".select2-highlighted").click
-    find(".invitation-save-button").click
+    overlay.select_first_alternate
+    find('.invitation-save-button').click
     expect(page.find('.alternate-link-icon')).to be_present
   end
 
   scenario "prevents invitations while a review is invited in the subqueue" do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.invited_users = [reviewer1]
+    overlay.add_to_queue(reviewer2)
+    overlay.find('.invitation-item-action-edit').click
+    overlay.select_first_alternate
+    overlay.find('.invitation-save-button').click
+
+    header = find('.invitation-item-header', text: reviewer2.first_name)
+    expect(header).to have_css('.invitation-item-action-send.invitation-item-action--disabled')
   end
 
   scenario "does not disable other invitations in the main queue when another invitation is invited/accepted" do
+    overlay = Page.view_task_overlay(paper, task)
+    # invited user
+    overlay.invited_users = [reviewer1]
+    # pending user
+    overlay.add_to_queue(reviewer2)
+    overlay.find('.invitation-item-action-edit').click
+    overlay.find('.invitation-save-button').click
+
+    header = find('.invitation-item-header', text: reviewer2.first_name)
+    expect(header).to have_no_css('.invitation-item-action-send.invitation-item-action--disabled')
   end
 
   scenario "edits an invitation" do
@@ -82,17 +95,26 @@ feature "Invite Reviewer", js: true do
     # day by dragging day, in all the thousand small uncaring ways.
     overlay.find('.invitation-item-header').click
     overlay.find('.invitation-item-header').click
+
     overlay.find('.invitation-item-action-edit').click
-    find('.invitation-edit-body')
-    page.execute_script %Q{
-      var content = $('.invitation-edit-body');
-      content.html('New body');
-      content.keyup();
-    }
+    overlay.invitation_body = 'New body'
     overlay.find('.invitation-save-button').click
     expect(overlay.find('.invitation-show-body')).to have_text('New body')
   end
 
   scenario "deletes only a pending invitation" do
+    overlay = Page.view_task_overlay(paper, task)
+
+    # invited
+    overlay.invited_users = [reviewer1]
+    find('.invitation-item-header', text: reviewer1.first_name).click
+    expect(overlay).to have_no_css('.invitation-item-action-delete')
+
+    # pending
+    overlay.add_to_queue(reviewer2)
+    header = find('.invitation-item-header', text: reviewer2.first_name)
+    expect(header).to have_css('.invitation-item-action-delete')
+    header.find('.invitation-item-action-delete').click
+    expect(overlay).to have_no_css('.invitation-item-header', text: reviewer2.first_name)
   end
 end

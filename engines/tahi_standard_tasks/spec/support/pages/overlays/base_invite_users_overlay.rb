@@ -32,9 +32,29 @@ class BaseInviteUsersOverlay < CardOverlay
     fill_in "invitation-recipient", with: reviewer.email
     find(".auto-suggest-item", text: "#{reviewer.full_name} <#{reviewer.email}>").click
 
-    # Invite
+    # compose invite button
     find('.invitation-email-entry-button').click
+    # add to queue button
     find('.invitation-save-button').click
+  end
+
+  def select_first_alternate
+    # Using the capybara-select2 helper here doesn't work because... not sure.
+    # I think we are using select2 strangely here.
+    within(".invitation-item--edit") do
+      find('.link-alternate-select.select2-container').click
+    end
+
+    find(".select2-highlighted").click
+  end
+
+  def invitation_body=(content)
+    find('.invitation-edit-body')
+    page.execute_script %Q{
+      var content = $('.invitation-edit-body');
+      content.html('#{content}');
+      content.keyup();
+    }
   end
 
   def has_invitees?(*invitees)

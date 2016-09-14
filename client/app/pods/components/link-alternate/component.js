@@ -4,22 +4,22 @@ export default Ember.Component.extend({
   invitation: null, // passed-in
   classNames: ['invitation-link-alternate'],
   filteredAlternates: Ember.computed.filter('invitations.@each.state', function(invitation) {
-    if (invitation===this.get('invitation')) { // Reject suggested alternate if itself
-      return false;
+    // Reject suggested alternate if itself
+    if (invitation===this.get('invitation')) { return false; }
+
+    // Reject if already linked to a primary
+    if (invitation.get('primary')) { return false; }
+
+    // Reject if primary has accepted
+    if(invitation.get('state') === 'accepted') { return false; }
+
+    if(invitation.get('alternates.length')) {
+      // Reject if any any alternates have accepted
+      if(invitation.get('alternates').any((inv)=> {
+        return inv.get('state') === 'accepted';
+      })) { return false; }
     }
 
-    if (invitation.get('primary')) { // Reject any alternates already linked to a primary
-      return false;
-    }
-    if(invitation.get('alternates.length')) {
-      if(invitation.get('state') === 'accepted') { return false; }
-      const altAccepted = invitation.get('alternates').any((inv)=> {
-        return inv.get('state') === 'accepted';
-      });
-      if(altAccepted) {
-        return false;
-      }
-    }
     return true;
   }),
   alternateCandidates: Ember.computed('invitations.[]', function() {

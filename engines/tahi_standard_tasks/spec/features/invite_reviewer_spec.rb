@@ -22,7 +22,7 @@ feature "Invite Reviewer", js: true do
   scenario "Editor can invite any user as a reviewer to a paper" do
     overlay = Page.view_task_overlay(paper, task)
     overlay.invited_users = [reviewer1]
-    expect(overlay).to have_reviewers reviewer1.full_name
+    expect(overlay).to have_invitees reviewer1.full_name
 
     # Already invited users don't show up again the search
     overlay.fill_in 'invitation-recipient', with: 'Hen'
@@ -52,7 +52,7 @@ feature "Invite Reviewer", js: true do
   scenario "links alternate candidates with other potential reviewers" do
     overlay = Page.view_task_overlay(paper, task)
     overlay.invited_users = [reviewer1]
-    expect(overlay).to have_reviewers reviewer1.full_name
+    expect(overlay).to have_invitees reviewer1.full_name
 
     overlay.fill_in 'invitation-recipient', with: reviewer2.email
     overlay.find('.invitation-email-entry-button').click
@@ -67,12 +67,28 @@ feature "Invite Reviewer", js: true do
     find(".invitation-save-button").click
     expect(page.find('.alternate-link-icon')).to be_present
   end
+
   scenario "prevents invitations while a review is invited in the subqueue" do
   end
+
   scenario "does not disable other invitations in the main queue when another invitation is invited/accepted" do
   end
+
   scenario "edits an invitation" do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.add_to_queue(reviewer1)
+
+    # Life is not lost by dying; life is lost minute by minute,
+    # day by dragging day, in all the thousand small uncaring ways.
+    overlay.find('.invitation-item-header').click
+    overlay.find('.invitation-item-header').click
+
+    overlay.find('.invitation-item-action-edit').click
+    overlay.find('.invitation-edit-body').set('New body')
+    overlay.find('.invitation-save-button').click
+    expect(overlay.find('.invitation-show-body')).to have_text('New body')
   end
+
   scenario "deletes only a pending invitation" do
   end
 end

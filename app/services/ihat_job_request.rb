@@ -58,13 +58,20 @@ class IhatJobRequest
   # port, but it can be overriden by the `IHAT_CALLBACK_URL` environment
   # variable
   def self.build_ihat_callback_url
-    url = ENV.fetch('IHAT_CALLBACK_URL', UrlHelpers.root_url)
-    uri = URI.parse(url)
+    url = ENV.fetch('IHAT_CALLBACK_URL') do
+      if TahiEnv.force_ssl?
+        protocol = 'https'
+        port = 443
+      else
+        protocol = 'http'
+        port = 80
+      end
 
-    UrlHelpers.ihat_jobs_url(
-      protocol: uri.scheme,
-      host: uri.host,
-      port: uri.port)
+      UrlHelpers.root_url(protocol: protocol, port: port)
+    end
+
+    uri = URI.parse(url)
+    UrlHelpers.ihat_jobs_url(protocol: uri.scheme, host: uri.host, port: uri.port)
   end
 
   private

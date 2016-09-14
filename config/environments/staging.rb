@@ -9,6 +9,7 @@ Tahi::Application.configure do
     review_app_host = "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com"
     config.action_controller.asset_host = "//#{review_app_host}"
     config.action_mailer.default_url_options = { host: review_app_host }
+    routes.default_url_options = { host: review_app_host }
   else
     # use overriden asset host from config
     config.action_controller.asset_host = ENV.fetch("RAILS_ASSET_HOST")

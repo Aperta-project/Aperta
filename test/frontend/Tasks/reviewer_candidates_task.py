@@ -225,14 +225,7 @@ class ReviewerCandidatesTask(BaseTask):
     inst = 'University of Minnesota Twin Cities'
     inst_input = self._get(self._cand_inst_input)
     inst_input.send_keys(inst + Keys.ENTER)
-    choice = random.choice(['recommend', 'oppose'])
-    if choice == 'recommend':
-      self._get(self._cand_recc_radio_btn).click()
-    else:
-      self._get(self._cand_opp_radio_btn).click()
-    reason = generate_paragraph(start_with_lorem=True)[2]
-    opt_reason_field = self._get(self._cand_reason)
-    opt_reason_field.send_keys(reason)
+    choice, reason = self._make_type_choice()
     save_button = self._get(self._cand_form_save)
     save_button.click()
     self.check_for_flash_error()
@@ -256,7 +249,11 @@ class ReviewerCandidatesTask(BaseTask):
     time.sleep(.5)
     self._actions.move_to_element(delete_recommendation).perform()
     time.sleep(.5)
-    delete_recommendation.click()
+    try:
+      delete_recommendation.click()
+    except WebDriverException:
+      logging.info('Element is covered by the toolbar...')
+      self.click_covered_element(delete_recommendation)
     # Now need to validate the delete confirmation bits
     confirm_question = self._get(self._cand_view_delete_confirm_text)
     assert 'This will permanently delete the suggested reviewer. Are you sure?' \
@@ -301,22 +298,7 @@ class ReviewerCandidatesTask(BaseTask):
     inst_input.send_keys(inst + Keys.ENTER)
     self._actions.move_to_element(intro_text).perform()
     time.sleep(1)
-    choice = random.choice(['recommend', 'oppose'])
-    if choice == 'recommend':
-      recc_btn = self._get(self._cand_recc_radio_btn)
-      try:
-        recc_btn.click()
-      except WebDriverException:
-        self.click_covered_element(recc_btn)
-    else:
-      opp_btn = self._get(self._cand_opp_radio_btn)
-      try:
-        opp_btn.click()
-      except WebDriverException:
-        self.click_covered_element(opp_btn)
-    reason = generate_paragraph(start_with_lorem=True)[2]
-    opt_reason_field = self._get(self._cand_reason)
-    opt_reason_field.send_keys(reason)
+    self._make_type_choice()
     save_button = self._get(self._cand_form_save)
     save_button.click()
     self.check_for_flash_error()
@@ -358,3 +340,29 @@ class ReviewerCandidatesTask(BaseTask):
     except ElementDoesNotExistAssertionError:
       return False
     return True
+
+  def _make_type_choice(self):
+    """
+    randomly select a choice to recommend or oppose a candidate and give a reason
+    :return choice: recommend or oppose
+    :return reason: text listed for reason for choice
+    """
+    choice = random.choice(['recommend', 'oppose'])
+    if choice == 'recommend':
+      recc_btn = self._get(self._cand_recc_radio_btn)
+      try:
+        recc_btn.click()
+      except WebDriverException:
+        logging.info('Selection covered by toolbar...')
+        self.click_covered_element(recc_btn)
+    else:
+      opp_btn = self._get(self._cand_opp_radio_btn)
+      try:
+        opp_btn.click()
+      except WebDriverException:
+        logging.info('Selection covered by toolbar...')
+        self.click_covered_element(opp_btn)
+    reason = generate_paragraph(start_with_lorem=True)[2]
+    opt_reason_field = self._get(self._cand_reason)
+    opt_reason_field.send_keys(reason)
+    return choice, reason

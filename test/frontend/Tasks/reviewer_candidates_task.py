@@ -341,13 +341,16 @@ class ReviewerCandidatesTask(BaseTask):
       return False
     return True
 
-  def _make_type_choice(self):
+  def _make_type_choice(self, choice='', reason=''):
     """
     randomly select a choice to recommend or oppose a candidate and give a reason
+    :param choice: if you want a specific choice
+    :param reason: if you want a specific reason
     :return choice: recommend or oppose
     :return reason: text listed for reason for choice
     """
-    choice = random.choice(['recommend', 'oppose'])
+    if not choice:
+      choice = random.choice(['recommend', 'oppose'])
     if choice == 'recommend':
       recc_btn = self._get(self._cand_recc_radio_btn)
       try:
@@ -362,7 +365,9 @@ class ReviewerCandidatesTask(BaseTask):
       except WebDriverException:
         logging.info('Selection covered by toolbar...')
         self.click_covered_element(opp_btn)
-    reason = generate_paragraph(start_with_lorem=True)[2]
+    if not reason:
+      reason = generate_paragraph(start_with_lorem=True)[2]
     opt_reason_field = self._get(self._cand_reason)
     opt_reason_field.send_keys(reason)
+    logging.debug(choice, reason)
     return choice, reason

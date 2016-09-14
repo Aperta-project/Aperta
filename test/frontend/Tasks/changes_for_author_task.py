@@ -53,5 +53,6 @@ class ChangesForAuthorTask(BaseTask):
     try:
       changes_made_btn.click()
     except WebDriverException:
+      logging.info('Element is covered by the toolbar...')
       self.click_covered_element(changes_made_btn)
     time.sleep(1)

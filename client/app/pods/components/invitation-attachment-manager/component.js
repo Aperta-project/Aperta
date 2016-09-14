@@ -4,6 +4,7 @@ import { task as concurrencyTask, timeout } from 'ember-concurrency';
 export default Ember.Component.extend({
   multiple: false,
   invitation: null,
+  classNames: ['invitation-attachment-manager'],
 
   enableEditingAttachments: true,
 

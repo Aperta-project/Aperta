@@ -4,6 +4,7 @@
 POM for the dynamically generated Changes for Author Card
 """
 import time
+import logging
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -53,6 +54,6 @@ class ChangesForAuthorTask(BaseTask):
     try:
       changes_made_btn.click()
     except WebDriverException:
-      logging.info('Element is covered by the toolbar...')
+      logging.info('changes_made_btn is covered by the toolbar...')
       self.click_covered_element(changes_made_btn)
     time.sleep(1)

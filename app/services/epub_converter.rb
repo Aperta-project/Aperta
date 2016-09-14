@@ -55,7 +55,7 @@ class EpubConverter
   def _embed_source(workdir)
     FileUtils.mkdir_p _source_dir(workdir)
     File.open(_path_to_source(workdir), 'wb') do |f|
-      f.write manuscript_contents
+      f.write manuscript_source_contents
     end
   end
 
@@ -68,9 +68,8 @@ class EpubConverter
   end
 
   def _manuscript_source_path
-    Pathname.new(manuscript_source.file.path)
+    @manuscript_source_path ||= Pathname.new(manuscript_source.path)
   end
-
 
   private
 
@@ -123,11 +122,10 @@ class EpubConverter
   end
 
   def manuscript_source
-    paper.latest_version.source
+    @manuscript_source ||= paper.file.to_file
   end
 
-  def manuscript_contents
-    manuscript_source.download!(manuscript_source.url)
-    manuscript_source.file.read
+  def manuscript_source_contents
+    @manuscript_source_contents ||= manuscript_source.read
   end
 end

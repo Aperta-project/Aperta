@@ -6,11 +6,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Email invitation changes can now be saved
 - Added billing role
+- Keeps all uploaded manuscripts
+- Can view old versions of figures and supporting information
+- Aperta is now configured to clean out temporary files every 24 hours on the backend.
 ### Changed
 ### Deprecated
 ### Removed
 - Production staff, publishing services, and staff admin can no longer view the billing card
 ### Fixed
+- Emails are properly displated in all clients
 - Emails are not sent when a decision is rescinded
 ### Security
 
@@ -25,6 +29,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Add permission to view decisions
 ### Changed
 - Upgrade to ruby 2.2.4
+- Change paper tracker submitted search fields from SUBMITTED to VERSION DATE, and FIRST SUBMITTED to SUBMISISON DATE.
 ### Deprecated
 ### Removed
 ### Fixed
@@ -608,5 +613,3 @@ _Changes too big to document, initial release_
 [1.1.0]: https://github.com/tahi-project/tahi/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/tahi-project/tahi/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Tahi-project/tahi/tree/v1.0.0
-
-

@@ -20,8 +20,6 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
-      :tables,
-      :bibitems,
       :journal
     ).find(params[:id])
     requires_user_can(:view, paper)
@@ -40,8 +38,7 @@ class PapersController < ApplicationController
         DownloadManuscriptWorker.download_manuscript(
           paper,
           url,
-          current_user,
-          DownloadManuscriptWorker.build_ihat_callback_url(request)
+          current_user
         )
       end
     end
@@ -111,10 +108,10 @@ class PapersController < ApplicationController
     requires_user_can(:view, paper)
     respond_to do |format|
       format.docx do
-        if paper.latest_version.source_url.blank?
+        if paper.file.blank? || paper.file.url.blank?
           render status: :not_found, nothing: true
         else
-          redirect_to paper.latest_version.source_url
+          redirect_to paper.file.url
         end
       end
 
@@ -183,9 +180,7 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: [],
-      table_ids: [],
-      bibitem_ids: []
+      figure_ids: []
     )
   end
 
@@ -200,9 +195,7 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: [],
-      table_ids: [],
-      bibitem_ids: []
+      figure_ids: []
     )
   end
 

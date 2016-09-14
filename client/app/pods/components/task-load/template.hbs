@@ -1,7 +1,7 @@
-{{#util/promise-loader promise=taskLoad}}
+{{#util/async-content task=taskLoad as |content|}}
   <div class="animation-fade-in">
-    {{yield promiseProxy.content}}
+    {{yield content}}
   </div>
 {{else}}
   {{yield to="inverse"}}
-{{/util/promise-loader}}
+{{/util/async-content}}

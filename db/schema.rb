@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160823140447) do
+ActiveRecord::Schema.define(version: 20160912141012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20160823140447) do
     t.boolean  "publishable"
     t.string   "file_hash"
     t.string   "previous_file_hash"
+    t.integer  "uploaded_by_id"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
@@ -125,16 +126,6 @@ ActiveRecord::Schema.define(version: 20160823140447) do
     t.string   "current_address_country"
     t.string   "current_address_postal"
   end
-
-  create_table "bibitems", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "format"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
@@ -635,17 +626,6 @@ ActiveRecord::Schema.define(version: 20160823140447) do
 
   add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
 
-  create_table "tables", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
-
   create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
@@ -766,11 +746,21 @@ ActiveRecord::Schema.define(version: 20160823140447) do
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "source"
     t.text     "original_text"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
+
+  create_table "versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   create_table "withdrawals", force: :cascade do |t|
     t.string   "reason"

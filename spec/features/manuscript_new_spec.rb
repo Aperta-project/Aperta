@@ -21,11 +21,9 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
     end
   end
 
-  def paper_src
+  def paper_has_uploaded_manuscript
     paper = Paper.find_by(title: 'Paper Title')
-    if paper
-      paper.latest_version[:source]
-    end
+    paper.try(:file).try(:url)
   end
 
   scenario 'success' do
@@ -41,7 +39,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
       dashboard.upload_file(
         element_id: 'upload-files',
         file_name: 'about_equations.docx',
-        sentinel: proc { paper_src },
+        sentinel: proc { paper_has_uploaded_manuscript },
         process_before_upload: true
       )
 

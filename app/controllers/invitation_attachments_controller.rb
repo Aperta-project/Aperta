@@ -17,7 +17,7 @@ class InvitationAttachmentsController < ApplicationController
   def create
     requires_user_can(:manage_invitations, invitation.task)
     new_attachment = invitation.attachments.create
-    DownloadAttachmentWorker.perform_async(new_attachment.id, params[:url])
+    DownloadAttachmentWorker.perform_async(new_attachment.id, params[:url], current_user.id)
     render json: new_attachment, root: 'attachment'
   end
 
@@ -37,7 +37,7 @@ class InvitationAttachmentsController < ApplicationController
   def update_attachment
     requires_user_can(:manage_invitations, invitation.task)
     attachment.update_attribute(:status, 'processing')
-    DownloadAttachmentWorker.perform_async(attachment.id, params[:url])
+    DownloadAttachmentWorker.perform_async(attachment.id, params[:url], current_user.id)
     render json: attachment, root: 'attachment'
   end
 

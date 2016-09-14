@@ -22,5 +22,4 @@ export default Ember.Component.extend({
       return hash1 !== hash2;
     }
   )
-
 });

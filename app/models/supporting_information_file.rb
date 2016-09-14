@@ -4,6 +4,8 @@
 class SupportingInformationFile < Attachment
   include CanBeStrikingImage
 
+  self.public_resource = true
+
   before_save :ensure_striking_image_category_is_figure
 
   default_scope { order(:id) }

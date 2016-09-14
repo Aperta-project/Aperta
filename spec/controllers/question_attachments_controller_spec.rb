@@ -125,7 +125,8 @@ describe QuestionAttachmentsController do
         question_attachment = answer.attachments.last
         expect(DownloadAttachmentWorker).to have_queued_job(
           question_attachment.id,
-          'http://some.cat.image.gif'
+          'http://some.cat.image.gif',
+          user.id
         )
       end
 
@@ -177,7 +178,8 @@ describe QuestionAttachmentsController do
         do_request
         expect(DownloadAttachmentWorker).to have_queued_job(
           question_attachment.id,
-          'http://some.cat.image.gif'
+          'http://some.cat.image.gif',
+          user.id
         )
       end
 

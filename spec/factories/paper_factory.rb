@@ -338,9 +338,10 @@ FactoryGirl.define do
           ]
         )
 
-        version = paper.latest_version
-        version.source = File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
-        version.save!
+        paper.file = FactoryGirl.create(
+          :manuscript_attachment,
+          paper: paper,
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')))
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]
         paper.save!

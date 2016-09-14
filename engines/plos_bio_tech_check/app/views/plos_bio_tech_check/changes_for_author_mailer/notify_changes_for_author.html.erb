@@ -1,50 +1,49 @@
-<div class="container">
-  <div class="greeting">
-    <p class="message">
-      Changes are needed on your Manuscript in <%= @journal.name %>
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <p>
-      Dear <%= @author.full_name %>,
-    </p>
-    <p>
-      Thank you for submitting your manuscript to <%= @journal.name %>.
-      Before your submission can proceed through the editorial process,
-      please address the following requests:
-    </p>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
 
-    <blockquote>
-      <%= simple_format @task.body["initialTechCheckBody"] if @task.body["initialTechCheckBody"].present? %>
-    </blockquote>
+<h1>
+  Changes are needed on your Manuscript in <%= @journal.name %>
+</h1>
 
-    <p>
-      Your paper has been made editable to enable you to make these
-      changes. Please click on the link below which will take you to
-      your manuscript. The task “Changes for Author” will be listed on
-      the right hand sidebar and will include the requirements listed
-      above. When you have completed these requests, you can resubmit
-      your paper to the journal office by clicking “These Changes Have
-      Been Made.”
-    </p>
+<hr>
 
-    <p>
-      <%= link_to client_paper_url(@task.paper), client_paper_url(@task.paper) %>
-    </p>
+<p>Dear <%= @author.full_name %>,</p>
 
-    <p>
-      Please address these technical requirements at your earliest convenience, preferably within 1-2 days.
-    </p>
+<p>
+  Thank you for submitting your manuscript to <%= @journal.name %>.
+  Before your submission can proceed through the editorial process,
+  please address the following requests:
+</p>
 
-    <p>
-      If you have any questions feel free to contact us for assistance by replying to this email.
-    </p>
-  </div>
-  <hr>
-  <div class="footer">
-    Best regards,
-    <br>
-    The <%= @journal.name %> Team
-  </div>
-</div>
+<% if @task.body['initialTechCheckBody'].present? %>
+  <%= render partial: 'email/blockquote', locals: {
+    text: simple_format(@task.body['initialTechCheckBody'])
+  } %>
+<% end %>
+
+<p>
+  Your paper has been made editable to enable you to make these
+  changes. Please click on the link below which will take you to
+  your manuscript. The task “Changes for Author” will be listed on
+  the right hand sidebar and will include the requirements listed
+  above. When you have completed these requests, you can resubmit
+  your paper to the journal office by clicking “These Changes Have
+  Been Made.”
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@task.paper),
+  text: 'View Manuscript'
+} %>
+
+<p>
+  Please address these technical requirements at your earliest convenience, preferably within 1-2 days.
+</p>
+
+<p>
+  If you have any questions feel free to contact us for assistance by replying to this email.
+</p>
+
+<hr>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @journal } %>

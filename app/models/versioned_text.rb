@@ -13,8 +13,6 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
-  mount_uploader :source, SourceUploader # CarrierWave obj
-
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
 
@@ -57,8 +55,7 @@ class VersionedText < ActiveRecord::Base
       d.update!(
         major_version: nil,
         minor_version: nil,
-        submitting_user: nil,
-        source: source) # makes duplicate of S3 file
+        submitting_user: nil) # makes duplicate of S3 file
     end
   end
 

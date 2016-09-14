@@ -17,19 +17,6 @@ module Snapshottable
     has_many :snapshots, as: :source
   end
 
-  class_methods do
-    # +snapshottable_uploader+ will prevent carrierwave from removing a
-    # mounted file/attachment if the including model has been snapshotted.
-    def mount_snapshottable_uploader(mounted_as, uploader_class)
-      mount_uploader mounted_as, uploader_class
-      carrierwave_removal_method_on_save = "remove_previously_stored_#{mounted_as}".to_sym
-      skip_callback :save, :after, carrierwave_removal_method_on_save, if: -> { snapshotted? }
-
-      carrierwave_removal_method_on_destroy = "remove_#{mounted_as}!".to_sym
-      skip_callback :commit, :after, carrierwave_removal_method_on_destroy, if: -> { snapshotted? }
-    end
-  end
-
   # Returns the current snapshot for the including model. When a snapshot_key
   # exists it will be used as a condition when searching for the snapshot. when
   # a snapshot_key does not exist it will return the most recent snapshot.

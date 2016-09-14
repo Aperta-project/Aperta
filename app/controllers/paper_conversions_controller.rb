@@ -19,8 +19,7 @@ class PaperConversionsController < ApplicationController
   def export
     requires_user_can(:view, paper)
     export_format = params[:export_format]
-    job_id = if export_format == 'docx' &&
-                paper.latest_version.source_url.present?
+    job_id = if export_format == 'docx' && paper.file.url.present?
                # This is already available for download, and does not
                # need background processing.
                'source'
@@ -46,7 +45,7 @@ class PaperConversionsController < ApplicationController
     requires_user_can(:view, paper)
     if params[:job_id] == 'source'
       # Direct download, redirect to download link.
-      render status: :ok, json: { url: paper.latest_version.source_url }
+      render status: :ok, json: { url: paper.file.url }
     else
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?

@@ -123,7 +123,7 @@ RSpec.shared_examples_for 'attachment#download! sets the status' do
   end
 end
 
-RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3 files' do
+RSpec.shared_examples_for 'attachment#download! always keeps snapshotted files on s3' do
   describe 'previously uploaded s3 file' do
     let(:url_1) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
     let(:url_2) { 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg' }
@@ -138,7 +138,7 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
         subject.download!(url_2)
       end
 
-      it 'does not remove the existings file when it has been snapshotted' do
+      it 'does not remove the existing file when it has been snapshotted' do
         snapshot = FactoryGirl.create(:snapshot, source: subject)
         expect(subject).to_not receive(:remove_previously_stored_file)
         subject.download!(url_2)
@@ -153,6 +153,31 @@ RSpec.shared_examples_for 'attachment#download! knows when to keep and remove s3
 
       it 'does not remove the existing file when it has been snapshotted' do
         snapshot = FactoryGirl.create(:snapshot, source: subject)
+        expect(subject).to_not receive(:remove_file!)
+        subject.destroy!
+      end
+    end
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! always keeps files on s3, no matter what' do
+  describe 'previously uploaded s3 file' do
+    let(:url_1) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
+    let(:url_2) { 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg' }
+
+    before do
+      subject.download!(url_1)
+    end
+
+    context 'downloading a new file over an existing file' do
+      it 'does not remove the existing file' do
+        expect(subject).to_not receive(:remove_previously_stored_file)
+        subject.download!(url_2)
+      end
+    end
+
+    context 'destroying the attachment' do
+      it 'does not remove the existing file' do
         expect(subject).to_not receive(:remove_file!)
         subject.destroy!
       end
@@ -219,5 +244,23 @@ RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
       end
     end
   end
+end
 
+RSpec.shared_examples_for 'attachment#download! does not create resource tokens' do
+  describe 'skip creating resource tokens' do
+    before do
+      subject || fail('The calling example was expected to set up the subject, but it did not.')
+      url || fail('The calling example was expected to set up a :url, but it did not.')
+
+      # we don't want any resource tokens to exist for these shared examples,
+      # but there's no need to bother the including test about this.
+      subject.resource_tokens.delete_all
+    end
+
+    it 'does not create resource tokens' do
+      expect do
+        subject.download!(url)
+      end.to_not change { subject.resource_tokens.count }
+    end
+  end
 end

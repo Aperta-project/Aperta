@@ -65,7 +65,7 @@ class QuestionAttachmentsController < ApplicationController
   # rubocop:enable Style/CyclomaticComplexity,Style/PerceivedComplexity
 
   def process_attachments(question_attachment, url)
-    DownloadAttachmentWorker.perform_async question_attachment.id, url
+    DownloadAttachmentWorker.perform_async question_attachment.id, url, current_user.id
   end
 
   def attachment_params

@@ -4,6 +4,8 @@
 class Figure < Attachment
   include CanBeStrikingImage
 
+  self.public_resource = true
+  
   default_scope { order(:id) }
 
   after_save :insert_figures!, if: :should_insert_figures?

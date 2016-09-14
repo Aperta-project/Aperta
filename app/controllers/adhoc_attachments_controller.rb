@@ -18,7 +18,7 @@ class AdhocAttachmentsController < ApplicationController
   def create
     requires_user_can :edit, task
     attachment = task.attachments.create
-    DownloadAttachmentWorker.perform_async(attachment.id, params[:url])
+    DownloadAttachmentWorker.perform_async(attachment.id, params[:url], current_user.id)
     render json: attachment, root: 'attachment'
   end
 
@@ -40,7 +40,7 @@ class AdhocAttachmentsController < ApplicationController
     attachment = task.attachments.find(params[:id])
     requires_user_can :edit, attachment.task
     attachment.update_attribute(:status, 'processing')
-    DownloadAttachmentWorker.perform_async(attachment.id, params[:url])
+    DownloadAttachmentWorker.perform_async(attachment.id, params[:url], current_user.id)
     render json: attachment, root: 'attachment'
   end
 

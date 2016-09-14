@@ -16,8 +16,7 @@ module TahiStandardTasks
       DownloadManuscriptWorker.download_manuscript(
         task.paper,
         params[:url],
-        current_user,
-        DownloadManuscriptWorker.build_ihat_callback_url(request)
+        current_user
       )
 
       head 204

@@ -135,12 +135,7 @@ describe PapersController do
 
         it 'calls DownloadManuscriptWorker' do
           expect(DownloadManuscriptWorker).to receive(:download_manuscript)
-            .with(
-              paper,
-              "someURL",
-              user,
-              "http://test.host/api/ihat/jobs"
-            )
+            .with(paper, "someURL", user)
           do_request
         end
       end
@@ -561,11 +556,8 @@ describe PapersController do
           it 'redirects to the docx file' do
             # Force the controller to use our mocked paper
             allow(controller).to receive(:paper).and_return(paper)
-            latest_version = double(paper.latest_version)
-            allow(paper).to receive(:latest_version)
-              .and_return(latest_version)
-            expect(latest_version).to receive(:source_url)
-              .and_return(docx_url).twice
+            manuscript_file = double('ManuscriptAttachment', url: docx_url)
+            allow(paper).to receive(:file).and_return(manuscript_file)
 
             do_request
             expect(response).to redirect_to(docx_url)

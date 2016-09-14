@@ -57,7 +57,11 @@ export default Ember.Component.extend({
         let task = this.get('task');
         let snap1 = paper.snapshotForTaskAndVersion(task, this.get('version1'));
         let snap2 = paper.snapshotForTaskAndVersion(task, this.get('version2'));
-        return snap1 && snap1.hasDiff(snap2);
+        if (typeof(snap1) !== 'undefined') {
+          return snap1.hasDiff(snap2);
+        } else if (typeof(snap2) !== 'undefined') {
+          return snap2.hasDiff(snap1);
+        }
       }
       return false;
     }),

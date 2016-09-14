@@ -78,9 +78,6 @@ export default Component.extend({
 
     cancelEdit(){
       this.get('file').rollbackAttributes();
-      this.get('model').validateAll();
-      if(this.get('model').validationErrorsPresent()) { return; }
-
       this.set('uiState', 'view');
     },
 

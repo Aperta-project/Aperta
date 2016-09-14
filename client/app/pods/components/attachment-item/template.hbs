@@ -8,7 +8,9 @@
                       displayIcon=true
                       displayText=true}}
 
-      <span class="upload-cancel-button" {{action "deleteFile"}}>×</span>
+      {{#unless disabled}}
+        <span class="upload-cancel-button" {{action "deleteFile"}}>×</span>
+      {{/unless}}
     </div>
   {{else if isCanceled}}
     <div class="processing-attachment">
@@ -17,7 +19,9 @@
   {{else if isProcessing}}
     <div class="processing-attachment">
       {{progress-spinner visible=true size="small"}} Processing {{attachment.filename}} ...
-      <span class="upload-cancel-button" {{action "cancelUpload"}}>×</span>
+      {{#unless disabled}}
+        <span class="upload-cancel-button" {{action "cancelUpload"}}>×</span>
+      {{/unless}}
     </div>
   {{else}}
     <a href="{{attachment.src}}" class="file-link" target="_blank">

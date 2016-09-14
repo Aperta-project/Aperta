@@ -112,14 +112,19 @@ describe Attachment do
     # Look there for more
     subject(:attachment) { FactoryGirl.create(:attachment) }
 
-    it 'sets the error state on an exception' do
+    it 'stores the original uploaded url and error state on an exception' do
       allow(subject.file).to receive(:download!)
-        .and_raise(Exception, "Download failed!")
+        .and_raise("Download failed!")
 
       begin
         subject.download!('bogus url')
       rescue Exception
+        # This happens in non-error cases too, but this is an easy place to test this.
+        expect(subject.pending_url).to eq('bogus url')
         expect(subject.status).to eq(Attachment::STATUS_ERROR)
+        expect(subject.error_message).to eq("Download failed!")
+        expect(subject.error_backtrace).to be_present
+        expect(subject.errored_at).to be_present
       end
     end
   end

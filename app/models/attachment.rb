@@ -96,6 +96,10 @@ class Attachment < ActiveRecord::Base
     # Wrap this in a transaction so the ActiveRecord after_commit lifecycle
     # event isn't fired until the transaction completes and all of the work is
     # finished.
+
+    # Store off the url in case of any failures
+    update_column :pending_url, url
+
     Attachment.transaction do
       @downloading = true
       file.download! url
@@ -121,7 +125,12 @@ class Attachment < ActiveRecord::Base
       on_download_complete
     end
   rescue Exception => ex
-    update_attribute :status, STATUS_ERROR
+    update_attributes!(
+      status: STATUS_ERROR,
+      error_message: ex.message,
+      error_backtrace: ex.backtrace.join("\n"),
+      errored_at: Time.zone.now
+    )
     on_download_failed(ex)
   ensure
     @downloading = false

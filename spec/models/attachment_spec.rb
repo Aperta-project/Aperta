@@ -90,20 +90,20 @@ describe Attachment do
 
     it 'destroys the attachment if status is STATUS_PROCESSING' do
       subject.status = Attachment::STATUS_PROCESSING
-      expect(subject).to receive(:destroy)
       subject.cancel_download
+      expect(subject).to be_destroyed
     end
 
     it 'destroys the attachment if status is STATUS_ERROR' do
       subject.status = Attachment::STATUS_ERROR
-      expect(subject).to receive(:destroy)
       subject.cancel_download
+      expect(subject).to be_destroyed
     end
 
     it 'does nothing if status is STATUS_DONE' do
       subject.status = Attachment::STATUS_DONE
-      expect(subject).to_not receive(:destroy)
       subject.cancel_download
+      expect(subject).to_not be_destroyed
     end
   end
 

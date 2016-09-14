@@ -50,6 +50,7 @@ Tahi::Application.routes.draw do
       end
     end
     resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments'
+    resources :manuscript_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
@@ -70,7 +71,6 @@ Tahi::Application.routes.draw do
       put :update_attachment, on: :member
     end
     resources :group_authors, only: [:show, :create, :update, :destroy]
-    resources :tables, only: [:create, :update, :destroy]
     resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
@@ -195,7 +195,6 @@ Tahi::Application.routes.draw do
     # s3 request policy
     #
     namespace :s3 do
-      resource :request_policy, only: [:show]
       get :sign, to: 'forms#sign'
     end
   end

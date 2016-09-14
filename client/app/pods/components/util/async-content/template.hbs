@@ -1,0 +1,5 @@
+{{#if task.lastSuccessful}}
+  {{yield task.lastSuccessful.value}}
+{{else}}
+  {{yield to="inverse"}}
+{{/if}}

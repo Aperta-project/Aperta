@@ -1,35 +1,34 @@
-<div class="container">
-  <div class="greeting">
-    Thank you for agreeing to review for <%= @journal.name %>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <p>
-      Hello <%= @assignee_name %>,</p>
-    <p class="message">
-      Thank you very much for agreeing to review the manuscript
-      "<%= @paper.display_title(sanitized: false) %>" for <%= @journal.name %>.
-    </p>
-    <p class="message">
-      In the interest of returning timely decisions to the authors, please return
-      your review in 10 days. Please do let us know if you wish to request additional
-      time to review this manuscript, so that we may plan accordingly.
-    </p>
-    <p>
-      For full reviewer guidelines, including what we look for and how to structure your
-      review for PLOS Biology, please visit:
-      <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines">
-        http://journals.plos.org/plosbiology/s/reviewer-guidelines"</a>.
-    </p>
-    <div class="paper-abstract">
-      You can access the manuscript and your reviewer report here:
-        <%= link_to client_paper_url(@paper), client_paper_url(@paper) %>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-    Sincerely,
-    <br>
-    <%= @journal.name %> Team
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @journal } %>
+<br><br>
+
+<h1>
+  Thank you for agreeing to review for <%= @journal.name %>
+</h1>
+
+<hr>
+
+<p>Hello <%= @assignee_name %>,</p>
+
+<p>
+  Thank you very much for agreeing to review the manuscript
+  "<%= @paper.display_title(sanitized: false) %>" for <%= @journal.name %>.
+</p>
+
+<p>
+  In the interest of returning timely decisions to the authors, please return
+  your review in 10 days. Please do let us know if you wish to request additional
+  time to review this manuscript, so that we may plan accordingly.
+</p>
+
+<p>
+  For full reviewer guidelines, including what we look for and how to structure your
+  review for PLOS Biology, please visit:
+  <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines">http://journals.plos.org/plosbiology/s/reviewer-guidelines"</a>.
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@paper),
+  text: 'View Manuscript'
+} %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @journal } %>

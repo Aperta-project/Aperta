@@ -14,7 +14,7 @@
         </header>
         <div class="overlay-body">
           <div id="versioned-metadata">
-            {{#util/promise-loader promise=selectedSnapshots as |snapshots| }}
+            {{#util/async-content task=selectedSnapshots as |snapshots| }}
               <div class="versioned-metadata-version">
                 <span class="grey">Viewing</span>
                 <span class="versioned-metadata-version-string">
@@ -31,17 +31,17 @@
                   </span>
                 {{/if}}
               </div>
-            {{/util/promise-loader}}
+            {{/util/async-content}}
 
             <h2>{{model.title}}</h2>
 
-            {{#util/promise-loader promise=selectedSnapshots as |snapshots|}}
+            {{#util/async-content task=selectedSnapshots as |snapshots|}}
                 {{nested-snapshot
                   snapshot1=snapshots.v1.contents
                   snapshot2=snapshots.v2.contents}}
             {{else}}
               {{progress-spinner visible=true size="large" center=true}}
-            {{/util/promise-loader}}
+            {{/util/async-content}}
           </div>
         </div>
         <footer class="overlay-footer">

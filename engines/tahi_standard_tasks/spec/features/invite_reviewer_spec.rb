@@ -82,9 +82,13 @@ feature "Invite Reviewer", js: true do
     # day by dragging day, in all the thousand small uncaring ways.
     overlay.find('.invitation-item-header').click
     overlay.find('.invitation-item-header').click
-
     overlay.find('.invitation-item-action-edit').click
-    overlay.find('.invitation-edit-body').set('New body')
+    find('.invitation-edit-body')
+    page.execute_script %Q{
+      var content = $('.invitation-edit-body');
+      content.html('New body');
+      content.keyup();
+    }
     overlay.find('.invitation-save-button').click
     expect(overlay.find('.invitation-show-body')).to have_text('New body')
   end

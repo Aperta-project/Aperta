@@ -240,7 +240,6 @@ class WorkflowPage(AuthenticatedPage):
     assert author_cards[0].text == 'Additional Information', author_cards[0].text
     assert author_cards[1].text == 'Authors', author_cards[1].text
     assert author_cards[2].text == 'Billing', author_cards[2].text
-    assert author_cards[3].text == 'Changes For Author', author_cards[3].text
     assert author_cards[4].text == 'Competing Interests', author_cards[4].text
     assert author_cards[5].text == 'Cover Letter', author_cards[5].text
     assert author_cards[6].text == 'Data Availability', author_cards[6].text
@@ -250,7 +249,6 @@ class WorkflowPage(AuthenticatedPage):
     assert author_cards[10].text == 'New Taxon', author_cards[10].text
     assert author_cards[11].text == 'Reporting Guidelines', author_cards[11].text
     assert author_cards[12].text == 'Reviewer Candidates', author_cards[12].text
-    assert author_cards[13].text == 'Revise Task', author_cards[13].text
     assert author_cards[14].text == 'Supporting Info', author_cards[14].text
     assert author_cards[15].text == 'Upload Manuscript', author_cards[15].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
@@ -267,10 +265,15 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[10].text == 'Production Metadata', staff_cards[10].text
     assert staff_cards[11].text == 'Register Decision', staff_cards[11].text
     assert staff_cards[12].text == 'Related Articles', staff_cards[12].text
-    assert staff_cards[13].text == 'Reviewer Report', staff_cards[13].text
     assert staff_cards[14].text == 'Revision Tech Check', staff_cards[14].text
     assert staff_cards[15].text == 'Send to Apex', staff_cards[15].text
     assert staff_cards[16].text == 'Title And Abstract', staff_cards[16].text
+    author_cards_text = [x.text for x in author_cards]
+    # This will fail until APERTA-6333 is fixed
+    assert 'Changes For Author' not in author_cards_text, author_cards_text
+    assert 'Revise Manuscript' not in author_cards_text, author_cards_text
+    assert 'Reviewer Report' not in author_cards_text, author_cards_text
+
     # APERTA-5513 AC 3
     author_cards[10].click()
     author_cards[11].click()

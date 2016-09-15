@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Billing Task', js: true do
+feature 'Billing Task', js: true, flaky: true do
   before do
     user  = create :user, :site_admin
     paper = create :paper_with_task,
@@ -33,7 +33,12 @@ feature 'Billing Task', js: true do
 
       idents.each do |ident|
         find("input[name*='#{ident}']").set 'foo'
-        page.execute_script("$(\"input[name*='#{ident}']\").blur()")
+      end
+
+      # effectively blur and allow all the input values to validate
+      check 'plos_billing--affirm_true_and_complete'
+
+      idents.each do |ident|
         expect(page).to have_css("#error-for-#{ident}",
           text: "Must be a number")
       end

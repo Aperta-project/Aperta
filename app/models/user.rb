@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include Assignable::User
-  include UserHelper
+  include Authorizations::UserHelper
   include UserDevise
 
   include PgSearch

@@ -59,14 +59,8 @@ module Authorizations
       end
     end
 
-    def user_is_site_admin?
-      user.assignments.includes(:permissions)
-      .where(permissions: { action: :*, applies_to: System.name })
-      .exists?
-    end
-
     def all
-      if user_is_site_admin?
+      if user.site_admin?
         load_all_objects
       else
         load_authorized_objects

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import PropTypeMixin, {PropTypes} from 'ember-prop-types'
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   propTypes: {
@@ -34,16 +34,6 @@ export default Ember.Component.extend({
     return uniqueUsers;
   }),
 
-  _setupFocus: Ember.on('didInsertElement', function() {
-    this.$('.new-comment-field').on('focus', ()=> {
-      this.set('editing', true);
-    });
-  }),
-
-  _teardownFocus: Ember.on('willDestroyElement', function() {
-    this.$('.new-comment-field').off();
-  }),
-
   clear() {
     this.set('comment', '');
     this.set('editing', false);
@@ -51,6 +41,10 @@ export default Ember.Component.extend({
 
   actions: {
     cancel() { this.clear(); },
+
+    startEditing() {
+      this.set('editing', true);
+    },
 
     save() {
       if(Ember.isEmpty(this.get('comment'))) {

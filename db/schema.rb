@@ -131,16 +131,6 @@ ActiveRecord::Schema.define(version: 20160914180529) do
     t.string   "current_address_postal"
   end
 
-  create_table "bibitems", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "format"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
-
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
     t.date     "from_date"
@@ -639,17 +629,6 @@ ActiveRecord::Schema.define(version: 20160914180529) do
   end
 
   add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
-
-  create_table "tables", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
 
   create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
     t.integer  "paper_id"

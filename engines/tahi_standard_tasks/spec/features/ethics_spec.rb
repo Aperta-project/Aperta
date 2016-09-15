@@ -27,7 +27,7 @@ feature 'Ethics Task', js: true do
     login_as(author, scope: :user)
   end
 
-  scenario 'It shows 3 questions' do
+  scenario 'It shows 3 questions', flaky: true do
     view_ethics_card_on_the_manuscript_page
     expect(page).to have_selector('.question-text', count: 3)
 

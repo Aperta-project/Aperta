@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   disabled: false,
   notDisabled: Ember.computed.not('disabled'),
   buttonText: 'Upload File',
-  fileUploads: [],
+  fileUploads: Ember.computed(() => { return []; }),
   multiple: false,
   showDescription: true,
 
@@ -73,7 +73,7 @@ export default Ember.Component.extend({
     },
 
     uploadFailed(reason){
-     console.log('uploadFailed', reason);
+      throw new Ember.Error(`s3 uploadFailed: ${reason}`);
     }
   }
 });

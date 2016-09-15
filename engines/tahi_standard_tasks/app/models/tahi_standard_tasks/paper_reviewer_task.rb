@@ -31,6 +31,10 @@ module TahiStandardTasks
       )
     end
 
+    def invitation_rescinded(invitation)
+      # NOOP until this is implemented
+    end
+
     def array_attributes
       super + [:reviewer_ids]
     end

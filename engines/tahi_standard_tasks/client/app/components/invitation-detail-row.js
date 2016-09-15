@@ -47,6 +47,10 @@ export default Component.extend({
     return this.get('allowDestroy') && this.get('invitation.pending') && !this.get('closedState');
   }),
 
+  displayRescindButton: computed('invitation.invited', function() {
+    return this.get('invitation.invited');
+  }),
+
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
       return 'closed';
@@ -95,6 +99,10 @@ export default Component.extend({
         invitation.save();
         this.get('setRowState')('show');
       }
+    },
+
+    rescindInvitation(invitation) {
+      invitation.rescind();
     },
 
     destroyInvitation(invitation) {

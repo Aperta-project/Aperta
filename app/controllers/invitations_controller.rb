@@ -59,7 +59,7 @@ class InvitationsController < ApplicationController
     requires_user_can(:manage_invitations, task)
     invitation.rescind!
     Activity.invitation_withdrawn!(invitation, user: current_user)
-    respond_with(invitation)
+    render json: invitation
   end
 
   def accept

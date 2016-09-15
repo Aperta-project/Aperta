@@ -25,6 +25,10 @@ module TahiStandardTasks
       )
     end
 
+    def invitation_rescinded(invitation)
+      # NOOP until this is implemented
+    end
+
     def invitee_role
       Role::ACADEMIC_EDITOR_ROLE
     end

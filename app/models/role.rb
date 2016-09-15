@@ -70,6 +70,10 @@ class Role < ActiveRecord::Base
     find_by(name: Role::USER_ROLE, journal: nil)
   end
 
+  def self.site_admin_role
+    find_by(name: Role::SITE_ADMIN_ROLE, journal: nil)
+  end
+
   def self.ensure_exists(name, journal: nil,
                                participates_in: [],
                                delete_stray_permissions: true,

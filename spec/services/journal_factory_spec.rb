@@ -53,7 +53,7 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
-    context 'creating the default roles and permission for the journal' do
+    context 'creating the default roles and permission for the journal', flaky: true do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal')
       end

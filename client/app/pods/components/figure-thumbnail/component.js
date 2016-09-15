@@ -95,7 +95,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     cancelEditing() {
       this.set('editState', false);
-      this.get('figure').rollback();
+      this.get('figure').rollbackAttributes();
     },
 
     toggleEditState() {

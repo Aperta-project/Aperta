@@ -13,7 +13,7 @@ const FakeCanService = Ember.Object.extend({
   },
 
   can(permission, resource){
-    return new Ember.RSVP.Promise( (resolve, reject) => {
+    return new Ember.RSVP.Promise((resolve) => {
       resolve(this.allowedPermissions[permission] === resource);
     });
   },
@@ -29,6 +29,10 @@ const FakeCanService = Ember.Object.extend({
     return Ability.create({});
   },
 
+  /**
+   * Calling allowPermission on an instance of the service is the way
+   * to add permissions.
+  */
   allowPermission(permission, resource){
     this.allowedPermissions[permission] = resource;
     return this;

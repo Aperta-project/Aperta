@@ -53,6 +53,11 @@ describe JournalFactory, flaky: true do
       end.to change(Journal, :count).by(1)
     end
 
+    it 'assigns hints to all role types' do
+      journal = JournalFactory.create(name: 'Journal of the Stars')
+      expect(journal.roles.where(assigned_to_type_hint: nil).count).to eq(0)
+    end
+
     context 'creating the default roles and permission for the journal', flaky: true do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal')

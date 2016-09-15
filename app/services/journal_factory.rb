@@ -8,7 +8,6 @@ class JournalFactory
 
   def self.ensure_default_roles_and_permissions_exist(journal)
     new(journal).ensure_default_roles_and_permissions_exist
-    assign_hints(journal)
   end
 
   def initialize(journal)
@@ -18,20 +17,21 @@ class JournalFactory
   def create
     @journal.save!
     ensure_default_roles_and_permissions_exist
+    assign_hints
     @journal
   end
 
-  def self.assign_hint(journal, names, hint)
-    journal.roles.where(name: names)
-           .update_all(assigned_to_type_hint: hint)
+  def assign_hint(names, hint)
+    @journal.roles.where(name: names)
+            .update_all(assigned_to_type_hint: hint)
   end
 
-  def self.assign_hints(journal)
-    assign_hint journal, Role::USER_ROLES,             'User'
-    assign_hint journal, Role::DISCUSSION_TOPIC_ROLES, 'DiscussionTopic'
-    assign_hint journal, Role::TASK_ROLES,             'Task'
-    assign_hint journal, Role::PAPER_ROLES,            'Paper'
-    assign_hint journal, Role::JOURNAL_ROLES,          'Journal'
+  def assign_hints
+    assign_hint Role::USER_ROLES,             User.name
+    assign_hint Role::DISCUSSION_TOPIC_ROLES, DiscussionTopic.name
+    assign_hint Role::TASK_ROLES,             Task.name
+    assign_hint Role::PAPER_ROLES,            Paper.name
+    assign_hint Role::JOURNAL_ROLES,          Journal.name
   end
 
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/LineLength

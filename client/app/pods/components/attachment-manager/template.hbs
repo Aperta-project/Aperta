@@ -23,7 +23,7 @@
 {{#each fileUploads as |f|}}
   {{upload-preview upload=f}}
 {{/each}}
-<h3>{{uploadInProgress}}</h3>
+
 {{#if showAddButton}}
   <div class="button-secondary button--green fileinput-button {{if uploadInProgress "button--disabled"}}">
     {{buttonText}}

@@ -20,15 +20,14 @@
                     uploadFinished=attrs.updateAttachment}}
 {{/each}}
 
-{{#if uploadInProgress}}
-  {{#each fileUploads as |f|}}
-    {{upload-preview upload=f}}
-  {{/each}}
-{{else}}
-
-  {{#if showAddButton}}
-    <div class="button-secondary button--green fileinput-button {{if disabled "button--disabled"}}">
-      {{buttonText}}
+{{#each fileUploads as |f|}}
+  {{upload-preview upload=f}}
+{{/each}}
+<h3>{{uploadInProgress}}</h3>
+{{#if showAddButton}}
+  <div class="button-secondary button--green fileinput-button {{if uploadInProgress "button--disabled"}}">
+    {{buttonText}}
+    <div class="{{if uploadInProgress "hidden"}}">
       {{s3-file-uploader class="add-new-attachment"
                          accept=accept
                          filePath=filePath
@@ -39,5 +38,5 @@
                          uploadFailed=(action "uploadFailed")
                          fileAdded=(action "fileAdded")}}
     </div>
-  {{/if}}
+  </div>
 {{/if}}

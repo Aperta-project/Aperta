@@ -32,9 +32,10 @@ export default Ember.Component.extend({
   showDescription: true,
 
   uploadInProgress: Ember.computed.notEmpty('fileUploads'),
-  hasAttachments: Ember.computed.notEmpty('attachments'),
-  noAttachments: Ember.computed.not('hasAttachments'),
-  canUploadFile: Ember.computed.or('noAttachments', 'multiple'),
+  canUploadFile: Ember.computed('attachments.[]', 'multiple', function() {
+    return Ember.isEmpty(this.get('attachments')) || this.get('multiple');
+  }),
+
   showAddButton: Ember.computed.and('notDisabled', 'canUploadFile'),
 
   init() {

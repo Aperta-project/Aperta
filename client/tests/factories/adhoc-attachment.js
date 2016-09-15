@@ -3,13 +3,13 @@ import FactoryGuy from 'ember-data-factory-guy';
 
 FactoryGuy.define('adhoc-attachment', {
   default: {
-    alt: 'figure alternate text',
-    caption: 'figure caption',
-    detailSrc: 'figure_detail.jpg',
-    filename: 'figure_filename.jpg',
-    previewSrc: 'figure_preview.jpg',
-    src: 'figure.jpg',
+    alt: 'adhoc_attachment alternate text',
+    caption: 'adhoc_attachment caption',
+    detailSrc: 'adhoc_attachment_detail.jpg',
+    filename: 'adhoc_attachment.jpg',
+    previewSrc: 'adhoc_attachment_preview.jpg',
+    src: 'adhoc_attachment.jpg',
     status: 'done',
-    title: 'Figure Title'
+    title: 'adhoc_attachment Title'
   }
 });

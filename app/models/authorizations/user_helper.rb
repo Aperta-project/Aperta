@@ -17,6 +17,19 @@ module Authorizations
           target: target
         ).all
       end
+
+      def site_admins
+        with_role(Role.site_admin_role, assigned_to: System.first)
+      end
+
+      def with_role(role, assigned_to: nil)
+        with_role_query = joins(assignments: :role).where(roles: { id: role })
+        if assigned_to
+          with_role_query.where(assignments: { assigned_to: assigned_to })
+        else
+          with_role_query
+        end
+      end
     end
 
     def can?(permission, target)

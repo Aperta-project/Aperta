@@ -105,10 +105,6 @@ class User < ActiveRecord::Base
     Rails.configuration.password_auth_enabled && super
   end
 
-  def self.site_admins
-    where(site_admin: true)
-  end
-
   def full_name
     "#{first_name} #{last_name}"
   end

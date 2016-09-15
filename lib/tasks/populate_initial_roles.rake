@@ -39,10 +39,10 @@ namespace :data do
                 next unless journal.present?
                 csv["Role"].split(',').map(&:strip).each do |role_name|
                   if role_name == 'Site Admin'
-                    user.update_column(:site_admin, true)
+                    user.assign_to!(assigned_to: System.first!, role: Role.site_admin_role)
                     STDERR.puts('  made site admin')
                   elsif role_name == '-Site Admin'
-                    user.update_column(:site_admin, false)
+                    user.resign_from!(assigned_to: System.first!, role: Role.site_admin_role)
                     STDERR.puts('  removed site admin')
                   elsif role_name == 'None' # remove all roles
                     user.assignments.destroy_all

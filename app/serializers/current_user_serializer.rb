@@ -10,4 +10,8 @@ class CurrentUserSerializer < ActiveModel::Serializer
   def permissions
     object.filter_authorized(:view_profile, object).serializable
   end
+
+  def site_admin
+    object.site_admin?
+  end
 end

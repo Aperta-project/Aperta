@@ -30,7 +30,7 @@ describe PaperTrackerController do
   end
 
   describe 'on GET #index' do
-    let(:user) { FactoryGirl.create :user, site_admin: true }
+    let(:user) { FactoryGirl.create :user, :site_admin }
 
     it 'list the paper in journal that user belongs to' do
       paper = make_matchable_paper

@@ -13,8 +13,8 @@ module Authorizations
   # what the user is assigned to, what roles the person has, and what
   # permissions they have thru those roles.
   class Query
-    # WILDCARD_STATE represents the notion that any state is valid.
-    WILDCARD_STATE = PermissionState::WILDCARD
+    # WILDCARD represents the notion that any state is valid.
+    WILDCARD = PermissionState::WILDCARD
 
     attr_reader :permission, :klass, :user
 
@@ -96,7 +96,7 @@ module Authorizations
     end
 
     def allowed?(object, states)
-      states.include?(WILDCARD_STATE) ||
+      states.include?(WILDCARD) ||
         !object.respond_to?(permission_state_column) ||
         states.member?(object.send(permission_state_column))
     end
@@ -201,7 +201,7 @@ module Authorizations
 
         # This is to make sure that if no permission states were hooked up
         # that we accept any state. It's more a fallback.
-        permissible_states = [WILDCARD_STATE] if permissible_states.empty?
+        permissible_states = [WILDCARD] if permissible_states.empty?
 
         # determine how this kind of thing relates to what we're interested in
         if assigned_to_klass <=> @klass

@@ -160,7 +160,7 @@ test('Cancel resets all values', function(assert){
   assert.expect(2);
 
   var relatedArticle = newRelatedArticle();
-  relatedArticle.rollback = function() {
+  relatedArticle.rollbackAttributes = function() {
     assert.ok(true, 'Calls rollback');
   };
   setup(this, relatedArticle, true);

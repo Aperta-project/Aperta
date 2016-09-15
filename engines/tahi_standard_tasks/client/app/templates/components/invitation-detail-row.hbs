@@ -10,7 +10,10 @@
     </div>
     <div class="invitation-item-status" {{action "toggleDetails"}}>
       {{#if (and (eq uiState 'closed') invitation.invited)}}
-          <span>Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
+        <span>Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
+      {{/if}}
+      {{#if (and (eq uiState 'closed') (eq invitation.state 'rescinded'))}}
+        <span>Rescinded {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
       {{/if}}
     </div>
     <div class="invitation-item-body-preview" {{action "toggleDetails"}}>
@@ -25,8 +28,14 @@
       {{/if}}
       {{#if displayDestroyButton}}
         <span class="invitation-item-action invitation-item-action-delete" {{action "destroyInvitation" invitation}}>
-          <span class="fa fa-trash invite-remove" ></span>
+          <span class="fa fa-trash invite-remove"></span>
           <span class="invitation-item-action-text">Delete</span>
+        </span>
+      {{/if}}
+      {{#if displayRescindButton}}
+        <span class="invitation-item-action invitation-item-action-delete" {{action "rescindInvitation" invitation}}>
+          <span class="fa fa-ban invite-rescind"></span>
+          <span class="invitation-item-action-text">Rescind</span>
         </span>
       {{/if}}
       {{#if displaySendButton}}

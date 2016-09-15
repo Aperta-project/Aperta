@@ -25,6 +25,7 @@ class Invitation < ActiveRecord::Base
     end
     state :accepted
     state :declined
+    state :rescinded
 
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
@@ -35,6 +36,12 @@ class Invitation < ActiveRecord::Base
     }) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
+
+    event(:rescind,
+      after_commit: :notify_invitation_rescinded) do
+      transitions from: :invited, to: :rescinded
+    end
+
     event(:accept,
           after_commit: :notify_invitation_accepted) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
@@ -62,12 +69,6 @@ class Invitation < ActiveRecord::Base
 
   def recipient_name
     invitee.try(:full_name) || email
-  end
-
-  def rescind!
-    destroy!.tap do
-      task.invitation_rescinded(self)
-    end
   end
 
   # Normalize emails to addr-spec
@@ -126,6 +127,10 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_declined
     task.invitation_declined(self)
+  end
+
+  def notify_invitation_rescinded
+    task.invitation_rescinded(self)
   end
 
   def generate_token

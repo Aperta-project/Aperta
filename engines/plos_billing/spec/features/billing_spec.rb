@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Billing Task', js: true do
+feature 'Billing Task', js: true, flaky: true do
   before do
     user  = create :user, :site_admin
     paper = create :paper_with_task,

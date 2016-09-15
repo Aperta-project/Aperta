@@ -1048,7 +1048,7 @@ describe JournalFactory do
       context 'Billing staff' do
         let(:permissions) { journal.billing_role.permissions }
 
-        describe 'permission to PlosBilling::BillingTask' do
+        describe 'permission to PlosBilling::BillingTask', flaky: true do
           it 'can :view and :edit' do
             expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),

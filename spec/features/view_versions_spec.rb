@@ -109,7 +109,7 @@ feature 'Viewing Versions:', js: true do
         )
       end
 
-      scenario 'The user cannot see cover letter task versions', selenium: true do
+      scenario 'The user cannot see cover letter task versions', flaky: true do
         SnapshotService.new(paper).snapshot!(task)
         FactoryGirl.create(:snapshot,
                            major_version: 0,

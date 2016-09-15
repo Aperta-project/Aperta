@@ -41,18 +41,18 @@ module Authorizations
         @target = target.all
         @participations_only = true if @participations_only == :default
 
-      # we're looking for a specific object, e.g. Task.first got passed in
+        # we're looking for a specific object, e.g. Task.first got passed in
       elsif target.is_a?(ActiveRecord::Base)
         @klass = target.class
         @target = @klass.where(id: target.id)
         @participations_only = false if @participations_only == :default
 
-      # we're looking for a set of objects with a pre-existing query, e.g. Task.where(name: "Bar") got passed in
+        # we're looking for a set of objects with a pre-existing query, e.g. Task.where(name: "Bar") got passed in
       elsif target.is_a?(ActiveRecord::Relation)
         @klass = target.model
         @participations_only = true if @participations_only == :default
 
-      # we're looking for a specific of objects e.g. [Task.first, Task.last] got passed in
+        # we're looking for a specific of objects e.g. [Task.first, Task.last] got passed in
       elsif target.is_a?(Array)
         @klass = target.first.class
         @participations_only = false if @participations_only == :default
@@ -140,8 +140,117 @@ module Authorizations
       ].flatten.map(&:name).uniq
     end
 
+    def assignments_subquery
+      assignments = Assignment.all
+        .select('
+          assignments.id,
+          assignments.assigned_to_type,
+          assignments.assigned_to_id,
+          roles.id AS role_id,
+          roles.name AS role_name,
+          permissions.id AS permission_id'
+        )
+      .joins(permissions: :states)
+      .where(assignments: { user_id: user.id })
+
+     # explicitly add conditions rather than converting Assignment.all
+     # to user.assignments. The reason is that ActiveRecord::Relation
+     # will produce bind parameters that will not get handled correctly
+     # when we convert to AREL queries below
+     assignments_arel = assignments.arel
+
+     # Find each authorization configured for the klass we're querying against
+     auth_configs = Authorizations.configuration.authorizations.select do |ac|
+       # if what we're authorizing is the same class or an ancestor of @klass
+       ac.authorizes >= @klass
+     end
+     auth_configs.each do |ac|
+       join_table = ac.assignment_to.arel_table
+       source_table = ac.authorizes.arel_table
+       inverse_of_via = ac.inverse_of_via
+       association = ac.assignment_to.reflections[ac.via.to_s]
+
+       assignments_arel.outer_join(join_table)
+         .on(
+       join_table[ ac.assignment_to.primary_key ]
+         .eq( Assignment.arel_table[:assigned_to_id] )
+         .and( Assignment.arel_table[:assigned_to_type]
+         .eq(ac.assignment_to.name) ))
+     end
+
+     # add implicit JOIN in case the person is assigned directly to the
+     # klass we're querying against
+     assignments_arel.outer_join(@klass.arel_table)
+       .on(
+     @klass.arel_table[ @klass.primary_key ]
+       .eq( Assignment.arel_table[:assigned_to_id] )
+       .and( Assignment.arel_table[:assigned_to_type]
+       .eq(@klass.name) ))
+
+     klasses2where = auth_configs.map { |ac| ac.assignment_to } << @klass
+     arel_conditions = klasses2where.reduce(nil) do |arel_conditions, klass|
+       if arel_conditions
+         arel_conditions.or(klass.arel_table.primary_key.not_eq(nil))
+       else
+         klass.arel_table.primary_key.not_eq(nil)
+       end
+     end
+
+     assignments_arel.where(arel_conditions)
+       .where(Permission.arel_table[:action].eq(@permission))
+       .where(Permission.arel_table[:applies_to].in(eligible_applies_to))
+
+     if @participations_only
+       role_accessibility_method = "participates_in_#{@klass.table_name}"
+       if Role.column_names.include?(role_accessibility_method)
+         assignments_arel.where(Role.arel_table[role_accessibility_method.to_sym].eq(true))
+       end
+     end
+
+     assignments_arel.group(Assignment.arel_table[:assigned_to_type])
+       .group(Assignment.arel_table[:assigned_to_id])
+       .group(Assignment.arel_table[:id])
+       .group(Role.arel_table[:id])
+       .group(Permission.arel_table[:id])
+
+      assignments_arel
+    end
+
+    def objects_by_klass klass
+      a2_table = Arel::Table.new(:assignments_table)
+      composed_a2 = Arel::Nodes::As.new(assignments_table)
+ 
+     # klass.arel_table.join(assignments_subquery).on(
+     #   .project(Arel.sql('tasks.id as id, tasks.paper_id as paper_id, a2.role_id as role_id, a2.permission_id as permission_id'))
+     #   .with(assignments_subquery)
+     #   .where(
+     # assignments_subquery.joins(Task.arel_table).on(Task.arel_table[:id].eq(assignments_subquery[:assigned_to_id]))
+     #   .where(assignments_subquery[:assigned-to_type].eq('Task'))
+    end
+
     def load_authorized_objects
-      perm_q = { 'permissions.applies_to' => eligible_applies_to }
+      select_columns = 'tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'
+      a2_table = Arel::Table.new(:a2_table)
+      composed_a2 = Arel::Nodes::As.new(a2_table, assignments_subquery)
+
+      tasks = Task.arel_table
+      tasks_query = tasks.join(a2_table).on(tasks[:id].eq(a2_table[:assigned_to_id]))
+        .where(a2_table[:assigned_to_type].eq('Task'))
+        .with(composed_a2)
+        .project(Arel.sql(select_columns))
+
+      papers = Paper.arel_table
+      papers_query = papers.join(tasks, Arel::Nodes::OuterJoin).on(papers[:id].eq(tasks[:paper_id]))
+        .join(a2_table, Arel::Nodes::OuterJoin).on(a2_table[:assigned_to_id].eq(papers[:id]))
+        .where(a2_table[:assigned_to_type].eq('Paper')
+        .project(Arel.sql(select_columns))
+
+     # journals = Journal.arel_table
+     # journals_query = journals.join(papers, Arel::Nodes::OuterJoin).on(papers[:journal_id].eq(journal[:id]))
+      #  .join(papers[:journal_id].eq(journals[:id])
+
+     # binding.pry
+      perm_q = { 'permissions.applies_to' => eligible_applies_to, 'permissions.action' => @permission }
       assignments = user.assignments.includes(permissions: :states).where(perm_q)
 
       # If @participations_only is true then we want to use specific fields
@@ -156,41 +265,43 @@ module Authorizations
         end
       end
 
+      # TODOMPM - this block of code should be taken care of by the above.  But verify that
       # Load all assignments the user has a permissible assignment for
-      if @permission == :*
-        permissible_assignments = assignments.all
-      else
-        permissible_assignments = assignments.where('permissions.action' => @permission)
-      end
+      # if @permission == :*
+      #  permissible_assignments = assignments.all
+      #else
+      #  permissible_assignments = assignments.where('permissions.action' => @permission)
+      #end
 
       # Load all assignments (including permissions and permission states)
       # based on the permissible assignments, but DO NOT limit it to the
       # permissible action. We want to know all permissions this user has
       # for the assignment.
-      permissions_by_assignment_id = assignments.where('assignments.id' => assignments.map(&:id)).reduce({}) do |h, assignment|
-        h[assignment.id] = assignment.permissions
-        h
-      end
+      # TODOMPM - Figure out how to do this later
+      # permissions_by_assignment_id = assignments.where('assignments.id' => assignments.map(&:id)).reduce({}) do |h, assignment|
+      #  h[assignment.id] = assignment.permissions
+      #  h
+      #end
 
       # Group by type so we can reduce queries later. 1 query for every combination of: kind of thing we're assigned to AND set of permissions.
       permissible_assignments_grouped = Hash.new{ |h,k| h[k] = [] }
 
-      permissible_assignments.each do |assignment|
+      assignments.each do |assignment|
         permissions = assignment.permissions
         permissible_actions = permissions.flat_map(&:action).map(&:to_sym)
         permissible_state_names = permissions.flat_map(&:states).flat_map(&:name)
-        all_permissions = permissions_by_assignment_id[assignment.id].reduce({}) do |h, permission|
-          h[permission.action.to_sym] = { states: permission.states.map(&:name).sort }
-          h
-        end
+        #all_permissions = permissions_by_assignment_id[assignment.id].reduce({}) do |h, permission|
+        #  h[permission.action.to_sym] = { states: permission.states.map(&:name).sort }
+        #  h
+        #end
 
         if permissible_actions.include?(@permission) || @permission == :*
-          group_by_key = {
-            type: assignment.assigned_to_type,
-            permissible_states: permissible_state_names,
-            all_permissions: all_permissions
-          }
-          permissible_assignments_grouped[group_by_key] << assignment
+            group_by_key = {
+          type: assignment.assigned_to_type,
+          permissible_states: permissible_state_names,
+          all_permissions: {@permission => ['*']}
+        }
+        permissible_assignments_grouped[group_by_key] << assignment
         else
           # no-op: this assignment doesn't have a permission that allows authorization
         end
@@ -229,9 +340,9 @@ module Authorizations
           # but for now just determined based on the reflection type that matches.
           Authorizations.configuration.authorizations
             .select { |auth|
-              auth.authorizes >= @klass && # if what we're authorizing is the same class or an ancestor of @klass
+            auth.authorizes >= @klass && # if what we're authorizing is the same class or an ancestor of @klass
               auth.assignment_to >= assigned_to_klass # if what you're assigned to is the same class
-            }
+          }
             .each do |auth|
             authorized_objects = QueryAgainstAuthorization.new(
               authorization: auth,

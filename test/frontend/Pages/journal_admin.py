@@ -188,7 +188,8 @@ class JournalAdminPage(AdminPage):
     # Get list of roles that should be displayed
     journal_roles = PgSQL().query('SELECT id from roles WHERE journal_id = %s AND name in '
                                   '(\'Staff Admin\', \'Internal Editor\', \'Production Staff\','
-                                  '\'Publishing Services\', \'Freelance Editor\');',
+                                  '\'Publishing Services\', \'Freelance Editor\','
+                                  ' \'Billing Staff\');',
                                   (journal_id,))
     journal_roles = tuple([x[0] for x in journal_roles])
     users_db = PgSQL().query('SELECT user_id from assignments WHERE role_id in %s AND '

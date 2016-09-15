@@ -680,6 +680,7 @@ class DashboardPage(AuthenticatedPage):
     :return: Count of unaccepted invites (does not include rejected or accepted invites)
     """
     username = username['user']
+    logging.info('Checking dashboard invite stanza for user {0}'.format(username))
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
                                      'WHERE state = %s '

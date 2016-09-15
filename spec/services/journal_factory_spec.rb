@@ -53,7 +53,7 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
-    context 'creating the default roles and permission for the journal' do
+    context 'creating the default roles and permission for the journal', flaky: true do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal')
       end
@@ -1048,7 +1048,7 @@ describe JournalFactory do
       context 'Billing staff' do
         let(:permissions) { journal.billing_role.permissions }
 
-        describe 'permission to PlosBilling::BillingTask', flaky: true do
+        describe 'permission to PlosBilling::BillingTask' do
           it 'can :view and :edit' do
             expect(permissions).to include(
               Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),

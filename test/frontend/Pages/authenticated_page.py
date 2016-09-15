@@ -671,6 +671,7 @@ class AuthenticatedPage(PlosPage):
     :param element: webelement to receive the click
     :return: None
     """
+    logging.debug('{0} is covered by the toolbar...'.format(element))
     self._driver.execute_script("javascript:arguments[0].click()", element)
     return None
 

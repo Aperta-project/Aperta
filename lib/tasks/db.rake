@@ -17,10 +17,11 @@ namespace :db do
     args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'db'}_dump.tar.gz"
-    Rake::Task['db:drop'].invoke
-    Rake::Task['db:create'].invoke
 
     with_config do |app, host, db, user, password|
+      drop_cmd = system("dropdb #{db} && createdb #{db}")
+      raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
+
       ENV['PGPASSWORD'] = password.to_s
       cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)

@@ -17,7 +17,6 @@ FactoryGirl.define do
     trait(:with_roles_and_permissions) do
       after(:create) do |journal|
         JournalFactory.ensure_default_roles_and_permissions_exist(journal)
-        journal.roles.where(name: Role::JOURNAL_ROLES).update_all(assigned_to_type_hint: "Journal")
       end
     end
 

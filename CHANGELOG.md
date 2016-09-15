@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.25.0] - {2016-09-15}
+### Added
 - Email invitation changes can now be saved
 - Added billing role
 - Keeps all uploaded manuscripts

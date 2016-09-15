@@ -746,7 +746,6 @@ ActiveRecord::Schema.define(version: 20160916134145) do
     t.datetime "updated_at"
     t.string   "username"
     t.string   "avatar"
-    t.boolean  "site_admin",             default: false
     t.integer  "ned_id"
   end
 

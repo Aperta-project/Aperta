@@ -255,7 +255,7 @@ describe InvitationsController do
 
   describe "PUT /invitations/:id/rescind" do
     subject(:do_request) do
-      delete(
+      put(
         :rescind,
         format: "json",
         id: invitation.to_param)
@@ -284,30 +284,12 @@ describe InvitationsController do
       end
 
       context "Invitation with invitee" do
-        it "deletes the invitation" do
-          expect do
-            do_request
-          end.to change { task.invitations.count }.by(-1)
-          expect(Invitation.exists?(id: invitation.id)).to be(false)
+        it "changes invitation state to rescinded" do
+          do_request
+          expect(invitation.reload.state).to eq('rescinded')
         end
 
-        it { is_expected.to responds_with(204) }
-      end
-
-      context "Invitation witout invitee" do
-        before do
-          invitation.update(invitee: nil)
-          expect(invitation.invitee).to be nil
-        end
-
-        it "deletes the invitation" do
-          expect do
-            do_request
-          end.to change { task.invitations.count }.by(-1)
-          expect(Invitation.exists?(id: invitation.id)).to be(false)
-        end
-
-        it { is_expected.to responds_with(204) }
+        it { is_expected.to responds_with(200) }
       end
     end
 

@@ -86,18 +86,28 @@ describe Invitation do
   end
 
   describe '#rescind!' do
-    subject!(:invitation) { FactoryGirl.create :invitation, task: task }
+    it "sets the state to 'rescinded' from 'invited'" do
+      invitation.invite!
+      invitation.rescind!
+      expect(invitation.state).to eq('rescinded')
+    end
 
-    it 'destroys the invitation' do
-      expect do
-        invitation.rescind!
-      end.to change { Invitation.count }.by -1
-      expect(Invitation.exists?(id: invitation.id)).to be(false)
+    it "sets the state to 'rescinded' from 'accepted'" do
+      invitation.invite!
+      invitation.accept!
+      invitation.rescind!
+      expect(invitation.state).to eq('rescinded')
+    end
+
+    it "does not set the state to 'rescinded' from 'pending'" do
+      expect { invitation.rescind! }.to raise_exception
+      expect(invitation.state).not_to eq('rescinded')
     end
 
     it 'tells the task it was rescinded' do
       expect(invitation.task).to receive(:invitation_rescinded)
         .with(invitation)
+      invitation.invite!
       invitation.rescind!
     end
   end

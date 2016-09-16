@@ -7,6 +7,7 @@ class Task < ActiveRecord::Base
   DEFAULT_TITLE = 'Ad-hoc'
   DEFAULT_ROLE = 'user'
   REQUIRED_PERMISSIONS = {}
+  SYSTEM_GENERATED = false
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types

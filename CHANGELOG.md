@@ -2,7 +2,18 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+
+## [1.25.1] - {2016-09-16}
+### Added
+- Rescinding invitations will not delete them from the UI
+- Show statuses for when invitations were rescinded
+### Removed
+- Users can no longer add system-generated tasks (Revise Manuscript, Changes For Author, Reviewer Report) to a workflow
+### Fixed
+- Journal admin: the button to add a new MMT works again
+- Can rescind invitations again
+
+## [1.25.0] - {2016-09-14}
 ### Added
 - Email invitation changes can now be saved
 - Added billing role
@@ -13,9 +24,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 - Production staff, publishing services, and staff admin can no longer view the billing card
-- Users can no longer add system-generated tasks (Revise Manuscript, Changes For Author, Reviewer Report) to a workflow
 ### Fixed
-- Journal admin: the button to add a new MMT works again
 - Emails are not sent when a decision is rescinded
 ### Security
 

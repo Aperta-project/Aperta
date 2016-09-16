@@ -6,6 +6,7 @@ import random
 import time
 import urllib
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import StaleElementReferenceException
 
@@ -189,7 +190,10 @@ class FiguresTask(BaseTask):
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
       add_new_figures_btn = self._get(self._add_new_figures_btn)
       self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
-      add_new_figures_btn.click()
+      try:
+        add_new_figures_btn.click()
+      except WebDriverException:
+        self.click_covered_element(add_new_figures_btn)
       figure_candidates_list.remove(figure)
       # Time needed for script execution per photo for upload, storing, preview generation, and
       #   page update
@@ -220,10 +224,11 @@ class FiguresTask(BaseTask):
     time.sleep(5)
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_input.send_keys(fn)
-    replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
-    # except StaleElementReferenceException:
-    #   time.sleep(1)
-    #   replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+    try:
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+    except StaleElementReferenceException:
+      time.sleep(1)
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     self.scroll_element_into_view_below_toolbar(replace_btn)
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
@@ -255,7 +260,10 @@ class FiguresTask(BaseTask):
         # Move to item to get the edit icons to appear
         self._actions.move_to_element(page_fig_item).perform()
         delete_icon = self._get(self._figure_delete_icon)
-        delete_icon.click()
+        try:
+          delete_icon.click()
+        except WebDriverException:
+          self.click_covered_element(delete_icon)
         time.sleep(1)
         self._get(self._figure_delete_confirmation)
         line_1 = self._get(self._figure_delete_confirm_line1)
@@ -348,7 +356,10 @@ class FiguresTask(BaseTask):
         self._actions.move_to_element(figure_block).perform()
         edit_icon = figure_block.find_element(*self._figure_edit_icon)
         self._actions.move_to_element(edit_icon).perform()
-        edit_icon.click()
+        try:
+          edit_icon.click()
+        except WebDriverException:
+          self.click_covered_element(edit_icon)
         time.sleep(1)
         label_prefix = figure_block.find_element(*self._figure_edit_label_prefix)
         assert 'Fig.' in label_prefix.text, label_prefix.text

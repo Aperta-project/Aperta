@@ -55,7 +55,7 @@ feature "Discussions", js: true, selenium: true do
       discussion_topic.add_discussion_participant(discussion_participant)
     end
 
-    scenario 'can see discussion and add reply' do
+    scenario 'can see discussion and add reply', flaky: true do
       login_as(user, scope: :user)
       visit "/papers/#{paper.id}/discussions"
 

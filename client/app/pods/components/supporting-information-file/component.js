@@ -34,10 +34,10 @@ export default Component.extend({
 
   fileIconClass: computed('file.category', function() {
     const klass = {
-       'Figure': 'fa-file-image-o',
-       'Text': 'fa-file-text-o',
-       'Table': 'fa-file-o',
-       'Data': 'fa-file-o'
+      'Figure': 'fa-file-image-o',
+      'Text': 'fa-file-text-o',
+      'Table': 'fa-file-o',
+      'Data': 'fa-file-o'
     };
     return klass[this.get('file.category')] || 'fa-file-o';
   }),
@@ -77,10 +77,7 @@ export default Component.extend({
     },
 
     cancelEdit(){
-      this.get('file').rollback();
-      this.get('model').validateAll();
-      if(this.get('model').validationErrorsPresent()) { return; }
-
+      this.get('file').rollbackAttributes();
       this.set('uiState', 'view');
     },
 

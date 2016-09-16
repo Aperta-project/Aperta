@@ -5,6 +5,7 @@ module PlosBioTechCheck
 
     DEFAULT_TITLE = 'Changes For Author'
     DEFAULT_ROLE = 'author'
+    SYSTEM_GENERATED = true
 
     def active_model_serializer
       TaskSerializer

@@ -26,12 +26,10 @@ export default DS.Model.extend({
   groupAuthors: hasMany('group-author', { async: false }),
   journal: belongsTo('journal', { async: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
-  paperTaskTypes: hasMany('paper-task-type', { async: true }),
 
-  // I've avoided using .@each.systemGenerated here since it will never change
-  addableTaskTypes: computed('paperTaskTypes.[]', function() {
-    return this.get('paperTaskTypes').filterBy('systemGenerated', false);
-  }),
+  paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  addableTaskTypes: computed.filterBy('paperTaskTypes', 'systemGenerated', false),
+
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),

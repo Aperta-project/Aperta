@@ -10,6 +10,7 @@ import random
 import time
 from datetime import datetime
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface
@@ -691,9 +692,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     except ElementDoesNotExistAssertionError:
       logging.info('No Initial Decision infobox shown yet, skipping close of infobox.')
       return
-    # self.scroll_element_into_view_below_toolbar(infobox_closer)
     time.sleep(1)
-    infobox_closer.click()
+    try:
+      infobox_closer.click()
+    except WebDriverException:
+      self.click_covered_element(infobox_closer)
+
 
   def get_paper_doi_part(self):
     """

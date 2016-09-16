@@ -1,14 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Page Object Model for the Journal specific Admin Page. Validates global and dynamic elements and their styles
-This is really a shell of a test. It minimally validates the page elements, and not yet any of their functions.
-We can extend this at a later time.
+Page Object Model for the Journal specific Admin Page. Validates global and dynamic elements and
+  their styles. This is really a shell of a test.
 """
 
 import logging
 import time
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -32,7 +32,8 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_users_title = (By.CLASS_NAME, 'admin-section-title')
     self._journal_admin_user_search_field = (By.CLASS_NAME, 'admin-user-search-input')
     self._journal_admin_user_search_button = (By.CLASS_NAME, 'admin-user-search-button')
-    self._journal_admin_user_search_default_state_text = (By.CLASS_NAME, 'admin-user-search-default-state-text')
+    self._journal_admin_user_search_default_state_text = (By.CLASS_NAME,
+                                                          'admin-user-search-default-state-text')
     self._journal_admin_user_search_results_table = (By.CLASS_NAME, 'admin-users')
     self._journal_admin_user_search_results_table_uname_header = (By.XPATH, '//table[1]/tr/th[1]')
     self._journal_admin_user_search_results_table_fname_header = (By.XPATH, '//table[1]/tr/th[2]')
@@ -43,24 +44,30 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_user_row_username = (By.CSS_SELECTOR, 'tr.user-row td')
     self._journal_admin_user_row_fname = (By.CSS_SELECTOR, 'tr.user-row td + td')
     self._journal_admin_user_row_lname = (By.CSS_SELECTOR, 'tr.user-row td + td + td')
-    self._journal_admin_user_row_roles = (By.CSS_SELECTOR, 'tr.user-row td div ul.select2-choices li div')
-    self._journal_admin_user_row_role_delete = (By.CSS_SELECTOR, 'tr.user-row td div ul.select2-choices li a')
-    self._journal_admin_user_row_role_add = (By.CSS_SELECTOR, 'tr.user-row td div span.assign-role-button')
-    self._journal_admin_user_row_role_add_field = (By.CSS_SELECTOR,
-                                                   'tr.user-row td div div ul li.select2-search-field input')
-    self._journal_admin_user_row_role_search_result_item = (By. CSS_SELECTOR, 'ul.select2-results li div')
+    self._journal_admin_user_row_roles = (By.CSS_SELECTOR,
+                                          'tr.user-row td div ul.select2-choices li div')
+    self._journal_admin_user_row_role_delete = (By.CSS_SELECTOR,
+                                                'tr.user-row td div ul.select2-choices li a')
+    self._journal_admin_user_row_role_add = (By.CSS_SELECTOR,
+                                             'tr.user-row td div span.assign-role-button')
+    self._journal_admin_user_row_role_add_field = (
+        By.CSS_SELECTOR, 'tr.user-row td div div ul li.select2-search-field input')
+    self._journal_admin_user_row_role_search_result_item = (By. CSS_SELECTOR,
+                                                            'ul.select2-results li div')
 
     self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
     self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
     self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
-    self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header')
-    self._journal_admin_roles_permission_heading = (By.CSS_SELECTOR,
-                                                     'div.admin-roles div.admin-roles-header + div.admin-roles-header')
+    self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR,
+                                                   'div.admin-roles div.admin-roles-header')
+    self._journal_admin_roles_permission_heading = (
+        By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header + div.admin-roles-header')
     self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
 
     self._journal_admin_avail_task_types_div = (By.XPATH, '//div[@class="admin-section"][1]')
     self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
-    self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][1]/div')
+    self._journal_admin_avail_task_types_edit_btn = (By.XPATH,
+                                                     '//div[@class="admin-section"][1]/div')
 
     self._journal_admin_att_overlay_task_title_heading = (By.CSS_SELECTOR, 'div.task-headers h3')
     self._journal_admin_att_overlay_role_heading = (By.CSS_SELECTOR, 'div.task-headers h3 + h3')
@@ -70,7 +77,8 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_att_overlay_row_clear_btn = (By.CSS_SELECTOR, 'div button')
 
     self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
-    self._journal_admin_manu_mgr_templates_button = (By.XPATH, '//div[@class="admin-section"][2]/button')
+    self._journal_admin_manu_mgr_templates_button = (By.XPATH,
+                                                     '//div[@class="admin-section"][2]/button')
     self._journal_admin_manu_mgr_thumbnail = (By.CLASS_NAME, 'mmt-thumbnail')
     self._journal_admin_manu_mgr_thumb_title = (By.CSS_SELECTOR, 'h3.mmt-thumbnail-title')
     self._journal_admin_manu_mgr_thumb_phases = (By.TAG_NAME, 'span')
@@ -82,12 +90,15 @@ class JournalAdminPage(AdminPage):
     self._journal_styles_css_overlay_field_label = (By.CSS_SELECTOR, 'div.overlay-header + p')
     self._journal_styles_css_overlay_field = (By.CSS_SELECTOR, 'div.overlay-header + p + textarea')
     self._journal_styles_css_overlay_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a')
-    self._journal_styles_css_overlay_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons a + button')
+    self._journal_styles_css_overlay_save = (By.CSS_SELECTOR,
+                                             'div.overlay-action-buttons a + button')
 
     self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
     self._mmt_template_error_msg = (By.CSS_SELECTOR, 'div.mmt-edit-error-message')
-    self._mmt_template_save_button = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-save-button')
-    self._mmt_template_cancel_link = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-cancel-button')
+    self._mmt_template_save_button = (By.CSS_SELECTOR,
+                                      'div.paper-type-form a.paper-type-save-button')
+    self._mmt_template_cancel_link = (By.CSS_SELECTOR,
+                                      'div.paper-type-form a.paper-type-cancel-button')
     self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')
     self._mmt_template_columns = (By.CSS_SELECTOR, 'div.ember-view.column')
     self._mmt_template_column_title = (By.CSS_SELECTOR, 'div.column-header div h2')
@@ -122,7 +133,7 @@ class JournalAdminPage(AdminPage):
       self._get(self._journal_admin_user_search_results_table_lname_header)
       self._get(self._journal_admin_user_search_results_table_rname_header)
       self._get(self._journal_admin_user_search_results_table)
-      page_user_list = self._gets(self._journal_admin_user_search_results_row)
+      self._gets(self._journal_admin_user_search_results_row)
     else:
       logging.info('No users assigned roles in journal: {0}, so will add one...'.format(journal))
       self._add_user_with_role('atest author3', 'Staff Admin')
@@ -197,10 +208,10 @@ class JournalAdminPage(AdminPage):
                              (journal_roles, journal_id))
     users_db = set([x[0] for x in users_db])
     users_db = tuple(users_db)
-    #Check if there are users with journal roles
+    # Check if there are users with journal roles
     usernames_db = PgSQL().query('SELECT username FROM users WHERE id in %s;', (users_db,))
     usernames_db = [x[0] for x in usernames_db]
-    #For each user, get first and last name
+    # For each user, get first and last name
     lastnames_db = []
     for username in usernames_db:
       lastnames_db.append(PgSQL().query(
@@ -224,7 +235,7 @@ class JournalAdminPage(AdminPage):
         if counter > 0:
           assert last_name.lower() >= old_last_name.lower(), 'Not in alphabetical order {0} is'\
               ' showed before {1}'.format(last_name.lower(), old_last_name.lower())
-        roles = roles.find_elements(*(By.CSS_SELECTOR,'li.select2-search-choice'))
+        roles = roles.find_elements(*(By.CSS_SELECTOR, 'li.select2-search-choice'))
         roles = [x.text for x in roles]
         # search for roles in DB
         uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
@@ -253,9 +264,9 @@ class JournalAdminPage(AdminPage):
 
   def validate_task_types_section(self, journal):
     """
-    Assert the existence and function of the elements of the Available Task Types section and overlay.
-    It is expected that this section will change radically following the roles and permissions work,
-    so not investing too much here at present.
+    Assert the existence and function of the elements of the Available Task Types section and
+      overlay. It is expected that this section will change radically following the roles and
+      permissions work, so not investing too much here at present.
     :param journal: The PLOS Yeti journal is prepopulated with an extra task so requires special
       handling.
     :return: void function
@@ -268,7 +279,10 @@ class JournalAdminPage(AdminPage):
     assert 'EDIT TASK TYPES' in edit_tt_btn.text
     self._actions.move_to_element(att_section).perform()
     time.sleep(.5)
-    edit_tt_btn.click()
+    try:
+      edit_tt_btn.click()
+    except WebDriverException:
+      self.click_covered_element(edit_tt_btn)
     # time for animation of overlay
     time.sleep(.5)
     self._get(self._overlay_header_close)
@@ -337,7 +351,8 @@ class JournalAdminPage(AdminPage):
         mmt.find_element(*self._journal_admin_manu_mgr_thumb_edit)
         # Journals must have at least one MMT, so if only one, no delete icon is present
         if len(mmts) > 1:
-          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa.fa-trash.animation-scale-in')
+          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR,
+                                                       'span.fa.fa-trash.animation-scale-in')
           mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
     # Need to ensure the Add New Template button is not under the top toolbar
@@ -448,7 +463,8 @@ class JournalAdminPage(AdminPage):
     time.sleep(1)
     self.set_timeout(2)
     try:
-      logging.info('The following message will only be found if there is a particular data state, it is not an error.')
+      logging.info('The following message will only be found if there is a particular data '
+                   'state, it is not an error.')
       msg = self._get(self._mmt_template_error_msg)
     except ElementDoesNotExistAssertionError:
       self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
@@ -480,7 +496,8 @@ class JournalAdminPage(AdminPage):
         mmt.find_element(*self._journal_admin_manu_mgr_thumb_edit)
         # Journals must have at least one MMT, so if only one, no delete icon is present
         if len(mmts) > 1:
-          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa.fa-trash.animation-scale-in')
+          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR,
+                                                       'span.fa.fa-trash.animation-scale-in')
           if name.text == 'Research<-False':
             logging.info('Found MMT to delete - moving to trash icon')
             time.sleep(1)
@@ -488,15 +505,18 @@ class JournalAdminPage(AdminPage):
             logging.info('Clicking on MMT trash icon')
             delete_mmt.click()
             time.sleep(1)
-            self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR,
-                                                                     'div.mmt-thumbnail-overlay-confirm-destroy p')
+            self._journal_admin_manu_mgr_delete_confirm_paragraph = (
+                By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p')
             confirm_text = self._get(self._journal_admin_manu_mgr_delete_confirm_paragraph)
-            assert 'This will permanently delete your template. Are you sure?' in confirm_text.text, confirm_text.text
-            self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR,
-                                                                'div.mmt-thumbnail-overlay-confirm-destroy p + button')
-            self._journal_admin_manu_mgr_thumb_delete_confirm = (By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
+            assert 'This will permanently delete your template. Are you sure?' in \
+                confirm_text.text, confirm_text.text
+            self._journal_admin_manu_mgr_thumb_delete_cancel = (
+                By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p + button')
+            self._journal_admin_manu_mgr_thumb_delete_confirm = (
+                By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
             time.sleep(1)
-            self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)  # cancel mmt delete should be present
+            # cancel mmt delete should be present
+            self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)
             confirm_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_confirm)
             confirm_delete.click()
             # If this mmt is found before the end of the list of mmt, the DOM will be stale so

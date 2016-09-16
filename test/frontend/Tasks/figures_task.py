@@ -343,6 +343,7 @@ class FiguresTask(BaseTask):
       page_fig_name = figure_block.find_element(*self._figure_dl_link)
       if figure in page_fig_name.text:
         logging.info('Editing figure: {0}'.format(figure))
+        self.scroll_by_pixels(-60)
         # Move to item to get the edit icons to appear
         self._actions.move_to_element(figure_block).perform()
         edit_icon = figure_block.find_element(*self._figure_edit_icon)

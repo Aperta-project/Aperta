@@ -21,6 +21,20 @@ moduleFor('controller:admin/journal/index', 'JournalIndexController', {
   }
 });
 
+test('#addMMTTemplate transitions to the new mmt route', function(assert) {
+  assert.expect(1);
+  let controller = this.subject();
+  controller.transitionToRoute = function(routeName) {
+    assert.equal(
+      routeName,
+      'admin.journal.manuscript_manager_template.new',
+      'calls transitionToRoute with the new template route'
+    );
+  };
+
+  controller.send('addMMTemplate');
+});
+
 test('#destroyMMTemplate does not delete the last MMT', function(assert) {
   Ember.run((function(_this) {
     return function() {

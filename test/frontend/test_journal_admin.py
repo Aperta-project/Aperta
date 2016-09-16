@@ -1,5 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates the Aperta Journal-specific Admin page.
+"""
+
 import logging
 import random
 import time
@@ -8,10 +12,9 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
+
 from frontend.common_test import CommonTest
-"""
-This test case validates the Aperta Journal-specific Admin page.
-"""
+
 __author__ = 'jgray@plos.org'
 
 users = [staff_admin_login,
@@ -48,7 +51,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal admin component display and function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -68,7 +71,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal user search display and function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -88,7 +91,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal role display and function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -97,7 +100,6 @@ class ApertaJournalAdminTest(CommonTest):
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_roles_section(journal)
-
 
   def test_validate_task_types_display_function(self):
     """
@@ -119,7 +121,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal task types display and function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -144,7 +146,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -164,7 +166,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal add mmt (paper type) function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -199,7 +201,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating Journal Style Settings display and function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())

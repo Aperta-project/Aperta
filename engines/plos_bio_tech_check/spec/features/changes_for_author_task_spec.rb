@@ -6,7 +6,7 @@ feature 'Changes For Author', js: true do
   let(:task) { create :changes_for_author_task, paper: paper }
   let(:journal) { create :journal, :with_roles_and_permissions }
 
-  scenario "paper is editable but not submittable" do
+  scenario "paper is editable but not submittable", flaky: true do
     login_as(author)
     overlay = Page.view_task_overlay(paper, task)
     overlay.find("button#submit-tech-fix").click

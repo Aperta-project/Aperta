@@ -127,6 +127,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'fake_ftp'
+  gem 'rspec-retry'
   gem 'generator_spec'
   gem 'pusher-fake'
   gem 'rspec-activemodel-mocks'

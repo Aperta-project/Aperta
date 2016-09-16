@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
 
 ## [1.25.1] - {2016-09-16}
 ### Added

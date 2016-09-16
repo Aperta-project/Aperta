@@ -16,7 +16,8 @@ export default Ember.Controller.extend({
 
   showChooseNewCardOverlay: false,
   addToPhase: null,
-  journalTaskTypes: Ember.computed.reads('model.addableTaskTypes'),
+  journalTaskTypes: Ember.computed.reads('model.paperTaskTypes'),
+  addableTaskTypes: Ember.computed.filterBy('journalTaskTypes', 'systemGenerated', false),
 
   taskToDisplay: null,
   showTaskOverlay: false,

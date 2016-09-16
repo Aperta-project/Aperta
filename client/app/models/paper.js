@@ -28,7 +28,6 @@ export default DS.Model.extend({
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
 
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
-  addableTaskTypes: computed.filterBy('paperTaskTypes', 'systemGenerated', false),
 
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),

@@ -25,6 +25,13 @@ module TahiStandardTasks
       )
     end
 
+    def invitation_rescinded(invitation)
+      if invitation.invitee.present?
+        invitation.invitee.resign_from!(assigned_to: invitation.task.journal,
+                                        role: invitation.invitee_role)
+      end
+    end
+
     def invitee_role
       Role::ACADEMIC_EDITOR_ROLE
     end

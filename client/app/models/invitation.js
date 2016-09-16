@@ -49,8 +49,8 @@ export default DS.Model.extend({
   rescind() {
     return this.get('restless')
     .put(`/api/invitations/${this.get('id')}/rescind`)
-    .then(() => {
-      this.unloadRecord();
+    .then((data) => {
+      this.store.pushPayload(data);
       return this;
     });
   },

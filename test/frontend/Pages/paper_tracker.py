@@ -336,8 +336,10 @@ class PaperTrackerPage(AuthenticatedPage):
         self._paper_tracker_table_tbody_manid = (
             By.XPATH,
             '//tbody/tr[{0}]/td[@class="paper-tracker-paper-id-column"]/a'.format(count + 1))
+        self._paper_tracker_table_tbody_verdate = (
+          By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column paper-submission-date"]'.format(count + 1))
         self._paper_tracker_table_tbody_subdate = (
-            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column"]'.format(count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column paper-submission-date"]'.format(count + 1))
         self._paper_tracker_table_tbody_paptype = (
             By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-type-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_status = (

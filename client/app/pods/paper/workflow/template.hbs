@@ -88,7 +88,7 @@
 
     {{choose-new-card journalTaskTypes=journalTaskTypes
                       phase=addToPhase
-                      isLoading=journalTaskTypes.isPending
+                      isLoading=(not journalTaskTypes.length)
                       addTaskType=(action "addTaskType")
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}

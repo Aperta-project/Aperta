@@ -29,14 +29,8 @@ export default DS.Model.extend({
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
 
   // I've avoided using .@each.systemGenerated here since it will never change
-  addableTaskTypes: computed('paperTaskTypes.isPending', function() {
-    let types = this.get('paperTaskTypes');
-    if (types.get('isPending')) {
-      return types; // return the promiseProxy so downstream
-                    // clients can check if it's resolved
-    } else {
-      return types.filterBy('systemGenerated', false);
-    }
+  addableTaskTypes: computed('paperTaskTypes.[]', function() {
+    return this.get('paperTaskTypes').filterBy('systemGenerated', false);
   }),
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),
@@ -111,7 +105,8 @@ export default DS.Model.extend({
     'decisions.@each.latestRegistered',
     function() {
       return this.get('decisions').findBy('latestRegistered', true);
-  }),
+    }
+  ),
 
   previousDecisions: computed('decisions.@each.registeredAt', function() {
     return this.get('decisions')

@@ -92,20 +92,14 @@ export default Ember.Component.extend({
 
   persistedInvitations: computed('invitations.@each.isNew', function() {
     const invitations = this.get('invitations');
-    if(isEmpty(invitations)) {
-      return [];
-    }
-
     return invitations.rejectBy('isNew');
   }),
 
   latestDecisionInvitations: computed(
     'latestDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');
-      if (this.get('latestDecision.invitations')) {
-        return this.get('latestDecision.invitations')
-                   .filterBy('inviteeRole', type);
-      }
+      return this.get('latestDecision.invitations')
+                  .filterBy('inviteeRole', type);
     }
   ),
   previousDecisions: computed('decisions', function() {

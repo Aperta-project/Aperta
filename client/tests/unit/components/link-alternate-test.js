@@ -17,13 +17,13 @@ test('#filteredAlternates does not include invitation', function(assert) {
 
   const filteredAlternates = component.get('filteredAlternates');
 
-  assert.equal(
-    filteredAlternates.contains(invitationA), false,
+  assert.notOk(
+    filteredAlternates.contains(invitationA),
     'it should not include invitation'
   );
 
-  assert.equal(
-    filteredAlternates.contains(invitationB), true,
+  assert.ok(
+    filteredAlternates.contains(invitationB),
     'it should include other invitations'
   );
 });
@@ -41,13 +41,13 @@ test('#filteredAlternates does not include invitations already linked', function
 
   const filteredAlternates = component.get('filteredAlternates');
 
-  assert.equal(
-    filteredAlternates.contains(invitationC), false,
+  assert.notOk(
+    filteredAlternates.contains(invitationC),
     'it should not include invitation already linked'
   );
 
-  assert.equal(
-    filteredAlternates.contains(invitationD), true,
+  assert.ok(
+    filteredAlternates.contains(invitationD),
     'it should include non linked invitations'
   );
 });
@@ -65,18 +65,18 @@ test('#filteredAlternates does not include accepted', function(assert) {
 
   const filteredAlternates = component.get('filteredAlternates');
 
-  assert.equal(
-    filteredAlternates.contains(invitationB), false,
+  assert.notOk(
+    filteredAlternates.contains(invitationB),
     'it should not include accepted primary'
   );
 
-  assert.equal(
-    filteredAlternates.contains(invitationC), false,
+  assert.notOk(
+    filteredAlternates.contains(invitationC),
     'it should not include alternate of accepted primary'
   );
 
-  assert.equal(
-    filteredAlternates.contains(invitationD), true,
+  assert.ok(
+    filteredAlternates.contains(invitationD),
     'it should include other invitations'
   );
 });

@@ -27,6 +27,17 @@ export default DS.Model.extend({
   journal: belongsTo('journal', { async: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
+
+  // I've avoided using .@each.systemGenerated here since it will never change
+  addableTaskTypes: computed('paperTaskTypes.isPending', function() {
+    let types = this.get('paperTaskTypes');
+    if (types.get('isPending')) {
+      return types; // return the promiseProxy so downstream
+                    // clients can check if it's resolved
+    } else {
+      return types.filterBy('systemGenerated', false);
+    }
+  }),
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),

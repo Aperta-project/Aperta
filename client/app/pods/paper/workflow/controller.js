@@ -16,8 +16,7 @@ export default Ember.Controller.extend({
 
   showChooseNewCardOverlay: false,
   addToPhase: null,
-  journalTaskTypes: [],
-  journalTaskTypesIsLoading: false,
+  journalTaskTypes: Ember.computed.reads('model.addableTaskTypes'),
 
   taskToDisplay: null,
   showTaskOverlay: false,
@@ -55,13 +54,7 @@ export default Ember.Controller.extend({
 
     showChooseNewCardOverlay(phase) {
       this.setProperties({
-        addToPhase: phase,
-        journalTaskTypesIsLoading: true
-      });
-
-      this.setProperties({
-        journalTaskTypes: this.get('model.paperTaskTypes'),
-        journalTaskTypesIsLoading: false
+        addToPhase: phase
       });
 
       this.set('showChooseNewCardOverlay', true);

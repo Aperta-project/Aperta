@@ -9,11 +9,8 @@
       {{/if}}
     </div>
     <div class="invitation-item-status" {{action "toggleDetails"}}>
-      {{#if (and (eq uiState 'closed') invitation.invited)}}
-        <span>Invited {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
-      {{/if}}
-      {{#if (and (eq uiState 'closed') (eq invitation.state 'rescinded'))}}
-        <span>Rescinded {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
+      {{#if (and (eq uiState 'closed') (not invitation.pending))}}
+        <span>{{capitalize invitation.state}} {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
       {{/if}}
     </div>
     <div class="invitation-item-body-preview" {{action "toggleDetails"}}>

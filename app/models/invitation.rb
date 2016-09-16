@@ -39,7 +39,7 @@ class Invitation < ActiveRecord::Base
 
     event(:rescind,
       after_commit: :notify_invitation_rescinded) do
-      transitions from: :invited, to: :rescinded
+      transitions from: [:invited, :accepted], to: :rescinded
     end
 
     event(:accept,

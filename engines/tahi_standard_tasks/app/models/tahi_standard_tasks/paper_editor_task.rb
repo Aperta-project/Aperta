@@ -26,7 +26,10 @@ module TahiStandardTasks
     end
 
     def invitation_rescinded(invitation)
-      # NOOP until this is implemented
+      if invitation.invitee.present?
+        invitation.invitee.resign_from!(assigned_to: invitation.task.journal,
+                                        role: invitation.invitee_role)
+      end
     end
 
     def invitee_role

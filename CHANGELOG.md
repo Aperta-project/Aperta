@@ -16,7 +16,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Users can no longer add system-generated tasks (Revise Manuscript, Changes For Author, Reviewer Report) to a workflow
 ### Fixed
 - Journal admin: the button to add a new MMT works again
-- Emails are properly displated in all clients
 - Emails are not sent when a decision is rescinded
 ### Security
 

@@ -24,16 +24,18 @@ class InviteAECard(BaseCard):
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
     # self._ae_input = (By.ID, 'invitation-recipient')
     self._recipient_field = (By.ID, 'invitation-recipient')
-    self._compose_invitation_button = (By.CLASS_NAME, 'compose-invite-button')
-    self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
-    self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
+    self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
+    ##invitation-email-entry-button
+    self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')
+    self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
+    self._edit_save_invitation_btn = (By.CLASS_NAME, 'invitation-save-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
     # self._edit_invite_text_send_invite_button = (By.CSS_SELECTOR, 'button.invite-reviewer-button')
 
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
-    self._invitee_listing = (By.CSS_SELECTOR, 'tr.invitation')
+    self._invitee_listing = (By.CLASS_NAME, 'invitation-item-header')
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
     self._invitee_avatar = (By.CSS_SELECTOR, 'img.invitee-thumbnail')
@@ -108,7 +110,7 @@ class InviteAECard(BaseCard):
       assert abstract in invite_text, abstract + '\nNot equal to\n' + invite_text
     else:
       assert 'Abstract is not available' in invite_text, invite_text
-    self._get(self._send_invitation_button).click()
+    self._get(self._edit_save_invitation_btn).click()
     time.sleep(1)
     invitee = self._get(self._invitee_listing)
     invitee.find_element(*self._invitee_avatar)
@@ -159,24 +161,21 @@ class InviteAECard(BaseCard):
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Invite Academic Editor'
     self.validate_application_title_style(card_title)
-    invite_text = self._get(self._invite_text)
-    assert invite_text.text == 'Academic Editor'
     # There is no definition of this external label style in the style guide. APERTA-7311
     #   currently, a new style validator has been implemented to match this UI
-    self.validate_input_field_external_label_style(invite_text)
     ae_input = self._get(self._invite_box)
-    assert ae_input.get_attribute('placeholder') == 'Invite Academic Editor by name or email' ,\
+    assert ae_input.get_attribute('placeholder') == 'Invite editor by name or email' ,\
         ae_input.get_attribute('placeholder')
     # Button
-    btn = self._get(self._compose_invite_button)
+    btn = self._get(self._compose_invitation_button)
     assert btn.text == 'COMPOSE INVITE'
     # Check disabled button
-    # Style validation on disabled button is commented out due to APERTA-6768
+    # Style validation on disabled button is commented out due to APERTA-7684
     # self.validate_primary_big_disabled_button_style(btn)
     # Enable button to check style
     ae_input.send_keys(user['email'] + Keys.ENTER)
     ae_input.send_keys(Keys.ENTER)
     time.sleep(.5)
-    self.validate_primary_big_green_button_style(btn)
+    self.validate_secondary_big_green_button_style(btn)
     ae_input.clear()
     return None

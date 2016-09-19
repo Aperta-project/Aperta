@@ -98,8 +98,10 @@ export default Ember.Component.extend({
   latestDecisionInvitations: computed(
     'latestDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');
-      return this.get('latestDecision.invitations')
-                  .filterBy('inviteeRole', type);
+      if (this.get('latestDecision.invitations')) {
+        return this.get('latestDecision.invitations')
+                    .filterBy('inviteeRole', type);
+      }
     }
   ),
   previousDecisions: computed('decisions', function() {

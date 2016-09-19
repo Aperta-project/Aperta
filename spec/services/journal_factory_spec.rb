@@ -53,9 +53,34 @@ describe JournalFactory, flaky: true do
       end.to change(Journal, :count).by(1)
     end
 
-    it 'assigns hints to all role types' do
-      journal = JournalFactory.create(name: 'Journal of the Stars')
-      expect(journal.roles.where(assigned_to_type_hint: nil).count).to eq(0)
+    context 'role hints' do
+      let!(:journal) { JournalFactory.create(name: 'Journal of the Stars') }
+
+      it 'assigns hints to discussion topic roles' do
+        topic_roles = journal.roles.select { |role| Role::DISCUSSION_TOPIC_ROLES.include?(role.name) }
+        expect(journal.roles.where(assigned_to_type_hint: DiscussionTopic.name.to_s).count).to \
+          eq(topic_roles.count)
+      end
+
+      it 'assigns hints to task roles' do
+        task_roles = journal.roles.select { |role| Role::TASK_ROLES.include?(role.name) }
+        expect(journal.roles.where(assigned_to_type_hint: Task.name.to_s).count).to eq(task_roles.count)
+      end
+
+      it 'assigns user hints to user roles' do
+        user_roles = journal.roles.select { |role| Role::USER_ROLES.include?(role.name) }
+        expect(journal.roles.where(assigned_to_type_hint: User.name.to_s).count).to eq(user_roles.count)
+      end
+
+      it 'assigns paper hints to user roles' do
+        paper_roles = journal.roles.select { |role| Role::PAPER_ROLES.include?(role.name) }
+        expect(journal.roles.where(assigned_to_type_hint: Paper.name.to_s).count).to eq(paper_roles.count)
+      end
+
+      it 'assigns journal hints to user roles' do
+        journal_roles = journal.roles.select { |role| Role::JOURNAL_ROLES.include?(role.name) }
+        expect(journal.roles.where(assigned_to_type_hint: Journal.name.to_s).count).to eq(journal_roles.count)
+      end
     end
 
     context 'creating the default roles and permission for the journal', flaky: true do

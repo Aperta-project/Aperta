@@ -10,6 +10,10 @@ class JournalFactory
     new(journal).ensure_default_roles_and_permissions_exist
   end
 
+  def self.assign_hints(journal)
+    new(journal).assign_hints
+  end
+
   def initialize(journal)
     @journal = journal
   end
@@ -27,7 +31,6 @@ class JournalFactory
   end
 
   def assign_hints
-    assign_hint Role::USER_ROLES,             User.name
     assign_hint Role::DISCUSSION_TOPIC_ROLES, DiscussionTopic.name
     assign_hint Role::TASK_ROLES,             Task.name
     assign_hint Role::PAPER_ROLES,            Paper.name

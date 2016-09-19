@@ -57,29 +57,23 @@ describe JournalFactory, flaky: true do
       let!(:journal) { JournalFactory.create(name: 'Journal of the Stars') }
 
       it 'assigns hints to discussion topic roles' do
-        topic_roles = journal.roles.select { |role| Role::DISCUSSION_TOPIC_ROLES.include?(role.name) }
-        expect(journal.roles.where(assigned_to_type_hint: DiscussionTopic.name.to_s).count).to \
-          eq(topic_roles.count)
+        expect(Role::DISCUSSION_TOPIC_ROLES.sort).to \
+          eq(journal.roles.where(assigned_to_type_hint: DiscussionTopic.name).map(&:name))
       end
 
       it 'assigns hints to task roles' do
-        task_roles = journal.roles.select { |role| Role::TASK_ROLES.include?(role.name) }
-        expect(journal.roles.where(assigned_to_type_hint: Task.name.to_s).count).to eq(task_roles.count)
+        expect(journal.roles.where(assigned_to_type_hint: Task.name).map(&:name).sort)
+          .to eq(Role::TASK_ROLES.sort)
       end
 
-      it 'assigns user hints to user roles' do
-        user_roles = journal.roles.select { |role| Role::USER_ROLES.include?(role.name) }
-        expect(journal.roles.where(assigned_to_type_hint: User.name.to_s).count).to eq(user_roles.count)
+      it 'assigns paper hints to paper roles' do
+        expect(journal.roles.where(assigned_to_type_hint: Paper.name).map(&:name).sort)
+          .to eq(Role::PAPER_ROLES.sort)
       end
 
-      it 'assigns paper hints to user roles' do
-        paper_roles = journal.roles.select { |role| Role::PAPER_ROLES.include?(role.name) }
-        expect(journal.roles.where(assigned_to_type_hint: Paper.name.to_s).count).to eq(paper_roles.count)
-      end
-
-      it 'assigns journal hints to user roles' do
-        journal_roles = journal.roles.select { |role| Role::JOURNAL_ROLES.include?(role.name) }
-        expect(journal.roles.where(assigned_to_type_hint: Journal.name.to_s).count).to eq(journal_roles.count)
+      it 'assigns journal hints to journal roles' do
+        expect(journal.roles.where(assigned_to_type_hint: Journal.name).map(&:name).sort)
+          .to eq(Role::JOURNAL_ROLES.sort)
       end
     end
 

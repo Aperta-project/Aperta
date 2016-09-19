@@ -26,7 +26,9 @@ export default DS.Model.extend({
   groupAuthors: hasMany('group-author', { async: false }),
   journal: belongsTo('journal', { async: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
+
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
+
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
@@ -100,7 +102,8 @@ export default DS.Model.extend({
     'decisions.@each.latestRegistered',
     function() {
       return this.get('decisions').findBy('latestRegistered', true);
-  }),
+    }
+  ),
 
   previousDecisions: computed('decisions.@each.registeredAt', function() {
     return this.get('decisions')

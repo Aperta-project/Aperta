@@ -4,6 +4,7 @@ module TahiStandardTasks
 
     DEFAULT_TITLE = 'Revise Manuscript'
     DEFAULT_ROLE = 'author'
+    SYSTEM_GENERATED = true
 
     def active_model_serializer
       ReviseTaskSerializer

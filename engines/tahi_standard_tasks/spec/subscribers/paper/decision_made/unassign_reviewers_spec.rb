@@ -4,8 +4,12 @@ describe Paper::DecisionMade::UnassignReviewers do
   include EventStreamMatchers
 
   context "rescinding invites" do
+    let!(:journal) do
+      FactoryGirl.create :journal,
+        :with_reviewer_role
+    end
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:reviewer_task) do
       FactoryGirl.create(:paper_reviewer_task, paper: paper)
     end

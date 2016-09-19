@@ -2,11 +2,11 @@
   <div class="outline {{if showSpinner 'loading'}}">
     {{#if isError}}
       <div class="progress-error">
+        <a class="upload-cancel-button" {{action "destroyFigure"}} title="Close">×</a>
         {{error-message message=uploadErrorMessage
                         displayIcon=true
                         displayText=true}}
 
-        <span class="upload-cancel-button" {{action "destroyFigure"}}>×</span>
       </div>
     {{else if isCanceled}}
       <div class="progress-text">
@@ -17,7 +17,7 @@
       <div class="progress-text">
         <h4>Figure Processing ... but you can continue working!</h4>
       </div>
-      <span class="upload-cancel-button" {{action "cancelUpload"}}>×</span>
+      <a class="upload-cancel-button" {{action "cancelUpload"}} title="Cancel Processing">×</a>
     {{else}}
       <div class="left-column">
         <div class="thumbnail-preview">

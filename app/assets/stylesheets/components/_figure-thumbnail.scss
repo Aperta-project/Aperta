@@ -7,12 +7,16 @@
 
   .progress-error .error-message {
     font-size: 14px;
+    padding-right: 10px;
   }
 
   .upload-cancel-button {
     color: $tahi-green;
     font-size: 30px;
-    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    text-decoration: none;
   }
 
   .replace-file-button {

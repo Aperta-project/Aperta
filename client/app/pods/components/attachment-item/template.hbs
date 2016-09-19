@@ -9,7 +9,7 @@
                       displayText=true}}
 
       {{#unless disabled}}
-        <span class="upload-cancel-button" {{action "deleteFile"}}>×</span>
+        <a class="upload-cancel-button" {{action "deleteFile"}} title="Cancel file upload">×</a>
       {{/unless}}
     </div>
   {{else if isCanceled}}
@@ -20,7 +20,7 @@
     <div class="processing-attachment">
       {{progress-spinner visible=true size="small"}} Processing {{attachment.filename}} ...
       {{#unless disabled}}
-        <span class="upload-cancel-button" {{action "cancelUpload"}}>×</span>
+        <a class="upload-cancel-button" {{action "cancelUpload"}} title="Cancel file upload">×</a>
       {{/unless}}
     </div>
   {{else}}

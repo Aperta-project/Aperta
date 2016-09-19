@@ -221,15 +221,16 @@ class FiguresTask(BaseTask):
       new_figure = random.choice(remaining_figures)
       fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(new_figure))
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
-    time.sleep(5)
+    guidelines_question = self._get(self._question_label)
+    self.scroll_element_into_view_below_toolbar(guidelines_question)
+    # time.sleep(5)
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_input.send_keys(fn)
     try:
       replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     except StaleElementReferenceException:
-      time.sleep(1)
-      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
-    self.scroll_element_into_view_below_toolbar(replace_btn)
+        time.sleep(10)
+        replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
     #   stale reference error
@@ -247,7 +248,8 @@ class FiguresTask(BaseTask):
     if not figure:
       raise(ValueError, 'A figure must be specified')
     logging.info(figure)
-
+    guidelines_question = self._get(self._question_label)
+    self.scroll_element_into_view_below_toolbar(guidelines_question)
     page_fig_list = self._gets(self._figure_dl_link)
     figure = urllib.quote_plus(figure[0])
     for page_fig_item in page_fig_list:

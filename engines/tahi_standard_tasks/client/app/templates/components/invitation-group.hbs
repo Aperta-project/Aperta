@@ -1,4 +1,4 @@
-{{#if primariesWithAlternates.length}}
+{{#if linkedInvitations.length}}
   {{#unless previousRound}}
     <div class='invitation-alternates-info'>
       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -9,7 +9,7 @@
     </div>
   {{/unless}}
 {{/if}}
-{{#each primariesWithAlternates as |invitation|}}
+{{#each linkedInvitations as |invitation|}}
   {{invitation-queue invitation=invitation
                      invitations=invitations
                      setRowState=(action attrs.setRowState)
@@ -22,7 +22,7 @@
                      alternateQueuing=true}}
 {{/each}}
 
-{{#each primaries as |invitation|}}
+{{#each mainQueueInvitations as |invitation|}}
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
                           setRowState=(action attrs.setRowState invitation)

@@ -95,11 +95,8 @@ export default Ember.Route.extend({
 
     updated(payload) {
       const record = this.store.getPolymorphic(payload.type, payload.id);
-      if (record) {
-        record.reload().catch(() => {
-          // This happens when a pusher update comes right after a delete
-          // We expect this to be a rare race-case due to quick user action.
-        });
+      if (record && !record.get('isDeleted')) {
+        record.reload();
         debug(`Pusher: updated ${payload.type} ${payload.id}`);
       }
     },

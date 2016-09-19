@@ -31,6 +31,7 @@ export default DS.Model.extend(Snapshottable, {
   },
 
   cancelUpload() {
+    this.deleteRecord();
     return this.get('restless').put(`/api/figures/${this.get('id')}/cancel`);
   }
 });

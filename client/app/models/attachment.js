@@ -12,6 +12,7 @@ export default DS.Model.extend(Snapshottable, {
   title: DS.attr('string'),
 
   cancelUpload() {
+    this.deleteRecord();
     return this.get('restless').put(`/api/attachments/${this.get('id')}/cancel`);
   }
 });

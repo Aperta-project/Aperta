@@ -17,7 +17,7 @@ module('Integration: Admin Test', {
     return Ember.run(app, app.destroy);
   },
   beforeEach: function() {
-    var adminJournalPayload, admin_journals, journal, journalId, journal_task_types, manuscript_manager_templates, oldRoles, phase_templates, task_templates;
+    var adminJournalPayload, admin_journals, journal, journalId, journal_task_types, manuscript_manager_templates, phase_templates, task_templates;
     app = startApp();
     server = setupMockServer();
     journal = Factory.createRecord('AdminJournal');
@@ -26,10 +26,9 @@ module('Integration: Admin Test', {
     phase_templates = Factory.createPhaseTemplate(manuscript_manager_templates);
     task_templates = Factory.createJournalTaskType(journal, {});
     journal_task_types = Factory.createTaskTemplate(journal, phase_templates, task_templates);
-    oldRoles = Factory.createJournalOldRole(journal);
     admin_journals = journal;
     adminJournalPayload = Factory.createPayload('adminJournal');
-    adminJournalPayload.addRecords([manuscript_manager_templates, phase_templates, task_templates, journal_task_types, oldRoles, admin_journals]);
+    adminJournalPayload.addRecords([manuscript_manager_templates, phase_templates, task_templates, journal_task_types, admin_journals]);
     server.respondWith('GET', '/api/admin/journals/authorization', [
       204, {
         'Content-Type': 'application/html'

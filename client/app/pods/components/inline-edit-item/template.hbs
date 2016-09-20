@@ -1,31 +1,18 @@
-{{#if isTextItem}}
-  {{inline-edit-text bodyPart=attrs.item
-                     editing=attrs.editing
-                     isNew=attrs.isNew
-                     delete=(action attrs.deleteItem item block)
-                     save=(action attrs.saveModel)}}
-
-{{else if isLabelItem}}
-  {{inline-edit-adhoc-label bodyPart=attrs.item
-                      editing=attrs.editing
-                      isNew=attrs.isNew}}
-
-{{else if isCheckboxItem}}
-  {{inline-edit-checkbox bodyPart=attrs.item
-                         editing=attrs.editing
-                         isNew=attrs.isNew
-                         delete=(action attrs.deleteItem item block)
-                         save=(action attrs.saveModel)}}
-
-{{else if isEmailItem}}
-  {{inline-edit-email bodyPart=attrs.item
-                      editing=attrs.editing
-                      allUsers=attrs.allUsers
-                      overlayParticipants=attrs.overlayParticipants
-                      isNew=attrs.isNew
-                      isSendable=isSendable
-                      paperId=paperId
-                      task=task
-                      sendEmail=(action attrs.sendEmail)}}
-{{/if}}
-
+<!-- renders
+  inline-edit-text,
+  inline-edit-email,
+  inline-edit-adhoc-label,
+  inline-edit-checkbox -->
+{{component
+    (concat 'inline-edit-' item.type)
+    bodyPart=item
+    editing=editing
+    allUsers=allUsers
+    overlayParticipants=overlayParticipants
+    isNew=isNew
+    isSendable=isSendable
+    paperId=paperId
+    task=task
+    sendEmail=(action attrs.sendEmail)
+    delete=(action attrs.deleteItem item block)
+    save=(action attrs.saveModel)}}

@@ -95,7 +95,7 @@ export default Ember.Route.extend({
 
     updated(payload) {
       const record = this.store.getPolymorphic(payload.type, payload.id);
-      if (record) {
+      if (record && !record.get('isDeleted')) {
         record.reload();
         debug(`Pusher: updated ${payload.type} ${payload.id}`);
       }

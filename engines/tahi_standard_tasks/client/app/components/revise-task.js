@@ -1,5 +1,6 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 const {
   computed,
@@ -25,6 +26,12 @@ export default TaskComponent.extend({
       }
     }]
   },
+
+  cancelUpload: concurrencyTask(function * (attachment) {
+    yield attachment.cancelUpload();
+    yield timeout(5000);
+    attachment.unloadRecord();
+  }),
 
   canUploadAttachments: computed('editingAuthorResponse', 'isEditable', function () {
     return this.get('editingAuthorResponse') && this.get('isEditable');
@@ -57,6 +64,10 @@ export default TaskComponent.extend({
   },
 
   actions: {
+    cancelUpload(attachment) {
+      this.get('cancelUpload').perform(attachment);
+    },
+
     saveAuthorResponse() {
       this.validateData();
       if(this.validationErrorsPresent()) { return; }

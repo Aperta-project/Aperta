@@ -112,7 +112,12 @@ export default Ember.TextField.extend({
       // with a `resourceUrl`.  This is in contrast to the s3-file-uploader, which
       // sends an action once the upload is complete.
       if (resourceUrl) { // tell rails server that upload to s3 finished
-        let postData = Ember.merge({ url: uploadedS3Url }, this.get('dataParams'));
+        let postData = Ember.merge(
+          {
+            url: uploadedS3Url,
+            filename: filename
+          } , this.get('dataParams')
+        );
         $.ajax({
           url: resourceUrl,
           dataType: 'json',

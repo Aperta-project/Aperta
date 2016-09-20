@@ -2746,6 +2746,10 @@ attachments:
   - file_hash
   - previous_file_hash
   - uploaded_by_id
+  - error_message
+  - error_backtrace
+  - errored_at
+  - pending_url
   records: 
   - - '1'
     - cover_image.jpg
@@ -2764,6 +2768,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2787,6 +2795,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '3'
     - cat2.jpg
     - '2'
@@ -2804,6 +2816,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2827,6 +2843,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '5'
     - quad-cat.jpg
     - '3'
@@ -2844,6 +2864,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2867,6 +2891,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '7'
     - cat2.jpg
     - '4'
@@ -2884,6 +2912,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2907,6 +2939,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '9'
     - 140.jpg
     - '12'
@@ -2924,6 +2960,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2947,6 +2987,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '11'
     - turtles-are-amazing.docx
     - '43'
@@ -2964,6 +3008,10 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2987,6 +3035,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '13'
     - 140.jpg
     - '170'
@@ -3004,6 +3056,10 @@ attachments:
     - Figure
     - 
     - true
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3027,6 +3083,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '15'
     - turtles-are-amazing.docx
     - '88'
@@ -3044,6 +3104,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3067,6 +3131,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '17'
     - 
     - '1'
@@ -3084,6 +3152,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3107,6 +3179,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '19'
     - 
     - '3'
@@ -3124,6 +3200,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3147,6 +3227,10 @@ attachments:
     - 
     - 
     - '3'
+    - 
+    - 
+    - 
+    - 
   - - '21'
     - 
     - '8'
@@ -3164,6 +3248,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3187,6 +3275,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '23'
     - 
     - '10'
@@ -3204,6 +3296,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3227,6 +3323,10 @@ attachments:
     - 
     - 
     - '3'
+    - 
+    - 
+    - 
+    - 
   - - '25'
     - 
     - '13'
@@ -3244,6 +3344,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 

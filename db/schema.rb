@@ -91,6 +91,10 @@ ActiveRecord::Schema.define(version: 20160916134145) do
     t.string   "file_hash"
     t.string   "previous_file_hash"
     t.integer  "uploaded_by_id"
+    t.text     "error_message"
+    t.text     "error_backtrace"
+    t.datetime "errored_at"
+    t.string   "pending_url"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree

@@ -49,7 +49,9 @@ Tahi::Application.routes.draw do
         get '/user/:user_id', to: 'affiliations#for_user'
       end
     end
-    resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments'
+    resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments' do
+      put :cancel, on: :member
+    end
     resources :manuscript_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
@@ -69,6 +71,7 @@ Tahi::Application.routes.draw do
     resources :feedback, only: :create
     resources :figures, only: [:show, :destroy, :update] do
       put :update_attachment, on: :member
+      put :cancel, on: :member
     end
     resources :group_authors, only: [:show, :create, :update, :destroy]
     resources :bibitems, only: [:create, :update, :destroy]

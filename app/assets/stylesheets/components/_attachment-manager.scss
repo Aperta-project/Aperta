@@ -6,6 +6,13 @@
     min-height: 30px;
   }
 
+  .upload-cancel-button {
+    color: $tahi-green;
+    font-size: 30px;
+    margin-left: 15px;
+    text-decoration: none;
+  }
+
   p.description {
     font-style: italic;
   }
@@ -21,7 +28,7 @@
   }
 
   .progress {
-    margin: 0px;
+    margin: 0 0 10px 0;
   }
 
   .s3-file-uploader {
@@ -33,7 +40,6 @@
   }
 
   .processing-attachment {
-    height: 30px;
     line-height: 30px;
     color: $tahi-grey-dark;
     font-size: 18px;

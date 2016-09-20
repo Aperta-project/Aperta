@@ -11,7 +11,10 @@ class Attachment < ActiveRecord::Base
   include Snapshottable
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
-  STATUS_DONE = 'done'
+
+  STATUS_PROCESSING = 'processing'.freeze
+  STATUS_ERROR = 'error'.freeze
+  STATUS_DONE = 'done'.freeze
 
   class_attribute :public_resource
 
@@ -70,14 +73,37 @@ class Attachment < ActiveRecord::Base
     snapshotted?
   end
 
+  def cancel_download
+    case status
+    when STATUS_PROCESSING
+      # delete the attachment and let sidekiq deal with it
+      #
+      # sidekiq still running
+      destroy
+    when STATUS_ERROR
+      # clean up from exception in sidekiq
+      #
+      # sidekiq not running due to exception
+      destroy
+    when STATUS_DONE
+      # sidekiq completely done, two ships passing in the night
+      # no-op
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   def download!(url, uploaded_by: nil)
     # Wrap this in a transaction so the ActiveRecord after_commit lifecycle
-    # event isn't fired until the transaction completes and all of the work
-    # is finished.
+    # event isn't fired until the transaction completes and all of the work is
+    # finished.
+
+    # Store off the url in case of any failures
+    update_column :pending_url, url
+
     Attachment.transaction do
       @downloading = true
       file.download! url
+
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
@@ -89,16 +115,22 @@ class Attachment < ActiveRecord::Base
       save!
       refresh_resource_token!(file) if public_resource
 
-      # Do not mark as done until all of the steps that go into
-      # downloading a file, creating resource tokens, etc are completed. This
-      # is to avoid other parts of the system thinking the attachment is
-      # done downloading before it's fully realized/usable.
+      # Do not mark as done until all of the steps that go into downloading a
+      # file, creating resource tokens, etc are completed. This is to avoid
+      # other parts of the system thinking the attachment is done downloading
+      # before it's fully realized/usable.
       update_column :status, STATUS_DONE
 
       @downloading = false
       on_download_complete
     end
   rescue Exception => ex
+    update_attributes!(
+      status: STATUS_ERROR,
+      error_message: ex.message,
+      error_backtrace: ex.backtrace.join("\n"),
+      errored_at: Time.zone.now
+    )
     on_download_failed(ex)
   ensure
     @downloading = false
@@ -180,6 +212,10 @@ class Attachment < ActiveRecord::Base
   # TODO: could we move this into the serializers?
   def task
     owner if owner_type == 'Task'
+  end
+
+  def invitation
+    owner if owner_type == 'Invitation'
   end
 
   # These methods were pulled up from Attachment subclasses

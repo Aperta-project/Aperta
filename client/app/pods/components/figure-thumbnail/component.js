@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNameBindings: ['destroyState:_destroy', 'editState:_edit'],
@@ -18,7 +19,13 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   previewState: false,
   editState: false,
   isProcessing: Ember.computed.equal('figure.status', 'processing'),
+  isError: Ember.computed.equal('figure.status', 'error'),
   showSpinner: Ember.computed.or('isProcessing', 'isUploading'),
+
+  uploadErrorMessage: Ember.computed('figure.filename', function() {
+    return `There was an error while processing ${this.get('figure.filename')}. Please try again
+    or contact Aperta staff.`;
+  }),
 
   validations: {
     'rank': [{
@@ -26,7 +33,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       message: 'Figure label must be unique',
       validation() {
         let rank = this.get('figure.rank');
-        if (rank === 0) { return true; };
+        if (rank === 0) { return true; }
 
         let count = this.get('figure.paper.figures').filterBy('rank', rank).get('length');
 
@@ -73,7 +80,19 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     });
   },
 
+  cancelUpload: concurrencyTask(function * () {
+    let figure = this.get('figure');
+    this.set('isCanceled', true);
+    yield figure.cancelUpload();
+    yield timeout(5000);
+    figure.unloadRecord();
+  }),
+
   actions: {
+    cancelUpload() {
+      this.get('cancelUpload').perform();
+    },
+
     cancelEditing() {
       this.set('editState', false);
       this.get('figure').rollbackAttributes();
@@ -122,7 +141,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     toggleStrikingImageFromCheckbox(checkbox) {
       let newValue = null;
       if (checkbox.get('checked')) {
-          newValue = checkbox.get('figure.id');
+        newValue = checkbox.get('figure.id');
       }
       this.get('strikingImageAction')(newValue);
     }

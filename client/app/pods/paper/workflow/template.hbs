@@ -85,9 +85,10 @@
                       outAnimationComplete=(action "hideChooseNewCardOverlay")
                       title="Pick the types of cards to add"
                       as |overlay|}}
-    {{choose-new-card journalTaskTypes=journalTaskTypes
+
+    {{choose-new-card journalTaskTypes=addableTaskTypes
                       phase=addToPhase
-                      isLoading=journalTaskTypesIsLoading
+                      isLoading=journalTaskTypes.isPending
                       addTaskType=(action "addTaskType")
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}

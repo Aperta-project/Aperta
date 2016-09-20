@@ -85,6 +85,49 @@ describe Attachment do
     end
   end
 
+  describe 'cancel_download' do
+    subject(:attachment) { FactoryGirl.create(:attachment) }
+
+    it 'destroys the attachment if status is STATUS_PROCESSING' do
+      subject.status = Attachment::STATUS_PROCESSING
+      subject.cancel_download
+      expect(subject).to be_destroyed
+    end
+
+    it 'destroys the attachment if status is STATUS_ERROR' do
+      subject.status = Attachment::STATUS_ERROR
+      subject.cancel_download
+      expect(subject).to be_destroyed
+    end
+
+    it 'does nothing if status is STATUS_DONE' do
+      subject.status = Attachment::STATUS_DONE
+      subject.cancel_download
+      expect(subject).to_not be_destroyed
+    end
+  end
+
+  describe 'download!' do
+    # Many of the download examples are in attachment_shared_examples.rb
+    # Look there for more
+    subject(:attachment) { FactoryGirl.create(:attachment) }
+
+    it 'stores the original uploaded url and error state on an exception' do
+      allow(subject.file).to receive(:download!)
+        .and_raise("Download failed!")
+
+      begin
+        subject.download!('bogus url')
+      rescue Exception
+        # This happens in non-error cases too, but this is an easy place to test this.
+        expect(subject.pending_url).to eq('bogus url')
+        expect(subject.status).to eq(Attachment::STATUS_ERROR)
+        expect(subject.error_message).to eq("Download failed!")
+        expect(subject.error_backtrace).to be_present
+        expect(subject.errored_at).to be_present
+      end
+    end
+  end
 
   describe 'setting #paper' do
     let(:paper) { FactoryGirl.create(:paper) }

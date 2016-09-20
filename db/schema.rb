@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912141012) do
+ActiveRecord::Schema.define(version: 20160916134145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,10 @@ ActiveRecord::Schema.define(version: 20160912141012) do
     t.string   "file_hash"
     t.string   "previous_file_hash"
     t.integer  "uploaded_by_id"
+    t.text     "error_message"
+    t.text     "error_backtrace"
+    t.datetime "errored_at"
+    t.string   "pending_url"
   end
 
   add_index "attachments", ["owner_id", "owner_type"], name: "index_attachments_on_owner_id_and_owner_type", using: :btree
@@ -300,6 +304,7 @@ ActiveRecord::Schema.define(version: 20160912141012) do
     t.string  "old_role"
     t.string  "kind"
     t.json    "required_permissions"
+    t.boolean "system_generated"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree

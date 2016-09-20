@@ -28,7 +28,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     addMMTemplate() {
-      this.transitionTo('admin.journal.manuscript_manager_template.new');
+      this.transitionToRoute('admin.journal.manuscript_manager_template.new');
     },
 
     destroyMMTemplate(template) {

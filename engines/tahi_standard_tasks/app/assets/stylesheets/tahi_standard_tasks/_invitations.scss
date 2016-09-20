@@ -294,6 +294,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
   .spacer { flex-grow: 1; }
 
+  .invitation-attachment-manager {
+    width: 100%;
+  }
+
   .attachment-manager {
     margin-bottom: 0;
   }

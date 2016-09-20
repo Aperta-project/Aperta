@@ -26,6 +26,10 @@ class FiguresPolicy < ApplicationPolicy
     papers_policy.show?
   end
 
+  def cancel?
+    papers_policy.show?
+  end
+
   private
 
   def papers_policy

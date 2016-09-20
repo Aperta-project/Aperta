@@ -44,6 +44,19 @@ class AdhocAttachmentsController < ApplicationController
     render json: attachment, root: 'attachment'
   end
 
+  def cancel
+    attachment = Attachment.find(params[:id])
+    if attachment.invitation
+      requires_user_can(:manage_invitations, attachment.invitation.task)
+    else
+      requires_user_can :edit, attachment.task
+    end
+
+    attachment.cancel_download
+
+    head :no_content
+  end
+
   private
 
   def task

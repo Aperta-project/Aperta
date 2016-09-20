@@ -36,11 +36,14 @@ class InviteAECard(BaseCard):
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
     self._invitee_listing = (By.CLASS_NAME, 'invitation-item-header')
+
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
-    self._invitee_avatar = (By.CSS_SELECTOR, 'img.invitee-thumbnail')
     self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
-    self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
+    self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
+    ##self._invitee_updated_at = (By.XPATH, '//following-sibling::div/div[0]')
+    #invitation-item-state-and-date
+
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
     self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
@@ -92,8 +95,7 @@ class InviteAECard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert '{0}, {1}'.format(creator_ln.encode('utf-8'), creator_fn.encode('utf-8')) in \
-        invite_text.encode('utf-8'), invite_text
+    assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
       # strip html, and remove whitespace
@@ -112,16 +114,22 @@ class InviteAECard(BaseCard):
       assert 'Abstract is not available' in invite_text, invite_text
     self._get(self._edit_save_invitation_btn).click()
     time.sleep(1)
-    invitee = self._get(self._invitee_listing)
-    invitee.find_element(*self._invitee_avatar)
-    pagefullname = invitee.find_element(*self._invitee_full_name)
+    #invitee = self._get(self._invitee_listing)
+    #invitee.find_element(*self._invitee_avatar)
+    #import pdb; pdb.set_trace()
     invitees = self._gets(self._invitee_listing)
     assert any(ae['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(ae['name'], [x.text for x in invitees])
-    invitee.find_element(*self._invitee_updated_at)
+    import pdb; pdb.set_trace()
+
+    #invitation-item-details
+    #invitation-item-state-and-date
+    invitees[0].find_element(*self._invitee_updated_at)
+    self._get(self._invitee_updated_at)
+    # MAKE THE ACTUAL INVITATION
     assert any('Invited' in s for s in [x.text for x in invitees]), \
         'Invited not found in {1}'.format([x.text for x in invitees])
-    invitee.find_element(*self._invitee_revoke)
+    self._get(*self._invitee_revoke)
 
   def validate_ae_response(self, ae, response, reason='N/A', suggestions='N/A'):
     """

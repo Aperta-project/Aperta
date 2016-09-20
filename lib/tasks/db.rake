@@ -14,10 +14,14 @@ namespace :db do
   DESC
   task :import_remote, [:env] => :environment do |t, args|
     return unless Rails.env.development?
+    args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'db'}_dump.tar.gz"
 
     with_config do |app, host, db, user, password|
+      drop_cmd = system("dropdb #{db} && createdb #{db}")
+      raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
+
       ENV['PGPASSWORD'] = password.to_s
       cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)

@@ -6,6 +6,7 @@
   <div class="task-body">
     {{#each blocks as |block|}}
       {{#inline-edit-body-part block=block
+                               canEdit=canEdit
                                editing=false
                                cancel="resetBlock"
                                save="saveBlock"
@@ -15,6 +16,7 @@
         {{#each block as |item|}}
           {{inline-edit-item item=item
                              block=block
+                             canFillOut=canFillOut
                              editing=editing
                              overlayParticipants=task.participations
                              emailSentStates=emailSentStates

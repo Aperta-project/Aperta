@@ -91,6 +91,15 @@
   }
 }
 
+.inline-edit-body-part.text {
+  .item-text {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #EEE;
+    min-height: 5rem;
+  }
+}
+
 .inline-edit-body-part.email {
   &.show-state {
     padding: 50px 5px 30px 5px;

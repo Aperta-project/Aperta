@@ -1,20 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  newBlocks: [],
+  newBlocks: Ember.computed(() => { return []; }),
   blocks: null,
   emailSentStates: null,
-
-  _init: Ember.on('init', function() {
-    this.set('newBlocks', []);
-  }),
 
   setEmailStates: Ember.on('init', function() {
     this.set('emailSentStates', Ember.ArrayProxy.create({
       content: []
     }));
   }),
-
   isNew(block) {
     return this.get('newBlocks').contains(block);
   },

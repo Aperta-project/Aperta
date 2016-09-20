@@ -1,9 +1,6 @@
+#
+# The System represents the application. It's explicitly called out
+# so it can be used in the data-driven authorization (R&P) sub-system.
+#
 class System < ActiveRecord::Base
-
-  has_many :_journals, class_name: "Journal"
-
-  def journals
-    _journals.unscoped
-  end
-
 end

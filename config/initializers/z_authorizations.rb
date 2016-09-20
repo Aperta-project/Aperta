@@ -1,7 +1,13 @@
-# This file must load after the devise initializer
-
+# This file must load after the devise initializer.
+#
 # This configuration defines how you get access to object based on your
-# assignments
+# assignments.
+#
+# For example, if somebody is assigned to a Journal and they are trying to
+# load the papers they have access to, this is used to tell the authorization
+# subsystem that a user assigned to a Journal trying to access Paper will
+# route thru the association called :papers on the Journal class.
+#
 Authorizations.configure do |config|
   #
   # System-level access
@@ -14,14 +20,14 @@ Authorizations.configure do |config|
 
   config.assignment_to(
     System,
-    authorizes: Task,
-    via: :tasks
+    authorizes: Paper,
+    via: :papers
   )
 
   config.assignment_to(
     System,
-    authorizes: Paper,
-    via: :papers
+    authorizes: Task,
+    via: :tasks
   )
 
   config.assignment_to(

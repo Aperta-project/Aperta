@@ -1,6 +1,7 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 export default TaskComponent.extend(BuildsTaskTemplate, {
   store: Ember.inject.service(),
@@ -26,6 +27,12 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
       store.pushPayload(response);
     });
   },
+
+  cancelUpload: concurrencyTask(function * (attachment) {
+    yield attachment.cancelUpload();
+    yield timeout(5000);
+    attachment.unloadRecord();
+  }),
 
   actions: {
     setTitle(title) {
@@ -78,8 +85,12 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
       attachment.destroyRecord();
     },
 
+    cancelUpload(attachment) {
+      this.get('cancelUpload').perform(attachment);
+    },
+
     uploadFailed(reason) {
-      console.log(reason);
+      throw new Ember.Error(`Upload from browser to s3 failed: ${reason}`);
     },
 
     addAttachmentsBlock() {

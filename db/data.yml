@@ -2746,6 +2746,10 @@ attachments:
   - file_hash
   - previous_file_hash
   - uploaded_by_id
+  - error_message
+  - error_backtrace
+  - errored_at
+  - pending_url
   records: 
   - - '1'
     - cover_image.jpg
@@ -2764,6 +2768,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2787,6 +2795,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '3'
     - cat2.jpg
     - '2'
@@ -2804,6 +2816,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2827,6 +2843,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '5'
     - quad-cat.jpg
     - '3'
@@ -2844,6 +2864,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2867,6 +2891,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '7'
     - cat2.jpg
     - '4'
@@ -2884,6 +2912,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2907,6 +2939,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '9'
     - 140.jpg
     - '12'
@@ -2924,6 +2960,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2947,6 +2987,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '11'
     - turtles-are-amazing.docx
     - '43'
@@ -2964,6 +3008,10 @@ attachments:
     - 
     - 
     - true
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -2987,6 +3035,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '13'
     - 140.jpg
     - '170'
@@ -3004,6 +3056,10 @@ attachments:
     - Figure
     - 
     - true
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3027,6 +3083,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '15'
     - turtles-are-amazing.docx
     - '88'
@@ -3044,6 +3104,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3067,6 +3131,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '17'
     - 
     - '1'
@@ -3084,6 +3152,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3107,6 +3179,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '19'
     - 
     - '3'
@@ -3124,6 +3200,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3147,6 +3227,10 @@ attachments:
     - 
     - 
     - '3'
+    - 
+    - 
+    - 
+    - 
   - - '21'
     - 
     - '8'
@@ -3164,6 +3248,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3187,6 +3275,10 @@ attachments:
     - 
     - 
     - 
+    - 
+    - 
+    - 
+    - 
   - - '23'
     - 
     - '10'
@@ -3204,6 +3296,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -3227,6 +3323,10 @@ attachments:
     - 
     - 
     - '3'
+    - 
+    - 
+    - 
+    - 
   - - '25'
     - 
     - '13'
@@ -3244,6 +3344,10 @@ attachments:
     - 
     - 
     - false
+    - 
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -4014,6 +4118,7 @@ journal_task_types:
   - old_role
   - kind
   - required_permissions
+  - system_generated
   records: 
   - - '1'
     - '1'
@@ -4021,204 +4126,238 @@ journal_task_types:
     - user
     - Task
     - "{}"
+    - false
   - - '2'
     - '1'
     - Authors
     - author
     - TahiStandardTasks::AuthorsTask
     - "{}"
+    - false
   - - '3'
     - '1'
     - Competing Interests
     - author
     - TahiStandardTasks::CompetingInterestsTask
     - "{}"
+    - false
   - - '4'
     - '1'
     - Cover Letter
     - author
     - TahiStandardTasks::CoverLetterTask
     - "{}"
+    - false
   - - '5'
     - '1'
     - Data Availability
     - author
     - TahiStandardTasks::DataAvailabilityTask
     - "{}"
+    - false
   - - '6'
     - '1'
     - Ethics Statement
     - author
     - TahiStandardTasks::EthicsTask
     - "{}"
+    - false
   - - '7'
     - '1'
     - Figures
     - author
     - TahiStandardTasks::FigureTask
     - "{}"
+    - false
   - - '8'
     - '1'
     - Financial Disclosure
     - author
     - TahiStandardTasks::FinancialDisclosureTask
     - "{}"
+    - false
   - - '9'
     - '1'
     - Assign Admin
     - admin
     - TahiStandardTasks::PaperAdminTask
     - "{}"
+    - false
   - - '10'
     - '1'
     - Invite Academic Editor
     - admin
     - TahiStandardTasks::PaperEditorTask
     - "{}"
+    - false
   - - '11'
     - '1'
     - Invite Reviewers
     - editor
     - TahiStandardTasks::PaperReviewerTask
     - "{}"
+    - false
   - - '12'
     - '1'
     - Production Metadata
     - admin
     - TahiStandardTasks::ProductionMetadataTask
     - "{}"
+    - false
   - - '13'
     - '1'
     - Additional Information
     - author
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - "{}"
+    - false
   - - '14'
     - '1'
     - Register Decision
     - editor
     - TahiStandardTasks::RegisterDecisionTask
     - "{}"
+    - false
   - - '15'
     - '1'
     - Reporting Guidelines
     - author
     - TahiStandardTasks::ReportingGuidelinesTask
     - "{}"
+    - false
   - - '16'
     - '1'
     - Reviewer Candidates
     - author
     - TahiStandardTasks::ReviewerRecommendationsTask
     - "{}"
+    - false
   - - '17'
     - '1'
     - Reviewer Report
     - reviewer
     - TahiStandardTasks::ReviewerReportTask
     - "{}"
+    - true
   - - '18'
     - '1'
-    - Revise Task
+    - Revise Manuscript
     - author
     - TahiStandardTasks::ReviseTask
     - "{}"
+    - true
   - - '19'
     - '1'
     - Supporting Info
     - author
     - TahiStandardTasks::SupportingInformationTask
     - "{}"
+    - false
   - - '20'
     - '1'
     - New Taxon
     - author
     - TahiStandardTasks::TaxonTask
     - "{}"
+    - false
   - - '21'
     - '1'
     - Upload Manuscript
     - author
     - TahiStandardTasks::UploadManuscriptTask
     - "{}"
+    - false
   - - '22'
     - '1'
     - Changes For Author
     - author
     - PlosBioTechCheck::ChangesForAuthorTask
     - "{}"
+    - true
   - - '23'
     - '1'
     - Final Tech Check
     - editor
     - PlosBioTechCheck::FinalTechCheckTask
     - "{}"
+    - false
   - - '24'
     - '1'
     - Initial Tech Check
     - editor
     - PlosBioTechCheck::InitialTechCheckTask
     - "{}"
+    - false
   - - '25'
     - '1'
     - Revision Tech Check
     - editor
     - PlosBioTechCheck::RevisionTechCheckTask
     - "{}"
+    - false
   - - '26'
     - '1'
     - Editor Discussion
     - admin
     - PlosBioInternalReview::EditorsDiscussionTask
     - "{}"
+    - false
   - - '27'
     - '1'
     - Billing
     - author
     - PlosBilling::BillingTask
     - '[{"action":"view","applies_to":"PlosBilling::BillingTask"},{"action":"edit","applies_to":"PlosBilling::BillingTask"}]'
+    - false
   - - '28'
     - '1'
     - Assign Team
     - admin
     - Tahi::AssignTeam::AssignTeamTask
     - "{}"
+    - false
   - - '29'
     - '1'
     - Test Task
     - user
     - InvitableTask
     - 
+    - false
   - - '30'
     - '1'
     - Initial Decision
     - editor
     - TahiStandardTasks::InitialDecisionTask
     - "{}"
+    - false
   - - '31'
     - '1'
     - Send to Apex
     - editor
     - TahiStandardTasks::SendToApexTask
     - "{}"
+    - false
   - - '32'
     - '1'
     - Related Articles
     - editor
     - TahiStandardTasks::RelatedArticlesTask
     - "{}"
+    - false
   - - '33'
     - '1'
     - Title And Abstract
     - editor
     - TahiStandardTasks::TitleAndAbstractTask
     - "{}"
+    - false
   - - '34'
     - '1'
     - Front Matter Reviewer Report
     - reviewer
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - "{}"
+    - true
 
 ---
 journals:
@@ -19234,7 +19373,7 @@ tasks:
     - '12'
     - 
   - - '191'
-    - Revise Task
+    - Revise Manuscript
     - TahiStandardTasks::ReviseTask
     - '45'
     - true

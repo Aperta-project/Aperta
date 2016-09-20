@@ -26,7 +26,7 @@ let template = hbs`{{invitation-detail-row
                       invitation=invitation}}`;
 
 test('displays invitation information if the invite.invited is true', function(assert){
-  this.set('invitation.invited', true);
+  this.set('invitation.state', 'invited');
   this.render(template);
 
   assert.textPresent('.invitation-item-status',

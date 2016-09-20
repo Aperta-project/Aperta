@@ -3,6 +3,7 @@ import DS from 'ember-data';
 import Snapshottable from 'tahi/mixins/snapshottable';
 
 export default DS.Model.extend(Snapshottable, {
+  restless: Ember.inject.service('restless'),
   paper: DS.belongsTo('paper', { async: false }),
 
   alt: DS.attr('string'),
@@ -22,17 +23,15 @@ export default DS.Model.extend(Snapshottable, {
     return Ember.run.debounce(this, this.save, 2000);
   },
 
-  toHtml() {
-    return "<figure itemscope data-id=\"" + (this.get('id')) + "\">\n  <h1 itemprop=\"title\">" + (this.get('title')) + "</h1>\n  <img src=\"" + (this.get('detailSrc')) + "\">\n  <figcaption>" + (this.get('caption')) + "</figcaption>\n</figure>";
-  },
-
-  reloadPaper() {
-    return this.get('paper').reload();
-  },
-
   save() {
+    let paper = this.get('paper');
     return this._super().then(() => {
-      return this.reloadPaper();
+      return paper.reload();
     });
+  },
+
+  cancelUpload() {
+    this.deleteRecord();
+    return this.get('restless').put(`/api/figures/${this.get('id')}/cancel`);
   }
 });

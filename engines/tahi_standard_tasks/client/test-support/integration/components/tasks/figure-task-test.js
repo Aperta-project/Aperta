@@ -1,9 +1,7 @@
-import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import registerCustomAssertions from '../../../helpers/custom-assertions';
-import Factory from '../../../helpers/factory'
+import Factory from '../../../helpers/factory';
 
 let createTaskWithFigures = function(figures) {
   return make('figure-task', {

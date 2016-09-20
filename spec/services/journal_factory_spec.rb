@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe JournalFactory do
+describe JournalFactory, flaky: true do
   describe '.create' do
     include AuthorizationSpecHelper
 
@@ -53,7 +53,7 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
-    context 'creating the default roles and permission for the journal' do
+    context 'creating the default roles and permission for the journal', flaky: true do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal')
       end
@@ -1050,10 +1050,9 @@ describe JournalFactory do
 
         describe 'permission to PlosBilling::BillingTask' do
           it 'can :view and :edit' do
-            expect(permissions).to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
+            # Sometimes there is more than one 'edit' or 'view' permission for BillingTask so this fixes spec flakiness
+            permission_strings = permissions.where(applies_to: 'PlosBilling::BillingTask').pluck(:action)
+            expect(permission_strings).to contain_exactly('view', 'edit')
           end
         end
       end

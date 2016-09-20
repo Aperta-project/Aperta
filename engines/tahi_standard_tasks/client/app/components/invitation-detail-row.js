@@ -5,7 +5,7 @@ import { task, timeout } from 'ember-concurrency';
 const {
   Component,
   computed,
-  computed: { equal, reads, and },
+  computed: { equal, reads, and, or },
   inject: { service }
 } = Ember;
 
@@ -46,6 +46,8 @@ export default Component.extend({
   displayDestroyButton: computed('invitation.pending', 'closedState', 'allowDestroy', function() {
     return this.get('allowDestroy') && this.get('invitation.pending') && !this.get('closedState');
   }),
+
+  displayRescindButton: or('invitation.invited', 'invitation.accepted'),
 
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
@@ -95,6 +97,10 @@ export default Component.extend({
         invitation.save();
         this.get('setRowState')('show');
       }
+    },
+
+    rescindInvitation(invitation) {
+      invitation.rescind();
     },
 
     destroyInvitation(invitation) {

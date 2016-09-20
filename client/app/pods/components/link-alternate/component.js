@@ -10,14 +10,6 @@ export default Ember.Component.extend({
     // Reject if already linked to a primary
     if (invitation.get('primary')) { return false; }
 
-    // Reject if primary has accepted
-    if(invitation.get('state') === 'accepted') { return false; }
-
-    // Reject if any any alternates have accepted
-    if(invitation.get('alternates').any((inv)=> {
-      return inv.get('state') === 'accepted';
-    })) { return false; }
-
     return true;
   }),
   alternateCandidates: Ember.computed('filteredAlternates', function() {

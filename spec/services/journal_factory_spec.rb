@@ -53,6 +53,30 @@ describe JournalFactory, flaky: true do
       end.to change(Journal, :count).by(1)
     end
 
+    context 'role hints' do
+      let!(:journal) { JournalFactory.create(name: 'Journal of the Stars') }
+
+      it 'assigns hints to discussion topic roles' do
+        expect(Role::DISCUSSION_TOPIC_ROLES.sort).to \
+          eq(journal.roles.where(assigned_to_type_hint: DiscussionTopic.name).map(&:name))
+      end
+
+      it 'assigns hints to task roles' do
+        expect(journal.roles.where(assigned_to_type_hint: Task.name).map(&:name).sort)
+          .to eq(Role::TASK_ROLES.sort)
+      end
+
+      it 'assigns paper hints to paper roles' do
+        expect(journal.roles.where(assigned_to_type_hint: Paper.name).map(&:name).sort)
+          .to eq(Role::PAPER_ROLES.sort)
+      end
+
+      it 'assigns journal hints to journal roles' do
+        expect(journal.roles.where(assigned_to_type_hint: Journal.name).map(&:name).sort)
+          .to eq(Role::JOURNAL_ROLES.sort)
+      end
+    end
+
     context 'creating the default roles and permission for the journal', flaky: true do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal')

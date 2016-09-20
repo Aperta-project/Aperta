@@ -10,7 +10,6 @@ export default Ember.Component.extend({
   showChooseReceivers: false,
   mailRecipients: [],
   recipients: null,
-  allUsers: null,
   overlayParticipants: null,
   emailSentStates: Ember.computed.alias('parentView.emailSentStates'),
   lastSentAt: null,

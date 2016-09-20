@@ -5,7 +5,6 @@ const { computed } = Ember;
 const { setDiff } = computed;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
-  allUsers: null,
   selectedCollaborator: null,
   paper: null,
   initialCollaborations: null,

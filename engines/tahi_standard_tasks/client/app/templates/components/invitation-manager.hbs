@@ -9,7 +9,7 @@
 
   {{partial 'invitation-compose'}}
 
-  {{#each previousDecisionsWithFilteredInvitations as |decision|}}
+  {{#each sortedPreviousDecisionsWithFilteredInvitations as |decision|}}
     <div class='invitation-revision-round'>
       v{{decision.revisionNumber}} {{humanize decision.verdict}}
     </div>

@@ -107,6 +107,7 @@ export default Ember.Component.extend({
   previousDecisions: computed('decisions', function() {
     return this.get('decisions').without(this.get('latestDecision'));
   }),
+
   previousDecisionsWithFilteredInvitations: computed(
     'previousDecisions.@each.inviteeRole', function() {
       return this.get('previousDecisions').map(decision => {
@@ -120,6 +121,16 @@ export default Ember.Component.extend({
       });
     }
   ),
+
+  sortedPreviousDecisionsWithFilteredInvitations: Ember.computed.sort(
+      'previousDecisionsWithFilteredInvitations', function(a,b){
+        if (parseInt(a.id) < parseInt(b.id)) {
+          return 1;
+        } else if (parseInt(a.id) > parseInt(b.id)) {
+          return -1;
+        }
+        return 0;
+      }),
 
   actions: {
     cancelAction() {

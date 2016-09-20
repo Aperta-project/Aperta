@@ -40,6 +40,13 @@ export default Ember.Mixin.create({
       this.set('title', title);
     },
 
+    addLabel(){
+      this.get('newBlocks').pushObject([{
+        type: 'adhoc-label',
+        value: ''
+      }]);
+    },
+
     addTextBlock() {
       this.get('newBlocks').pushObject([{
         type: 'text',

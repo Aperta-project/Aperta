@@ -1,18 +1,23 @@
 {{#if isTextItem}}
   {{inline-edit-text bodyPart=attrs.item
                      editing=attrs.editing
-                     isNew=attrs.isNew}}
-{{/if}}
+                     isNew=attrs.isNew
+                     delete=(action attrs.deleteItem item block)
+                     save=(action attrs.saveModel)}}
 
-{{#if isCheckboxItem}}
+{{else if isLabelItem}}
+  {{inline-edit-label bodyPart=attrs.item
+                      editing=attrs.editing
+                      isNew=attrs.isNew}}
+
+{{else if isCheckboxItem}}
   {{inline-edit-checkbox bodyPart=attrs.item
                          editing=attrs.editing
                          isNew=attrs.isNew
-                         delete=(action "deleteItem" item)
+                         delete=(action attrs.deleteItem item block)
                          save=(action attrs.saveModel)}}
-{{/if}}
 
-{{#if isEmailItem}}
+{{else if isEmailItem}}
   {{inline-edit-email bodyPart=attrs.item
                       editing=attrs.editing
                       allUsers=attrs.allUsers
@@ -22,5 +27,5 @@
                       paperId=paperId
                       task=task
                       sendEmail=(action attrs.sendEmail)}}
-
 {{/if}}
+

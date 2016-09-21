@@ -13,7 +13,7 @@
     </p>
     <p>
     <%= if @reply
-          simple_format(@reply.body)
+          @reply.sanitized_body.html_safe
         end %>
     </p>
     <p>

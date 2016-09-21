@@ -8,7 +8,7 @@
       {{user-affiliation-form
         affiliation=affiliation
         countries=countries
-        commitAffiliation='commitAffiliation'
+        commitAffiliation=(action 'commitAffiliation')
         removeAffiliation='removeAffiliation'
         hideNewAffiliationForm='hideNewAffiliationForm'}}
     {{else}}
@@ -22,7 +22,7 @@
       affiliation=newAffiliation
       editAffiliation=true
       countries=countries
-      commitAffiliation='commitAffiliation'
+      commitAffiliation=(action 'commitAffiliation')
       hideNewAffiliationForm='hideNewAffiliationForm'}}
   {{else}}
     <a class="button-secondary button--green" {{action "showNewAffiliationForm"}}>

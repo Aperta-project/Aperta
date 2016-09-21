@@ -58,18 +58,14 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       }
     },
 
-    commitAffiliation(affiliation, component) {
-      this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
+    commitAffiliation(affiliation) {
+      return this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
         user.get('affiliations').addObject(affiliation);
         this.clearAllValidationErrors();
         var isNew = affiliation.get('isNew')
-        affiliation.save().then(() => {
+        return affiliation.save().then(() => {
           this.send('hideNewAffiliationForm');
-          component.set('editAffiliation', false);
           if (isNew) { this.get('affiliations').pushObject(affiliation); }
-        }, (response) => {
-          affiliation.set('user', null);
-          component.displayValidationErrorsFromResponse(response);
         });
       });
     },

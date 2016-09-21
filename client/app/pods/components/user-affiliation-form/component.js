@@ -51,11 +51,17 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     },
 
     commitAffiliation(affiliation) {
-      this.sendAction('commitAffiliation', affiliation, this);
+      this.attrs.commitAffiliation(affiliation).then(() =>{
+        this.set('editAffiliation', false);
+      } , (response) => {
+        affiliation.set('user', null);
+        this.displayValidationErrorsFromResponse(response);
+      });
     },
 
     hideNewAffiliationForm() {
       this.set('editAffiliation', false);
+      this.get('affiliation').rollbackAttributes();
       this.sendAction('hideNewAffiliationForm');
     }
   }

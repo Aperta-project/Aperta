@@ -6,10 +6,10 @@
       {{#inline-edit-body-part block=block
                                canEdit=canEdit
                                editing=false
-                               cancel="resetBlock"
-                               save="saveBlock"
-                               delete="deleteBlock"
-                               addItem="addCheckboxItem"
+                               cancel=(action "resetBlock" block)
+                               save=(action "saveBlock" block)
+                               delete=(action "deleteBlock" block)
+                               addItem=(action "addCheckboxItem" block)
                                as |editing|}}
         {{#each block as |item|}}
           {{component
@@ -32,10 +32,10 @@
     {{#each newBlocks as |block|}}
       {{#inline-edit-body-part block=block
                                editing=true
-                               cancel="resetBlock"
-                               save="saveBlock"
-                               delete="deleteBlock"
-                               addItem="addCheckboxItem"
+                               cancel=(action "resetBlock" block)
+                               save=(action "saveBlock" block)
+                               delete=(action "deleteBlock" block)
+                               addItem=(action "addCheckboxItem" block)
                                as |editing|}}
         {{#each block as |item|}}
           {{component

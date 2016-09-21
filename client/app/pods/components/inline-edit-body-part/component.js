@@ -20,11 +20,7 @@ export default Ember.Component.extend({
     return this.get('block').any(this._isNotEmpty);
   }),
 
-  hasNoContent: computed.not('hasContent'),
-
-  bodyPartType: computed('block.@each.type', function() {
-    return this.get('block.firstObject.type');
-  }),
+  bodyPartType: computed.reads('block.firstObject.type'),
 
   _isNotEmpty(item) {
     return item && !Ember.isEmpty(item.value);
@@ -33,18 +29,14 @@ export default Ember.Component.extend({
   actions: {
     toggleEdit() {
       if (this.get('editing')) {
-        this.sendAction('cancel', this.get('block'), this.get('snapshot'));
+        this.get('cancel')(this.get('snapshot'));
       }
       this.toggleProperty('editing');
     },
 
-    deleteBlock() {
-      this.sendAction('delete', this.get('block'));
-    },
-
     save() {
       if (this.get('hasContent')) {
-        this.sendAction('save', this.get('block'));
+        this.get('save')();
         return this.toggleProperty('editing');
       }
     },
@@ -55,10 +47,6 @@ export default Ember.Component.extend({
 
     cancelDeletion() {
       this.set('confirmDelete', false);
-    },
-
-    addItem() {
-      this.sendAction('addItem', this.get('block'));
     }
   }
 });

@@ -7,11 +7,11 @@
   </div>
 
   <div class="edit-actions">
-    <div class="button-secondary button--green pull-right {{if hasNoContent "button--disabled"}}" {{action "save"}}>Save</div>
+    <div class="button-secondary button--green pull-right {{unless hasContent "button--disabled"}}" {{action "save"}}>Save</div>
     <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
   </div>
 
-  <div class="button-secondary button--green add-item" {{action "addItem"}}>
+  <div class="button-secondary button--green add-item" {{action attrs.addItem}}>
     <span class="fa fa-plus"></span>
   </div>
 
@@ -20,7 +20,7 @@
       <p>This will permanently delete your item. Are you sure?</p>
       <br>
       <button class="button-secondary button--green knockout" {{action "cancelDeletion"}}>Cancel</button>
-      <button class="button-secondary button--green knockout delete-button" {{action "deleteBlock"}}>Delete Forever</button>
+      <button class="button-secondary button--green knockout delete-button" {{action attrs.delete}}>Delete Forever</button>
     </div>
   {{/if}}
 </div>

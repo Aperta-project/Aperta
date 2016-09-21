@@ -296,6 +296,7 @@ class BaseCard(AuthenticatedPage):
     """
     A method to revoke an invitation for a user
     :param invitee: The user with the invite to revoke
+    :param role: The role whose invitation you want to revoke
     :return: void function
     """
     invited = self._gets(self._invitee_listing)

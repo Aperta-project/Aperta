@@ -291,14 +291,14 @@ class BaseCard(AuthenticatedPage):
     """
     return self.get(self._versioned_metadata_version_string).text
 
-  def revoke_invitee(self, invitee, role):
+  def revoke_invitee(self, invitee):
     """
     A method to revoke an invitation for a user
     :param invitee: The user with the invite to revoke
-    :param role: The role whose invitation you want to revoke
     :return: void function
     """
     invited = self._gets(self._invitee_listing)
+    import pdb; pdb.set_trace()
     for invitation in invited:
       pagefullname = invitation.find_element(*self._invitee_full_name)
       revoke = invitation.find_element(*self._invitee_revoke)

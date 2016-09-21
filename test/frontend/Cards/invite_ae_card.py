@@ -21,7 +21,10 @@ class InviteAECard(BaseCard):
 
     # Locators - Instance members
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
-    self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
+    self._send_invitation_button = (By.CLASS_NAME, 'invitation-item-action-send')
+    # ADD RECIND
+    self._rescind_button = (By.CSS_SELECTOR, 'span.invitation-item-action-text')
+    ##invitation-item-action-send
     # self._ae_input = (By.ID, 'invitation-recipient')
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
@@ -35,7 +38,8 @@ class InviteAECard(BaseCard):
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
-    self._invitee_listing = (By.CLASS_NAME, 'invitation-item-header')
+    ##self._invitee_listing = (By.CLASS_NAME, 'invitation-item-header')
+    self._invitee_listing = (By.CLASS_NAME, 'invitation-item')
 
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
@@ -45,7 +49,7 @@ class InviteAECard(BaseCard):
     #invitation-item-state-and-date
 
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
-    self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
+    ##self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
     self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
     self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestions')
 
@@ -81,9 +85,12 @@ class InviteAECard(BaseCard):
     self._get(self._recipient_field).send_keys(ae['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
     time.sleep(2)
-    invite_heading = self._get(self._edit_invite_heading).text
+
+    invite_headings = self._gets(self._edit_invite_heading)
     # Since the AE is potentially off system, we can only validate email
-    assert ae['email'] in invite_heading, invite_heading
+    invite_headings_text = [x.text for x in invite_headings]
+    assert any(ae['email'] in s for s in invite_headings_text), \
+        '{0} not found in {1}'.format(ae['email'], invite_headings_text)
     invite_text = self._get(self._edit_invite_textarea).text
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
@@ -95,6 +102,7 @@ class InviteAECard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
+    import pdb; pdb.set_trace()
     assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
@@ -116,20 +124,18 @@ class InviteAECard(BaseCard):
     time.sleep(1)
     #invitee = self._get(self._invitee_listing)
     #invitee.find_element(*self._invitee_avatar)
-    #import pdb; pdb.set_trace()
     invitees = self._gets(self._invitee_listing)
     assert any(ae['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(ae['name'], [x.text for x in invitees])
-    import pdb; pdb.set_trace()
-
-    #invitation-item-details
-    #invitation-item-state-and-date
-    invitees[0].find_element(*self._invitee_updated_at)
+    #invitees[0].find_element(*self._invitee_updated_at)
     self._get(self._invitee_updated_at)
     # MAKE THE ACTUAL INVITATION
+    #invitation-item-action-send
+    self._get(self._send_invitation_button).click()
+    time.sleep(2)
     assert any('Invited' in s for s in [x.text for x in invitees]), \
-        'Invited not found in {1}'.format([x.text for x in invitees])
-    self._get(*self._invitee_revoke)
+        'Invited not found in {0}'.format([x.text for x in invitees])
+    self._gets(self._rescind_button)
 
   def validate_ae_response(self, ae, response, reason='N/A', suggestions='N/A'):
     """

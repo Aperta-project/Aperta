@@ -94,7 +94,7 @@ class InviteAECardTest(CommonTest):
                                       manuscript_title,
                                       creator_user,
                                       paper_id)
-    invite_ae_card.revoke_invitee(pub_svcs_login)
+    invite_ae_card.revoke_invitee(pub_svcs_login, 'Academic Editor')
     time.sleep(.5)
     workflow_page.logout()
     dashboard_page = self.cas_login(email=academic_editor_login['email'])

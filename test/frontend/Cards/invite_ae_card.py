@@ -38,20 +38,15 @@ class InviteAECard(BaseCard):
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
-    ##self._invitee_listing = (By.CLASS_NAME, 'invitation-item-header')
     self._invitee_listing = (By.CLASS_NAME, 'invitation-item')
 
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
-    self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
+    self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
-    ##self._invitee_updated_at = (By.XPATH, '//following-sibling::div/div[0]')
-    #invitation-item-state-and-date
-
-    self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
-    ##self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
-    self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
-    self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestions')
+    self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
+    self._reason = (By.CLASS_NAME, 'invitation-decline-reason')
+    self._suggestions = (By.CLASS_NAME, 'invitation-reviewer-suggestions')
 
   # POM Actions
   def invite_ae(self, user):
@@ -102,7 +97,6 @@ class InviteAECard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    import pdb; pdb.set_trace()
     assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
     if abstract is not None:
@@ -148,10 +142,8 @@ class InviteAECard(BaseCard):
     """
     time.sleep(.5)
     invitee = self._get(self._invitee_listing)
-    invitee.find_element(*self._invitee_avatar)
     pagefullname = invitee.find_element(*self._invitee_full_name)
     assert ae['name'] in pagefullname.text
-    invitee.find_element(*self._invitee_updated_at)
     status = invitee.find_element(*self._invitee_state)
     assert response in ['Accept', 'Decline'], response
     if response == 'Accept':

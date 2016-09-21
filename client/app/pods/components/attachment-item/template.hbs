@@ -20,7 +20,7 @@
     <div class="processing-attachment">
       {{progress-spinner visible=true size="small"}} Processing {{attachment.filename}} ...
       {{#unless disabled}}
-        <a class="upload-cancel-button" {{action "cancelUpload"}} title="Cancel file upload">×</a>
+        <a class="upload-cancel-button" {{action "cancelUpload"}} title="Cancel file processing">×</a>
       {{/unless}}
     </div>
   {{else}}

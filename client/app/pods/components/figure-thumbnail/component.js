@@ -88,6 +88,13 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     figure.unloadRecord();
   }),
 
+  willDestroyElement() {
+    this._super(...arguments);
+    if (this.get('isCanceled') && this.get('figure')) {
+      this.get('figure').unloadRecord();
+    }
+  },
+
   actions: {
     cancelUpload() {
       this.get('cancelUpload').perform();

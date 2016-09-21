@@ -1,77 +1,8 @@
 {{partial "task-completed-section"}}
 
-<div class="task-main-content">
-  {{inline-edit-h1 title=task.title setTitle="setTitle"}}
-
-  <div class="task-body">
-    {{#each blocks as |block|}}
-      {{#inline-edit-body-part block=block
-                               canEdit=canEdit
-                               editing=false
-                               cancel="resetBlock"
-                               save="saveBlock"
-                               delete="deleteBlock"
-                               addItem="addCheckboxItem"
-                               as |editing|}}
-        {{#each block as |item|}}
-          {{component
-              (concat 'inline-edit-' item.type)
-              bodyPart=item
-              editing=editing
-              overlayParticipants=participants
-              isNew=false
-              isSendable=true
-              paperId=paperId
-              emailSentStates=emailSentStates
-              task=task
-              sendEmail=(action "sendEmail")
-              delete=(action "deleteItem" item block)
-              save=(action "save")}}
-        {{/each}}
-      {{/inline-edit-body-part}}
-    {{/each}}
-
-    {{#each newBlocks as |block|}}
-      {{#inline-edit-body-part block=block
-                               editing=true
-                               cancel="resetBlock"
-                               save="saveBlock"
-                               delete="deleteBlock"
-                               addItem="addCheckboxItem"
-                               as |editing|}}
-        {{#each block as |item|}}
-          {{component
-              (concat 'inline-edit-' item.type)
-              bodyPart=item
-              editing=editing
-              overlayParticipants=participants
-              isNew=false
-              isSendable=true
-              paperId=paperId
-              emailSentStates=emailSentStates
-              task=task
-              sendEmail=(action "sendEmail")
-              delete=(action "deleteItem" item block)
-              save=(action "save")}}
-        {{/each}}
-      {{/inline-edit-body-part}}
-    {{/each}}
-
-    {{#if showAttachmentsBlock}}
-      {{attachment-manager filePath="ad-hoc"
-                           attachments=task.attachments
-                           multiple=true
-                           hasCaption=true
-                           accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.doc,.odt,.epub,.pdf"
-                           captionChanged=(action "updateAttachmentCaption")
-                           deleteFile=(action "deleteAttachment")
-                           cancelUpload=(action "cancelUpload")
-                           uploadFinished=(action "createAttachment")
-                           updateAttachment=(action "updateAttachment") }}
-    {{/if}}
-  </div>
-
-  {{#reveal-adhoc-toolbar-buttons}}
-    {{partial "components/reveal-adhoc-toolbar-buttons/buttons"}}
-  {{/reveal-adhoc-toolbar-buttons}}
-</div>
+{{ad-hoc-body
+    task=task
+    blocks=task.body
+    isEditingTemplate=false
+    save=(action 'save')
+    sendEmail=(action 'sendEmail')}}

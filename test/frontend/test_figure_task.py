@@ -11,7 +11,7 @@ The author should be able to:
       i) labels must be unique
     f) change figure order
       i) figures auto-order based on figure label
-      ii) figures with indiscernable labels are placed last
+      ii) figures with undiscernable labels are placed last
     g) tag an image as the striking image
     h) hover over an image to see the edit and delete icons in grey
       i) hovering over the grey icons turns them green
@@ -45,6 +45,7 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the elements and styles of the figures task
     :return: void function
     """
+    logging.info('test_smoke_figures_task_styles')
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -53,8 +54,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # APERTA-7210
-    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -84,6 +83,7 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the upload function of the figures task
     :return: void function
     """
+    logging.info('test_core_figures_task_upload')
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -92,8 +92,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # APERTA-7210
-    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -133,6 +131,7 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the replacement function of the figures task
     :return: void function
     """
+    logging.info('test_core_figures_task_replace')
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -141,8 +140,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # APERTA-7210
-    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -167,6 +164,7 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the delete function of the figures task
     :return: void function
     """
+    logging.info('test_core_figures_task_delete')
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -175,8 +173,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # APERTA-7210
-    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -198,6 +194,7 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the download function of the figures task
     :return: void function
     """
+    logging.info('test_core_figures_task_download')
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -206,8 +203,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # APERTA-7210
-    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -230,6 +225,7 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the edit function of the figures task, including re-ordering
     :return: void function
     """
+    logging.info('test_core_figures_task_edit_reorder')
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -238,8 +234,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # APERTA-7210
-    # manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -250,7 +244,6 @@ class FigureTaskTest(CommonTest):
     # It is necessary to provide a lengthy wait for upload and processing of the image
     next_figure = figures_task.upload_figure('figure2_tiff_lzw.tiff')
     figures_list.append(next_figure)
-    time.sleep(15)
     logging.info(figures_list)
     figures_task.edit_figure(figures_list[0])
     figures_task.logout()

@@ -107,6 +107,8 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   context 'with a user assigned as site admin' do
+    let!(:site_admin_role) { FactoryGirl.create(:role, :site_admin) }
+
     let(:csv) do
       [['Jane Doe', 'jane@example.edu', 'Site Admin', nil, journal.name]]
     end

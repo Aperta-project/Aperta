@@ -122,15 +122,10 @@ export default Ember.Component.extend({
     }
   ),
 
+  decisionSorting: ['id:desc'],
+
   sortedPreviousDecisionsWithFilteredInvitations: Ember.computed.sort(
-      'previousDecisionsWithFilteredInvitations', function(a,b){
-        if (parseInt(a.id) < parseInt(b.id)) {
-          return 1;
-        } else if (parseInt(a.id) > parseInt(b.id)) {
-          return -1;
-        }
-        return 0;
-      }),
+      'previousDecisionsWithFilteredInvitations', 'decisionSorting'),
 
   actions: {
     cancelAction() {

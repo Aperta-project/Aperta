@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Component.extend({
   editing: false,
@@ -11,16 +10,14 @@ export default Ember.Component.extend({
   mailRecipients: [],
   recipients: null,
   overlayParticipants: null,
-  emailSentStates: Ember.computed.alias('parentView.emailSentStates'),
+  emailSentStates: null,
   lastSentAt: null,
   store: Ember.inject.service(),
 
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
 
-    this.set('recipients',
-             this.get('overlayParticipants').map((p) => p.get('user'))
-            );
+    this.set('recipients', this.get('overlayParticipants').slice());
   }),
 
   keyForStates: Ember.computed.alias('bodyPart.subject'),

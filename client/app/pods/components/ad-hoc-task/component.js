@@ -10,6 +10,7 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
   hasAttachments: Ember.computed.notEmpty('task.attachments'),
   showAttachments: false,
   showAttachmentsBlock: Ember.computed.or('hasAttachments', 'showAttachments'),
+  participants: Ember.computed.mapBy('task.participations', 'user'),
 
   attachmentsPath: Ember.computed('task.id', function() {
     return `/api/tasks/${this.get('task.id')}/attachments`;

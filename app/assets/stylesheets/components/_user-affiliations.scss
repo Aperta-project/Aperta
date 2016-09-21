@@ -18,7 +18,10 @@
   .action-icons {
     margin-left: .25em;
     &>span {
-      margin: 0 .12em
+      margin: 0 .12em;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 

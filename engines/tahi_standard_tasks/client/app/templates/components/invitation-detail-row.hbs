@@ -11,7 +11,7 @@
         {{invitation.email}}
       {{/if}}
     </div>
-    <div class="invitation-item-status" {{action "toggleDetails"}}>
+    <div class="invitation-item-status">
       {{#if (and (eq uiState 'closed') (not invitation.pending))}}
         <span>{{capitalize invitation.state}} {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
       {{/if}}

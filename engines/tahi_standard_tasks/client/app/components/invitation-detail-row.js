@@ -14,7 +14,7 @@ const {
  */
 
 export default Component.extend({
-  classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass'],
+  classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass', 'disabled:invitation-item--disabled'],
 
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired
@@ -24,6 +24,12 @@ export default Component.extend({
   currentRound: computed.not('previousRound'),
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
+  }),
+
+  disabled: computed('uiState', function(){
+    if ((this.get('activeInvitationState') === 'edit') && (this.get('activeInvitation') !== this.get('invitation'))) {
+      return true;
+    }
   }),
 
   invitationStateClass: computed('invitation.state', function() {

@@ -22,10 +22,13 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
 });
 
 let template = hbs`{{invitation-detail-row
-                      invitation=invitation}}`;
+                      invitation=invitation
+                      uiState='closed'}}`;
 
 test('displays invitation information if the invite.invited is true', function(assert){
-  this.set('invitation.state', 'invited');
+  this.set('invitation.pending', false);
+  this.set('invitation.invited', true);
+  this.set('invitation.invitedAt', this.get('update-date'));
   this.render(template);
 
   assert.textPresent('.invitation-item-status',

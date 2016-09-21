@@ -16,7 +16,6 @@
                                as |editing|}}
         {{#each block as |item|}}
           {{inline-edit-item item=item
-                             block=block
                              editing=editing
                              overlayParticipants=task.participations
                              emailSentStates=emailSentStates
@@ -24,8 +23,7 @@
                              paperId=paperId
                              task=task
                              saveModel=(action "save")
-                             deleteBlock=(action "deleteBlock")
-                             deleteItem=(action "deleteItem")
+                             deleteItem=(action "deleteItem" item block)
                              sendEmail=(action "sendEmail")}}
         {{/each}}
       {{/inline-edit-body-part}}
@@ -41,7 +39,6 @@
                                as |editing|}}
         {{#each block as |item|}}
           {{inline-edit-item item=item
-                             block=block
                              editing=editing
                              overlayParticipants=task.participations
                              emailSentStates=emailSentStates
@@ -49,8 +46,7 @@
                              paperId=paperId
                              task=task
                              saveModel=(action "save")
-                             deleteBlock=(action "deleteBlock")
-                             deleteItem=(action "deleteItem")
+                             deleteItem=(action "deleteItem" item block)
                              sendEmail=(action "sendEmail")}}
         {{/each}}
       {{/inline-edit-body-part}}

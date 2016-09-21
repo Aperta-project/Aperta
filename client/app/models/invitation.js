@@ -23,18 +23,20 @@ export default DS.Model.extend({
   task: DS.belongsTo('task', { polymorphic: true, async: true }),
   title: DS.attr('string'),
   updatedAt: DS.attr('date'),
+  invitedAt: DS.attr('date'),
   acceptedAt: DS.attr('date'),
   declinedAt: DS.attr('date'),
-  invitedAt: DS.attr('date'),
+  rescindedAt: DS.attr('date'),
 
   pendingFeedback: false,
 
   restless: Ember.inject.service('restless'),
 
-  accepted: currentState('accepted'),
   pending: currentState('pending'),
   invited: currentState('invited'),
+  accepted: currentState('accepted'),
   declined: currentState('declined'),
+  rescinded: currentState('rescinded'),
 
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',

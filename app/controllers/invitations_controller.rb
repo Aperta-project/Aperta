@@ -46,7 +46,7 @@ class InvitationsController < ApplicationController
       invitation_params.merge(inviter: current_user)
     )
     if invitation_params[:state] == 'pending'
-      invitation.associate_existing_user
+      invitation.set_invitee
       invitation.save
     else
       send_and_notify(invitation)

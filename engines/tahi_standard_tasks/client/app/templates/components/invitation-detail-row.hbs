@@ -13,7 +13,13 @@
     </div>
     <div class="invitation-item-status">
       {{#if (and (eq uiState 'closed') (not invitation.pending))}}
-        <span>{{capitalize invitation.state}} {{format-date invitation.updatedAt format="MMM D, YYYY"}}</span>
+        {{#if invitation.accepted}}
+          <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+        {{else if invitation.declined}}
+          <span>Declined {{format-date invitation.declinedAt format="MMM D, YYYY"}}</span>
+        {{else if invitation.rescinded}}
+          <span>Rescinded {{format-date invitation.rescindedAt format="MMM D, YYYY"}}</span>
+        {{/if}}
       {{/if}}
     </div>
     <div class="invitation-item-body-preview">
@@ -76,10 +82,20 @@
 
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
+    <div class="invitation-item-state-and-date">
+      {{#if invitation.invited}}
+        <span>Invited {{format-date invitation.invitedAt format="LLL"}}</span>
+      {{else if invitation.accepted}}
+        <span>Accepted {{format-date invitation.acceptedAt format="LLL"}}</span>
+        <hr>
+      {{else if invitation.rescinded}}
+        <span>Rescinded {{format-date invitation.rescindedAt format="LLL"}}</span>
+        <hr>
+      {{/if}}
+    </div>
     {{#if invitation.declined}}
       <div class="invitation-item-state-and-date">
-        Declined
-        {{format-date invitation.declinedAt format="LLL"}}
+        <span>Declined {{format-date invitation.declinedAt format="LLL"}}</span>
       </div>
       <div class="invitation-item-decline-info">
         <p>
@@ -91,13 +107,13 @@
           {{unbound (break-to-tag invitation.reviewerSuggestions)}}
         </p>
       </div>
+      <hr>
     {{/if}}
-    {{#if invitation.invited}}
+    {{#unless invitation.pending}}
       <div class="invitation-item-state-and-date">
-        Invited
-        {{format-date invitation.invitedAt format="LLL"}}
+        <span>Invited {{format-date invitation.invitedAt format="LLL"}}</span>
       </div>
-    {{/if}}
+    {{/unless}}
 {{!-- Leave weird indentation --}}
 <div class="invitation-show-body">{{{invitation.body}}}</div>
     <div class="invite-edit-buttons">

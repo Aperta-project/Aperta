@@ -134,6 +134,7 @@ class AssignTeamCard(BaseCard):
     :param role: role that should have been revoked for the assignee
     :return: void function
     """
+    time.sleep(5)
     assigned = self._gets(self._assignee_listing)
     for assignment in assigned:
       pagefullname = assignment.find_element(*self._assignee_full_name)
@@ -142,4 +143,6 @@ class AssignTeamCard(BaseCard):
       if role in role_clause.text:
         logging.info('Found role, checking assignee ({0}) for match'.format(assignee['name']))
         if assignee['name'] in pagefullname.text:
-          raise('Revoked assignment found for {0} and {1}'.format(assignee['name'], role))
+          raise(ValueError,
+                'Revoked assignment found for {0} and {1}'.format(assignee['name'],
+                                                                  role))

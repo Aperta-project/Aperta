@@ -24,11 +24,15 @@ class InviteAECard(BaseCard):
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
     # self._ae_input = (By.ID, 'invitation-recipient')
     self._recipient_field = (By.ID, 'invitation-recipient')
-    self._compose_invitation_button = (By.CLASS_NAME, 'compose-invite-button')
+    self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
-    # self._edit_invite_text_send_invite_button = (By.CSS_SELECTOR, 'button.invite-reviewer-button')
+    self._edit_invite_text_save = (By.CSS_SELECTOR, 'button.invitation-save-button')
+    # new action buttons
+    self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
+    self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
+    self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
 
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
@@ -52,12 +56,12 @@ class InviteAECard(BaseCard):
     """
     time.sleep(.5)
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
-    self._get(self._recipient_field).send_keys(Keys.ENTER)
-    time.sleep(2)
-    self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
-    self._get(self._send_invitation_button).click()
-    # give some time to allow complete to check automatically,
-    time.sleep(.5)
+    self._get(self._compose_invitation_button).click()
+    time.sleep(1)
+    self._get(self._edit_invite_text_save).click()
+    time.sleep(1)
+    self._get(self._invite_send_invite_button).click()
+    time.sleep(1)
     self.click_completion_button()
     self.click_close_button()
 

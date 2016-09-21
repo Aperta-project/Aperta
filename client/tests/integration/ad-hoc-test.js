@@ -4,7 +4,6 @@ import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import { paperWithTask } from '../helpers/setups';
 import Factory from '../helpers/factory';
-import FactoryGuy from 'ember-data-factory-guy';
 import { make } from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
@@ -19,7 +18,7 @@ const paperTaskURL = function paperTaskURL(paper, task) {
   return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
 };
 
-module('Integration: Super AdHoc Card', {
+module('Integration: AdHoc Card', {
   afterEach() {
     server.restore();
     Ember.run(function() { TestHelper.teardown(); });

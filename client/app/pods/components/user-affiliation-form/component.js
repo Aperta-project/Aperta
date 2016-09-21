@@ -14,7 +14,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     return { id: item, text: item };
   },
 
-  formattedCountries: Ember.computed('countries.data', function() {
+  formattedCountries: Ember.computed('countries.data.[]', function() {
     return this.get('countries.data').map(this.select2Helper);
   }),
 

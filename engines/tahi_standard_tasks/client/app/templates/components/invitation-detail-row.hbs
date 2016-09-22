@@ -108,9 +108,7 @@
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
     <div class="invitation-item-state-and-date">
-      {{#if invitation.invited}}
-        <span>Invited {{format-date invitation.invitedAt format="LLL"}}</span>
-      {{else if invitation.accepted}}
+      {{#if invitation.accepted}}
         <span>Accepted {{format-date invitation.acceptedAt format="LLL"}}</span>
         <hr>
       {{else if invitation.rescinded}}

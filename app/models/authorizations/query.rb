@@ -233,6 +233,15 @@ module Authorizations
      #   .where(assignments_subquery[:assigned-to_type].eq('Task'))
     end
 
+# puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
+    def union(a, list=[])
+      if list.count == 1
+        return a.union(list.first)
+      else
+        return a.union(union(list.first, list[1..-1]))
+      end
+    end
+
     def load_authorized_objects
       a2_table = Arel::Table.new(:a2_table)
       composed_a2 = Arel::Nodes::As.new(a2_table, assignments_subquery)
@@ -251,12 +260,13 @@ module Authorizations
           # E.g. Journal has_many :tasks, :through => :papers
           if reflection.respond_to?(:through_options)
             loop do
+              # this is the Paper reflection
               delegate_reflection = reflection.delegate_reflection
-
               through_reflection = assigned_to_klass.reflections[delegate_reflection.options[:through].to_s]
               through_klass = through_reflection.klass
               through_table = through_reflection.klass.arel_table
 
+              # this is the Task reflection (from the perspective of Paper)
               through_target_reflection = through_klass.reflections[reflection.name.to_s]
               through_target_table = through_target_reflection.klass.arel_table
 
@@ -296,8 +306,16 @@ module Authorizations
         end
       end
 
-puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
-      # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last)).to_sql
+      puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
+      puts '--------------------------------------------------------'
+      u = union(queries2union.first.with(composed_a2), queries2union[1..-1])
+      puts u.to_sql
+
+      sm = Arel::SelectManager.new(klass.arel_table.engine).
+        project('*').
+        from( Arel.sql(u.to_sql).as('tasks') )
+      # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
+
 
       binding.pry
       return nil

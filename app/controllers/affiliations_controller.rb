@@ -35,7 +35,8 @@ class AffiliationsController < ApplicationController
   end
 
   def destroy
-    current_user == affiliation.user || requires_user_can(:manage_users, Journal)
+    require_current_user_or_user_can(:manage_users, Journal)
+
     if affiliation.try(:destroy)
       render json: true
     else
@@ -46,15 +47,39 @@ class AffiliationsController < ApplicationController
   private
 
   def require_current_user_or_user_can(action, object)
-    current_user == user || requires_user_can(action, object)
+    current_user_accessing_their_own_record? ||
+      requires_user_can(action, object)
   end
 
   def user
     User.find(params[:user_id] || affiliation_params[:user_id])
   end
 
+  def current_user_accessing_their_own_record?
+    return false if current_user_listing_affiliations
+    return false if current_user_showing_affiliation
+    return false if affiliation_user_matches_current_user
+
+    true
+  end
+
+  def current_user_listing_affiliations
+    params[:user_id] && current_user.id != params[:user_id]
+  end
+
+  def current_user_showing_affiliation
+    params[:id] && current_user.id != affiliation.user_id
+  end
+
+  def affiliation_user_matches_current_user
+    params[:affiliation].try(:user_id) &&
+      current_user.id != affiliation_params[:user_id]
+  end
+
   def affiliation
-    Affiliation.find(params[:id])
+    @affiliation ||= begin
+      Affiliation.find(params[:id])
+    end
   end
 
   def affiliation_params

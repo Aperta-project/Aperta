@@ -88,10 +88,12 @@ test('can delete a pending invitation', function(assert) {
       inviteeRole: 'Reviewer',
       state: 'pending'
     });
+
     decision.set('invitations', [invitation]);
 
     TestHelper.mockFind('task').returns({model: task});
     TestHelper.mockDelete('invitation', invitation.id);
+    TestHelper.mockFind('decision').returns({model: decision});
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
@@ -124,6 +126,10 @@ test('can not send or delete a pending invitation from a previous round', functi
     oldDecision.set('invitations', [invitation]);
 
     TestHelper.mockFind('task').returns({model: task});
+    TestHelper.mockFind('decision').returns({model: decision});
+    $.mockjax({url: /\/api\/decisions\/2/, type: 'GET', status: 200, responseText: {
+      decision: $.extend({id: oldDecision.id}, oldDecision.toJSON())
+    }});
 
     visit(`/papers/${paper.id}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
@@ -134,6 +140,7 @@ test('can not send or delete a pending invitation from a previous round', functi
     });
 
     click('.invitation-item-full-name');
+
     andThen(function() {
       assert.elementNotFound('.invitation-item-action-delete');
       assert.elementNotFound('.invitation-item-action-send');

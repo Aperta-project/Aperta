@@ -56,7 +56,7 @@ feature "Invite Reviewer", js: true do
     invitation_no_feedback.reload
     # Invitation decline_reason and reviewer_suggestions are stored
     # as '' in dB, but getter in model returns 'n/a' when blank
-    expect(invitation_no_feedback.decline_reason).to eq('n/a')
-    expect(invitation_no_feedback.reviewer_suggestions).to eq('n/a')
+    expect(invitation_no_feedback.decline_reason).to eq('No feedback provided')
+    expect(invitation_no_feedback.reviewer_suggestions).to eq('None')
   end
 end

@@ -74,13 +74,13 @@ describe TahiStandardTasks::ReviewerMailer do
         expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{reviewer_task.id}})
       end
 
-      it 'contains n/a for decline reason when not set' do
-        expect(email.body).to match(%r{<strong>Reason:\s</strong>.+n/a})
+      it "contains 'No feedback provided' for decline reason when not set" do
+        expect(email.body).to match(%r{<strong>Reason: </strong><p>No feedback provided</p>\n})
       end
 
-      it 'contains n/a for reviewer suggestions when not set' do
+      it "contains 'None' for reviewer suggestions when not set" do
         expect(email.body).to match(
-          %r{<strong>Reviewer\sSuggestions:\s</strong>.+n/a}
+          %r{<strong>Reviewer Suggestions: </strong><p>None</p>\n}
         )
       end
 

@@ -1,0 +1,17 @@
+{{#if filteredAlternates.length}}
+  <i class="fa fa-link" aria-hidden="true"></i>
+  <div class="alternate-text">Link as an alternate to:</div>
+
+  {{select-2-single minimumResultsForSearch=10
+                    class="link-alternate-select"
+                    allowClear=true
+                    placeholder='Select a candidate (optional)...'
+                    selectionCleared="selectionCleared"
+                    selectionSelected="selectionSelected"
+                    source=alternateCandidates
+                    value=''
+                    class="link-alternate-select"
+                    selectedData=selectedPrimary
+                    width=250
+                    enable=enable}}
+{{/if}}

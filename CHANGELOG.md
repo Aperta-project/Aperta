@@ -27,6 +27,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Keeps all uploaded manuscripts
 - Can view old versions of figures and supporting information
 - Aperta is now configured to clean out temporary files every 24 hours on the backend.
+- Queuing Alternates and subqueues for Invite Reviewers and Invite Editors tasks 
 ### Changed
 ### Deprecated
 ### Removed

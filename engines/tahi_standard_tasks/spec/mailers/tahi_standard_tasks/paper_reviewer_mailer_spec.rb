@@ -49,6 +49,10 @@ describe TahiStandardTasks::PaperReviewerMailer do
         expect(email.body).to include
         confirm_decline_invitation_url(invitation.token)
       end
+
+      it "bcc's apertachasing@plos.org to support chasing in Salesforce" do
+        expect(email.bcc).to include('apertachasing@plos.org')
+      end
     end
 
     describe "email body content" do

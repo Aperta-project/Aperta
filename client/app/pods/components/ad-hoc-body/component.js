@@ -48,6 +48,7 @@ export default Ember.Component.extend({
   showAttachments: false,
   showAttachmentsBlock: Ember.computed.or('hasAttachments', 'showAttachments'),
   participants: Ember.computed.mapBy('task.participations', 'user'),
+  toolbarActive: false,
 
   attachmentsPath: Ember.computed('task.id', function() {
     return `/api/tasks/${this.get('task.id')}/attachments`;
@@ -101,6 +102,10 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    toggleToolbar() {
+      this.toggleProperty('toolbarActive');
+    },
+
     setTitle(title) {
       this.set('title', title);
     },

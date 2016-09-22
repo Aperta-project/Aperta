@@ -45,7 +45,16 @@
     {{/if}}
   </div>
 
-  {{#reveal-adhoc-toolbar-buttons disabled=hasNewBlock}}
+  <div class="adhoc-content-toolbar
+              {{if toolbarActive "_active"}}
+              {{if toolbarActive "_animate-backward" "_animate-forward"}}"
+       disabled={{hasNewBlock}}
+       {{action "toggleToolbar"}}>
+
+    <div class="button-primary {{if hasNewBlock "button--disabled"}} button--green">
+      <span class="fa fa-plus"></span>
+      <span class="fa fa-remove"></span>
+    </div>
     <div class="button-secondary button--green adhoc-toolbar-item--list" {{action "addChecklist"}}>
       <span class="fa fa-th-list"></span>
     </div>
@@ -67,5 +76,5 @@
         <span class="fa fa-paperclip"></span>
       </div>
     {{/unless}}
-  {{/reveal-adhoc-toolbar-buttons}}
+  </div>
 </div>

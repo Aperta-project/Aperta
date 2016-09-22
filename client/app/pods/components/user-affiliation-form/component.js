@@ -62,6 +62,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     hideNewAffiliationForm() {
       this.set('editAffiliation', false);
       this.get('affiliation').rollbackAttributes();
+      this.clearAllValidationErrors();
       this.sendAction('hideNewAffiliationForm');
     }
   }

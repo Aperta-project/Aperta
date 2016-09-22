@@ -22,5 +22,9 @@ describe TahiStandardTasks::PaperEditorMailer do
     it "contains a link to the dashboard" do
       expect(email.body.raw_source).to match(%r{http://www.example.com/})
     end
+
+    it "bcc's apertachasing@plos.org to support chasing in Salesforce" do
+      expect(email.bcc).to include('apertachasing@plos.org')
+    end
   end
 end

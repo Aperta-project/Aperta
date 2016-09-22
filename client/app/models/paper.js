@@ -237,7 +237,7 @@ export default DS.Model.extend({
       // the records which were pushed.
       this.store.pushPayload(data);
       return _.map(data['users'], (user) => {
-        return this.store.find('user', user['id']);
+        return this.store.findRecord('user', user['id']);
       });
     });
   }

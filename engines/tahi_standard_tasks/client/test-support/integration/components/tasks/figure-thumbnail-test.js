@@ -48,7 +48,7 @@ test('it allows the user to cancel', function(assert) {
   this.set('figure', make('figure', {status: 'processing'}));
   this.render(template);
 
-  this.$('.upload-cancel-button').click();
+  this.$('.upload-cancel-link').click();
 
   assert.textPresent('.progress-text','Upload canceled. Re-upload to try again', 'shows cancel message');
 });

@@ -26,7 +26,7 @@ test('can cancel processing uploads', function(assert){
   });
   this.render(template);
 
-  this.$('.upload-cancel-button').click();
+  this.$('.upload-cancel-link').click();
 
   assert.textPresent('.processing-attachment', 'Upload canceled. Re-upload to try again', 'shows cancel message');
 });

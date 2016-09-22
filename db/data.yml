@@ -4019,6 +4019,11 @@ invitations:
   - decline_reason
   - reviewer_suggestions
   - token
+  - primary_id
+  - invited_at
+  - declined_at
+  - accepted_at
+  - rescinded_at
   records: 
   - - '1'
     - reviewer@example.com
@@ -4060,6 +4065,11 @@ invitations:
 
     - '1'
     - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - '2016-06-02 13:47:43.341436'
     - 
     - 
     - 
@@ -4105,6 +4115,11 @@ invitations:
 
     - '1'
     - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - '2016-06-13 13:33:37.292317'
     - 
     - 
     - 

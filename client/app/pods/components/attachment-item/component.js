@@ -49,7 +49,12 @@ export default Ember.Component.extend({
     Ember.assert('Please provide filePath property', this.get('filePath'));
   },
 
-
+  willDestroyElement() {
+    this._super(...arguments);
+    if (this.get('isCanceled') && this.get('attachment')) {
+      this.get('attachment').unloadRecord();
+    }
+  },
   actions: {
 
     deleteFile() {
@@ -62,6 +67,7 @@ export default Ember.Component.extend({
       this.set('isCanceled', true);
       this.get('cancelUpload')(this.get('attachment'));
     },
+
 
     captionChanged() {
       if (this.attrs.captionChanged) {

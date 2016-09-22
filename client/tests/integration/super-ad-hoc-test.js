@@ -96,7 +96,7 @@ module('Integration: Super AdHoc Card', {
 
 test('Changing the title on an AdHoc Task', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper });
+  const task  = make('ad-hoc-task', { paper: paper });
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -114,7 +114,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
 
 test('AdHoc Task text block', function(assert) {
   let paper = make('paper');
-  let task  = make('task', { paper: paper, body: [] });
+  let task  = make('ad-hoc-task', { paper: paper, body: [] });
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -149,7 +149,7 @@ test('AdHoc Task text block', function(assert) {
 
 test('AdHoc Task list block', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper, body: [] });
+  const task  = make('ad-hoc-task', { paper: paper, body: [] });
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -188,7 +188,7 @@ test('AdHoc Task list block', function(assert) {
 
 test('AdHoc Task email block', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper, body: [] });
+  const task  = make('ad-hoc-task', { paper: paper, body: [] });
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });

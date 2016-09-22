@@ -253,7 +253,7 @@ module Authorizations
         join_table = assigned_to_klass.arel_table
         target_table = @klass.arel_table
 
-        query = a2_table.project(Arel.sql('tasks.id AS task_id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
+        query = a2_table.project(Arel.sql('tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
 
         if reflection.collection? || reflection.has_one? || reflection.belongs_to? # has_many or has_one associations
 
@@ -296,7 +296,7 @@ module Authorizations
 
             query
           else
-            query = a2_table.project(Arel.sql('tasks.id AS task_id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
+            query = a2_table.project(Arel.sql('tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
             query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
             query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
             query
@@ -306,148 +306,28 @@ module Authorizations
         end
       end
 
-      puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
-      puts '--------------------------------------------------------'
+      # puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
+      # puts '--------------------------------------------------------'
       u = union(queries2union.first.with(composed_a2), queries2union[1..-1])
-      puts u.to_sql
 
       sm = Arel::SelectManager.new(klass.arel_table.engine).
-        project('*').
-        from( Arel.sql(u.to_sql).as('tasks') )
-      # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
+        project(klass.arel_table.primary_key).
+        from( Arel.sql(u.to_sql).as('tasks') ).
+        outer_join(PermissionRequirement.arel_table).on(
+          PermissionRequirement.arel_table[:required_on_type].eq(klass.name).and(
+            PermissionRequirement.arel_table[:required_on_id].eq(klass.arel_table.primary_key)
+          )
+        ).
+        where(klass.arel_table.primary_key.not_eq(nil).or(
+          PermissionRequirement.arel_table.primary_key.eq(nil).and(
+            PermissionRequirement.arel_table[:permission_id].eq(klass.arel_table[:permission_id])
+          )
+        )).
+        group(klass.arel_table.primary_key) ; true
+      sql = sm.to_sql
+      objects = klass.where(id: klass.find_by_sql(sm.to_sql).map(&:id))
 
-
-      binding.pry
-      return nil
-      # select_columns = 'tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'
-
-    #   tasks = Task.arel_table
-    #   tasks_query = tasks.join(a2_table).on(tasks[:id].eq(a2_table[:assigned_to_id]))
-    #     .where(a2_table[:assigned_to_type].eq('Task'))
-    #     .with(composed_a2)
-    #     .project(Arel.sql(select_columns))
-     #
-    #   papers = Paper.arel_table
-    #   papers_query = papers.join(tasks, Arel::Nodes::OuterJoin).on(papers[:id].eq(tasks[:paper_id]))
-    #     .join(a2_table, Arel::Nodes::OuterJoin).on(a2_table[:assigned_to_id].eq(papers[:id]))
-    #     .where(a2_table[:assigned_to_type].eq('Paper')
-    #     .project(Arel.sql(select_columns))
-     #
-    #  # journals = Journal.arel_table
-    #  # journals_query = journals.join(papers, Arel::Nodes::OuterJoin).on(papers[:journal_id].eq(journal[:id]))
-    #   #  .join(papers[:journal_id].eq(journals[:id])
-
-     # binding.pry
-      perm_q = { 'permissions.applies_to' => eligible_applies_to, 'permissions.action' => @permission }
-      assignments = user.assignments.includes(permissions: :states).where(perm_q)
-
-      # If @participations_only is true then we want to use specific fields
-      # on Role to determine if we should consider these assignments. The purpose of this
-      # is so users assigned to a paper with a role like Author (or Reviewer, etc) get papers
-      # through assignments in their default list of papers (e.g. what they see on the dashboard).
-      # But we don't want that for roles (e.g. Internal Editor assigned to a Journal).
-      if @participations_only
-        role_accessibility_method = "participates_in_#{@klass.table_name}"
-        if Role.column_names.include?(role_accessibility_method)
-          assignments = assignments.where(:roles => { role_accessibility_method => true })
-        end
-      end
-
-      # TODOMPM - this block of code should be taken care of by the above.  But verify that
-      # Load all assignments the user has a permissible assignment for
-      # if @permission == :*
-      #  permissible_assignments = assignments.all
-      #else
-      #  permissible_assignments = assignments.where('permissions.action' => @permission)
-      #end
-
-      # Load all assignments (including permissions and permission states)
-      # based on the permissible assignments, but DO NOT limit it to the
-      # permissible action. We want to know all permissions this user has
-      # for the assignment.
-      # TODOMPM - Figure out how to do this later
-      # permissions_by_assignment_id = assignments.where('assignments.id' => assignments.map(&:id)).reduce({}) do |h, assignment|
-      #  h[assignment.id] = assignment.permissions
-      #  h
-      #end
-
-      # Group by type so we can reduce queries later. 1 query for every combination of: kind of thing we're assigned to AND set of permissions.
-      permissible_assignments_grouped = Hash.new{ |h,k| h[k] = [] }
-
-      assignments.each do |assignment|
-        permissions = assignment.permissions
-        permissible_actions = permissions.flat_map(&:action).map(&:to_sym)
-        permissible_state_names = permissions.flat_map(&:states).flat_map(&:name)
-        #all_permissions = permissions_by_assignment_id[assignment.id].reduce({}) do |h, permission|
-        #  h[permission.action.to_sym] = { states: permission.states.map(&:name).sort }
-        #  h
-        #end
-
-        if permissible_actions.include?(@permission) || @permission == :*
-            group_by_key = {
-          type: assignment.assigned_to_type,
-          permissible_states: permissible_state_names,
-          all_permissions: {@permission => ['*']}
-        }
-        permissible_assignments_grouped[group_by_key] << assignment
-        else
-          # no-op: this assignment doesn't have a permission that allows authorization
-        end
-      end
-
-      # Create a place to store the authorized objects
-      result_set = ResultSet.new
-
-      # Loop over the things we're assigned to and load them all up
-      permissible_assignments_grouped.each_pair do |hsh, assignments|
-        assigned_to_type = hsh[:type]
-        permissible_states = hsh[:permissible_states]
-        all_permissions = hsh[:all_permissions]
-
-        assigned_to_klass = assigned_to_type.constantize
-        authorized_objects = []
-
-        # This is to make sure that if no permission states were hooked up
-        # that we accept any state. It's more a fallback.
-        permissible_states = [WILDCARD] if permissible_states.empty?
-
-        # determine how this kind of thing relates to what we're interested in
-        if assigned_to_klass <=> @klass
-          authorized_objects = QueryAgainstAssignedObject.new(
-            klass: @klass,
-            target: @target,
-            assignments: assignments,
-            state_join: permission_state_join,
-            permissible_states: permissible_states,
-            state_column: permission_state_column
-          ).query
-          result_set.add_objects(authorized_objects, with_permissions: all_permissions)
-        else
-          # Determine how the Assignment#thing relates to object we're checking
-          # permissions on. This can be pulled out later into a configurable property,
-          # but for now just determined based on the reflection type that matches.
-          Authorizations.configuration.authorizations
-            .select { |auth|
-            auth.authorizes >= @klass && # if what we're authorizing is the same class or an ancestor of @klass
-              auth.assignment_to >= assigned_to_klass # if what you're assigned to is the same class
-          }
-            .each do |auth|
-            authorized_objects = QueryAgainstAuthorization.new(
-              authorization: auth,
-              klass: @klass,
-              target: @target,
-              assigned_to_klass: assigned_to_klass,
-              assignments: assignments,
-              permissible_states: permissible_states,
-              state_join: permission_state_join,
-              state_column: permission_state_column
-            ).query
-            result_set.add_objects(authorized_objects, with_permissions: all_permissions)
-          end
-        end
-      end
-
-      result_set
+      ResultSet.new.tap { |rs| rs.add_objects(objects) }
     end
 
     class ResultSet

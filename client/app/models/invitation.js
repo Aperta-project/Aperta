@@ -16,20 +16,27 @@ export default DS.Model.extend({
   invitationType: DS.attr('string'),
   invitee: DS.belongsTo('user', { inverse: 'invitations', async: true }),
   inviteeRole: DS.attr('string'),
+  primary: DS.belongsTo('invitation', { inverse: 'alternates', async: false }),
+  alternates: DS.hasMany('invitation'),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
   task: DS.belongsTo('task', { polymorphic: true, async: true }),
   title: DS.attr('string'),
   updatedAt: DS.attr('date'),
+  invitedAt: DS.attr('date'),
+  acceptedAt: DS.attr('date'),
+  declinedAt: DS.attr('date'),
+  rescindedAt: DS.attr('date'),
 
   pendingFeedback: false,
 
   restless: Ember.inject.service('restless'),
 
-  accepted: currentState('accepted'),
   pending: currentState('pending'),
   invited: currentState('invited'),
+  accepted: currentState('accepted'),
   declined: currentState('declined'),
+  rescinded: currentState('rescinded'),
 
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',

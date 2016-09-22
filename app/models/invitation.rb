@@ -9,6 +9,8 @@ class Invitation < ActiveRecord::Base
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
   has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
+  has_many :alternates, class_name: 'Invitation', foreign_key: 'primary_id'
+  belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
 
   scope :where_email_matches,
@@ -31,22 +33,25 @@ class Invitation < ActiveRecord::Base
     # block a certain transition if desired.
 
     event(:invite, {
-      after: [:generate_token, :associate_existing_user],
-      after_commit: :notify_invitation_invited
+          after: [:generate_token, :set_invitee, :set_invited_at],
+          after_commit: :notify_invitation_invited
     }) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
 
     event(:rescind,
-      after_commit: :notify_invitation_rescinded) do
+          after: [:set_rescinded_at],
+          after_commit: :notify_invitation_rescinded) do
       transitions from: [:invited, :accepted], to: :rescinded
     end
 
     event(:accept,
+          after: [:set_accepted_at],
           after_commit: :notify_invitation_accepted) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
+          after: [:set_declined_at],
           after_commit: :notify_invitation_declined) do
       transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
@@ -93,14 +98,14 @@ class Invitation < ActiveRecord::Base
   end
 
   def decline_reason
-    self[:decline_reason].present? ? self[:decline_reason] : 'n/a'
+    self[:decline_reason].present? ? self[:decline_reason] : 'No feedback provided'
   end
 
   def reviewer_suggestions
-    self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'n/a'
+    self[:reviewer_suggestions].present? ? self[:reviewer_suggestions] : 'None'
   end
 
-  def associate_existing_user
+  def set_invitee
     update(invitee: User.find_by(email: email))
   end
 
@@ -131,6 +136,22 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_rescinded
     task.invitation_rescinded(self)
+  end
+
+  def set_invited_at
+    update!(invited_at: Time.current.utc)
+  end
+
+  def set_accepted_at
+    update!(accepted_at: Time.current.utc)
+  end
+
+  def set_declined_at
+    update!(declined_at: Time.current.utc)
+  end
+
+  def set_rescinded_at
+    update!(rescinded_at: Time.current.utc)
   end
 
   def generate_token

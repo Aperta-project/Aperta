@@ -3,7 +3,7 @@ namespace :maintenance_mode do
   task :on do
     on roles(:app) do
       within release_path do
-        execute "cp", "public/502.html", "public/system/maintenance.html"
+        execute "cp", "public/503.html", "public/system/maintenance.html"
       end
     end
   end

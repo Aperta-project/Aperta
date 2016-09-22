@@ -82,8 +82,8 @@ export default DS.Model.extend({
   submissionTasks: computed.filterBy('tasks', 'isSubmissionTask', true),
   sortedSubmissionTasks: computed.sort('submissionTasks', 'taskSorting'),
 
-  displayTitle: computed('title', 'shortTitle', function() {
-    return this.get('title') || this.get('shortTitle');
+  displayTitle: computed('title', function() {
+    return this.get('title') || '[No Title]';
   }),
 
   collaborators: computed('collaborations.@each.user', function() {

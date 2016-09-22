@@ -22,7 +22,7 @@ let createTask = function() {
         { id: 3,
           verdict: 'minor_revision', registeredAt: new Date()}
       ],
-      shortTitle: 'GREAT TITLE',
+      title: 'GREAT TITLE',
       creator: {
         id: 5,
         lastName: 'Jones',

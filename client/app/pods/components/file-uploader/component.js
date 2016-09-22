@@ -129,7 +129,7 @@ export default Ember.TextField.extend({
       } else {
       // without a resourceUrl pass the data up and allow the caller to
       // decide what to do with it.
-        this.sendAction('done', uploadedS3Url, filename);
+        this.sendAction('done', location, filename);
       }
     });
     uploader.on('fileuploadprogress', (e, data) => {

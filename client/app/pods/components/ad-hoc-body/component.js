@@ -92,6 +92,11 @@ export default Ember.Component.extend({
     return this.get('blockObjects').isAny('isNew');
   }),
 
+  save() {
+    this.get('task').set('body', this.get('displayedBlocks').mapBy('items'));
+    this.get('save')();
+  },
+
   addBlock(firstItemAttrs) {
     this.get('blockObjects').pushObject(
       BlockObject.create({
@@ -104,6 +109,9 @@ export default Ember.Component.extend({
   actions: {
     toggleToolbar() {
       this.toggleProperty('toolbarActive');
+      if (this.get('hasNewBlock')) {
+        this.set('toolbarActive', false);
+      }
     },
 
     setTitle(title) {
@@ -146,7 +154,7 @@ export default Ember.Component.extend({
 
       block.pruneEmptyItems();
 
-      this.get('save')(this.get('displayedBlocks'));
+      this.save();
     },
 
     resetBlock(block) {
@@ -172,7 +180,7 @@ export default Ember.Component.extend({
       }
 
       if (!block.get('isNew')) {
-        this.get('save')(this.get('displayedBlocks'));
+        this.save();
       }
     },
 
@@ -180,7 +188,7 @@ export default Ember.Component.extend({
       this.get('blockObjects').removeObject(block);
 
       if (!block.get('isNew')) {
-        this.get('save')(this.get('displayedBlocks'));
+        this.save();
       }
     },
 
@@ -190,7 +198,7 @@ export default Ember.Component.extend({
         task: data
       });
 
-      this.get('save')(this.get('displayedBlocks'));
+      this.save();
     },
 
     updateAttachmentCaption(caption, attachment) {

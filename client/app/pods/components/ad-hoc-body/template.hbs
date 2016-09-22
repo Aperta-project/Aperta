@@ -45,35 +45,38 @@
     {{/if}}
   </div>
 
-  <div class="adhoc-content-toolbar
-              {{if toolbarActive "_active"}}
-              {{if toolbarActive "_animate-forward" "_animate-backward"}}"
-       {{action "toggleToolbar"}}>
 
-    <div class="button-primary {{if hasNewBlock "button--disabled"}} button--green">
-      <span class="fa fa-plus"></span>
-      <span class="fa fa-remove"></span>
-    </div>
-    <div class="button-secondary button--green adhoc-toolbar-item--list" {{action "addChecklist"}}>
-      <span class="fa fa-th-list"></span>
-    </div>
+  {{#if canManage }}
+      <div class="adhoc-content-toolbar
+                  {{if toolbarActive "_active"}}
+                {{if toolbarActive "_animate-forward" "_animate-backward"}}"
+         {{action "toggleToolbar"}}>
 
-    <div class="button-secondary button--green adhoc-toolbar-item--text" {{action "addTextBlock"}}>
-      <span class="fa fa-edit"></span>
-    </div>
-
-    <div class="button-secondary button--green adhoc-toolbar-item--label" {{action "addLabel"}}>
-      <span class="fa fa-paragraph"></span>
-    </div>
-
-    <div class="button-secondary button--green adhoc-toolbar-item--email" {{action "addEmail"}}>
-      <span class="fa fa-envelope"></span>
-    </div>
-
-    {{#unless isEditingTemplate}}
-      <div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachmentsBlock"}}>
-        <span class="fa fa-paperclip"></span>
+      <div class="button-primary {{if hasNewBlock "button--disabled"}} button--green">
+        <span class="fa fa-plus"></span>
+        <span class="fa fa-remove"></span>
       </div>
-    {{/unless}}
-  </div>
+      <div class="button-secondary button--green adhoc-toolbar-item--list" {{action "addChecklist"}}>
+        <span class="fa fa-th-list"></span>
+      </div>
+
+      <div class="button-secondary button--green adhoc-toolbar-item--text" {{action "addTextBlock"}}>
+        <span class="fa fa-edit"></span>
+      </div>
+
+      <div class="button-secondary button--green adhoc-toolbar-item--label" {{action "addLabel"}}>
+        <span class="fa fa-paragraph"></span>
+      </div>
+
+      <div class="button-secondary button--green adhoc-toolbar-item--email" {{action "addEmail"}}>
+        <span class="fa fa-envelope"></span>
+      </div>
+
+      {{#unless isEditingTemplate}}
+        <div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachmentsBlock"}}>
+          <span class="fa fa-paperclip"></span>
+        </div>
+      {{/unless}}
+    </div>
+  {{/if}}
 </div>

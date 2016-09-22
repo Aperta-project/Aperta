@@ -92,8 +92,9 @@ export default Ember.Component.extend({
     return this.get('blockObjects').isAny('isNew');
   }),
 
-  save() {
-    this.get('task').set('body', this.get('displayedBlocks').mapBy('items'));
+  saveBlocks() {
+    let blockPath = this.get('isEditingTemplate') ? 'template' : 'body';
+    this.get('task').set(blockPath, this.get('displayedBlocks').mapBy('items'));
     this.get('save')();
   },
 
@@ -154,7 +155,7 @@ export default Ember.Component.extend({
 
       block.pruneEmptyItems();
 
-      this.save();
+      this.saveBlocks();
     },
 
     resetBlock(block) {
@@ -180,7 +181,7 @@ export default Ember.Component.extend({
       }
 
       if (!block.get('isNew')) {
-        this.save();
+        this.saveBlocks();
       }
     },
 
@@ -188,7 +189,7 @@ export default Ember.Component.extend({
       this.get('blockObjects').removeObject(block);
 
       if (!block.get('isNew')) {
-        this.save();
+        this.saveBlocks();
       }
     },
 
@@ -198,7 +199,7 @@ export default Ember.Component.extend({
         task: data
       });
 
-      this.save();
+      this.saveBlocks();
     },
 
     updateAttachmentCaption(caption, attachment) {

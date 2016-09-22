@@ -6,7 +6,7 @@
       {{#inline-edit-body-part block=block
                                canEdit=canEdit
                                canManage=canManage
-                               editing=block.isNew
+                               editing=(readonly block.isNew)
                                cancel=(action "resetBlock" block)
                                save=(action "saveBlock" block)
                                delete=(action "deleteBlock" block)

@@ -98,10 +98,10 @@ export default Ember.Component.extend({
     this.get('save')();
   },
 
-  addBlock(firstItemAttrs) {
+  addBlock(firstItemAttrs, isNew = true) {
     this.get('blockObjects').pushObject(
       BlockObject.create({
-        isNew: true,
+        isNew: isNew,
         items: [firstItemAttrs]
       })
     );
@@ -130,7 +130,7 @@ export default Ember.Component.extend({
       this.addBlock({
         type: 'text',
         value: ''
-      });
+      }, false);
     },
 
     addChecklist() {

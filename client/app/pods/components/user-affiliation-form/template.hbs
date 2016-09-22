@@ -90,12 +90,14 @@
                       role="endPicker"
                       date=affiliation.endDate
                       placeholder="End Date"}}
+        {{error-message message=validationErrors.endDate}}
       {{/date-picker-group}}
 
       {{input type="text"
               value=affiliation.email
               placeholder="Email Address"
               class="affiliation-field form-control"}}
+      {{error-message message=validationErrors.email}}
     </div>
 
     <button class="button-secondary button--green" {{action "commitAffiliation" affiliation}}>done</button>

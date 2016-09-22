@@ -92,7 +92,7 @@
 }
 
 .inline-edit-body-part.text {
-  .item-text {
+  [contenteditable] {
     border: 1px solid #ccc;
     border-radius: 5px;
     background: #EEE;

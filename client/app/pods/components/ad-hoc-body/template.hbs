@@ -2,51 +2,27 @@
   {{inline-edit-h1 title=task.title setTitle="setTitle"}}
 
   <div class="task-body">
-    {{#each blocks as |block|}}
+    {{#each displayedBlocks as |block|}}
       {{#inline-edit-body-part block=block
                                canEdit=canEdit
-                               editing=false
+                               canManage=canManage
+                               editing=block.isNew
                                cancel=(action "resetBlock" block)
                                save=(action "saveBlock" block)
                                delete=(action "deleteBlock" block)
                                addItem=(action "addCheckboxItem" block)
                                as |editing|}}
-        {{#each block as |item|}}
+        {{#each block.items as |item|}}
           {{component
               (concat 'inline-edit-' item.type)
               bodyPart=item
+              canEdit=canEdit
+              canManage=canManage
               editing=editing
-              overlayParticipants=participants
-              isNew=false
-              isSendable=true
-              paperId=paperId
               emailSentStates=emailSentStates
-              task=task
-              sendEmail=(action "sendEmail")
-              delete=(action "deleteItem" item block)
-              save=(action attrs.save)}}
-        {{/each}}
-      {{/inline-edit-body-part}}
-    {{/each}}
-
-    {{#each newBlocks as |block|}}
-      {{#inline-edit-body-part block=block
-                               editing=true
-                               cancel=(action "resetBlock" block)
-                               save=(action "saveBlock" block)
-                               delete=(action "deleteBlock" block)
-                               addItem=(action "addCheckboxItem" block)
-                               as |editing|}}
-        {{#each block as |item|}}
-          {{component
-              (concat 'inline-edit-' item.type)
-              bodyPart=item
-              editing=editing
-              overlayParticipants=participants
-              isNew=true
               isSendable=true
+              overlayParticipants=participants
               paperId=paperId
-              emailSentStates=emailSentStates
               task=task
               sendEmail=(action "sendEmail")
               delete=(action "deleteItem" item block)
@@ -69,7 +45,7 @@
     {{/if}}
   </div>
 
-  {{#reveal-adhoc-toolbar-buttons}}
+  {{#reveal-adhoc-toolbar-buttons disabled=hasNewBlock}}
     <div class="button-secondary button--green adhoc-toolbar-item--list" {{action "addChecklist"}}>
       <span class="fa fa-th-list"></span>
     </div>

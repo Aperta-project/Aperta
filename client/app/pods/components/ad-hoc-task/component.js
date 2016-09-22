@@ -8,6 +8,11 @@ export default TaskComponent.extend({
       });
 
       this.send('save');
-    }
+    },
+
+    save(persistedBlocks) {
+      this.get('task').set('body', persistedBlocks.mapBy('items'));
+      this._super();
+    },
   }
 });

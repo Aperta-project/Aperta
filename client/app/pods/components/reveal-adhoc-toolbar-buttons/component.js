@@ -5,9 +5,13 @@ export default Ember.Component.extend({
   classNameBindings: ['active:_active', 'animationDirection'],
 
   active: false,
+  disabled: false,
   animationDirection: '_animate-forward',
 
-  click() { this.send('toggle'); },
+  click() {
+    if (!this.get('disabled')) {
+      this.send('toggle');}
+  },
 
   actions: {
     toggle() {

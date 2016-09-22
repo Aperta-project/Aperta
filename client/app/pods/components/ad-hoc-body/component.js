@@ -1,6 +1,46 @@
 import Ember from 'ember';
 import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
+
+let isNotEmpty = (item) => {
+  return item && Ember.isPresent(item.value);
+};
+
+
+let BlockObject = Ember.Object.extend({
+  items: null,
+  snapshot: null,
+  isNew: false,
+
+  type: Ember.computed.reads('items.firstObject.type'),
+  hasContent: Ember.computed('items.@each.value', function() {
+    return this.get('items').any(isNotEmpty);
+  }),
+
+  createSnapshot() {
+    this.set('snapshot', Ember.copy(this.get('items'), true));
+  },
+
+  revertToSnapshot() {
+    this.set('items', Ember.copy(this.get('snapshot'), true));
+  },
+
+  addItem(attrs) {
+    this.get('items').pushObject(attrs);
+  },
+
+  init() {
+    this._super(...arguments);
+    this.set('snapshot', []);
+  },
+
+  pruneEmptyItems() {
+    this.set('items', this.get('items').reject(function(item) {
+      return Ember.isEmpty(item.value);
+    }));
+  }
+});
+
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   restless: Ember.inject.service(),
@@ -18,7 +58,7 @@ export default Ember.Component.extend({
   }),
 
   canEdit: true,
-  canFillOut: false,
+  canManage: true,
 
   attachmentsRequest(path, method, s3Url, file) {
     const store = this.get('store');
@@ -36,88 +76,84 @@ export default Ember.Component.extend({
   }),
 
   // BuildsTaskTemplate stuff
-  newBlocks: Ember.computed(() => { return []; }),
-  blocks: null,
   emailSentStates: Ember.computed(() => { return []; }),
 
-  isNew(block) {
-    return this.get('newBlocks').contains(block);
-  },
-
-  replaceBlock(block, otherBlock) {
-    let blocks = this.get('blocks');
-    let position = blocks.indexOf(block);
-
-    if (position !== -1) {
-      blocks.replace(position, 1, [otherBlock]);
-      blocks.enumerableContentDidChange();
-    }
-  },
-
-  _pruneEmptyItems(block) {
-    return block.reject(function(item) {
-      return Ember.isEmpty(item.value);
+  blocks: null,
+  blockObjects: Ember.computed('blocks.[]', function() {
+    return this.get('blocks').map((block) => {
+      return BlockObject.create({items: block});
     });
+  }),
+
+  blockSort: ['isNew:asc'],
+  displayedBlocks: Ember.computed.sort('blockObjects', 'blockSort'),
+  hasNewBlock: Ember.computed('blockObjects.@each.isNew', function() {
+    return this.get('blockObjects').isAny('isNew');
+  }),
+
+  addBlock(firstItemAttrs) {
+    this.get('blockObjects').pushObject(
+      BlockObject.create({
+        isNew: true,
+        items: [firstItemAttrs]
+      })
+    );
   },
 
   actions: {
     setTitle(title) {
       this.set('title', title);
-      this.get('save')();
     },
 
     addLabel(){
-      this.get('newBlocks').pushObject([{
+      this.addBlock({
         type: 'adhoc-label',
         value: ''
-      }]);
+      });
     },
 
     addTextBlock() {
-      this.get('newBlocks').pushObject([{
+      this.addBlock({
         type: 'text',
         value: ''
-      }]);
+      });
     },
 
     addChecklist() {
-      this.get('newBlocks').pushObject([{
+      this.addBlock({
         type: 'checkbox',
         value: '',
         answer: false
-      }]);
+      });
     },
 
     addEmail() {
-      this.get('newBlocks').pushObject([{
+      this.addBlock({
         type: 'email',
         subject: '',
         value: '',
         sent: ''
-      }]);
+      });
     },
 
     saveBlock(block) {
-      if (this.isNew(block)) {
-        this.get('blocks').pushObject(block);
-        this.get('newBlocks').removeObject(block);
-      }
+      block.set('isNew', false);
 
-      this.replaceBlock(block, this._pruneEmptyItems(block));
+      block.pruneEmptyItems();
 
-      this.get('save')();
+      this.get('save')(this.get('persistedBlocks'));
     },
 
-    resetBlock(block, snapshot) {
-      if (this.isNew(block)) {
-        this.get('newBlocks').removeObject(block);
+    resetBlock(block) {
+      if (block.get('isNew')) {
+        this.get('blockObjects').removeObject(block);
       } else {
-        this.replaceBlock(block, snapshot);
+        block.revertToSnapshot();
       }
     },
 
     addCheckboxItem(block) {
-      return block.pushObject({
+      return block.addItem({
         type: 'checkbox',
         value: '',
         answer: false
@@ -126,21 +162,20 @@ export default Ember.Component.extend({
 
     deleteItem(item, block) {
       block.removeObject(item);
-      if (Ember.isEmpty(block)) {
+      if (!block.get('hasContent')) {
         this.send('deleteBlock', block);
       }
 
-      if (!this.isNew(block)) {
-        this.get('save')();
+      if (!block.get('isNew')) {
+        this.get('save')(this.get('persistedBlocks'));
       }
     },
 
     deleteBlock(block) {
-      if (this.isNew(block)) {
-        this.get('newBlocks').removeObject(block);
-      } else {
-        this.get('blocks').removeObject(block);
-        this.get('save')();
+      this.get('blockObjects').removeObject(block);
+
+      if (!block.get('isNew')) {
+        this.get('save')(this.get('persistedBlocks'));
       }
     },
 
@@ -150,7 +185,7 @@ export default Ember.Component.extend({
         task: data
       });
 
-      this.get('save')();
+      this.get('save')(this.get('persistedBlocks'));
     },
 
     updateAttachmentCaption(caption, attachment) {

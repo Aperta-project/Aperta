@@ -1,19 +1,21 @@
-<div class="inline-edit-body-part clearfix {{if confirmDelete "confirm-delete"}} {{if editing "editing"}} {{bodyPartType}}">
+<div class="inline-edit-body-part clearfix {{if confirmDelete "confirm-delete"}} {{if editing "editing"}} {{block.type}}">
   {{yield editing}}
 
-  <div class="view-actions">
-    <span class="fa fa-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-    <span class="fa fa-trash inline-edit-icon" {{action "confirmDeletion"}}></span>
-  </div>
+  {{#if canManage}}
+    <div class="view-actions">
+      <span class="fa fa-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+      <span class="fa fa-trash inline-edit-icon" {{action "confirmDeletion"}}></span>
+    </div>
 
-  <div class="edit-actions">
-    <div class="button-secondary button--green pull-right {{unless hasContent "button--disabled"}}" {{action "save"}}>Save</div>
-    <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
-  </div>
+    <div class="edit-actions">
+      <div class="button-secondary button--green pull-right {{unless block.hasContent "button--disabled"}}" {{action "save"}}>Save</div>
+      <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
+    </div>
 
-  <div class="button-secondary button--green add-item" {{action attrs.addItem}}>
-    <span class="fa fa-plus"></span>
-  </div>
+    <div class="button-secondary button--green add-item" {{action attrs.addItem}}>
+      <span class="fa fa-plus"></span>
+    </div>
+  {{/if}}
 
   {{#if confirmDelete}}
     <div class="bodypart-destroy-overlay bodypart-overlay">

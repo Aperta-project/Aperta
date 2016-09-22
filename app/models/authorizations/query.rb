@@ -140,6 +140,15 @@ module Authorizations
       ].flatten.map(&:name).uniq
     end
 
+    def auth_configs
+      @auth_configs ||= begin
+        Authorizations.configuration.authorizations.select do |ac|
+          # if what we're authorizing is the same class or an ancestor of @klass
+          ac.authorizes >= @klass
+        end
+      end
+    end
+
     def assignments_subquery
       assignments = Assignment.all
         .select('
@@ -159,34 +168,30 @@ module Authorizations
      # when we convert to AREL queries below
      assignments_arel = assignments.arel
 
-     # Find each authorization configured for the klass we're querying against
-     auth_configs = Authorizations.configuration.authorizations.select do |ac|
-       # if what we're authorizing is the same class or an ancestor of @klass
-       ac.authorizes >= @klass
-     end
      auth_configs.each do |ac|
        join_table = ac.assignment_to.arel_table
        source_table = ac.authorizes.arel_table
        inverse_of_via = ac.inverse_of_via
        association = ac.assignment_to.reflections[ac.via.to_s]
 
-       assignments_arel.outer_join(join_table)
-         .on(
-       join_table[ ac.assignment_to.primary_key ]
-         .eq( Assignment.arel_table[:assigned_to_id] )
-         .and( Assignment.arel_table[:assigned_to_type]
-         .eq(ac.assignment_to.name) ))
+       assignments_arel.outer_join(join_table).on(
+         join_table[ ac.assignment_to.primary_key ]
+           .eq( Assignment.arel_table[:assigned_to_id] )
+           .and( Assignment.arel_table[:assigned_to_type]
+           .eq(ac.assignment_to.name)))
      end
 
      # add implicit JOIN in case the person is assigned directly to the
-     # klass we're querying against
+     # klass we're querying against. This could potentially move to an auth config
+     # where the via was :self or something else treated specially
      assignments_arel.outer_join(@klass.arel_table)
        .on(
-     @klass.arel_table[ @klass.primary_key ]
-       .eq( Assignment.arel_table[:assigned_to_id] )
-       .and( Assignment.arel_table[:assigned_to_type]
-       .eq(@klass.name) ))
+         @klass.arel_table[ @klass.primary_key ]
+           .eq( Assignment.arel_table[:assigned_to_id] )
+           .and( Assignment.arel_table[:assigned_to_type]
+           .eq(@klass.name)))
 
+    # Append @klass, again, this could possibly be moved to an auth config
      klasses2where = auth_configs.map { |ac| ac.assignment_to } << @klass
      arel_conditions = klasses2where.reduce(nil) do |arel_conditions, klass|
        if arel_conditions
@@ -219,9 +224,9 @@ module Authorizations
     def objects_by_klass klass
       a2_table = Arel::Table.new(:assignments_table)
       composed_a2 = Arel::Nodes::As.new(assignments_table)
- 
+
      # klass.arel_table.join(assignments_subquery).on(
-     #   .project(Arel.sql('tasks.id as id, tasks.paper_id as paper_id, a2.role_id as role_id, a2.permission_id as permission_id'))
+     #   .project(Arel.sql('tasks.id as id, tasks.paper_id as paper_id, a2_table.role_id as role_id, a2_table.permission_id as permission_id'))
      #   .with(assignments_subquery)
      #   .where(
      # assignments_subquery.joins(Task.arel_table).on(Task.arel_table[:id].eq(assignments_subquery[:assigned_to_id]))
@@ -229,25 +234,90 @@ module Authorizations
     end
 
     def load_authorized_objects
-      select_columns = 'tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'
       a2_table = Arel::Table.new(:a2_table)
       composed_a2 = Arel::Nodes::As.new(a2_table, assignments_subquery)
 
-      tasks = Task.arel_table
-      tasks_query = tasks.join(a2_table).on(tasks[:id].eq(a2_table[:assigned_to_id]))
-        .where(a2_table[:assigned_to_type].eq('Task'))
-        .with(composed_a2)
-        .project(Arel.sql(select_columns))
+      # klasses2where = auth_configs.map { |ac| ac.assignment_to } << @klass
+      queries2union = auth_configs.map do |ac|
+        assigned_to_klass = ac.assignment_to
+        reflection = ac.assignment_to.reflections[ac.via.to_s]
+        join_table = assigned_to_klass.arel_table
+        target_table = @klass.arel_table
 
-      papers = Paper.arel_table
-      papers_query = papers.join(tasks, Arel::Nodes::OuterJoin).on(papers[:id].eq(tasks[:paper_id]))
-        .join(a2_table, Arel::Nodes::OuterJoin).on(a2_table[:assigned_to_id].eq(papers[:id]))
-        .where(a2_table[:assigned_to_type].eq('Paper')
-        .project(Arel.sql(select_columns))
+        query = a2_table.project(Arel.sql('tasks.id AS task_id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
 
-     # journals = Journal.arel_table
-     # journals_query = journals.join(papers, Arel::Nodes::OuterJoin).on(papers[:journal_id].eq(journal[:id]))
-      #  .join(papers[:journal_id].eq(journals[:id])
+        if reflection.collection? || reflection.has_one? || reflection.belongs_to? # has_many or has_one associations
+
+          # E.g. Journal has_many :tasks, :through => :papers
+          if reflection.respond_to?(:through_options)
+            loop do
+              delegate_reflection = reflection.delegate_reflection
+
+              through_reflection = assigned_to_klass.reflections[delegate_reflection.options[:through].to_s]
+              through_klass = through_reflection.klass
+              through_table = through_reflection.klass.arel_table
+
+              through_target_reflection = through_klass.reflections[reflection.name.to_s]
+              through_target_table = through_target_reflection.klass.arel_table
+
+              # construct the join from journals table to the a2_table
+              query.outer_join(join_table).on(
+                join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name))
+              )
+
+              # construct the join from papers table to the journals table
+              query.outer_join(through_table).on(
+                through_table[through_reflection.foreign_key].eq(
+                  join_table.primary_key
+                )
+              )
+
+              # construct the join from tasks table to the papers table
+              query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(through_klass.arel_table.primary_key))
+
+              # the next two lines are for supporting a :through that goes thru a :through
+              # it is completely untested and may not even be important. If it isn't we may
+              # be able to get rid of the whole looping construct
+              break unless delegate_reflection.respond_to?(:delegate_reflection)
+              reflection = delegate_reflection
+            end
+
+            query.where(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+
+            query
+          else
+            query = a2_table.project(Arel.sql('tasks.id AS task_id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
+            query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+            query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
+            query
+          end
+        else
+          fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"
+        end
+      end
+
+puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
+      # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last)).to_sql
+
+      binding.pry
+      return nil
+      # select_columns = 'tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'
+
+    #   tasks = Task.arel_table
+    #   tasks_query = tasks.join(a2_table).on(tasks[:id].eq(a2_table[:assigned_to_id]))
+    #     .where(a2_table[:assigned_to_type].eq('Task'))
+    #     .with(composed_a2)
+    #     .project(Arel.sql(select_columns))
+     #
+    #   papers = Paper.arel_table
+    #   papers_query = papers.join(tasks, Arel::Nodes::OuterJoin).on(papers[:id].eq(tasks[:paper_id]))
+    #     .join(a2_table, Arel::Nodes::OuterJoin).on(a2_table[:assigned_to_id].eq(papers[:id]))
+    #     .where(a2_table[:assigned_to_type].eq('Paper')
+    #     .project(Arel.sql(select_columns))
+     #
+    #  # journals = Journal.arel_table
+    #  # journals_query = journals.join(papers, Arel::Nodes::OuterJoin).on(papers[:journal_id].eq(journal[:id]))
+    #   #  .join(papers[:journal_id].eq(journals[:id])
 
      # binding.pry
       perm_q = { 'permissions.applies_to' => eligible_applies_to, 'permissions.action' => @permission }

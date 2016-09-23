@@ -12,8 +12,14 @@ export default Select2Component.extend({
   }).observes('selectedData'),
 
   initSelection: function(el, callback) {
-    if (Ember.isPresent(this.get('selectedData'))) {
-      callback(this.get('selectedData'));
-    }
+    (new Ember.RSVP.Promise((function(_this) {
+      return function(resolve) {
+        return resolve(_this.get('selectedData'));
+      };
+    })(this))).then((data) => {
+      if (Ember.isPresent(data)) {
+        callback(data);
+      }
+    });
   }
 });

@@ -21,9 +21,11 @@
   </label>
 
   {{#power-select placeholder="Select a journal"
-                  class="paper-new-select"
-                  id="paper-new-journal-select"
                   tagName="div"
+                  id="paper-new-journal-select"
+                  class="paper-new-select"
+                  triggerClass="paper-new-select-trigger"
+                  dropdownClass="paper-new-select-dropdown"
                   options=journals
                   selected=paper.journal
                   onchange=(action "selectJournal")
@@ -43,9 +45,11 @@
   </label>
 
   {{#power-select placeholder="Select a paper type"
-                  class="paper-new-select"
-                  id="paper-new-paper-type-select"
                   tagName="div"
+                  id="paper-new-paper-type-select"
+                  class="paper-new-select"
+                  triggerClass="paper-new-select-trigger"
+                  dropdownClass="paper-new-select-dropdown"
                   options=paper.journal.paperTypes
                   selected=paper.paperType
                   onchange=(action "selectPaperType")

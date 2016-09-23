@@ -7,7 +7,7 @@ machine:
     version:
       2.2.4 # when changing ruby versions, also update the cache_directory path below
   node:
-    version: 4.2.4
+    version: 4.5.0
 
   environment:
     RAILS_ENV: test

@@ -33,6 +33,7 @@ gem 'fog', '~> 1.36.0'
 gem 'gepub', '~> 0.7.0beta1'
 gem 'kaminari'
 gem 'lograge'
+gem 'mail_safe', require: false
 gem 'migration_data'
 gem 'mini_magick'
 gem 'newrelic_rpm'
@@ -110,10 +111,6 @@ group :development do
   gem 'rubocop'
   gem 'spring'
   gem 'spring-commands-rspec'
-end
-
-group :staging do
-  gem 'mail_safe', require: false
 end
 
 group :test do

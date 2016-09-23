@@ -144,7 +144,7 @@ class InviteAECard(BaseCard):
     if response == 'Accept':
       assert 'Accepted' in status.text, status.text
     elif response == 'Decline':
-      import pdb; pdb.set_trace()
+      # Need to extend box to display text
       status.click()
       assert 'Decline' in status.text, status.text
       reason_suggestions = self._get(self._reason_suggestions).text

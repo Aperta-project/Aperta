@@ -71,8 +71,8 @@ class DashboardPage(AuthenticatedPage):
     # View Invitations Modal Static Locators
     self._view_invites_title = (By.CLASS_NAME, 'overlay-header-title')
     self._view_invites_invite_listing = (By.CSS_SELECTOR, 'div.pending-invitation')
-    self._invite_yes_btn = (By.CSS_SELECTOR, 'p + button')
-    self._invite_no_btn = (By.CSS_SELECTOR, 'p + button + button')
+    self._invite_yes_btn = (By.CSS_SELECTOR, 'button.invitation-accept')
+    self._invite_no_btn = (By.CSS_SELECTOR, 'button.invitation-decline')
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')
 
     # Create New Submission Modal
@@ -167,7 +167,7 @@ class DashboardPage(AuthenticatedPage):
     suggestions = ''
     for listing in invite_listings:
       logging.info(u'Invitation title: {}'.format(listing.text))
-      if title in listing.text:
+      if title in self.normalize_spaces(listing.text):
         if response == 'Accept':
           listing.find_element(*self._invite_yes_btn).click()
           time.sleep(2)

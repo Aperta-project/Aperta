@@ -145,8 +145,8 @@ class InviteAECard(BaseCard):
       assert 'Accepted' in status.text, status.text
     elif response == 'Decline':
       # Need to extend box to display text
-      status.click()
       assert 'Decline' in status.text, status.text
+      status.click()
       reason_suggestions = self._get(self._reason_suggestions).text
       reason_suggestions = self.normalize_spaces(reason_suggestions)
       assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)

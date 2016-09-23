@@ -67,7 +67,7 @@ class BaseCard(AuthenticatedPage):
     self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CLASS_NAME, 'invitation-item-action-text')
-    self._invitation_state = (By.CLASS_NAME, 'invitation-item-state-and-date')
+    self._invitation_state = (By.CLASS_NAME, 'invitation-item-status')
 
 
   # Common actions for all cards

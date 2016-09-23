@@ -166,6 +166,7 @@ class DashboardPage(AuthenticatedPage):
     reasons = ''
     suggestions = ''
     for listing in invite_listings:
+      logging.info(u'Invitation title: {}'.format(listing.text))
       if title in listing.text:
         if response == 'Accept':
           listing.find_element(*self._invite_yes_btn).click()
@@ -185,6 +186,9 @@ class DashboardPage(AuthenticatedPage):
           # Time to get sure information is sent
           time.sleep(2)
           return 'Decline', (reasons, suggestions)
+    # If flow reachs this point, there was an error
+    invite_listings_text = [x.text for x in invite_listings]
+    raise ValueError('{0} not in {1}'.format(title, invite_listings_text))
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """

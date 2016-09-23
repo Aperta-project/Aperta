@@ -45,8 +45,9 @@ class InviteAECard(BaseCard):
     self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
     self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
-    self._reason = (By.CLASS_NAME, 'invitation-decline-reason')
-    self._suggestions = (By.CLASS_NAME, 'invitation-reviewer-suggestions')
+    self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
+    #self._reason = (By.CLASS_NAME, 'invitation-item-body-preview')
+    #self._suggestions = (By.CLASS_NAME, 'invitation-reviewer-suggestions')
 
   # POM Actions
   def invite_ae(self, user):
@@ -140,7 +141,7 @@ class InviteAECard(BaseCard):
     :param response: The reviewers response to the invitation
     :return void function
     """
-    time.sleep(.5)
+    time.sleep(2)
     invitee = self._get(self._invitee_listing)
     pagefullname = invitee.find_element(*self._invitee_full_name)
     assert ae['name'] in pagefullname.text
@@ -149,14 +150,14 @@ class InviteAECard(BaseCard):
     if response == 'Accept':
       assert 'Accepted' in status.text, status.text
     elif response == 'Decline':
+      import pdb; pdb.set_trace()
+      status.click()
       assert 'Decline' in status.text, status.text
-      reason_text = self._get(self._reason).text
-      reason_text = self.normalize_spaces(reason_text)
-      assert reason in reason_text, '{0} not in {1}'.format(reason, reason_text)
-      suggestion_text = self._get(self._suggestions).text
-      suggestion_text = self.normalize_spaces(suggestion_text)
-      assert suggestions in suggestion_text, '{0} not in {1}'.format(reason,
-        suggestion_text)
+      reason_suggestions = self._get(self._reason_suggestions).text
+      reason_suggestions = self.normalize_spaces(reason_suggestions)
+      assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)
+      assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
+                                                                         reason_suggestions)
 
   def check_style(self, user, paper_id):
     """

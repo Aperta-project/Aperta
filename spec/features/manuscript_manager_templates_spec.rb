@@ -103,10 +103,8 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
         find('label', text: 'Ad-hoc').click
         find('button', text: 'ADD').click
       end
-
       expect(page).to have_css('.overlay-body h1.inline-edit.editing',
-                               text: 'Ad-hoc',
-                               visible: false)
+                               text: 'Ad-hoc')
 
       find('.adhoc-content-toolbar .fa-plus').click
       find('.adhoc-content-toolbar .adhoc-toolbar-item--text').click

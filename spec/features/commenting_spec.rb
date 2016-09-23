@@ -21,6 +21,7 @@ feature 'Comments on cards', js: true do
     let!(:task) do
       FactoryGirl.create(
         :task,
+        type: 'AdHocTask',
         paper: paper,
         phase: paper.phases.first,
         participants: [admin, albert]
@@ -31,9 +32,7 @@ feature 'Comments on cards', js: true do
       task.comments.create(commenter: albert, body: "Lorem\nipsum dolor\nsit amet")
       CommentLookManager.sync_task(task)
       click_link paper.title
-      within ".control-bar" do
-        click_link "Workflow"
-      end
+      find('#go-to-workflow').click
     end
 
     scenario "displays the number of unread comments as badge on task" do

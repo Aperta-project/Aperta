@@ -16,30 +16,6 @@ module('integration/serializer', {
   }
 });
 
-test('normalizeTaskName denamespaces task types', function(assert) {
-  var result;
-  result = subject.normalizeTaskName('Foo::BarTask');
-  return assert.equal(result, 'BarTask', 'strips the namespace off the type');
-});
-
-test('normalizeTaskName doesnt touch unnamespaced stuff', function(assert) {
-  var result;
-  result = subject.normalizeTaskName('Task');
-  return assert.equal(result, 'Task', 'Task goes through unchanged');
-});
-
-test('normalizeTaskName denamespaces deeply namespaced task types', function(assert) {
-  var result;
-  result = subject.normalizeTaskName('Foo::Baz::BarTask');
-  return assert.equal(result, 'BarTask', 'strips the namespace off the type');
-});
-
-test('normalizeTaskName denamespaces really deeply namespaced task types', function(assert) {
-  var result;
-  result = subject.normalizeTaskName('Tahi::Foo::Baz::BarTask');
-  return assert.equal(result, 'BarTask', 'strips the namespace off the type');
-});
-
 test('serializing a model that was originally namespaced will correctly re-namespace it', function(assert) {
   return Ember.run(() => {
     var json, snapshot, task;

@@ -93,6 +93,38 @@ describe UserMailer, redis: true do
     end
   end
 
+  describe '#notify_mention_in_discussion' do
+    let(:user)  { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:topic) { FactoryGirl.create(:discussion_topic, paper: paper) }
+    let(:reply) { FactoryGirl.create(:discussion_reply) }
+    let(:email) { UserMailer.notify_mention_in_discussion(user.id, topic.id, reply.id) }
+
+    let(:sanitized_body) { 'hi foo <a class="discussion-at-mention" data-user-id="200" title="Steve Zissou">@steve</a>' }
+
+    it 'uses the sanitized body from the reply and marks it as html_safe' do
+      allow(DiscussionReply).to receive(:find).and_return reply
+      allow(reply).to receive(:sanitized_body).and_return sanitized_body
+      expect(sanitized_body).to receive(:html_safe).and_return sanitized_body.html_safe
+      expect(email.body).to include sanitized_body
+    end
+  end
+
+  describe '#assigned_editor' do
+    let(:invitee) { FactoryGirl.create(:user) }
+    let(:task) { FactoryGirl.create(:task) }
+    let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
+
+    it 'sends the email to the invitees email address with correct subject' do
+      expect(email.to).to contain_exactly(invitee.email)
+      expect(email.subject).to eq "You've been assigned as an editor for the manuscript, \"#{task.paper.display_title}\""
+    end
+
+    it 'tells the user they have been added as an editor' do
+      expect(email.body).to match(/been assigned as an Editor/)
+    end
+  end
+
   describe '#mention_collaborator' do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper) }
@@ -173,6 +205,7 @@ describe UserMailer, redis: true do
     end
 
     it "tells admin that paper has been submitted" do
+      expect(email.body).to include "Hello #{admin.first_name}"
       expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.abstract
       expect(email.body).to include client_paper_url(paper)

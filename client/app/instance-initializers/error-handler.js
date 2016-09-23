@@ -45,6 +45,9 @@ export default {
       if (statusText === 'abort') { return; }
       // don't blow up in case of a 403 from rails
       if (status === 403) { return; }
+      // a 404 could happen when pusher reloads, so either handle
+      // it at the call site or let ember data pick it up.
+      if (status === 404) { return; }
       // ember data should handle these errors.
       if (status === 422) { return; }
       // session invalid, redirect to sign in

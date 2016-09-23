@@ -167,7 +167,7 @@ describe TokenInvitationsController do
         it 'does not update the invite' do
           do_request
           invitation.reload
-          expect(invitation.reviewer_suggestions).to eq("n/a")
+          expect(invitation.reviewer_suggestions).to eq("None")
           expect(invitation.decline_reason).to eq("reasons")
         end
       end

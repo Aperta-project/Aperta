@@ -30,11 +30,18 @@ export default Ember.Component.extend({
   hasCaption: false,
   fileUpload: null,
   caption: null,
+  isCanceled: false,
   isProcessing: Ember.computed.equal('attachment.status', 'processing'),
+  isError: Ember.computed.equal('attachment.status', 'error'),
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   fileTypeClass: Ember.computed('attachment.filename', function(){
     return fontAwesomeFiletypeClass(this.get('attachment.filename'));
+  }),
+
+  processingErrorMessage: Ember.computed('attachment.filename', function() {
+    return `There was an error while processing ${this.get('attachment.filename')}. Please try again
+    or contact Aperta staff.`;
   }),
 
   init() {
@@ -42,6 +49,12 @@ export default Ember.Component.extend({
     Ember.assert('Please provide filePath property', this.get('filePath'));
   },
 
+  willDestroyElement() {
+    this._super(...arguments);
+    if (this.get('isCanceled') && this.get('attachment')) {
+      this.get('attachment').unloadRecord();
+    }
+  },
   actions: {
 
     deleteFile() {
@@ -49,6 +62,12 @@ export default Ember.Component.extend({
         this.attrs.deleteFile(this.get('attachment'));
       }
     },
+
+    cancelUpload() {
+      this.set('isCanceled', true);
+      this.get('cancelUpload')(this.get('attachment'));
+    },
+
 
     captionChanged() {
       if (this.attrs.captionChanged) {
@@ -81,7 +100,7 @@ export default Ember.Component.extend({
     },
 
     uploadFailed(reason){
-     console.log('uploadFailed', reason);
+      throw new Ember.Error(`Upload from browser to s3 failed: ${reason}`);
     }
   }
 });

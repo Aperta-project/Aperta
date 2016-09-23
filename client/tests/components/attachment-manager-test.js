@@ -1,7 +1,6 @@
-import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
 
-moduleForComponent('attachment-manager', 'Integration | Component | attachment manager', {
+moduleForComponent('attachment-manager', 'Unit | Component | attachment manager', {
   unit: true
 });
 
@@ -16,7 +15,7 @@ test('uploading a single file works', function(assert) {
     attrs: { uploadFinished: finishedStub }
   });
 
-  expect(6);
+  assert.expect(6);
   component.send('fileAdded', {name: 'hey'});
   assert.equal(component.get('fileUploads.firstObject.file.name'), 'hey', 'File is set');
 
@@ -43,7 +42,7 @@ test('uploading multiple files correctly maintains state', function(assert) {
     attrs: { uploadFinished: finishedStub }
   });
 
-  expect(7);
+  assert.expect(7);
 
   component.send('fileAdded', {name: 'hey'});
   component.send('fileAdded', {name: 'dude'});

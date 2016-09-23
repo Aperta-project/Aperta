@@ -1,4 +1,5 @@
 class DiscussionReply < ActiveRecord::Base
+  include ActionView::Helpers::TextHelper
   include EventStream::Notifiable
 
   belongs_to :discussion_topic, inverse_of: :discussion_replies
@@ -14,5 +15,13 @@ class DiscussionReply < ActiveRecord::Base
   def user_mentions
     @user_mentions ||=
       UserMentions.new(body, replier, permission_object: discussion_topic)
+  end
+
+  def sanitized_body
+    formatted = simple_format(strip_tags(body))
+
+    UserMentions
+      .new(formatted, replier, permission_object: discussion_topic)
+      .decorated_mentions
   end
 end

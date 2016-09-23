@@ -2,10 +2,26 @@
   {{upload-preview upload=fileUpload}}
 
 {{else}}
+  {{#if isError}}
+    <div class="processing-attachment">
+      {{error-message message=processingErrorMessage
+                      displayIcon=true
+                      displayText=true}}
 
-  {{#if isProcessing}}
+      {{#unless disabled}}
+        <a class="upload-cancel-button" {{action "deleteFile"}} title="Cancel file upload">×</a>
+      {{/unless}}
+    </div>
+  {{else if isCanceled}}
+    <div class="processing-attachment">
+      Upload canceled. Re-upload to try again
+    </div>
+  {{else if isProcessing}}
     <div class="processing-attachment">
       {{progress-spinner visible=true size="small"}} Processing {{attachment.filename}} ...
+      {{#unless disabled}}
+        <a class="upload-cancel-link" {{action "cancelUpload"}} title="Cancel file processing">cancel</a>
+      {{/unless}}
     </div>
   {{else}}
     <a href="{{attachment.src}}" class="file-link" target="_blank">

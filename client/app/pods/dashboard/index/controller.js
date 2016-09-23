@@ -87,7 +87,7 @@ export default Ember.Controller.extend({
     acceptInvitation(invitation) {
       return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
         // Force the user's papers to load
-        this.store.find('paper');
+        this.store.findAll('paper');
       });
     },
 

@@ -20,14 +20,14 @@ moduleForModel('paper', 'Unit: Paper Model', {
   }
 });
 
-test('displayTitle displays short title if title is missing', function(assert) {
+test('displayTitle displays [NO TITLE] if title is missing', function(assert) {
   var shortTitle;
   shortTitle = 'test short title';
   var paper = FactoryGuy.make("paper", {
     title: "",
     shortTitle: shortTitle
   });
-  assert.equal(paper.get('displayTitle'), shortTitle);
+  assert.equal(paper.get('displayTitle'), "[No Title]");
 });
 
 test('displayTitle displays title if present', function(assert) {

@@ -40,7 +40,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   applyTemplateReplacements(str) {
     str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
     str = str.replace(/\[AUTHOR EMAIL\]/g, this.get('task.paper.creator.email'));
-    str = str.replace(/\[PAPER TITLE\]/g, this.get('task.paper.shortTitle'));
+    str = str.replace(/\[PAPER TITLE\]/g, this.get('task.paper.displayTitle'));
     str = str.replace(/\[JOURNAL NAME\]/g, this.get('task.paper.journal.name'));
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },

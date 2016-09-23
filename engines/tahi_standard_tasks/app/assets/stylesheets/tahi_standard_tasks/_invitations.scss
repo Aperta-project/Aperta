@@ -2,30 +2,6 @@ $invite-padding-vertical: 1.5rem;
 $invite-padding-horizontal: 2rem;
 $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
-.pending-invitation {
-  .invitation-metadata {
-    font-size: 14px;
-    font-weight: bold;
-    .date {
-      font-weight: normal;
-    }
-  }
-
-  h4 {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 0px;
-  }
-
-  p, h3 {
-    margin-bottom: 20px;
-  }
-}
-
-.standard-invite-text .fileinput-button {
-  float: left;
-}
-
 .invitees, .assignments {
   width: $message-body-width;
   margin-top: 36px;
@@ -36,13 +12,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
     text-transform: capitalize;
   }
 
-  .revision-human-number {
-    border-bottom: 1px solid $tahi-grey-light;
-    td {
-      padding-top: 45px;
-      padding-bottom: 5px;
-    }
-  }
   .expired-invitations {
     &::before {
       content: '';
@@ -71,6 +40,19 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 /* Invitation body content-editable
 ---------------------------------------------------------------------------- */
 
+.invitation-item-decline-info {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.invitation-item-decline-title {
+  font-style: italic;
+}
+
+
+/* Invitation body content-editable
+---------------------------------------------------------------------------- */
+
 .invitation-show-body,
 .invitation-edit-body {
   padding: 0.75rem 1.5rem;
@@ -90,7 +72,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
      .invitation-item-header
      .invitation-item-details-loading
      .invitation-item-details
-     .invitation-item-decline-info
 ---------------------------------------------------------------------------- */
 
 .invitation-item {
@@ -101,9 +82,32 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 }
 
+.invitation-item--primary {
+  border-top-color: #B2B2B2;
+}
+
+.invitation-item--alternate {
+  position: relative;
+  border-top: 1px dashed $tahi-grey-light;
+
+  &:last-child:after {
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #B2B2B2;
+  }
+}
+
+.invitation-item--disabled {
+}
+
 /* Invitation Item Header
    .invitation-item-header
      .invitation-item-full-name
+     .invitation-item-item-status
      .invitation-item-body-preview
      .invitation-item-actions
 ---------------------------------------------------------------------------- */
@@ -112,15 +116,16 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   display: flex;
   width: 100%;
   font-size: 1.4rem;
+  cursor: pointer;
 }
 
 .invitation-item-header > * {
-  flex: 1 0 auto;
-  padding: $invite-padding-vertical 0;
+  flex: 0 0 auto;
+  padding: $invite-padding-vertical 0 $invite-padding-vertical $invite-padding-horizontal;
 }
 
-.invitation-item-header > :first-child {
-  padding-left: $invite-padding-horizontal;
+.invitation-item-spacer {
+  flex-grow: 1;
 }
 
 .invitation-item--closed {
@@ -162,6 +167,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-state--accepted {
+  .invitation-item-status,
   .invitation-item-full-name {
     font-weight: bold;
   }
@@ -173,20 +179,27 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 }
 
+.invitation-item--alternate {
+  .invitation-item-full-name {
+    padding-left: 3rem;
+
+    .alternate-link-icon {
+       padding-right: 0.3rem;
+    }
+  }
+}
+
 .invitation-item-body-preview {
   display: none;
   overflow: hidden;
-  flex: 0 1 auto;
-  padding-left: $invite-padding-horizontal;
+  flex-shrink: 1;
   cursor: pointer;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .invitation-item-full-name {
-  width: 30%;
-  flex-grow: 0;
-  padding-left: $invite-padding-horizontal;
+  width: 32%;
   cursor: pointer;
 }
 
@@ -194,21 +207,13 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-weight: bold;
 }
 
-.invitation-item-updated-at {
-  flex-grow: 2;
-  padding-left: $invite-padding-horizontal;
+.invitation-item-status {
+  width: 18%;
   cursor: pointer;
 }
 
-.invitation-state--accepted .invitation-item-updated-at {
-  font-weight: bold;
-}
-
-.invitation-item-status {
-  width: 15%;
-}
-
 .invitation-item-actions {
+  flex-basis: auto;
   padding: 0 $invite-padding-horizontal 0 0;
   text-align: right;
 }
@@ -231,11 +236,11 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item-action.invitation-item-action--disabled {
   cursor: default;
-  color: $tahi-grey-xlight;
+  color: $tahi-grey-lighter;
 
-  &:hover { color: $tahi-grey-xlight; }
+  &:hover { color: $tahi-grey-lighter; }
 
-  .fa { color: $tahi-grey-xlight; }
+  .fa { color: $tahi-grey-lighter; }
 }
 
 .invitation-item--closed {
@@ -294,6 +299,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
   .spacer { flex-grow: 1; }
 
+  .invitation-attachment-manager {
+    width: 80%;
+  }
+
   .attachment-manager {
     margin-bottom: 0;
   }
@@ -313,25 +322,35 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 
-/* Invitation Decline Info
----------------------------------------------------------------------------- */
-
-.invitation-item-decline-info {
-  padding: 0 $invite-padding-horizontal 1rem $invite-padding-horizontal;
-  color: #555;
-  font-size: 1.2rem;
-}
-
 .invite-edit-save-confirmation {
   margin-right: 30px;
   color: $tahi-grey-dark;
   font-size: 1.4rem;
 }
 
-
 /* Invitation Link Alternate
 ---------------------------------------------------------------------------- */
 
+.invitation-alternates-info {
+  padding: 1.5rem 0;
+}
+
 .invitation-link-alternate {
-  margin-top: 15px;
+  padding-top: 1.5rem;
+}
+
+.alternate-text {
+  display: inline-block;
+  margin: 0 3px 0 3px;
+}
+
+
+.invitation-revision-round {
+  margin-top: 12px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  padding: 12px 20px;
+  color: $tahi-black;
+  font-size: 20px;
+  background: $tahi-grey-xlight;
 }

@@ -5,6 +5,26 @@
     margin-left: 0;
   }
 
+  .progress-error .error-message {
+    font-size: 14px;
+    padding-right: 10px;
+  }
+
+  .upload-cancel-button {
+    color: $tahi-green;
+    font-size: 30px;
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    text-decoration: none;
+  }
+
+  .upload-cancel-link {
+    color: $tahi-green;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
   .replace-file-button {
     color: $tahi-grey;
     font-size: 1.3rem;

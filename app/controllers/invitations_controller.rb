@@ -46,7 +46,7 @@ class InvitationsController < ApplicationController
       invitation_params.merge(inviter: current_user)
     )
     if invitation_params[:state] == 'pending'
-      invitation.associate_existing_user
+      invitation.set_invitee
       invitation.save
     else
       send_and_notify(invitation)
@@ -59,7 +59,7 @@ class InvitationsController < ApplicationController
     requires_user_can(:manage_invitations, task)
     invitation.rescind!
     Activity.invitation_withdrawn!(invitation, user: current_user)
-    respond_with(invitation)
+    render json: invitation
   end
 
   def accept
@@ -98,13 +98,14 @@ class InvitationsController < ApplicationController
         :email,
         :state,
         :reviewer_suggestions,
-        :task_id)
+        :task_id,
+        :primary_id)
   end
 
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:body, :email)
+      .permit(:body, :email, :primary_id)
   end
 
   def task

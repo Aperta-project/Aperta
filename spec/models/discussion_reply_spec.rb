@@ -13,4 +13,17 @@ RSpec.describe DiscussionReply, type: :model, redis: true do
         .from(old_body).to(new_body)
     end
   end
+
+  describe "#sanitized_body" do
+    let(:input_body) { "hi \n <div>foo</foo> @steve" }
+    let(:formatted_body) { "<p>hi \n<br /> foo @steve</p>" }
+    let(:discussion_reply) { build :discussion_reply, body: input_body }
+
+    it 'strips sanitizes and formats the body and then adds at-mention links' do
+      dbl = instance_double("UserMentions")
+      expect(dbl).to receive(:decorated_mentions)
+      expect(UserMentions).to receive(:new).with(formatted_body, anything, anything).and_return(dbl)
+      discussion_reply.sanitized_body
+    end
+  end
 end

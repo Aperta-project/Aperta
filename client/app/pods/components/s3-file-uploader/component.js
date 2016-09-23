@@ -27,7 +27,7 @@
 **/
 
 import Ember from 'ember';
-import checkType from 'tahi/lib/file-upload/check-filetypes'
+import checkType from 'tahi/lib/file-upload/check-filetypes';
 
 export default Ember.Component.extend({
   attributeBindings: ['type', 'accept', 'multiple', 'name', 'disabled'],
@@ -38,6 +38,10 @@ export default Ember.Component.extend({
   disabled: false,
   accept: null,
   validateFileTypes: false,
+
+  uploadXHR: null, // set when the form submits to s3
+
+  uploadCanceled: false,
 
   init() {
     this._super(...arguments);
@@ -53,8 +57,23 @@ export default Ember.Component.extend({
     fileData.url = url;
     fileData.formData = formData;
     return fileData.process().done(() => {
-      return fileData.submit();
+      return this.set('uploadXHR', fileData.submit());
     });
+  },
+
+  uploaderCallbacks: [
+    'fileuploadadd',
+    'fileuploadstart',
+    'fileuploadprogress',
+    'fileuploaddone',
+    'fileuploadfail'
+  ],
+
+  willDestroyElement() {
+    this._super(...arguments);
+    this.$().off(this.get('uploaderCallbacks').join(' '));
+    this.set('uploadCanceled', true);
+    Ember.tryInvoke(this.get('uploadXHR'), 'abort');
   },
 
   _setupFileUpload() {
@@ -70,7 +89,7 @@ export default Ember.Component.extend({
       let file = addedFileData.files[0];
       let fileName = file.name;
       if (Ember.isPresent(acceptedFileTypes) && this.get('validateFileTypes')) {
-        Ember.assert("The addingFileFailed action must be defined if validateFileTypes is true",
+        Ember.assert('The addingFileFailed action must be defined if validateFileTypes is true',
                      !!this.attrs.addingFileFailed);
       }
       let {error, msg} = checkType(fileName, acceptedFileTypes);
@@ -97,7 +116,7 @@ export default Ember.Component.extend({
     this.$().on('fileuploadstart', (e, data) => {
       // call action uploadStarted if it's defined
       if (this.attrs.uploadStarted) {
-        this.attrs.uploadStarted();
+        this.attrs.uploadStarted(e, data, this.get('uploadXHR'));
       }
     });
 
@@ -121,6 +140,7 @@ export default Ember.Component.extend({
 
     this.$().on('fileuploadfail', (e, data) => {
       // call action uploadFailed if it's defined
+      if (this.get('uploadCanceled')) { return; }
       if (this.attrs.uploadFailed) {
         this.attrs.uploadFailed(data.errorThrown);
       }

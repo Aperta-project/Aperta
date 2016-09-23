@@ -15,9 +15,7 @@ class GroupAuthorsController < ApplicationController
     group_author.save!
 
     # render all group_authors, since position is controlled by acts_as_list
-    render json: group_author.paper,
-           serializer: PaperAuthorSerializer,
-           root: 'paper'
+    render json: author_list_payload(group_author)
   end
 
   def update
@@ -25,9 +23,7 @@ class GroupAuthorsController < ApplicationController
     group_author.update!(group_author_params)
 
     # render all group_authors, since position is controlled by acts_as_list
-    render json: group_author.paper,
-           serializer: PaperAuthorSerializer,
-           root: 'paper'
+    render json: author_list_payload(group_author)
   end
 
   def destroy
@@ -35,15 +31,20 @@ class GroupAuthorsController < ApplicationController
     group_author.destroy!
 
     # render all group_authors, since position is controlled by acts_as_list
-    render json: group_author.paper,
-           serializer: PaperAuthorSerializer,
-           root: 'paper'
+    render json: author_list_payload(group_author)
   end
 
   private
 
   def group_author
     @group_author ||= GroupAuthor.includes(:author_list_item).find(params[:id])
+  end
+
+  def author_list_payload(group_author)
+    serializer = PaperAuthorSerializer.new(group_author.paper, root: 'paper')
+    hash = serializer.as_json
+    hash.delete("paper")
+    hash
   end
 
   def group_author_params

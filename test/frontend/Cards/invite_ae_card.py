@@ -46,8 +46,6 @@ class InviteAECard(BaseCard):
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
     self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
     self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
-    #self._reason = (By.CLASS_NAME, 'invitation-item-body-preview')
-    #self._suggestions = (By.CLASS_NAME, 'invitation-reviewer-suggestions')
 
   # POM Actions
   def invite_ae(self, user):
@@ -117,15 +115,11 @@ class InviteAECard(BaseCard):
       assert 'Abstract is not available' in invite_text, invite_text
     self._get(self._edit_save_invitation_btn).click()
     time.sleep(1)
-    #invitee = self._get(self._invitee_listing)
-    #invitee.find_element(*self._invitee_avatar)
     invitees = self._gets(self._invitee_listing)
     assert any(ae['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(ae['name'], [x.text for x in invitees])
-    #invitees[0].find_element(*self._invitee_updated_at)
     self._get(self._invitee_updated_at)
-    # MAKE THE ACTUAL INVITATION
-    #invitation-item-action-send
+    # Make the actual invitation
     self._get(self._send_invitation_button).click()
     time.sleep(2)
     assert any('Invited' in s for s in [x.text for x in invitees]), \

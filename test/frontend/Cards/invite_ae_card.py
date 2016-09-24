@@ -137,7 +137,14 @@ class InviteAECard(BaseCard):
     """
     time.sleep(2)
     invitee = self._get(self._invitee_listing)
-    pagefullname = invitee.find_element(*self._invitee_full_name)
+    pagefullname = False
+    count = 0
+    while not pagefullname:
+      pagefullname = invitee.find_element(*self._invitee_full_name)
+      count += 1
+      time.sleep(.5)
+      if count > 60:
+        raise(StandardError, 'Full name not present, aborting')
     assert ae['name'] in pagefullname.text
     status = invitee.find_element(*self._invitee_state)
     assert response in ['Accept', 'Decline'], response

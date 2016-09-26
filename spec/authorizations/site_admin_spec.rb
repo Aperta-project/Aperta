@@ -45,26 +45,118 @@ describe 'Site admins have ALL the permissions' do
       end
     end
 
-    describe 'filter_authorized' do
+    describe '#filter_authorized' do
       it 'returns its inputs for a single instance' do
         expect(user.filter_authorized(:view, paper1).objects)
           .to contain_exactly(paper1)
       end
 
-      it 'returns all instances when a class is passed in' do
-        query = user.filter_authorized(:view, Authorizations::FakePaper)
-        expect(query.objects).to eq(Authorizations::FakePaper.all)
+      context 'when a class is passed in' do
+        it 'returns no instances by default' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper
+          )
+          expect(query.objects).to eq([])
+        end
+
+        it 'returns no instances when participations_only is true' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper,
+            participations_only: true
+          )
+          expect(query.objects).to eq([])
+        end
+
+        it 'returns all instances participations_only is false' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper,
+            participations_only: false
+          )
+          expect(query.objects).to eq(Authorizations::FakePaper.all)
+        end
       end
 
-      it 'returns the same instances when a relation is passed in' do
-        query = user.filter_authorized(:view, Authorizations::FakePaper.all)
-        expect(query.objects).to eq(Authorizations::FakePaper.all)
+      context 'when a relation is passed in' do
+        it 'returns no instances by default' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.all
+          )
+          expect(query.objects).to eq([])
 
-        query = user.filter_authorized(
-          :view,
-          Authorizations::FakePaper.where(id: [paper2.id, paper3.id])
-        )
-        expect(query.objects).to contain_exactly(paper2, paper3)
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.where(id: [paper2.id, paper3.id])
+          )
+          expect(query.objects).to eq([])
+        end
+
+        it 'returns no instances when participations_only is true' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.all,
+            participations_only: true
+          )
+          expect(query.objects).to eq([])
+
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.where(id: [paper2.id, paper3.id]),
+            participations_only: true
+          )
+          expect(query.objects).to eq([])
+        end
+
+        it 'returns all instances when participations_only is false' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.all,
+            participations_only: false
+          )
+          expect(query.objects).to eq(Authorizations::FakePaper.all)
+
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.where(id: [paper2.id, paper3.id]),
+            participations_only: false
+          )
+          expect(query.objects).to contain_exactly(paper2, paper3)
+        end
+      end
+
+      context <<-DESC.strip_heredoc do
+        when the user assigned to the Site Admin role has another
+        assignment that allows them to participate
+
+        This is so that a user can fill dual purposes in the system. E.g.
+        a system-level user who has access to everything, but whom participates
+        in nothing AND a non-system-level user who may be a participant in a
+        paper, task, discussion, etc.
+      DESC
+        let(:paper_role) { FactoryGirl.create(:role) }
+
+        before do
+          paper_role.ensure_permission_exists :view, applies_to: Authorizations::FakePaper
+          user.assign_to! assigned_to: paper1, role: paper_role
+        end
+
+        it 'returns the records they are participating in' do
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.all
+          )
+          expect(query.objects).to contain_exactly(paper1)
+
+          query = user.filter_authorized(
+            :view,
+            Authorizations::FakePaper.all,
+            participations_only: true
+          )
+          expect(query.objects).to contain_exactly(paper1)
+        end
       end
 
       it 'generates the correct json' do

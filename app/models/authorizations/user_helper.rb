@@ -33,7 +33,9 @@ module Authorizations
     end
 
     def can?(permission, target)
-      filter_authorized(permission, target).objects.length > 0
+      filter_authorized(
+        permission, target, participations_only: false
+      ).objects.length > 0
     end
 
     def filter_authorized(permission, target, participations_only: :default)

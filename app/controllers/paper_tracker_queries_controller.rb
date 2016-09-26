@@ -37,7 +37,11 @@ class PaperTrackerQueriesController < ApplicationController
   end
 
   def journals
-    current_user.filter_authorized(:view_paper_tracker, Journal).objects
+    current_user.filter_authorized(
+      :view_paper_tracker,
+      Journal,
+      participations_only: false
+    ).objects
   end
 
   def authorize

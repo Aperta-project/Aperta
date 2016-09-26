@@ -13,29 +13,40 @@ class AffiliationsController < ApplicationController
   end
 
   def for_user
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user.id == params[:user_id] ||
+      requires_user_can(:manage_users, Journal)
+
     render json: Affiliation.where(user_id: params[:user_id])
   end
 
   def show
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user == affiliation.user ||
+      requires_user_can(:manage_users, Journal)
+
     render json: affiliation
   end
 
   def update
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user == affiliaiton.user &&
+      curent_user.id == affiliation_params[:user_id] ||
+      requires_user_can(:manage_users, Journal)
+
     affiliation.update_attributes! affiliation_params
     respond_with affiliation
   end
 
   def create
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user == user &&
+      curent_user.id == affiliation_params[:user_id] ||
+      requires_user_can(:manage_users, Journal)
+
     new_affiliation = user.affiliations.create!(affiliation_params)
     render json: new_affiliation
   end
 
   def destroy
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user == affiliation.user ||
+      requires_user_can(:manage_users, Journal)
 
     if affiliation.try(:destroy)
       render json: true
@@ -46,34 +57,10 @@ class AffiliationsController < ApplicationController
 
   private
 
-  def require_current_user_or_user_can(action, object)
-    current_user_accessing_their_own_record? ||
-      requires_user_can(action, object)
-  end
-
   def user
-    User.find(params[:user_id] || affiliation_params[:user_id])
-  end
-
-  def current_user_accessing_their_own_record?
-    return false if current_user_listing_affiliations
-    return false if current_user_showing_affiliation
-    return false if affiliation_user_matches_current_user
-
-    true
-  end
-
-  def current_user_listing_affiliations
-    params[:user_id] && current_user.id != params[:user_id]
-  end
-
-  def current_user_showing_affiliation
-    params[:id] && current_user.id != affiliation.user_id
-  end
-
-  def affiliation_user_matches_current_user
-    params[:affiliation].try(:user_id) &&
-      current_user.id != affiliation_params[:user_id]
+    @user ||= begin
+      User.find(params[:user_id] || affiliation_params[:user_id])
+    end
   end
 
   def affiliation

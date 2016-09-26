@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import DragNDrop from 'tahi/services/drag-n-drop';
 
 const {
   Component,
@@ -13,7 +14,7 @@ const {
  *
  */
 
-export default Component.extend({
+export default Component.extend(DragNDrop.DraggableMixin, {
   classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass', 'disabled:invitation-item--disabled'],
 
   propTypes: {
@@ -31,6 +32,15 @@ export default Component.extend({
       return true;
     }
   }),
+
+  model: computed.alias('invitation'),
+  dragStart(e) {
+    e.dataTransfer.effectAllowed = 'move';
+    DragNDrop.dragItem = this.get('invitation');
+    // REQUIRED for Firefox to let something drag
+    // http://html5doctor.com/native-drag-and-drop
+    e.dataTransfer.setData('Text', 'authorid');
+  },
 
   invitationStateClass: computed('invitation.state', function() {
     return 'invitation-state--' + this.get('invitation.state');

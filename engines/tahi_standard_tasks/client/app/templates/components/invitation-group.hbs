@@ -22,6 +22,10 @@
                      alternateQueuing=true}}
 {{/each}}
 
+  {{invitation-drop-target index=0
+                       model=invitation
+                       isEditable=true
+  }}
 {{#each mainQueueInvitations as |invitation|}}
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
@@ -33,3 +37,7 @@
                           activeInvitation=activeInvitation
                           activeInvitationState=activeInvitationState}}
 {{/each}}
+  {{invitation-drop-target index=1
+                       model=invitation
+                       isEditable=true
+  }}

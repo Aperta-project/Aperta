@@ -8,34 +8,12 @@
 # subsystem that a user assigned to a Journal trying to access Paper will
 # route thru the association called :papers on the Journal class.
 #
+# The only exception to this rule right are the System-level assignments.
+# This is because the System-level assignment is only used for Site Admins (aka _superusers_).
+# The authorization sub-system does not need to look up these routes for site admins
+# even though the routes for them are supplied below. 
+#
 Authorizations.configure do |config|
-  #
-  # System-level access
-  #
-  config.assignment_to(
-    System,
-    authorizes: Journal,
-    via: :journals
-  )
-
-  config.assignment_to(
-    System,
-    authorizes: Paper,
-    via: :papers
-  )
-
-  config.assignment_to(
-    System,
-    authorizes: Task,
-    via: :tasks
-  )
-
-  config.assignment_to(
-    System,
-    authorizes: DiscussionTopic,
-    via: :discussion_topics
-  )
-
   #
   # Journal level access
   #

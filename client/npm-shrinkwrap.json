@@ -13765,6 +13765,20 @@
       "version": "4.0.11",
       "from": "loader.js@>=4.0.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/loader.js/-/loader.js-4.0.11.tgz"
+    },
+    "ember-prop-types": {
+      "version": "3.0.0",
+      "from": "ember-prop-types@*",
+      "dependencies": {
+        "ember-get-config": {
+          "version": "0.1.7",
+          "from": "ember-get-config@0.1.7"
+        },
+        "npm-install-security-check": {
+          "version": "1.0.4",
+          "from": "npm-install-security-check@>=1.0.0 <2.0.0"
+        }
+      }
     }
   }
 }

@@ -12,19 +12,57 @@ from frontend.Cards.basecard import BaseCard
 
 __author__ = 'sbassi@plos.org'
 
-class InviteAECard(InviteCard):
+class InviteCard(BaseCard):
   """
-  Page Object Model for Invite AE Card
+  Abstract class for Page Object Model of all types of Invite cards
   """
   def __init__(self, driver):
-    super(InviteAECard, self).__init__(driver)
+    super(InviteCard, self).__init__(driver)
 
     # Locators - Instance members
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
+    self._send_invitation_button = (By.CLASS_NAME, 'invitation-item-action-send')
+    self._rescind_button = (By.CSS_SELECTOR, 'span.invitation-item-action-text')
+    self._recipient_field = (By.ID, 'invitation-recipient')
+    self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
+    self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')
+    self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
+    self._edit_save_invitation_btn = (By.CLASS_NAME, 'invitation-save-button')
+    self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
+    self._edit_invite_text_save = (By.CSS_SELECTOR, 'button.invitation-save-button')
+
+    # new action buttons
+    self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
+    self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
+    self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
+
+    self._invitees_table = (By.CLASS_NAME, 'invitees')
+    # There can be an arbitrary number of invitees, but once one is accepted, all others are
+    #   revoked - we retain information about revoked invitations.
+    self._invitee_listing = (By.CLASS_NAME, 'invitation-item')
 
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
-    self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
+    self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
+    self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
+    self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
+
+  # POM Actions
+  def invite(self, user):
+    """
+    This method invites the user that is passed as parameter
+    :user: User to send the invitation
+    """
+    time.sleep(.5)
+    self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
+    self._get(self._compose_invitation_button).click()
+    time.sleep(1)
+    self._get(self._edit_invite_text_save).click()
+    time.sleep(1)
+    self._get(self._invite_send_invite_button).click()
+    time.sleep(1)
+    self.click_completion_button()
+    self.click_close_button()
 
   def validate_invite_ae(self, ae, title, creator, manu_id):
     """

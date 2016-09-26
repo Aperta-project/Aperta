@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
 from Base.PostgreSQL import PgSQL
-from frontend.Cards.basecard import BaseCard
+from frontend.Cards.invite_card import InviteCard
 
 __author__ = 'sbassi@plos.org'
 
@@ -25,102 +25,6 @@ class InviteAECard(InviteCard):
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
     self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
-
-  def validate_invite_ae(self, ae, title, creator, manu_id):
-    """
-    Invites the Academic Editor (AE) that is passed as parameter, verifying the composed email.
-      Makes function and style validations.
-    :param ae: user to invite as AE specified as email, or, if in system, name,
-        or username
-    :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
-    :param creator: user object of the creator of the manuscript
-    :param manu_id: paper id of the manuscript
-    :return void function
-    """
-    time.sleep(.5)
-    self._get(self._recipient_field).send_keys(ae['email'] + Keys.ENTER)
-    self._get(self._compose_invitation_button).click()
-    time.sleep(2)
-
-    invite_headings = self._gets(self._edit_invite_heading)
-    # Since the AE is potentially off system, we can only validate email
-    invite_headings_text = [x.text for x in invite_headings]
-    assert any(ae['email'] in s for s in invite_headings_text), \
-        '{0} not found in {1}'.format(ae['email'], invite_headings_text)
-    invite_text = self._get(self._edit_invite_textarea).text
-    # Always remember that our ember text always normalizes whitespaces down to one
-    #  Painful lesson
-    title = re.sub(r'[ \t\f\v]+', ' ', title)
-    # and need to scrub latin-1 non-breaking spaces
-    title = re.sub(u'\xa0', u' ', title)
-    assert title in invite_text, \
-        title + '\nNot found in \n' + invite_text
-    assert 'PLOS Wombat' in invite_text, invite_text
-    assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
-    creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
-    abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (manu_id,))[0][0]
-    if abstract is not None:
-      # strip html, and remove whitespace
-      # NOTA BENE: BeautifulSoup4 inherently handles str to unicode conversion
-      abstract = self.get_text(abstract).strip()
-    if abstract is not None:
-      # Always remember that our ember text always normalizes whitespaces down to one
-      #  Painful lesson
-      abstract = re.sub(r'[ \t\f\v]+', ' ', abstract)
-      # It also removes trailing spaces
-      abstract = re.sub(r'[ \t\f\v]+\n', r'\n', abstract)
-      # and need to scrub latin-1 non-breaking spaces
-      abstract = re.sub(u'\xa0', u' ', abstract)
-      assert abstract in invite_text, abstract + '\nNot equal to\n' + invite_text
-    else:
-      assert 'Abstract is not available' in invite_text, invite_text
-    self._get(self._edit_save_invitation_btn).click()
-    time.sleep(1)
-    invitees = self._gets(self._invitee_listing)
-    assert any(ae['name'] in s for s in [x.text for x in invitees]), \
-        '{0} not found in {1}'.format(ae['name'], [x.text for x in invitees])
-    self._get(self._invitee_updated_at)
-    # Make the actual invitation
-    self._get(self._send_invitation_button).click()
-    time.sleep(2)
-    assert any('Invited' in s for s in [x.text for x in invitees]), \
-        'Invited not found in {0}'.format([x.text for x in invitees])
-    self._gets(self._rescind_button)
-
-  def validate_ae_response(self, ae, response, reason='N/A', suggestions='N/A'):
-    """
-    This method invites the Academic Editor (AE) that is passed as parameter, verifying
-      the composed email. It then checks the table of invited AE.
-    :param ae: user to invite as reviewer specified as email, or, if in system, name,
-        or username
-    :param response: The reviewers response to the invitation
-    :return void function
-    """
-    time.sleep(2)
-    invitee = self._get(self._invitee_listing)
-    pagefullname = False
-    count = 0
-    while not pagefullname:
-      pagefullname = invitee.find_element(*self._invitee_full_name)
-      count += 1
-      time.sleep(.5)
-      if count > 60:
-        raise(StandardError, 'Full name not present, aborting')
-    assert ae['name'] in pagefullname.text
-    status = invitee.find_element(*self._invitee_state)
-    assert response in ['Accept', 'Decline'], response
-    if response == 'Accept':
-      assert 'Accepted' in status.text, status.text
-    elif response == 'Decline':
-      # Need to extend box to display text
-      assert 'Decline' in status.text, status.text
-      status.click()
-      reason_suggestions = self._get(self._reason_suggestions).text
-      reason_suggestions = self.normalize_spaces(reason_suggestions)
-      assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)
-      assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
-                                                                         reason_suggestions)
 
   def check_style(self, user, paper_id):
     """

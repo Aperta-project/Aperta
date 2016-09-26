@@ -43,6 +43,7 @@ class InviteAECardTest(CommonTest):
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
+                        doc='NMR_for_submission_7_Feb_2011.doc',
                         )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
@@ -84,12 +85,12 @@ class InviteAECardTest(CommonTest):
                            encoding='utf-8',
                            errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
-    invite_ae_card.validate_invite_ae(academic_editor_login,
+    invite_ae_card.validate_invite(academic_editor_login,
                                           manuscript_title,
                                           creator_user,
                                           paper_id)
     # Invite a second user to delete
-    invite_ae_card.validate_invite_ae(pub_svcs_login,
+    invite_ae_card.validate_invite(pub_svcs_login,
                                       manuscript_title,
                                       creator_user,
                                       paper_id)

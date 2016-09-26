@@ -73,6 +73,9 @@ class DiscussionsPage < Page
   end
 
   def submit_comment
+    # send focus event so submit button appears. For some reason it needs to be
+    # sent twice.
+    2.times { page.execute_script("$('#{new_comment_field}').focus()") }
     find(new_comment_field).send_keys(:tab)
     find('button.new-comment-submit-button').click
   end

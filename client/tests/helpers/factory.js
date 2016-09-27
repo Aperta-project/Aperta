@@ -32,7 +32,7 @@ Factory = {
     }
     baseAttrs = FactoryAttributes[type];
     if (!baseAttrs) {
-      throw "No factory exists in FactoryAttributes for type: " + type + ". You may need to define this.";
+      throw 'No factory exists in FactoryAttributes for type: ' + type + '. You may need to define this.';
     }
     return _.defaults(recordAttrs, baseAttrs);
   },
@@ -61,7 +61,7 @@ Factory = {
       options = {};
     }
     keyName = options.keyName || sourceModel._rootKey;
-    model[keyName + "_id"] = sourceModel.id;
+    model[keyName + '_id'] = sourceModel.id;
     if (inverseKeyName = options.inverse) {
       this.setForeignKey(sourceModel, model, {
         keyName: inverseKeyName
@@ -88,7 +88,7 @@ Factory = {
     keyName = options.keyName || _.first(models)._rootKey;
     deNamespace = deNamespaceTaskType;
     if (options.embed) {
-      key = keyName + "s";
+      key = keyName + 's';
       modelIds = _.map(models, function(t) {
         return {
           id: t.id,
@@ -96,8 +96,8 @@ Factory = {
         };
       });
     } else {
-      key = keyName + "_ids";
-      modelIds = _.pluck(models, "id");
+      key = keyName + '_ids';
+      modelIds = _.pluck(models, 'id');
     }
     if (options.merge) {
       this.mergeArrays(model, key, modelIds);
@@ -166,7 +166,7 @@ Factory = {
       if (records.length > 0) {
         var singularRecord = payload[typeName];
         delete payload[typeName];
-        return payload[typeName + "s"] = records.concat(Ember.makeArray(singularRecord));;
+        return payload[typeName + 's'] = records.concat(Ember.makeArray(singularRecord));
       }
     });
     return payload;
@@ -308,8 +308,8 @@ Factory = {
       lite_paper_id: paper.id
     }));
     newTask.links = {
-      nested_questions: "/api/tasks/" + newTask.id + "/nested_questions",
-      nested_question_answers: "/api/tasks/" + newTask.id + "/nested_question_answers"
+      nested_questions: '/api/tasks/' + newTask.id + '/nested_questions',
+      nested_question_answers: '/api/tasks/' + newTask.id + '/nested_question_answers'
     };
     this.addHasMany(paper, [newTask], {
       inverse: 'paper',
@@ -377,10 +377,10 @@ FactoryAttributes = {};
 FactoryAttributes.User = {
   _rootKey: 'user',
   id: null,
-  full_name: "Fake User",
-  avatar_url: "/images/profile-no-image.png",
-  username: "fakeuser",
-  email: "fakeuser@example.com",
+  full_name: 'Fake User',
+  avatar_url: '/images/profile-no-image.png',
+  username: 'fakeuser',
+  email: 'fakeuser@example.com',
   siteAdmin: false,
   affiliation_ids: []
 };
@@ -388,9 +388,9 @@ FactoryAttributes.User = {
 FactoryAttributes.Journal = {
   _rootKey: 'journal',
   id: null,
-  name: "Fake Journal",
-  logo_url: "/images/no-journal-image.gif",
-  paper_types: ["Research"],
+  name: 'Fake Journal',
+  logo_url: '/images/no-journal-image.gif',
+  paper_types: ['Research'],
   journal_task_type_ids: [],
   manuscript_manager_template_ids: [],
   old_role_ids: [],
@@ -403,9 +403,9 @@ FactoryAttributes.Journal = {
 FactoryAttributes.AdminJournal = {
   _rootKey: 'admin_journal',
   id: null,
-  name: "Fake Journal",
-  logo_url: "/images/no-journal-image.gif",
-  paper_types: ["Research"],
+  name: 'Fake Journal',
+  logo_url: '/images/no-journal-image.gif',
+  paper_types: ['Research'],
   journal_task_type_ids: [],
   manuscript_manager_template_ids: [],
   old_role_ids: [],
@@ -430,8 +430,8 @@ FactoryAttributes.OldRole = {
 FactoryAttributes.Author = {
   _rootKey: 'author',
   id: null,
-  first_name: "Dave",
-  last_name: "Thomas",
+  first_name: 'Dave',
+  last_name: 'Thomas',
   paper_id: null,
   position: 1
 };
@@ -439,11 +439,11 @@ FactoryAttributes.Author = {
 FactoryAttributes.Paper = {
   _rootKey: 'paper',
   id: 1,
-  short_title: "Paper",
-  title: "Foo",
+  short_title: 'Paper',
+  title: 'Foo',
   body: null,
-  publishing_state: "submitted",
-  paper_type: "Research",
+  publishing_state: 'submitted',
+  paper_type: 'Research',
   status: null,
   phase_ids: [],
   figure_ids: [],
@@ -459,22 +459,22 @@ FactoryAttributes.Paper = {
 FactoryAttributes.LitePaper = {
   _rootKey: 'paper',
   id: null,
-  title: "Foo",
+  title: 'Foo',
   paper_id: null,
-  short_title: "Paper",
-  publishing_state: "submitted",
+  short_title: 'Paper',
+  publishing_state: 'submitted',
   oldRoles: []
 };
 
 FactoryAttributes.MessageTask = {
   _rootKey: 'task',
   id: null,
-  title: "Message Time",
-  type: "MessageTask",
+  title: 'Message Time',
+  type: 'MessageTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  oldRole: "author",
+  paper_title: 'Foo',
+  oldRole: 'author',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -486,12 +486,12 @@ FactoryAttributes.MessageTask = {
 FactoryAttributes.Task = {
   _rootKey: 'task',
   id: null,
-  title: "Base Task",
-  type: "Task",
+  title: 'Base Task',
+  type: 'Task',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  oldRole: "admin",
+  paper_title: 'Foo',
+  oldRole: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -504,12 +504,12 @@ FactoryAttributes.Task = {
 FactoryAttributes.AdHocTask = {
   _rootKey: 'ad_hoc_task',
   id: null,
-  title: "AdHoc Task",
-  type: "AdHocTask",
+  title: 'AdHoc Task',
+  type: 'AdHocTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  oldRole: "user",
+  paper_title: 'Foo',
+  oldRole: 'user',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -522,12 +522,12 @@ FactoryAttributes.AdHocTask = {
 FactoryAttributes.ReviewerReportTask = {
   _rootKey: 'task',
   id: null,
-  title: "Reviewer Report by Reviewer User",
-  type: "ReviewerReportTask",
+  title: 'Reviewer Report by Reviewer User',
+  type: 'ReviewerReportTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  old_role: "reviewer",
+  paper_title: 'Foo',
+  old_role: 'reviewer',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -539,12 +539,12 @@ FactoryAttributes.ReviewerReportTask = {
 FactoryAttributes.FrontMatterReviewerReportTask = {
   _rootKey: 'task',
   id: null,
-  title: "Front Matter Reviewer Report by Reviewer User",
-  type: "FrontMatterReviewerReportTask",
+  title: 'Front Matter Reviewer Report by Reviewer User',
+  type: 'FrontMatterReviewerReportTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  old_role: "reviewer",
+  paper_title: 'Foo',
+  old_role: 'reviewer',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -556,12 +556,12 @@ FactoryAttributes.FrontMatterReviewerReportTask = {
 FactoryAttributes.ReviseTask = {
   _rootKey: 'task',
   id: null,
-  title: "Revise Task",
-  type: "ReviseTask",
+  title: 'Revise Task',
+  type: 'ReviseTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  old_role: "admin",
+  paper_title: 'Foo',
+  old_role: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -573,12 +573,12 @@ FactoryAttributes.ReviseTask = {
 FactoryAttributes.BillingTask = {
   _rootKey: 'task',
   id: null,
-  title: "Billing",
-  type: "BillingTask",
+  title: 'Billing',
+  type: 'BillingTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  old_role: "admin",
+  paper_title: 'Foo',
+  old_role: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -593,12 +593,12 @@ FactoryAttributes.BillingTask = {
 FactoryAttributes.FigureTask = {
   _rootKey: 'task',
   id: null,
-  title: "Figures",
-  type: "FigureTask",
+  title: 'Figures',
+  type: 'FigureTask',
   completed: false,
   body: [],
-  paper_title: "Foo",
-  old_role: "admin",
+  paper_title: 'Foo',
+  old_role: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -619,13 +619,13 @@ FactoryAttributes.FinancialDisclosureTask = {
   id: null,
   lite_paper_id: null,
   paper_id: null,
-  paper_title: "Test",
+  paper_title: 'Test',
   participation_ids: [],
   phase_id: null,
   question_ids: [],
-  old_role: "author",
-  title: "Financial Disclosure",
-  type: "FinancialDisclosureTask"
+  old_role: 'author',
+  title: 'Financial Disclosure',
+  type: 'FinancialDisclosureTask'
 };
 
 FactoryAttributes.Funder = {
@@ -635,9 +635,9 @@ FactoryAttributes.Funder = {
   funder_influence_description: null,
   grant_number: null,
   id: null,
-  name: "Monsanto",
+  name: 'Monsanto',
   task_id: null,
-  website: "www.monsanto.com"
+  website: 'www.monsanto.com'
 };
 
 FactoryAttributes.ReportingGuidelinesTask = {
@@ -648,14 +648,14 @@ FactoryAttributes.ReportingGuidelinesTask = {
   id: null,
   lite_paper_id: null,
   paper_id: null,
-  paper_title: "Test",
+  paper_title: 'Test',
   participation_ids: [],
   phase_id: null,
   question_ids: [],
   assigned_to_me: true,
-  old_role: "author",
-  title: "Reporting Guidelines",
-  type: "ReportingGuidelinesTask"
+  old_role: 'author',
+  title: 'Reporting Guidelines',
+  type: 'ReportingGuidelinesTask'
 };
 
 FactoryAttributes.AuthorsTask = {
@@ -666,14 +666,14 @@ FactoryAttributes.AuthorsTask = {
   id: null,
   lite_paper_id: null,
   paper_id: null,
-  paper_title: "Test",
+  paper_title: 'Test',
   participation_ids: [],
   phase_id: null,
   question_ids: [],
   assigned_to_me: true,
-  old_role: "author",
-  title: "Authors",
-  type: "AuthorsTask"
+  old_role: 'author',
+  title: 'Authors',
+  type: 'AuthorsTask'
 };
 
 FactoryAttributes.TitleAndAbstractTask = {
@@ -684,14 +684,14 @@ FactoryAttributes.TitleAndAbstractTask = {
   id: null,
   lite_paper_id: null,
   paper_id: null,
-  paper_title: "Test",
+  paper_title: 'Test',
   participation_ids: [],
   phase_id: null,
   question_ids: [],
   assigned_to_me: true,
-  old_role: "editor",
-  title: "Title And Abstract",
-  type: "TitleAndAbstractTask"
+  old_role: 'editor',
+  title: 'Title And Abstract',
+  type: 'TitleAndAbstractTask'
 };
 
 FactoryAttributes.Comment = {
@@ -699,7 +699,7 @@ FactoryAttributes.Comment = {
   id: null,
   commenter_id: null,
   task_id: null,
-  body: "A sample comment",
+  body: 'A sample comment',
   created_at: null,
   comment_look_ids: []
 };
@@ -715,7 +715,7 @@ FactoryAttributes.CommentLook = {
 FactoryAttributes.Phase = {
   _rootKey: 'phase',
   id: null,
-  name: "Submission Data",
+  name: 'Submission Data',
   position: null,
   paper_id: null,
   tasks: []
@@ -724,7 +724,7 @@ FactoryAttributes.Phase = {
 FactoryAttributes.ManuscriptManagerTemplate = {
   _rootKey: 'manuscript_manager_template',
   id: null,
-  paper_type: "Research",
+  paper_type: 'Research',
   phase_template_ids: [],
   journal_id: null
 };
@@ -734,7 +734,7 @@ FactoryAttributes.PhaseTemplate = {
   id: null,
   position: 1,
   manuscript_manager_template_id: null,
-  name: "Phase 1",
+  name: 'Phase 1',
   task_template_ids: []
 };
 
@@ -751,7 +751,7 @@ FactoryAttributes.TaskTemplate = {
   _rootKey: 'task_template',
   id: null,
   template: [],
-  title: "Journal Task Template",
+  title: 'Journal Task Template',
   phase_template_id: null,
   journal_task_type_id: null
 };
@@ -759,7 +759,7 @@ FactoryAttributes.TaskTemplate = {
 FactoryAttributes.TaskType = {
   _rootKey: 'task_type',
   id: null,
-  kind: "Task"
+  kind: 'Task'
 };
 
 FactoryAttributes.Participation = {

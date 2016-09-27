@@ -28,7 +28,7 @@ describe Task do
   end
 
   describe '#add_participant' do
-    subject(:task) { FactoryGirl.create :task, paper: paper }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
     let(:user) { FactoryGirl.create :user }
 
@@ -48,7 +48,7 @@ describe Task do
   end
 
   describe '#assignments' do
-    subject(:task) { FactoryGirl.create :task }
+    subject(:task) { FactoryGirl.create :ad_hoc_task }
 
     before do
       Assignment.create!(
@@ -68,7 +68,7 @@ describe Task do
   end
 
   describe '#participations' do
-    subject(:task) { FactoryGirl.create :task, paper: paper }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     let!(:participant_assignment) do
@@ -94,7 +94,7 @@ describe Task do
   end
 
   describe '#participants' do
-    subject(:task) { FactoryGirl.create :task, paper: paper }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     let!(:participant_assignment) do

@@ -100,11 +100,15 @@
 }
 
 .inline-edit-body-part.text {
-  [contenteditable] {
+
+  .item-text .editable {
     border: 1px solid #ccc;
     border-radius: 5px;
-    background: #EEE;
     min-height: 5rem;
+    background: #EEE;
+    &[contenteditable] {
+      background: none;
+    }
   }
 }
 

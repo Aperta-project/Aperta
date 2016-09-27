@@ -486,12 +486,30 @@ FactoryAttributes.MessageTask = {
 FactoryAttributes.Task = {
   _rootKey: 'task',
   id: null,
-  title: "AdHoc Task",
+  title: "Base Task",
   type: "Task",
   completed: false,
   body: [],
   paper_title: "Foo",
   oldRole: "admin",
+  phase_id: null,
+  paper_id: null,
+  lite_paper_id: null,
+  assignee_ids: [],
+  assigned_to_me: true,
+  participant_ids: [],
+  comment_ids: []
+};
+
+FactoryAttributes.AdHocTask = {
+  _rootKey: 'ad_hoc_task',
+  id: null,
+  title: "AdHoc Task",
+  type: "AdHocTask",
+  completed: false,
+  body: [],
+  paper_title: "Foo",
+  oldRole: "user",
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,

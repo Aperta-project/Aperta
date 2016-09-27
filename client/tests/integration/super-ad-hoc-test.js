@@ -35,6 +35,7 @@ module('Integration: Super AdHoc Card', {
 
     let records = paperWithTask('Task', {
       id: 1,
+      type: 'AdHocTask',
       title: 'Super Ad-Hoc'
     });
 

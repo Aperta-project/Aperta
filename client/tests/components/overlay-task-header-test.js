@@ -10,7 +10,7 @@ moduleForComponent('overlay-task-header', 'Integration | Component | overlay tas
     this.set('displayTask', Ember.Object.create({
       id: 'id-1',
       title: 'Adhoc Task',
-      type: 'Task',
+      type: 'AdHocTask',
       paper: Ember.Object.create({
         id: 'id-2',
         index: 'papers',

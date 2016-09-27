@@ -310,24 +310,85 @@ module Authorizations
       # puts '--------------------------------------------------------'
       u = union(queries2union.first.with(composed_a2), queries2union[1..-1])
 
+      table = {
+        roles: Role.arel_table,
+        permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
+        permissions: Permission.arel_table,
+        permission_requirements: PermissionRequirement.arel_table,
+        permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
+        permission_states: PermissionState.arel_table,
+        results_1: Arel::Table.new(:tasks),
+        results_with_permissions: Arel::Table.new(:results_with_permissions)
+      }
+
       sm = Arel::SelectManager.new(klass.arel_table.engine).
-        project(klass.arel_table.primary_key).
+        project(
+          klass.arel_table.primary_key,
+          Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions")
+        ).
         from( Arel.sql(u.to_sql).as('tasks') ).
-        outer_join(PermissionRequirement.arel_table).on(
-          PermissionRequirement.arel_table[:required_on_type].eq(klass.name).and(
-            PermissionRequirement.arel_table[:required_on_id].eq(klass.arel_table.primary_key)
+        outer_join(table[:permission_requirements]).on(
+          table[:permission_requirements][:required_on_type].eq(klass.name).and(
+            table[:permission_requirements][:required_on_id].eq(klass.arel_table.primary_key)
           )
         ).
-        where(klass.arel_table.primary_key.not_eq(nil).or(
-          PermissionRequirement.arel_table.primary_key.eq(nil).and(
+        join(table[:roles]).on(
+          table[:roles][:id].eq(table[:results_1][:role_id])
+        ).
+        join(table[:permissions_roles]).on(
+          table[:permissions_roles][:role_id].eq(table[:roles][:id])
+        ).
+        join(table[:permissions]).on(
+          table[:permissions][:id].eq(table[:permissions_roles][:permission_id])
+        ).
+        join(table[:permission_states_permissions]).on(
+          table[:permission_states_permissions][:permission_id].eq(table[:permissions][:id])
+        ).
+        join(table[:permission_states]).on(
+          table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
+        ).
+        where(klass.arel_table.primary_key.not_eq(nil).and(
+          PermissionRequirement.arel_table.primary_key.eq(nil).or(
             PermissionRequirement.arel_table[:permission_id].eq(klass.arel_table[:permission_id])
           )
         )).
-        group(klass.arel_table.primary_key) ; true
-      sql = sm.to_sql
-      objects = klass.where(id: klass.find_by_sql(sm.to_sql).map(&:id))
+        group(klass.arel_table.primary_key)
 
-      ResultSet.new.tap { |rs| rs.add_objects(objects) }
+# SELECT * FROM (
+# SELECT tasks.id, string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions
+# --  ,max(permission_requirements.required_on_id)
+# FROM (
+# binding.pry
+      sm2 = Arel::SelectManager.new(klass.arel_table.engine).
+        project(klass.arel_table[Arel.star], 'permission_actions').
+        from( Arel.sql('(' + sm.to_sql + ')').as('results_with_permissions') ).
+        join(klass.arel_table).on(klass.arel_table[:id].eq(table[:results_with_permissions][:id]))
+
+      objects = klass.find_by_sql(sm2.to_sql)
+
+      # pull out permissions
+      rs = ResultSet.new
+      objects.each do |task|
+        permissions_to_states_string = Hash[ objects.first.permission_actions.split(/\s*,\s*/).map { |f| f.split(/:/) } ]
+        permissions_to_states = Hash[ permissions_to_states_string.map { |k,v|
+          [k, { states: v.split(/\s*,\s*/) }]
+        } ]
+
+        rs.add_object(task, with_permissions: permissions_to_states)
+      end
+
+
+# expect(permission_hash["edit"]["states"])
+#   .to contain_exactly("unsubmitted", "*")
+#
+# expect(permission_hash["view"]["states"])
+#   .to contain_exactly("*")
+#
+# expect(permission_hash["discuss"]["states"])
+#   .to contain_exactly("*")
+# binding.pry
+
+      rs
     end
 
     class ResultSet
@@ -335,15 +396,9 @@ module Authorizations
         @object_permission_map = Hash.new{ |h,k| h[k] = {} }
       end
 
-      def add_objects(objects, with_permissions:)
-        objects.each do |object|
-          # Permission states may come thru multiple role assignments
-          # so combine them together rather than overwrite. Otherwise
-          # only the last set of permission sets seen will be kept in
-          # this ResultSet
-          @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
-            { states: (v1[:states] + v2[:states]).uniq.sort }
-          end
+      def add_object(object, with_permissions)
+        @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
+          { states: (v1[:states] + v2[:states]).uniq.sort }
         end
       end
 

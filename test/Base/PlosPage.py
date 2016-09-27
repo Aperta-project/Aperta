@@ -172,6 +172,8 @@ class PlosPage(object):
     :return: string
     """
     text = text.strip()
+    # Remove non breakables spaces
+    text = text.replace(u'\xa0', u' ')
     return re.sub(r'\s+', ' ', text)
 
   @staticmethod

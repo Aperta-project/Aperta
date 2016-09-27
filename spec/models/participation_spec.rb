@@ -8,7 +8,8 @@ describe "Participation" do
 
   describe "#add_paper_role" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:journal) { FactoryGirl.create(:journal) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
     context "participant paper old_role already exists" do
@@ -34,7 +35,8 @@ describe "Participation" do
 
   describe "#remove_paper_role" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:tasks) { FactoryGirl.create_list(:ad_hoc_task, 2, paper: paper) }
 
     context "user is participant on two paper tasks" do

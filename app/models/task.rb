@@ -6,6 +6,7 @@ class Task < ActiveRecord::Base
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
   DEFAULT_ROLE = 'user'.freeze
+
   REQUIRED_PERMISSIONS = {}
   SYSTEM_GENERATED = false
 

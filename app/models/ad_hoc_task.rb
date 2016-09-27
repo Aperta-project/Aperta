@@ -3,6 +3,6 @@ class AdHocTask < Task
   DEFAULT_TITLE = 'Ad-hoc'.freeze
 
   # Avoid resetting adhoc task title and role
-  def restore_defaults
+  def self.restore_defaults
   end
 end

@@ -146,7 +146,11 @@ module Authorizations
           # if what we're authorizing is the same class or an ancestor of @klass
           ac.authorizes >= @klass
         end
-      end
+      end.concat([Authorizations::Authorization.new(
+        assignment_to: @klass,
+        authorizes: @klass,
+        via: :self
+      )])
     end
 
     def assignments_subquery
@@ -171,25 +175,17 @@ module Authorizations
      auth_configs.each do |ac|
        join_table = ac.assignment_to.arel_table
        source_table = ac.authorizes.arel_table
-       inverse_of_via = ac.inverse_of_via
        association = ac.assignment_to.reflections[ac.via.to_s]
 
        assignments_arel.outer_join(join_table).on(
          join_table[ ac.assignment_to.primary_key ]
-           .eq( Assignment.arel_table[:assigned_to_id] )
-           .and( Assignment.arel_table[:assigned_to_type]
-           .eq(ac.assignment_to.name)))
+         .eq( Assignment.arel_table[:assigned_to_id] )
+         .and(
+           Assignment.arel_table[:assigned_to_type].
+           eq(ac.assignment_to.name)
+         )
+       )
      end
-
-     # add implicit JOIN in case the person is assigned directly to the
-     # klass we're querying against. This could potentially move to an auth config
-     # where the via was :self or something else treated specially
-     assignments_arel.outer_join(@klass.arel_table)
-       .on(
-         @klass.arel_table[ @klass.primary_key ]
-           .eq( Assignment.arel_table[:assigned_to_id] )
-           .and( Assignment.arel_table[:assigned_to_type]
-           .eq(@klass.name)))
 
     # Append @klass, again, this could possibly be moved to an auth config
      klasses2where = auth_configs.map { |ac| ac.assignment_to } << @klass
@@ -235,28 +231,52 @@ module Authorizations
 
 # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
     def union(a, list=[])
-      if list.count == 1
+      if list.blank?
+        return a
+      elsif list.count == 1
         return a.union(list.first)
       else
         return a.union(union(list.first, list[1..-1]))
       end
     end
 
+    def table
+      @table ||= {
+        roles: Role.arel_table,
+        permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
+        permissions: Permission.arel_table,
+        permission_requirements: PermissionRequirement.arel_table,
+        permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
+        permission_states: PermissionState.arel_table,
+        results_1: Arel::Table.new(:results_1),
+        results_with_permissions: Arel::Table.new(:results_with_permissions)
+      }
+    end
+
     def load_authorized_objects
       a2_table = Arel::Table.new(:a2_table)
       composed_a2 = Arel::Nodes::As.new(a2_table, assignments_subquery)
 
-      # klasses2where = auth_configs.map { |ac| ac.assignment_to } << @klass
       queries2union = auth_configs.map do |ac|
         assigned_to_klass = ac.assignment_to
         reflection = ac.assignment_to.reflections[ac.via.to_s]
         join_table = assigned_to_klass.arel_table
         target_table = @klass.arel_table
 
-        query = a2_table.project(Arel.sql('tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
+        query = a2_table.project(
+          klass.arel_table.primary_key.as('id'),
+          a2_table[:role_id].as('role_id'),
+          a2_table[:permission_id].as('permission_id')
+          # Arel.sql('tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id')
+        )
 
-        if reflection.collection? || reflection.has_one? || reflection.belongs_to? # has_many or has_one associations
+        query.project(klass.arel_table[:paper_id]) if klass.column_names.include?('paper_id')
 
+        if assigned_to_klass <=> @klass
+          query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+          query
+
+        elsif reflection.collection? || reflection.has_one?
           # E.g. Journal has_many :tasks, :through => :papers
           if reflection.respond_to?(:through_options)
             loop do
@@ -296,11 +316,14 @@ module Authorizations
 
             query
           else
-            query = a2_table.project(Arel.sql('tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id'))
             query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
             query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
             query
           end
+        elsif reflection.belongs_to?
+            query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+            query.outer_join(target_table).on(join_table[reflection.foreign_key].eq(target_table.primary_key))
+            query
         else
           fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"
         end
@@ -308,28 +331,19 @@ module Authorizations
 
       # puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
       # puts '--------------------------------------------------------'
-      u = union(queries2union.first.with(composed_a2), queries2union[1..-1])
+      return ResultSet.new if queries2union.empty?
 
-      table = {
-        roles: Role.arel_table,
-        permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
-        permissions: Permission.arel_table,
-        permission_requirements: PermissionRequirement.arel_table,
-        permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
-        permission_states: PermissionState.arel_table,
-        results_1: Arel::Table.new(:tasks),
-        results_with_permissions: Arel::Table.new(:results_with_permissions)
-      }
+      u = union(queries2union.first.with(composed_a2), queries2union[1..-1])
 
       sm = Arel::SelectManager.new(klass.arel_table.engine).
         project(
-          klass.arel_table.primary_key,
+          table[:results_1][:id],
           Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions")
         ).
-        from( Arel.sql(u.to_sql).as('tasks') ).
+        from( Arel.sql('(' + u.to_sql + ')').as(table[:results_1].table_name) ).
         outer_join(table[:permission_requirements]).on(
           table[:permission_requirements][:required_on_type].eq(klass.name).and(
-            table[:permission_requirements][:required_on_id].eq(klass.arel_table.primary_key)
+            table[:permission_requirements][:required_on_id].eq(table[:results_1][:id])
           )
         ).
         join(table[:roles]).on(
@@ -347,18 +361,18 @@ module Authorizations
         join(table[:permission_states]).on(
           table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
         ).
-        where(klass.arel_table.primary_key.not_eq(nil).and(
+        where(table[:results_1][:id].not_eq(nil).and(
           PermissionRequirement.arel_table.primary_key.eq(nil).or(
-            PermissionRequirement.arel_table[:permission_id].eq(klass.arel_table[:permission_id])
+            PermissionRequirement.arel_table[:permission_id].eq(table[:results_1][:permission_id])
           )
         )).
-        group(klass.arel_table.primary_key)
+        group(table[:results_1][:id])
 
 # SELECT * FROM (
 # SELECT tasks.id, string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions
 # --  ,max(permission_requirements.required_on_id)
 # FROM (
-# binding.pry
+
       sm2 = Arel::SelectManager.new(klass.arel_table.engine).
         project(klass.arel_table[Arel.star], 'permission_actions').
         from( Arel.sql('(' + sm.to_sql + ')').as('results_with_permissions') ).
@@ -376,18 +390,6 @@ module Authorizations
 
         rs.add_object(task, with_permissions: permissions_to_states)
       end
-
-
-# expect(permission_hash["edit"]["states"])
-#   .to contain_exactly("unsubmitted", "*")
-#
-# expect(permission_hash["view"]["states"])
-#   .to contain_exactly("*")
-#
-# expect(permission_hash["discuss"]["states"])
-#   .to contain_exactly("*")
-# binding.pry
-
       rs
     end
 
@@ -399,6 +401,12 @@ module Authorizations
       def add_object(object, with_permissions)
         @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
           { states: (v1[:states] + v2[:states]).uniq.sort }
+        end
+      end
+
+      def add_objects(object, with_permissions)
+        objects.each do |object|
+          add_object object, with_permissions
         end
       end
 

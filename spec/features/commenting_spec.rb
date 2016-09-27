@@ -20,7 +20,7 @@ feature 'Comments on cards', js: true do
   describe "being made aware of commenting" do
     let!(:task) do
       FactoryGirl.create(
-        :task,
+        :ad_hoc_task,
         type: 'AdHocTask',
         paper: paper,
         phase: paper.phases.first,

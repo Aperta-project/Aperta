@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :participation do
-    association :task
+    association :ad_hoc_task
     association :user
   end
 end

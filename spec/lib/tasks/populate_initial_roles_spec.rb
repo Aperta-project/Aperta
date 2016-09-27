@@ -85,7 +85,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
         [[nil, 'jane@example.edu', 'None', nil, journal.name]]
       end
       let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-      let(:task) { FactoryGirl.create(:task, paper: paper) }
+      let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
       let(:paper_role) { FactoryGirl.create(:role, journal: journal) }
       let(:task_role) { FactoryGirl.create(:role, journal: journal) }
       it 'should remove all users roles' do

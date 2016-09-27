@@ -135,7 +135,7 @@ describe Task do
 
   describe "#nested_question_answers" do
     it "destroys nested_question_answers on destroy" do
-      task = FactoryGirl.create(:task, :with_nested_question_answers)
+      task = FactoryGirl.create(:ad_hoc_task, :with_nested_question_answers)
       nested_question_answer_ids = task.nested_question_answers.pluck :id
       expect(nested_question_answer_ids).to have_at_least(1).id
 
@@ -148,7 +148,7 @@ describe Task do
   end
 
   describe "#answer_for" do
-    subject(:task) { FactoryGirl.create(:task) }
+    subject(:task) { FactoryGirl.create(:ad_hoc_task) }
     let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
     let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
 

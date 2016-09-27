@@ -241,7 +241,7 @@ describe DecisionsController do
 
     let(:decision) { paper.draft_decision }
     let(:task) do
-      double("Task", id: 3, paper: paper).tap do |t|
+      double("AdHocTask", id: 3, paper: paper).tap do |t|
         allow(t).to receive(:after_register)
         allow(t).to receive(:notify_requester=)
         allow(t).to receive(:answer_for)

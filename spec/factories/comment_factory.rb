@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :comment do
     body "Here is a sample comment"
     association :commenter, factory: :user
-    task
+    association :task, factory: :adhoc_task
   end
 end

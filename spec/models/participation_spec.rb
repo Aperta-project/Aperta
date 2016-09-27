@@ -35,7 +35,7 @@ describe "Participation" do
   describe "#remove_paper_role" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let(:tasks) { FactoryGirl.create_list(:task, 2, paper: paper) }
+    let(:tasks) { FactoryGirl.create_list(:ad_hoc_task, 2, paper: paper) }
 
     context "user is participant on two paper tasks" do
       before do

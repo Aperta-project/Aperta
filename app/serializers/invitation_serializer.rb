@@ -11,7 +11,8 @@ class InvitationSerializer < ActiveModel::Serializer
              :invited_at,
              :declined_at,
              :accepted_at,
-             :rescinded_at
+             :rescinded_at,
+             :position
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true

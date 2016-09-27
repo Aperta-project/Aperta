@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(version: 20161018143343) do
     t.datetime "declined_at"
     t.datetime "accepted_at"
     t.datetime "rescinded_at"
+    t.integer  "position"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree

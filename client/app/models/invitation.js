@@ -16,6 +16,7 @@ export default DS.Model.extend({
   invitationType: DS.attr('string'),
   invitee: DS.belongsTo('user', { inverse: 'invitations', async: true }),
   inviteeRole: DS.attr('string'),
+  position: DS.attr('number'),
   primary: DS.belongsTo('invitation', { inverse: 'alternates', async: false }),
   alternates: DS.hasMany('invitation'),
   reviewerSuggestions: DS.attr('string'),

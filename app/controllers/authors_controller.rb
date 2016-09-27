@@ -12,6 +12,7 @@ class AuthorsController < ApplicationController
     requires_user_can :edit_authors, paper
     author = Author.new(author_params)
     author.save!
+    author.author_list_item.move_to_bottom
 
     # render all authors, since position is controlled by acts_as_list
     render json: author_list_payload(author)

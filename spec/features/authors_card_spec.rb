@@ -55,5 +55,24 @@ feature 'Authors card', js: true do
       overlay = Page.view_task_overlay(paper, paper.tasks.first)
       expect(overlay).to be_uncompleted
     end
+
+    scenario 'new authors go to bottom of the list', selenium: true do
+      login_as(author, scope: :user)
+      visit "/papers/#{paper.id}"
+      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+
+      find_button('Add a New Author').click
+      find('#add-new-individual-author-link').click
+      find('.author-first').send_keys('First')
+      find_button('done').click
+
+      find_button('Add a New Author').click
+      find('#add-new-individual-author-link').click
+      find('.author-first').send_keys('Last')
+      find_button('done').click
+
+      last_author = find(:xpath, '//div[@class="ember-view author-task-item"][2]')
+      expect(last_author).to have_text 'Last'
+    end
   end
 end

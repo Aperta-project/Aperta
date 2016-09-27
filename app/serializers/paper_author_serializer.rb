@@ -24,10 +24,10 @@ class PaperAuthorSerializer < ActiveModel::Serializer
   # apologize. Sam and Jerry <sam@mutuallyhuman.com>
   # <jerry@mutuallyhuman.com>
   def authors
-    object.authors.order('id DESC')
+    object.authors.reorder(id: :desc)
   end
 
   def group_authors
-    object.group_authors.order('id DESC')
+    object.group_authors.reorder(id: :desc)
   end
 end

@@ -113,7 +113,7 @@ module Authorizations
       permission_names = Permission.where(applies_to: eligible_applies_to).pluck(:action)
       permission_hsh = {}
       permission_names.each do |name|
-        permission_hsh[name.to_sym] = { states: ['*'] }
+        permission_hsh[name.to_sym] = { states: [WILDCARD_STATE] }
       end
 
       if @target.is_a?(Class)
@@ -198,8 +198,13 @@ module Authorizations
      end
 
      assignments_arel.where(arel_conditions)
-       .where(Permission.arel_table[:action].eq(@permission))
-       .where(Permission.arel_table[:applies_to].in(eligible_applies_to))
+        .where(Permission.arel_table[:applies_to].in(eligible_applies_to))
+
+     # If we're looking for the wildcard permission then we aren't interested in any one
+     # permission, but all of the possible permissions
+     if @permission.to_sym != :*
+       assignments_arel.where(Permission.arel_table[:action].eq(@permission))
+     end
 
      if @participations_only
        role_accessibility_method = "participates_in_#{@klass.table_name}"
@@ -220,23 +225,23 @@ module Authorizations
     def objects_by_klass klass
       a2_table = Arel::Table.new(:assignments_table)
       composed_a2 = Arel::Nodes::As.new(assignments_table)
-
-     # klass.arel_table.join(assignments_subquery).on(
-     #   .project(Arel.sql('tasks.id as id, tasks.paper_id as paper_id, a2_table.role_id as role_id, a2_table.permission_id as permission_id'))
-     #   .with(assignments_subquery)
-     #   .where(
-     # assignments_subquery.joins(Task.arel_table).on(Task.arel_table[:id].eq(assignments_subquery[:assigned_to_id]))
-     #   .where(assignments_subquery[:assigned-to_type].eq('Task'))
     end
 
-# puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
+    # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
     def union(a, list=[])
       if list.blank?
         return a
       elsif list.count == 1
+        # return Arel::Nodes::Union.new(a, list.first)
         return a.union(list.first)
       else
-        return a.union(union(list.first, list[1..-1]))
+        begin
+          return Arel::Nodes::Union.new(a, union(list.first, list[1..-1]))
+          # return a.union(union(list.first, list[1..-1]))
+        rescue Exception => ex
+          binding.pry
+          raise ex
+        end
       end
     end
 
@@ -267,7 +272,6 @@ module Authorizations
           klass.arel_table.primary_key.as('id'),
           a2_table[:role_id].as('role_id'),
           a2_table[:permission_id].as('permission_id')
-          # Arel.sql('tasks.id AS id, tasks.paper_id AS paper_id, a2_table.role_id AS role_id, a2_table.permission_id AS permission_id')
         )
 
         query.project(klass.arel_table[:paper_id]) if klass.column_names.include?('paper_id')
@@ -329,13 +333,12 @@ module Authorizations
         end
       end
 
-      # puts queries2union.first.with(composed_a2).union(queries2union.last).to_sql
-      # puts '--------------------------------------------------------'
       return ResultSet.new if queries2union.empty?
 
-      u = union(queries2union.first.with(composed_a2), queries2union[1..-1])
+      u = union(queries2union.first, queries2union[1..-1])
 
       sm = Arel::SelectManager.new(klass.arel_table.engine).
+        with(composed_a2).
         project(
           table[:results_1][:id],
           Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions")
@@ -361,24 +364,23 @@ module Authorizations
         join(table[:permission_states]).on(
           table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
         ).
-        where(table[:results_1][:id].not_eq(nil).and(
-          PermissionRequirement.arel_table.primary_key.eq(nil).or(
-            PermissionRequirement.arel_table[:permission_id].eq(table[:results_1][:permission_id])
+        where(
+          table[:results_1][:id].not_eq(nil).and(
+            table[:permission_requirements].primary_key.eq(nil).or(
+              table[:permission_requirements][:permission_id].eq(table[:results_1][:permission_id])
+            )
+          ).and(
+            table[:permissions][:applies_to].in(eligible_applies_to)
           )
-        )).
+        ).
         group(table[:results_1][:id])
-
-# SELECT * FROM (
-# SELECT tasks.id, string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions
-# --  ,max(permission_requirements.required_on_id)
-# FROM (
 
       sm2 = Arel::SelectManager.new(klass.arel_table.engine).
         project(klass.arel_table[Arel.star], 'permission_actions').
         from( Arel.sql('(' + sm.to_sql + ')').as('results_with_permissions') ).
         join(klass.arel_table).on(klass.arel_table[:id].eq(table[:results_with_permissions][:id]))
 
-      objects = klass.find_by_sql(sm2.to_sql)
+      objects  = @target.from( Arel.sql("(#{sm2.to_sql}) AS #{klass.table_name} ") )
 
       # pull out permissions
       rs = ResultSet.new
@@ -398,13 +400,13 @@ module Authorizations
         @object_permission_map = Hash.new{ |h,k| h[k] = {} }
       end
 
-      def add_object(object, with_permissions)
+      def add_object(object, with_permissions: [])
         @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
           { states: (v1[:states] + v2[:states]).uniq.sort }
         end
       end
 
-      def add_objects(object, with_permissions)
+      def add_objects(object, with_permissions: [])
         objects.each do |object|
           add_object object, with_permissions
         end

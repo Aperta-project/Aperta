@@ -29,7 +29,7 @@ describe TaskRoleUpdater do
     end
     let!(:related_completed_task) do
       FactoryGirl.create(
-        :task,
+        :ad_hoc_task,
         paper: paper,
         completed: true,
         old_role: task.old_role

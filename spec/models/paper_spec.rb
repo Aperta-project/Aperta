@@ -1295,7 +1295,7 @@ describe Paper do
   describe '#snapshottable_things' do
     subject(:paper) { Paper.new }
     let(:task) do
-      FactoryGirl.build_stubbed(:task, paper: paper, snapshottable: true)
+      FactoryGirl.build_stubbed(:ad_hoc_task, paper: paper, snapshottable: true)
     end
     let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
     let(:si_file) do

@@ -5,11 +5,6 @@ describe Task do
 
   it_behaves_like 'is not snapshottable'
 
-  describe '.restore_defaults' do
-    it_behaves_like '<Task class>.restore_defaults does not update title'
-    it_behaves_like '<Task class>.restore_defaults does not update old_role'
-  end
-
   describe ".without" do
     let!(:tasks) do
       2.times.map do
@@ -207,16 +202,19 @@ describe Task do
   end
 
   describe "#can_change?: associations can use this method to update based on task" do
-    let(:task) {
-      Task.create! title: "Paper Admin",
+    let(:task) do
+      FactoryGirl.create(
+        :ad_hoc_task,
+        title: "Paper Admin",
         completed: true,
         old_role: 'admin',
         phase_id: 3,
         paper_id: 99
-    }
+      )
+    end
 
     it "returns true" do
-      expect(task.can_change? double).to eq(true)
+      expect(task.can_change?(double)).to eq(true)
     end
   end
 end

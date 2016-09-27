@@ -10,6 +10,7 @@ import random
 import time
 from datetime import datetime
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface
@@ -194,7 +195,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: Int with journal_id
     """
     paper_id = self.get_paper_id_from_url()
-    print paper_id
+    logging.info(paper_id)
     journal_id = PgSQL().query('SELECT papers.journal_id '
                                'FROM papers '
                                'WHERE id = %s;', (paper_id,))[0][0]
@@ -543,7 +544,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
-          task.click()
+          self.click_covered_element(task)
           time.sleep(.5)
           break
         elif task.text == task_name and 'active' \
@@ -574,16 +575,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Billing':
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
-      # complete_billing task
-      task.click()
-      """
-      if not base_task.completed_state():
-        base_task.click_completion_button()
-        manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
-        self._actions.move_to_element(manuscript_id_text).perform()
-        task.click()
-      """
-      time.sleep(1)
+      time.sleep(2)
+      tasks = self._gets(self._task_headings)
+      self.click_covered_element(task)
+      time.sleep(2)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
@@ -605,14 +600,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Check completed_check status
       if not base_task.completed_state():
         base_task.click_completion_button()
-      task.click()
+      self.click_covered_element(task)
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-      task.click()
+      self.click_covered_element(task)
       time.sleep(1)
     elif 'Review by ' in task_name:
       logging.info('Completing {0}'.format(task_name))
@@ -690,15 +685,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def close_infobox(self):
     """Close the infobox element, if present"""
     # Note due to APERTA-7210 the closer element is present but is z-ordered underneath
-    # another element and thus not visible or clickable at present.
+    # another element and thus not visible or click-able at present.
     time.sleep(1)
     try:
       infobox_closer = self._get(self._infobox_closer)
     except ElementDoesNotExistAssertionError:
       logging.info('No Initial Decision infobox shown yet, skipping close of infobox.')
       return
-    infobox_closer.click()
     time.sleep(1)
+    try:
+      infobox_closer.click()
+    except WebDriverException:
+      self.click_covered_element(infobox_closer)
+
 
   def get_paper_doi_part(self):
     """
@@ -827,3 +826,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._paper_sidebar_state_information)
     logging.info(datetime.now())
     self.restore_timeout()
+
+  def reset_view_top_accordion(self):
+    """ Resets the view to the submission information section of the right hand column"""
+    sub_info = self._get(self._paper_sidebar_state_information)
+    self._actions.move_to_element(sub_info).perform()
+    time.sleep(.5)

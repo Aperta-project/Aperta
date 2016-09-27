@@ -6,6 +6,7 @@ import random
 import time
 import urllib
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import StaleElementReferenceException
 
@@ -177,6 +178,7 @@ class FiguresTask(BaseTask):
     #   directory, catch and abort - no good will follow
     assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
                                    'incorrect value, aborting: {0}'.format(current_path)
+    self._reset_position_to_conformance_question()
     for iteration in range(0, iterations):
       if figure2send == 'random':
         figure = random.choice(figure_candidates_list)
@@ -188,7 +190,11 @@ class FiguresTask(BaseTask):
       time.sleep(1)
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
       add_new_figures_btn = self._get(self._add_new_figures_btn)
-      add_new_figures_btn.click()
+      self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
+      try:
+        add_new_figures_btn.click()
+      except WebDriverException:
+        self.click_covered_element(add_new_figures_btn)
       figure_candidates_list.remove(figure)
       # Time needed for script execution per photo for upload, storing, preview generation, and
       #   page update
@@ -216,19 +222,21 @@ class FiguresTask(BaseTask):
       new_figure = random.choice(remaining_figures)
       fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(new_figure))
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
-    time.sleep(5)
+    self._reset_position_to_conformance_question()
+    # time.sleep(5)
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_input.send_keys(fn)
     try:
       replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     except StaleElementReferenceException:
-      time.sleep(5)
-      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
-
+        time.sleep(10)
+        replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
-    #   stale reference error
-    time.sleep(30)
+    #   stale reference error. Sadly, it looks like we put up a spinner, briefly return the old
+    #   content, then put up the spinner again, so I can just use a wait for element.
+    time.sleep(15)
+    self._wait_for_element(self._get(self._figure_listing).find_element(*self._figure_replace_btn))
     fig_list = []
     fig_list.append(new_figure)
     return fig_list
@@ -242,7 +250,8 @@ class FiguresTask(BaseTask):
     if not figure:
       raise(ValueError, 'A figure must be specified')
     logging.info(figure)
-
+    self._reset_position_to_conformance_question()
+    self._wait_for_element(self._gets(self._figure_dl_link)[0])
     page_fig_list = self._gets(self._figure_dl_link)
     figure = urllib.quote_plus(figure[0])
     for page_fig_item in page_fig_list:
@@ -255,7 +264,10 @@ class FiguresTask(BaseTask):
         # Move to item to get the edit icons to appear
         self._actions.move_to_element(page_fig_item).perform()
         delete_icon = self._get(self._figure_delete_icon)
-        delete_icon.click()
+        try:
+          delete_icon.click()
+        except WebDriverException:
+          self.click_covered_element(delete_icon)
         time.sleep(1)
         self._get(self._figure_delete_confirmation)
         line_1 = self._get(self._figure_delete_confirm_line1)
@@ -281,6 +293,7 @@ class FiguresTask(BaseTask):
     :return void function
     """
     matched = False
+    self._reset_position_to_conformance_question()
     if not figure:
       raise (ValueError, 'A figure was not specified')
     logging.info('Downloading figure: {0}'.format(figure))
@@ -291,7 +304,10 @@ class FiguresTask(BaseTask):
         fig = urllib.quote_plus(fig)
         if fig in page_fig_item.text:
           logging.info('Match!')
-          page_fig_item.click()
+          try:
+            page_fig_item.click()
+          except WebDriverException:
+            self.click_covered_element(page_fig_item)
           time.sleep(1)
           orig_dir = os.getcwd()
           os.chdir('/tmp')
@@ -328,7 +344,7 @@ class FiguresTask(BaseTask):
       raise(ValueError, 'A figure must be specified')
     logging.info(figure)
     figure = urllib.quote_plus(figure)
-
+    self._reset_position_to_conformance_question()
     # Redefining this down here to avoid a stale element reference due to the listing having
     #   been replaced, potentially, since lookup
     self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
@@ -343,11 +359,15 @@ class FiguresTask(BaseTask):
       page_fig_name = figure_block.find_element(*self._figure_dl_link)
       if figure in page_fig_name.text:
         logging.info('Editing figure: {0}'.format(figure))
+        self.scroll_by_pixels(-60)
         # Move to item to get the edit icons to appear
         self._actions.move_to_element(figure_block).perform()
         edit_icon = figure_block.find_element(*self._figure_edit_icon)
         self._actions.move_to_element(edit_icon).perform()
-        edit_icon.click()
+        try:
+          edit_icon.click()
+        except WebDriverException:
+          self.click_covered_element(edit_icon)
         time.sleep(1)
         label_prefix = figure_block.find_element(*self._figure_edit_label_prefix)
         assert 'Fig.' in label_prefix.text, label_prefix.text
@@ -363,9 +383,19 @@ class FiguresTask(BaseTask):
         assert 'SAVE' in save_link.text, save_link.text
         striking_chkbx.click()
         assert striking_chkbx.is_selected() == True, striking_chkbx.is_selected()
+        self._reset_position_to_conformance_question()
+        try:
+          label_field.click()
+        except WebDriverException:
+          self.click_covered_element(label_field)
+        # The label field click above is not registering in all cases, so doing it a second time
+        #   to ensure it gets registered.
         label_field.click()
         time.sleep(.5)
-        save_link.click()
+        try:
+          save_link.click()
+        except WebDriverException:
+          self.click_covered_element(save_link)
         time.sleep(5)
         matched = True
     # time for order of blocks to update - often very slow - particularly when on Heroku CI
@@ -404,6 +434,7 @@ class FiguresTask(BaseTask):
     :param fig_list: list of file names
     :return: boolean, true if all passed filenames appear on the figures card
     """
+    self._wait_for_element(self._gets(self._figure_dl_link)[0])
     page_fig_list = self._gets(self._figure_dl_link)
     page_fig_name_list = []
     for page_fig_item in page_fig_list:
@@ -453,3 +484,11 @@ class FiguresTask(BaseTask):
         assert 'This is the striking image' in page_strike_status.text, page_strike_status.text
     if not matched:
       raise(ValueError, 'Figure list: {0} not found on page'.format(figure))
+
+  def _reset_position_to_conformance_question(self):
+    """
+    Resets the scrolled position to the figure guideline conformance question. This should put
+      the first figure block below the toolbar.
+    """
+    guidelines_question = self._get(self._question_label)
+    self.scroll_element_into_view_below_toolbar(guidelines_question)

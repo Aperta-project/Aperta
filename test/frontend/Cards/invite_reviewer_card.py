@@ -26,7 +26,7 @@ class InviteReviewersCard(BaseCard):
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._reviewer_suggester = (By.CSS_SELECTOR, 'div.auto-suggest')
     self._reviewer_suggestion_listing = (By.CSS_SELECTOR, 'div.auto-suggest-item')
-    self._compose_invitation_button = (By.CSS_SELECTOR, 'button.compose-invite-button')
+    self._compose_invitation_button = (By.CSS_SELECTOR, 'button.invitation-email-entry-button')
 
     self._edit_invite_div = (By.CSS_SELECTOR, 'div.invite-reviewer-edit-invite')
     # the following locators assume they will be searched for by find element within the scope of
@@ -34,7 +34,11 @@ class InviteReviewersCard(BaseCard):
     self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
-    self._edit_invite_text_send_invite_button = (By.CSS_SELECTOR, 'button.invite-reviewer-button')
+    self._edit_invite_text_save = (By.CSS_SELECTOR, 'button.invitation-save-button')
+    # new action buttons
+    self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
+    self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
+    self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
 
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
@@ -67,8 +71,10 @@ class InviteReviewersCard(BaseCard):
     """
     self._get(self._recipient_field).send_keys(reviewer['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
-    time.sleep(2)
-    self._get(self._edit_invite_text_send_invite_button).click()
+    time.sleep(1)
+    self._get(self._edit_invite_text_save).click()
+    time.sleep(1)
+    self._get(self._invite_send_invite_button).click()
     time.sleep(1)
 
   def validate_invite_reviewer(self, reviewer, title, creator, manu_id):

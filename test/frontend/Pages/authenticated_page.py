@@ -112,6 +112,7 @@ class AuthenticatedPage(PlosPage):
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Task list id needed in task and manuscript page
+    self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
     self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
@@ -395,18 +396,6 @@ class AuthenticatedPage(PlosPage):
       # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
       logging.error('Error Message found: {0}'.format(error_msg_string))
 
-  def click_covered_element(self, element):
-    """
-    Because the Manuscript toolbar obscures content, we need a method specifically to click
-    on element without click on that is on top. This breaks Selenium prevision on not
-    clicking in elements that a regular user will not be able to click, so use it only for
-    non core test component. Consider this a Konami like cheatcode for development purposes.
-    :param element: webelement to receive the click
-    :return: None
-    """
-    self._driver.execute_script("javascript:arguments[0].click()", element)
-    return None
-
   def check_for_flash_success(self):
     """
     Check that any process (submit, save, send, etc) triggered a flash success message
@@ -658,6 +647,41 @@ class AuthenticatedPage(PlosPage):
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     self._get(post_message_btn).click()
     return None
+
+  def scroll_element_into_view_below_toolbar(self, element):
+    """
+    Because the Manuscript toolbar obscures content, we need a method specifically to scroll an
+      element to the top and then down below the toolbar.
+    :param element: webelement to scroll to
+    :return: void function
+    """
+    self._driver.execute_script("javascript:arguments[0].scrollIntoView()", element)
+    # This delay seems to be needed for the second call to succeed
+    time.sleep(1)
+    # using 2x the height of the toolbar as for items like images, the positioning can "receded"
+    self._driver.execute_script("javascript:scrollBy(0,-120)")
+    time.sleep(1)
+
+  def click_covered_element(self, element):
+    """
+    Because the Manuscript toolbar obscures content, we need a method specifically to click
+    on element without click on that is on top. This breaks Selenium prevision on not
+    clicking in elements that a regular user will not be able to click, so use it only for
+    non core test component. Consider this a Konami like cheatcode for development purposes.
+    :param element: webelement to receive the click
+    :return: None
+    """
+    logging.debug('{0} is covered by the toolbar...'.format(element))
+    self._driver.execute_script("javascript:arguments[0].click()", element)
+    return None
+
+  def scroll_by_pixels(self, pixels):
+    """
+    A generic method to scroll by x pixels (positive - down) or (negative - up)
+    :return: void function
+    """
+    self._driver.execute_script('javascript:scrollBy(0,{0})'.format(pixels))
+    time.sleep(1)
 
   # Style Validations
   # Divider and Border Styles ===========================

@@ -66,7 +66,8 @@ class BaseCard(AuthenticatedPage):
     self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
     self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
-    self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
+    self._invitee_revoke = (By.CLASS_NAME, 'invitation-item-action-text')
+    self._invitation_state = (By.CLASS_NAME, 'invitation-item-status')
 
 
   # Common actions for all cards
@@ -312,7 +313,7 @@ class BaseCard(AuthenticatedPage):
 
   def validate_invitation(self, invitee, role):
     """
-    a method to validate the invitation for a role for a user
+    A method to validate the invitation for a role for a user
     :param invitee: person for whom the invite should have been sent
     :param role: role whose invite should have been extended for the assignee
     :return: void function
@@ -331,7 +332,7 @@ class BaseCard(AuthenticatedPage):
 
   def _validate_invitation_revocation(self, invitee, role):
     """
-    an internal method to validate the revocation of an invite for a role for a user
+    An internal method to validate the revocation of an invite for a role for a user
     :param invitee: person for whom the invite should have been revoked
     :param role: role whose invite should have been revoked for the assignee
     :return: void function
@@ -342,5 +343,7 @@ class BaseCard(AuthenticatedPage):
       logging.info('Checking invitee ({0}) for match among remaining '
                    'invitees'.format(invitee['name']))
       if invitee['name'] in pagefullname.text:
-        raise ElementExistsAssertionError('Invitation found for {0} and {1} - should have been '
-                                          'revoked'.format(invitee['name'], role))
+        state = invitation.find_element(*self._invitation_state).text
+        if 'Rescinded' not in state:
+          raise ElementExistsAssertionError('Invitation for {0} and {1} - should have been '
+                                            'Rescinded'.format(invitee['name'], role))

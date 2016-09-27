@@ -71,8 +71,8 @@ class DashboardPage(AuthenticatedPage):
     # View Invitations Modal Static Locators
     self._view_invites_title = (By.CLASS_NAME, 'overlay-header-title')
     self._view_invites_invite_listing = (By.CSS_SELECTOR, 'div.pending-invitation')
-    self._invite_yes_btn = (By.CSS_SELECTOR, 'p + button')
-    self._invite_no_btn = (By.CSS_SELECTOR, 'p + button + button')
+    self._invite_yes_btn = (By.CSS_SELECTOR, 'button.invitation-accept')
+    self._invite_no_btn = (By.CSS_SELECTOR, 'button.invitation-decline')
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')
 
     # Create New Submission Modal
@@ -166,7 +166,8 @@ class DashboardPage(AuthenticatedPage):
     reasons = ''
     suggestions = ''
     for listing in invite_listings:
-      if title in listing.text:
+      logging.info(u'Invitation title: {}'.format(listing.text))
+      if title in self.normalize_spaces(listing.text):
         if response == 'Accept':
           listing.find_element(*self._invite_yes_btn).click()
           time.sleep(2)
@@ -185,6 +186,9 @@ class DashboardPage(AuthenticatedPage):
           # Time to get sure information is sent
           time.sleep(2)
           return 'Decline', (reasons, suggestions)
+    # If flow reachs this point, there was an error
+    invite_listings_text = [x.text for x in invite_listings]
+    raise ValueError(u'{0} not in {1}'.format(title, invite_listings_text))
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """
@@ -680,6 +684,7 @@ class DashboardPage(AuthenticatedPage):
     :return: Count of unaccepted invites (does not include rejected or accepted invites)
     """
     username = username['user']
+    logging.info('Checking dashboard invite stanza for user {0}'.format(username))
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
                                      'WHERE state = %s '

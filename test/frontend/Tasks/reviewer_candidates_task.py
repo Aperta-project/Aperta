@@ -6,6 +6,7 @@ import random
 import time
 
 from loremipsum import generate_paragraph
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -224,14 +225,7 @@ class ReviewerCandidatesTask(BaseTask):
     inst = 'University of Minnesota Twin Cities'
     inst_input = self._get(self._cand_inst_input)
     inst_input.send_keys(inst + Keys.ENTER)
-    choice = random.choice(['recommend', 'oppose'])
-    if choice == 'recommend':
-      self._get(self._cand_recc_radio_btn).click()
-    else:
-      self._get(self._cand_opp_radio_btn).click()
-    reason = generate_paragraph(start_with_lorem=True)[2]
-    opt_reason_field = self._get(self._cand_reason)
-    opt_reason_field.send_keys(reason)
+    choice, reason = self._make_type_choice()
     save_button = self._get(self._cand_form_save)
     save_button.click()
     self.check_for_flash_error()
@@ -255,7 +249,11 @@ class ReviewerCandidatesTask(BaseTask):
     time.sleep(.5)
     self._actions.move_to_element(delete_recommendation).perform()
     time.sleep(.5)
-    delete_recommendation.click()
+    try:
+      delete_recommendation.click()
+    except WebDriverException:
+      logging.info('Element is covered by the toolbar...')
+      self.click_covered_element(delete_recommendation)
     # Now need to validate the delete confirmation bits
     confirm_question = self._get(self._cand_view_delete_confirm_text)
     assert 'This will permanently delete the suggested reviewer. Are you sure?' \
@@ -276,6 +274,7 @@ class ReviewerCandidatesTask(BaseTask):
     Fill out the New Candidate form with random data, then delete that entry
     :param user_object: dictionary for user whose data to use in filling out the recommendation
     """
+    intro_text = self._get(self._intro_text)
     new_cand_btn = self._get(self._new_candidate_btn)
     new_cand_btn.click()
     fn = user_object['name'].split(' ')[0]
@@ -297,19 +296,13 @@ class ReviewerCandidatesTask(BaseTask):
     inst = 'Southern Connecticut State University'
     inst_input = self._get(self._cand_inst_input)
     inst_input.send_keys(inst + Keys.ENTER)
-    choice = random.choice(['recommend', 'oppose'])
-    if choice == 'recommend':
-      self._get(self._cand_recc_radio_btn).click()
-    else:
-      self._get(self._cand_opp_radio_btn).click()
-    reason = generate_paragraph(start_with_lorem=True)[2]
-    opt_reason_field = self._get(self._cand_reason)
-    opt_reason_field.send_keys(reason)
+    self._actions.move_to_element(intro_text).perform()
+    time.sleep(1)
+    self._make_type_choice()
     save_button = self._get(self._cand_form_save)
     save_button.click()
     self.check_for_flash_error()
     time.sleep(2)
-
     entry = self._get(self._cand_entry_view)
     full_name = entry.find_element(*self._cand_view_full_name)
     self._actions.move_to_element(full_name).perform()
@@ -317,10 +310,17 @@ class ReviewerCandidatesTask(BaseTask):
     time.sleep(.5)
     self._actions.move_to_element(delete_recommendation).perform()
     time.sleep(.5)
-    delete_recommendation.click()
+    try:
+      delete_recommendation.click()
+    except WebDriverException:
+      self.click_covered_element(delete_recommendation)
     confirm_delete = self._get(self._cand_view_delete_confirm_delete)
-    confirm_delete.click()
-    time.sleep(1)
+    time.sleep(2)
+    try:
+      confirm_delete.click()
+    except WebDriverException:
+      self.click_covered_element(confirm_delete)
+    time.sleep(3)
     try:
       self._get(self._cand_entry_view)
     except ElementDoesNotExistAssertionError:
@@ -340,3 +340,34 @@ class ReviewerCandidatesTask(BaseTask):
     except ElementDoesNotExistAssertionError:
       return False
     return True
+
+  def _make_type_choice(self, choice='', reason=''):
+    """
+    randomly select a choice to recommend or oppose a candidate and give a reason
+    :param choice: if you want a specific choice
+    :param reason: if you want a specific reason
+    :return choice: recommend or oppose
+    :return reason: text listed for reason for choice
+    """
+    if not choice:
+      choice = random.choice(['recommend', 'oppose'])
+    if choice == 'recommend':
+      recc_btn = self._get(self._cand_recc_radio_btn)
+      try:
+        recc_btn.click()
+      except WebDriverException:
+        logging.info('Selection covered by toolbar...')
+        self.click_covered_element(recc_btn)
+    else:
+      opp_btn = self._get(self._cand_opp_radio_btn)
+      try:
+        opp_btn.click()
+      except WebDriverException:
+        logging.info('Selection covered by toolbar...')
+        self.click_covered_element(opp_btn)
+    if not reason:
+      reason = generate_paragraph(start_with_lorem=True)[2]
+    opt_reason_field = self._get(self._cand_reason)
+    opt_reason_field.send_keys(reason)
+    logging.debug(choice, reason)
+    return choice, reason

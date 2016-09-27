@@ -80,6 +80,7 @@ class InitialDecisionCard(BaseCard):
       assert "A decision of Invite full submission has been registered." in \
           decision_msg.text, decision_msg.text
     else:
-      assert "A final decision of Reject has been registered." in alert_msg.text, alert_msg.text
+      assert "A final decision of Reject has been registered." in decision_msg.text, \
+          decision_msg.text
     self.click_close_button()
     return choice

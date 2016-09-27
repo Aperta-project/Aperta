@@ -26,7 +26,7 @@ class ProfilePage(AuthenticatedPage):
     self._profile_username = (By.XPATH, './/div[@id="profile-username"]/h2')
     self._profile_email_title = (By.XPATH, './/div[@id="profile-email"]/h1')
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
-    self._profile_affiliation_title = (By.XPATH, './/div["col-md-10"]/div[4]/h1')
+    self._profile_affiliation_title = (By.CSS_SELECTOR, 'div.user-affiliation h1')
     self._profile_link = (By.CSS_SELECTOR, 'div.profile-link a')
     self._affiliation_btn = (By.CSS_SELECTOR, 'a.button--green')
     self._reset_btn = (By.CSS_SELECTOR, 'a.reset-password-link')
@@ -34,30 +34,26 @@ class ProfilePage(AuthenticatedPage):
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
     self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]/span')
     self._avatar_input = (By.CSS_SELECTOR, 'input[type="file"]')
-    self._add_affiliation_title = (By.CSS_SELECTOR, 'div.profile-affiliations-form h3')
-    self._institution_input = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div/div/div/input")
-    self._department_input = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/input")
-    self._tile_input = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/input[2]")
+    self._add_affiliation_title = (By.CSS_SELECTOR, 'div.affiliations-form h3')
+    self._institution_input = (By.CSS_SELECTOR, 'div.affiliations-form div div input')
+    self._department_input = (By.XPATH,
+        ".//div[contains(@class, 'affiliations-form')]/div[2]/following-sibling::input")
+    self._tile_input = (By.XPATH,
+        ".//div[contains(@class, 'affiliations-form')]/div[2]/following-sibling::input[2]")
     self._country = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[3]/input")
+        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[3]/input")
     self._datepicker_1 = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input")
+        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/div/input")
     self._datepicker_2 = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input[2]")
+        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/div/input[2]")
     self._email = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/input")
-    self._add_done_btn = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/button")
-    self._add_cancel_btn = (
-        By.XPATH, ".//div[contains(@class, 'profile-affiliations-form')]/a")
-    self._profile_affiliations = (By.CSS_SELECTOR, 'div.profile-affiliation')
-    self._remove_affiliation_icon = (By.CSS_SELECTOR, 'div.profile-remove-affiliation')
+        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/input")
+    self._add_done_btn = (By.CSS_SELECTOR, 'button.button--green')
+    self._add_cancel_btn = (By.CSS_SELECTOR, 'a.author-cancel')
+    self._profile_affiliations = (By.CLASS_NAME, 'affiliation-existing')
+    self._remove_affiliation_icon = (By.CLASS_NAME, 'affiliation-remove')
     self._success_message = (By.CSS_SELECTOR, 'div.success')
     self._error_message = (By.CLASS_NAME, 'error-message')
-
   # POM Actions
 
   @staticmethod
@@ -123,7 +119,6 @@ class ProfilePage(AuthenticatedPage):
     Validate the error message for an invalid adding new affiliation.
     :return: None
     """
-    # self.click_left_nav()
     self.click_add_affiliation_button()
     add_done_btn = self._get(self._add_done_btn)
     add_done_btn.click()

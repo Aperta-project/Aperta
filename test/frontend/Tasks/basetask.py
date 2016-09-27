@@ -40,7 +40,8 @@ class BaseTask(AuthenticatedPage):
     try:
       self._get(self._completion_button).click()
     except WebDriverException:
-      self._get(self._completion_button).send_keys(Keys.SPACE)
+      time.sleep(1)
+      self.click_covered_element(self._get(self._completion_button))
 
   def completed_state(self):
     """Returns the selected state of the task completed button as a boolean"""

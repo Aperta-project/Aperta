@@ -44,7 +44,7 @@ class RegisterDecisionCard(BaseCard):
     self._decision_bar_contents_preamble = (By.CSS_SELECTOR, 'div.decision-bar-contents > h4')
     self._decision_bar_contents_letter = (By.CSS_SELECTOR, 'div.decision-bar-contents > div')
     # Form Elements for selected decision
-    self._letter_template_placeholder_div = (By.CSS_SELECTOR, 'div.letter-template-paceholder')
+    self._letter_template_placeholder_div = (By.CSS_SELECTOR, 'div.letter-template-placeholder')
     self._letter_template_placeholder_paragraph = (By.CSS_SELECTOR,
                                                    'div.letter-template-placeholder > p')
     self._letter_template_reject_selector = (By.CSS_SELECTOR,

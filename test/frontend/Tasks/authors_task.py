@@ -557,18 +557,17 @@ class AuthorsTask(BaseTask):
     author_div = self._get(self._author_items)
     self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
-    edit_btn.click()
+    self.click_covered_element(edit_btn)
     time.sleep(1)
     govt_employee_question = self._get(self._govt_employee_question)
-    self._actions.move_to_element(govt_employee_question).perform()
+    #self._actions.move_to_element(govt_employee_question).perform()
     if 'government' in author_data and author_data['government']:
-      self._get(self._govt_employee_radio_yes).click()
+      self.click_covered_element(self._get(self._govt_employee_radio_yes))
     else:
-      self._get(self._govt_employee_radio_no).click()
-    self._get(self._authors_ack_agree2name).click()
-    self._get(self._authors_ack_auth_crit).click()
-    self._get(self._authors_ack_agree2submit).click()
-
+      self.click_covered_element(self._get(self._govt_employee_radio_no))
+    self.click_covered_element(self._get(self._authors_ack_agree2name))
+    self.click_covered_element(self._get(self._authors_ack_auth_crit))
+    self.click_covered_element(self._get(self._authors_ack_agree2submit))
     title_input = self._get(self._title_input)
     department_input = self._get(self._department_input)
     institutions = self._gets(self._institution_div)
@@ -586,18 +585,19 @@ class AuthorsTask(BaseTask):
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
-      corresponding_chck.click()
+      self.click_covered_element(corresponding_chck)
     author_contribution_chck = self._get(self._designed_chkbx)
     if not author_contribution_chck.is_selected():
-      author_contribution_chck.click()
+      self.click_covered_element(author_contribution_chck)
     # Need to complete the remaining required elements to successfully complete this card.
     author_inits_input = self._get(self._author_inits_input)
     author_inits_input.send_keys(author_data['initials'])
     add_author_add_btn = self._get(self._add_author_add_btn)
-    add_author_add_btn.click()
+    self.click_covered_element(add_author_add_btn)
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
+      time.sleep(.5)
       self.click_completion_button()
       time.sleep(2)
       try:

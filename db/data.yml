@@ -4135,13 +4135,6 @@ journal_task_types:
   - required_permissions
   - system_generated
   records: 
-  - - '1'
-    - '1'
-    - SUBCLASSME
-    - user
-    - Task
-    - "{}"
-    - false
   - - '2'
     - '1'
     - Authors

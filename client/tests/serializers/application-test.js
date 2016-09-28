@@ -154,10 +154,10 @@ test("normalizeSingleResponse normalizes sideloaded tasks via their 'type' attri
         "data": [
           {
             "id": "1",
-            "type": "initial-tech-check-task"
+            "type": "InitialTechCheckTask"
           }, {
             "id": "2",
-            "type": "task"
+            "type": "Task"
           }
         ]
       }
@@ -452,10 +452,10 @@ test("normalizeSingleResponse normalizes sideloaded stuff even if they're not ex
         "data": [
           {
             "id": "1",
-            "type": "initial-tech-check-task"
+            "type": "InitialTechCheckTask"
           }, {
             "id": "2",
-            "type": "task"
+            "type": "Task"
           }
         ]
       }

@@ -100,7 +100,7 @@ DESC
     it 'includes the descendants when filtering for authorization of the parent class' do
       expect(
         user.filter_authorized(:view, Authorizations::FakeTask.all).objects
-      ).to contain_exactly(specialized_task, even_more_specialized_task)
+      ).to contain_exactly(generic_task, specialized_task, even_more_specialized_task)
     end
 
     it 'includes the only subclass objects and its descendants when filtering for authorization of the subclass' do

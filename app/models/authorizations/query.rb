@@ -60,6 +60,8 @@ module Authorizations
     end
 
     def all
+      return ResultSet.new unless @target
+
       if user.site_admin? && !@participations_only
         load_all_objects
       else

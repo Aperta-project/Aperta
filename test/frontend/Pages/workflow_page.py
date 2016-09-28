@@ -268,7 +268,6 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[13].text == u'Send to Apex', staff_cards[13].text
     assert staff_cards[14].text == u'Title And Abstract', staff_cards[14].text
     author_cards_text = [x.text for x in author_cards]
-    # This will fail until APERTA-6333 is fixed
     assert u'Changes For Author' not in author_cards_text, author_cards_text
     assert u'Revise Manuscript' not in author_cards_text, author_cards_text
     assert u'Reviewer Report' not in author_cards_text, author_cards_text

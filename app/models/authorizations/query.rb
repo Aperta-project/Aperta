@@ -190,17 +190,19 @@ module Authorizations
      end
 
     # Append @klass, again, this could possibly be moved to an auth config
-     klasses2where = auth_configs.map { |ac| ac.assignment_to } << @klass
-     arel_conditions = klasses2where.reduce(nil) do |arel_conditions, klass|
+     arel_conditions = auth_configs.reduce(nil) do |arel_conditions, ac|
        if arel_conditions
-         arel_conditions.or(klass.arel_table.primary_key.not_eq(nil))
+         arel_conditions.or(
+           ac.assignment_to .arel_table.primary_key.not_eq(nil)
+         )
        else
-         klass.arel_table.primary_key.not_eq(nil)
+         ac.assignment_to.arel_table.primary_key.not_eq(nil)
        end
      end
 
-     assignments_arel.where(arel_conditions)
-        .where(Permission.arel_table[:applies_to].in(eligible_applies_to))
+     assignments_arel
+      .where(arel_conditions)
+      .where(Permission.arel_table[:applies_to].in(eligible_applies_to))
 
      # If we're looking for the wildcard permission then we aren't interested in any one
      # permission, but all of the possible permissions
@@ -213,6 +215,23 @@ module Authorizations
        if Role.column_names.include?(role_accessibility_method)
          assignments_arel.where(Role.arel_table[role_accessibility_method.to_sym].eq(true))
        end
+     end
+
+     if @permission_state_column # e.g. Task delegates to Paper
+       delegated_state_column = klass.delegate_state_to.to_s
+       delegated_state_table = klass.reflections[delegated_state_column].klass.arel_table
+
+       # WHERE papers.publishing_state = permission_states.name
+       assignments_arel.where(
+         delegated_state_table[permission_state_column].eq(PermissionState.arel_table[:name])
+          .or(delegated_state_table[permission_state_column].eq(nil))
+       )
+     elsif @permission_state_check # e.g. Paper has its own publishing state column
+       # WHERE papers.publishing_state = permission_states.name
+       assignments_arel.where(
+         klass.arel_table[permission_state_column].eq(PermissionState.arel_table[:name])
+          .or(klass.arel_table[permission_state_column].eq(nil))
+       )
      end
 
      assignments_arel.group(Assignment.arel_table[:assigned_to_type])
@@ -237,13 +256,7 @@ module Authorizations
         # return Arel::Nodes::Union.new(a, list.first)
         return a.union(list.first)
       else
-        begin
-          return Arel::Nodes::Union.new(a, union(list.first, list[1..-1]))
-          # return a.union(union(list.first, list[1..-1]))
-        rescue Exception => ex
-          binding.pry
-          raise ex
-        end
+        return Arel::Nodes::Union.new(a, union(list.first, list[1..-1]))
       end
     end
 
@@ -261,6 +274,12 @@ module Authorizations
     end
 
     def load_authorized_objects
+      if klass.respond_to?(:delegate_state_to)
+        @permission_state_column = klass.delegate_state_to.to_s
+      elsif klass.column_names.include?(permission_state_column.to_s)
+        @permission_state_check = true
+      end
+
       a2_table = Arel::Table.new(:a2_table)
       composed_a2 = Arel::Nodes::As.new(a2_table, assignments_subquery)
 
@@ -279,7 +298,17 @@ module Authorizations
         query.project(klass.arel_table[:paper_id]) if klass.column_names.include?('paper_id')
 
         if assigned_to_klass <=> @klass
-          query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+          query.outer_join(join_table).on(
+            join_table.primary_key.eq(a2_table[:assigned_to_id]).and(
+              a2_table[:assigned_to_type].eq(assigned_to_klass.name)
+            )
+          )
+
+          id_values = @target.where_values_hash['id']
+          if id_values.present?
+            id_values = [ id_values ].flatten
+            query = query.where(join_table.primary_key.in(id_values))
+          end
           query
 
         elsif reflection.collection? || reflection.has_one?
@@ -311,6 +340,12 @@ module Authorizations
               # construct the join from tasks table to the papers table
               query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(through_klass.arel_table.primary_key))
 
+              foreign_key_value = @target.where_values_hash[through_target_reflection.foreign_key]
+              if foreign_key_value
+                foreign_key_values = [ foreign_key_value ].flatten
+                query.where(through_klass.arel_table.primary_key.in(foreign_key_values))
+              end
+
               # the next two lines are for supporting a :through that goes thru a :through
               # it is completely untested and may not even be important. If it isn't we may
               # be able to get rid of the whole looping construct
@@ -319,17 +354,27 @@ module Authorizations
             end
 
             query.where(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
-
             query
           else
             query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
             query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
+            foreign_key_value = @target.where_values_hash[reflection.foreign_key]
+            if foreign_key_value
+              foreign_key_values = [ foreign_key_value ].flatten
+              query.where(join_table.primary_key.in(foreign_key_values))
+            end
             query
           end
         elsif reflection.belongs_to?
-            query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
-            query.outer_join(target_table).on(join_table[reflection.foreign_key].eq(target_table.primary_key))
-            query
+          query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+          query.outer_join(target_table).on(join_table[reflection.foreign_key].eq(target_table.primary_key))
+
+          foreign_key_value = @target.where_values_hash[reflection.foreign_key]
+          if foreign_key_value
+            foreign_key_values = [ foreign_key_value ].flatten
+            query.where(join_table.primary_key.in(foreign_key_values))
+          end
+          query
         else
           fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"
         end
@@ -343,7 +388,7 @@ module Authorizations
         with(composed_a2).
         project(
           table[:results_1][:id],
-          Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions")
+          Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions"),
         ).
         from( Arel.sql('(' + u.to_sql + ')').as(table[:results_1].table_name) ).
         outer_join(table[:permission_requirements]).on(
@@ -383,6 +428,8 @@ module Authorizations
         join(klass.arel_table).on(klass.arel_table[:id].eq(table[:results_with_permissions][:id]))
 
       objects  = @target.from( Arel.sql("(#{sm2.to_sql}) AS #{klass.table_name} ") )
+      # binding.pry
+      # objects = []
 
       # pull out permissions
       rs = ResultSet.new

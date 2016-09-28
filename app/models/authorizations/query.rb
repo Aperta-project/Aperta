@@ -6,7 +6,6 @@ require_dependency 'emberize'
 module Authorizations
   class Error < ::StandardError ; end
   class QueryError < Error ; end
-  class CannotFindInverseAssociation < QueryError ; end
 
   # Query represents the quer(y|ies) for finding the authorized objects from
   # the database based on how the authorizations sub-system is configured,

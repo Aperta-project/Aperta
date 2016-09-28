@@ -27,7 +27,7 @@ class AffiliationsController < ApplicationController
   end
 
   def update
-    (current_user == affiliaiton.user &&
+    (current_user == affiliation.user &&
       curent_user.id == affiliation_params[:user_id]) ||
       requires_user_can(:manage_users, Journal)
 

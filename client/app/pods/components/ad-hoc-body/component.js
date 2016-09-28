@@ -137,6 +137,7 @@ export default Ember.Component.extend({
         type: 'text',
         value: ''
       }, false);
+      this.saveBlocks();
     },
 
     addChecklist() {

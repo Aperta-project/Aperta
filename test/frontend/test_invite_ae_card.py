@@ -43,6 +43,7 @@ class InviteAECardTest(CommonTest):
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
+                        doc='Plos Biology Manuscript.Final-1.doc',
                         )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
@@ -78,8 +79,9 @@ class InviteAECardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_card('invite_academic_editor')
     invite_ae_card = InviteAECard(self.getDriver())
-    invite_ae_card.check_style(academic_editor_login, paper_id)
+    invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', paper_id)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
+    ##import pdb; pdb.set_trace()
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
                            errors='strict')
@@ -143,7 +145,7 @@ class InviteAECardTest(CommonTest):
     workflow_page.click_card('invite_academic_editor')
     time.sleep(3)
     invite_ae = InviteAECard(self.getDriver())
-    invite_ae.validate_ae_response(academic_editor_login, invite_response,
+    invite_ae.validate_response(academic_editor_login, invite_response,
         response_data[0], response_data[1])
 
 if __name__ == '__main__':

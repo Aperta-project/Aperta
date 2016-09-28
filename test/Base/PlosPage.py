@@ -173,7 +173,11 @@ class PlosPage(object):
     """
     text = text.strip()
     # Remove non breakables spaces
-    text = text.replace(u'\xa0', u' ')
+    try:
+      text = text.replace(u'\xa0', u' ')
+    except UnicodeDecodeError:
+      text = unicode(text, 'utf-8')
+      text = text.replace(u'\xa0', u' ')
     return re.sub(r'\s+', ' ', text)
 
   @staticmethod

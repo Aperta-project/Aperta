@@ -26,7 +26,7 @@ class InviteAECard(InviteCard):
     #   the above, enclosing div
     self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
 
-  def check_style(self, user, paper_id):
+  def _check_style(self, user, paper_id):
     """
     Style check for the card
     :user: User to send the invitation

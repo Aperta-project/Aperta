@@ -8,13 +8,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
-from frontend.Cards.basecard import BaseCard
-
+from frontend.Cards.invite_card import InviteCard
 
 __author__ = 'jgray@plos.org'
 
-
-class InviteReviewersCard(BaseCard):
+class InviteReviewersCard(InviteCard):
   """
   Page Object Model for Invite Reviewer Card
   """
@@ -31,31 +29,32 @@ class InviteReviewersCard(BaseCard):
     self._edit_invite_div = (By.CSS_SELECTOR, 'div.invite-reviewer-edit-invite')
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
-    self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
-    self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
-    self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
-    self._edit_invite_text_save = (By.CSS_SELECTOR, 'button.invitation-save-button')
-    # new action buttons
-    self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
-    self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
-    self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
 
-    self._invitees_table = (By.CLASS_NAME, 'invitees')
+    ##self._edit_invite_heading = (By.CSS_SELECTOR, 'h3.invite-to')
+    ##self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.taller-textarea')
+    ##self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
+    ##self._edit_invite_text_save = (By.CSS_SELECTOR, 'button.invitation-save-button')
+    # new action buttons
+    ##self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
+    ##self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
+    ##self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
+
+    ##self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
-    self._invitee_listing = (By.CSS_SELECTOR, 'tr.invitation')
+    ##self._invitee_listing = (By.CSS_SELECTOR, 'tr.invitation')
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
-    self._invitee_avatar = (By.CSS_SELECTOR, 'img.invitee-thumbnail')
-    self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
-    self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
-    self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
-    self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
-    self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
-    self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestions')
+    ##self._invitee_avatar = (By.CSS_SELECTOR, 'img.invitee-thumbnail')
+    ##self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
+    ##self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
+    ##self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
+    ##self._invitee_revoke = (By.CSS_SELECTOR, 'span.invite-remove')
+    ##self._reason = (By.CSS_SELECTOR, 'tr.invitation-decline-reason')
+    ##self._suggestions = (By.CSS_SELECTOR, 'tr.invitation-reviewer-suggestions')
 
   # POM Actions
-  def validate_card_elements_styles(self, paper_id):
+  def _validate_card_elements_styles(self, paper_id):
     """
     This method validates the styles of the card elements including the common card elements
     :return void function

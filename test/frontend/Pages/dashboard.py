@@ -190,7 +190,6 @@ class DashboardPage(AuthenticatedPage):
           return 'Decline', (reasons, suggestions)
     # If flow reachs this point, there was an error
     invite_listings_text = [x.text for x in invite_listings]
-    import pdb; pdb.set_trace()
     raise ValueError(u'{0} not in {1}'.format(title, invite_listings_text))
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):

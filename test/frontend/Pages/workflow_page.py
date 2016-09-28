@@ -237,42 +237,41 @@ class WorkflowPage(AuthenticatedPage):
     # APERTA-5513 AC 1 and 2
     author_col, staff_col = self._gets(self._add_card_overlay_columns)
     author_cards = author_col.find_elements_by_tag_name('label')
-    assert author_cards[0].text == 'Additional Information', author_cards[0].text
-    assert author_cards[1].text == 'Authors', author_cards[1].text
-    assert author_cards[2].text == 'Billing', author_cards[2].text
-    assert author_cards[4].text == 'Competing Interests', author_cards[4].text
-    assert author_cards[5].text == 'Cover Letter', author_cards[5].text
-    assert author_cards[6].text == 'Data Availability', author_cards[6].text
-    assert author_cards[7].text == 'Ethics Statement', author_cards[7].text
-    assert author_cards[8].text == 'Figures', author_cards[8].text
-    assert author_cards[9].text == 'Financial Disclosure', author_cards[9].text
-    assert author_cards[10].text == 'New Taxon', author_cards[10].text
-    assert author_cards[11].text == 'Reporting Guidelines', author_cards[11].text
-    assert author_cards[12].text == 'Reviewer Candidates', author_cards[12].text
-    assert author_cards[14].text == 'Supporting Info', author_cards[14].text
-    assert author_cards[15].text == 'Upload Manuscript', author_cards[15].text
+    assert author_cards[0].text == u'Additional Information', author_cards[0].text
+    assert author_cards[1].text == u'Authors', author_cards[1].text
+    assert author_cards[2].text == u'Billing', author_cards[2].text
+    assert author_cards[3].text == u'Competing Interests', author_cards[3].text
+    assert author_cards[4].text == u'Cover Letter', author_cards[4].text
+    assert author_cards[5].text == u'Data Availability', author_cards[5].text
+    assert author_cards[6].text == u'Ethics Statement', author_cards[6].text
+    assert author_cards[7].text == u'Figures', author_cards[7].text
+    assert author_cards[8].text == u'Financial Disclosure', author_cards[8].text
+    assert author_cards[9].text == u'New Taxon', author_cards[9].text
+    assert author_cards[10].text == u'Reporting Guidelines', author_cards[10].text
+    assert author_cards[11].text == u'Reviewer Candidates', author_cards[11].text
+    assert author_cards[12].text == u'Supporting Info', author_cards[12].text
+    assert author_cards[13].text == u'Upload Manuscript', author_cards[13].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
-    assert staff_cards[0].text == 'Ad-hoc', staff_cards[0].text
-    assert staff_cards[1].text == 'Assign Admin', staff_cards[1].text
-    assert staff_cards[2].text == 'Assign Team', staff_cards[2].text
-    assert staff_cards[3].text == 'Editor Discussion', staff_cards[3].text
-    assert staff_cards[4].text == 'Final Tech Check', staff_cards[4].text
-    assert staff_cards[5].text == 'Front Matter Reviewer Report', staff_cards[5].text
-    assert staff_cards[6].text == 'Initial Decision', staff_cards[6].text
-    assert staff_cards[7].text == 'Initial Tech Check', staff_cards[7].text
-    assert staff_cards[8].text == 'Invite Academic Editor', staff_cards[8].text
-    assert staff_cards[9].text == 'Invite Reviewers', staff_cards[9].text
-    assert staff_cards[10].text == 'Production Metadata', staff_cards[10].text
-    assert staff_cards[11].text == 'Register Decision', staff_cards[11].text
-    assert staff_cards[12].text == 'Related Articles', staff_cards[12].text
-    assert staff_cards[14].text == 'Revision Tech Check', staff_cards[14].text
-    assert staff_cards[15].text == 'Send to Apex', staff_cards[15].text
-    assert staff_cards[16].text == 'Title And Abstract', staff_cards[16].text
+    assert staff_cards[0].text == u'Ad-hoc', staff_cards[0].text
+    assert staff_cards[1].text == u'Assign Admin', staff_cards[1].text
+    assert staff_cards[2].text == u'Assign Team', staff_cards[2].text
+    assert staff_cards[3].text == u'Editor Discussion', staff_cards[3].text
+    assert staff_cards[4].text == u'Final Tech Check', staff_cards[4].text
+    assert staff_cards[5].text == u'Initial Decision', staff_cards[5].text
+    assert staff_cards[6].text == u'Initial Tech Check', staff_cards[6].text
+    assert staff_cards[7].text == u'Invite Academic Editor', staff_cards[7].text
+    assert staff_cards[8].text == u'Invite Reviewers', staff_cards[8].text
+    assert staff_cards[9].text == u'Production Metadata', staff_cards[9].text
+    assert staff_cards[10].text == u'Register Decision', staff_cards[10].text
+    assert staff_cards[11].text == u'Related Articles', staff_cards[11].text
+    assert staff_cards[12].text == u'Revision Tech Check', staff_cards[12].text
+    assert staff_cards[13].text == u'Send to Apex', staff_cards[13].text
+    assert staff_cards[14].text == u'Title And Abstract', staff_cards[14].text
     author_cards_text = [x.text for x in author_cards]
     # This will fail until APERTA-6333 is fixed
-    assert 'Changes For Author' not in author_cards_text, author_cards_text
-    assert 'Revise Manuscript' not in author_cards_text, author_cards_text
-    assert 'Reviewer Report' not in author_cards_text, author_cards_text
+    assert u'Changes For Author' not in author_cards_text, author_cards_text
+    assert u'Revise Manuscript' not in author_cards_text, author_cards_text
+    assert u'Reviewer Report' not in author_cards_text, author_cards_text
 
     # APERTA-5513 AC 3
     author_cards[10].click()

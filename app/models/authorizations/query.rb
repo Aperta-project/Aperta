@@ -289,7 +289,9 @@ module Authorizations
       end
 
       query.where(
-        table[:permission_states][:name].eq(local_permission_state_column)
+        table[:permission_states][:name].eq(local_permission_state_column).or(
+          table[:permission_states][:name].eq('*')
+        )
       )
     end
 
@@ -344,8 +346,13 @@ module Authorizations
               through_klass = through_reflection.klass
               through_table = through_reflection.klass.arel_table
 
-              # this is the Task reflection (from the perspective of Paper)
-              through_target_reflection = through_klass.reflections[reflection.name.to_s]
+              # If we have a thru association it may be a has_many or a has_one
+              # so we check both the singular and the plural forms.
+              plural_reflection = reflection.name.to_s.pluralize
+              singular_reflection = reflection.name.to_s.singularize
+              through_target_reflection = begin
+                through_klass.reflections[plural_reflection] || through_klass.reflections[singular_reflection]
+              end
               through_target_table = through_target_reflection.klass.arel_table
 
               # construct the join from journals table to the a2_table

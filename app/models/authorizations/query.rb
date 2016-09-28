@@ -471,12 +471,18 @@ module Authorizations
       # pull out permissions
       rs = ResultSet.new
       objects.each do |task|
-        permissions_to_states_string = Hash[ objects.first.permission_actions.split(/\s*,\s*/).map { |f| f.split(/:/) } ]
-        permissions_to_states = Hash[ permissions_to_states_string.map { |k,v|
-          [k, { states: v.split(/\s*,\s*/) }]
-        } ]
+        permission_states = Hash.new { |h,k| h[k] = { states: [] } }
 
-        rs.add_object(task, with_permissions: permissions_to_states)
+        # Permission_actions come thru as a string column, e.g:
+        #   "read:*, talk:in_progress, talk:in_review, view:*, write:in_progress"
+        #
+        # They need to be parsed out and the permission states should be
+        # grouped by their corresponding permission action.
+        objects.first.permission_actions.
+          split(/\s*,\s*/).
+          map { |f| f.split(/:/) }.
+          each { |permission, state| permission_states[permission][:states] << state }
+        rs.add_object(task, with_permissions: permission_states)
       end
       rs
     end

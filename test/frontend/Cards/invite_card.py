@@ -53,6 +53,7 @@ class InviteCard(BaseCard):
     """
     This method invites the user that is passed as parameter
     :user: User to send the invitation
+    :return: None
     """
     time.sleep(.5)
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
@@ -89,9 +90,7 @@ class InviteCard(BaseCard):
     invite_text = self._get(self._edit_invite_textarea).text
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
-    title = re.sub(r'[ \t\f\v]+', ' ', title)
-    # and need to scrub latin-1 non-breaking spaces
-    title = re.sub(u'\xa0', u' ', title)
+    title = self.normalize_spaces(title)
     assert title in invite_text, \
         title + '\nNot found in \n' + invite_text
     assert 'PLOS Wombat' in invite_text, invite_text

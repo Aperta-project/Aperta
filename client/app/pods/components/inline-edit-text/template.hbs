@@ -1,5 +1,10 @@
 <div class="inline-edit bodypart-display {{bodyPartType}}">
   <div class="item-text">
-    {{content-editable value=bodyPart.value class="editable" editable=canEdit}}
+    {{content-editable
+      placeholder="Click to type in your response."
+      value=bodyPart.value
+      class="editable"
+      focus-out=(action save)
+      editable=canEdit}}
   </div>
 </div>

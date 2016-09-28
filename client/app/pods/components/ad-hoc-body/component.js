@@ -58,7 +58,7 @@ export default Ember.Component.extend({
     return this.get('task.paper.id');
   }),
 
-  canEdit: true,
+  canEdit: false,
   canManage: true,
 
   attachmentsRequest(path, method, s3Url, file) {
@@ -82,7 +82,13 @@ export default Ember.Component.extend({
   blocks: null,
   blockObjects: Ember.computed('blocks.[]', function() {
     return this.get('blocks').map((block) => {
+      // note that items are shared by reference here.
+      // that means that when one of the items' 'value' property
+      // is updated, it will update item in the blocks array too.
+      // we should probably make it such that the block items are copied
+      // rather than shared, as it makes things way more confusing.
       return BlockObject.create({items: block});
+      //
     });
   }),
 

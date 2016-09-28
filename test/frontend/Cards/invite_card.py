@@ -40,6 +40,7 @@ class InviteCard(BaseCard):
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
     self._invitee_listing = (By.CLASS_NAME, 'invitation-item')
+    self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
 
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
@@ -99,18 +100,11 @@ class InviteCard(BaseCard):
     assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (ms_id,))[0][0]
     if abstract is not None:
-      # strip html, and remove whitespace
-      # NOTA BENE: BeautifulSoup4 inherently handles str to unicode conversion
-      abstract = self.get_text(abstract).strip()
-    if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one
       #  Painful lesson
-      abstract = re.sub(r'[ \t\f\v]+', ' ', abstract)
-      # It also removes trailing spaces
-      abstract = re.sub(r'[ \t\f\v]+\n', r'\n', abstract)
-      # and need to scrub latin-1 non-breaking spaces
-      abstract = re.sub(u'\xa0', u' ', abstract)
-      assert abstract in invite_text, abstract + '\nNot equal to\n' + invite_text
+      abstract = self.normalize_spaces(abstract)
+      invite_text = self.normalize_spaces(invite_text)
+      assert abstract in invite_text, u'{0} not int {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
     self._get(self._edit_save_invitation_btn).click()
@@ -126,7 +120,7 @@ class InviteCard(BaseCard):
         'Invited not found in {0}'.format([x.text for x in invitees])
     self._gets(self._rescind_button)
 
-  def validate_ae_response(self, invitee, response, reason='N/A', suggestions='N/A'):
+  def validate_response(self, invitee, response, reason='N/A', suggestions='N/A'):
     """
     This method invites the Academic Editor (AE) that is passed as parameter, verifying
       the composed email. It then checks the table of invited AE.
@@ -160,20 +154,26 @@ class InviteCard(BaseCard):
       assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
                                                                          reason_suggestions)
 
-  def check_style(self, user, paper_id):
+  def validate_card_elements_styles(self, user, card_type, paper_id):
     """
     Style check for the card
-    :user: User to send the invitation
+    :param user: User (AE or Reviewer) to send the invitation
+    :return None
     """
     self.validate_common_elements_styles(paper_id)
-    card_title = self._get(self._card_heading)
-    assert card_title.text == 'Invite Academic Editor'
-    self.validate_application_title_style(card_title)
     # There is no definition of this external label style in the style guide. APERTA-7311
     #   currently, a new style validator has been implemented to match this UI
-    ae_input = self._get(self._invite_box)
-    assert ae_input.get_attribute('placeholder') == 'Invite editor by name or email' ,\
-        ae_input.get_attribute('placeholder')
+    user_input = self._get(self._invite_box)
+    card_title = self._get(self._card_heading)
+    if card_type == 'reviewer':
+      assert card_title.text == 'Invite Reviewers', card_title.text
+      assert user_input.get_attribute('placeholder') == 'Invite reviewer by name or email' ,\
+        user_input.get_attribute('placeholder')
+    elif card_type == 'ae':
+      assert card_title.text == 'Invite Academic Editor', card_title.text
+      assert user_input.get_attribute('placeholder') == 'Invite editor by name or email' ,\
+        user_input.get_attribute('placeholder')
+    self.validate_application_title_style(card_title)
     # Button
     btn = self._get(self._compose_invitation_button)
     assert btn.text == 'COMPOSE INVITE'
@@ -181,9 +181,9 @@ class InviteCard(BaseCard):
     # Style validation on disabled button is commented out due to APERTA-7684
     # self.validate_primary_big_disabled_button_style(btn)
     # Enable button to check style
-    ae_input.send_keys(user['email'] + Keys.ENTER)
-    ae_input.send_keys(Keys.ENTER)
+    user_input.send_keys(user['email'] + Keys.ENTER)
+    user_input.send_keys(Keys.ENTER)
     time.sleep(.5)
     self.validate_secondary_big_green_button_style(btn)
-    ae_input.clear()
+    user_input.clear()
     return None

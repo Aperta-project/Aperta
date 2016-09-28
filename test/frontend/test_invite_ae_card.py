@@ -43,7 +43,6 @@ class InviteAECardTest(CommonTest):
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
-                        doc='Plos Biology Manuscript.Final-1.doc',
                         )
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances

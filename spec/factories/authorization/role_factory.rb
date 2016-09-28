@@ -1,3 +1,6 @@
+# Many roles are defined on the journal level. See the journal_factory
+# helpers for traits that assist with setting up specific roles. They
+# are typically named like "with_<role_name>_role", e.g. with_creator_role
 FactoryGirl.define do
   factory :role do
     sequence(:name){ |i| "Role #{i}" }
@@ -5,16 +8,17 @@ FactoryGirl.define do
     participates_in_papers true
     participates_in_tasks true
 
-    trait :creator do
-      fail 'Use Role.creator instead of this factory'
-    end
+    trait :site_admin do
+      name Role::SITE_ADMIN_ROLE
+      journal { nil }
+      participates_in_papers false
+      participates_in_tasks false
 
-    trait :collaborator do
-      fail 'Use Role.collaborator instead of this factory'
-    end
-
-    trait :task_participant do
-      name Role::TASK_PARTICIPANT_ROLE
+      after(:create) do |role|
+        role.ensure_permission_exists(
+          Permission::WILDCARD, applies_to: System.name
+        )
+      end
     end
   end
 end

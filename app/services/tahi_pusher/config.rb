@@ -1,7 +1,5 @@
 module TahiPusher
   class Config
-    SYSTEM_CHANNEL = "system"
-
     # injected into ember layout (ember.html.erb)
     # then loaded into ember client (pusher-override.coffee)
     def self.as_json(_ = {})
@@ -10,7 +8,7 @@ module TahiPusher
         auth_endpoint_path:
           Rails.application.routes.url_helpers.auth_event_stream_path,
         key: Pusher.key,
-        channels: [SYSTEM_CHANNEL]
+        channels: [TahiPusher::ChannelName::SYSTEM]
       }.merge(socket_options)
     end
 

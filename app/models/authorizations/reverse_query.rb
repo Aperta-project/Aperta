@@ -48,7 +48,9 @@ module Authorizations
     # return models which authorize target_model
     def models_which_authorize(target_model)
       authorizations_on_target(target_model).map do |authorization|
-        target_model.send(authorization.inverse_of_via)
+        if authorization.inverse_of_via
+          target_model.send(authorization.inverse_of_via)
+        end
       end.select(&:present?)
     end
 

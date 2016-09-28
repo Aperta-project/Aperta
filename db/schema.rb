@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(version: 20161018143343) do
     t.datetime "accepted_at"
     t.datetime "rescinded_at"
     t.integer  "position"
+    t.integer  "invite_queue_id"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
@@ -303,6 +304,14 @@ ActiveRecord::Schema.define(version: 20161018143343) do
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
+
+  create_table "invite_queues", force: :cascade do |t|
+    t.string   "queue_title"
+    t.integer  "task_id"
+    t.integer  "primary_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"

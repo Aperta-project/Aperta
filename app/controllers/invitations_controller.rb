@@ -105,7 +105,7 @@ class InvitationsController < ApplicationController
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:body, :email, :primary_id)
+      .permit(:body, :email, :primary_id, :queue_id)
   end
 
   def task

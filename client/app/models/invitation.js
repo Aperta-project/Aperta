@@ -14,6 +14,7 @@ export default DS.Model.extend({
   email: DS.attr('string'),
   information: DS.attr('string'),
   invitationType: DS.attr('string'),
+  inviteQueue: DS.belongsTo('inviteQueue'),
   invitee: DS.belongsTo('user', { inverse: 'invitations', async: true }),
   inviteeRole: DS.attr('string'),
   position: DS.attr('number'),

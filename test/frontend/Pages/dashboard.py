@@ -162,7 +162,6 @@ class DashboardPage(AuthenticatedPage):
     """
     response = random.choice(['Accept', 'Decline'])
     title = self.normalize_spaces(title)
-    response = 'Decline'
     logging.info(response)
     invite_listings = self._gets(self._view_invites_invite_listing)
     reasons = ''

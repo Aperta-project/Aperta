@@ -81,7 +81,7 @@ module Authorizations
     # evolve to work with other kinds of models this is the entry point for
     # refactoring, replacing, or removing.
     def permission_state_column
-      :publishing_state
+      'publishing_state'
     end
 
     # +permission_state_join+ allows for a model to delegate their state
@@ -217,23 +217,6 @@ module Authorizations
        end
      end
 
-     if @permission_state_column # e.g. Task delegates to Paper
-       delegated_state_column = klass.delegate_state_to.to_s
-       delegated_state_table = klass.reflections[delegated_state_column].klass.arel_table
-
-       # WHERE papers.publishing_state = permission_states.name
-       assignments_arel.where(
-         delegated_state_table[permission_state_column].eq(PermissionState.arel_table[:name])
-          .or(delegated_state_table[permission_state_column].eq(nil))
-       )
-     elsif @permission_state_check # e.g. Paper has its own publishing state column
-       # WHERE papers.publishing_state = permission_states.name
-       assignments_arel.where(
-         klass.arel_table[permission_state_column].eq(PermissionState.arel_table[:name])
-          .or(klass.arel_table[permission_state_column].eq(nil))
-       )
-     end
-
      assignments_arel.group(Assignment.arel_table[:assigned_to_type])
        .group(Assignment.arel_table[:assigned_to_id])
        .group(Assignment.arel_table[:id])
@@ -275,7 +258,7 @@ module Authorizations
 
     def load_authorized_objects
       if klass.respond_to?(:delegate_state_to)
-        @permission_state_column = klass.delegate_state_to.to_s
+        @delegate_permission_state_to_association = klass.delegate_state_to.to_s
       elsif klass.column_names.include?(permission_state_column.to_s)
         @permission_state_check = true
       end
@@ -309,6 +292,30 @@ module Authorizations
             id_values = [ id_values ].flatten
             query = query.where(join_table.primary_key.in(id_values))
           end
+
+          if @delegate_permission_state_to_association # e.g. Task delegates to Paper
+            delegate_state_table = klass.reflections[@delegate_permission_state_to_association].klass.arel_table
+            query.join(delegate_state_table).on(
+              klass.arel_table[klass.reflections[@delegate_permission_state_to_association].foreign_key].eq(
+                delegate_state_table.primary_key
+              )
+            )
+            query.join(table[:permission_states_permissions]).on(
+              table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+            )
+            query.join(table[:permission_states]).on(
+              table[:permission_states][:name].eq(delegate_state_table[permission_state_column])
+            )
+          elsif @permission_state_check # e.g. Paper has its own publishing state column
+            # WHERE papers.publishing_state = permission_states.name
+            query.join(table[:permission_states_permissions]).on(
+              table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+            )
+            query.join(table[:permission_states]).on(
+              table[:permission_states][:name].eq(klass.arel_table[permission_state_column])
+            )
+          end
+
           query
 
         elsif reflection.collection? || reflection.has_one?
@@ -353,6 +360,23 @@ module Authorizations
               reflection = delegate_reflection
             end
 
+            if @delegate_permission_state_to_association # e.g. Task delegates to Paper
+                query.join(table[:permission_states_permissions]).on(
+                  table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+                )
+                query.join(table[:permission_states]).on(
+                  table[:permission_states][:name].eq(klass.reflections[@delegate_permission_state_to_association].klass.arel_table[permission_state_column])
+                )
+            elsif @permission_state_check # e.g. Paper has its own publishing state column
+              # WHERE papers.publishing_state = permission_states.name
+              query.join(table[:permission_states_permissions]).on(
+                table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+              )
+              query.join(table[:permission_states]).on(
+                table[:permission_states][:name].eq(klass.arel_table[permission_state_column])
+              )
+            end
+
             query.where(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
             query
           else
@@ -363,6 +387,24 @@ module Authorizations
               foreign_key_values = [ foreign_key_value ].flatten
               query.where(join_table.primary_key.in(foreign_key_values))
             end
+
+            if @delegate_permission_state_to_association # e.g. Task delegates to Paper
+              query.join(table[:permission_states_permissions]).on(
+                table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+              )
+              query.join(table[:permission_states]).on(
+                table[:permission_states][:name].eq(klass.reflections[@delegate_permission_state_to_association].klass.arel_table[permission_state_column])
+              )
+            elsif @permission_state_check # e.g. Paper has its own publishing state column
+              # WHERE papers.publishing_state = permission_states.name
+              query.join(table[:permission_states_permissions]).on(
+                table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+              )
+              query.join(table[:permission_states]).on(
+                table[:permission_states][:name].eq(klass.arel_table[permission_state_column])
+              )
+            end
+
             query
           end
         elsif reflection.belongs_to?
@@ -374,6 +416,24 @@ module Authorizations
             foreign_key_values = [ foreign_key_value ].flatten
             query.where(join_table.primary_key.in(foreign_key_values))
           end
+
+          if @delegate_permission_state_to_association # e.g. Task delegates to Paper
+            query.join(table[:permission_states_permissions]).on(
+              table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+            )
+            query.join(table[:permission_states]).on(
+              table[:permission_states][:name].eq(klass.reflections[@delegate_permission_state_to_association].klass.arel_table[permission_state_column])
+            )
+          elsif @permission_state_check # e.g. Paper has its own publishing state column
+            # WHERE papers.publishing_state = permission_states.name
+            query.join(table[:permission_states_permissions]).on(
+              table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+            )
+            query.join(table[:permission_states]).on(
+              table[:permission_states][:name].eq(klass.arel_table[permission_state_column])
+            )
+          end
+
           query
         else
           fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"

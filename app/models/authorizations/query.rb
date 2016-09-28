@@ -6,6 +6,7 @@ require_dependency 'emberize'
 module Authorizations
   class Error < ::StandardError ; end
   class QueryError < Error ; end
+  class MissingAssociationForAuthConfiguration < Error ; end
 
   # Query represents the quer(y|ies) for finding the authorized objects from
   # the database based on how the authorizations sub-system is configured,
@@ -334,6 +335,15 @@ module Authorizations
           add_permission_state_check_to_query(query, a2_table)
 
           query
+
+        elsif reflection.nil?
+          fail MissingAssociationForAuthConfiguration, <<-ERROR.strip_heredoc
+            Expected to find #{ac.via.inspect} association defined on
+            #{assigned_to_klass}, but did not. This was because the following
+            Authorizations::Configuration was configured:
+
+            #{ac.inspect}
+          ERROR
 
         elsif reflection.collection? || reflection.has_one?
           # E.g. Journal has_many :tasks, :through => :papers

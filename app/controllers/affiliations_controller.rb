@@ -28,7 +28,7 @@ class AffiliationsController < ApplicationController
 
   def update
     (current_user == affiliation.user &&
-      curent_user.id == affiliation_params[:user_id]) ||
+      current_user.id == affiliation_params[:user_id]) ||
       requires_user_can(:manage_users, Journal)
 
     affiliation.update_attributes! affiliation_params
@@ -37,7 +37,7 @@ class AffiliationsController < ApplicationController
 
   def create
     (current_user == user &&
-      curent_user.id == affiliation_params[:user_id]) ||
+      current_user.id == affiliation_params[:user_id]) ||
       requires_user_can(:manage_users, Journal)
 
     new_affiliation = user.affiliations.create!(affiliation_params)

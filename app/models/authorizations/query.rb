@@ -400,15 +400,15 @@ module Authorizations
         @object_permission_map = Hash.new{ |h,k| h[k] = {} }
       end
 
-      def add_object(object, with_permissions: [])
+      def add_object(object, with_permissions: {})
         @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
           { states: (v1[:states] + v2[:states]).uniq.sort }
         end
       end
 
-      def add_objects(object, with_permissions: [])
+      def add_objects(objects, with_permissions: {})
         objects.each do |object|
-          add_object object, with_permissions
+          add_object object, with_permissions: with_permissions
         end
       end
 

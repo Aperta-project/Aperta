@@ -105,7 +105,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       expect(TahiStandardTasks::RegisterDecisionMailer)
         .to receive_message_chain(:delay, :notify_author_email)
         .with(
-          decision_id: decision_one,
+          decision_id: decision_one.id,
           to_field: to_field.value,
           subject_field: subject_field.value)
       task.send_email

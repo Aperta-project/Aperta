@@ -25,10 +25,12 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     ned_id
-    site_admin false
 
     trait :site_admin do
-      site_admin true
+      after(:create) do |user, evaluator|
+        role = Role.site_admin_role || FactoryGirl.create(:role, :site_admin)
+        user.assign_to! assigned_to: System.first_or_create!, role: role
+      end
     end
 
     trait :with_affiliation do

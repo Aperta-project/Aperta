@@ -68,7 +68,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
           ).to eq(1)
           expect(paper.reviewers.count).to eq(1)
 
-          overlay = Page.view_task_overlay(paper, task)
+          overlay = Page.view_task_overlay(paper, task, without_waiting: true)
           overlay.register_decision = "Accept"
           overlay.decision_letter = "Accepting this because I can"
           sleep 1 # letter saves on a debounce

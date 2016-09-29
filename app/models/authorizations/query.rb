@@ -81,24 +81,6 @@ module Authorizations
       'publishing_state'
     end
 
-    # +permission_state_join+ allows for a model to delegate their state
-    # by implementing a `delegate_state_to` method on the class that
-    # returns the name of the association to delegate to as a symbol.
-    #
-    # For example, having the following method in a model will delegate permission state to Paper:
-    #  def self.delegate_state_to
-    #    :paper
-    #  end
-    def permission_state_join
-      @klass.try(:delegate_state_to)
-    end
-
-    def allowed?(object, states)
-      states.include?(PermissionState::WILDCARD) ||
-        !object.respond_to?(permission_state_column) ||
-        states.member?(object.send(permission_state_column))
-    end
-
     # +load_all_objects+ is a way to bypass R&P queries. It is intended to be
     # used in the case of Site Admins(s) or other System-level roles that
     # have access to everything in the system.
@@ -221,11 +203,6 @@ module Authorizations
        .group(Permission.arel_table[:id])
 
       assignments_arel
-    end
-
-    def objects_by_klass klass
-      a2_table = Arel::Table.new(:assignments_table)
-      composed_a2 = Arel::Nodes::As.new(assignments_table)
     end
 
     # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql

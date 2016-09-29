@@ -15,8 +15,9 @@
   {{/if}}
 
   <span class="ember-power-select-status-icon" {{action "otherTrigger"}}></span>
-{{else}}
+{{/if}}
 
+<div class="{{if _otherOptionSelected "power-select-other-dropdown-hidden"}}">
   {{#power-select options=_optionsWithOther
                   selected=selectedValue
                   searchEnabled=searchEnabled
@@ -25,5 +26,4 @@
                   as |v|}}
     {{v}}
   {{/power-select}}
-
-{{/if}}
+</div>

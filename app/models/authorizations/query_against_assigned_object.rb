@@ -3,8 +3,6 @@ module Authorizations
   # QueryAgainstAssignedObject builds the query for finding authorized
   # objects.
   class QueryAgainstAssignedObject
-    WILDCARD = Authorizations::Query::WILDCARD
-
     attr_reader :assignments, :permissible_states
 
     # == Constructor Arguments
@@ -56,7 +54,7 @@ module Authorizations
         has_state_column = @target.class.column_names.include?(@state_column)
         has_state_column && permissible_states.include?(@target.send(@state_column))
       end
-      if permissible_states.include?(WILDCARD)
+      if permissible_states.include?(PermissionState::WILDCARD)
         [@target]
       elsif has_state_column
         has_state ? [@target] : []
@@ -84,7 +82,7 @@ module Authorizations
     # If the klass we're querying against doesn't have the @state_column
     # then this won't add any permission/state conditions to the query.
     def add_permissible_state_conditions_to_query(query)
-      if !permissible_states.include?(WILDCARD)
+      if !permissible_states.include?(PermissionState::WILDCARD)
         if @state_join
           return query.joins(@state_join).where(@state_join.to_s.pluralize => { @state_column => permissible_states })
         elsif @klass.column_names.include?(@state_column)

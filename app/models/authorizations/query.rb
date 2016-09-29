@@ -13,9 +13,6 @@ module Authorizations
   # what the user is assigned to, what roles the person has, and what
   # permissions they have thru those roles.
   class Query
-    # WILDCARD represents the notion that any state is valid.
-    WILDCARD = PermissionState::WILDCARD
-
     attr_reader :permission, :klass, :user
 
     # == Constructor Arguments
@@ -97,7 +94,7 @@ module Authorizations
     end
 
     def allowed?(object, states)
-      states.include?(WILDCARD) ||
+      states.include?(PermissionState::WILDCARD) ||
         !object.respond_to?(permission_state_column) ||
         states.member?(object.send(permission_state_column))
     end
@@ -115,7 +112,7 @@ module Authorizations
       permission_names = Permission.where(applies_to: eligible_applies_to).pluck(:action)
       permission_hsh = {}
       permission_names.each do |name|
-        permission_hsh[name.to_sym] = { states: [WILDCARD_STATE] }
+        permission_hsh[name.to_sym] = { states: [PermissionState::WILDCARD] }
       end
 
       if @target.is_a?(Class)
@@ -206,7 +203,7 @@ module Authorizations
 
      # If we're looking for the wildcard permission then we aren't interested in any one
      # permission, but all of the possible permissions
-     if @permission.to_sym != :*
+     if @permission.to_sym != Permission::WILDCARD.to_sym
        assignments_arel.where(Permission.arel_table[:action].eq(@permission))
      end
 
@@ -290,7 +287,7 @@ module Authorizations
 
       query.where(
         table[:permission_states][:name].eq(local_permission_state_column).or(
-          table[:permission_states][:name].eq('*')
+          table[:permission_states][:name].eq(PermissionState::WILDCARD.to_s)
         )
       )
     end

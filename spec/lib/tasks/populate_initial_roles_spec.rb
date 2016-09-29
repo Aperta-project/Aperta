@@ -107,26 +107,28 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   context 'with a user assigned as site admin' do
+    let!(:site_admin_role) { FactoryGirl.create(:role, :site_admin) }
+
     let(:csv) do
       [['Jane Doe', 'jane@example.edu', 'Site Admin', nil, journal.name]]
     end
 
-    it 'should set the site_admin flag' do
+    it 'makes the user a Site Admin' do
       expect { run_rake_task }.to change { User.count }.by 1
-      expect(user.site_admin).to be true
+      expect(user.site_admin?).to be true
     end
   end
 
   context 'with a user unassigned as site admin' do
-    let(:user) { FactoryGirl.create(:user, site_admin: true) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:csv) do
       [[nil, user.email, '-Site Admin', nil, journal.name]]
     end
 
-    it 'should remove the site_admin flag' do
-      expect(user.site_admin).to be true
+    it 'removes the user from the Site Admin role' do
+      expect(user.site_admin?).to be true
       expect { run_rake_task }.not_to change { User.count }
-      expect(user.reload.site_admin).to be false
+      expect(user.reload.site_admin?).to be false
     end
   end
 

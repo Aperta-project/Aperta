@@ -47,7 +47,7 @@ class EventStreamSubscriber
   end
 
   def system_channel
-    TahiPusher::ChannelName.build(target: TahiPusher::Config::SYSTEM_CHANNEL, access: TahiPusher::ChannelName::PUBLIC)
+    TahiPusher::ChannelName.build(target: TahiPusher::ChannelName::SYSTEM, access: TahiPusher::ChannelName::PUBLIC)
   end
 
 end

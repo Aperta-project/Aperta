@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include Assignable::User
-  include UserHelper
+  include Authorizations::UserHelper
   include UserDevise
 
   include PgSearch
@@ -103,10 +103,6 @@ class User < ActiveRecord::Base
 
   def password_required?
     Rails.configuration.password_auth_enabled && super
-  end
-
-  def self.site_admins
-    where(site_admin: true)
   end
 
   def full_name

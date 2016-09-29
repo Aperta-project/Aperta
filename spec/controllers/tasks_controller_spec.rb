@@ -147,7 +147,6 @@ describe TasksController, redis: true do
         let(:new_assignee) { FactoryGirl.create(:user) }
 
         before do
-          user.update! site_admin: false
           task.add_participant(user)
         end
 

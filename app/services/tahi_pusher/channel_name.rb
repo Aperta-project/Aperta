@@ -7,6 +7,7 @@ module TahiPusher
     PRESENCE          = "presence"
     PRIVATE           = "private"
     PUBLIC            = "public"
+    SYSTEM            = "system"
 
     # <#Paper:1234 @id=4> --> "private-paper@4"
     def self.build(target:, access:)
@@ -52,6 +53,7 @@ module TahiPusher
     # "private-paper@4" --> true, "system" --> false
     def active_record_backed?
       model, _ = suffix.partition(MODEL_SEPARATOR)
+      return false if model == SYSTEM
       model.classify.constantize.new.is_a?(ActiveRecord::Base)
     rescue NameError
       false # model could not be constantized

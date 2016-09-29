@@ -6,17 +6,14 @@ describe User do
     expect(build(:user)).to be_valid
   end
 
-  describe "scopes" do
-    let(:user1) { FactoryGirl.create(:user) }
-    let(:user2) { FactoryGirl.create(:user) }
+  describe '.site_admins' do
+    let!(:user1) { FactoryGirl.create(:user, :site_admin) }
+    let!(:user2) { FactoryGirl.create(:user) }
 
-    describe ".admins" do
-      it "includes admin users only" do
-        user1.update! site_admin: true
-        admins = User.site_admins
-        expect(admins).to include user1
-        expect(admins).not_to include user2
-      end
+    it 'includes admin users only' do
+      site_admins = User.site_admins
+      expect(site_admins).to include user1
+      expect(site_admins).not_to include user2
     end
   end
 

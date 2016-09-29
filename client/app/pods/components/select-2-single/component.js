@@ -16,6 +16,10 @@ export default Select2Component.extend({
       return function(resolve) {
         return resolve(_this.get('selectedData'));
       };
-    })(this))).then(callback);
+    })(this))).then((data) => {
+      if (Ember.isPresent(data)) {
+        callback(data);
+      }
+    });
   }
 });

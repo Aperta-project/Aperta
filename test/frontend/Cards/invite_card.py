@@ -55,35 +55,33 @@ class InviteCard(BaseCard):
     :user: User to send the invitation
     :return: None
     """
-    time.sleep(.5)
+    self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
-    time.sleep(1)
+    self._wait_for_element(self._get(self._edit_invite_text_save))
     self._get(self._edit_invite_text_save).click()
-    time.sleep(1)
+    self._wait_for_element(self._get(self._invite_send_invite_button))
     self._get(self._invite_send_invite_button).click()
-    time.sleep(1)
-    self.click_completion_button()
+    self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 
   def validate_invite(self, invitee, title, creator, ms_id):
     """
-    Invites the Academic Editor (AE) that is passed as parameter, verifying the composed email.
+    Invites the invitee that is passed as parameter, verifying the composed email.
       Makes function and style validations.
-    :param ae: user to invite as AE specified as email, or, if in system, name,
+    :param invitee: user to invite specified as email, or, if in system, name,
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
     :param ms_id: paper id of the manuscript
     :return void function
     """
-    time.sleep(.5)
+    self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(invitee['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
     time.sleep(2)
-
     invite_headings = self._gets(self._edit_invite_heading)
-    # Since the AE is potentially off system, we can only validate email
+    # Since the invitee is potentially off system, we can only validate email
     invite_headings_text = [x.text for x in invite_headings]
     assert any(invitee['email'] in s for s in invite_headings_text), \
         '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
@@ -103,7 +101,7 @@ class InviteCard(BaseCard):
       #  Painful lesson
       abstract = self.normalize_spaces(abstract)
       invite_text = self.normalize_spaces(invite_text)
-      assert abstract in invite_text, u'{0} not int {1}'.format(abstract, invite_text)
+      assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
     self._get(self._edit_save_invitation_btn).click()
@@ -121,8 +119,8 @@ class InviteCard(BaseCard):
 
   def validate_response(self, invitee, response, reason='N/A', suggestions='N/A'):
     """
-    This method invites the Academic Editor (AE) that is passed as parameter, verifying
-      the composed email. It then checks the table of invited AE.
+    This method invites the invitee that is passed as parameter, verifying
+      the composed email. It then checks the table of invited users.
     :param ae: user to invite as reviewer specified as email, or, if in system, name,
         or username
     :param response: The reviewers response to the invitation

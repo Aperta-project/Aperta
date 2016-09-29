@@ -25,7 +25,7 @@ test('it renders', function(assert) {
     {{power-select-other options=names value=nameValue}}
   `);
 
-  assert.equal(this.$('.ember-power-select').length, 1, 'select renders');
+  assert.equal(this.$('.ember-power-select-trigger').length, 1, 'select renders');
 });
 
 test('initial value is selected', function(assert) {
@@ -58,12 +58,15 @@ test('input displayed when other option is selected', function(assert) {
     'input is visible'
   );
 
+
   Ember.run(() => {
-    this.$('.ember-power-select-status-icon').click();
+    let event = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
+    this.$('.ember-power-select-trigger')[0].dispatchEvent(event);
   });
 
   Ember.run(() => {
-    $('.ember-power-select-option:contains("John")').mouseup();
+    let event = new window.Event('mouseup', { bubbles: true, cancelable: true, view: window });
+    $('.ember-power-select-option:contains("John")')[0].dispatchEvent(event);
   });
 
   Ember.run(() => {

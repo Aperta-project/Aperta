@@ -636,6 +636,12 @@ ActiveRecord::Schema.define(version: 20160920175155) do
 
   add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
 
+  create_table "systems", force: :cascade do |t|
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
@@ -740,7 +746,6 @@ ActiveRecord::Schema.define(version: 20160920175155) do
     t.datetime "updated_at"
     t.string   "username"
     t.string   "avatar"
-    t.boolean  "site_admin",             default: false
     t.integer  "ned_id"
   end
 

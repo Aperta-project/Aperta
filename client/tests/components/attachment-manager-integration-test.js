@@ -16,11 +16,13 @@ let template = hbs`{{attachment-manager
                       attachments=attachments
                       cancelUpload=(action cancelUpload)
                       deleteFile=(action deleteFile)}}`;
+
 test('can cancel processing uploads', function(assert){
   let attachment = make('adhoc-attachment', {status: 'processing'});
   assert.expect(2);
   this.set('filePath', 'test_file_path');
   this.set('attachments', [attachment]);
+  this.set('deleteFile', function() {});
   this.set('cancelUpload', function() {
     assert.ok(true, 'cancelUpload action is invoked');
   });
@@ -36,6 +38,7 @@ test('can delete uploads that have failed during processing', function(assert){
   assert.expect(2);
   this.set('filePath', 'test_file_path');
   this.set('attachments', [attachment]);
+  this.set('cancelUpload', function() {});
   this.set('deleteFile', function() {
     assert.ok(true, 'deleteFile action is invoked');
   });

@@ -15,7 +15,9 @@ moduleForComponent(
 );
 
 let template = hbs`{{figure-thumbnail figure=figure destroyFigure=(action destroyFigure)}}`;
+
 test('it renders stuff when status is done', function(assert) {
+  this.set('destroyFigure', function(){});
   this.set('figure', make('figure', {status: 'done', title: 'My Title'}));
   this.render(template);
 
@@ -23,6 +25,7 @@ test('it renders stuff when status is done', function(assert) {
 });
 
 test('it renders a progress message while processing', function(assert) {
+  this.set('destroyFigure', function(){});
   this.set('figure', make('figure', {status: 'processing'}));
   this.render(template);
   assert.elementFound('.progress-text', 'shows the progress message');
@@ -45,6 +48,7 @@ test('it renders an error state', function(assert) {
 });
 
 test('it allows the user to cancel', function(assert) {
+  this.set('destroyFigure', function(){});
   this.set('figure', make('figure', {status: 'processing'}));
   this.render(template);
 

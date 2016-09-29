@@ -83,7 +83,7 @@
       display: block;
     }
     .add-item {
-      display: inline-block;
+      display: none;
     }
     .item-remove {
       margin: 10px;
@@ -92,10 +92,8 @@
     }
   }
 
-  &.email .add-item,
-  &.adhoc-label .add-item,
-  &.text .add-item {
-    display: none;
+  &.checkbox .add-item, {
+    display: inline-block;
   }
 }
 

@@ -32,16 +32,11 @@
     {{/each}}
 
     {{#if showAttachmentsBlock}}
-      {{attachment-manager filePath="ad-hoc"
-                           attachments=task.attachments
-                           multiple=true
-                           hasCaption=true
-                           accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.doc,.odt,.epub,.pdf"
-                           captionChanged=(action "updateAttachmentCaption")
-                           deleteFile=(action "deleteAttachment")
-                           cancelUpload=(action "cancelUpload")
-                           uploadFinished=(action "createAttachment")
-                           updateAttachment=(action "updateAttachment") }}
+    <div class="adhoc-attachments">
+      {{#if (not canEdit)}}
+        User Attached Files:
+      {{/if}}
+    </div>
     {{/if}}
   </div>
 
@@ -73,7 +68,7 @@
       </div>
 
       {{#unless isEditingTemplate}}
-        <div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachmentsBlock"}}>
+        <div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachments"}}>
           <span class="fa fa-paperclip"></span>
         </div>
       {{/unless}}

@@ -10,7 +10,6 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 let App = null;
 let server = null;
 let fakeUser = null;
-let currentPaper = null;
 
 const { mockFind } = TestHelper;
 
@@ -29,41 +28,6 @@ module('Integration: AdHoc Card', {
     App      = startApp();
     server   = setupMockServer();
     fakeUser = window.currentUserData.user;
-
-    TestHelper.handleFindAll('discussion-topic', 1);
-
-    let records = paperWithTask('Task', {
-      id: 1,
-      title: 'Super Ad-Hoc'
-    });
-
-    currentPaper = records[0];
-
-    let paperPayload = Factory.createPayload('paper');
-    paperPayload.addRecords(records.concat([fakeUser]));
-
-    let paperResponse = paperPayload.toJSON();
-    let collaborators = [
-      {
-        id: '35',
-        full_name: 'Aaron Baker',
-        info: 'testroles2, collaborator'
-      }
-    ];
-
-    server.respondWith('GET', '/api/dashboards', [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify({
-        dashboards: []
-      })
-    ]);
-
-    server.respondWith('GET', '/api/papers/' + currentPaper.id, [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify(paperResponse)
-    ]);
 
     server.respondWith('PUT', /\/api\/tasks\/\d+/, [
       204, {
@@ -95,7 +59,7 @@ module('Integration: AdHoc Card', {
 
 test('Changing the title on an AdHoc Task', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper });
+  const task  = make('task', { paper: paper, body: [], title: "Custom title" });
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -124,7 +88,7 @@ test('AdHoc Task text block', function(assert) {
     assert.elementFound('.inline-edit-body-part',
                         'New text body part is created');
 
-    Ember.$('.inline-edit-form div[contenteditable]')
+    Ember.$('.inline-edit.text div[contenteditable]')
          .html('New contenteditable, yahoo!')
          .trigger('keyup');
 
@@ -192,11 +156,11 @@ test('AdHoc Task email block', function(assert) {
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
 
-   server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [
-     204, {
-       'Content-Type': 'application/json'
-     }, JSON.stringify({})
-   ]);
+  server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [
+    204, {
+      'Content-Type': 'application/json'
+    }, JSON.stringify({})
+  ]);
 
   visit(paperTaskURL(paper, task));
 

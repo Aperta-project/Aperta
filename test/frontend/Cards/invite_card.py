@@ -99,6 +99,7 @@ class InviteCard(BaseCard):
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one
       #  Painful lesson
+      import pdb; pdb.set_trace()
       abstract = self.normalize_spaces(abstract)
       invite_text = self.normalize_spaces(invite_text)
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)

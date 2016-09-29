@@ -85,7 +85,7 @@ class InviteCard(BaseCard):
     invite_headings_text = [x.text for x in invite_headings]
     assert any(invitee['email'] in s for s in invite_headings_text), \
         '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
-    invite_text = self._get(self._edit_invite_textarea).text
+    invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
     title = self.normalize_spaces(title)
@@ -99,7 +99,6 @@ class InviteCard(BaseCard):
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one
       #  Painful lesson
-      import pdb; pdb.set_trace()
       abstract = self.normalize_spaces(abstract)
       invite_text = self.normalize_spaces(invite_text)
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
@@ -122,12 +121,12 @@ class InviteCard(BaseCard):
     """
     This method invites the invitee that is passed as parameter, verifying
       the composed email. It then checks the table of invited users.
-    :param ae: user to invite as reviewer specified as email, or, if in system, name,
+    :param invitee: user to invite specified as email, or, if in system, name,
         or username
-    :param response: The reviewers response to the invitation
+    :param response: The response to the invitation
     :return void function
     """
-    time.sleep(2)
+    self._wait_for_element(self._get(self._invitee_listing))
     invitee_element = self._get(self._invitee_listing)
     pagefullname = False
     count = 0

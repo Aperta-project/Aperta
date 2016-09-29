@@ -22,6 +22,24 @@ DESC
     Authorizations.reset_configuration
   end
 
+  context 'when you are assigned to a descendant' do
+    permissions do
+      permission action: 'view', applies_to: Authorizations::FakeTask.name
+    end
+
+    role :for_viewing do
+      has_permission action: 'view', applies_to: Authorizations::FakeTask.name
+    end
+
+    before do
+      assign_user user, to: specialized_task, with_role: role_for_viewing
+    end
+
+    it 'grants access to the descendant the user is assigned to' do
+      expect(user.can?(:view, specialized_task)).to be(true)
+    end
+  end
+
   context 'when you have permissions to an ancestor' do
     permissions do
       permission action: 'view', applies_to: Authorizations::FakeTask.name

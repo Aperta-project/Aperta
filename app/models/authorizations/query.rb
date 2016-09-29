@@ -163,7 +163,7 @@ module Authorizations
          .eq( Assignment.arel_table[:assigned_to_id] )
          .and(
            Assignment.arel_table[:assigned_to_type].
-           eq(ac.assignment_to.name)
+            eq(ac.assignment_to.base_class.name)
          )
        )
      end
@@ -296,7 +296,7 @@ module Authorizations
         if assigned_to_klass <=> @klass
           query.outer_join(join_table).on(
             join_table.primary_key.eq(a2_table[:assigned_to_id]).and(
-              a2_table[:assigned_to_type].eq(assigned_to_klass.name)
+              a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)
             )
           )
 
@@ -340,7 +340,7 @@ module Authorizations
 
               # construct the join from journals table to the a2_table
               query.outer_join(join_table).on(
-                join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name))
+                join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name))
               )
 
               # construct the join from papers table to the journals table
@@ -368,10 +368,10 @@ module Authorizations
 
             add_permission_state_check_to_query(query, a2_table)
 
-            query.where(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+            query.where(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
             query
           else
-            query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+            query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
             query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
             foreign_key_value = @target.where_values_hash[reflection.foreign_key]
             if foreign_key_value
@@ -384,7 +384,7 @@ module Authorizations
             query
           end
         elsif reflection.belongs_to?
-          query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.name)))
+          query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
           query.outer_join(target_table).on(join_table[reflection.foreign_key].eq(target_table.primary_key))
 
           foreign_key_value = @target.where_values_hash[reflection.foreign_key]

@@ -17135,7 +17135,7 @@ task_templates:
     - "[]"
     - '1'
   - - '200'
-    - '1'
+    - '35'
     - '64'
     - Academic Editor Feedback
     - "[]"

@@ -241,6 +241,9 @@ module Authorizations
 
       return unless local_permission_state_column
 
+      query.join(table[:permissions]).on(
+        table[:permissions][:id].eq(a2_table[:permission_id])
+      )
       query.outer_join(table[:permission_states_permissions]).on(
         table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
       )
@@ -267,7 +270,25 @@ module Authorizations
           table[:permission_states][:name].eq(PermissionState::WILDCARD.to_s)
         )
       )
+
+      # If the @klass uses STI then we need to add conditions which enforces
+      # scope based on the permissions.applies_to column.
+      if @klass.column_names.include?(@klass.inheritance_column)
+        qs = [@klass].concat(@klass.descendants).reduce(nil) do |q, permissible_klass|
+          eligible_ancestors = (permissible_klass.ancestors & permissible_klass.base_class.descendants) << permissible_klass.base_class
+          condition = klass.arel_table[:type].eq(permissible_klass.name).and(
+            table[:permissions][:applies_to].in(eligible_ancestors.map(&:name))
+          )
+          q ? q.or(condition) : condition
+        end
+        query.where(qs)
+      else
+        # no-op for non-STI klasses
+      end
+
+      query
     end
+
 
     def load_authorized_objects
       if klass.respond_to?(:delegate_state_to)

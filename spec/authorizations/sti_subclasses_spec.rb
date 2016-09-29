@@ -71,17 +71,17 @@ DESC
 
     it 'includes the descendants when filtering for authorization of the parent class' do
       expect(
-        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::FakeTask.all, participations_only: false).objects
       ).to contain_exactly(generic_task, specialized_task, even_more_specialized_task)
     end
 
     it 'includes the only subclass objects and its descendants when filtering for authorization of the subclass' do
       expect(
-        user.filter_authorized(:view, Authorizations::SpecializedFakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::SpecializedFakeTask.all, participations_only: false).objects
       ).to contain_exactly(specialized_task, even_more_specialized_task)
 
       expect(
-        user.filter_authorized(:view, Authorizations::EvenMoreSpecializedFakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::EvenMoreSpecializedFakeTask.all, participations_only: false).objects
       ).to contain_exactly(even_more_specialized_task)
     end
   end
@@ -115,19 +115,23 @@ DESC
       expect(user.can?(:view, even_more_specialized_task)).to be(true)
     end
 
-    it 'includes the descendants when filtering for authorization of the parent class' do
+    it 'does not grant access on the ancestor' do
+      expect(user.can?(:view, generic_task)).to be(false)
+    end
+
+    it 'does not include impermissible ancestors when filtering for authorization of the parent class' do
       expect(
-        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
-      ).to contain_exactly(generic_task, specialized_task, even_more_specialized_task)
+        user.filter_authorized(:view, Authorizations::FakeTask.all, participations_only: false).objects
+      ).to_not include(generic_task)
     end
 
     it 'includes the only subclass objects and its descendants when filtering for authorization of the subclass' do
       expect(
-        user.filter_authorized(:view, Authorizations::SpecializedFakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::SpecializedFakeTask.all, participations_only: false).objects
       ).to contain_exactly(specialized_task, even_more_specialized_task)
 
       expect(
-        user.filter_authorized(:view, Authorizations::EvenMoreSpecializedFakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::EvenMoreSpecializedFakeTask.all, participations_only: false).objects
       ).to contain_exactly(even_more_specialized_task)
     end
   end

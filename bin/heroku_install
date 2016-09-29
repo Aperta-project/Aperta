@@ -6,7 +6,8 @@ bower="$(pwd)/node_modules/.bin/bower"
 
 for app in "client"; do
   cd $app &&
-    npm install &&
+    (npm install npm-install-retry@1.0.2 || npm install npm-install-retry@1.0.2 || npm install npm-install-retry@1.0.2) &&
+    ./node_modules/npm-install-retry/bin/npm-install-retry --wait 500 --attempts 10 &&
     $bower install &&
     cd -
 done

@@ -16,6 +16,7 @@ class Role < ActiveRecord::Base
   PRODUCTION_STAFF_ROLE = 'Production Staff'
   PUBLISHING_SERVICES_ROLE = 'Publishing Services'
   REVIEWER_ROLE = 'Reviewer'
+  SITE_ADMIN_ROLE = 'Site Admin'
   STAFF_ADMIN_ROLE = 'Staff Admin'
   TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'
@@ -67,6 +68,10 @@ class Role < ActiveRecord::Base
 
   def self.user_role
     find_by(name: Role::USER_ROLE, journal: nil)
+  end
+
+  def self.site_admin_role
+    find_by(name: Role::SITE_ADMIN_ROLE, journal: nil)
   end
 
   def self.ensure_exists(name, journal: nil,

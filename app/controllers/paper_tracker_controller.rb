@@ -6,6 +6,7 @@ class PaperTrackerController < ApplicationController
 
   def index
     fail AuthorizationError unless journal_ids.length > 0
+
     # show all papers that user is connected to across all journals
     papers = order(QueryParser.new(current_user: current_user)
              .build(params[:query] || '')
@@ -69,7 +70,11 @@ class PaperTrackerController < ApplicationController
   end
 
   def journal_ids
-    current_user.filter_authorized(:view_paper_tracker, Journal).objects
+    current_user.filter_authorized(
+      :view_paper_tracker,
+      Journal,
+      participations_only: false
+    ).objects
   end
 
   def papers_submitted

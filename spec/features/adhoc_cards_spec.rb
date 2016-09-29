@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Adhoc cards', js: true do
   let(:author) { create :user, first_name: 'Author' }
-  let(:admin) { FactoryGirl.create :user, site_admin: true }
+  let(:admin) { FactoryGirl.create :user, :site_admin }
   let(:paper) do
     FactoryGirl.create :paper_with_task,
                        :with_integration_journal,

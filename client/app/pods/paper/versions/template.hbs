@@ -24,9 +24,10 @@
           {{flash-messages}}
           {{#rendered-manuscript paper=model}}
             <div id="paper-body">
-              {{html-diff default=model.body
+              {{text-diff default=model.body
                           comparisonText=comparisonVersion.text
-                          viewingText=viewingVersion.text}}
+                          viewingText=viewingVersion.text
+                          diffManuscript=true}}
             </div>
           {{/rendered-manuscript}}
         </div>

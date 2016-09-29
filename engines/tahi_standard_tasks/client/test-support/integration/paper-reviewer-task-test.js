@@ -26,6 +26,7 @@ moduleForComponent(
 
 test('User can add a new reviewer after tweaking the email of an exiting user',
   function(assert){
+    const context = this;
     assert.expect(2);
 
     stubAutocompleteUser({
@@ -49,8 +50,8 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
 
     // Tweak the existing email, as per scenario in APERTA-6811
     andThen(function() {
-      let current = this.$('#invitation-recipient').val();
-      this.$('#invitation-recipient').val(current).keyup();
+      let current = context.$('#invitation-recipient').val();
+      context.$('#invitation-recipient').val(current).keyup();
     });
 
     click('.invitation-email-entry-button');

@@ -94,7 +94,7 @@ export default Ember.Component.extend({
     const value   = this.get('value');
     const options = this.get('options');
 
-    if(options.contains(value)) {
+    if(options.includes(value)) {
       this.set('selectedValue', value);
     } else if(!Ember.isEmpty(value)) {
       this.set('selectedValue', this.get('otherText'));
@@ -145,7 +145,8 @@ export default Ember.Component.extend({
       this.set('selectedValue', null);
       this.set('value', null);
       Ember.run.scheduleOnce('afterRender', ()=> {
-        this.$('.ember-power-select-trigger').mousedown();
+        let event = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
+        this.$('.ember-power-select-trigger')[0].dispatchEvent(event);
       });
     }
   }

@@ -6,7 +6,7 @@ namespace :data do
     task migrate_invitations_to_queues: :environment do
       Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
         if task.invite_queues.empty? && task.invitations.present?
-          general_queue = InviteQueue.create(queue_title: 'Main', task: task)
+          general_queue = InviteQueue.create(queue_title: 'Main', task: task, main_queue: true)
           sub_queues = []
           task.invitations.each do |invitation|
             if invitation.alternates.empty? && invitation.primary.blank? # belongs in main queue
@@ -16,6 +16,7 @@ namespace :data do
               sub_queues << InviteQueue.find_or_create_by(
                 task: task,
                 queue_title: "SubQueue for: #{invitation.primary.email}",
+                main_queue: false,
                 primary: invitation.primary
               )
             end
@@ -30,7 +31,7 @@ namespace :data do
 
       Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
         if task.invite_queues.empty? && task.invitations.present?
-          general_queue = InviteQueue.create(queue_title: 'Main', task: task)
+          general_queue = InviteQueue.create(queue_title: 'Main', task: task, main_queue: true)
           task.invitations.each do |invitation|
             invitation.invite_queue = general_queue
             invitation.save

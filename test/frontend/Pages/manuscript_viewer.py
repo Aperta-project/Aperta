@@ -177,7 +177,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def get_manuscript_version(self):
     """
-    Retrieves current manuscript version
+    Retrieves current manuscript version. This method asumes the user is in the manuscript
+    viewer and will open the version tab, retrieve the version string and close the tab
     :return: String with manuscript version number
     """
     version_btn = self._get(self._tb_versions_link)

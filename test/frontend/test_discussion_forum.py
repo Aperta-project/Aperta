@@ -82,7 +82,6 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
                                      msg='', participants=[creator['user']])
-    # send another msg
     ms_viewer.logout()
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])

@@ -593,13 +593,13 @@ class AuthenticatedPage(PlosPage):
     participants = participants or []
     self._get(self._discussion_link).click()
     self._get(self._create_new_topic).click()
-    time.sleep(.5)
+    time.sleep(1)
     if topic:
       self._get(self._topic_title_field).send_keys(topic)
     else:
       self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
     # create topic btn
-    time.sleep(.5)
+    time.sleep(1)
     self._get(self._create_topic).click()
     # add paper creator to the discussion
     if participants:
@@ -610,18 +610,24 @@ class AuthenticatedPage(PlosPage):
         self._get(self._participant_field).send_keys(participant + Keys.ENTER)
         time.sleep(5)
         self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
-    time.sleep(.5)
+    time.sleep(2)
     js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
     self._driver.execute_script(js_cmd)
-    time.sleep(.5)
+    time.sleep(5)
     msg_body = self._get(self._message_body_field)
     if msg:
       msg_body.send_keys(msg)
     else:
       msg_body.send_keys(generate_paragraph()[2])
+    show_form = (By.CSS_SELECTOR, 'div.discussions-show-form')
+    time.sleep(1)
+    self._get(show_form).click()
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._wait_for_element(self._get(post_message_btn))
     self._get(post_message_btn).click()
+    # Need to wait for make sure the post is sent
+    time.sleep(3)
     return None
 
   def post_discussion(self, msg=''):
@@ -646,6 +652,8 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     self._get(post_message_btn).click()
+    # Need to wait for make sure the post is sent
+    time.sleep(3)
     return None
 
   def scroll_element_into_view_below_toolbar(self, element):

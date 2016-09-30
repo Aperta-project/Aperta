@@ -68,6 +68,19 @@ module Authorizations
 
     private
 
+    def table
+      @table ||= {
+        roles: Role.arel_table,
+        permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
+        permissions: Permission.arel_table,
+        permission_requirements: PermissionRequirement.arel_table,
+        permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
+        permission_states: PermissionState.arel_table,
+        results_1: Arel::Table.new(:results_1),
+        results_with_permissions: Arel::Table.new(:results_with_permissions)
+      }
+    end
+
     # +permission_state_column+ should return the column that houses
     # a model's state.
     #
@@ -80,6 +93,19 @@ module Authorizations
     def permission_state_column
       'publishing_state'
     end
+
+
+    # Our version of Arel won't let us union more than two things. So we get around that.
+    def union(a, list=[])
+      if list.blank?
+        return a
+      elsif list.count == 1
+        return a.union(list.first)
+      else
+        return Arel::Nodes::Union.new(a, union(list.first, list[1..-1]))
+      end
+    end
+
 
     # +load_all_objects+ is a way to bypass R&P queries. It is intended to be
     # used in the case of Site Admins(s) or other System-level roles that
@@ -108,6 +134,7 @@ module Authorizations
       result_set
     end
 
+
     # Returns the eligible values for a permission applies_to given the
     # @klass being queried. This searches the class, any of its descendants,
     # as well as any ancestors in the lineage from the @klass to its base-class.
@@ -121,6 +148,7 @@ module Authorizations
       ].flatten.map(&:name).uniq
     end
 
+
     def auth_configs
       @auth_configs ||= begin
         Authorizations.configuration.authorizations.select do |ac|
@@ -133,6 +161,7 @@ module Authorizations
         via: :self
       )])
     end
+
 
     def assignments_subquery
       assignments = Assignment.all
@@ -168,7 +197,7 @@ module Authorizations
        )
      end
 
-    # Append @klass, again, this could possibly be moved to an auth config
+     # Append @klass, again, this could possibly be moved to an auth config
      arel_conditions = auth_configs.reduce(nil) do |arel_conditions, ac|
        if arel_conditions
          arel_conditions.or(
@@ -205,30 +234,6 @@ module Authorizations
       assignments_arel
     end
 
-    # puts Arel::Nodes::Union.new(queries2union.first.with(composed_a2), Arel::Nodes::Union.new(queries2union.last, anotherqueryhere)).to_sql
-    def union(a, list=[])
-      if list.blank?
-        return a
-      elsif list.count == 1
-        # return Arel::Nodes::Union.new(a, list.first)
-        return a.union(list.first)
-      else
-        return Arel::Nodes::Union.new(a, union(list.first, list[1..-1]))
-      end
-    end
-
-    def table
-      @table ||= {
-        roles: Role.arel_table,
-        permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
-        permissions: Permission.arel_table,
-        permission_requirements: PermissionRequirement.arel_table,
-        permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
-        permission_states: PermissionState.arel_table,
-        results_1: Arel::Table.new(:results_1),
-        results_with_permissions: Arel::Table.new(:results_with_permissions)
-      }
-    end
 
     def add_permission_state_check_to_query(query, a2_table)
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
@@ -491,59 +496,6 @@ module Authorizations
       end
       rs
     end
-
-    class ResultSet
-      def initialize
-        @object_permission_map = Hash.new{ |h,k| h[k] = {} }
-      end
-
-      def add_object(object, with_permissions: {})
-        @object_permission_map[object].merge!(with_permissions) do |key, v1, v2|
-          { states: (v1[:states] + v2[:states]).uniq.sort }
-        end
-      end
-
-      def add_objects(objects, with_permissions: {})
-        objects.each do |object|
-          add_object object, with_permissions: with_permissions
-        end
-      end
-
-      def objects
-        @object_permission_map.keys
-      end
-
-      delegate :each, :map, :length, to: :@object_permission_map
-
-      def as_json
-        serializable.as_json
-      end
-
-      def serializable
-        results = []
-        each do |object, permissions|
-          item = PermissionResult.new(
-            object: { id: object.id, type: object.class.sti_name },
-            permissions: permissions,
-            id: "#{Emberize.class_name(object.class)}+#{object.id}"
-          )
-
-          results.push item
-        end
-        results
-      end
-    end
-  end
-end
-
-class PermissionResult
-  attr_accessor :object, :permissions, :id
-  include ActiveModel::SerializerSupport
-
-  def initialize(object:, permissions:, id:)
-    @object = object
-    @permissions = permissions
-    @id = id
   end
 end
 # rubocop:enable all

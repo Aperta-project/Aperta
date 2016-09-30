@@ -5,6 +5,7 @@ class CreateInviteQueues < ActiveRecord::Migration
       t.string :queue_title
       t.integer :task_id
       t.integer :primary_id
+      t.integer :decision_id
       t.boolean :main_queue, null: false
       t.timestamps
     end

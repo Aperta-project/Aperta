@@ -3,5 +3,6 @@
 class InviteQueue < ActiveRecord::Base
   belongs_to :task
   belongs_to :primary, class_name: 'Invitation'
+  belongs_to :decision
   has_many :invitations
 end

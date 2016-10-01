@@ -16,14 +16,15 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
 
   newAffiliation: null,
 
-  _fetchCountries: Ember.on('init', function() {
+  init() {
+    this._super(...arguments);
     this.get('countries').fetch();
-  }),
+  },
 
   didInsertElement() {
     this._super(...arguments);
-    let store = this.get('store');
-    let userId = this.get('user.id');
+    const store = this.get('store');
+    const userId = this.get('user.id');
 
     this.get('restless')
     .get(`/api/affiliations/user/${userId}`)
@@ -52,7 +53,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     },
 
     removeAffiliation(affiliation) {
-      if (confirm('Are you sure you want to destroy this affiliation?')) {
+      if (window.confirm('Are you sure you want to destroy this affiliation?')) {
         this.get('affiliations').removeObject(affiliation);
         affiliation.destroyRecord();
       }
@@ -62,7 +63,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       return this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
         user.get('affiliations').addObject(affiliation);
         this.clearAllValidationErrors();
-        var isNew = affiliation.get('isNew')
+        const isNew = affiliation.get('isNew');
         return affiliation.save().then(() => {
           this.send('hideNewAffiliationForm');
           if (isNew) { this.get('affiliations').pushObject(affiliation); }

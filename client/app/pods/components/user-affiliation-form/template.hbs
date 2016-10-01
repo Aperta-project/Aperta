@@ -40,27 +40,38 @@
       <h3>Edit Affiliation</h3>
     {{/if}}
 
-
+    {{error-message message=validationErrors.name
+                    displayIcon=true
+                    displayText=true}}
     {{institution-search
       class="affiliation-field-institution"
       institutionSelected="institutionSelected"
       placeholder="Institution"
       value=institution
+      errors=validationErrors.name
     }}
-    {{error-message message=validationErrors.name}}
 
-    {{input type="text"
-            value=affiliation.department
-            placeholder="Department"
-            class="affiliation-field form-control"}}
+    <div class="inset-form-control required department">
+      <div class="inset-form-control-text">
+        <label>Department</label>
+      </div>
+      {{input type="text"
+              value=affiliation.department
+              placeholder="Department"
+              class="affiliation-field inset-form-control-input"}}
+    </div>
 
-    {{input type="text"
-            value=affiliation.title
-            placeholder="Title"
-            class="affiliation-field form-control"}}
+    <div class="inset-form-control required department">
+      <div class="inset-form-control-text">
+        <label>Title</label>
+      </div>
+      {{input type="text"
+              value=affiliation.title
+              placeholder="Title"
+              class="affiliation-field inset-form-control-input"}}
+    </div>
 
     {{#if countries.loaded}}
-      <h1>country: {{country.text}}/id: {{country.id}}</h1>
       {{select-2-single class="affiliation-field"
                         placeholder="Country"
                         source=formattedCountries
@@ -77,6 +88,7 @@
     {{/if}}
 
     <div class="form-group">
+      <h1>time at institution:</h1>
       {{#date-picker-group as |group|}}
         {{date-picker group=group
                       type="text"
@@ -93,11 +105,19 @@
         {{error-message message=validationErrors.endDate}}
       {{/date-picker-group}}
 
-      {{input type="text"
-              value=affiliation.email
-              placeholder="Email Address"
-              class="affiliation-field form-control"}}
-      {{error-message message=validationErrors.email}}
+      <div class="inset-form-control required email {{if validationErrors.email "error"}}">
+        <div class="inset-form-control-text">
+          <label>Email Address</label>
+          {{error-message message=validationErrors.email
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=affiliation.email
+                placeholder="Email Address"
+                class="affiliation-field inset-form-control-input"}}
+      </div>
+
     </div>
 
     <button class="button-secondary button--green" {{action "commitAffiliation" affiliation}}>done</button>

@@ -15,6 +15,15 @@
 
   h2 { @include ellipsis; }
 
+  .did-you-mean {
+    margin-bottom: 15px;
+  }
+
+  .select2-container {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
   .action-icons {
     margin-left: .25em;
     &>span {
@@ -32,20 +41,18 @@
   }
 
   .affiliations-form {
-    margin-top: 40px;
+    width: 290px;
+    margin: 40px 0;
+    border-radius: 6px;
+    padding: 20px;
+    background: #f5f5f5;
 
     input {
-      margin: 15px 0;
+      margin-bottom: 15px;
     }
-    .affiliation-field-institution {
-      width: 251px;
-      input {
-        margin: 0 0;
-      }
-    }
-  }
 
-  .affiliation-field {
-    width: 250px;
+    .affiliation-field-institution {
+      input { margin: 0 0; }
+    }
   }
 }

@@ -1,23 +1,27 @@
 import { test, moduleForComponent } from 'ember-qunit';
-import wait from 'ember-test-helpers/wait';
+// import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import registerCustomAssertions from '../helpers/custom-assertions';
+import page from '../pages/ad-hoc-task';
 moduleForComponent('ad-hoc-body', 'Integration | Component | ad-hoc body', {
   integration: true,
   beforeEach() {
+    page.setContext(this);
     registerCustomAssertions();
     manualSetup(this.container);
+  },
+
+  afterEach() {
+    page.removeContext();
   }
 });
 
-let template = hbs
-`{{ad-hoc-body task=task
-    save=(action fakeSave)
-    blocks=task.body
-    canManage=canManage
-    canEdit=canEdit}}`;
-
+let template = hbs`{{ad-hoc-body task=task
+                    save=(action fakeSave)
+                    blocks=task.body
+                    canManage=canManage
+                    canEdit=canEdit}}`;
 
 test('canManage=true adding new blocks', function(assert) {
   // adding a text block immediately persists the new block to the task body
@@ -28,47 +32,40 @@ test('canManage=true adding new blocks', function(assert) {
   this.set('canEdit', false);
   this.set('canManage', false);
   this.render(template);
-  assert.elementNotFound('.adhoc-content-toolbar', `does not show the content toolbar when canManage is false`);
+  assert.notOk(page.toolbarVisible, `does not show the content toolbar when canManage is false`);
 
   this.set('canManage', true);
-  assert.elementFound('.adhoc-content-toolbar', `shows the content toolbar`);
+  assert.ok(page.toolbarVisible, `shows the content toolbar`);
 
   // Checkbox list
-  this.$('.admin-content-toolbar').click();
-  this.$('.adhoc-content-toolbar .adhoc-toolbar-item--list').click();
-  this.$('.inline-edit-body-part.checkbox label.editable').html('I am a nice checkbox');
-  this.$('.inline-edit-body-part.checkbox label.editable').keyup();
-  this.$('.edit-actions .button-secondary').click(); // click save
-  assert.textPresent('.inline-edit.bodypart-display.checkbox ', 'I am a nice checkbox', `checkbox added to page`);
+  page.toolbar.open();
+  page.toolbar.addCheckbox();
+  page.checkboxes(0).setLabel('I am a nice checkbox');
+  page.checkboxes(0).save();
+  assert.equal(page.checkboxes(0).label, 'I am a nice checkbox', `checkbox added to page`);
 
   // User editable text
-  this.$('.admin-content-toolbar').click();
-  assert.elementFound('.adhoc-toolbar-item--text', `can insert a text item`);
-  this.$('.adhoc-content-toolbar .adhoc-toolbar-item--text').click();
-  assert.elementFound('.inline-edit-body-part.text', `shows the text item`);
+  page.toolbar.open();
+  page.toolbar.addText();
+  assert.equal(page.textboxes().count, 1);
 
   // Label text
-  this.$('.admin-content-toolbar').click();
-  assert.elementFound('.adhoc-toolbar-item--label', `can insert a label`);
-  this.$('.adhoc-content-toolbar .adhoc-toolbar-item--label').click();
-  assert.elementFound('.inline-edit-body-part.adhoc-label', `label added to card`);
-  this.$('.inline-edit-body-part.adhoc-label editable').val('I am a nice label');
-  this.$('.inline-edit-body-part.adhoc-label editable').keyup();
-  this.$('.edit-actions .button-secondary').click();
+  page.toolbar.open();
+  page.toolbar.addLabel();
+  page.labels(0).setText('I am a nice label');
+  page.labels(0).save();
+  assert.equal(page.labels(0).text, 'I am a nice label', `label added to card`);
 
   // Email
-  this.$('.admin-content-toolbar').click();
-  assert.elementFound('.adhoc-toolbar-item--email', `can insert an email`);
-  this.$('.adhoc-content-toolbar .adhoc-toolbar-item--email').click();
+  page.toolbar.open();
+  page.toolbar.addEmail();
+  page.emails(0).setSubject('This is a nice little subject');
+  page.emails(0).setBody('This is a nice little email');
+  page.emails(0).save();
   assert.elementFound('.inline-edit-body-part.email', `email added to card`);
-  this.$('.inline-edit-body-part.email ember-text-field').val('This is a nice little subject');
-  this.$('.inline-edit-body-part.email ember-text-field').keyup();
-  this.$('.inline-edit-body-part.email editable').val('This is a nice little email');
-  this.$('.inline-edit-body-part.email editable').keyup();
-  this.$('.edit-actions .button-secondary').click();
 
   // Attachment
-  this.$('.admin-content-toolbar').click();
+  page.toolbar.open();
   assert.elementFound('.adhoc-toolbar-item--image', `can insert an attachment`);
 
   assert.equal(savecount, 4, `expected number of times to call save`);
@@ -177,6 +174,7 @@ test('canEdit=true filling out some stuff still works', function(assert) {
 });
 
 test('canEdit=false all fields are disabled', function(assert) {
+  this.set('fakeSave', function() {});
   this.set('canEdit', false);
   this.set('canManage', false);
   this.set('task', taskWithBlocks());

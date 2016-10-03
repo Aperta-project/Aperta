@@ -55,6 +55,14 @@
     margin-top: 10px;
   }
 
+  .item-text {
+    margin-right: 95px;
+
+    .ember-view {
+      padding-left: 5px;
+    }
+  }
+
   .edit-actions, .add-item {
     display: none;
   }
@@ -75,7 +83,7 @@
       display: block;
     }
     .add-item {
-      display: inline-block;
+      display: none;
     }
     .item-remove {
       margin: 10px;
@@ -84,9 +92,21 @@
     }
   }
 
-  &.email .add-item,
-  &.text .add-item {
-    display: none;
+  &.checkbox .add-item, {
+    display: inline-block;
+  }
+}
+
+.inline-edit-body-part.text {
+
+  .item-text .editable {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 5rem;
+    background: #EEE;
+    &[contenteditable] {
+      background: none;
+    }
   }
 }
 
@@ -151,7 +171,7 @@
 
 .bodypart-overlay {
   @include position(absolute, 0px 0px 0px 0px);
-  background-color: #29a904;
+  background-color: $tahi-green;
   z-index: 1; // higher index to ensure overlay stays above all other content
 }
 
@@ -164,14 +184,16 @@
 
 .bodypart-destroy-overlay {
   padding: 30px;
+  text-align: center;
 
   > * {
     display: inline-block;
   }
 
-  button {
-    margin-top: -10px;
+  h4 {
+    color: white;
   }
+
 }
 
 .bodypart-choose-receiver-overlay {

@@ -1,27 +1,22 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Component.extend({
   editing: false,
-  isNew: false,
   bodyPart: null,
   bodyPartType: Ember.computed.alias('bodyPart.type'),
   isSendable: true,
   showChooseReceivers: false,
   mailRecipients: [],
   recipients: null,
-  allUsers: null,
   overlayParticipants: null,
-  emailSentStates: Ember.computed.alias('parentView.emailSentStates'),
-  lastSentAt: null,
+  emailSentStates: null,
+  lastSentAt: Ember.computed.reads('bodyPart.sent'),
   store: Ember.inject.service(),
 
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
 
-    this.set('recipients',
-             this.get('overlayParticipants').map((p) => p.get('user'))
-            );
+    this.set('recipients', this.get('overlayParticipants').slice());
   }),
 
   keyForStates: Ember.computed.alias('bodyPart.subject'),
@@ -54,8 +49,7 @@ export default Ember.Component.extend({
       var bodyPart, recipientIds;
       recipientIds = this.get('recipients').mapBy('id');
       bodyPart = this.get('bodyPart');
-      bodyPart.sent = moment().format('MMMM Do YYYY');
-      this.set('lastSentAt', bodyPart.sent);
+      this.set('bodyPart.sent', moment().format('MMMM Do YYYY'));
       this.attrs.sendEmail({
         body: bodyPart.value,
         subject: bodyPart.subject,
@@ -71,10 +65,10 @@ export default Ember.Component.extend({
     },
 
     addRecipient: function(newRecipient, availableRecipients) {
-      var recipient, store, user;
+      var recipient, store;
       store = this.get('store');
       recipient = availableRecipients.findBy('id', newRecipient.id);
-      user = store.findOrPush('user', recipient);
+      store.findOrPush('user', recipient);
       return this.get('recipients').addObject(recipient);
     }
   }

@@ -1,0 +1,20 @@
+<div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}}">
+  <div class='item-text'>{{bodyPart.value}}</div>
+  {{attachment-manager filePath="ad-hoc"
+                       attachments=task.attachments
+                       disabled=(not canEdit)
+                       multiple=true
+                       alwaysShowAddButton=true
+                       showDescription=false
+                       hasCaption=true
+                       accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.doc,.odt,.epub,.pdf"
+                       captionChanged=(action "updateAttachmentCaption")
+                       deleteFile=(action "deleteAttachment")
+                       cancelUpload=(action "cancelUpload")
+                       uploadFinished=(action "createAttachment")
+                       updateAttachment=(action "updateAttachment") }}
+</div>
+
+<div class="inline-edit-form {{if editing "editing"}}">
+  {{input value=bodyPart.value class="editable"}}
+</div>

@@ -1,0 +1,77 @@
+<div class="task-main-content">
+  {{inline-edit-h1 title=task.title setTitle="setTitle"}}
+
+  <div class="task-body">
+    {{#each displayedBlocks as |block|}}
+      {{#inline-edit-body-part block=block
+                               canEdit=canEdit
+                               canManage=canManage
+                               editing=(readonly block.isNew)
+                               cancel=(action "resetBlock" block)
+                               save=(action "saveBlock" block)
+                               delete=(action "deleteBlock" block)
+                               addItem=(action "addCheckboxItem" block)
+                               as |editing|}}
+        {{#each block.items as |item|}}
+          {{component
+              (concat 'inline-edit-' item.type)
+              bodyPart=item
+              canEdit=canEdit
+              canManage=canManage
+              editing=editing
+              emailSentStates=emailSentStates
+              isSendable=true
+              overlayParticipants=participants
+              paperId=paperId
+              task=task
+              sendEmail=(action "sendEmail")
+              delete=(action "deleteItem" item block)
+              save=(action attrs.save)}}
+        {{/each}}
+      {{/inline-edit-body-part}}
+    {{/each}}
+
+    {{#if showAttachmentsBlock}}
+    <div class="adhoc-attachments">
+      {{#if (not canEdit)}}
+        User Attached Files:
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+
+
+  {{#if canManage }}
+      <div class="adhoc-content-toolbar
+                  {{if toolbarActive "_active"}}
+                {{if toolbarActive "_animate-forward" "_animate-backward"}}"
+         {{action "toggleToolbar"}}>
+
+      <div class="button-primary {{if hasNewBlock "button--disabled"}} button--green">
+        <span class="fa fa-plus"></span>
+        <span class="fa fa-remove"></span>
+      </div>
+      <div class="button-secondary button--green adhoc-toolbar-item--list" {{action "addChecklist"}}>
+        <span class="fa fa-th-list"></span>
+      </div>
+
+      <div class="button-secondary button--green adhoc-toolbar-item--text" {{action "addTextBlock"}}>
+        <span class="fa fa-edit"></span>
+      </div>
+
+      <div class="button-secondary button--green adhoc-toolbar-item--label" {{action "addLabel"}}>
+        <span class="fa fa-paragraph"></span>
+      </div>
+
+      <div class="button-secondary button--green adhoc-toolbar-item--email" {{action "addEmail"}}>
+        <span class="fa fa-envelope"></span>
+      </div>
+
+      {{#unless isEditingTemplate}}
+        <div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachments"}}>
+          <span class="fa fa-paperclip"></span>
+        </div>
+      {{/unless}}
+    </div>
+  {{/if}}
+</div>

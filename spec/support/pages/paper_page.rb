@@ -190,7 +190,7 @@ HERE
 
     expect(page).to have_css(
       '.withdrawal-banner',
-      text: 'This paper has been withdrawn from Plos Biology and is in View Only mode'
+      text: /This paper has been withdrawn from.*and is in View Only mode/
     )
   end
 

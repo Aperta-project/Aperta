@@ -7,6 +7,17 @@ import PageObject, {
 } from 'ember-cli-page-object';
 
 export default PageObject.create({
+  titlePencil: clickable('h1.inline-edit .fa-pencil'),
+  titleInput: fillable('.large-edit input[name=title]'),
+  titleSave: clickable('.large-edit .button--green:contains("Save")'),
+  title: text('h1.inline-edit'),
+
+  setTitle(text) {
+    this.titlePencil()
+        .titleInput(text)
+        .titleSave();
+  },
+
   toolbarVisible: isVisible('.adhoc-content-toolbar'),
   toolbar: {
     scope: '.adhoc-content-toolbar',
@@ -22,7 +33,8 @@ export default PageObject.create({
     itemScope: '.task-body .inline-edit-body-part.checkbox',
     item: {
       edit: clickable('.fa-pencil'),
-      delete: clickable('.fa-trash'),
+      trash: clickable('.fa-trash'),
+      confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
       setLabel(text) {
@@ -37,8 +49,12 @@ export default PageObject.create({
     itemScope: '.task-body .inline-edit-body-part.text',
     item: {
       edit: clickable('.fa-pencil'),
-      delete: clickable('.fa-trash'),
+      trash: clickable('.fa-trash'),
+      confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
+      setText(text) {
+        return $(this.scope + ' div.editable').html(text).keyup();
+      },
       deleteVisible: isVisible('.fa-trash'),
     }
   }),
@@ -47,7 +63,8 @@ export default PageObject.create({
     itemScope: '.task-body .inline-edit-body-part.adhoc-label',
     item: {
       edit: clickable('.fa-pencil'),
-      delete: clickable('.fa-trash'),
+      trash: clickable('.fa-trash'),
+      confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
       setText(text){
@@ -62,7 +79,8 @@ export default PageObject.create({
     itemScope: '.task-body .inline-edit-body-part.email',
     item: {
       edit: clickable('.fa-pencil'),
-      delete: clickable('.fa-pencil'),
+      trash: clickable('.fa-pencil'),
+      confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
       setBody(text){
@@ -71,7 +89,9 @@ export default PageObject.create({
       setSubject: fillable('input', {scope: '.editing'}),
       subject: text('.item-subject'),
       body: text('.item-text'),
-      save: clickable('.edit-actions .button-secondary')
+      save: clickable('.edit-actions .button-secondary'),
+      send: clickable('.email-send-participants'),
+      sendConfirm: clickable('.send-email-action')
     }
   }),
 
@@ -79,7 +99,8 @@ export default PageObject.create({
     itemScope: '.task-body .inline-edit-body-part.attachments',
     item: {
       edit: clickable('.fa-pencil'),
-      delete: clickable('.fa-pencil'),
+      trash: clickable('.fa-pencil'),
+      confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
     }

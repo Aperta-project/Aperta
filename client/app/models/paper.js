@@ -138,7 +138,7 @@ export default DS.Model.extend({
   isInSubmittableState: computed(
     'publishingState',
     function() {
-      return PAPER_SUBMITTABLE_STATES.contains(this.get('publishingState'));
+      return PAPER_SUBMITTABLE_STATES.includes(this.get('publishingState'));
     }
   ),
 
@@ -162,7 +162,7 @@ export default DS.Model.extend({
     'publishingState',
     'gradualEngagement',
     function() {
-      return PAPER_GRADUAL_ENGAGEMENT_STATES.contains(this.get('publishingState')) &&
+      return PAPER_GRADUAL_ENGAGEMENT_STATES.includes(this.get('publishingState')) &&
          this.get('gradualEngagement');
     }
   ),

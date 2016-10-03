@@ -14,14 +14,14 @@ moduleForComponent('reviewer-invitation-feedback',
                       }));
                     }});
 
-var template = hbs`{{reviewer-invitation-feedback
+let template = hbs`{{reviewer-invitation-feedback
                       invitation=invitation
                       decline=(action decline invitation)
                       }}`;
 
-var fillText = function(selector, text) {
-  this.$(selector).val(text);
-  this.$(selector).change();
+let fillText = function(context, selector, text) {
+  context.$(selector).val(text);
+  context.$(selector).change();
 };
 
 test('displays paper title', function(assert){
@@ -35,7 +35,7 @@ test('can set decline reason', function(assert){
   assert.expect(1);
 
   this.render(template);
-  fillText('textarea[name="declineReason"]', 'Too busy!');
+  fillText(this, 'textarea[name="declineReason"]', 'Too busy!');
 
   assert.equal(this.get('invitation.declineReason'), 'Too busy!');
 });
@@ -44,7 +44,7 @@ test('can set reviewer suggestions', function(assert){
   assert.expect(1);
 
   this.render(template);
-  fillText('textarea[name="reviewerSuggestions"]', 'Other guy is great');
+  fillText(this, 'textarea[name="reviewerSuggestions"]', 'Other guy is great');
 
   assert.equal(
     this.get('invitation.reviewerSuggestions'),
@@ -102,8 +102,8 @@ test('can Send Feedback', function(assert){
 
   this.render(template);
 
-  fillText('textarea[name="declineReason"]', 'some value');
-  fillText('textarea[name="reviewerSuggestions"]', 'some other value');
+  fillText(this, 'textarea[name="declineReason"]', 'some value');
+  fillText(this, 'textarea[name="reviewerSuggestions"]', 'some other value');
 
   this.$('.reviewer-feedback-buttons > .reviewer-send-feedback').click();
 });

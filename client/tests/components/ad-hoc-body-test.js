@@ -42,11 +42,15 @@ test('canManage=true adding new blocks', function(assert) {
   page.toolbar.addCheckbox();
   page.checkboxes(0).setLabel('I am a nice checkbox');
   page.checkboxes(0).save();
+  assert.ok(page.checkboxes(0).editVisible, `checkboxes are editable (manageable)`);
+  assert.ok(page.checkboxes(0).deleteVisible, `checkboxes are deletable (manageable)`);
   assert.equal(page.checkboxes(0).label, 'I am a nice checkbox', `checkbox added to page`);
 
   // User editable text
   page.toolbar.open();
   page.toolbar.addText();
+  assert.notOk(page.textboxes(0).editVisible, `textboxes are not editable (manageable)`);
+  assert.ok(page.textboxes(0).deleteVisible, `textboxes are deletable (manageable)`);
   assert.equal(page.textboxes().count, 1);
 
   // Label text
@@ -55,6 +59,8 @@ test('canManage=true adding new blocks', function(assert) {
   page.labels(0).setText('I am a nice label');
   page.labels(0).save();
   assert.equal(page.labels(0).text, 'I am a nice label', `label added to card`);
+  assert.ok(page.labels(0).editVisible, `labels are editable (manageable)`);
+  assert.ok(page.labels(0).deleteVisible, `labels are deletable (manageable)`);
 
   // Email
   page.toolbar.open();
@@ -62,13 +68,20 @@ test('canManage=true adding new blocks', function(assert) {
   page.emails(0).setSubject('This is a nice little subject');
   page.emails(0).setBody('This is a nice little email');
   page.emails(0).save();
-  assert.elementFound('.inline-edit-body-part.email', `email added to card`);
+  let expectedSubject = 'Subject: This is a nice little subject';
+  assert.equal(page.emails(0).subject, expectedSubject, `subject added to email`);
+  assert.equal(page.emails(0).body, expectedSubject + ' This is a nice little email', `body added to email`);
+  assert.ok(page.emails(0).editVisible, `emails are editable (manageable)`);
+  assert.ok(page.emails(0).deleteVisible, `emails are deletable (manageable)`);
 
   // Attachment
   page.toolbar.open();
-  assert.elementFound('.adhoc-toolbar-item--image', `can insert an attachment`);
+  page.toolbar.addAttachment();
+  assert.equal(page.attachments().count, 1, `can insert an attachment uploader`);
+  assert.ok(page.attachments(0).editVisible, `attachments are editable (manageable)`);
+  assert.ok(page.attachments(0).deleteVisible, `attachments are deletable (manageable)`);
 
-  assert.equal(savecount, 4, `expected number of times to call save`);
+  assert.equal(savecount, 5, `expected number of times to call save`);
 });
 
 let taskWithBlocks = function() {

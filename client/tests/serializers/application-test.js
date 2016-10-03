@@ -46,14 +46,14 @@ test("normalizeSingleResponse normalizes the primary task record based on its 't
     title: 'Initial Tech Check'
   };
   expectedPayload = {
-    "attributes": {
-      "qualifiedType": "InitialTechCheckTask",
-      "title": "Initial Tech Check",
-      "type": "InitialTechCheckTask"
+    'attributes': {
+      'qualifiedType': 'InitialTechCheckTask',
+      'title': 'Initial Tech Check',
+      'type': 'InitialTechCheckTask'
     },
-    "id": "1",
-    "relationships": {},
-    "type": "initial-tech-check-task"
+    'id': '1',
+    'relationships': {},
+    'type': 'initial-tech-check-task'
   };
   result = subject.normalizeSingleResponse(store, store.modelFor('task'), {
     task: task
@@ -65,7 +65,7 @@ test("normalizeSingleResponse normalizes the primary task record based on its 't
   return assert.deepEqual(pluralResult.data, expectedPayload, 'normalizes a 1-length array of tasks too');
 });
 
-test("normalizeSingleResponse leaves a model with the requested type unchanged", function(assert) {
+test('normalizeSingleResponse leaves a model with the requested type unchanged', function(assert) {
   var expectedPayload, pluralResult, result, store, task;
   store = getStore();
   task = {
@@ -74,14 +74,14 @@ test("normalizeSingleResponse leaves a model with the requested type unchanged",
     title: 'Ad-hoc Task'
   };
   expectedPayload = {
-    "attributes": {
-      "qualifiedType": "AdHocTask",
-      "title": "Ad-hoc Task",
-      "type": "AdHocTask"
+    'attributes': {
+      'qualifiedType': 'AdHocTask',
+      'title': 'Ad-hoc Task',
+      'type': 'AdHocTask'
     },
-    "id": "1",
-    "relationships": {},
-    "type": "ad-hoc-task"
+    'id': '1',
+    'relationships': {},
+    'type': 'ad-hoc-task'
   };
   result = subject.normalizeSingleResponse(store, store.modelFor('task'), {
     task: task
@@ -123,47 +123,47 @@ test("normalizeSingleResponse normalizes sideloaded tasks via their 'type' attri
   };
   result = subject.normalizeSingleResponse(store, store.modelFor('phase'), jsonHash);
   assert.deepEqual(result.data, {
-    "attributes": {},
-    "id": "1",
-    "relationships": {
-      "tasks": {
-        "data": [
+    'attributes': {},
+    'id': '1',
+    'relationships': {
+      'tasks': {
+        'data': [
           {
-            "id": "1",
-            "type": "InitialTechCheckTask"
+            'id': '1',
+            'type': 'InitialTechCheckTask'
           }, {
-            "id": "2",
-            "type": "ad-hoc-task"
+            'id': '2',
+            'type': 'AdHocTask'
           }
         ]
       }
     },
-    "type": "phase"
-  }, "primary record is serialized into data");
+    'type': 'phase'
+  }, 'primary record is serialized into data');
   return assert.deepEqual(result.included, [
     {
-      "attributes": {
-        "qualifiedType": "Standard::InitialTechCheckTask",
-        "title": "Initial Tech Check",
-        "type": "InitialTechCheckTask"
+      'attributes': {
+        'qualifiedType': 'Standard::InitialTechCheckTask',
+        'title': 'Initial Tech Check',
+        'type': 'InitialTechCheckTask'
       },
-      "id": "1",
-      "relationships": {},
-      "type": "initial-tech-check-task"
+      'id': '1',
+      'relationships': {},
+      'type': 'initial-tech-check-task'
     }, {
-      "attributes": {
-        "qualifiedType": "AdHocTask",
-        "title": "Ad-hoc",
-        "type": "AdHocTask"
+      'attributes': {
+        'qualifiedType': 'AdHocTask',
+        'title': 'Ad-hoc',
+        'type': 'AdHocTask'
       },
-      "id": "2",
-      "relationships": {},
-      "type": "ad-hoc-task"
+      'id': '2',
+      'relationships': {},
+      'type': 'ad-hoc-task'
     }
   ], 'tasks are sideloaded with their proper type, defaulting to adhoc');
 });
 
-test("mungePayloadTypes", function(assert) {
+test('mungePayloadTypes', function(assert) {
   var expected, inputPayload, output;
   inputPayload = {
     tasks: [
@@ -210,7 +210,7 @@ test("mungePayloadTypes", function(assert) {
   return assert.deepEqual(expected, output, 'It munges every object with a type, but leaves objects without types untouched');
 });
 
-test("newNormalize when the primary record has the same type attribute as the passed-in modelName", function(assert) {
+test('newNormalize when the primary record has the same type attribute as the passed-in modelName', function(assert) {
   var newModelName, payload, ref, ref1, simplePayload, singularPayload;
   simplePayload = {
     ad_hoc_tasks: [
@@ -269,7 +269,7 @@ test("newNormalize always pluralizes the primary record's key, even when the pri
   }, 'singular primary key has been pluralized');
 });
 
-test("newNormalize when the primary record has a different type attribute than the passed-in modelName", function(assert) {
+test('newNormalize when the primary record has a different type attribute than the passed-in modelName', function(assert) {
   var newModelName, payload, payloadToChange, ref, ref1;
   payloadToChange = {
     tasks: [
@@ -326,7 +326,7 @@ test("newNormalize when the primary record has a different type attribute than t
   }, 'model is moved to correct primary key for singular payloads');
 });
 
-test("newNormalize puts non-primary records into new buckets based on their type attributes", function(assert) {
+test('newNormalize puts non-primary records into new buckets based on their type attributes', function(assert) {
   var newModelName, payload, payloadToChange, ref;
   payloadToChange = {
     papers: [
@@ -421,42 +421,42 @@ test("normalizeSingleResponse normalizes sideloaded stuff even if they're not ex
   };
   result = subject.normalizeSingleResponse(store, store.modelFor('phase'), jsonHash);
   assert.deepEqual(result.data, {
-    "attributes": {},
-    "id": "1",
-    "relationships": {
-      "tasks": {
-        "data": [
+    'attributes': {},
+    'id': '1',
+    'relationships': {
+      'tasks': {
+        'data': [
           {
-            "id": "1",
-            "type": "InitialTechCheckTask"
+            'id': '1',
+            'type': 'InitialTechCheckTask'
           }, {
-            "id": "2",
-            "type": "ad-hoc-task"
+            'id': '2',
+            'type': 'AdHocTask'
           }
         ]
       }
     },
-    "type": "phase"
-  }, "primary record is serialized into data");
+    'type': 'phase'
+  }, 'primary record is serialized into data');
   return assert.deepEqual(result.included, [
     {
-      "attributes": {
-        "qualifiedType": "Standard::InitialTechCheckTask",
-        "title": "Initial Tech Check",
-        "type": "InitialTechCheckTask"
+      'attributes': {
+        'qualifiedType': 'Standard::InitialTechCheckTask',
+        'title': 'Initial Tech Check',
+        'type': 'InitialTechCheckTask'
       },
-      "id": "1",
-      "relationships": {},
-      "type": "initial-tech-check-task"
+      'id': '1',
+      'relationships': {},
+      'type': 'initial-tech-check-task'
     }, {
-      "attributes": {
-        "qualifiedType": "AdHocTask",
-        "title": "Ad-hoc",
-        "type": "AdHocTask"
+      'attributes': {
+        'qualifiedType': 'AdHocTask',
+        'title': 'Ad-hoc',
+        'type': 'AdHocTask'
       },
-      "id": "2",
-      "relationships": {},
-      "type": "ad-hoc-task"
+      'id': '2',
+      'relationships': {},
+      'type': 'ad-hoc-task'
     }
   ], 'tasks are sideloaded with their proper type, defaulting to adhoc');
 });
@@ -571,15 +571,15 @@ test("normalizeArrayResponse works correctly even when no 'task' type tasks are 
   let expected = {
     data: [
       {
-        id: "1",
+        id: '1',
         attributes: {},
         relationships: {},
-        type: "adhoc-attachment"
+        type: 'adhoc-attachment'
       }
     ],
     included: []
   };
-  assert.deepEqual(result, expected, 'found adhoc-attachment in data')
+  assert.deepEqual(result, expected, 'found adhoc-attachment in data');
 });
 
 test("normalizePayloadData reorganizes a JSON payload according to the items' types", function(assert) {
@@ -603,7 +603,7 @@ test("normalizePayloadData reorganizes a JSON payload according to the items' ty
   assert.deepEqual(result, expectedOutput);
 });
 
-test("normalizePayloadData does nothing when payload is undefined (e.g. 204 NO CONTENT)", function(assert) {
+test('normalizePayloadData does nothing when payload is undefined (e.g. 204 NO CONTENT)', function(assert) {
   subject.normalizePayloadData(undefined);
   assert.ok(true, 'did not blow up');
 });

@@ -5,7 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'tahi',
     podModulePrefix: 'tahi/pods',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -54,7 +54,7 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
+    ENV.rootURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -65,6 +65,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+
   }
 
   return ENV;

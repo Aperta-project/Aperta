@@ -607,9 +607,7 @@ test("normalizeArrayResponse works correctly even when no 'task' type tasks are 
 });
 
 test("normalizePayloadData reorganizes a JSON payload according to the items' types", function(assert) {
-  var jsonHash, result, store;
-  store = getStore();
-  jsonHash = {
+  const jsonHash = {
     paper: { id: '99' },
     attachment: { id: '44', type: 'AdhocAttachment' },
     tasks: [
@@ -618,20 +616,18 @@ test("normalizePayloadData reorganizes a JSON payload according to the items' ty
       { id: '3' }
     ]
   };
-  expectedOutput = {
+  const expectedOutput = {
     papers: [{ id: '99' }],
     adhoc_attachments: [{ id: '44', type: 'AdhocAttachment' }],
     authors_tasks: [{ id: '2', type: 'AuthorsTask' }],
     initial_tech_check_tasks: [ { id: '1', type: 'InitialTechCheckTask' } ],
     tasks: [{ id: '3'}]
   };
-  result = subject.normalizePayloadData(jsonHash);
+  const result = subject.normalizePayloadData(jsonHash);
   assert.deepEqual(result, expectedOutput);
 });
 
 test("normalizePayloadData does nothing when payload is undefined (e.g. 204 NO CONTENT)", function(assert) {
-  let store = getStore();
-
-  result = subject.normalizePayloadData(undefined);
+  subject.normalizePayloadData(undefined);
   assert.ok(true, 'did not blow up');
 });

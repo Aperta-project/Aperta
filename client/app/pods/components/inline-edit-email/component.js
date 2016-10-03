@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   recipients: null,
   overlayParticipants: null,
   emailSentStates: null,
-  lastSentAt: null,
+  lastSentAt: Ember.computed.reads('bodyPart.sent'),
   store: Ember.inject.service(),
 
   initRecipients: Ember.observer('showChooseReceivers', function() {
@@ -49,8 +49,7 @@ export default Ember.Component.extend({
       var bodyPart, recipientIds;
       recipientIds = this.get('recipients').mapBy('id');
       bodyPart = this.get('bodyPart');
-      bodyPart.sent = moment().format('MMMM Do YYYY');
-      this.set('lastSentAt', bodyPart.sent);
+      this.set('bodyPart.sent', moment().format('MMMM Do YYYY'));
       this.attrs.sendEmail({
         body: bodyPart.value,
         subject: bodyPart.subject,
@@ -66,10 +65,10 @@ export default Ember.Component.extend({
     },
 
     addRecipient: function(newRecipient, availableRecipients) {
-      var recipient, store, user;
+      var recipient, store;
       store = this.get('store');
       recipient = availableRecipients.findBy('id', newRecipient.id);
-      user = store.findOrPush('user', recipient);
+      store.findOrPush('user', recipient);
       return this.get('recipients').addObject(recipient);
     }
   }

@@ -40,6 +40,7 @@ let BlockObject = Ember.Object.extend({
 });
 
 export default Ember.Component.extend({
+  restless: Ember.inject.service(),
   participants: Ember.computed.mapBy('task.participations', 'user'),
   toolbarActive: false,
   paperId: Ember.computed('task', function() {

@@ -472,8 +472,8 @@ class JournalAdminPage(AdminPage):
       template_field.click()
       template_field.send_keys(Keys.ARROW_DOWN + '<-False')
       time.sleep(1)
-      # If this mmt template already exists, this save should return an error and the name link won't
-      # exist
+      # If this mmt template already exists, this save should return an error and the name link
+      # won't exist
       save_template_button.click()
       time.sleep(1)
       self.set_timeout(2)

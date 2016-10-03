@@ -172,7 +172,7 @@ class ApertaJournalAdminTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.select_named_journal('PLOS Wombat')
+    adm_page.select_named_journal('PLOS Wombat', click=True)
 
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)

@@ -40,7 +40,7 @@ test('canManage=true adding new blocks', function(assert) {
   // Checkbox list
   page.toolbar.open();
   page.toolbar.addCheckbox();
-  page.checkboxes(0).setLabel('I am a nice checkbox');
+  page.checkboxes(0).labelText('I am a nice checkbox');
   page.checkboxes(0).save();
   assert.ok(page.checkboxes(0).editVisible, `checkboxes are editable (manageable)`);
   assert.ok(page.checkboxes(0).deleteVisible, `checkboxes are deletable (manageable)`);

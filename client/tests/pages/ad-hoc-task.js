@@ -6,6 +6,30 @@ import PageObject, {
   isVisible
 } from 'ember-cli-page-object';
 
+import Ember from 'ember';
+
+import { findElementWithAssert } from 'ember-cli-page-object/extend';
+
+let contentEditable = function(selector, options = {}) {
+  return {
+    isDescriptor: true,
+    value(text) {
+      let setText = () => {
+        findElementWithAssert(this, selector, options).html(text).keyup();
+      };
+
+      // If andThen exists, we're in the acceptance test context.
+      if (typeof andThen === 'function') {
+        wait().then(setText);
+      } else {
+        Ember.run(null, setText);
+      }
+
+      return this;
+    }
+  };
+};
+
 export default PageObject.create({
   titlePencil: clickable('h1.inline-edit .fa-pencil'),
   titleInput: fillable('.large-edit input[name=title]'),
@@ -37,9 +61,7 @@ export default PageObject.create({
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
-      setLabel(text) {
-        return $(this.scope + ' label.editable').html(text).keyup();
-      },
+      labelText: contentEditable('label.editable'),
       label: text('label:nth(0)'),
       save: clickable('.edit-actions .button-secondary'),
     }

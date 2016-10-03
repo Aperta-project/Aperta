@@ -108,12 +108,7 @@ test('AdHoc Task list block', function(assert) {
   page.toolbar.open()
               .addCheckbox();
 
-  andThen(function() {
-    // PageObjects did not have support for contenteditable at the time of
-    // writing. This needs to be an async function so it's wrapped in an
-    // `andThen`.
-    page.checkboxes(0).setLabel('checkbox list item');
-  });
+  page.checkboxes(0).labelText('checkbox list item');
   page.checkboxes(0).save();
 
   andThen(function() {

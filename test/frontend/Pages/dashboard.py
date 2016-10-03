@@ -161,6 +161,7 @@ class DashboardPage(AuthenticatedPage):
     element there is a tuple with two elements and ID for reasons an ID for suggestions
     """
     response = random.choice(['Accept', 'Decline'])
+    title = self.normalize_spaces(title)
     logging.info(response)
     invite_listings = self._gets(self._view_invites_invite_listing)
     reasons = ''

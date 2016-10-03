@@ -78,18 +78,19 @@ class InviteAECardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_card('invite_academic_editor')
     invite_ae_card = InviteAECard(self.getDriver())
-    invite_ae_card.check_style(academic_editor_login, paper_id)
+    invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', paper_id)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
+    ##import pdb; pdb.set_trace()
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
                            errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
-    invite_ae_card.validate_invite_ae(academic_editor_login,
+    invite_ae_card.validate_invite(academic_editor_login,
                                           manuscript_title,
                                           creator_user,
                                           paper_id)
     # Invite a second user to delete
-    invite_ae_card.validate_invite_ae(pub_svcs_login,
+    invite_ae_card.validate_invite(pub_svcs_login,
                                       manuscript_title,
                                       creator_user,
                                       paper_id)
@@ -143,7 +144,7 @@ class InviteAECardTest(CommonTest):
     workflow_page.click_card('invite_academic_editor')
     time.sleep(3)
     invite_ae = InviteAECard(self.getDriver())
-    invite_ae.validate_ae_response(academic_editor_login, invite_response,
+    invite_ae.validate_response(academic_editor_login, invite_response,
         response_data[0], response_data[1])
 
 if __name__ == '__main__':

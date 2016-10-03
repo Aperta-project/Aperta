@@ -172,6 +172,12 @@ class PlosPage(object):
     :return: string
     """
     text = text.strip()
+    # Replace non breakables spaces by spaces
+    try:
+      text = text.replace(u'\xa0', u' ')
+    except UnicodeDecodeError:
+      text = unicode(text, 'utf-8')
+      text = text.replace(u'\xa0', u' ')
     return re.sub(r'\s+', ' ', text)
 
   @staticmethod

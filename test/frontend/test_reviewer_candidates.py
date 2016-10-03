@@ -264,14 +264,13 @@ class ReviewerCandidatesTaskTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.invite_reviewer(reviewer_login)
-    invite_reviewers.click_close_button()
+    invite_reviewers.invite(reviewer_login)
     # Need a break to give time to close card
-    time.sleep(3)
+    time.sleep(2)
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
     time.sleep(3)
-    invite_ae_card.invite_ae(academic_editor_login)
+    invite_ae_card.invite(academic_editor_login)
     invite_ae_card.click_close_button()
     time.sleep(2)
     # Now set the reviewer candidates card to incomplete and set the manuscript editable

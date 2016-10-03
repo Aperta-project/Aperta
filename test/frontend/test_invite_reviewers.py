@@ -56,9 +56,6 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
-    # Set up a handling editor, academic editor and cover editor for this paper
-
-    # self.set_editors_in_db(paper_id)
     # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
@@ -75,22 +72,22 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_card_elements_styles(paper_id)
+    invite_reviewers.validate_card_elements_styles(reviewer_login, 'reviewer', paper_id)
     logging.info('Paper id is: {0}.'.format(paper_id))
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
                                encoding='utf-8',
                                errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
-    invite_reviewers.validate_invite_reviewer(reviewer_login,
-                                              manuscript_title,
-                                              creator_user,
-                                              paper_id)
+    invite_reviewers.validate_invite(reviewer_login,
+                                     manuscript_title,
+                                     creator_user,
+                                     paper_id)
     # Invite a second user to invite then delete before acceptance
-    invite_reviewers.validate_invite_reviewer(prod_staff_login,
-                                              manuscript_title,
-                                              creator_user,
-                                              paper_id)
+    invite_reviewers.validate_invite(prod_staff_login,
+                                     manuscript_title,
+                                     creator_user,
+                                     paper_id)
     logging.info('Revoking invite for {0}'.format(prod_staff_login['name']))
     invite_reviewers.revoke_invitee(prod_staff_login, 'Reviewer')
     invite_reviewers.click_close_button()
@@ -146,7 +143,7 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_reviewer_response(reviewer_login, invite_response,
+    invite_reviewers.validate_response(reviewer_login, invite_response,
         response_data[0], response_data[1])
 
 

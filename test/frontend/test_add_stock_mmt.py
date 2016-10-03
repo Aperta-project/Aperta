@@ -89,25 +89,25 @@ class ApertaJournalAdminTest(CommonTest):
     only_init_dec_mmt = {'name': 'OnlyInitialDecisionCard',
                          'user_tasks':  ['Initial Decision', 'Upload Manuscript'],
                          'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
-                                        'Initial Tech Check', 'Invite Academic Editor',
-                                        'Invite Reviewers', 'Register Decision', 'Related Articles',
-                                        'Revision Tech Check', 'Send to Apex',
+                                         'Initial Tech Check', 'Invite Academic Editor',
+                                         'Invite Reviewers', 'Register Decision', 'Related Articles',
+                                         'Revision Tech Check', 'Send to Apex',
                                          'Title And Abstract'],
                          'uses_resrev_report': True
                          }
     only_rev_cands_mmt = {'name': 'OnlyReviewerCandidates',
                           'user_tasks':  ['Reviewer Candidates', 'Upload Manuscript'],
                           'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
-                                         'Initial Tech Check', 'Invite Academic Editor',
-                                         'Invite Reviewers', 'Production Metadata',
-                                         'Register Decision', 'Related Articles',
-                                         'Revision Tech Check', 'Send to Apex',
+                                          'Initial Tech Check', 'Invite Academic Editor',
+                                          'Invite Reviewers', 'Production Metadata',
+                                          'Register Decision', 'Related Articles',
+                                          'Revision Tech Check', 'Send to Apex',
                                           'Title And Abstract'],
-                         'uses_resrev_report': True
+                          'uses_resrev_report': True
                           }
     front_matter_mmt   = {'name': 'Front-Matter-type',
                           'user_tasks':  ['Additional Information', 'Authors', 'Figures',
-                                         'Supporting Info', 'Upload Manuscript'],
+                                          'Supporting Info', 'Upload Manuscript'],
                           'staff_tasks': ['Invite Reviewers', 'Production Metadata',
                                           'Register Decision', 'Related Articles', 'Send to Apex',
                                           'Title And Abstract'],
@@ -120,7 +120,7 @@ class ApertaJournalAdminTest(CommonTest):
                           'staff_tasks': ['Assign Admin', 'Invite Academic Editor',
                                           'Invite Reviewers', 'Register Decision',
                                           'Title And Abstract'],
-                         'uses_resrev_report': True
+                          'uses_resrev_report': True
                           }
     resrch_w_init_dec  = {'name': 'Research w/Initial Decision Card',
                           'user_tasks':  ['Authors', 'Billing', 'Cover Letter', 'Figures',

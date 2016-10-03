@@ -4,11 +4,11 @@
  * for now top-level functions will do just fine.
  */
 export function eligibleUsersPath(taskId, userType) {
-  return `api/tasks/${taskId}/eligible_users/${userType}`;
+  return `/api/tasks/${taskId}/eligible_users/${userType}`;
 }
 
 export function uploadManuscriptPath(taskId) {
-  return `api/tasks/${taskId}/upload_manuscript`;
+  return `/api/tasks/${taskId}/upload_manuscript`;
 }
 
 export function filteredUsersPath(paperId) {

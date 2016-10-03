@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Initial Decision', js: true, sidekiq: :inline! do
-  given(:admin) { FactoryGirl.create(:user, site_admin: true) }
+  given(:admin) { FactoryGirl.create(:user, :site_admin) }
   given(:paper) do
     FactoryGirl.create :paper_with_task,
                        :with_integration_journal,

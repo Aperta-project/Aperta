@@ -178,7 +178,7 @@ export default Ember.Service.extend(Ember.Evented, {
   removeNotificationsFromStoreById(ids) {
     this.get('_data')
         .removeObjects(this.get('_data').map(function(n) {
-          if(ids.contains(n.id)) {
+          if(ids.includes(n.id)) {
             return n;
           }
         }));

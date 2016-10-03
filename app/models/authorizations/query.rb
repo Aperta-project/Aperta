@@ -13,8 +13,8 @@ module Authorizations
   # what the user is assigned to, what roles the person has, and what
   # permissions they have thru those roles.
   class Query
-    # WILDCARD_STATE represents the notion that any state is valid.
-    WILDCARD_STATE = PermissionState::WILDCARD
+    # WILDCARD represents the notion that any state is valid.
+    WILDCARD = PermissionState::WILDCARD
 
     attr_reader :permission, :klass, :user
 
@@ -60,8 +60,7 @@ module Authorizations
     end
 
     def all
-      if user.site_admin
-        # TODO: Remove this when site_admin is no more
+      if user.site_admin? && !@participations_only
         load_all_objects
       else
         load_authorized_objects
@@ -96,18 +95,27 @@ module Authorizations
     end
 
     def allowed?(object, states)
-      states.include?(WILDCARD_STATE) ||
+      states.include?(WILDCARD) ||
         !object.respond_to?(permission_state_column) ||
         states.member?(object.send(permission_state_column))
     end
 
+    # +load_all_objects+ is a way to bypass R&P queries. It is intended to be
+    # used in the case of Site Admins(s) or other System-level roles that
+    # have access to everything in the system.
+    #
+    # Note: If :participations_only is true then this will never return any
+    # records. This is because System accounts should _never_ be considered
+    # participants.
     def load_all_objects
       result_set = ResultSet.new
+
       permission_names = Permission.where(applies_to: eligible_applies_to).pluck(:action)
       permission_hsh = {}
       permission_names.each do |name|
         permission_hsh[name.to_sym] = { states: ['*'] }
       end
+
       if @target.is_a?(Class)
         result_set.add_objects(@target.all, with_permissions: permission_hsh)
       elsif @target.is_a?(ActiveRecord::Base)
@@ -115,7 +123,8 @@ module Authorizations
       elsif @target.is_a?(ActiveRecord::Relation)
         result_set.add_objects(@target.all, with_permissions: permission_hsh)
       end
-      return result_set
+
+      result_set
     end
 
     # Returns the eligible values for a permission applies_to given the
@@ -201,7 +210,7 @@ module Authorizations
 
         # This is to make sure that if no permission states were hooked up
         # that we accept any state. It's more a fallback.
-        permissible_states = [WILDCARD_STATE] if permissible_states.empty?
+        permissible_states = [WILDCARD] if permissible_states.empty?
 
         # determine how this kind of thing relates to what we're interested in
         if assigned_to_klass <=> @klass

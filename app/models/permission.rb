@@ -1,4 +1,7 @@
 class Permission < ActiveRecord::Base
+  # The WILDCARD permission represents permission to all things.
+  WILDCARD = '*'
+
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :states, class_name: 'PermissionState'
 

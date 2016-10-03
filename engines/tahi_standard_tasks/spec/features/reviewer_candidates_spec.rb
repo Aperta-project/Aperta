@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature "User adding reviewer candidates", js: true do
-  let(:admin) { create :user, site_admin: true, first_name: 'Admin' }
+  let(:admin) { create :user, :site_admin, first_name: 'Admin' }
   let!(:paper) do
     create :paper,:with_integration_journal, :with_tasks, creator: admin
   end

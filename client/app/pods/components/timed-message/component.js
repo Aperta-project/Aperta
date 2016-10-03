@@ -47,7 +47,9 @@ export default Ember.Component.extend({
     this.$().html(this.get('message'));
 
     Ember.run.later(this, function() {
-      this.set('message', '');
+      if(!this.get('isDestroyed')) {
+        this.set('message', '');
+      }
     }, this.get('duration'));
   })
 });

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature "Invite Admin", js: true do
-  let(:site_admin) { FactoryGirl.create(:user, site_admin: true) }
+  let(:site_admin) { FactoryGirl.create(:user, :site_admin) }
   let(:admin) { FactoryGirl.create(:user) }
   let(:paper) do
     FactoryGirl.create(

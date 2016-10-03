@@ -20,11 +20,11 @@ var Ability = Ember.Object.extend({
     }
 
     states = states.states;
-    if (states.contains('*')){
+    if (states.includes('*')){
       return true;
     }
 
-    return states.contains(this.get('resource.permissionState'));
+    return states.includes(this.get('resource.permissionState'));
   })
 });
 

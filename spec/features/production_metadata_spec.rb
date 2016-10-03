@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Production Metadata Card', js: true do
-  let(:admin) { create :user, site_admin: true, first_name: 'Admin' }
+  let(:admin) { create :user, :site_admin, first_name: 'Admin' }
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) do
     create :paper, :with_integration_journal, :with_tasks, creator: author

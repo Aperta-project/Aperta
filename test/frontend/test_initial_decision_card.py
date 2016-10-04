@@ -73,21 +73,27 @@ class InitialDecisionCardTest(CommonTest):
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
     paper_id = manuscript_page.get_paper_id_from_url()
-
     # Get paper version for AC 6
-    version_before = Decimal(manuscript_page.get_manuscript_version()[1:])
+    version = manuscript_page.get_ui_manuscript_version()
+    assert 'draft' in version, version
     # figures
     manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Figures')
+    # Submit paper
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(2)
     manuscript_page.close_modal()
+    # refresh page and get version
+    manuscript_page.refresh()
+    version = manuscript_page.get_ui_manuscript_version()
+    # Wait for 0.0 according to new version proposal, where this version number
+    # is assigned after the Initial submission.
+    assert '0.0' in version, version
     # logout and enter as editor
     manuscript_page.logout()
-
     # login as staff admin
     dashboard_page = self.cas_login(email=staff_admin_login['email'])
     # look for the article in paper tracker
@@ -102,6 +108,7 @@ class InitialDecisionCardTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the elements to attach to DOM, otherwise failures
     time.sleep(2)
+    # Initial decision: Invite
     workflow_page.click_card('initial_decision')
     # time.sleep(3)
     initial_decision = InitialDecisionCard(self.getDriver())
@@ -131,8 +138,10 @@ class InitialDecisionCardTest(CommonTest):
       figures_task.check_question()
       assert figures_task.is_question_checked() == False
     # AC 6
-    version_after = Decimal(manuscript_page.get_manuscript_version()[1:])
-    assert version_after - version_before == Decimal('0.1'), (version_after, version_before)
+    manuscript_page.refresh()
+    version = manuscript_page.get_ui_manuscript_version()
+    # After the user is invited, the ms version goes back to draft
+    assert 'draft' in version, version
 
 
 if __name__ == '__main__':

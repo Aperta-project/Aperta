@@ -157,7 +157,9 @@ class FiguresTask(BaseTask):
     Checks if checkmark for the question on Figures task is applied or not
     :return: Bool
     """
-    question_check= self._get(self._question_check)
+    self.set_timeout(60)
+    question_check = self._get(self._question_check)
+    self.restore_timeout()
     if question_check.is_selected():
       return True
     else:

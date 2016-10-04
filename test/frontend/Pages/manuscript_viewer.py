@@ -175,9 +175,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert 'Compare With:' in bar_items[2].text, bar_items[2].text
     self._get(self._tb_versions_closer).click()
 
-  def get_manuscript_version(self):
+  def get_ui_manuscript_version(self):
     """
-    Retrieves current manuscript version
+    Retrieves current manuscript version. This method assumes the user is in the manuscript
+    viewer and will open the version tab, retrieve the version string and close the tab
     :return: String with manuscript version number
     """
     version_btn = self._get(self._tb_versions_link)

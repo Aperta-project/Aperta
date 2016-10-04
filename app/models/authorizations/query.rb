@@ -76,7 +76,7 @@ module Authorizations
         permission_requirements: PermissionRequirement.arel_table,
         permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
         permission_states: PermissionState.arel_table,
-        results_1: Arel::Table.new(:results_1),
+        results: Arel::Table.new(:results),
         results_with_permissions: Arel::Table.new(:results_with_permissions)
       }
     end
@@ -149,6 +149,9 @@ module Authorizations
     end
 
 
+    # This walks the authorization configuration file and creates a path from 
+    # a authorized parent to all authorized children
+    # For example: paper authorizes tasks.
     def auth_configs
       @auth_configs ||= begin
         Authorizations.configuration.authorizations.select do |ac|
@@ -162,80 +165,7 @@ module Authorizations
       )])
     end
 
-
-    def assignments_subquery
-      assignments = Assignment.all
-        .select('
-          assignments.id,
-          assignments.assigned_to_type,
-          assignments.assigned_to_id,
-          roles.id AS role_id,
-          roles.name AS role_name,
-          permissions.id AS permission_id'
-        )
-      .joins(permissions: :states)
-      .where(assignments: { user_id: user.id })
-
-     # explicitly add conditions rather than converting Assignment.all
-     # to user.assignments. The reason is that ActiveRecord::Relation
-     # will produce bind parameters that will not get handled correctly
-     # when we convert to AREL queries below
-     assignments_arel = assignments.arel
-
-     auth_configs.each do |ac|
-       join_table = ac.assignment_to.arel_table
-       source_table = ac.authorizes.arel_table
-       association = ac.assignment_to.reflections[ac.via.to_s]
-
-       assignments_arel.outer_join(join_table).on(
-         join_table[ ac.assignment_to.primary_key ]
-         .eq( Assignment.arel_table[:assigned_to_id] )
-         .and(
-           Assignment.arel_table[:assigned_to_type].
-            eq(ac.assignment_to.base_class.name)
-         )
-       )
-     end
-
-     # Append @klass, again, this could possibly be moved to an auth config
-     arel_conditions = auth_configs.reduce(nil) do |arel_conditions, ac|
-       if arel_conditions
-         arel_conditions.or(
-           ac.assignment_to .arel_table.primary_key.not_eq(nil)
-         )
-       else
-         ac.assignment_to.arel_table.primary_key.not_eq(nil)
-       end
-     end
-
-     assignments_arel
-      .where(arel_conditions)
-      .where(Permission.arel_table[:applies_to].in(eligible_applies_to))
-
-     # If we're looking for the wildcard permission then we aren't interested in any one
-     # permission, but all of the possible permissions
-     if @permission.to_sym != Permission::WILDCARD.to_sym
-       assignments_arel.where(Permission.arel_table[:action].eq(@permission))
-     end
-
-     if @participations_only
-       role_accessibility_method = "participates_in_#{@klass.table_name}"
-       if Role.column_names.include?(role_accessibility_method)
-         assignments_arel.where(Role.arel_table[role_accessibility_method.to_sym].eq(true))
-       end
-     end
-
-     assignments_arel.group(Assignment.arel_table[:assigned_to_type])
-       .group(Assignment.arel_table[:assigned_to_id])
-       .group(Assignment.arel_table[:id])
-       .group(Role.arel_table[:id])
-       .group(Permission.arel_table[:id])
-
-      assignments_arel
-    end
-
-
-    def add_permission_state_check_to_query(query, a2_table)
+    def add_permission_state_check_to_query(query, permissions_query)
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
         delegate_permission_state_to_association = klass.delegate_state_to.to_s
         delegate_state_table = klass.reflections[delegate_permission_state_to_association].klass.arel_table
@@ -247,10 +177,10 @@ module Authorizations
       return unless local_permission_state_column
 
       query.join(table[:permissions]).on(
-        table[:permissions][:id].eq(a2_table[:permission_id])
+        table[:permissions][:id].eq(permissions_query[:permission_id])
       )
       query.outer_join(table[:permission_states_permissions]).on(
-        table[:permission_states_permissions][:permission_id].eq(a2_table[:permission_id])
+        table[:permission_states_permissions][:permission_id].eq(permissions_query[:permission_id])
       )
       query.outer_join(table[:permission_states]).on(
         table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
@@ -302,27 +232,31 @@ module Authorizations
         @permission_state_check = true
       end
 
-      a2_table = Arel::Table.new(:a2_table)
-      composed_a2 = Arel::Nodes::As.new(a2_table, assignments_subquery)
+      assignments_subquery = PermissibleAssignmentsQuery.new(user: @user, permission: @permission,
+        klass: @klass, applies_to: eligible_applies_to, auth_configs: auth_configs,
+        participations_only: @participations_only).to_arel
 
-      queries2union = auth_configs.map do |ac|
+      permissions_query = Arel::Table.new(:permissions_query)
+      permissions_table = Arel::Nodes::As.new(permissions_query, assignments_subquery)
+
+      authorization_paths = auth_configs.map do |ac|
         assigned_to_klass = ac.assignment_to
         reflection = ac.assignment_to.reflections[ac.via.to_s]
         join_table = assigned_to_klass.arel_table
         target_table = @klass.arel_table
 
-        query = a2_table.project(
+        query = permissions_query.project(
           klass.arel_table.primary_key.as('id'),
-          a2_table[:role_id].as('role_id'),
-          a2_table[:permission_id].as('permission_id')
+          permissions_query[:role_id].as('role_id'),
+          permissions_query[:permission_id].as('permission_id')
         )
 
         query.project(klass.arel_table[:paper_id]) if klass.column_names.include?('paper_id')
 
         if assigned_to_klass <=> @klass
           query.outer_join(join_table).on(
-            join_table.primary_key.eq(a2_table[:assigned_to_id]).and(
-              a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)
+            join_table.primary_key.eq(permissions_query[:assigned_to_id]).and(
+              permissions_query[:assigned_to_type].eq(assigned_to_klass.base_class.name)
             )
           )
 
@@ -332,7 +266,7 @@ module Authorizations
             query = query.where(join_table.primary_key.in(id_values))
           end
 
-          add_permission_state_check_to_query(query, a2_table)
+          add_permission_state_check_to_query(query, permissions_query)
 
           query
 
@@ -364,9 +298,9 @@ module Authorizations
               end
               through_target_table = through_target_reflection.klass.arel_table
 
-              # construct the join from journals table to the a2_table
+              # construct the join from journals table to the permissions_query
               query.outer_join(join_table).on(
-                join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name))
+                join_table.primary_key.eq(permissions_query[:assigned_to_id]).and(permissions_query[:assigned_to_type].eq(assigned_to_klass.base_class.name))
               )
 
               # construct the join from papers table to the journals table
@@ -392,12 +326,13 @@ module Authorizations
               reflection = delegate_reflection
             end
 
-            add_permission_state_check_to_query(query, a2_table)
 
-            query.where(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
+            query.where(join_table.primary_key.eq(permissions_query[:assigned_to_id]).and(permissions_query[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
+
+            add_permission_state_check_to_query(query, permissions_query)
             query
           else
-            query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
+            query.outer_join(join_table).on(join_table.primary_key.eq(permissions_query[:assigned_to_id]).and(permissions_query[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
             query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
             foreign_key_value = @target.where_values_hash[reflection.foreign_key]
             if foreign_key_value
@@ -405,12 +340,12 @@ module Authorizations
               query.where(join_table.primary_key.in(foreign_key_values))
             end
 
-            add_permission_state_check_to_query(query, a2_table)
+            add_permission_state_check_to_query(query, permissions_query)
 
             query
           end
         elsif reflection.belongs_to?
-          query.outer_join(join_table).on(join_table.primary_key.eq(a2_table[:assigned_to_id]).and(a2_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
+          query.outer_join(join_table).on(join_table.primary_key.eq(permissions_query[:assigned_to_id]).and(permissions_query[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
           query.outer_join(target_table).on(join_table[reflection.foreign_key].eq(target_table.primary_key))
 
           foreign_key_value = @target.where_values_hash[reflection.foreign_key]
@@ -419,7 +354,7 @@ module Authorizations
             query.where(join_table.primary_key.in(foreign_key_values))
           end
 
-          add_permission_state_check_to_query(query, a2_table)
+          add_permission_state_check_to_query(query, permissions_query)
 
           query
         else
@@ -427,24 +362,24 @@ module Authorizations
         end
       end
 
-      return ResultSet.new if queries2union.empty?
+      return ResultSet.new if authorization_paths.empty?
 
-      u = union(queries2union.first, queries2union[1..-1])
+      u = union(authorization_paths.first, authorization_paths[1..-1])
 
-      sm = Arel::SelectManager.new(klass.arel_table.engine).
-        with(composed_a2).
+      results_with_permissions_query = Arel::SelectManager.new(klass.arel_table.engine).
+        with(permissions_table).
         project(
-          table[:results_1][:id],
+          table[:results][:id],
           Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions"),
         ).
-        from( Arel.sql('(' + u.to_sql + ')').as(table[:results_1].table_name) ).
+        from( Arel.sql('(' + u.to_sql + ')').as(table[:results].table_name) ).
         outer_join(table[:permission_requirements]).on(
           table[:permission_requirements][:required_on_type].eq(klass.name).and(
-            table[:permission_requirements][:required_on_id].eq(table[:results_1][:id])
+            table[:permission_requirements][:required_on_id].eq(table[:results][:id])
           )
         ).
         join(table[:roles]).on(
-          table[:roles][:id].eq(table[:results_1][:role_id])
+          table[:roles][:id].eq(table[:results][:role_id])
         ).
         join(table[:permissions_roles]).on(
           table[:permissions_roles][:role_id].eq(table[:roles][:id])
@@ -459,24 +394,22 @@ module Authorizations
           table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
         ).
         where(
-          table[:results_1][:id].not_eq(nil).and(
+          table[:results][:id].not_eq(nil).and(
             table[:permission_requirements].primary_key.eq(nil).or(
-              table[:permission_requirements][:permission_id].eq(table[:results_1][:permission_id])
+              table[:permission_requirements][:permission_id].eq(table[:results][:permission_id])
             )
           ).and(
             table[:permissions][:applies_to].in(eligible_applies_to)
           )
         ).
-        group(table[:results_1][:id])
+        group(table[:results][:id])
 
-      sm2 = Arel::SelectManager.new(klass.arel_table.engine).
+      results_with_permissions = Arel::SelectManager.new(klass.arel_table.engine).
         project(klass.arel_table[Arel.star], 'permission_actions').
-        from( Arel.sql('(' + sm.to_sql + ')').as('results_with_permissions') ).
+        from( Arel.sql('(' + results_with_permissions_query.to_sql + ')').as('results_with_permissions') ).
         join(klass.arel_table).on(klass.arel_table[:id].eq(table[:results_with_permissions][:id]))
 
-      objects  = @target.from( Arel.sql("(#{sm2.to_sql}) AS #{klass.table_name} ") )
-      # binding.pry
-      # objects = []
+      objects  = @target.from( Arel.sql("(#{results_with_permissions.to_sql}) AS #{klass.table_name} ") )
 
       # pull out permissions
       rs = ResultSet.new

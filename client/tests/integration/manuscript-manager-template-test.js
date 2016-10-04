@@ -35,7 +35,7 @@ module('Integration: Manuscript Manager Templates', {
 });
 
 test('Changing phase name', function(assert) {
-  var adminJournal, columnTitleSelect, mmt, pt;
+  var adminJournal, columnTitleSelect, mmt;
   adminJournal = FactoryGuy.make('admin-journal', {
     id: 1
   });
@@ -43,10 +43,10 @@ test('Changing phase name', function(assert) {
     id: 1,
     journal: adminJournal
   });
-  pt = FactoryGuy.make('phase-template', {
+  FactoryGuy.make('phase-template', {
     id: 1,
     manuscriptManagerTemplate: mmt,
-    name: "Phase 1"
+    name: 'Phase 1'
   });
   TestHelper.mockFind('admin-journal').returns({
     model: adminJournal
@@ -90,10 +90,11 @@ test('Adding an Ad-Hoc card', function(assert) {
   click('.overlay .button--green:contains("Add")');
   andThen(function() {
     assert.elementFound('h1.inline-edit:contains("Ad Hoc")');
-    return assert.ok(find('h1.inline-edit').hasClass('editing'), "The title should be editable to start");
+    assert.notOk(find('h1.inline-edit').hasClass('editing'), 'The title should not be editable to start');
   });
+
   click('.adhoc-content-toolbar .fa-plus');
-  click('.adhoc-content-toolbar .adhoc-toolbar-item--text');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--label');
   fillInContentEditable('.inline-edit-form div[contenteditable]', 'New contenteditable, yahoo!');
   click('.task-body .inline-edit-body-part .button--green:contains("Save")');
   andThen(function() {

@@ -168,6 +168,7 @@ describe Task do
       tasks_from_source = Dir[Rails.root.join('**/*.rb')]
         .select { |path| path.match(%r{models/.*task.rb}) }
         .reject { |path| path.match(/concerns/) }
+        .reject { |path| path.match(%r{models/task.rb}) }
         .map { |path| path.match(%r{models/(.*).rb})[1] }
 
       tasks = Task.descendants.map { |c| c.to_s.underscore }
@@ -186,8 +187,9 @@ describe Task do
   end
 
   describe 'Task.safe_constantize' do
-    it 'works with Task' do
-      expect(Task.safe_constantize('Task')).to eq(Task)
+    it 'fails with Task' do
+      expect { Task.safe_constantize('Task') }
+        .to raise_error(/constantize disallowed/)
     end
 
     it 'works with Task descendants' do

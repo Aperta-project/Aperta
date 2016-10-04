@@ -58,66 +58,64 @@ module Authorizations
             #{ac.inspect}
           ERROR
 
-        elsif reflection.collection? || reflection.has_one?
+        elsif reflection.respond_to?(:through_options)
           # E.g. Journal has_many :tasks, :through => :papers
-          if reflection.respond_to?(:through_options)
-            loop do
-              # this is the Paper reflection
-              delegate_reflection = reflection.delegate_reflection
-              through_reflection = assigned_to_klass.reflections[delegate_reflection.options[:through].to_s]
-              through_klass = through_reflection.klass
-              through_table = through_reflection.klass.arel_table
+          loop do
+            # this is the Paper reflection
+            delegate_reflection = reflection.delegate_reflection
+            through_reflection = assigned_to_klass.reflections[delegate_reflection.options[:through].to_s]
+            through_klass = through_reflection.klass
+            through_table = through_reflection.klass.arel_table
 
-              # If we have a thru association it may be a has_many or a has_one
-              # so we check both the singular and the plural forms.
-              plural_reflection = reflection.name.to_s.pluralize
-              singular_reflection = reflection.name.to_s.singularize
-              through_target_reflection = begin
-                through_klass.reflections[plural_reflection] || through_klass.reflections[singular_reflection]
-              end
-              through_target_table = through_target_reflection.klass.arel_table
+            # If we have a thru association it may be a has_many or a has_one
+            # so we check both the singular and the plural forms.
+            plural_reflection = reflection.name.to_s.pluralize
+            singular_reflection = reflection.name.to_s.singularize
+            through_target_reflection = begin
+              through_klass.reflections[plural_reflection] || through_klass.reflections[singular_reflection]
+            end
+            through_target_table = through_target_reflection.klass.arel_table
 
-              # construct the join from journals table to the permissible_assignments_table
-              query.outer_join(join_table).on(
-                join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name))
+            # construct the join from journals table to the permissible_assignments_table
+            query.outer_join(join_table).on(
+              join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name))
+            )
+
+            # construct the join from papers table to the journals table
+            query.outer_join(through_table).on(
+              through_table[through_reflection.foreign_key].eq(
+                join_table.primary_key
               )
+            )
 
-              # construct the join from papers table to the journals table
-              query.outer_join(through_table).on(
-                through_table[through_reflection.foreign_key].eq(
-                  join_table.primary_key
-                )
-              )
+            # construct the join from tasks table to the papers table
+            query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(through_klass.arel_table.primary_key))
 
-              # construct the join from tasks table to the papers table
-              query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(through_klass.arel_table.primary_key))
-
-              foreign_key_value = @target.where_values_hash[through_target_reflection.foreign_key]
-              if foreign_key_value
-                foreign_key_values = [ foreign_key_value ].flatten
-                query.where(through_klass.arel_table.primary_key.in(foreign_key_values))
-              end
-
-              # the next two lines are for supporting a :through that goes thru a :through
-              # it is completely untested and may not even be important. If it isn't we may
-              # be able to get rid of the whole looping construct
-              break unless delegate_reflection.respond_to?(:delegate_reflection)
-              reflection = delegate_reflection
+            foreign_key_value = @target.where_values_hash[through_target_reflection.foreign_key]
+            if foreign_key_value
+              foreign_key_values = [ foreign_key_value ].flatten
+              query.where(through_klass.arel_table.primary_key.in(foreign_key_values))
             end
 
-
-            query.where(join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
-
-            add_permission_state_check_to_query(query)
-            query
-          else
-            ObjectsAuthorizedViaCollection.new(
-              target: target,
-              auth_config: ac,
-              permissible_assignments_table: permissible_assignments_table,
-              klass: klass
-            ).to_arel
+            # the next two lines are for supporting a :through that goes thru a :through
+            # it is completely untested and may not even be important. If it isn't we may
+            # be able to get rid of the whole looping construct
+            break unless delegate_reflection.respond_to?(:delegate_reflection)
+            reflection = delegate_reflection
           end
+
+
+          query.where(join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
+
+          add_permission_state_check_to_query(query)
+          query
+        elsif reflection.collection? || reflection.has_one?
+          ObjectsAuthorizedViaCollection.new(
+            target: target,
+            auth_config: ac,
+            permissible_assignments_table: permissible_assignments_table,
+            klass: klass
+          ).to_arel
         elsif reflection.belongs_to?
           ObjectsAuthorizedThroughBelongsTo.new(
             target: target,

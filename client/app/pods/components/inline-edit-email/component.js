@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   editing: false,
   bodyPart: null,
   bodyPartType: Ember.computed.alias('bodyPart.type'),
-  isSendable: true,
+  isSendable: Ember.computed.notEmpty('recipients'),
   showChooseReceivers: false,
   mailRecipients: [],
   recipients: null,
@@ -22,12 +22,8 @@ export default Ember.Component.extend({
   keyForStates: Ember.computed.alias('bodyPart.subject'),
 
   showSentMessage: Ember.computed('keyForStates', 'emailSentStates.[]', function() {
-    if (this.get('isSendable')) {
-      let key = this.get('keyForStates');
-      return this.get('emailSentStates').includes(key);
-    } else {
-      return false;
-    }
+    let key = this.get('keyForStates');
+    return this.get('emailSentStates').includes(key);
   }),
 
   setSentState: function() {

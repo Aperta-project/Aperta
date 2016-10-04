@@ -142,11 +142,34 @@
   .inline-edit-icon {
     top: 2px;
   }
+
+  .participant-selector-label {
+    color: white;
+  }
+
+  .bodypart-email-sent-overlay {
+    text-align: center;
+    color: white;
+    padding: 30px;
+  }
+
+  .fa-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+
+  .participant-selector {
+    margin-bottom: 20px;
+  }
 }
 
 .bodypart-display {
   position: relative;
   margin: 10px 0;
+
   @include transition(min-height, 0.3s);
 
   .fa.inline-edit-icon {
@@ -173,6 +196,10 @@
   @include position(absolute, 0px 0px 0px 0px);
   background-color: $tahi-green;
   z-index: 1; // higher index to ensure overlay stays above all other content
+
+  h4, p {
+    color: white;
+  }
 }
 
 .overlay-content .bodypart-overlay p {
@@ -197,7 +224,8 @@
 }
 
 .bodypart-choose-receiver-overlay {
-  padding: 20px 0 20px 110px;
+  padding: 30px;
+  text-align: center;
 }
 
 .overlay-content .bodypart-email-sent-overlay {

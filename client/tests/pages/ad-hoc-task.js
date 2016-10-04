@@ -74,9 +74,6 @@ export default PageObject.create({
       trash: clickable('.fa-trash'),
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
-      setText(text) {
-        return $(this.scope + ' div.editable').html(text).keyup();
-      },
       deleteVisible: isVisible('.fa-trash'),
     }
   }),
@@ -89,9 +86,7 @@ export default PageObject.create({
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
-      setText(text){
-        return $(this.scope + ' div.editable').html(text).keyup();
-      },
+      labelText: contentEditable('div.editable'),
       text: text('.item-text'),
       save: clickable('.edit-actions .button-secondary')
     }
@@ -105,15 +100,14 @@ export default PageObject.create({
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
-      setBody(text){
-        return $(this.scope + ' div.editable').html(text).keyup();
-      },
+      setBody: contentEditable('div.editable'),
       setSubject: fillable('input', {scope: '.editing'}),
       subject: text('.item-subject'),
       body: text('.item-text'),
       save: clickable('.edit-actions .button-secondary'),
       send: clickable('.email-send-participants'),
-      sendConfirm: clickable('.send-email-action')
+      cancel: clickable('.bodypart-overlay .button-link'),
+      sendConfirmVisible: isVisible('.send-email-action')
     }
   }),
 

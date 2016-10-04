@@ -142,7 +142,6 @@ test('AdHoc Task email block', function(assert) {
 
   page.emails(0).setSubject('Deep subject');
 
-
   andThen(function() {
     page.emails(0).setBody('Awesome email body!');
   });

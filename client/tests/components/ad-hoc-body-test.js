@@ -4,6 +4,8 @@ import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import registerCustomAssertions from '../helpers/custom-assertions';
 import page from '../pages/ad-hoc-task';
+import FakeCanService from '../helpers/fake-can-service';
+
 moduleForComponent('ad-hoc-body', 'Integration | Component | ad-hoc body', {
   integration: true,
   beforeEach() {
@@ -24,14 +26,21 @@ let template = hbs`{{ad-hoc-body task=task
                     canEdit=canEdit}}`;
 
 test('canManage=true adding new blocks', function(assert) {
+  this.registry.register('service:can', FakeCanService);
+
   // adding a text block immediately persists the new block to the task body
   let savecount = 0;
   let task = make('task', {body: []});
+
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('add_email_participants', task);
+
   this.set('task', task);
   this.set('fakeSave', function() { savecount += 1; });
   this.set('canEdit', false);
   this.set('canManage', false);
   this.render(template);
+
   assert.notOk(page.toolbarVisible, `does not show the content toolbar when canManage is false`);
 
   this.set('canManage', true);
@@ -56,7 +65,7 @@ test('canManage=true adding new blocks', function(assert) {
   // Label text
   page.toolbar.open();
   page.toolbar.addLabel();
-  page.labels(0).setText('I am a nice label');
+  page.labels(0).labelText('I am a nice label');
   page.labels(0).save();
   assert.equal(page.labels(0).text, 'I am a nice label', `label added to card`);
   assert.ok(page.labels(0).editVisible, `labels are editable (manageable)`);
@@ -71,6 +80,11 @@ test('canManage=true adding new blocks', function(assert) {
   let expectedSubject = 'Subject: This is a nice little subject';
   assert.equal(page.emails(0).subject, expectedSubject, `subject added to email`);
   assert.equal(page.emails(0).body, expectedSubject + ' This is a nice little email', `body added to email`);
+
+  page.emails(0).send();
+  assert.notOk(page.emails(0).sendConfirmVisible, `emails cannot send without recipients`);
+  page.emails(0).cancel();
+
   assert.ok(page.emails(0).editVisible, `emails are editable (manageable)`);
   assert.ok(page.emails(0).deleteVisible, `emails are deletable (manageable)`);
 

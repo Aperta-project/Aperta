@@ -47,8 +47,6 @@ module Authorizations
             klass: klass
           ).to_arel
 
-          add_permission_state_check_to_query(query)
-
           query
 
         elsif reflection.nil?

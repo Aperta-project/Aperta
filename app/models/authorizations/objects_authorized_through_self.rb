@@ -31,7 +31,7 @@ module Authorizations
         query.where(common_query.join_table.primary_key.in(id_values))
       end
 
-      query
+      common_query.add_permission_state_check_to_query(query)
     end
   end
 end

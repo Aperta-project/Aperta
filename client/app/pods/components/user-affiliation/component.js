@@ -8,23 +8,23 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
 
   restless: Ember.inject.service(),
   store: Ember.inject.service(),
-
   countries: Ember.inject.service(),
 
   showAffiliationForm: false,
   affiliations: Ember.computed(function() { return []; }),
-  today: new Date(),
+  loading: true,
 
   newAffiliation: null,
 
-  _fetchCountries: Ember.on('init', function() {
+  init() {
+    this._super(...arguments);
     this.get('countries').fetch();
-  }),
+  },
 
   didInsertElement() {
     this._super(...arguments);
-    let store = this.get('store');
-    let userId = this.get('user.id');
+    const store = this.get('store');
+    const userId = this.get('user.id');
 
     this.get('restless')
     .get(`/api/affiliations/user/${userId}`)
@@ -34,14 +34,9 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
         'affiliations',
         store.peekAll('affiliation').filterBy('user.id', userId)
       );
+      this.set('loading', false);
     });
   },
-
-  formattedCountries: Ember.computed('countries.data', function() {
-    return this.get('countries.data').map(function(c) {
-      return { id: c, text: c };
-    });
-  }),
 
   actions: {
     hideNewAffiliationForm() {
@@ -58,24 +53,20 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     },
 
     removeAffiliation(affiliation) {
-      if (confirm('Are you sure you want to destroy this affiliation?')) {
+      if (window.confirm('Are you sure you want to destroy this affiliation?')) {
         this.get('affiliations').removeObject(affiliation);
         affiliation.destroyRecord();
       }
     },
 
     commitAffiliation(affiliation) {
-
-      this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
+      return this.get('store').findRecord('user', this.get('user.id')).then((user)=>{
         user.get('affiliations').addObject(affiliation);
         this.clearAllValidationErrors();
-
-        affiliation.save().then(() => {
+        const isNew = affiliation.get('isNew');
+        return affiliation.save().then(() => {
           this.send('hideNewAffiliationForm');
-          this.get('affiliations').pushObject(affiliation);
-        }, (response) => {
-          affiliation.set('user', null);
-          this.displayValidationErrorsFromResponse(response);
+          if (isNew) { this.get('affiliations').pushObject(affiliation); }
         });
       });
     },
@@ -89,4 +80,4 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
       this.set('newAffiliation.country', country.text);
     },
   }
-})
+});

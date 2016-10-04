@@ -33,6 +33,8 @@ module Authorizations
         reflection = ac.assignment_to.reflections[ac.via.to_s]
         join_table = assigned_to_klass.arel_table
         target_table = klass.arel_table
+
+        # TODOMPM - remove this query = when all of the following conditions are moved to their own classes
         query = ObjectsAuthorizedCommonQuery.new(
           auth_config: ac,
           klass: klass,
@@ -109,17 +111,12 @@ module Authorizations
             add_permission_state_check_to_query(query)
             query
           else
-            query.outer_join(join_table).on(join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
-            query.outer_join(target_table).on(target_table[reflection.foreign_key].eq(join_table.primary_key))
-            foreign_key_value = @target.where_values_hash[reflection.foreign_key]
-            if foreign_key_value
-              foreign_key_values = [ foreign_key_value ].flatten
-              query.where(join_table.primary_key.in(foreign_key_values))
-            end
-
-            add_permission_state_check_to_query(query)
-
-            query
+            ObjectsAuthorizedViaCollection.new(
+              target: target,
+              auth_config: ac,
+              permissible_assignments_table: permissible_assignments_table,
+              klass: klass
+            ).to_arel
           end
         elsif reflection.belongs_to?
           ObjectsAuthorizedThroughBelongsTo.new(

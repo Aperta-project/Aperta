@@ -621,3 +621,84 @@ paper_tracker_search_queries = ['0000003',
                                 'ALL REVIEWS COMPLETE',
                                 'NOT ALL REVIEWS COMPLETE'
                                 ]
+
+only_init_dec_mmt = {'name'              : 'OnlyInitialDecisionCard',
+                     'user_tasks'        : ['Initial Decision', 'Upload Manuscript'],
+                     'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                            'Initial Tech Check', 'Invite Academic Editor',
+                                            'Invite Reviewers', 'Register Decision',
+                                            'Related Articles',
+                                            'Revision Tech Check', 'Send to Apex',
+                                            'Title And Abstract'],
+                     'uses_resrev_report': True
+                     }
+only_rev_cands_mmt = {'name'              : 'OnlyReviewerCandidates',
+                      'user_tasks'        : ['Reviewer Candidates', 'Upload Manuscript'],
+                      'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                             'Initial Tech Check', 'Invite Academic Editor',
+                                             'Invite Reviewers', 'Production Metadata',
+                                             'Register Decision', 'Related Articles',
+                                             'Revision Tech Check', 'Send to Apex',
+                                             'Title And Abstract'],
+                      'uses_resrev_report': True
+                      }
+front_matter_mmt = {'name'              : 'Front-Matter-type',
+                    'user_tasks'        : ['Additional Information', 'Authors', 'Figures',
+                                           'Supporting Info', 'Upload Manuscript'],
+                    'staff_tasks'       : ['Invite Reviewers', 'Production Metadata',
+                                           'Register Decision', 'Related Articles', 'Send to Apex',
+                                           'Title And Abstract'],
+                    'uses_resrev_report': False
+                    }
+research_mmt = {'name'              : 'Research',
+                'user_tasks'        : ['Authors', 'Billing', 'Cover Letter', 'Figures',
+                                       'Financial Disclosure', 'Supporting Info',
+                                       'Upload Manuscript'],
+                'staff_tasks'       : ['Assign Admin', 'Invite Academic Editor',
+                                       'Invite Reviewers', 'Register Decision',
+                                       'Title And Abstract'],
+                'uses_resrev_report': True
+                }
+resrch_w_init_dec = {'name'              : 'Research w/Initial Decision Card',
+                     'user_tasks'        : ['Authors', 'Billing', 'Cover Letter', 'Figures',
+                                            'Financial Disclosure', 'Supporting Info',
+                                            'Upload Manuscript'],
+                     'staff_tasks'       : ['Assign Admin', 'Initial Decision',
+                                            'Invite Academic Editor', 'Invite Reviewers',
+                                            'Register Decision', 'Title And Abstract'],
+                     'uses_resrev_report': True
+                     }
+imgs_init_dec_mmt = {'name'              : 'Images+InitialDecision',
+                     'user_tasks'        : ['Figures', 'Initial Decision', 'Upload Manuscript'],
+                     'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                            'Invite Academic Editor', 'Invite Reviewers',
+                                            'Production Metadata', 'Register Decision',
+                                            'Related Articles', 'Revision Tech Check',
+                                            'Send to Apex',
+                                            'Title And Abstract'],
+                     'uses_resrev_report': True
+                     }
+gen_cmplt_apexdata = {'name'              : 'generateCompleteApexData',
+                      'user_tasks'        : ['Additional Information', 'Authors', 'Billing',
+                                             'Competing Interests', 'Cover Letter',
+                                             'Data Availability', 'Ethics Statement', 'Figures',
+                                             'Financial Disclosure', 'New Taxon',
+                                             'Reporting Guidelines', 'Reviewer Candidates',
+                                             'Supporting Info', 'Upload Manuscript'],
+                      'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                             'Invite Academic Editor', 'Invite Reviewers',
+                                             'Production Metadata', 'Register Decision',
+                                             'Related Articles', 'Revision Tech Check',
+                                             'Send to Apex',
+                                             'Title And Abstract'],
+                      'uses_resrev_report': True
+                      }
+no_cards_mmt = {'name'              : 'NoCards',
+                'user_tasks'        : ['Upload Manuscript'],
+                'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                       'Invite Academic Editor', 'Invite Reviewers',
+                                       'Production Metadata', 'Register Decision',
+                                       'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                       'Title And Abstract'],
+                'uses_resrev_report': True
+                }

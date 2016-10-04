@@ -14,7 +14,7 @@ describe NestedQuestionAnswersController do
         nested_question_answer: {
           value: "Hello",
           owner_id: owner.id,
-          owner_type: owner.type,
+          owner_type: nested_question.owner_type,
           additional_data: { "institution-id" => "123" }
         }
       }
@@ -71,7 +71,7 @@ describe NestedQuestionAnswersController do
         nested_question_answer: {
           value: "bar",
           owner_id: owner.id,
-          owner_type: owner.type,
+          owner_type: nested_question.owner_type,
           additional_data: { "institution-id" => "123" }
         }
       }
@@ -90,8 +90,9 @@ describe NestedQuestionAnswersController do
         answer = FactoryGirl.create(
           :nested_question_answer,
           nested_question: nested_question, value: "foo",
-          owner_type: owner.type,
-          owner_id: owner.id)
+          owner_type: nested_question.owner_type,
+          owner_id: owner.id
+        )
 
         expect do
           do_request
@@ -126,7 +127,7 @@ describe NestedQuestionAnswersController do
         nested_question_answer: {
           value: "Bye",
           owner_id: owner.id,
-          owner_type: owner.type,
+          owner_type: nested_question.owner_type,
           additional_data: { "institution-id" => "234" }
         }
       }
@@ -184,7 +185,7 @@ describe NestedQuestionAnswersController do
         nested_question_answer: {
           value: "Bye",
           owner_id: owner.id,
-          owner_type: owner.type,
+          owner_type: nested_question.owner_type,
           additional_data: { "institution-id" => "234" }
         }
       }

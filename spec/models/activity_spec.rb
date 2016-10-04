@@ -444,7 +444,7 @@ describe Activity do
 
     context "a submission task" do
       subject(:activity) { Activity.task_updated!(task, user: user) }
-      let(:task) { FactoryGirl.create(:task) }
+      let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
       context "was completed" do
         before { task.update! completed: true }

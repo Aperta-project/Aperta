@@ -131,7 +131,7 @@ describe Attachment do
 
   describe 'setting #paper' do
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:task) { FactoryGirl.create(:task, paper: paper) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
     it 'is set when assigning #owner and the owner is a Paper' do
       expect do

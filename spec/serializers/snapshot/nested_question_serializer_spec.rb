@@ -5,7 +5,7 @@ describe Snapshot::NestedQuestionSerializer do
   let(:nested_question) do
     FactoryGirl.create(:nested_question, ident: 'my-question', text: 'What up?')
   end
-  let(:owner) { FactoryGirl.create(:task) }
+  let(:owner) { FactoryGirl.create(:ad_hoc_task) }
 
   describe '#as_json - serializing nested questions' do
     it 'serializes the question without an answer' do

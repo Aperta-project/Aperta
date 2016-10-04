@@ -4,7 +4,7 @@ describe TahiStandardTasks::ReviewerMailer do
   let(:assigner) { FactoryGirl.create(:user) }
   let(:paper) { reviewer_task.paper }
   let(:reviewer) { FactoryGirl.create(:user) }
-  let(:reviewer_task) { FactoryGirl.create(:task) }
+  let(:reviewer_task) { FactoryGirl.create(:paper_reviewer_task) }
 
   describe ".reviewer_accepted" do
     context "with an assigner" do

@@ -9,10 +9,9 @@ describe TahiStandardTasks::RegisterDecisionMailer do
   }
 
   let(:task) {
-    FactoryGirl.create(:task,
+    FactoryGirl.create(:register_decision_class,
                        title: "Register Decision Report",
                        old_role: 'reviewer',
-                       type: "TahiStandardTasks::RegisterDecisionTask",
                        paper: paper,
                        completed: true)
   }

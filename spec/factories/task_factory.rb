@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :task do
+  factory :ad_hoc_task do
     title "Do something awesome"
     old_role 'admin'
     phase

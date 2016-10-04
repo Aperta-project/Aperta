@@ -93,8 +93,8 @@ describe User do
   describe '#tasks' do
     subject(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper, :with_integration_journal)}
-    let!(:participating_task) { FactoryGirl.create(:task, paper: paper) }
-    let!(:not_participating_task) { FactoryGirl.create(:task, paper: paper) }
+    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
     let!(:other_role) { FactoryGirl.create(:role) }
 
     before do
@@ -272,7 +272,7 @@ describe User do
     let!(:decoy_journal) { FactoryGirl.create(:journal) }
     let!(:decoy_role) { FactoryGirl.create(:role, name: 'role', journal: decoy_journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:task) { FactoryGirl.create(:task, paper: paper) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
     shared_examples_for 'assigning to a role' do
       it 'can be used to assign a role on a journal' do
@@ -339,7 +339,7 @@ describe User do
     let(:user) { FactoryGirl.create(:user) }
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:task) { FactoryGirl.create(:task, paper: paper) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
     let!(:role) { FactoryGirl.create(:role, name: 'role', journal: journal) }
     let!(:user_role) { FactoryGirl.create(:role, name: 'user role', journal: nil) }
     # role with same name on a different journal

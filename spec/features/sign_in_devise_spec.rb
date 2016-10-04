@@ -40,6 +40,7 @@ feature "Devise redirect", js: true do
     fill_in('Login', with: user.username)
     fill_in('Password', with: 'password')
     click_on "Sign in"
+    expect(page).to have_css('#profile')
     expect(page.current_path).to eq '/profile'
   end
 end

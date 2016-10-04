@@ -30,7 +30,7 @@ describe TahiStandardTasks::UploadManuscriptController do
       end
 
       context "when the task exists but it's not an UploadManuscriptTask" do
-        let(:task) { FactoryGirl.create(:task, paper: paper) }
+        let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
         it "responds with a 404" do
           do_request

@@ -4,8 +4,9 @@ class Task < ActiveRecord::Base
   include Commentable
   include Snapshottable
 
-  DEFAULT_TITLE = 'Ad-hoc'
-  DEFAULT_ROLE = 'user'
+  DEFAULT_TITLE = 'SUBCLASSME'.freeze
+  DEFAULT_ROLE = 'user'.freeze
+
   REQUIRED_PERMISSIONS = {}
   SYSTEM_GENERATED = false
 

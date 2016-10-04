@@ -13,15 +13,5 @@ export default Ember.Component.extend({
     set(key, value) {
       return this.set('bodyPart.answer', value);
     }
-  }),
-
-  actions: {
-    saveChanges() {
-      this.attrs.save();
-    },
-
-    deleteItem() {
-      this.attrs['delete']();
-    }
-  }
+  })
 });

@@ -14,9 +14,11 @@
       <div class="button-link button--green pull-right cancee-block" {{action "toggleEdit"}}>cancel</div>
     </div>
 
-    <div class="button-secondary button--green add-item" {{action attrs.addItem}}>
-      <span class="fa fa-plus"></span>
-    </div>
+    {{#if editing}}
+      <div class="button-secondary button--green add-item" {{action attrs.addItem}}>
+        <span class="fa fa-plus"></span>
+      </div>
+    {{/if}}
   {{/if}}
 
   {{#if confirmDelete}}

@@ -27,6 +27,10 @@ let BlockObject = Ember.Object.extend({
     this.get('items').pushObject(attrs);
   },
 
+  removeItem(item) {
+    this.get('items').removeObject(item);
+  },
+
   init() {
     this._super(...arguments);
     this.set('snapshot', []);
@@ -166,7 +170,7 @@ export default Ember.Component.extend({
     },
 
     deleteItem(item, block) {
-      block.removeObject(item);
+      block.removeItem(item);
       if (!block.get('hasContent')) {
         this.send('deleteBlock', block);
       }

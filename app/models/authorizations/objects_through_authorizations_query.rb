@@ -1,13 +1,12 @@
 module Authorizations
   class ObjectsThroughAuthorizationsQuery
     include QueryHelpers
-    attr_reader :auth_configs, :klass, :target, :assignments_query, :permissible_assignments_table
+    attr_reader :auth_configs, :klass, :target, :permissible_assignments_table
 
-    def initialize(assignments_query:, target:, klass:, auth_configs:, permissible_assignments_table:)
+    def initialize(target:, klass:, auth_configs:, permissible_assignments_table:)
       @auth_configs = auth_configs
       @klass = klass
       @target = target
-      @assignments_query = assignments_query
       @permissible_assignments_table = permissible_assignments_table
     end
 
@@ -33,28 +32,20 @@ module Authorizations
         assigned_to_klass = ac.assignment_to
         reflection = ac.assignment_to.reflections[ac.via.to_s]
         join_table = assigned_to_klass.arel_table
-        target_table = @klass.arel_table
-
-        query = permissible_assignments_table.project(
-          klass.arel_table.primary_key.as('id'),
-          permissible_assignments_table[:role_id].as('role_id'),
-          permissible_assignments_table[:permission_id].as('permission_id')
-        )
-
-        query.project(klass.arel_table[:paper_id]) if klass.column_names.include?('paper_id')
+        target_table = klass.arel_table
+        query = ObjectsAuthorizedCommonQuery.new(
+          auth_config: ac,
+          klass: klass,
+          permissible_assignments_table: permissible_assignments_table
+        ).to_arel
 
         if assigned_to_klass <=> @klass
-          query.outer_join(join_table).on(
-            join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(
-              permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)
-            )
-          )
-
-          id_values = @target.where_values_hash['id']
-          if id_values.present?
-            id_values = [ id_values ].flatten
-            query = query.where(join_table.primary_key.in(id_values))
-          end
+          query = ObjectsAuthorizedThroughSelf.new(
+            target: target,
+            auth_config: ac,
+            permissible_assignments_table: permissible_assignments_table,
+            klass: klass
+          ).to_arel
 
           add_permission_state_check_to_query(query)
 

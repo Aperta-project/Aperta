@@ -141,22 +141,23 @@ module Authorizations
 
 
     def load_authorized_objects
-      assignments_query = PermissibleAssignmentsQuery.new(user: @user,
-                                                             permission: @permission,
-                                                             klass: @klass,
-                                                             applies_to: eligible_applies_to,
-                                                             auth_configs: auth_configs,
-                                                             participations_only: @participations_only)
-                                                          .to_arel
+      assignments_query = PermissibleAssignmentsQuery.new(
+        user: @user,
+        permission: @permission,
+        klass: @klass,
+        applies_to: eligible_applies_to,
+        auth_configs: auth_configs,
+        participations_only: @participations_only)
+      .to_arel
 
       permissible_assignments_table = Arel::Table.new(:permissions_table)
       permissible_assignments_as_table = Arel::Nodes::As.new(permissible_assignments_table, assignments_query)
 
-      authorization_query = ObjectsThroughAuthorizationsQuery.new(assignments_query: assignments_query,
-                                                                  klass: @klass,
-                                                                  target: @target,
-                                                                  auth_configs: auth_configs,
-                                                                  permissible_assignments_table: permissible_assignments_table)
+      authorization_query = ObjectsThroughAuthorizationsQuery.new(
+        klass: @klass,
+        target: @target,
+        auth_configs: auth_configs,
+        permissible_assignments_table: permissible_assignments_table)
 
 
       authorization_paths = authorization_query.to_arel

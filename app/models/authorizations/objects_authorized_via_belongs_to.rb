@@ -1,5 +1,5 @@
 module Authorizations
-  class ObjectsAuthorizedThroughBelongsTo
+  class ObjectsAuthorizedViaBelongsTo
     attr_reader :target, :permissible_assignments_table,
       :common_query, :common_arel
 

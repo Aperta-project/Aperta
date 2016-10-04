@@ -42,7 +42,7 @@ module Authorizations
         ).to_arel
 
         if assigned_to_klass <=> @klass
-          ObjectsAuthorizedThroughSelf.new(
+          ObjectsAuthorizedViaSelf.new(
             target: target,
             auth_config: ac,
             permissible_assignments_table: permissible_assignments_table,
@@ -117,7 +117,7 @@ module Authorizations
             klass: klass
           ).to_arel
         elsif reflection.belongs_to?
-          ObjectsAuthorizedThroughBelongsTo.new(
+          ObjectsAuthorizedViaBelongsTo.new(
             target: target,
             auth_config: ac,
             permissible_assignments_table: permissible_assignments_table,

@@ -7,7 +7,6 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
   countries: null,
   editAffiliation: false,
 
-
   today: new Date(),
 
   select2Helper: function(item) {
@@ -33,7 +32,7 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
   }),
 
   actions:{
-    editAffiliation(affiliation) {
+    editAffiliation() {
       this.set('editAffiliation', true);
     },
 

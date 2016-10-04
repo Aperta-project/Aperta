@@ -103,3 +103,9 @@
     }
   }
 }
+
+.did-you-mean--error {
+  .did-you-mean-input {
+    border: 1px solid $tahi-error-red;
+  }
+}

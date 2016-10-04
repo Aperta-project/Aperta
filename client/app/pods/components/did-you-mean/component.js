@@ -15,7 +15,7 @@ const {
 export default Component.extend({
   classNameBindings: [
     ':did-you-mean',
-    'errorPresent:error'
+    'errorPresent:did-you-mean--error'
   ],
   // attrs:
   endpoint: null,

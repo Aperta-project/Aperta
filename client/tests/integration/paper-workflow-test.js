@@ -25,7 +25,7 @@ module('Integration: Paper Workflow page', {
       task: {
         id: 1,
         title: 'New Ad-Hoc Task',
-        type: 'Task',
+        type: 'AdHocTask',
         phase_id: 1,
         paper_id: 1,
         lite_paper_id: 1

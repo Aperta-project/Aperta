@@ -29,7 +29,7 @@ describe AdhocAttachmentSerializer, serializer_test: true do
         src: src,
         status: attachment.status,
         filename: attachment.filename,
-        task: { id: attachment.task.id, type: "Task" },
+        task: { id: attachment.task.id, type: "AdHocTask" },
         type: 'AdhocAttachment'
       )
       expect(deserialized_content[:adhoc_attachment]).to match(expected_contents)

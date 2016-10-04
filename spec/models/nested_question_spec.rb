@@ -57,7 +57,7 @@ describe NestedQuestion do
   end
 
   describe '#update_all_exactly!' do
-    let(:owner) { FactoryGirl.create(:task) }
+    let(:owner) { FactoryGirl.create(:ad_hoc_task) }
 
     let!(:nested_question_a) do
       FactoryGirl.create(:nested_question, owner: owner)

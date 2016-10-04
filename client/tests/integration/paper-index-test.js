@@ -110,6 +110,7 @@ test('on paper.index as a participant on a task but not author of paper', functi
   expect(1);
   records = paperWithTask('Task', {
     id: 1,
+    type: 'AdHocTask',
     title: 'ReviewMe',
     oldRole: 'reviewer'
   });

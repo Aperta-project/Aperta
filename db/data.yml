@@ -4149,13 +4149,6 @@ journal_task_types:
   - required_permissions
   - system_generated
   records: 
-  - - '1'
-    - '1'
-    - Ad-hoc
-    - user
-    - Task
-    - "{}"
-    - false
   - - '2'
     - '1'
     - Authors
@@ -4387,6 +4380,13 @@ journal_task_types:
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - "{}"
     - true
+  - - '35'
+    - '1'
+    - Ad-hoc
+    - user
+    - AdHocTask
+    - "{}"
+    - false
 
 ---
 journals:
@@ -17135,7 +17135,7 @@ task_templates:
     - "[]"
     - '1'
   - - '200'
-    - '1'
+    - '35'
     - '64'
     - Academic Editor Feedback
     - "[]"
@@ -17621,7 +17621,7 @@ tasks:
     - 
   - - '20'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '4'
     - false
     - '2015-10-29 20:16:37.770082'
@@ -17886,7 +17886,7 @@ tasks:
     - 
   - - '41'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '9'
     - false
     - '2015-10-30 19:43:28.753676'
@@ -18145,7 +18145,7 @@ tasks:
     - 
   - - '62'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '14'
     - false
     - '2015-11-02 14:04:03.236117'
@@ -18407,7 +18407,7 @@ tasks:
     - 
   - - '83'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '19'
     - false
     - '2015-11-02 14:46:24.143576'
@@ -18659,7 +18659,7 @@ tasks:
     - 
   - - '104'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '24'
     - false
     - '2015-11-03 22:59:21.321385'
@@ -18911,7 +18911,7 @@ tasks:
     - 
   - - '125'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '29'
     - false
     - '2015-11-03 23:02:07.186712'
@@ -19163,7 +19163,7 @@ tasks:
     - 
   - - '146'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '34'
     - false
     - '2015-11-10 22:27:27.595453'
@@ -19415,7 +19415,7 @@ tasks:
     - 
   - - '189'
     - Academic Editor Feedback
-    - Task
+    - AdHocTask
     - '44'
     - false
     - '2016-04-12 18:43:35.004522'

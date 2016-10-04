@@ -3,7 +3,7 @@ require 'rails_helper'
 describe TaskRoleUpdater do
   let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let(:assignee) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:task, old_role: PaperRole::ADMIN, paper: paper) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task, old_role: PaperRole::ADMIN, paper: paper) }
 
   subject do
     TaskRoleUpdater.new(task: task, assignee_id: assignee.id, paper_role_name: PaperRole::ADMIN)
@@ -25,11 +25,11 @@ describe TaskRoleUpdater do
 
   describe 'updating other tasks' do
     let!(:unrelated_role_task) do
-      FactoryGirl.create(:task, paper: paper, old_role: 'foo')
+      FactoryGirl.create(:ad_hoc_task, paper: paper, old_role: 'foo')
     end
     let!(:related_completed_task) do
       FactoryGirl.create(
-        :task,
+        :ad_hoc_task,
         paper: paper,
         completed: true,
         old_role: task.old_role

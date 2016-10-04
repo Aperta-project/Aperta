@@ -14,7 +14,7 @@ describe SnapshotService do
   subject(:service) { described_class.new(paper, registry) }
   let(:paper) { FactoryGirl.create(:paper, :with_creator, :submitted) }
   let(:registry) { SnapshotService::Registry.new }
-  let(:things_to_snapshot) { FactoryGirl.create_list(:task, 3) }
+  let(:things_to_snapshot) { FactoryGirl.create_list(:ad_hoc_task, 3) }
   let(:snapshots) { Snapshot.all.order('id') }
   let(:adhoc_attachment) do
     FactoryGirl.create(:adhoc_attachment, :with_task, paper: paper)

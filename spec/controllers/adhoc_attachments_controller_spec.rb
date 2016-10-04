@@ -4,7 +4,7 @@ describe AdhocAttachmentsController do
   let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal, creator: user) }
-  let(:task) { FactoryGirl.create(:task, paper: paper) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
   describe 'GET #index' do
     subject(:do_request) { get :index, format: 'json', task_id: task.to_param }

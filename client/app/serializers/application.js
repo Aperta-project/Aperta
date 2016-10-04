@@ -20,21 +20,6 @@ export default ActiveModelSerializer.extend({
   // The Task payload has a key of `type`. This is the full
   // Ruby class name. Example: "ApertaThings::ImportantTask"
   // The Ember side is only interested in the last half.
-  // If `type` is simply "Task", it's ad-hoc
-
-  normalizeTaskName(fullName) {
-    const taskTypeNames = fullName.split('::');
-
-    if (taskTypeNames.length === 1) {
-      return fullName;
-    }
-
-    return deNamespaceTaskType(fullName);
-  },
-
-  // The Task payload has a key of `type`. This is the full
-  // Ruby class name. Example: "ApertaThings::ImportantTask"
-  // The Ember side is only interested in the last half.
   // Store the original full name in `qualified_type`
   // We snake case because our superclass expects it
   mungeTaskData(taskObj) {
@@ -42,7 +27,7 @@ export default ActiveModelSerializer.extend({
 
     if (qualifiedType) {
       taskObj.qualified_type = qualifiedType;
-      taskObj.type = this.normalizeTaskName(taskObj.type);
+      taskObj.type = deNamespaceTaskType(taskObj.type);
     }
 
     return taskObj;
@@ -128,15 +113,15 @@ export default ActiveModelSerializer.extend({
         });
       } else {
         let record = payload[oldBucketName];
-          const type = record.type;
-          if (type) {
-            let newBucketName = type.underscore();
-            if(!payload[newBucketName]) { payload[newBucketName] = record; }
+        const type = record.type;
+        if (type) {
+          let newBucketName = type.underscore();
+          if(!payload[newBucketName]) { payload[newBucketName] = record; }
 
-            if (newBucketName !== oldBucketName) {
-              delete payload[oldBucketName];
-            }
+          if (newBucketName !== oldBucketName) {
+            delete payload[oldBucketName];
           }
+        }
       }
     });
   },
@@ -144,7 +129,7 @@ export default ActiveModelSerializer.extend({
   hasMultipleTypes(records) {
     if (!Ember.isArray(records)) { return false; }
 
-    return records.mapBy('type').uniq().length > 1
+    return records.mapBy('type').uniq().length > 1;
   },
 
   newNormalize(modelName, sourcePayload, assumeObject) {
@@ -192,7 +177,7 @@ export default ActiveModelSerializer.extend({
 
     var newPayload = {};
     for(var key of Object.keys(rawPayload)) {
-      let {newModelName, payload, isPolymorphic} = this.newNormalize(key, rawPayload[key]);
+      let { payload } = this.newNormalize(key, rawPayload[key]);
 
       // if we get { tasks: [{...}], authors: [{...}] } back from newNormalize
       // make sure we add all key/value pairs to newPayload
@@ -204,50 +189,44 @@ export default ActiveModelSerializer.extend({
     return newPayload;
   },
 
-  normalizeSingleResponse(
-    store, primaryModelClass, originalPayload, recordId, requestType
-  ) {
-      let {newModelName, payload} = this.newNormalize(
-        primaryModelClass.modelName,
-        this.mungePayloadTypes(originalPayload),
-        false
-      );
+  normalizeSingleResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
+    let {newModelName, payload} = this.newNormalize(
+      primaryModelClass.modelName,
+      this.mungePayloadTypes(originalPayload),
+      false
+    );
 
-      let newModelClass = store.modelFor(newModelName);
-      return this._super.apply(
-        this, [store, newModelClass, payload, recordId, requestType]
-      );
+    let newModelClass = store.modelFor(newModelName);
+    return this._super.apply(
+      this, [store, newModelClass, payload, recordId, requestType]
+    );
   },
 
-  normalizeArrayResponse(
-    store, primaryModelClass, originalPayload, recordId, requestType
-  ) {
-      let {newModelName, payload, isPolymorphic} = this.newNormalize(
-        primaryModelClass.modelName,
-        this.mungePayloadTypes(originalPayload),
-        false
-      );
+  normalizeArrayResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
+    let {newModelName, payload, isPolymorphic} = this.newNormalize(
+      primaryModelClass.modelName,
+      this.mungePayloadTypes(originalPayload),
+      false
+    );
 
-      let newModelClass = store.modelFor(newModelName);
-      let normalizedPayload = this._super.apply(
-        this, [store, newModelClass, payload, recordId, requestType]
-      );
+    let newModelClass = store.modelFor(newModelName);
+    let normalizedPayload = this._super.apply(
+      this, [store, newModelClass, payload, recordId, requestType]
+    );
 
-      if (isPolymorphic) {
-        if (!normalizedPayload.data) { normalizedPayload.data = []; }
-        normalizedPayload.data.push(...normalizedPayload.included);
-        delete normalizedPayload.included;
-      }
-
+    if (isPolymorphic) {
       if (!normalizedPayload.data) { normalizedPayload.data = []; }
-      return normalizedPayload;
+      normalizedPayload.data.push(...normalizedPayload.included);
+      delete normalizedPayload.included;
+    }
+
+    if (!normalizedPayload.data) { normalizedPayload.data = []; }
+    return normalizedPayload;
   },
 
   // Make sure normalizeSaveResponse uses our normalizeSingleResponse
 
-  normalizeSaveResponse(
-    store, primaryModelClass, payload, id, requestType
-  ) {
+  normalizeSaveResponse(store, primaryModelClass, payload, id, requestType) {
     return this.normalizeSingleResponse(...arguments);
   }
 });

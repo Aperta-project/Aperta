@@ -209,7 +209,8 @@ class Attachment < ActiveRecord::Base
     end
   end
 
-  # TODO: could we move this into the serializers?
+  # in this case, owner_type is referring to the Table name of the owner,
+  # so we still want to use the base 'Task' instead of a specific subclass
   def task
     owner if owner_type == 'Task'
   end

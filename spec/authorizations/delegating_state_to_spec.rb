@@ -9,7 +9,7 @@ describe "Permission states can be delegated to a model's association" do
 
   let!(:user) { FactoryGirl.create(:user) }
   let!(:paper) { FactoryGirl.create(:paper) }
-  let!(:task) { FactoryGirl.create(:task, paper: paper) }
+  let!(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
   permissions do
     permission action: 'edit', applies_to: Task.name, states: Paper::EDITABLE_STATES

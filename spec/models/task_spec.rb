@@ -5,11 +5,6 @@ describe Task do
 
   it_behaves_like 'is not snapshottable'
 
-  describe '.restore_defaults' do
-    it_behaves_like '<Task class>.restore_defaults does not update title'
-    it_behaves_like '<Task class>.restore_defaults does not update old_role'
-  end
-
   describe ".without" do
     let!(:tasks) do
       2.times.map do
@@ -28,7 +23,7 @@ describe Task do
   end
 
   describe '#add_participant' do
-    subject(:task) { FactoryGirl.create :task, paper: paper }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
     let(:user) { FactoryGirl.create :user }
 
@@ -48,7 +43,7 @@ describe Task do
   end
 
   describe '#assignments' do
-    subject(:task) { FactoryGirl.create :task }
+    subject(:task) { FactoryGirl.create :ad_hoc_task }
 
     before do
       Assignment.create!(
@@ -68,7 +63,7 @@ describe Task do
   end
 
   describe '#participations' do
-    subject(:task) { FactoryGirl.create :task, paper: paper }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     let!(:participant_assignment) do
@@ -94,7 +89,7 @@ describe Task do
   end
 
   describe '#participants' do
-    subject(:task) { FactoryGirl.create :task, paper: paper }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     let!(:participant_assignment) do
@@ -135,7 +130,7 @@ describe Task do
 
   describe "#nested_question_answers" do
     it "destroys nested_question_answers on destroy" do
-      task = FactoryGirl.create(:task, :with_nested_question_answers)
+      task = FactoryGirl.create(:ad_hoc_task, :with_nested_question_answers)
       nested_question_answer_ids = task.nested_question_answers.pluck :id
       expect(nested_question_answer_ids).to have_at_least(1).id
 
@@ -148,7 +143,7 @@ describe Task do
   end
 
   describe "#answer_for" do
-    subject(:task) { FactoryGirl.create(:task) }
+    subject(:task) { FactoryGirl.create(:ad_hoc_task) }
     let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
     let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
 
@@ -207,16 +202,19 @@ describe Task do
   end
 
   describe "#can_change?: associations can use this method to update based on task" do
-    let(:task) {
-      Task.create! title: "Paper Admin",
+    let(:task) do
+      FactoryGirl.create(
+        :ad_hoc_task,
+        title: "Paper Admin",
         completed: true,
         old_role: 'admin',
         phase_id: 3,
         paper_id: 99
-    }
+      )
+    end
 
     it "returns true" do
-      expect(task.can_change? double).to eq(true)
+      expect(task.can_change?(double)).to eq(true)
     end
   end
 end

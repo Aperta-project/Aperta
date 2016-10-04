@@ -1,57 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>We're sorry, but something went wrong (500)</title>
+  <title>Aperta (Outage)</title>
   <style>
+
+  @font-face {
+    font-family: 'source-sans-pro';
+    src: url(/assets/SourceSansPro-Regular-a9f0f6c78f399dbde243ca7f9bff15c7c9b3a21c500c4e7bd67bcc2000db1fad.eot);
+    src: url(/assets/SourceSansPro-Regular-a9f0f6c78f399dbde243ca7f9bff15c7c9b3a21c500c4e7bd67bcc2000db1fad.eot?#iefix) format("embedded-opentype"),
+         url(/assets/SourceSansPro-Regular.otf-154564c20eb3bd31c8212f6994482f59adfd00531be9509b0f52d310d623b26e.woff) format("woff"),
+         url(/assets/SourceSansPro-Regular-4c3749a7496356db5c7bc2e9899ac5075581519918e885c323e0321a3cafec06.ttf) format("truetype"),
+         url(/assets/SourceSansPro-Regular-d9121486bdd5bbfbdae46117b1618d42c65be083f02431841f0235f946aaaf36.svg) format("svg");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   body {
-    background-color: #EFEFEF;
-    color: #2E2F30;
+    background-image: url(/assets/auth/bg-1-742dc8c23a36f9cf771771eb5989bbb9ef42c12758aef763ac33fa81eb63f530.jpg);
+    background-color: #ddd;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    color: #333333;
     text-align: center;
-    font-family: arial, sans-serif;
+    font-family: "source-sans-pro", helvetica, sans-serif;
+    font-size: 19px;
+    line-height: 1.428571429;
+    letter-spacing: 0.01em;
   }
 
   div.dialog {
-    width: 25em;
-    margin: 4em auto 0 auto;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
+    max-width: 588px;
     background-color: white;
-    padding: 7px 4em 0 4em;
+    padding: 38px 56px 30px 56px ;
+    margin: 56px auto 0 auto;
   }
 
-  h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
+  img.logo {
+    max-width: 150px;
+    padding-right: 20px;
   }
 
-  body > p {
-    width: 33em;
-    margin: 0 auto 1em;
-    padding: 1em 0;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow:0 3px 8px rgba(50, 50, 50, 0.17);
+  img.maintenance {
+    width: 40%;
+    max-width: 200px;
+    margin-top: 13px;
   }
+
+  h2 {
+    font-size: 38px;
+    font-weight: normal;
+    margin: 10px 0 0 0;
+    letter-spacing: 0.02em;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0 0 10px 0;
+  }
+
+  .attribution {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    color: white;
+    font-size: 10px;
+  }
+
+  a {
+    text-decoration: underline;
+    color: white;
+  }
+
   </style>
 </head>
 
 <body>
   <!-- This file lives in public/500.html -->
   <div class="dialog">
-    <h1>We're sorry, but something went wrong.</h1>
+    <img class="logo" alt="PLOS" src="/images/plos_logo.png">
+    <h2>Welcome to Aperta</h2>
+    <h3>Submit & manage manuscripts.</h3>
+    <img class="maintenance" alt="maintenance" src="/images/unplanned-outage.svg">
+    <p>We're sorry, something went wrong and the team has been alerted to the issue. You may try again now, of if you experience repeated difficulty please try again later.</p>
   </div>
-  <p>If you are the application owner check the logs for more information.</p>
+
+  <div class="attribution">
+    <span>Image credit: Sid Mosdell on Flickr under a <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> license</span>
+  </div>
 </body>
 </html>

@@ -5,6 +5,6 @@ FactoryGirl.define do
   end
 
   trait :assigned_to_task do
-    association :assigned_to, factory: :task
+    association :assigned_to, factory: :ad_hoc_task
   end
 end

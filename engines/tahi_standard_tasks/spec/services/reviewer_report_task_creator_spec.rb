@@ -10,7 +10,7 @@ describe ReviewerReportTaskCreator do
     )
   end
   let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let!(:originating_task) { FactoryGirl.create(:task, paper: paper) }
+  let!(:originating_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
   let!(:assignee) { FactoryGirl.create(:user) }
 
   subject do

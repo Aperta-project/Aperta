@@ -26,7 +26,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         # create
         submission_phase.tasks.create(
           title: "Wicked Awesome Card",
-          type: "Task",
+          type: "AdHocTask",
           body: text_body,
           old_role: "admin",
           paper: submission_phase.paper

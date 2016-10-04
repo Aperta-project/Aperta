@@ -51,7 +51,7 @@ describe UserMailer, redis: true do
   describe '#add_participant' do
     let(:invitor) { FactoryGirl.create(:user) }
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:task) { FactoryGirl.create(:task) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task) }
     let(:email) { UserMailer.add_participant(invitor.id, invitee.id, task.id) }
 
     it_behaves_like "invitor is not available"
@@ -112,7 +112,7 @@ describe UserMailer, redis: true do
 
   describe '#assigned_editor' do
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:task) { FactoryGirl.create(:task) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task) }
     let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
 
     it 'sends the email to the invitees email address with correct subject' do
@@ -128,7 +128,7 @@ describe UserMailer, redis: true do
   describe '#mention_collaborator' do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:task) { FactoryGirl.create(:task, paper: paper) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
     let(:comment) { FactoryGirl.create(:comment, task: task) }
 
     let(:email) { UserMailer.mention_collaborator(comment.id, invitee.id) }

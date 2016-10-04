@@ -26,7 +26,7 @@ export function paperWithParticipant() {
 
   let litePaper = Factory.createLitePaper(paper);
   let phase     = Factory.createPhase(paper);
-  let task      = Factory.createTask('Task', paper, phase);
+  let task      = Factory.createTask('Task', paper, phase, {type: 'AdHocTask'});
   let user      = Factory.createRecord('User', {
     full_name: 'Some Guy'
   });

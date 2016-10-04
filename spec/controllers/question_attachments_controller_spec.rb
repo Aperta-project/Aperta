@@ -6,7 +6,7 @@ describe QuestionAttachmentsController do
     FactoryGirl.create(:question_attachment, owner: answer)
   end
   let(:answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
-  let(:task) { FactoryGirl.create(:task) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
   describe "#show" do
     subject(:do_request) do

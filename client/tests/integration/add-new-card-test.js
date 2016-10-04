@@ -31,7 +31,7 @@ module('Integration: adding a new card', {
         {
           id: 1,
           title: 'Ad Hoc',
-          kind: 'Task',
+          kind: 'AdHocTask',
           journal_id: 1
         }
       ]
@@ -41,7 +41,7 @@ module('Integration: adding a new card', {
       task: {
         id: 2,
         title: 'Ad Hoc Task',
-        type: 'Task',
+        type: 'AdHocTask',
         phase_id: 1,
         paper_id: 1,
         lite_paper_id: 1

@@ -103,7 +103,7 @@ namespace :data do
     task ad_hoc_tasks: [:setup, :journals, :active_manuscripts] do
       desired_tasks = 5_000
       progress("ad hoc tasks", desired_tasks) do
-        FactoryGirl.create(:task, phase: random(Phase))
+        FactoryGirl.create(:ad_hoc_task, phase: random(Phase))
       end
     end
 

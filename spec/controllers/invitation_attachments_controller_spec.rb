@@ -4,7 +4,7 @@ describe InvitationAttachmentsController do
   let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal, creator: user) }
-  let(:task) { FactoryGirl.create(:task, paper: paper) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
   let(:invitation) { FactoryGirl.create(:invitation, task: task) }
 
   describe 'GET #index' do

@@ -18,7 +18,7 @@ feature 'Publishing Related Questions Card', js: true do
   context 'As creator' do
     before do
       login_as(creator, scope: :user)
-      visit "/papers/#{paper.id}"
+      Capybara.current_session.visit_without_waiting "/papers/#{paper.id}"
     end
 
     let!(:overlay) { Page.view_task_overlay(paper, task) }

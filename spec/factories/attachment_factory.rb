@@ -11,7 +11,7 @@ FactoryGirl.define do
     end
 
     before :create do |attachment|
-      attachment.owner ||= FactoryGirl.create(:task)
+      attachment.owner ||= FactoryGirl.create(:ad_hoc_task)
     end
 
     trait :with_resource_token do
@@ -21,7 +21,7 @@ FactoryGirl.define do
     end
 
     trait :with_task do
-      association :owner, factory: :task
+      association :owner, factory: :ad_hoc_task
     end
   end
 end

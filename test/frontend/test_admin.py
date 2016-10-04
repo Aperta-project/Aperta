@@ -4,10 +4,8 @@ import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, super_admin_login, creator_login1, \
-    creator_login2, creator_login3, creator_login4, creator_login5, reviewer_login, \
-    academic_editor_login, handling_editor_login, cover_editor_login, internal_editor_login, \
-    pub_svcs_login
+from Base.Resources import admin_users, users, external_editorial_users, editorial_users, \
+    super_admin_login, billing_staff_login
 from Pages.admin import AdminPage
 from frontend.common_test import CommonTest
 
@@ -17,12 +15,11 @@ This test case validates the Aperta Admin page.
 
 __author__ = 'jgray@plos.org'
 
-admin_users = [staff_admin_login, super_admin_login]
-non_admin_users = [creator_login1, creator_login2, creator_login3, creator_login4,
-                   creator_login5, reviewer_login, academic_editor_login, handling_editor_login,
-                   cover_editor_login, internal_editor_login, pub_svcs_login]
+non_admin_users = users + external_editorial_users + editorial_users
+non_admin_users.append(billing_staff_login)
 user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
 all_users = admin_users + non_admin_users + user_search
+
 
 @MultiBrowserFixture
 class ApertaAdminTest(CommonTest):

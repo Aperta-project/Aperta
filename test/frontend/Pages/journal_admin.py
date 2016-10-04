@@ -99,11 +99,20 @@ class JournalAdminPage(AdminPage):
                                       'div.paper-type-form a.paper-type-save-button')
     self._mmt_template_cancel_link = (By.CSS_SELECTOR,
                                       'div.paper-type-form a.paper-type-cancel-button')
+    self._mmt_template_back_link = (By.CSS_SELECTOR,
+                                    'div.paper-type-form a.button-link')
+    self._mmt_template_resrev_checkbox = (By.CSS_SELECTOR,
+                                          'input.uses-research-article-reviewer-report')
+    self._mmt_template_resrev_label = (By.CSS_SELECTOR,
+                                       'label.uses-research-article-reviewer-report')
     self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')
     self._mmt_template_columns = (By.CSS_SELECTOR, 'div.ember-view.column')
     self._mmt_template_column_title = (By.CSS_SELECTOR, 'div.column-header div h2')
     self._mmt_template_column_no_cards_card = (By.CSS_SELECTOR, 'div.sortable-no-cards')
     self._mmt_template_column_add_new_card_btn = (By.CSS_SELECTOR, 'a.button-secondary')
+    # borrowed locators from the add_new_cards overlay definition in workflow_page
+    self._card_types = (By.CSS_SELECTOR, 'div.row label')
+    self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
 
   # POM Actions
   def validate_users_section(self, journal):
@@ -441,43 +450,101 @@ class JournalAdminPage(AdminPage):
     # Time to clear the overlay
     time.sleep(2)
 
-  def add_new_mmt_template(self):
+  def add_new_mmt_template(self, commit=False, mmt_name='', user_tasks=('upload_manuscript'),
+                           staff_tasks=('assign_team', 'editor_discussion', 'final_tech_check',
+                                        'initial_tech_check', 'invite_academic_editor',
+                                        'invite_reviewers', 'production_metadata',
+                                        'register_decision', 'related_articles',
+                                        'revision_tech_check', 'send_to_apex',
+                                        'title_and_abstract'), uses_resrev_report=True):
     """
     A function to add a new mmt (paper type) template to a journal
+    :param commit: boolean, whether to commit the named mmt to the journal, defaults to False.
+      All other params are ignored if False
+    :param mmt_name: optional name for the new mmt
+    :param user_tasks: list of user facing tasks to add to the mmt
+    :param staff_tasks: list of staff facing tasks to add to the mmt
+    :param uses_resrev_report: boolean, default true, specifies mmt type as research for
+      the purposes of reviewer report selection
     :return: void function
     """
-    logging.info('Add New Template called')
-    # Need to ensure the Add New Template button is not under the top toolbar
-    att_title = self._get(self._journal_admin_avail_task_types_title)
-    self._actions.move_to_element(att_title).perform()
-    add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
-    add_mmt_btn.click()
-    time.sleep(.5)
-    template_field = self._get(self._mmt_template_name_field)
-    save_template_button = self._get(self._mmt_template_save_button)
-    template_field.click()
-    template_field.send_keys(Keys.ARROW_DOWN + '<-False')
-    time.sleep(1)
-    # If this mmt template already exists, this save should return an error and the name link won't exist
-    save_template_button.click()
-    time.sleep(1)
-    self.set_timeout(2)
-    try:
-      logging.info('The following message will only be found if there is a particular data '
-                   'state, it is not an error.')
-      msg = self._get(self._mmt_template_error_msg)
-    except ElementDoesNotExistAssertionError:
-      self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
-      self._get(self._mmt_template_name_link)
-      self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
-      back_btn = self._get(self._journal_admin_manu_mgr_back_link)
+    if not commit:
+      logging.info('Add New Template called')
+      # Need to ensure the Add New Template button is not under the top toolbar
+      att_title = self._get(self._journal_admin_avail_task_types_title)
+      self._actions.move_to_element(att_title).perform()
+      add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
+      add_mmt_btn.click()
+      self._wait_for_element(self._get(self._mmt_template_name_field))
+      template_field = self._get(self._mmt_template_name_field)
+      save_template_button = self._get(self._mmt_template_save_button)
+      template_field.click()
+      template_field.send_keys(Keys.ARROW_DOWN + '<-False')
+      self._wait_for_element(save_template_button)
+      # If this mmt template already exists, this save should return an error and the name link
+      # won't exist
+      save_template_button.click()
+      time.sleep(1)
+      self.set_timeout(2)
+      try:
+        logging.info('The following message will only be found if there is a particular data '
+                     'state, it is not an error.')
+        msg = self._get(self._mmt_template_error_msg)
+      except ElementDoesNotExistAssertionError:
+        self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
+        self._get(self._mmt_template_name_link)
+        self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
+        back_btn = self._get(self._journal_admin_manu_mgr_back_link)
+        back_btn.click()
+        self.restore_timeout()
+        return
+      assert 'Has already been taken' in msg.text, msg.text
+      cancel = self._get(self._mmt_template_cancel_link)
+      cancel.click()
+      time.sleep(1)
+    else:
+      logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2} and that uses the '
+                   'research reviewer report: {3}'.format(mmt_name,
+                                                          user_tasks,
+                                                          staff_tasks,
+                                                          uses_resrev_report))
+      # Need to ensure the Add New Template button is not under the top toolbar
+      att_title = self._get(self._journal_admin_avail_task_types_title)
+      self._actions.move_to_element(att_title).perform()
+      add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
+      add_mmt_btn.click()
+      self._wait_for_element(self._get(self._mmt_template_name_field))
+      template_field = self._get(self._mmt_template_name_field)
+      save_template_button = self._get(self._mmt_template_save_button)
+      template_field.click()
+      template_field.send_keys(Keys.ARROW_DOWN + (Keys.BACKSPACE * 8) + mmt_name + Keys.ENTER)
+      self._wait_for_element(save_template_button)
+      save_template_button.click()
+      time.sleep(1)
+      phases = self._gets(self._mmt_template_column_add_new_card_btn)
+      phase1 = phases[0]
+      phase1.click()
+      for card_name in user_tasks:
+        self.add_card_to_mmt(card_name)
+      div_buttons = self._get(self._div_buttons)
+      div_buttons.find_element_by_class_name('button-primary').click()
+      time.sleep(1)
+      phase3 = phases[2]
+      phase3.click()
+      for card_name in staff_tasks:
+        self.add_card_to_mmt(card_name)
+      div_buttons = self._get(self._div_buttons)
+      div_buttons.find_element_by_class_name('button-primary').click()
+      time.sleep(1)
+      # working around a stale element reference
+      new_save_template_button = self._get(self._mmt_template_save_button)
+      new_save_template_button.click()
+      time.sleep(1)
+      if uses_resrev_report:
+        self._get(self._mmt_template_resrev_checkbox).click()
+      time.sleep(1)
+      back_btn = self._get(self._mmt_template_back_link)
       back_btn.click()
-      self.restore_timeout()
-      return
-    assert 'Has already been taken' in msg.text, msg.text
-    cancel = self._get(self._mmt_template_cancel_link)
-    cancel.click()
-    time.sleep(1)
 
   def delete_new_mmt_template(self):
     """
@@ -524,3 +591,32 @@ class JournalAdminPage(AdminPage):
           else:
             mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
+
+  def is_mmt_present(self, mmt_name):
+    """
+    A function to check if a named mmt exists for journal under test
+    :return: boolean indicating if named mmt was found on journal admin page
+    """
+    logging.info('Checking for MMT {0}'.format(mmt_name))
+    mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
+    if mmts:
+      for mmt in mmts:
+        name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
+        logging.info('Found {0}'.format(name.text))
+        if name.text == mmt_name:
+          return True
+    return False
+
+  def add_card_to_mmt(self, card_title):
+    """
+    An abbreviated method that merely checks the appropriate checkbox of the edit mmt overlay.
+    :param card_title: The Actual Card title verbatim that you wish to check
+    :return: void function
+    """
+    card_types = self._gets(self._card_types)
+    for card in card_types:
+      if card.text == card_title:
+        card.click()
+        break
+    else:
+      raise ElementDoesNotExistAssertionError('No such card')

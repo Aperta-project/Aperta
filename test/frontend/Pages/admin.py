@@ -418,11 +418,12 @@ class AdminPage(AuthenticatedPage):
     self._actions.click_and_hold(journal_link).release().perform()
     return journal_name
 
-  def select_named_journal(self, journal):
+  def select_named_journal(self, journal, click=False):
     """
     Given a journal name, identifies the journal block index on the admin page for that journal
     :param journal: The journal name
-    :return: the index of the named journal block
+    :param click: whether to click the named journal rather than just return its index.
+    :return: the index of the named journal block, or False if the journal block is not found
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     count = 0
@@ -434,6 +435,8 @@ class AdminPage(AuthenticatedPage):
       logging.debug(journal_title.text)
       logging.debug(journal)
       if journal_title.text == journal:
+        if click:
+          journal_title.click()
         return count + 1
       count += 1
     return False

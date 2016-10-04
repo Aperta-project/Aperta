@@ -74,7 +74,7 @@ class InitialDecisionCardTest(CommonTest):
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
     paper_id = manuscript_page.get_paper_id_from_url()
     # Get paper version for AC 6
-    version = manuscript_page.get_manuscript_version()
+    version = manuscript_page.get_ui_manuscript_version()
     assert 'draft' in version, version
     # figures
     manuscript_page.click_task('Figures')
@@ -88,7 +88,9 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.close_modal()
     # refresh page and get version
     manuscript_page.refresh()
-    version = manuscript_page.get_manuscript_version()
+    version = manuscript_page.get_ui_manuscript_version()
+    # Wait for 0.0 according to new version proposal, where this version number
+    # is assigned after the Initial submission.
     assert '0.0' in version, version
     # logout and enter as editor
     manuscript_page.logout()
@@ -137,7 +139,8 @@ class InitialDecisionCardTest(CommonTest):
       assert figures_task.is_question_checked() == False
     # AC 6
     manuscript_page.refresh()
-    version = manuscript_page.get_manuscript_version()
+    version = manuscript_page.get_ui_manuscript_version()
+    # After the user is invited, the ms version goes back to draft
     assert 'draft' in version, version
 
 

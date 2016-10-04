@@ -24,6 +24,9 @@ export default Ember.Component.extend({
   autoSuggestSelectedText: null,
 
   decisions: computed.alias('task.decisions'),
+
+  queueSortingCriteria: ['mainQueue'],
+  inviteQueues: computed.sort('task.inviteQueues', 'queueSortingCriteria'),
   invitations: computed.alias('task.invitations'),
 
   inviteeRole: computed.reads('task.inviteeRole'),
@@ -69,6 +72,7 @@ export default Ember.Component.extend({
 
   createInvitation: task(function * (props) {
     let invitation = this.get('store').createRecord('invitation', props);
+    this.get('task.inviteQueues').findBy('mainQueue').get('invitations').addObject(invitation);
     this.set('pendingInvitation', invitation);
     try {
       yield invitation.save();
@@ -147,6 +151,12 @@ export default Ember.Component.extend({
     // auto-suggest action
     didSelectUser(selectedUser) {
       this.set('selectedUser', selectedUser);
+    },
+
+    placeInQueue(invitation) {
+      this.get('task.inviteQueues')
+          .filterBy('mainQueue', false)
+          .findBy('primary.id', invitation.get('primary.id'));
     },
 
     toggleActiveInvitation(invitation, rowState) {

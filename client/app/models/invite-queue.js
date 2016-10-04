@@ -4,6 +4,7 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   queueTitle: DS.attr('string'),
   task: DS.belongsTo('task', { async: true }),
-  primary: DS.belongsTo('primary', { async: true }),
+  primary: DS.belongsTo('invitation', { inverse: 'inviteQueue', async: true }),
+  mainQueue: DS.attr('boolean'),
   invitations: DS.hasMany('invitation', { async: true })
 });

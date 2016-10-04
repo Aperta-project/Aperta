@@ -126,6 +126,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
           invitation.set('primary', potentialPrimary);
         }
       }
+      this.get('placeInQueue')(invitation);
 
       invitation.save().then( ()=>{
         this.get('setRowState')('show');

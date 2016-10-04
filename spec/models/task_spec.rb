@@ -158,10 +158,10 @@ describe Task do
     end
   end
 
-  describe 'Task.all_task_types' do
+  describe 'Task.descendants' do
     it 'includes a new subclass of Task' do
       new_task = Class.new(Task)
-      expect(Task.all_task_types).to include(new_task)
+      expect(Task.descendants).to include(new_task)
     end
 
     it 'returns all the tasks' do
@@ -170,7 +170,7 @@ describe Task do
         .reject { |path| path.match(/concerns/) }
         .map { |path| path.match(%r{models/(.*).rb})[1] }
 
-      tasks = Task.all_task_types.map { |c| c.to_s.underscore }
+      tasks = Task.descendants.map { |c| c.to_s.underscore }
       expect(tasks).to include(*tasks_from_source)
     end
 
@@ -181,7 +181,7 @@ describe Task do
       expect do
         ActionDispatch::Reloader.cleanup!
         ActionDispatch::Reloader.prepare!
-      end.not_to change { Task.all_task_types.count }
+      end.not_to change { Task.descendants.count }
     end
   end
 

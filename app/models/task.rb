@@ -145,21 +145,17 @@ class Task < ActiveRecord::Base
       :paper
     end
 
-    def all_task_types
-      Task.descendants + [Task]
-    end
-
     def metadata_task_types
-      all_task_types.select { |klass| klass <=> MetadataTask }
+      descendants.select { |klass| klass <=> MetadataTask }
     end
 
     def submission_task_types
-      all_task_types.select { |klass| klass <=> SubmissionTask }
+      descendants.select { |klass| klass <=> SubmissionTask }
     end
 
     def safe_constantize(str)
       fail StandardError, 'Attempted to constantize disallowed value' \
-        unless Task.all_task_types.map(&:to_s).member?(str)
+        unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
   end

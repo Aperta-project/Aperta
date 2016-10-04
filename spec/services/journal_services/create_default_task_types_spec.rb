@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe JournalServices::CreateDefaultTaskTypes do
-  include_context 'clean Task.all_task_types'
+  include_context 'clean Task.descendants'
 
   let(:journal) { FactoryGirl.create(:journal) }
 

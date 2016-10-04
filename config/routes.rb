@@ -44,7 +44,7 @@ Tahi::Application.routes.draw do
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
-    resources :affiliations, only: [:index, :create, :destroy] do
+    resources :affiliations, only: [:index, :create, :destroy, :update] do
       collection do
         get '/user/:user_id', to: 'affiliations#for_user'
       end

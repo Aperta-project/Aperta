@@ -50,7 +50,8 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
     },
 
     commitAffiliation(affiliation) {
-      this.attrs.commitAffiliation(affiliation).then(() =>{
+      this.clearAllValidationErrors();
+      this.get('commitAffiliation')(affiliation).then(() =>{
         this.set('editAffiliation', false);
       } , (response) => {
         affiliation.set('user', null);

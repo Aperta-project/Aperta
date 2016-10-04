@@ -14,7 +14,7 @@ describe QuestionAttachment do
     FactoryGirl.create(:nested_question_answer, owner: task, paper: paper)
   end
   let(:task) do
-    FactoryGirl.create(:task, paper: paper)
+    FactoryGirl.create(:ad_hoc_task, paper: paper)
   end
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do

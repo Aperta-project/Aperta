@@ -17,7 +17,7 @@ describe CommentsController do
 
   let(:task) do
     FactoryGirl.create(
-      :task,
+      :ad_hoc_task,
       paper: paper,
       participants: [user],
       title: "Task",
@@ -101,7 +101,7 @@ describe CommentsController do
       context "the user is not a participant on the card" do
         let(:task) do
           FactoryGirl.create(
-            :task,
+            :ad_hoc_task,
             paper: paper,
             participants: [],
             title: "Task",
@@ -146,7 +146,7 @@ describe CommentsController do
 
         let(:task) do
           FactoryGirl.create(
-            :task,
+            :ad_hoc_task,
             paper: paper,
             participants: [],
             title: "Task",

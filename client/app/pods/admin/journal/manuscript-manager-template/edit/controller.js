@@ -97,7 +97,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
           template: []
         });
 
-        if (taskType.get('kind') === 'Task') {
+        if (taskType.get('kind') === 'AdHocTask') {
           hasAdHocType = true;
           this.set('adHocTaskToDisplay', newTaskTemplate);
         }
@@ -187,7 +187,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     editTaskTemplate(taskTemplate){
-      if (taskTemplate.get('kind') === 'Task') {
+      if (taskTemplate.get('kind') === 'AdHocTask') {
         this.setProperties({
           showAdHocTaskOverlay: true,
           adHocTaskToDisplay: taskTemplate

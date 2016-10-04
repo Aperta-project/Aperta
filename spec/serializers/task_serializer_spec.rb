@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TaskSerializer, serializer_test: true do
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:task) { FactoryGirl.create(:task, paper: paper) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
   let(:object_for_serializer) { task }
 
   describe '#is_metadata_task' do
@@ -11,9 +11,9 @@ describe TaskSerializer, serializer_test: true do
     end
 
     it 'returns true if task is a metadata type' do
-      Task.metadata_types << 'Task'
+      Task.metadata_types << 'AdHocTask'
       expect(deserialized_content[:task][:is_metadata_task]).to eq(true)
-      Task.metadata_types.delete('Task')
+      Task.metadata_types.delete('AdHocTask')
     end
   end
 
@@ -35,9 +35,9 @@ describe TaskSerializer, serializer_test: true do
     end
 
     it 'returns true if task is a submission type' do
-      Task.submission_types << 'Task'
+      Task.submission_types << 'AdHocTask'
       expect(deserialized_content[:task][:is_submission_task]).to eq(true)
-      Task.submission_types.delete('Task')
+      Task.submission_types.delete('AdHocTask')
     end
   end
 

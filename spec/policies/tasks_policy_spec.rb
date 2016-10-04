@@ -4,7 +4,7 @@ describe TasksPolicy do
 
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let(:task) { create(:task, paper: paper) }
+  let(:task) { create(:ad_hoc_task, paper: paper) }
   let(:policy) { TasksPolicy.new(current_user: user, task: task) }
   let(:user) { FactoryGirl.create(:user) }
 

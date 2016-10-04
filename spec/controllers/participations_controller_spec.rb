@@ -7,7 +7,7 @@ describe ParticipationsController do
   let!(:paper) do
     FactoryGirl.create(:paper, journal: journal)
   end
-  let(:task) { FactoryGirl.create(:task, paper: paper) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
   before do
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: journal) do |role|
@@ -162,7 +162,7 @@ describe ParticipationsController do
       end
 
       context "participants" do
-        let(:task) { FactoryGirl.create(:task, paper: paper) }
+        let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
         let(:editors_discussion_task) do
           FactoryGirl.create(:editors_discussion_task, paper: paper)
         end

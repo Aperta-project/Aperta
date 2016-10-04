@@ -42,7 +42,7 @@ module('Integration: Paper Docx Download', {
 test('show download links on control bar', function(assert) {
   return Ember.run(function() {
     var jobId, mock, paperPayload, paperResponse, records;
-    records = paperWithTask('Task', {
+    records = paperWithTask('AdHocTask', {
       id: 1,
       title: "Metadata",
       isMetadataTask: true,

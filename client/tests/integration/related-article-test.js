@@ -11,7 +11,7 @@ moduleForComponent('related-article',
 // When not editable:
 
 test('Shows all data when not editable', function(assert){
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   setup(this, relatedArticle);
 
   assert.textPresent(
@@ -31,7 +31,7 @@ test('Shows all data when not editable', function(assert){
 });
 
 test('Hides send together text if attribute is false', function(assert){
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.sendManuscriptsTogether = false;
   setup(this, relatedArticle);
 
@@ -41,7 +41,7 @@ test('Hides send together text if attribute is false', function(assert){
 });
 
 test('Shows send together text when attribute is true', function(assert){
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.sendManuscriptsTogether = true;
   setup(this, relatedArticle);
 
@@ -51,7 +51,7 @@ test('Shows send together text when attribute is true', function(assert){
 });
 
 test('Hides send to apex text if attribute is false', function(assert){
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.sendLinkToApex = false;
   setup(this, relatedArticle);
 
@@ -61,7 +61,7 @@ test('Hides send to apex text if attribute is false', function(assert){
 });
 
 test('Shows send to apex text if attribute is true', function(assert){
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.sendLinkToApex = true;
   setup(this, relatedArticle);
 
@@ -84,7 +84,7 @@ test('Can be edited', function(assert) {
     '.related-article-send-to-apex',
     'publish together bullet is present');
 
-  Ember.run(function() {
+  Ember.run(()=> {
     this.$('.related-article-edit').click();
 
     assert.elementFound(
@@ -96,7 +96,7 @@ test('Can be edited', function(assert) {
 test('Can be deleted', function(assert) {
   assert.expect(2);
 
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.destroyRecord = function() {
     assert.ok(true, 'Calls destroy');
   };
@@ -115,7 +115,7 @@ test('Can be deleted', function(assert) {
 // When editable:
 
 test('Shows inputs, filled in, when editing', function(assert){
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   setup(this, relatedArticle, true);
 
   assert.inputPresent(
@@ -146,7 +146,7 @@ test('Shows inputs, filled in, when editing', function(assert){
 test('Save saves new values', function(assert){
   assert.expect(2);
 
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.save = function() {
     assert.ok(true, 'Calls save');
   };
@@ -159,7 +159,7 @@ test('Save saves new values', function(assert){
 test('Cancel resets all values', function(assert){
   assert.expect(2);
 
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.rollbackAttributes = function() {
     assert.ok(true, 'Calls rollback');
   };
@@ -170,7 +170,7 @@ test('Cancel resets all values', function(assert){
 });
 
 test('starts in the edit state if the record is new', function(assert) {
-  var relatedArticle = newRelatedArticle();
+  let relatedArticle = newRelatedArticle();
   relatedArticle.isNew = true;
   setup(this, relatedArticle, true);
 
@@ -181,7 +181,7 @@ test('starts in the edit state if the record is new', function(assert) {
 });
 
 
-var newRelatedArticle = function() {
+let newRelatedArticle = function() {
   return {
     id: 3,
     linkedDOI: 'journal.pcbi.1004816',
@@ -192,7 +192,7 @@ var newRelatedArticle = function() {
   };
 };
 
-var template = hbs`{{related-article
+let template = hbs`{{related-article
                        relatedArticle=relatedArticle
                        editState=editable}}`;
 

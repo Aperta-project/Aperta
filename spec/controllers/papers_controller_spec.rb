@@ -232,7 +232,7 @@ describe PapersController do
       get :comment_looks, id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:task) { FactoryGirl.create(:task, paper: paper)}
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper)}
 
     it_behaves_like "an unauthenticated json request"
 

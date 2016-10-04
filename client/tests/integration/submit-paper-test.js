@@ -30,7 +30,7 @@ module('Integration: Submitting Paper', {
 
     let journal = FactoryGuy.make('journal');
     let phase = FactoryGuy.make('phase');
-    let task  = FactoryGuy.make('task', {
+    let task  = FactoryGuy.make('ad-hoc-task', {
       phase: phase,
       isMetaDataTask: true,
       isSubmissionTask: true,

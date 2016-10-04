@@ -45,5 +45,9 @@ module Authorizations
     def inverse_of_via
       assignment_to.reflections[via.to_s].try(:inverse_of).try(:name)
     end
+
+    def reflection
+      assignment_to.reflections[via.to_s]
+    end
   end
 end

@@ -1,9 +1,10 @@
 module Authorizations
   class ObjectsAuthorizedViaThroughAssociation
-    attr_reader :target, :permissible_assignments_table,
+    attr_reader :auth_config, :target, :permissible_assignments_table,
       :common_query, :common_arel, :klass
 
     def initialize(auth_config:, target:, permissible_assignments_table:, klass:)
+      @auth_config = auth_config
       @common_query = ObjectsAuthorizedCommonQuery.new(
         auth_config: auth_config,
         klass: klass,
@@ -22,6 +23,7 @@ module Authorizations
     def to_arel
       # E.g. Journal has_many :tasks, :through => :papers
       query = common_arel
+      reflection = auth_config.reflection
 
       loop do
         # construct the join from journals table to the permissible_assignments_table
@@ -85,13 +87,9 @@ module Authorizations
       @join_table ||= common_query.join_table
     end
 
-    def reflection
-      @reflection ||= common_query.reflection
-    end
-
     # this is the Paper reflection
     def delegate_reflection
-      @delegate_reflection ||= reflection.delegate_reflection
+      @delegate_reflection ||= auth_config.reflection.delegate_reflection
     end
 
     def through_association
@@ -109,19 +107,15 @@ module Authorizations
     end
 
     def through_table
-      @through_table ||= through_reflection.klass.arel_table
-    end
-
-    def through_target_table
-      @through_target_table ||= through_target_reflection.klass.arel_table
+      @through_table ||= through_klass.arel_table
     end
 
     def through_target_reflection
       @through_target_reflection ||= begin
         # If we have a thru association it may be a has_many or a has_one
         # so we check both the singular and the plural forms.
-        plural_reflection = reflection.name.to_s.pluralize
-        singular_reflection = reflection.name.to_s.singularize
+        plural_reflection = auth_config.reflection.name.to_s.pluralize
+        singular_reflection = auth_config.reflection.name.to_s.singularize
         through_klass.reflections[plural_reflection] ||
           through_klass.reflections[singular_reflection]
       end

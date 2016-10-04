@@ -107,6 +107,7 @@ class AuthenticatedPage(PlosPage):
     # Discussion messages
     self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
     self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
+    self._post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
@@ -620,8 +621,9 @@ class AuthenticatedPage(PlosPage):
     else:
       msg_body.send_keys(generate_paragraph()[2])
     time.sleep(1)
-    post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-    self._get(post_message_btn).click()
+    self._wait_for_element(self._get(self._post_message_btn))
+    post_message_btn = self._get(self._post_message_btn)
+    post_message_btn.click()
     return None
 
   def post_discussion(self, msg=''):
@@ -630,9 +632,13 @@ class AuthenticatedPage(PlosPage):
     :param msg: Message to post. If empty, will post a random text.
     :return: None.
     """
-    self._get(self._discussion_link).click()
+    self._wait_for_element(self._get(self._discussion_link))
+    post_discussion_btn = self._get(self._discussion_link)
+    post_discussion_btn.click()
     # click on first discussion
-    self._get(self._first_discussion_lnk).click()
+    self._wait_for_element(self._get(self._first_discussion_lnk))
+    first_disc_link = self._get(self._first_discussion_lnk)
+    first_disc_link.click()
     time.sleep(.5)
     # This shouldn't make baby Jesus cry, since there is good reason for this:
     # make textarea visible. Selenium won't do it because running JS is not

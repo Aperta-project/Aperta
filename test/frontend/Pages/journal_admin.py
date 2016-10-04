@@ -594,20 +594,18 @@ class JournalAdminPage(AdminPage):
 
   def is_mmt_present(self, mmt_name):
     """
-        A function to check if a named mmt exists for journal under test
-        :return: boolean indicating if named mmt was found on journal admin page
-        """
+    A function to check if a named mmt exists for journal under test
+    :return: boolean indicating if named mmt was found on journal admin page
+    """
     logging.info('Checking for MMT {0}'.format(mmt_name))
-    mmt_found = False
     mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
     if mmts:
-      count = 0
       for mmt in mmts:
         name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
         logging.info('Found {0}'.format(name.text))
         if name.text == mmt_name:
           return True
-    return mmt_found
+    return False
 
   def add_card_to_mmt(self, card_title):
     """

@@ -9,17 +9,13 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
+from Base.Resources import admin_users
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
 
 from frontend.common_test import CommonTest
 
 __author__ = 'jgray@plos.org'
-
-users = [staff_admin_login,
-         super_admin_login,
-         ]
 
 user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
 
@@ -49,7 +45,7 @@ class ApertaJournalAdminTest(CommonTest):
       section headings save for user and roles that are validated separately
     """
     logging.info('Validating journal admin component display and function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -69,7 +65,7 @@ class ApertaJournalAdminTest(CommonTest):
       result set elements
     """
     logging.info('Validating journal user search display and function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -89,7 +85,7 @@ class ApertaJournalAdminTest(CommonTest):
       permission display per role
     """
     logging.info('Validating journal role display and function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -119,7 +115,7 @@ class ApertaJournalAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Validating journal task types display and function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -144,7 +140,7 @@ class ApertaJournalAdminTest(CommonTest):
     NOTE: Not working due to APERTA-7465
     """
     logging.info('Validating journal mmt (paper type) display and function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -164,7 +160,7 @@ class ApertaJournalAdminTest(CommonTest):
     NOTE: Not working due to APERTA-7465
     """
     logging.info('Validating journal add mmt (paper type) function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -199,7 +195,7 @@ class ApertaJournalAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Validating Journal Style Settings display and function')
-    user_type = random.choice(users)
+    user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()

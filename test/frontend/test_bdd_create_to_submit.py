@@ -5,8 +5,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, staff_admin_login, super_admin_login
+from Base.Resources import users, admin_users
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Pages.dashboard import DashboardPage
@@ -24,14 +23,6 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 __author__ = 'jgray@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         ]
-admin_users = [staff_admin_login, super_admin_login]
 
 cards = ['cover_letter',
          'billing',

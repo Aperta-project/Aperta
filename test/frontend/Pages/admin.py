@@ -423,7 +423,7 @@ class AdminPage(AuthenticatedPage):
     Given a journal name, identifies the journal block index on the admin page for that journal
     :param journal: The journal name
     :param click: whether to click the named journal rather than just return its index.
-    :return: the index of the named journal block
+    :return: the index of the named journal block, or False if the journal block is not found
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     count = 0

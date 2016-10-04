@@ -57,8 +57,7 @@ fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
 oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
 
-# Accounts for new permissions scheme
-# These are NED CAS logins.
+# Accounts for CAS permissions scheme
 creator_login1 = {'user': 'aauthor1', 'name': 'atest author1', 'email': 'sealresq+1000@gmail.com'}
 creator_login2 = {'user': 'aauthor2', 'name': 'atest author2', 'email': 'sealresq+1001@gmail.com'}
 creator_login3 = {'user': 'aauthor3', 'name': 'atest author3', 'email': 'sealresq+1002@gmail.com'}
@@ -136,9 +135,13 @@ cover_editor_login = {'user': 'acoveredit',
 prod_staff_login = {'user': 'aprodstaff',
                     'name': 'atest prodstaff',
                     'email': 'sealresq+1013@gmail.com'}
+billing_staff_login = {'user': 'abillstaff',
+                       'name': 'atest billstaff',
+                       'email': 'sealresq+1034@gmail.com'}
 # anyone can be a discussion_participant
 # everyone has a user role for their own profile page
 
+# User groupings, users are authors, collaborators, discussion participants, etc.
 users = [creator_login1,
          creator_login2,
          creator_login3,
@@ -178,26 +181,23 @@ external_editorial_users = [cover_editor_login,
                             academic_editor_login,
                             ]
 
+admin_users = [staff_admin_login,
+               super_admin_login,
+               ]
+
 # Define connector information for Aperta's Tahi component postgres instance
 # NOTA BENE: Production data should NEVER be included in this file.
 # DEV/CI
 psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
+# QA/RC
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.sfo.plos.org')
+# Stage
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-401.sfo.plos.org')
+# Global
 psql_port = getenv('APERTA_PSQL_PORT', '5432')
 psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
 psql_pw = getenv('APERTA_PSQL_PW', '')
 psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
-# QA/RC
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.sfo.plos.org')
-# psql_port = getenv('APERTA_PSQL_PORT', '5432')
-# psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
-# psql_pw = getenv('APERTA_PSQL_PW', '')
-# psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
-# Stage
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-401.sfo.plos.org')
-# psql_port = getenv('APERTA_PSQL_PORT', '5432')
-# psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
-# psql_pw = getenv('APERTA_PSQL_PW', '')
-# psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
@@ -214,7 +214,7 @@ affiliation = {'institution': 'Universidad Del Este',
                'email': 'test@test.org',
                'department': 'Molecular Biology',
                'initials': 'JMD',
-               'government': False,}
+               'government': False}
 
 # Author for Author card
 author = {'first': 'Jane',
@@ -248,6 +248,8 @@ billing_data = {'first': 'Jane',
                 'ZIP': '12345',
                 'country': 'Argentina'}
 
+# Generally, a random choice is made from among these documents when we create a new manuscript in
+#   the test suite.
 docs = ['10yearsRabiesSL20140723.doc',
         '11-OvCa-Collab-HeightBMI-paper-July.doc',
         '120220_PLoS_Genetics_review.docx',
@@ -368,6 +370,8 @@ docs = ['10yearsRabiesSL20140723.doc',
         'Kurian_et_al_PLOS2016.docx'
         ]
 
+# Generally, a random choice is made from among these figures when we create a new figure in
+#   the test suite.
 figures = ['FIg1_2B_281_29.eps',
            'FIgure_1.tif',
            'Fig 1.tif',
@@ -564,6 +568,7 @@ task_names = ['Ad-hoc',
               'Title And Abstract',
               'Upload Manuscript']
 
+# The developer test journal PLOS Yeti contains a custom set of task names
 yeti_task_names = ['Ad-hoc',
                    'Additional Information',
                    'Assign Admin',
@@ -596,6 +601,8 @@ yeti_task_names = ['Ad-hoc',
                    'Title And Abstract',
                    'Upload Manuscript']
 
+# This is a list of valid paper tracker queries from which one is chosen during the test of that
+#   feature.
 paper_tracker_search_queries = ['0000003',
                                 'Genome',
                                 'DOI IS pwom',
@@ -621,3 +628,85 @@ paper_tracker_search_queries = ['0000003',
                                 'ALL REVIEWS COMPLETE',
                                 'NOT ALL REVIEWS COMPLETE'
                                 ]
+
+# The following MMT definitions are seed data for our integration test suite
+only_init_dec_mmt = {'name'              : 'OnlyInitialDecisionCard',
+                     'user_tasks'        : ['Initial Decision', 'Upload Manuscript'],
+                     'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                            'Initial Tech Check', 'Invite Academic Editor',
+                                            'Invite Reviewers', 'Register Decision',
+                                            'Related Articles',
+                                            'Revision Tech Check', 'Send to Apex',
+                                            'Title And Abstract'],
+                     'uses_resrev_report': True
+                     }
+only_rev_cands_mmt = {'name'              : 'OnlyReviewerCandidates',
+                      'user_tasks'        : ['Reviewer Candidates', 'Upload Manuscript'],
+                      'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                             'Initial Tech Check', 'Invite Academic Editor',
+                                             'Invite Reviewers', 'Production Metadata',
+                                             'Register Decision', 'Related Articles',
+                                             'Revision Tech Check', 'Send to Apex',
+                                             'Title And Abstract'],
+                      'uses_resrev_report': True
+                      }
+front_matter_mmt = {'name'              : 'Front-Matter-type',
+                    'user_tasks'        : ['Additional Information', 'Authors', 'Figures',
+                                           'Supporting Info', 'Upload Manuscript'],
+                    'staff_tasks'       : ['Invite Reviewers', 'Production Metadata',
+                                           'Register Decision', 'Related Articles', 'Send to Apex',
+                                           'Title And Abstract'],
+                    'uses_resrev_report': False
+                    }
+research_mmt = {'name'              : 'Research',
+                'user_tasks'        : ['Authors', 'Billing', 'Cover Letter', 'Figures',
+                                       'Financial Disclosure', 'Supporting Info',
+                                       'Upload Manuscript'],
+                'staff_tasks'       : ['Assign Admin', 'Invite Academic Editor',
+                                       'Invite Reviewers', 'Register Decision',
+                                       'Title And Abstract'],
+                'uses_resrev_report': True
+                }
+resrch_w_init_dec = {'name'              : 'Research w/Initial Decision Card',
+                     'user_tasks'        : ['Authors', 'Billing', 'Cover Letter', 'Figures',
+                                            'Financial Disclosure', 'Supporting Info',
+                                            'Upload Manuscript'],
+                     'staff_tasks'       : ['Assign Admin', 'Initial Decision',
+                                            'Invite Academic Editor', 'Invite Reviewers',
+                                            'Register Decision', 'Title And Abstract'],
+                     'uses_resrev_report': True
+                     }
+imgs_init_dec_mmt = {'name'              : 'Images+InitialDecision',
+                     'user_tasks'        : ['Figures', 'Initial Decision', 'Upload Manuscript'],
+                     'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                            'Invite Academic Editor', 'Invite Reviewers',
+                                            'Production Metadata', 'Register Decision',
+                                            'Related Articles', 'Revision Tech Check',
+                                            'Send to Apex',
+                                            'Title And Abstract'],
+                     'uses_resrev_report': True
+                     }
+gen_cmplt_apexdata = {'name'              : 'generateCompleteApexData',
+                      'user_tasks'        : ['Additional Information', 'Authors', 'Billing',
+                                             'Competing Interests', 'Cover Letter',
+                                             'Data Availability', 'Ethics Statement', 'Figures',
+                                             'Financial Disclosure', 'New Taxon',
+                                             'Reporting Guidelines', 'Reviewer Candidates',
+                                             'Supporting Info', 'Upload Manuscript'],
+                      'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                             'Invite Academic Editor', 'Invite Reviewers',
+                                             'Production Metadata', 'Register Decision',
+                                             'Related Articles', 'Revision Tech Check',
+                                             'Send to Apex',
+                                             'Title And Abstract'],
+                      'uses_resrev_report': True
+                      }
+no_cards_mmt = {'name'              : 'NoCards',
+                'user_tasks'        : ['Upload Manuscript'],
+                'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                       'Invite Academic Editor', 'Invite Reviewers',
+                                       'Production Metadata', 'Register Decision',
+                                       'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                       'Title And Abstract'],
+                'uses_resrev_report': True
+                }

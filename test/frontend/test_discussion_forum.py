@@ -6,9 +6,7 @@ import time
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5
+from Base.Resources import users, editorial_users, admin_users
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from selenium.webdriver.common.by import By
@@ -19,10 +17,7 @@ Automated test case for: add discussion forum notification icons to MS
 """
 __author__ = 'sbassi@plos.org'
 
-staff_users = [staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
-               super_admin_login]
-
-users = [creator_login1, creator_login2, creator_login3, creator_login4, creator_login5]
+staff_users = admin_users + editorial_users
 
 @MultiBrowserFixture
 class DiscussionForumTest(CommonTest):
@@ -80,8 +75,9 @@ class DiscussionForumTest(CommonTest):
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
+    # This is failing for Asian Character set usernames of only two characters APERTA-7862
     ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                     msg='', participants=[creator['user']])
+                                  participants=[creator['user']])
     # send another msg
     ms_viewer.logout()
     logging.info('Logging in as user: {0}'.format(creator))

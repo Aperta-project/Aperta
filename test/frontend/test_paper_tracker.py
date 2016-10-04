@@ -6,8 +6,7 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from Pages.paper_tracker import PaperTrackerPage
-from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login
+from Base.Resources import editorial_users, staff_admin_login
 
 """
 This test case validates the Aperta paper_tracker page.
@@ -20,13 +19,8 @@ Those acts are expected to be defined in
 __author__ = 'jgray@plos.org'
 
 
-users = [staff_admin_login,
-         internal_editor_login,
-         prod_staff_login,
-         pub_svcs_login,
-         # super_admin_login,  ordering for superadmin is bogus in test
-         ]
-
+users = editorial_users
+users.append(staff_admin_login)
 
 @MultiBrowserFixture
 class ApertaPaperTrackerTest(CommonTest):

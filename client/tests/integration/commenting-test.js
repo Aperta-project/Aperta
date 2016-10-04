@@ -3,7 +3,7 @@ import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { test } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
-import { build, make, makeList } from 'ember-data-factory-guy';
+import { make, makeList } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 var App;
@@ -42,7 +42,8 @@ test('A card with more than 5 comments has the show all comments button', functi
   comments = makeList("comment", 10);
   task = make("task", {
     paper: paper,
-    comments: comments
+    comments: comments,
+    body: []
   });
   Factory.createPermission('Paper', paper.id, ['view']);
   Factory.createPermission('Task', task.id, ['view', 'edit']);
@@ -70,6 +71,7 @@ test('A card with less than 5 comments doesnt have the show all comments button'
   comments = makeList("comment", 3);
   task = FactoryGuy.make("task", {
     paper: paper,
+    body: [],
     comments: comments
   });
   Factory.createPermission('Paper', paper.id, ['view']);
@@ -95,6 +97,7 @@ test('A task with a commentLook shows up as unread and deletes its comment look'
   comments = makeList("comment", 2, "unread");
   task = FactoryGuy.make("task", {
     paper: paper,
+    body: [],
     comments: comments
   });
   Factory.createPermission('Paper', paper.id, ['view']);

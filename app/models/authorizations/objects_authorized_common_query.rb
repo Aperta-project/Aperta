@@ -21,6 +21,10 @@ module Authorizations
       klass.arel_table
     end
 
+    def reflection
+      auth_config.assignment_to.reflections[auth_config.via.to_s]
+    end
+
     # +permission_state_column+ should return the column that houses
     # a model's state.
     #

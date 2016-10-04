@@ -40,14 +40,12 @@ module Authorizations
         ).to_arel
 
         if assigned_to_klass <=> @klass
-          query = ObjectsAuthorizedThroughSelf.new(
+          ObjectsAuthorizedThroughSelf.new(
             target: target,
             auth_config: ac,
             permissible_assignments_table: permissible_assignments_table,
             klass: klass
           ).to_arel
-
-          query
 
         elsif reflection.nil?
           fail MissingAssociationForAuthConfiguration, <<-ERROR.strip_heredoc
@@ -124,24 +122,19 @@ module Authorizations
             query
           end
         elsif reflection.belongs_to?
-          query.outer_join(join_table).on(join_table.primary_key.eq(permissible_assignments_table[:assigned_to_id]).and(permissible_assignments_table[:assigned_to_type].eq(assigned_to_klass.base_class.name)))
-          query.outer_join(target_table).on(join_table[reflection.foreign_key].eq(target_table.primary_key))
-
-          foreign_key_value = @target.where_values_hash[reflection.foreign_key]
-          if foreign_key_value
-            foreign_key_values = [ foreign_key_value ].flatten
-            query.where(join_table.primary_key.in(foreign_key_values))
-          end
-
-          add_permission_state_check_to_query(query)
-
-          query
+          ObjectsAuthorizedThroughBelongsTo.new(
+            target: target,
+            auth_config: ac,
+            permissible_assignments_table: permissible_assignments_table,
+            klass: klass
+          ).to_arel
         else
           fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"
         end
       end
     end
 
+    #TODOMPM - remove this method when all conditions above are in their own classes
     def add_permission_state_check_to_query(query)
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
         delegate_permission_state_to_association = klass.delegate_state_to.to_s

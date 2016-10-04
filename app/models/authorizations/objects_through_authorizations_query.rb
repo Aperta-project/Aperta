@@ -1,15 +1,27 @@
 module Authorizations
   class ObjectsThroughAuthorizationsQuery
-    attr_reader :auth_configs, :klass, :target, :assignments_query, :permission_state_column, :table, :permissible_assignments_table
+    include QueryHelpers
+    attr_reader :auth_configs, :klass, :target, :assignments_query, :permissible_assignments_table
 
-    def initialize(assignments_query:, target:, klass:, auth_configs:, permission_state_column:, table:, permissible_assignments_table:)
+    def initialize(assignments_query:, target:, klass:, auth_configs:, permissible_assignments_table:)
       @auth_configs = auth_configs
       @klass = klass
       @target = target
       @assignments_query = assignments_query
-      @permission_state_column = permission_state_column
-      @table = table
       @permissible_assignments_table = permissible_assignments_table
+    end
+
+    # +permission_state_column+ should return the column that houses
+    # a model's state.
+    #
+    # This is so permissions that are tied to states can add a
+    # WHERE condition in the query for matching against the right states.
+    #
+    # Right now this is set up to work for Paper(s). If the system needs to
+    # evolve to work with other kinds of models this is the entry point for
+    # refactoring, replacing, or removing.
+    def permission_state_column
+      'publishing_state'
     end
 
     def to_sql

@@ -13,6 +13,7 @@ module Authorizations
   # what the user is assigned to, what roles the person has, and what
   # permissions they have thru those roles.
   class Query
+    include QueryHelpers
     attr_reader :permission, :klass, :user
 
     # == Constructor Arguments
@@ -67,33 +68,6 @@ module Authorizations
     end
 
     private
-
-    def table
-      @table ||= {
-        roles: Role.arel_table,
-        permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
-        permissions: Permission.arel_table,
-        permission_requirements: PermissionRequirement.arel_table,
-        permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
-        permission_states: PermissionState.arel_table,
-        results: Arel::Table.new(:results),
-        results_with_permissions: Arel::Table.new(:results_with_permissions)
-      }
-    end
-
-    # +permission_state_column+ should return the column that houses
-    # a model's state.
-    #
-    # This is so permissions that are tied to states can add a
-    # WHERE condition in the query for matching against the right states.
-    #
-    # Right now this is set up to work for Paper(s). If the system needs to
-    # evolve to work with other kinds of models this is the entry point for
-    # refactoring, replacing, or removing.
-    def permission_state_column
-      'publishing_state'
-    end
-
 
     # Our version of Arel won't let us union more than two things. So we get around that.
     def union(a, list=[])
@@ -167,12 +141,6 @@ module Authorizations
 
 
     def load_authorized_objects
-      if klass.respond_to?(:delegate_state_to)
-        @delegate_permission_state_to_association = klass.delegate_state_to.to_s
-      elsif klass.column_names.include?(permission_state_column.to_s)
-        @permission_state_check = true
-      end
-
       assignments_query = PermissibleAssignmentsQuery.new(user: @user,
                                                              permission: @permission,
                                                              klass: @klass,
@@ -188,8 +156,6 @@ module Authorizations
                                                                   klass: @klass,
                                                                   target: @target,
                                                                   auth_configs: auth_configs,
-                                                                  permission_state_column: permission_state_column,
-                                                                  table: table,
                                                                   permissible_assignments_table: permissible_assignments_table)
 
 

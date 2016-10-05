@@ -77,7 +77,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                     msg='', participants=[creator['user']])
+                                  participants=[creator['user']])
     ms_viewer.logout()
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])

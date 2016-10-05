@@ -65,7 +65,7 @@ module TahiStandardTasks
 
         <a href="%{dashboard_url}">View Invitation</a>
 
-        If you do take this assignment, and think that this work is not suitable for further consideration by PLOS Biology, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
+        If you do take this assignment, and think that this work is not suitable for further consideration by %{journal_name}, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
 
         I have appended further information, including a copy of the abstract and full list of authors below.
 

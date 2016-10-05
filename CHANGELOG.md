@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 - Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
+- PLOS Biology name is no longer hard coded in letter templates
 ### Security
 
 ## [1.25.1] - {2016-09-16}

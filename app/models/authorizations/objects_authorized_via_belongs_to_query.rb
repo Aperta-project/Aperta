@@ -30,11 +30,11 @@ module Authorizations
         )
       )
 
-      foreign_key_value = @target.where_values_hash[auth_config.reflection.foreign_key]
-      if foreign_key_value
-        foreign_key_values = [ foreign_key_value ].flatten
-        query.where(common_query.join_table.primary_key.in(foreign_key_values))
-      end
+      common_query.add_column_condition(
+        query: query,
+        column: auth_config.reflection.foreign_key,
+        values:  @target.where_values_hash[auth_config.reflection.foreign_key]
+      )
 
       common_query.add_permission_state_check(query)
     end

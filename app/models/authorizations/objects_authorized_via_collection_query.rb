@@ -22,11 +22,11 @@ module Authorizations
         .and(assignments_table[:assigned_to_type].eq(common_query.assigned_to_klass.base_class.name)))
       query.outer_join(common_query.target_table).on(common_query.target_table[auth_config.reflection.foreign_key].eq(common_query.join_table.primary_key))
 
-      foreign_key_value = @target.where_values_hash[auth_config.reflection.foreign_key]
-      if foreign_key_value
-        foreign_key_values = [ foreign_key_value ].flatten
-        query.where(common_query.join_table.primary_key.in(foreign_key_values))
-      end
+      common_query.add_column_condition(
+        query: query,
+        column: common_query.join_table.primary_key,
+        values: @target.where_values_hash[auth_config.reflection.foreign_key]
+      )
 
       common_query.add_permission_state_check(query)
     end

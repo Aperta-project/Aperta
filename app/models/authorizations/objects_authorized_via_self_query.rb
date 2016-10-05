@@ -22,24 +22,17 @@ module Authorizations
         )
       )
 
-      add_primary_key_condition(query)
+      common_query.add_column_condition(
+        query: query,
+        column: common_query.join_table.primary_key,
+        values:  @target.where_values_hash[klass.primary_key]
+      )
+
       common_query.add_permission_state_check(query)
     end
 
     def to_sql
       to_arel.to_sql
-    end
-
-    private
-
-    def add_primary_key_condition(query)
-      values = @target.where_values_hash[klass.primary_key]
-      if values.present?
-        values = [values].flatten
-        query.where(common_query.join_table.primary_key.in(values))
-      end
-
-      query
     end
   end
 end

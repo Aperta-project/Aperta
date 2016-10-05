@@ -16,55 +16,23 @@ module Authorizations
       @target = target
     end
 
+    def to_arel
+      query = common_arel
+
+      add_query_from_reflection(auth_config.reflection, query)
+
+      common_query.add_permission_state_check(query)
+    end
+
     def to_sql
       to_arel.to_sql
     end
 
-    def to_arel
-      # E.g. Journal has_many :tasks, :through => :papers
-      query = common_arel
-      reflection = auth_config.reflection
+    private
 
-      loop do
-        # construct the join from journals table to the assignments_table
-        query.outer_join(join_table).on(
-          join_table.primary_key.eq(
-            assignments_table[:assigned_to_id]
-          ).and(
-            assignments_table[:assigned_to_type].eq(
-              assigned_to_klass.base_class.name
-            )
-          )
-        )
-
-        # construct the join from papers table to the journals table
-        query.outer_join(through_table).on(
-          through_table[through_reflection.foreign_key].eq(
-            join_table.primary_key
-          )
-        )
-
-        # construct the join from tasks table to the papers table
-        query.outer_join(klass.arel_table).on(
-          klass.arel_table[reflection.foreign_key].eq(
-            through_klass.arel_table.primary_key
-          )
-        )
-
-        foreign_key_value = @target.where_values_hash[through_target_reflection.foreign_key]
-        if foreign_key_value
-          foreign_key_values = [ foreign_key_value ].flatten
-          query.where(through_klass.arel_table.primary_key.in(foreign_key_values))
-        end
-
-        # the next two lines are for supporting a :through that goes thru a :through
-        # it is completely untested and may not even be important. If it isn't we may
-        # be able to get rid of the whole looping construct
-        break unless delegate_reflection.respond_to?(:delegate_reflection)
-        reflection = delegate_reflection
-      end
-
-      query.where(
+    def add_query_from_reflection(reflection, query)
+      # construct the join from journals table to the assignments_table
+      query.join(join_table).on(
         join_table.primary_key.eq(
           assignments_table[:assigned_to_id]
         ).and(
@@ -74,10 +42,28 @@ module Authorizations
         )
       )
 
-      common_query.add_permission_state_check(query)
-    end
+      # construct the join from papers table to the journals table
+      query.outer_join(through_table).on(
+        through_table[through_reflection.foreign_key].eq(
+          join_table.primary_key
+        )
+      )
 
-    private
+      # construct the join from tasks table to the papers table
+      query.outer_join(klass.arel_table).on(
+        klass.arel_table[reflection.foreign_key].eq(
+          through_klass.arel_table.primary_key
+        )
+      )
+
+      common_query.add_column_condition(
+        query: query,
+        column: through_klass.arel_table.primary_key,
+        values: @target.where_values_hash[through_target_reflection.foreign_key]
+      )
+
+      query
+    end
 
     def assigned_to_klass
       @assigned_to_klass ||= common_query.assigned_to_klass
@@ -87,7 +73,6 @@ module Authorizations
       @join_table ||= common_query.join_table
     end
 
-    # this is the Paper reflection
     def delegate_reflection
       @delegate_reflection ||= auth_config.reflection.delegate_reflection
     end

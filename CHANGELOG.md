@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
 ### Security
 
 ## [1.25.1] - {2016-09-16}

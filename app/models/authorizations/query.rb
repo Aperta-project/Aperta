@@ -150,6 +150,8 @@ module Authorizations
 
       # Build a query responsible for finding the total set of objects that
       # the user has permission on.
+      # This is more than just the permissible objects.  We'll filter out the
+      # objects that are not allowed in the next step.
       objects_via_authorizations = ObjectsThroughAuthorizationsQuery.new(
         klass: @klass,
         target: @target,
@@ -157,68 +159,24 @@ module Authorizations
         permissible_assignments_table: permissible_assignments_table
       ).to_arel
 
-      results_with_permissions_query = Arel::SelectManager.new(klass.arel_table.engine).
-        with(permissible_assignments_as_table).
-        project(
-          table[:results][:id],
-          Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions"),
-        ).
-        from( Arel.sql('(' + objects_via_authorizations.to_sql + ')').as(table[:results].table_name) ).
-        outer_join(table[:permission_requirements]).on(
-          table[:permission_requirements][:required_on_type].eq(klass.name).and(
-            table[:permission_requirements][:required_on_id].eq(table[:results][:id])
-          )
-        ).
-        join(table[:roles]).on(
-          table[:roles][:id].eq(table[:results][:role_id])
-        ).
-        join(table[:permissions_roles]).on(
-          table[:permissions_roles][:role_id].eq(table[:roles][:id])
-        ).
-        join(table[:permissions]).on(
-          table[:permissions][:id].eq(table[:permissions_roles][:permission_id])
-        ).
-        join(table[:permission_states_permissions]).on(
-          table[:permission_states_permissions][:permission_id].eq(table[:permissions][:id])
-        ).
-        join(table[:permission_states]).on(
-          table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
-        ).
-        where(
-          table[:results][:id].not_eq(nil).and(
-            table[:permission_requirements].primary_key.eq(nil).or(
-              table[:permission_requirements][:permission_id].eq(table[:results][:permission_id])
-            )
-          ).and(
-            table[:permissions][:applies_to].in(eligible_applies_to)
-          )
-        ).
-        group(table[:results][:id])
+      results_with_permissions_query = ObjectsPermissibleByRequiredPermissions.new(
+        klass: @klass,
+        permissible_assignments_as_table: permissible_assignments_as_table,
+        objects_via_authorizations: objects_via_authorizations,
+        eligible_applies_to: eligible_applies_to
+      )
 
-      results_with_permissions = Arel::SelectManager.new(klass.arel_table.engine).
-        project(klass.arel_table[Arel.star], 'permission_actions').
-        from( Arel.sql('(' + results_with_permissions_query.to_sql + ')').as('results_with_permissions') ).
-        join(klass.arel_table).on(klass.arel_table[:id].eq(table[:results_with_permissions][:id]))
+      hydrate_objects_query = HydrateObjectsQuery.new(
+        klass: klass,
+        results_with_permissions_query: results_with_permissions_query,
+        target: @target
+      )
 
-      objects  = @target.from( Arel.sql("(#{results_with_permissions.to_sql}) AS #{klass.table_name} ") )
-
-      # pull out permissions
-      rs = ResultSet.new
-      objects.each do |task|
-        permission_states = Hash.new { |h,k| h[k] = { states: [] } }
-
-        # Permission_actions come thru as a string column, e.g:
-        #   "read:*, talk:in_progress, talk:in_review, view:*, write:in_progress"
-        #
-        # They need to be parsed out and the permission states should be
-        # grouped by their corresponding permission action.
-        objects.first.permission_actions.
-          split(/\s*,\s*/).
-          map { |f| f.split(/:/) }.
-          each { |permission, state| permission_states[permission][:states] << state }
-        rs.add_object(task, with_permissions: permission_states)
-      end
-      rs
+      HydrateObjects.new(
+        query: hydrate_objects_query,
+        klass: @klass,
+        target: @target
+      ).to_result_set
     end
   end
 end

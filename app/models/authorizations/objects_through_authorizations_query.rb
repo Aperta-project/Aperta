@@ -14,6 +14,7 @@ module Authorizations
       to_arel.to_sql
     end
 
+    # This query returns more than the permissible objects.
     def to_arel
       auth_paths = auth_configs.map do |auth_config|
         construct_query_for_auth_config(auth_config)

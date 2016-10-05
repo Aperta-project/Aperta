@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   respond_to :json
 
   def show
-    requires_user_can(:manage_user, Journal)
+    requires_user_can(:manage_users, Journal)
     render json: User.find(params[:id])
   end
 

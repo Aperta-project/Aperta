@@ -622,7 +622,10 @@ class AuthenticatedPage(PlosPage):
       msg_body.send_keys(generate_paragraph()[2])
     show_form = (By.CSS_SELECTOR, 'div.discussions-show-form')
     time.sleep(1)
-    self._get(show_form).click()
+    form_element = self._get(show_form)
+    form_element.click()
+    # Click twice for butons to appear
+    form_element.click()
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     self._wait_for_element(self._get(post_message_btn))

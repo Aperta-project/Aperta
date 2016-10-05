@@ -15,9 +15,11 @@ module Authorizations
     end
 
     def to_arel
-      auth_configs.map do |auth_config|
+      auth_paths = auth_configs.map do |auth_config|
         construct_query_for_auth_config(auth_config)
       end
+
+      union(auth_paths)
     end
 
     private

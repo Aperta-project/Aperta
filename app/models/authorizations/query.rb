@@ -69,17 +69,6 @@ module Authorizations
 
     private
 
-    # Our version of Arel won't let us union more than two things. So we get around that.
-    def union(a, list=[])
-      if list.blank?
-        return a
-      elsif list.count == 1
-        return a.union(list.first)
-      else
-        return Arel::Nodes::Union.new(a, union(list.first, list[1..-1]))
-      end
-    end
-
 
     # +load_all_objects+ is a way to bypass R&P queries. It is intended to be
     # used in the case of Site Admins(s) or other System-level roles that
@@ -141,6 +130,8 @@ module Authorizations
 
 
     def load_authorized_objects
+      return ResultSet.new if auth_configs.empty?
+
       # Find all of the assignments that the user has where the role they are
       # assigned to has permission on the kind of thing (klass) in question.
       assignments_arel = PermissibleAssignmentsQuery.new(
@@ -159,16 +150,12 @@ module Authorizations
 
       # Build a query responsible for finding the total set of objects that
       # the user has permission on.
-      authorization_arel = ObjectsThroughAuthorizationsQuery.new(
+      objects_via_authorizations = ObjectsThroughAuthorizationsQuery.new(
         klass: @klass,
         target: @target,
         auth_configs: auth_configs,
         permissible_assignments_table: permissible_assignments_table
       ).to_arel
-
-      return ResultSet.new if authorization_arel.empty?
-
-      u = union(authorization_arel.first, authorization_arel[1..-1])
 
       results_with_permissions_query = Arel::SelectManager.new(klass.arel_table.engine).
         with(permissible_assignments_as_table).
@@ -176,7 +163,7 @@ module Authorizations
           table[:results][:id],
           Arel.sql("string_agg(distinct(concat(permissions.action::text, ':', permission_states.name::text)), ', ') AS permission_actions"),
         ).
-        from( Arel.sql('(' + u.to_sql + ')').as(table[:results].table_name) ).
+        from( Arel.sql('(' + objects_via_authorizations.to_sql + ')').as(table[:results].table_name) ).
         outer_join(table[:permission_requirements]).on(
           table[:permission_requirements][:required_on_type].eq(klass.name).and(
             table[:permission_requirements][:required_on_id].eq(table[:results][:id])

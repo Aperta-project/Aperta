@@ -1,7 +1,7 @@
 module Authorizations
   class ObjectsAuthorizedViaSelfQuery
     attr_reader :target, :assignments_table,
-      :common_query, :common_arel
+      :common_query, :common_arel, :klass
 
     def initialize(auth_config:, target:, assignments_table:, klass:)
       @common_query = ObjectsAuthorizedCommonQuery.new(
@@ -12,10 +12,7 @@ module Authorizations
       @assignments_table = assignments_table
       @common_arel = common_query.to_arel
       @target = target
-    end
-
-    def to_sql
-      to_arel.to_sql
+      @klass = klass
     end
 
     def to_arel
@@ -25,13 +22,24 @@ module Authorizations
         )
       )
 
-      id_values = @target.where_values_hash['id']
-      if id_values.present?
-        id_values = [id_values].flatten
-        query.where(common_query.join_table.primary_key.in(id_values))
+      add_primary_key_condition(query)
+      common_query.add_permission_state_check(query)
+    end
+
+    def to_sql
+      to_arel.to_sql
+    end
+
+    private
+
+    def add_primary_key_condition(query)
+      values = @target.where_values_hash[klass.primary_key]
+      if values.present?
+        values = [values].flatten
+        query.where(common_query.join_table.primary_key.in(values))
       end
 
-      common_query.add_permission_state_check_to_query(query)
+      query
     end
   end
 end

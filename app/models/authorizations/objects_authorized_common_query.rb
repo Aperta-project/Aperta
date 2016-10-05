@@ -46,7 +46,7 @@ module Authorizations
       to_arel.to_sql
     end
 
-    def add_permission_state_check_to_query(query)
+    def add_permission_state_check(query)
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
         delegate_permission_state_to_association = klass.delegate_state_to.to_s
         delegate_state_table = klass.reflections[delegate_permission_state_to_association].klass.arel_table

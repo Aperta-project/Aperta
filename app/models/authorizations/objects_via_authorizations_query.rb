@@ -10,17 +10,17 @@ module Authorizations
       @assignments_table = assignments_table
     end
 
-    def to_sql
-      to_arel.to_sql
-    end
-
     # This query returns more than the permissible objects.
     def to_arel
-      auth_paths = auth_configs.map do |auth_config|
+      auth_path_queries = auth_configs.map do |auth_config|
         construct_query_for_auth_config(auth_config)
       end
 
-      union(auth_paths)
+      union(auth_path_queries.map(&:to_arel))
+    end
+
+    def to_sql
+      to_arel.to_sql
     end
 
     private
@@ -34,7 +34,7 @@ module Authorizations
           auth_config: auth_config,
           assignments_table: assignments_table,
           klass: klass
-        ).to_arel
+        )
 
       elsif reflection.nil?
         fail MissingAssociationForAuthConfiguration, <<-ERROR.strip_heredoc
@@ -51,7 +51,7 @@ module Authorizations
           auth_config: auth_config,
           assignments_table: assignments_table,
           klass: klass
-        ).to_arel
+        )
 
       elsif reflection.collection? || reflection.has_one?
         ObjectsAuthorizedViaCollectionQuery.new(
@@ -59,7 +59,7 @@ module Authorizations
           auth_config: auth_config,
           assignments_table: assignments_table,
           klass: klass
-        ).to_arel
+        )
 
       elsif reflection.belongs_to?
         ObjectsAuthorizedViaBelongsToQuery.new(
@@ -67,7 +67,7 @@ module Authorizations
           auth_config: auth_config,
           assignments_table: assignments_table,
           klass: klass
-        ).to_arel
+        )
 
       else
         fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"

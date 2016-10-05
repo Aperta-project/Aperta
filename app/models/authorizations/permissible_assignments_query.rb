@@ -13,10 +13,6 @@ module Authorizations
       @participations_only = participations_only
     end
 
-    def to_sql
-      to_arel.to_sql
-    end
-
     def to_arel
       return @query if @query
 
@@ -30,6 +26,10 @@ module Authorizations
         .group(Assignment.arel_table[:id])
         .group(Role.arel_table[:id])
         .group(Permission.arel_table[:id])
+    end
+
+    def to_sql
+      to_arel.to_sql
     end
 
     private

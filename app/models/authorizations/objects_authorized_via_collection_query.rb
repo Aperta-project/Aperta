@@ -18,9 +18,11 @@ module Authorizations
     end
 
     def to_arel
-      query = common_arel.outer_join(common_query.join_table).on(common_query.join_table.primary_key.eq(assignments_table[:assigned_to_id])
-        .and(assignments_table[:assigned_to_type].eq(common_query.assigned_to_klass.base_class.name)))
-      query.outer_join(common_query.target_table).on(common_query.target_table[auth_config.reflection.foreign_key].eq(common_query.join_table.primary_key))
+      query = common_arel.outer_join(common_query.join_table).on(
+        common_query.join_table.primary_key.eq(assignments_table[:assigned_to_id]).and(
+          assignments_table[:assigned_to_type].eq(common_query.assigned_to_klass.base_class.name)))
+        .outer_join(common_query.target_table).on(
+          common_query.target_table[auth_config.reflection.foreign_key].eq(common_query.join_table.primary_key))
 
       common_query.add_column_condition(
         query: query,

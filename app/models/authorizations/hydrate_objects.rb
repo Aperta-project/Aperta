@@ -10,11 +10,8 @@ module Authorizations
     end
 
     def to_result_set
-      objects = target.from( Arel.sql("(#{query.to_sql}) AS #{klass.table_name} ") )
-
       # pull out permissions
-      rs = Query::ResultSet.new
-      objects.each do |object|
+      objects.each_with_object(Query::ResultSet.new) do |object, rs|
         permission_states = Hash.new { |h,k| h[k] = { states: [] } }
 
         # Permission_actions come thru as a string column, e.g:
@@ -28,7 +25,12 @@ module Authorizations
           each { |permission, state| permission_states[permission][:states] << state }
         rs.add_object(object, with_permissions: permission_states)
       end
-      rs
+    end
+
+    private
+
+    def objects
+      target.from( Arel.sql("(#{query.to_sql}) AS #{klass.table_name} ") )
     end
   end
 end

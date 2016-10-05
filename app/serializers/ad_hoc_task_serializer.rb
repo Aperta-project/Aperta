@@ -1,0 +1,2 @@
+class AdHocTaskSerializer < TaskSerializer
+end

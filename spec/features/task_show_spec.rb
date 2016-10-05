@@ -8,6 +8,7 @@ feature "Displaying task", js: true do
       :with_integration_journal,
       creator: admin,
       task_params: {
+        type: 'AdHocTask',
         title: "Assign Admin"
       }
     )

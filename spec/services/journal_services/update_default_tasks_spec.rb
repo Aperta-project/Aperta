@@ -10,7 +10,7 @@ describe JournalServices::UpdateDefaultTasks do
   end
 
   it 'Does not update Ad-hoc tasks title' do
-    adhoc_task = FactoryGirl.create(:task, title: 'Custom Ad-hoc Task',
+    adhoc_task = FactoryGirl.create(:ad_hoc_task, title: 'Custom Ad-hoc Task',
                                            old_role: 'user')
     JournalServices::UpdateDefaultTasks.call
     expect(adhoc_task.reload.title).to eq('Custom Ad-hoc Task')

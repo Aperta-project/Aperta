@@ -1,7 +1,7 @@
-{
+/*jshint node:true*/
+module.exports = {
   "framework": "qunit",
   "test_page": "tests/index.html?hidepassed",
-  "phantomjs_debug_port": 5555,
   "launch_in_ci": [
     "Firefox"
   ],
@@ -9,4 +9,4 @@
     "Firefox",
     "Chrome"
   ]
-}
+};

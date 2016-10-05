@@ -29,7 +29,7 @@ export default Ember.Component.extend({
   showSentMessage: Ember.computed('keyForStates', 'emailSentStates.[]', function() {
     if (this.get('isSendable')) {
       let key = this.get('keyForStates');
-      return this.get('emailSentStates').contains(key);
+      return this.get('emailSentStates').includes(key);
     } else {
       return false;
     }

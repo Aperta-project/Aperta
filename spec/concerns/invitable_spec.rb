@@ -5,7 +5,7 @@ describe Invitable do
   describe '#invitee_role' do
     context 'when it is not implemented in the task' do
       it 'raises a NotImplementedError' do
-        task = create(:task).extend Invitable
+        task = create(:ad_hoc_task).extend Invitable
         expect{ task.invitee_role }.to raise_error NotImplementedError
       end
     end

@@ -10,12 +10,11 @@ describe TahiStandardTasks::RegisterDecisionMailer do
   end
 
   let(:task) do
-    FactoryGirl.create(:task,
-      title: "Register Decision Report",
-      old_role: 'reviewer',
-      type: "TahiStandardTasks::RegisterDecisionTask",
-      paper: paper,
-      completed: true)
+    FactoryGirl.create(:register_decision_task,
+                       title: "Register Decision Report",
+                       old_role: 'reviewer',
+                       paper: paper,
+                       completed: true)
   end
 
   let(:decision) do

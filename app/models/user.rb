@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
     },
     through: :assignments,
     source: :assigned_to,
-    source_type: 'Task'
+    source_type: 'Task' # source_type is a table name, not a specific subtype of Task
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
   has_many \

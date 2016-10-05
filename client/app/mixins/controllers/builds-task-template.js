@@ -16,7 +16,7 @@ export default Ember.Mixin.create({
   }),
 
   isNew(block) {
-    return this.get('newBlocks').contains(block);
+    return this.get('newBlocks').includes(block);
   },
 
   replaceBlock(block, otherBlock) {

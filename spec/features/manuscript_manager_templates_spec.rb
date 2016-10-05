@@ -103,9 +103,10 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
         find('label', text: 'Ad-hoc').click
         find('button', text: 'ADD').click
       end
-
       expect(page).to have_css('.overlay-body h1.inline-edit.editing',
                                text: 'Ad-hoc',
+                               # For some reason, capybara cannot find this
+                               # element unless it is marked visible.
                                visible: false)
 
       find('.adhoc-content-toolbar .fa-plus').click

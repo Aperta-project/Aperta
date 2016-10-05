@@ -65,7 +65,7 @@ test('Adding an Ad-Hoc card', function(assert) {
   var adminJournal, journalTaskType, mmt, pt;
   journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
-    kind: "Task",
+    kind: "AdHocTask",
     title: "Ad Hoc"
   });
   adminJournal = FactoryGuy.make('admin-journal', {

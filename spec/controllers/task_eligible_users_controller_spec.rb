@@ -3,7 +3,7 @@ require 'rails_helper'
 describe TaskEligibleUsersController do
   let(:user) { FactoryGirl.create :user }
   let(:paper) { FactoryGirl.create :paper, :submitted_lite, journal: journal }
-  let(:task) { FactoryGirl.create :task, paper: paper }
+  let(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
 
   describe "#academic_editors" do
     let(:journal) do

@@ -1,6 +1,6 @@
 {{#if withdrawn}}
   <div class="withdrawal-banner">
-    This paper has been withdrawn from Plos Biology and is in View Only mode
+    This paper has been withdrawn from {{paper.journal.name}} and is in View Only mode
     {{#if (can 'reactivate' paper)}}
       <button class='button-secondary reactivate' {{action 'reactivate'}}>REACTIVATE</button>
     {{/if}}

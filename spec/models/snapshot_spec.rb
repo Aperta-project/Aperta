@@ -32,14 +32,14 @@ describe Snapshot, type: :model do
   describe 'setting #key' do
     let(:snapshot) { FactoryGirl.build(:snapshot) }
     let(:source_with_snapshot_key) do
-      FactoryGirl.create(:task).tap do |task|
+      FactoryGirl.create(:ad_hoc_task).tap do |task|
         def task.snapshot_key
           'abc123'
         end
       end
     end
     let(:source_without_snapshot_key) do
-      FactoryGirl.create(:task).tap do |task|
+      FactoryGirl.create(:ad_hoc_task).tap do |task|
         class << task
           undef_method :snapshot_key
         end

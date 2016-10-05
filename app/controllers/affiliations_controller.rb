@@ -1,5 +1,6 @@
 class AffiliationsController < ApplicationController
   before_action :authenticate_user!
+  respond_to :json
 
   def index
     query = params.dig(:query)
@@ -12,23 +13,41 @@ class AffiliationsController < ApplicationController
   end
 
   def for_user
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user.id == params[:user_id].to_i ||
+      requires_user_can(:manage_users, Journal)
+
     render json: Affiliation.where(user_id: params[:user_id])
   end
 
   def show
-    require_current_user_or_user_can(:manage_users, Journal)
+    current_user == affiliation.user ||
+      requires_user_can(:manage_users, Journal)
+
     render json: affiliation
   end
 
+  def update
+    (current_user == affiliation.user &&
+     current_user.id == affiliation_params[:user_id].to_i) ||
+      requires_user_can(:manage_users, Journal)
+
+    affiliation.update_attributes! affiliation_params
+    respond_with affiliation
+  end
+
   def create
-    require_current_user_or_user_can(:manage_users, Journal)
+    (current_user == user &&
+     current_user.id == affiliation_params[:user_id].to_i) ||
+      requires_user_can(:manage_users, Journal)
+
     new_affiliation = user.affiliations.create!(affiliation_params)
     render json: new_affiliation
   end
 
   def destroy
-    current_user == affiliation.user || requires_user_can(:manage_users, Journal)
+    current_user == affiliation.user ||
+      requires_user_can(:manage_users, Journal)
+
     if affiliation.try(:destroy)
       render json: true
     else
@@ -38,16 +57,16 @@ class AffiliationsController < ApplicationController
 
   private
 
-  def require_current_user_or_user_can(action, object)
-    current_user == user || requires_user_can(action, object)
-  end
-
   def user
-    User.find(params[:user_id] || affiliation_params[:user_id])
+    @user ||= begin
+      User.find(params[:user_id] || affiliation_params[:user_id])
+    end
   end
 
   def affiliation
-    Affiliation.find(params[:id])
+    @affiliation ||= begin
+      Affiliation.find(params[:id])
+    end
   end
 
   def affiliation_params

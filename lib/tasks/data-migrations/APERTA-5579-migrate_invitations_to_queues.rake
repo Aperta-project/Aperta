@@ -8,6 +8,27 @@ namespace :data do
         if task.invite_queues.empty? && task.invitations.present?
           general_queue = InviteQueue.create(queue_title: 'Main', task: task, main_queue: true)
           sub_queues = []
+          task.decisions.each do |decision|
+            decision.invitations.each do |invitation|
+              if invitation.alternates.empty? && invitation.primary.blank? # belongs in main queue
+                  invitation.invite_queue = general_queue
+                  invitation.save
+                elsif invitation.primary.present? # Create subqueues first
+                  sub_queues << InviteQueue.find_or_create_by(
+                    task: task,
+                    queue_title: "SubQueue for: #{invitation.primary.email}",
+                    main_queue: false,
+                    primary: invitation.primary
+                  )
+                end
+              end
+              sub_queues.each do |queue|
+                queue.invitations << queue.primary
+                queue.invitations << queue.primary.alternates
+                queue.save
+              end
+            end
+          end
           task.invitations.each do |invitation|
             if invitation.alternates.empty? && invitation.primary.blank? # belongs in main queue
               invitation.invite_queue = general_queue

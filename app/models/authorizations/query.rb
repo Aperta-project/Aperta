@@ -156,19 +156,19 @@ module Authorizations
         klass: @klass,
         target: @target,
         auth_configs: auth_configs,
-        permissible_assignments_table: permissible_assignments_table
+        assignments_table: permissible_assignments_table
       ).to_arel
 
       results_with_permissions_query = ObjectsPermissibleByRequiredPermissions.new(
         klass: @klass,
-        permissible_assignments_as_table: permissible_assignments_as_table,
-        objects_via_authorizations: objects_via_authorizations,
-        eligible_applies_to: eligible_applies_to
+        assignments_table: permissible_assignments_as_table,
+        objects_query: objects_via_authorizations,
+        applies_to: eligible_applies_to
       )
 
       hydrate_objects_query = HydrateObjectsQuery.new(
         klass: klass,
-        results_with_permissions_query: results_with_permissions_query,
+        objects_with_permissions_query: results_with_permissions_query,
         target: @target
       )
 

@@ -1,16 +1,16 @@
 module Authorizations
   class ObjectsAuthorizedViaThroughAssociation
-    attr_reader :auth_config, :target, :permissible_assignments_table,
+    attr_reader :auth_config, :target, :assignments_table,
       :common_query, :common_arel, :klass
 
-    def initialize(auth_config:, target:, permissible_assignments_table:, klass:)
+    def initialize(auth_config:, target:, assignments_table:, klass:)
       @auth_config = auth_config
       @common_query = ObjectsAuthorizedCommonQuery.new(
         auth_config: auth_config,
         klass: klass,
-        permissible_assignments_table: permissible_assignments_table
+        assignments_table: assignments_table
       )
-      @permissible_assignments_table = permissible_assignments_table
+      @assignments_table = assignments_table
       @common_arel = common_query.to_arel
       @klass = klass
       @target = target
@@ -26,12 +26,12 @@ module Authorizations
       reflection = auth_config.reflection
 
       loop do
-        # construct the join from journals table to the permissible_assignments_table
+        # construct the join from journals table to the assignments_table
         query.outer_join(join_table).on(
           join_table.primary_key.eq(
-            permissible_assignments_table[:assigned_to_id]
+            assignments_table[:assigned_to_id]
           ).and(
-            permissible_assignments_table[:assigned_to_type].eq(
+            assignments_table[:assigned_to_type].eq(
               assigned_to_klass.base_class.name
             )
           )
@@ -66,9 +66,9 @@ module Authorizations
 
       query.where(
         join_table.primary_key.eq(
-          permissible_assignments_table[:assigned_to_id]
+          assignments_table[:assigned_to_id]
         ).and(
-          permissible_assignments_table[:assigned_to_type].eq(
+          assignments_table[:assigned_to_type].eq(
             assigned_to_klass.base_class.name
           )
         )

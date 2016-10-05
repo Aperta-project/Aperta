@@ -1,13 +1,13 @@
 module Authorizations
   class ObjectsThroughAuthorizationsQuery
     include QueryHelpers
-    attr_reader :auth_configs, :klass, :target, :permissible_assignments_table
+    attr_reader :auth_configs, :klass, :target, :assignments_table
 
-    def initialize(target:, klass:, auth_configs:, permissible_assignments_table:)
+    def initialize(target:, klass:, auth_configs:, assignments_table:)
       @auth_configs = auth_configs
       @klass = klass
       @target = target
-      @permissible_assignments_table = permissible_assignments_table
+      @assignments_table = assignments_table
     end
 
     def to_sql
@@ -32,7 +32,7 @@ module Authorizations
         ObjectsAuthorizedViaSelf.new(
           target: target,
           auth_config: auth_config,
-          permissible_assignments_table: permissible_assignments_table,
+          assignments_table: assignments_table,
           klass: klass
         ).to_arel
 
@@ -49,7 +49,7 @@ module Authorizations
         ObjectsAuthorizedViaThroughAssociation.new(
           target: target,
           auth_config: auth_config,
-          permissible_assignments_table: permissible_assignments_table,
+          assignments_table: assignments_table,
           klass: klass
         ).to_arel
 
@@ -57,7 +57,7 @@ module Authorizations
         ObjectsAuthorizedViaCollection.new(
           target: target,
           auth_config: auth_config,
-          permissible_assignments_table: permissible_assignments_table,
+          assignments_table: assignments_table,
           klass: klass
         ).to_arel
 
@@ -65,7 +65,7 @@ module Authorizations
         ObjectsAuthorizedViaBelongsTo.new(
           target: target,
           auth_config: auth_config,
-          permissible_assignments_table: permissible_assignments_table,
+          assignments_table: assignments_table,
           klass: klass
         ).to_arel
 

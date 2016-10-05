@@ -1,12 +1,12 @@
 module Authorizations
   class ObjectsAuthorizedCommonQuery
     include QueryHelpers
-    attr_reader :auth_config, :query, :klass, :permissible_assignments_table
+    attr_reader :auth_config, :query, :klass, :assignments_table
 
-    def initialize(auth_config:, klass:, permissible_assignments_table:)
+    def initialize(auth_config:, klass:, assignments_table:)
       @auth_config = auth_config
       @klass = klass
-      @permissible_assignments_table = permissible_assignments_table
+      @assignments_table = assignments_table
     end
 
     def assigned_to_klass
@@ -35,10 +35,10 @@ module Authorizations
     end
 
     def to_arel
-      permissible_assignments_table.project(
+      assignments_table.project(
         klass.arel_table.primary_key.as('id'),
-        permissible_assignments_table[:role_id].as('role_id'),
-        permissible_assignments_table[:permission_id].as('permission_id')
+        assignments_table[:role_id].as('role_id'),
+        assignments_table[:permission_id].as('permission_id')
       )
     end
 
@@ -58,10 +58,10 @@ module Authorizations
       return query unless local_permission_state_column
 
       query.join(table[:permissions]).on(
-        table[:permissions][:id].eq(permissible_assignments_table[:permission_id])
+        table[:permissions][:id].eq(assignments_table[:permission_id])
       )
       query.outer_join(table[:permission_states_permissions]).on(
-        table[:permission_states_permissions][:permission_id].eq(permissible_assignments_table[:permission_id])
+        table[:permission_states_permissions][:permission_id].eq(assignments_table[:permission_id])
       )
       query.outer_join(table[:permission_states]).on(
         table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])

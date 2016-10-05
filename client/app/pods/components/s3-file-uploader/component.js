@@ -61,30 +61,24 @@ export default Ember.Component.extend({
     });
   },
 
-  uploaderCallbacks: [
-    'fileuploadadd',
-    'fileuploadstart',
-    'fileuploadprogress',
-    'fileuploaddone',
-    'fileuploadfail'
-  ],
-
   willDestroyElement() {
     this._super(...arguments);
-    this.$().off(this.get('uploaderCallbacks').join(' '));
+    this.$().fileupload('destroy');
     this.set('uploadCanceled', true);
     Ember.tryInvoke(this.get('uploadXHR'), 'abort');
   },
 
   _setupFileUpload() {
-    this.$().fileupload({
+    let $uploader = this.$();
+    $uploader.fileupload({
       autoUpload: false,
       dataType: 'XML',
-      method: 'POST'
+      method: 'POST',
+      dropZone: $uploader
     });
 
     this.$().on('fileuploadadd', (e, addedFileData) => {
-
+      if (this.get('isDestroyed')) { return; }
       let acceptedFileTypes = this.get('accept');
       let file = addedFileData.files[0];
       let fileName = file.name;

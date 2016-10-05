@@ -48,6 +48,11 @@ export default Ember.TextField.extend({
     return Ember.$.getJSON('/api/s3/sign', requestPayload);
   },
 
+  willDestroyElement() {
+    this._super(...arguments);
+    this.$().fileupload('destroy');
+  },
+
   setupUploader: (function() {
     let uploader = this.$();
     let params = this.getProperties('dataType', 'method', 'acceptFileTypes');
@@ -58,12 +63,13 @@ export default Ember.TextField.extend({
     params.autoUpload = false;
     params.previewMaxHeight = 90;
     params.previewMaxWidth = 300;
+    params.dropZone = uploader;
 
     uploader.fileupload(params);
 
     // called when file selected from dialog window
     uploader.on('fileuploadadd', (e, uploadData) => {
-      if (this.get('disabled')) { return; }
+      if (this.get('disabled') || this.get('isDestroyed')) { return; }
 
       let file = uploadData.files[0];
       let fileName = file.name;

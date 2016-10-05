@@ -1,5 +1,5 @@
 module Authorizations
-  class ObjectsAuthorizedViaSelf
+  class ObjectsAuthorizedViaSelfQuery
     attr_reader :target, :assignments_table,
       :common_query, :common_arel
 

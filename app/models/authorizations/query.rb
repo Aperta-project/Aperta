@@ -152,17 +152,17 @@ module Authorizations
       # the user has permission on.
       # This is more than just the permissible objects.  We'll filter out the
       # objects that are not allowed in the next step.
-      objects_via_authorizations = ObjectsThroughAuthorizationsQuery.new(
+      objects_via_authorizations_query = ObjectsViaAuthorizationsQuery.new(
         klass: @klass,
         target: @target,
         auth_configs: auth_configs,
         assignments_table: permissible_assignments_table
-      ).to_arel
+      )
 
-      results_with_permissions_query = ObjectsPermissibleByRequiredPermissions.new(
+      results_with_permissions_query = ObjectsPermissibleByRequiredPermissionsQuery.new(
         klass: @klass,
         assignments_table: permissible_assignments_as_table,
-        objects_query: objects_via_authorizations,
+        objects_query: objects_via_authorizations_query,
         applies_to: eligible_applies_to
       )
 

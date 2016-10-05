@@ -1,5 +1,5 @@
 module Authorizations
-  class ObjectsThroughAuthorizationsQuery
+  class ObjectsViaAuthorizationsQuery
     include QueryHelpers
     attr_reader :auth_configs, :klass, :target, :assignments_table
 
@@ -29,7 +29,7 @@ module Authorizations
       reflection = auth_config.reflection
 
       if auth_config.assignment_to <=> @klass
-        ObjectsAuthorizedViaSelf.new(
+        ObjectsAuthorizedViaSelfQuery.new(
           target: target,
           auth_config: auth_config,
           assignments_table: assignments_table,
@@ -46,7 +46,7 @@ module Authorizations
         ERROR
 
       elsif reflection.respond_to?(:through_options)
-        ObjectsAuthorizedViaThroughAssociation.new(
+        ObjectsAuthorizedViaThroughAssociationQuery.new(
           target: target,
           auth_config: auth_config,
           assignments_table: assignments_table,
@@ -54,7 +54,7 @@ module Authorizations
         ).to_arel
 
       elsif reflection.collection? || reflection.has_one?
-        ObjectsAuthorizedViaCollection.new(
+        ObjectsAuthorizedViaCollectionQuery.new(
           target: target,
           auth_config: auth_config,
           assignments_table: assignments_table,
@@ -62,7 +62,7 @@ module Authorizations
         ).to_arel
 
       elsif reflection.belongs_to?
-        ObjectsAuthorizedViaBelongsTo.new(
+        ObjectsAuthorizedViaBelongsToQuery.new(
           target: target,
           auth_config: auth_config,
           assignments_table: assignments_table,

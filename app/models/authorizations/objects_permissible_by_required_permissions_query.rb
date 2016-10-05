@@ -1,5 +1,5 @@
 module Authorizations
-  class ObjectsPermissibleByRequiredPermissions
+  class ObjectsPermissibleByRequiredPermissionsQuery
     include QueryHelpers
     attr_reader :klass, :assignments_table, :objects_query, :applies_to
 

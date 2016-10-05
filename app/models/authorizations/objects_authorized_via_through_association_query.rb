@@ -1,5 +1,5 @@
 module Authorizations
-  class ObjectsAuthorizedViaThroughAssociation
+  class ObjectsAuthorizedViaThroughAssociationQuery
     attr_reader :auth_config, :target, :assignments_table,
       :common_query, :common_arel, :klass
 

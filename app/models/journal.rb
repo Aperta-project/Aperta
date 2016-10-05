@@ -17,9 +17,9 @@ class Journal < ActiveRecord::Base
   validates :name, presence: { message: 'Please include a journal name' }
   validates :doi_journal_prefix, uniqueness: {
     scope: [:doi_publisher_prefix],
-    if: proc { |journal|
+    if: proc do |journal|
       journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
-    }
+    end
   }
   validate :has_valid_doi_information?
 
@@ -27,45 +27,49 @@ class Journal < ActiveRecord::Base
   before_destroy :confirm_no_papers, prepend: true
   before_destroy :destroy_roles
 
-  mount_uploader :logo,       LogoUploader
+  mount_uploader :logo, LogoUploader
 
   # rubocop:disable Metrics/LineLength
   has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :billing_role, -> { where(name: Role::BILLING_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :creator_role, -> { where(name: Role::CREATOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :collaborator_role, -> { where(name: Role::COLLABORATOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :cover_editor_role, -> { where(name: Role::COVER_EDITOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :discussion_participant_role, -> { where(name: Role::DISCUSSION_PARTICIPANT) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :freelance_editor_role, -> { where(name: Role::FREELANCE_EDITOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :internal_editor_role, -> { where(name: Role::INTERNAL_EDITOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :handling_editor_role, -> { where(name: Role::HANDLING_EDITOR_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :production_staff_role, -> { where(name: Role::PRODUCTION_STAFF_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :publishing_services_role, -> { where(name: Role::PUBLISHING_SERVICES_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :reviewer_role, -> { where(name: Role::REVIEWER_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :reviewer_report_owner_role, -> { where(name: Role::REVIEWER_REPORT_OWNER_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :staff_admin_role, -> { where(name: Role::STAFF_ADMIN_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :task_participant_role, -> { where(name: Role::TASK_PARTICIPANT_ROLE) },
-          class_name: 'Role'
+    class_name: 'Role'
   has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
-          class_name: 'Role'
+    class_name: 'Role'
   # rubocop:enable Metrics/LineLength
 
   def admins
     users.merge(OldRole.admins)
+  end
+
+  def staff_admins
+    User.with_role(staff_admin_role, assigned_to: self)
   end
 
   def reviewers
@@ -125,7 +129,7 @@ class Journal < ActiveRecord::Base
   def destroy_roles
     # old_roles that are marked as 'required' are prevented from being destroyed, so you cannot use
     # a dependent_destroy on the AR relationship.
-    self.mark_for_destruction
+    mark_for_destruction
     old_roles.destroy_all
   end
 

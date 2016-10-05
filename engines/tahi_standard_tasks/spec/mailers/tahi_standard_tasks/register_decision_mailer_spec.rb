@@ -9,14 +9,6 @@ describe TahiStandardTasks::RegisterDecisionMailer do
       title: "Paper Title")
   end
 
-  let(:task) do
-    FactoryGirl.create(:register_decision_task,
-                       title: "Register Decision Report",
-                       old_role: 'reviewer',
-                       paper: paper,
-                       completed: true)
-  end
-
   let(:decision) do
     paper.decisions.create!(
       letter: "Body text of a Decision Letter",

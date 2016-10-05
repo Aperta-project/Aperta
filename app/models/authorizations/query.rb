@@ -123,7 +123,7 @@ module Authorizations
     end
 
 
-    # This walks the authorization configuration file and creates a path from 
+    # This walks the authorization configuration file and creates a path from
     # a authorized parent to all authorized children
     # For example: paper authorizes tasks.
     def auth_configs
@@ -141,30 +141,34 @@ module Authorizations
 
 
     def load_authorized_objects
-      assignments_query = PermissibleAssignmentsQuery.new(
+      # Find all of the assignments that the user has where the role they are
+      # assigned to has permission on the kind of thing (klass) in question.
+      assignments_arel = PermissibleAssignmentsQuery.new(
         user: @user,
         permission: @permission,
         klass: @klass,
         applies_to: eligible_applies_to,
         auth_configs: auth_configs,
-        participations_only: @participations_only)
-      .to_arel
+        participations_only: @participations_only
+      ).to_arel
 
+      # We're going to use the assignments_query above as a sub-query
+      # so let's wrap it in an As alias and call it permissions_table.
       permissible_assignments_table = Arel::Table.new(:permissions_table)
-      permissible_assignments_as_table = Arel::Nodes::As.new(permissible_assignments_table, assignments_query)
+      permissible_assignments_as_table = Arel::Nodes::As.new(permissible_assignments_table, assignments_arel)
 
-      authorization_query = ObjectsThroughAuthorizationsQuery.new(
+      # Build a query responsible for finding the total set of objects that
+      # the user has permission on.
+      authorization_arel = ObjectsThroughAuthorizationsQuery.new(
         klass: @klass,
         target: @target,
         auth_configs: auth_configs,
-        permissible_assignments_table: permissible_assignments_table)
+        permissible_assignments_table: permissible_assignments_table
+      ).to_arel
 
+      return ResultSet.new if authorization_arel.empty?
 
-      authorization_paths = authorization_query.to_arel
-
-      return ResultSet.new if authorization_paths.empty?
-
-      u = union(authorization_paths.first, authorization_paths[1..-1])
+      u = union(authorization_arel.first, authorization_arel[1..-1])
 
       results_with_permissions_query = Arel::SelectManager.new(klass.arel_table.engine).
         with(permissible_assignments_as_table).

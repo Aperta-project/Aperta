@@ -27,8 +27,8 @@ class Page < PageFragment
       new
     end
 
-    def view_task_overlay(paper, task)
-      new.view_task_overlay(paper, task)
+    def view_task_overlay(paper, task, opts = {})
+      new.view_task_overlay(paper, task, opts)
     end
   end
 
@@ -51,8 +51,12 @@ class Page < PageFragment
     DashboardPage.new
   end
 
-  def view_task_overlay(paper, task)
-    visit "/papers/#{paper.id}/tasks/#{task.id}"
+  def view_task_overlay(paper, task, opts = {})
+    if opts[:without_waiting] == true
+      visit_without_waiting "/papers/#{paper.id}/tasks/#{task.id}"
+    else
+      visit "/papers/#{paper.id}/tasks/#{task.id}"
+    end
     class_name =
       (task.title.split(' ')
       .map(&:capitalize)

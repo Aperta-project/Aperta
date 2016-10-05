@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Rescinding invitations will not delete them from the UI
 - Show statuses for when invitations were rescinded
+- Ad-hoc cards have editing and managing permissions
 ### Removed
 - Users can no longer add system-generated tasks (Revise Manuscript, Changes For Author, Reviewer Report) to a workflow
 ### Fixed

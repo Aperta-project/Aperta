@@ -1,6 +1,7 @@
 module Authorizations
   class ObjectsAuthorizedCommonQuery
     include QueryHelpers
+
     attr_reader :auth_config, :query, :klass, :assignments_table
 
     # == Constructor Arguments
@@ -55,6 +56,8 @@ module Authorizations
       to_arel.to_sql
     end
 
+    # Adds a WHERE clause condition to the query for the given column
+    # if the provided set of value(s) is not nil. Otherwise, no-op.
     def add_column_condition(query:, column:, values:)
       if values
         values = [ values ].flatten
@@ -64,15 +67,26 @@ module Authorizations
       query
     end
 
+    # Adds JOINs and WHERE clause conditions to the given query for
+    # enforcing permission state checks. If the current @klass does not
+    # have a column for its permission state and does not implement a
+    # class-level +delegate_state_to+ method that returns the name of an
+    # association to delegate the state check to, then this is a no-op
+    # and the given query will not be modified in any way.
     def add_permission_state_check(query)
+      # This checks to see if the current @klass delegates the permission
+      # state checks. E.g. Task currently delegates permission state checks to
+      # Paper.
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
         delegate_permission_state_to_association = klass.delegate_state_to.to_s
         delegate_state_table = klass.reflections[delegate_permission_state_to_association].klass.arel_table
         delegate_state_table[permission_state_column]
       elsif klass.column_names.include?(permission_state_column.to_s) # e.g. Paper has its own publishing state column
+        # E.g. Paper.arel_table['publishing_state']
         klass.arel_table[permission_state_column]
       end
 
+      # if there is no permission state column to use then do nothing
       return query unless local_permission_state_column
 
       query.join(table[:permissions]).on(
@@ -99,28 +113,90 @@ module Authorizations
         )
       end
 
-      query.where(
-        table[:permission_states][:name].eq(local_permission_state_column).or(
-          table[:permission_states][:name].eq(PermissionState::WILDCARD.to_s)
-        )
+      add_wildcard_conditions_for_permission_state_check(
+        query,
+        local_permission_state_column
       )
+      add_sti_conditions_for_permission_state_check(query)
 
-      # If the @klass uses STI then we need to add conditions which enforces
-      # scope based on the permissions.applies_to column.
+      query
+    end
+
+    private
+
+    # If the @klass uses STI then we need to add conditions which enforces
+    # scope based on the permissions.applies_to column.
+    #
+    # Given the following hierarchy:
+    #
+    #     D < C < B < A
+    #
+    # A is the base class. It is the least specialized. D on the other hand
+    # is the most specialized. This means that permissoins on A trickle
+    # down to include B, C, and D, but the reverse is not true.
+    #
+    # Here's an example...
+    #
+    # We want to generate the correct set of conditions so we need to add
+    # WHERE clause conditions for permissions.applies_to at every level of
+    # the STI inheritance hierarchy.
+    #
+    # If a record is an A (in STI terms) then we need an permission that
+    # applies_to A. Permissions that apply to B, C, and D are do not qualify
+    # because they are more specific.
+    #
+    # If a permissions applies to B then we need a permission that applies
+    # to A or B.
+    #
+    # If a permissions applies to C then we need a permission that applies
+    # to A, B, or C.
+    #
+    # If a permissions applies to D then we need a permission that applies
+    # to A, B, C, or D.
+    #
+    # This will result in potentially a lot of SQL, but the database is pretty
+    # fast at applying these conditions.
+    def add_sti_conditions_for_permission_state_check(query)
       if @klass.column_names.include?(@klass.inheritance_column)
+        # qs is short for queries, q in the block is short for query.
+        # These names were chosen since we're passing in a +query+ variable.
+        # If you have better names, let's use yours. :)
         qs = [@klass].concat(@klass.descendants).reduce(nil) do |q, permissible_klass|
-          eligible_ancestors = (permissible_klass.ancestors & permissible_klass.base_class.descendants) << permissible_klass.base_class
+
+          # Given the following hierarchy:
+          #    D < C < B < A
+          #
+          # If permissible_klass is C then +klasses+ will become
+          #   [A, B]
+          #
+          klasses = (permissible_klass.ancestors & permissible_klass.base_class.descendants)
+
+          # Now add back in our current permissible_klass C. +klasses+ is now:
+          #  [A, B, C]
+          klasses << permissible_klass.base_class
+
+          # Here we add the condition
           condition = klass.arel_table[:type].eq(permissible_klass.name).and(
-            table[:permissions][:applies_to].in(eligible_ancestors.map(&:name))
+            table[:permissions][:applies_to].in(klasses.map(&:name))
           )
+
+          # Based on how Arel works we need to chain conditions rather than
+          # apply them all to the query object.
           q ? q.or(condition) : condition
         end
         query.where(qs)
       else
         # no-op for non-STI klasses
       end
+    end
 
-      query
+    # Allow for exact permission state matches OR any wildcard matches
+    def add_wildcard_conditions_for_permission_state_check(query, state_column)
+      query.where(
+        table[:permission_states][:name].eq(state_column).or(
+          table[:permission_states][:name].eq(PermissionState::WILDCARD.to_s)
+        )
+      )
     end
   end
 end

@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## [1.27.0] - {2016-10-6}
 ### Added
 ### Changed
 ### Deprecated

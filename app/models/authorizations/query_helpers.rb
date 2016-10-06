@@ -1,8 +1,13 @@
 module Authorizations
   module QueryHelpers
+    def reference_query_as_table(query, table_name)
+      Arel::Nodes::As.new Arel::Table.new(table_name), query.to_arel
+    end
+
     def table
       @table ||= {
         roles: Role.arel_table,
+        permissible_assignments: Arel::Table.new(:permissible_assignments),
         permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
         permissions: Permission.arel_table,
         permission_requirements: PermissionRequirement.arel_table,

@@ -5,6 +5,8 @@ module Authorizations
     #   2. The permissions associated with that object
     # This class accomplishes that
     class ResultSet
+      delegate :each, :map, :length, to: :@object_permission_map
+
       def initialize
         @object_permission_map = Hash.new { |h, k| h[k] = {} }
       end
@@ -13,19 +15,19 @@ module Authorizations
         @object_permission_map[object].merge!(with_permissions) do |_k, v1, v2|
           { states: (v1[:states] + v2[:states]).uniq.sort }
         end
+        self
       end
 
       def add_objects(objects, with_permissions: {})
         objects.each do |object|
           add_object object, with_permissions: with_permissions
         end
+        self
       end
 
       def objects
         @object_permission_map.keys
       end
-
-      delegate :each, :map, :length, to: :@object_permission_map
 
       def as_json
         serializable.as_json

@@ -47,7 +47,6 @@ feature "User adding reviewer candidates", js: true do
       find("textarea[name*=reason]").set "Because they do good work"
       click_button "done"
     end
-    wait_for_ajax
 
     # See the new reviewer
     within ".reviewer" do

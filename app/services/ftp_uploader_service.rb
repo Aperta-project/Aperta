@@ -7,9 +7,10 @@ class FtpUploaderService
 
   def initialize(
     file_io: nil,
-    final_filename: nil,
     passive_mode: true,
-    url: TahiEnv.apex_ftp_url
+    final_filename: nil,
+    url: TahiEnv.apex_ftp_url,
+    email_on_failure: nil
   )
 
     ftp_url = URI.parse(url)
@@ -26,6 +27,7 @@ class FtpUploaderService
     @password = ftp_url.password
     @port = ftp_url.port || 21
     @user = URI.unescape(ftp_url.user)
+    @email_on_failure = email_on_failure
   end
 
   def upload
@@ -64,7 +66,7 @@ class FtpUploaderService
     AdhocMailer.delay.send_adhoc_email(
       transfer_failed,
       transfer_failed + ": #{@ftp.last_response}. Please try to upload again.",
-      User.joins(:old_roles).where('old_roles.kind' => 'admin')
+      email_on_failure
     )
   end
 

@@ -2,10 +2,12 @@
 class BillingFTPUploader < FtpUploaderService
   def initialize(billing_log_report)
     @billing_log_report = billing_log_report
+
     super(
       file_io: @billing_log_report.csv,
       final_filename: timestamped_filename,
-      url: TahiEnv.billing_ftp_url
+      url: TahiEnv.billing_ftp_url,
+      email_on_failure: Rails.configuration.x.admin_email
     )
   end
 

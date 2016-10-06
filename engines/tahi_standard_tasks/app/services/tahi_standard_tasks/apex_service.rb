@@ -59,7 +59,8 @@ module TahiStandardTasks
     def upload_file(file_io, final_filename)
       FtpUploaderService.new(
         file_io: file_io,
-        final_filename: final_filename
+        final_filename: final_filename,
+        email_on_failure: @paper.journal.staff_admins.pluck(:email)
       ).upload
     end
   end

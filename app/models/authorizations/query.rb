@@ -7,10 +7,49 @@ module Authorizations
   class QueryError < Error; end
   class MissingAssociationForAuthConfiguration < Error; end
 
-  # Query represents the quer(y|ies) for finding the authorized objects from
-  # the database based on how the authorizations sub-system is configured,
-  # what the user is assigned to, what roles the person has, and what
-  # permissions they have thru those roles.
+  # Query represents the entry-point into the Authorizations sub-system. It's
+  # where you start if you want to find accessible objects or check access
+  # of an existing object.
+  #
+  # == Example - Find all papers that a user can view
+  #
+  #     Authorizations::Query.new(
+  #       permission: :view,
+  #       target: Paper.all,
+  #       user: User.find(14),
+  #       participations_only: false
+  #     ).all
+  #
+  # == Example - Find all papers that a user can view and is participating in
+  #
+  #     Authorizations::Query.new(
+  #       permission: :view,
+  #       target: Paper.all,
+  #       user: User.find(14),
+  #       participations_only: true
+  #     ).all
+  #
+  # == More Examples
+  #
+  # For more examples of what's possible see the specs in spec/authorizations/
+  # directory.
+  #
+  # == More information on participations_only
+  #
+  # participations_only is used to check if any of the roles a user is
+  # assigned to should be considered an active participant as opposed to
+  # somebody with access. This is useful for displaying relevant papers
+  # on a user's dashboard.
+  #
+  # Some users, like Journal-level Staff Admins, have access to a lot of papers
+  # in the system, but they aren't participating in many of them. Maybe even
+  # none of them. When trying to determine what to show on the dashboard it
+  # may be relevant to display papers they are actively participating in.
+  #
+  # == Notes
+  #
+  # The Authorizations::UserHelper module provides convenience methods
+  # that wrap this object. Check those before using this object directly.
   #
   # rubocop:disable ClassLength
   class Query
@@ -19,16 +58,14 @@ module Authorizations
     attr_reader :permission, :klass, :user
 
     # == Constructor Arguments
-    # * permission - is the permission you are checking for authorization \
-    #                against
-    # * target - is the object, class, or ActiveRecord::Relation that is being \
-    #            being authorized
-    # * user - is the user who the query will be check for authorization against
-    # * participations_only - a boolean specifying if only targets a user
-    #                         participates in should be returned. If not
-    #                         specified, it depends on the target passed in. For
-    #                         Class or ActiveRecord::Relation, it is true, for
-    #                         Array or ActiveRecord::Base, it is false.
+    # * permission: the permission action to check against, e.g. :view
+    # * target: the object, class, or ActiveRecord::Relation that is being \
+    #    being authorized
+    # * user: the user who the query will be check for authorization against
+    # * participations_only: a boolean specifying if only targets a user \
+    #     participates in should be returned. If not specified, it depends on \
+    #     the target passed in. For Class or ActiveRecord::Relation, it is \
+    #     true, for Array or ActiveRecord::Base, it is false.
     def initialize(permission:, target:, user:, participations_only: :default)
       @permission = permission.to_sym
       @user = user
@@ -38,9 +75,14 @@ module Authorizations
       initialize_for_target
     end
 
+    # Returns an Authorizations::ResultSet instance containing the
+    # results of the query.
     def all
       return ResultSet.new unless @target
 
+      # Always force participation checks to go thru R&P. Why?
+      # Because a site admin can access everything but should not be inundated
+      # with every single paper on their dashboard.
       if user.site_admin? && !@participations_only
         load_all_objects
       else
@@ -64,14 +106,21 @@ module Authorizations
 
     def initialize_for_class
       @klass = @target
-      @target = @target.all
       @participations_only = true if @participations_only == :default
+
+      # If @target is provided as a class then we need to re-set target
+      # to an ActiveRecord::Relation scoped to all instances.
+      @target = @target.all
     end
 
     def initialize_for_activerecord_instance
       @klass = @target.class
-      @target = @klass.where(id: @target.id)
       @participations_only = false if @participations_only == :default
+
+      # If @target is provided as an ActiveRecord instance then we need to
+      # re-set target to an ActiveRecord::Relation scoped down to that
+      # instance.
+      @target = @klass.where(id: @target.id)
     end
 
     def initialize_for_activerecord_relation
@@ -84,9 +133,13 @@ module Authorizations
       @participations_only = false if @participations_only == :default
     end
 
-    # This walks the authorization configuration file and creates a path from
-    # a authorized parent to all authorized children
-    # For example: paper authorizes tasks.
+    # This walks thru the Authorizations::Configuration and returns all
+    # Authorizations::Authorization instances where the authorized type
+    # the same klass of @klass or a descendant of @klass.
+    #
+    # Note: This will also add in an Authorization for self references.
+    # E.g. for an assignment to Task to authorize Task. A self
+    # assignment/authorization an implicit authorization path.
     def auth_configs
       @auth_configs ||= begin
         Authorizations.configuration.authorizations.select do |ac|
@@ -100,9 +153,14 @@ module Authorizations
       )])
     end
 
-    # Returns the eligible values for a permission applies_to given the
-    # @klass being queried. This searches the class, any of its descendants,
-    # as well as any ancestors in the lineage from the @klass to its base-class.
+    # Returns an array of types/classes that are eligible for this query.
+    # For example, Task has a lot of subclasses. If we are searching for all
+    # authorized tasks for a user (e.g. @target=Task.all) then we need to
+    # to check the permissions.applies_to column for Task and any of its
+    # subclasses.
+    #
+    # This specifically is meant to correspond with what permissions.applies_to
+    # column values are valid based on the @klass of this query.
     def eligible_applies_to
       eligible_ancestors = @klass.ancestors & @klass.base_class.descendants
       [
@@ -113,15 +171,15 @@ module Authorizations
       ].flatten.map(&:name).uniq
     end
 
-    # +load_all_objects+ is a way to bypass R&P queries. It is intended to be
-    # used in the case of Site Admins(s) or other System-level roles that
-    # have access to everything in the system.
+    # This method, intended to be used in the case of Site Admins(s) or other
+    # System-level roles that have access to everything in the system, will
+    # return a ResultSet object including the results of whatever the
+    # original @target was requesting.
     #
-    # Note: If :participations_only is true then this will never return any
-    # records. This is because System accounts should _never_ be considered
-    # participants.
+    # Note: This method should not be called if @participations_only is true
     def load_all_objects
       result_set = ResultSet.new
+      return result_set if @participations_only
 
       permissions = Permission.where(applies_to: eligible_applies_to)
       permissions_hash = permissions.each_with_object({}) do |permission, hsh|
@@ -138,28 +196,52 @@ module Authorizations
       end
     end
 
+    # Returns a ResultSet of all authorized objects returned by this query.
     def load_authorized_objects
+      # Short-circuit out of here if there are no configured authorization
+      # pathways for this query
       return ResultSet.new if auth_configs.empty?
+
+      hydrate_objects_from_query(
+        results_with_permissions_query
+      ).to_result_set
+    end
+
+    # Takes a query object and hydrates it returning a HydratesObject
+    # instance.
+    def hydrate_objects_from_query(query_to_hydrate)
+      hydrate_objects_query = HydrateObjectsQuery.new(
+        klass: klass,
+        objects_with_permissions_query: query_to_hydrate,
+        target: @target
+      )
 
       HydrateObjects.new(
         query: hydrate_objects_query,
         klass: @klass,
         target: @target
-      ).to_result_set
-    end
-
-    def hydrate_objects_query
-      HydrateObjectsQuery.new(
-        klass: klass,
-        objects_with_permissions_query: results_with_permissions_query,
-        target: @target
       )
     end
 
-    # Build a query responsible for finding the total set of objects that
-    # the user has permission on.
-    # This is more than just the permissible objects.  We'll filter out the
-    # objects that are not allowed in the next step.
+    # Returns a PermissibleAssignmentsQuery instance responsible for finding
+    # Assignment(s) whose roles have the requested @permission on the type
+    # of @klass that we're querying against. These are all of the assignments
+    # that could give the user permission/access to an object.
+    def permissible_assignments_query
+      PermissibleAssignmentsQuery.new(
+        user: @user,
+        permission: @permission,
+        klass: @klass,
+        applies_to: eligible_applies_to,
+        auth_configs: auth_configs,
+        participations_only: @participations_only
+      )
+    end
+
+    # Returns a ObjectsViaAuthorizationsQuery instance responsible for
+    # finding all objects that pertain to query through the configured
+    # authorization paths. This will limit the search thru each of the
+    # permissible_assignments found in the permissible_assignments_query.
     def objects_via_authorizations_query
       ObjectsViaAuthorizationsQuery.new(
         klass: @klass,
@@ -169,21 +251,10 @@ module Authorizations
       )
     end
 
-    # Find all of the assignments that the user has where the role they are
-    # assigned to has permission on the kind of thing (klass) in question.
-    def permissible_assignments_query
-      @permissible_assignments_query ||= begin
-        PermissibleAssignmentsQuery.new(
-          user: @user,
-          permission: @permission,
-          klass: @klass,
-          applies_to: eligible_applies_to,
-          auth_configs: auth_configs,
-          participations_only: @participations_only
-        )
-      end
-    end
-
+    # Returns a ObjectsPermissibleByRequiredPermissionsQuery instance
+    # responsible for filtering the results of
+    # objects_found_via_authorizations_query by any additional
+    # permission_requirements.
     def results_with_permissions_query
       # We're going to use the permissible_assignments_query above as a
       # sub-query so let's wrap it in an alias/reference

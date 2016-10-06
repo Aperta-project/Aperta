@@ -1,5 +1,7 @@
-import getOwner from 'ember-getowner-polyfill';
+import Ember from 'ember';
 import ActiveModelAdapter from 'active-model-adapter';
+
+const { getOwner } = Ember;
 
 export default ActiveModelAdapter.extend({
   namespace: 'api',

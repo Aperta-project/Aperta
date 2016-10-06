@@ -49,6 +49,14 @@ Tahi::Application.routes.draw do
         get '/user/:user_id', to: 'affiliations#for_user'
       end
     end
+
+    get '/orcid/oauth', action: 'callback', controller: 'orcid_oauth'
+
+    resources :orcid_accounts, only: [:show] do
+      put 'clear', on: :member
+      put 'choose_random_id', on: :member
+    end
+
     resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments' do
       put :cancel, on: :member
     end

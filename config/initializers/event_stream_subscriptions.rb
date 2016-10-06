@@ -6,6 +6,7 @@ stream_to_paper_channel = EventStream::StreamToPaperChannel
 stream_to_everyone = EventStream::StreamToEveryone
 stream_to_user = EventStream::StreamToUser
 stream_to_discussion_channel = EventStream::StreamToDiscussionChannel
+stream_to_orcid_account_channel = EventStream::StreamToOrcidAccountChannel
 
 Subscriptions.configure do
 
@@ -81,4 +82,7 @@ Subscriptions.configure do
   add 'discussion_reply:updated', stream_to_discussion_channel
   add 'discussion_reply:destroyed', stream_to_everyone
 
+  # Orcid Accounts:
+
+  add 'orcid_account:updated', stream_to_orcid_account_channel
 end

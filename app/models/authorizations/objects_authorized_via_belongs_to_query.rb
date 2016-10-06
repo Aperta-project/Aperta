@@ -1,8 +1,42 @@
 module Authorizations
-  class ObjectsAuthorizedViaBelongsToQuery
-    attr_reader :auth_config, :target, :assignments_table,
-      :common_query, :common_arel
 
+  # ObjectsAuthorizedViaBelongsTofQuery represents the query responsible for
+  # finding all authorized objects through a belongs_to associations, e.g.:
+  #
+  #    Authorizations::Authorization.new(
+  #      assignment_to: Task,
+  #      authorizes: Paper,
+  #      via: :paper
+  #    )
+  #
+  # In the above authorization Task has a belongs_to :paper association
+  # for accessing its Paper. It only knows its a belongs_to association by
+  # looking at up Task.reflections['paper'] definition.
+  #
+  # == Columns returned
+  #
+  # Running this query will return the following columns:
+  #
+  #   * <klass.table_name>.id AS id
+  #   * <assignments_table>.role_id AS role_id
+  #   * <assignments_table>.permission_id AS permission_table
+  #
+  # The < and > brackets are used above because the table references are
+  # dynamic. See the corresponding constructor arguments for more information.
+  #
+  # == Note
+  #
+  # This query does not enforce permission requirements. That must be done
+  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
+  class ObjectsAuthorizedViaBelongsToQuery
+    attr_reader  :assignments_table, :auth_config, :common_query, :target
+
+    # == Constructor Arguments
+    # * assignments_table: the Arel::Table reference representing the \
+    #     assignments table to use for this query
+    # * auth_config: the Authorization(s) path to JOIN against
+    # * klass: the type/class that is being queried against
+    # * target: the ActiveRecord::Relation being queried against
     def initialize(auth_config:, target:, assignments_table:, klass:)
       @auth_config = auth_config
       @common_query = ObjectsAuthorizedCommonQuery.new(
@@ -11,7 +45,6 @@ module Authorizations
         assignments_table: assignments_table
       )
       @assignments_table = assignments_table
-      @common_arel = common_query.to_arel
       @target = target
     end
 
@@ -20,7 +53,9 @@ module Authorizations
     end
 
     def to_arel
-      query = common_arel.outer_join(common_query.join_table).on(
+      query = common_query.to_arel
+
+      query.outer_join(common_query.join_table).on(
         common_query.join_table.primary_key.eq(assignments_table[:assigned_to_id]).and(
           assignments_table[:assigned_to_type].eq(common_query.assigned_to_klass.base_class.name)))
 

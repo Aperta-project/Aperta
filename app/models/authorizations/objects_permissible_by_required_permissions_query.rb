@@ -1,9 +1,11 @@
 module Authorizations
   class ObjectsPermissibleByRequiredPermissionsQuery
     include QueryHelpers
-    attr_reader :klass, :assignments_table, :objects_query, :applies_to
 
-    def initialize klass:, assignments_table:, objects_query:, applies_to:
+    attr_reader :applies_to, :assignments_table, :auth_config, :common_query,
+      :klass, :objects_query, :target
+
+    def initialize(klass:, assignments_table:, objects_query:, applies_to:)
       @klass = klass
       @assignments_table = assignments_table
       @objects_query = objects_query

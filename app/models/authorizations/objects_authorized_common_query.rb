@@ -3,25 +3,34 @@ module Authorizations
     include QueryHelpers
     attr_reader :auth_config, :query, :klass, :assignments_table
 
+    # == Constructor Arguments
+    # * assignments_table: the Arel::Table reference representing the \
+    #     assignments table to use for this query
+    # * auth_config: the Authorization(s) path to JOIN against
+    # * klass: the type/class that is being queried against
     def initialize(auth_config:, klass:, assignments_table:)
       @auth_config = auth_config
       @klass = klass
       @assignments_table = assignments_table
     end
 
+    # Returns the class that the current Authorization instance is
+    # assigned_to.
     def assigned_to_klass
       auth_config.assignment_to
     end
 
+    # Returns the Arel::Table instance for the +assigned_to_klass+
     def join_table
       assigned_to_klass.arel_table
     end
 
+    # Returns the Arel::Table instance for @klass
     def target_table
       klass.arel_table
     end
 
-    # +permission_state_column+ should return the column that houses
+    # +permission_state_column+ returns the column that houses
     # a model's state.
     #
     # This is so permissions that are tied to states can add a
@@ -54,7 +63,7 @@ module Authorizations
 
       query
     end
-    
+
     def add_permission_state_check(query)
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
         delegate_permission_state_to_association = klass.delegate_state_to.to_s

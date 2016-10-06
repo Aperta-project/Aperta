@@ -1,8 +1,41 @@
 module Authorizations
-  class ObjectsAuthorizedViaSelfQuery
-    attr_reader :target, :assignments_table,
-      :common_query, :common_arel, :klass
 
+  # ObjectsAuthorizedViaSelfQuery represents the query responsible for finding
+  # all authorized objects through a self-reference, e.g.:
+  #
+  #    Authorizations::Authorization.new(
+  #      assignment_to: Paper,
+  #      authorizes: Paper,
+  #      via: :self
+  #    )
+  #
+  # A self-reference means that the thing a user is assigned to is the same
+  # type of thing that it authorizes.
+  #
+  # == Columns returned
+  #
+  # Running this query will return the following columns:
+  #
+  #   * <klass.table_name>.id AS id
+  #   * <assignments_table>.role_id AS role_id
+  #   * <assignments_table>.permission_id AS permission_table
+  #
+  # The < and > brackets are used above because the table references are
+  # dynamic. See the corresponding constructor arguments for more information.
+  #
+  # == Note
+  #
+  # This query does not enforce permission requirements. That must be done
+  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
+  class ObjectsAuthorizedViaSelfQuery
+    attr_reader :target, :assignments_table, :common_query, :common_arel, :klass
+
+    # == Constructor Arguments
+    # * assignments_table: the Arel::Table reference representing the \
+    #     assignments table to use for this query
+    # * auth_config: the Authorization(s) path to JOIN against
+    # * klass: the type/class that is being queried against
+    # * target: the ActiveRecord::Relation being queried against
     def initialize(auth_config:, target:, assignments_table:, klass:)
       @common_query = ObjectsAuthorizedCommonQuery.new(
         auth_config: auth_config,

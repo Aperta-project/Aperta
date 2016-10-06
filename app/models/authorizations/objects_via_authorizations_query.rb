@@ -1,8 +1,26 @@
 module Authorizations
+
+  # ObjectsViaAuthorizationsQuery represents the query responsible for finding
+  # all objects through a given set of authorization pathways.
+  #
+  # Running an instance of this query generates a set of UNION'd queries
+  # responsible for finding the @klass in question based on the provided
+  # Authorizations::Authorization paths.
+  #
+  # == Note
+  #
+  # This query does not enforce permission requirements. That must be done
+  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
   class ObjectsViaAuthorizationsQuery
     include QueryHelpers
     attr_reader :auth_configs, :klass, :target, :assignments_table
 
+    # == Constructor Arguments
+    # * target: the ActiveRecord::Relation that we want to query objects from
+    # * klass: the type/class that is being queried against
+    # * auth_configs: the collection of Authorization(s) to JOIN against
+    # * assignments_table: the Arel::Table instance to be used when JOINing \
+    #     and filtering against Assignment(s)
     def initialize(target:, klass:, auth_configs:, assignments_table:)
       @auth_configs = auth_configs
       @klass = klass
@@ -25,6 +43,8 @@ module Authorizations
 
     private
 
+    # This returns a query object built specifically for the given
+    # Authorizations::Authorization object.
     def construct_query_for_auth_config(auth_config)
       reflection = auth_config.reflection
 

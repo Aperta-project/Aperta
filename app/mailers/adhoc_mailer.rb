@@ -3,9 +3,9 @@ class AdhocMailer < ActionMailer::Base
   default from: Rails.configuration.from_email
   layout "mailer"
 
-  def send_adhoc_email(subject, body, user)
+  def send_adhoc_email(subject, body, addresses)
     @email_body = body
     @plain_text_body = Nokogiri::HTML(body.gsub('<br>', "\n\n")).text
-    mail(to: user.email, subject: subject)
+    mail(to: addresses, subject: subject)
   end
 end

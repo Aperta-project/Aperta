@@ -11,16 +11,13 @@ module Authorizations
         assignments_table: assignments_table
       )
       @assignments_table = assignments_table
-      @common_arel = common_query.to_arel
       @klass = klass
       @target = target
     end
 
     def to_arel
-      query = common_arel
-
-      add_query_from_reflection(auth_config.reflection, query)
-
+      query = common_query.to_arel
+      add_joins_and_conditions(auth_config.reflection, query)
       common_query.add_permission_state_check(query)
     end
 
@@ -30,7 +27,7 @@ module Authorizations
 
     private
 
-    def add_query_from_reflection(reflection, query)
+    def add_joins_and_conditions(reflection, query)
       # construct the join from journals table to the assignments_table
       query.join(join_table).on(
         join_table.primary_key.eq(

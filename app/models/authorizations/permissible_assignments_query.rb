@@ -16,12 +16,14 @@ module Authorizations
     def to_arel
       return @query if @query
 
-      add_auth_config_joins
-      add_auth_config_conditions
-      add_wildcard_permission
-      add_participations_only
+      @query = base_query
 
-      query.group(Assignment.arel_table[:assigned_to_type])
+      add_auth_config_joins(@query)
+      add_auth_config_conditions(@query)
+      add_wildcard_permission(@query)
+      add_participations_only(@query)
+
+      @query.group(Assignment.arel_table[:assigned_to_type])
         .group(Assignment.arel_table[:assigned_to_id])
         .group(Assignment.arel_table[:id])
         .group(Role.arel_table[:id])
@@ -34,8 +36,14 @@ module Authorizations
 
     private
 
-    def query
-      @query ||= begin
+    # Returns an AREL AST which represents a basic query for finding
+    # all assignments for a user joining on their roles, permissions,
+    # and permission_states.
+    def base_query
+      @base_query ||= begin
+        # In the beginning we cheat by using ActiveRecord to reduce the
+        # amount of AREL code we have to write. We will convert to AREL
+        # below.
         assignments = Assignment.all
           .select('
             assignments.id,
@@ -56,7 +64,7 @@ module Authorizations
       end
     end
 
-    def add_auth_config_joins
+    def add_auth_config_joins(query)
       auth_configs.each do |ac|
         join_table = ac.assignment_to.arel_table
         source_table = ac.authorizes.arel_table
@@ -73,7 +81,7 @@ module Authorizations
       end
     end
 
-    def add_auth_config_conditions
+    def add_auth_config_conditions(query)
       arel_conditions = auth_configs.reduce(nil) do |conditions, ac|
         if conditions
           conditions.or(
@@ -91,13 +99,13 @@ module Authorizations
 
     # If we're looking for the wildcard permission then we aren't interested in any one
     # permission, but all of the possible permissions
-    def add_wildcard_permission
+    def add_wildcard_permission(query)
       if @permission.to_sym != Permission::WILDCARD.to_sym
         query.where(Permission.arel_table[:action].eq(@permission))
       end
     end
 
-    def add_participations_only
+    def add_participations_only(query)
       if @participations_only
         role_accessibility_method = "participates_in_#{@klass.table_name}"
         if Role.column_names.include?(role_accessibility_method)

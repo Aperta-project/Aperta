@@ -1,9 +1,13 @@
 module Authorizations
   module QueryHelpers
+    # Returns an Arel::Node::As instance which aliases the given query
+    # with the provided table_name.
     def reference_query_as_table(query, table_name)
       Arel::Nodes::As.new Arel::Table.new(table_name), query.to_arel
     end
 
+    # Returns a Hash of names to Arel::Table instances for common table
+    # references in the Authorizations sub-system.
     def table
       @table ||= {
         roles: Role.arel_table,
@@ -18,7 +22,9 @@ module Authorizations
       }
     end
 
-    # Our version of Arel won't let us union more than two things. So we get around that.
+    # Arel doesn't provide a nice way to union more than two queries so
+    # this method gets around that by accepting a list of Arel ASTs to
+    # union.
     def union(*args)
       if args.length == 1 && args.first.is_a?(Array)
         first = args.first.first

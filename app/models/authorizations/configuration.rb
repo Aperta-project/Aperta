@@ -1,6 +1,6 @@
 module Authorizations
-  # Configuration houses the individual Authorization(s) being used to
-  # configure the authorization sub-system.
+  # An Authorizations::Configuration houses the individual Authorization(s)
+  # being used to configure the authorization sub-system.
   module Configuration
     extend self
 
@@ -19,10 +19,13 @@ module Authorizations
       )
     end
 
+    # Clears out any currently configured Authorizations.
     def reset
       @authorizations = []
     end
 
+    # Reloads the application's default Authorizations from
+    # config/initializers/z_authorizations.rb
     def reload
       reset
       load 'config/initializers/z_authorizations.rb'

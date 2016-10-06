@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export function qGet(params, hash) {
+export function findQuestion(params, hash) {
   let [owner, ident] = params;
 
   let question = owner.get('nestedQuestions').findBy('ident', ident);
@@ -11,4 +11,4 @@ export function qGet(params, hash) {
   }
 }
 
-export default Ember.Helper.helper(qGet);
+export default Ember.Helper.helper(findQuestion);

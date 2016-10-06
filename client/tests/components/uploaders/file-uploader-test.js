@@ -11,7 +11,7 @@ moduleForComponent('file-uploader',
 
 test('rejecting improper file types', function(assert) {
 
-  expect(3);
+  assert.expect(3);
   let fakeData = {files: [{name: 'badFile.png'}]};
 
   this.set('failedAddStub', function(errorMessage, {fileName, acceptedFileTypes}) {
@@ -36,4 +36,32 @@ test('rejecting improper file types', function(assert) {
 
   this.$('input').trigger('fileuploadadd', [fakeData]);
 
+});
+
+
+test('fires an action on fileuploaddone when url is not provided', function(assert) {
+  assert.expect(2);
+  this.set('doneStub', function(fileUrl, filename) {
+    assert.equal(
+      fileUrl,
+      'pending/testDir',
+      `extracts the first location tag from the response
+       and converts %2F escape chars to /`);
+    assert.equal(
+      filename,
+      'testFile',
+      `extracts the name of the first file`);
+  });
+  this.render(hbs`{{file-uploader id="upload-files"
+                      done=(action doneStub)}}`
+             );
+
+  let resultLocation = $.parseXML('<root><Location>pending%2FtestDir</Location></root>');
+  let uploadData = {
+    files: [
+      {name: 'testFile'}
+    ],
+    result: resultLocation
+  };
+  this.$('input').trigger('fileuploaddone', [uploadData]);
 });

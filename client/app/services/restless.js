@@ -1,8 +1,9 @@
 /* jshint unused: false */
 
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import camelizeKeys from 'tahi/lib/camelize-keys';
+
+const { getOwner } = Ember;
 
 export default Ember.Service.extend({
   pathFor(model) {

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
-import getOwner from 'ember-getowner-polyfill';
+
+const { getOwner } = Ember;
 
 const debug = function(description, obj) {
   const devOrTest = ENV.environment === 'development' ||

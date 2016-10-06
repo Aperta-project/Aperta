@@ -53,7 +53,7 @@ class TasksController < ApplicationController
       AdhocMailer.delay.send_adhoc_email(
         task_email_params[:subject],
         task_email_params[:body],
-        user
+        user.email
       )
     end
     head :no_content

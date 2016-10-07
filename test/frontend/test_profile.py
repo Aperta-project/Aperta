@@ -25,7 +25,7 @@ class ApertaProfileTest(CommonTest):
      - reset password
   """
 
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     test_profile: Validates elements and styles of the profile page
     :return: void function

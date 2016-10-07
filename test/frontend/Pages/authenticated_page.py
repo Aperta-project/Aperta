@@ -634,7 +634,7 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     self._wait_for_element(self._get(post_message_btn))
-    self._get(post_message_btn).click()
+    self.click_covered_element(self._get(post_message_btn))
     # Need to wait for make sure the post is sent
     time.sleep(3)
     return None

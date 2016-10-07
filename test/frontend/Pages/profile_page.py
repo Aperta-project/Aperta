@@ -177,7 +177,7 @@ class ProfilePage(AuthenticatedPage):
     department_input.send_keys(affiliation['department'])
     title_input.send_keys(affiliation['title'])
     country.click()
-    #import pdb; pdb.set_trace()
+    # Check for the country list selector before sending keys to country field
     self._get(self._country_list_items)
     country.send_keys(affiliation['country'] + Keys.RETURN)
     time.sleep(.5)

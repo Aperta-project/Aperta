@@ -40,7 +40,7 @@ module('Integration: Discussions', {
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
     mockFind('paper').returns({ model: paper });
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', paper.id, ['manage_workflow', 'start_discussion']);
 

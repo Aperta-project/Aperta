@@ -29,7 +29,7 @@ module('Integration: PaperIndex', {
     app = startApp();
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
     figureTaskId = 94139;
     records = paperWithTask('FigureTask', {
       id: figureTaskId,

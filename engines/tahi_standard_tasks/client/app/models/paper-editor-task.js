@@ -5,5 +5,6 @@ export default Task.extend({
   academicEditors: DS.belongsTo('user'),
   relationshipsToSerialize: ['academicEditors', 'participants'],
   inviteeRole: DS.attr('string'),
-  invitationTemplate: DS.attr()
+  invitationTemplate: DS.attr(),
+  inviteQueues: DS.hasMany('inviteQueue', { async: false })
 });

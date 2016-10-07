@@ -95,11 +95,14 @@ class InvitationsController < ApplicationController
       .permit(:actor_id,
         :body,
         :decline_reason,
+        :decision_id,
         :email,
         :state,
         :reviewer_suggestions,
         :task_id,
-        :primary_id)
+        :primary_id,
+        :position,
+        :invite_queue_id)
   end
 
   def invitation_update_params

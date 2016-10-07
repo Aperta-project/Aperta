@@ -98,6 +98,7 @@ Tahi::Application.routes.draw do
         put :update_attachment, on: :member
       end
     end
+    resources :invite_queues, only: [:create]
     resources :journals, only: [:index, :show] do
       resources :old_roles, only: :index, shallow: true do
         namespace 'old_roles', path: '' do

@@ -72,7 +72,20 @@ export default Ember.Component.extend({
 
   createInvitation: task(function * (props) {
     let invitation = this.get('store').createRecord('invitation', props);
-    this.get('task.inviteQueues').findBy('mainQueue').get('invitations').addObject(invitation);
+    let mainQueue;
+    let queueParent;
+    if (this.get('groupByDecision')) {
+      queueParent = this.get('latestDecision');
+    } else {
+      queueParent = this.get('task');
+    }
+    let promise = this.getOrCreateMainQueue(queueParent);
+    yield promise;
+    promise.then((queue)=> {
+      mainQueue = queue;
+      mainQueue.get('invitations').addObject(invitation);
+    });
+
     this.set('pendingInvitation', invitation);
     try {
       yield invitation.save();
@@ -93,6 +106,30 @@ export default Ember.Component.extend({
       // to do its thing) we have to wrap the ajax request in a try-catch block
     }
   }),
+
+  getOrCreateMainQueue: function(queueParent) {
+    let mainQueue;
+    let queues = queueParent.get('inviteQueues');
+    if (queues.get('length')) {
+      mainQueue = queues.findBy('mainQueue');
+      return new Ember.RSVP.Promise((resolve, fail)=> {
+        resolve(mainQueue);
+      });
+    } else {
+      var decision;
+      if (queueParent.get('constructor.modelName') === 'decision') {
+        decision = queueParent;
+      }
+      mainQueue = this.get('store').createRecord('inviteQueue', {
+        queueTitle: 'Main',
+        mainQueue: true,
+        task: this.get('task'),
+        decision: decision
+      });
+      queueParent.get('inviteQueues').addObject(mainQueue);
+      return mainQueue.save();
+    }
+  },
 
   persistedInvitations: computed('invitations.@each.isNew', function() {
     const invitations = this.get('invitations');

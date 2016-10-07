@@ -132,6 +132,7 @@ class ProfilePage(AuthenticatedPage):
   def validate_image_upload(self):
     """Validate uploading a new image as profile avatar"""
     # TODO: Check this when Pivotal#101632186 is fixed.
+    self._get(self._profile_name_title)
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
     self._get(self._avatar_hover).click()
     avatar_input = self._iget(self._avatar_input)

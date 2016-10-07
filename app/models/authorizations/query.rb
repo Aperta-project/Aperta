@@ -47,6 +47,110 @@ module Authorizations
   # none of them. When trying to determine what to show on the dashboard it
   # may be relevant to display papers they are actively participating in.
   #
+  # == Deep Dive!
+  #
+  # The query generates _a lot_ of SQL. The SQL looks complex, but it's
+  # conceptually pretty simple. There are four things that need to be done.
+  # Consider this code:
+  #
+  #       Authorizations::Query.new(
+  #         user: User.find_by_username("joe"),
+  #         permission: :view,
+  #         target: Paper.find(99).tasks
+  #       ).all
+  #
+  #    Joe is trying to get a list of all of the tasks on Paper 99 that he
+  #    can view. Here are the four steps we need to consider:
+  #
+  # ==== Step 1
+  #
+  # For a given user and permission we need to find all of the \
+  # Assignment(s) that could give the user access to kind of object \
+  # (e.g. Task, Paper, Journal, etc).
+  #
+  # This means that we need to find all assignments for Joe, JOIN on
+  # roles, JOIN on permissions, JOIN on permission_states and then only include
+  # those records where the permissions.applies_to matches Paper.
+  #
+  # Remember, this is just to get a list of Assignment(s) that _might_ give Joe
+  # access. We don't know for sure yet, onto step 2.
+  #
+  # Note: the PermissibleAssignmentsQuery represents Step 1.
+  #
+  # ==== Step 2
+  #
+  # Once we have the set of assignments which could give a user access to an \
+  # an object we need to then look at all of the Authorization paths. The
+  # Authorization paths tell us how to get from the kind of object the user
+  # is assigned to, to the kind of object that the user is querying for.
+  #
+  # There may be multiple paths. For example, if Joe was looking to access
+  # Paper 99 he may be assigned to a Journal. If so, then the path may be
+  # the Journal's "has_many :papers" association, but if Joe is assigned
+  # to a Task (say he's a Reviewer assigned to a ReviewerReportTask) then the
+  # path may be thru Task's "belongs_to :paper" association.
+  #
+  # Because there are many ways to get from point A (what the user is \
+  # assigned to) to point B (what the user is querying for) we need to
+  # dynamically query all of those paths because we don't know ahead of time
+  # which path will give him access.
+  #
+  # Once we look at all of the paths we will the set of the objects that
+  # Joe is authorized to view. Well mostly. Up until know we haven't taken
+  # into consideration PermissionRequirement(s). Let's do that next.
+  #
+  # Note: the ObjectsViaAuthorizationsQuery represents Step 2. Internally,
+  # it will use ObjectsAuthorizedViaNNNQuery objects to do the heavy
+  # lifting where NNN is BelongsTo, Collection, Self, or Through.
+  #
+  # ==== Step 3
+  #
+  # Now that we have all of the objects that a user may be authorized to see
+  # we need to further reduce the results to exclude any that have
+  # PermissionRequirement(s) that the user doesn't have.
+  #
+  # The result of this is final set of objects that a user can see. For Joe,
+  # it would be a list of all of the tasks he could view on Paper 99.
+  #
+  # At this point we have a set of records which contains two key pieces of
+  # information: the object id and the permission actions. E.g. we may have
+  # a result set that looks like this:
+  #
+  #     id       permission_actions
+  #   ------  |  -------------------
+  #      11   |    view:*, edit: unsubumitted
+  #      47   |    view:*, edit: unsubmitted
+  #      33   |    view:*, edit: unsubmitted
+  #
+  # Note: the ObjectsPermissibleByRequiredPermissionsQuery handles this work.
+  #
+  # ==== Step 4
+  #
+  # Up to this point all of the queries and subqueries have used only the
+  # columns that they need to do their job. This wasn't mentioned earlier in
+  # these docs because it didnt' seem relevant. Now it's relevant.
+  #
+  # If you look at the table of results in Step 3 above there are only
+  # two fields. We need to take the tasks that Joe can view and hydrate
+  # them. So, step 4 involves JOINing those ids back on the tasks table
+  # and selecting _all_ of the columns.
+  #
+  # That's all step 4 does.
+  #
+  # Note: HydrateObjectsQuery and HydrateObjects handle step 4.
+  #
+  # ==== Summary
+  #
+  # There are parts of the Authorization query which are static and there
+  # are parts which are dynamic. The code to generate the dynamic bits does
+  # get a bit messy because it is doing some complicated things (converting
+  # Ruby code to efficient SQL code), but in reality only the four steps
+  # above are being applied.
+  #
+  # P.S. This code works with Single Table Inheritance (STI) and that is
+  # an area that also makes some Ruby code more cmoplex as well as the
+  # resulting SQL complex. Fortunately, it's not a problem for the database.
+  #
   # == Notes
   #
   # The Authorizations::UserHelper module provides convenience methods

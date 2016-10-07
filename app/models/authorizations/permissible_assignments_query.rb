@@ -87,7 +87,7 @@ module Authorizations
             roles.name AS role_name,
             permissions.id AS permission_id'
           )
-        .joins(permissions: :states)
+        .joins(:permissions)
         .where(assignments: { user_id: user.id })
 
         # explicitly call .arel rather than convert Assignment.all

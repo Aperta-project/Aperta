@@ -12,18 +12,10 @@ module Authorizations
     def to_result_set
       @results_set ||= begin
         objects.each_with_object(Query::ResultSet.new) do |object, rs|
-          permission_states = Hash.new { |h,k| h[k] = { states: [] } }
-
-          # Permission_actions come thru as a string column, e.g:
-          #   "read:*, talk:in_progress, talk:in_review, view:*, write:in_progress"
-          #
-          # They need to be parsed out and the permission states should be
-          # grouped by their corresponding permission action.
-          object.permission_actions.
-            split(/\s*,\s*/).
-            map { |f| f.split(/:/) }.
-            each { |permission, state| permission_states[permission][:states] << state }
-          rs.add_object(object, with_permissions: permission_states)
+          permissions_map = convert_permission_actions_into_hash_map(
+            object.permission_actions
+          )
+          rs.add_object(object, with_permissions: permissions_map)
         end
       end
     end
@@ -32,6 +24,15 @@ module Authorizations
 
     def objects
       target.from Arel.sql("(#{query.to_sql}) AS #{klass.table_name} ")
+    end
+    def convert_permission_actions_into_hash_map(permission_actions)
+      permissions_map = Hash.new { |h,k| h[k] = { states: [] } }
+
+      permission_actions.split(/\s*,\s*/).
+        map { |f| f.split(/:/) }.
+        each { |action, state| permissions_map[action][:states] << state }
+
+      permissions_map
     end
   end
 end

@@ -12,7 +12,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users, creator_login23
+from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage

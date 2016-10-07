@@ -36,6 +36,12 @@ module Authorizations
 
     attr_reader :auth_config, :assignments_table, :common_query, :target
 
+    # == Constructor Arguments
+    # * assignments_table: the Arel::Table reference representing the \
+    #     assignments table to use for this query
+    # * auth_config: the Authorization(s) path to JOIN against
+    # * klass: the type/class that is being queried against
+    # * target: the ActiveRecord::Relation being queried against
     def initialize(auth_config:, target:, assignments_table:, klass:)
       @auth_config = auth_config
       @common_query = ObjectsAuthorizedCommonQuery.new(

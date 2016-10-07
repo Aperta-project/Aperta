@@ -33,13 +33,15 @@ module Authorizations
       end
     end
 
-    private
-
-    # Returns an ActiveRecord::Relation instance that combines @target
-    # and the passed in @query.
-    def objects
-      target.from Arel.sql("(#{query.to_sql}) AS #{klass.table_name} ")
+    def to_arel
+      objects.arel
     end
+
+    def to_sql
+      to_arel.to_sql
+    end
+
+    private
 
     # permission_actions come thru as a string column, e.g:
     #   "view:*, edit:unsubmitted, submit:unsubmitted, withdraw:submitted"
@@ -62,6 +64,12 @@ module Authorizations
         each { |action, state| permissions_map[action][:states] << state }
 
       permissions_map
+    end
+
+    # Returns an ActiveRecord::Relation instance that combines @target
+    # and the passed in @query.
+    def objects
+      target.from Arel.sql("(#{query.to_sql}) AS #{klass.table_name} ")
     end
   end
 end

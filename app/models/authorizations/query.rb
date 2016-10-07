@@ -91,6 +91,14 @@ module Authorizations
       end
     end
 
+    def to_arel
+      load_authorized_objects_query.to_arel
+    end
+
+    def to_sql
+      to_arel.to_sql
+    end
+
     private
 
     def initialize_for_target
@@ -203,9 +211,7 @@ module Authorizations
       # pathways for this query
       return ResultSet.new if auth_configs.empty?
 
-      hydrate_objects_from_query(
-        results_with_permissions_query
-      ).to_result_set
+      load_authorized_objects_query.to_result_set
     end
 
     # Takes a query object and hydrates it returning a HydratesObject
@@ -222,6 +228,12 @@ module Authorizations
         klass: @klass,
         target: @target
       )
+    end
+
+    def load_authorized_objects_query
+      @load_authorized_objects_query ||= begin
+        hydrate_objects_from_query(results_with_permissions_query)
+      end
     end
 
     # Returns a PermissibleAssignmentsQuery instance responsible for finding

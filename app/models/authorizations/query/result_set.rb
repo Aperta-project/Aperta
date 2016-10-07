@@ -4,7 +4,7 @@ module Authorizations
   class Query
 
     # Authorizations::Query::ResultSet represents the results of running an
-    # Authorization::Query. 
+    # Authorizations::Query.
     class ResultSet
       delegate :each, :map, :length, to: :@object_permission_map
 
@@ -40,7 +40,7 @@ module Authorizations
         serializable.as_json
       end
 
-      # Retruns a collection of Authorization::Query::Result objects that
+      # Retruns a collection of Authorizations::Query::Result objects that
       # can be serialized for client applications to consume.
       def serializable
         results = []

@@ -86,7 +86,6 @@ class InviteCard(BaseCard):
     assert any(invitee['email'] in s for s in invite_headings_text), \
         '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
     invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
-    invite_text = invite_text.replace('&nbsp;', ' ')
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
     title = self.normalize_spaces(title)
@@ -94,7 +93,8 @@ class InviteCard(BaseCard):
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
+    main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
+    assert main_author in invite_text, (main_author, invite_text)
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (ms_id,))[0][0]
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one

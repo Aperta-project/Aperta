@@ -36,7 +36,6 @@ class InviteReviewersCardTest(CommonTest):
     """
     # Users logs in and make a submission
     creator_user = random.choice(users)
-    creator_user = creator_login23
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()

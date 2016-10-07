@@ -1,8 +1,8 @@
 namespace :data do
   namespace :migrate do
     desc <<-DESC
-      Use data from the activity feed to fix `registered_at` dates for
-      decisions.
+      APERTA-7719 Use data from the activity feed to fix `registered_at` dates
+      for decisions.
     DESC
     task fix_decision_registered_at_dates: :environment do
       # A hash which relates decision verdicts to their expected activity

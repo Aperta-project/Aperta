@@ -6,16 +6,15 @@ class OrcidWorker
 
   def perform(user_id, authorization_code)
     response = oauth_authorize(authorization_code)
-    response_hash = JSON.parse(response.body)
 
-    orcid_account = OrcidAccount.find_or_create_by(user_id: user_id)
-    orcid_account.access_token = response_hash['access_token']
-    orcid_account.refresh_token = response_hash['refresh_token']
-    orcid_account.identifier = response_hash['orcid']
-    orcid_account.expires_at = DateTime.now.utc + response_hash['expires_in'].seconds
-    orcid_account.name = response_hash['name']
-    orcid_account.scope = response_hash['scope']
-    orcid_account.authorization_code_response = response_hash
+    orcid_account = OrcidAccount.find_by(user_id: user_id)
+    orcid_account.access_token = response['access_token']
+    orcid_account.refresh_token = response['refresh_token']
+    orcid_account.identifier = response['orcid']
+    orcid_account.expires_at = DateTime.now.utc + response['expires_in'].seconds
+    orcid_account.name = response['name']
+    orcid_account.scope = response['scope']
+    orcid_account.authorization_code_response = response
     orcid_account.save!
 
     OrcidProfileWorker.perform_in(5.seconds, orcid_account.id)
@@ -25,7 +24,7 @@ class OrcidWorker
 
   def oauth_authorize(code)
     # client id and secret are Aperta's id and secret, NOT the end user's
-    RestClient.post(
+    response = JSON.parse RestClient.post(
       "https://#{ENV['ORCID_SITE_HOST']}/oauth/token", {
         'client_id' => ENV['ORCID_KEY'],
         'client_secret' => ENV['ORCID_SECRET'],
@@ -33,6 +32,11 @@ class OrcidWorker
         'code' => code
       }, 'Accept' => 'application/json'
     )
+    if response["errorDesc"] &&
+        !response['errorDesc']['content'].empty?
+      raise OrcidAccount::APIError, response['errorDesc']['content']
+    end
+    response
   rescue RestClient::ExceptionWithResponse => ex
     raise OrcidAccount::APIError, ex.to_s
   end

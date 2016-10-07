@@ -212,8 +212,8 @@ module Authorizations
     def hydrate_objects_from_query(query_to_hydrate)
       hydrate_objects_query = HydrateObjectsQuery.new(
         klass: klass,
-        objects_with_permissions_query: query_to_hydrate,
-        target: @target
+        query: query_to_hydrate,
+        select_columns: [ klass.arel_table[Arel.star], :permission_actions ]
       )
 
       HydrateObjects.new(

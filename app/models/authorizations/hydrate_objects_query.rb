@@ -1,24 +1,40 @@
 module Authorizations
   class HydrateObjectsQuery
     include QueryHelpers
-    attr_reader :klass, :objects_with_permissions_query, :target
 
-    def initialize(klass:, objects_with_permissions_query:, target:)
+    attr_reader :select_columns, :klass, :query
+
+    def initialize(klass:, query:, select_columns:)
       @klass = klass
-      @objects_with_permissions_query = objects_with_permissions_query
-      @target = target
+      @query = query
+      @select_columns = process_select_columns(select_columns)
     end
 
     def to_arel
-      Arel::SelectManager.new(klass.arel_table.engine).
-        project(klass.arel_table[Arel.star], 'permission_actions').
-        from( Arel.sql('(' + objects_with_permissions_query.to_sql + ')').as('results_with_permissions') ).
-        join(klass.arel_table).on(klass.arel_table[:id].eq(table[:results_with_permissions][:id]))
+      Arel::SelectManager.new(klass.arel_table.engine)
+        .project(*select_columns)
+        .from( Arel.sql("( #{@query.to_sql} )").as(as_table.name))
+        .join(klass.arel_table).on(klass.arel_table[:id].eq(as_table[:id]))
     end
 
     def to_sql
       to_arel.to_sql
     end
+
+    private
+
+    def as_table
+      @as_table ||= Arel::Table.new(:object_ids_to_hydrate)
+    end
+
+    def process_select_columns(select_columns)
+      select_columns.map do |column|
+        if column.is_a?(String) or column.is_a?(Symbol)
+          as_table[column]
+        else
+          column
+        end
+      end
+    end
   end
 end
-

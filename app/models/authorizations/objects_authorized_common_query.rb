@@ -1,4 +1,13 @@
 module Authorizations
+
+  # ObjectsAuthorizedCommonQuery contains a bunch of common methods
+  # useful fo building up other queries. It's a helper class.
+  #
+  # == Note
+  #
+  # We pulled this out has a separate class rather than as a base-class
+  # or a module because we thought it would make it easier to reason about
+  # the code later on if there was an explicit boundary.
   class ObjectsAuthorizedCommonQuery
     include QueryHelpers
 
@@ -132,7 +141,7 @@ module Authorizations
     #     D < C < B < A
     #
     # A is the base class. It is the least specialized. D on the other hand
-    # is the most specialized. This means that permissoins on A trickle
+    # is the most specialized. This means that permissions on A trickle
     # down to include B, C, and D, but the reverse is not true.
     #
     # Here's an example...
@@ -141,17 +150,17 @@ module Authorizations
     # WHERE clause conditions for permissions.applies_to at every level of
     # the STI inheritance hierarchy.
     #
-    # If a record is an A (in STI terms) then we need an permission that
-    # applies_to A. Permissions that apply to B, C, and D are do not qualify
+    # If a record is an A then we need a permission that applies_to A.
+    # Permissions that apply to B, C, and D are do not qualify
     # because they are more specific.
     #
-    # If a permissions applies to B then we need a permission that applies
+    # If a permission applies to B then we need a permission that applies
     # to A or B.
     #
-    # If a permissions applies to C then we need a permission that applies
+    # If a permission applies to C then we need a permission that applies
     # to A, B, or C.
     #
-    # If a permissions applies to D then we need a permission that applies
+    # If a permission applies to D then we need a permission that applies
     # to A, B, C, or D.
     #
     # This will result in potentially a lot of SQL, but the database is pretty
@@ -175,7 +184,8 @@ module Authorizations
           #  [A, B, C]
           klasses << permissible_klass.base_class
 
-          # Here we add the condition
+          # Here we add the condition to allow any record whose
+          # permission.applies_to is for A, B, or C
           condition = klass.arel_table[:type].eq(permissible_klass.name).and(
             table[:permissions][:applies_to].in(klasses.map(&:name))
           )

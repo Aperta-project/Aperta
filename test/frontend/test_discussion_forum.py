@@ -6,7 +6,7 @@ import time
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import users, editorial_users, admin_users
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from selenium.webdriver.common.by import By
@@ -69,9 +69,9 @@ class DiscussionForumTest(CommonTest):
         raise  ValueError('Page not loaded')
     logging.info("Assigned paper id: {0}".format(paper_id))
     ms_viewer.logout()
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
+    staff_user = random.choice(staff_users)
+    logging.info('Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
@@ -93,10 +93,8 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     ms_viewer._get(ms_viewer._badge_red)
     ms_viewer.logout()
-    #time.sleep(10)
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
+    logging.info('Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())

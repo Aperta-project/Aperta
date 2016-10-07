@@ -614,7 +614,12 @@ class AuthenticatedPage(PlosPage):
     time.sleep(2)
     js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
     self._driver.execute_script(js_cmd)
-    time.sleep(5)
+    message_body_div = self._get(self._message_body_div)
+    count = 0
+    while 'editing' not in message_body_div.get_attribute('class'):
+      time.sleep(.5)
+      if count > 60:
+        break
     msg_body = self._get(self._message_body_field)
     if msg:
       msg_body.send_keys(msg)
@@ -623,9 +628,9 @@ class AuthenticatedPage(PlosPage):
     show_form = (By.CSS_SELECTOR, 'div.discussions-show-form')
     time.sleep(1)
     form_element = self._get(show_form)
-    form_element.click()
+    self.click_covered_element(form_element)
     # Click twice for butons to appear
-    form_element.click()
+    self.click_covered_element(form_element)
     time.sleep(1)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     self._wait_for_element(self._get(post_message_btn))

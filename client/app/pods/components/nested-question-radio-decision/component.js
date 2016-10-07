@@ -10,7 +10,7 @@ export default NestedQuestionComponent.extend({
 
   actions: {
     setAnswer(decision) {
-      this.set('model.answer.value', decision);
+      this.set('answer.value', decision);
     }
   }
 });

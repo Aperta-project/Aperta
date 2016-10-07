@@ -9,8 +9,8 @@
       </span>
     {{/if}}
 
-    {{#if model.answer.value}}
-      <div class="answer-text">{{model.answer.value}}</div>
+    {{#if answer.value}}
+      <div class="answer-text">{{answer.value}}</div>
     {{else}}
       <div class="answer-text no-answer">{{noResponseText}}</div>
     {{/if}}
@@ -27,7 +27,7 @@
 
         {{#if formatted}}
           {{format-input name=ident
-                         value=model.answer.value
+                         value=answer.value
                          class=inputClassNames
                          placeholder=placeholder
                          displayBold=false
@@ -35,7 +35,7 @@
                          disabled=disabled}}
         {{else}}
           {{input name=ident
-                  value=model.answer.value
+                  value=answer.value
                   class=inputClassNames
                   placeholder=placeholder
                   type=type

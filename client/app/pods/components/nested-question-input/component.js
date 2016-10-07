@@ -6,7 +6,7 @@ export default NestedQuestionComponent.extend({
   setAnswer: Ember.on('init',
       function() {
         if (this.get('defaultAnswer')) {
-          this.set('model.answer.value', this.get('defaultAnswer'));
+          this.set('answer.value', this.get('defaultAnswer'));
         }
       }),
   classNameBindings: [
@@ -19,8 +19,8 @@ export default NestedQuestionComponent.extend({
   type: 'text',
   clearHiddenQuestions: Ember.observer('displayContent', function() {
     if (!this.get('displayContent')) {
-      this.set('model.answer.value', '');
-      this.get('model.answer').save();
+      this.set('answer.value', '');
+      this.get('answer').save();
     }
   })
 });

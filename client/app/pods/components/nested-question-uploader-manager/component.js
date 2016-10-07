@@ -7,9 +7,7 @@ export default NestedQuestionComponent.extend({
 
   store: Ember.inject.service(),
 
-  attachments: Ember.computed('model.answer.attachment', function() {
-    return this.get('model.answer.attachments');
-  }),
+  attachments: Ember.computed.alias('model.answer.attachments'),
 
   // Do not propagate to parent component as this component is in charge
   // of saving itself (otherwise the parent component may issue another

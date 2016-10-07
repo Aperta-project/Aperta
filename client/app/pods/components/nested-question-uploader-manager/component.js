@@ -7,8 +7,8 @@ export default NestedQuestionComponent.extend({
 
   store: Ember.inject.service(),
 
-  attachments: Ember.computed('model.answer.attachment', function() {
-    return this.get('model.answer.attachments');
+  attachments: Ember.computed('answer.attachments', function() {
+    return this.get('answer.attachments');
   }),
 
   // Do not propagate to parent component as this component is in charge
@@ -34,7 +34,7 @@ export default NestedQuestionComponent.extend({
       Ember.assert(s3Url, 'Must provide an s3Url');
       Ember.assert(file, 'Must provide a file');
 
-      const answer = this.get('model.answer');
+      const answer = this.get('answer');
       const store =  this.get('store');
       answer.save().then( (savedAnswer) => {
         if(!attachment){

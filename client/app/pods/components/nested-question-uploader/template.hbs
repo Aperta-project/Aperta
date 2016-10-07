@@ -7,7 +7,7 @@
 
   <div class="additional-data">
     <span class="button-primary button--green fileinput-button {{if disabled 'button--disabled'}}">
-      {{if model.answer.attachment "Replace File" "Select & upload"}}
+      {{if answer.attachment "Replace File" "Select & upload"}}
 
       {{file-uploader accept=accept
                       start="uploadStarted"
@@ -23,8 +23,8 @@
                          disabled=disabled}}
       </div>
     {{/if}}
-    {{#if model.answer.attachment}}
-      {{attachment-thumbnail attachment=model.answer.attachment
+    {{#if answer.attachment}}
+      {{attachment-thumbnail attachment=answer.attachment
                              destroyAttachment="destroyAttachment"}}
   {{/if}}
   </div>

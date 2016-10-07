@@ -9,8 +9,8 @@ export default NestedQuestionComponent.extend({
 
   clearHiddenQuestions: Ember.observer('displayContent', 'disabled', function() {
     if (!this.get('disabled') && !this.get('displayContent')) {
-      this.set('model.answer.value', '');
-      this.get('model.answer').save();
+      this.set('answer.value', '');
+      this.get('answer').save();
     }
   })
 });

@@ -13,14 +13,14 @@ export default NestedQuestionComponent.extend({
   noLabel: 'No',
   noValue: false,
   displayBlockContent: false,
-  yesSelected: equal('model.answer.value', true),
-  noSelected:  equal('model.answer.value', false),
+  yesSelected: equal('answer.value', true),
+  noSelected:  equal('answer.value', false),
 
   namePrefix: computed(function(){
     return `${this.elementId}-${this.get('ident')}`;
   }),
 
-  yieldingForAdditionalData: computed('model.answer.value', function() {
+  yieldingForAdditionalData: computed('answer.value', function() {
     const yes = this.get('yesSelected');
     const no  = this.get('noSelected');
 

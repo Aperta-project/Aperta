@@ -8,7 +8,7 @@ export default NestedQuestionComponent.extend({
   labelClassNames: ['question-checkbox'],
   textClassNames: ['model-question'],
 
-  additionalDataYieldValue: computed('checked', 'model.answer.value',
+  additionalDataYieldValue: computed('checked', 'answer.value',
     function(){
       return { checked: this.get('isChecked'),
                unchecked: this.get('isNotChecked'),
@@ -16,18 +16,18 @@ export default NestedQuestionComponent.extend({
     }
   ),
 
-  textYieldValue: computed('checked', 'model.answer.value', function(){
+  textYieldValue: computed('checked', 'answer.value', function(){
     return { checked: this.get('isChecked'),
              unchecked: this.get('isNotChecked'),
              yieldingForText: true };
   }),
 
-  isChecked: computed.alias('model.answer.value'),
+  isChecked: computed.alias('answer.value'),
   isNotChecked: computed.not('isChecked'),
 
   setCheckedValue(checked){
     this.set('checked', checked);
-    this.set('model.answer.value', checked);
+    this.set('answer.value', checked);
   },
 
   actions: {

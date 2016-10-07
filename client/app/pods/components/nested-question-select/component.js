@@ -8,7 +8,7 @@ export default NestedQuestionComponent.extend({
 
   init: function() {
     this._super(...arguments);
-    if (this.get('defaultSelection') && !this.get('model.answer.value')) {
+    if (this.get('defaultSelection') && !this.get('answer.value')) {
       this.set('selectedData', this.get('defaultSelection'));
       this.sendAction('selectionSelected', this.get('defaultSelection'));
     }
@@ -16,8 +16,8 @@ export default NestedQuestionComponent.extend({
 
   defaultSelection: null,
 
-  selectedData: Ember.computed('model.answer.value', function() {
-    const value = this.get('model.answer.value');
+  selectedData: Ember.computed('answer.value', function() {
+    const value = this.get('answer.value');
     const id = parseInt(value) || value;
     return this.get('source').findBy('id', id);
   }),
@@ -29,13 +29,13 @@ export default NestedQuestionComponent.extend({
 
   actions: {
     selectionSelected(selection) {
-      this.set('model.answer.value', selection.id);
-      this.set('model.answer.additionalData', { nav_customer_number: selection.nav_customer_number })
+      this.set('answer.value', selection.id);
+      this.set('answer.additionalData', { nav_customer_number: selection.nav_customer_number });
       this.sendAction('selectionSelected', selection);
       this.save();
 
       if(this.attrs.validate) {
-        this.attrs.validate(this.get('model.ident'), selection.id);
+        this.attrs.validate(this.get('ident'), selection.id);
       }
     }
   }

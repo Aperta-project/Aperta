@@ -50,9 +50,9 @@ module Authorizations
     #
     # This generates a SELECT statement that looks like:
     #
-    #    SELECT tasks.*, object_ids_to_hydrate.permission_actions
+    #    SELECT tasks.*, authorized_objects_to_hydrate.permission_actions
     #
-    # The object_ids_to_hydrate table is an internal table alias for the
+    # The authorized_objects_to_hydrate table is an internal table alias for the
     # the +query+ passed in. So what we've really done is passed thru the
     # permission_actions column from the passed in +query+ to the results
     # of this hydrating query. Neat stuff, right?
@@ -78,9 +78,9 @@ module Authorizations
     # Returns the Arel::Table instance responsible for aliasing the
     # @query. This is so we can treat @query as a sub-query. E.g.:
     #
-    #     (SELECT * FROM ... WHERE ... ) AS object_ids_to_hydrate
+    #     (SELECT * FROM ... WHERE ... ) AS authorized_objects_to_hydrate
     def as_table
-      @as_table ||= Arel::Table.new(:object_ids_to_hydrate)
+      @as_table ||= Arel::Table.new(:authorized_objects_to_hydrate)
     end
 
     # Takes in a collection of possible column references (Arel columns,

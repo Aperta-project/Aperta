@@ -1,12 +1,13 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import startApp from 'tahi/tests/helpers/start-app';
-import setupMockServer from '../helpers/mock-server';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
 import { make } from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
-import page from '../pages/ad-hoc-task';
+import page from 'tahi/tests/pages/ad-hoc-task';
+import Factory from '../helpers/factory';
 
-let App = null;
 let server = null;
 
 const { mockFind } = TestHelper;
@@ -15,15 +16,13 @@ const paperTaskURL = function paperTaskURL(paper, task) {
   return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
 };
 
-module('Integration: AdHoc Card', {
+moduleForAcceptance('Integration: AdHoc Card', {
   afterEach() {
     server.restore();
     Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, App.destroy);
   },
 
   beforeEach() {
-    App      = startApp();
     server   = setupMockServer();
 
     server.respondWith('PUT', /\/api\/tasks\/\d+/, [
@@ -56,7 +55,8 @@ module('Integration: AdHoc Card', {
 
 test('Changing the title on an AdHoc Task', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper, body: [], title: 'Custom title' });
+  const task  = make('ad-hoc-task', { paper: paper, body: [], title: 'Custom title' });
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -72,7 +72,8 @@ test('Changing the title on an AdHoc Task', function(assert) {
 
 test('AdHoc Task text block', function(assert) {
   let paper = make('paper');
-  let task  = make('task', { paper: paper, body: [] });
+  let task  = make('ad-hoc-task', { paper: paper, body: [] });
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -80,9 +81,7 @@ test('AdHoc Task text block', function(assert) {
   visit(paperTaskURL(paper, task));
 
   page.toolbar.addText();
-  andThen(function() {
-    page.textboxes(0).setText('New contenteditable, yahoo!');
-  });
+  page.textboxes(0).setText('New contenteditable, yahoo!');
 
   andThen(function() {
     assert.textPresent('.inline-edit', 'yahoo');
@@ -98,7 +97,8 @@ test('AdHoc Task text block', function(assert) {
 
 test('AdHoc Task list block', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper, body: [] });
+  const task  = make('ad-hoc-task', { paper: paper, body: [] });
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -125,7 +125,8 @@ test('AdHoc Task list block', function(assert) {
 
 test('AdHoc Task email block', function(assert) {
   const paper = make('paper');
-  const task  = make('task', { paper: paper, body: [] });
+  const task  = make('ad-hoc-task', { paper: paper, body: [] });
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'add_email_participants']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -155,15 +156,4 @@ test('AdHoc Task email block', function(assert) {
 
   page.emails(0).send().sendConfirm();
 
-  andThen(function() {
-    assert.elementFound('.bodypart-last-sent',
-                        'The sent at time should appear');
-    assert.elementFound('.bodypart-email-sent-overlay',
-                        'The sent confirmation should appear');
-
-    assert.ok(_.findWhere(server.requests, {
-      method: 'PUT',
-      url: '/api/tasks/1/send_message'
-    }), 'It posts to the server');
-  });
 });

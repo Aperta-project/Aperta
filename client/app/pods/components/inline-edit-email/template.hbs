@@ -29,7 +29,7 @@
                            canManage=(can 'add_email_participants' task)}}
     <button class="button-link button--white" {{action "toggleChooseReceivers"}}>cancel</button>
     {{#if isSendable}}
-      <button class="button-secondary button--green send-email-action" {{action "sendEmail" model}}>Send Email</button>
+      <button class="button-secondary button--green send-email-action" {{action "sendEmail"}}>Send Email</button>
     {{else}}
       <button class="button-secondary button--disabled send-email-action">Send Email</button>
     {{/if}}

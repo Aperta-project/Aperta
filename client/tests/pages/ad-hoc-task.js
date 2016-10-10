@@ -74,6 +74,7 @@ export default PageObject.create({
       trash: clickable('.fa-trash'),
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
+      setText: contentEditable('div.editable'),
       deleteVisible: isVisible('.fa-trash'),
     }
   }),
@@ -107,7 +108,9 @@ export default PageObject.create({
       save: clickable('.edit-actions .button-secondary'),
       send: clickable('.email-send-participants'),
       cancel: clickable('.bodypart-overlay .button-link'),
-      sendConfirmVisible: isVisible('.send-email-action')
+      sendConfirm: clickable('.send-email-action'),
+      sendConfirmVisible: isVisible('.send-email-action'),
+      sendConfirmDisabled: isVisible('.send-email-action.button--disabled')
     }
   }),
 

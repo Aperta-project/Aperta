@@ -12,6 +12,7 @@ moduleForComponent('ad-hoc-body', 'Integration | Component | ad-hoc body', {
     page.setContext(this);
     registerCustomAssertions();
     manualSetup(this.container);
+    this.registry.register('service:can', FakeCanService);
   },
 
   afterEach() {
@@ -26,11 +27,9 @@ let template = hbs`{{ad-hoc-body task=task
                     canEdit=canEdit}}`;
 
 test('canManage=true adding new blocks', function(assert) {
-  this.registry.register('service:can', FakeCanService);
-
   // adding a text block immediately persists the new block to the task body
   let savecount = 0;
-  let task = make('task', {body: []});
+  let task = make('ad-hoc-task', {body: []});
 
   let fake = this.container.lookup('service:can');
   fake.allowPermission('add_email_participants', task);
@@ -82,7 +81,7 @@ test('canManage=true adding new blocks', function(assert) {
   assert.equal(page.emails(0).body, expectedSubject + ' This is a nice little email', `body added to email`);
 
   page.emails(0).send();
-  assert.notOk(page.emails(0).sendConfirmVisible, `emails cannot send without recipients`);
+  assert.ok(page.emails(0).sendConfirmDisabled, `emails cannot send without recipients`);
   page.emails(0).cancel();
 
   assert.ok(page.emails(0).editVisible, `emails are editable (manageable)`);
@@ -200,11 +199,27 @@ test('canEdit=true filling out some stuff still works', function(assert) {
   // File uploads need to be specified
 });
 
-test('canEdit=false all fields are disabled', function(assert) {
+test('canEdit=false users can send email with permission', function(assert) {
+  let task = taskWithBlocks();
+  // Set the permissions such that the user can add participants
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('add_email_participants', task);
+
   this.set('fakeSave', function() {});
   this.set('canEdit', false);
   this.set('canManage', false);
-  this.set('task', taskWithBlocks());
+  this.set('task', task);
+  this.render(template);
+
+  assert.elementFound('.bodypart-display.email .email-send-participants',`emails can always be sent`);
+});
+
+test('canEdit=false all fields are disabled', function(assert) {
+  let task = taskWithBlocks();
+  this.set('fakeSave', function() {});
+  this.set('canEdit', false);
+  this.set('canManage', false);
+  this.set('task', task);
   this.render(template);
 
   // Checkboxes are disabled
@@ -214,6 +229,7 @@ test('canEdit=false all fields are disabled', function(assert) {
   assert.elementNotFound('.bodypart-display.text .editable[contenteditable]');
 
   // Emails send in any state
-  assert.elementFound('.bodypart-display.email .email-send-participants',`emails can always be sent`);
+  // If the user cannot add recipients
+  assert.elementNotFound('.bodypart-display.email .email-send-participants',`emails can only be sent with permission to add participants`);
 });
 

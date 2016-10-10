@@ -64,6 +64,12 @@ class Journal < ActiveRecord::Base
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength
 
+  def self.staff_admins_for_papers(papers)
+    journals = Journal.joins(:papers)
+                      .where(papers: { id: papers })
+    journals.map(&:staff_admins).flatten
+  end
+
   def admins
     users.merge(OldRole.admins)
   end

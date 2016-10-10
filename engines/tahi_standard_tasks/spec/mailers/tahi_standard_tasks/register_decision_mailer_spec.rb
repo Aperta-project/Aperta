@@ -1,31 +1,24 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::RegisterDecisionMailer do
-  let(:paper) {
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) do
     FactoryGirl.create(:paper,
-                       :with_integration_journal,
-                       :with_creator,
-                       title: "Paper Title")
-  }
+      :with_creator,
+      journal: journal,
+      title: "Paper Title")
+  end
 
-  let(:task) {
-    FactoryGirl.create(:register_decision_class,
-                       title: "Register Decision Report",
-                       old_role: 'reviewer',
-                       paper: paper,
-                       completed: true)
-  }
-
-  let(:decision) {
+  let(:decision) do
     paper.decisions.create!(
       letter: "Body text of a Decision Letter",
       verdict: "accept"
     )
-  }
+  end
 
-  let(:email_with_no_fields_specified) {
+  let(:email_with_no_fields_specified) do
     described_class.notify_author_email(to_field: nil, subject_field: nil, decision_id: decision.id)
-  }
+  end
 
   describe "#notify_author_email" do
     context 'with to field and subject field empty' do
@@ -43,9 +36,9 @@ describe TahiStandardTasks::RegisterDecisionMailer do
     end
 
     context 'with to field and subject field populated with custom values' do
-      let(:email_to_arbitrary) {
+      let(:email_to_arbitrary) do
         described_class.notify_author_email(to_field: 'arb@example.com', subject_field: 'Your Submission', decision_id: decision.id)
-      }
+      end
       it "sends email to the author's email" do
         expect(email_to_arbitrary.to).to eq(['arb@example.com'])
       end

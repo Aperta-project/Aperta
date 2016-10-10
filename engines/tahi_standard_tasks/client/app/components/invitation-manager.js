@@ -24,14 +24,29 @@ export default Ember.Component.extend({
   autoSuggestSelectedText: null,
 
   decisions: computed.alias('task.decisions'),
+  latestDecision: computed.alias('task.paper.latestDecision'),
 
   queueSortingCriteria: ['mainQueue'],
   inviteQueues: computed.sort('task.inviteQueues', 'queueSortingCriteria'),
   invitations: computed.alias('task.invitations'),
+  currentInviteQueues: computed.alias('latestDecision.inviteQueues'),
+  previousInviteQueues: computed('task.paper.previousDecisions', function() {
+    return _.flatten(this.get('task.paper.previousDecisions').map(function(decision) {
+      return decision.get('inviteQueues');
+    }));
+  }),
 
   inviteeRole: computed.reads('task.inviteeRole'),
   latestDecision: computed('decisions', 'decisions.@each.latest', function() {
     return this.get('decisions').findBy('latest', true);
+  }),
+
+  queueParent: computed('groupByDecision','task', function() {
+    if (this.get('groupByDecision')) {
+      return this.get('latestDecision');
+    } else {
+      return this.get('task');
+    }
   }),
 
   applyTemplateReplacements(str) {
@@ -73,13 +88,7 @@ export default Ember.Component.extend({
   createInvitation: task(function * (props) {
     let invitation = this.get('store').createRecord('invitation', props);
     let mainQueue;
-    let queueParent;
-    if (this.get('groupByDecision')) {
-      queueParent = this.get('latestDecision');
-    } else {
-      queueParent = this.get('task');
-    }
-    let promise = this.getOrCreateMainQueue(queueParent);
+    let promise = this.getOrCreateMainQueue(this.get('queueParent'));
     yield promise;
     promise.then((queue)=> {
       mainQueue = queue;
@@ -107,11 +116,39 @@ export default Ember.Component.extend({
     }
   }),
 
-  getOrCreateMainQueue: function(queueParent) {
+  getOrCreateMainQueue() {
     let mainQueue;
+    const queueParent = this.get('queueParent');
     let queues = queueParent.get('inviteQueues');
     if (queues.get('length')) {
       mainQueue = queues.findBy('mainQueue');
+      return new Ember.RSVP.Promise((resolve, fail)=> {
+        resolve(mainQueue);
+      });
+    } else {
+      var decision;
+      if (queueParent.get('constructor.modelName') === 'decision') {
+        decision = queueParent;
+      }
+      mainQueue = this.get('store').createRecord('inviteQueue', {
+        queueTitle: 'Main',
+        mainQueue: true,
+        task: this.get('task'),
+        decision: decision
+      });
+      queueParent.get('inviteQueues').addObject(mainQueue);
+      return mainQueue.save();
+    }
+  },
+
+  getOrCreateSubQueue(primary) {
+    let subQueue;
+    if(primary.get('inviteQueue').length){
+    }
+    const queueParent = this.get('queueParent');
+    let queues = queueParent.get('inviteQueues');
+    if (queues.get('length')) {
+      subQueue = queues.findBy('mainQueue');
       return new Ember.RSVP.Promise((resolve, fail)=> {
         resolve(mainQueue);
       });
@@ -190,10 +227,18 @@ export default Ember.Component.extend({
       this.set('selectedUser', selectedUser);
     },
 
-    placeInQueue(invitation) {
-      this.get('task.inviteQueues')
-          .filterBy('mainQueue', false)
-          .findBy('primary.id', invitation.get('primary.id'));
+    placeInDifferentQueue(invitation) {
+      const primary = invitation.get('primary');
+      this.getOrCreateSubQueue();
+      if (primary) {
+        invitation.set('inviteQueue', );
+
+      } else {
+        const queue = this.get('task.queueParent').filterBy('mainQueue', true);
+      }
+      //this.get('task.inviteQueues')
+      //    .filterBy('mainQueue', false)
+      //    .findBy('primary.id', invitation.get('primary.id'));
     },
 
     toggleActiveInvitation(invitation, rowState) {

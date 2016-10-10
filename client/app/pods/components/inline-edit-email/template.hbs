@@ -1,46 +1,44 @@
-{{#with (can 'add_email_participants' task) as |permittedToSend|}}
-  <div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}} {{if showChooseReceivers "show-choose-receivers"}}">
-    {{#if permittedToSend}}
-      <div class="send-email">
-        {{#if lastSentAt}} <span class="bodypart-last-sent">Sent {{lastSentAt}}</span>{{/if}}
-        <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email</div>
-      </div>
+<div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}} {{if showChooseReceivers "show-choose-receivers"}}">
+  {{#if (can 'add_email_participants' task)}}
+    <div class="send-email">
+      {{#if lastSentAt}} <span class="bodypart-last-sent">Sent {{lastSentAt}}</span>{{/if}}
+      <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email</div>
+    </div>
+  {{/if}}
+  <div class="item-text">
+    <div class="item-subject">
+      Subject: {{bodyPart.subject}}
+    </div>
+    {{{bodyPart.value}}}
+  </div>
+</div>
+
+<div class="inline-edit-form {{if editing "editing"}} {{if showChooseReceivers "hidden"}}">
+  {{input value=bodyPart.subject placeholder="Enter a subject"}}
+  {{content-editable value=bodyPart.value class="editable email-body"}}
+</div>
+
+{{#if showChooseReceivers}}
+  <div class="bodypart-choose-receiver-overlay bodypart-overlay">
+    <h4>Please choose who should receive this email.</h4>
+    {{participant-selector currentParticipants=recipients
+                           onRemove=(action "removeRecipient")
+                           onSelect=(action "addRecipient")
+                           label="Recipients:"
+                           paperId=paperId
+                           canManage=(can 'add_email_participants' task)}}
+    <button class="button-link button--white" {{action "toggleChooseReceivers"}}>cancel</button>
+    {{#if isSendable}}
+      <button class="button-secondary button--green send-email-action" {{action "sendEmail" model}}>Send Email</button>
+    {{else}}
+      <button class="button-secondary button--disabled send-email-action">Send Email</button>
     {{/if}}
-    <div class="item-text">
-      <div class="item-subject">
-        Subject: {{bodyPart.subject}}
-      </div>
-      {{{bodyPart.value}}}
-    </div>
   </div>
+{{/if}}
 
-  <div class="inline-edit-form {{if editing "editing"}} {{if showChooseReceivers "hidden"}}">
-    {{input value=bodyPart.subject placeholder="Enter a subject"}}
-    {{content-editable value=bodyPart.value class="editable email-body"}}
+{{#if showSentMessage}}
+  <div class="bodypart-email-sent-overlay bodypart-overlay">
+    <span class="fa fa-remove animation-scale-in" {{action "clearEmailSent"}}></span>
+    <h4>Your email has been sent.</h4>
   </div>
-
-  {{#if showChooseReceivers}}
-    <div class="bodypart-choose-receiver-overlay bodypart-overlay">
-      <h4>Please choose who should receive this email.</h4>
-      {{participant-selector currentParticipants=recipients
-                             onRemove=(action "removeRecipient")
-                             onSelect=(action "addRecipient")
-                             label="Recipients:"
-                             paperId=paperId
-                             canManage=permittedToSend}}
-      <button class="button-link button--white" {{action "toggleChooseReceivers"}}>cancel</button>
-      {{#if isSendable}}
-        <button class="button-secondary button--green send-email-action" {{action "sendEmail" model}}>Send Email</button>
-      {{else}}
-        <button class="button-secondary button--disabled send-email-action">Send Email</button>
-      {{/if}}
-    </div>
-  {{/if}}
-
-  {{#if showSentMessage}}
-    <div class="bodypart-email-sent-overlay bodypart-overlay">
-      <span class="fa fa-remove animation-scale-in" {{action "clearEmailSent"}}></span>
-      <h4>Your email has been sent.</h4>
-    </div>
-  {{/if}}
-{{/with}}
+{{/if}}

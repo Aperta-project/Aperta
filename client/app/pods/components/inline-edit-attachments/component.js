@@ -11,14 +11,13 @@ export default Ember.Component.extend({
   showAttachments: false,
   showAttachmentsBlock: Ember.computed.or('hasAttachments', 'showAttachments'),
 
-  attachmentsRequest(path, method, s3Url, file) {
+  attachmentsRequest: Ember.concurrencyTask(function * (path, method, s3Url, file) {
     const store = this.get('store');
     const restless = this.get('restless');
-    restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name;
-      store.pushPayload(response);
-    });
-  },
+    let response = yield restless.ajaxPromise(method, path, {url: s3Url});
+    response.attachment.filename = file.name;
+    store.pushPayload(response);
+  }),
 
   attachmentsPath: Ember.computed('task.id', function() {
     return `/api/tasks/${this.get('task.id')}/attachments`;
@@ -37,11 +36,11 @@ export default Ember.Component.extend({
 
     updateAttachment(s3Url, file, attachment) {
       const path = `${this.get('attachmentsPath')}/${attachment.id}/update_attachment`;
-      this.attachmentsRequest(path, 'PUT', s3Url, file);
+      this.get('attachmentsRequest').perform(path, 'PUT', s3Url, file);
     },
 
     createAttachment(s3Url, file) {
-      this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
+      this.get('attachmentsRequest').perform(this.get('attachmentsPath'), 'POST', s3Url, file);
     },
 
     deleteAttachment(attachment) {

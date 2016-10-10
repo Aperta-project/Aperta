@@ -7,6 +7,10 @@ class OrcidAccount < ActiveRecord::Base
   class APIError < StandardError; end
 
   def update_orcid_profile!
+    unless identifier && access_token
+      raise OrcidAccount::APIError, 'Need an Orcid ID and access token before fetching profile'
+    end
+
     api_profile_url = "https://#{ENV['ORCID_API_HOST']}/" \
       + "v#{ENV['ORCID_API_VERSION']}/" \
       + "#{identifier}/orcid-profile"
@@ -29,7 +33,7 @@ class OrcidAccount < ActiveRecord::Base
   end
 
   def access_token_valid
-    return unless expires_at
+    return unless expires_at && access_token
     (expires_at > DateTime.now.utc) && access_token
   end
 

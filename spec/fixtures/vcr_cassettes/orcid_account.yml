@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.sandbox.orcid.org/v1.2/0000-0002-8398-4521/orcid-profile
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 77ca0753-a8ac-491b-a1c4-0dbaa0c486d0
+      Content-Type:
+      - application/orcid+xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Fri, 07 Oct 2016 20:09:29 GMT
+      Content-Type:
+      - application/vnd.orcid+xml; qs=5;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA3VUTW+jMBC951cg7sZAsxWNHFd7WVWV9ta97M2Jh2DVH8h2
+        mvLvd0rYJpgECYRn3nsz4xmbPX8anX2AD8rZbV4VZZ6B3Tup7GGb/3n7RZo8
+        C1FYKbSzsM0HCPkzXzHn90oSAyGIA2QoYsM272LsN5SeTqdi9OP3QG2g4yLn
+        qwwfNnHIFJRXRc1oajxDz0F671qlIYtDjwkcA/hJ6gqjJNioWgX+4hrdR6/4
+        lFbAKnbu8yq1Eh+Cb02ah6eGrH/UFaNfjLlGL2LHb2JHzxzcuRD5IhSjo/2S
+        Nr2f93fZ0ILHZkBIQmi3Fxo4WEan34XuTfIk3KkQnR8S0b0HEXHrsaexc5L/
+        BrMDT0YdD5LRFDCnh+POqPDVOyJFBF6X1SOpcMce36pmU6431VPRlNVfRlNk
+        UpsIkRicP9wTeUuqqjd1U6zXDyh1A5wUpYUyIHn0R8AKptUcgyN35oMRSvNW
+        6IDYxHqH0ntlhB/uUOfeRY8WfZj6s1MuHUA8Fc4KTSRElErmYYQc1AdYYgUe
+        JP7zldHr9RLdCqP0MLr5C7wbgaN0bZuHp/fj/6/lO+fLAI6HFm8KOrsq+Oof
+        vUa9tHMEAAA=
+    http_version: 
+  recorded_at: Fri, 07 Oct 2016 20:09:29 GMT
+recorded_with: VCR 2.9.3

@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Reporting Guidelines: PRISMA uploads for systematic review and meta-analyses work again
 ### Security
 
 ## [1.25.1] - {2016-09-16}

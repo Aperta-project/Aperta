@@ -9,6 +9,7 @@ let BlockObject = Ember.Object.extend({
   items: null,
   snapshot: null,
   isNew: false,
+  index: null,
 
   type: Ember.computed.reads('items.firstObject.type'),
   hasContent: Ember.computed('items.@each.value', function() {
@@ -57,18 +58,18 @@ export default Ember.Component.extend({
 
   blocks: null,
   blockObjects: Ember.computed('blocks.[]', function() {
-    return this.get('blocks').map((block) => {
+    return this.get('blocks').map((block, idx) => {
       // note that items are shared by reference here.
       // that means that when one of the items' 'value' property
       // is updated, it will update item in the blocks array too.
       // we should probably make it such that the block items are copied
       // rather than shared, as it makes things way more confusing.
-      return BlockObject.create({items: block});
+      return BlockObject.create({items: block, index: idx});
       //
     });
   }),
 
-  blockSort: ['isNew:asc'],
+  blockSort: ['isNew:asc', 'index:asc'],
   displayedBlocks: Ember.computed.sort('blockObjects', 'blockSort'),
   hasNewBlock: Ember.computed('blockObjects.@each.isNew', function() {
     return this.get('blockObjects').isAny('isNew');
@@ -89,9 +90,12 @@ export default Ember.Component.extend({
     // always return a reference to the same array until the `blocks.[]` key is invalidated,
     // so you can trust the `blockObjects` reference to stay consistent until you add
     // or remove a block, at which point it will recompute and return a fresh array
+
+    let newIndex = this.get('blockObjects.length');
     this.get('blockObjects').pushObject(
       BlockObject.create({
         isNew: isNew,
+        index: newIndex,
         items: [firstItemAttrs]
       })
     );

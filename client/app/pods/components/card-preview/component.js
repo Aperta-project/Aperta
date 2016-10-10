@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import ENV from 'tahi/config/environment';
 import taskComponentName from 'tahi/lib/task-component-name';
+
+const { getOwner } = Ember;
 
 export default Ember.Component.extend({
   classNames: ['card'],

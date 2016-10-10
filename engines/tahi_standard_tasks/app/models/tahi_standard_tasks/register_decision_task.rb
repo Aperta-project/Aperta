@@ -29,7 +29,8 @@ module TahiStandardTasks
       RegisterDecisionMailer.delay.notify_author_email(
         to_field: EmailService.new(email: to_field).valid_email_or_nil,
         subject_field: subject_field,
-        decision_id: paper.decisions.completed.last)
+        decision_id: paper.decisions.completed.last.id
+      )
     end
 
     private

@@ -2,17 +2,25 @@
  *= require_self
 */
 
+// https://github.com/Tahi-project/tahi/wiki/CSS-Guidelines
+
+@import 'config/functions';
+@import 'config/variables';
+@import 'config/colors';
+@import 'config/z-index';
+@import 'config/webfonts';
+
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
-@import 'bourbon';
-@import 'variables';
-@import 'z-index';
-@import 'webfonts';
-@import 'mixins';
-@import 'resets';
+@import 'bootstrap-overrides';
 
-@import 'base-layout';
-@import 'flex-base';
+// NOTE: Bourbon is mostly used for vendor prefixing
+// When writing/editing styles, check to see if prefixing is necessary
+@import 'bourbon';
+
+@import 'config/mixins';
+
+@import 'config/global-resets';
 
 @import 'animations/base';
 @import 'components/base';
@@ -20,7 +28,9 @@
 @import 'screens/base';
 @import 'ui/base';
 
-@import 'tahi';
+// This is bad and you should feel bad
+@import 'dumping-ground';
+
 @import 'print';
 
 // STANDARD CARDS

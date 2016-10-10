@@ -1,0 +1,115 @@
+/*
+------------------------------------------------------------------------------
+ Are you sure you styles don't have a home?
+ See application.scss for an explanation on how the file structure works
+-------------------------------------------------------------------------------
+*/
+
+.main-content {
+  @include position(absolute, $main-nav-height 0px 0px 0px);
+  overflow: auto;
+}
+
+.overlay-open .main-content {
+  @include filter(grayscale(50%) blur(3px));
+}
+
+// Config for Ember-CLI addon ember-power-select
+.ember-basic-dropdown-content {
+  z-index: z('power-select-content');
+}
+
+.power-select-other.error .power-select-other-input {
+  border: 1px solid $aperta-red;
+}
+
+
+.warning {
+  color: red;
+  font-size: 14px;
+  font-style: italic;
+}
+
+// NOTE This is a component, create home: ./components/_datepicker.scss
+.datepicker-field {
+  width: 100px;
+  display: inline-block;
+
+  &.datepicker {
+    margin-right: 15px;
+  }
+}
+
+// for old style forms
+.form-group {
+  position: relative;
+
+  p {
+    margin: 15px 0;
+    font-size: 18px;
+  }
+
+  &.required {
+    position: relative;
+    &::before {
+      content: "*";
+      font-size: 24pt;
+      font-weight: bold;
+      position: absolute;
+      color: #5d4aac;
+      left: -20px;
+    }
+  }
+}
+
+// for new style forms
+.form-inline {
+  .required {
+    &::before {
+      content: "*";
+      margin: 0 3px 0 -3px;
+      color: $aperta-green;
+      font-size: 18pt;
+      float: left;
+    }
+  }
+}
+
+.error {
+  input, select, textarea,
+  .did-you-mean-input, .select2-container .select2-choice {
+    border: 1px solid $aperta-red;
+  }
+}
+
+.tahi-generic-loading {
+  @include position(absolute, 30% 30% auto 30%);
+  text-align: center;
+
+  .quote {
+    padding-top: 4rem;
+    font-size: 1.5em;
+    font-style: italic;
+  }
+}
+
+.clear {
+  clear: both;
+}
+
+.feedback {
+  font-size: 16px;
+  color: $aperta-green;
+}
+
+.preserve-line-breaks {
+  white-space: pre-line;
+}
+
+
+/*
+------------------------------------------------------------------------------
+ Are you sure you styles don't have a home?
+ See application.scss for an explanation on how the file structure works
+-------------------------------------------------------------------------------
+*/

@@ -50,7 +50,13 @@ export default Ember.TextField.extend({
 
   willDestroyElement() {
     this._super(...arguments);
-    this.$().fileupload('destroy');
+    this._cleanupFileUpload();
+  },
+
+  _cleanupFileUpload() {
+    if ($.data(this.$()[0])['blueimp-fileupload']) {
+      this.$().fileupload('destroy');
+    }
   },
 
   setupUploader: (function() {

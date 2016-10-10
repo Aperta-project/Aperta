@@ -49,8 +49,8 @@ export default Ember.Component.extend({
   },
 
   didInsertElement() {
-    Ember.run.scheduleOnce('afterRender', this, this._setupFileUpload);
     this._super(...arguments);
+    this._setupFileUpload();
   },
 
   _submitToS3(fileData, {url, formData}) {
@@ -63,9 +63,15 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     this._super(...arguments);
-    this.$().fileupload('destroy');
+    this._cleanupFileUpload();
     this.set('uploadCanceled', true);
     Ember.tryInvoke(this.get('uploadXHR'), 'abort');
+  },
+
+  _cleanupFileUpload() {
+    if ($.data(this.$()[0])['blueimp-fileupload']) {
+      this.$().fileupload('destroy');
+    }
   },
 
   _setupFileUpload() {

@@ -47,9 +47,7 @@ export default Ember.Component.extend({
   restless: Ember.inject.service(),
   participants: Ember.computed.mapBy('task.participations', 'user'),
   toolbarActive: false,
-  paperId: Ember.computed('task', function() {
-    return this.get('task.paper.id');
-  }),
+  paperId: Ember.computed.reads('task.paper.id'),
 
   canEdit: true,
   canManage: true,
@@ -83,6 +81,14 @@ export default Ember.Component.extend({
   },
 
   addBlock(firstItemAttrs, isNew = true) {
+    // You'll see several instances of us mutating the `blockObjects`
+    // array throughout this component.  `blockObjects` is a computed property
+    // that will retain its cached value until an item is added or removed from the
+    // passed-in `blocks` array; it acts as our working set of changes to the blocks.
+    // Remember that in practice calling `this.get('blockObjects')` multiple times will
+    // always return a reference to the same array until the `blocks.[]` key is invalidated,
+    // so you can trust the `blockObjects` reference to stay consistent until you add
+    // or remove a block, at which point it will recompute and return a fresh array
     this.get('blockObjects').pushObject(
       BlockObject.create({
         isNew: isNew,

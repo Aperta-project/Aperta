@@ -35,6 +35,7 @@ class ProductionMedataCard(BaseCard):
     self._how_to_pay = (By.XPATH, ".//li[contains(@class, 'question')]/div/div")
     self._volume_number_field = (By.CLASS_NAME, 'volume-number')
     self._issue_number_field = (By.CLASS_NAME, 'issue-number')
+    self._error_msg = (By.CLASS_NAME, 'error-message')
 
   def check_style(self, paper_id):
     """
@@ -79,7 +80,9 @@ class ProductionMedataCard(BaseCard):
     # press I am done with this task
     done_btn = self._get(self._completion_button)
     done_btn.click()
-    self._wait_for_element(self._get(self._volume_number_field))
+    # Time required for the error messages to appear
+    time.sleep(5)
+    self._gets(self._error_msg)
     volume_field = self._get(self._volume_number_field)
     assert 'Must be a whole number' in volume_field.text, volume_field.text
     issue_field = self._get(self._issue_number_field)

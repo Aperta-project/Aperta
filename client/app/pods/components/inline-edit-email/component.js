@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
 
-    this.set('recipients', this.get('overlayParticipants').slice());
+    this.set('recipients', this.get('overlayParticipants'));
   }),
 
   keyForStates: Ember.computed.alias('bodyPart.subject'),

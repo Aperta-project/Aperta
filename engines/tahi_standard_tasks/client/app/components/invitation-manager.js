@@ -122,7 +122,7 @@ export default Ember.Component.extend({
     let queues = queueParent.get('inviteQueues');
     if (queues.get('length')) {
       mainQueue = queues.findBy('mainQueue');
-      return new Ember.RSVP.Promise((resolve, fail)=> {
+      return new Ember.RSVP.Promise((resolve)=> {
         resolve(mainQueue);
       });
     } else {
@@ -142,30 +142,20 @@ export default Ember.Component.extend({
   },
 
   getOrCreateSubQueue(primary) {
-    let subQueue;
     if(primary.get('inviteQueue').length){
+      return new Ember.RSVP.Promise((resolve)=> {
+        resolve(primary.get('inviteQueue'));
+      });
     }
     const queueParent = this.get('queueParent');
-    let queues = queueParent.get('inviteQueues');
-    if (queues.get('length')) {
-      subQueue = queues.findBy('mainQueue');
-      return new Ember.RSVP.Promise((resolve, fail)=> {
-        resolve(mainQueue);
-      });
-    } else {
-      var decision;
-      if (queueParent.get('constructor.modelName') === 'decision') {
-        decision = queueParent;
-      }
-      mainQueue = this.get('store').createRecord('inviteQueue', {
-        queueTitle: 'Main',
-        mainQueue: true,
-        task: this.get('task'),
-        decision: decision
-      });
-      queueParent.get('inviteQueues').addObject(mainQueue);
-      return mainQueue.save();
-    }
+    const subQueue = queueParent.get('inviteQueues').createRecord({
+      primary: primary,
+      mainQueue: false,
+      queueTitle: `SubQueue for: ${primary.get('email')}`,
+      task: this.get('task')
+    });
+    queueParent.get('inviteQueues').addObject(subQueue);
+    return subQueue.save();
   },
 
   persistedInvitations: computed('invitations.@each.isNew', function() {
@@ -229,16 +219,17 @@ export default Ember.Component.extend({
 
     placeInDifferentQueue(invitation) {
       const primary = invitation.get('primary');
-      this.getOrCreateSubQueue();
       if (primary) {
-        invitation.set('inviteQueue', );
-
+        return this.getOrCreateSubQueue(primary).then(function(queue) {
+          invitation.set('inviteQueue', queue);
+          return invitation.save();
+        });
       } else {
-        const queue = this.get('task.queueParent').filterBy('mainQueue', true);
+        return this.getOrCreateMainQueue().then(function(queue) {
+          invitation.set('inviteQueue', queue);
+          return invitation.save();
+        });
       }
-      //this.get('task.inviteQueues')
-      //    .filterBy('mainQueue', false)
-      //    .findBy('primary.id', invitation.get('primary.id'));
     },
 
     toggleActiveInvitation(invitation, rowState) {

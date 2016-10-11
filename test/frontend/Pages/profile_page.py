@@ -179,6 +179,7 @@ class ProfilePage(AuthenticatedPage):
     country.click()
     # Check for the country list selector before sending keys to country field
     self._get(self._country_list_items)
+    time.sleep(1)
     country.send_keys(affiliation['country'] + Keys.RETURN)
     time.sleep(.5)
     datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)

@@ -12,10 +12,10 @@
 }
 
 .animation-fade-in {
-  @include animation(fadeIn 200ms $ease-out-quad);
-  @include animation-fill-mode(forwards);
+  animation: fadeIn 200ms $ease-out-quad;
+  animation-fill-mode: forwards;
 }
 
 .animation-fade-out {
-  @include animation(fadeOut 200ms $ease-out-quad);
+  animation: fadeOut 200ms $ease-out-quad;
 }

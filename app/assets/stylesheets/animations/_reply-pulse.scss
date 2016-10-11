@@ -5,6 +5,6 @@
 }
 
 .animation-pulse {
-  @include animation-name(reply-pulse);
-  @include animation-duration(1500ms);
+  animation-name: reply-pulse;
+  animation-duration: 1500ms;
 }

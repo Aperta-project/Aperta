@@ -1,45 +1,47 @@
-<nav class="main-nav" role="navigation">
-  <div class="main-nav-items">
-    {{#link-to "dashboard" class="main-nav-item main-nav-item--first main-nav-item-app-name"
-      id="nav-dashboard"
-      title="Dashboard"}}
-      {{specifiedAppName}}
-    {{/link-to}}
+<a href="#main-content" id="skip-to-main-content">Skip to content</a>
+<div id="main-navigation-cover" aria-hidden="true"></div>
 
-    <span class="main-nav-item main-nav-item--spacer"></span>
+<nav id="main-navigation" role="navigation">
+  {{#link-to "dashboard" class="main-navigation-item main-navigation-item--home main-nav-item-app-name" id="nav-dashboard" title="Dashboard"}}
+    {{specifiedAppName}}
+  {{/link-to}}
 
-    {{#link-to "dashboard" class="main-nav-item" id='nav-manuscripts'
-      title="Dashboard"}}
-      Your Manuscripts
-    {{/link-to}}
+  <span class="spacer"></span>
 
-    {{#if isLoggedIn}}
-      {{#if canViewAdminLinks}}
-        {{link-to "Admin" "admin" class="main-nav-item" id="nav-admin"}}
-      {{/if}}
+  {{#link-to "dashboard" class="main-navigation-item" id="nav-manuscripts" title="Dashboard"}}
+    Your Manuscripts
+  {{/link-to}}
 
-      {{#if canViewPaperTracker}}
-        {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item" id="nav-paper-tracker"}}
-      {{/if}}
-
-      <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback" class="main-nav-item">Feedback</a>
-
-      <a href="http://journals.plos.org/plosbiology/s/aperta-help" class="main-nav-item" id="nav-help" target="_blank">Help</a>
-
-      <span id="profile-dropdown-menu" class="main-nav-item main-nav-item--last" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-        <img src={{currentUser.avatarUrl}} class="user-thumbnail">
-        <span class="profile-dropdown-menu-text">{{currentUser.fullName}}</span>
-      </span>
-
-      <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">
-        <li>{{link-to "Profile" "profile" id="nav-profile"}}</li>
-        <li><a href="/users/sign_out" id="nav-signout">Sign Out</a></li>
-      </ul>
+  {{#if isLoggedIn}}
+    {{#if canViewAdminLinks}}
+      {{link-to "Admin" "admin" class="main-navigation-item" id="nav-admin"}}
     {{/if}}
-  </div>
+
+    {{#if canViewPaperTracker}}
+      {{link-to "Paper Tracker" "paper_tracker" class="main-navigation-item" id="nav-paper-tracker"}}
+    {{/if}}
+
+    <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback" class="main-navigation-item">Feedback</a>
+
+    <a href="http://journals.plos.org/plosbiology/s/aperta-help" class="main-navigation-item" id="nav-help" target="_blank">Help</a>
+
+    {{#main-nav-user-section}}
+      <div class="main-nav-user-section-header" id="profile-dropdown-menu-trigger">
+        <div><img src={{currentUser.avatarUrl}} aria-hidden="true"></div>
+        {{currentUser.fullName}}
+      </div>
+      <div class="main-nav-user-section-body" id="profile-dropdown-menu">
+        {{link-to "Profile" "profile" class="main-nav-user-section-item" id="nav-profile"}}
+        <a href="/users/sign_out" class="main-nav-user-section-item" id="nav-signout">Sign Out</a>
+      </div>
+    {{/main-nav-user-section}}
+    <span></span>
+  {{/if}}
 </nav>
 
-<main class="main-content" role="main">{{outlet}}</main>
+<div id="control-bar-cover" aria-hidden="true"></div>
+
+<main id="main-content" class="main-content" role="main">{{outlet}}</main>
 
 {{#overlay-fullscreen visible=showFeedbackOverlay
                       outAnimationComplete=(action "hideFeedbackOverlay")

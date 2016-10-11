@@ -10,7 +10,8 @@ class FtpUploaderService
     passive_mode: true,
     final_filename: nil,
     url: TahiEnv.apex_ftp_url,
-    email_on_failure: nil
+    email_on_failure: nil,
+    error_detail: nil
   )
 
     ftp_url = URI.parse(url)
@@ -28,6 +29,7 @@ class FtpUploaderService
     @port = ftp_url.port || 21
     @user = URI.unescape(ftp_url.user)
     @email_on_failure = email_on_failure
+    @error_detail = error_detail
   end
 
   def upload
@@ -36,6 +38,7 @@ class FtpUploaderService
 
     begin
       @ftp = Net::FTP.new
+      Rails.logger.info "Beginning transfer for #{@final_filename}"
       connect_to_server
       enter_packages_directory
       tmp_file = upload_to_temporary_file
@@ -63,11 +66,15 @@ class FtpUploaderService
 
   def notify_admin
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
-    AdhocMailer.delay.send_adhoc_email(
+    transfer_error = transfer_failed + ": #{@ftp.last_response}."
+    transfer_error = transfer_error + "\n" + @error_detail if @error_detail
+    GenericMailer.delay.send_email(
       transfer_failed,
-      transfer_failed + ": #{@ftp.last_response}. Please try to upload again.",
+      transfer_error + "\nPlease try to upload again.",
       email_on_failure
     )
+    Bugsnag.notify(transfer_error)
+    Rails.logger.warn(transfer_error)
   end
 
   def connect_to_server
@@ -89,6 +96,7 @@ class FtpUploaderService
   def upload_to_temporary_file
     upload_time = Time.zone.now.strftime "%Y-%m-%d-%H%M%S"
     "temp_#{upload_time}_#{@final_filename}".tap do |temp_name|
+      Rails.logger.info "Beginning transfer to temp location at #{temp_name}"
       @ftp.putbinaryfile(@file_io, temp_name, 1000)
     end
   end

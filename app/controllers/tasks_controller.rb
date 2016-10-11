@@ -50,7 +50,7 @@ class TasksController < ApplicationController
   def send_message
     users = User.where(id: task_email_params[:recipients])
     users.each do |user|
-      AdhocMailer.delay.send_adhoc_email(
+      GenericMailer.delay.send_email(
         task_email_params[:subject],
         task_email_params[:body],
         user.email

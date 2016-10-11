@@ -1,5 +1,5 @@
 # This service is used to FTP the BillingLogReport to billing ftp server.
-class BillingFTPUploader < FtpUploaderService
+class BillingFTPUploader
   def initialize(billing_log_report)
     @billing_log_report = billing_log_report
 
@@ -7,17 +7,18 @@ class BillingFTPUploader < FtpUploaderService
              .staff_admins_for_papers(billing_log_report.papers_to_process)
              .pluck(:email)
 
-    super(
+    @ftp_uploader = FtpUploaderService.new(
       file_io: @billing_log_report.csv,
       final_filename: timestamped_filename,
       url: TahiEnv.billing_ftp_url,
-      email_on_failure: emails
+      email_on_failure: emails,
+      error_detail: error_detail
     )
   end
 
   def upload
     if TahiEnv.billing_ftp_enabled?
-      super
+      @ftp_uploader.upload
     else
       Rails.logger.info "Billing FTP is not enabled."
     end
@@ -30,12 +31,9 @@ class BillingFTPUploader < FtpUploaderService
 
   private
 
-  def notify_admin
-    transfer_error = "Billing FTP Transfer failed for #{@final_filename}: "\
-      "#{@ftp.last_response}. "\
+  def error_detail
       "#{@billing_log_report.papers_to_process.count} papers with the"\
       "following IDs were not sent to billing: #{paper_ids}"
-    Bugsnag.notify(transfer_error)
   end
 
   def paper_ids

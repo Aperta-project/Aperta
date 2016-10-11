@@ -54,7 +54,6 @@ Tahi::Application.routes.draw do
 
     resources :orcid_accounts, only: [:show] do
       put 'clear', on: :member
-      put 'choose_random_id', on: :member
     end
 
     resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments' do

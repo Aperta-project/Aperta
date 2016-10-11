@@ -51,10 +51,6 @@ export default Ember.Component.extend({
       var popup = window.open(this.get('orcidAccount.oauthAuthorizeUrl'), "_blank", "toolbar=no, scrollbars=yes, width=500, height=630, top=0, left=0");
       this.set('button_disabled', true);
       addListener(this)
-    },
-
-    randomOrcidId(orcidAccount) {
-      orcidAccount.chooseRandomId();
     }
   }
 });

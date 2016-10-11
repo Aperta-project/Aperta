@@ -14,8 +14,5 @@ export default DS.Model.extend({
     .then((data) => {
       this.store.pushPayload(data);
     });
-  },
-  chooseRandomId() {
-    return this.get('restless').put(`/api/orcid_accounts/${this.get('id')}/choose_random_id`)
   }
 });

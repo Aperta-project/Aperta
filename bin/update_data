@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# quit immediately on any non-zero exit code
+# `set -xe` causes this whole script to immediately exit if any single command fails
 set -xe
 
 git checkout master

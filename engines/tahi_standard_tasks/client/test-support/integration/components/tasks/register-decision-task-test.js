@@ -9,7 +9,8 @@ let createTask = function() {
   return make('register-decision-task', {
     paper: {
       journal: {
-        id: 1
+        id: 1,
+        staffEmail: 'staffpeople@plos.org'
       },
       publishingState: 'submitted',
       decisions: [
@@ -36,7 +37,7 @@ let createTask = function() {
         templateDecision: 'accept',
         to: '[AUTHOR EMAIL]',
         subject: 'Your [JOURNAL NAME] Submission',
-        letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely Someone who Accepts' },
+        letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts' },
       {
         id: 2,
         text: 'Editor Reject',
@@ -99,6 +100,11 @@ test('it replaces [LAST NAME] with the authors last name', function(assert) {
   assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
 });
 
+test('it replaces [JOURNAL STAFF EMAIL] with the journal staff email', function(assert) {
+  this.selectDecision('Accept');
+  assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
+});
+
 test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
   this.selectDecision('Accept');
   let journalName = this.task.get('paper.journal.name');
@@ -114,6 +120,7 @@ test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
   this.selectDecision('Accept');
   assert.inputContains('.to-field', 'author@example.com');
 });
+
 
 test('User has the ability to rescind', function(assert){
   assert.elementFound(

@@ -37,33 +37,66 @@ export default Ember.Component.extend({
       this.get('comparisonText'),
       this.get('viewingText') || this.get('default'));
 
+    if (!this.get('manuscriptDiff')) {
+      return this.styleDiff(diff);
+    }
+
+    diff = this.refineDiff(diff);
+    return this.styleDiff(diff);
+  },
+
+  // If one word was changed in a sentence, it will show up in the
+  // diff as an added sentence and a removed sentence. This makes
+  // the diff hard to read.  So we'll look for adjcent chunks that
+  // match that pattern and do a word level diff in them for a more
+  // precise result.
+  refineDiff: function(diff) {
     let processed = Array();
-    if (this.get('manuscriptDiff')) {
-      for (var i = 0; i < diff.length; i++) {
-        if (diff[i].value.startsWith('<img'))
-        {
-          processed.push(diff[i]);
-        }
-        else if ((diff[i].removed && diff[i+1].added) || 
-                 (diff[i].added && diff[i+1].removed)){
-          let left = diff[i].value ? diff[i].value : '';
-          let right = diff[i+1].value ? diff[i+1].value : '';
-          left = left.replace(/<span>/,'').replace(/<\/span>/, '');
-          right = right.replace(/<span>/,'').replace(/<\/span>/, '');
-          let sentence = JsDiff.diffWords(
-            left, right);
-          i = i + 1;
-          _.each(sentence, (chunk) => {
-            chunk.value = '<span>' + chunk.value + '</span>';
-            processed.push(chunk);
-          });
-        } else {
-          processed.push(diff[i]);
-        }
+
+    for (var index = 0; index < diff.length; index++) {
+      var chunk = diff[index];
+
+      if ( this.diffable(chunk) &&
+           this.adjcentChunksAreDifferent(chunk, diff[index+1]) )
+      {
+        processed.push(this.rediff(chunk.value, diff[index+1].value));
+
+        // We've already processed the next chunk, so skip it
+        index++;
+      } else {
+        // If it doesn't match the pattern pass it through
+        processed.push(chunk);
       }
     }
-    // Style the diff
-    return _.map(processed, (chunk) => {
+
+    return _.flatten(processed);
+  },
+
+  adjcentChunksAreDifferent: function(left, right) {
+    return (left && left.added && right.removed) ||
+           (right && right.added && left.removed);
+  },
+
+  diffable: function(chunk) {
+    return chunk.value && chunk.value.startsWith('<span>');
+  },
+
+  rediff: function(left, right) {
+    // unpack the left and right chunks from the sentence diff
+    left = left.replace(/<span>/,'').replace(/<\/span>/, '');
+    right = right.replace(/<span>/,'').replace(/<\/span>/, '');
+
+    // perform the diff
+    let sentence = JsDiff.diffWords(left, right);
+
+    // and repack for display
+    return _.each(sentence, function(chunk) {
+      chunk.value = '<span>' + chunk.value + '</span>';
+    });
+  },
+
+  styleDiff: function(diff) {
+    return _.map(diff, (chunk) => {
       let html = this.addDiffStylingClass(chunk);
       return this.unForceValidHTML(html);
     }).join('');

@@ -2,12 +2,35 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## [{version}] - {release_date}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
+### Security
+
 ## [1.27.0] - {2016-10-6}
 ### Added
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
+- Feedback with attachments will now send successfully
+## Security
+
+## [1.26.0] - {2016-09-22}
+### Added
+- Users can cancel figure and adhoc uploads
+- Uploads that fail processing will show an error
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- At-mentions in discussions are no longer shown as escaped html notification emails
+- Users can once again add group authors
+- Users can cancel manuscript withdraw again
 ### Security
 
 ## [1.25.1] - {2016-09-16}

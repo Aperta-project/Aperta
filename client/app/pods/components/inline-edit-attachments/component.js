@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   showAttachments: false,
   showAttachmentsBlock: Ember.computed.or('hasAttachments', 'showAttachments'),
 
-  attachmentsRequest: Ember.concurrencyTask(function * (path, method, s3Url, file) {
+  attachmentsRequest: concurrencyTask(function * (path, method, s3Url, file) {
     const store = this.get('store');
     const restless = this.get('restless');
     let response = yield restless.ajaxPromise(method, path, {url: s3Url});

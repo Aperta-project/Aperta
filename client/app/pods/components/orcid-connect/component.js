@@ -1,32 +1,9 @@
 import Ember from 'ember';
 
-var actualOauthListener = null;
-
-function oauthListener(event) {
-  if (event.type === 'storage' && event.key === 'orcidOauthResult') {
-    this.set('orcidOauthResult', event.newValue);
-    window.localStorage.removeItem('orcidOauthResult');
-    removeListener(actualOauthListener);
-  }
-}
-
-function removeListener(listener){
-  window.removeEventListener('storage', actualOauthListener, false);
-  actualOauthListener = null;
-}
-
-function addListener(binding) {
-  if (actualOauthListener) {
-    removeListener(actualOauthListener);
-  }
-  actualOauthListener = oauthListener.bind(binding);
-  window.addEventListener('storage', actualOauthListener, false);
-}
-
 export default Ember.Component.extend({
-  classNames: ['orcid-connect'],
-  
-  user: null,  // pass this in
+  classNames: ['orcid-connect', 'profile-section'],
+
+  orcidAccount: null,  // pass this in
   store: Ember.inject.service(),
 
   reloadIfNoResponse(){
@@ -58,18 +35,6 @@ export default Ember.Component.extend({
 
   orcidOauthResult: null,
 
-  didInsertElement() {
-    this._super(...arguments);
-    let store = this.get('store');
-
-    this.get('user.orcidAccount').then( (orcidAccount) => {
-      this.set('orcidAccount', orcidAccount);
-    });
-  },
-
-
-
-
   accessTokenExpired: Ember.computed('orcidAccount.status', function() {
     return this.get('orcidAccount.status') == 'access_token_expired';
   }),
@@ -82,7 +47,6 @@ export default Ember.Component.extend({
     },
 
     openOrcid() {
-      //clear local storage...
       window.localStorage.removeItem('orcidOauthResult');
       var popup = window.open(this.get('orcidAccount.oauthAuthorizeUrl'), "_blank", "toolbar=no, scrollbars=yes, width=500, height=630, top=0, left=0");
       this.set('button_disabled', true);
@@ -94,3 +58,26 @@ export default Ember.Component.extend({
     }
   }
 });
+
+var actualOauthListener = null;
+
+function oauthListener(event) {
+  if (event.type === 'storage' && event.key === 'orcidOauthResult') {
+    this.set('orcidOauthResult', event.newValue);
+    window.localStorage.removeItem('orcidOauthResult');
+    removeListener(actualOauthListener);
+  }
+}
+
+function removeListener(listener){
+  window.removeEventListener('storage', actualOauthListener, false);
+  actualOauthListener = null;
+}
+
+function addListener(binding) {
+  if (actualOauthListener) {
+    removeListener(actualOauthListener);
+  }
+  actualOauthListener = oauthListener.bind(binding);
+  window.addEventListener('storage', actualOauthListener, false);
+}

@@ -1,5 +1,4 @@
 <a href="#main-content" id="skip-to-main-content">Skip to content</a>
-<div id="main-navigation-cover" aria-hidden="true"></div>
 
 <nav id="main-navigation" role="navigation">
   {{#link-to "dashboard" class="main-navigation-item main-navigation-item--home main-nav-item-app-name" id="nav-dashboard" title="Dashboard"}}
@@ -39,7 +38,9 @@
   {{/if}}
 </nav>
 
-<div id="control-bar-cover" aria-hidden="true"></div>
+<div id="mobile-nav">
+  <nav id="control-bar" role="navigation"></nav>
+</div>
 
 <main id="main-content" class="main-content" role="main">{{outlet}}</main>
 
@@ -52,6 +53,8 @@
 
 <div id="overlay-drop-zone"></div>
 <div id="ember-basic-dropdown-wormhole"></div>
+<div id="main-navigation-cover" aria-hidden="true"></div>
+<div id="control-bar-cover" aria-hidden="true"></div>
 
 {{#if showSaveStatusDiv}}
   <div id="delayedSave"></div>

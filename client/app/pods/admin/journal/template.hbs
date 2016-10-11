@@ -1,21 +1,3 @@
-<div class="control-bar">
-  <div class="control-bar-inner-wrapper base-layout">
-    <div class="control-bar-item" id="control-bar-paper-journal-logo">
-      {{#if model.logoUrl}}
-        <img src="{{unbound model.logoUrl}}">
-      {{else}}
-        <div class="paper-journal">{{unbound model.name}}</div>
-      {{/if}}
-    </div>
-
-    {{link-to "Journal Administration" "admin.journal" model class="control-bar-item control-bar-journal-title"}}
-
-    <div class="control-bar-item-spacer"></div>
-
-    {{outlet "controlBarButtons"}}
-  </div>
-</div>
-
-{{flash-messages classNames="flash-messages--below-control-bar"}}
+{{flash-messages}}
 
 {{outlet}}

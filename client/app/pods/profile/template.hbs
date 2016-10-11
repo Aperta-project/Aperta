@@ -1,37 +1,38 @@
-{{flash-messages}}
-
-<div class="base-screen" id="profile">
-  <div class="col-md-2">
-    {{user-avatar-upload user=model}}
-  </div>
-
-  <div class="col-md-10">
-    <div class="profile-section">
-      <h1>First and last name:</h1>
-      <h2 id="profile-name">{{model.fullName}}</h2>
+<div class="main-content-section">
+  {{flash-messages}}
+  <div class="base-screen" id="profile">
+    <div class="col-md-2">
+      {{user-avatar-upload user=model}}
     </div>
 
-    <div id="profile-username" class="profile-section">
-      <h1>Username:</h1>
-      <h2>{{model.username}}</h2>
+    <div class="col-md-10">
+      <div class="profile-section">
+        <h1>First and last name:</h1>
+        <h2 id="profile-name">{{model.fullName}}</h2>
+      </div>
+
+      <div id="profile-username" class="profile-section">
+        <h1>Username:</h1>
+        <h2>{{model.username}}</h2>
+      </div>
+
+      <div id="profile-email" class="profile-section">
+        <h1>Email:</h1>
+        <h2>{{model.email}}</h2>
+      </div>
+
+      {{orcid-connect user=model}}
+
+      {{user-affiliation user=model}}
+
+      <div class="profile-link">
+        <a href="https://community.plos.org/account/edit-profile" target="_blank">
+          View or edit your full profile
+        </a>
+        <br>
+        Any changes to your username or email will be updated in Aperta on your next login.
+      </div>
+      <br><br>
     </div>
-
-    <div id="profile-email" class="profile-section">
-      <h1>Email:</h1>
-      <h2>{{model.email}}</h2>
-    </div>
-
-    {{orcid-connect user=model}}
-
-    {{user-affiliation user=model}}
-
-    <div class="profile-link">
-      <a href="https://community.plos.org/account/edit-profile" target="_blank">
-        View or edit your full profile
-      </a>
-      <br>
-      Any changes to your username or email will be updated in Aperta on your next login.
-    </div>
-    <br><br>
   </div>
 </div>

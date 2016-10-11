@@ -5,11 +5,6 @@
 -------------------------------------------------------------------------------
 */
 
-.main-content {
-  @include position(absolute, $main-nav-height 0px 0px 0px);
-  overflow: auto;
-}
-
 .overlay-open .main-content {
   @include filter(grayscale(50%) blur(3px));
 }

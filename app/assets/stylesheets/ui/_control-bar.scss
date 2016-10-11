@@ -1,0 +1,188 @@
+/* CONTROL BAR
+
+Elements do not have any default styles.
+All properties are applied in a media query.
+
+----------------------------------------------------------------------------- */
+
+
+/* CONTROL BAR : SMALL SCREEN
+----------------------------------------------------------------------------- */
+@include max-screen-width($layout-large-screen) {
+  #control-bar {
+    position: absolute;
+    top: $mobile-nav-height;
+    right: 10px;
+    left: 10px;
+    display: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    box-shadow: 0 0.4rem 0.4rem rgba(0,0,0, 0.1);
+    background: #fff;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(-30.0rem);
+
+    &.visible {
+      display: block;
+      animation: animation-control-bar-small-screen 0.4s cubic-bezier(0.040, 0.025, 0.005, 1.000);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #control-bar .control-bar-button {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 2rem 1rem 1.9rem;
+    color: #222;
+    font-size: 1.6rem;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus,
+    &:active {
+      color: #000;
+      background: #eee;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  #control-bar .fa {
+    display: inline-block;
+    width: 2rem;
+    margin-right: 1rem;
+    color: #555;
+    font-size: 2.0rem;
+    text-align: center;
+  }
+
+  #control-bar-paper-title {
+    display: none;
+  }
+
+  #control-bar-cover {
+    display: none;
+    @include position(absolute, 0 0 0 0);
+    background: rgba(50,50,50, 0.5);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+}
+
+
+/* CONTROL BAR : LARGE SCREEN
+----------------------------------------------------------------------------- */
+
+@include min-screen-width($layout-large-screen) {
+  #control-bar {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    height: $control-bar-height-large-screen;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+
+    .spacer { flex-grow: 1; }
+  }
+
+  #control-bar .control-bar-button {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 1rem;
+    padding: 1.2rem 0.4rem 1.0rem 0.4rem;
+    color: $aperta-green;
+    font-size: 1.2rem;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:last-child {
+      margin-right: 0;
+      padding-right: 2.6rem;
+    }
+
+    .fa { font-size: 1.8rem; }
+
+    .badge {
+      position: absolute;
+      top: 4px;
+      right: 7px;
+      bottom: auto;
+      left: auto;
+    }
+  }
+
+  #control-bar.control-bar--blue a {
+    color: $aperta-blue;
+  }
+
+  #control-bar {
+    #nav-manuscript,
+    #nav-workflow {
+      justify-content: center;
+      margin-right: 1.4rem;
+      padding-right: 2.8rem;
+
+      .fa { display: none; }
+
+      &:after {
+        position: absolute;
+        top: 1.3rem;
+        right: 0;
+        content: '';
+        width: 1px;
+        height: $control-bar-height-large-screen - 2.6rem;
+        background: #ddd;
+      }
+    }
+
+    // for demo
+    #nav-manuscript { display: none; }
+  }
+
+  #control-bar-paper-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding-left: 2rem;
+    font-size: 1.4rem;
+
+    span { overflow: hidden; }
+  }
+
+  #control-bar-cover { display: none; }
+}
+
+#control-bar-journal-nav {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-left: 2rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+
+  .journal-name {
+    overflow: hidden;
+    padding-left: 2rem;
+  }
+
+  .fa {
+    display: flex;
+    align-items: center;
+    color: $aperta-blue;
+  }
+
+  .fa > * {
+    padding-left: 4px;
+    color: $aperta-blue;
+    font-family: $aperta-font-family;
+    font-size: 1.5rem;
+  }
+}

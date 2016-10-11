@@ -17,15 +17,14 @@ All properties are applied in a media query.
 /* !important for flexbox based layout
    required to create fixed headers and scrolling content
 */
-body, html, #layout-container { height: 100%; }
+body, html, #layout-container,
+.ember-application > .ember-view { height: 100%; }
 
 /* Main Layout : large screen */
 @include min-screen-width($layout-large-screen) {
-  #satellite-loading {
-    //top: $main-nav-height-large-screen + $control-bar-height-large-screen;
-    top: 0;
-  }
+  .ember-application > .ember-view,
   #layout-container, #main-content { display: flex; }
+  .ember-application > .ember-view,
   #layout-container { flex-direction: column; }
 
   #main-content { flex: 1;  }
@@ -63,9 +62,6 @@ body, html, #layout-container { height: 100%; }
 
 /* Main Layout : small screen */
 @include max-screen-width($layout-large-screen) {
-  #satellite-loading {
-    top: 0;
-  }
   #layout-container, #main-content { display: flex; }
   #layout-container { flex-direction: column; }
   #main-content { flex: 1;  }

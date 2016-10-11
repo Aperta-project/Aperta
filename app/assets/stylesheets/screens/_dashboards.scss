@@ -1,3 +1,8 @@
+.dashboard-plos-logo svg {
+  width: 16rem;
+  margin-bottom: 4rem;
+}
+
 .manuscript-list-heading {
   color: $tahi-black;
   font-weight: bold;
@@ -34,9 +39,6 @@
   line-height: 1;
 }
 
-.dashboard-plos-logo {
-  padding-bottom: 40px;
-}
 
 .dashboard-submitted-papers {
   list-style-type: none;

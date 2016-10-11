@@ -3,6 +3,9 @@
 Elements do not have any default styles.
 All properties are applied in a media query.
 
+On large screens, main navigation is part of the flexbox layout.
+On small screens, main navigation is positioned absolutely off screen.
+
 #main-navigation
   .main-navigation-item
   .main-navigation-item
@@ -18,8 +21,7 @@ All properties are applied in a media query.
   #main-navigation-cover { display: none; }
 
   #main-navigation {
-    // position: relative;
-    @include position(fixed, 0px 0px auto 0px);
+    position: relative;
     display: flex;
     justify-content: flex-end;
     height: $main-nav-height-large-screen;

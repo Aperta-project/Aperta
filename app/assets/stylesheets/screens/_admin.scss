@@ -1,3 +1,32 @@
+#control-bar-journal-logo {
+  display: block;
+  height: 40px;
+  margin-right: 1rem;
+  align-self: center;
+}
+
+#control-bar-journal-name {
+  font-size: 2.0rem;
+  align-self: center;
+}
+
+#control-bar-journal-back-button {
+  color: $tahi-blue;
+  font-size: 1.8rem;
+
+  &:focus,
+  &:hover { color: $tahi-blue; }
+}
+
+@include min-screen-width($layout-large-screen) {
+  #control-bar-journal-back-button {
+    margin-left: 2rem;
+    margin-right: 3rem;
+    align-self: stretch;
+    line-height: $control-bar-height-large-screen;
+  }
+}
+
 .modal-field-label, .modal-field {
   margin-top: 20px;
   margin-bottom: 10px;
@@ -17,6 +46,47 @@
     border-radius: 5px;
     color: $tahi-blue;
     padding: 5px;
+  }
+}
+
+.admin-user-search {
+  width: 50%;
+}
+
+.admin-search {
+  display: flex;
+
+  input, button {
+    color: #2d85de;
+    border: 1px solid $tahi-blue;
+    background: #fff;
+  }
+
+  input {
+    flex-grow: 2;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 1rem;
+    font-size: 1.8rem;
+
+    @include placeholder {
+      color: lighten($tahi-blue, 25%);
+      text-transform: uppercase;
+    }
+  }
+
+  button {
+    flex-basis: 60px;
+    border-left: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 2.6rem;
+    cursor: pointer;
+
+    .fa {
+      position: relative;
+      top: -1px;
+    }
   }
 }
 
@@ -44,36 +114,6 @@
   }
 }
 
-.admin-user-search-input {
-  float: left;
-  width: 300px;
-  border: 1px solid $tahi-blue;
-  border-radius: 5px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  font-size: 18px;
-  color: $tahi-blue;
-  padding: 10px 10px 8px 10px;
-
-  @include placeholder {
-    color: $tahi-blue;
-  }
-}
-
-.admin-user-search-button {
-  float: left;
-  width: 60px;
-  border: 1px solid $tahi-blue;
-  background: white;
-  border-radius: 5px;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  font-size: 26px;
-  padding: 6px 0 0;
-  border-left: none;
-  color: $tahi-blue;
-}
-
 .admin-user-search-default-state-text {
   clear: both;
   padding-top: 10px;
@@ -84,7 +124,6 @@
 
 .admin-users {
   width: 100%;
-  max-width: 600px;
   margin-top: 30px;
   border-collapse: separate;
   border-spacing: 0 10px;
@@ -177,12 +216,4 @@
     vertical-align: -6px;
     font-style: italic;
   }
-}
-
-.control-bar-journal-title {
-  color: $tahi-blue;
-  font-size: 24px;
-
-  &:focus,
-  &:hover { color: $tahi-blue; }
 }

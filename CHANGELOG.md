@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 - Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
+- Fixed issue where roles couldn't be assigned in the admin page in some journals
 ### Security
 
 ## [1.27.0] - {2016-10-6}

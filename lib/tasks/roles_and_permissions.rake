@@ -18,6 +18,7 @@ namespace :'roles-and-permissions' do
       # duplicate logic just expose the step that ensures journals are
       # set up baseline roles and permissions.
       JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+      JournalFactory.assign_hints(journal)
     end
   end
 end

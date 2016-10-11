@@ -36,6 +36,34 @@ test("It can diff a single paragraph of two sentences", function(assert) {
   );
 });
 
+test("It reports no changes in manuscript with no differences", function(assert) {
+  this.component.setProperties({
+    viewingText: "<p>I am a cat.</p>",
+    comparisonText: "<p>I am a cat.</p>",
+     manuscriptDiff: true
+  });
+
+  assert.equal(
+    this.component.diff(),
+    '<p class=\"unchanged\">I am a cat.</p>'
+  );
+
+});
+
+test("It can find a single word difference in a manuscript diff", function(assert) {
+   this.component.setProperties({
+    viewingText: "<p>I am a cat.</p>",
+    comparisonText: "<p>I am a dog.</p>",
+     manuscriptDiff: true
+  });
+
+  assert.equal(
+    this.component.diff(),
+    '<p><span class=\"unchanged\">I am a </span><span class=\"removed\">dog</span><span class=\"added\">cat</span>' +
+    '<span class=\"unchanged\">.</span><span class=\"unchanged\"></span></p>'
+  );
+});
+
 test("forceValidHTML adds pairs of elements to `tokens`", function(assert) {
        var tokens =  ["a", "b", "c"];
        this.component.forceValidHTML($("<p>Grandiose</p>")[0], tokens);

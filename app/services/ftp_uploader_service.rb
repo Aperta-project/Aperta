@@ -68,13 +68,13 @@ class FtpUploaderService
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
     transfer_error = transfer_failed + ": #{@ftp.last_response}."
     transfer_error = transfer_error + "\n" + @error_detail if @error_detail
+    Rails.logger.warn(transfer_error)
+    Bugsnag.notify(transfer_error)
     GenericMailer.delay.send_email(
       transfer_failed,
       transfer_error + "\nPlease try to upload again.",
       email_on_failure
     )
-    Bugsnag.notify(transfer_error)
-    Rails.logger.warn(transfer_error)
   end
 
   def connect_to_server

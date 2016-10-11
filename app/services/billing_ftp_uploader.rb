@@ -5,7 +5,7 @@ class BillingFTPUploader
 
     emails = Journal
              .staff_admins_for_papers(billing_log_report.papers_to_process)
-             .pluck(:email)
+             .map(&:email)
 
     @ftp_uploader = FtpUploaderService.new(
       file_io: @billing_log_report.csv,

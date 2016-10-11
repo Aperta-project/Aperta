@@ -23,6 +23,7 @@
 
     div[contenteditable] {
       width: 910px;
+      height: 20px;
     }
 
     &.large-edit {
@@ -199,4 +200,8 @@
 
 .email-send-participants {
   margin-right: 25px;
+}
+
+.ad-hoc-template-overlay .adhoc-toolbar-item--image {
+  display: none;
 }

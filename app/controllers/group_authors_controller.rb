@@ -13,6 +13,7 @@ class GroupAuthorsController < ApplicationController
     requires_user_can :edit_authors, Paper.find(group_author_params[:paper_id])
     group_author = GroupAuthor.new(group_author_params)
     group_author.save!
+    group_author.author_list_item.move_to_bottom
 
     # render all group_authors, since position is controlled by acts_as_list
     render json: author_list_payload(group_author)

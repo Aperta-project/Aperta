@@ -8,12 +8,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
 ### Security
 
 ## [1.25.1] - {2016-09-16}
 ### Added
 - Rescinding invitations will not delete them from the UI
 - Show statuses for when invitations were rescinded
+- Ad-Hoc cards allow any type of file upload
 ### Removed
 - Users can no longer add system-generated tasks (Revise Manuscript, Changes For Author, Reviewer Report) to a workflow
 ### Fixed

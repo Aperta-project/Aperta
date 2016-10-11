@@ -2,36 +2,28 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   editing: false,
-  isNew: false,
   bodyPart: null,
   bodyPartType: Ember.computed.alias('bodyPart.type'),
-  isSendable: true,
+  isSendable: Ember.computed.notEmpty('recipients'),
   showChooseReceivers: false,
   mailRecipients: [],
   recipients: null,
-  allUsers: null,
   overlayParticipants: null,
-  emailSentStates: Ember.computed.alias('parentView.emailSentStates'),
-  lastSentAt: null,
+  emailSentStates: null,
+  lastSentAt: Ember.computed.reads('bodyPart.sent'),
   store: Ember.inject.service(),
 
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
 
-    this.set('recipients',
-             this.get('overlayParticipants').map((p) => p.get('user'))
-            );
+    this.set('recipients', this.get('overlayParticipants'));
   }),
 
   keyForStates: Ember.computed.alias('bodyPart.subject'),
 
   showSentMessage: Ember.computed('keyForStates', 'emailSentStates.[]', function() {
-    if (this.get('isSendable')) {
-      let key = this.get('keyForStates');
-      return this.get('emailSentStates').includes(key);
-    } else {
-      return false;
-    }
+    let key = this.get('keyForStates');
+    return this.get('emailSentStates').includes(key);
   }),
 
   setSentState: function() {
@@ -53,9 +45,8 @@ export default Ember.Component.extend({
       var bodyPart, recipientIds;
       recipientIds = this.get('recipients').mapBy('id');
       bodyPart = this.get('bodyPart');
-      bodyPart.sent = moment().format('MMMM Do YYYY');
-      this.set('lastSentAt', bodyPart.sent);
-      this.attrs.sendEmail({
+      this.set('bodyPart.sent', moment().format('MMMM Do YYYY'));
+      this.get('sendEmail')({
         body: bodyPart.value,
         subject: bodyPart.subject,
         recipients: recipientIds
@@ -70,10 +61,10 @@ export default Ember.Component.extend({
     },
 
     addRecipient: function(newRecipient, availableRecipients) {
-      var recipient, store, user;
+      var recipient, store;
       store = this.get('store');
       recipient = availableRecipients.findBy('id', newRecipient.id);
-      user = store.findOrPush('user', recipient);
+      store.findOrPush('user', recipient);
       return this.get('recipients').addObject(recipient);
     }
   }

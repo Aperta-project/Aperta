@@ -56,6 +56,14 @@
     margin-top: 10px;
   }
 
+  .item-text {
+    margin-right: 95px;
+
+    .ember-view {
+      padding-left: 5px;
+    }
+  }
+
   .edit-actions, .add-item {
     display: none;
   }
@@ -76,7 +84,7 @@
       display: block;
     }
     .add-item {
-      display: inline-block;
+      display: none;
     }
     .item-remove {
       margin: 10px;
@@ -85,9 +93,21 @@
     }
   }
 
-  &.email .add-item,
-  &.text .add-item {
-    display: none;
+  &.checkbox .add-item, {
+    display: inline-block;
+  }
+}
+
+.inline-edit-body-part.text {
+
+  .item-text .editable {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 5rem;
+    background: #EEE;
+    &[contenteditable] {
+      background: none;
+    }
   }
 }
 
@@ -123,11 +143,34 @@
   .inline-edit-icon {
     top: 2px;
   }
+
+  .participant-selector-label {
+    color: white;
+  }
+
+  .bodypart-email-sent-overlay {
+    text-align: center;
+    color: white;
+    padding: 30px;
+  }
+
+  .fa-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+
+  .participant-selector {
+    margin-bottom: 20px;
+  }
 }
 
 .bodypart-display {
   position: relative;
   margin: 10px 0;
+
   @include transition(min-height, 0.3s);
 
   .fa.inline-edit-icon {
@@ -152,8 +195,12 @@
 
 .bodypart-overlay {
   @include position(absolute, 0px 0px 0px 0px);
-  background-color: #29a904;
+  background-color: $tahi-green;
   z-index: 1; // higher index to ensure overlay stays above all other content
+
+  h4, p {
+    color: white;
+  }
 }
 
 .overlay-content .bodypart-overlay p {
@@ -165,18 +212,21 @@
 
 .bodypart-destroy-overlay {
   padding: 30px;
+  text-align: center;
 
   > * {
     display: inline-block;
   }
 
-  button {
-    margin-top: -10px;
+  h4 {
+    color: white;
   }
+
 }
 
 .bodypart-choose-receiver-overlay {
-  padding: 20px 0 20px 110px;
+  padding: 30px;
+  text-align: center;
 }
 
 .overlay-content .bodypart-email-sent-overlay {

@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Ad-hoc cards have editing and managing permissions
 ### Changed
 ### Deprecated
 ### Removed

@@ -16,19 +16,35 @@
                      deleteOnCancel=(eq invitation composedInvitation)
                      composedInvitation=composedInvitation
                      toggleActiveInvitation=toggleActiveInvitation
-                     placeInQueue=(action placeInQueue)
                      placeInDifferentQueue=(action placeInDifferentQueue)
+                     destroyInvite=destroyInvite
                      previousRound=previousRound
                      activeInvitation=activeInvitation
                      activeInvitationState=activeInvitationState
                      alternateQueuing=true}}
 {{/each}}
 
+
+{{#each sentMainQueueInvitations as |invitation|}}
+  {{invitation-detail-row invitation=invitation
+                          invitations=invitations
+                          setRowState=(action attrs.setRowState invitation)
+                          deleteOnCancel=(eq invitation composedInvitation)
+                          composedInvitation=composedInvitation
+                          toggleActiveInvitation=toggleActiveInvitation
+                          placeInDifferentQueue=(action placeInDifferentQueue)
+                          destroyInvite=destroyInvite
+                          previousRound=previousRound
+                          activeInvitation=activeInvitation
+                          activeInvitationState=activeInvitationState}}
+{{/each}}
+
+
   {{invitation-drop-target index=0
                        model=invitation
                        isEditable=true
   }}
-{{#each mainQueueInvitations as |invitation|}}
+{{#each sortedPendingMainQueueInvitations as |invitation|}}
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
                           setRowState=(action attrs.setRowState invitation)
@@ -36,6 +52,8 @@
                           composedInvitation=composedInvitation
                           toggleActiveInvitation=toggleActiveInvitation
                           previousRound=previousRound
+                          placeInDifferentQueue=(action placeInDifferentQueue)
+                          destroyInvite=destroyInvite
                           activeInvitation=activeInvitation
                           activeInvitationState=activeInvitationState}}
 {{/each}}
@@ -43,3 +61,4 @@
                        model=invitation
                        isEditable=true
   }}
+

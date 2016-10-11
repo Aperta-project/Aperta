@@ -142,7 +142,7 @@ export default Ember.Component.extend({
   },
 
   getOrCreateSubQueue(primary) {
-    if(primary.get('inviteQueue').length){
+    if(primary.get('inviteQueue')){
       return new Ember.RSVP.Promise((resolve)=> {
         resolve(primary.get('inviteQueue'));
       });
@@ -215,6 +215,20 @@ export default Ember.Component.extend({
     // auto-suggest action
     didSelectUser(selectedUser) {
       this.set('selectedUser', selectedUser);
+    },
+
+    destroyInvite(invitation) {
+      if (invitation.get('inviteQueue.invitations.length') == 2) {
+        this.getOrCreateMainQueue().then((mainQueue)=> {
+          const subQueue = invitation.get('inviteQueue');
+          const primary = invitation.get('primary');
+          primary.set('inviteQueue', mainQueue);
+          primary.save();
+          subQueue.destroyRecord();
+        });
+      }
+      invitation.get('inviteQueue.invitations').removeObject(invitation);
+      invitation.destroyRecord();
     },
 
     placeInDifferentQueue(invitation) {

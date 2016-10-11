@@ -1,13 +1,28 @@
 {{#if groupByDecision}}
-  {{invitation-group invitations=latestDecisionInvitations
+  {{#each currentInviteQueues as |queue|}}
+    QUEUE--------------- {{queue.queueTitle}} {{queue.id}}
+    {{invitation-group invitations=queue.invitations
+                       activeInvitation=activeInvitation
+                       activeInvitationState=activeInvitationState
+                       composedInvitation=composedInvitation
+                       placeInDifferentQueue=(action 'placeInDifferentQueue')
+                       destroyInvite=(action 'destroyInvite')
+                       setRowState=(action 'toggleActiveInvitation')
+                       class='active-invitations'}}
+
+
+  {{/each}}
+  {{partial 'invitation-compose'}}
+  Compare with original implementation below
+  DELETE BELOW
+
+  {{!--invitation-group invitations=latestDecisionInvitations
                      activeInvitation=activeInvitation
                      activeInvitationState=activeInvitationState
                      composedInvitation=composedInvitation
                      setRowState=(action 'toggleActiveInvitation')
-                     class='active-invitations'}}
-
-
-  {{partial 'invitation-compose'}}
+                     class='active-invitations'--}}
+DELETE ABOVE
 
   {{#each sortedPreviousDecisionsWithFilteredInvitations as |decision|}}
     <div class='invitation-revision-round'>
@@ -19,6 +34,7 @@
                        composedInvitation=composedInvitation
                        setRowState=(action 'toggleActiveInvitation')
                        placeInDifferentQueue=(action 'placeInDifferentQueue')
+                       destroyInvite=(action 'destroyInvite')
                        previousRound=true
                        class='expired-invitations'}}
   {{/each}}
@@ -29,6 +45,7 @@
                       activeInvitationState=activeInvitationState
                       composedInvitation=composedInvitation
                       placeInDifferentQueue=(action 'placeInDifferentQueue')
+                      destroyInvite=(action 'destroyInvite')
                       setRowState=(action 'toggleActiveInvitation')
                       class='active-invitations'}}
   {{partial 'invitation-compose'}}

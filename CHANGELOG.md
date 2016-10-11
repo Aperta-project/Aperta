@@ -12,6 +12,28 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - PLOS Biology name is no longer hard coded in letter templates
 ### Security
 
+## [1.27.0] - {2016-10-6}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Feedback with attachments will now send successfully
+## Security
+
+## [1.26.0] - {2016-09-22}
+### Added
+- Users can cancel figure and adhoc uploads
+- Uploads that fail processing will show an error
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- At-mentions in discussions are no longer shown as escaped html notification emails
+- Users can once again add group authors
+- Users can cancel manuscript withdraw again
+### Security
+
 ## [1.25.1] - {2016-09-16}
 ### Added
 - Rescinding invitations will not delete them from the UI

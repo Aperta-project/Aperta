@@ -73,7 +73,7 @@ class FtpUploaderService
     GenericMailer.delay.send_email(
       transfer_failed,
       transfer_error + "\nPlease try to upload again.",
-      email_on_failure
+      @email_on_failure
     )
   end
 

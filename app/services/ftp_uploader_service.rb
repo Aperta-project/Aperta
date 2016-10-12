@@ -66,7 +66,8 @@ class FtpUploaderService
 
   def notify_admin(exception)
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
-    transfer_error = transfer_failed + ": #{@ftp.last_response}."
+    transfer_error = transfer_failed
+    transfer_error += ": #{@ftp.last_response}." if @ftp
     transfer_error += "\n" + @error_detail if @error_detail
     transfer_error += "\nPlease try to upload again."
     transfer_error += "\n\nException Detail:\n" + exception.message if exception

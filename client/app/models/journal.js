@@ -5,5 +5,6 @@ export default DS.Model.extend({
   logoUrl: DS.attr('string'),
   manuscriptCss: DS.attr('string'),
   name: DS.attr('string'),
+  staffEmail: DS.attr('string'),
   paperTypes: DS.attr()
 });

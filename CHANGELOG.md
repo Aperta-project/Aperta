@@ -34,7 +34,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - At-mentions in discussions are no longer shown as escaped html notification emails
 - Users can once again add group authors
 - Users can cancel manuscript withdraw again
->>>>>>> master
 ### Security
 
 ## [1.25.1] - {2016-09-16}

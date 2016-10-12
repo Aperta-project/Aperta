@@ -36,38 +36,38 @@ class FtpUploaderService
     fail FtpTransferError, 'file_io is required' if @file_io.blank?
     fail FtpTransferError, 'final_filename is required' if @final_filename.blank?
 
-    begin
-      @ftp = Net::FTP.new
-      Rails.logger.info "Beginning transfer for #{@final_filename}"
-      connect_to_server
-      enter_packages_directory
-      tmp_file = upload_to_temporary_file
-      if @ftp.last_response_code == TRANSFER_COMPLETE
-        begin
-          @ftp.delete @final_filename
-        rescue Net::FTPPermError
-        end
-        @ftp.rename(tmp_file, @final_filename)
-        Rails.logger.info "Transfer successful for #{@final_filename}"
-        return true
-      else
-        fail FtpTransferError, "FTP Transfer failed: #{@ftp.last_response}"
+    @ftp = Net::FTP.new
+    Rails.logger.info "Beginning transfer for #{@final_filename}"
+    connect_to_server
+    enter_packages_directory
+    tmp_file = upload_to_temporary_file
+    if @ftp.last_response_code == TRANSFER_COMPLETE
+      begin
+        @ftp.delete @final_filename
+      rescue Net::FTPPermError
       end
-    rescue IOError, SystemCallError, Net::FTPError, FtpTransferError
-      notify_admin
-      raise
-    ensure
-      @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
-      @ftp.close
+      @ftp.rename(tmp_file, @final_filename)
+      Rails.logger.info "Transfer successful for #{@final_filename}"
+      return true
+    else
+      raise FtpTransferError, "FTP Transfer failed: #{@ftp.last_response}"
     end
+  rescue Exception => e
+    notify_admin(e)
+    raise
+  ensure
+    @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
+    @ftp.close
   end
 
   private
 
-  def notify_admin
+  def notify_admin(exception)
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
     transfer_error = transfer_failed + ": #{@ftp.last_response}."
-    transfer_error = transfer_error + "\n" + @error_detail if @error_detail
+    transfer_error += "\n" + @error_detail if @error_detail
+    transfer_error += "\nPlease try to upload again."
+    transfer_error += "\n\nException Detail:\n" + exception.message if exception
     Rails.logger.warn(transfer_error)
     Bugsnag.notify(transfer_error)
     GenericMailer.delay.send_email(

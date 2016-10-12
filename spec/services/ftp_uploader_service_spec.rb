@@ -53,7 +53,7 @@ describe FtpUploaderService do
       expect(@server.files).not_to include(final_filename)
     end
 
-    it 'notifies admins upon FTP failure' do
+    it 'notifies email list upon FTP failure' do
       final_filename = 'test.jpg'
       emails = ['adminA@example.com', 'adminB@example.com']
       uploader = FtpUploaderService.new(

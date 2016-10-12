@@ -130,7 +130,7 @@ describe Journal do
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:admin) { FactoryGirl.create(:user) }
 
-    it 'finds all associated admins' do
+    it 'finds all associated staff_admins' do
       admin.assign_to!(role: journal.staff_admin_role, assigned_to: journal)
       admins = Journal.staff_admins_for_papers([paper])
 

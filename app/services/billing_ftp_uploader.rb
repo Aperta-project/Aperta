@@ -32,8 +32,8 @@ class BillingFTPUploader
   private
 
   def error_detail
-      "#{@billing_log_report.papers_to_process.count} papers with the"\
-      "following IDs were not sent to billing: #{paper_ids}"
+    "#{@billing_log_report.papers_to_process.count} papers with the"\
+    "following IDs were not sent to billing: #{paper_ids}"
   end
 
   def paper_ids

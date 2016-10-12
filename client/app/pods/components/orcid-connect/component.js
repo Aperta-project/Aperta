@@ -2,14 +2,19 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['orcid-connect', 'profile-section'],
-
-  orcidAccount: null,  // pass this in
+  user: null,         // pass one
+  orcidAccount: null, // of these in
   store: Ember.inject.service(),
 
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
     window.addEventListener('storage', this._oauthListener, false);
+    if(this.get('user')) {
+      this.get('user.orcidAccount').then( (account) => {
+        this.set('orcidAccount', account);
+      });
+    }
   },
 
   willDestroyElement() {
@@ -22,7 +27,6 @@ export default Ember.Component.extend({
       this.set('orcidOauthResult', event.newValue);
       window.localStorage.removeItem('orcidOauthResult');
       window.removeEventListener('storage', this._oauthListener, false);
-    }
   },
 
   reloadIfNoResponse(){

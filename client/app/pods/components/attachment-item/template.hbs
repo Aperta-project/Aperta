@@ -30,12 +30,12 @@
 
     {{#unless disabled}}
       <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
-        <i class="fa fa-refresh"></i>
+        {{fa-icon icon="refresh"}}
         Replace
       </span>
 
       <span {{action "deleteFile"}} class="file-action delete-attachment">
-        <i class="fa fa-trash"></i>
+        {{fa-icon icon="trash"}}
         Delete
       </span>
     {{/unless}}

@@ -5,7 +5,7 @@
     {{#if task.body.submitted}}
     {{front-matter-reviewer-report-questions model=task decision=task.decision readOnly=true}}
       <div class="feedback reviewer-report-feedback">
-        <i class="fa fa-check-circle"></i>
+        {{fa-icon icon="check-circle"}}
         This report has been submitted
       </div>
     {{else}}

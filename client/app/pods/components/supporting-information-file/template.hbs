@@ -4,7 +4,7 @@
       <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
 
       <button class="fileinput-button">
-        <i class="fa fa-refresh"></i>
+        {{fa-icon icon="refresh"}}
         <span>Replace File</span>
         {{file-uploader url=attachmentUrl
                         railsMethod="PUT"

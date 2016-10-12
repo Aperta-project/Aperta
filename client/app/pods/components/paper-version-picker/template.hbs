@@ -2,11 +2,11 @@
   <div class="versions active">
     <div id="versioning-bar" class="toot">
       <div class="bar-item">
-        <i class="fa fa-files-o"></i>
+        {{fa-icon icon="files-o"}}
       </div>
       <div class="bar-item">
         Now viewing:
-        {{ select-native
+        {{select-native
           name="view_version"
           content=paper.versionedTexts
           optionValuePath="id"
@@ -16,7 +16,7 @@
       </div>
       <div class="bar-item">
         Compare With:
-        {{ select-native
+        {{select-native
           name="compare_version"
           prompt="-"
           content=paper.versionedTexts

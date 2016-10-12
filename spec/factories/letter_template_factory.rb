@@ -21,7 +21,7 @@ FactoryGirl.define do
       text 'RA- Accept'
       template_decision 'accept'
       letter <<-LETTER.strip_heredoc
-          ***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [Last Name],\n\ Accept!.\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\nPLOS Biology  \n
+          ***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [Last Name],\n\ Accept!\n publish your manuscript in [JOURNAL NAME]\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\nPLOS Biology  \n
        LETTER
     end
 
@@ -29,7 +29,7 @@ FactoryGirl.define do
       text 'Editor Decision - Major Revision'
       template_decision 'major_revision'
       letter <<-LETTER.strip_heredoc
-          ***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [Last Name],\n\ Major Revision!\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\nPLOS Biology  \n
+          ***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [Last Name],\n\ Major Revision!\n\nPlease email us [JOURNAL STAFF NAME]\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\nPLOS Biology  \n
        LETTER
     end
 

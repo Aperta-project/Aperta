@@ -35,7 +35,7 @@ describe Journal do
       it "destroys journal" do
         expect { journal.destroy }.to change { Journal.count }.by(-1)
       end
-    end
+   end
   end
 
   describe '#last_doi_issued' do
@@ -122,6 +122,19 @@ describe Journal do
       journal = build(:journal)
       expect(journal).to be_valid
       journal.save!
+    end
+  end
+
+  describe '.staff_admins_for_papers' do
+    let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:admin) { FactoryGirl.create(:user) }
+
+    it 'finds all associated admins' do
+      admin.assign_to!(role: journal.staff_admin_role, assigned_to: journal)
+      admins = Journal.staff_admins_for_papers([paper])
+
+      expect(admins).to eq([admin])
     end
   end
 end

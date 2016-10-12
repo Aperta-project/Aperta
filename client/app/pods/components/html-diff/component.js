@@ -17,9 +17,11 @@ export default Ember.Component.extend({
   // These are elements that contain sentences worth diffing individually.
   tokenizeInsideElements: ['div', 'p'],
 
+  diffManuscript: false,
+
   renderEquations: true,
 
-  sentenceDelimiter: /([.!?,;]\s*)/g,
+  sentenceDelimiter: /([.!?,;\s])/g,
 
   manuscript: function() {
     if (!this.get('comparisonText')) {
@@ -60,15 +62,15 @@ export default Ember.Component.extend({
   addDiffStylingClass(chunk) {
     let cssClass = null;
     if (chunk.added) {
-      cssClass = "added";
+      cssClass = 'added';
     } else if (chunk.removed) {
-      cssClass = "removed";
+      cssClass = 'removed';
     } else {
-      cssClass = "unchanged";
+      cssClass = 'unchanged';
     }
 
     let elements = $(chunk.value).addClass(cssClass).toArray();
-    return _.pluck(elements, 'outerHTML').join("");
+    return _.pluck(elements, 'outerHTML').join('');
   },
 
   // TOKENIZING
@@ -89,8 +91,8 @@ export default Ember.Component.extend({
   forceValidHTML(element, tokens) {
     // Add the fake tag pairs
     let tagName = element.nodeName.toLowerCase();
-    tokens.unshift("<fake-open-" + tagName + "></fake-open-" + tagName + ">");
-    tokens.push("<fake-close-" + tagName + "></fake-close-" + tagName + ">");
+    tokens.unshift('<fake-open-' + tagName + '></fake-open-' + tagName + '>');
+    tokens.push('<fake-close-' + tagName + '></fake-close-' + tagName + '>');
   },
 
   unForceValidHTML: function(value) {
@@ -123,7 +125,7 @@ export default Ember.Component.extend({
     if (this.isTextNode(element)) {
       // Split the text into sentence fragments.
       let chunks = element.textContent.split(this.sentenceDelimiter);
-      return _.map(chunks, (e) => { return "<span>" + e + "</span>"; });
+      return _.map(chunks, (e) => { return '<span>' + e + '</span>'; });
 
     } else if (this.shouldRecurseInto(element)) {
       // Recurse within this element
@@ -150,7 +152,7 @@ export default Ember.Component.extend({
     else if (!window.MathJax.Hub) { return; }
 
     Ember.run.next(() => {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$()[0]]);
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);
     });
   }.observes('manuscript').on('didInsertElement')
 });

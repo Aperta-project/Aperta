@@ -13,12 +13,25 @@ export default Ember.Component.extend({
   // This is the default if nothing else is set
   default: '',
 
-  chunks: Ember.computed('comparisonText', 'viewingText', function() {
+  diffManuscript: false,
+
+  chunks: Ember.computed('comparisonText', 'viewingText', 'diffManuscript', function() {
+    if (this.get('diffManuscript')) {
+      return this.charDiff();
+    }
+
     return this.diff();
   }),
 
   diff() {
     return JsDiff.diffSentences(
+      String(this.get('comparisonText') || this.get('default')),
+      String(this.get('viewingText') || this.get('default'))
+    );
+  },
+
+  charDiff() {
+    return JsDiff.diffWordsWithSpace(
       String(this.get('comparisonText') || this.get('default')),
       String(this.get('viewingText') || this.get('default'))
     );

@@ -37,17 +37,16 @@ export default Ember.Component.extend({
       this.get('comparisonText'),
       this.get('viewingText') || this.get('default'));
 
-    if (!this.get('manuscriptDiff')) {
-      return this.styleDiff(diff);
+    if (this.get('manuscriptDiff')) {
+      diff = this.refineDiff(diff);
     }
 
-    diff = this.refineDiff(diff);
     return this.styleDiff(diff);
   },
 
   // If one word was changed in a sentence, it will show up in the
   // diff as an added sentence and a removed sentence. This makes
-  // the diff hard to read.  So we'll look for adjcent chunks that
+  // the diff hard to read.  So we'll look for adjacent chunks that
   // match that pattern and do a word level diff in them for a more
   // precise result.
   refineDiff: function(diff) {
@@ -69,6 +68,8 @@ export default Ember.Component.extend({
       }
     }
 
+    // rediff returns an array, which the template can't handle.
+    // Flattening so the template can process the result.
     return _.flatten(processed);
   },
 

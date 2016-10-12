@@ -82,13 +82,16 @@ class PaperTrackerPage(AuthenticatedPage):
                  'publishing_state': 6,
                  }
     submitted_papers = []
+    journal_papers = []
     for journal in journal_ids:
-      journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, first_submitted_at, '
+      journal_papers += PgSQL().query('SELECT id, title, doi, submitted_at, first_submitted_at, '
                                      'paper_type, publishing_state '
                                      'FROM papers '
                                      'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
                                      'AND submitted_at IS NOT NULL '
                                      'ORDER BY papers.submitted_at ASC;', (journal, 'unsubmitted'))
+
+
     for paper in journal_papers:
       # convert paper tuples to lists so they are mutable for data sanitization.
       paper = list(paper)

@@ -65,9 +65,9 @@ class Journal < ActiveRecord::Base
   # rubocop:enable Metrics/LineLength
 
   def self.staff_admins_for_papers(papers)
-    journals = Journal.joins(:papers)
-                      .where(papers: { id: papers })
-    journals.map(&:staff_admins).flatten
+    journals = joins(:papers)
+               .where(papers: { id: papers })
+    journals.flat_map(&:staff_admins)
   end
 
   def admins

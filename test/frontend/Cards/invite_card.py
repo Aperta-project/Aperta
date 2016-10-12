@@ -89,12 +89,12 @@ class InviteCard(BaseCard):
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
     title = self.normalize_spaces(title)
-    assert title in invite_text, \
-        title + '\nNot found in \n' + invite_text
+    assert title in invite_text, title + '\nNot found in \n' + invite_text
     assert 'PLOS Wombat' in invite_text, invite_text
     assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    assert u'{0}, {1}'.format(creator_ln, creator_fn) in invite_text, invite_text
+    main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
+    assert main_author in invite_text, (main_author, invite_text)
     abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (ms_id,))[0][0]
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one

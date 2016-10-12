@@ -136,6 +136,7 @@ class AuthorsTask(BaseTask):
         By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > label > input')
     self._ggovt_employee_radio_no = (
         By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > label + label > input')
+    self._handles = (By.CLASS_NAME, 'author-task-item-view-drag-handle')
 
     # Form Action Buttons
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
@@ -245,8 +246,8 @@ class AuthorsTask(BaseTask):
         project_admin_lbl, validation_lbl, writing_od_lbl, writing_re_lbl, funding_lbl,  \
         formal_analysis_lbl = ind_auth_form.find_elements_by_class_name('question-checkbox')
 
-    assert corresponding_lbl.text == ('This person should be identified as corresponding author'
-                                      ' on the published article'), corresponding_lbl.text
+    assert corresponding_lbl.text == 'This person should be identified as corresponding author'\
+                                      ' on the published article', corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
     assert conceptualization_lbl.text == 'Conceptualization', conceptualization_lbl.text
     assert visualization_lbl.text == 'Visualization', visualization_lbl.text
@@ -318,7 +319,7 @@ class AuthorsTask(BaseTask):
     :param add_grp_link: the WebDriver element for the Add New Group Author link
     :return: void function
     """
-    add_new_author_btn.click()
+    self.click_covered_element(add_new_author_btn)
     add_grp_link.click()
     grp_auth_form = self._get(self._group_author_form)
     grp_auth_form_title = self._get(self._group_author_edit_label)
@@ -409,7 +410,7 @@ class AuthorsTask(BaseTask):
     # Note: the acknowledgements were validated in the individual form element/styling method
     # Close the form when done validating
     add_author_cancel_lnk = self._get(self._add_author_cancel_lnk)
-    add_author_cancel_lnk.click()
+    self.click_covered_element(add_author_cancel_lnk)
 
   def add_individual_author_task_action(self):
     """Validate working of Author Card. Adds new individual author"""
@@ -522,10 +523,12 @@ class AuthorsTask(BaseTask):
         break
     # Get author to delete
     authors = self._gets(self._author_items)
-    self._actions.move_to_element(authors[n - 1]).perform()
-    time.sleep(5)
+    handles = self._gets(self._handles)
+    # Click on the left handle so the trash icon is displayed
+    self.click_covered_element(handles[n-1])
+    time.sleep(2)
     trash = authors[n - 1].find_element_by_css_selector('span.fa-trash')
-    trash.click()
+    self.click_covered_element(trash)
     # get buttons
     time.sleep(1)
     delete_div = self._get(self._delete_author_div)
@@ -536,7 +539,7 @@ class AuthorsTask(BaseTask):
     assert cancel_btn.text == 'CANCEL', cancel_btn.text
     assert delete_btn.text == 'DELETE FOREVER', delete_btn.text
     # TODO: check styles, resume this when styles are set.
-    delete_btn.click()
+    self.click_covered_element(delete_btn)
     time.sleep(2)
 
   def validate_styles(self):

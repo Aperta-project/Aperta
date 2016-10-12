@@ -52,5 +52,26 @@ describe FtpUploaderService do
       end.to raise_error(StandardError, 'final_filename is required')
       expect(@server.files).not_to include(final_filename)
     end
+
+    it 'notifies admins upon FTP failure' do
+      final_filename = 'test.jpg'
+      emails = ['adminA@example.com', 'adminB@example.com']
+      uploader = FtpUploaderService.new(
+        passive_mode: true,
+        file_io: 'present',
+        final_filename: final_filename,
+        url: 'ftp://user:password@127.0.0.1:21212/my_dir',
+        email_on_failure: emails
+      )
+      email_contents = emails << final_filename
+
+      allow(uploader).to receive(:connect_to_server).and_raise(FtpUploaderService::FtpTransferError)
+
+      expect do
+        uploader.upload
+      end.to raise_error(Net::FTPConnectionError, 'not connected')
+
+      expect(Sidekiq::Extensions::DelayedMailer.jobs.first["args"].last).to include(*email_contents)
+    end
   end
 end

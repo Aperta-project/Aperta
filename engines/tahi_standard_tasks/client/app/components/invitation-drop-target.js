@@ -36,8 +36,13 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
 
   drop(e) {
     this.removeDragStyles();
-    this.attrs.changePosition(DragNDrop.dragItem, this.get('position'));
+    this.changePosition(DragNDrop.dragItem, this.get('position'));
     DragNDrop.dragItem = null;
     return DragNDrop.cancel(e);
+  },
+
+  changePosition(item, newPosition) {
+    item.set('position', newPosition);
+    item.save();
   }
 });

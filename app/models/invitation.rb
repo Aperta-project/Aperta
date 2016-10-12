@@ -19,6 +19,20 @@ class Invitation < ActiveRecord::Base
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
   validates :email, format: /.+@.+/
+  validates :task, presence: true
+
+  belongs_to :invite_queue
+  acts_as_list scope: :invite_queue
+  scope :primaries, -> { where("primary_id is not NULL") }
+  # include RankedModel
+  # ranks :position
+  # ranks :alternate_position, with_same: :primary_id, scope: :alternate_pending
+  # ranks :main_queue_position, scope: :main_pending
+  scope :main_pending, -> { includes(:alternates).where(alternates: { id: nil }) }
+  scope :alternate_pending, -> { joins(:alternates).where(alternates: { state: 'pending' }) }
+  scope :pending, -> { where(state: "pending") }
+  scope :alternates2, -> { where("primary_id is not NULL") }
+
 
   aasm column: :state do
     state :pending, initial: true
@@ -107,6 +121,10 @@ class Invitation < ActiveRecord::Base
 
   def set_invitee
     update(invitee: User.find_by(email: email))
+  end
+
+  def find_or_create_main_queue
+
   end
 
   private

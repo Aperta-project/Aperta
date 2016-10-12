@@ -76,7 +76,22 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   closedState: equal('uiState', 'closed'),
   editState: equal('uiState', 'edit'),
 
+  shiftAuthorPositions(author, newPosition) {
+    debugger;
+    author.set('position', newPosition);
+    author.save();
+  },
+
   actions: {
+    changeAuthorPosition(author, newPosition) {
+      debugger;
+      this.shiftAuthorPositions(author, newPosition);
+    },
+    removeAuthor(author) {
+      debugger;
+      author.destroyRecord();
+    },
+
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
         this.get('setRowState')('show');
@@ -126,9 +141,6 @@ export default Component.extend(DragNDrop.DraggableMixin, {
           invitation.set('primary', potentialPrimary);
         }
       }
-      this.get('placeInQueue')(invitation);
-
-      invitation.save().then( ()=>{
       this.get('placeInDifferentQueue')(invitation).then(()=> {
         this.get('setRowState')('show');
       });
@@ -136,7 +148,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
     destroyInvitation(invitation) {
       if (invitation.get('pending')) {
-        invitation.destroyRecord();
+        this.get('destroyInvite')(invitation);
       }
     },
 

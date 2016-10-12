@@ -31,7 +31,7 @@ module('Integration: Commenting', {
         journals: []
       }
     });
-    return TestHelper.handleFindAll('discussion-topic', 1);
+    return TestHelper.mockFindAll('discussion-topic', 1);
   }
 });
 

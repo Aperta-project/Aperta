@@ -12,6 +12,8 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
   validations: null,
   questionValidations: null,
 
+  isNew: Ember.computed.reads('object.isNew'),
+
   init() {
     this._super(...arguments);
 

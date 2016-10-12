@@ -1,7 +1,7 @@
 // https://github.com/IvyApp/ivy-codemirror
 
 import Ember from 'ember';
-import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
+import LazyLoader from 'tahi/lib/lazy-loader';
 
 export default Ember.Component.extend({
   tagName: 'textarea',

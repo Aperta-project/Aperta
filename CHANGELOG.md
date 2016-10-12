@@ -9,6 +9,32 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Reporting Guidelines: PRISMA uploads for systematic review and meta-analyses work again
+- Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
+- PLOS Biology name is no longer hard coded in letter templates
+- Fixed issue where roles couldn't be assigned in the admin page in some journals
+### Security
+
+## [1.27.0] - {2016-10-6}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- Feedback with attachments will now send successfully
+## Security
+
+## [1.26.0] - {2016-09-22}
+### Added
+- Users can cancel figure and adhoc uploads
+- Uploads that fail processing will show an error
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- At-mentions in discussions are no longer shown as escaped html notification emails
+- Users can once again add group authors
+- Users can cancel manuscript withdraw again
 ### Security
 
 ## [1.25.1] - {2016-09-16}

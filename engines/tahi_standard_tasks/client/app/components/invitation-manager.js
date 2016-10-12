@@ -23,13 +23,15 @@ export default Ember.Component.extend({
   selectedUser: null,
   autoSuggestSelectedText: null,
 
+  // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),
   latestDecision: computed.alias('task.paper.latestDecision'),
 
   queueSortingCriteria: ['mainQueue'],
+  // TODO: inviteQueues might not be used anymore
   inviteQueues: computed.sort('task.inviteQueues', 'queueSortingCriteria'),
   invitations: computed.alias('task.invitations'),
-  currentInviteQueues: computed.alias('latestDecision.inviteQueues'),
+
   previousInviteQueues: computed('task.paper.previousDecisions', function() {
     return _.flatten(this.get('task.paper.previousDecisions').map(function(decision) {
       return decision.get('inviteQueues');
@@ -37,17 +39,7 @@ export default Ember.Component.extend({
   }),
 
   inviteeRole: computed.reads('task.inviteeRole'),
-  latestDecision: computed('decisions', 'decisions.@each.latest', function() {
-    return this.get('decisions').findBy('latest', true);
-  }),
 
-  queueParent: computed('groupByDecision','task', function() {
-    if (this.get('groupByDecision')) {
-      return this.get('latestDecision');
-    } else {
-      return this.get('task');
-    }
-  }),
 
   applyTemplateReplacements(str) {
     const name = this.get('selectedUser.full_name');
@@ -85,15 +77,9 @@ export default Ember.Component.extend({
     return user.full_name + ' <' + user.email + '>';
   },
 
-  createInvitation: task(function * (props) {
+  createInvitation: task(function * (mainQueue, props) {
     let invitation = this.get('store').createRecord('invitation', props);
-    let mainQueue;
-    let promise = this.getOrCreateMainQueue(this.get('queueParent'));
-    yield promise;
-    promise.then((queue)=> {
-      mainQueue = queue;
-      mainQueue.get('invitations').addObject(invitation);
-    });
+    mainQueue.get('invitations').addObject(invitation);
 
     this.set('pendingInvitation', invitation);
     try {
@@ -115,48 +101,6 @@ export default Ember.Component.extend({
       // to do its thing) we have to wrap the ajax request in a try-catch block
     }
   }),
-
-  getOrCreateMainQueue() {
-    let mainQueue;
-    const queueParent = this.get('queueParent');
-    let queues = queueParent.get('inviteQueues');
-    if (queues.get('length')) {
-      mainQueue = queues.findBy('mainQueue');
-      return new Ember.RSVP.Promise((resolve)=> {
-        resolve(mainQueue);
-      });
-    } else {
-      var decision;
-      if (queueParent.get('constructor.modelName') === 'decision') {
-        decision = queueParent;
-      }
-      mainQueue = this.get('store').createRecord('inviteQueue', {
-        queueTitle: 'Main',
-        mainQueue: true,
-        task: this.get('task'),
-        decision: decision
-      });
-      queueParent.get('inviteQueues').addObject(mainQueue);
-      return mainQueue.save();
-    }
-  },
-
-  getOrCreateSubQueue(primary) {
-    if(primary.get('inviteQueue')){
-      return new Ember.RSVP.Promise((resolve)=> {
-        resolve(primary.get('inviteQueue'));
-      });
-    }
-    const queueParent = this.get('queueParent');
-    const subQueue = queueParent.get('inviteQueues').createRecord({
-      primary: primary,
-      mainQueue: false,
-      queueTitle: `SubQueue for: ${primary.get('email')}`,
-      task: this.get('task')
-    });
-    queueParent.get('inviteQueues').addObject(subQueue);
-    return subQueue.save();
-  },
 
   persistedInvitations: computed('invitations.@each.isNew', function() {
     const invitations = this.get('invitations');
@@ -201,10 +145,10 @@ export default Ember.Component.extend({
       this.set('activeInvitation', null);
     },
 
-    composeInvite() {
+    composeInvite(mainQueue) {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
-      this.get('createInvitation').perform({
+      this.get('createInvitation').perform(mainQueue, {
         task: this.get('task'),
         email: this.get('selectedUser.email'),
         body: this.buildInvitationBody(),
@@ -218,7 +162,7 @@ export default Ember.Component.extend({
     },
 
     destroyInvite(invitation) {
-      if (invitation.get('inviteQueue.invitations.length') == 2) {
+      if (invitation.get('inviteQueue.invitations.length') === 2) {
         this.getOrCreateMainQueue().then((mainQueue)=> {
           const subQueue = invitation.get('inviteQueue');
           const primary = invitation.get('primary');

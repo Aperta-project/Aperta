@@ -1,18 +1,43 @@
 {{#if groupByDecision}}
-  {{#each currentInviteQueues as |queue|}}
-    QUEUE--------------- {{queue.queueTitle}} {{queue.id}}
-    {{invitation-group invitations=queue.invitations
-                       activeInvitation=activeInvitation
-                       activeInvitationState=activeInvitationState
-                       composedInvitation=composedInvitation
-                       placeInDifferentQueue=(action 'placeInDifferentQueue')
-                       destroyInvite=(action 'destroyInvite')
-                       setRowState=(action 'toggleActiveInvitation')
-                       class='active-invitations'}}
+  {{#invite-queues task=task queueParent=latestDecision as |q|}}
+    {{#each q.queues as |queue|}}
+      QUEUE--------------- {{queue.queueTitle}} {{queue.id}}
+      {{invitation-group invitations=queue.invitations
+                         activeInvitation=activeInvitation
+                         activeInvitationState=activeInvitationState
+                         composedInvitation=composedInvitation
+                         placeInDifferentQueue=q.placeInDifferentQueue
+                         destroyInvite=q.destroyInvite
+                         setRowState=(action 'toggleActiveInvitation')
+                         class='active-invitations'}}
 
 
-  {{/each}}
-  {{partial 'invitation-compose'}}
+    {{/each}}
+    <div class="invitation-email-entry">
+      {{#auto-suggest endpoint=autoSuggestSourceUrl
+                      queryParameter="query"
+                      inputId="invitation-recipient"
+                      placeholder=placeholder
+                      errorMessage=pendingInvitation.errors.email.firstObject.message
+                      parseResponseFunction=parseUserSearchResponse
+                      resultText=autoSuggestSelectedText
+                      itemSelected="didSelectUser"
+                      inputChanged="inputChanged"
+                      itemDisplayTextFunction=displayUserSelected
+                      as |user|}}
+        {{user.full_name}} &lt;{{user.email}}&gt;
+      {{/auto-suggest}}
+      <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
+              {{action "composeInvite" q.mainQueue}}>
+        Compose Invite
+      </button>
+      {{#if createInvitation.isRunning}}
+        <div class="invitation-email-entry-progress animation-fade-in">
+          {{progress-spinner visible=true size="small"}}
+        </div>
+      {{/if}}
+    </div>
+  {{/invite-queues}}
   Compare with original implementation below
   DELETE BELOW
 
@@ -40,6 +65,7 @@ DELETE ABOVE
   {{/each}}
 
 {{else}}
+  <!-- groupByDecisions=false -->
   {{invitation-group  invitations=persistedInvitations
                       activeInvitation=activeInvitation
                       activeInvitationState=activeInvitationState
@@ -48,6 +74,29 @@ DELETE ABOVE
                       destroyInvite=(action 'destroyInvite')
                       setRowState=(action 'toggleActiveInvitation')
                       class='active-invitations'}}
-  {{partial 'invitation-compose'}}
+  <div class="invitation-email-entry">
+    {{#auto-suggest endpoint=autoSuggestSourceUrl
+                    queryParameter="query"
+                    inputId="invitation-recipient"
+                    placeholder=placeholder
+                    errorMessage=pendingInvitation.errors.email.firstObject.message
+                    parseResponseFunction=parseUserSearchResponse
+                    resultText=autoSuggestSelectedText
+                    itemSelected="didSelectUser"
+                    inputChanged="inputChanged"
+                    itemDisplayTextFunction=displayUserSelected
+                    as |user|}}
+      {{user.full_name}} &lt;{{user.email}}&gt;
+    {{/auto-suggest}}
+    <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
+            {{action "composeInvite"}}>
+      Compose Invite
+    </button>
+    {{#if createInvitation.isRunning}}
+      <div class="invitation-email-entry-progress animation-fade-in">
+        {{progress-spinner visible=true size="small"}}
+      </div>
+    {{/if}}
+  </div>
 {{/if}}
 

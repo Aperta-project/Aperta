@@ -42,6 +42,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     str = str.replace(/\[AUTHOR EMAIL\]/g, this.get('task.paper.creator.email'));
     str = str.replace(/\[PAPER TITLE\]/g, this.get('task.paper.displayTitle'));
     str = str.replace(/\[JOURNAL NAME\]/g, this.get('task.paper.journal.name'));
+    str = str.replace(/\[JOURNAL STAFF EMAIL\]/g, this.get('task.paper.journal.staffEmail'));
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
 

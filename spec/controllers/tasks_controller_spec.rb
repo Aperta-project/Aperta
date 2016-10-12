@@ -18,7 +18,7 @@ describe TasksController, redis: true do
     )
   end
 
-  describe "#index" do
+  describe "GET #index" do
     subject(:do_request) do
       get :index, {
              format: 'json',
@@ -69,7 +69,7 @@ describe TasksController, redis: true do
     end
   end
 
-  describe "POST 'create'" do
+  describe "POST #create" do
     subject(:do_request) do
       post :create, {
         format: 'json',
@@ -109,7 +109,7 @@ describe TasksController, redis: true do
     end
   end
 
-  describe "PATCH 'update'" do
+  describe "PATCH #update" do
     let(:task) do
       FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first)
     end
@@ -210,10 +210,14 @@ describe TasksController, redis: true do
     end
   end
 
-  describe "GET 'show'" do
-    let(:task) { FactoryGirl.create(:ad_hoc_task) }
+  describe "GET #show" do
+    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
     subject(:do_request) { get :show, { id: task.id, format: :json } }
     let(:format) { :json }
+
+    before do
+      allow(Task).to receive(:find).with(task.id.to_param).and_return task
+    end
 
     context "when the user has access" do
       before do
@@ -244,8 +248,12 @@ describe TasksController, redis: true do
     end
   end
 
-  describe "PUT 'send_message'" do
-    let(:task) { FactoryGirl.create(:ad_hoc_task) }
+  describe "PUT #send_message" do
+    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
+
+    before do
+      allow(Task).to receive(:find).with(task.id.to_param).and_return task
+    end
 
     subject(:do_request) do
       put :send_message, {
@@ -297,4 +305,154 @@ describe TasksController, redis: true do
       it { is_expected.to responds_with(403) }
     end
   end
+
+  describe "DELETE #destroy" do
+    let(:task) { FactoryGirl.create(:ad_hoc_task) }
+
+    subject(:do_request) do
+      delete :destroy, { id: task.id, format: "json" }
+    end
+
+    context "when the user has access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, task.paper)
+          .and_return true
+      end
+
+      it "destroys the task" do
+        expect do
+          do_request
+        end.to change { Task.exists?(task.id) }.from(true).to(false)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, task.paper)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+
+      it "does not destroy the task" do
+        expect do
+          do_request
+        end.to_not change { Task.exists?(task.id) }.from(true)
+      end
+    end
+  end
+
+  describe "GET #nested_questions" do
+    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
+    let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
+    let(:nested_questions) { [ nested_question ] }
+
+    subject(:do_request) do
+      get :nested_questions, { task_id: task.id, format: "json" }
+    end
+
+    before do
+      allow(Task).to receive(:find).with(task.id.to_param).and_return task
+    end
+
+    context "when the user has access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+        allow(task).to receive(:nested_questions).and_return nested_questions
+      end
+
+      it "responds with a list of serialized nested questions" do
+        do_request
+        response_json = JSON.parse(response.body)
+        expect(response_json).to have_key('nested_questions')
+        expect(response_json['nested_questions'].first).to eq(
+          NestedQuestionSerializer.new(
+            nested_question
+          ).as_json[:nested_question].deep_stringify_keys
+        )
+      end
+
+      it "responds 200 OK" do
+        do_request
+        expect(response.status).to be 200
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
+  describe "GET #nested_question_answers" do
+    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
+    let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
+    let(:nested_question_answer) do
+      FactoryGirl.build_stubbed(
+        :nested_question_answer,
+        owner: nested_question
+      )
+    end
+    let(:nested_question_answers) { [ nested_question_answer ] }
+
+    subject(:do_request) do
+      get :nested_question_answers, { task_id: task.id, format: "json" }
+    end
+
+    before do
+      allow(Task).to receive(:find).with(task.id.to_param).and_return task
+    end
+
+    context "when the user has access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+        allow(task).to receive(:nested_question_answers)
+          .and_return nested_question_answers
+      end
+
+      it "responds with a list of serialized nested question answers" do
+        do_request
+        response_json = JSON.parse(response.body)
+        expect(response_json).to have_key('nested_question_answers')
+        expect(response_json['nested_question_answers'].first).to eq(
+          NestedQuestionAnswerSerializer.new(
+          nested_question_answer
+          ).as_json[:nested_question_answer].deep_stringify_keys
+        )
+      end
+
+      it "responds 200 OK" do
+        do_request
+        expect(response.status).to be 200
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
 end

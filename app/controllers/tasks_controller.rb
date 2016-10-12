@@ -51,9 +51,9 @@ class TasksController < ApplicationController
     users = User.where(id: task_email_params[:recipients])
     users.each do |user|
       GenericMailer.delay.send_email(
-        task_email_params[:subject],
-        task_email_params[:body],
-        user.email
+        subject: task_email_params[:subject],
+        body: task_email_params[:body],
+        to: user.email
       )
     end
     head :no_content

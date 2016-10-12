@@ -71,9 +71,9 @@ class FtpUploaderService
     Rails.logger.warn(transfer_error)
     Bugsnag.notify(transfer_error)
     GenericMailer.delay.send_email(
-      transfer_failed,
-      transfer_error + "\nPlease try to upload again.",
-      @email_on_failure
+      subject: transfer_failed,
+      body: transfer_error + "\nPlease try to upload again.",
+      to: @email_on_failure
     )
   end
 

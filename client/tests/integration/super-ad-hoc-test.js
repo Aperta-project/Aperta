@@ -31,7 +31,7 @@ module('Integration: Super AdHoc Card', {
     server   = setupMockServer();
     fakeUser = window.currentUserData.user;
 
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     let records = paperWithTask('Task', {
       id: 1,

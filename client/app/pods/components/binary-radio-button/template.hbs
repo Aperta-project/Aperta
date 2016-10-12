@@ -1,21 +1,19 @@
 <label>
-  {{radio-button-action selection=selection
-                        name=name
-                        id=idYes
-                        value=yesValue
-                        checked=yesChecked
-                        action="selectYes"
-                        disabled=disabled}}
+  {{radio-button selection=selection
+                 name=name
+                 id=idYes
+                 value=yesValue
+                 action=(action "selectYes")
+                 disabled=disabled}}
   {{yesLabel}}
 </label>
 
 <label>
-  {{radio-button-action selection=selection
-                        name=name
-                        id=idNo
-                        value=noValue
-                        checked=noChecked
-                        action="selectNo"
-                        disabled=disabled}}
+  {{radio-button selection=selection
+                 name=name
+                 id=idNo
+                 value=noValue
+                 action=(action "selectNo")
+                 disabled=disabled}}
   {{noLabel}}
 </label>

@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Reporting Guidelines: PRISMA uploads for systematic review and meta-analyses work again
 - Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
 - PLOS Biology name is no longer hard coded in letter templates
 - Fixed issue where roles couldn't be assigned in the admin page in some journals

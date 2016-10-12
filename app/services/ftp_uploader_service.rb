@@ -56,8 +56,10 @@ class FtpUploaderService
     notify_admin(e)
     raise
   ensure
-    @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
-    @ftp.close
+    if @ftp
+      @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
+      @ftp.close
+    end
   end
 
   private

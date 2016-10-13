@@ -1,6 +1,7 @@
 # This service is used to FTP the BillingLogReport to billing ftp server.
 class BillingFTPUploader
   def initialize(billing_log_report)
+    raise(ArgumentError) if billing_log_report.nil?
     @billing_log_report = billing_log_report
 
     emails = Journal

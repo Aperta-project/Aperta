@@ -9,7 +9,6 @@ export default Ember.Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
-    window.addEventListener('storage', this._oauthListener, false);
     if(this.get('user')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
@@ -25,30 +24,39 @@ export default Ember.Component.extend({
   oauthListener(event) {
     if (event.type === 'storage' && event.key === 'orcidOauthResult') {
       this.set('orcidOauthResult', event.newValue);
+      this.set('oauthInProgress', false);
       window.localStorage.removeItem('orcidOauthResult');
+      Ember.run.later(this, 'reloadIfNoResponse', 10000);
       window.removeEventListener('storage', this._oauthListener, false);
+    }
   },
 
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }
-
+    this.set('orcidOauthResult', null);
     if (!this.get('orcidAccount.identifier')) {
       this.get('store').findRecord('orcidAccount', this.get('orcidAccount.id'), {reload: true});
     }
   },
 
-  button_text: Ember.computed('button_disabled', 'orcidOauthResult', function() {
-    if (this.get('button_disabled')) {
+  oauthInProgress: false,
+
+  buttonDisabled: Ember.computed('oauthInProgress', 'orcidOauthResult', 'orcid.identifier', function(){
+    return this.get('oauthInProgress') ||
+      (this.get('orcidOauthResult') === 'success' &&
+        Ember.isEmpty(this.get('orcid.identifier')));
+  }),
+
+  buttonText: Ember.computed('oauthInProgress', 'orcidOauthResult', function() {
+    if (this.get('oauthInProgress')) {
       if (this.get('orcidOauthResult') === null){
         return 'Connecting to ORCID...';
 
       } else if (this.get('orcidOauthResult') === 'success') {
-        Ember.run.later(this, 'reloadIfNoResponse', 10000);
         return 'Retrieving ORCID ID...';
 
       } else if (this.get('orcidOauthResult') === 'failure') {
-        this.set('button_disabled', null);
-        this.set('orcidOauthResult', null);
+
         return 'Connect or create your ORCID ID';
       }
     } else {
@@ -63,7 +71,7 @@ export default Ember.Component.extend({
   actions: {
     removeOrcidAccount(orcidAccount) {
       orcidAccount.clearRecord();
-      this.set('button_disabled', false);
+      this.set('oauthInProgress', false);
       this.set('orcidOauthResult', null);
     },
 
@@ -72,9 +80,11 @@ export default Ember.Component.extend({
       window.open(
         this.get('orcidAccount.oauthAuthorizeUrl'),
         '_blank',
-        'toolbar=no, scrollbars=yes, width=500, height=630, top=0, left=0'
+        'toolbar=no, scrollbars=yes, width=500, height=630, top=500, left=500'
       );
-      this.set('button_disabled', true);
+      this.set('orcidOauthResult', null);
+      this.set('oauthInProgress', true);
+      window.addEventListener('storage', this._oauthListener, false);
     }
   }
 });

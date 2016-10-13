@@ -8,10 +8,10 @@ import time
 import uuid
 
 from psycopg2 import DatabaseError
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from loremipsum import generate_paragraph
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface
@@ -847,3 +847,17 @@ class DashboardPage(AuthenticatedPage):
   def return_cns_base_overlay_div(self):
     """Method for debugging purposes only"""
     return self._get(self._cns_base_overlay_div)
+
+  def _wait_for_page_load(self):
+    """
+    A fuction to validate that the dashboard page is loaded before interacting with it
+    """
+    self.set_timeout(15)
+    try:
+      self._wait_for_element(self._get(self._dash_inactive_section_title))
+    except ElementDoesNotExistAssertionError:
+      try:
+        self._wait_for_element(self._get(self._dash_active_section_title))
+      except ElementDoesNotExistAssertionError:
+        self._wait_for_element(self._get(self._dashboard_info_text))
+    self.restore_timeout()

@@ -64,6 +64,21 @@ test("It can find a single word difference in a manuscript diff", function(asser
   );
 });
 
+test("It finds punctuation differences", function(assert) {
+   this.component.setProperties({
+    viewingText: "<p>I am a cat.</p>",
+    comparisonText: "<p>I am a cat!</p>",
+     manuscriptDiff: true
+  });
+
+  assert.equal(
+    this.component.diff(),
+    '<p><span class=\"unchanged\">I am a cat</span><span class=\"removed\">!</span>' +
+    '<span class=\"added\">.</span><span class=\"unchanged\"></span></p>'
+  );
+});
+
+
 test("forceValidHTML adds pairs of elements to `tokens`", function(assert) {
        var tokens =  ["a", "b", "c"];
        this.component.forceValidHTML($("<p>Grandiose</p>")[0], tokens);

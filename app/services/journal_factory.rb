@@ -92,6 +92,7 @@ class JournalFactory
 
       # Tasks
       task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
@@ -260,6 +261,7 @@ class JournalFactory
 
       # Tasks
       task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)

@@ -461,6 +461,14 @@ describe JournalFactory, flaky: true do
         end
       end
 
+      context 'Freelance Editor' do
+        let(:permissions) { journal.freelance_editor_role.permissions }
+
+        it 'has no permissions' do
+          expect(permissions).to be_empty
+        end
+      end
+
       context 'Handling Editor' do
         let(:permissions) { journal.handling_editor_role.permissions }
 

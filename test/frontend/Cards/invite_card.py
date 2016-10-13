@@ -86,6 +86,7 @@ class InviteCard(BaseCard):
     assert any(invitee['email'] in s for s in invite_headings_text), \
         '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
     invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
+    invite_text = invite_text.replace('&nbsp', ' ')
     # Always remember that our ember text always normalizes whitespaces down to one
     #  Painful lesson
     title = self.normalize_spaces(title)

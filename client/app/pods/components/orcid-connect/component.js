@@ -41,8 +41,13 @@ export default Ember.Component.extend({
 
   oauthInProgress: false,
 
-  buttonDisabled: Ember.computed('oauthInProgress', 'orcidOauthResult', 'orcid.identifier', function(){
+  buttonDisabled: Ember.computed('oauthInProgress',
+                                 'orcidOauthResult', 
+                                 'orcid.identifier',
+                                 'orcidAccount.isLoaded',
+                                 function(){
     return this.get('oauthInProgress') ||
+      !this.get('orcidAccount.isLoaded') ||
       (this.get('orcidOauthResult') === 'success' &&
         Ember.isEmpty(this.get('orcid.identifier')));
   }),

@@ -45,6 +45,10 @@ describe JournalFactory, flaky: true do
         permission_states: { id: PermissionState.wildcard }
       )
     end
+    let(:reviewer_report_klasses) do
+      [TahiStandardTasks::ReviewerReportTask] +
+        TahiStandardTasks::ReviewerReportTask.descendants
+    end
 
     it 'creates a new journal with the given params' do
       expect do
@@ -293,10 +297,7 @@ describe JournalFactory, flaky: true do
 
         describe 'Task permissions' do
           let(:task_klasses) { ::Task.descendants }
-          let(:non_editable_task_klasses) do
-            [TahiStandardTasks::ReviewerReportTask] +
-              TahiStandardTasks::ReviewerReportTask.descendants
-          end
+          let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -
               non_editable_task_klasses -
@@ -334,7 +335,7 @@ describe JournalFactory, flaky: true do
               expect(permissions).to include(permission)
             end
 
-            non_editable_task_klasses.each do |klass|
+            reviewer_report_klasses.each do |klass|
               expect(permissions).to_not include(
                 Permission.find_by(action: 'edit', applies_to: klass.name)
               )
@@ -444,6 +445,17 @@ describe JournalFactory, flaky: true do
               Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
           end
+
+          it 'is not able to edit the ReviewerReportTask(s)' do
+            reviewer_report_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(
+                  action: 'edit',
+                  applies_to: klass.name
+                )
+              )
+            end
+          end
         end
       end
 
@@ -498,10 +510,7 @@ describe JournalFactory, flaky: true do
 
         describe 'Task permissions' do
           let(:task_klasses) { ::Task.descendants }
-          let(:non_editable_task_klasses) do
-            [TahiStandardTasks::ReviewerReportTask] +
-              TahiStandardTasks::ReviewerReportTask.descendants
-          end
+          let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -
               non_editable_task_klasses -
@@ -539,7 +548,7 @@ describe JournalFactory, flaky: true do
               expect(permissions).to include(permission)
             end
 
-            non_editable_task_klasses.each do |klass|
+            reviewer_report_klasses.each do |klass|
               expect(permissions).to_not include(
                 Permission.find_by(action: 'edit', applies_to: klass.name)
               )

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
+import LazyLoader from 'tahi/lib/lazy-loader';
 import ENV from 'tahi/config/environment';
 
 export default Ember.Component.extend({

@@ -7,9 +7,7 @@ export default NestedQuestionComponent.extend({
 
   store: Ember.inject.service(),
 
-  attachments: Ember.computed('answer.attachments', function() {
-    return this.get('answer.attachments');
-  }),
+  attachments: Ember.computed.alias('answer.attachments'),
 
   // Do not propagate to parent component as this component is in charge
   // of saving itself (otherwise the parent component may issue another
@@ -55,7 +53,7 @@ export default NestedQuestionComponent.extend({
     },
 
     deleteAttachment(attachment){
-     attachment.destroyRecord();
+      attachment.destroyRecord();
     }
   }
 });

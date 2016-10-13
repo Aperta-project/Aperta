@@ -34,7 +34,7 @@ module('Integration: Paper Docx Download', {
       app = startApp();
       server = setupMockServer();
       fakeUser = window.currentUserData.user;
-      return TestHelper.handleFindAll('discussion-topic', 1);
+      return TestHelper.mockFindAll('discussion-topic', 1);
     });
   }
 });

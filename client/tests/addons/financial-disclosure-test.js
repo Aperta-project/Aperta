@@ -29,7 +29,7 @@ module('Integration: FinancialDisclosure', {
     app = startApp();
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     records = paperWithTask('FinancialDisclosureTask', {
       id: financialDisclosureTaskId,

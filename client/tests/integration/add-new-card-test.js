@@ -19,7 +19,7 @@ module('Integration: adding a new card', {
   beforeEach() {
     app = startApp();
     server = setupMockServer();
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.mockFindAll('discussion-topic', 1);
 
     let adminJournalsResponse = {
       admin_journal: {

@@ -22,14 +22,4 @@ class OrcidOauthController < ApplicationController
       TEMPLATE
     end
   end
-
-  def index
-    render json: user_orcid_account
-  end
-
-  private
-
-  def user_orcid_account
-    OrcidAccount.find_by(user_id: current_user.id)
-  end
 end

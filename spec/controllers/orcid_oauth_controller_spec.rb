@@ -1,60 +1,33 @@
 require 'rails_helper'
 
-describe UsersController do
+describe OrcidOauthController do
   let(:user) { FactoryGirl.create :user }
-  let(:url) { "www.example.com/foo.jpg" }
+  let(:orcid_account) { user.orcid_account }
+  let(:orcid_worker) {  }
 
-  describe '#update_avatar' do
-    subject(:do_request) do
-      put :update_avatar,
-          format: 'json',
-          url: url
+  describe '#callback' do
+    subject(:do_request_with_error) do
+      get :callback, id: user.id, format: :html
+    end
+    subject(:do_request_without_error) do
+      get :callback, id: user.id, format: :html
     end
 
-    it_behaves_like 'an unauthenticated json request'
-    context 'when the user is signed in' do
-      before do
-        stub_sign_in(user)
-      end
-
-      it 'downloads the given avatar for current user' do
-        expect(DownloadAvatar).to receive(:call).with(user, url)
-        do_request
-      end
-
-      it "renders the current user's url on success" do
-        allow(DownloadAvatar).to receive(:call).and_return(true)
-
-        do_request
-        expect(res_body['avatar_url']).to eq(user.avatar.url)
-      end
-
-      it 'responds with a 500 on failure' do
-        allow(DownloadAvatar).to receive(:call).and_return(false)
-
-        do_request
-        expect(response.status).to eq(500)
-      end
-    end
-  end
-
-  describe '#show' do
-    subject(:do_request) do
-      get :show, id: user.id, format: :json
-    end
-
-    it_behaves_like 'an unauthenticated json request'
+    it_behaves_like "when the user is not signed in"    
 
     context 'when the user is signed in' do
       before do
         stub_sign_in(user)
       end
-
-      it "calls the users's serializer when rendering JSON" do
-        expect_any_instance_of(UsersController).to receive(:requires_user_can).with(:manage_user, Journal) { true }
-        do_request
-        serializer = user.active_model_serializer.new(user, scope: user)
-        expect(res_body.keys).to match_array(serializer.as_json.stringify_keys.keys)
+      
+      it "calls the OrcidWorker if no error is passed in" do        
+        do_request_without_error
+        expect(OrcidWorker).to receive(:perform_async).with(user.id, anything)
+      end
+      
+      it "does not call the OrcidWorker if an error is passed in" do
+        do_request_with_error
+        expect(OrcidWorker).not_to receive(:perform_async)          
       end
     end
   end

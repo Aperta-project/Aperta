@@ -19,6 +19,28 @@ class InvitationsController < ApplicationController
     respond_with invitation
   end
 
+  # non restful route for drag and drop changes
+  def update_position
+    # you'll get an invite and a new position from the params,
+    # then call invite's invite_queue's move_position or whatever.
+    #
+    # You'll need to eventually return both the updated invite AND
+    # the rest of the invites in the queue
+
+  end
+  #
+  # non restful route for assigning and unassigning primaries
+  def update_primary
+    # you'll get an invite and a new position from the params,
+    # then call invite's invite_queue's update_primary or whatever.
+    #
+    # You'll need to eventually return both the updated invite AND
+    # the rest of the invites in the queue
+  end
+
+  # it's not a great example, but the authors controller has examples of updating 
+  # the order of the author list. look at author_list_item
+
   def destroy
     requires_user_can(:manage_invitations, invitation.task)
     unless invitation.pending?
@@ -45,6 +67,10 @@ class InvitationsController < ApplicationController
     invitation = task.invitations.build(
       invitation_params.merge(inviter: current_user)
     )
+
+    invite_queue = task.active_invite_queue
+    invite_queue.add_invite(invite)
+
     if invitation_params[:state] == 'pending'
       invitation.set_invitee
       invitation.save
@@ -100,9 +126,7 @@ class InvitationsController < ApplicationController
         :state,
         :reviewer_suggestions,
         :task_id,
-        :primary_id,
-        :position,
-        :invite_queue_id)
+        :primary_id)
   end
 
   def invitation_update_params

@@ -23,6 +23,7 @@ class Invitation < ActiveRecord::Base
 
   belongs_to :invite_queue
   acts_as_list scope: :invite_queue
+
   scope :primaries, -> { where("primary_id is not NULL") }
   # include RankedModel
   # ranks :position
@@ -31,7 +32,6 @@ class Invitation < ActiveRecord::Base
   scope :main_pending, -> { includes(:alternates).where(alternates: { id: nil }) }
   scope :alternate_pending, -> { joins(:alternates).where(alternates: { state: 'pending' }) }
   scope :pending, -> { where(state: "pending") }
-  scope :alternates2, -> { where("primary_id is not NULL") }
 
 
   aasm column: :state do
@@ -123,8 +123,12 @@ class Invitation < ActiveRecord::Base
     update(invitee: User.find_by(email: email))
   end
 
-  def find_or_create_main_queue
+  def has_alternates?
+    alternates.exists?
+  end
 
+  def is_alternate?
+    primary.exists?
   end
 
   private

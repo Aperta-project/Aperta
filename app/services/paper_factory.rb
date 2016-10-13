@@ -60,6 +60,14 @@ class PaperFactory
       body: task_template.template,
       old_role: journal_task_type.old_role,
       notify: false)
+    # TODO: this paper_creation_hook might be the place to make the queue.
+    # BUT: We talked and it might be better to make a new service object to do it.
+    # ie. PaperReviewerTaskFactory.task_created(task) and then that thing has the logic
+    # for creating the queue.  WE'd need a base class that normally performs a no-op for this
+    # to work, but then we'd have a generic and more flexible solution.
+    #
+    # TODO MORE: Check and see what happens when users add new cards to the workflow and make sure
+    # that the same thing happens there
     task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
   end
 

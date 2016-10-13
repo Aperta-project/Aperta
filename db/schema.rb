@@ -306,11 +306,8 @@ ActiveRecord::Schema.define(version: 20161018143343) do
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
 
   create_table "invite_queues", force: :cascade do |t|
-    t.string   "queue_title"
     t.integer  "task_id"
-    t.integer  "primary_id"
     t.integer  "decision_id"
-    t.boolean  "main_queue",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

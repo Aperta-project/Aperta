@@ -38,6 +38,10 @@ module TahiStandardTasks
       end
     end
 
+    def active_invite_queue
+      paper.draft_decision.invite_queue
+    end
+
     def array_attributes
       super + [:reviewer_ids]
     end

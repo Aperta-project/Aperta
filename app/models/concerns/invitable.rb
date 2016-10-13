@@ -3,7 +3,11 @@ module Invitable
 
   included do
     has_many :invitations, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
-    has_many :invite_queues, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
+    has_one :invite_queue, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
+  end
+
+  def active_invite_queue
+    invite_queue
   end
 
   # Public: after transition hook for custom task behavior upon

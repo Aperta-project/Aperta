@@ -107,7 +107,7 @@ class TahiEnv
       end
 
       # TahiEnv#app_name
-      # TahiEnv#orcid_enabled? for boolean
+      # TahiEnv#orcid_login_enabled? for boolean
       reader_method_name = "#{env_var.key.downcase}"
       reader_method_name << "?" if env_var.boolean?
       define_method(reader_method_name) do

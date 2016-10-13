@@ -11,8 +11,8 @@ class OrcidAccount < ActiveRecord::Base
       raise OrcidAccount::APIError, 'Need an Orcid ID and access token before fetching profile'
     end
 
-    api_profile_url = "https://#{ENV['ORCID_API_HOST']}/" \
-      + "v#{ENV['ORCID_API_VERSION']}/" \
+    api_profile_url = "https://#{TahiEnv.orcid_api_host}/" \
+      + "v#{TahiEnv.orcid_api_version}/" \
       + "#{identifier}/orcid-profile"
 
     response = RestClient.get(api_profile_url,
@@ -29,7 +29,7 @@ class OrcidAccount < ActiveRecord::Base
 
   def profile_url
     return unless identifier
-    'https://' + ENV['ORCID_SITE_HOST'] + '/' + identifier
+    'https://' + TahiEnv.orcid_site_host + '/' + identifier
   end
 
   def access_token_valid

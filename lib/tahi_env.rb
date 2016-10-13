@@ -129,11 +129,11 @@ class TahiEnv
   optional :NEWRELIC_APP_NAME
 
   # Orcid
-  optional :ORCID_ENABLED, :boolean, default: false
-  required :ORCID_API_HOST, if: :orcid_enabled?
-  required :ORCID_SITE_HOST, if: :orcid_enabled?
-  required :ORCID_SECRET, if: :orcid_enabled?
-  required :ORCID_KEY, if: :orcid_enabled?
+  optional :ORCID_LOGIN_ENABLED, :boolean, default: false
+  required :ORCID_API_HOST
+  required :ORCID_SITE_HOST
+  required :ORCID_SECRET
+  required :ORCID_KEY
 
   # Puma
   optional :PUMA_WORKERS
@@ -179,7 +179,7 @@ class TahiEnv
   end
 
   def validate_at_least_one_form_of_auth
-    has_auth = cas_enabled? || orcid_enabled? || password_auth_enabled?
+    has_auth = cas_enabled? || orcid_login_enabled? || password_auth_enabled?
     unless has_auth
       errors.add \
         :base,

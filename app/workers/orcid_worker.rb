@@ -25,9 +25,9 @@ class OrcidWorker
   def oauth_authorize(code)
     # client id and secret are Aperta's id and secret, NOT the end user's
     response = JSON.parse RestClient.post(
-      "https://#{ENV['ORCID_SITE_HOST']}/oauth/token", {
-        'client_id' => ENV['ORCID_KEY'],
-        'client_secret' => ENV['ORCID_SECRET'],
+      "https://#{TahiEnv.orcid_site_host}/oauth/token", {
+        'client_id' => TahiEnv.orcid_key,
+        'client_secret' => TahiEnv.orcid_secret,
         'grant_type' => 'authorization_code',
         'code' => code
       }, 'Accept' => 'application/json'

@@ -1,41 +1,46 @@
 class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
-  before_action :enforce_index_policy, only: [:index]
 
   ## papers/:paper_id/figures
   def index
+    requires_user_can(:view, paper)
     respond_with paper.figures
   end
 
   def show
+    requires_user_can(:view, paper)
     respond_with figure
   end
 
   def create
+    requires_user_can(:edit, paper)
     figure.update_attributes(status: Attachment::STATUS_PROCESSING)
     DownloadAttachmentWorker.perform_async(figure.id, params[:url], current_user.id)
     respond_with figure
   end
 
   def update
+    requires_user_can(:edit, paper)
     figure.update_attributes figure_params
     render json: figure
   end
 
   def update_attachment
+    requires_user_can(:edit, paper)
     figure.update_attribute(:status, Attachment::STATUS_PROCESSING)
     DownloadAttachmentWorker.perform_async(figure.id, params[:url], current_user.id)
     render json: figure
   end
 
   def cancel
+    requires_user_can(:edit, paper)
     figure.cancel_download
     head :no_content
   end
 
   def destroy
+    requires_user_can(:edit, paper)
     figure.destroy
     head :no_content
   end
@@ -54,14 +59,6 @@ class FiguresController < ApplicationController
         paper.figures.new
       end
     end
-  end
-
-  def enforce_index_policy
-    authorize_action!(resource: nil, for_paper: paper)
-  end
-
-  def enforce_policy
-    authorize_action!(resource: figure)
   end
 
   def figure_params

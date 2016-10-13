@@ -35,7 +35,6 @@ class ProductionMedataCard(BaseCard):
     self._how_to_pay = (By.XPATH, ".//li[contains(@class, 'question')]/div/div")
     self._volume_number_field = (By.CLASS_NAME, 'volume-number')
     self._issue_number_field = (By.CLASS_NAME, 'issue-number')
-    self._error_msg = (By.CLASS_NAME, 'error-message')
 
   def check_style(self, paper_id):
     """

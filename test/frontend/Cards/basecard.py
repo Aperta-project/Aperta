@@ -68,7 +68,8 @@ class BaseCard(AuthenticatedPage):
     self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
     self._invitee_revoke = (By.CLASS_NAME, 'invitation-item-action-text')
     self._invitation_state = (By.CLASS_NAME, 'invitation-item-status')
-
+    # Error message associated with form validation
+    self._error_msg = (By.CLASS_NAME, 'error-message')
 
   # Common actions for all cards
   def click_task_completed_checkbox(self):

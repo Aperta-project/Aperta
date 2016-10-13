@@ -91,13 +91,31 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
+      # Cover Editors can edit _all_ tasks except for ReviewerReportTask(s).
+      # Of those editable tasks all but the TitleAndAstractTask can only be
+      # modified if the Paper itself is editable.
+      editable_task_klasses = task_klasses -
+        [TahiStandardTasks::ReviewerReportTask] -
+        TahiStandardTasks::ReviewerReportTask.descendants -
+        [TahiStandardTasks::TitleAndAbstractTask]
+      editable_task_klasses.each do |klass|
+        role.ensure_permission_exists(
+          :edit,
+          applies_to: klass,
+          states: Paper::EDITABLE_STATES
+        )
+      end
+
+      # The TitleAndAbstractTask is always editable, regardless of paper state.
       role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
 
       # Discussions

@@ -165,8 +165,9 @@ class CommonTest(FrontEndTest):
   @staticmethod
   def set_editors_in_db(paper_id):
     """
-    Set up a handling editor, academic editor and cover editor for a given paper
-    This is a temporary solution until these assignments can be done using the UI
+    Set up a handling editor, academic editor and cover editor for a given paper.
+    Also set up Freelance editor role (journal scope) for Cover Editor and Handling Editor
+    This is used for seeding data in new environments.
     :paper_id: Integer with the paper id
     Returns None
     """
@@ -195,3 +196,177 @@ class CommonTest(FrontEndTest):
     PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
                    'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
                    (acadedit_user_id, academic_editor_role_for_env, paper_id))
+
+  @staticmethod
+  def set_staff_in_db():
+    """
+    Set up a internal editor, staff admin, billing_staff, publishing services and production staff
+      for a given journal.
+    This supports seeding data in a new environment
+    Returns None
+    """
+    # Set up a handling editor, academic editor and cover editor for this paper
+    wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = \'PLOS Wombat\';')[0][0]
+    internal_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                                 'name = \'Internal Editor\';',
+                                                 (wombat_journal_id,))[0][0]
+    staff_admin_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                             'name = \'Staff Admin\';',
+                                             (wombat_journal_id,))[0][0]
+    billstaff_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                             'name = \'Billing Staff\';',
+                                             (wombat_journal_id,))[0][0]
+    pubsvcs_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                         'name = \'Publishing Services\';',
+                                         (wombat_journal_id,))[0][0]
+    prodstaff_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                           'name = \'Production Staff\';',
+                                           (wombat_journal_id,))[0][0]
+
+    intedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aintedit\';')[0][0]
+    staffadm_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'astaffadmin\';')[0][0]
+    billstaff_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'abillstaff\';')[0][0]
+    pubsvcs_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'apubsvcs\';')[0][0]
+    prodstaff_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aprodstaff\';')[0][0]
+
+    # test if assignment already exists, add it NOT present
+    intedit_role_exists = PgSQL().query('SELECT roles.name '
+                                        'FROM assignments '
+                                        'JOIN roles ON roles.id = assignments.role_id '
+                                        'WHERE assignments.user_id=%s '
+                                        'AND roles.name=\'Internal Editor\' '
+                                        'AND assignments.assigned_to_type=\'Journal\';',
+                                        (intedit_user_id,))[0][0]
+    if intedit_role_exists != 'Internal Editor':
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                   'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                   (intedit_user_id, internal_editor_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Internal editor assignment already exists')
+    staffadm_role_exists = PgSQL().query('SELECT roles.name '
+                                        'FROM assignments '
+                                        'JOIN roles ON roles.id = assignments.role_id '
+                                        'WHERE assignments.user_id=%s '
+                                        'AND roles.name=\'Staff Admin\' '
+                                        'AND assignments.assigned_to_type=\'Journal\';',
+                                        (staffadm_user_id,))[0][0]
+    if staffadm_role_exists != 'Staff Admin':
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (staffadm_user_id, staff_admin_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Staff Admin assignment already exists')
+    billstaff_role_exists = PgSQL().query('SELECT roles.name '
+                                          'FROM assignments '
+                                          'JOIN roles ON roles.id = assignments.role_id '
+                                          'WHERE assignments.user_id=%s '
+                                          'AND roles.name=\'Billing Staff\' '
+                                          'AND assignments.assigned_to_type=\'Journal\';',
+                                          (billstaff_user_id,))[0][0]
+    if billstaff_role_exists != 'Billing Staff':
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (billstaff_user_id, billstaff_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Billing Staff assignment already exists')
+    pubsvcs_role_exists = PgSQL().query('SELECT roles.name '
+                                        'FROM assignments '
+                                        'JOIN roles ON roles.id = assignments.role_id '
+                                        'WHERE assignments.user_id=%s '
+                                        'AND roles.name=\'Publishing Services\' '
+                                        'AND assignments.assigned_to_type=\'Journal\';',
+                                        (pubsvcs_user_id,))[0][0]
+    if pubsvcs_role_exists != 'Publishing Services':
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (pubsvcs_user_id, pubsvcs_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Publishing Services assignment already exists')
+    prodstaff_role_exists = PgSQL().query('SELECT roles.name '
+                                        'FROM assignments '
+                                        'JOIN roles ON roles.id = assignments.role_id '
+                                        'WHERE assignments.user_id=%s '
+                                        'AND roles.name=\'Production Staff\' '
+                                        'AND assignments.assigned_to_type=\'Journal\';',
+                                        (prodstaff_user_id,))[0][0]
+    if prodstaff_role_exists != 'Production Staff':
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (prodstaff_user_id, prodstaff_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Production Staff assignment already exists')
+
+  @staticmethod
+  def set_freelance_eds_in_db():
+    """
+    Set up a freelance editor role for cover editor and handling editor in plos wombat test journal
+    This supports seeding data in a new environment
+    Returns None
+    """
+    # Set up a handling editor, academic editor and cover editor for this paper
+    wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = \'PLOS Wombat\';')[0][0]
+    freelance_editor_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
+                                                  'name = \'Freelance Editor\';',
+                                                  (wombat_journal_id,))[0][0]
+
+    handedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'ahandedit\';')[0][0]
+    covedit_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'acoveredit\';')[0][0]
+
+    # test if assignment already exists, add it NOT present
+    handedit_fe_role_exists = PgSQL().query('SELECT roles.name '
+                                            'FROM assignments '
+                                            'JOIN roles ON roles.id = assignments.role_id '
+                                            'WHERE assignments.user_id=%s '
+                                            'AND roles.name=\'Freelance Editor\' '
+                                            'AND assignments.assigned_to_type=\'Journal\';',
+                                            (handedit_user_id,))[0][0]
+    if handedit_fe_role_exists != 'Freelance Editor':
+      logging.info('Handling editor user lacks Freeland Editor role, adding...')
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (handedit_user_id, freelance_editor_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Handling editors\' Freelance Editor assignment already exists')
+    covedit_fe_role_exists = PgSQL().query('SELECT roles.name '
+                                           'FROM assignments '
+                                           'JOIN roles ON roles.id = assignments.role_id '
+                                           'WHERE assignments.user_id=%s '
+                                           'AND roles.name=\'Freelance Editor\' '
+                                           'AND assignments.assigned_to_type=\'Journal\';',
+                                           (covedit_user_id,))[0][0]
+    if covedit_fe_role_exists != 'Freelance Editor':
+      logging.info('Cover editor user lacks Freeland Editor role, adding...')
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (covedit_user_id, freelance_editor_role_for_env, wombat_journal_id))
+    else:
+      logging.info('Cover editor\' Freelance Editor assignment already exists')
+
+  @staticmethod
+  def set_site_admin_in_db():
+    """
+    Set up a site admin for the system
+    This supports seeding data in a new environment
+    Returns None
+    """
+    site_admin_role_for_env = PgSQL().query('SELECT id '
+                                            'FROM roles '
+                                            'WHERE name = \'Site Admin\';')[0][0]
+
+    siteadmin_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'asuperadm\';')[0][0]
+
+    # test if assignment already exists, add it NOT present
+    siteadm_role_exists = PgSQL().query('SELECT roles.name '
+                                        'FROM assignments '
+                                        'JOIN roles ON roles.id = assignments.role_id '
+                                        'WHERE assignments.user_id=%s '
+                                        'AND roles.name=\'Site Admin\' '
+                                        'AND assignments.assigned_to_type=\'System\';',
+                                        (siteadmin_user_id,))[0][0]
+    if siteadm_role_exists != 'Site Admin':
+      logging.info('Site Admin user Site Admin role, adding...')
+      PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
+                     'created_at, updated_at) VALUES (%s, %s, 1, \'System\', now(), now());',
+                     (siteadmin_user_id, site_admin_role_for_env))
+    else:
+      logging.info('Site Admin assignment already exists')

@@ -43,5 +43,9 @@ class ApertaPopulateUsersTest(CommonTest):
       dashboard_page._wait_for_page_load()
       dashboard_page.logout()
 
+    self.set_staff_in_db()
+    self.set_freelance_eds_in_db()
+    self.set_site_admin_in_db()
+
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

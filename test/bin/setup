@@ -1,0 +1,35 @@
+#! /usr/bin/env bash
+
+set -e
+
+command_exists () {
+  command -v $1 &> /dev/null;
+}
+
+# ensure virtualenv is installed
+if ! command_exists virtualenv; then
+  if ! command_exists pip; then
+    echo "Whoops, you need to install either pip or virtualenv"
+    echo "Check here for more info: https://pip.readthedocs.io/en/stable/installing/#install-pip"
+    exit 1
+  fi
+  pip install virtualenv
+fi
+
+# install python requirements into a virtual environment
+VENV_DIR="venv"
+VENV_ACTIVATE="$VENV_DIR/bin/activate"
+if [ ! -e $VENV_ACTIVATE ]; then
+  virtualenv $VENV_DIR
+fi
+source $VENV_ACTIVATE
+pip install -r requirements.txt
+
+# get secrets
+scp aperta@aperta-frontend-201.sfo.plos.org:secrets/env.tahi-integration env.tahi-integration
+source env.tahi-integration
+
+# setup data on host
+python -m frontend.test_add_superadmin
+python -m frontend.test_add_stock_mmt
+python -m frontend.test_add_stock_users_assignments

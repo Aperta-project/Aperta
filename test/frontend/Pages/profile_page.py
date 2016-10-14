@@ -46,6 +46,7 @@ class ProfilePage(AuthenticatedPage):
     self._remove_affiliation_icon = (By.CLASS_NAME, 'affiliation-remove')
     self._success_message = (By.CSS_SELECTOR, 'div.success')
     self._error_message = (By.CLASS_NAME, 'error-message')
+    self._country_input = (By.CSS_SELECTOR, 'input.select2-input')
   # POM Actions
 
   @staticmethod
@@ -180,7 +181,7 @@ class ProfilePage(AuthenticatedPage):
     # Check for the country list selector before sending keys to country field
     self._get(self._country_list_items)
     time.sleep(1)
-    country.send_keys(affiliation['country'] + Keys.RETURN)
+    self._get(self._country_input).send_keys(affiliation['country'] + Keys.RETURN)
     time.sleep(.5)
     datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)
     time.sleep(.5)

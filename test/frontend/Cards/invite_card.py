@@ -83,6 +83,7 @@ class InviteCard(BaseCard):
     invite_headings = self._gets(self._edit_invite_heading)
     # Since the invitee is potentially off system, we can only validate email
     invite_headings_text = [x.text for x in invite_headings]
+    import pdb; pdb.set_trace()
     assert any(invitee['email'] in s for s in invite_headings_text), \
         '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
     invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')

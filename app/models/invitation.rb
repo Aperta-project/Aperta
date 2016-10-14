@@ -8,8 +8,8 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
-  has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   has_many :alternates, class_name: 'Invitation', foreign_key: 'primary_id'
+  has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
 
@@ -32,6 +32,10 @@ class Invitation < ActiveRecord::Base
   scope :main_pending, -> { includes(:alternates).where(alternates: { id: nil }) }
   scope :alternate_pending, -> { joins(:alternates).where(alternates: { state: 'pending' }) }
   scope :pending, -> { where(state: "pending") }
+
+  def main_queue?
+    alternates.blank? && primary.blank?
+  end
 
 
   aasm column: :state do
@@ -124,11 +128,11 @@ class Invitation < ActiveRecord::Base
   end
 
   def has_alternates?
-    alternates.exists?
+    alternates.present?
   end
 
   def is_alternate?
-    primary.exists?
+    primary.present?
   end
 
   private

@@ -23,39 +23,39 @@ describe InviteQueue do
   end
 
   let(:group_1_primary) do
-    FactoryGirl.create(:invitation, task: task, paper: paper)
+    FactoryGirl.create(:invitation, task: task, paper: paper, body: 'group_1_primary')
   end
 
   let(:g1_alternate_1) do
-    FactoryGirl.create(:invitation, primary: group_1_primary, task: task, paper: paper)
+    FactoryGirl.create(:invitation, primary: group_1_primary, task: task, paper: paper, body: 'g1_alternate_1')
   end
 
   let(:g1_alternate_2) do
-    FactoryGirl.create(:invitation, primary: group_1_primary, task: task, paper: paper)
+    FactoryGirl.create(:invitation, primary: group_1_primary, task: task, paper: paper, body: 'g1_alternate_2')
   end
 
   let(:g1_alternate_3) do
-    FactoryGirl.create(:invitation, primary: group_1_primary, task: task, paper: paper)
+    FactoryGirl.create(:invitation, primary: group_1_primary, task: task, paper: paper, body: 'g1_alternate_3')
   end
 
   let(:group_2_primary) do
-    FactoryGirl.create(:invitation, task: task, paper: paper)
+    FactoryGirl.create(:invitation, task: task, paper: paper, body: 'group_2_primary')
   end
 
   let(:g2_alternate_1_sent) do
-    FactoryGirl.create(:invitation, :invited, primary: group_2_primary, task: task, paper: paper)
+    FactoryGirl.create(:invitation, :invited, primary: group_2_primary, task: task, paper: paper, body: 'g2_alternate_1_sent')
   end
 
   let(:g2_alternate_2) do
-    FactoryGirl.create(:invitation, primary: group_2_primary, task: task, paper: paper)
+    FactoryGirl.create(:invitation, primary: group_2_primary, task: task, paper: paper, body: 'g2_alternate_2')
   end
 
-  let(:sent_1) { FactoryGirl.create(:invitation, :invited, task: task, paper: paper) }
-  let(:sent_2) { FactoryGirl.create(:invitation, :invited, task: task, paper: paper) }
+  let(:sent_1) { FactoryGirl.create(:invitation, :invited, task: task, paper: paper, body: 'sent_1') }
+  let(:sent_2) { FactoryGirl.create(:invitation, :invited, task: task, paper: paper, body: 'sent_2') }
 
-  let(:ungrouped_1) { FactoryGirl.create(:invitation, task: task, paper: paper) }
-  let(:ungrouped_2) { FactoryGirl.create(:invitation, task: task, paper: paper) }
-  let(:ungrouped_3) { FactoryGirl.create(:invitation, task: task, paper: paper) }
+  let(:ungrouped_1) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_1') }
+  let(:ungrouped_2) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_2') }
+  let(:ungrouped_3) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_3') }
 
   let(:full_queue) do
     q = FactoryGirl.create(
@@ -63,7 +63,7 @@ describe InviteQueue do
       invitations: [
         group_1_primary, # 1
         g1_alternate_1, # 2
-        g1_alternate_2, # 3
+        g1_alternate_2, # 3  <--- For some reason position 2 again?
         g1_alternate_3, # 4
         group_2_primary, # 5
         g2_alternate_1_sent, # 6
@@ -72,7 +72,7 @@ describe InviteQueue do
         sent_2, # 9
         ungrouped_1, # 10
         ungrouped_2, # 11
-        ungrouped_3 # 12
+        ungrouped_3  # 12
       ]
     )
     q.invitations.all.each_with_index do |i, idx|
@@ -104,7 +104,10 @@ describe InviteQueue do
 
   describe "#assign_primary" do
     context "the invite is an ungrouped primary" do
-
+      it "places the primary at the top of the queue" do
+        full_queue.assign_primary(invite: ungrouped_1, primary: ungrouped_2)
+        expect(ungrouped_2.position).to eq(1)
+      end
     end
 
     context "the invite is an alternate" do

@@ -13,7 +13,15 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def valid_positions_for_invite(invite)
-    return []
+    return [] if invite.has_alternates?
+    return invite.primary.alternates.pluck(:position) if invite.is_alternate?
+    valid_positions = []
+    invite.invite_queue.invitations.each do |invitation|
+      if invitation.main_queue? && invitation.pending?
+        valid_positions << invitation.position
+      end
+    end
+    return valid_positions
   end
 
   def move_invite_to_position(invite, pos)
@@ -25,8 +33,11 @@ class InviteQueue < ActiveRecord::Base
     end
   end
 
-  def assign_primary(invite, primary)
-
+  def assign_primary(invite:, primary:)
+    invite.primary = primary
+    invite.save
+    primary.move_to_top
+    invite.insert_at(2)
   end
 
   def unassign_primary(invite)
@@ -35,5 +46,9 @@ class InviteQueue < ActiveRecord::Base
 
   def remove_invite(invite)
 
+  end
+
+  def ungrouped_primaries
+    invitations.ungrouped
   end
 end

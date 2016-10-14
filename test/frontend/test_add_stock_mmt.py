@@ -20,7 +20,7 @@ __author__ = 'jgray@plos.org'
 
 
 @MultiBrowserFixture
-class ApertaJournalAdminTest(CommonTest):
+class ApertaSeedJournalMMTTest(CommonTest):
   """
   Self imposed AC:
      - Tests for and, if not present for journal PLOS Wombat, adds the following MMT to that
@@ -76,6 +76,8 @@ class ApertaJournalAdminTest(CommonTest):
                         Invite Academic Editor, Invite Reviewers, Register Decision,
                         Related Articles, Revision Tech Check, Send to Apex, Title And Abstract
             useresearchreviewerreport: True
+  This test should be run second among test_add_superadmin (first), test_add_stock_mmt and
+    test_add_stock_users_assignments (last).
   """
   def test_populate_base_mmts(self):
     """

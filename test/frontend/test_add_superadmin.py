@@ -7,9 +7,7 @@ This test case that populates all mmt needed for python test suite runs.
 import logging
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import reviewer_login, staff_admin_login, handling_editor_login, \
-    pub_svcs_login, academic_editor_login, internal_editor_login, super_admin_login, \
-    cover_editor_login, prod_staff_login, billing_staff_login
+from Base.Resources import super_admin_login
 
 from frontend.common_test import CommonTest
 
@@ -26,7 +24,8 @@ class ApertaPopulateSuperAdmin(CommonTest):
   def test_populate_superadmin_assignments(self):
     """
     test_add_superadmin: Getting around a chicken and egg issue. Need the superadmin to bootstrap
-      the initial seeding
+      the initial seeding. This test should be run first among test_add_superadmin,
+      test_add_stock_mmt and test_add_stock_users_assignments
     :return: void function
     """
     logging.info('test_add_superadmin')

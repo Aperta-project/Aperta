@@ -22,6 +22,8 @@ class ApertaPopulateUsersTest(CommonTest):
   Self imposed AC:
      - Populate user and assignment data necessary to run the QA maintained integration test suite
      user list is maintained in Base/Resources.py
+     This test should be run last among test_add_superadmin (first), test_add_stock_mmt (second) and
+    test_add_stock_users_assignments (last).
   """
   def test_populate_base_users_assignments(self):
     """

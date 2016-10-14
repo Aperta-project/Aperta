@@ -4,18 +4,17 @@
 Page Object Model for the Paper Tracker Page. Validates global and dynamic elements and their styles
 """
 
-from datetime import datetime
 import logging
 import random
 import string
 import time
 
-from Base.CustomException import ElementDoesNotExistAssertionError, ErrorAlertThrownException
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
 from Base.Resources import paper_tracker_search_queries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
+from authenticated_page import AuthenticatedPage
 
 
 __author__ = 'jgray@plos.org'
@@ -162,7 +161,6 @@ class PaperTrackerPage(AuthenticatedPage):
 
     search_input = self._get(self._paper_tracker_search_field)
     search_button = self._get(self._paper_tracker_search_button)
-    search_save_link = self._get(self._paper_tracker_save_search_link)
     assert 'Title keyword or Manuscript ID number' in search_input.get_attribute('placeholder'), \
         search_input.get_attribute('placeholder')
     query = random.choice(paper_tracker_search_queries)
@@ -214,7 +212,9 @@ class PaperTrackerPage(AuthenticatedPage):
     total_count = self.validate_heading_and_subhead(username)[0]
     logging.debug("Total count is {0}".format(total_count))
     initial_paginination = self._get(self._paper_tracker_pagination_summary)
-    assert '{0} found'.format(total_count) in initial_paginination.text, initial_paginination.text
+    assert '{0} found'.format(total_count) in initial_paginination.text, \
+        'Total count: {0} is not equal to page displayed total{1}'.format(total_count,
+                                                                          initial_paginination.text)
     assert 'Page 1 of ' in initial_paginination.text, initial_paginination.text
     try:
       next = self._get(self._paper_tracker_pagination_next)
@@ -259,11 +259,13 @@ class PaperTrackerPage(AuthenticatedPage):
                                   "assigned_to_type = 'Journal' ORDER BY assigned_to_id;")
 
     total_count = 0
-    for total_count, journal in enumerate(journal_ids):
+    for journal_id in journal_ids:
+      logging.info(total_count)
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
-                                  (journal, 'unsubmitted'))[0][0]
+                                  (journal_id, 'unsubmitted'))[0][0]
       total_count += int(paper_count)
+      logging.info(total_count)
     return total_count, journal_ids
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):
@@ -346,9 +348,11 @@ class PaperTrackerPage(AuthenticatedPage):
             By.XPATH,
             '//tbody/tr[{0}]/td[@class="paper-tracker-paper-id-column"]/a'.format(count + 1))
         self._paper_tracker_table_tbody_verdate = (
-          By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column paper-submission-date"]'.format(count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column '
+                      'paper-submission-date"]'.format(count + 1))
         self._paper_tracker_table_tbody_subdate = (
-            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column paper-submission-date"]'.format(count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column '
+                      'paper-submission-date"]'.format(count + 1))
         self._paper_tracker_table_tbody_paptype = (
             By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-type-column"]'.format(count + 1))
         self._paper_tracker_table_tbody_status = (
@@ -610,7 +614,35 @@ class PaperTrackerPage(AuthenticatedPage):
       assert article_type == papers[0][5], \
           'Article Type in page: {0} != Article Type in DB: {1}'.format(article_type, papers[0])
 
-      logging.info('Sorting by Date ASC')
+      logging.info('Sorting by Submission Date ASC')
+      self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
+      date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+      date_th.click()
+      time.sleep(2)
+      # check order
+      self._paper_tracker_table_tbody_manid = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
+      pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
+      papers = self._get_paper_list(journal_ids, sort_by='first_submitted_at', reverse=False)
+      db_id = papers[0][0]
+      assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
+      logging.info('Sorting by Submission Date DESC')
+      self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
+      date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+      date_th.click()
+      time.sleep(2)
+      # check order
+      self._paper_tracker_table_tbody_manid = (
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
+      pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
+      papers = self._get_paper_list(journal_ids, sort_by='first_submitted_at', reverse=True)
+      db_id = papers[0][0]
+      assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
+
+
+      logging.info('Sorting by Version Date ASC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
       date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
       date_th.click()
@@ -623,7 +655,7 @@ class PaperTrackerPage(AuthenticatedPage):
       papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=False)
       db_id = papers[0][0]
       assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
-      logging.info('Sorting by Date DESC')
+      logging.info('Sorting by Version Date DESC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
       date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
       date_th.click()
@@ -682,7 +714,6 @@ class PaperTrackerPage(AuthenticatedPage):
             'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
       else:
         raise TypeError('Database title or Page title are not both unicode objects')
-
       logging.info('Sorting by Title DESC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
       title_th.click()

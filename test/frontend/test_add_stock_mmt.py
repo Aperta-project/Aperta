@@ -9,7 +9,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import admin_users, no_cards_mmt, gen_cmplt_apexdata, imgs_init_dec_mmt, \
+from Base.Resources import super_admin_login, no_cards_mmt, gen_cmplt_apexdata, imgs_init_dec_mmt, \
   resrch_w_init_dec, research_mmt, front_matter_mmt, only_rev_cands_mmt, only_init_dec_mmt
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
@@ -20,7 +20,7 @@ __author__ = 'jgray@plos.org'
 
 
 @MultiBrowserFixture
-class ApertaJournalAdminTest(CommonTest):
+class ApertaSeedJournalMMTTest(CommonTest):
   """
   Self imposed AC:
      - Tests for and, if not present for journal PLOS Wombat, adds the following MMT to that
@@ -76,6 +76,8 @@ class ApertaJournalAdminTest(CommonTest):
                         Invite Academic Editor, Invite Reviewers, Register Decision,
                         Related Articles, Revision Tech Check, Send to Apex, Title And Abstract
             useresearchreviewerreport: True
+  This test should be run second among test_add_superadmin (first), test_add_stock_mmt and
+    test_add_stock_users_assignments (last).
   """
   def test_populate_base_mmts(self):
     """
@@ -86,9 +88,9 @@ class ApertaJournalAdminTest(CommonTest):
     all_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
                 no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
     logging.info('test_populate_base_mmts')
-    user_type = random.choice(admin_users)
-    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'])
+    logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
+                                                       super_admin_login['email']))
+    dashboard_page = self.cas_login(email=super_admin_login['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())

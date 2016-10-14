@@ -607,7 +607,7 @@ yeti_task_names = ['Ad-hoc',
 
 # This is a list of valid paper tracker queries from which one is chosen during the test of that
 #   feature.
-paper_tracker_search_queries = ['0000003',
+paper_tracker_search_queries = ['1000003',
                                 'Genome',
                                 'DOI IS pwom',
                                 'TYPE IS research',
@@ -615,22 +615,27 @@ paper_tracker_search_queries = ['0000003',
                                 'STATUS IS submitted',
                                 'TITLE IS genome',
                                 'STATUS IS rejected OR STATUS IS withdrawn',
-                                'TYPE IS research AND (STATUS IS rejected OR STATUS IS withdrawn)',
+                                '(TYPE IS NoCards OR TYPE IS OnlyInitialDecisionCard) AND '
+                                '(STATUS IS rejected OR STATUS IS withdrawn)',
                                 'STATUS IS NOT unsubmitted',
                                 'USER aacadedit HAS ROLE academic editor',
                                 'USER ahandedit HAS ANY ROLE',
                                 'ANYONE HAS ROLE cover editor',
                                 'USER aacadedit HAS ROLE academic editor AND STATUS IS submitted',
-                                'USER astaffadmin HAS ROLE staff admin AND NO ONE HAS ROLE '
-                                'academic editor',
-                                'NO ONE HAS ROLE staff admin',
-                                'SUBMITTED > 3 DAYS AGO',
-                                'SUBMITTED < 1 DAY AGO',
+                                'USER areviewer HAS ROLE reviewer AND NO ONE HAS ROLE academic '
+                                'editor',
+                                'NO ONE HAS ROLE cover editor',
+                                'VERSION DATE > 3 DAYS AGO',
+                                'SUBMISSION DATE < 2 DAYS AGO',
+                                'SUBMISSION DATE = 2016/10/13',
+                                'VERSION DATE > 10/01/2016',
+                                'SUMBISSION DATE = 09/2016',
+                                'SUBMISSION DATE > last Friday',
+                                'SUBMISSION DATE > November, 2015',
                                 'USER me HAS ANY ROLE',
                                 'TASK invite reviewers HAS OPEN INVITATIONS',
-                                'TASK invite academic editors HAS OPEN INVITATIONS',
                                 'ALL REVIEWS COMPLETE',
-                                'NOT ALL REVIEWS COMPLETE'
+                                'NOT ALL REVIEWS COMPLETE',
                                 ]
 
 # The following MMT definitions are seed data for our integration test suite

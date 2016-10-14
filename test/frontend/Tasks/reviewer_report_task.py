@@ -16,15 +16,32 @@ class ReviewerReportTask(BaseTask):
   def __init__(self, driver):
     super(ReviewerReportTask, self).__init__(driver)
     # Locators - Instance members
+    # Research Reviewer Report locators
     self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
     self._questions = (By.CLASS_NAME, 'question-text')
     self._questions_help = (By.CLASS_NAME, 'question-help')
+    self._q1_accept_label = (By.CSS_SELECTOR, 'div.flex-group > label')
+    self._q1_accept_radio = (By.CSS_SELECTOR, 'input[value=\'accept\']')
+    self._q1_reject_label = (By.CSS_SELECTOR, 'div.flex-group > label + label')
+    self._q1_reject_radio = (By.CSS_SELECTOR, 'input[value=\'reject\']')
+    self._q1_majrev_label = (By.CSS_SELECTOR, 'div.flex-group > label + label + label')
+    self._q1_majrev_radio = (By.CSS_SELECTOR, 'input[value=\'major_revision\']')
+    self._q1_minrev_label = (By.CSS_SELECTOR, 'div.flex-group > label + label + label + label')
+    self._q1_minrev_radio = (By.CSS_SELECTOR, 'input[value=\'minor_revision\']')
+    self._q2_yes_label = (By.CSS_SELECTOR, '')
+    self._q2_yes_radio = (By.CSS_SELECTOR, '')
+    self._q2_no_label = (By.CSS_SELECTOR, '')
+    self._q2_no_radio = (By.CSS_SELECTOR, '')
     self._q2_form = (By.CLASS_NAME, 'reviewer_report--competing_interests--detail')
     self._q3_form = (By.CLASS_NAME, 'reviewer_report--identity')
     self._q4_form = (By.CLASS_NAME, 'reviewer_report--comments_for_author')
     self._q5_form = (By.CLASS_NAME, 'reviewer_report--additional_comments')
     self._q6_form = (By.CLASS_NAME, 'reviewer_report--suitable_for_another_journal--journal')
     self._submit_button = (By.CLASS_NAME, 'button-primary')
+    # Front Matter Reviewer Report locators
+
+    # Shared Locators
+
 
   # POM Actions
   def validate_task_elements_styles(self):

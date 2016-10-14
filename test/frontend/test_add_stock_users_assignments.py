@@ -35,8 +35,8 @@ class ApertaPopulateUsersTest(CommonTest):
     :return: void function
     """
     all_users = [reviewer_login, staff_admin_login, handling_editor_login, pub_svcs_login,
-                 academic_editor_login, internal_editor_login, super_admin_login,
-                 cover_editor_login, prod_staff_login, billing_staff_login]
+                 academic_editor_login, internal_editor_login, cover_editor_login, prod_staff_login,
+                 billing_staff_login]
     logging.info('test_add_stock_users_assignments')
     # Ensuring accounts are present for all relevant users
     for user in all_users:

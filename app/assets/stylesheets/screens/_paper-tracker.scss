@@ -1,5 +1,5 @@
-.base-screen.paper-tracker {
-  width: 90%;
+.paper-tracker-screen {
+  padding-top: 8rem;
 }
 
 .paper-tracker-message {
@@ -76,7 +76,6 @@
 
 #main-content #paper-tracker-saved-searches {
   flex-grow: 1;
-  padding-top: 8rem;
 
   ul {
     list-style-type: none;
@@ -90,6 +89,5 @@
 
 #main-content #paper-tracker-paper-list {
   border-right: 1px solid $tahi-grey-light;
-  padding-top: 8rem;
   flex-grow: 4;
 }

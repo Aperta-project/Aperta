@@ -38,7 +38,6 @@ class ApertaProfileTest(CommonTest):
     profile_page.validate_initial_page_elements_styles(profile_user)
     profile_page.validate_invalid_add_new_affiliation()
     profile_page.validate_nav_toolbar_elements(profile_user)
-    return self
 
   def test_affiliations(self):
     """
@@ -54,7 +53,6 @@ class ApertaProfileTest(CommonTest):
     profile_page.click_add_affiliation_button()
     # Check affiliation css elements
     profile_page.validate_affiliation_form_css()
-    return self
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

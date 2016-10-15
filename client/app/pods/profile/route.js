@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import AuthorizedRoute from 'tahi/routes/authorized'
+import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend( {
   model() { return this.currentUser; },
@@ -9,7 +9,7 @@ export default AuthorizedRoute.extend( {
       if (!value){
         return this.handleUnauthorizedRequest(transition);
       }
-    })
+    });
   },
 
   afterModel(model) {

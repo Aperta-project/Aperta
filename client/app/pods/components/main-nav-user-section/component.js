@@ -1,5 +1,7 @@
 import Component from 'ember-component';
 
+let userNavClicked = false;
+
 export default Component.extend({
   classNameBindings: [
     ':main-nav-user-section',
@@ -12,9 +14,9 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    this.$().on('click', (event)=> {
+    this.$().on('click', ()=> {
+      userNavClicked = true;
       this.toggleProperty('active');
-      event.stopPropagation();
       this.listenForBodyClick();
     });
   },
@@ -24,10 +26,12 @@ export default Component.extend({
     $('body')
       .off('click.mainnav')
       .on('click.mainnav', function() {
-        if($(this).closest('.main-nav-user-section').length) {
+        if($(this).closest('.main-nav-user-section').length || userNavClicked) {
+          userNavClicked = false;
           return;
         }
 
+        userNavClicked = false;
         $('body').off('click.mainnav');
         that.set('active', false);
       });

@@ -35,29 +35,6 @@ body, html, #layout-container,
     padding: 2rem;
     -webkit-overflow-scrolling: touch;
   }
-
-  #main-content .manuscript {
-    flex-grow: 6;
-    border-right: 1px solid #ddd;
-
-    // for demo
-    h1 {
-      margin-top: 0;
-      font-weight: normal;
-      font-size: 3.2rem;
-      font-family: $aperta-article-font-family;
-    }
-
-    p {
-      font-size: 1.4rem;
-      font-family: $aperta-article-font-family;
-      line-height: 125%;
-    }
-  }
-
-  #main-content .tasks {
-    flex-grow: 4;
-  }
 }
 
 /* Main Layout : small screen */
@@ -83,7 +60,7 @@ body, html, #layout-container,
   .main-content-section {
     overflow: auto;
     flex-grow: 1;
-    display: none;
+    // display: none;
     padding: 2.0rem;
     -webkit-overflow-scrolling: touch;
 

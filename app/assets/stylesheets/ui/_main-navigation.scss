@@ -45,6 +45,7 @@ On small screens, main navigation is positioned absolutely off screen.
     white-space: nowrap;
     text-decoration: none;
     cursor: pointer;
+    @include user-select(none);
 
     &:hover,
     &:focus {
@@ -96,186 +97,28 @@ On small screens, main navigation is positioned absolutely off screen.
   }
 
   .main-nav-user-section-body {
+    @extend .popover-menu;
     display: none;
     position: absolute;
     top: 3.8rem;
     right: 0;
     min-width: 15rem;
-    border: solid 1px #d5d5d5;
-    border-radius: 0.6rem;
-    padding: 0.25rem 0;
-    box-shadow: 0 0 0.7rem 1rem rgba(0, 0, 0, 0.05), 0 0 0.1rem 0.2rem rgba(0, 0, 0, 0.02);
-    background-color: #fff;
     z-index: 10;
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: -8px;
-      right: 10px;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-bottom: 8px solid #fff;
-      border-style: none double solid;
-    }
-
     .main-nav-user-section-body-content {
+      @extend .popover-menu-content;
+
       &:after {
         content: '';
         position: absolute;
-        top: -9px;
+        top: -8px;
         right: 10px;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 8px solid #d5d5d5;
-        border-style: none double solid;
+        @include triangle(16px, #fff, up);
       }
     }
   }
 
   .main-nav-user-section-item {
-    display: block;
-    padding: 0.8rem 1.0rem;
-    color: $tahi-green;
-    font-size: 1.3rem;
-    line-height: 100%; // .main-navigation-item override
-    text-decoration: none;
-
-    &:hover {
-      color: #fff;
-      text-decoration: none;
-      background: $tahi-green;
-    }
+    @extend .popover-menu-item;
   }
 //}
-
-
-/* SMALL SCREEN
------------------------------------------------------------------------------ */
-
-// @include max-screen-width($layout-large-screen) {
-//   #main-navigation-cover {
-//     display: none;
-//     content: '';
-//     @include position(fixed, 0 0 0 0);
-//     background: rgba(0,0,0, 0.3);
-//     z-index: 4;
-//     -webkit-backdrop-filter: blur(2px);
-//     backdrop-filter: blur(2px);
-//   }
-//
-//   #main-navigation {
-//     overflow: hidden;
-//     display: flex;
-//     flex-direction: column;
-//     @include position(fixed, 10px 10px auto 10px);
-//     border-radius: 6px;
-//     background: #f6f6f6;
-//     transform: translateY(-#{$main-nav-width-mobile+10});
-//     transition: all 0.2s cubic-bezier(0.040, 0.025, 0.005, 1.000);
-//     z-index: 10;
-//
-//     &.visible {
-//       transform: translateY(0);
-//       box-shadow: 0 2px 5px rgba(0,0,0, 0.2), 0 40px 80px rgba(0,0,0, 0.2);
-//
-//       .main-navigation-item {
-//         //animation: animation-main-nav-small-screen 0.5s cubic-bezier(0.040, 0.025, 0.005, 1.000);
-//       }
-//
-//       .main-nav-user-section {
-//         animation: none;
-//       }
-//
-//       .main-nav-user-section-header,
-//       .main-nav-user-section-body {
-//         //animation: animation-main-nav-small-screen 0.5s cubic-bezier(0.040, 0.025, 0.005, 1.000);
-//       }
-//     }
-//
-//     .plos-logo {
-//       position: absolute;
-//       top: 1rem;
-//       left: 0;
-//       height: 170%;
-//
-//       path {
-//         fill: rgba(0,0,0, 0.03);
-//       }
-//     }
-//   }
-//
-//   .main-navigation-item {
-//     position: relative;
-//     display: block;
-//     border-bottom: 1px solid #e3e3e3;
-//     padding: 1.1rem 0 1.1rem 2rem;
-//     color: #222;
-//     font-size: 1.8rem;
-//     text-decoration: none;
-//     z-index: 1;
-//     -webkit-tap-highlight-color: transparent;
-//
-//     &:hover {
-//       color: #222;
-//       text-decoration: none;
-//     }
-//
-//     &:focus,
-//     &:active {
-//       background-color: #fff;
-//     }
-//
-//     &.main-navigation-item--home {
-//       display: none;
-//     }
-//   }
-//
-//   .main-nav-user-section {
-//     order: -1;
-//     background: #fff;
-//
-//     &:focus,
-//     &:active {
-//       background-color: #fff;
-//     }
-//   }
-//
-//   .main-nav-user-section-header {
-//     display: flex;
-//     align-items: center;
-//     margin-bottom: 1rem;
-//     color: #333;
-//     font-size: 1.8rem;
-//
-//     div {
-//       overflow: hidden;
-//       display: inline-block;
-//       width: 4.0rem;
-//       height: 4.0rem;
-//       margin-right: 1rem;
-//       border: 1px solid rgba(255,255,255, 0.3);
-//       border-radius: 50%;
-//       background-clip: border-box;
-//
-//       svg {
-//         position: relative;
-//         top: -60px;
-//         left: 0.7rem;
-//         width: 2.4rem;
-//       }
-//     }
-//   }
-//
-//   .main-nav-user-section-item {
-//     margin-right: 1rem;
-//     color: #333;
-//     font-size: 1.6rem;
-//     text-decoration: none;
-//
-//     &:hover {
-//       color: #333;
-//       text-decoration: none;
-//     }
-//   }
-// }

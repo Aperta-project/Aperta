@@ -17,82 +17,86 @@
               close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
-{{#ember-wormhole to="control-bar"}}
-  {{#link-to "admin.journals" id="control-bar-journal-back-button"}}
-    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-    Journals
-  {{/link-to}}
+{{#control-bar}}
+  <nav role="navigation" id="control-bar">
+    {{#link-to "admin.journals" id="control-bar-journal-back-button"}}
+      {{fa-icon icon="chevron-left"}}
+      All Journals
+    {{/link-to}}
 
-  {{#if model.logoUrl}}
-    <img src="{{unbound model.logoUrl}}" id="control-bar-journal-logo">
-  {{/if}}
+    {{#if model.logoUrl}}
+      <img src="{{unbound model.logoUrl}}" id="control-bar-journal-logo">
+    {{/if}}
 
-  <div id="control-bar-journal-name">{{unbound model.name}}</div>
+    <div id="control-bar-journal-name">{{unbound model.name}}</div>
 
-  <div class="spacer"></div>
-{{/ember-wormhole}}
+    <div class="spacer"></div>
+  </nav>
+{{/control-bar}}
 
-<div class="main-content-section">
-  <div class="base-screen">
-    <div class="admin-users-row">
-      <h2 class="admin-section-title">Users</h2>
-      <div class="admin-search admin-user-search">
-        {{input enter="searchUsers"
-                placeholder="SEARCH ALL USERS"
-                name="Admin Search Input"
-                value=searchQuery}}
-        <button {{action "searchUsers"}}><span class="fa fa-search"></span></button>
+<main id="main-content" class="main-content" role="main">
+  <div class="main-content-section">
+    <div class="base-layout">
+      <div class="admin-users-row first">
+        <h2 class="admin-section-title">Users</h2>
+        <div class="admin-search admin-user-search">
+          {{input enter="searchUsers"
+                  placeholder="SEARCH ALL USERS"
+                  name="Admin Search Input"
+                  value=searchQuery}}
+          <button {{action "searchUsers"}}>{{fa-icon icon="search"}}</button>
+        </div>
+
+        {{#if adminJournalUsers}}
+          <table class="admin-users">
+            <tr>
+              <th>Last Name</th>
+              <th>First Name</th>
+              <th>Username</th>
+              <th>Roles</th>
+            </tr>
+            {{#each adminJournalUsers as |user|}}
+
+              {{admin-journal-user user=user
+                                   journal=model
+                                   journalRoles=model.adminJournalRoles
+                                   assignOldRole="assignOldRoleToUser"}}
+            {{/each}}
+          </table>
+        {{/if}}
       </div>
 
-      {{#if adminJournalUsers}}
-        <table class="admin-users">
-          <tr>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Username</th>
-            <th>Roles</th>
-          </tr>
-          {{#each adminJournalUsers as |user|}}
-
-            {{admin-journal-user user=user
-                                 journal=model
-                                 journalRoles=model.adminJournalRoles
-                                 assignOldRole="assignOldRoleToUser"}}
-          {{/each}}
-        </table>
-      {{/if}}
-    </div>
-
-    <div class="admin-section">
-      <h2 class="admin-section-title">Available Task Types</h2>
-      <div class="button-primary button--blue" {{action "showEditTaskTypesOverlay"}}>
-        Edit Task Types
-      </div>
-    </div>
-
-    <div class="admin-section">
-      <h2 class="admin-section-title">Manuscript Manager Templates</h2>
-      <button class="button-primary button--blue" {{action "addMMTemplate" phase taskType}}>Add New Template</button>
-      <br><br>
-      {{#each model.manuscriptManagerTemplates as |mmt|}}
-        {{manuscript-manager-template model=mmt
-                                      canDestroy=canDeleteManuscriptManagerTemplates
-                                      destroyTemplate=(action "destroyMMTemplate")}}
-      {{/each}}
-    </div>
-
-    <div class="admin-section">
-      <h2 class="admin-section-title">Style Settings</h2>
-
-      <div class="admin-style-setting-section">
-        <button id="edit-pdf-css" class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>
-        {{timed-message class="pdf-css save-status" message=pdfCssSaveStatus}}
+      <div class="admin-section">
+        <h2 class="admin-section-title">Available Task Types</h2>
+        <div class="button-primary button--blue" {{action "showEditTaskTypesOverlay"}}>
+          Edit Task Types
+        </div>
       </div>
 
-      <div class="admin-style-setting-section">
-        <button id="edit-manuscript-css" class="button-primary button--blue" {{action "editCSS" "manuscript"}}>Edit Manuscript CSS</button>
-        {{timed-message class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
+      <div class="admin-section">
+        <h2 class="admin-section-title">Manuscript Manager Templates</h2>
+        <button class="button-primary button--blue" {{action "addMMTemplate" phase taskType}}>Add New Template</button>
+        <br><br>
+        {{#each model.manuscriptManagerTemplates as |mmt|}}
+          {{manuscript-manager-template model=mmt
+                                        canDestroy=canDeleteManuscriptManagerTemplates
+                                        destroyTemplate=(action "destroyMMTemplate")}}
+        {{/each}}
+      </div>
+
+      <div class="admin-section">
+        <h2 class="admin-section-title">Style Settings</h2>
+
+        <div class="admin-style-setting-section">
+          <button id="edit-pdf-css" class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>
+          {{timed-message class="pdf-css save-status" message=pdfCssSaveStatus}}
+        </div>
+
+        <div class="admin-style-setting-section">
+          <button id="edit-manuscript-css" class="button-primary button--blue" {{action "editCSS" "manuscript"}}>Edit Manuscript CSS</button>
+          {{timed-message class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>

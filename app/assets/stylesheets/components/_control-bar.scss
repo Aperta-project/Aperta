@@ -54,19 +54,6 @@
   @include justify-content(flex-end);
 }
 
-.control-bar-sub-items {
-  overflow: hidden;
-  height: 0;
-  font-size: 12px;
-  @include transition(height 0.2s);
-}
-
-.control-bar--sub-items-active .control-bar-sub-items {
-  height: 45px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.05);
-}
-
 .control-bar-item-spacer {
   @include flex-grow(1);
 }
@@ -149,7 +136,10 @@
   line-height: 30px;
   text-align: right;
 
-  &.active { display: block; }
+  &.active {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .contributors-add {
@@ -177,20 +167,20 @@
 }
 
 
-
 // manuscript-download-links section -------------
 // child of .control-bar-sub-items
 
 .manuscript-download-links {
   display: none;
   height: 100%;
-  @include justify-content(flex-end);
+  justify-content: flex-end;
+  align-items: center;
 
-  &.active { @include display(flex); }
+  &.active { display: flex; }
 
   a {
-    @include display(flex);
-    @include align-items(center);
+    display: flex;
+    align-items: center;
     margin-right: 25px;
     font-size: 1.4rem;
     text-decoration: none;

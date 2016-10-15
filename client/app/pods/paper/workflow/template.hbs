@@ -1,61 +1,3 @@
-<div class="control-bar">
-  <div class="control-bar-inner-wrapper">
-    <img id='control-bar-paper-journal-logo' src={{model.journal.logoUrl}} />
-
-    <div class="control-bar-item control-bar-item--first" id="control-bar-paper-title">
-      <span>{{{model.title}}}</span>
-    </div>
-
-    <div class="control-bar-item-spacer"></div>
-
-    {{#link-to "paper.index" model class="control-bar-item control-bar-link paper-navigation-link" id="nav-manuscript"}}
-      Go to Manuscript
-    {{/link-to}}
-
-    <label class="control-bar-item">
-      <span>
-        {{check-box name="paper-editable" checked=model.editable action="toggleEditable" id="nav-paper-editable"}}
-        Editable
-      </span>
-    </label>
-
-    <div class="control-bar-item control-bar-link activity-link" {{action "showActivityOverlay" "workflow"}} id="nav-recent-activity">
-      <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
-      Recent Activity
-    </div>
-
-    {{#link-to "paper.workflow.discussions" model class="control-bar-item control-bar-link control-bar-item--last" id="nav-discussions"}}
-      <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
-      {{notification type="paper" id=model.id}}
-      Discussions
-    {{/link-to}}
-  </div>
-</div>
-
-{{flash-messages classNames="flash-messages--below-control-bar"}}
-
-{{#autosized-column-headers columns=sortedPhases}}
-  {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-  {{#each sortedPhases as |phase|}}
-    {{phase-column phase=phase
-                   paper=model
-                   taskMovedWithinList=(action "taskMovedWithinList")
-                   taskMovedBetweenList=(action "taskMovedBetweenList")
-                   startDragging=(action "startDragging")
-                   stopDragging=(action "stopDragging")
-                   savePhase="savePhase"
-                   addPhase="addPhase"
-                   showDeleteConfirm="showCardDeleteOverlay"
-                   removePhase="removePhase"
-                   rollbackPhase="rollbackPhase"
-                   viewCard=(action "viewCard")
-                   chooseNewCardTypeOverlay="showChooseNewCardOverlay"
-                   changePhaseForTask="changePhaseForTask"}}
-  {{/each}}
-{{/autosized-column-headers}}
-
-{{outlet}}
-
 {{overlay-task visible=showTaskOverlay
                task=taskToDisplay
                outAnimationComplete=(action "hideTaskOverlay")}}
@@ -92,3 +34,63 @@
                       addTaskType=(action "addTaskType")
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
+
+{{#control-bar}}
+  <nav role="navigation" id="control-bar">
+    <img id="control-bar-paper-journal-logo" src={{model.journal.logoUrl}} />
+
+    <div id="control-bar-paper-title">
+      <span>{{{paper.title}}}</span>
+    </div>
+
+    <span class="spacer" aria-hidden="true"></span>
+
+    {{#link-to "paper.index" model class="control-bar-button" id="nav-manuscript"}}
+      Go to Manuscript
+    {{/link-to}}
+
+    <label id="nav-paper-editable">
+      <span>
+        {{check-box name="paper-editable" checked=model.editable action="toggleEditable"}}
+        Editable
+      </span>
+    </label>
+
+    <div class="control-bar-button" {{action "showActivityOverlay" "workflow"}} id="nav-recent-activity">
+      {{partial "svg/heartbeat"}}
+      Recent Activity
+    </div>
+
+    {{#link-to "paper.workflow.discussions" model class="control-bar-button" id="nav-discussions"}}
+      {{fa-icon icon="comment"}}
+      {{notification type="paper" id=model.id}}
+      Discussions
+    {{/link-to}}
+  </nav>
+{{/control-bar}}
+
+{{flash-messages classNames="flash-messages--below-control-bar"}}
+
+<main id="main-content" class="main-content" role="main">
+  {{#autosized-column-headers columns=sortedPhases}}
+    {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+    {{#each sortedPhases as |phase|}}
+      {{phase-column phase=phase
+                     paper=model
+                     taskMovedWithinList=(action "taskMovedWithinList")
+                     taskMovedBetweenList=(action "taskMovedBetweenList")
+                     startDragging=(action "startDragging")
+                     stopDragging=(action "stopDragging")
+                     savePhase="savePhase"
+                     addPhase="addPhase"
+                     showDeleteConfirm="showCardDeleteOverlay"
+                     removePhase="removePhase"
+                     rollbackPhase="rollbackPhase"
+                     viewCard=(action "viewCard")
+                     chooseNewCardTypeOverlay="showChooseNewCardOverlay"
+                     changePhaseForTask="changePhaseForTask"}}
+    {{/each}}
+  {{/autosized-column-headers}}
+
+  {{outlet}}
+</main>

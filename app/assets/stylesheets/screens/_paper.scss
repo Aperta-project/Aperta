@@ -1,16 +1,4 @@
 // CSS here meant to style paper view page, and paper body
-.paper-container {
-  @include position(relative, 0px 0px 0px 0px);
-  top: 60px;
-  z-index: z('paper-container');
-
-  &.versions-expanded {
-    top: 131px;
-  }
-  &.paper-container--versions {
-    top: 131px;
-  }
-}
 
 .manuscript-pane {
   margin-right: 20px;
@@ -27,7 +15,6 @@
 
 .manuscript-container {
   position: relative;
-  max-width: 880px;
   margin: 0 auto;
 }
 
@@ -109,6 +96,17 @@
 
   .paper-body-figure-caption {
     font-weight: bold;
+  }
+}
+
+#nav-paper-editable {
+  align-self: center;
+  margin: 0 1rem;
+}
+
+@include min-screen-width($layout-large-screen) {
+  #main-content.paper-container--versions .split-pane-element {
+    padding-top: 75px;
   }
 }
 

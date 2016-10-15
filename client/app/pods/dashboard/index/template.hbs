@@ -1,5 +1,3 @@
-{{flash-messages}}
-
 {{#overlay-fullscreen visible=showNewManuscriptOverlay
                       outAnimationComplete=(action "hideNewManuscriptOverlay")
                       title="Create a New Submission"
@@ -24,87 +22,90 @@
                     decline=(action "declineInvitation")}}
 {{/overlay-fullscreen}}
 
-<div class="base-screen">
-  <div class="dashboard-plos-logo animation-fade-in">
-    {{partial "plos-logo"}}
-  </div>
+<main id="main-content" class="main-content" role="main">
+  {{flash-messages}}
+  <div class="base-screen">
+    <div class="dashboard-plos-logo animation-fade-in">
+      {{partial "plos-logo"}}
+    </div>
 
-  {{#if invitationsNeedsUserUpdate}}
-    <section class="dashboard-section">
+    {{#if invitationsNeedsUserUpdate}}
+      <section class="dashboard-section">
+        <h2 class="welcome-message">
+          You have <span class="invitation-count">{{invitationsNeedsUserUpdate.length}} {{pluralize-string count=invitationsNeedsUserUpdate.length string="invitation"}}</span>.
+        </h2>
+        <button class="button-primary button--green" {{action "showInvitationsOverlay"}}>View invitations</button>
+      </section>
+    {{/if}}
+
+    <section id="dashboard-my-submissions" class="dashboard-section">
       <h2 class="welcome-message">
-        You have <span class="invitation-count">{{invitationsNeedsUserUpdate.length}} {{pluralize-string count=invitationsNeedsUserUpdate.length string="invitation"}}</span>.
-      </h2>
-      <button class="button-primary button--green" {{action "showInvitationsOverlay"}}>View invitations</button>
-    </section>
-  {{/if}}
-
-  <section id="dashboard-my-submissions" class="dashboard-section">
-    <h2 class="welcome-message">
-      Hi, {{currentUser.firstName}}.
-      {{#if papers.length}}
-        {{#if activePapers.length}}
-          You have {{totalActivePaperCount}} {{pluralize-string count=totalActivePaperCount string="active manuscript"}}.
+        Hi, {{currentUser.firstName}}.
+        {{#if papers.length}}
+          {{#if activePapers.length}}
+            You have {{totalActivePaperCount}} {{pluralize-string count=totalActivePaperCount string="active manuscript"}}.
+          {{else}}
+            You have {{totalInactivePaperCount}} {{pluralize-string count=totalInactivePaperCount string="inactive manuscript"}}.
+          {{/if}}
         {{else}}
-          You have {{totalInactivePaperCount}} {{pluralize-string count=totalInactivePaperCount string="inactive manuscript"}}.
+          You have no manuscripts.
+        {{/if}}
+      </h2>
+
+      <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
+
+      {{#if hasPapers}}
+        {{#if hasActivePapers}}
+          <div class="table-responsive">
+            <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
+              <thead class="manuscript-list-heading {{if activePapersVisible "gray-line"}} active-papers" {{action "toggleActiveContainer"}}>
+                <tr>
+                  <th class="col-xs-9 hug-left">{{activeManuscriptsHeading}}</th>
+                  {{#if activePapersVisible}}
+                    <th class="col-xs-1 text-center">Role</th>
+                    <th class="col-xs-2 text-center">Status</th>
+                  {{/if}}
+                </tr>
+              </thead>
+              <tbody>
+                {{#if activePapersVisible}}
+                  {{#each sortedDraftPapers as |paper|}}
+                    {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
+                  {{/each}}
+                  {{#each sortedNonDraftPapers as |paper|}}
+                    {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
+                  {{/each}}
+                {{/if}}
+              </tbody>
+            </table>
+          </div>
+        {{/if}}
+
+        {{#if hasInactivePapers}}
+          <div class="table-responsive">
+            <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
+              <thead class="manuscript-list-heading {{if inactivePapersVisible "gray-line"}} inactive-papers" {{action "toggleInactiveContainer"}}>
+                <tr>
+                  <th class="col-xs-9 hug-left">{{inactiveManuscriptsHeading}}</th>
+                  {{#if inactivePapersVisible}}
+                    <th class="col-xs-1 text-center">Role</th>
+                    <th class="col-xs-2 text-center">Status</th>
+                  {{/if}}
+                </tr>
+              </thead>
+              <tbody>
+                {{#if inactivePapersVisible}}
+                  {{#each sortedInactivePapers as |paper|}}
+                    {{dashboard-link model=paper type="inactive" class="inactive-paper-table-row"}}
+                  {{/each}}
+                {{/if}}
+              </tbody>
+            </table>
+          </div>
         {{/if}}
       {{else}}
-        You have no manuscripts.
+        <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
       {{/if}}
-    </h2>
-
-    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
-
-    {{#if hasPapers}}
-      {{#if hasActivePapers}}
-        <div class="table-responsive">
-          <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class="manuscript-list-heading {{if activePapersVisible "gray-line"}} active-papers" {{action "toggleActiveContainer"}}>
-              <tr>
-                <th class="col-xs-9 hug-left">{{activeManuscriptsHeading}}</th>
-                {{#if activePapersVisible}}
-                  <th class="col-xs-1 text-center">Role</th>
-                  <th class="col-xs-2 text-center">Status</th>
-                {{/if}}
-              </tr>
-            </thead>
-            <tbody>
-              {{#if activePapersVisible}}
-                {{#each sortedDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
-                {{/each}}
-                {{#each sortedNonDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
-                {{/each}}
-              {{/if}}
-            </tbody>
-          </table>
-        </div>
-      {{/if}}
-
-      {{#if hasInactivePapers}}
-        <div class="table-responsive">
-          <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class="manuscript-list-heading {{if inactivePapersVisible "gray-line"}} inactive-papers" {{action "toggleInactiveContainer"}}>
-              <tr>
-                <th class="col-xs-9 hug-left">{{inactiveManuscriptsHeading}}</th>
-                {{#if inactivePapersVisible}}
-                  <th class="col-xs-1 text-center">Role</th>
-                  <th class="col-xs-2 text-center">Status</th>
-                {{/if}}
-              </tr>
-            </thead>
-            <tbody>
-              {{#if inactivePapersVisible}}
-                {{#each sortedInactivePapers as |paper|}}
-                  {{dashboard-link model=paper type="inactive" class="inactive-paper-table-row"}}
-                {{/each}}
-              {{/if}}
-            </tbody>
-          </table>
-        </div>
-      {{/if}}
-    {{else}}
-      <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
-    {{/if}}
-  </section>
-</div>
+    </section>
+  </div>
+</main>

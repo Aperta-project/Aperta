@@ -1,43 +1,29 @@
 {{flash-messages}}
 
-<div class='base-screen paper-tracker'>
-  <div class="paper-tracker-saved-searches">
-    <h3>Saved Searches</h3>
-    <ul>
-    {{#each paperTrackerQueries as |query|}}
-      <li>{{paper-tracker-query query=query}}</li>
-    {{/each}}
-
-    {{#if newQueryState}}
-      <li>{{input value=newQueryTitle enter="saveQuery" id="new-query-title"}}</li>
-    {{/if}}
-    </ul>
-  </div>
-
-  <div class="paper-tracker-search">
-    <div class='row' class='search-controls' id='search-controls-top'>
+<main id="main-content" class="main-content" role="main">
+  <div id="paper-tracker-paper-list" class="main-content-section">
+    <div id="paper-tracker-search-controls">
       <div class="input-group">
-
         {{input type="text"
-        class="form-control"
-        id="query-input"
-        value=queryInput
-        enter="search"
-        placeholder="Title keyword or Manuscript ID number"}}
+                class="form-control"
+                id="query-input"
+                value=queryInput
+                enter="search"
+                placeholder="Title keyword or Manuscript ID number"}}
 
         <div class="input-group-btn">
-          <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
+          <button id="search" class="btn btn-primary" {{action "search"}}>{{fa-icon icon="search"}}</button>
         </div>
       </div>
 
       <a class="save-search-button" {{action "startNewSavedQuery"}}>Save this Search</a>
 
-      <div class='pagination-col'>
+      <div class="pagination-col">
         {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
       </div>
     </div>
 
-    <div class='paper-tracker-table'>
+    <div class="paper-tracker-table">
       <table>
         <thead>
           <tr>
@@ -47,48 +33,42 @@
                           orderBy="title"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}
+                          sortAction=(action "sort")}}
             </th>
             <th class="paper-tracker-paper-id-column">
               {{sort-link text="Manuscript ID"
                           orderBy="doi"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}
+                          sortAction=(action "sort")}}
             </th>
             <th class="paper-tracker-date-column">
               {{sort-link text="Version Date"
                           orderBy="submitted_at"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}
+                          sortAction=(action "sort")}}
             </th>
             <th class="paper-tracker-date-column">
               {{sort-link text="Submission Date"
                           orderBy="first_submitted_at"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}
+                          sortAction=(action "sort")}}
             </th>
             <th class="paper-tracker-type-column">
               {{sort-link text="Article Type"
                           orderBy="paper_type"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}
+                          sortAction=(action "sort")}}
             </th>
             <th class="paper-tracker-status-column">
               {{sort-link text="Status"
                           orderBy="publishing_state"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}
+                          sortAction=(action "sort")}}
             </th>
             <th class="paper-tracker-members-column">Members</th>
             <th class="paper-tracker-handling-editor-column">
@@ -96,15 +76,15 @@
                           orderBy="handling_editor"
                           activeOrderBy=orderBy
                           activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}</th>
-              <th class="paper-tracker-cover-editor-column">
-                {{sort-link text="Cover Editor"
-                          orderBy="cover_editor"
-                          activeOrderBy=orderBy
-                          activeOrderDir=orderDir
-                          sortAction=(action "sort")
-              }}</th>
+                          sortAction=(action "sort")}}
+            </th>
+            <th class="paper-tracker-cover-editor-column">
+              {{sort-link text="Cover Editor"
+                        orderBy="cover_editor"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")}}
+            </th>
           </tr>
         </thead>
 
@@ -117,12 +97,25 @@
       </table>
     </div>
 
-    <div class='row' class='search-controls'>
-      <div class='col-sm-6 search-col'> </div>
+    <div class="row" class="search-controls">
+      <div class="col-sm-6 search-col"> </div>
 
-      <div class='col-sm-6 pagination-col'>
+      <div class="col-sm-6 pagination-col">
         {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
       </div>
     </div>
   </div>
-</div>
+
+  <div id="paper-tracker-saved-searches" class="main-content-section">
+    <h3>Saved Searches</h3>
+    <ul>
+    {{#each paperTrackerQueries as |query|}}
+      <li>{{paper-tracker-query query=query}}</li>
+    {{/each}}
+
+    {{#if newQueryState}}
+      <li>{{input value=newQueryTitle enter="saveQuery" id="new-query-title"}}</li>
+    {{/if}}
+    </ul>
+  </div>
+</main>

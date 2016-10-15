@@ -30,19 +30,19 @@
         {{currentUser.fullName}}
       </div>
       <div class="main-nav-user-section-body" id="profile-dropdown-menu">
-        {{link-to "Profile" "profile" class="main-nav-user-section-item" id="nav-profile"}}
-        <a href="/users/sign_out" class="main-nav-user-section-item" id="nav-signout">Sign Out</a>
+        <div class="main-nav-user-section-body-content">
+          {{link-to "Profile" "profile" class="main-nav-user-section-item" id="nav-profile"}}
+          <a href="/users/sign_out" class="main-nav-user-section-item" id="nav-signout">Sign Out</a>
+        </div>
       </div>
     {{/main-nav-user-section}}
     <span></span>
   {{/if}}
 </nav>
 
-<div id="mobile-nav">
-  <nav id="control-bar" role="navigation"></nav>
-</div>
+<div id="mobile-nav"></div>
 
-<main id="main-content" class="main-content" role="main">{{outlet}}</main>
+{{outlet}}
 
 {{#overlay-fullscreen visible=showFeedbackOverlay
                       outAnimationComplete=(action "hideFeedbackOverlay")

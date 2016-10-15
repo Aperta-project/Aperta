@@ -1,41 +1,43 @@
-<div class="main-content-section">
-  {{flash-messages}}
+<main id="main-content" class="main-content" role="main">
+  <div class="main-content-section">
+    {{flash-messages}}
 
-  {{#overlay-fullscreen visible=showUserDetailsOverlay
-                        outAnimationComplete=(action "hideUserDetailsOverlay")
-                        title="User Details"
-                        overlayClass="user-detail-overlay overlay--blue"
-                        as |overlay|}}
-      {{user-details model=detailsForUser
-                     close=(action overlay.animateOut)}}
-  {{/overlay-fullscreen}}
+    {{#overlay-fullscreen visible=showUserDetailsOverlay
+                          outAnimationComplete=(action "hideUserDetailsOverlay")
+                          title="User Details"
+                          overlayClass="user-detail-overlay overlay--blue"
+                          as |overlay|}}
+        {{user-details model=detailsForUser
+                       close=(action overlay.animateOut)}}
+    {{/overlay-fullscreen}}
 
 
-  <div class="base-screen admin-screen">
-    <div class="admin-search admin-user-search">
-      {{input enter="searchUsers"
-              placeholder="SEARCH ALL USERS"
-              value=searchQuery}}
-      <button {{action "searchUsers"}}><span class="fa fa-search"></span></button>
+    <div class="base-screen admin-screen">
+      <div class="admin-search admin-user-search">
+        {{input enter="searchUsers"
+                placeholder="SEARCH ALL USERS"
+                value=searchQuery}}
+        <button {{action "searchUsers"}}>{{fa-icon icon="search"}}</button>
+      </div>
+
+      {{#if adminJournalUsers}}
+        <table class="admin-users">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+          </tr>
+          {{#each adminJournalUsers as |user|}}
+            {{partial "admin/edit-journal-user"}}
+          {{/each}}
+        </table>
+      {{else}}
+        <p class="admin-user-search-default-state-text">{{placeholderText}}</p>
+      {{/if}}
+
+      <br><br>
+
+      {{outlet}}
     </div>
-
-    {{#if adminJournalUsers}}
-      <table class="admin-users">
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
-        {{#each adminJournalUsers as |user|}}
-          {{partial "admin/edit-journal-user"}}
-        {{/each}}
-      </table>
-    {{else}}
-      <p class="admin-user-search-default-state-text">{{placeholderText}}</p>
-    {{/if}}
-
-    <br><br>
-
-    {{outlet}}
   </div>
-</div>
+</main>

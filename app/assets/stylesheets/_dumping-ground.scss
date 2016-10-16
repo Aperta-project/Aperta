@@ -5,7 +5,7 @@
 -------------------------------------------------------------------------------
 */
 
-.overlay-open .main-content {
+.overlay-open #main-content {
   @include filter(grayscale(50%) blur(3px));
 }
 

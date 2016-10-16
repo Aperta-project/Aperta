@@ -56,7 +56,7 @@
 {{#split-pane id="main-content" class="main-content" role="main" handleClass="manuscript-handle"}}
   {{#split-pane-element class="manuscript-pane main-content-section"}}
     {{#rendered-manuscript paper=model}}
-      {{#if paper.processing}}
+      {{#if model.processing}}
         {{#progress-spinner-message visible=true size="large" align="middle"}}
           Loading . . .
         {{/progress-spinner-message}}

@@ -15,7 +15,8 @@ feature 'Paper Tracker', js: true do
     count.times { FactoryGirl.create(:paper, :completed, journal: journal) }
     login_as(user, scope: :user)
     visit '/paper_tracker'
-    expect(find(search_controls)).to have_content('Page 1 of 1')
+    controls = find(search_controls)
+    expect(controls).to have_content('Page 1 of 1')
     within(search_controls) do
       expect(page).to_not have_css('.btn.prev')
       expect(page).to_not have_css('.btn.next')
@@ -27,7 +28,8 @@ feature 'Paper Tracker', js: true do
     count.times { FactoryGirl.create(:paper, :completed, journal: journal) }
     login_as(user, scope: :user)
     visit '/paper_tracker'
-    expect(find(search_controls)).to have_content('Page 1 of 2')
+    controls = find(search_controls)
+    expect(controls).to have_content('Page 1 of 2')
     within(search_controls) do
       expect(page).to_not have_css('.btn.prev')
       expect(page).to have_css('.btn.next')
@@ -39,7 +41,8 @@ feature 'Paper Tracker', js: true do
     count.times { FactoryGirl.create(:paper, :completed, journal: journal) }
     login_as(user, scope: :user)
     visit '/paper_tracker?page=2'
-    expect(find(search_controls)).to have_content('Page 2 of 3')
+    controls = find(search_controls)
+    expect(controls).to have_content('Page 2 of 3')
     within(search_controls) do
       expect(page).to have_css('.btn.prev')
       expect(page).to have_css('.btn.next')

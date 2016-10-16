@@ -32,7 +32,7 @@ feature 'Comments on cards', js: true do
       task.comments.create(commenter: albert, body: "Lorem\nipsum dolor\nsit amet")
       CommentLookManager.sync_task(task)
       click_link paper.title
-      find('#go-to-workflow').click
+      find('#nav-workflow').click
     end
 
     scenario "displays the number of unread comments as badge on task" do

@@ -7,8 +7,8 @@ class PaperWorkflowPage < Page
   end
 
   def view_recent_activity
-    within '.control-bar' do
-      find('.activity-link').click
+    within '#control-bar' do
+      find('#nav-recent-activity').click
     end
   end
 end

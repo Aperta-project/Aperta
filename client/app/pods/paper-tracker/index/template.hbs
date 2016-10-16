@@ -18,7 +18,7 @@
 
       <a class="save-search-button" {{action "startNewSavedQuery"}}>Save this Search</a>
 
-      <div class="pagination-col">
+      <div id="search-controls-top" class="pagination-col">
         {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
       </div>
     </div>

@@ -4,20 +4,19 @@
 
 // https://github.com/Tahi-project/tahi/wiki/CSS-Guidelines
 
-@import 'config/functions';
-@import 'config/variables';
-@import 'config/colors';
-@import 'config/z-index';
-@import 'config/webfonts';
 
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
-@import 'bootstrap-overrides';
 
 // NOTE: Bourbon is mostly used for vendor prefixing
 // When writing/editing styles, check to see if prefixing is necessary
 @import 'bourbon';
 
+@import 'config/functions';
+@import 'config/variables';
+@import 'config/colors';
+@import 'config/z-index';
+@import 'config/webfonts';
 @import 'config/mixins';
 
 @import 'config/global-resets';

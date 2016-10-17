@@ -6,10 +6,10 @@
 }
 
 .segmented-button {
-  border: 1px solid $tahi-green;
+  border: 1px solid $aperta-green;
   border-right-width: 0;
   padding: 2px 0;
-  color: $tahi-green;
+  color: $aperta-green;
   font-size: 11px;
   font-weight: 400;
   text-align: center;
@@ -36,7 +36,7 @@
 
 .segmented-button--active {
   color: #fff;
-  background: $tahi-green;
+  background: $aperta-green;
 
   &:hover { text-decoration: none; }
 }

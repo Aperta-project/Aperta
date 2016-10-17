@@ -1,12 +1,12 @@
 .related-article {
   position: relative;
   margin: 10px 0;
-  background-color: $tahi-grey-xlight;
+  background-color: $aperta-grey-xlight;
   padding: 20px;
   line-height: 1.5;
 
   &:hover, &.editing {
-    background-color: $tahi-grey-light;
+    background-color: $aperta-grey-light;
   }
 
   .related-article-editing-actions {

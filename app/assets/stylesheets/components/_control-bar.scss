@@ -26,7 +26,7 @@
 
 .contributors-add {
   margin-right: 15px;
-  color: $tahi-green;
+  color: $aperta-green;
   cursor: pointer;
 }
 
@@ -41,10 +41,10 @@
     width: $circle-radius;
     height: $circle-radius;
     margin-right: 4px;
-    border: 2px solid $tahi-green;
+    border: 2px solid $aperta-green;
     border-radius: $circle-radius / 2;
     vertical-align: middle;
-    background-color: $tahi-green-light;
+    background-color: $aperta-green-light;
   }
 }
 
@@ -74,13 +74,13 @@
       margin-left: 5px;
     }
 
-    svg path { fill: $tahi-green; }
+    svg path { fill: $aperta-green; }
   }
 
   a:hover {
-    color: $tahi-green-dark;
+    color: $aperta-green-dark;
     text-decoration: none;
 
-    svg path { fill: $tahi-green-dark; }
+    svg path { fill: $aperta-green-dark; }
   }
 }

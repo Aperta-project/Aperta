@@ -18,17 +18,17 @@
   }
 
   .added {
-    background-color: rgba($tahi-green-light, .5);
+    background-color: rgba($aperta-green-light, .5);
     th {
-      background: darken($tahi-green-light, 5%);
+      background: darken($aperta-green-light, 5%);
     }
   }
 
   .removed {
     opacity: .8;
-    background-color: rgba($tahi-red-light, .5);
+    background-color: rgba($aperta-red-light, .5);
     th {
-      background: darken($tahi-red-light, 5%);
+      background: darken($aperta-red-light, 5%);
     }
   }
 

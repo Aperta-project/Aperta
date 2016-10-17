@@ -15,7 +15,7 @@ $task-disclosure-radius: 4px;
   font-size: 1.8rem;
   line-height: 4.0rem;
   cursor: pointer;
-  background: $tahi-grey-lighter;
+  background: $aperta-grey-lighter;
   z-index: 1;
   @include ellipsis;
   @include user-select(none);
@@ -58,7 +58,7 @@ $task-disclosure-radius: 4px;
   }
 
   &.active {
-    background: $tahi-green;
+    background: $aperta-green;
     polygon { fill: #fff; }
   }
 }

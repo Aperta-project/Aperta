@@ -34,7 +34,7 @@
   display: inline-block;
   width: 251px; // +1px for border
   height: 100%;
-  border-right: 1px solid $tahi-grey-light;
+  border-right: 1px solid $aperta-grey-light;
   text-align: left;
   vertical-align: top;
   white-space: initial;
@@ -70,7 +70,7 @@
     position: absolute;
     top: -5px;
     cursor: pointer;
-    color: $tahi-green;
+    color: $aperta-green;
     font-size: 20px;
   }
 
@@ -124,11 +124,11 @@
 }
 
 .btn-link.column-header-update-cancel {
-  color: $tahi-green;
+  color: $aperta-green;
 }
 
 .column-icon {
-  color: $tahi-green-light;
+  color: $aperta-green-light;
   display: none;
   font-size: 14px;
   position: absolute;
@@ -174,9 +174,9 @@
   .sortable-no-cards {
     position: relative;
     margin-bottom: 8px;
-    border: 1px solid $tahi-grey-light;
+    border: 1px solid $aperta-grey-light;
     border-radius: 5px;
-    color: $tahi-grey-light;
+    color: $aperta-grey-light;
     font-size: 20px;
     text-align: center;
 
@@ -204,8 +204,8 @@
 
   i.fa-plus-square,
   i.fa-plus-square-o {
-    background-color: $tahi-white;
-    color: $tahi-grey-light;
+    background-color: $aperta-white;
+    color: $aperta-grey-light;
     height: 15px;
     position: relative;
     top: 3px;
@@ -218,8 +218,8 @@
 
   &:hover {
     i.fa-plus-square {
-      background-color: $tahi-white;
-      color: $tahi-green;
+      background-color: $aperta-white;
+      color: $aperta-green;
       display: inline;
     }
 

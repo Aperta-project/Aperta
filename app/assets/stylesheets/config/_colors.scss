@@ -4,10 +4,6 @@
 $aperta-green: #39a329;
 $aperta-green-light: #8ecb87;
 $aperta-green-dark: #0f7400;
-// NOTE deprecated 'tahi' prefix
-  $tahi-green: $aperta-green;
-  $tahi-green-light: $aperta-green-light;
-  $tahi-green-dark: $aperta-green-dark;
 
 
 /* BLUE - ADMIN
@@ -16,10 +12,6 @@ $aperta-green-dark: #0f7400;
 $aperta-blue: #2d85de;
 $aperta-blue-light: #94b8e0;
 $aperta-blue-dark: #205e9c;
-// NOTE deprecated 'tahi' prefix
-  $tahi-blue: $aperta-blue;
-  $tahi-blue-light: $aperta-blue-light;
-  $tahi-blue-dark: $aperta-blue-dark;
 
 
 /* GREY
@@ -28,19 +20,11 @@ $aperta-blue-dark: #205e9c;
 $grey-base: rgb(135,135,135);
 $aperta-black: darken($grey-base, 33%);
 $aperta-grey: $grey-base;
+$aperta-grey-dark: #878787;
 $aperta-grey-light: lighten($grey-base, 30%);
 $aperta-grey-lighter: lighten($grey-base, 37%);
 $aperta-grey-xlight: lighten($grey-base, 43%);
 $aperta-white: #fff;
-// NOTE deprecated 'tahi' prefix
-  $tahi-black: $aperta-black;
-  $tahi-grey: $aperta-grey;
-  $tahi-grey-light: $aperta-grey-light;
-  $tahi-grey-lighter: $aperta-grey-lighter;
-  $tahi-grey-xlight: $aperta-grey-xlight;
-  $tahi-white: $aperta-white;
-// NOTE deprecated:
-  $tahi-grey-dark: $aperta-grey;
 
 
 /* RED
@@ -50,13 +34,4 @@ $red-base: rgb(206, 11, 36);
 $aperta-red: $red-base;
 $aperta-red-light: lighten($red-base, 50%);
 $aperta-red-dark: darken($red-base, 10%);
-$aperta-background-red: #f7efe9;
-// NOTE deprecated 'tahi' prefix
-  $tahi-red: $aperta-red;
-  $tahi-red-light: $aperta-red-light;
-  $tahi-background-red: $aperta-background-red;
-// NOTE deprecated 'error' variables:
-  $tahi-error-red: $aperta-red;
-  $tahi-error-background-red: $aperta-background-red;
-  $tahi-red-light: $aperta-red-light;
-
+$aperta-red-background: #f7efe9;

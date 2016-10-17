@@ -34,13 +34,13 @@
   }
 
   .added {
-    background-color: rgba($tahi-green-light, .5);
+    background-color: rgba($aperta-green-light, .5);
     padding: 5px 10px;
   }
 
   .removed {
     opacity: .8;
-    background-color: rgba($tahi-red-light, .5);
+    background-color: rgba($aperta-red-light, .5);
     padding: 5px 10px;
     text-decoration: line-through;
     .added {

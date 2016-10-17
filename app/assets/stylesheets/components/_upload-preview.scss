@@ -1,5 +1,5 @@
 .upload-preview-filename {
-  color: $tahi-white;
+  color: $aperta-white;
   position: absolute;
   left: 12px;
   top: 10px;
@@ -11,17 +11,17 @@
 }
 
 .upload-error-button {
-  color: $tahi-green;
+  color: $aperta-green;
   font-size: 40px;
   line-height: 0.5;
 
   &:hover {
-    color: $tahi-green-dark;
+    color: $aperta-green-dark;
   }
 }
 
 .upload-error-text {
   display: block;
   margin-top: 35px;
-  color: $tahi-error-red;
+  color: $aperta-red;
 }

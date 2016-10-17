@@ -5,7 +5,7 @@
   top: 100%;
   left: 0px;
   z-index: z('floating-list-active');
-  border: 1px solid $tahi-grey-light;
+  border: 1px solid $aperta-grey-light;
   border-top: 0;
   width: 100%;
 }
@@ -46,7 +46,7 @@
   position: relative;
 
   &.error {
-    border-color: $tahi-error-red;
+    border-color: $aperta-red;
   }
 
   .error-message {
@@ -57,7 +57,7 @@
 }
 
 .auto-suggest-border .auto-suggest {
-  border-top: 1px solid $tahi-grey-light;
+  border-top: 1px solid $aperta-grey-light;
 }
 
 .auto-suggest-border .progress-spinner {

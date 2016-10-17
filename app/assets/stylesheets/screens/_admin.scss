@@ -11,11 +11,11 @@
 }
 
 #control-bar-journal-back-button {
-  color: $tahi-blue;
+  color: $aperta-blue;
   font-size: 1.8rem;
 
   &:focus,
-  &:hover { color: $tahi-blue; }
+  &:hover { color: $aperta-blue; }
 }
 
 @include min-screen-width($layout-large-screen) {
@@ -42,9 +42,9 @@
   @extend .col-md-8;
   font-size: 24px;
   input {
-    border: 1px solid $tahi-grey-light;
+    border: 1px solid $aperta-grey-light;
     border-radius: 5px;
-    color: $tahi-blue;
+    color: $aperta-blue;
     padding: 5px;
   }
 }
@@ -58,7 +58,7 @@
 
   input, button {
     color: #2d85de;
-    border: 1px solid $tahi-blue;
+    border: 1px solid $aperta-blue;
     background: #fff;
   }
 
@@ -70,7 +70,7 @@
     font-size: 1.8rem;
 
     @include placeholder {
-      color: lighten($tahi-blue, 25%);
+      color: lighten($aperta-blue, 25%);
       text-transform: uppercase;
     }
   }
@@ -95,7 +95,7 @@
     display: inline;
     width: 30px;
     margin-right: 5px;
-    color: $tahi-grey-light;
+    color: $aperta-grey-light;
     font-size: 18px;
     cursor: pointer;
 
@@ -117,7 +117,7 @@
 .admin-user-search-default-state-text {
   clear: both;
   padding-top: 10px;
-  color: $tahi-grey-dark;
+  color: $aperta-grey-dark;
   font-size: 22px;
   font-style: italic;
 }
@@ -134,7 +134,7 @@
   th {
     font-size: 18px;
     font-weight: normal;
-    color: $tahi-grey-dark;
+    color: $aperta-grey-dark;
   }
 
   td {
@@ -143,7 +143,7 @@
   }
 
   tr {
-    color: $tahi-blue;
+    color: $aperta-blue;
     vertical-align: top;
   }
 
@@ -185,7 +185,7 @@
   float: left;
   margin-right: 25px;
   .save-status {
-    color: $tahi-blue;
+    color: $aperta-blue;
   }
 }
 
@@ -207,16 +207,16 @@
 }
 
 .success {
-  color: $tahi-green;
+  color: $aperta-green;
 }
 
 .error {
-  color: $tahi-error-red;
+  color: $aperta-red;
 }
 
 .user-detail-overlay {
   span.save-status {
-    color: $tahi-blue;
+    color: $aperta-blue;
     vertical-align: -6px;
     font-style: italic;
   }

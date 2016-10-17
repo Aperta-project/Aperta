@@ -13,12 +13,12 @@
       margin-left: 1em;
       cursor: pointer;
       text-decoration: underline;
-      color: $tahi-blue;
+      color: $aperta-blue;
       font-size: .8em;
     }
 
     .fa-check-circle {
-      color: $tahi-green;
+      color: $aperta-green;
     }
   }
 
@@ -61,14 +61,14 @@
       top: 0px;
       right: 0px;
       border-width: 0 0 0 1px;
-      background-color: $tahi-grey-light;
+      background-color: $aperta-grey-light;
       height: 100%;
       @include background(linear-gradient(to top, #ccc 0%, #eee 60%));
     }
   }
 
   .did-you-mean-expanded {
-    border: 1px solid $tahi-grey-light;
+    border: 1px solid $aperta-grey-light;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-top: 0;
@@ -82,7 +82,7 @@
 
     .did-you-mean-options {
       overflow-y: auto;
-      border: 1px solid $tahi-grey-light;
+      border: 1px solid $aperta-grey-light;
       border-width: 0 0;
       max-height: 10em;
     }
@@ -93,7 +93,7 @@
       line-height: 1.1;
 
       &:hover {
-        background-color: $tahi-grey-light;
+        background-color: $aperta-grey-light;
       }
     }
 
@@ -101,13 +101,13 @@
       cursor: pointer;
       padding: .5em 1em;
       text-decoration: underline;
-      color: $tahi-blue;
+      color: $aperta-blue;
     }
   }
 }
 
 .did-you-mean--error {
   .did-you-mean-input {
-    border: 1px solid $tahi-error-red;
+    border: 1px solid $aperta-red;
   }
 }

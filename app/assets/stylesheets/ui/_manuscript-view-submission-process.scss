@@ -15,7 +15,7 @@
   #sp-close {
     @include position(absolute, 0px 0px auto auto);
     padding: 3px 20px 3px 13px;
-    color: $tahi-green;
+    color: $aperta-green;
     font-size: 4rem;
     cursor: pointer;
   }
@@ -51,7 +51,7 @@
 }
 
 #submission-process-toggle {
-  color: $tahi-green;
+  color: $aperta-green;
   font-size: 17px;
   float:right;
   margin: 0px 5px 10px 10px;

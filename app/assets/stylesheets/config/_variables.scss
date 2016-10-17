@@ -1,16 +1,9 @@
 $aperta-font-family: 'Source Sans Pro', 'source-sans-pro', helvetica, sans-serif;
 $aperta-article-font-family: 'lora', georgia, times, serif;
-// NOTE tahi prefix deprecated
-$tahi-font-family: $aperta-font-family;
-$tahi-article-font-family: $aperta-article-font-family;
 
 // -- NOTE Remove -------------------------------------------------------------
-$tahi-font-size-small: 12px;
-$grid-float-breakpoint: 0;
-$tahi-control-bar-height: 60px;
 $main-nav-height: 42px;
 $message-body-width: 700px;
-$tahi-paper-width: 1120px;
 // -- ^ Remove -------------------------------------------------------------
 
 $layout-large-screen: 790px;

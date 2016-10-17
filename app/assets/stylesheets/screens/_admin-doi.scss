@@ -8,10 +8,10 @@
     top: 24px;
   }
 
-  .error.required:before { color: $tahi-error-red; }
+  .error.required:before { color: $aperta-red; }
 
-  input { border: 1px solid $tahi-grey-light; }
-  .error input { border-color: $tahi-error-red; }
+  input { border: 1px solid $aperta-grey-light; }
+  .error input { border-color: $aperta-red; }
 
   .admin-section-title  {
     margin-bottom: 5px;
@@ -30,7 +30,7 @@
 }
 
 .admin-doi-settings-title {
-  color: $tahi-grey-dark;
+  color: $aperta-grey-dark;
   font-size: 18px;
   font-weight: normal;
 }
@@ -38,9 +38,9 @@
 .admin-doi-settings-edit-button {
   @include position(absolute, 28px auto auto 0px);
   padding: 0 3px;
-  color: $tahi-grey-light;
+  color: $aperta-grey-light;
   font-size: 15px;
   cursor: pointer;
 
-  &:hover { color: $tahi-grey; }
+  &:hover { color: $aperta-grey; }
 }

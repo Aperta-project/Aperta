@@ -43,7 +43,7 @@
 .popover-menu-item {
   display: block;
   padding: 0.8rem 1.5rem;
-  color: $tahi-green;
+  color: $aperta-green;
   font-size: 1.3rem;
   line-height: 100%; // .main-navigation-item override
   text-decoration: none;
@@ -51,7 +51,7 @@
   &:hover {
     color: #fff;
     text-decoration: none;
-    background: $tahi-green;
+    background: $aperta-green;
   }
 
   .fa {

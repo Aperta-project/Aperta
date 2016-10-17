@@ -12,13 +12,13 @@
   }
 
   .rescind-decision-button {
-    color: $tahi-green;
+    color: $aperta-green;
     border: none;
     background-color: transparent;
     margin-left: 10px;
 
     &:disabled {
-      color: $tahi-grey-light;
+      color: $aperta-grey-light;
     }
   }
 }

@@ -23,7 +23,7 @@ body {
 }
 
 body, h1, input {
-  font-family: $tahi-font-family;
+  font-family: $aperta-font-family;
   font-weight: normal;
 }
 
@@ -47,7 +47,7 @@ html.bg-2 { background-image: url(image-path('auth/bg-2.jpg'));
   text-decoration: underline;
 }
 
-#tahi-container {
+#aperta-container {
   max-width: 860px;
   margin: 0 auto;
   padding: 120px 0 20px 0;
@@ -62,7 +62,7 @@ input:focus, textarea:focus, *[contenteditable] { outline: none; }
 a, button, .fa, { transition: all 0.1s ease-in-out; }
 
 a {
-  color: $tahi-green;
+  color: $aperta-green;
   text-decoration: none;
 
   &:focus, &:hover {
@@ -103,7 +103,7 @@ a {
 
 .auth-flash--notice {
   border: 1px solid #d7f0d1;
-  color: $tahi-green;
+  color: $aperta-green;
   background: #eafde7;
 }
 
@@ -215,10 +215,10 @@ a {
 
 .button-secondary.auth-3rd-party-button {
   background: transparent;
-  border-color: $tahi-green;
+  border-color: $aperta-green;
   text-transform: none;
 
-  &:hover { color: $tahi-green; }
+  &:hover { color: $aperta-green; }
 }
 
 .auth-orcid {
@@ -226,7 +226,7 @@ a {
 }
 
 .auth-cas {
-  background: $tahi-green;
+  background: $aperta-green;
 }
 
 .auth-linkedin {

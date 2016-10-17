@@ -45,7 +45,7 @@
     background-color: $color-hover;
 
     &:focus, &:hover {
-      background-color: $tahi-white;
+      background-color: $aperta-white;
       border-color: $color;
       color: $color;
     }
@@ -86,13 +86,13 @@
   color: #fff;
   &:hover { text-decoration: none; }
 
-  &.button--green { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
-  &.button--blue  { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
-  &.button--grey  { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
-  &.button--red   { @include button-primary-modifier($tahi-error-red, $tahi-error-red); }
+  &.button--green { @include button-primary-modifier($aperta-green, $aperta-green-dark); }
+  &.button--blue  { @include button-primary-modifier($aperta-blue, $aperta-blue-dark); }
+  &.button--grey  { @include button-primary-modifier($aperta-grey, $aperta-grey-dark); }
+  &.button--red   { @include button-primary-modifier($aperta-red, $aperta-red); }
   &.button--white {
-    @include button-primary-modifier($tahi-white, $tahi-green-light);
-    color: $tahi-green-dark;
+    @include button-primary-modifier($aperta-white, $aperta-green-light);
+    color: $aperta-green-dark;
   }
 }
 
@@ -100,10 +100,10 @@
   @extend .button;
   background: #fff;
 
-  &.button--green { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
-  &.button--blue  { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
-  &.button--grey  { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
-  &.button--red   { @include button-secondary-modifier($tahi-error-red, $tahi-error-background-red, $tahi-error-red); }
+  &.button--green { @include button-secondary-modifier($aperta-green, $aperta-green-light, $aperta-green-dark); }
+  &.button--blue  { @include button-secondary-modifier($aperta-blue, $aperta-blue-light, $aperta-blue-dark); }
+  &.button--grey  { @include button-secondary-modifier($aperta-grey, $aperta-grey-light, $aperta-grey-dark); }
+  &.button--red   { @include button-secondary-modifier($aperta-red, $aperta-red-background, $aperta-red); }
 }
 
 .button-link {
@@ -111,11 +111,11 @@
   text-transform: none;
   background: transparent;
 
-  &.button--green { @include button-link-modifier($tahi-green, $tahi-green-dark); }
-  &.button--blue  { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
-  &.button--grey  { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
-  &.button--white { @include button-link-modifier($tahi-white, $tahi-white); }
-  &.button--red   { @include button-link-modifier($tahi-error-red, $tahi-error-red); }
+  &.button--green { @include button-link-modifier($aperta-green, $aperta-green-dark); }
+  &.button--blue  { @include button-link-modifier($aperta-blue, $aperta-blue-dark); }
+  &.button--grey  { @include button-link-modifier($aperta-grey, $aperta-grey-dark); }
+  &.button--white { @include button-link-modifier($aperta-white, $aperta-white); }
+  &.button--red   { @include button-link-modifier($aperta-red, $aperta-red); }
 
   &:hover {
     text-decoration: underline;
@@ -126,43 +126,43 @@
 // .button modifier
 .button:disabled, .button--disabled {
   color: #eee;
-  background-color: $tahi-grey-light;
+  background-color: $aperta-grey-light;
   cursor: not-allowed;
 
   &:focus, &:hover {
     color: #eee;
-    background-color: $tahi-grey-light;
+    background-color: $aperta-grey-light;
   }
 
   &.button-primary {
     color: #eee;
-    border-color: $tahi-grey-light;
-    background-color: $tahi-grey-light;
+    border-color: $aperta-grey-light;
+    background-color: $aperta-grey-light;
 
     &:focus, &:hover {
       color: #eee;
-      border-color: $tahi-grey-light;
-      background-color: $tahi-grey-light;
+      border-color: $aperta-grey-light;
+      background-color: $aperta-grey-light;
     }
   }
 
   &.button-secondary {
-    color: $tahi-grey-light;
-    border-color: $tahi-grey-light;
+    color: $aperta-grey-light;
+    border-color: $aperta-grey-light;
     background: #fff;
 
     &:focus, &:hover {
-      color: $tahi-grey-light;
-      border-color: $tahi-grey-light;
+      color: $aperta-grey-light;
+      border-color: $aperta-grey-light;
       background: #fff;
     }
   }
 
   &.button-link {
-    color: $tahi-grey-light;
+    color: $aperta-grey-light;
     background: transparent;
     &:focus, &:hover {
-      color: $tahi-grey-light;
+      color: $aperta-grey-light;
       text-decoration: none;
     }
   }

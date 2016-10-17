@@ -28,18 +28,23 @@ describe OrcidAccountsController do
     subject(:do_request) do
       get :clear, id: user.id, format: :json
     end
-    
+
     context 'when the user is signed in' do
       before do
         stub_sign_in(user)
       end
 
       it "calls orcid_account.reset!" do
+        allow(OrcidAccount).to receive(:find).with(orcid_account.id.to_s).and_return(orcid_account)
+        expect(orcid_account).to receive(:reset!)
         do_request
-        expect(orcid_account).to_receive(:reset!)
+      end
+
+      it "calls the orcid account's serializer when rendering JSON" do
+        do_request
+        serializer = orcid_account.active_model_serializer.new(orcid_account, scope: orcid_account)
+        expect(res_body.keys).to match_array(serializer.as_json.stringify_keys.keys)
       end
     end
-    
   end
-
 end

@@ -11,7 +11,7 @@ class OrcidOauthController < ApplicationController
         <p>An error occured. Please close this window and try again</p>
       TEMPLATE
     else
-      OrcidWorker.perform_async(@current_user.id, params[:code])
+      OrcidWorker.perform_async(current_user.id, params[:code])
       render html: <<-TEMPLATE.html_safe
         <script>
           window.localStorage.setItem('orcidOauthResult', 'success');

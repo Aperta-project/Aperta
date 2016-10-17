@@ -219,6 +219,8 @@ describe TasksController, redis: true do
       allow(Task).to receive(:find).with(task.id.to_param).and_return task
     end
 
+    it_behaves_like "an unauthenticated json request"
+
     context "when the user has access" do
       before do
         stub_sign_in user
@@ -265,6 +267,8 @@ describe TasksController, redis: true do
         }
       }
     end
+
+    it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
@@ -313,6 +317,8 @@ describe TasksController, redis: true do
       delete :destroy, { id: task.id, format: "json" }
     end
 
+    it_behaves_like "an unauthenticated json request"
+
     context "when the user has access" do
       before do
         stub_sign_in user
@@ -358,6 +364,8 @@ describe TasksController, redis: true do
     before do
       allow(Task).to receive(:find).with(task.id.to_param).and_return task
     end
+
+    it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
@@ -415,6 +423,8 @@ describe TasksController, redis: true do
     before do
       allow(Task).to receive(:find).with(task.id.to_param).and_return task
     end
+
+    it_behaves_like "an unauthenticated json request"    
 
     context "when the user has access" do
       before do

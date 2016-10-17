@@ -70,6 +70,10 @@ class Journal < ActiveRecord::Base
     journals.flat_map(&:staff_admins)
   end
 
+  def self.staff_admins_across_all_journals
+    all.flat_map(&:staff_admins)
+  end
+
   def admins
     users.merge(OldRole.admins)
   end

@@ -1,4 +1,4 @@
-@include keyframes(scaleIn) {
+@keyframes scaleIn {
   0% {
     opacity: 0;
     transform: scale(0);

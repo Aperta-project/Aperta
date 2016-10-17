@@ -50,4 +50,38 @@ class OrcidAccount < ActiveRecord::Base
       .each { |attribute| self[attribute] = nil }
     save!
   end
+
+  def exchange_code_for_token(authorization_code)
+    response = oauth_authorize(authorization_code)
+    update_attributes(
+      access_token: response['access_token'],
+      refresh_token: response['access_token'],
+      identifier: response['orcid'],
+      expires_at: DateTime.now.utc + response['expires_in'].seconds,
+      name: response['name'],
+      scope: response['scope'],
+      authorization_code_response: response
+    )
+  end
+
+  private
+
+  def oauth_authorize(code)
+    # client id and secret are Aperta's id and secret, NOT the end user's
+    response = JSON.parse RestClient.post(
+      "https://#{TahiEnv.orcid_site_host}/oauth/token", {
+        'client_id' => TahiEnv.orcid_key,
+        'client_secret' => TahiEnv.orcid_secret,
+        'grant_type' => 'authorization_code',
+        'code' => code
+      }, 'Accept' => 'application/json'
+    )
+    if response["errorDesc"] &&
+        !response['errorDesc']['content'].empty?
+      raise OrcidAccount::APIError, response['errorDesc']['content']
+    end
+    response
+  rescue RestClient::ExceptionWithResponse => ex
+    raise OrcidAccount::APIError, ex.to_s
+  end
 end

@@ -25,6 +25,51 @@ describe OrcidAccount do
     end
   end
 
+  describe '#exchange_code_for_token' do
+    # Get this from after authorizing on orcid.org. Click on the oauth link, authorize aperta, and capture the authorization code from the callback.
+    let(:authorization_code) { 'C3b6Z2' }
+    # this is the orcid returned with the test account. Update this when refreshing the VCR cassettee
+    let(:orcid_identifier) { '0000-0002-8398-4521' }
+    let(:cassette) { 'orcid_authorization' }
+    let(:orcid_account) do
+      FactoryGirl.create(:orcid_account,
+        identifier: nil,
+        access_token: nil)
+    end
+
+    context 'server returns http error code' do
+      let(:authorization_code) { 'ZZZZZZ' }
+      let(:cassette) { 'orcid_authorization_failure_bad_code' }
+
+      it 'raises OrcidAccount::APIError on an error message in message body' do
+        expect do
+          orcid_account.exchange_code_for_token(authorization_code)
+        end.to raise_error(OrcidAccount::APIError)
+      end
+    end
+
+    context 'server returns http error code' do
+      let(:orcid_key) { 'Bogus-key' }
+      let(:cassette) { 'orcid_authorization_failure_http_error_code' }
+
+      it 'raises OrcidAccount::APIError on a non 200 response' do
+        expect do
+          orcid_account.exchange_code_for_token(authorization_code)
+        end.to raise_error(OrcidAccount::APIError)
+      end
+    end
+
+    it 'receives an access token' do
+      orcid_account.exchange_code_for_token(authorization_code)
+      expect(orcid_account.access_token).not_to be_empty
+    end
+
+    it 'saves the orcid identifier' do
+      orcid_account.exchange_code_for_token(authorization_code)
+      expect(orcid_account.identifier).to eq(orcid_identifier)
+    end
+  end
+
   describe '#update_orcid_profile!' do
     it 'updates the orcid profile' do
       orcid_account.update_orcid_profile!

@@ -70,7 +70,10 @@ class FtpUploaderService
     transfer_error += ": #{@ftp.last_response}." if @ftp
     transfer_error += "\n" + @error_detail if @error_detail
     transfer_error += "\nPlease try to upload again."
-    transfer_error += "\n\nException Detail:\n" + exception.message if exception
+    if exception
+      transfer_error += "\n\nException Detail:\n" + exception.message
+      transfer_error += "\n\nBacktrace:\n" + exception.backtrace.join("\n")
+    end
     Rails.logger.warn(transfer_error)
     Bugsnag.notify(transfer_error)
     GenericMailer.delay.send_email(

@@ -14,7 +14,7 @@ class Invitation < ActiveRecord::Base
   before_create :assign_to_draft_decision
 
   scope :where_email_matches,
-        ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
+    ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
@@ -36,6 +36,7 @@ class Invitation < ActiveRecord::Base
   def ungrouped_primary?
     !has_alternates? && !is_alternate?
   end
+
   def has_alternates?
     alternates.exists?
   end
@@ -43,7 +44,6 @@ class Invitation < ActiveRecord::Base
   def is_alternate?
     primary_id.present?
   end
-
 
   aasm column: :state do
     state :pending, initial: true
@@ -57,27 +57,25 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite, {
-          after: [:generate_token, :set_invitee, :set_invited_at],
-          after_commit: :notify_invitation_invited
-    }) do
+    event(:invite, after: [:generate_token, :set_invitee, :set_invited_at],
+                   after_commit: :notify_invitation_invited) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
 
     event(:rescind,
-          after: [:set_rescinded_at],
-          after_commit: :notify_invitation_rescinded) do
+      after: [:set_rescinded_at],
+      after_commit: :notify_invitation_rescinded) do
       transitions from: [:invited, :accepted], to: :rescinded
     end
 
     event(:accept,
-          after: [:set_accepted_at],
-          after_commit: :notify_invitation_accepted) do
+      after: [:set_accepted_at],
+      after_commit: :notify_invitation_accepted) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
-          after: [:set_declined_at],
-          after_commit: :notify_invitation_declined) do
+      after: [:set_declined_at],
+      after_commit: :notify_invitation_declined) do
       transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
   end

@@ -67,20 +67,19 @@ class DiscussionForumTest(CommonTest):
       counter += 1
       if counter >= 60:
         raise  ValueError('Page not loaded')
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    logging.info(u'Assigned paper id: {0}'.format(paper_id))
     ms_viewer.logout()
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
+    staff_user = random.choice(staff_users)
+    logging.info(u'Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
                                   participants=[creator['user']])
-    # send another msg
     ms_viewer.logout()
-    logging.info('Logging in as user: {0}'.format(creator))
+    logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
@@ -94,17 +93,15 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     ms_viewer._get(ms_viewer._badge_red)
     ms_viewer.logout()
-    #time.sleep(10)
-    user_type = random.choice(staff_users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login(email=user_type['email'])
+    logging.info(u'Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
     ms_viewer.post_discussion('@' + creator['user'])
     ms_viewer.logout()
-    logging.info('Logging in as user: {0}'.format(creator))
+    logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())

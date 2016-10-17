@@ -58,7 +58,7 @@
 
 .inset-form-control-text {
   @include position(absolute, 5px 13px auto 13px);
-  @include display(flex);
+  display: flex;
   pointer-events: none;
   z-index: 1;
 
@@ -66,8 +66,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    @include flex-grow(1);
-    @include flex-shrink(0);
+    flex-grow: 1;
+    flex-shrink: 0;
   }
 
   .fa {

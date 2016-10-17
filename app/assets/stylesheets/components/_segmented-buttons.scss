@@ -1,7 +1,7 @@
 .segmented-buttons {
-  @include display(flex);
-  @include align-items(stretch);
-  @include justify-content(space-between);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
   @include user-select(none);
 }
 
@@ -17,7 +17,7 @@
   white-space: nowrap;
   background: #fff;
   cursor: default;
-  @include flex-grow(1);
+  flex-grow: 1;
   transition: all 0.15s;
 
   &:hover { text-decoration: underline; }

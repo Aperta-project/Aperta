@@ -50,7 +50,7 @@
 }
 
 .overlay-footer .participant-selector {
-  @include flex-grow(1);
+  flex-grow: 1;
 }
 
 .overlay-action-buttons {

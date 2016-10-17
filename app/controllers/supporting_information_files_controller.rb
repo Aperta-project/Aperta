@@ -9,8 +9,8 @@ class SupportingInformationFilesController < ApplicationController
 
   def create
     requires_user_can(:edit, file.paper)
-    file.update_attributes(status: 'processing')
-    DownloadAttachmentWorker.perform_async(file.id, params[:url], current_user.id)
+    DownloadAttachmentWorker
+      .download_attachment(file, params[:url], current_user)
     respond_with file
   end
 
@@ -28,8 +28,8 @@ class SupportingInformationFilesController < ApplicationController
 
   def update_attachment
     requires_user_can(:edit, file.paper)
-    file.update_attribute(:status, 'processing')
-    DownloadAttachmentWorker.perform_async(file.id, params[:url], current_user.id)
+    DownloadAttachmentWorker
+      .download_attachment(file, params[:url], current_user)
     respond_with file
   end
 
@@ -62,7 +62,4 @@ class SupportingInformationFilesController < ApplicationController
       attachment: [])
   end
 
-  def render_404
-    head 404
-  end
 end

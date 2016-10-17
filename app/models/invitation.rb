@@ -24,7 +24,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :invite_queue
   acts_as_list scope: :invite_queue
 
-  scope :primaries, -> { where("primary_id is not NULL") }
+  scope :grouped_alternates, -> { where.not(primary: nil) }
   # include RankedModel
   # ranks :position
   # ranks :alternate_position, with_same: :primary_id, scope: :alternate_pending
@@ -34,7 +34,14 @@ class Invitation < ActiveRecord::Base
   scope :pending, -> { where(state: "pending") }
 
   def ungrouped_primary?
-    alternates.blank? && primary.blank?
+    !has_alternates? && !is_alternate?
+  end
+  def has_alternates?
+    alternates.exists?
+  end
+
+  def is_alternate?
+    primary_id.present?
   end
 
 
@@ -125,14 +132,6 @@ class Invitation < ActiveRecord::Base
 
   def set_invitee
     update(invitee: User.find_by(email: email))
-  end
-
-  def has_alternates?
-    alternates.exists?
-  end
-
-  def is_alternate?
-    primary_id.present?
   end
 
   private

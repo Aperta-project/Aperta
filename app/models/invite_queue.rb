@@ -6,6 +6,13 @@ class InviteQueue < ActiveRecord::Base
   belongs_to :decision
   has_many :invitations
 
+  def grouped_alternates
+    invitations.where.not(primary: nil)
+  end
+  def ungrouped_primaries
+    invitations.select(&:ungrouped_primary?)
+  end
+
   def add_invite(invite)
     # acts_as_list always puts new items at the bottom of the list by default,
     # so we don't need to do anything further.
@@ -34,11 +41,24 @@ class InviteQueue < ActiveRecord::Base
     end
   end
 
-  def assign_primary(invite:, primary:)
+  def create_primary_group(invite:, primary:)
+    # find the max position of any alternate, and put the new primary below that
+    last_alternate = grouped_alternates.maximum(:position)
     invite.primary = primary
     invite.save
-    primary.move_to_top
-    invite.insert_at(2)
+    binding.pry
+    if last_alternate
+      primary.insert_at(last_alternate + 1)
+      invite.insert_at(last_alternate + 2)
+    else
+      primary.move_to_top
+      invite.insert_at(2)
+    end
+  end
+
+  def assign_primary(invite:, primary:)
+    #TODO: need different behavior if the primary is already grouped or not
+    create_primary_group(invite: invite, primary: primary)
   end
 
   def unassign_primary(invite)
@@ -49,7 +69,4 @@ class InviteQueue < ActiveRecord::Base
 
   end
 
-  def ungrouped_primaries
-    invitations.ungrouped
-  end
 end

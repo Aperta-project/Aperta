@@ -88,8 +88,8 @@ describe InviteQueue do
     end
 
     it "an alternate can go to the position of another unsent alternate in its group" do
-      expect(full_queue.valid_positions_for_invite(g1_alternate_2)).to eq([2])
-      expect(full_queue.valid_positions_for_invite(g1_alternate_1)).to eq([3])
+      expect(full_queue.valid_positions_for_invite(g1_alternate_1)).to eq([3, 4])
+      expect(full_queue.valid_positions_for_invite(g1_alternate_2)).to eq([2, 4])
       expect(full_queue.valid_positions_for_invite(g2_alternate_2)).to eq([])
     end
 

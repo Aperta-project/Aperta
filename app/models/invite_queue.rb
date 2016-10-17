@@ -13,15 +13,16 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def valid_positions_for_invite(invite)
-    return [] if invite.has_alternates?
-    return invite.primary.alternates.pluck(:position) if invite.is_alternate?
-    valid_positions = []
-    invite.invite_queue.invitations.each do |invitation|
-      if invitation.main_queue? && invitation.pending?
-        valid_positions << invitation.position
-      end
-    end
-    return valid_positions
+    return [] if invite.has_alternates? || !invite.pending?
+    valid_invites = if invite.is_alternate?
+                      invite.primary.alternates
+                    else
+                      invitations.select(&:ungrouped_primary?)
+                    end
+    valid_invites
+      .select(&:pending?)
+      .reject { |i| i.id == invite.id }
+      .map(&:position)
   end
 
   def move_invite_to_position(invite, pos)

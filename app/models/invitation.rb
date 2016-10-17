@@ -33,7 +33,7 @@ class Invitation < ActiveRecord::Base
   scope :alternate_pending, -> { joins(:alternates).where(alternates: { state: 'pending' }) }
   scope :pending, -> { where(state: "pending") }
 
-  def main_queue?
+  def ungrouped_primary?
     alternates.blank? && primary.blank?
   end
 
@@ -128,11 +128,11 @@ class Invitation < ActiveRecord::Base
   end
 
   def has_alternates?
-    alternates.present?
+    alternates.exists?
   end
 
   def is_alternate?
-    primary.present?
+    primary_id.present?
   end
 
   private

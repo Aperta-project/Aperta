@@ -94,8 +94,15 @@ class ApertaSeedJournalMMTTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.select_named_journal('PLOS Wombat', click=True)
-
+    wombat_exists = adm_page.select_named_journal('PLOS Wombat', click=True)
+    logging.info(wombat_exists)
+    if not wombat_exists:
+      adm_page.validate_add_new_journal('asuperadm',
+                                        journal_name='PLOS Wombat',
+                                        journal_desc='Of, by and for the best marsupials',
+                                        logo='WombatPVC_web-01.jpg',
+                                        commit=True)
+      adm_page.select_named_journal('PLOS Wombat', click=True)
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
     for mmt in all_mmts:
@@ -108,6 +115,8 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                      user_tasks=mmt['user_tasks'],
                                      staff_tasks=mmt['staff_tasks'],
                                      uses_resrev_report=mmt['uses_resrev_report'])
+        ja_page = JournalAdminPage(self.getDriver())
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

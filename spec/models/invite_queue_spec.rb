@@ -105,9 +105,9 @@ describe InviteQueue do
   describe "#assign_primary" do
     context "the invite is an ungrouped primary" do
       it "places the primary and the new alternate below the other existing groups" do
-        full_queue.assign_primary(invite: ungrouped_1, primary: ungrouped_2)
-        expect(ungrouped_2.reload.position).to eq(8)
-        expect(ungrouped_1.reload.position).to eq(9)
+        full_queue.assign_primary(invite: ungrouped_2, primary: ungrouped_3)
+        expect(ungrouped_3.reload.position).to eq(8)
+        expect(ungrouped_2.reload.position).to eq(9)
       end
     end
 

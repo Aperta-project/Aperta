@@ -134,6 +134,7 @@ class TahiEnv
   required :ORCID_SITE_HOST
   required :ORCID_SECRET
   required :ORCID_KEY
+  required :ORCID_API_VERSION
 
   # Puma
   optional :PUMA_WORKERS

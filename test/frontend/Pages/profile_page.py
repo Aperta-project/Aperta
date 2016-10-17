@@ -36,24 +36,17 @@ class ProfilePage(AuthenticatedPage):
     self._avatar_input = (By.CSS_SELECTOR, 'input[type="file"]')
     self._add_affiliation_title = (By.CSS_SELECTOR, 'div.affiliations-form h3')
     self._institution_input = (By.CSS_SELECTOR, 'div.affiliations-form div div input')
-    self._department_input = (By.XPATH,
-        ".//div[contains(@class, 'affiliations-form')]/div[2]/following-sibling::input")
-    self._tile_input = (By.XPATH,
-        ".//div[contains(@class, 'affiliations-form')]/div[2]/following-sibling::input[2]")
-    self._country = (
-        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[3]/input")
-    self._datepicker_1 = (
-        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/div/input")
-    self._datepicker_2 = (
-        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/div/input[2]")
-    self._email = (
-        By.XPATH, ".//div[contains(@class, 'affiliations-form')]/div[5]/input")
+    self._country_list_items = (By.CSS_SELECTOR, 'li.select2-result-selectable')
+    # Following two selectors will be used until specific class is added (APERTA-7868)
+    self._affiliation_field = (By.CLASS_NAME, 'affiliation-field')
+    self._datepicker = (By.CLASS_NAME, 'datepicker')
     self._add_done_btn = (By.CSS_SELECTOR, 'button.button--green')
     self._add_cancel_btn = (By.CSS_SELECTOR, 'a.author-cancel')
     self._profile_affiliations = (By.CLASS_NAME, 'affiliation-existing')
     self._remove_affiliation_icon = (By.CLASS_NAME, 'affiliation-remove')
     self._success_message = (By.CSS_SELECTOR, 'div.success')
     self._error_message = (By.CLASS_NAME, 'error-message')
+    self._country_input = (By.CSS_SELECTOR, 'input.select2-input')
   # POM Actions
 
   @staticmethod
@@ -140,6 +133,7 @@ class ProfilePage(AuthenticatedPage):
   def validate_image_upload(self):
     """Validate uploading a new image as profile avatar"""
     # TODO: Check this when Pivotal#101632186 is fixed.
+    self._get(self._profile_name_title)
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
     self._get(self._avatar_hover).click()
     avatar_input = self._iget(self._avatar_input)
@@ -160,22 +154,18 @@ class ProfilePage(AuthenticatedPage):
     # Note that the sytle guide is silent on this search selector style (APERTA-6358)
     institution_input = self._get(self._institution_input)
     # APERTA-6358 Commenting out until style implementation fixed.
-    department_input = self._get(self._department_input)
+    department_input, title_input, country, tmp, email = self._gets(self._affiliation_field)
     # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(department_input)
-    title_input = self._get(self._tile_input)
     # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(title_input)
-    country = self._get(self._country)
     # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_single_select_dropdown_style(country)
-    datepicker_1 = self._get(self._datepicker_1)
     # Note that the sytle guide is silent on this date selector style (APERTA-6358)
     # self.validate_input_field_style(datepicker_1)
-    datepicker_2 = self._get(self._datepicker_2)
+    datepicker_1, datepicker_2 = self._gets(self._datepicker)
     # Note that the sytle guide is silent on this date selector style (APERTA-6358)
     # self.validate_input_field_style(datepicker_2)
-    email = self._get(self._email)
     # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(email)
     add_done_btn = self._get(self._add_done_btn)
@@ -187,7 +177,11 @@ class ProfilePage(AuthenticatedPage):
     institution_input.send_keys(affiliation['institution'])
     department_input.send_keys(affiliation['department'])
     title_input.send_keys(affiliation['title'])
-    country.send_keys(affiliation['country'] + Keys.RETURN)
+    country.click()
+    # Check for the country list selector before sending keys to country field
+    self._get(self._country_list_items)
+    time.sleep(1)
+    self._get(self._country_input).send_keys(affiliation['country'] + Keys.RETURN)
     time.sleep(.5)
     datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)
     time.sleep(.5)
@@ -207,14 +201,14 @@ class ProfilePage(AuthenticatedPage):
         affiliation['department'], affiliations[-1].text)
     assert affiliation['title'] in affiliations[-1].text, '{0} not in {1}'.format(
         affiliation['title'], affiliations[-1].text)
-    assert affiliation['country'] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['country'], affiliations[-1].text)
     assert affiliation['start'][-4:] in affiliations[-1].text, '{0} not in {1}'.format(
         affiliation['start'], affiliations[-1].text)
     assert affiliation['end'][-4:] in affiliations[-1].text, '{0} not in {1}'.format(
         affiliation['end'], affiliations[-1].text)
     assert affiliation['email'] in affiliations[-1].text, '{0} not in {1}'.format(
         affiliation['email'], affiliations[-1].text)
+    assert affiliation['country'] in affiliations[-1].text, '{0} not in {1}'.format(
+        affiliation['country'], affiliations[-1].text)
     remove_icons = self._gets(self._remove_affiliation_icon)
     remove_icons[-1].click()
     alert = self._driver.switch_to_alert()

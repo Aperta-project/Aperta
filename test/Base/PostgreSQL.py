@@ -21,8 +21,8 @@ class PgSQL(object):
 
   @staticmethod
   def _get_connection():
-    cnxstring = 'host=' + str(psql_hname) + ' ' + 'port=' + str(psql_port) + ' ' + 'user=' + str(psql_uname) + ' ' \
-                + 'password=' + str(psql_pw) + ' ' + 'dbname=' + str(psql_db)
+    cnxstring = 'host=\'' + str(psql_hname) + '\' ' + 'port=\'' + str(psql_port) + '\' ' + 'user=\'' + str(psql_uname) + '\' ' \
+                + 'password=\'' + str(psql_pw) + '\' ' +  'dbname=\'' + str(psql_db) + '\''
     conn = psycopg2.connect(cnxstring)
     return conn
 

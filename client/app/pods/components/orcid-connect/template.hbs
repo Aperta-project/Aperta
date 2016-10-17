@@ -1,6 +1,8 @@
 
     {{#if accessTokenExpired}}
-      <!-- orcid account was linked, but access has expired -->
+      {{!-- Users have the option of choosing to give temporary access to
+      Aperta. This state allows the user to re-authenticate with ORCID in the
+      future to grant Aperta access again without removing their ORCID ID --}}
       <h1><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/> ORCID ID: </h1>
       <a href="{{orcidAccount.profile_url}}">{{orcidAccount.identifier}}</a>
       <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>

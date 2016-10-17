@@ -25,7 +25,7 @@
   input {
     margin-right: 10px;
     vertical-align: 2px;
-    @include transform(scale(2));
+    transform: scale(2);
   }
 }
 

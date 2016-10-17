@@ -38,10 +38,10 @@
   border-bottom: 1px solid #ddd;
   background: rgba(255,255,255, 0.94);
   z-index: z('control-bar');
-  @include transition(height 0.2s ease-in-out);
+  transition: height 0.2s ease-in-out;
 
   &.control-bar--sub-items-active {
-    @include transition(height 0.2s ease-in-out);
+    transition: height 0.2s ease-in-out;
     height: 105px;
   }
 }

@@ -59,7 +59,7 @@ html.bg-2 { background-image: url(image-path('auth/bg-2.jpg'));
 input { font-size: 14px; }
 input:focus, textarea:focus, *[contenteditable] { outline: none; }
 
-a, button, .fa, { @include transition(all 0.1s ease-in-out); }
+a, button, .fa, { transition: all 0.1s ease-in-out; }
 
 a {
   color: $tahi-green;

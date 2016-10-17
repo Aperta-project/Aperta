@@ -39,7 +39,7 @@
 .inline-edit.editing { display: none; }
 
 .inline-edit-body-part {
-  @include transition(min-height, 0.2s);
+  transition: min-height, 0.2s;
   position: relative;
   border-top: 1px solid #ccc;
 
@@ -124,7 +124,7 @@
 .bodypart-display {
   position: relative;
   margin: 10px 0;
-  @include transition(min-height, 0.3s);
+  transition: min-height, 0.3s;
 
   .fa.inline-edit-icon {
     top: 3px;

@@ -89,7 +89,7 @@ $task-disclosure-radius: 4px;
     padding: 10px 15px;
     color: #666;
     cursor: pointer;
-    @include transition(opacity 0.2s);
+    transition: opacity 0.2s;
     @include user-select(none);
 
     // Bootstrap override :-\

@@ -104,8 +104,8 @@
   z-index: 1;
   opacity: 0;
 
-  @include transition-property(opacity bottom);
-  @include transition-duration(0.1s);
+  transition-property: opacity bottom;
+  transition-duration: 0.1s;
 }
 
 .active .column-title-update-buttons {

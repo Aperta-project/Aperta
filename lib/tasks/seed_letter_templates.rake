@@ -193,7 +193,7 @@ namespace :seed do
 
           Upon resubmission, the editors will assess the advance your revised manuscript represents over work published prior to its resubmission in reaching a decision regarding further consideration. The editors also will assess the revisions you have made and decide whether to consult further with an Academic Editor. If the editors and Academic Editor feel that the revised manuscript remains appropriate for the journal and that the revisions are sufficient to warrant further consideration, we generally will send the manuscript for re-review. We aim to consult the same Academic Editor and reviewers for revised manuscripts but may consult others if needed.
 
-          We expect to receive your revised manuscript within two months. Please email us (plosbiology@plos.org) to discuss this if you have any questions or concerns, or would like to request an extension. 
+          We expect to receive your revised manuscript within two months. Please email us ([JOURNAL STAFF EMAIL]) to discuss this if you have any questions or concerns, or would like to request an extension. 
 
           At this stage, your manuscript remains formally under active consideration at our journal. Please note that unless we receive the revised manuscript within this timeframe, your submission may be closed and the manuscript would no longer be ‘under consideration’ at [JOURNAL NAME]. We will of course be in touch before this action is taken. Please rest assured that this is merely an administrative step - you may still submit your revised submission after your file is closed, but will need to do so as a new submission, referencing the previous tracking number.
 
@@ -289,7 +289,7 @@ namespace :seed do
 
           Dear Dr. [LAST NAME]
 
-          On behalf of my colleagues and the Academic Editor, [*INSERT AE'S NAME*], I am pleased to inform you that we will be delighted to publish your manuscript in PLOS Biology.  
+          On behalf of my colleagues and the Academic Editor, [*INSERT AE'S NAME*], I am pleased to inform you that we will be delighted to publish your manuscript in [JOURNAL NAME].  
           
           Please note that since your article will appear in the magazine section of the journal you will not be charged for publication.
           

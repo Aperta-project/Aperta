@@ -16,7 +16,7 @@ namespace :db do
     return unless Rails.env.development?
     args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
-    location = "http://bighector.plos.org/aperta/#{env || 'db'}_dump.tar.gz"
+    location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
 
     with_config do |app, host, db, user, password|
       drop_cmd = system("dropdb #{db} && createdb #{db}")

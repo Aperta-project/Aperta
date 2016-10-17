@@ -69,7 +69,7 @@ export default TaskComponent.extend({
   ),
 
   sortedSavedAuthorsWithErrors: computed(
-    'sortedAuthorsWithErrors.@each.object.isNew',
+    'sortedAuthorsWithErrors.@each.isNew',
     'sentinal',
     function() {
       return this.get('sortedAuthorsWithErrors').filter((a)=> {

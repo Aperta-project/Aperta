@@ -3883,9 +3883,9 @@ decisions:
       PLOS Yeti
     - major_revision
     - '2016-04-12 18:43:34.68423'
-    - '2016-08-12 16:47:34.930251'
+    - '2016-10-04 23:38:23.196011'
     - Revisions made.
-    - '2016-04-12 18:43:34.68423'
+    - '2016-04-12 18:57:27.016732'
     - '0'
     - '0'
     - false
@@ -3921,9 +3921,9 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 18:57:26.981107'
-    - '2016-08-12 16:47:34.93367'
+    - '2016-10-04 23:38:23.199527'
     - Revised!
-    - '2016-04-12 18:57:26.981107'
+    - '2016-04-12 19:00:40.427848'
     - '0'
     - '1'
     - false
@@ -3959,9 +3959,9 @@ decisions:
       PLOS Yeti
     - minor_revision
     - '2016-04-12 19:00:40.408544'
-    - '2016-08-12 16:47:34.935982'
+    - '2016-10-04 23:38:23.202073'
     - Last revisions.
-    - '2016-04-12 19:00:40.408544'
+    - '2016-04-12 19:03:40.797867'
     - '0'
     - '2'
     - false
@@ -4651,7 +4651,7 @@ letter_templates:
       we generally will send the manuscript for re-review. We aim to consult the same
       Academic Editor and reviewers for revised manuscripts but may consult others
       if needed.\n\nWe expect to receive your revised manuscript within two months.
-      Please email us (plosbiology@plos.org) to discuss this if you have any questions
+      Please email us ([JOURNAL STAFF EMAIL]) to discuss this if you have any questions
       or concerns, or would like to request an extension. \n\nAt this stage, your
       manuscript remains formally under active consideration at our journal. Please
       note that unless we receive the revised manuscript within this timeframe, your
@@ -4757,34 +4757,35 @@ letter_templates:
     - Your [JOURNAL NAME] submission
     - "***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [LAST NAME]\n\nOn behalf
       of my colleagues and the Academic Editor, [*INSERT AE'S NAME*], I am pleased
-      to inform you that we will be delighted to publish your manuscript in PLOS Biology.
-      \ \n\nPlease note that since your article will appear in the magazine section
-      of the journal you will not be charged for publication.\n\nThe files will now
-      enter our production system. In one-two weeks' time, you should receive a copyedited
-      version of the manuscript, along with your figures for a final review. You will
-      be given two business days to review and approve the copyedit. Then, within
-      a week, you will receive a PDF proof of your typeset article. You will have
-      two days to review the PDF and make any final corrections. If there is a chance
-      that you'll be unavailable during the copy editing/proof review period, please
-      provide us with contact details of one of the other authors whom you nominate
-      to handle these stages on your behalf. This will ensure that any requested corrections
-      reach the production department in time for publication.\n\nPRESS \n\nWe frequently
-      collaborate with communication and public information offices. If your institution
-      is planning to promote your findings, we would be grateful if they could coordinate
-      with biologypress@plos.org.\n\nWe also ask that you take this opportunity to
-      read our Embargo Policy regarding the discussion, promotion and media coverage
-      of work that is yet to be published by PLOS. As your manuscript is not yet published,
-      it is bound by the conditions of our Embargo Policy. Please be aware that this
-      policy is in place both to ensure that any press coverage of your article is
-      fully substantiated and to provide a direct link between such coverage and the
-      published work. For full details of our Embargo Policy, please visit http://www.plos.org/about/media-inquiries/embargo-policy/.\nPlease
+      to inform you that we will be delighted to publish your manuscript in [JOURNAL
+      NAME].  \n\nPlease note that since your article will appear in the magazine
+      section of the journal you will not be charged for publication.\n\nThe files
+      will now enter our production system. In one-two weeks' time, you should receive
+      a copyedited version of the manuscript, along with your figures for a final
+      review. You will be given two business days to review and approve the copyedit.
+      Then, within a week, you will receive a PDF proof of your typeset article. You
+      will have two days to review the PDF and make any final corrections. If there
+      is a chance that you'll be unavailable during the copy editing/proof review
+      period, please provide us with contact details of one of the other authors whom
+      you nominate to handle these stages on your behalf. This will ensure that any
+      requested corrections reach the production department in time for publication.\n\nPRESS
+      \n\nWe frequently collaborate with communication and public information offices.
+      If your institution is planning to promote your findings, we would be grateful
+      if they could coordinate with biologypress@plos.org.\n\nWe also ask that you
+      take this opportunity to read our Embargo Policy regarding the discussion, promotion
+      and media coverage of work that is yet to be published by PLOS. As your manuscript
+      is not yet published, it is bound by the conditions of our Embargo Policy. Please
+      be aware that this policy is in place both to ensure that any press coverage
+      of your article is fully substantiated and to provide a direct link between
+      such coverage and the published work. For full details of our Embargo Policy,
+      please visit http://www.plos.org/about/media-inquiries/embargo-policy/.\nPlease
       don't hesitate to contact me should you have any questions.   \nKind regards,
       \             \n             \n[*INSERT NAME*]\nPublications Assistant\n[JOURNAL
       NAME]\n\nOn Behalf of\n[*HANDLING EDITOR*]\n[*HANDLING EDITOR POSITION*]\n[JOURNAL
       NAME] \n"
     - '1'
     - '2016-07-28 18:22:30.416805'
-    - '2016-07-28 18:22:30.417809'
+    - '2016-10-06 17:09:55.152562'
 
 ---
 manuscript_manager_templates:

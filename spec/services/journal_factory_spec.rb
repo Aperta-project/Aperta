@@ -315,7 +315,12 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'Task permissions' do
-          let(:task_klasses) { ::Task.descendants - billing_task_klasses - restricted_invite_klasses }
+          let(:task_klasses) do
+            ::Task.descendants -
+              billing_task_klasses -
+              changes_for_author_task_klasses -
+              restricted_invite_klasses
+          end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -
@@ -373,11 +378,18 @@ describe JournalFactory, flaky: true do
             end
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
-            expect(permissions).not_to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
+          end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
           end
         end
 

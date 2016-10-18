@@ -36,6 +36,15 @@ class InvitationsController < ApplicationController
     #
     # You'll need to eventually return both the updated invite AND
     # the rest of the invites in the queue
+    #
+    if params[:primary_id]
+      new_primary = Invitation.find(params[:primary_id])
+      invitation.invite_queue.assign_primary(primary: new_primary, invite: invitation)
+    else
+      invitation.invite_queue.unassign_primary(invitation)
+    end
+
+    render json: invitation.invite_queue.invitations
   end
 
   # it's not a great example, but the authors controller has examples of updating 
@@ -51,9 +60,10 @@ class InvitationsController < ApplicationController
       fail ActiveRecord::RecordInvalid, invitation
     end
 
+    invitation.invite_queue.remove_invite(invitation)
     invitation.destroy!
 
-    respond_with invitation
+    render json: invitations_in_queue
   end
 
   def send_invite
@@ -69,7 +79,7 @@ class InvitationsController < ApplicationController
     )
 
     invite_queue = task.active_invite_queue
-    invite_queue.add_invite(invite)
+    invite_queue.add_invite(invitation)
 
     if invitation_params[:state] == 'pending'
       invitation.set_invitee
@@ -77,7 +87,8 @@ class InvitationsController < ApplicationController
     else
       send_and_notify(invitation)
     end
-    respond_with(invitation)
+
+    render json: invitations_in_queue
   end
 
   def rescind
@@ -110,8 +121,12 @@ class InvitationsController < ApplicationController
 
   private
 
+  def invitations_in_queue
+    invitation.invite_queue.invitations.reorder(id: :desc)
+  end
+
   def send_and_notify(invitation)
-    invitation.invite!
+    invitation.invite_queue.send_invite(invite)
     Activity.invitation_sent!(invitation, user: current_user)
   end
 
@@ -125,14 +140,13 @@ class InvitationsController < ApplicationController
         :email,
         :state,
         :reviewer_suggestions,
-        :task_id,
-        :primary_id)
+        :task_id)
   end
 
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:body, :email, :primary_id, :queue_id)
+      .permit(:body, :email)
   end
 
   def task

@@ -15,7 +15,6 @@ class InvitationSerializer < ActiveModel::Serializer
              :position
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
-  has_one :invite_queue, embed: :id, include: true
   has_one :task, embed: :id, polymorphic: true
   has_many :attachments, embed: :id, polymorphic: true, include: true
   has_one :primary, embed: :id

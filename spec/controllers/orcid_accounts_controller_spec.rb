@@ -35,7 +35,7 @@ describe OrcidAccountsController do
       end
 
       it "calls orcid_account.reset!" do
-        allow(OrcidAccount).to receive(:find).with(orcid_account.id.to_s).and_return(orcid_account)
+        allow(OrcidAccount).to receive(:find).with(orcid_account.to_param).and_return(orcid_account)
         expect(orcid_account).to receive(:reset!)
         do_request
       end

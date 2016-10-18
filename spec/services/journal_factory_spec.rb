@@ -53,7 +53,8 @@ describe JournalFactory, flaky: true do
       [TahiStandardTasks::PaperEditorTask]
     end
     let(:changes_for_author_task_klasses) do
-      [PlosBioTechCheck::ChangesForAuthorTask]
+      [PlosBioTechCheck::ChangesForAuthorTask] +
+        PlosBioTechCheck::ChangesForAuthorTask.descendants
     end
     let(:reviewer_report_klasses) do
       [TahiStandardTasks::ReviewerReportTask] +

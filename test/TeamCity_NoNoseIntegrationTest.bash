@@ -10,16 +10,25 @@
 # env.SELENIUM_GRID_URL
 # env.WEBDRIVER_TARGET_URL
 # being set as Environment Variables
+
+# Stop the script if any single command fails
+set -e
+
 cd frontend/assets
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
 gunzip testing_assets.tar.gz
 tar --warning=no-unknown-keyword -xf testing_assets.tar
 rm testing_assets.tar
 cd ../..
+
+# Reverses 'set -e'. Allows the script to continue through failures.
+set +e 
+
 rm Output/*.png
 rm Base/*.pyc
 rm frontend/*.pyc
 rm frontend/Pages/*.pyc
+
 python -m frontend.test_addl_info_task
 python -m frontend.test_admin
 python -m frontend.test_assign_team

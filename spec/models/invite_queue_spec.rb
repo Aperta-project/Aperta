@@ -2,13 +2,11 @@ require 'rails_helper'
 
 describe InviteQueue do
   def make_queue(invite_array)
-    sorted_array = invite_array.each_with_index.map do |i, idx|
-      [i.id, idx + 1]
-    end
     q = FactoryGirl.create :invite_queue, invitations: invite_array
 
-    sorted_array.each do |(id, pos)|
-      Invitation.where(id: id).update_all(position: pos)
+    invite_array.each_with_index do |i, pos|
+      Invitation.where(id: i.id).update_all(position: pos + 1)
+      i.reload
     end
     q
   end
@@ -18,8 +16,10 @@ describe InviteQueue do
 
   describe "#add_invite" do
     let(:queue) do
-      make_queue [FactoryGirl.create(:invitation, task: task, paper: paper),
-                  FactoryGirl.create(:invitation, task: task, paper: paper)]
+      make_queue [
+        ungrouped_1,
+        ungrouped_2
+      ]
     end
     let(:invitation) { FactoryGirl.create(:invitation, task: task, paper: paper) }
     it 'should add the invitation to the bottom of the queue' do
@@ -371,7 +371,7 @@ describe InviteQueue do
         queue.send_invite(g2_alternate_3)
         expect(g2_alternate_3.reload.position).to eq(5)
 
-        queue.send_invite(g1_alternate_1)
+        queue.send_invite(g1_alternate_1.reload) # reload since acts_as_list has changed its position
         expect(g1_alternate_1.reload.position).to eq(2)
       end
     end

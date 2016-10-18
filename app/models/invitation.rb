@@ -22,16 +22,10 @@ class Invitation < ActiveRecord::Base
   validates :task, presence: true
 
   belongs_to :invite_queue
-  acts_as_list scope: :invite_queue
+  acts_as_list scope: :invite_queue, add_new_at: :bottom
 
+  scope :not_pending, -> { where.not(state: "pending") }
   scope :grouped_alternates, -> { where.not(primary: nil) }
-  # include RankedModel
-  # ranks :position
-  # ranks :alternate_position, with_same: :primary_id, scope: :alternate_pending
-  # ranks :main_queue_position, scope: :main_pending
-  scope :main_pending, -> { includes(:alternates).where(alternates: { id: nil }) }
-  scope :alternate_pending, -> { joins(:alternates).where(alternates: { state: 'pending' }) }
-  scope :pending, -> { where(state: "pending") }
 
   def ungrouped_primary?
     !has_alternates? && !is_alternate?

@@ -60,6 +60,16 @@ describe JournalFactory, flaky: true do
       [TahiStandardTasks::ReviewerReportTask] +
         TahiStandardTasks::ReviewerReportTask.descendants
     end
+    let(:tech_check_klasses) do
+      [
+        PlosBioTechCheck::InitialTechCheckTask,
+        PlosBioTechCheck::RevisionTechCheckTask,
+        PlosBioTechCheck::FinalTechCheckTask
+      ] +
+        PlosBioTechCheck::InitialTechCheckTask.descendants +
+        PlosBioTechCheck::RevisionTechCheckTask.descendants +
+        PlosBioTechCheck::FinalTechCheckTask.descendants
+    end
 
     it 'creates a new journal with the given params' do
       expect do
@@ -495,6 +505,13 @@ describe JournalFactory, flaky: true do
               applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
+          end
+
+          it 'can do nothing on any of the PlosBioTechCheck tasks' do
+            tech_check_permissions = Permission.where(
+              applies_to: tech_check_klasses.map(&:name)
+            ).all
+            expect(permissions).not_to include(*tech_check_permissions)
           end
         end
       end

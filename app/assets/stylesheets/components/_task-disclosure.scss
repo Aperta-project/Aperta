@@ -19,7 +19,6 @@ $task-disclosure-radius: 4px;
   z-index: 1;
   @include ellipsis;
   @include user-select(none);
-  will-change: transform;
 }
 
 .task-disclosure--open .task-disclosure-heading {

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 import time
+import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -35,6 +36,9 @@ class InviteCard(BaseCard):
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
     self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
     self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
+    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    self._fileinput_btn = (By.CLASS_NAME, 'fileinput-button')
+    self._replace_attachment = (By.CSS_SELECTOR, 'span.replace-attachment')
 
     self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
@@ -65,7 +69,7 @@ class InviteCard(BaseCard):
     self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 
-  def validate_invite(self, invitee, title, creator, ms_id):
+  def validate_invite(self, invitee, title, creator, ms_id, attach=''):
     """
     Invites the invitee that is passed as parameter, verifying the composed email.
       Makes function and style validations.
@@ -73,6 +77,7 @@ class InviteCard(BaseCard):
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
+    :param attach: filename to attach to the invitation
     :param ms_id: paper id of the manuscript
     :return void function
     """
@@ -105,6 +110,15 @@ class InviteCard(BaseCard):
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
+    if attach:
+      fn = os.path.join(os.getcwd(), 'frontend/assets/', attach)
+      self._gets(self._file_attach_btn)[0].send_keys(fn)
+      time.sleep(.5)
+      import pdb; pdb.set_trace()
+      self._get(self._fileinput_btn).click()
+      #upload_ms_btn = self._get(self._upload_manuscript_btn)
+      #upload_ms_btn.click()
+    import pdb; pdb.set_trace()
     self._get(self._edit_save_invitation_btn).click()
     time.sleep(1)
     invitees = self._gets(self._invitee_listing)

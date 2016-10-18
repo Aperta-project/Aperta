@@ -80,7 +80,6 @@ class InviteAECardTest(CommonTest):
     invite_ae_card = InviteAECard(self.getDriver())
     invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', paper_id)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
-    ##import pdb; pdb.set_trace()
     manuscript_title = unicode(manuscript_title,
                            encoding='utf-8',
                            errors='strict')
@@ -88,7 +87,8 @@ class InviteAECardTest(CommonTest):
     invite_ae_card.validate_invite(academic_editor_login,
                                           manuscript_title,
                                           creator_user,
-                                          paper_id)
+                                          paper_id,
+                                          'imgs/plos.gif')
     # Invite a second user to delete
     invite_ae_card.validate_invite(pub_svcs_login,
                                       manuscript_title,

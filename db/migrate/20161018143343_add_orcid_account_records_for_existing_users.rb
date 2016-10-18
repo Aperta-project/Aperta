@@ -4,7 +4,7 @@ class AddOrcidAccountRecordsForExistingUsers < ActiveRecord::Migration
   def up
     execute <<-SQL
       INSERT INTO orcid_accounts (user_id, created_at, updated_at)
-      SELECT                      id,      created_at, updated_at
+      SELECT                      id,      NOW(),      NOW()
       FROM users;
     SQL
   end

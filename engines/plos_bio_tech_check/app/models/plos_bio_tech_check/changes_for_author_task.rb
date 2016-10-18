@@ -15,12 +15,26 @@ module PlosBioTechCheck
       super << :body
     end
 
+    def submit_tech_check!(submitted_by:)
+      complete!
+      if paper.submit_minor_check!(submitted_by)
+        increment_initial_tech_check_round!
+        notify_tech_fixed
+        Activity.tech_check_fixed!(paper, user: submitted_by)
+        true
+      else
+        false
+      end
+    end
+
     def notify_changes_for_author
       PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_changes_for_author(
         author_id: paper.creator.id,
         task_id: self.id
       )
     end
+
+    private
 
     def notify_tech_fixed
       paper.admins.each do |admin|
@@ -29,6 +43,14 @@ module PlosBioTechCheck
           paper_id: paper.id
         )
       end
+    end
+
+    def initial_tech_check_tasks
+      paper.tasks.of_type(InitialTechCheckTask)
+    end
+
+    def increment_initial_tech_check_round!
+      initial_tech_check_tasks.map(&:increment_round!)
     end
   end
 end

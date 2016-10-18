@@ -2,12 +2,13 @@ require 'rails_helper'
 
 describe InviteQueue do
   def make_queue(invite_array)
-    q = FactoryGirl.create(
-      :invite_queue,
-      invitations: invite_array
-    )
-    q.invitations.all.each_with_index do |i, idx|
-      i.update(position: idx + 1)
+    sorted_array = invite_array.each_with_index.map do |i, idx|
+      [i.id, idx + 1]
+    end
+    q = FactoryGirl.create :invite_queue, invitations: invite_array
+
+    sorted_array.each do |(id, pos)|
+      Invitation.where(id: id).update_all(position: pos)
     end
     q
   end

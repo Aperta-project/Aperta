@@ -67,18 +67,21 @@ class FtpUploaderService
   def notify_admin(exception)
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
     transfer_error = transfer_failed
-    transfer_error += ": #{@ftp.last_response}." if @ftp
+    transfer_error += ": #{@ftp.last_response}" if @ftp
     transfer_error += "\n" + @error_detail if @error_detail
-    transfer_error += "\nPlease try to upload again."
+    transfer_error += <<-STR.strip_heredoc
+      \n\nIf this was a manual attempt please try to upload again. Otherwise,
+      please contact the Aperta support team.
+    STR
     if exception
-      transfer_error += "\n\nException Detail:\n" + exception.message
-      transfer_error += "\n\nBacktrace:\n" + exception.backtrace.join("\n")
+      transfer_error += "\nException Detail:\n" + exception.message
+      transfer_error += "\nBacktrace:\n" + exception.backtrace.join("\n")
     end
     Rails.logger.warn(transfer_error)
     Bugsnag.notify(transfer_error)
     GenericMailer.delay.send_email(
       subject: transfer_failed,
-      body: transfer_error + "\nPlease try to upload again.",
+      body: transfer_error,
       to: @email_on_failure
     )
   end

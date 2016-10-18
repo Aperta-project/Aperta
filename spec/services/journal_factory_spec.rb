@@ -1033,35 +1033,50 @@ describe JournalFactory, flaky: true do
             ::Task.descendants - accessible_task_klasses
           end
 
-          it 'can :view and :view_participants on accessible task klasses' do
-            accessible_task_klasses.each do |klass|
-              klass_permissions = Permission.where(applies_to: klass.name)
-              expect(permissions).to include(
-                klass_permissions.find_by(action: :view),
-                klass_permissions.find_by(action: :view_participants)
-              )
-            end
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'cannot :view or :view_participants on inaccessible task klasses' do
-            all_inaccessible_task_klasses.each do |klass|
-              klass_permissions = Permission.where(applies_to: klass.name)
-              expect(permissions).to_not include(
-                klass_permissions.find_by(action: :view),
-                klass_permissions.find_by(action: :view_participants)
-              )
-            end
+          it 'can do nothing on the TahiStandardTasks::CoverLetterTask' do
+            cover_letter_permissions = Permission.where(
+              applies_to: 'TahiStandardTasks::CoverLetterTask'
+            ).all
+            expect(permissions).not_to include(*cover_letter_permissions)
           end
+
+          it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do
+            register_decision_permissions = Permission.where(
+              applies_to: 'TahiStandardTasks::RegisterDecisionTask'
+            ).all
+            expect(permissions).not_to include(*register_decision_permissions)
+          end
+
+          it 'can do nothing on the TahiStandardTasks::ReviewerRecommendationsTask' do
+            reviewer_recommendations_permissions = Permission.where(
+              applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask'
+            ).all
+            expect(permissions).not_to include(*reviewer_recommendations_permissions)
+          end
+
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
+          end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
+          end
+
         end
 
-        it 'cannot :view or :edit the ReviewerRecommendationsTask' do
-          expect(permissions).to_not include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
-          )
-          expect(permissions).to_not include(
-            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
-          )
-        end
       end
 
       context 'Reviewer Report Owner' do

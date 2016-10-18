@@ -209,6 +209,9 @@ Tahi::Application.routes.draw do
     end
   end
 
+  # Paper tracker allows CSV
+  get '/api/paper_tracker', constraints: { format: :csv }, to: 'paper_tracker#index'
+
   # epub/pdf paper download formats
   #
   resources :papers, only: [] do

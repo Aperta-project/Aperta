@@ -2,22 +2,37 @@
 class PaperTrackerController < ApplicationController
   before_action :authenticate_user!
 
-  respond_to :json
+  respond_to :json, :csv
 
   def index
     fail AuthorizationError unless journal_ids.length > 0
-
     # show all papers that user is connected to across all journals
     papers = order(QueryParser.new(current_user: current_user)
-             .build(params[:query] || '')
-             .where(journal_id: journal_ids)
-             .where.not(publishing_state: :unsubmitted))
-             .page(page)
+                     .build(params[:query] || '')
+                     .where(journal_id: journal_ids)
+                     .where.not(publishing_state: :unsubmitted))
 
-    respond_with papers,
-                 each_serializer: PaperTrackerSerializer,
-                 root: 'papers',
-                 meta: metadata(papers)
+    respond_to do |format|
+      format.json do
+        papers = papers.page(page)
+        respond_with papers,
+                     each_serializer: PaperTrackerSerializer,
+                     root: 'papers',
+                     meta: metadata(papers)
+      end
+      format.csv do
+        headers['Content-Disposition'] = 'attachment; filename=paper_tracker.csv'
+        headers['Content-Type'] = Mime::CSV.to_s
+        streamer = PaperTrackerCsvStreamer.new(response.stream)
+        begin
+          papers.find_each do |paper|
+            streamer.write_line(paper)
+          end
+        ensure
+          streamer.close
+        end
+      end
+    end
   end
 
   private

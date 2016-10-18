@@ -1,4 +1,4 @@
-!/bin/bash
+#!/usr/bin/env bash
 # Command Line script for TeamCity build job for test run
 # Depends on
 # env.APERTA_PSQL_DBNAME

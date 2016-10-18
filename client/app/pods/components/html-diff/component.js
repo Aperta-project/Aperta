@@ -14,6 +14,8 @@ export default Ember.Component.extend({
   // This is the default if nothing else is set
   default: null,
 
+  manuscriptDiff: false,
+
   // These are elements that contain sentences worth diffing individually.
   tokenizeInsideElements: ['div', 'p'],
 
@@ -35,7 +37,66 @@ export default Ember.Component.extend({
       this.get('comparisonText'),
       this.get('viewingText') || this.get('default'));
 
-    // Style the diff
+    if (this.get('manuscriptDiff')) {
+      diff = this.refineDiff(diff);
+    }
+
+    return this.styleDiff(diff);
+  },
+
+  // If one word was changed in a sentence, it will show up in the
+  // diff as an added sentence and a removed sentence. This makes
+  // the diff hard to read.  So we'll look for adjacent chunks that
+  // match that pattern and do a word level diff in them for a more
+  // precise result.
+  refineDiff: function(diff) {
+    let processed = Array();
+
+    for (var index = 0; index < diff.length; index++) {
+      var chunk = diff[index];
+
+      if ( this.diffable(chunk) &&
+           this.adjcentChunksAreDifferent(chunk, diff[index+1]) )
+      {
+        processed.push(this.rediff(chunk.value, diff[index+1].value));
+
+        // We've already processed the next chunk, so skip it
+        index++;
+      } else {
+        // If it doesn't match the pattern pass it through
+        processed.push(chunk);
+      }
+    }
+
+    // rediff returns an array, which the template can't handle.
+    // Flattening so the template can process the result.
+    return _.flatten(processed);
+  },
+
+  adjcentChunksAreDifferent: function(left, right) {
+    return (left && left.added && right.removed) ||
+           (right && right.added && left.removed);
+  },
+
+  diffable: function(chunk) {
+    return chunk.value && chunk.value.startsWith('<span>');
+  },
+
+  rediff: function(left, right) {
+    // unpack the left and right chunks from the sentence diff
+    left = left.replace(/<span>/,'').replace(/<\/span>/, '');
+    right = right.replace(/<span>/,'').replace(/<\/span>/, '');
+
+    // perform the diff
+    let sentence = JsDiff.diffWords(left, right);
+
+    // and repack for display
+    return _.each(sentence, function(chunk) {
+      chunk.value = '<span>' + chunk.value + '</span>';
+    });
+  },
+
+  styleDiff: function(diff) {
     return _.map(diff, (chunk) => {
       let html = this.addDiffStylingClass(chunk);
       return this.unForceValidHTML(html);
@@ -60,15 +121,15 @@ export default Ember.Component.extend({
   addDiffStylingClass(chunk) {
     let cssClass = null;
     if (chunk.added) {
-      cssClass = "added";
+      cssClass = 'added';
     } else if (chunk.removed) {
-      cssClass = "removed";
+      cssClass = 'removed';
     } else {
-      cssClass = "unchanged";
+      cssClass = 'unchanged';
     }
 
     let elements = $(chunk.value).addClass(cssClass).toArray();
-    return _.pluck(elements, 'outerHTML').join("");
+    return _.pluck(elements, 'outerHTML').join('');
   },
 
   // TOKENIZING
@@ -89,8 +150,8 @@ export default Ember.Component.extend({
   forceValidHTML(element, tokens) {
     // Add the fake tag pairs
     let tagName = element.nodeName.toLowerCase();
-    tokens.unshift("<fake-open-" + tagName + "></fake-open-" + tagName + ">");
-    tokens.push("<fake-close-" + tagName + "></fake-close-" + tagName + ">");
+    tokens.unshift('<fake-open-' + tagName + '></fake-open-' + tagName + '>');
+    tokens.push('<fake-close-' + tagName + '></fake-close-' + tagName + '>');
   },
 
   unForceValidHTML: function(value) {
@@ -123,7 +184,7 @@ export default Ember.Component.extend({
     if (this.isTextNode(element)) {
       // Split the text into sentence fragments.
       let chunks = element.textContent.split(this.sentenceDelimiter);
-      return _.map(chunks, (e) => { return "<span>" + e + "</span>"; });
+      return _.map(chunks, (e) => { return '<span>' + e + '</span>'; });
 
     } else if (this.shouldRecurseInto(element)) {
       // Recurse within this element
@@ -150,7 +211,7 @@ export default Ember.Component.extend({
     else if (!window.MathJax.Hub) { return; }
 
     Ember.run.next(() => {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$()[0]]);
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);
     });
   }.observes('manuscript').on('didInsertElement')
 });

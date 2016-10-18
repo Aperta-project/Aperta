@@ -22,9 +22,15 @@ fi
 
 cd frontend/assets
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
-gunzip testing_assets.tar.gz
-tar --warning=no-unknown-keyword -xf testing_assets.tar
-rm testing_assets.tar
+TESTING_ASSETS="testing_assets.tar.gz"
+if tar --version | grep -q 'gnu'; then
+  echo "Detected GNU tar"
+  tar --warning=no-unknown-keyword -vxf $TESTING_ASSETS
+else
+  echo "Detected non-GNU tar"
+  tar -vxf $TESTING_ASSETS
+fi
+rm $TESTING_ASSETS
 cd ../..
 
 # Reverses 'set -e'. Allows the script to continue through failures.

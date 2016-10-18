@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [{version}] - {release_date}
 ### Added
 ### Changed
+- Updated Figures, Supporting Information Files, and Title and Abstract to use new R&P
 ### Deprecated
 ### Removed
 ### Fixed

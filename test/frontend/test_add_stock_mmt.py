@@ -5,7 +5,6 @@ This test case that populates all mmt needed for python test suite runs.
 """
 
 import logging
-import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
@@ -115,8 +114,9 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                      user_tasks=mmt['user_tasks'],
                                      staff_tasks=mmt['staff_tasks'],
                                      uses_resrev_report=mmt['uses_resrev_report'])
+        # It is necessary to reinvoke the driver to avoid a Stale Element Reference Exception
+        #   as each new mmt add updates the DOM
         ja_page = JournalAdminPage(self.getDriver())
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

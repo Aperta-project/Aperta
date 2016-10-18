@@ -6,6 +6,27 @@ command_exists () {
   command -v $1 &> /dev/null;
 }
 
+USAGE="usage: bin/setup [-v]"
+DESC="Prepare application state for our python tests. Default sets up a local dev env. -v sets up a local vagrant env"
+
+while getopts ":vh" opt; do
+  case $opt in
+    v)
+      VAGRANT=true
+      ;;
+    h)
+      echo $USAGE
+      echo $DESC
+      exit 0
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      echo $USAGE
+      exit 1
+      ;;
+  esac
+done
+
 # ensure virtualenv is installed
 if ! command_exists virtualenv; then
   if ! command_exists pip; then
@@ -26,8 +47,15 @@ source $VENV_ACTIVATE
 pip install -r requirements.txt
 
 # get secrets
-scp aperta@aperta-frontend-201.sfo.plos.org:secrets/env.tahi-integration env.tahi-integration
-source env.tahi-integration
+scp aperta@aperta-frontend-201.sfo.plos.org:secrets/env.tahi-integration config/env.vagrant
+
+if [ $VAGRANT ]; then
+  echo "Configuring vagrant environment ..."
+  source config/env.vagrant
+else
+  echo "Configuring development environment ..."
+  source config/env.dev
+fi
 
 # setup data on host
 python -m frontend.test_add_superadmin

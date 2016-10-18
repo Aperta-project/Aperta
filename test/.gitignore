@@ -3,6 +3,7 @@
 .DS_Store
 .idea/*
 .idea/inspectionProfiles/*
+config/env.vagrant
 frontend/.cache
 frontent/Output/*.png
 frontend/assets/*
@@ -14,6 +15,4 @@ frontend/assets/profileandjournallogos/*
 frontend/assets/responsetoreviewers/*
 frontend/assets/reviewerreports/*
 Output/
-
-env.tahi-integration
 venv/

@@ -48,8 +48,8 @@ feature 'Viewing Versions:', js: true do
 
       page.select_comparison_version(version_1)
 
-      expect(page.find('#paper-body .added')).to have_content 'OK first body'
-      expect(page.find('#paper-body .removed')).to have_content 'OK second body'
+      expect(page.find('#paper-body .added')).to have_content 'first'
+      expect(page.find('#paper-body .removed')).to have_content 'second'
     end
 
     scenario 'The user views an old version of a task', selenium: true do

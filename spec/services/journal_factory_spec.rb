@@ -340,7 +340,11 @@ describe JournalFactory, flaky: true do
           DESC
             task_klasses.each do |klass|
               expect(permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name)
+                Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
+                Permission.find_by(action: :manage_participant, applies_to: klass.name),
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
               )
             end
           end
@@ -570,7 +574,11 @@ describe JournalFactory, flaky: true do
           DESC
             task_klasses.each do |klass|
               expect(permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name)
+                Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
+                Permission.find_by(action: :manage_participant, applies_to: klass.name),
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
               )
             end
           end

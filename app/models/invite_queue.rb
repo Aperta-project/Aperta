@@ -93,7 +93,24 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def send_invite(invite)
-
+    invite.reload
+    return if invite.has_alternates?
+    new_position = 0
+    if invite.is_alternate?
+      primary = invite.primary
+      new_position = (primary.alternates.where.not(state: 'pending').maximum(:position) || primary.position) + 1
+    else
+      # if there are sent ungrouped primaries, the invite goes below those
+      sent_primaries = invitations.where.not(state: 'pending').all.select(&:ungrouped_primary?)
+      if sent_primaries.present?
+        new_position = sent_primaries.max_by(&:position).position + 1
+      else
+        # if there are none, the invite goes below the last grouped invite
+        new_position = (invitations.where.not(primary: nil).maximum(:position) || 0) + 1
+      end
+    end
+    invite.invite!
+    invite.insert_at(new_position)
   end
 
   private

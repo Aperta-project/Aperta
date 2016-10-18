@@ -14,7 +14,7 @@ describe InviteQueue do
   end
 
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+  let(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
 
   describe "#add_invite" do
     let(:queue) do
@@ -291,6 +291,89 @@ describe InviteQueue do
   end
 
   describe "#send_invite" do
+    let(:queue) do
+      make_queue [
+        ungrouped_1, # 1
+      ]
+    end
 
+    it "calls 'invite!'" do
+      expect(ungrouped_1).to receive(:invite!)
+      queue.send_invite(ungrouped_1)
+    end
+
+    context "the invite is an ungrouped primary" do
+      context "there are existing sent invitations" do
+        let(:queue) do
+          make_queue [
+            group_2_primary, # 1
+            g2_alternate_2, # 2
+            sent_1, # 3
+            ungrouped_1, # 4
+            ungrouped_2, # 5
+          ]
+        end
+
+        it "gets repositioned to the bottom of the sent invitations" do
+          queue.send_invite(ungrouped_2)
+          expect(ungrouped_2.reload.position).to eq(4)
+        end
+      end
+
+      context "there are groups but no sent invitations" do
+        let(:queue) do
+          make_queue [
+            group_2_primary, # 1
+            g2_alternate_2, # 2
+            ungrouped_1, # 3
+            ungrouped_2, # 4
+          ]
+        end
+
+        it "gets repositioned after the end of the groups" do
+          queue.send_invite(ungrouped_2)
+          expect(ungrouped_2.reload.position).to eq(3)
+        end
+      end
+    end
+
+    context "the invite is a primary with alternates" do
+      let(:queue) do
+        make_queue [
+          group_2_primary, # 1
+          g2_alternate_1_sent, # 2
+          g2_alternate_2, # 3
+        ]
+      end
+      it "does not get repositioned" do
+        queue.send_invite(group_2_primary)
+        expect(group_2_primary.reload.position).to eq(1)
+      end
+    end
+
+    context "the invite is an alternate" do
+      let(:g2_alternate_3) do
+        FactoryGirl.create(:invitation, primary: group_2_primary, task: task, paper: paper, body: 'g2_alternate_3')
+      end
+
+      let(:queue) do
+        make_queue [
+          group_1_primary, # 1
+          g1_alternate_1, # 2
+          group_2_primary, # 3
+          g2_alternate_1_sent, # 4
+          g2_alternate_2, # 5
+          g2_alternate_3 # 6
+        ]
+      end
+
+      it "gets repositioned to the bottom of the sent alternates for its primary" do
+        queue.send_invite(g2_alternate_3)
+        expect(g2_alternate_3.reload.position).to eq(5)
+
+        queue.send_invite(g1_alternate_1)
+        expect(g1_alternate_1.reload.position).to eq(2)
+      end
+    end
   end
 end

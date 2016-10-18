@@ -290,6 +290,13 @@ describe JournalFactory, flaky: true do
               )
             end
           end
+
+          it 'can do nothing on any of the PlosBioTechCheck tasks' do
+            tech_check_permissions = Permission.where(
+              applies_to: tech_check_klasses.map(&:name)
+            ).all
+            expect(permissions).not_to include(*tech_check_permissions)
+          end
         end
       end
 

@@ -15,7 +15,8 @@ describe InvitationsController do
   let(:user) { invitee }
   let(:invitee) { FactoryGirl.create(:user) }
   let(:phase) { FactoryGirl.create(:phase) }
-  let(:task) { FactoryGirl.create :invitable_task }
+  let(:task) { FactoryGirl.create :paper_editor_task }
+  let!(:queue) { FactoryGirl.create(:invite_queue, task: task) }
 
   describe 'GET /invitations' do
     subject(:do_request) { get :index, format: :json }

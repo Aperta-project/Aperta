@@ -27,6 +27,7 @@ class InvitationsController < ApplicationController
     # You'll need to eventually return both the updated invite AND
     # the rest of the invites in the queue
 
+    render json: invitations_in_queue
   end
   #
   # non restful route for assigning and unassigning primaries
@@ -37,14 +38,14 @@ class InvitationsController < ApplicationController
     # You'll need to eventually return both the updated invite AND
     # the rest of the invites in the queue
     #
-    if params[:primary_id]
+    if params[:primary_id].present?
       new_primary = Invitation.find(params[:primary_id])
       invitation.invite_queue.assign_primary(primary: new_primary, invite: invitation)
     else
       invitation.invite_queue.unassign_primary(invitation)
     end
 
-    render json: invitation.invite_queue.invitations
+    render json: invitations_in_queue
   end
 
   # it's not a great example, but the authors controller has examples of updating 
@@ -69,7 +70,7 @@ class InvitationsController < ApplicationController
   def send_invite
     requires_user_can(:manage_invitations, invitation.task)
     send_and_notify(invitation)
-    render json: invitation
+    render json: invitations_in_queue
   end
 
   def create
@@ -121,7 +122,7 @@ class InvitationsController < ApplicationController
   end
 
   def send_and_notify(invitation)
-    invitation.invite_queue.send_invite(invite)
+    invitation.invite_queue.send_invite(invitation)
     Activity.invitation_sent!(invitation, user: current_user)
   end
 

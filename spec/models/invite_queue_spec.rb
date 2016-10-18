@@ -225,15 +225,68 @@ describe InviteQueue do
 
   describe "#remove_invite" do
     context "the invite is an ungrouped primary" do
+      let(:small_queue) do
+        make_queue [
+          ungrouped_1, # 1
+          ungrouped_2, # 2
+        ]
+      end
 
+      it "removes the invite from the list and repositions the other items" do
+        small_queue.remove_invite(ungrouped_1)
+        expect(small_queue.invitations.pluck(:id)).to_not include(ungrouped_1.id)
+        expect(ungrouped_2.reload.position).to eq(1)
+      end
     end
 
     context "the invite is an alternate" do
+      context "the primary has other alternates" do
+        let(:small_queue) do
+          make_queue [
+            group_1_primary, # 1
+            g1_alternate_1, # 2
+            g1_alternate_2, # 3
+            ungrouped_1, # 4
+          ]
+        end
 
+        it "removes the invite from the queue, unsets the primary, and reorders the list" do
+          small_queue.remove_invite(g1_alternate_1)
+          expect(small_queue.invitations.pluck(:id)).to_not include(g1_alternate_1.id)
+          expect(g1_alternate_1.primary_id).to be_blank
+          expect(group_1_primary.reload.position).to eq(1) # the primary should stay put
+          expect(ungrouped_1.reload.position).to eq(3)
+        end
+      end
+
+      context "the primary has no other alternates" do
+        let(:small_queue) do
+          make_queue [
+            group_1_primary, # 1
+            g1_alternate_1, # 2
+            ungrouped_1, # 3
+          ]
+        end
+
+        it "removes the invite from the queue's invites and moves the newly-ungrouped primary to the bottom of the list" do
+          small_queue.remove_invite(g1_alternate_1)
+          expect(small_queue.invitations.pluck(:id)).to_not include(g1_alternate_1.id)
+          expect(group_1_primary.reload.position).to eq(2)
+        end
+      end
     end
 
     context "the invite is a primary with alternates" do
-
+      let(:small_queue) do
+        make_queue [
+          group_1_primary, # 1
+          g1_alternate_1, # 2
+        ]
+      end
+      it "blows up" do
+        expect { small_queue.remove_invite(group_1_primary) }
+          .to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
   end
 

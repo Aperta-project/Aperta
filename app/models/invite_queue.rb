@@ -80,7 +80,16 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def remove_invite(invite)
+    raise_primary_error(invite, "a primary with alternates cannot be removed") if invite.has_alternates?
 
+    invite.remove_from_list
+
+    existing_primary = invite.primary
+    invite.update(primary: nil, invite_queue: nil)
+    # if the primary has no more alternates it's ungrouped
+    if existing_primary
+      existing_primary.move_to_bottom unless existing_primary.has_alternates?
+    end
   end
 
   def send_invite(invite)

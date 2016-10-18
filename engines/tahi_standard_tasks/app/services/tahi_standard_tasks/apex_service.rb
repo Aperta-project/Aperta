@@ -14,10 +14,11 @@ module TahiStandardTasks
 
     attr_reader :apex_delivery
 
-    def initialize(apex_delivery:)
+    def initialize(apex_delivery:, ftp_url: TahiEnv.apex_ftp_url)
       @apex_delivery = apex_delivery
       @paper = @apex_delivery.paper
       @task = @apex_delivery.task
+      @ftp_url = ftp_url
     end
 
     def make_delivery!
@@ -60,7 +61,8 @@ module TahiStandardTasks
       FtpUploaderService.new(
         file_io: file_io,
         final_filename: final_filename,
-        email_on_failure: @paper.journal.staff_admins.pluck(:email)
+        email_on_failure: @paper.journal.staff_admins.pluck(:email),
+        url: @ftp_url
       ).upload
     end
   end

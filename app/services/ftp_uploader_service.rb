@@ -6,10 +6,10 @@ class FtpUploaderService
   TRANSFER_COMPLETE = '226'
 
   def initialize(
-    file_io: nil,
+    url:,
+    file_io:,
+    final_filename:,
     passive_mode: true,
-    final_filename: nil,
-    url: TahiEnv.apex_ftp_url,
     email_on_failure: nil,
     error_detail: nil
   )

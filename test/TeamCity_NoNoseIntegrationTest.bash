@@ -14,6 +14,12 @@
 # Stop the script if any single command fails
 set -e
 
+# Use a virtualenv if it exists
+VENV_ACTIVATE="venv/bin/activate"
+if [ -e $VENV_ACTIVATE ]; then
+  source $VENV_ACTIVATE
+fi
+
 cd frontend/assets
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
 gunzip testing_assets.tar.gz

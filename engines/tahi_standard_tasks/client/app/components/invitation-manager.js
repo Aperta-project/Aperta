@@ -151,8 +151,7 @@ export default Ember.Component.extend({
       this.get('createInvitation').perform(mainQueue, {
         task: this.get('task'),
         email: this.get('selectedUser.email'),
-        body: this.buildInvitationBody(),
-        state: 'pending'
+        body: this.buildInvitationBody()
       });
     },
 

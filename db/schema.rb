@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161018143343) do
+ActiveRecord::Schema.define(version: 20161018214706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -279,14 +279,14 @@ ActiveRecord::Schema.define(version: 20161018143343) do
     t.integer  "task_id"
     t.integer  "invitee_id"
     t.integer  "actor_id"
-    t.string   "state"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.string   "state",                default: "pending", null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "decision_id"
     t.string   "information"
     t.text     "body"
     t.integer  "inviter_id"
-    t.string   "invitee_role",         null: false
+    t.string   "invitee_role",                             null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
     t.string   "token"

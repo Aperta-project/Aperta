@@ -74,19 +74,14 @@ class InvitationsController < ApplicationController
 
   def create
     requires_user_can(:manage_invitations, task)
-    invitation = task.invitations.build(
+    @invitation = task.invitations.build(
       invitation_params.merge(inviter: current_user)
     )
-
     invite_queue = task.active_invite_queue
     invite_queue.add_invite(invitation)
 
-    if invitation_params[:state] == 'pending'
-      invitation.set_invitee
-      invitation.save
-    else
-      send_and_notify(invitation)
-    end
+    @invitation.set_invitee
+    @invitation.save
 
     render json: invitations_in_queue
   end

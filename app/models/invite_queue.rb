@@ -55,14 +55,11 @@ class InviteQueue < ActiveRecord::Base
     raise_primary_error(invite, "an alternate cannot be assigned as a primary") if primary.is_alternate?
     raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") if !invite.pending?
 
-    primary.reload
-    invite.reload
     if primary.has_alternates?
       last_alternate = primary.alternates.maximum(:position)
       invite.update(primary: primary)
-      invite.reload
 
-      invite.insert_at(last_alternate + 1)
+      invite.reload.insert_at(last_alternate + 1)
     else
       create_primary_group(invite: invite, primary: primary)
     end
@@ -75,13 +72,11 @@ class InviteQueue < ActiveRecord::Base
 
     existing_primary = invite.primary
     invite.update(primary: nil)
-    existing_primary.reload
-    invite.reload
 
-    unless existing_primary.alternates.exists? #if the primary has no more alternates it's ungrouped
-      existing_primary.move_to_bottom
-    end
-    invite.move_to_bottom
+    # if the primary has no more alternates it's ungrouped
+    existing_primary.move_to_bottom unless existing_primary.has_alternates?
+
+    invite.reload.move_to_bottom
   end
 
   def remove_invite(invite)

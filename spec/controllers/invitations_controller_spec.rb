@@ -151,9 +151,11 @@ describe InvitationsController do
     let!(:invitation) do
       FactoryGirl.create(
         :invitation,
+        body: 'Invitation sent!',
         state: 'pending',
         invitee: invitee,
-        task: task
+        task: task,
+        invite_queue: queue
       )
     end
     subject(:do_request) do
@@ -183,7 +185,7 @@ describe InvitationsController do
         it 'sends the invitation' do
           do_request
           data = res_body.with_indifferent_access
-          saved_invitation = Invitation.find(data[:invitation][:id])
+          saved_invitation = Invitation.find(data[:invitations][0][:id])
           expect(saved_invitation.state).to eq('invited')
         end
 

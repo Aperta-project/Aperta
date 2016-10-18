@@ -156,50 +156,66 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'permissions on tasks' do
-          let(:accessible_task_klasses) do
-            ::Task.submission_task_types + [PlosBioTechCheck::ChangesForAuthorTask]
-          end
-          let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+          let(:submission_task_klasses) { ::Task.submission_task_types }
+          let(:inaccessible_task_klasses) do
+            ::Task.descendants -
+              submission_task_klasses -
+              changes_for_author_task_klasses
           end
 
           it <<-DESC.strip_heredoc do
-            can :view and :edit all submission tasks
-            can :view and :edit the ChangesForAuthorTask
+            can :view submission tasks in any state
           DESC
-            accessible_task_klasses.each do |klass|
-              expect(permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.joins(:states).where(
-                  action: 'edit',
-                  applies_to: klass.name,
-                  permission_states: { name: Paper::EDITABLE_STATES }
-                ).first
-              )
-            end
-
-            all_inaccessible_task_klasses.each do |klass|
-              expect(permissions).to_not include(
-                Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.joins(:states).where(
-                  action: 'edit',
-                  applies_to: klass.name,
-                  permission_states: { name: Paper::EDITABLE_STATES }
-                ).first
-              )
-            end
+            expected_view_permissions = Permission.joins(:states).where(
+              action: 'view',
+              applies_to: submission_task_klasses.map(&:name),
+              permission_states: { name: PermissionState.wildcard.name }
+            ).all
+            expect(permissions).to include(*expected_view_permissions)
           end
 
-          it 'can view/add/remove participants on all Tasks except ProductionMetadataTask' do
-            accessible_task_klasses.each do |klass|
-              expect(permissions).to include(
-                Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :manage_participant, applies_to: klass.name)
-              )
-            end
+          it <<-DESC.strip_heredoc do
+            can :edit all submission tasks when the paper is in an editable state
+          DESC
+            expected_edit_permissions = Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: submission_task_klasses.map(&:name),
+              permission_states: { name: Paper::EDITABLE_STATES }
+            ).all
+            expect(permissions).to include(*expected_edit_permissions)
+          end
 
-            all_inaccessible_task_klasses.each do |klass|
-              expect(permissions).to_not include(
+          it 'has no permissions on inaccessible tasks' do
+            expect(permissions).to_not include(
+              *Permission.where(
+                applies_to: inaccessible_task_klasses.map(&:name)
+              ).all
+            )
+          end
+
+          it <<-DESC.strip_heredoc do
+            can :view the PlosBioTechCheck ChangesForAuthorTask in any paper state
+            can :edit the PlosBioTechCheck ChangesForAuthorTask in editable paper states
+          DESC
+            task_klass_names = changes_for_author_task_klasses.map(&:name)
+            expected_view_permissions = Permission.joins(:states).where(
+              action: 'view',
+              applies_to: task_klass_names,
+              permission_states: { name: PermissionState.wildcard.name }
+            ).all
+            expect(permissions).to include(*expected_view_permissions)
+
+            expected_edit_permissions = Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: task_klass_names,
+              permission_states: { name: Paper::EDITABLE_STATES }
+            ).all
+            expect(permissions).to include(*expected_edit_permissions)
+          end
+
+          it 'can view/add/remove participants on all submission tasks except ProductionMetadataTask' do
+            submission_task_klasses.each do |klass|
+              expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )

@@ -83,7 +83,7 @@ class ReviewerReportTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     logging.info('Paper id is: {0}.'.format(research_paper_id))
-    invite_reviewers.invite_reviewer(reviewer_login)
+    invite_reviewers.invite(reviewer_login)
     invite_reviewers.click_close_button()
     workflow_page.logout()
 

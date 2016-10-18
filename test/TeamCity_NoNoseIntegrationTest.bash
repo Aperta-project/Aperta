@@ -10,7 +10,7 @@
 # env.SELENIUM_GRID_URL
 # env.WEBDRIVER_TARGET_URL
 # being set as Environment Variables
-cd test/frontend/assets
+cd frontend/assets
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
 gunzip testing_assets.tar.gz
 tar --warning=no-unknown-keyword -xf testing_assets.tar

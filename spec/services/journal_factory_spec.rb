@@ -149,7 +149,10 @@ describe JournalFactory, flaky: true do
             ::Task.descendants - accessible_task_klasses
           end
 
-          it 'can :view and :edit all Tasks except ProductionMetadataTask' do
+          it <<-DESC.strip_heredoc do
+            can :view and :edit all submission tasks
+            can :view and :edit the ChangesForAuthorTask
+          DESC
             accessible_task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),

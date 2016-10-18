@@ -488,6 +488,13 @@ describe JournalFactory, flaky: true do
               )
             end
           end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
+          end
         end
       end
 

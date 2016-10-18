@@ -1,39 +1,26 @@
 module PlosBioTechCheck
   class FinalTechCheckTask < Task
+    include NotifyAuthorOfChanges
 
     DEFAULT_TITLE = 'Final Tech Check'
     DEFAULT_ROLE = 'editor'
 
     before_create :initialize_body
 
+    def self.nested_questions
+      NestedQuestion.where(owner_id:nil, owner_type:name).all
+    end
+
     def active_model_serializer
       FinalTechCheckTaskSerializer
     end
 
-    def notify_changes_for_author
-      PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_changes_for_author(
-        author_id: paper.creator.id,
-        task_id: self.changes_for_author_task.id
-      )
+    def letter_text
+      body["finalTechCheckBody"]
     end
 
-    def changes_for_author_task
-      @_task ||= paper.tasks.detect { |task|
-                task.type == "PlosBioTechCheck::ChangesForAuthorTask"
-              }
-      return @_task if @_task.present?
-
-      @_task = PlosBioTechCheck::ChangesForAuthorTask.create!({
-        body: {},
-        title: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE,
-        old_role: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_ROLE,
-        paper: paper,
-        phase: phase
-      })
-    end
-
-    def self.nested_questions
-      NestedQuestion.where(owner_id:nil, owner_type:name).all
+    def letter_text=(text)
+      self.body = body.merge("finalTechCheckBody" => text)
     end
 
     private

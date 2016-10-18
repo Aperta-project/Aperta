@@ -1,9 +1,17 @@
 module PlosBioTechCheck
   class FinalTechCheckController < ApplicationController
-    include TechCheckController
+    before_action :authenticate_user!
 
-    def letter_text(task)
-      task.body["finalTechCheckBody"]
+    def send_email
+      requires_user_can :edit, task
+      task.notify_author_of_changes!(submitted_by: current_user)
+      render json: { success: true }
+    end
+
+    private
+
+    def task
+      @task ||= FinalTechCheckTask.find(params[:id])
     end
   end
 end

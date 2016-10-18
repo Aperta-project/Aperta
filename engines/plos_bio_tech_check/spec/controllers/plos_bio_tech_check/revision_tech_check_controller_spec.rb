@@ -2,33 +2,50 @@ require 'rails_helper'
 
 describe PlosBioTechCheck::RevisionTechCheckController do
   routes { PlosBioTechCheck::Engine.routes }
-  let(:admin) { create :user, :site_admin, first_name: "Admin" }
-  let(:paper) do
-    FactoryGirl.create(
-      :paper_with_phases,
-      :with_integration_journal,
-      :submitted,
-      creator: admin
-    )
-  end
-  let(:task) { create :revision_tech_check_task, paper: paper }
 
-  before do
-    task.body["revisedTechCheckBody"] = "words"
-    sign_in admin
-  end
+  let(:user) { FactoryGirl.build_stubbed :user }
+  let(:task) { FactoryGirl.build_stubbed :revision_tech_check_task }
 
-  describe "#letter_text" do
-    it "return ITC task.body" do
-      expect(subject.letter_text(task)).to eq "words"
-    end
-  end
-
-  describe "#send_email" do
-    it 'makes the paper editable' do
+  describe '#send_email' do
+    subject(:do_request) do
       post :send_email, id: task.id, format: :json
-      task.paper.reload
-      expect(task.paper.editable).to eq true
+    end
+
+    before do
+      allow(PlosBioTechCheck::RevisionTechCheckTask).to receive(:find)
+        .with(task.to_param)
+        .and_return task
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:edit, task)
+          .and_return true
+        allow(task).to receive(:notify_author_of_changes!)
+      end
+
+      it 'tells the task to notify the author of changes' do
+        expect(task).to receive(:notify_author_of_changes!)
+          .with(submitted_by: user)
+        do_request
+      end
+
+      it { is_expected.to responds_with(200) }
+    end
+
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 end

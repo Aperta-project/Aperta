@@ -15,12 +15,12 @@ describe InviteQueue do
 
   let(:paper) { FactoryGirl.create(:paper) }
   let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
-  let(:queue) do
-    make_queue [FactoryGirl.create(:invitation, task: task, paper: paper),
-                FactoryGirl.create(:invitation, task: task, paper: paper)]
-  end
 
   describe "#add_invite" do
+    let(:queue) do
+      make_queue [FactoryGirl.create(:invitation, task: task, paper: paper),
+                  FactoryGirl.create(:invitation, task: task, paper: paper)]
+    end
     let(:invitation) { FactoryGirl.create(:invitation, task: task, paper: paper) }
     it 'should add the invitation to the bottom of the queue' do
       queue.add_invite(invitation)
@@ -64,24 +64,24 @@ describe InviteQueue do
   let(:ungrouped_2) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_2') }
   let(:ungrouped_3) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_3') }
 
-  let(:full_queue) do
-    make_queue [
-      group_1_primary, # 1
-      g1_alternate_1, # 2
-      g1_alternate_2, # 3
-      g1_alternate_3, # 4
-      group_2_primary, # 5
-      g2_alternate_1_sent, # 6
-      g2_alternate_2, # 7
-      sent_1, # 8
-      sent_2, # 9
-      ungrouped_1, # 10
-      ungrouped_2, # 11
-      ungrouped_3  # 12
-    ]
-  end
-
   describe "#valid_positions_for_invite" do
+    let(:full_queue) do
+      make_queue [
+        group_1_primary, # 1
+        g1_alternate_1, # 2
+        g1_alternate_2, # 3
+        g1_alternate_3, # 4
+        group_2_primary, # 5
+        g2_alternate_1_sent, # 6
+        g2_alternate_2, # 7
+        sent_1, # 8
+        sent_2, # 9
+        ungrouped_1, # 10
+        ungrouped_2, # 11
+        ungrouped_3  # 12
+      ]
+    end
+
     it "an ungrouped primary can go to the position of other ungrouped primaries" do
       expect(full_queue.valid_positions_for_invite(ungrouped_1)).to eq([11, 12])
       expect(full_queue.valid_positions_for_invite(ungrouped_2)).to eq([10, 12])

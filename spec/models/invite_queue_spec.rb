@@ -136,10 +136,10 @@ describe InviteQueue do
     end
 
     context "the invite and the primary are both ungrouped" do
-      it "places the primary and the new alternate below the other existing groups" do
+      it "places the primary and the new alternate at the very top of the queue" do
         small_queue.assign_primary(invite: ungrouped_2, primary: ungrouped_1)
-        expect(ungrouped_1.reload.position).to eq(3)
-        expect(ungrouped_2.reload.position).to eq(4)
+        expect(ungrouped_1.reload.position).to eq(1)
+        expect(ungrouped_2.reload.position).to eq(2)
       end
     end
 
@@ -152,7 +152,7 @@ describe InviteQueue do
     end
   end
 
-  describe "#unassign_primary" do
+  describe "#unassign_primary_from" do
     context "error cases" do
       let(:small_queue) do
         make_queue [
@@ -162,18 +162,18 @@ describe InviteQueue do
         ]
       end
       it "blows up if the invite is a primary with alternates." do
-        expect { small_queue.unassign_primary(group_1_primary) }
+        expect { small_queue.unassign_primary_from(group_1_primary) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
       it "blows up if the invite has no primary" do
-        expect { small_queue.unassign_primary(ungrouped_1) }
+        expect { small_queue.unassign_primary_from(ungrouped_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
       it "blows up if the invite is not in a pending state" do
         g1_alternate_1.update(state: "invited")
-        expect { small_queue.unassign_primary(g1_alternate_1) }
+        expect { small_queue.unassign_primary_from(g1_alternate_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
     end
@@ -189,13 +189,12 @@ describe InviteQueue do
       end
 
       it "unassigns the primary" do
-        small_queue.unassign_primary(g1_alternate_1)
+        small_queue.unassign_primary_from(g1_alternate_1)
         expect(g1_alternate_1.reload.primary).to be_blank
       end
 
-      # TODO: this needs to be based on the created_at date
       it "moves the ungrouped invite to the bottom of the list" do
-        small_queue.unassign_primary(g1_alternate_1)
+        small_queue.unassign_primary_from(g1_alternate_1)
         expect(group_1_primary.reload.position).to eq(1) # the primary should stay put
         expect(g1_alternate_1.reload.position).to eq(4)
       end
@@ -211,13 +210,12 @@ describe InviteQueue do
       end
 
       it "unassigns the primary" do
-        small_queue.unassign_primary(g1_alternate_1)
+        small_queue.unassign_primary_from(g1_alternate_1)
         expect(g1_alternate_1.reload.primary).to be_blank
       end
 
-      # TODO: this needs to be based on the created_at date
       it "moves the newly-ungrouped primary and the ungrouped invite to the bottom of the list" do
-        small_queue.unassign_primary(g1_alternate_1)
+        small_queue.unassign_primary_from(g1_alternate_1)
         expect(group_1_primary.reload.position).to eq(2)
         expect(g1_alternate_1.reload.position).to eq(3)
       end

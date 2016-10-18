@@ -44,20 +44,9 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def create_primary_group(invite:, primary:)
-    # find the max position of any alternate, and put the new primary below that
-    last_alternate = grouped_alternates.maximum(:position)
     invite.update(primary: primary)
-
-    # it seems we need to reload both records to get acts_as_list to behave well
-    invite.reload
-    primary.reload
-    if last_alternate
-      primary.insert_at(last_alternate + 1)
-      invite.insert_at(last_alternate + 2)
-    else
-      primary.move_to_top
-      invite.insert_at(2)
-    end
+    primary.move_to_top
+    invite.insert_at(2)
   end
 
   def assign_primary(invite:, primary:)
@@ -66,6 +55,8 @@ class InviteQueue < ActiveRecord::Base
     raise_primary_error(invite, "an alternate cannot be assigned as a primary") if primary.is_alternate?
     raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") if !invite.pending?
 
+    primary.reload
+    invite.reload
     if primary.has_alternates?
       last_alternate = primary.alternates.maximum(:position)
       invite.update(primary: primary)
@@ -77,15 +68,17 @@ class InviteQueue < ActiveRecord::Base
     end
   end
 
-  def unassign_primary(invite)
+  def unassign_primary_from(invite)
     raise_primary_error(invite, "invite already has no primary") if invite.primary.blank?
     raise_primary_error(invite, "a primary with alternates is not valid for unassigning") if invite.has_alternates?
     raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") if !invite.pending?
 
     existing_primary = invite.primary
     invite.update(primary: nil)
+    existing_primary.reload
+    invite.reload
 
-    unless invite.alternates.exists? #if the primary has no more alternates it's ungrouped
+    unless existing_primary.alternates.exists? #if the primary has no more alternates it's ungrouped
       existing_primary.move_to_bottom
     end
     invite.move_to_bottom

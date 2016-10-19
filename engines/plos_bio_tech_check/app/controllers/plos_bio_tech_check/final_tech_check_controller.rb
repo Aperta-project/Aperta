@@ -4,7 +4,10 @@ module PlosBioTechCheck
 
     def send_email
       requires_user_can :edit, task
-      task.notify_author_of_changes!(submitted_by: current_user)
+      NotifyAuthorOfChangesNeededService.new(
+        task,
+        submitted_by: current_user
+      ).notify!
       render json: { success: true }
     end
 

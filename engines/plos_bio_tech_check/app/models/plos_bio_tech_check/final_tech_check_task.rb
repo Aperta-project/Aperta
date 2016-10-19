@@ -1,7 +1,5 @@
 module PlosBioTechCheck
   class FinalTechCheckTask < Task
-    include NotifyAuthorOfChanges
-
     DEFAULT_TITLE = 'Final Tech Check'
     DEFAULT_ROLE = 'editor'
 

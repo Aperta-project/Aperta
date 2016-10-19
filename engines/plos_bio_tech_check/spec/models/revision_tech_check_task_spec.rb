@@ -12,8 +12,6 @@ describe PlosBioTechCheck::RevisionTechCheckTask do
   end
   let(:journal){ FactoryGirl.create(:journal, :with_creator_role) }
 
-  it_behaves_like 'a PlosBioTechCheck that notifies the author of changes'
-
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
     it_behaves_like '<Task class>.restore_defaults update old_role to the default'

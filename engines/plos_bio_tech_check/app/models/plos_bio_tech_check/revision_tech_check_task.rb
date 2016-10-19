@@ -1,7 +1,5 @@
 module PlosBioTechCheck
   class RevisionTechCheckTask < Task
-    include NotifyAuthorOfChanges
-
     DEFAULT_TITLE = 'Revision Tech Check'
     DEFAULT_ROLE = 'editor'
 

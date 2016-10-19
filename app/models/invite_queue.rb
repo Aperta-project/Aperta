@@ -51,6 +51,7 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def assign_primary(invite:, primary:)
+    raise_primary_error(invite, "invite and primary must belong to the same queue") if invite.invite_queue_id != primary.invite_queue_id
     raise_primary_error(invite, "alternates must be ungrouped before being reassigned") if invite.is_alternate?
     raise_primary_error(invite, "a primary with alternates must be ungrouped before being reassigned") if invite.has_alternates?
     raise_primary_error(invite, "an alternate cannot be assigned as a primary") if primary.is_alternate?

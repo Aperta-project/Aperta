@@ -119,6 +119,15 @@ describe InviteQueue do
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
+      it "blows up if the invite and the primary don't belong to the same queue" do
+        some_other_primary = FactoryGirl.create :invitation,
+          task: task,
+          paper: paper,
+          invite_queue: nil
+        expect { small_queue.assign_primary(invite: g1_alternate_1, primary: some_other_primary) }
+          .to raise_error(ActiveRecord::RecordInvalid)
+      end
+
       it "blows up if the invite is a primary with alternates." do
         expect { small_queue.assign_primary(invite: group_1_primary, primary: ungrouped_1) }
           .to raise_error(ActiveRecord::RecordInvalid)

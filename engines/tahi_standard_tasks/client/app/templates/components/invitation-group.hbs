@@ -10,7 +10,7 @@
   {{/unless}}
 {{/if}}
 
-{{#each sortedInvitations as |invitation|}}
+{{#each (sort-by "position" invitations) as |invitation|}}
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
                           setRowState=(action attrs.setRowState invitation)

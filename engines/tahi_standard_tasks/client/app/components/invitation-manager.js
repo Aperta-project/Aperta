@@ -27,9 +27,6 @@ export default Ember.Component.extend({
   decisions: computed.alias('task.decisions'),
   latestDecision: computed.alias('task.paper.latestDecision'),
 
-  queueSortingCriteria: ['mainQueue'],
-  // TODO: inviteQueues might not be used anymore
-  inviteQueues: computed.sort('task.inviteQueues', 'queueSortingCriteria'),
   invitations: computed.alias('task.invitations'),
 
   previousInviteQueues: computed('task.paper.previousDecisions', function() {
@@ -77,16 +74,16 @@ export default Ember.Component.extend({
     return user.full_name + ' <' + user.email + '>';
   },
 
-  createInvitation: task(function * (mainQueue, props) {
+  createInvitation: task(function * (props) {
     let invitation = this.get('store').createRecord('invitation', props);
-    mainQueue.get('invitations').addObject(invitation);
 
     this.set('pendingInvitation', invitation);
     try {
       yield invitation.save();
-      if (this.get('groupByDecision')) {
-        this.get('latestDecision.invitations').addObject(invitation);
-      }
+      // The nature of the server response should let us skip the stuff below
+      // if (this.get('groupByDecision')) {
+      //   this.get('latestDecision.invitations').addObject(invitation);
+      // }
 
       this.setProperties({
         activeInvitation: invitation,
@@ -145,10 +142,10 @@ export default Ember.Component.extend({
       this.set('activeInvitation', null);
     },
 
-    composeInvite(mainQueue) {
+    composeInvite() {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
-      this.get('createInvitation').perform(mainQueue, {
+      this.get('createInvitation').perform({
         task: this.get('task'),
         email: this.get('selectedUser.email'),
         body: this.buildInvitationBody()

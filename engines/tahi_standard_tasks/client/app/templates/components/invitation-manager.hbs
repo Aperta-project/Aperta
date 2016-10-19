@@ -27,7 +27,7 @@
       {{user.full_name}} &lt;{{user.email}}&gt;
     {{/auto-suggest}}
     <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
-            {{action "composeInvite" q.mainQueue}}>
+            {{action "composeInvite"}}>
       Compose Invite
     </button>
     {{#if createInvitation.isRunning}}

@@ -24,6 +24,7 @@ export default DS.Model.extend({
   task: DS.belongsTo('task', { polymorphic: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
+
   updatedAt: DS.attr('date'),
   invitedAt: DS.attr('date'),
   acceptedAt: DS.attr('date'),

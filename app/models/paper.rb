@@ -532,20 +532,11 @@ class Paper < ActiveRecord::Base
     latest_version.new_draft! unless draft
   end
 
-  #TODO: for now maybe call a method in each place where 
-  #we're creating decisions in order to add a queue.
-  #
-  #  maybe later we'll have a hook like:
-  #  paper.queues.each do |q| q.decision_created
-  #  buuut that doesn't totally make sense now
-  #  
-  #  Questions for UX: 
-  #  - Will there ever be papers that have decisions that don't need to have queues?
-  #    Really that means will there be decisions that don't have reviewers?
-  #    Should we make a queue for every decision, or only those that have reviewers?
   def new_draft_decision!
-    #TODOMORE: just create the queue here for now
-    decisions.create unless draft_decision
+    unless draft_decision
+      new_decision = decisions.create
+      new_decision.create_invite_queue!
+    end
   end
 
   def draft

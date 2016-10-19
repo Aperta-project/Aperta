@@ -9,6 +9,7 @@ class InviteQueue < ActiveRecord::Base
   def grouped_alternates
     invitations.where.not(primary: nil)
   end
+
   def ungrouped_primaries
     invitations.select(&:ungrouped_primary?)
   end

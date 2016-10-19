@@ -7,6 +7,10 @@ module TahiStandardTasks
 
     include Invitable
 
+    def self.task_added_to_workflow(paper_editor_task)
+      paper_editor_task.create_invite_queue!
+    end
+
     def academic_editors
       paper.academic_editors
     end
@@ -15,10 +19,6 @@ module TahiStandardTasks
       invitation.body = add_invitation_link(invitation)
       invitation.save!
       PaperEditorMailer.delay.notify_invited invitation_id: invitation.id
-    end
-
-    def self.task_added_to_workflow(paper_editor_task)
-      paper_editor_task.create_invite_queue!
     end
 
     def invitation_accepted(invitation)

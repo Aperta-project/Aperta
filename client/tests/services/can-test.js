@@ -25,6 +25,39 @@ moduleFor('service:can', 'Unit: Can Service Permissions', {
   }
 });
 
+test('permissions update when `resource.permissionState` changes', function(assert){
+  const can = this.subject({
+    container: this.container,
+    store: this.store
+  });
+
+  run(() => {
+    // Only one (the last) of the `permissionStates` applies. WHY?
+    this.resource.setProperties({permissionState:'closed'});
+    this.permission.setProperties({
+      permissions: {
+        view: { states: ['open'] }
+      }
+    });
+  });
+
+  run(() => {
+    can.can('view', this.resource).then(function(value){
+      assert.equal(value, false, 'Should not be granted permission');
+    });
+  });
+
+  run(() => {
+    this.resource.setProperties({permissionState:'open'});
+  });
+
+  run(() => {
+    can.can('view', this.resource).then(function(value){
+      assert.equal(value, true, 'Should be granted permission');
+    });
+  });
+});
+
 test('permission is denied when permissions are empty', function(assert){
   assert.expect(1);
   const can = this.subject({

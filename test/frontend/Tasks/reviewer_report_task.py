@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import time
+
+import logging
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -20,6 +21,7 @@ class ReviewerReportTask(BaseTask):
     self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
     self._questions = (By.CLASS_NAME, 'question-text')
     self._questions_help = (By.CLASS_NAME, 'question-help')
+    self._question_textarea = (By.CSS_SELECTOR, 'li.question > div > textarea')
     self._submit_button = (By.CLASS_NAME, 'button-primary')
     # Question one is the same regardless front-matter or research type - all other questions differ
     self._q1_accept_label = (By.CSS_SELECTOR, 'div.flex-group > label')
@@ -30,27 +32,36 @@ class ReviewerReportTask(BaseTask):
     self._q1_majrev_radio = (By.CSS_SELECTOR, 'input[value=\'major_revision\']')
     self._q1_minrev_label = (By.CSS_SELECTOR, 'div.flex-group > label + label + label + label')
     self._q1_minrev_radio = (By.CSS_SELECTOR, 'input[value=\'minor_revision\']')
+    # Yes/no Radio buttons are the same wherever they appear.
+    # Note these must be used with a find to be unique
+    self._yes_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label')
+    self._yes_radio = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label > input')
+    self._no_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label + label')
+    self._no_radio = (By.CSS_SELECTOR,
+                          'div.yes-no-with-comments > div > label + label > input')
     # Research Reviewer Report locators
-    self._res_q2_yes_label = (By.CSS_SELECTOR, '')
-    self._res_q2_yes_radio = (By.CSS_SELECTOR, '')
-    self._res_q2_no_label = (By.CSS_SELECTOR, '')
-    self._res_q2_no_radio = (By.CSS_SELECTOR, '')
     self._res_q2_form = (By.CLASS_NAME, 'reviewer_report--competing_interests--detail')
     self._res_q3_form = (By.CLASS_NAME, 'reviewer_report--identity')
     self._res_q4_form = (By.CLASS_NAME, 'reviewer_report--comments_for_author')
     self._res_q5_form = (By.CLASS_NAME, 'reviewer_report--additional_comments')
     self._res_q6_form = (By.CLASS_NAME, 'reviewer_report--suitable_for_another_journal--journal')
     # Front Matter Reviewer Report locators
-
-
-
+    self._fm_q2_form = (By.NAME, 'front_matter_reviewer_report--competing_interests')
+    self._fm_q3_form = (By.NAME, 'front_matter_reviewer_report--suitable--comment')
+    self._fm_q4_form = (By.NAME,
+                        'front_matter_reviewer_report--includes_unpublished_data--explanation')
+    self._fm_q5_form = (By.NAME, 'front_matter_reviewer_report--additional_comments')
+    self._fm_q6_form = (By.NAME, 'front_matter_reviewer_report--identity')
 
   # POM Actions
-  def validate_task_elements_styles(self):
+  def validate_task_elements_styles(self, research_type=True):
     """
     This method validates the styles of the task elements including the common tasks elements
+    :param research_type: boolean, determines whether elements will be validated as a research type
+      reviewer report (default) or a front-matter type report.
     :return void function
     """
+    # First the global elements/sytles
     self.validate_common_elements_styles()
     accrb = self._get(self._q1_accept_radio)
     self.validate_radio_button(accrb)
@@ -80,6 +91,69 @@ class ReviewerReportTask(BaseTask):
     qh2, qh3, qh4, qh5, qh6 = question_help_list
     for qh in question_help_list:
       self.validate_application_ptext(qh)
+    # Then the specific styles
+    if research_type:
+      q2yeslbl = q2.find_element(*self._yes_label)
+      assert q2yeslbl.text == 'Yes', q2yeslbl.text
+      self.validate_radio_button_label(q2yeslbl)
+      q2yesradio = q2.find_element(*self._yes_radio)
+      self.validate_radio_button(q2yesradio)
+      q2nolbl = q2.find_element(*self._no_label)
+      assert q2nolbl.text == 'No', q2nolbl.text
+      self.validate_radio_button_label(q2nolbl)
+      q2noradio = q2.find_element(*self._no_radio)
+      self.validate_radio_button(q2noradio)
+      q6yeslbl = q4.find_element(*self._yes_label)
+      assert q6yeslbl.text == 'Yes', q6yeslbl.text
+      self.validate_radio_button_label(q6yeslbl)
+      q6yesradio = q6.find_element(*self._yes_radio)
+      self.validate_radio_button(q6yesradio)
+      q6nolbl = q6.find_element(*self._no_label)
+      assert q6nolbl.text == 'No', q6nolbl.text
+      self.validate_radio_button_label(q6nolbl)
+      q6noradio = q6.find_element(*self._no_radio)
+      self.validate_radio_button(q6noradio)
+      q2rta = self._get(self._res_q2_form)
+      self.validate_textarea_style(q2rta)
+      q3rta = self._get(self._res_q3_form)
+      self.validate_textarea_style(q3rta)
+      q4rta = self._get(self._res_q4_form)
+      self.validate_textarea_style(q4rta)
+      q5rta = self._get(self._res_q5_form)
+      self.validate_textarea_style(q5rta)
+      q6rta = self._get(self._res_q6_form)
+      self.validate_textarea_style(q6rta)
+    else:
+      q3yeslbl = q3.find_element(*self._yes_label)
+      assert q3yeslbl.text == 'Yes', q3yeslbl.text
+      self.validate_radio_button_label(q3yeslbl)
+      q3yesradio = q3.find_element(*self._yes_radio)
+      self.validate_radio_button(q3yesradio)
+      q3nolbl = q3.find_element(*self._no_label)
+      assert q3nolbl.text == 'No', q3nolbl.text
+      self.validate_radio_button_label(q3nolbl)
+      q3noradio = q3.find_element(*self._no_radio)
+      self.validate_radio_button(q3noradio)
+      q4yeslbl = q4.find_element(*self._yes_label)
+      assert q4yeslbl.text == 'Yes', q4yeslbl.text
+      self.validate_radio_button_label(q4yeslbl)
+      q4yesradio = q4.find_element(*self._yes_radio)
+      self.validate_radio_button(q4yesradio)
+      q4nolbl = q4.find_element(*self._no_label)
+      assert q4nolbl.text == 'No', q4nolbl.text
+      self.validate_radio_button_label(q4nolbl)
+      q4noradio = q4.find_element(*self._no_radio)
+      self.validate_radio_button(q4noradio)
+      q2fmta = self._get(self._fm_q2_form)
+      self.validate_textarea_style(q2fmta)
+      q3fmta = self._get(self._fm_q3_form)
+      self.validate_textarea_style(q3fmta)
+      q4fmta = self._get(self._fm_q4_form)
+      self.validate_textarea_style(q4fmta)
+      q5fmta = self._get(self._fm_q5_form)
+      self.validate_textarea_style(q5fmta)
+      q6fmta = self._get(self._fm_q6_form)
+      self.validate_textarea_style(q6fmta)
 
   def validate_reviewer_report(self, research_type=True):
     """

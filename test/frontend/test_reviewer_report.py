@@ -105,7 +105,7 @@ class ReviewerReportTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     assert paper_viewer.click_task('front_matter_reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
-    reviewer_report_task.validate_task_elements_styles()
+    reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report(research_type=False)
 
   def rest_core_rev_rep_research_actions(self):

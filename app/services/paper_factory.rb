@@ -51,24 +51,19 @@ class PaperFactory
 
   def create_task_from_template(task_template, phase)
     journal_task_type = task_template.journal_task_type
+    task_class = Task.safe_constantize(task_template.journal_task_type.kind)
     task = TaskFactory.create(
-      Task.safe_constantize(task_template.journal_task_type.kind),
+      task_class,
       phase: phase,
       paper: phase.paper,
       creator: creator,
       title: task_template.title,
       body: task_template.template,
       old_role: journal_task_type.old_role,
-      notify: false)
-    # TODO: this paper_creation_hook might be the place to make the queue.
-    # BUT: We talked and it might be better to make a new service object to do it.
-    # ie. PaperReviewerTaskFactory.task_created(task) and then that thing has the logic
-    # for creating the queue.  WE'd need a base class that normally performs a no-op for this
-    # to work, but then we'd have a generic and more flexible solution.
-    #
-    # TODO MORE: Check and see what happens when users add new cards to the workflow and make sure
-    # that the same thing happens there
-    task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
+      notify: false
+    )
+    task.paper_creation_hook(paper)
+    task_class.task_added_to_workflow(task)
   end
 
   def add_creator_assignment!

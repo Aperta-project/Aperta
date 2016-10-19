@@ -24,6 +24,7 @@ class TasksController < ApplicationController
 
   def create
     requires_user_can :manage_workflow, paper
+    task.class.task_added_to_workflow(task)
     respond_with(task, location: task_url(task))
   end
 

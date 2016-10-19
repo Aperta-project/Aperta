@@ -158,6 +158,14 @@ class Task < ActiveRecord::Base
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
+
+    # This hook is intended to give task subclasses an opportunity
+    # to create any extra data they might need to function correctly.
+    # Specifically, PaperEditorTask needs to create an InviteQueue
+    # for itself.
+    def task_added_to_workflow(task)
+      # no-op
+    end
   end
 
   def journal_task_type
@@ -245,6 +253,10 @@ class Task < ActiveRecord::Base
   # Needed for invitations.
   def invitee_role
     "Override me"
+  end
+
+  def paper_creation_hook(paper)
+    # no-op to be overriden and used in the paper factory
   end
 
   private

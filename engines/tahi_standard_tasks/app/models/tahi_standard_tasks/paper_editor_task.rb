@@ -17,6 +17,10 @@ module TahiStandardTasks
       PaperEditorMailer.delay.notify_invited invitation_id: invitation.id
     end
 
+    def self.task_added_to_workflow(paper_editor_task)
+      paper_editor_task.create_invite_queue!
+    end
+
     def invitation_accepted(invitation)
       add_invitee_as_academic_editor_on_paper!(invitation)
       PaperAdminMailer.delay.notify_admin_of_editor_invite_accepted(

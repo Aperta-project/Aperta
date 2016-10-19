@@ -44,6 +44,22 @@ describe InvitationsController do
     end
   end
 
+  describe 'GET /invitation/:id/update_position/' do
+    subject(:do_request) { get(:show, format: :json, id: invitation.id) }
+    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+
+    it_behaves_like 'an unauthenticated json request'
+    context 'with a new invitation' do
+      before { stub_sign_in user }
+      it 'places the invitation at the end of the queue' do
+        do_request
+        data = res_body.with_indifferent_access
+        expect(data).to have_key(:invitation)
+        invitation_json = data[:invitation]
+      end
+    end
+  end
+
   describe 'GET /invitation/:id' do
     subject(:do_request) { get(:show, format: :json, id: invitation.id) }
 

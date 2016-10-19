@@ -1,21 +1,12 @@
 require "rails_helper"
 
-class TestTask < Task
-  include Invitable
-
-  DEFAULT_TITLE = 'Test Task'.freeze
-  DEFAULT_ROLE = 'user'.freeze
-
-  def invitation_rescinded(*)
-    true
-  end
-end
-
 describe InvitationsController do
   let(:user) { invitee }
+  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:invitee) { FactoryGirl.create(:user) }
-  let(:phase) { FactoryGirl.create(:phase) }
-  let(:task) { FactoryGirl.create :paper_editor_task }
+  let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
   let!(:queue) { FactoryGirl.create(:invite_queue, task: task) }
 
   describe 'GET /invitations' do
@@ -67,13 +58,28 @@ describe InvitationsController do
 
     it_behaves_like 'an unauthenticated json request'
     context 'the user is authorized' do
-      before { stub_sign_in user }
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return true
+      end
       it 'calls invite_queue#move_invite_to_position' do
         allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
         expect(invitation.invite_queue).to receive(:move_invite_to_position).with(invitation, 2)
         do_request
         data = res_body.with_indifferent_access
         expect(data[:invitations].length).to eq(2)
+      end
+      context "when the user does not have access" do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:manage_invitations, task)
+            .and_return false
+        end
+
+        it { is_expected.to responds_with(403) }
       end
     end
   end
@@ -90,7 +96,12 @@ describe InvitationsController do
 
     it_behaves_like 'an unauthenticated json request'
     context 'the user is authorized' do
-      before { stub_sign_in user }
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return true
+      end
       context 'the primary id is present' do
         it 'calls invite_queue#assign_primary' do
           allow(Invitation).to receive(:find).and_return(primary)
@@ -117,6 +128,15 @@ describe InvitationsController do
           data = res_body.with_indifferent_access
           expect(data[:invitations].length).to eq(2)
         end
+      end
+      context "when the user does not have access" do
+        before do
+          allow(user).to receive(:can?)
+            .with(:manage_invitations, task)
+            .and_return false
+        end
+
+        it { is_expected.to responds_with(403) }
       end
     end
   end
@@ -304,7 +324,8 @@ describe InvitationsController do
       post(
         :send_invite,
         format: 'json',
-        id: invitation.to_param)
+        id: invitation.to_param
+      )
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -347,7 +368,8 @@ describe InvitationsController do
       put(
         :rescind,
         format: "json",
-        id: invitation.to_param)
+        id: invitation.to_param
+      )
     end
 
     let(:invitation) do
@@ -394,9 +416,6 @@ describe InvitationsController do
   end
 
   context "transitioning state" do
-    let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
     let(:invitation) do
       FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task)
     end
@@ -451,7 +470,8 @@ describe InvitationsController do
           format: :json,
           invitation: {
             decline_reason: 'This is my decline reason',
-            reviewer_suggestions: 'Added reviewer suggesions' }
+            reviewer_suggestions: 'Added reviewer suggesions'
+          }
         )
       end
 

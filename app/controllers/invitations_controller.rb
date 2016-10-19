@@ -21,6 +21,7 @@ class InvitationsController < ApplicationController
 
   # non restful route for drag and drop changes
   def update_position
+    requires_user_can(:manage_invitations, invitation.task)
     invitation.invite_queue.move_invite_to_position(invitation, params[:position])
 
     render json: invitations_in_queue
@@ -28,6 +29,7 @@ class InvitationsController < ApplicationController
 
   # non restful route for assigning and unassigning primaries
   def update_primary
+    requires_user_can(:manage_invitations, invitation.task)
     if params[:primary_id].present?
       new_primary = Invitation.find(params[:primary_id])
       invitation.invite_queue.assign_primary(primary: new_primary, invite: invitation)

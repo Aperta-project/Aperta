@@ -7,14 +7,17 @@ describe OrcidOauthController do
   let(:error) { 'some_error' }
 
   describe '#callback:' do
+    subject(:do_request) do
+      get :callback, code: code, format: :html
+    end
 
-    # it_behaves_like "when the user is not signed in"
+    it_behaves_like "when the user is not signed in"
 
     context 'when the user is signed in,' do
       before do
         stub_sign_in(user)
       end
-      
+
       context 'and there is an error passed in,' do
         subject(:do_request) do
           get :callback, error: error, format: :html
@@ -25,12 +28,8 @@ describe OrcidOauthController do
           do_request
         end
       end
-      
-      context 'and there is no error passed in,' do
-        subject(:do_request) do
-          get :callback, code: code, format: :html
-        end
 
+      context 'and there is no error passed in,' do
         it "calls the OrcidWorker" do
           allow(controller).to receive(:current_user).and_return(user)
           allow(OrcidWorker).to receive(:perform_async)

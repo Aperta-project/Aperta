@@ -1,18 +1,13 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
 
-  before_action :must_be_able_to_view_paper, only: [:index]
-  before_action :must_be_able_to_manage_workflow_on_paper, only: [:create, :destroy]
-
-  before_action :must_be_able_to_view_task, only: [:show, :nested_questions, :nested_question_answers]
-  before_action :must_be_able_to_edit_task, only: [:update, :send_message]
-
   before_action :unmunge_empty_arrays, only: [:update]
 
   respond_to :json
 
   ## /paper/tasks/
   def index
+    requires_user_can :view, paper
     tasks = current_user.filter_authorized(
       :view,
       paper.tasks.includes(:paper),
@@ -23,15 +18,17 @@ class TasksController < ApplicationController
   end
 
   def show
+    requires_user_can :view, task
     respond_with(task, location: task_url(task))
   end
 
   def create
+    requires_user_can :manage_workflow, paper
     respond_with(task, location: task_url(task))
   end
 
   def update
-    requires_user_can(:edit, task)
+    requires_user_can :edit, task
 
     task.assign_attributes(task_params(task.class))
     task.save!
@@ -43,11 +40,13 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    requires_user_can :manage_workflow, paper
     task.destroy
     respond_with(task)
   end
 
   def send_message
+    requires_user_can :edit, task
     users = User.where(id: task_email_params[:recipients])
     users.each do |user|
       GenericMailer.delay.send_email(
@@ -60,12 +59,14 @@ class TasksController < ApplicationController
   end
 
   def nested_questions
+    requires_user_can :view, task
     respond_with task.nested_questions,
                  each_serializer: NestedQuestionSerializer,
                  root: "nested_questions"
   end
 
   def nested_question_answers
+    requires_user_can :view, task
     respond_with task.nested_question_answers,
                  each_serializer: NestedQuestionAnswerSerializer,
                  root: "nested_question_answers"
@@ -120,21 +121,5 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
-  end
-
-  def must_be_able_to_manage_workflow_on_paper
-    fail AuthorizationError unless current_user.can?(:manage_workflow, paper)
-  end
-
-  def must_be_able_to_view_paper
-    fail AuthorizationError unless current_user.can?(:view, paper)
-  end
-
-  def must_be_able_to_view_task
-    fail AuthorizationError unless current_user.can?(:view, task)
-  end
-
-  def must_be_able_to_edit_task
-    fail AuthorizationError unless current_user.can?(:edit, task)
   end
 end

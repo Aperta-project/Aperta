@@ -47,3 +47,6 @@ spring
 engines/*/Gemfile.lock
 
 .byebug_history
+
+# Database dumps
+*.dat

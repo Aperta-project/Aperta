@@ -36,6 +36,7 @@ describe TahiEnv do
       EVENT_STREAM_WS_HOST: 'slanger-staging.tahi-project.org',
       EVENT_STREAM_WS_PORT: '8080',
       ORCID_LOGIN_ENABLED: 'true',
+      ORCID_CONNECT_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
       ORCID_SITE_HOST: 'sandbox.orcid.com',
       ORCID_SECRET: 'orcidsecret',
@@ -132,13 +133,14 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'NEWRELIC_KEY'
   it_behaves_like 'optional env var', var: 'NEWRELIC_APP_NAME'
 
-  # Orcid #TODO: update this
+  # Orcid
   it_behaves_like 'optional boolean env var', var: 'ORCID_LOGIN_ENABLED', default_value: false
-  it_behaves_like 'required env var', var: 'ORCID_API_HOST'
-  it_behaves_like 'required env var', var: 'ORCID_API_VERSION'
-  it_behaves_like 'required env var', var: 'ORCID_SITE_HOST'
-  it_behaves_like 'required env var', var: 'ORCID_SECRET'
-  it_behaves_like 'required env var', var: 'ORCID_KEY'
+  it_behaves_like 'optional boolean env var', var: 'ORCID_CONNECT_ENABLED', default_value: false
+  it_behaves_like 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_API_VERSION', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_CONNECT_ENABLED'
 
   # Puma
   it_behaves_like 'optional env var', var: 'PUMA_WORKERS'

@@ -130,11 +130,12 @@ class TahiEnv
 
   # Orcid
   optional :ORCID_LOGIN_ENABLED, :boolean, default: false
-  required :ORCID_API_HOST
-  required :ORCID_SITE_HOST
-  required :ORCID_SECRET
-  required :ORCID_KEY
-  required :ORCID_API_VERSION
+  optional :ORCID_CONNECT_ENABLED, :boolean, default: false
+  required :ORCID_API_HOST, if: :orcid_connect_enabled?
+  required :ORCID_SITE_HOST, if: :orcid_connect_enabled?
+  required :ORCID_SECRET, if: :orcid_connect_enabled?
+  required :ORCID_KEY, if: :orcid_connect_enabled?
+  required :ORCID_API_VERSION, if: :orcid_connect_enabled?
 
   # Puma
   optional :PUMA_WORKERS

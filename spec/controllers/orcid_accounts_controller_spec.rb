@@ -47,4 +47,54 @@ describe OrcidAccountsController do
       end
     end
   end
+
+  describe "#oauth_authorize_url" do
+    subject(:do_request) do
+      get :show, id: orcid_account.id, format: :json
+    end
+
+    context 'when the user is signed in' do
+      before do
+        stub_sign_in(user)
+      end
+
+      let(:oauth_authorize_url) { res_body['orcid_account']['oauth_authorize_url'] }
+      let(:redirect_uri) { 'http://test.host/api/orcid/oauth' }
+
+      it "hits the ORCID server" do
+        do_request
+        expect(oauth_authorize_url).to match(/#{TahiEnv.orcid_site_host}/)
+      end
+
+      it "hits /oauth/authorize" do
+        do_request
+        expect(oauth_authorize_url).to match(%r{/oauth/authorize})
+      end
+
+      it "contains the ORCID_KEY" do
+        do_request
+        expect(oauth_authorize_url).to match(/#{TahiEnv.orcid_key}/)
+      end
+
+      it "passes a response_type of 'code'" do
+        do_request
+        expect(oauth_authorize_url).to match(/response_type=code/)
+      end
+
+      it "requests a scope of '/read-limited'" do
+        do_request
+        expect(oauth_authorize_url).to match(%r{scope=/read-limited})
+      end
+
+      it "requests only one scope" do
+        do_request
+        expect(oauth_authorize_url).not_to match(%r{scope=/[\w-]*%20/})
+      end
+
+      it "passes in a redirect uri" do
+        do_request
+        expect(oauth_authorize_url).to match(/redirect_uri=#{redirect_uri}/)
+      end
+    end
+  end
 end

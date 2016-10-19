@@ -16,10 +16,12 @@ class ReviewerReportTask(BaseTask):
   def __init__(self, driver):
     super(ReviewerReportTask, self).__init__(driver)
     # Locators - Instance members
-    # Research Reviewer Report locators
+    # Shared Locators
     self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
     self._questions = (By.CLASS_NAME, 'question-text')
     self._questions_help = (By.CLASS_NAME, 'question-help')
+    self._submit_button = (By.CLASS_NAME, 'button-primary')
+    # Question one is the same regardless front-matter or research type - all other questions differ
     self._q1_accept_label = (By.CSS_SELECTOR, 'div.flex-group > label')
     self._q1_accept_radio = (By.CSS_SELECTOR, 'input[value=\'accept\']')
     self._q1_reject_label = (By.CSS_SELECTOR, 'div.flex-group > label + label')
@@ -28,19 +30,19 @@ class ReviewerReportTask(BaseTask):
     self._q1_majrev_radio = (By.CSS_SELECTOR, 'input[value=\'major_revision\']')
     self._q1_minrev_label = (By.CSS_SELECTOR, 'div.flex-group > label + label + label + label')
     self._q1_minrev_radio = (By.CSS_SELECTOR, 'input[value=\'minor_revision\']')
-    self._q2_yes_label = (By.CSS_SELECTOR, '')
-    self._q2_yes_radio = (By.CSS_SELECTOR, '')
-    self._q2_no_label = (By.CSS_SELECTOR, '')
-    self._q2_no_radio = (By.CSS_SELECTOR, '')
-    self._q2_form = (By.CLASS_NAME, 'reviewer_report--competing_interests--detail')
-    self._q3_form = (By.CLASS_NAME, 'reviewer_report--identity')
-    self._q4_form = (By.CLASS_NAME, 'reviewer_report--comments_for_author')
-    self._q5_form = (By.CLASS_NAME, 'reviewer_report--additional_comments')
-    self._q6_form = (By.CLASS_NAME, 'reviewer_report--suitable_for_another_journal--journal')
-    self._submit_button = (By.CLASS_NAME, 'button-primary')
+    # Research Reviewer Report locators
+    self._res_q2_yes_label = (By.CSS_SELECTOR, '')
+    self._res_q2_yes_radio = (By.CSS_SELECTOR, '')
+    self._res_q2_no_label = (By.CSS_SELECTOR, '')
+    self._res_q2_no_radio = (By.CSS_SELECTOR, '')
+    self._res_q2_form = (By.CLASS_NAME, 'reviewer_report--competing_interests--detail')
+    self._res_q3_form = (By.CLASS_NAME, 'reviewer_report--identity')
+    self._res_q4_form = (By.CLASS_NAME, 'reviewer_report--comments_for_author')
+    self._res_q5_form = (By.CLASS_NAME, 'reviewer_report--additional_comments')
+    self._res_q6_form = (By.CLASS_NAME, 'reviewer_report--suitable_for_another_journal--journal')
     # Front Matter Reviewer Report locators
 
-    # Shared Locators
+
 
 
   # POM Actions
@@ -50,6 +52,34 @@ class ReviewerReportTask(BaseTask):
     :return void function
     """
     self.validate_common_elements_styles()
+    accrb = self._get(self._q1_accept_radio)
+    self.validate_radio_button(accrb)
+    acclbl = self._get(self._q1_accept_label)
+    assert acclbl.text == 'Accept', acclbl.text
+    self.validate_radio_button_label(acclbl)
+    rejrb = self._get(self._q1_reject_radio)
+    self.validate_radio_button(rejrb)
+    rejlbl = self._get(self._q1_reject_label)
+    assert rejlbl.text == 'Reject', acclbl.text
+    self.validate_radio_button_label(rejlbl)
+    majrevrb = self._get(self._q1_majrev_radio)
+    self.validate_radio_button(majrevrb)
+    majrevlbl = self._get(self._q1_majrev_label)
+    assert majrevlbl.text == 'Major Revision', majrevlbl.text
+    self.validate_radio_button_label(majrevlbl)
+    minrevrb = self._get(self._q1_minrev_radio)
+    self.validate_radio_button(minrevrb)
+    minrevlbl = self._get(self._q1_minrev_label)
+    assert majrevlbl.text == 'Major Revision', majrevlbl.text
+    self.validate_radio_button_label(majrevlbl)
+    question_list = self._gets(self._questions)
+    q1, q2, q3, q4, q5, q6 = question_list
+    for q in question_list:
+      self.validate_application_list_style(q)
+    question_help_list = self._gets(self._questions_help)
+    qh2, qh3, qh4, qh5, qh6 = question_help_list
+    for qh in question_help_list:
+      self.validate_application_ptext(qh)
 
   def validate_reviewer_report(self, research_type=True):
     """
@@ -92,16 +122,17 @@ class ReviewerReportTask(BaseTask):
           u' between journals of suitable manuscripts to reduce redundant review cycles, and we ' \
           u'appreciate your support.', qh6.text
     else:
-      assert u'Please refer to our referee guidelines for detailed instructions.' in \
-             review_note.text
+      assert u'Please refer to our referee guidelines and information on our article ' \
+                         u'types.' in review_note.text, review_note.text
       assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-' \
-             'for-publication">referee</a>' in review_note.get_attribute('innerHTML')
+             'for-publication" target="_blank">referee</a>' in \
+             review_note.get_attribute('innerHTML'), review_note.get_attribute('innerHTML')
       question_list = self._gets(self._questions)
       q1, q2, q3, q4, q5, q6 = question_list
       assert q1.text == u'Please provide your publication recommendation:', q1.text
       assert q2.text == u'Do you have any potential or perceived competing interests that may ' \
                         u'influence your review?', q2.text
-      assert q3.text == u'Is this manuscript suitable in principle for the magazine seciton of ' \
+      assert q3.text == u'Is this manuscript suitable in principle for the magazine section of ' \
                         u'PLOS Biology?', q3.text
       assert q4.text == u'If previously unpublished data are included to support the conclusions,' \
                         u' please note in the box below whether:', q4.text
@@ -112,15 +143,14 @@ class ReviewerReportTask(BaseTask):
       qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential' \
                          u' interests that you feel the Editor should be aware of when ' \
-                         u'considering your review.  If you have no competing interests, please ' \
+                         u'considering your review. If you have no competing interests, please ' \
                          u'write: "I have no competing interests."', qh2.text
       assert qh3.text == u'Please refer to our referee guidelines and information on our article ' \
                          u'types.\nSubmit your detailed comments in the box below. These will be ' \
                          u'communicated to the authors.', qh3.text
       assert qh4.text == u'The data have been generated rigorously with relevant controls, ' \
                          u'replication and sample sizes, if applicable.\nThe data provided ' \
-                         u'support the conclusions that are drawn.\nThese comments will be ' \
-                         u'communicated to the authors.', qh4.text
+                         u'support the conclusions that are drawn.', qh4.text
       assert qh5.text == u'Additional comments may include concerns about dual publication, ' \
                          u'research or publication ethics.', qh5.text
       assert qh6.text == u'Your name and review will not be published with the manuscript.', \

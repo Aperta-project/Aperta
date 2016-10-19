@@ -57,6 +57,7 @@ class InviteCard(BaseCard):
     """
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
+    self._wait_for_element(self._get(self._compose_invitation_button))
     self._get(self._compose_invitation_button).click()
     self._wait_for_element(self._get(self._edit_invite_text_save))
     self._get(self._edit_invite_text_save).click()

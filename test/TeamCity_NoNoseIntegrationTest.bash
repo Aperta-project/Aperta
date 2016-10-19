@@ -14,13 +14,16 @@
 # Stop the script if any single command fails
 set -e
 
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ASSETS_DIR=$SCRIPT_DIR/frontend/assets
+
 # Use a virtualenv if it exists
 VENV_ACTIVATE="venv/bin/activate"
 if [ -e $VENV_ACTIVATE ]; then
   source $VENV_ACTIVATE
 fi
 
-cd frontend/assets
+cd $ASSETS_DIR
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
 TESTING_ASSETS="testing_assets.tar.gz"
 if tar --version | grep -q 'gnu'; then
@@ -31,7 +34,7 @@ else
   tar -vxf $TESTING_ASSETS
 fi
 rm $TESTING_ASSETS
-cd ../..
+cd $SCRIPT_DIR
 
 # Reverses 'set -e'. Allows the script to continue through failures.
 set +e 

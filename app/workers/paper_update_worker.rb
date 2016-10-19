@@ -7,6 +7,10 @@ class PaperUpdateWorker
 
   attr_reader :paper, :epub_stream
 
+  # Retries here are would be confusing.  A paper could revert to an older
+  # state hours or days after it was fixed.
+  sidekiq_options :retry => 0
+
   def perform(ihat_job_params)
     job_response = IhatJobResponse.new(ihat_job_params.with_indifferent_access)
     @paper = Paper.find(job_response.paper_id)

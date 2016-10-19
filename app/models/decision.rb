@@ -14,6 +14,8 @@ class Decision < ActiveRecord::Base
 
   VERDICTS = PUBLISHING_STATE_BY_VERDICT.keys
 
+  scope :completed, -> { where.not(major_version: nil, minor_version: nil) }
+
   belongs_to :paper
   has_many :invitations
   has_many :nested_question_answers

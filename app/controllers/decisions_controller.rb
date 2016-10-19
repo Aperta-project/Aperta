@@ -6,7 +6,7 @@ class DecisionsController < ApplicationController
     paper = Paper.find(params[:paper_id])
     requires_user_can(:view, paper)
 
-    decisions = paper.decisions.no_drafts
+    decisions = paper.decisions.completed
 
     if current_user.can?(:view_decisions, paper)
       decisions = paper.decisions

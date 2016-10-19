@@ -179,8 +179,9 @@ describe InvitationsController do
         invitation: {
           email: email_to_invite,
           task_id: task.id,
-          body: invitation_body,
-        })
+          body: invitation_body
+        }
+      )
     end
 
     let(:email_to_invite) { invitee.email }
@@ -204,12 +205,75 @@ describe InvitationsController do
 
           data = res_body.with_indifferent_access
           invitation = Invitation.find(data[:invitations][0][:id])
+          expect(invitation.invite_queue).to eq(task.active_invite_queue)
 
           expect(invitation.state).to eq('pending')
           expect(invitation.invitee).to eq(invitee)
           expect(invitation.email).to eq(invitee.email)
-          expect(invitation.invite_queue).to eq(task.active_invite_queue)
         end
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
+  describe 'DELETE /invitations/:id' do
+    let!(:invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invite_queue: queue
+    end
+
+    let!(:other_invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invite_queue: queue
+    end
+
+    subject(:do_request) do
+      delete(
+        :destroy,
+        format: 'json',
+        id: invitation.id
+      )
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task).and_return(true)
+      end
+
+      it 'removes the invitation from the queue and destroys it' do
+        allow(Invitation).to receive(:find).and_call_original
+        allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+        expect(invitation.invite_queue).to receive(:remove_invite).with(invitation)
+
+        do_request
+
+        expect(invitation).to be_destroyed
+      end
+
+      it 'renders the remaining invitations in the queue' do
+        do_request
+
+        data = res_body.with_indifferent_access
+        expect(data[:invitations].length).to eq(1)
+        expect(data[:invitations][0][:id]).to eq(other_invitation.id)
       end
     end
 
@@ -261,10 +325,9 @@ describe InvitationsController do
         end
 
         it 'sends the invitation' do
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          expect(invitation.invite_queue).to receive(:send_invite).with(invitation)
           do_request
-          data = res_body.with_indifferent_access
-          saved_invitation = Invitation.find(data[:invitations][0][:id])
-          expect(saved_invitation.state).to eq('invited')
         end
 
         it 'creates an activity' do

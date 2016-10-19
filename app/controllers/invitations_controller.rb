@@ -48,10 +48,11 @@ class InvitationsController < ApplicationController
       fail ActiveRecord::RecordInvalid, invitation
     end
 
+    queue = invitation.invite_queue
     invitation.invite_queue.remove_invite(invitation)
     invitation.destroy!
 
-    render json: invitations_in_queue
+    render json: invitations_in_queue(queue)
   end
 
   def send_invite
@@ -104,8 +105,12 @@ class InvitationsController < ApplicationController
 
   private
 
-  def invitations_in_queue
-    invitation.invite_queue.invitations.reorder(id: :desc)
+  def invitations_in_queue(queue = nil)
+    if queue
+      queue.invitations.reorder(id: :desc)
+    else
+      invitation.invite_queue.invitations.reorder(id: :desc)
+    end
   end
 
   def send_and_notify(invitation)

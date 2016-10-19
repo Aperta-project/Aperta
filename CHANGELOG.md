@@ -7,6 +7,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Manuscript diffing has been enhanced. Words that have changed are now highlighted
   inside of changed sentences.
 ### Changed
+- Cover Editors and Handling Editors can no longer view or edit the Billing card
+- Cover Editors and Handling Editors can no longer edit any Reviewer Reports
 ### Deprecated
 ### Removed
 ### Fixed

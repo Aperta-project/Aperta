@@ -45,6 +45,14 @@ describe JournalFactory, flaky: true do
         permission_states: { id: PermissionState.wildcard }
       )
     end
+    let(:billing_task_klasses) do
+      [PlosBilling::BillingTask] +
+        PlosBilling::BillingTask.descendants
+    end
+    let(:reviewer_report_klasses) do
+      [TahiStandardTasks::ReviewerReportTask] +
+        TahiStandardTasks::ReviewerReportTask.descendants
+    end
 
     it 'creates a new journal with the given params' do
       expect do
@@ -291,38 +299,69 @@ describe JournalFactory, flaky: true do
           end
         end
 
-        context 'has Task permission to' do
-          let(:task_actions) do
-            [
-              'add_email_participants',
-              'manage_invitations',
-              'manage_participant',
-              'view',
-              'view_participants'
-            ]
+        describe 'Task permissions' do
+          let(:task_klasses) { ::Task.descendants - billing_task_klasses }
+          let(:non_editable_task_klasses) { reviewer_report_klasses }
+          let(:editable_task_klasses_based_on_paper_state) do
+            task_klasses -
+              non_editable_task_klasses -
+              editable_task_klasses_regardless_of_paper_state
+          end
+          let(:editable_task_klasses_regardless_of_paper_state) do
+            [TahiStandardTasks::TitleAndAbstractTask]
           end
 
-          it 'has all task permissions' do
-            task_actions.each do |action|
+          it <<-DESC do
+            can :add_email_participants on all Tasks
+            can :manage_invitations on all Tasks
+            can :manage_participant on all Tasks
+            can :view on all Tasks
+            can :view_participants  on all Tasks
+          DESC
+            task_klasses.each do |klass|
               expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
+                Permission.find_by(action: :view, applies_to: klass.name)
               )
             end
           end
 
-          it ':edit' do
-            expect(permissions).to include(
-              permissions_with_editable_paper_states.where(
+          it <<-DESC do
+            can :edit all Tasks except ReviewerReportTasks(s) when the
+            paper is in an editable state
+          DESC
+            editable_task_klasses_based_on_paper_state.each do |klass|
+              permission = Permission.joins(:states).find_by(
                 action: 'edit',
-                applies_to: 'Task'
-              ).first
-            )
+                applies_to: klass.name,
+                permission_states: { name: Paper::EDITABLE_STATES }
+              )
+              expect(permissions).to include(permission)
+            end
+
+            reviewer_report_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: 'edit', applies_to: klass.name)
+              )
+            end
           end
 
-          it ':edit TitleAndAbstractTask regardless of paper state' do
-            expect(permissions).to include(
-              Permission.find_by(action: 'edit',
-                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask')
+          it 'can :edit TitleAndAbstractTask regardless of paper state' do
+            editable_task_klasses_regardless_of_paper_state.each do |klass|
+              permission = Permission.find_by(
+                action: 'edit',
+                applies_to: klass.name
+              )
+              expect(permissions).to include(permission)
+              expect(permission.states).to contain_exactly(
+                PermissionState.wildcard
+              )
+            end
+          end
+
+          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+            expect(permissions).not_to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -343,15 +382,6 @@ describe JournalFactory, flaky: true do
                 permissions_on_discussion_topic.find_by(action: action)
               ), action
             end
-          end
-        end
-
-        describe 'permission to PlosBilling::BillingTask' do
-          it 'cannot :view or :edit' do
-            expect(permissions).not_to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
           end
         end
       end
@@ -416,6 +446,25 @@ describe JournalFactory, flaky: true do
               Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
             )
           end
+
+          it 'is not able to edit the ReviewerReportTask(s)' do
+            reviewer_report_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(
+                  action: 'edit',
+                  applies_to: klass.name
+                )
+              )
+            end
+          end
+        end
+      end
+
+      context 'Freelance Editor' do
+        let(:permissions) { journal.freelance_editor_role.permissions }
+
+        it 'has no permissions' do
+          expect(permissions).to be_empty
         end
       end
 
@@ -468,38 +517,69 @@ describe JournalFactory, flaky: true do
           end
         end
 
-        context 'has Task permission to' do
-          let(:task_actions) do
-            [
-              'add_email_participants',
-              'manage_invitations',
-              'manage_participant',
-              'view',
-              'view_participants'
-            ]
+        describe 'Task permissions' do
+          let(:task_klasses) { ::Task.descendants - billing_task_klasses }
+          let(:non_editable_task_klasses) { reviewer_report_klasses }
+          let(:editable_task_klasses_based_on_paper_state) do
+            task_klasses -
+              non_editable_task_klasses -
+              editable_task_klasses_regardless_of_paper_state
+          end
+          let(:editable_task_klasses_regardless_of_paper_state) do
+            [TahiStandardTasks::TitleAndAbstractTask]
           end
 
-          it 'has all task permissions' do
-            task_actions.each do |action|
+          it <<-DESC do
+            can :add_email_participants on all Tasks
+            can :manage_invitations on all Tasks
+            can :manage_participant on all Tasks
+            can :view on all Tasks
+            can :view_participants  on all Tasks
+          DESC
+            task_klasses.each do |klass|
               expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              ), action
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
             end
           end
 
-          it ':edit' do
-            expect(permissions).to include(
-              permissions_with_editable_paper_states.find_by(
-                applies_to: 'Task',
-                action: 'edit'
+          it <<-DESC do
+            can :edit all Tasks except ReviewerReportTasks(s) when the
+            paper is in an editable state
+          DESC
+            editable_task_klasses_based_on_paper_state.each do |klass|
+              permission = Permission.joins(:states).find_by(
+                action: 'edit',
+                applies_to: klass.name,
+                permission_states: { name: Paper::EDITABLE_STATES }
               )
-            )
+              expect(permissions).to include(permission)
+            end
+
+            reviewer_report_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: 'edit', applies_to: klass.name)
+              )
+            end
           end
 
-          it ':edit TitleAndAbstractTask regardless of paper state' do
-            expect(permissions).to include(
-              Permission.find_by(action: 'edit',
-                                 applies_to: 'TahiStandardTasks::TitleAndAbstractTask')
+          it 'can :edit TitleAndAbstractTask regardless of paper state' do
+            editable_task_klasses_regardless_of_paper_state.each do |klass|
+              permission = Permission.find_by(
+                action: 'edit',
+                applies_to: klass.name
+              )
+              expect(permissions).to include(permission)
+              expect(permission.states).to contain_exactly(
+                PermissionState.wildcard
+              )
+            end
+          end
+
+          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+            expect(permissions).not_to include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -520,15 +600,6 @@ describe JournalFactory, flaky: true do
                 permissions_on_discussion_topic.find_by(action: action)
               )
             end
-          end
-        end
-
-        describe 'permission to PlosBilling::BillingTask' do
-          it 'cannot :view or :edit' do
-            expect(permissions).not_to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
           end
         end
       end
@@ -600,7 +671,14 @@ describe JournalFactory, flaky: true do
             ]
           end
 
-          it 'has all task permissions' do
+          it <<-DESC do
+            can :add_email_participants on all Tasks
+            can :edit on all Tasks except billing tasks
+            can :manage_invitations on all Tasks
+            can :manage_participant on all Tasks
+            can :view on all Tasks except billing tasks
+            can :view_participants  on all Tasks
+          DESC
             task_actions.each do |action|
               expect(permissions).to include(
                 permissions_on_task.find_by(action: action)
@@ -610,6 +688,13 @@ describe JournalFactory, flaky: true do
 
           it 'has no additional Task permissions' do
             expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+          end
+
+          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+            expect(permissions).to_not include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+            )
           end
         end
 
@@ -634,15 +719,6 @@ describe JournalFactory, flaky: true do
 
           it 'has no additional discussion topic permissions' do
             expect(permissions_on_discussion_topic.map(&:action) - discussion_topic_actions).to eq([])
-          end
-        end
-
-        describe 'permission to PlosBilling::BillingTask' do
-          it 'cannot :view or :edit' do
-            expect(permissions).not_to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
           end
         end
       end
@@ -706,6 +782,7 @@ describe JournalFactory, flaky: true do
           let(:task_actions) do
             [
               'add_email_participants',
+              'edit',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -713,7 +790,14 @@ describe JournalFactory, flaky: true do
             ]
           end
 
-          it 'has all task permissions' do
+          it <<-DESC do
+            can :add_email_participants on all Tasks
+            can :edit on all Tasks except billing tasks
+            can :manage_invitations on all Tasks
+            can :manage_participant on all Tasks
+            can :view on all Tasks except billing tasks
+            can :view_participants  on all Tasks
+          DESC
             task_actions.each do |action|
               expect(permissions).to include(
                 permissions_on_task.find_by(action: action)
@@ -721,13 +805,14 @@ describe JournalFactory, flaky: true do
             end
           end
 
-          it ':edit' do
-            expect(permissions).to include(
-              Permission.joins(:states).where(
-                action: 'edit',
-                applies_to: 'Task',
-                permission_states: { id: PermissionState.wildcard }
-              ).first
+          it 'has no additional Task permissions' do
+            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+          end
+
+          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+            expect(permissions).to_not include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -749,15 +834,6 @@ describe JournalFactory, flaky: true do
                 permissions_on_discussion_topic.find_by(action: action)
               )
             end
-          end
-        end
-
-        describe 'permission to PlosBilling::BillingTask' do
-          it 'cannot :view or :edit' do
-            expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
           end
         end
       end
@@ -821,6 +897,7 @@ describe JournalFactory, flaky: true do
           let(:task_actions) do
             [
               'add_email_participants',
+              'edit',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -828,7 +905,14 @@ describe JournalFactory, flaky: true do
             ]
           end
 
-          it 'has all task permissions' do
+          it <<-DESC do
+            can :add_email_participants on all Tasks
+            can :edit on all Tasks except billing tasks
+            can :manage_invitations on all Tasks
+            can :manage_participant on all Tasks
+            can :view on all Tasks except billing tasks
+            can :view_participants  on all Tasks
+          DESC
             task_actions.each do |action|
               expect(permissions).to include(
                 permissions_on_task.find_by(action: action)
@@ -836,13 +920,14 @@ describe JournalFactory, flaky: true do
             end
           end
 
-          it ':edit' do
-            expect(permissions).to include(
-              Permission.joins(:states).where(
-                action: 'edit',
-                applies_to: 'Task',
-                permission_states: { id: PermissionState.wildcard }
-              ).first
+          it 'has no additional Task permissions' do
+            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+          end
+
+          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+            expect(permissions).to_not include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
             )
           end
         end
@@ -864,15 +949,6 @@ describe JournalFactory, flaky: true do
                 permissions_on_discussion_topic.find_by(action: action)
               )
             end
-          end
-        end
-
-        describe 'permission to PlosBilling::BillingTask' do
-          it 'cannot :view or :edit' do
-            expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
           end
         end
       end
@@ -1031,12 +1107,30 @@ describe JournalFactory, flaky: true do
             ]
           end
 
-          it 'has all task permissions' do
+          it <<-DESC do
+            can :add_email_participants on all Tasks
+            can :edit on all Tasks except billing tasks
+            can :manage_invitations on all Tasks
+            can :manage_participant on all Tasks
+            can :view on all Tasks except billing tasks
+            can :view_participants  on all Tasks
+          DESC
             task_actions.each do |action|
               expect(permissions).to include(
                 permissions_on_task.find_by(action: action)
               )
             end
+          end
+
+          it 'has no additional Task permissions' do
+            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+          end
+
+          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+            expect(permissions).to_not include(
+              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+            )
           end
         end
 
@@ -1056,15 +1150,6 @@ describe JournalFactory, flaky: true do
                 permissions_on_discussion_topic.find_by(action: action)
               )
             end
-          end
-        end
-
-        describe 'permission to PlosBilling::BillingTask' do
-          it 'cannot :view or :edit' do
-            expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
           end
         end
       end

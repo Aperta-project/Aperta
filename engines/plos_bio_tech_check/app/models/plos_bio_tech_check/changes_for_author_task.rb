@@ -15,6 +15,15 @@ module PlosBioTechCheck
       super << :body
     end
 
+    def letter_text
+      body["initialTechCheckBody"]
+    end
+
+    def letter_text=(text)
+      self.body ||= {}
+      self.body = body.merge("initialTechCheckBody" => text)
+    end
+
     def submit_tech_check!(submitted_by:)
       complete!
       if paper.submit_minor_check!(submitted_by)

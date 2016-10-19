@@ -36,6 +36,12 @@ module TahiStandardTasks
       end
     end
 
+    def active_invite_queue
+      queue = paper.invite_queue
+      queue = InviteQueue.create(task: self) unless queue
+      queue
+    end
+
     def invitee_role
       Role::ACADEMIC_EDITOR_ROLE
     end

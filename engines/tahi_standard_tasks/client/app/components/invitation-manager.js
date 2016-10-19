@@ -161,32 +161,7 @@ export default Ember.Component.extend({
     },
 
     destroyInvite(invitation) {
-      if (invitation.get('inviteQueue.invitations.length') === 2) {
-        this.getOrCreateMainQueue().then((mainQueue)=> {
-          const subQueue = invitation.get('inviteQueue');
-          const primary = invitation.get('primary');
-          primary.set('inviteQueue', mainQueue);
-          primary.save();
-          subQueue.destroyRecord();
-        });
-      }
-      invitation.get('inviteQueue.invitations').removeObject(invitation);
       invitation.destroyRecord();
-    },
-
-    placeInDifferentQueue(invitation) {
-      const primary = invitation.get('primary');
-      if (primary) {
-        return this.getOrCreateSubQueue(primary).then(function(queue) {
-          invitation.set('inviteQueue', queue);
-          return invitation.save();
-        });
-      } else {
-        return this.getOrCreateMainQueue().then(function(queue) {
-          invitation.set('inviteQueue', queue);
-          return invitation.save();
-        });
-      }
     },
 
     toggleActiveInvitation(invitation, rowState) {

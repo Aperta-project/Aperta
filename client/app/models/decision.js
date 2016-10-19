@@ -9,7 +9,6 @@ export default DS.Model.extend({
   draft: DS.attr('boolean'),
   initial: DS.attr('boolean'),
   invitations: DS.hasMany('invitation', { async: false }),
-  inviteQueues: DS.hasMany('inviteQueue', { async: false }),
   latest: DS.attr('boolean'),
   latestRegistered: DS.attr('boolean'),
   letter: DS.attr('string'),

@@ -1,24 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  placeInDifferentQueue() {
-    // no-op
-  },
-
+  sortCriteria: ['position:asc'],
+  sortedInvitations: Ember.computed.sort('invitations', 'sortCriteria'),
   linkedInvitations: Ember.computed.filter('invitations.@each.primary', function(inv) {
     return inv.get('alternates.length');
   }),
-
-  sentMainQueueInvitations: Ember.computed.filter('invitations.@each.primary', function(inv) {
-    return !inv.get('primary') && !inv.get('alternates.length') && (inv.get('state') !== 'pending');
-  }),
-
-  pendingMainQueueInvitations: Ember.computed.filter('invitations.@each.primary', function(inv) {
-    return !inv.get('primary') && !inv.get('alternates.length') && (inv.get('state') === 'pending');
-  }),
-
-  //queueSorting: ['position'],
-  sortedPendingMainQueueInvitations: Ember.computed.sort('pendingMainQueueInvitations', function(invitation) {
-    return invitation.position;
-  })
 });

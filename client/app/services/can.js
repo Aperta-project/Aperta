@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-var Ability = Ember.Object.extend({
+export var Ability = Ember.Object.extend({
   name: null,
   resource: null,
   permissions:null,

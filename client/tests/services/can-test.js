@@ -1,6 +1,7 @@
 import { moduleFor, test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Ember from 'ember';
+import { Ability } from 'tahi/services/can';
 const { run } = Ember;
 
 moduleFor('service:can', 'Unit: Can Service Permissions', {
@@ -25,35 +26,36 @@ moduleFor('service:can', 'Unit: Can Service Permissions', {
   }
 });
 
-test('permissions update when `resource.permissionState` changes', function(assert){
+test('the underlying Ability#can updates when `resource.permissionState` changes', function(assert){
   const can = this.subject({
     container: this.container,
     store: this.store
   });
 
   run(() => {
-    // Only one (the last) of the `permissionStates` applies. WHY?
-    this.resource.setProperties({permissionState:'closed'});
     this.permission.setProperties({
       permissions: {
         view: { states: ['open'] }
       }
     });
-  });
+    this.resource.setProperties({permissionState:'closed'});
 
-  run(() => {
-    can.can('view', this.resource).then(function(value){
-      assert.equal(value, false, 'Should not be granted permission');
+    let ability = Ability.create({
+      name: 'view',
+      resource: this.resource,
+      permissions: this.permission
     });
-  });
 
-  run(() => {
-    this.resource.setProperties({permissionState:'open'});
-  });
+    assert.equal(ability.get('can'), false, 'Should not be granted permission');
 
-  run(() => {
-    can.can('view', this.resource).then(function(value){
-      assert.equal(value, true, 'Should be granted permission');
+    wait().then(() => {
+      this.resource.setProperties({permissionState:'open'});
+      assert.equal(ability.get('can'), true, 'Should be granted permission');
+    });
+
+    wait().then(() => {
+      this.resource.setProperties({permissionState:'closed'});
+      assert.equal(ability.get('can'), false, 'Should not be granted permission');
     });
   });
 });

@@ -119,14 +119,20 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     save(invitation) {
       const potentialPrimary = this.get('potentialPrimary');
 
-      if(potentialPrimary) {
-        if (potentialPrimary === 'cleared') {
-          invitation.set('primary', null);
-        } else {
-          invitation.set('primary', potentialPrimary);
-        }
-      }
       this.get('setRowState')('show');
+      invitation.save().then(()=>{
+        let p;
+        if(potentialPrimary) {
+          if (potentialPrimary === 'cleared') {
+            p = null;
+          } else {
+            p = potentialPrimary.get('id');
+          }
+          return invitation.updatePrimary(p);
+        } else {
+          return Ember.RSVP.resolve();
+        }
+      });
     },
 
     destroyInvitation(invitation) {

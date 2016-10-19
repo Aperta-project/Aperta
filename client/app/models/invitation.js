@@ -65,6 +65,15 @@ export default DS.Model.extend({
     });
   },
 
+  updatePrimary(primaryId) {
+    return this.get('restless')
+    .put(`/api/invitations/${this.get('id')}/update_primary`, {primary_id: primaryId})
+    .then((data) => {
+      this.store.pushPayload(data);
+      return this;
+    });
+  },
+
   decline() {
     let data = {
       'invitation': {

@@ -269,7 +269,8 @@ describe InvitationsController do
   end
 
   context "transitioning state" do
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
     let(:invitation) do
       FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task)

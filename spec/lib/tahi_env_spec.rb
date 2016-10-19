@@ -10,6 +10,8 @@ describe TahiEnv do
     {
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
+      APEX_FTP_ENABLED: 'false',
+      BILLING_FTP_ENABLED: 'false',
       BUGSNAG_API_KEY: 'rails_api_key',
       CAS_ENABLED: 'false',
       DATABASEDOTCOM_CLIENT_ID: 'abc9876',

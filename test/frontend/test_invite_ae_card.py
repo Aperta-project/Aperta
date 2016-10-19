@@ -87,8 +87,7 @@ class InviteAECardTest(CommonTest):
     invite_ae_card.validate_invite(academic_editor_login,
                                           manuscript_title,
                                           creator_user,
-                                          paper_id,
-                                          'imgs/plos.gif')
+                                          paper_id)
     # Invite a second user to delete
     invite_ae_card.validate_invite(pub_svcs_login,
                                       manuscript_title,

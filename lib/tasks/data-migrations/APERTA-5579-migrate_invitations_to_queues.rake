@@ -5,23 +5,27 @@ namespace :data do
       APERTA-5579: Migrates invitations to place them within queues instead of tasks.
     DESC
     task migrate_invitations_to_queues: :environment do
-      Decision.find_each(&:create_invite_queue!)
       Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
         task.paper.decisions.each do |decision|
-          put_invitations_into_queue(decision.invitations, decision.invite_queue)
+          queue = decision.create_invite_queue!(task: task)
+          put_invitations_into_queue(decision.invitations, queue)
         end
       end
       Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
-        queue = task.create_invite_queue!
+        queue = task.create_invite_queue!(task: task)
         put_invitations_into_queue(task.invitations, queue)
       end
     end
   end
 
   def put_invitations_into_queue(invitations, queue)
-    # get grouped invitations and
-    invitations.each do |i|
-      i.update(invite_queue: queue)
+    grouped_primaries = []
+    # get grouped invitations
+    invitations.each do |invite|
+      invite.update(invite_queue: queue)
+      if invite.has_alternates?
+        grouped_primaries << invite
+      end
     end
 
     # get linked primaries, order them by date added

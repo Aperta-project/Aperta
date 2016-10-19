@@ -35,7 +35,7 @@ describe Journal do
       it "destroys journal" do
         expect { journal.destroy }.to change { Journal.count }.by(-1)
       end
-    end
+   end
   end
 
   describe '#last_doi_issued' do
@@ -122,6 +122,41 @@ describe Journal do
       journal = build(:journal)
       expect(journal).to be_valid
       journal.save!
+    end
+  end
+
+  describe '.staff_admins_for_papers' do
+    let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:admin) { FactoryGirl.create(:user) }
+
+    before do
+      admin.assign_to!(role: journal.staff_admin_role, assigned_to: journal)
+    end
+
+    it <<-DESC do
+      finds and returns staff_admins for journals associated with the
+      given papers
+    DESC
+      admins = Journal.staff_admins_for_papers([paper])
+      expect(admins).to eq([admin])
+    end
+  end
+
+  describe '.staff_admins_across_all_journals' do
+    let!(:journal_1) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let!(:journal_2) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let(:admin_1) { FactoryGirl.create(:user) }
+    let(:admin_2) { FactoryGirl.create(:user) }
+
+    before do
+      admin_1.assign_to!(role: journal_1.staff_admin_role, assigned_to: journal_1)
+      admin_2.assign_to!(role: journal_2.staff_admin_role, assigned_to: journal_2)
+    end
+
+    it 'finds and returns staff_admins across all journals' do
+      admins = Journal.staff_admins_across_all_journals
+      expect(admins).to contain_exactly(admin_1, admin_2)
     end
   end
 end

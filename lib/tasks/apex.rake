@@ -8,14 +8,15 @@ namespace :apex do
     filename = args['filename'] || 'test.jpg'
     filepath = args['filepath'] || Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
 
+    host = args['host']
+    user = args['user']
+    password = args['password']
+
+    ftp_url = "ftp://#{CGI.escape(user)}:#{CGI.escape(password)}@#{CGI.escape(host)}"
     FtpUploaderService.new(
-      host: args['host'],
-      passive_mode: true,
-      user: args['user'],
-      password: args['password'],
-      port: 21,
-      filename: filename,
-      filepath: filepath
+      url: ftp_url,
+      final_filename: filename,
+      file_io: File.open(filepath)
     ).upload
   end
 end

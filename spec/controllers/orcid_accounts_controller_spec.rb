@@ -29,6 +29,8 @@ describe OrcidAccountsController do
       get :clear, id: orcid_account.id, format: :json
     end
 
+    it_behaves_like 'an unauthenticated json request'
+
     context 'when the user is signed in' do
       before do
         stub_sign_in(user)
@@ -52,6 +54,8 @@ describe OrcidAccountsController do
     subject(:do_request) do
       get :show, id: orcid_account.id, format: :json
     end
+
+    it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is signed in' do
       before do

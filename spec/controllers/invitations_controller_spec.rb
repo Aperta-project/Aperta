@@ -3,8 +3,8 @@ require "rails_helper"
 class TestTask < Task
   include Invitable
 
-  DEFAULT_TITLE = 'Test Task'
-  DEFAULT_ROLE = 'user'
+  DEFAULT_TITLE = 'Test Task'.freeze
+  DEFAULT_ROLE = 'user'.freeze
 
   def invitation_rescinded(*)
     true
@@ -44,18 +44,79 @@ describe InvitationsController do
     end
   end
 
-  describe 'GET /invitation/:id/update_position/' do
-    subject(:do_request) { get(:show, format: :json, id: invitation.id) }
-    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+  describe 'put /invitation/:id/update_position/' do
+    let!(:invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invite_queue: queue
+    end
+    let!(:other_invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invite_queue: queue
+    end
+
+    subject(:do_request) do
+      put :update_position,
+        format: :json,
+        id: invitation.id,
+        position: 2
+    end
 
     it_behaves_like 'an unauthenticated json request'
-    context 'with a new invitation' do
+    context 'the user is authorized' do
       before { stub_sign_in user }
-      it 'places the invitation at the end of the queue' do
+      it 'calls invite_queue#move_invite_to_position' do
+        allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+        expect(invitation.invite_queue).to receive(:move_invite_to_position).with(invitation, 2)
         do_request
         data = res_body.with_indifferent_access
-        expect(data).to have_key(:invitation)
-        invitation_json = data[:invitation]
+        expect(data[:invitations].length).to eq(2)
+      end
+    end
+  end
+
+  describe 'put /invitation/:id/update_primary/' do
+    let!(:invitation) { FactoryGirl.create(:invitation, task: task, invite_queue: queue, invitee: invitee) }
+    let!(:primary) { FactoryGirl.create(:invitation, task: task, invite_queue: queue, invitee: invitee) }
+    subject(:do_request) do
+      put :update_primary,
+        format: :json,
+        id: invitation.id,
+        primary_id: primary.id
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+    context 'the user is authorized' do
+      before { stub_sign_in user }
+      context 'the primary id is present' do
+        it 'calls invite_queue#assign_primary' do
+          allow(Invitation).to receive(:find).and_return(primary)
+          allow(Invitation).to receive(:find).with(primary.to_param).and_return(primary)
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          expect(invitation.invite_queue).to receive(:assign_primary).with(primary: primary, invite: invitation)
+          put :update_primary,
+            format: :json,
+            id: invitation.id,
+            primary_id: primary.id
+          data = res_body.with_indifferent_access
+          expect(data[:invitations].length).to eq(2)
+        end
+      end
+      context 'the primary id is not present' do
+        it 'calls invite_queue#unassign_primary_from' do
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          expect(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
+
+          put :update_primary,
+            format: :json,
+            id: invitation.id
+
+          data = res_body.with_indifferent_access
+          expect(data[:invitations].length).to eq(2)
+        end
       end
     end
   end
@@ -147,6 +208,7 @@ describe InvitationsController do
           expect(invitation.state).to eq('pending')
           expect(invitation.invitee).to eq(invitee)
           expect(invitation.email).to eq(invitee.email)
+          expect(invitation.invite_queue).to eq(task.active_invite_queue)
         end
       end
     end

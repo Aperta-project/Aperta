@@ -21,35 +21,22 @@ class InvitationsController < ApplicationController
 
   # non restful route for drag and drop changes
   def update_position
-    # you'll get an invite and a new position from the params,
-    # then call invite's invite_queue's move_position or whatever.
-    #
-    # You'll need to eventually return both the updated invite AND
-    # the rest of the invites in the queue
+    invitation.invite_queue.move_invite_to_position(invitation, params[:position])
 
     render json: invitations_in_queue
   end
-  #
+
   # non restful route for assigning and unassigning primaries
   def update_primary
-    # you'll get an invite and a new position from the params,
-    # then call invite's invite_queue's update_primary or whatever.
-    #
-    # You'll need to eventually return both the updated invite AND
-    # the rest of the invites in the queue
-    #
     if params[:primary_id].present?
       new_primary = Invitation.find(params[:primary_id])
       invitation.invite_queue.assign_primary(primary: new_primary, invite: invitation)
     else
-      invitation.invite_queue.unassign_primary(invitation)
+      invitation.invite_queue.unassign_primary_from(invitation)
     end
 
     render json: invitations_in_queue
   end
-
-  # it's not a great example, but the authors controller has examples of updating 
-  # the order of the author list. look at author_list_item
 
   def destroy
     requires_user_can(:manage_invitations, invitation.task)

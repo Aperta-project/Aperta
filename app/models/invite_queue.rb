@@ -35,8 +35,9 @@ class InviteQueue < ActiveRecord::Base
       .map(&:position)
   end
 
-  # This method is never intended to be called on an unpersisted invitation
   def move_invite_to_position(invite, pos)
+    raise_position_error(invite, "unpersisted invitation called") if !invite.persisted?
+
     if valid_positions_for_invite(invite).include? pos
       invite.insert_at(pos)
     else
@@ -119,6 +120,11 @@ class InviteQueue < ActiveRecord::Base
 
   def raise_primary_error(invite, msg)
     invite.errors.add(:primary, msg)
+    raise ActiveRecord::RecordInvalid, invite
+  end
+
+  def raise_position_error(invite, msg)
+    invite.errors.add(:position, msg)
     raise ActiveRecord::RecordInvalid, invite
   end
 end

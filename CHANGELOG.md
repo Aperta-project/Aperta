@@ -8,6 +8,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   inside of changed sentences.
 ### Changed
 - Updated Figures, Supporting Information Files, and Title and Abstract to use new R&P
+- Cover Editors and Handling Editors can no longer view or edit the Billing card
+- Cover Editors and Handling Editors can no longer edit any Reviewer Reports
 ### Deprecated
 ### Removed
 ### Fixed
@@ -15,6 +17,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Uploaded files by dropping them into the browser now longer triggers all visible file uploaders
 - PLOS Biology name is no longer hard coded in letter templates
 - Fixed issue where roles couldn't be assigned in the admin page in some journals
+- Fixed ad-hoc email component to expand properly
+- Notifications when FTP uploads fail are now being emailed out to the Journal Staff Admins for associated papers
 ### Security
 
 ## [1.27.0] - {2016-10-6}

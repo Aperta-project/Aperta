@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def ensure_orcid_acccount!
-    OrcidAccount.find_or_create_by(user_id: id)
+    OrcidAccount.find_or_create_by!(user_id: id)
   end
 
   def created_papers_for_journal(journal)

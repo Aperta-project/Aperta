@@ -171,31 +171,25 @@ class AuthenticatedPage(PlosPage):
     self._overlay_action_button_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a.button-link')
     self._overlay_action_button_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons button.button-primary')
     # Attachment component
-    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
-    #self._fileinput_btn = (By.CLASS_NAME, 'fileinput-button')
     self._replace_attachment = (By.CSS_SELECTOR, 'span.replace-attachment')
-    #self._replace_attachment_input = (By.CSS_SELECTOR, 'input.s3-file-uploader')
-    #self._replace_attachment_input = (By.XPATH, '//span[contains(@class, \'delete-attachment\')]/following-sibling::input')
-    #self._delete_attachment = (By.CSS_SELECTOR, 'span.delete-attachment')
     self._attachment_div = (By.CSS_SELECTOR, 'div.attachment-manager')
     self._att_item = (By.CSS_SELECTOR, 'div.attachment-item')
-
+    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
 
 
   # POM Actions
-  def attch_file(file_name):
+  def attach_file(self, file_name):
     """ """
-    self._get(self._file_attach_btn).send_keys(file_name)
-
+    self._gets(self._file_attach_btn)[0].send_keys(file_name)
     return None
 
-  def delete_attach_file(file_name):
+  def delete_attach_file(self, file_name):
     """ """
-    #from fn takes only last name
-    items = self._get(self._attachment_div).find_elements(self._att_item)
+    items = self._get(self._attachment_div).find_elements(*self._att_item)
     for item in items:
-      pass
-    self._get(self._file_attach_btn).send_keys(file_name)
+      if file_name.split('/')[-1] in item.text:
+        item.find_element(*(By.CSS_SELECTOR, 'span.delete-attachment'))
+        break
     return None
 
   def click_profile_nav(self):

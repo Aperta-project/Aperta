@@ -49,6 +49,11 @@ class InviteCard(BaseCard):
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
     self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
 
+    ###
+    # TEST
+    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    ###
+
   # POM Actions
   def invite(self, user):
     """
@@ -107,29 +112,16 @@ class InviteCard(BaseCard):
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
+
     fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/plos.gif')
-    # Attach a file
-    ##
-
-    self._gets(self._file_attach_btn)[0].send_keys(fn)
-    time.sleep(.5)
-    import pdb; pdb.set_trace()
-
-    # Delete attachment
-    self._get(self._delete_attachment).click()
-    # Replace attached file
-    ## a_2015-08-16_3461.JPG
-    fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/a_2015-08-16_3461.JPG')
-    self._div_attachment = (By.CSS_SELECTOR, 'div.attachment-item')
-
-    replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
-    replace_input.send_keys(fn)
-
-    ##self._get(self._replace_attachment_input).send_keys(fn)
-    ##self._get(self._fileinput_btn).click()
-    #upload_ms_btn = self._get(self._upload_manuscript_btn)
-    #upload_ms_btn.click()
-    import pdb; pdb.set_trace()
+    self.attach_file(fn)
+    time.sleep(3)
+    fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png')
+    self.attach_file(fn)
+    # Wait for file to attach
+    time.sleep(5)
+    self.delete_attach_file(fn)
+    time.sleep(2)
     self._get(self._edit_save_invitation_btn).click()
     time.sleep(1)
     invitees = self._gets(self._invitee_listing)

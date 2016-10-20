@@ -10,15 +10,15 @@ describe InvitationsController do
   let!(:queue) { FactoryGirl.create(:invite_queue, task: task) }
 
   describe 'GET /invitations' do
-    subject(:do_request) { get :index, format: :json }
     let!(:invitation) do
-      FactoryGirl.create(:invitation, :invited, invitee: invitee)
+      FactoryGirl.create(:invitation, :invited, invitee: invitee, invite_queue: queue)
     end
+    subject(:do_request) { get :index, format: :json }
 
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authenticated' do
-      before { stub_sign_in user }
+      before { stub_sign_in invitee }
 
       it 'returns required fields' do
         do_request

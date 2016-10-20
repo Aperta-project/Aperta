@@ -37,7 +37,7 @@ module TahiStandardTasks
     end
 
     def active_invite_queue
-      queue = paper.invite_queue
+      queue = self.invite_queue
       queue = InviteQueue.create(task: self) unless queue
       queue
     end

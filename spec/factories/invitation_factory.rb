@@ -7,7 +7,7 @@ FactoryGirl.define do
     task { create(:invitable_task, paper: paper) }
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
-    decision { paper.draft_decision || paper.new_draft_decision! }
+    decision { build(:decision) }
 
     after(:build) do |invitation, evaluator|
       invitation.email = evaluator.invitee.email if evaluator.invitee

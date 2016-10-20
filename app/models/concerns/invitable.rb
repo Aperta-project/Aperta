@@ -7,7 +7,8 @@ module Invitable
   end
 
   def active_invite_queue
-    invite_queue
+    # noop - To be implemented by other tasks whether invite queues
+    #        are tied to decision or task
   end
 
   # Public: after transition hook for custom task behavior upon

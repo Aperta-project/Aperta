@@ -1,7 +1,7 @@
 {{#unless (eq uiState "edit")}}
   <div class="invitation-item-header" {{action "toggleDetails"}}>
     <div class="invitation-item-full-name">
-      {{#if alternate}}
+      {{#if isAlternate}}
         <i class="fa fa-link alternate-link-icon" aria-hidden="true"></i>
       {{/if}}
       {{#if invitee}}

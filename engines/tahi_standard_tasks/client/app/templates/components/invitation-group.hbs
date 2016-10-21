@@ -10,6 +10,10 @@
   {{/unless}}
 {{/if}}
 
+{{invitation-drop-target index=0
+                     model=invitation
+                     isEditable=true}}
+
 {{#each (sort-by "position" invitations) as |invitation|}}
   {{invitation-detail-row invitation=invitation
                           invitations=invitations

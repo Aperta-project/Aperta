@@ -99,6 +99,13 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
     height: 2px;
     background: #B2B2B2;
   }
+
+  .invitation-item-full-name {
+    padding-left: 3rem;
+    .alternate-link-icon {
+       padding-right: 0.3rem;
+    }
+  }
 }
 
 .invitation-item--disabled {
@@ -176,16 +183,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--closed {
   .invitation-item-body-preview {
     display: block;
-  }
-}
-
-.invitation-item--alternate {
-  .invitation-item-full-name {
-    padding-left: 3rem;
-
-    .alternate-link-icon {
-       padding-right: 0.3rem;
-    }
   }
 }
 

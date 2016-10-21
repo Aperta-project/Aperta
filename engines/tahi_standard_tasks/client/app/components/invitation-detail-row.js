@@ -15,11 +15,18 @@ const {
  */
 
 export default Component.extend(DragNDrop.DraggableMixin, {
-  classNameBindings: [':invitation-item', 'invitationStateClass', 'uiStateClass', 'disabled:invitation-item--disabled'],
+  classNameBindings: [
+    ':invitation-item',
+    'invitationStateClass',
+    'uiStateClass',
+    'disabled:invitation-item--disabled', 'isAlternate:invitation-item--alternate'
+  ],
 
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired
   },
+
+  isAlternate: computed.alias('invitation.primary'),
 
   allowAttachments: true,
   currentRound: computed.not('previousRound'),

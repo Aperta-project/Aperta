@@ -97,6 +97,8 @@ class InviteQueue < ActiveRecord::Base
     if invite.is_alternate?
       primary = invite.primary
       new_position = (primary.alternates.not_pending.maximum(:position) || primary.position) + 1
+    elsif invite.has_alternates?
+      return invite.invite! # Invite with no reordering if primary
     else
       # if there are sent ungrouped primaries, the invite goes below those
       sent_primaries = invitations.not_pending.all.select(&:ungrouped_primary?)

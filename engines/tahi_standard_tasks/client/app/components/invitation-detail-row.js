@@ -127,7 +127,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
       const potentialPrimary = this.get('potentialPrimary');
 
       this.get('setRowState')('show');
-      invitation.save().then(()=>{
+      this.get('saveInvite')(invitation).then(() => {
         let p;
         if(potentialPrimary) {
           if (potentialPrimary === 'cleared') {

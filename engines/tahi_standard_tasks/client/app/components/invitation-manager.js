@@ -157,6 +157,11 @@ export default Ember.Component.extend({
       this.set('selectedUser', selectedUser);
     },
 
+    saveInvite(invitation) {
+      this.set('composedInvitation', null);
+      return invitation.save();
+    },
+
     destroyInvite(invitation) {
       invitation.destroyRecord();
     },

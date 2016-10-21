@@ -37,9 +37,7 @@ module TahiStandardTasks
     end
 
     def active_invite_queue
-      queue = self.invite_queue
-      queue = InviteQueue.create(task: self) unless queue
-      queue
+      self.invite_queue || InviteQueue.create(task: self)
     end
 
     def invitee_role

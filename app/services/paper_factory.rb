@@ -62,7 +62,7 @@ class PaperFactory
       old_role: journal_task_type.old_role,
       notify: false
     )
-    task.paper_creation_hook(paper)
+    task_class.task_added_to_paper(paper)
     task_class.task_added_to_workflow(task)
   end
 

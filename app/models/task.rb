@@ -166,6 +166,10 @@ class Task < ActiveRecord::Base
     def task_added_to_workflow(task)
       # no-op
     end
+
+    def task_added_to_paper(paper)
+      # no-op to be overriden and used in the paper factory
+    end
   end
 
   def journal_task_type
@@ -253,10 +257,6 @@ class Task < ActiveRecord::Base
   # Needed for invitations.
   def invitee_role
     "Override me"
-  end
-
-  def paper_creation_hook(paper)
-    # no-op to be overriden and used in the paper factory
   end
 
   private

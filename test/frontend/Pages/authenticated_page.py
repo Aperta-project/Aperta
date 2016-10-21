@@ -179,16 +179,24 @@ class AuthenticatedPage(PlosPage):
 
   # POM Actions
   def attach_file(self, file_name):
-    """ """
+    """
+    Attach a file to the attach component that is located in Invite AE and other places
+    :param file_name: File name with the full path
+    :return: None
+    """
     self._gets(self._file_attach_btn)[0].send_keys(file_name)
     return None
 
   def delete_attach_file(self, file_name):
-    """ """
+    """
+    Delete a file from the attach component that is located in Invite AE and other places
+    :param file_name: File name with the full path
+    :return: None
+    """
     items = self._get(self._attachment_div).find_elements(*self._att_item)
     for item in items:
       if file_name.split('/')[-1] in item.text:
-        item.find_element(*(By.CSS_SELECTOR, 'span.delete-attachment'))
+        item.find_element(*(By.CSS_SELECTOR, 'span.delete-attachment')).click()
         break
     return None
 

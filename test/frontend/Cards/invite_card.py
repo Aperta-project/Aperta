@@ -48,11 +48,7 @@ class InviteCard(BaseCard):
     self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
     self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
-
-    ###
-    # TEST
     self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
-    ###
 
   # POM Actions
   def invite(self, user):
@@ -112,14 +108,16 @@ class InviteCard(BaseCard):
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
-
+    # Attach a file
     fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/plos.gif')
     self.attach_file(fn)
     time.sleep(3)
+    # Attach a sencond file
     fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png')
     self.attach_file(fn)
     # Wait for file to attach
     time.sleep(5)
+    # Delete the second file from the attach
     self.delete_attach_file(fn)
     time.sleep(2)
     self._get(self._edit_save_invitation_btn).click()

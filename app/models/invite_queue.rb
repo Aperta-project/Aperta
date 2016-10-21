@@ -93,7 +93,6 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def send_invite(invite)
-    return if invite.has_alternates?
     new_position = 0
     if invite.is_alternate?
       primary = invite.primary

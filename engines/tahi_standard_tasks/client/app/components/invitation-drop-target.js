@@ -20,10 +20,11 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
   },
 
   dragEnter(e) {
-    // if(this.notAdjacent(this.get('position'), DragNDrop.dragItem.get('position'))) {
+    if(this.validDropZone()) {
       this.$().addClass('current-drop-target');
-      DragNDrop.cancel(e);
-    // }
+    }
+
+    DragNDrop.cancel(e);
   },
 
   dragLeave() {
@@ -36,13 +37,20 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
 
   drop(e) {
     this.removeDragStyles();
-    this.changePosition(DragNDrop.dragItem, this.get('position'));
-    DragNDrop.dragItem = null;
+    if(this.validDropZone()) {
+      this.get('changePosition')(DragNDrop.dragItem, this.get('position'));
+      DragNDrop.dragItem = null;
+    }
     return DragNDrop.cancel(e);
   },
 
-  changePosition(item, newPosition) {
-    item.set('position', newPosition);
-    item.save();
+  //changePosition(item, newPosition) {
+  //  item.set('position', newPosition);
+  //  item.save();
+  //},
+
+  validDropZone() {
+    return DragNDrop.dragItem.get('validPositionsForInvite')
+                    .includes(this.get('position'));
   }
 });

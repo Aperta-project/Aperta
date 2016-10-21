@@ -9,6 +9,7 @@ const {
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
+  restless: Ember.inject.service(),
 
   // external props
   replaceTargetName: '', // used in template replacements
@@ -140,6 +141,18 @@ export default Ember.Component.extend({
     cancelAction() {
       this.set('selectedUser', null);
       this.set('activeInvitation', null);
+    },
+
+    changePosition(invitation, newPosition) {
+      const url = '/api/invitations/' + invitation.get('id') + '/update_position';
+      this.get('restless').put(url, {
+        invitation: {
+          id: invitation.get('id'),
+          position: newPosition
+        }
+      }).then((response)=> {
+        this.get('store').pushPayload(response);
+      });
     },
 
     composeInvite() {

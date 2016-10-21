@@ -11,6 +11,7 @@
   {{i.group invitations=(if groupByDecision
                             latestDecisionInvitations
                             persistedInvitations)
+            changePosition=(action 'changePosition')
   }}
 
   <div class="invitation-email-entry">

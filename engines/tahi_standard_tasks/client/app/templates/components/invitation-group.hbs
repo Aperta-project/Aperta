@@ -10,11 +10,12 @@
   {{/unless}}
 {{/if}}
 
-{{invitation-drop-target index=0
-                     model=invitation
-                     isEditable=true}}
-
 {{#each (sort-by "position" invitations) as |invitation|}}
+  {{invitation-drop-target position=invitation.position
+                       model=invitation
+                       changePosition=(action changePosition)
+                       isEditable=true}}
+
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
                           setRowState=(action attrs.setRowState invitation)
@@ -26,8 +27,10 @@
                           previousRound=previousRound
                           activeInvitation=activeInvitation
                           activeInvitationState=activeInvitationState}}
-
-  {{invitation-drop-target index=0
-                       model=invitation
-                       isEditable=true}}
 {{/each}}
+
+{{invitation-drop-target position=invitations.lastObject.position
+                         model=invitations.lastObject
+                         changePosition=(action changePosition)
+                         isEditable=true}}
+

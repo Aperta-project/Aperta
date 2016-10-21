@@ -13,11 +13,16 @@ class InvitationSerializer < ActiveModel::Serializer
              :accepted_at,
              :rescinded_at,
              :position,
-             :decision_id
+             :decision_id,
+             :valid_positions_for_invite
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true
   has_many :attachments, embed: :id, polymorphic: true, include: true
   has_one :primary, embed: :id
   has_many :alternates, embed: :id
+
+  def valid_positions_for_invite
+    object.invite_queue.valid_positions_for_invite(object)
+  end
 end

@@ -281,18 +281,69 @@ class DashboardPage(AuthenticatedPage):
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
+  def get_dashboard_ms(self, user):
+    """
+    Get amount of related manuscripts of a user
+    :param user: user name to get related manuscripts
+    :return: A count of active_manuscripts
+    """
+    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (user,))[0][0]
+    # Get count of distinct papers from paper_roles for validating count of manuscripts on
+    # dashboard welcome message
+    active_manuscript_list = []
+    try:
+      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                                'papers.updated_at '
+                                                'FROM assignments '
+                                                'JOIN roles ON assignments.role_id=roles.id '
+                                                'JOIN papers ON '
+                                                'papers.id=assignments.assigned_to_id '
+                                                'WHERE assignments.user_id=%s AND '
+                                                'roles.participates_in_papers=True AND '
+                                                'assignments.assigned_to_type=\'Paper\' AND '
+                                                'papers.publishing_state NOT '
+                                                'IN (\'withdrawn\', \'rejected\', \'submitted\', '
+                                                '\'checking\', \'initially_submitted\', '
+                                                '\'in_revision\', \'invited_for_full_submission\') '
+                                                ';', (uid,))
+      # APERTA-6352 We are not correctly sorting active submitted documents on the dashboard
+      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                               'assignments.created_at '
+                                               'FROM assignments '
+                                               'JOIN roles ON assignments.role_id=roles.id '
+                                               'JOIN papers ON '
+                                               'papers.id=assignments.assigned_to_id '
+                                               'WHERE assignments.user_id=%s AND '
+                                               'roles.participates_in_papers=True AND '
+                                               'assignments.assigned_to_type=\'Paper\' AND '
+                                               'papers.publishing_state '
+                                               'IN (\'submitted\', \'checking\', '
+                                               '\'initially_submitted\', \'in_revision\', '
+                                               '\'invited_for_full_submission\') '
+                                               ';', (uid,))
+      for amt in activ_manu_unsbmtd_tuples:
+        active_manuscript_list.append(amt[0])
+      for amt in active_manu_sbmtd_tuples:
+        active_manuscript_list.append(amt[0])
+      logging.info(active_manuscript_list)
+    except DatabaseError:
+      logging.error('Database access error.')
+      raise
+    return len(active_manuscript_list)
+
+
   def validate_manuscript_section_main_title(self, user):
     """
     Validates the title section of the manuscript presentation part of the page
     This is always present and follows the Invite section if present. The paper
     content of the active and inactive sections are presented separately.
-    :param user: user dictionary for validating Dashboard welcome message
+    :param user: user name for validating Dashboard welcome message
     :return: A tuple containing: (active_manuscripts (a count),
                                   active_manuscript_list (ordered by assignment.created_at),
                                   uid (of user))
     """
     logging.debug(user)
-    username = user['user']
+    username = user
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;',

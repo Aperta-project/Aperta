@@ -37,7 +37,6 @@ users = [creator_login1,
          super_admin_login,
          ]
 
-
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):
   """
@@ -90,22 +89,24 @@ class ManuscriptViewerTest(CommonTest):
       manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=False)
     return self
 
-  def _test_role_aware_menus(self):
+  def test_role_aware_menus(self):
     """
     APERTA-3: Validates role aware menus
     """
-    roles = {creator_login1['email']: 7,
-             creator_login2['email']: 7,
-             creator_login3['email']: 7,
-             creator_login4['email']: 7,
-             creator_login5['email']: 7,
-             reviewer_login['email']: 7,
-             academic_editor_login['email']: 7,
-             handling_editor_login['email']: 8,
-             super_admin_login['email']: 8,
-             staff_admin_login['email']: 8,
-             pub_svcs_login['email']: 7,
-             internal_editor_login['email']: 8,
+    roles = {creator_login1['user']: 7,
+             creator_login2['user']: 7,
+             creator_login3['user']: 7,
+             creator_login4['user']: 7,
+             creator_login5['user']: 7,
+             reviewer_login['user']: 7,
+             academic_editor_login['user']: 7,
+             cover_editor_login['user']: 7,
+             handling_editor_login['user']: 7,
+             super_admin_login['user']: 8,
+             staff_admin_login['user']: 8,
+             pub_svcs_login['user']: 8,
+             internal_editor_login['user']: 8,
+             prod_staff_login['user']: 8,
              }
 
     for user in users:
@@ -114,12 +115,12 @@ class ManuscriptViewerTest(CommonTest):
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
       dashboard_page = self.cas_login(user['email'])
       dashboard_page.set_timeout(120)
-      if dashboard_page.validate_manuscript_section_main_title(user['user']) > 0:
+      if dashboard_page.get_dashboard_ms(user['user']) > 0:
         dashboard_page.restore_timeout()
-        self.select_preexisting_article(init=False, first=True)
+        self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         time.sleep(3)  # needed to give time to retrieve new menu items
-        if user['user'] == academic_editor_login['user']:
+        if user['user'] == academic_editor_login['user'] or user['user'] == cover_editor_login:
           paper_id = manuscript_viewer.get_paper_id_from_url()
           permissions = PgSQL().query('SELECT paper_roles.old_role FROM paper_roles '
                                       'WHERE user_id = %s AND paper_id = %s;', (uid, paper_id))
@@ -130,8 +131,8 @@ class ManuscriptViewerTest(CommonTest):
       else:
         dashboard_page.restore_timeout()
         logging.info('No manuscripts present for user: {0}'.format(user['user']))
-    # Logout
-    dashboard_page.logout()
+      # Logout
+      dashboard_page.logout()
     return self
 
   def test_initial_submission_infobox(self):

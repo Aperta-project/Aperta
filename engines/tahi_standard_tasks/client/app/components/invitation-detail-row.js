@@ -37,8 +37,36 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   disabled: computed('uiState', function(){
     if ((this.get('activeInvitationState') === 'edit') && (this.get('activeInvitation') !== this.get('invitation'))) {
       return true;
+    } else if (this.get('queueHasInvitedOrAccepted')) {
+      return true;
     }
   }),
+
+
+  primary: computed('invitation', function(){
+    let primary = this.get('invitation.primary');
+    if (this.get('invitation.alternates.length')) {
+      primary = this.get('invitation');
+    }
+    return primary;
+  }),
+
+  queueHasInvitedOrAccepted: computed('primary.state', 'primary.alternates.@each.state', function(){
+    if (!this.get('primary')) {
+      return false;
+    }
+    const primaryInvitedOrAccepted = this.invitedOrAccepted(this.get('primary'));
+    const altsHaveInvitedOrAccepted = this.get('primary.alternates').any((inv)=> {
+      return this.invitedOrAccepted(inv);
+    });
+
+    return primaryInvitedOrAccepted || altsHaveInvitedOrAccepted;
+  }),
+
+  invitedOrAccepted(obj) {
+    return obj.get('state') === 'invited' || obj.get('state') === 'accepted';
+  },
+
 
   model: computed.alias('invitation'),
   dragStart(e) {

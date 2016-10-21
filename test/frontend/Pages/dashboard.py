@@ -284,9 +284,10 @@ class DashboardPage(AuthenticatedPage):
   def get_dashboard_ms(self, user):
     """
     Get amount of related manuscripts of a user
-    :param user: user name to get related manuscripts
+    :param user: user dictionary to get related manuscripts
     :return: A count of active_manuscripts
     """
+    user = user['user']
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (user,))[0][0]
     # Get count of distinct papers from paper_roles for validating count of manuscripts on
     # dashboard welcome message
@@ -337,13 +338,13 @@ class DashboardPage(AuthenticatedPage):
     Validates the title section of the manuscript presentation part of the page
     This is always present and follows the Invite section if present. The paper
     content of the active and inactive sections are presented separately.
-    :param user: user name for validating Dashboard welcome message
+    :param user: user dictionary for validating Dashboard welcome message
     :return: A tuple containing: (active_manuscripts (a count),
                                   active_manuscript_list (ordered by assignment.created_at),
                                   uid (of user))
     """
     logging.debug(user)
-    username = user
+    username = user['user']
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;',

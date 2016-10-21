@@ -115,7 +115,7 @@ class ManuscriptViewerTest(CommonTest):
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
       dashboard_page = self.cas_login(user['email'])
       dashboard_page.set_timeout(120)
-      if dashboard_page.get_dashboard_ms(user['user']) > 0:
+      if dashboard_page.get_dashboard_ms(user):
         dashboard_page.restore_timeout()
         self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
@@ -297,7 +297,7 @@ class ManuscriptViewerTest(CommonTest):
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
     # Checking if there is already a manuscript one can use
-    if dashboard_page.validate_manuscript_section_main_title(user)[0]:
+    if dashboard_page.get_dashboard_ms(user):
       self.select_preexisting_article(first=True)
     else:
       # create a new manuscript

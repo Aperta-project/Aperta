@@ -58,7 +58,7 @@ class ReviewerReportTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviate the timeout for conversion success message
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
     research_paper_id = manuscript_page.get_paper_id_from_url()
     # Need to complete cards here
@@ -102,13 +102,16 @@ class ReviewerReportTest(CommonTest):
       dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(research_paper_id)
     self._driver.navigated = True
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    assert paper_viewer.click_task('front_matter_reviewer_report')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    assert manuscript_page.click_task('front_matter_reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report(research_type=False)
+    manuscript_page.click_task('front_matter_reviewer_report')
+    manuscript_page.complete_task('front_matter_reviewer_report')
 
-  def rest_core_rev_rep_research_actions(self):
+
+  def test_core_rev_rep_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the research
       reviewer report.
@@ -130,7 +133,7 @@ class ReviewerReportTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviate the timeout for conversion success message
-    manuscript_page.validate_ihat_conversions_success(timeout=30)
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
     research_paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
@@ -169,11 +172,13 @@ class ReviewerReportTest(CommonTest):
         dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(research_paper_id)
     self._driver.navigated = True
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    assert paper_viewer.click_task('research_reviewer_report')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    assert manuscript_page.click_task('research_reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report()
+    manuscript_page.click_task('research_reviewer_report')
+    manuscript_page.complete_task('research_reviewer_report')
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

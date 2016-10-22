@@ -19,6 +19,7 @@ class ReviewerReportTask(BaseTask):
     # Locators - Instance members
     # Shared Locators
     self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
+    self._question_block = (By.CSS_SELECTOR, 'li.question')
     self._questions = (By.CLASS_NAME, 'question-text')
     self._questions_help = (By.CLASS_NAME, 'question-help')
     self._question_textarea = (By.CSS_SELECTOR, 'li.question > div > textarea')
@@ -32,20 +33,24 @@ class ReviewerReportTask(BaseTask):
     self._q1_majrev_radio = (By.CSS_SELECTOR, 'input[value=\'major_revision\']')
     self._q1_minrev_label = (By.CSS_SELECTOR, 'div.flex-group > label + label + label + label')
     self._q1_minrev_radio = (By.CSS_SELECTOR, 'input[value=\'minor_revision\']')
-    # Yes/no Radio buttons are the same wherever they appear.
-    # Note these must be used with a find to be unique
-    self._yes_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label')
-    self._yes_radio = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label > input')
-    self._no_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label + label')
-    self._no_radio = (By.CSS_SELECTOR,
-                          'div.yes-no-with-comments > div > label + label > input')
     # Research Reviewer Report locators
-    self._res_q2_form = (By.CLASS_NAME, 'reviewer_report--competing_interests--detail')
-    self._res_q3_form = (By.CLASS_NAME, 'reviewer_report--identity')
-    self._res_q4_form = (By.CLASS_NAME, 'reviewer_report--comments_for_author')
-    self._res_q5_form = (By.CLASS_NAME, 'reviewer_report--additional_comments')
-    self._res_q6_form = (By.CLASS_NAME, 'reviewer_report--suitable_for_another_journal--journal')
+    # Note these must be used with a find to be unique
+    self._res_yes_label = (By.CSS_SELECTOR, 'div.ember-view > label')
+    self._res_yes_radio = (By.CSS_SELECTOR, 'div.ember-view > label > input')
+    self._res_no_label = (By.CSS_SELECTOR, 'div.ember-view > label + label')
+    self._res_no_radio = (By.CSS_SELECTOR, 'div.ember-view > label + label > input')
+    self._res_q2_form = (By.NAME, 'reviewer_report--competing_interests--detail')
+    self._res_q3_form = (By.NAME, 'reviewer_report--identity')
+    self._res_q4_form = (By.NAME, 'reviewer_report--comments_for_author')
+    self._res_q5_form = (By.NAME, 'reviewer_report--additional_comments')
+    self._res_q6_form = (By.NAME, 'reviewer_report--suitable_for_another_journal--journal')
     # Front Matter Reviewer Report locators
+    # Note these must be used with a find to be unique
+    self._fm_yes_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label')
+    self._fm_yes_radio = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label > input')
+    self._fm_no_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label + label')
+    self._fm_no_radio = (By.CSS_SELECTOR,
+                      'div.yes-no-with-comments > div > label + label > input')
     self._fm_q2_form = (By.NAME, 'front_matter_reviewer_report--competing_interests')
     self._fm_q3_form = (By.NAME, 'front_matter_reviewer_report--suitable--comment')
     self._fm_q4_form = (By.NAME,
@@ -83,35 +88,35 @@ class ReviewerReportTask(BaseTask):
     minrevlbl = self._get(self._q1_minrev_label)
     assert majrevlbl.text == 'Major Revision', majrevlbl.text
     self.validate_radio_button_label(majrevlbl)
+    question_block_list = self._gets(self._question_block)
+    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
     question_list = self._gets(self._questions)
-    q1, q2, q3, q4, q5, q6 = question_list
     for q in question_list:
       self.validate_application_list_style(q)
     question_help_list = self._gets(self._questions_help)
-    qh2, qh3, qh4, qh5, qh6 = question_help_list
     for qh in question_help_list:
       self.validate_application_ptext(qh)
     # Then the specific styles
     if research_type:
-      q2yeslbl = q2.find_element(*self._yes_label)
+      q2yeslbl = qb2.find_element(*self._res_yes_label)
       assert q2yeslbl.text == 'Yes', q2yeslbl.text
       self.validate_radio_button_label(q2yeslbl)
-      q2yesradio = q2.find_element(*self._yes_radio)
+      q2yesradio = qb2.find_element(*self._res_yes_radio)
       self.validate_radio_button(q2yesradio)
-      q2nolbl = q2.find_element(*self._no_label)
+      q2nolbl = qb2.find_element(*self._res_no_label)
       assert q2nolbl.text == 'No', q2nolbl.text
       self.validate_radio_button_label(q2nolbl)
-      q2noradio = q2.find_element(*self._no_radio)
+      q2noradio = qb2.find_element(*self._res_no_radio)
       self.validate_radio_button(q2noradio)
-      q6yeslbl = q4.find_element(*self._yes_label)
+      q6yeslbl = qb6.find_element(*self._res_yes_label)
       assert q6yeslbl.text == 'Yes', q6yeslbl.text
       self.validate_radio_button_label(q6yeslbl)
-      q6yesradio = q6.find_element(*self._yes_radio)
+      q6yesradio = qb6.find_element(*self._res_yes_radio)
       self.validate_radio_button(q6yesradio)
-      q6nolbl = q6.find_element(*self._no_label)
+      q6nolbl = qb6.find_element(*self._res_no_label)
       assert q6nolbl.text == 'No', q6nolbl.text
       self.validate_radio_button_label(q6nolbl)
-      q6noradio = q6.find_element(*self._no_radio)
+      q6noradio = qb6.find_element(*self._res_no_radio)
       self.validate_radio_button(q6noradio)
       q2rta = self._get(self._res_q2_form)
       self.validate_textarea_style(q2rta)
@@ -124,25 +129,25 @@ class ReviewerReportTask(BaseTask):
       q6rta = self._get(self._res_q6_form)
       self.validate_textarea_style(q6rta)
     else:
-      q3yeslbl = q3.find_element(*self._yes_label)
+      q3yeslbl = qb3.find_element(*self._fm_yes_label)
       assert q3yeslbl.text == 'Yes', q3yeslbl.text
       self.validate_radio_button_label(q3yeslbl)
-      q3yesradio = q3.find_element(*self._yes_radio)
+      q3yesradio = qb3.find_element(*self._fm_yes_radio)
       self.validate_radio_button(q3yesradio)
-      q3nolbl = q3.find_element(*self._no_label)
+      q3nolbl = qb3.find_element(*self._fm_no_label)
       assert q3nolbl.text == 'No', q3nolbl.text
       self.validate_radio_button_label(q3nolbl)
-      q3noradio = q3.find_element(*self._no_radio)
+      q3noradio = qb3.find_element(*self._fm_no_radio)
       self.validate_radio_button(q3noradio)
-      q4yeslbl = q4.find_element(*self._yes_label)
+      q4yeslbl = qb4.find_element(*self._fm_yes_label)
       assert q4yeslbl.text == 'Yes', q4yeslbl.text
       self.validate_radio_button_label(q4yeslbl)
-      q4yesradio = q4.find_element(*self._yes_radio)
+      q4yesradio = qb4.find_element(*self._fm_yes_radio)
       self.validate_radio_button(q4yesradio)
-      q4nolbl = q4.find_element(*self._no_label)
+      q4nolbl = qb4.find_element(*self._fm_no_label)
       assert q4nolbl.text == 'No', q4nolbl.text
       self.validate_radio_button_label(q4nolbl)
-      q4noradio = q4.find_element(*self._no_radio)
+      q4noradio = qb4.find_element(*self._fm_no_radio)
       self.validate_radio_button(q4noradio)
       q2fmta = self._get(self._fm_q2_form)
       self.validate_textarea_style(q2fmta)

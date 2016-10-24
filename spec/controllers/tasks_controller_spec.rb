@@ -20,12 +20,10 @@ describe TasksController, redis: true do
 
   describe "GET #index" do
     subject(:do_request) do
-      get :index, {
-             format: 'json',
-             paper_id: paper.to_param,
-           }
+      get :index, format: 'json',
+                  paper_id: paper.to_param
     end
-    let(:tasks){ [FactoryGirl.build_stubbed(:ad_hoc_task)] }
+    let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -71,15 +69,13 @@ describe TasksController, redis: true do
 
   describe "POST #create" do
     subject(:do_request) do
-      post :create, {
-        format: 'json',
-        task: {
-          type: 'TahiStandardTasks::AuthorsTask',
-          paper_id: paper.to_param,
-          phase_id: paper.phases.last.id,
-          title: 'Verify Signatures'
-        }
-      }
+      post :create, format: 'json',
+                    task: {
+                      type: 'TahiStandardTasks::AuthorsTask',
+                      paper_id: paper.to_param,
+                      phase_id: paper.phases.last.id,
+                      title: 'Verify Signatures'
+                    }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -122,10 +118,10 @@ describe TasksController, redis: true do
     subject(:do_request) do
       xhr(
         :patch,
-        :update, {
-          format: 'json',
-          paper_id: paper.to_param,
-          id: task.to_param, task: { completed: '1' } } )
+        :update, format: 'json',
+                 paper_id: paper.to_param,
+                 id: task.to_param, task: { completed: '1' }
+      )
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -163,12 +159,10 @@ describe TasksController, redis: true do
 
       context "when the user cannot edit the task" do
         subject(:do_unauthorized_request) do
-          xhr :patch, :update, {
-            format: 'json',
-            paper_id: paper.to_param,
-            id: task.to_param,
-            task: { completed: '1' }
-          }
+          xhr :patch, :update, format: 'json',
+                               paper_id: paper.to_param,
+                               id: task.to_param,
+                               task: { completed: '1' }
         end
 
         before do
@@ -217,7 +211,7 @@ describe TasksController, redis: true do
 
   describe "GET #show" do
     let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    subject(:do_request) { get :show, { id: task.id, format: :json } }
+    subject(:do_request) { get :show, id: task.id, format: :json }
     let(:format) { :json }
 
     before do
@@ -263,14 +257,12 @@ describe TasksController, redis: true do
     end
 
     subject(:do_request) do
-      put :send_message, {
-        id: task.id, format: "json",
-        task: {
-          subject: "Hello",
-          body: "Greetings from Vulcan!",
-          recipients: [user.id]
-        }
-      }
+      put :send_message, id: task.id, format: "json",
+                         task: {
+                           subject: "Hello",
+                           body: "Greetings from Vulcan!",
+                           recipients: [user.id]
+                         }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -293,12 +285,12 @@ describe TasksController, redis: true do
 
         expect do
           put :send_message,
-              id: task.id, format: "json",
-              task: {
-                subject: "Hello",
-                body: "Greetings from Vulcan!",
-                recipients: [user.id, user2.id]
-              }
+            id: task.id, format: "json",
+            task: {
+              subject: "Hello",
+              body: "Greetings from Vulcan!",
+              recipients: [user.id, user2.id]
+            }
         end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(2)
       end
     end
@@ -319,7 +311,7 @@ describe TasksController, redis: true do
     let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
     subject(:do_request) do
-      delete :destroy, { id: task.id, format: "json" }
+      delete :destroy, id: task.id, format: "json"
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -360,10 +352,10 @@ describe TasksController, redis: true do
   describe "GET #nested_questions" do
     let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
     let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
-    let(:nested_questions) { [ nested_question ] }
+    let(:nested_questions) { [nested_question] }
 
     subject(:do_request) do
-      get :nested_questions, { task_id: task.id, format: "json" }
+      get :nested_questions, task_id: task.id, format: "json"
     end
 
     before do
@@ -419,17 +411,17 @@ describe TasksController, redis: true do
         owner: nested_question
       )
     end
-    let(:nested_question_answers) { [ nested_question_answer ] }
+    let(:nested_question_answers) { [nested_question_answer] }
 
     subject(:do_request) do
-      get :nested_question_answers, { task_id: task.id, format: "json" }
+      get :nested_question_answers, task_id: task.id, format: "json"
     end
 
     before do
       allow(Task).to receive(:find).with(task.id.to_param).and_return task
     end
 
-    it_behaves_like "an unauthenticated json request"    
+    it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
@@ -447,7 +439,7 @@ describe TasksController, redis: true do
         expect(response_json).to have_key('nested_question_answers')
         expect(response_json['nested_question_answers'].first).to eq(
           NestedQuestionAnswerSerializer.new(
-          nested_question_answer
+            nested_question_answer
           ).as_json[:nested_question_answer].deep_stringify_keys
         )
       end
@@ -469,5 +461,4 @@ describe TasksController, redis: true do
       it { is_expected.to responds_with(403) }
     end
   end
-
 end

@@ -53,8 +53,8 @@ describe TaskFactory do
   end
 
   it "Sets the body from params" do
-    task = TaskFactory.create(klass, paper: paper, phase: phase, body: {key: 'value'})
-    expect(task.body).to eq({'key' => 'value'})
+    task = TaskFactory.create(klass, paper: paper, phase: phase, body: { key: 'value' })
+    expect(task.body).to eq('key' => 'value')
   end
 
   it "Sets the participants from params" do

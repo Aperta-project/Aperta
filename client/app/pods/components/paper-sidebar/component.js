@@ -24,7 +24,6 @@ export default Ember.Component.extend({
     },
 
     submitPaper(){
-      this.get('paper').save();
       this.attrs.showPaperSubmitOverlay();
     }
   }

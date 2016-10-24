@@ -1,9 +1,6 @@
 .flex-group {
   display: flex;
   flex-wrap: wrap;
-
-  // NOTE WUT?
-  height: 100%;
   overflow-y: scroll;
 
   &.flex-group--divider {

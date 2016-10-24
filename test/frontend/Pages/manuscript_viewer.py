@@ -24,6 +24,7 @@ from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
+from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -581,6 +582,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       tasks = self._gets(self._task_headings)
       self.click_covered_element(task)
       time.sleep(2)
+    elif task_name == 'Reviewer Report':
+      review_report =ReviewerReportTask(self._driver)
+      review_report.complete_reviewer_report()
+      # complete_billing task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+        task.click()
+      time.sleep(1)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()

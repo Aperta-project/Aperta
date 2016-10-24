@@ -785,7 +785,7 @@ class AuthenticatedPage(PlosPage):
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
-    assert title.value_of_css_property('line-height') == '19.8px', title.value_of_css_property('line-height')
+    assert title.value_of_css_property('line-height') == '18px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 

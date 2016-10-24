@@ -3,6 +3,8 @@
 
 import logging
 
+from loremipsum import generate_paragraph
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -24,6 +26,10 @@ class ReviewerReportTask(BaseTask):
     self._questions_help = (By.CLASS_NAME, 'question-help')
     self._question_textarea = (By.CSS_SELECTOR, 'li.question > div > textarea')
     self._submit_button = (By.CLASS_NAME, 'button-primary')
+    self._submit_confirm_text = (By.CLASS_NAME, 'reviewer-report-confirmation')
+    self._submit_confirm_yes_btn = (By.CSS_SELECTOR, 'div.reviewer-report-confirmation > button')
+    self._submit_confirm_no_btn = (By.CSS_SELECTOR,
+                                   'div.reviewer-report-confirmation > button + button')
     # Question one is the same regardless front-matter or research type - all other questions differ
     self._q1_accept_label = (By.CSS_SELECTOR, 'div.flex-group > label')
     self._q1_accept_radio = (By.CSS_SELECTOR, 'input[value=\'accept\']')
@@ -159,6 +165,24 @@ class ReviewerReportTask(BaseTask):
       self.validate_textarea_style(q5fmta)
       q6fmta = self._get(self._fm_q6_form)
       self.validate_textarea_style(q6fmta)
+    submit_btn = self._get(self._submit_button)
+    assert submit_btn.text == 'SUBMIT THIS REPORT', submit_btn.text
+    self.validate_primary_big_green_button_style(submit_btn)
+    # Need to move to an appropriate place so this button is not under the toolbar.
+    self._actions.move_to_element(qb6).perform()
+    submit_btn.click()
+    confirm_text = self._get(self._submit_confirm_text)
+    assert 'Once you submit the report, you will no longer be able to edit it. Are you sure?' in \
+           confirm_text.text, confirm_text.text
+    # APERTA-8079
+    # self.validate_application_h4_style(confirm_text)
+    confirm_yes = self._get(self._submit_confirm_yes_btn)
+    assert confirm_yes.text == 'YES, I\u2019M SURE', confirm_yes.text
+    self.validate_primary_big_green_button_style(confirm_yes)
+    confirm_no = self._get(self._submit_confirm_no_btn)
+    assert confirm_no.text == 'NOPE', confirm_no.text
+    self.validate_secondary_big_green_button_style(confirm_no)
+    confirm_no.click()
 
   def validate_reviewer_report(self, research_type=True):
     """
@@ -238,3 +262,82 @@ class ReviewerReportTask(BaseTask):
     assert submit_button.text == u'SUBMIT THIS REPORT', submit_button.text
     self.validate_primary_big_green_button_style(submit_button)
     # TODO: Check options when APERTA-7321 is ready
+
+  def complete_reviewer_report(self):
+    """
+    Completes and submits the reviewer report
+    :return: void function
+    """
+    research_type = False
+    self._wait_for_element(self._get(self._review_note))
+    review_note = self._get(self._review_note)
+    if u'Please refer to our referee guidelines for detailed instructions.' in review_note.text:
+      research_type=True
+    question_block_list = self._gets(self._question_block)
+    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    if research_type:
+      q2radval = self.get_random_bool()
+      if q2radval:
+        q2yesradio = qb2.find_element(*self._res_yes_radio)
+        q2yesradio.click()
+      else:
+        q2noradio = qb2.find_element(*self._res_no_radio)
+        q2noradio.click()
+      q2rta = self._get(self._res_q2_form)
+      q2response = generate_paragraph()
+      q2rta.send_keys(q2response)
+      q3rta = self._get(self._res_q3_form)
+      q3response = generate_paragraph()
+      q3rta.send_keys(q3response)
+      q4rta = self._get(self._res_q4_form)
+      q4response = generate_paragraph()
+      q4rta.send_keys(q4response)
+      q5rta = self._get(self._res_q5_form)
+      q5response = generate_paragraph()
+      q5rta.send_keys(q5response)
+      q6radval = self.get_random_bool()
+      if q6radval:
+        q6yesradio = qb6.find_element(*self._res_yes_radio)
+        q6yesradio.click()
+      else:
+        q6noradio = qb6.find_element(*self._res_no_radio)
+        q6noradio.click()
+      q6rta = self._get(self._res_q6_form)
+      q6response = generate_paragraph()
+      q6rta.send_keys(q6response)
+    else:
+      q2fmta = self._get(self._fm_q2_form)
+      q2response = generate_paragraph()
+      q2fmta.send_keys(q2response)
+      q3radval = self.get_random_bool()
+      if q3radval:
+        q3yesradio = qb3.find_element(*self._fm_yes_radio)
+        q3yesradio.click()
+      else:
+        q3noradio = qb3.find_element(*self._fm_no_radio)
+        q3noradio.click()
+      q3fmta = self._get(self._fm_q3_form)
+      q3response = generate_paragraph()
+      q3fmta.send_keys(q3response)
+      q4radval = self.get_random_bool()
+      if q4radval:
+        q4yesradio = qb4.find_element(*self._fm_yes_radio)
+        q4yesradio.click()
+      else:
+        q4noradio = qb4.find_element(*self._fm_no_radio)
+        q4noradio.click()
+      q4fmta = self._get(self._fm_q4_form)
+      q4response = generate_paragraph()
+      q4fmta.send_keys(q4response)
+      q5fmta = self._get(self._fm_q5_form)
+      q5response = generate_paragraph()
+      q5fmta.send_keys(q5response)
+      q6fmta = self._get(self._fm_q6_form)
+      q6response = generate_paragraph()
+      q6fmta.send_keys(q6response)
+    submit_report_btn = self._get(self._submit_button)
+    submit_report_btn.click()
+
+    self._wait_for_element(self._get(self._submit_confirm_yes_btn))
+    confirm_yes = self._get(self._submit_confirm_yes_btn)
+    confirm_yes.click()

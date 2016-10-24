@@ -114,22 +114,37 @@ describe InvitationsController do
           allow(Invitation).to receive(:find).with(primary.to_param).and_return(primary)
           allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
           expect(invitation.invite_queue).to receive(:assign_primary).with(primary: primary, invite: invitation)
-          put :update_primary,
-            format: :json,
-            id: invitation.id,
-            primary_id: primary.id
+
+          do_request
+        end
+
+        it "responds with all the invitations in the invite queue" do
+          do_request
           data = res_body.with_indifferent_access
           expect(data[:invitations].length).to eq(2)
         end
       end
 
       context 'the primary id is not present' do
-        it 'calls invite_queue#unassign_primary_from' do
-          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-          expect(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
+        subject(:do_request) do
           put :update_primary,
             format: :json,
             id: invitation.id
+        end
+
+        before do
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          allow(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
+        end
+
+        it 'calls invite_queue#unassign_primary_from' do
+          expect(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
+          do_request
+        end
+
+        it "responds with all the invitations in the invite queue" do
+          do_request
+
           data = res_body.with_indifferent_access
           expect(data[:invitations].length).to eq(2)
         end

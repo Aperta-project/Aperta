@@ -47,14 +47,15 @@ module Authorizations
     # Authorizations::Authorization object.
     def construct_query_for_auth_config(auth_config)
       reflection = auth_config.reflection
+      args = {
+        target: target,
+        auth_config: auth_config,
+        assignments_table: assignments_table,
+        klass: klass
+      }
 
       if auth_config.assignment_to <=> @klass
-        ObjectsAuthorizedViaSelfQuery.new(
-          target: target,
-          auth_config: auth_config,
-          assignments_table: assignments_table,
-          klass: klass
-        )
+        ObjectsAuthorizedViaSelfQuery.new(args)
 
       elsif reflection.nil?
         fail MissingAssociationForAuthConfiguration, <<-ERROR.strip_heredoc
@@ -66,28 +67,13 @@ module Authorizations
         ERROR
 
       elsif reflection.respond_to?(:through_options)
-        ObjectsAuthorizedViaThroughAssociationQuery.new(
-          target: target,
-          auth_config: auth_config,
-          assignments_table: assignments_table,
-          klass: klass
-        )
+        ObjectsAuthorizedViaThroughAssociationQuery.new(args)
 
       elsif reflection.collection? || reflection.has_one?
-        ObjectsAuthorizedViaCollectionQuery.new(
-          target: target,
-          auth_config: auth_config,
-          assignments_table: assignments_table,
-          klass: klass
-        )
+        ObjectsAuthorizedViaCollectionQuery.new(args)
 
       elsif reflection.belongs_to?
-        ObjectsAuthorizedViaBelongsToQuery.new(
-          target: target,
-          auth_config: auth_config,
-          assignments_table: assignments_table,
-          klass: klass
-        )
+        ObjectsAuthorizedViaBelongsToQuery.new(args)
 
       else
         fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"

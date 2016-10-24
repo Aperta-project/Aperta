@@ -112,7 +112,6 @@ describe JournalFactory, flaky: true do
         context 'has Paper permission to' do
           let(:paper_actions) do
             [
-              'edit',
               'submit',
               'view',
               'withdraw'
@@ -125,6 +124,13 @@ describe JournalFactory, flaky: true do
                 permissions_on_paper.find_by(action: action)
               ), action
             end
+          end
+
+          it ':edit' do
+            expect(permissions).to include(
+              permissions_on_paper_with_editable_paper_states
+                .find_by(action: 'edit')
+            )
           end
 
           it ':edit_authors' do

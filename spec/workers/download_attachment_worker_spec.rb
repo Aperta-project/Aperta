@@ -8,6 +8,16 @@ describe DownloadAttachmentWorker, redis: true do
     let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
     let(:user) { FactoryGirl.build_stubbed(:user) }
 
+    describe ".download_attachment" do
+      it "sets the attachment to processing and queues up sidekiq job" do
+        expect(attachment).to receive(:update_attribute)
+          .with(:status, Attachment::STATUS_PROCESSING)
+        expect(described_class).to receive(:perform_async)
+          .with(attachment.id, url, user.id)
+        described_class.download_attachment(attachment, url, user)
+      end
+    end
+
     context "with a user and attachment" do
       before do
         allow(User).to receive(:find)

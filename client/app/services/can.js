@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
-var Ability = Ember.Object.extend({
+export var Ability = Ember.Object.extend({
   name: null,
   resource: null,
   permissions:null,
 
-  can: Ember.computed('name', 'resource', 'permissions', function(){
+  can: Ember.computed('name', 'resource', 'resource.permissionState', 'permissions', function(){
     if (!this.get('permissions')){
       return false;
     }

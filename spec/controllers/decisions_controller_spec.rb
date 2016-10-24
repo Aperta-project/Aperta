@@ -6,39 +6,75 @@ describe DecisionsController do
   let!(:revise_manuscript_task) { create :revise_task, paper: paper }
 
   describe '#index' do
+    let(:paper) { FactoryGirl.create(:paper) }
+    let!(:decision_1) { FactoryGirl.create(:decision, paper: paper) }
+    let!(:decision_2) { FactoryGirl.create(:decision, :pending, paper: paper) }
+
     subject(:do_request) do
       xhr :get, :index, format: :json, paper_id: paper.id
     end
 
     it_behaves_like 'an unauthenticated json request'
 
-    context 'when the user is authorized' do
+    context 'when the user is authorized to :view the paper' do
+      let(:decisions_in_response) do
+        res_body.with_indifferent_access[:decisions]
+      end
+      let(:decision_ids_in_response) do
+        decisions_in_response.map { |h| h[:id] }
+      end
+
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view_decisions, paper)
+          .with(:view, paper)
           .and_return true
-        do_request
+        allow(user).to receive(:can?)
+          .with(:view_decisions, paper)
+          .and_return false
       end
 
-      it 'returns decision fields' do
-        expect(response.status).to eq(200)
+      it 'includes only completed decisions in the response' do
+        do_request
+        expect(decision_ids_in_response).to contain_exactly(decision_1.id)
+      end
+
+      context 'and the user can also :view_decisions on the paper' do
+        before do
+          allow(user).to receive(:can?)
+            .with(:view_decisions, paper)
+            .and_return true
+        end
+
+        it 'includes all decisions in the response' do
+          do_request
+          expect(decision_ids_in_response).to contain_exactly(
+            decision_1.id,
+            decision_2.id
+          )
+        end
+      end
+
+      it 'responds with decision fields' do
+        do_request
 
         data = res_body.with_indifferent_access
         expect(data).to have_key(:decisions)
 
-        decision_json = data[:decisions][0]
+        decision_json = decisions_in_response[0]
         expect(decision_json).to have_key(:author_response)
         expect(decision_json).to have_key(:draft)
         expect(decision_json).to have_key(:major_version)
       end
+
+      it { is_expected.to responds_with(200) }
     end
 
-    context 'when the user does not have access' do
+    context 'when the user does not have access to :view the paper' do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view_decisions, paper)
+          .with(:view, paper)
           .and_return false
       end
 

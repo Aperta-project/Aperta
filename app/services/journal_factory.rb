@@ -41,7 +41,7 @@ class JournalFactory
   def ensure_default_roles_and_permissions_exist
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
       # Paper
-      role.ensure_permission_exists(:edit, applies_to: Paper)
+      role.ensure_permission_exists(:edit, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)

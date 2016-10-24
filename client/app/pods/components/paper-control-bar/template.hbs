@@ -51,7 +51,7 @@
       {{fa-icon icon="ellipsis-v"}}
       More
     {{/popover.trigger}}
-    {{#popover.content class="popover-menu add-new-author-dropdown"}}
+    {{#popover.content}}
       <div class="popover-menu-content">
         {{#unless paperWithdrawn}}
           {{#if (can "withdraw" paper)}}

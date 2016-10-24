@@ -22,7 +22,9 @@ class InvitationsController < ApplicationController
   # non restful route for drag and drop changes
   def update_position
     requires_user_can(:manage_invitations, invitation.task)
-    invitation.invite_queue.move_invite_to_position(invitation, invitation_update_params[:position])
+    invitation.invite_queue.move_invite_to_position(
+      invitation, params[:position]
+    )
 
     render json: invitations_in_queue
   end
@@ -136,7 +138,7 @@ class InvitationsController < ApplicationController
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:id, :body, :email, :position)
+      .permit(:id, :body, :email)
   end
 
   def task

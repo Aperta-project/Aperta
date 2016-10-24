@@ -68,12 +68,11 @@ export default DS.Model.extend({
   },
 
   updatePrimary(primaryId) {
-    return this.get('restless')
-    .put(`/api/invitations/${this.get('id')}/update_primary`, {primary_id: primaryId})
-    .then((data) => {
-      this.store.pushPayload(data);
-      return this;
-    });
+    return this.get('restless').putUpdate(this, '/update_primary', { primary_id: primaryId });
+  },
+
+  changePosition(newPosition) {
+    return this.get('restless').putUpdate(this, '/update_position', { position: newPosition });
   },
 
   decline() {

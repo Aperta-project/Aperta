@@ -212,6 +212,14 @@ describe InvitationsController do
     end
   end
 
+  describe 'PUT /invitations/:id' do
+    it "does not update the invitation's primary" do
+    end
+
+    it "does not update the invitation's position" do
+    end
+  end
+
   describe 'POST /invitations' do
     subject(:do_request) do
       post(

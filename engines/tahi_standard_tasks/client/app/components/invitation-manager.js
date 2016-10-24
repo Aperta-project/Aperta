@@ -144,15 +144,7 @@ export default Ember.Component.extend({
     },
 
     changePosition(invitation, newPosition) {
-      const url = '/api/invitations/' + invitation.get('id') + '/update_position';
-      this.get('restless').put(url, {
-        invitation: {
-          id: invitation.get('id'),
-          position: newPosition
-        }
-      }).then((response)=> {
-        this.get('store').pushPayload(response);
-      });
+      invitation.changePosition(newPosition);
     },
 
     composeInvite() {

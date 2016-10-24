@@ -96,8 +96,8 @@ describe TasksController, redis: true do
         expect { do_request }.to change(Task, :count).by 1
       end
 
-      it "calls the task class's task_added_to_workflow hook with the task" do
-        expect(TahiStandardTasks::AuthorsTask).to receive(:task_added_to_workflow)
+      it "uses the TaskFactory to create the new task" do
+        expect(TaskFactory).to receive(:create)
         do_request
       end
     end

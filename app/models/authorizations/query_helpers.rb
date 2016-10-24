@@ -25,27 +25,12 @@ module Authorizations
     # Arel doesn't provide a nice way to union more than two queries so
     # this method gets around that by accepting a list of Arel ASTs to
     # union.
-    def union(*args)
-      if args.length == 1 && args.first.is_a?(Array)
-        first = args.first.first
-        list = args.first[1..-1]
-      elsif args.length == 1
-        first = args.first
-        list = []
-        # we have a single arel node with no list?
-      elsif args.length == 2
-        first = args.first
-        list = args.last
+    def union(list)
+      raise ArgumentError unless list.is_a?(Array)
+      if list.size == 1
+        return list[0]
       else
-        fail "I don't know what's going on"
-      end
-
-      if list.blank?
-        return first
-      elsif list.count == 1
-        return first.union(list.first)
-      else
-        return Arel::Nodes::Union.new(first, union(list.first, list[1..-1]))
+        return Arel::Nodes::Union.new(list[0], union(list[1..-1]))
       end
     end
   end

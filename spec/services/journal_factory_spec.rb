@@ -49,6 +49,9 @@ describe JournalFactory, flaky: true do
       [PlosBilling::BillingTask] +
         PlosBilling::BillingTask.descendants
     end
+    let(:restricted_invite_klasses) do
+      [TahiStandardTasks::PaperEditorTask]
+    end
     let(:reviewer_report_klasses) do
       [TahiStandardTasks::ReviewerReportTask] +
         TahiStandardTasks::ReviewerReportTask.descendants
@@ -306,7 +309,7 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'Task permissions' do
-          let(:task_klasses) { ::Task.descendants - billing_task_klasses }
+          let(:task_klasses) { ::Task.descendants - billing_task_klasses - restricted_invite_klasses }
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -
@@ -524,7 +527,7 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'Task permissions' do
-          let(:task_klasses) { ::Task.descendants - billing_task_klasses }
+          let(:task_klasses) { ::Task.descendants - billing_task_klasses - restricted_invite_klasses }
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -

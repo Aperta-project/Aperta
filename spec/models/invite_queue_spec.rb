@@ -304,17 +304,6 @@ describe InviteQueue do
   end
 
   describe "#send_invite" do
-    let(:queue) do
-      make_queue [
-        ungrouped_1, # 1
-      ]
-    end
-
-    it "calls 'invite!'" do
-      expect(ungrouped_1).to receive(:invite!)
-      queue.send_invite(ungrouped_1)
-    end
-
     context "the invite is an ungrouped primary" do
       context "there are existing sent invitations" do
         let(:queue) do
@@ -330,6 +319,11 @@ describe InviteQueue do
         it "gets repositioned to the bottom of the sent invitations" do
           queue.send_invite(ungrouped_2)
           expect(ungrouped_2.reload.position).to eq(4)
+        end
+
+        it "calls 'invite!'" do
+          expect(ungrouped_2).to receive(:invite!)
+          queue.send_invite(ungrouped_2)
         end
       end
 
@@ -362,6 +356,11 @@ describe InviteQueue do
         queue.send_invite(group_2_primary)
         expect(group_2_primary.reload.position).to eq(1)
       end
+
+      it "calls 'invite!'" do
+        expect(group_2_primary).to receive(:invite!)
+        queue.send_invite(group_2_primary)
+      end
     end
 
     context "the invite is an alternate" do
@@ -386,6 +385,11 @@ describe InviteQueue do
 
         queue.send_invite(g1_alternate_1.reload) # reload since acts_as_list has changed its position
         expect(g1_alternate_1.reload.position).to eq(2)
+      end
+
+      it "calls 'invite!'" do
+        expect(g2_alternate_3).to receive(:invite!)
+        queue.send_invite(g2_alternate_3)
       end
     end
   end

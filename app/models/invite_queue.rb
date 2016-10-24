@@ -36,7 +36,7 @@ class InviteQueue < ActiveRecord::Base
   end
 
   def move_invite_to_position(invite, pos)
-    raise_position_error(invite, "unpersisted invitation called") if !invite.persisted?
+    raise_position_error(invite, "unpersisted invitation called") unless invite.persisted?
 
     if valid_positions_for_invite(invite).include? pos
       invite.insert_at(pos)
@@ -57,7 +57,7 @@ class InviteQueue < ActiveRecord::Base
     raise_primary_error(invite, "alternates must be ungrouped before being reassigned") if invite.is_alternate?
     raise_primary_error(invite, "a primary with alternates must be ungrouped before being reassigned") if invite.has_alternates?
     raise_primary_error(invite, "an alternate cannot be assigned as a primary") if primary.is_alternate?
-    raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") if !invite.pending?
+    raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") unless invite.pending?
 
     if primary.has_alternates?
       last_alternate = primary.alternates.maximum(:position)
@@ -72,7 +72,7 @@ class InviteQueue < ActiveRecord::Base
   def unassign_primary_from(invite)
     raise_primary_error(invite, "invite already has no primary") if invite.primary.blank?
     raise_primary_error(invite, "a primary with alternates is not valid for unassigning") if invite.has_alternates?
-    raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") if !invite.pending?
+    raise_primary_error(invite, "sent invitations cannot have their primary assignment changed") unless invite.pending?
 
     existing_primary = invite.primary
     invite.update(primary: nil)
@@ -87,33 +87,42 @@ class InviteQueue < ActiveRecord::Base
     raise_primary_error(invite, "a primary with alternates cannot be removed") if invite.has_alternates?
 
     invite.remove_from_list
+    existing_primary = invite.primary
 
     invite.update(primary: nil, invite_queue: nil)
-    invite.primary.move_to_bottom if invite.primary.try(:ungrouped_primary?)
+    existing_primary.move_to_bottom if existing_primary.try(:ungrouped_primary?)
   end
 
   def send_invite(invite)
-    new_position = 0
-    if invite.is_alternate?
-      primary = invite.primary
-      new_position = (primary.alternates.not_pending.maximum(:position) || primary.position) + 1
-    elsif invite.has_alternates?
-      return invite.invite! # Invite with no reordering if primary
-    else
-      # if there are sent ungrouped primaries, the invite goes below those
-      sent_primaries = invitations.not_pending.all.select(&:ungrouped_primary?)
-      if sent_primaries.present?
-        new_position = sent_primaries.max_by(&:position).position + 1
-      else
-        # if there are none, the invite goes below the last grouped invite
-        new_position = (invitations.grouped_alternates.maximum(:position) || 0) + 1
-      end
-    end
+    # Grouped primaries don't get reordered, just sent
+    return invite.invite! if invite.has_alternates?
+
+    new_position = if invite.is_alternate?
+                     sent_alternate_position(invite)
+                   else
+                     sent_ungrouped_invite_position
+                   end
     invite.invite!
     invite.insert_at(new_position)
   end
 
   private
+
+  def sent_alternate_position(invite)
+    primary = invite.primary
+    (primary.alternates.not_pending.maximum(:position) || primary.position) + 1
+  end
+
+  def sent_ungrouped_invite_position
+    # if there are sent ungrouped primaries, the invite goes below those
+    sent_primaries = invitations.not_pending.all.select(&:ungrouped_primary?)
+    if sent_primaries.present?
+      sent_primaries.max_by(&:position).position + 1
+    else
+      # if there are none, the invite goes below the last grouped invite
+      (invitations.grouped_alternates.maximum(:position) || 0) + 1
+    end
+  end
 
   def raise_primary_error(invite, msg)
     invite.errors.add(:primary, msg)

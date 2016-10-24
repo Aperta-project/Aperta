@@ -25,6 +25,9 @@ class Invitation < ActiveRecord::Base
   acts_as_list scope: :invite_queue, add_new_at: :bottom
 
   scope :not_pending, -> { where.not(state: "pending") }
+  scope :pending, -> { where(state: "pending") }
+  scope :rescinded, -> { where(state: "rescinded") }
+  scope :invited, -> { where(state: "invited") }
   scope :grouped_alternates, -> { where.not(primary: nil) }
 
   def ungrouped_primary?

@@ -19,6 +19,7 @@ namespace :data do
   end
 
   def put_invitations_into_queue(invitations, queue)
+    queue_invitations = []
     grouped_primaries = []
     # get grouped invitations
     invitations.each do |invite|
@@ -28,8 +29,19 @@ namespace :data do
       end
     end
 
-    # get linked primaries, order them by date added
-    # for each primary, get the alternates, order first by pending/sent, then by date added
+    # put grouped primaries and alternates in queue
+    grouped_primaries.each do |primary|
+      queue_invitations << primary
+      queue_invitations << primary.alternates.rescinded
+      queue_invitations << primary.alternates.invited
+      queue_invitations << primary.alternates.pending
+    end
+
+    remaining_invitations = invitations - queue_invitations
+    queue_invitations += remaining_invitations
+
+    queue.invitations = queue_invitations
+    queue.save
   end
 
   desc <<-DESC

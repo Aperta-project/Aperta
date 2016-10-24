@@ -70,7 +70,7 @@ module Authorizations
   #
   # This means that we need to find all assignments for Joe, JOIN on
   # roles, JOIN on permissions, JOIN on permission_states and then only include
-  # those records where the permissions.applies_to matches Paper.
+  # those records where the permissions.applies_to matches Task.
   #
   # Remember, this is just to get a list of Assignment(s) that _might_ give Joe
   # access. We don't know for sure yet, onto step 2.
@@ -79,7 +79,7 @@ module Authorizations
   #
   # ==== Step 2
   #
-  # Once we have the set of assignments which could give a user access to an \
+  # Once we have the set of assignments which could give a user access to \
   # an object we need to then look at all of the Authorization paths. The
   # Authorization paths tell us how to get from the kind of object the user
   # is assigned to, to the kind of object that the user is querying for.

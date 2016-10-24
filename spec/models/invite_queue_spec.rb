@@ -198,7 +198,7 @@ describe InviteQueue do
         ]
       end
 
-      it "unassigns the primary" do
+      it "The alternate should no longer be linked as an alternate" do
         small_queue.unassign_primary_from(g1_alternate_1)
         expect(g1_alternate_1.reload.primary).to be_blank
       end
@@ -219,12 +219,15 @@ describe InviteQueue do
         ]
       end
 
-      it "unassigns the primary" do
+      it "The alternate should no longer be linked as an alternate" do
         small_queue.unassign_primary_from(g1_alternate_1)
         expect(g1_alternate_1.reload.primary).to be_blank
       end
 
-      it "moves the newly-ungrouped primary and the ungrouped invite to the bottom of the list" do
+      it <<-DESC.strip_heredoc do
+        moves the newly-ungrouped primary and the ungrouped invite to the bottom of the list.
+        The ungrouped primary is now just another regular invitation
+      DESC
         small_queue.unassign_primary_from(g1_alternate_1)
         expect(group_1_primary.reload.position).to eq(2)
         expect(g1_alternate_1.reload.position).to eq(3)
@@ -241,7 +244,7 @@ describe InviteQueue do
         ]
       end
 
-      it "removes the invite from the list and repositions the other items" do
+      it "removes the invite from the list and repositions the other invites" do
         small_queue.remove_invite(ungrouped_1)
         expect(small_queue.invitations.pluck(:id)).to_not include(ungrouped_1.id)
         expect(ungrouped_2.reload.position).to eq(1)
@@ -292,7 +295,8 @@ describe InviteQueue do
           g1_alternate_1, # 2
         ]
       end
-      it "blows up" do
+
+      it "blows up. invites must be first ungrouped before they can be removed from the queue" do
         expect { small_queue.remove_invite(group_1_primary) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end

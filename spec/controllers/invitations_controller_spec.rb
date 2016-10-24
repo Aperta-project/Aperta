@@ -42,6 +42,7 @@ describe InvitationsController do
         task: task,
         invite_queue: queue
     end
+
     let!(:other_invitation) do
       FactoryGirl.create :invitation,
         invitee: invitee,
@@ -65,6 +66,7 @@ describe InvitationsController do
           .with(:manage_invitations, task)
           .and_return true
       end
+
       it 'calls invite_queue#move_invite_to_position' do
         allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
         expect(invitation.invite_queue).to receive(:move_invite_to_position).with(invitation, 2)
@@ -72,6 +74,7 @@ describe InvitationsController do
         data = res_body.with_indifferent_access
         expect(data[:invitations].length).to eq(2)
       end
+
       context "when the user does not have access" do
         before do
           stub_sign_in user
@@ -106,7 +109,6 @@ describe InvitationsController do
       end
 
       context 'the primary id is present' do
-
         it 'calls invite_queue#assign_primary' do
           allow(Invitation).to receive(:find).and_return(primary)
           allow(Invitation).to receive(:find).with(primary.to_param).and_return(primary)
@@ -119,11 +121,9 @@ describe InvitationsController do
           data = res_body.with_indifferent_access
           expect(data[:invitations].length).to eq(2)
         end
-
       end
 
       context 'the primary id is not present' do
-
         it 'calls invite_queue#unassign_primary_from' do
           allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
           expect(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
@@ -133,7 +133,6 @@ describe InvitationsController do
           data = res_body.with_indifferent_access
           expect(data[:invitations].length).to eq(2)
         end
-
       end
 
       context "when the user does not have access" do
@@ -144,7 +143,6 @@ describe InvitationsController do
         end
 
         it { is_expected.to responds_with(403) }
-
       end
     end
   end

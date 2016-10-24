@@ -11,7 +11,7 @@ FactoryGirl.define do
 
     after(:build) do |invitation, evaluator|
       invitation.email = evaluator.invitee.email if evaluator.invitee
-      #invitation.body = "You've been invited to"
+      invitation.body = "You've been invited to"
     end
 
     # Ensure that these associations are saved if necessary.

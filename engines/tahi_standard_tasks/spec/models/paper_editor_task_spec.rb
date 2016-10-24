@@ -12,10 +12,12 @@ describe TahiStandardTasks::PaperEditorTask do
 
   describe "#invitation_invited" do
     let!(:task) do
-      described_class.create!(paper: paper,
-                              phase: paper.phases.first,
-                              title: "Invite Editor",
-                              old_role: "admin")
+      described_class.create!(
+        paper: paper,
+        phase: paper.phases.first,
+        title: "Invite Editor",
+        old_role: "admin"
+      )
     end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
@@ -35,10 +37,12 @@ describe TahiStandardTasks::PaperEditorTask do
     end
 
     let!(:task) do
-      described_class.create!(paper: paper,
-                              phase: paper.phases.first,
-                              title: "Invite Editor",
-                              old_role: "admin")
+      described_class.create!(
+        paper: paper,
+        phase: paper.phases.first,
+        title: "Invite Editor",
+        old_role: "admin"
+      )
     end
 
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
@@ -65,10 +69,12 @@ describe TahiStandardTasks::PaperEditorTask do
 
     subject(:invitation_template) { task.invitation_template }
     let!(:task) do
-      described_class.create!(paper: paper,
-                              phase: paper.phases.first,
-                              title: 'Invite Editor',
-                              old_role: 'admin')
+      described_class.create!(
+        paper: paper,
+        phase: paper.phases.first,
+        title: 'Invite Editor',
+        old_role: 'admin'
+      )
     end
 
     it 'has a salutation' do

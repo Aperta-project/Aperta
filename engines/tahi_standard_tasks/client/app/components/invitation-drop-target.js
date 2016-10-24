@@ -50,7 +50,7 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
   //},
 
   validDropZone() {
-    return DragNDrop.dragItem.get('validPositionsForInvite')
+    return DragNDrop.dragItem.get('validNewPositionsForInvite')
                     .includes(this.get('position'));
   }
 });

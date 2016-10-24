@@ -21,7 +21,7 @@ class InviteQueue < ActiveRecord::Base
     invite.move_to_bottom
   end
 
-  def valid_positions_for_invite(invite)
+  def valid_new_positions_for_invite(invite)
     return [] if invite.has_alternates? || !invite.pending?
     valid_invites = if invite.is_alternate?
                       invite.primary.alternates
@@ -38,7 +38,7 @@ class InviteQueue < ActiveRecord::Base
   def move_invite_to_position(invite, pos)
     raise_position_error(invite, "unpersisted invitation called") unless invite.persisted?
 
-    if valid_positions_for_invite(invite).include? pos
+    if valid_new_positions_for_invite(invite).include? pos
       invite.insert_at(pos)
     else
       invite.errors.add(:position, "is not valid.")

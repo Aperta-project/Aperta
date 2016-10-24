@@ -64,7 +64,7 @@ describe InviteQueue do
   let(:ungrouped_2) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_2') }
   let(:ungrouped_3) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_3') }
 
-  describe "#valid_positions_for_invite" do
+  describe "#valid_new_positions_for_invite" do
     let(:full_queue) do
       make_queue [
         group_1_primary, # 1
@@ -83,22 +83,22 @@ describe InviteQueue do
     end
 
     it "an ungrouped primary can go to the position of other ungrouped primaries" do
-      expect(full_queue.valid_positions_for_invite(ungrouped_1)).to eq([11, 12])
-      expect(full_queue.valid_positions_for_invite(ungrouped_2)).to eq([10, 12])
+      expect(full_queue.valid_new_positions_for_invite(ungrouped_1)).to eq([11, 12])
+      expect(full_queue.valid_new_positions_for_invite(ungrouped_2)).to eq([10, 12])
     end
 
     it "an alternate can go to the position of another unsent alternate in its group" do
-      expect(full_queue.valid_positions_for_invite(g1_alternate_1)).to eq([3, 4])
-      expect(full_queue.valid_positions_for_invite(g1_alternate_2)).to eq([2, 4])
-      expect(full_queue.valid_positions_for_invite(g2_alternate_2)).to eq([])
+      expect(full_queue.valid_new_positions_for_invite(g1_alternate_1)).to eq([3, 4])
+      expect(full_queue.valid_new_positions_for_invite(g1_alternate_2)).to eq([2, 4])
+      expect(full_queue.valid_new_positions_for_invite(g2_alternate_2)).to eq([])
     end
 
     it "a grouped primary has no valid positions" do
-      expect(full_queue.valid_positions_for_invite(group_1_primary)).to eq([])
+      expect(full_queue.valid_new_positions_for_invite(group_1_primary)).to eq([])
     end
 
     it "sent (invited) invites have no valid positions" do
-      expect(full_queue.valid_positions_for_invite(sent_1)).to eq([])
+      expect(full_queue.valid_new_positions_for_invite(sent_1)).to eq([])
     end
   end
 

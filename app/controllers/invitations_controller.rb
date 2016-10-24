@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    fail AuthorizationError unless invitation.can_be_viewed_by?(current_user)
+    raise AuthorizationError unless invitation.can_be_viewed_by?(current_user)
     respond_with invitation
   end
 
@@ -34,7 +34,10 @@ class InvitationsController < ApplicationController
     requires_user_can(:manage_invitations, invitation.task)
     if params[:primary_id].present?
       new_primary = Invitation.find(params[:primary_id])
-      invitation.invite_queue.assign_primary(primary: new_primary, invite: invitation)
+      invitation.invite_queue.assign_primary(
+        primary: new_primary,
+        invite: invitation
+      )
     else
       invitation.invite_queue.unassign_primary_from(invitation)
     end
@@ -49,7 +52,7 @@ class InvitationsController < ApplicationController
         :invited,
         "This invitation has been sent and must be rescinded."
       )
-      fail ActiveRecord::RecordInvalid, invitation
+      raise ActiveRecord::RecordInvalid, invitation
     end
 
     queue = invitation.invite_queue
@@ -88,7 +91,7 @@ class InvitationsController < ApplicationController
   end
 
   def accept
-    fail AuthorizationError unless invitation.invitee == current_user
+    raise AuthorizationError unless invitation.invitee == current_user
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)
@@ -96,7 +99,7 @@ class InvitationsController < ApplicationController
   end
 
   def decline
-    fail AuthorizationError unless invitation.invitee == current_user
+    raise AuthorizationError unless invitation.invitee == current_user
     invitation.update_attributes(
       actor: current_user,
       decline_reason: invitation_params[:decline_reason],

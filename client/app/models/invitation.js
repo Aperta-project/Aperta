@@ -25,6 +25,8 @@ export default DS.Model.extend({
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
 
+  isAlternate: Ember.computed.notEmpty('primary'),
+
   updatedAt: DS.attr('date'),
   invitedAt: DS.attr('date'),
   acceptedAt: DS.attr('date'),
@@ -51,6 +53,8 @@ export default DS.Model.extend({
         Ember.isBlank(this.get('declineReason'));
     }
   ),
+
+  isInvitedOrAccepted: Ember.computed.or('invited', 'accepted'),
 
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
 

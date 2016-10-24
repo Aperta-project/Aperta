@@ -5,8 +5,7 @@ import DragNDrop from 'tahi/services/drag-n-drop';
 const {
   Component,
   computed,
-  computed: { equal, reads, and, or },
-  inject: { service }
+  computed: { equal, reads, and, or }
 } = Ember;
 
 /*
@@ -19,14 +18,12 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     ':invitation-item',
     'invitationStateClass',
     'uiStateClass',
-    'disabled:invitation-item--disabled', 'isAlternate:invitation-item--alternate'
+    'disabled:invitation-item--disabled', 'invitation.isAlternate:invitation-item--alternate'
   ],
 
   propTypes: {
     invitation: PropTypes.EmberObject.isRequired
   },
-
-  isAlternate: computed.alias('invitation.primary'),
 
   allowAttachments: true,
   currentRound: computed.not('previousRound'),
@@ -34,39 +31,30 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return 'invitation-item--' + this.get('uiState');
   }),
 
-  disabled: computed('uiState', function(){
+  disabled: computed('activeInvitationState', 'invitation', 'activeInvitation', 'invitationGroupCantSendInvite', function(){
     if ((this.get('activeInvitationState') === 'edit') && (this.get('activeInvitation') !== this.get('invitation'))) {
       return true;
-    } else if (this.get('queueHasInvitedOrAccepted')) {
-      return true;
+    } else {
+      return this.get('invitationGroupCantSendInvite');
     }
   }),
 
-
-  primary: computed('invitation', function(){
-    let primary = this.get('invitation.primary');
-    if (this.get('invitation.alternates.length')) {
-      primary = this.get('invitation');
-    }
-    return primary;
+  primary: computed('invitation.primary', function(){
+    return this.get('invitation.primary') || this.get('invitation');
   }),
 
-  queueHasInvitedOrAccepted: computed('primary.state', 'primary.alternates.@each.state', function(){
-    if (!this.get('primary')) {
-      return false;
+  // This is per APERTA-7395.  Once an invitation in a group of primary/linked alternates has been
+  // sent, no invitations in the group can again be sent.  Once the invitee declines, then
+  // users can try to send another invite.  If a member of the group has accepted the
+  // same is true.
+  invitationGroupCantSendInvite: computed(
+    'primary.isInvitedOrAccepted',
+    'primary.alternates.@each.isInvitedOrAccepted',
+    function(){
+      return (this.get('primary.isInvitedOrAccepted') ||
+              this.get('primary.alternates').isAny('isInvitedOrAccepted', true));
     }
-    const primaryInvitedOrAccepted = this.invitedOrAccepted(this.get('primary'));
-    const altsHaveInvitedOrAccepted = this.get('primary.alternates').any((inv)=> {
-      return this.invitedOrAccepted(inv);
-    });
-
-    return primaryInvitedOrAccepted || altsHaveInvitedOrAccepted;
-  }),
-
-  invitedOrAccepted(obj) {
-    return obj.get('state') === 'invited' || obj.get('state') === 'accepted';
-  },
-
+  ),
 
   model: computed.alias('invitation'),
   dragStart(e) {

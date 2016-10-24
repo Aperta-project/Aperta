@@ -68,12 +68,8 @@ module Authorizations
     # Adds a WHERE clause condition to the query for the given column
     # if the provided set of value(s) is not nil. Otherwise, no-op.
     def add_column_condition(query:, column:, values:)
-      if values
-        values = [ values ].flatten
-        query.where(column.in(values))
-      end
-
-      query
+      return query if values.nil?
+      query.where(column.in(values))
     end
 
     # Adds JOINs and WHERE clause conditions to the given query for

@@ -15,6 +15,11 @@ describe DownloadManuscriptWorker, redis: true do
       described_class.download_manuscript(paper, url, user)
     end
 
+    it "does not retry" do
+      worker = described_class.new
+      expect(worker.sidekiq_options_hash["retry"]).to be(false)
+    end
+
     context 'when the URL is blank' do
       it 'raises an exception' do
         expect do

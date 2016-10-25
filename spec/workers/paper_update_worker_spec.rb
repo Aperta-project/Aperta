@@ -30,4 +30,10 @@ describe PaperUpdateWorker do
       end.to change { paper.reload.processing }.from(true).to(false)
     end
   end
+
+  describe "retries" do
+    it "does not retry" do
+      expect(worker.sidekiq_options_hash["retry"]).to be(false)
+    end
+  end
 end

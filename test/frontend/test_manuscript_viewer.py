@@ -201,9 +201,7 @@ class ManuscriptViewerTest(CommonTest):
     self._driver.get(paper_url)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Note: Request title to make sure the required page is loaded
-    manuscript_page.set_timeout(20)
-    manuscript_page.get_paper_title_from_page()
-    manuscript_page.restore_timeout()
+    manuscript_page.get_paper_title_from_page(timeout=60)
     manuscript_page.set_timeout(.5)
     try:
       manuscript_page.get_infobox()
@@ -223,7 +221,7 @@ class ManuscriptViewerTest(CommonTest):
     paper_id = manuscript_page.get_current_url().split('/')[-1]
     # Complete IMG card to force display of submission status project
     time.sleep(1)
-    print('Opening the Figures task')
+    logging.info('Opening the Figures task')
     manuscript_page.click_task('Figures')
     time.sleep(5)
     manuscript_page.complete_task('Figures')
@@ -235,8 +233,6 @@ class ManuscriptViewerTest(CommonTest):
         manuscript_page.get_submission_status_ready2submit_text()
     # APERTA-6840 - we disabled add collaborators temporarily
     # manuscript_page.logout()
-
-
     # dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
     # dashboard_page.go_to_manuscript(paper_id)
     # time.sleep(1)
@@ -290,7 +286,7 @@ class ManuscriptViewerTest(CommonTest):
   def test_paper_download(self):
     """
     test_manuscript_viewer: Validates the download functions, formats, UI elements and styles
-    :return void function
+    :return: void function
     """
     user = random.choice(users)
     logging.info('Running test_paper_download')

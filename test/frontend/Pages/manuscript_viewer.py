@@ -619,12 +619,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()
 
-  def get_paper_title_from_page(self):
+  def get_paper_title_from_page(self, timeout=None):
     """
     Returns the encoded paper title as it appears on the manuscript_viewer page
+    :param timeout: Time to wait an title to appear, in seconds
     :return: paper_title
     """
+    if timeout:
+      self.set_timeout(timeout)
+    else:
+      self.set_timeout(30)
     paper_title = self._get(self._paper_title).text
+    self.restore_timeout()
     return paper_title
 
   def click_submit_btn(self):
@@ -698,7 +704,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       infobox_closer.click()
     except WebDriverException:
       self.click_covered_element(infobox_closer)
-
 
   def get_paper_doi_part(self):
     """

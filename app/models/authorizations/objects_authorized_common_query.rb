@@ -188,7 +188,7 @@ module Authorizations
 
           # Based on how Arel works we need to chain conditions rather than
           # apply them all to the query object.
-          q ? q.or(condition) : condition
+          chain_condition_using_or(q, condition)
         end
         query.where(qs)
       else

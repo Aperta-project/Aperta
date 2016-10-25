@@ -27,10 +27,8 @@ module Authorizations
     # union.
     def union(list)
       raise ArgumentError unless list.is_a?(Array)
-      if list.size == 1
-        return list[0]
-      else
-        return Arel::Nodes::Union.new(list[0], union(list[1..-1]))
+      list.reduce do |sofar, obj|
+        Arel::Nodes::Union.new(sofar, obj)
       end
     end
   end

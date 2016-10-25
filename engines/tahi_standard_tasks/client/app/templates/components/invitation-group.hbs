@@ -16,7 +16,6 @@
         position=invitation.position
         index=invitation.position
         changePosition=(action changePosition)}}
-                         <span>Index: {{invitation.position}}</span>
     {{/invitation-drop-target}}
 
     {{invitation-detail-row invitation=invitation
@@ -37,6 +36,5 @@
       position=sortedInvitations.length
       index=(inc sortedInvitations.length)
       changePosition=(action changePosition)}}
-                         <span>Position: {{sortedInvitations.length}}</span>
   {{/invitation-drop-target}}
 {{/with}}

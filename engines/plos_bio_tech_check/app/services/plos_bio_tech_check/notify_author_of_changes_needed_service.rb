@@ -9,7 +9,7 @@ module PlosBioTechCheck
 
     def notify!
       update_changes_for_author_task!
-      queue_up_emails_for_delivery
+      queue_up_email_for_delivery
       add_user_participations submitted_by
       Activity.task_sent_to_author! task, user: submitted_by
     end
@@ -51,7 +51,7 @@ module PlosBioTechCheck
       @task.paper
     end
 
-    def queue_up_emails_for_delivery
+    def queue_up_email_for_delivery
       ChangesForAuthorMailer.delay.notify_changes_for_author(
         author_id: paper.creator.id,
         task_id: changes_for_author_task.id

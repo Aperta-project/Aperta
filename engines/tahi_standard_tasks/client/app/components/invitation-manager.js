@@ -143,7 +143,7 @@ export default Ember.Component.extend({
       this.set('activeInvitation', null);
     },
 
-    changePosition(invitation, newPosition) {
+    changePosition(newPosition, invitation) {
       invitation.changePosition(newPosition);
     },
 

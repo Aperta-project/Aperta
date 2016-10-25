@@ -5,13 +5,13 @@
                       destroyInvite=(action 'destroyInvite')
                       saveInvite=(action 'saveInvite')
                       setRowState=(action 'toggleActiveInvitation')
+                      changePosition=(action 'changePosition')
                       class='active-invitations')
                     ) as |i| }}
 
   {{i.group invitations=(if groupByDecision
                             latestDecisionInvitations
                             persistedInvitations)
-            changePosition=(action 'changePosition')
   }}
 
   <div class="invitation-email-entry">

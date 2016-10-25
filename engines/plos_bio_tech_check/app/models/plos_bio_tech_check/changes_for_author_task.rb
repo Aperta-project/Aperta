@@ -1,4 +1,7 @@
 module PlosBioTechCheck
+  # The ChangesForAuthorTask represents the card for an author fills out
+  # after somebody has filled out a TechCheck card and requested changes
+  # from the author.
   class ChangesForAuthorTask < Task
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier

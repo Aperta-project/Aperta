@@ -213,10 +213,75 @@ describe InvitationsController do
   end
 
   describe 'PUT /invitations/:id' do
-    it "does not update the invitation's primary" do
+    let!(:invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invite_queue: queue,
+        position: 1,
+        primary: nil
     end
 
-    it "does not update the invitation's position" do
+    let!(:other_invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invite_queue: queue
+    end
+    subject(:do_request) do
+      post(
+        :update,
+        format: 'json',
+        id: invitation.id,
+        invitation: {
+          email: "foo@bar.com",
+          task_id: task.id,
+          body: "other body",
+          primary_id: other_invitation.id,
+          position: 5
+        }
+      )
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task).and_return(true)
+      end
+      it "updates the body and email" do
+        do_request
+        expect(invitation.reload.body).to eq("other body")
+        expect(invitation.reload.email).to eq("foo@bar.com")
+      end
+
+      it "responds with the updated invitation" do
+        do_request
+        expect(res_body["invitation"]["id"]).to eq(invitation.id)
+      end
+
+      it "does not update the invitation's primary" do
+        do_request
+        expect(invitation.reload.primary_id).to eq(nil)
+      end
+
+      it "does not update the invitation's position" do
+        do_request
+        expect(invitation.reload.position).to eq(1)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 

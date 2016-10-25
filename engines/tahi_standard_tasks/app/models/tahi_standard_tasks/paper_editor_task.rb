@@ -8,7 +8,7 @@ module TahiStandardTasks
     include Invitable
 
     def self.task_added_to_workflow(paper_editor_task)
-      paper_editor_task.create_invite_queue!
+      paper_editor_task.create_invitation_queue!
     end
 
     def academic_editors
@@ -36,8 +36,8 @@ module TahiStandardTasks
       end
     end
 
-    def active_invite_queue
-      self.invite_queue || InviteQueue.create(task: self)
+    def active_invitation_queue
+      self.invitation_queue || InvitationQueue.create(task: self)
     end
 
     def invitee_role

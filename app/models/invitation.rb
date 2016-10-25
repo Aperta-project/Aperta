@@ -21,8 +21,8 @@ class Invitation < ActiveRecord::Base
   validates :email, format: /.+@.+/
   validates :task, presence: true
 
-  belongs_to :invite_queue
-  acts_as_list scope: :invite_queue, add_new_at: :bottom
+  belongs_to :invitation_queue
+  acts_as_list scope: :invitation_queue, add_new_at: :bottom
 
   scope :not_pending, -> { where.not(state: "pending") }
   scope :pending, -> { where(state: "pending") }

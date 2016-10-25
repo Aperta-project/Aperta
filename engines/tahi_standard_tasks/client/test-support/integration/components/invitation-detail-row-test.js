@@ -25,7 +25,7 @@ let template = hbs`{{invitation-detail-row
                       invitation=invitation
                       uiState='closed'}}`;
 
-test('displays invitation information if the invite.invited is true', function(assert){
+test('displays invitation information if invitation.invited is true', function(assert){
   this.set('invitation.pending', false);
   this.set('invitation.invited', true);
   this.set('invitation.invitedAt', this.get('update-date'));
@@ -50,7 +50,7 @@ test('displays invitation email when no invitee present', function(assert){
   assert.textPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
-test('displays delete icon if invite is pending, the row is in the show state, and in current round', function(assert) {
+test('displays delete icon if invitation is pending, the row is in the show state, and in current round', function(assert) {
   this.setProperties({
     'invitation.pending': true,
     currentRound: true,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161018214706) do
+ActiveRecord::Schema.define(version: 20161025175053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -274,6 +274,13 @@ ActiveRecord::Schema.define(version: 20161018214706) do
     t.datetime "updated_at"
   end
 
+  create_table "invitation_queues", force: :cascade do |t|
+    t.integer  "task_id"
+    t.integer  "decision_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "invitations", force: :cascade do |t|
     t.string   "email"
     t.integer  "task_id"
@@ -296,7 +303,7 @@ ActiveRecord::Schema.define(version: 20161018214706) do
     t.datetime "accepted_at"
     t.datetime "rescinded_at"
     t.integer  "position"
-    t.integer  "invite_queue_id"
+    t.integer  "invitation_queue_id"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
@@ -304,13 +311,6 @@ ActiveRecord::Schema.define(version: 20161018214706) do
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
-
-  create_table "invite_queues", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "decision_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"

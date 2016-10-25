@@ -161,7 +161,7 @@ class Task < ActiveRecord::Base
 
     # This hook is intended to give task subclasses an opportunity
     # to create any extra data they might need to function correctly.
-    # Specifically, PaperEditorTask needs to create an InviteQueue
+    # Specifically, PaperEditorTask needs to create an InvitationQueue
     # for itself.
     def task_added_to_workflow(task)
       # no-op

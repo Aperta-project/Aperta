@@ -38,9 +38,9 @@ module TahiStandardTasks
       end
     end
 
-    def active_invite_queue
-      paper.draft_decision.invite_queue ||
-        InviteQueue.create(task: self, decision: paper.draft_decision)
+    def active_invitation_queue
+      paper.draft_decision.invitation_queue ||
+        InvitationQueue.create(task: self, decision: paper.draft_decision)
     end
 
     def array_attributes

@@ -535,7 +535,7 @@ class Paper < ActiveRecord::Base
   def new_draft_decision!
     unless draft_decision
       new_decision = decisions.create
-      new_decision.create_invite_queue!
+      new_decision.create_invitation_queue!
     end
   end
 

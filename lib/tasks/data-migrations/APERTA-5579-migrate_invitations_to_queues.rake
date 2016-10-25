@@ -7,12 +7,12 @@ namespace :data do
     task migrate_invitations_to_queues: :environment do
       Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
         task.paper.decisions.each do |decision|
-          queue = decision.create_invite_queue!(task: task)
+          queue = decision.create_invitation_queue!(task: task)
           put_invitations_into_queue(decision.invitations, queue)
         end
       end
       Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
-        queue = task.create_invite_queue!(task: task)
+        queue = task.create_invitation_queue!(task: task)
         put_invitations_into_queue(task.invitations, queue)
       end
     end
@@ -23,7 +23,7 @@ namespace :data do
     grouped_primaries = []
     # get grouped invitations
     invitations.each do |invite|
-      invite.update(invite_queue: queue)
+      invite.update(invitation_queue: queue)
       if invite.has_alternates?
         grouped_primaries << invite
       end
@@ -50,6 +50,6 @@ namespace :data do
       This is intended to be run as part of a down migration.
   DESC
   task :migrate_queues_back_to_invitations do
-    InviteQueue.destroy_all
+    InvitationQueue.destroy_all
   end
 end

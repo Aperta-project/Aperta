@@ -1512,9 +1512,9 @@ describe Paper do
         .not_to change { paper.decisions.count }
     end
 
-    it 'creates an invite queue for the decision' do
+    it 'creates an invitation queue for the decision' do
       paper.new_draft_decision!
-      expect(paper.decisions.last.invite_queue).to be_present
+      expect(paper.decisions.last.invitation_queue).to be_present
     end
   end
 

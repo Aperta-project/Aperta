@@ -7,11 +7,11 @@ describe InvitationsController do
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:invitee) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
-  let!(:queue) { FactoryGirl.create(:invite_queue, task: task) }
+  let!(:queue) { FactoryGirl.create(:invitation_queue, task: task) }
 
   describe 'GET /invitations' do
     let!(:invitation) do
-      FactoryGirl.create(:invitation, :invited, invitee: invitee, invite_queue: queue)
+      FactoryGirl.create(:invitation, :invited, invitee: invitee, invitation_queue: queue)
     end
     subject(:do_request) { get :index, format: :json }
 
@@ -40,14 +40,14 @@ describe InvitationsController do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invite_queue: queue
+        invitation_queue: queue
     end
 
     let!(:other_invitation) do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invite_queue: queue
+        invitation_queue: queue
     end
 
     subject(:do_request) do
@@ -67,9 +67,9 @@ describe InvitationsController do
           .and_return true
       end
 
-      it 'calls invite_queue#move_invite_to_position' do
+      it 'calls invitation_queue#move_invitation_to_position' do
         allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-        expect(invitation.invite_queue).to receive(:move_invite_to_position).with(invitation, 2)
+        expect(invitation.invitation_queue).to receive(:move_invitation_to_position).with(invitation, 2)
         do_request
         data = res_body.with_indifferent_access
         expect(data[:invitations].length).to eq(2)
@@ -89,8 +89,8 @@ describe InvitationsController do
   end
 
   describe 'put /invitation/:id/update_primary/' do
-    let!(:invitation) { FactoryGirl.create(:invitation, task: task, invite_queue: queue, invitee: invitee) }
-    let!(:primary) { FactoryGirl.create(:invitation, task: task, invite_queue: queue, invitee: invitee) }
+    let!(:invitation) { FactoryGirl.create(:invitation, task: task, invitation_queue: queue, invitee: invitee) }
+    let!(:primary) { FactoryGirl.create(:invitation, task: task, invitation_queue: queue, invitee: invitee) }
     subject(:do_request) do
       put :update_primary,
         format: :json,
@@ -109,16 +109,16 @@ describe InvitationsController do
       end
 
       context 'the primary id is present' do
-        it 'calls invite_queue#assign_primary' do
+        it 'calls invitation_queue#assign_primary' do
           allow(Invitation).to receive(:find).and_return(primary)
           allow(Invitation).to receive(:find).with(primary.to_param).and_return(primary)
           allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-          expect(invitation.invite_queue).to receive(:assign_primary).with(primary: primary, invite: invitation)
+          expect(invitation.invitation_queue).to receive(:assign_primary).with(primary: primary, invitation: invitation)
 
           do_request
         end
 
-        it "responds with all the invitations in the invite queue" do
+        it "responds with all the invitations in the invitation queue" do
           do_request
           data = res_body.with_indifferent_access
           expect(data[:invitations].length).to eq(2)
@@ -134,15 +134,15 @@ describe InvitationsController do
 
         before do
           allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-          allow(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
+          allow(invitation.invitation_queue).to receive(:unassign_primary_from).with(invitation)
         end
 
-        it 'calls invite_queue#unassign_primary_from' do
-          expect(invitation.invite_queue).to receive(:unassign_primary_from).with(invitation)
+        it 'calls invitation_queue#unassign_primary_from' do
+          expect(invitation.invitation_queue).to receive(:unassign_primary_from).with(invitation)
           do_request
         end
 
-        it "responds with all the invitations in the invite queue" do
+        it "responds with all the invitations in the invitation queue" do
           do_request
 
           data = res_body.with_indifferent_access
@@ -165,7 +165,7 @@ describe InvitationsController do
   describe 'GET /invitation/:id' do
     subject(:do_request) { get(:show, format: :json, id: invitation.id) }
 
-    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, invitation_queue: queue) }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -217,7 +217,7 @@ describe InvitationsController do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invite_queue: queue,
+        invitation_queue: queue,
         position: 1,
         primary: nil
     end
@@ -226,7 +226,7 @@ describe InvitationsController do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invite_queue: queue
+        invitation_queue: queue
     end
     subject(:do_request) do
       post(
@@ -319,7 +319,7 @@ describe InvitationsController do
 
           data = res_body.with_indifferent_access
           invitation = Invitation.find(data[:invitations][0][:id])
-          expect(invitation.invite_queue).to eq(task.active_invite_queue)
+          expect(invitation.invitation_queue).to eq(task.active_invitation_queue)
 
           expect(invitation.state).to eq('pending')
           expect(invitation.invitee).to eq(invitee)
@@ -345,14 +345,14 @@ describe InvitationsController do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invite_queue: queue
+        invitation_queue: queue
     end
 
     let!(:other_invitation) do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invite_queue: queue
+        invitation_queue: queue
     end
 
     subject(:do_request) do
@@ -375,7 +375,7 @@ describe InvitationsController do
       it 'removes the invitation from the queue and destroys it' do
         allow(Invitation).to receive(:find).and_call_original
         allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-        expect(invitation.invite_queue).to receive(:remove_invite).with(invitation)
+        expect(invitation.invitation_queue).to receive(:remove_invitation).with(invitation)
 
         do_request
 
@@ -411,7 +411,7 @@ describe InvitationsController do
         state: 'pending',
         invitee: invitee,
         task: task,
-        invite_queue: queue
+        invitation_queue: queue
       )
     end
     subject(:do_request) do
@@ -441,7 +441,7 @@ describe InvitationsController do
 
         it 'sends the invitation' do
           allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-          expect(invitation.invite_queue).to receive(:send_invite).with(invitation)
+          expect(invitation.invitation_queue).to receive(:send_invitation).with(invitation)
           do_request
         end
 

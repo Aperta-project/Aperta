@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :invite_queue do
+  factory :invitation_queue do
   end
 end

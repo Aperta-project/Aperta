@@ -22,7 +22,7 @@ class InvitationsController < ApplicationController
   # non restful route for drag and drop changes
   def update_position
     requires_user_can(:manage_invitations, invitation.task)
-    invitation.invite_queue.move_invite_to_position(
+    invitation.invitation_queue.move_invitation_to_position(
       invitation, params[:position]
     )
 
@@ -34,12 +34,12 @@ class InvitationsController < ApplicationController
     requires_user_can(:manage_invitations, invitation.task)
     if params[:primary_id].present?
       new_primary = Invitation.find(params[:primary_id])
-      invitation.invite_queue.assign_primary(
+      invitation.invitation_queue.assign_primary(
         primary: new_primary,
-        invite: invitation
+        invitation: invitation
       )
     else
-      invitation.invite_queue.unassign_primary_from(invitation)
+      invitation.invitation_queue.unassign_primary_from(invitation)
     end
 
     render json: invitations_in_queue
@@ -55,8 +55,8 @@ class InvitationsController < ApplicationController
       raise ActiveRecord::RecordInvalid, invitation
     end
 
-    queue = invitation.invite_queue
-    queue.remove_invite(invitation)
+    queue = invitation.invitation_queue
+    queue.remove_invitation(invitation)
     invitation.destroy!
 
     render json: invitations_in_queue(queue)
@@ -73,8 +73,8 @@ class InvitationsController < ApplicationController
     @invitation = task.invitations.build(
       invitation_params.merge(inviter: current_user)
     )
-    invite_queue = task.active_invite_queue
-    invite_queue.add_invite(invitation)
+    invitation_queue = task.active_invitation_queue
+    invitation_queue.add_invitation(invitation)
 
     @invitation.set_invitee
     @invitation.save
@@ -116,12 +116,12 @@ class InvitationsController < ApplicationController
     if queue
       queue.invitations.reorder(id: :desc)
     else
-      invitation.invite_queue.invitations.reorder(id: :desc)
+      invitation.invitation_queue.invitations.reorder(id: :desc)
     end
   end
 
   def send_and_notify(invitation)
-    invitation.invite_queue.send_invite(invitation)
+    invitation.invitation_queue.send_invitation(invitation)
     Activity.invitation_sent!(invitation, user: current_user)
   end
 

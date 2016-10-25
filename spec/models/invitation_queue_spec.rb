@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe InviteQueue do
+describe InvitationQueue do
   def make_queue(invite_array)
-    q = FactoryGirl.create :invite_queue, invitations: invite_array
+    q = FactoryGirl.create :invitation_queue, invitations: invite_array
 
     invite_array.each_with_index do |i, pos|
       Invitation.where(id: i.id).update_all(position: pos + 1)
@@ -14,7 +14,7 @@ describe InviteQueue do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
 
-  describe "#add_invite" do
+  describe "#add_invitation" do
     let(:queue) do
       make_queue [
         ungrouped_1,
@@ -23,8 +23,8 @@ describe InviteQueue do
     end
     let(:invitation) { FactoryGirl.create(:invitation, task: task, paper: paper) }
     it 'should add the invitation to the bottom of the queue' do
-      queue.add_invite(invitation)
-      expect(invitation.invite_queue).to eq(queue)
+      queue.add_invitation(invitation)
+      expect(invitation.invitation_queue).to eq(queue)
       expect(invitation.reload.position).to eq(3)
     end
   end
@@ -64,7 +64,7 @@ describe InviteQueue do
   let(:ungrouped_2) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_2') }
   let(:ungrouped_3) { FactoryGirl.create(:invitation, task: task, paper: paper, body: 'ungrouped_3') }
 
-  describe "#valid_new_positions_for_invite" do
+  describe "#valid_new_positions_for_invitation" do
     let(:full_queue) do
       make_queue [
         group_1_primary, # 1
@@ -83,22 +83,22 @@ describe InviteQueue do
     end
 
     it "an ungrouped primary can go to the position of other ungrouped primaries" do
-      expect(full_queue.valid_new_positions_for_invite(ungrouped_1)).to eq([11, 12])
-      expect(full_queue.valid_new_positions_for_invite(ungrouped_2)).to eq([10, 12])
+      expect(full_queue.valid_new_positions_for_invitation(ungrouped_1)).to eq([11, 12])
+      expect(full_queue.valid_new_positions_for_invitation(ungrouped_2)).to eq([10, 12])
     end
 
     it "an alternate can go to the position of another unsent alternate in its group" do
-      expect(full_queue.valid_new_positions_for_invite(g1_alternate_1)).to eq([3, 4])
-      expect(full_queue.valid_new_positions_for_invite(g1_alternate_2)).to eq([2, 4])
-      expect(full_queue.valid_new_positions_for_invite(g2_alternate_2)).to eq([])
+      expect(full_queue.valid_new_positions_for_invitation(g1_alternate_1)).to eq([3, 4])
+      expect(full_queue.valid_new_positions_for_invitation(g1_alternate_2)).to eq([2, 4])
+      expect(full_queue.valid_new_positions_for_invitation(g2_alternate_2)).to eq([])
     end
 
     it "a grouped primary has no valid positions" do
-      expect(full_queue.valid_new_positions_for_invite(group_1_primary)).to eq([])
+      expect(full_queue.valid_new_positions_for_invitation(group_1_primary)).to eq([])
     end
 
     it "sent (invited) invites have no valid positions" do
-      expect(full_queue.valid_new_positions_for_invite(sent_1)).to eq([])
+      expect(full_queue.valid_new_positions_for_invitation(sent_1)).to eq([])
     end
   end
 
@@ -112,9 +112,9 @@ describe InviteQueue do
     ]
   end
 
-  describe "#move_invite_to_position" do
+  describe "#move_invitation_to_position" do
     it "can move stuff to the end of the list" do
-      small_queue.move_invite_to_position(ungrouped_1, 5)
+      small_queue.move_invitation_to_position(ungrouped_1, 5)
       expect(ungrouped_1.reload.position).to eq(5)
       expect(ungrouped_2.reload.position).to eq(4)
     end
@@ -122,48 +122,48 @@ describe InviteQueue do
 
   describe "#assign_primary" do
     context "error cases" do
-      it "blows up if the invite is an alternate.  primaries need to be unassigned first" do
-        expect { small_queue.assign_primary(invite: g1_alternate_1, primary: ungrouped_1) }
+      it "blows up if the invitation is an alternate.  primaries need to be unassigned first" do
+        expect { small_queue.assign_primary(invitation: g1_alternate_1, primary: ungrouped_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
-      it "blows up if the invite and the primary don't belong to the same queue" do
+      it "blows up if the invitation and the primary don't belong to the same queue" do
         some_other_primary = FactoryGirl.create :invitation,
           task: task,
           paper: paper,
-          invite_queue: nil
-        expect { small_queue.assign_primary(invite: g1_alternate_1, primary: some_other_primary) }
+          invitation_queue: nil
+        expect { small_queue.assign_primary(invitation: g1_alternate_1, primary: some_other_primary) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
-      it "blows up if the invite is a primary with alternates." do
-        expect { small_queue.assign_primary(invite: group_1_primary, primary: ungrouped_1) }
+      it "blows up if the invitation is a primary with alternates." do
+        expect { small_queue.assign_primary(invitation: group_1_primary, primary: ungrouped_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
-      it "blows up if the invite is not in a pending state" do
-        group_1_primary.update(state: "invited")
-        expect { small_queue.assign_primary(invite: group_1_primary, primary: ungrouped_1) }
+      it "blows up if the invitation is not in a pending state" do
+        group_1_primary.update(state: "invitationd")
+        expect { small_queue.assign_primary(invitation: group_1_primary, primary: ungrouped_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
       it "blows up if the primary is an alternate" do
-        expect { small_queue.assign_primary(invite: ungrouped_1, primary: g1_alternate_1) }
+        expect { small_queue.assign_primary(invitation: ungrouped_1, primary: g1_alternate_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
     end
 
-    context "the invite and the primary are both ungrouped" do
+    context "the invitation and the primary are both ungrouped" do
       it "places the primary and the new alternate at the very top of the queue" do
-        small_queue.assign_primary(invite: ungrouped_2, primary: ungrouped_1)
+        small_queue.assign_primary(invitation: ungrouped_2, primary: ungrouped_1)
         expect(ungrouped_1.reload.position).to eq(1)
         expect(ungrouped_2.reload.position).to eq(2)
       end
     end
 
-    context "the invite is ungrouped, the primary already has alternates" do
+    context "the invitation is ungrouped, the primary already has alternates" do
       it "places the new alternate below the existing alternates" do
-        small_queue.assign_primary(invite: ungrouped_1, primary: group_1_primary)
+        small_queue.assign_primary(invitation: ungrouped_1, primary: group_1_primary)
         expect(ungrouped_1.reload.position).to eq(3)
         expect(group_1_primary.reload.position).to eq(1)
       end
@@ -179,17 +179,17 @@ describe InviteQueue do
           ungrouped_1, # 4
         ]
       end
-      it "blows up if the invite is a primary with alternates." do
+      it "blows up if the invitation is a primary with alternates." do
         expect { small_queue.unassign_primary_from(group_1_primary) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
-      it "blows up if the invite has no primary" do
+      it "blows up if the invitation has no primary" do
         expect { small_queue.unassign_primary_from(ungrouped_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
 
-      it "blows up if the invite is not in a pending state" do
+      it "blows up if the invitation is not in a pending state" do
         g1_alternate_1.update(state: "invited")
         expect { small_queue.unassign_primary_from(g1_alternate_1) }
           .to raise_error(ActiveRecord::RecordInvalid)
@@ -211,7 +211,7 @@ describe InviteQueue do
         expect(g1_alternate_1.reload.primary).to be_blank
       end
 
-      it "moves the ungrouped invite to the bottom of the list" do
+      it "moves the ungrouped invitation to the bottom of the list" do
         small_queue.unassign_primary_from(g1_alternate_1)
         expect(group_1_primary.reload.position).to eq(1) # the primary should stay put
         expect(g1_alternate_1.reload.position).to eq(4)
@@ -233,7 +233,7 @@ describe InviteQueue do
       end
 
       it <<-DESC.strip_heredoc do
-        moves the newly-ungrouped primary and the ungrouped invite to the bottom of the list.
+        moves the newly-ungrouped primary and the ungrouped invitation to the bottom of the list.
         The ungrouped primary is now just another regular invitation
       DESC
         small_queue.unassign_primary_from(g1_alternate_1)
@@ -243,8 +243,8 @@ describe InviteQueue do
     end
   end
 
-  describe "#remove_invite" do
-    context "the invite is an ungrouped primary" do
+  describe "#remove_invitation" do
+    context "the invitation is an ungrouped primary" do
       let(:small_queue) do
         make_queue [
           ungrouped_1, # 1
@@ -252,14 +252,14 @@ describe InviteQueue do
         ]
       end
 
-      it "removes the invite from the list and repositions the other invites" do
-        small_queue.remove_invite(ungrouped_1)
+      it "removes the invitation from the list and repositions the other invitations" do
+        small_queue.remove_invitation(ungrouped_1)
         expect(small_queue.invitations.pluck(:id)).to_not include(ungrouped_1.id)
         expect(ungrouped_2.reload.position).to eq(1)
       end
     end
 
-    context "the invite is an alternate" do
+    context "the invitation is an alternate" do
       context "the primary has other alternates" do
         let(:small_queue) do
           make_queue [
@@ -270,8 +270,8 @@ describe InviteQueue do
           ]
         end
 
-        it "removes the invite from the queue, unsets the primary, and reorders the list" do
-          small_queue.remove_invite(g1_alternate_1)
+        it "removes the invitation from the queue, unsets the primary, and reorders the list" do
+          small_queue.remove_invitation(g1_alternate_1)
           expect(small_queue.invitations.pluck(:id)).to_not include(g1_alternate_1.id)
           expect(g1_alternate_1.primary_id).to be_blank
           expect(group_1_primary.reload.position).to eq(1) # the primary should stay put
@@ -288,15 +288,15 @@ describe InviteQueue do
           ]
         end
 
-        it "removes the invite from the queue's invites and moves the newly-ungrouped primary to the bottom of the list" do
-          small_queue.remove_invite(g1_alternate_1)
+        it "removes the invitation from the queue's invitations and moves the newly-ungrouped primary to the bottom of the list" do
+          small_queue.remove_invitation(g1_alternate_1)
           expect(small_queue.invitations.pluck(:id)).to_not include(g1_alternate_1.id)
           expect(group_1_primary.reload.position).to eq(2)
         end
       end
     end
 
-    context "the invite is a primary with alternates" do
+    context "the invitation is a primary with alternates" do
       let(:small_queue) do
         make_queue [
           group_1_primary, # 1
@@ -304,15 +304,15 @@ describe InviteQueue do
         ]
       end
 
-      it "blows up. invites must be first ungrouped before they can be removed from the queue" do
-        expect { small_queue.remove_invite(group_1_primary) }
+      it "blows up. invitations must be first ungrouped before they can be removed from the queue" do
+        expect { small_queue.remove_invitation(group_1_primary) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
     end
   end
 
-  describe "#send_invite" do
-    context "the invite is an ungrouped primary" do
+  describe "#send_invitation" do
+    context "the invitation is an ungrouped primary" do
       context "there are existing sent invitations" do
         let(:queue) do
           make_queue [
@@ -325,13 +325,13 @@ describe InviteQueue do
         end
 
         it "gets repositioned to the bottom of the sent invitations" do
-          queue.send_invite(ungrouped_2)
+          queue.send_invitation(ungrouped_2)
           expect(ungrouped_2.reload.position).to eq(4)
         end
 
         it "calls 'invite!'" do
           expect(ungrouped_2).to receive(:invite!)
-          queue.send_invite(ungrouped_2)
+          queue.send_invitation(ungrouped_2)
         end
       end
 
@@ -346,13 +346,13 @@ describe InviteQueue do
         end
 
         it "gets repositioned after the end of the groups" do
-          queue.send_invite(ungrouped_2)
+          queue.send_invitation(ungrouped_2)
           expect(ungrouped_2.reload.position).to eq(3)
         end
       end
     end
 
-    context "the invite is a primary with alternates" do
+    context "the invitation is a primary with alternates" do
       let(:queue) do
         make_queue [
           group_2_primary, # 1
@@ -361,13 +361,13 @@ describe InviteQueue do
         ]
       end
       it "does not get repositioned" do
-        queue.send_invite(group_2_primary)
+        queue.send_invitation(group_2_primary)
         expect(group_2_primary.reload.position).to eq(1)
       end
 
       it "calls 'invite!'" do
         expect(group_2_primary).to receive(:invite!)
-        queue.send_invite(group_2_primary)
+        queue.send_invitation(group_2_primary)
       end
     end
 
@@ -388,16 +388,16 @@ describe InviteQueue do
       end
 
       it "gets repositioned to the bottom of the sent alternates for its primary" do
-        queue.send_invite(g2_alternate_3)
+        queue.send_invitation(g2_alternate_3)
         expect(g2_alternate_3.reload.position).to eq(5)
 
-        queue.send_invite(g1_alternate_1.reload) # reload since acts_as_list has changed its position
+        queue.send_invitation(g1_alternate_1.reload) # reload since acts_as_list has changed its position
         expect(g1_alternate_1.reload.position).to eq(2)
       end
 
       it "calls 'invite!'" do
         expect(g2_alternate_3).to receive(:invite!)
-        queue.send_invite(g2_alternate_3)
+        queue.send_invitation(g2_alternate_3)
       end
     end
   end

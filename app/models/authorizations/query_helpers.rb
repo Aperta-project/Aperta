@@ -22,13 +22,6 @@ module Authorizations
       }
     end
 
-    # Returns the condition if query is nil. Otherwise, returns the result of
-    # query.or(condition).
-    def chain_condition_using_or(query, condition)
-      return condition unless query
-      query.or(condition)
-    end
-
     # Arel doesn't provide a nice way to union more than two queries so
     # this method gets around that by accepting a list of Arel ASTs to
     # union.

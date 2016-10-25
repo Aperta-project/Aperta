@@ -163,34 +163,12 @@ module Authorizations
     # fast at applying these conditions.
     def add_sti_conditions_for_permission_state_check(query)
       if @klass.column_names.include?(@klass.inheritance_column)
-        # qs is short for queries, q in the block is short for query.
-        # These names were chosen since we're passing in a +query+ variable.
-        # If you have better names, let's use yours. :)
-        qs = [@klass].concat(@klass.descendants).reduce(nil) do |q, permissible_klass|
-
-          # Given the following hierarchy:
-          #    D < C < B < A
-          #
-          # If permissible_klass is C then +klasses+ will become
-          #   [A, B]
-          #
-          klasses = (permissible_klass.ancestors & permissible_klass.base_class.descendants)
-
-          # Now add back in our current permissible_klass C. +klasses+ is now:
-          #  [A, B, C]
-          klasses << permissible_klass.base_class
-
-          # Here we add the condition to allow any record whose
-          # permission.applies_to is for A, B, or C
-          condition = klass.arel_table[:type].eq(permissible_klass.name).and(
-            table[:permissions][:applies_to].in(klasses.map(&:name))
-          )
-
-          # Based on how Arel works we need to chain conditions rather than
-          # apply them all to the query object.
-          chain_condition_using_or(q, condition)
+        initial = make_sti_condition_for(@klass)
+        conditions = @klass.descendants.reduce(initial) do |condition, subclass|
+          condition.or make_sti_condition_for(subclass)
         end
-        query.where(qs)
+
+        query.where(conditions)
       else
         # no-op for non-STI klasses
       end
@@ -202,6 +180,30 @@ module Authorizations
         table[:permission_states][:name].eq(state_column).or(
           table[:permission_states][:name].eq(PermissionState::WILDCARD.to_s)
         )
+      )
+    end
+
+    # Returns an Arel condition be used for matching matching single table
+    # inheritance column values against the given klass. E.g.
+    #
+    #    some_arel_query.where( make_sti_condition_for(Task) )
+    def make_sti_condition_for(permissible_klass)
+      # Given the following hierarchy:
+      #    D < C < B < A
+      #
+      # If permissible_klass is C then +klasses+ will become
+      #   [A, B]
+      #
+      klasses = (permissible_klass.ancestors & permissible_klass.base_class.descendants)
+
+      # Now add back in our current permissible_klass C. +klasses+ is now:
+      #  [A, B, C]
+      klasses << permissible_klass.base_class
+
+      # Here we add the condition to allow any record whose
+      # permission.applies_to is for A, B, or C
+      klass.arel_table[:type].eq(permissible_klass.name).and(
+        table[:permissions][:applies_to].in(klasses.map(&:name))
       )
     end
   end

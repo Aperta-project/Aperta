@@ -112,6 +112,14 @@ describe InviteQueue do
     ]
   end
 
+  describe "#move_invite_to_position" do
+    it "can move stuff to the end of the list" do
+      small_queue.move_invite_to_position(ungrouped_1, 5)
+      expect(ungrouped_1.reload.position).to eq(5)
+      expect(ungrouped_2.reload.position).to eq(4)
+    end
+  end
+
   describe "#assign_primary" do
     context "error cases" do
       it "blows up if the invite is an alternate.  primaries need to be unassigned first" do

@@ -134,7 +134,13 @@ module Authorizations
     #
     # Given the following hierarchy:
     #
-    #     D < C < B < A
+    #    A (base-class)
+    #    |
+    #    B (subclass of A)
+    #    |
+    #    C (subclass of B)
+    #    |
+    #    D (subclass of C)
     #
     # A is the base class. It is the least specialized. D on the other hand
     # is the most specialized. This means that permissions on A trickle
@@ -189,16 +195,20 @@ module Authorizations
     #    some_arel_query.where( make_sti_condition_for(Task) )
     def make_sti_condition_for(permissible_klass)
       # Given the following hierarchy:
-      #    D < C < B < A
       #
-      # If permissible_klass is C then +klasses+ will become
-      #   [A, B]
+      #    A (base-class)
+      #    |
+      #    B (subclass of A)
+      #    |
+      #    C (subclass of B)
+      #    |
+      #    D (subclass of C)
       #
-      klasses = (permissible_klass.ancestors & permissible_klass.base_class.descendants)
-
-      # Now add back in our current permissible_klass C. +klasses+ is now:
-      #  [A, B, C]
-      klasses << permissible_klass.base_class
+      # If permissible_klass is C then +klasses+ will become: [A, B, C]
+      ancestors = permissible_klass.ancestors
+      base_class = permissible_klass.base_class
+      base_class_descendants = base_class.descendants
+      klasses = [base_class].concat(base_class_descendants) & ancestors
 
       # Here we add the condition to allow any record whose
       # permission.applies_to is for A, B, or C

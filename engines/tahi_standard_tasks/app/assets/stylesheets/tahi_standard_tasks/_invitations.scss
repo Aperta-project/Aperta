@@ -245,6 +245,15 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   .invitation-item-action-text { display: none; }
 }
 
+.invitation-item-drag-handle {
+  @include align-self(stretch);
+  max-width: 12px;
+  cursor: move;
+  cursor: -webkit-grab;
+  background: url(image-path('drag-circle.svg'));
+  background-size: 6px;
+  opacity: 0;
+}
 
 /* Invitation Item Header and Details state changes
 ---------------------------------------------------------------------------- */
@@ -252,6 +261,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--closed {
   .invitation-item-header:hover {
     background: $aperta-grey-xlight;
+
+    .invitation-item-drag-handle {
+      opacity: 1;
+    }
   }
 }
 

@@ -11,6 +11,10 @@ class Author < ActiveRecord::Base
   has_one :paper,
           through: :author_list_item,
           inverse_of: :authors
+
+  # Not validated as not all authors have corresponding users.
+  belongs_to :user
+
   delegate :position, to: :author_list_item
 
   validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?

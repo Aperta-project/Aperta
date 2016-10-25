@@ -150,13 +150,13 @@ module Authorizations
     # Permissions that apply to B, C, and D are do not qualify
     # because they are more specific.
     #
-    # If a permission applies to B then we need a permission that applies
+    # If a record is a B then we need a permission that applies
     # to A or B.
     #
-    # If a permission applies to C then we need a permission that applies
+    # If a record is a C then we need a permission that applies
     # to A, B, or C.
     #
-    # If a permission applies to D then we need a permission that applies
+    # If a record is a D then we need a permission that applies
     # to A, B, C, or D.
     #
     # This will result in potentially a lot of SQL, but the database is pretty

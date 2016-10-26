@@ -83,6 +83,8 @@ module TahiStandardTasks
 
         ***************** CONFIDENTIAL *****************
 
+        %{paper_type}
+
         Manuscript Title:
         %{manuscript_title}
 
@@ -98,6 +100,7 @@ module TahiStandardTasks
 
     def template_data
       { manuscript_title: paper.display_title(sanitized: false),
+        paper_type: paper.paper_type,
         journal_name: paper.journal.name,
         abstract: abstract,
         authors:  AuthorsList.authors_list(paper)

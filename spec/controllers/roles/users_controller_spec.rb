@@ -23,7 +23,8 @@ describe OldRoles::UsersController do
         "last_name" => admin.last_name,
         "avatar_url" => admin.avatar.url,
         "username" => admin.username,
-        "affiliation_ids"=>[]
+        "affiliation_ids" => [],
+        "orcid_account_id" => admin.orcid_account.id
       }
 
       expect(res_body["users"]).to include(expected_response)

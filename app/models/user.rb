@@ -56,6 +56,8 @@ class User < ActiveRecord::Base
   has_many :discussion_topics, through: :discussion_participants
   has_many :notifications, inverse_of: :paper
 
+  has_one :orcid_account
+
   attr_accessor :login
 
   validates \
@@ -72,7 +74,7 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  after_create :add_user_role!, :associate_invites
+  after_create :add_user_role!, :associate_invites, :ensure_orcid_acccount!
 
   if Rails.configuration.password_auth_enabled
     devise(
@@ -95,6 +97,10 @@ class User < ActiveRecord::Base
     Invitation.where_email_matches(email)
       .where(invitee: nil)
       .update_all(invitee_id: id)
+  end
+
+  def ensure_orcid_acccount!
+    OrcidAccount.find_or_create_by!(user_id: id)
   end
 
   def created_papers_for_journal(journal)

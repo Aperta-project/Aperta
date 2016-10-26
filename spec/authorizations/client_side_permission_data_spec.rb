@@ -121,6 +121,7 @@ DESC
       let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
 
       before do
+        Authorizations.reset_configuration
         Authorizations.configure do |config|
           config.assignment_to(
             Authorizations::FakePaper,

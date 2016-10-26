@@ -173,13 +173,6 @@ DESC
           user.filter_authorized(:view, chained_query).objects
         ).to_not include(other_task)
       end
-
-      it 'raises when the column name is ambiguous' do
-        chained_exclusion_query = query.where(id: paper.id).where('name = ?', paper.name)
-        expect do
-          user.filter_authorized(:view, chained_exclusion_query).objects
-        end.to raise_error(/column reference "name" is ambiguous/)
-      end
     end
 
     context 'when given join-chained ActiveRecord::Relation(s)' do

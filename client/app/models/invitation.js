@@ -30,6 +30,7 @@ export default DS.Model.extend({
 
   canReposition: Ember.computed.notEmpty('validNewPositionsForInvitation'),
 
+  paperType: DS.attr('string'),
   updatedAt: DS.attr('date'),
   invitedAt: DS.attr('date'),
   acceptedAt: DS.attr('date'),

@@ -8,6 +8,7 @@
     {{else}}
       <div class="pending-invitation">
         <h2 class='invitation-metadata'>{{invitation.inviteeRole}} Invitation | <span class="date">{{format-date invitation.createdAt format='MMMM D, YYYY'}}</span></h2>
+        <p class="invitation-paper-type">{{invitation.paperType}} article</p>
         <li class="dashboard-paper-title">
           <h3>{{partial "svg/manuscript-icon"}} {{{invitation.title}}}</h3>
           {{#if invitation.information}}

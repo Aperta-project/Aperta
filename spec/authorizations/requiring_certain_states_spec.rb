@@ -72,7 +72,7 @@ DESC
   end
 
   context <<-DESC do
-    when a user has access to an object that has requires a specific state
+    when a user has access to an object that requires a specific state
     AND the object IS IN that state
   DESC
     before do

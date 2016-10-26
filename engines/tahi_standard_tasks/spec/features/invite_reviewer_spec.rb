@@ -117,4 +117,13 @@ feature "Invite Reviewer", js: true do
     header.find('.invitation-item-action-delete').click
     expect(overlay).to have_no_css('.invitation-item-header', text: reviewer2.first_name)
   end
+
+  scenario 'attaching files to invitations' do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.add_to_queue(reviewer1)
+    ActiveInvitation.for_user(reviewer1) do |invite|
+      invite.edit
+      invite.upload_attachment('yeti.jpg')
+    end
+  end
 end

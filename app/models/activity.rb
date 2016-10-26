@@ -268,6 +268,16 @@ class Activity < ActiveRecord::Base
     activity
   end
 
+  def self.tech_check_fixed!(paper, user:)
+    create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.tech_fixed',
+      subject: paper,
+      user: user,
+      message: 'Author tech fixes were submitted'
+    )
+  end
+
   def self.state_changed!(paper, to:)
     create(
       feed_name: 'forensic',

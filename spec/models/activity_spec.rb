@@ -80,6 +80,20 @@ describe Activity do
     )}
   end
 
+  describe "#tech_check_fixed!" do
+    subject(:activity) { Activity.tech_check_fixed!(paper, user: user) }
+    let(:paper) { FactoryGirl.build_stubbed(:changes_for_author_task) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: 'manuscript',
+        activity_key: 'paper.tech_fixed',
+        subject: paper,
+        user: user,
+        message: 'Author tech fixes were submitted'
+    )}
+  end
+
   describe "#comment_created" do
     subject(:activity) { Activity.comment_created!(comment, user: user) }
     let(:comment){ FactoryGirl.build_stubbed(:comment) }

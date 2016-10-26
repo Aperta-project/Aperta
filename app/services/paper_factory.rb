@@ -63,7 +63,7 @@ class PaperFactory
       notify: false
     )
     task_class.task_added_to_paper(paper)
-    task_class.task_added_to_workflow(task)
+    task
   end
 
   def add_creator_assignment!

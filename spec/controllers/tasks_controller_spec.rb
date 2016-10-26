@@ -93,7 +93,7 @@ describe TasksController, redis: true do
       end
 
       it "uses the TaskFactory to create the new task" do
-        expect(TaskFactory).to receive(:create)
+        expect(TaskFactory).to receive(:create).and_call_original
         do_request
       end
     end

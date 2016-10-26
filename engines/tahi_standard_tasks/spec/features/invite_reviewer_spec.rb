@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 feature "Invite Reviewer", js: true do
+  include SidekiqHelperMethods
+
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) do
     FactoryGirl.create(
@@ -125,5 +127,13 @@ feature "Invite Reviewer", js: true do
       invite.edit
       invite.upload_attachment('yeti.jpg')
     end
+    find('.invitation-save-button').click
+
+    # Make sure we get the attachment in the actual email
+    overlay.find('.invitation-item-action-send').click
+    process_sidekiq_jobs
+    email = find_email(reviewer1.email)
+    expect(email).to be
+    expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
   end
 end

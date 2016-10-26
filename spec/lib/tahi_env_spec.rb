@@ -10,6 +10,8 @@ describe TahiEnv do
     {
       APP_NAME: 'Aperta',
       ADMIN_EMAIL: 'aperta@example.com',
+      APEX_FTP_ENABLED: 'false',
+      BILLING_FTP_ENABLED: 'false',
       BUGSNAG_API_KEY: 'rails_api_key',
       CAS_ENABLED: 'false',
       DATABASEDOTCOM_CLIENT_ID: 'abc9876',
@@ -33,11 +35,13 @@ describe TahiEnv do
       AWS_REGION: 'us-west',
       EVENT_STREAM_WS_HOST: 'slanger-staging.tahi-project.org',
       EVENT_STREAM_WS_PORT: '8080',
-      ORCID_ENABLED: 'true',
+      ORCID_LOGIN_ENABLED: 'true',
+      ORCID_CONNECT_ENABLED: 'true',
       ORCID_API_HOST: 'api.sandbox.orcid.org',
       ORCID_SITE_HOST: 'sandbox.orcid.com',
       ORCID_SECRET: 'orcidsecret',
       ORCID_KEY: 'orcidkey',
+      ORCID_API_VERSION: '1.2',
       PASSWORD_AUTH_ENABLED: 'true',
       PUSHER_URL: 'http://pusher.tahi-project.org',
       PUSHER_VERBOSE_LOGGING: 'false',
@@ -130,11 +134,13 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'NEWRELIC_APP_NAME'
 
   # Orcid
-  it_behaves_like 'optional boolean env var', var: 'ORCID_ENABLED', default_value: false
-  it_behaves_like 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'ORCID_LOGIN_ENABLED', default_value: false
+  it_behaves_like 'optional boolean env var', var: 'ORCID_CONNECT_ENABLED', default_value: false
+  it_behaves_like 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_API_VERSION', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_CONNECT_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_CONNECT_ENABLED'
 
   # Puma
   it_behaves_like 'optional env var', var: 'PUMA_WORKERS'
@@ -164,7 +170,7 @@ describe TahiEnv do
 
   describe 'when no authentication is enabled' do
     it 'is not valid' do
-      ClimateControl.modify CAS_ENABLED: nil, ORCID_ENABLED: nil, PASSWORD_AUTH_ENABLED: nil do
+      ClimateControl.modify CAS_ENABLED: nil, ORCID_LOGIN_ENABLED: nil, PASSWORD_AUTH_ENABLED: nil do
         expect(env.errors.full_messages).to include \
           "Expected at least one form of authentication to be enabled, but none were. Possible forms: CAS, ORCID, PASSWORD_AUTH"
       end

@@ -151,13 +151,16 @@
     "ORCID_API_HOST": {
       "required": true
     },
-    "ORCID_ENABLED": {
+    "ORCID_LOGIN_ENABLED": {
       "required": true
     },
     "ORCID_KEY": {
       "required": true
     },
     "ORCID_SECRET": {
+      "required": true
+    },
+    "ORCID_API_VERSION": {
       "required": true
     },
     "ORCID_SITE_HOST": {

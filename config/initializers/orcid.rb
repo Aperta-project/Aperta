@@ -1,5 +1,5 @@
 Tahi::Application.configure do
-  if TahiEnv.orcid_enabled?
+  if TahiEnv.orcid_login_enabled?
     # enable for devise
     Devise.omniauth \
       :orcid,

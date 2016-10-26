@@ -23,7 +23,7 @@ namespace :data do
   def put_invitations_into_queue(invitations, queue)
     grouped_primaries = []
     # get grouped invitations
-    invitations.order(:created_at).each do |invitation|
+    invitations.each do |invitation|
       invitation.update(invitation_queue: queue)
       if invitation.has_alternates?
         grouped_primaries << invitation
@@ -31,12 +31,17 @@ namespace :data do
     end
     # put grouped primaries and alternates in queue
     grouped_invitations = []
+
+    # Newly associated primaries bubble to the top
+    grouped_primaries.sort! do |a,b|
+      result = a.alternates.newest_first.first.created_at <=> b.alternates.newest_first.first.created_at
+    end
+
     grouped_primaries.each do |primary|
       grouped_invitations << primary
-      #TODO: sort sent and rescinded invites by invited_at
-      # grouped_invitations.concat(primary.alternates.rescinded.order(:rescinded_at).all)
-      # grouped_invitations.concat(primary.alternates.invited.order(:invited_at).all)
-      # grouped_invitations.concat(primary.alternates.pending.order(:created_at).all)
+      grouped_invitations.concat(primary.alternates.rescinded.order(:rescinded_at).all)
+      grouped_invitations.concat(primary.alternates.invited.order(:invited_at).all)
+      grouped_invitations.concat(primary.alternates.pending.order(:created_at).all)
     end
 
     #grouped_invitations.each do |invitation| puts "invitation.id #{invitation.id} position: #{invitation.position} body: #{invitation.body}" end && nil

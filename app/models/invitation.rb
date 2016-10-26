@@ -29,6 +29,7 @@ class Invitation < ActiveRecord::Base
   scope :rescinded, -> { where(state: "rescinded") }
   scope :invited, -> { where(state: "invited") }
   scope :grouped_alternates, -> { where.not(primary: nil) }
+  scope :newest_first, -> { order(created_at: :desc) }
 
   def ungrouped_primary?
     !has_alternates? && !is_alternate?

@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.28.0] - {2016-10-21}
+### Added
 - Manuscript diffing has been enhanced. Words that have changed are now highlighted
   inside of changed sentences.
 ### Changed
@@ -61,7 +69,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Keeps all uploaded manuscripts
 - Can view old versions of figures and supporting information
 - Aperta is now configured to clean out temporary files every 24 hours on the backend.
-- Queuing Alternates and subqueues for Invite Reviewers and Invite Editors tasks 
+- Queuing Alternates and subqueues for Invite Reviewers and Invite Editors tasks
 ### Changed
 ### Deprecated
 ### Removed

@@ -5,8 +5,6 @@
 .add-new-author-button-container {
   position: relative;
   padding-top: 10px;
-
-  .dropdown-menu { left: -5px; }
 }
 
 .author-task-item {
@@ -16,7 +14,7 @@
 
 .author-task-item-view {
   @include align-items(center);
-  background: $tahi-grey-xlight;
+  background: $aperta-grey-xlight;
 
   .flex-group {
     margin-left: 1rem;
@@ -88,7 +86,7 @@
 .authors-overlay-item-delete {
   padding: 10px 15px;
   color: #fff;
-  background-color: $tahi-green;
+  background-color: $aperta-green;
   z-index: 1;
 
   p { margin-left: 0; }
@@ -103,7 +101,7 @@
 
   &.current-drop-target {
     height: 80px;
-    border: 2px dashed $tahi-green-light;
+    border: 2px dashed $aperta-green-light;
   }
 }
 
@@ -133,7 +131,7 @@
         position: relative;
         top: 0.75rem;
         font-size: 21pt;
-        color: $tahi-green;
+        color: $aperta-green;
       }
     }
 

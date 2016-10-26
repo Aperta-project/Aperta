@@ -1,0 +1,56 @@
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+html {
+  font-size: 10px; // rem unit reset
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-family: $aperta-font-family;
+  font-size: 14px;
+  line-height: 1.42857143;
+}
+
+input, textarea {
+  font-family: $aperta-font-family;
+}
+
+input:focus, textarea:focus, *[contenteditable] {
+  outline: none;
+}
+
+// As of September 4th, 2016
+// Only Chrome and Safari support scrollbar styling
+// http://caniuse.com/#search=scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+  padding-left: 10px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 4px !important;
+  min-height: 40px;
+  background: #ddd;
+}
+
+a, button, .fa, {
+  transition: all 0.1s ease-in-out;
+}
+
+a {
+  color: $aperta-green;
+  cursor: pointer;
+
+  &:focus, &:hover {
+    text-decoration: underline;
+    color: $aperta-green;
+  }
+}
+
+hr { border-top: 1px solid #d6d6d6; }

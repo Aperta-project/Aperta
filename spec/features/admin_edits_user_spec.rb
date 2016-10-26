@@ -11,7 +11,7 @@ feature "Admin can edit user details and initiate password reset", js: true do
     login_as(user, scope: :user)
     visit "/"
 
-    within('.main-nav') do
+    within('#main-navigation') do
       click_link 'Admin'
     end
   end

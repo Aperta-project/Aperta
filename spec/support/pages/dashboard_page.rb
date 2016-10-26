@@ -41,11 +41,11 @@ class DashboardPage < Page
 
   #doesn't wait for elements to appear.
   def has_no_admin_link?
-    all(".main-nav a", text: "Admin").empty?
+    all(".main-navigation-item", text: "Admin").empty?
   end
 
   def admin_link
-    find(".main-nav a", text: "Admin")
+    find(".main-navigation-item", text: "Admin")
   end
 
   def visit_admin

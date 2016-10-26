@@ -17,7 +17,7 @@
   .card-content {
     color: #fff;
     text-decoration: none;
-    background-color: $tahi-green;
+    background-color: $aperta-green;
   }
 }
 
@@ -25,7 +25,7 @@
   @extend .fa, .fa-check;
   display: inline;
   margin-right: 5px;
-  color: $tahi-green;
+  color: $aperta-green;
 }
 
 .card-remove {
@@ -44,9 +44,9 @@
   position: relative;
   border-radius: 5px;
   padding: 10px 12px;
-  color: $tahi-green-dark;
+  color: $aperta-green-dark;
   font-size: 18px;
-  background-color: $tahi-green-light;
+  background-color: $aperta-green-light;
   cursor: pointer;
 
   .badge {
@@ -60,14 +60,14 @@
     overflow: hidden;
   }
   .card-completed-icon {
-    color: $tahi-green;
+    color: $aperta-green;
     margin-right: 7px;
     margin-top: 5px;
     display: none;
     float: left;
   }
   .card-diff-icon {
-    color: $tahi-green;
+    color: $aperta-green;
     margin-right: 7px;
     margin-top: 3px;
     float: left;
@@ -77,26 +77,26 @@
 // .card modifier:
 .card--completed {
   .card-content {
-    color: $tahi-grey-light - #666;
-    background: $tahi-grey-light;
+    color: $aperta-grey-light - #666;
+    background: $aperta-grey-light;
   }
 
   .card-completed-icon {
     display: block;
-    color: $tahi-green;
+    color: $aperta-green;
   }
 }
 
 .card--completed:hover .card-content,
 .card--completed:focus .card-content {
   color: #fff;
-  background: $tahi-grey-light - #333;
+  background: $aperta-grey-light - #333;
 
   .fa { color: #fff; }
 }
 
 // .card modifier:
 .card--dragging {
-  @include transform(rotate(2deg) scale(1.05));
+  transform: rotate(2deg) scale(1.05);
   box-shadow: 0 2px 2px rgba(0,0,0, 0.1);
 }

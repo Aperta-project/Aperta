@@ -1,0 +1,69 @@
+/* MAIN LAYOUT
+
+Layout elements do not have any default styles.
+All properties are applied in a media query.
+
+#layout-container [flexbox that will layout children vertically]
+    #main-navigation [hidden by default on small screen]
+    #mobile-nav [styled only on small screen]
+        #mobile-nav-content [styled only on small screen]
+        #control-bar [hidden by default on small screen]
+    #main-content [flexbox that will layout children horizontally]
+        .main-content-section#manuscript
+        .main-content-section#tasks
+
+----------------------------------------------------------------------------- */
+
+/* !important for flexbox based layout
+   required to create fixed headers and scrolling content
+*/
+body, html, #layout-container,
+.ember-application > .ember-view { height: 100%; }
+
+/* Main Layout : large screen */
+@include min-screen-width($layout-large-screen) {
+  .ember-application > .ember-view,
+  #layout-container, #main-content { display: flex; }
+  .ember-application > .ember-view,
+  #layout-container { flex-direction: column; }
+
+  #main-content { flex: 1;  }
+
+  #main-content .main-content-section {
+    overflow: auto;
+    flex: 1;
+    padding: 2rem;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Main Layout : small screen */
+@include max-screen-width($layout-large-screen) {
+  #layout-container, #main-content { display: flex; }
+  #layout-container { flex-direction: column; }
+  #main-content { flex: 1;  }
+
+  // for demo
+  #main-content .manuscript h1 {
+    margin-top: 0;
+    font-size: 2rem;
+    font-weight: normal;
+    font-family: $aperta-article-font-family;
+  }
+
+  #main-content .manuscript p {
+    font-size: 1.4rem;
+    line-height: 125%;
+    font-family: $aperta-article-font-family;
+  }
+
+  .main-content-section {
+    overflow: auto;
+    flex-grow: 1;
+    // display: none;
+    padding: 2.0rem;
+    -webkit-overflow-scrolling: touch;
+
+    &.visible { display: block; }
+  }
+}

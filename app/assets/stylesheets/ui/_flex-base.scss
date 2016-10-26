@@ -1,32 +1,35 @@
 .flex-group {
-  @include display(flex);
-  @include flex-wrap(wrap);
-
-  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
   overflow-y: scroll;
+
   &.flex-group--divider {
     margin-bottom: 1.5rem;
-    border-bottom: 1px solid $tahi-grey;
+    border-bottom: 1px solid $aperta-grey;
   }
 }
 
 .flex-element {
-  @include flex(10 10 auto);
+  flex: 10 10 auto;
 
-  input[type=text] { width: 100%; }
-  select { width: 100%; }
+  input[type=text],
+  select {
+    width: 100%;
+  }
 }
 
 
 .flex-form {
-  margin: 15px 0;
-  padding: 20px;
+  margin: 1.5rem 0;
+  padding: 2.0rem;
+
+  // probably should not be on generic selector:
   background: #eee;
 
   .flex-element {
     margin-bottom: 1.5rem;
-    padding-right: 5px;
-    padding-left: 5px;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
   }
 
   .flex-group.flex-element {

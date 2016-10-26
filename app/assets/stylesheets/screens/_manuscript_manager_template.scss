@@ -1,49 +1,59 @@
-.manuscript-manager-template {
-  .manuscript-manager-template-columns {
-    // override .columns to allow for larger .control-bar
-    top: 135px !important;
+.manuscript-manager-template-columns {
+  // override .columns to allow for larger .control-bar
+  top: 135px !important;
+}
+
+.edit-paper-type-field {
+  width: 330px;
+  height: 40px;
+  margin-left: 2rem;
+  color: $aperta-blue;
+  font-size: 20px;
+  border: 1px solid $aperta-blue;
+  border-radius: 5px;
+  padding-left: 8px;
+
+  &.error {
+    border-color: $aperta-red;
+  }
+}
+
+.mmt-edit-error-message { display: inline; }
+.mmt-edit-error-message.error-message--hidden {
+  display: none;
+  margin-left: 10px;
+}
+
+.paper-type-name {
+  align-self: center;
+  display: inline-block;
+  color: $aperta-blue;
+  font-size: 2.0rem;
+  cursor: pointer;
+
+  .fa {
+    position: relative;
+    top: -2px;
+    margin-left: 2px;
+    font-size: 16px;
+    opacity: 0.5;
   }
 
-  .edit-paper-type-field {
-    width: 330px;
-    height: 40px;
-    color: $tahi-blue;
-    font-size: 20px;
-    border: 1px solid $tahi-blue;
-    border-radius: 5px;
-    padding-left: 8px;
+  &:hover .fa {
+    opacity: 1;
   }
+}
 
-  .mmt-edit-error-message { display: inline; }
+.paper-type-save-button {
+  margin-left: 2rem;
+}
 
-  .paper-type-form {
-    position: absolute;
-    top: 80px;
-    left: 130px;
-  }
+.uses-research-article-reviewer-report {
+  align-self: center;
+  margin-left: 2rem;
 
-  .paper-type-name {
-    display: inline-block;
-    color: $tahi-blue;
-    font-size: 20px;
-    cursor: pointer;
-
-    .fa {
-      margin-left: 2px;
-      font-size: 16px;
-      opacity: 0.5;
-    }
-
-    &:hover .fa {
-      opacity: 1;
-    }
-  }
-
-  .paper-type-save-button {
-    margin-left: 40px;
-  }
-
-  .paper-type-cancel-button {
-    margin-top: 18px;
+  label {
+    // bootstrap override
+    margin-bottom: 0;
   }
 }

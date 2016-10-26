@@ -135,7 +135,7 @@ feature 'Viewing manuscript control bar', js: true do
     let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     scenario 'can view the Go to Workflow link' do
-      expect(page).to have_css('#go-to-workflow')
+      expect(page).to have_css('#nav-workflow')
     end
   end
 
@@ -146,7 +146,7 @@ feature 'Viewing manuscript control bar', js: true do
     end
 
     scenario 'can not view the Go to Workflow link' do
-      expect(page).to_not have_css('#go-to-workflow')
+      expect(page).to_not have_css('#nav-workflow')
     end
   end
 end

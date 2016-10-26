@@ -2,10 +2,10 @@
   padding: 0 60px 35px 60px;
 
   .methods {
-    @include flex(0 1 auto);
-    @include display(flex);
-    @include flex-flow(row wrap);
-    @include justify-content(center);
+    flex: 0 1 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
   }
 
   .logo {
@@ -13,7 +13,7 @@
   }
 
   h1 {
-    @include flex(0 0 100%);
+    flex: 0 0 100%;
     margin-top: 1px;
     margin-bottom: 0px;
     text-align: center;
@@ -57,7 +57,7 @@
     font-size: 18px;
     font-weight: 300;
     margin-right: auto;
-    @include align-self(flex-start);
+    align-self: flex-start;
   }
 
   .bold {
@@ -71,10 +71,10 @@
 
   .flex-bar {
     @include clearfix;
-    @include display(flex);
-    @include flex-direction(row);
-    @include justify-content(flex-end);
-    @include align-items(center);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   .flex-item {

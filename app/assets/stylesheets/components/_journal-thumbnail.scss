@@ -5,7 +5,7 @@
   min-width: 300px;
   min-height: 100px;
   margin: 35px 2.75% 0 0 ;
-  border: 1px solid $tahi-grey-light;
+  border: 1px solid $aperta-grey-light;
 
   p {
     margin: 12px 0 0 0;
@@ -20,11 +20,11 @@
     padding-top: 1.5rem;
     padding-bottom: 2rem;
     color: #d4d4d4;
-    font-size: 14px;
+    font-size: 1.8rem;
     text-align: center;
     cursor: pointer;
 
-    &:hover { color: $tahi-blue; }
+    &:hover { color: $aperta-blue; }
   }
 }
 
@@ -36,7 +36,7 @@
 
   img { vertical-align: top; }
   path, rect, circle {
-    fill: $tahi-blue;
+    fill: $aperta-blue;
   }
 }
 
@@ -59,7 +59,7 @@
   padding: 0;
   display: inline-block;
   margin-right: 15px;
-  color: $tahi-blue;
+  color: $aperta-blue;
   text-decoration: none;
 }
 
@@ -70,15 +70,15 @@
 }
 
 .journal-thumbnail-edit-form {
-  background-color: $tahi-blue;
-  border-color: $tahi-blue;
+  background-color: $aperta-blue;
+  border-color: $aperta-blue;
   padding: 20px 20px 12px 20px;
   position: relative;
 
   .link { margin-right: 10px; }
 
   .inset-form-control.required::before {
-    color: $tahi-blue-dark;
+    color: $aperta-blue-dark;
   }
 
   .journal-description-edit {

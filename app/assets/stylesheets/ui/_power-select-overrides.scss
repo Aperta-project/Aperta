@@ -1,0 +1,8 @@
+// Config for Ember-CLI addon ember-power-select
+.ember-basic-dropdown-content {
+  z-index: z('power-select-content');
+}
+
+.power-select-other.error .power-select-other-input {
+  border: 1px solid $aperta-red;
+}

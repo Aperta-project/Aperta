@@ -1,13 +1,21 @@
+// NOTE deprecate?
+
 .base-screen {
-  padding-top: 80px;
-  padding-bottom: 20px;
+  padding-top: 8rem;
+  padding-bottom: 2.0rem;
 }
-  
+
+.base-screen,
+.base-layout {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 @media only screen and (max-width: 1150px) {
   .base-layout,
   .base-screen {
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
   }
 }
 
@@ -15,7 +23,5 @@
   .base-layout,
   .base-screen {
     width: 1120px;
-    margin-right: auto;
-    margin-left: auto;
   }
 }

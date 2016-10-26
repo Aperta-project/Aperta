@@ -31,7 +31,7 @@
         background-image: none;
 
         &:first-child {
-          border-bottom-color: $tahi-green;
+          border-bottom-color: $aperta-green;
         }
 
         .select2-search-choice-close {
@@ -72,7 +72,7 @@
   .bodypart-overlay {
     .select2-choices,
     .select2-search-field {
-      background: $tahi-green;
+      background: $aperta-green;
 
       input {
         margin: 0;
@@ -88,10 +88,10 @@
 
 .add-participant-button {
   @include size(25px 25px);
-  border: 1px solid $tahi-green;
+  border: 1px solid $aperta-green;
   border-radius: 3px;
-  color: $tahi-green;
-  background: $tahi-white;
+  color: $aperta-green;
+  background: $aperta-white;
   line-height: 20px;
   position: relative;
   display: inline-block;
@@ -107,7 +107,7 @@
 
   &:hover {
     border: 1px solid #137300;
-    background: rgba($tahi-green, 0.5);
+    background: rgba($aperta-green, 0.5);
     color: #137300;
   }
 }
@@ -122,7 +122,7 @@
   box-shadow: none;
 
   .select2-highlighted {
-    background: $tahi-green;
+    background: $aperta-green;
 
     .suggestion-sub-value { color: rgba(255,255,255, 0.7); }
   }
@@ -134,7 +134,7 @@
   }
 
   .select2-no-results, .select2-searching {
-    background: $tahi-white;
+    background: $aperta-white;
   }
 }
 

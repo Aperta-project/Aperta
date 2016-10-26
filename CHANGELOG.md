@@ -26,6 +26,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - PLOS Biology name is no longer hard coded in letter templates
 - Fixed issue where roles couldn't be assigned in the admin page in some journals
 - Fixed ad-hoc email component to expand properly
+- Fixed scrolling on manuscript page
 - Notifications when FTP uploads fail are now being emailed out to the Journal Staff Admins for associated papers
 ### Security
 

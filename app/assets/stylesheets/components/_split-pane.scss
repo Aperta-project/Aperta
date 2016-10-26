@@ -1,21 +1,21 @@
 .split-pane {
-  @include display(flex);
+  display: flex;
   background: #fff;
   height: 100%;
 }
 
 .split-pane-element {
-  @include flex(0.5);
+  flex: 0.5;
   position: relative;
   overflow-y: auto;
   overflow-x: hide;
 
   &:first-of-type {
-    @include order(1);
+    order: 1;
   }
 
   &:last-of-type {
-    @include order(3);
+    order: 3;
   }
 
   &::-webkit-scrollbar-thumb { background: transparent; }
@@ -26,7 +26,7 @@
   position: relative;
   width: 1px;
   cursor: ew-resize;
-  @include order(2);
+  order: 2;
   z-index: 2;
 
   &:after {

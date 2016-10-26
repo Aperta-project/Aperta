@@ -43,9 +43,9 @@ module('Integration: PaperIndex', {
     paperPayload = Factory.createPayload('paper');
     paperPayload.addRecords(records.concat([fakeUser]));
     paperResponse = paperPayload.toJSON();
+    paperResponse.paper.gradual_engagement = true;
     tasksPayload = Factory.createPayload('tasks');
     tasksPayload.addRecords([figureTask]);
-    console.log(tasksPayload.toJSON());
     taskPayload = Factory.createPayload('task');
     taskPayload.addRecords([figureTask, currentPaper, fakeUser, nestedQuestion]);
     figureTaskResponse = taskPayload.toJSON();
@@ -107,7 +107,7 @@ module('Integration: PaperIndex', {
 
 test('on paper.index as a participant on a task but not author of paper', function(assert) {
   var journal, litePaper, paperPayload, paperResponse, phase, records, task;
-  expect(1);
+  assert.expect(1);
   records = paperWithTask('Task', {
     id: 1,
     type: 'AdHocTask',
@@ -119,19 +119,19 @@ test('on paper.index as a participant on a task but not author of paper', functi
   paperPayload.addRecords(records.concat([fakeUser]));
   paperResponse = paperPayload.toJSON();
   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
-  server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+  server.respondWith('GET', '/api/papers/' + currentPaper.id, [
     200, {
       "Content-Type": "application/json"
     }, JSON.stringify(paperResponse)
   ]);
-  return visit("/papers/" + currentPaper.id).then(function() {
+  return visit('/papers/' + currentPaper.id).then(function() {
     return assert.ok(!!find('#paper-assigned-tasks .task-disclosure-heading:contains("ReviewMe")').length);
   });
 });
 
 test('on paper.index as a participant on a task and author of paper', function(assert) {
   var journal, litePaper, paperPayload, paperResponse, phase, records, task;
-  expect(1);
+  assert.expect(1);
   records = paperWithTask('ReviseTask', {
     id: 1,
     qualifiedType: "TahiStandardTasks::ReviseTask",
@@ -148,34 +148,44 @@ test('on paper.index as a participant on a task and author of paper', function(a
       "Content-Type": "application/json"
     }, JSON.stringify(paperResponse)
   ]);
-  return visit("/papers/" + currentPaper.id).then(function() {
+  return visit('/papers/' + currentPaper.id).then(function() {
     return assert.ok(!!find('#paper-assigned-tasks .card-content:contains("Revise Task")'), "Participant task is displayed in '#paper-assigned-tasks' for author");
   });
 });
 
 test('visiting /paper: Author completes all metadata cards', function(assert) {
-  expect(3);
-  visit("/papers/" + currentPaper.id).then(function() {
-    return assert.ok(!find('#paper-container.sidebar-empty').length, "The sidebar should NOT be hidden");
+  assert.expect(3);
+  visit('/papers/' + currentPaper.id).then(function() {
+    return assert.ok(!find('#paper-container.sidebar-empty').length, 'The sidebar should NOT be hidden');
   }).then(function() {
-    var submitButton;
-    submitButton = find('button:contains("Submit")');
-    return assert.ok(!submitButton.length, "Submit is disabled");
+    const submitButton = find('button:contains("Submit")');
+    return assert.ok(!submitButton.length, 'Submit is disabled');
   }).then(function() {
-    var card, i, len, ref, results;
-    ref = find('#paper-submission-tasks .card-content');
-    results = [];
+    const ref = find('#paper-submission-tasks .card-content');
+    let results = [];
+    let i, len;
     for (i = 0, len = ref.length; i < len; i++) {
-      card = ref[i];
+      let card = ref[i];
       click(card);
       click('.task-completed');
       results.push(click('.overlay-close-button:first'));
     }
     return results;
   });
-  return andThen(function() {
-    var submitButton;
-    submitButton = find('button:contains("Submit")');
-    return assert.notOk(submitButton.hasClass('button--disabled'), "Submit is enabled");
+  andThen(function() {
+    const submitButton = find('button:contains("Submit")');
+    assert.notOk(submitButton.hasClass('button--disabled'), 'Submit is enabled');
+  });
+});
+
+test('visiting /paper: Gradual Engagement banner visible', function(assert) {
+  visit('/papers/' + currentPaper.id + '?firstView=true').then(function() {
+    assert.ok(find('#submission-process').length, 'The banner is visible');
+  });
+
+  click('#sp-close');
+
+  andThen(function() {
+    assert.ok(!find('#submission-process').length, 'The banner is not visible');
   });
 });

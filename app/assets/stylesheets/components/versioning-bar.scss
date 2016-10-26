@@ -1,26 +1,15 @@
 #versioning-bar {
-  @include clearfix;
-  @include position(relative, 60px 0 auto 0);
-  padding: 5px 30px;
-  margin-bottom: 10px;
-  background-color: #fff;
-  top: 0px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 3rem;
+  font-size: 1.4rem;
 
   .bar-item {
-    float: left;
-    margin-right: 15px;
-
-    &.exit-versions {
-      float: right;
-      margin-right: 0px;
-      font-size: 36px;
-      line-height: 17px;
-      color: $tahi-green;
-      cursor: pointer;
-    }
+    margin: 0 15px 0 0;
 
     .fa {
-      color: $tahi-green;
+      color: $aperta-green;
     }
 
     select {

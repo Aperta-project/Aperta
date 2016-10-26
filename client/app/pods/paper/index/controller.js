@@ -1,15 +1,26 @@
 import Ember from 'ember';
+import Controller from 'ember-controller';
 import PaperBase from 'tahi/mixins/controllers/paper-base';
 import Discussions from 'tahi/mixins/discussions/route-paths';
 
-export default Ember.Controller.extend(PaperBase, Discussions, {
+const {
+  computed,
+  computed: { equal }
+} = Ember;
+
+export default Controller.extend(PaperBase, Discussions, {
   //sent by paper-new on creation, used to show submission process 1st view
   queryParams: ['firstView'],
 
-  isGradualEngagement: Ember.computed.equal('model.gradualEngagement', true),
+  isGradualEngagement: equal('model.gradualEngagement', true),
+  renderEngagementBanner: computed('isGradualEngagement', 'model.isWithdrawn',
+    function() {
+      return this.get('model.gradualEngagement') &&
+        !this.get('model.isWithdrawn');
+    }
+  ),
 
-  showSubmissionProcess: Ember.computed(
-    'model', 'firstView', 'isGradualEngagement',
+  showSubmissionProcess: computed('model', 'firstView', 'isGradualEngagement',
     function() {
       if (!this.get('isGradualEngagement')) return false;
 

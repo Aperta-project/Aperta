@@ -10,7 +10,7 @@ $comments-animation-speed: 0.3s;
   overflow: hidden;
   position: relative;
   padding-bottom: 0;
-  @include transition(all $comments-animation-speed);
+  transition: all $comments-animation-speed;
 
   &.editing {
     padding-bottom: 45px;
@@ -47,8 +47,8 @@ $comments-animation-speed: 0.3s;
 .message-comment-buttons {
   overflow: hidden;
   @include position(absolute, auto 0px 20px 0px);
-  @include transition(all $comments-animation-speed);
-  @include transition-delay(0.15s);
+  transition: all $comments-animation-speed;
+  transition-delay: 0.15s;
   height: 0;
   opacity: 0;
 

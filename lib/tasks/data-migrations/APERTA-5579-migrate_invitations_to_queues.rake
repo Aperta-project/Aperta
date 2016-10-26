@@ -23,6 +23,8 @@ namespace :data do
   def put_invitations_into_queue(invitations, queue)
     grouped_primaries = []
     # get grouped invitations
+    #
+    # TODO: sort everything by created_at first
     invitations.each do |invite|
       invite.update(invitation_queue: queue)
       if invite.has_alternates?
@@ -34,6 +36,7 @@ namespace :data do
     grouped_invitations = []
     grouped_primaries.each do |primary|
       grouped_invitations << primary
+      #TODO: sort sent and rescinded invites by invited_at
       grouped_invitations.concat(primary.alternates.rescinded.all)
       grouped_invitations.concat(primary.alternates.invited.all)
       grouped_invitations.concat(primary.alternates.pending.all)
@@ -42,10 +45,14 @@ namespace :data do
     grouped_invitations = grouped_invitations.select(&:present?)
 
     remaining_invitations = invitations - grouped_invitations
+    #TODO: put sent invitations first, sort sent by invited_at, sort the rest by created_at
 
     reordered_invitations = grouped_invitations + remaining_invitations
 
+    #TODO: manually assign the 'position' field to reordered_invitations in the order they're in at this point.
+    # The tests should make sure that the positions are correct
     queue.invitations = reordered_invitations
+
     queue.save
   end
 

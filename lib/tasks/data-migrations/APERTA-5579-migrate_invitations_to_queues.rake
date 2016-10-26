@@ -7,11 +7,13 @@ namespace :data do
     task migrate_invitations_to_queues: :environment do
       Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
         task.paper.decisions.each do |decision|
+          puts "making queue for decision #{decision.id}"
           queue = decision.create_invitation_queue!(task: task)
           put_invitations_into_queue(decision.invitations, queue)
         end
       end
       Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
+        puts "making queue for task #{task.id}"
         queue = task.create_invitation_queue!(task: task)
         put_invitations_into_queue(task.invitations, queue)
       end
@@ -19,7 +21,6 @@ namespace :data do
   end
 
   def put_invitations_into_queue(invitations, queue)
-    queue_invitations = []
     grouped_primaries = []
     # get grouped invitations
     invitations.each do |invite|
@@ -30,17 +31,21 @@ namespace :data do
     end
 
     # put grouped primaries and alternates in queue
+    grouped_invitations = []
     grouped_primaries.each do |primary|
-      queue_invitations << primary
-      queue_invitations << primary.alternates.rescinded
-      queue_invitations << primary.alternates.invited
-      queue_invitations << primary.alternates.pending
+      grouped_invitations << primary
+      grouped_invitations.concat(primary.alternates.rescinded.all)
+      grouped_invitations.concat(primary.alternates.invited.all)
+      grouped_invitations.concat(primary.alternates.pending.all)
     end
 
-    remaining_invitations = invitations - queue_invitations
-    queue_invitations += remaining_invitations
+    grouped_invitations = grouped_invitations.select(&:present?)
 
-    queue.invitations = queue_invitations
+    remaining_invitations = invitations - grouped_invitations
+
+    reordered_invitations = grouped_invitations + remaining_invitations
+
+    queue.invitations = reordered_invitations
     queue.save
   end
 

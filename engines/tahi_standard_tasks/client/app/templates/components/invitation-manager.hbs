@@ -9,10 +9,11 @@
                       class='active-invitations')
                     ) as |i| }}
 
-  {{i.group invitations=(if groupByDecision
-                            latestDecisionInvitations
-                            persistedInvitations)
-  }}
+  {{#if groupByDecision}}
+    {{i.group invitations=latestDecisionInvitations}}
+  {{else}}
+    {{i.group invitations=persistedInvitations}}
+  {{/if}}
 
   <div class="invitation-email-entry">
     {{#auto-suggest endpoint=autoSuggestSourceUrl

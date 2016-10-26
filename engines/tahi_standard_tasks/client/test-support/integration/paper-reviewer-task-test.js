@@ -24,6 +24,8 @@ moduleForComponent(
   }
 );
 
+let decision = Ember.Object.create({id: 2, latest: true, invitations: []});
+
 test('User can add a new reviewer after tweaking the email of an exiting user',
   function(assert){
     const context = this;
@@ -40,12 +42,14 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
       assert.equal(
         properties.email, 'Foo Magoo <foo@example.com>',
         'Has a well-formatted email');
-      return newInvitation(properties.email);
+      let newInvite = newInvitation(properties.email);
+      decision.invitations.addObject(newInvite);
+      return newInvite;
     }, this);
 
     setupEditableTask(this);
 
-    fillIn('#invitation-recipient', 'foo');
+    fillIn('#invitation-recipient', 'foo@bar.com');
     click('.auto-suggest-item');
 
     // Tweak the existing email, as per scenario in APERTA-6811
@@ -70,6 +74,7 @@ var newInvitation = function(email) {
   });
 };
 
+
 var newTask = function() {
   return {
     id: 2,
@@ -85,6 +90,7 @@ var newTask = function() {
     },
 
     paper: {
+      latestDecision: decision,
       decisions: {
         reload() {
           // noop
@@ -93,7 +99,7 @@ var newTask = function() {
     },
 
     decisions: [
-      {id: 2, latest: true, invitations: []}
+      decision
     ]
   };
 };

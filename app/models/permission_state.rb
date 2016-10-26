@@ -1,5 +1,5 @@
 class PermissionState < ActiveRecord::Base
-  WILDCARD = '*'
+  WILDCARD = '*'.freeze
 
   def self.wildcard
     where(name: WILDCARD).first_or_create!

@@ -48,7 +48,7 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
 
   validDropZone() {
     return this.notAdjacent(this.get('index'), DragNDrop.dragItem.get('position')) &&
-    DragNDrop.dragItem.get('validNewPositionsForInvite')
+    DragNDrop.dragItem.get('validNewPositionsForInvitation')
                     .includes(this.get('position'));
   }
 });

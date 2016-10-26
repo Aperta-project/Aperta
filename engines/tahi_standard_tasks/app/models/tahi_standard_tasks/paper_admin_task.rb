@@ -36,7 +36,14 @@ module TahiStandardTasks
 
     def update_paper_admin_and_tasks
       # TODO: eventually move callback to controller
-      TaskRoleUpdater.new(task: self, assignee_id: admin_id, paper_role_name: PaperRole::ADMIN).update
+      paper.transaction do
+        admin = User.find(admin_id)
+        paper.assignments
+             .where(role: paper.journal.staff_admin_role)
+             .destroy_all
+        paper.assignments
+             .create!(user: admin, role: paper.journal.staff_admin_role)
+      end
     end
 
     def paper_admin_changed?

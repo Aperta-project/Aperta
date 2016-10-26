@@ -161,6 +161,7 @@ class Rescind < ActiveRecord::Migration
           count = 0
           VersionedText.find_each do |versioned_text|
             paper = versioned_text.paper
+            next if paper.blank?
             if versioned_text.latest_on_paper? && paper.draft_state?
               versioned_text.be_draft!
               count += 1

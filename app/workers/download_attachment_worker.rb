@@ -3,6 +3,15 @@
 class DownloadAttachmentWorker
   include Sidekiq::Worker
 
+  # Retries here could cause figures or supporting information to
+  # revert to a broken file after the error had been fixed
+  sidekiq_options :retry => false
+
+  def self.download_attachment(attachment, url, uploaded_by_user)
+    attachment.update_attribute(:status, Attachment::STATUS_PROCESSING)
+    perform_async(attachment.id, url, uploaded_by_user.id)
+  end
+
   def perform(attachment_id, url, uploaded_by_user_id)
     user = User.find(uploaded_by_user_id)
     Attachment.find(attachment_id).download!(url, uploaded_by: user)

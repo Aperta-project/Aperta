@@ -8,6 +8,8 @@ export default DS.Model.extend({
     async: false
   }),
 
+  orcidAccount: DS.belongsTo('orcidAccount', { async: true }),
+
   avatarUrl: DS.attr('string'),
   email: DS.attr('string'),
   firstName: DS.attr('string'),

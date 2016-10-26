@@ -21,11 +21,6 @@
   &.editing {
     display: block;
 
-    div[contenteditable] {
-      width: 910px;
-      height: 20px;
-    }
-
     &.large-edit {
       font-size: 48px;
       background-color: #C3E7BF;
@@ -126,6 +121,7 @@
   }
 
   .email-body {
+    overflow: auto;
     min-height: 100px;
     margin-bottom: 10px;
   }

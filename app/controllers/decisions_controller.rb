@@ -4,9 +4,15 @@ class DecisionsController < ApplicationController
 
   def index
     paper = Paper.find(params[:paper_id])
-    requires_user_can(:view_decisions, paper)
+    requires_user_can(:view, paper)
 
-    render json: paper.decisions,
+    decisions = paper.decisions.completed
+
+    if current_user.can?(:view_decisions, paper)
+      decisions = paper.decisions
+    end
+
+    render json: decisions,
            each_serializer: DecisionSerializer,
            root: 'decisions'
   end

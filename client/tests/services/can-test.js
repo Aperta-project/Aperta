@@ -1,6 +1,7 @@
 import { moduleFor, test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Ember from 'ember';
+import { Ability } from 'tahi/services/can';
 const { run } = Ember;
 
 moduleFor('service:can', 'Unit: Can Service Permissions', {
@@ -23,6 +24,40 @@ moduleFor('service:can', 'Unit: Can Service Permissions', {
   afterEach() {
     run(this.App, 'destroy');
   }
+});
+
+test('the underlying Ability#can updates when `resource.permissionState` changes', function(assert){
+  const can = this.subject({
+    container: this.container,
+    store: this.store
+  });
+
+  run(() => {
+    this.permission.setProperties({
+      permissions: {
+        view: { states: ['open'] }
+      }
+    });
+    this.resource.setProperties({permissionState:'closed'});
+
+    let ability = Ability.create({
+      name: 'view',
+      resource: this.resource,
+      permissions: this.permission
+    });
+
+    assert.equal(ability.get('can'), false, 'Should not be granted permission');
+
+    wait().then(() => {
+      this.resource.setProperties({permissionState:'open'});
+      assert.equal(ability.get('can'), true, 'Should be granted permission');
+    });
+
+    wait().then(() => {
+      this.resource.setProperties({permissionState:'closed'});
+      assert.equal(ability.get('can'), false, 'Should not be granted permission');
+    });
+  });
 });
 
 test('permission is denied when permissions are empty', function(assert){

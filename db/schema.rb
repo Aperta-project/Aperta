@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161006175522) do
+ActiveRecord::Schema.define(version: 20161018143343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -411,6 +411,23 @@ ActiveRecord::Schema.define(version: 20161006175522) do
   end
 
   add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
+
+  create_table "orcid_accounts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "access_token"
+    t.string   "refresh_token"
+    t.string   "identifier"
+    t.datetime "expires_at"
+    t.string   "name"
+    t.string   "scope"
+    t.jsonb    "authorization_code_response"
+    t.text     "profile_xml"
+    t.datetime "profile_xml_updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "orcid_accounts", ["user_id"], name: "index_orcid_accounts_on_user_id", using: :btree
 
   create_table "paper_roles", force: :cascade do |t|
     t.integer  "user_id"

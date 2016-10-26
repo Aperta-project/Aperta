@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Journal Administration", js: true do
+feature "Journal Administration", js: true, flaky: true do
   let(:user) { create :user, :site_admin }
   let!(:journal) { create :journal, :with_roles_and_permissions, description: 'journal 1 description' }
   let!(:journal2) { create :journal, :with_roles_and_permissions, description: 'journal 2 description' }

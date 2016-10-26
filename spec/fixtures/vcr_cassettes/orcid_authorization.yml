@@ -1,0 +1,41 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://sandbox.orcid.org/oauth/token
+    body:
+      encoding: UTF-8
+      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&grant_type=authorization_code&code=C3b6Z2
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '123'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Thu, 06 Oct 2016 18:12:28 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '228'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"access_token":"77ca0753-a8ac-491b-a1c4-0dbaa0c486d0","token_type":"bearer","refresh_token":"1acd31de-908e-45e8-9251-e16cfae3821a","expires_in":631138518,"scope":"/read-limited","name":"AJ
+        Hekman","orcid":"0000-0002-8398-4521"}'
+    http_version: 
+  recorded_at: Thu, 06 Oct 2016 18:12:28 GMT
+recorded_with: VCR 2.9.3

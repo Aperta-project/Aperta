@@ -131,7 +131,10 @@ class EditJournalFragment < PageFragment
 
   def save
     click_on "Save"
-    wait_for_ajax timeout: 20
+    # Creating a journal takes time to initialize everything it needs, e.g.
+    # its roles and permissions, MMTs, task templates, etc. So be kind to
+    # journal and allot it some more time to get set up.
+    wait_for_ajax timeout: 60
     session.has_content? @name
   end
 

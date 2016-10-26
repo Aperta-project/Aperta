@@ -2,6 +2,10 @@
 class ProcessManuscriptWorker
   include Sidekiq::Worker
 
+  # Retrying this could be confusing. If the user has fixed the problem by uploading
+  # a new version, this would overwrite that when processed hours or days later.
+  sidekiq_options :retry => false
+
   def perform(manuscript_attachment_id)
     manuscript_attachment = ManuscriptAttachment.find(manuscript_attachment_id)
     paper = manuscript_attachment.paper

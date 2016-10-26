@@ -23,24 +23,23 @@ namespace :data do
   def put_invitations_into_queue(invitations, queue)
     grouped_primaries = []
     # get grouped invitations
-    #
-    # TODO: sort everything by created_at first
-    invitations.each do |invite|
-      invite.update(invitation_queue: queue)
-      if invite.has_alternates?
-        grouped_primaries << invite
+    invitations.order(:created_at).each do |invitation|
+      invitation.update(invitation_queue: queue)
+      if invitation.has_alternates?
+        grouped_primaries << invitation
       end
     end
-
     # put grouped primaries and alternates in queue
     grouped_invitations = []
     grouped_primaries.each do |primary|
       grouped_invitations << primary
       #TODO: sort sent and rescinded invites by invited_at
-      grouped_invitations.concat(primary.alternates.rescinded.all)
-      grouped_invitations.concat(primary.alternates.invited.all)
-      grouped_invitations.concat(primary.alternates.pending.all)
+      # grouped_invitations.concat(primary.alternates.rescinded.order(:rescinded_at).all)
+      # grouped_invitations.concat(primary.alternates.invited.order(:invited_at).all)
+      # grouped_invitations.concat(primary.alternates.pending.order(:created_at).all)
     end
+
+    #grouped_invitations.each do |invitation| puts "invitation.id #{invitation.id} position: #{invitation.position} body: #{invitation.body}" end && nil
 
     grouped_invitations = grouped_invitations.select(&:present?)
 
@@ -49,9 +48,13 @@ namespace :data do
 
     reordered_invitations = grouped_invitations + remaining_invitations
 
+    # reordered_invitations = reordered_invitations.each_with_index do |i, pos|
+    #   Invitation.update_all(position: pos + 1)
+    #   i.reload
+    # end
     #TODO: manually assign the 'position' field to reordered_invitations in the order they're in at this point.
     # The tests should make sure that the positions are correct
-    queue.invitations = reordered_invitations
+    queue.invitations = reordered_invitations.reverse
 
     queue.save
   end

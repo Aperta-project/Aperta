@@ -29,6 +29,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:g1_alternate_1) do
     FactoryGirl.create(:invitation, {
+      created_at: 1.day.ago,
       primary: group_1_primary,
       task: task,
       paper: paper,
@@ -40,6 +41,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:g1_alternate_2) do
     FactoryGirl.create(:invitation, {
+      created_at: 2.days.ago,
       primary: group_1_primary,
       task: task,
       paper: paper,
@@ -51,6 +53,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:g1_alternate_3) do
     FactoryGirl.create(:invitation, {
+      created_at: 3.days.ago,
       primary: group_1_primary,
       task: task,
       paper: paper,
@@ -73,6 +76,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:g2_alternate_1_sent) do
     FactoryGirl.create(:invitation, :invited, {
+      created_at: 4.days.ago,
       primary: group_2_primary,
       task: task,
       paper: paper,
@@ -84,6 +88,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:g2_alternate_2) do
     FactoryGirl.create(:invitation, {
+      created_at: 5.days.ago,
       primary: group_2_primary,
       task: task,
       paper: paper,
@@ -95,6 +100,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:sent_1) do
     FactoryGirl.create(:invitation, :invited, {
+      created_at: 6.days.ago,
       task: task,
       paper: paper,
       body: 'sent_1',
@@ -104,6 +110,7 @@ describe "migrate invitations to queues rake task" do
   end
   let!(:sent_2) do
     FactoryGirl.create(:invitation, :invited, {
+      created_at: 7.days.ago,
       task: task,
       paper: paper,
       body: 'sent_2',
@@ -114,6 +121,7 @@ describe "migrate invitations to queues rake task" do
 
   let!(:ungrouped_1) do
     FactoryGirl.create(:invitation, {
+      created_at: 8.days.ago,
       task: task,
       paper: paper,
       body: 'ungrouped_1',
@@ -123,6 +131,7 @@ describe "migrate invitations to queues rake task" do
   end
   let!(:ungrouped_2) do
     FactoryGirl.create(:invitation, {
+      created_at: 9.days.ago,
       task: task,
       paper: paper,
       body: 'ungrouped_2',
@@ -132,6 +141,7 @@ describe "migrate invitations to queues rake task" do
   end
   let!(:ungrouped_3) do
     FactoryGirl.create(:invitation, {
+      created_at: 10.days.ago,
       task: task,
       paper: paper,
       body: 'ungrouped_3',
@@ -143,6 +153,10 @@ describe "migrate invitations to queues rake task" do
   context 'with existing decisions on a paper' do
     before do
       InvitationQueue.destroy_all
+      randomized_positions = (1..12).to_a.shuffle
+      Invitation.all.each do |invitation|
+        invitation.update_column(:position, randomized_positions.pop)
+      end
       run_rake_task
     end
 
@@ -160,6 +174,7 @@ describe "migrate invitations to queues rake task" do
       expect(group_2_primary.reload.position).to eq(5)
       expect(g2_alternate_1_sent.reload.position).to eq(6)
       expect(g2_alternate_2.reload.position).to eq(7)
+
       expect(sent_1.reload.position).to eq(8)
       expect(sent_2.reload.position).to eq(9)
       expect(ungrouped_1.reload.position).to eq(10)

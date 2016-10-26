@@ -30,12 +30,6 @@ export default Ember.Component.extend({
 
   invitations: computed.alias('task.invitations'),
 
-  previousInvitationQueues: computed('task.paper.previousDecisions', function() {
-    return _.flatten(this.get('task.paper.previousDecisions').map(function(decision) {
-      return decision.get('invitationQueues');
-    }));
-  }),
-
   inviteeRole: computed.reads('task.inviteeRole'),
 
 

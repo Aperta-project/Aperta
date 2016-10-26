@@ -32,6 +32,7 @@ describe Typesetter::AuthorSerializer do
       secondary_affiliation: secondary_affiliation
     )
   end
+  let(:user) { FactoryGirl.create(:user) }
 
   let(:contributes_question) do
     NestedQuestion.find_by(ident: "author--contributions")
@@ -106,12 +107,14 @@ describe Typesetter::AuthorSerializer do
       :secondary_affiliation,
       :contributions,
       :government_employee,
-      :type
+      :type,
+      :orcid_profile_url,
+      :orcid_authenticated
     )
   end
 
   before do
-    allow(author.paper).to receive(:creator).and_return(FactoryGirl.create(:user))
+    allow(author.paper).to receive(:creator).and_return(user)
   end
 
   describe 'contributions' do
@@ -225,6 +228,52 @@ describe Typesetter::AuthorSerializer do
   describe 'type' do
     it 'has a type of author' do
       expect(output[:type]).to eq 'author'
+    end
+  end
+
+  describe 'OrcidAccount fields' do
+    let(:orcid_account) { FactoryGirl.build_stubbed(:orcid_account, user: user) }
+    before do
+      allow(author).to receive(:user).and_return(user)
+      allow(user).to receive(:orcid_account).and_return(orcid_account)
+    end
+    context 'author has an OrcidAccount associated' do
+      let(:orcid_account) do
+        FactoryGirl.build_stubbed(:orcid_account,
+          identifier: '0000-0001-0002-0003',
+          access_token: 'has_access_token'
+        )
+      end
+      describe 'orcid_profile_url' do
+        it 'returns the profile url' do
+          expect(output[:orcid_profile_url])
+            .to eq('https://sandbox.orcid.org/0000-0001-0002-0003')
+        end
+      end
+
+      describe 'orcid_authenticated' do
+        it 'returns true' do
+          expect(output[:orcid_authenticated]).to eq true
+        end
+
+        it 'returns false if access token is nil' do
+          orcid_account.access_token = nil
+          expect(output[:orcid_authenticated]).to eq false
+        end
+      end
+    end
+    context 'author does not have an OrcidAccount associated' do
+      describe 'orcid_profile_url' do
+        it 'returns the profile url' do
+          expect(output[:orcid_profile_url]).to be_nil
+        end
+      end
+
+      describe 'orcid_authenticated' do
+        it 'returns false' do
+          expect(output[:orcid_authenticated]).to eq false
+        end
+      end
     end
   end
 end

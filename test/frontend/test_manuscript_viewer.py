@@ -6,10 +6,11 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, \
-    creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-    internal_editor_login, cover_editor_login, staff_admin_login, pub_svcs_login, \
-    prod_staff_login, super_admin_login
+#from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, \
+#    creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
+#    internal_editor_login, cover_editor_login, staff_admin_login, pub_svcs_login, \
+#    prod_staff_login, super_admin_login
+from Base.Resources import users, editorial_users, external_editorial_users, admin_users
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -21,6 +22,7 @@ This test case validates the article editor page and its associated overlays.
 """
 __author__ = 'sbassi@plos.org'
 
+"""
 users = [creator_login1,
          creator_login2,
          creator_login3,
@@ -36,6 +38,7 @@ users = [creator_login1,
          prod_staff_login,
          super_admin_login,
          ]
+"""
 
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):

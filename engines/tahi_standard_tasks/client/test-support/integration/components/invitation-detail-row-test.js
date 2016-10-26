@@ -123,6 +123,61 @@ test('the row is in the show state, invitation is declined, and in current round
 });
 
 
+test('grouped invitations are disabled when their primary has been invited or accepted', function(assert) {
+  this.set('invitation', make('invitation', {
+    email: 'jane@example.com',
+    invitee: { fullName: 'Jane McEdits' },
+    state: 'pending',
+    title: 'Awesome Paper!',
+    primary: make('invitation', {state: 'invited'})
+  }));
+  this.setProperties({
+    currentRound: true,
+    uiState: 'show'
+  });
+
+  this.render(openTemplate);
+  assert.elementFound('.invitation-item--disabled');
+  this.set('invitation.primary.state', 'accepted');
+  assert.elementFound('.invitation-item--disabled');
+
+  this.set('invitation.primary.state', 'pending');
+  assert.elementNotFound('.invitation-item--disabled');
+  this.set('invitation.primary.state', 'declined');
+  assert.elementNotFound('.invitation-item--disabled');
+});
+
+function testAlternateState(state, shouldBeDisabled) {
+  test(`grouped invitations are ${shouldBeDisabled ? 'disabled' : 'enabled'} when any alternate in the group is ${state}`, function(assert) {
+    let alternate = make('invitation', {state: state});
+
+    this.set('invitation', make('invitation', {
+      email: 'jane@example.com',
+      invitee: { fullName: 'Jane McEdits' },
+      state: 'pending',
+      title: 'Awesome Paper!',
+      primary: make('invitation', {state: 'pending', alternates: [alternate]})
+    }));
+    this.setProperties({
+      currentRound: true,
+      uiState: 'show'
+    });
+
+    this.render(openTemplate);
+
+    if (shouldBeDisabled) {
+      assert.elementFound('.invitation-item--disabled');
+    } else {
+      assert.elementNotFound('.invitation-item--disabled');
+    }
+  });
+}
+
+testAlternateState('invited', true);
+testAlternateState('accepted', true);
+testAlternateState('pending', false);
+testAlternateState('declined', false);
+
 test('displays decline feedback when declined', function(assert){
   this.setProperties({
     'invitation.state': 'declined',

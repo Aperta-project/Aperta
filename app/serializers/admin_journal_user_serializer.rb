@@ -9,9 +9,12 @@ class AdminJournalUserSerializer < ActiveModel::Serializer
 
   def user_roles
     if @options[:journal].present?
-      @options[:journal].user_roles.where(user: object)
+      object.roles.where(journal: @options[:journal],
+                         participates_in_papers: true,
+                         participates_in_tasks: true)
     else
-      object.user_roles
+      object.roles.where(participates_in_papers: true,
+                         participates_in_tasks: true)
     end
   end
 

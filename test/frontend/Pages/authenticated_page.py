@@ -83,7 +83,7 @@ class AuthenticatedPage(PlosPage):
     self._discussions_icon = (By.CSS_SELECTOR, 'a.control-bar-item--last div')
     self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
     # TODO: Change this when APERTA-5531 is completed
-    self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
+    self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-button')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar.toot div.bar-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.overlay-header-title')

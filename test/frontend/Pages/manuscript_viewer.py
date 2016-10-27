@@ -65,7 +65,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_more_link = (By.CSS_SELECTOR, 'div#more-dropdown-menu > div > span')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
-    self._tb_workflow_link = (By.ID, 'go-to-workflow')
+    self._tb_workflow_link = (By.ID, 'nav-workflow')
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
@@ -514,7 +514,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Time needed to update page and get correct amount of items
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
-    assert self._get(self._tb_workflow_link) if user_buttons == 8 else (len(buttons) == 7), \
+    assert self._get(self._tb_workflow_link) if user_buttons == 7 else (len(buttons) == 6), \
         len(buttons)
 
   def is_task_present(self, task_name):

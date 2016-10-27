@@ -96,46 +96,45 @@ class ManuscriptViewerTest(CommonTest):
     """
     APERTA-3: Validates role aware menus
     """
-    roles = {creator_login1['user']: 7,
-             creator_login2['user']: 7,
-             creator_login3['user']: 7,
-             creator_login4['user']: 7,
-             creator_login5['user']: 7,
-             reviewer_login['user']: 7,
-             academic_editor_login['user']: 7,
-             cover_editor_login['user']: 7,
-             handling_editor_login['user']: 7,
-             super_admin_login['user']: 8,
-             staff_admin_login['user']: 8,
-             pub_svcs_login['user']: 8,
-             internal_editor_login['user']: 8,
-             prod_staff_login['user']: 8,
-             }
 
-    for user in users:
-      logging.info('Logging in as user: {0}'.format(user))
-      logging.info('role: {0}'.format(roles[user['user']]))
+    roles = { 'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
+              'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
+              'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
+              'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 7,
+              'Cover Editor': 7, 'Reviewer': 7}
+
+    user = random.choice(users + editorial_users + external_editorial_users + admin_users)
+    logging.info('Logging in as user: {0}'.format(user))
+    ##logging.info('role: {0}'.format(roles[user['user']]))
+    dashboard_page = self.cas_login(user['email'])
+    dashboard_page.set_timeout(120)
+    if dashboard_page.get_dashboard_ms(user):
+      dashboard_page.restore_timeout()
+      self.select_preexisting_article(first=True)
+      manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+      journal_id = manuscript_viewer.get_journal_id()
+      time.sleep(3)  # needed to give time to retrieve new menu items
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
-      dashboard_page = self.cas_login(user['email'])
-      dashboard_page.set_timeout(120)
-      if dashboard_page.get_dashboard_ms(user):
-        dashboard_page.restore_timeout()
-        self.select_preexisting_article(first=True)
-        manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-        time.sleep(3)  # needed to give time to retrieve new menu items
-        if user['user'] == academic_editor_login['user'] or user['user'] == cover_editor_login:
-          paper_id = manuscript_viewer.get_paper_id_from_url()
-          permissions = PgSQL().query('SELECT paper_roles.old_role FROM paper_roles '
-                                      'WHERE user_id = %s AND paper_id = %s;', (uid, paper_id))
-          for x in permissions:
-            if ('editor',) == x:
-              roles[user['user']] = 8
-        manuscript_viewer.validate_roles(roles[user['user']])
-      else:
-        dashboard_page.restore_timeout()
-        logging.info('No manuscripts present for user: {0}'.format(user['user']))
-      # Logout
-      dashboard_page.logout()
+      paper_id = manuscript_viewer.get_paper_id_from_url()
+      journal_permissions = PgSQL().query('select name from roles where id in (select role_id'
+                                          ' from assignments where ((assigned_to_id = %s and '
+                                          'assigned_to_type = \'Journal\' and user_id = %s)));',
+                                          (journal_id, uid))
+      paper_permissions = PgSQL().query('select name from roles where id in (select role_id '
+                                        'from assignments where ((assigned_to_id = %s and '
+                                        'assigned_to_type = \'Paper\' and user_id = %s)));',
+                                        (paper_id, uid))
+      system_permissions = PgSQL().query('select name from roles where id in (select role_id '
+                                         'from assignments where ((assigned_to_type = '
+                                         '\'System\' and user_id = %s)));',(uid,))
+      permissions = journal_permissions + paper_permissions + system_permissions
+      max_elements = max([roles[item] for sublist in permissions for item in sublist])
+      logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
+                   .format(user, paper_id, permissions, max_elements))
+      manuscript_viewer.validate_roles(max_elements)
+    else:
+      dashboard_page.restore_timeout()
+      logging.info('No manuscripts present for user: {0}'.format(user['user']))
     return self
 
   def test_initial_submission_infobox(self):

@@ -261,9 +261,11 @@ class ReviewerReportTask(BaseTask):
       assert qh6.text == u'Your name and review will not be published with the manuscript.', \
           qh6.text
 
-  def complete_reviewer_report(self):
+  def complete_reviewer_report(self, recommendation=''):
     """
     Completes and submits the reviewer report
+    :param recommendation: optional parameter that can be one of 'Accept', 'Reject',
+      'Major Revision', 'Minor Revision' if an explicit outcome is desired
     :return: void function
     """
     logging.info('Complete Reviewer Report called')
@@ -274,15 +276,16 @@ class ReviewerReportTask(BaseTask):
       research_type = True
     question_block_list = self._gets(self._question_block)
     qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
-    choices = ['Accept', 'Reject', 'Major Revision', 'Minor Revision']
-    reccommendation = choice(choices)
-    if reccommendation == 'Accept':
+    if not recommendation:
+      choices = ['Accept', 'Reject', 'Major Revision', 'Minor Revision']
+      recommendation = choice(choices)
+    if recommendation == 'Accept':
       accrb = self._get(self._q1_accept_radio)
       accrb.click()
-    elif reccommendation == 'Reject':
+    elif recommendation == 'Reject':
       rejrb = self._get(self._q1_reject_radio)
       rejrb.click()
-    elif reccommendation == 'Major Revision':
+    elif recommendation == 'Major Revision':
       majrevrb = self._get(self._q1_majrev_radio)
       majrevrb.click()
     else:

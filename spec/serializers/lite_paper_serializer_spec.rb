@@ -23,7 +23,7 @@ Extruded Solids/,
     end
     it "includes the 'My Paper' old_role" do
       expect(deserialized_content[:lite_paper])
-        .to match(hash_including(old_roles: include('My Paper')))
+        .to match(hash_including(roles: include('My Paper')))
     end
   end
 

@@ -1515,6 +1515,141 @@ activities:
     - '1'
     - '2016-06-13 13:33:37.401749'
     - '2016-06-13 13:33:37.401749'
+  - - '168'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.sent
+    - foo3@bar.com was invited as Reviewer
+    - '1'
+    - '2016-10-26 17:25:59.388552'
+    - '2016-10-26 17:25:59.388552'
+  - - '169'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.sent
+    - sent1@bar.com was invited as Reviewer
+    - '1'
+    - '2016-10-26 17:26:39.335246'
+    - '2016-10-26 17:26:39.335246'
+  - - '170'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.sent
+    - sent2@bar.com was invited as Reviewer
+    - '1'
+    - '2016-10-26 17:27:02.826189'
+    - '2016-10-26 17:27:02.826189'
+  - - '171'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.sent
+    - foo@j.com was invited as Academic editor
+    - '1'
+    - '2016-10-26 19:22:25.912385'
+    - '2016-10-26 19:22:25.912385'
+  - - '172'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.withdrawn
+    - foo@j.com's invitation as Academic editor was withdrawn
+    - '1'
+    - '2016-10-26 19:22:34.258471'
+    - '2016-10-26 19:22:34.258471'
+  - - '173'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.sent
+    - Adam Administrator was invited as Reviewer
+    - '1'
+    - '2016-10-26 19:33:13.84987'
+    - '2016-10-26 19:33:13.84987'
+  - - '174'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.accepted
+    - Adam Administrator accepted invitation as Reviewer
+    - '1'
+    - '2016-10-26 19:33:22.267805'
+    - '2016-10-26 19:33:22.267805'
+  - - '175'
+    - workflow
+    - '12'
+    - Paper
+    - task.completed
+    - Review by Adam Administrator card was marked as complete
+    - '1'
+    - '2016-10-26 19:34:05.011646'
+    - '2016-10-26 19:34:05.011646'
+  - - '176'
+    - forensic
+    - '12'
+    - Paper
+    - paper.state_changed.submitted
+    - Paper state changed to submitted
+    - 
+    - '2016-10-26 19:34:48.07928'
+    - '2016-10-26 19:34:48.07928'
+  - - '177'
+    - manuscript
+    - '12'
+    - Paper
+    - decision.made
+    - 'A decision was made: Major Revision'
+    - '1'
+    - '2016-10-26 19:34:48.480421'
+    - '2016-10-26 19:34:48.480421'
+  - - '178'
+    - manuscript
+    - '12'
+    - Paper
+    - task.completed
+    - Revise Manuscript card was marked as complete
+    - '1'
+    - '2016-10-26 19:40:58.253583'
+    - '2016-10-26 19:40:58.253583'
+  - - '179'
+    - forensic
+    - '12'
+    - Paper
+    - paper.state_changed.in_revision
+    - Paper state changed to in_revision
+    - 
+    - '2016-10-26 19:41:03.593869'
+    - '2016-10-26 19:41:03.593869'
+  - - '180'
+    - manuscript
+    - '12'
+    - Paper
+    - paper.submitted
+    - Manuscript was submitted
+    - '1'
+    - '2016-10-26 19:41:05.174644'
+    - '2016-10-26 19:41:05.174644'
+  - - '181'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.sent
+    - Adam Administrator was invited as Reviewer
+    - '1'
+    - '2016-10-26 19:48:07.248163'
+    - '2016-10-26 19:48:07.248163'
+  - - '182'
+    - workflow
+    - '12'
+    - Paper
+    - invitation.withdrawn
+    - Adam Administrator's invitation as Reviewer was withdrawn
+    - '1'
+    - '2016-10-26 21:04:53.691608'
+    - '2016-10-26 21:04:53.691608'
 
 ---
 affiliations:
@@ -2736,6 +2871,13 @@ assignments:
     - System
     - '2016-09-26 14:26:22.173926'
     - '2016-09-26 14:26:22.173926'
+  - - '158'
+    - '1'
+    - '23'
+    - '210'
+    - Task
+    - '2016-10-26 19:33:22.237914'
+    - '2016-10-26 19:33:22.237914'
 
 ---
 attachments:
@@ -3968,14 +4110,73 @@ decisions:
     - false
   - - '21'
     - '12'
-    - 
-    - 
+    - "**choose appropriate first paragraph; attach prod reqs PDF - DELETE THIS***\n\nDear
+      Dr. Author,\n\n***EITHER****\n\nThank you very much for submitting your manuscript
+      “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>” for consideration
+      at PLOS Yeti. Your manuscript has been evaluated by the PLOS Yeti editorial
+      staff, by an Academic Editor with relevant expertise, and by several independent
+      reviewers.\n\n****OR (if previous OPEN REJECT)****\n\nThank you very much for
+      submitting a revised version of your manuscript \"<b>Diffable Paper:</b> <em>Paper
+      has versioned text and tasks</em>\" for consideration at PLOS Yeti. This revised
+      version of your manuscript has been evaluated by the PLOS Yeti editorial staff,
+      an Academic Editor and reviewers. \n\n****\n\nIn light of the reviews, we will
+      not be able to accept the current version of the manuscript, but we would welcome
+      resubmission of a much-revised version that takes into account the reviewers'
+      comments. We cannot make any decision about publication until we have seen the
+      revised manuscript and your response to the reviewers' comments. Your revised
+      manuscript is also likely to be sent for further evaluation by the reviewers.
+      \n\nYour revisions should address the specific points made by each reviewer.
+      Please also submit a cover letter and a point-by-point response to all of the
+      reviewers' comments that indicates the changes you have made to the manuscript.
+      You should also cite any additional relevant literature that has been published
+      since the original submission and mention any additional citations in your response.
+      \n\nPlease note that as a condition of publication PLOS’ data policy requires
+      that you make available all data used to draw conclusions in papers published
+      in PLOS journals. If you have not already done so, you must include any data
+      used in your manuscript either in appropriate repositories, within the body
+      of the manuscript, or as supporting information (NB this includes any numerical
+      values that were used to generate graphs, histograms etc.). For an example see
+      here: http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5.\n\nUpon
+      resubmission, the editors will assess the advance your revised manuscript represents
+      over work published prior to its resubmission in reaching a decision regarding
+      further consideration. The editors also will assess the revisions you have made
+      and decide whether to consult further with an Academic Editor. If the editors
+      and Academic Editor feel that the revised manuscript remains appropriate for
+      the journal and that the revisions are sufficient to warrant further consideration,
+      we generally will send the manuscript for re-review. We aim to consult the same
+      Academic Editor and reviewers for revised manuscripts but may consult others
+      if needed.\n\nWe expect to receive your revised manuscript within two months.
+      Please email us (plos-yeti-staff@example.com) to discuss this if you have any
+      questions or concerns, or would like to request an extension. \n\nAt this stage,
+      your manuscript remains formally under active consideration at our journal.
+      Please note that unless we receive the revised manuscript within this timeframe,
+      your submission may be closed and the manuscript would no longer be ‘under consideration’
+      at PLOS Yeti. We will of course be in touch before this action is taken. Please
+      rest assured that this is merely an administrative step - you may still submit
+      your revised submission after your file is closed, but will need to do so as
+      a new submission, referencing the previous tracking number.\n\nPlease notify
+      us by email if you do not wish to revise your manuscript for PLOS Yeti and instead
+      wish to pursue publication elsewhere, so that we may end consideration of the
+      manuscript at PLOS Yeti.\n\nIf you do still intend to submit a revised version
+      of your manuscript, please log in at http://www.aperta.tech.  On the ‘Your Manuscripts’
+      page, click the title of your manuscript to access and edit your submission.\n\nBefore
+      you revise your manuscript, we ask that you please review the following PLOS
+      policy and formatting requirements checklist PDF: https://drive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=sharing.
+      It’s helpful for you to take a look through this at this stage, and to align
+      your revision with our requirements; should your paper be eventually accepted,
+      this will save everyone time at the acceptance stage. \n\nThank you again for
+      your submission to our journal. We hope that our editorial process has been
+      constructive thus far, and we welcome your feedback at any time. Please don't
+      hesitate to contact us if you have any questions or comments. \nSincerely,\n\n[EDITOR
+      NAME]\n[EDITOR TITLE]\nPLOS Yeti\n\n------------------------------------------------------------------------\n\nReviewer
+      Notes:\n[REVIEWER COMMENTS]\n"
+    - major_revision
     - '2016-04-12 19:03:40.743898'
-    - '2016-04-12 19:03:40.743898'
-    - 
-    - 
-    - 
-    - 
+    - '2016-10-26 19:40:24.624725'
+    - Hey, sure.
+    - '2016-10-26 19:34:48.212607'
+    - '0'
+    - '3'
     - false
     - false
   - - '22'
@@ -3984,6 +4185,18 @@ decisions:
     - 
     - '2016-06-02 13:43:23.198268'
     - '2016-06-02 13:43:23.198268'
+    - 
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '23'
+    - '12'
+    - 
+    - 
+    - '2016-10-26 19:41:03.633739'
+    - '2016-10-26 19:41:03.633739'
     - 
     - 
     - 
@@ -4015,6 +4228,86 @@ group_authors:
     - '2016-04-12 18:47:58.788407'
 
 ---
+invitation_queues:
+  columns:
+  - id
+  - task_id
+  - decision_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - '19'
+    - '8'
+    - '2016-10-26 17:24:28.696356'
+    - '2016-10-26 17:24:28.696356'
+  - - '2'
+    - '40'
+    - '9'
+    - '2016-10-26 17:24:28.7191'
+    - '2016-10-26 17:24:28.7191'
+  - - '3'
+    - '61'
+    - '10'
+    - '2016-10-26 17:24:28.732453'
+    - '2016-10-26 17:24:28.732453'
+  - - '4'
+    - '82'
+    - '11'
+    - '2016-10-26 17:24:28.757954'
+    - '2016-10-26 17:24:28.757954'
+  - - '5'
+    - '103'
+    - '12'
+    - '2016-10-26 17:24:28.774207'
+    - '2016-10-26 17:24:28.774207'
+  - - '6'
+    - '124'
+    - '13'
+    - '2016-10-26 17:24:28.788678'
+    - '2016-10-26 17:24:28.788678'
+  - - '7'
+    - '145'
+    - '14'
+    - '2016-10-26 17:24:28.802066'
+    - '2016-10-26 17:24:28.802066'
+  - - '8'
+    - '188'
+    - '18'
+    - '2016-10-26 17:24:28.813811'
+    - '2016-10-26 17:24:28.813811'
+  - - '9'
+    - '188'
+    - '19'
+    - '2016-10-26 17:24:28.824202'
+    - '2016-10-26 17:24:28.824202'
+  - - '10'
+    - '188'
+    - '20'
+    - '2016-10-26 17:24:28.833303'
+    - '2016-10-26 17:24:28.833303'
+  - - '11'
+    - '188'
+    - '21'
+    - '2016-10-26 17:24:28.84312'
+    - '2016-10-26 17:24:28.84312'
+  - - '12'
+    - '207'
+    - '22'
+    - '2016-10-26 17:24:28.96693'
+    - '2016-10-26 17:24:28.96693'
+  - - '13'
+    - '209'
+    - 
+    - '2016-10-26 19:20:58.145684'
+    - '2016-10-26 19:20:58.145684'
+  - - '14'
+    - 
+    - '23'
+    - '2016-10-26 19:41:03.64338'
+    - '2016-10-26 19:41:03.64338'
+
+---
 invitations:
   columns:
   - id
@@ -4038,6 +4331,8 @@ invitations:
   - declined_at
   - accepted_at
   - rescinded_at
+  - position
+  - invitation_queue_id
   records: 
   - - '1'
     - reviewer@example.com
@@ -4046,7 +4341,7 @@ invitations:
     - 
     - invited
     - '2016-06-02 13:47:43.341436'
-    - '2016-06-02 13:47:43.365654'
+    - '2016-10-26 17:24:28.982542'
     - '22'
     - |-
       Here are the authors on the paper:
@@ -4087,14 +4382,16 @@ invitations:
     - 
     - 
     - 
+    - '1'
+    - '12'
   - - '2'
     - editor@example.com
     - '188'
     - '4'
     - 
-    - invited
+    - rescinded
     - '2016-06-13 13:33:37.292317'
-    - '2016-06-13 13:33:37.371221'
+    - '2016-10-26 19:34:48.269307'
     - '21'
     - |-
       Here are the authors on the paper:
@@ -4136,7 +4433,1032 @@ invitations:
     - '2016-06-13 13:33:37.292317'
     - 
     - 
+    - '2016-10-26 19:34:48.264999'
+    - '4'
+    - '11'
+  - - '3'
+    - foo@bar.com
+    - '188'
     - 
+    - 
+    - pending
+    - '2016-10-26 17:24:55.285772'
+    - '2016-10-26 17:25:23.516806'
+    - '21'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '2'
+    - '11'
+  - - '4'
+    - foo1@bar.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-26 17:25:03.580491'
+    - '2016-10-26 17:25:03.580491'
+    - '21'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '9'
+    - '11'
+  - - '5'
+    - foo2@bar.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-26 17:25:19.181351'
+    - '2016-10-26 17:25:23.534066'
+    - '21'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - '3'
+    - 
+    - 
+    - 
+    - 
+    - '3'
+    - '11'
+  - - '6'
+    - foo3@bar.com
+    - '188'
+    - 
+    - 
+    - rescinded
+    - '2016-10-26 17:25:52.20022'
+    - '2016-10-26 19:34:48.322456'
+    - '21'
+    - |-
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 0fed8642dc0c0b7e58d4
+    - '3'
+    - '2016-10-26 17:25:59.325219'
+    - 
+    - 
+    - '2016-10-26 19:34:48.317973'
+    - '2'
+    - '11'
+  - - '7'
+    - sent2@bar.com
+    - '188'
+    - 
+    - 
+    - rescinded
+    - '2016-10-26 17:26:27.078822'
+    - '2016-10-26 19:34:48.391103'
+    - '21'
+    - |-
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - b7bb4b4e51a318b2361c
+    - 
+    - '2016-10-26 17:27:02.776701'
+    - 
+    - 
+    - '2016-10-26 19:34:48.386047'
+    - '6'
+    - '11'
+  - - '8'
+    - sent1@bar.com
+    - '188'
+    - 
+    - 
+    - rescinded
+    - '2016-10-26 17:26:35.569105'
+    - '2016-10-26 19:34:48.357037'
+    - '21'
+    - |-
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 827c14d3646460f19daf
+    - 
+    - '2016-10-26 17:26:39.264385'
+    - 
+    - 
+    - '2016-10-26 19:34:48.352107'
+    - '5'
+    - '11'
+  - - '9'
+    - sealresq+7@gmail.com
+    - '188'
+    - '7'
+    - 
+    - pending
+    - '2016-10-26 17:27:10.025075'
+    - '2016-10-26 17:27:10.053862'
+    - '21'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '9'
+    - '11'
+  - - '10'
+    - hs@b.c
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-26 18:51:30.378987'
+    - '2016-10-26 18:51:30.378987'
+    - '21'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '10'
+    - '11'
+  - - '11'
+    - foo@bar.com
+    - '209'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:21:11.286696'
+    - '2016-10-27 21:31:58.0426'
+    - '21'
+    - 
+    - |+
+      I am writing to seek your advice as the academic editor on a manuscript entitled '<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>'. The corresponding author is Arthur Author, and the manuscript is under consideration at PLOS Yeti.
+
+      We would be very grateful if you could let us know whether or not you are able to take on this assignment within 24 hours, so that we know whether to await your comments, or if we need to approach someone else. To accept or decline the assignment via our submission system, please use the link below. If you are available to help and have no conflicts of interest, you also can view the entire manuscript via this link.
+
+      <a href="http://localhost:5000/">View Invitation</a>
+
+      If you do take this assignment, and think that this work is not suitable for further consideration by PLOS Yeti, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
+
+      I have appended further information, including a copy of the abstract and full list of authors below.
+
+      My colleagues and I are grateful for your support and advice. Please don't hesitate to contact me should you have any questions.
+
+      Kind regards,
+      Adam Administrator
+      PLOS Yeti
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+      To view this manuscript, please use the link presented above in the body of the e-mail.
+
+      You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
+
+    - '1'
+    - Academic Editor
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '1'
+    - '13'
+  - - '12'
+    - boo2@bar.com
+    - '209'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:21:25.54058'
+    - '2016-10-27 21:31:58.07234'
+    - '21'
+    - 
+    - |+
+      I am writing to seek your advice as the academic editor on a manuscript entitled '<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>'. The corresponding author is Arthur Author, and the manuscript is under consideration at PLOS Yeti.
+
+      We would be very grateful if you could let us know whether or not you are able to take on this assignment within 24 hours, so that we know whether to await your comments, or if we need to approach someone else. To accept or decline the assignment via our submission system, please use the link below. If you are available to help and have no conflicts of interest, you also can view the entire manuscript via this link.
+
+      <a href="http://localhost:5000/">View Invitation</a>
+
+      If you do take this assignment, and think that this work is not suitable for further consideration by PLOS Yeti, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
+
+      I have appended further information, including a copy of the abstract and full list of authors below.
+
+      My colleagues and I are grateful for your support and advice. Please don't hesitate to contact me should you have any questions.
+
+      Kind regards,
+      Adam Administrator
+      PLOS Yeti
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+      To view this manuscript, please use the link presented above in the body of the e-mail.
+
+      You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
+
+    - '1'
+    - Academic Editor
+    - 
+    - 
+    - 
+    - '11'
+    - 
+    - 
+    - 
+    - 
+    - '2'
+    - '13'
+  - - '14'
+    - foo@j.com
+    - '209'
+    - 
+    - 
+    - rescinded
+    - '2016-10-26 19:21:44.414096'
+    - '2016-10-27 21:31:58.088164'
+    - '21'
+    - |-
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      I am writing to seek your advice as the academic editor on a manuscript entitled '<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>'. The corresponding author is Arthur Author, and the manuscript is under consideration at PLOS Yeti.
+
+      We would be very grateful if you could let us know whether or not you are able to take on this assignment within 24 hours, so that we know whether to await your comments, or if we need to approach someone else. To accept or decline the assignment via our submission system, please use the link below. If you are available to help and have no conflicts of interest, you also can view the entire manuscript via this link.
+
+      <a href="http://localhost:5000/?invitation_token=465cca9751e6b64934e0">View Invitation</a>
+
+      If you do take this assignment, and think that this work is not suitable for further consideration by PLOS Yeti, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
+
+      I have appended further information, including a copy of the abstract and full list of authors below.
+
+      My colleagues and I are grateful for your support and advice. Please don't hesitate to contact me should you have any questions.
+
+      Kind regards,
+      Adam Administrator
+      PLOS Yeti
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+      To view this manuscript, please use the link presented above in the body of the e-mail.
+
+      You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
+
+    - '1'
+    - Academic Editor
+    - 
+    - 
+    - 465cca9751e6b64934e0
+    - 
+    - '2016-10-26 19:22:25.831802'
+    - 
+    - 
+    - '2016-10-26 19:22:34.222908'
+    - '3'
+    - '13'
+  - - '15'
+    - boy@dude.com
+    - '209'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:22:45.552366'
+    - '2016-10-27 21:31:58.101294'
+    - '21'
+    - 
+    - |+
+      I am writing to seek your advice as the academic editor on a manuscript entitled '<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>'. The corresponding author is Arthur Author, and the manuscript is under consideration at PLOS Yeti.
+
+      We would be very grateful if you could let us know whether or not you are able to take on this assignment within 24 hours, so that we know whether to await your comments, or if we need to approach someone else. To accept or decline the assignment via our submission system, please use the link below. If you are available to help and have no conflicts of interest, you also can view the entire manuscript via this link.
+
+      <a href="http://localhost:5000/">View Invitation</a>
+
+      If you do take this assignment, and think that this work is not suitable for further consideration by PLOS Yeti, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
+
+      I have appended further information, including a copy of the abstract and full list of authors below.
+
+      My colleagues and I are grateful for your support and advice. Please don't hesitate to contact me should you have any questions.
+
+      Kind regards,
+      Adam Administrator
+      PLOS Yeti
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+      To view this manuscript, please use the link presented above in the body of the e-mail.
+
+      You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
+
+    - '1'
+    - Academic Editor
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '4'
+    - '13'
+  - - '18'
+    - last@fm.com
+    - '209'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:23:57.955306'
+    - '2016-10-27 21:31:58.113187'
+    - '21'
+    - 
+    - |+
+      I am writing to seek your advice as the academic editor on a manuscript entitled '<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>'. The corresponding author is Arthur Author, and the manuscript is under consideration at PLOS Yeti.
+
+      We would be very grateful if you could let us know whether or not you are able to take on this assignment within 24 hours, so that we know whether to await your comments, or if we need to approach someone else. To accept or decline the assignment via our submission system, please use the link below. If you are available to help and have no conflicts of interest, you also can view the entire manuscript via this link.
+
+      <a href="http://localhost:5000/">View Invitation</a>
+
+      If you do take this assignment, and think that this work is not suitable for further consideration by PLOS Yeti, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.
+
+      I have appended further information, including a copy of the abstract and full list of authors below.
+
+      My colleagues and I are grateful for your support and advice. Please don't hesitate to contact me should you have any questions.
+
+      Kind regards,
+      Adam Administrator
+      PLOS Yeti
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+      To view this manuscript, please use the link presented above in the body of the e-mail.
+
+      You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
+
+    - '1'
+    - Academic Editor
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '5'
+    - '13'
+  - - '19'
+    - admin@example.com
+    - '188'
+    - '1'
+    - '1'
+    - accepted
+    - '2016-10-26 19:33:05.715703'
+    - '2016-10-26 19:33:22.148605'
+    - '21'
+    - |-
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - debb48b051c366370531
+    - 
+    - '2016-10-26 19:33:13.783273'
+    - 
+    - '2016-10-26 19:33:22.147339'
+    - 
+    - '8'
+    - '11'
+  - - '20'
+    - newguy@foo.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:42:00.631519'
+    - '2016-10-26 19:42:00.631519'
+    - '23'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '3'
+    - '14'
+  - - '21'
+    - newdude@foo.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:47:12.114707'
+    - '2016-10-26 19:47:17.124579'
+    - '23'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - '20'
+    - 
+    - 
+    - 
+    - 
+    - '6'
+    - '14'
+  - - '22'
+    - otherguy@dude.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-26 19:47:28.685648'
+    - '2016-10-26 19:47:40.947449'
+    - '23'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - '20'
+    - 
+    - 
+    - 
+    - 
+    - '5'
+    - '14'
+  - - '23'
+    - admin@example.com
+    - '188'
+    - '1'
+    - 
+    - rescinded
+    - '2016-10-26 19:47:52.976856'
+    - '2016-10-26 21:04:53.583211'
+    - '23'
+    - |-
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - aab38c8574c4dc6d1903
+    - '20'
+    - '2016-10-26 19:48:07.193693'
+    - 
+    - 
+    - '2016-10-26 21:04:53.581464'
+    - '4'
+    - '14'
+  - - '24'
+    - anotherguy@foo.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-27 21:33:14.76901'
+    - '2016-10-27 21:33:47.886973'
+    - '23'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '1'
+    - '14'
+  - - '25'
+    - somegal@bar.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-27 21:33:38.630913'
+    - '2016-10-27 21:33:48.131682'
+    - '23'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - '24'
+    - 
+    - 
+    - 
+    - 
+    - '2'
+    - '14'
+  - - '26'
+    - ungrouped-reviewer@foo.com
+    - '188'
+    - 
+    - 
+    - pending
+    - '2016-10-27 21:35:50.683506'
+    - '2016-10-27 21:35:50.683506'
+    - '23'
+    - 
+    - |+
+      You've been invited as a Reviewer on “<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Manuscript Title:
+      <b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>
+
+      Authors:
+      1. Solo, Han from New Republic
+      2. Author, Arthur from PLOS
+
+      Abstract:
+      <p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p>
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - '7'
+    - '14'
 
 ---
 journal_task_types:
@@ -6832,6 +8154,90 @@ nested_question_answers:
     - '2016-04-12 18:58:07.438021'
     - 
     - 
+    - '12'
+    - 
+  - - '236'
+    - '182'
+    - '210'
+    - Task
+    - major_revision
+    - text
+    - '2016-10-26 19:33:51.526922'
+    - '2016-10-26 19:33:51.526922'
+    - 
+    - '21'
+    - '12'
+    - 
+  - - '237'
+    - '124'
+    - '210'
+    - Task
+    - f
+    - boolean
+    - '2016-10-26 19:33:52.683479'
+    - '2016-10-26 19:33:52.683479'
+    - 
+    - '21'
+    - '12'
+    - 
+  - - '238'
+    - '132'
+    - '210'
+    - Task
+    - nah
+    - text
+    - '2016-10-26 19:33:56.49461'
+    - '2016-10-26 19:33:56.49461'
+    - 
+    - '21'
+    - '12'
+    - 
+  - - '239'
+    - '261'
+    - '210'
+    - Task
+    - hey
+    - text
+    - '2016-10-26 19:33:57.138531'
+    - '2016-10-26 19:33:57.138531'
+    - 
+    - '21'
+    - '12'
+    - 
+  - - '240'
+    - '131'
+    - '210'
+    - Task
+    - yo
+    - text
+    - '2016-10-26 19:33:58.40684'
+    - '2016-10-26 19:33:58.40684'
+    - 
+    - '21'
+    - '12'
+    - 
+  - - '241'
+    - '263'
+    - '210'
+    - Task
+    - t
+    - boolean
+    - '2016-10-26 19:34:00.940233'
+    - '2016-10-26 19:34:00.940233'
+    - 
+    - '21'
+    - '12'
+    - 
+  - - '242'
+    - '262'
+    - '210'
+    - Task
+    - whatever
+    - text
+    - '2016-10-26 19:34:04.068902'
+    - '2016-10-26 19:34:04.068902'
+    - 
+    - '21'
     - '12'
     - 
 
@@ -9679,8 +11085,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-10-29 19:36:19.627844'
-    - '2016-03-23 13:18:34.594851'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '2'
     - '2'
     - 
@@ -9692,8 +11098,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-10-29 20:07:28.341906'
-    - '2015-10-29 20:53:17.020456'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '3'
     - '3'
     - 
@@ -9705,8 +11111,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-10-29 20:11:22.705226'
-    - '2016-06-02 13:41:20.334489'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '4'
     - '4'
     - 
@@ -9718,8 +11124,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-02 15:15:33.644561'
-    - '2016-03-11 13:30:59.798522'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '5'
     - '5'
     - 
@@ -9731,8 +11137,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:58.406233'
-    - '2015-11-03 19:54:58.406233'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '6'
     - '7'
     - 
@@ -9744,8 +11150,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:58.612514'
-    - '2015-11-03 19:54:58.612514'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '7'
     - '8'
     - 
@@ -9757,8 +11163,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:58.707548'
-    - '2015-11-03 19:54:58.707548'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '8'
     - '9'
     - 
@@ -9770,8 +11176,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:58.791185'
-    - '2015-11-03 19:54:58.791185'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '9'
     - '10'
     - 
@@ -9783,8 +11189,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:58.877324'
-    - '2015-11-03 19:54:58.877324'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '10'
     - '11'
     - 
@@ -9796,8 +11202,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:58.961825'
-    - '2015-11-03 19:54:58.961825'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '11'
     - '12'
     - 
@@ -9809,8 +11215,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:59.052702'
-    - '2015-11-03 19:54:59.052702'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '12'
     - '13'
     - 
@@ -9822,8 +11228,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2015-11-03 19:54:59.135286'
-    - '2015-11-03 19:54:59.135286'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '13'
     - '14'
     - 
@@ -9835,8 +11241,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2016-03-15 18:52:16.093885'
-    - '2016-03-15 18:52:16.093885'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
   - - '14'
     - '15'
     - 
@@ -9848,8 +11254,8 @@ orcid_accounts:
     - 
     - 
     - 
-    - '2016-04-28 02:38:20.354896'
-    - '2016-04-28 02:44:24.965543'
+    - '2016-10-27 13:04:08.573317'
+    - '2016-10-27 13:04:08.573317'
 
 ---
 paper_roles:
@@ -10163,7 +11569,7 @@ papers:
       ivory, which fuels illegal trade, must be dramatically reduced.</p>
     - "<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>"
     - '2016-04-12 18:43:34.640539'
-    - '2016-04-12 19:05:53.753967'
+    - '2016-10-26 19:41:03.649118'
     - 
     - Research
     - '1'
@@ -10173,14 +11579,14 @@ papers:
     - false
     - yetipub/journal.yetijour.1000002
     - submitted
-    - '2016-04-12 19:05:53.748887'
+    - '2016-10-26 19:41:03.606184'
     - 
     - true
     - false
     - '2016-04-12 18:55:56.960225'
     - 
     - SupportingInformationFile
-    - '2016-04-12 19:05:53.732615'
+    - '2016-10-26 19:41:03.585529'
     - false
     - true
   - - '13'
@@ -16505,6 +17911,31 @@ permissions_roles:
     - '21'
     - '2016-10-18 14:38:33.300574'
     - '2016-10-18 14:38:33.300574'
+  - - '688'
+    - '238'
+    - '21'
+    - '2016-10-18 14:38:33.31436'
+    - '2016-10-18 14:38:33.31436'
+  - - '689'
+    - '239'
+    - '21'
+    - '2016-10-18 14:38:33.326958'
+    - '2016-10-18 14:38:33.326958'
+  - - '690'
+    - '172'
+    - '21'
+    - '2016-10-18 14:38:33.335049'
+    - '2016-10-18 14:38:33.335049'
+  - - '691'
+    - '77'
+    - '21'
+    - '2016-10-18 14:38:33.343143'
+    - '2016-10-18 14:38:33.343143'
+  - - '692'
+    - '79'
+    - '21'
+    - '2016-10-18 14:38:33.351648'
+    - '2016-10-18 14:38:33.351648'
   - - '693'
     - '240'
     - '21'
@@ -17235,6 +18666,11 @@ permissions_roles:
     - '21'
     - '2016-10-18 14:38:37.494464'
     - '2016-10-18 14:38:37.494464'
+  - - '844'
+    - '224'
+    - '21'
+    - '2016-10-18 14:38:37.545005'
+    - '2016-10-18 14:38:37.545005'
   - - '845'
     - '318'
     - '21'
@@ -17390,6 +18826,31 @@ permissions_roles:
     - '15'
     - '2016-10-18 14:38:40.296099'
     - '2016-10-18 14:38:40.296099'
+  - - '877'
+    - '238'
+    - '15'
+    - '2016-10-18 14:38:40.304546'
+    - '2016-10-18 14:38:40.304546'
+  - - '878'
+    - '239'
+    - '15'
+    - '2016-10-18 14:38:40.313341'
+    - '2016-10-18 14:38:40.313341'
+  - - '879'
+    - '172'
+    - '15'
+    - '2016-10-18 14:38:40.321888'
+    - '2016-10-18 14:38:40.321888'
+  - - '880'
+    - '77'
+    - '15'
+    - '2016-10-18 14:38:40.345377'
+    - '2016-10-18 14:38:40.345377'
+  - - '881'
+    - '79'
+    - '15'
+    - '2016-10-18 14:38:40.354103'
+    - '2016-10-18 14:38:40.354103'
   - - '882'
     - '240'
     - '15'
@@ -18120,6 +19581,11 @@ permissions_roles:
     - '15'
     - '2016-10-18 14:38:43.700105'
     - '2016-10-18 14:38:43.700105'
+  - - '1033'
+    - '224'
+    - '15'
+    - '2016-10-18 14:38:43.742707'
+    - '2016-10-18 14:38:43.742707'
   - - '1034'
     - '318'
     - '15'
@@ -19927,6 +21393,277 @@ snapshots:
     - '2016-04-12 19:05:54.288597'
     - '2016-04-12 19:05:54.288597'
     - 
+  - - '75'
+    - Task
+    - '170'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"supporting-information-task","type":"properties","children":[{"name":"id","type":"integer","value":170},{"name":"supporting-information-file","type":"properties","children":[{"name":"id","type":"integer","value":13},{"name":"caption","type":"text","value":"Another
+      cat"},{"name":"category","type":"text","value":"Figure"},{"name":"file","type":"text","value":"140.jpg"},{"name":"file_hash","type":"text","value":null},{"name":"label","type":"text","value":null},{"name":"publishable","type":"boolean","value":true},{"name":"status","type":"text","value":"done"},{"name":"title","type":"text","value":"140.jpg"},{"name":"url","type":"url","value":"/resource_proxy/EXxRBJ9WzLn3KTQLjm5Nc6dC"},{"name":"striking_image","type":"boolean","value":false}]}]}'
+    - '2016-10-26 19:41:04.909787'
+    - '2016-10-26 19:41:04.909787'
+    - 
+  - - '76'
+    - Task
+    - '171'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"authors-task","type":"properties","children":[{"name":"authors--persons_agreed_to_be_named","type":"question","value":{"id":200,"title":"Any
+      persons named in the Acknowledgements section of the manuscript, or referred
+      to as the source of a personal communication, have agreed to being so named.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"authors--authors_confirm_icmje_criteria","type":"question","value":{"id":201,"title":"All
+      authors have read, and confirm, that they meet, \u003ca href=\"http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html\"
+      target=\"_blank\"\u003eICMJE\u003c/a\u003e criteria for authorship.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"authors--authors_agree_to_submission","type":"question","value":{"id":202,"title":"All
+      contributing authors are aware of and agree to the submission of this manuscript.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":171},{"name":"author","type":"properties","children":[{"name":"author--published_as_corresponding_author","type":"question","value":{"id":101,"title":"This
+      person should be identified as corresponding author on the published article","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--deceased","type":"question","value":{"id":102,"title":"This
+      person is deceased","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"author--contributions","type":"question","value":{"id":104,"title":"Author
+      Contributions","answer_type":"question-set","answer":null,"attachments":[]},"children":[{"name":"author--contributions--conceptualization","type":"question","value":{"id":185,"title":"Conceptualization","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--investigation","type":"question","value":{"id":186,"title":"Investigation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--visualization","type":"question","value":{"id":187,"title":"Visualization","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--methodology","type":"question","value":{"id":188,"title":"Methodology","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--resources","type":"question","value":{"id":189,"title":"Resources","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"author--contributions--supervision","type":"question","value":{"id":190,"title":"Supervision","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--software","type":"question","value":{"id":191,"title":"Software","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--data-curation","type":"question","value":{"id":192,"title":"Data
+      Curation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--project-administration","type":"question","value":{"id":193,"title":"Project
+      Administration","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--validation","type":"question","value":{"id":194,"title":"Validation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--writing-original-draft","type":"question","value":{"id":195,"title":"Writing
+      - Original Draft","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--writing-review-and-editing","type":"question","value":{"id":196,"title":"Writing
+      - Review and Editing","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--funding-acquisition","type":"question","value":{"id":197,"title":"Funding
+      Acquisition","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--formal-analysis","type":"question","value":{"id":198,"title":"Formal
+      Analysis","answer_type":"boolean","answer":null,"attachments":[]},"children":[]}]},{"name":"author--government-employee","type":"question","value":{"id":199,"title":"Is
+      this author an employee of the United States Government?","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":12},{"name":"id","type":"integer","value":12},{"name":"first_name","type":"text","value":"Han"},{"name":"last_name","type":"text","value":"Solo"},{"name":"middle_initial","type":"text","value":""},{"name":"position","type":"integer","value":1},{"name":"email","type":"text","value":"h.solo@newrepublic.gov"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":"New
+      Republic"},{"name":"secondary_affiliation","type":"text","value":null},{"name":"ringgold_id","type":"text","value":null},{"name":"secondary_ringgold_id","type":"text","value":null}]},{"name":"author","type":"properties","children":[{"name":"author--published_as_corresponding_author","type":"question","value":{"id":101,"title":"This
+      person should be identified as corresponding author on the published article","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"author--deceased","type":"question","value":{"id":102,"title":"This
+      person is deceased","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions","type":"question","value":{"id":104,"title":"Author
+      Contributions","answer_type":"question-set","answer":null,"attachments":[]},"children":[{"name":"author--contributions--conceptualization","type":"question","value":{"id":185,"title":"Conceptualization","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--investigation","type":"question","value":{"id":186,"title":"Investigation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--visualization","type":"question","value":{"id":187,"title":"Visualization","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--methodology","type":"question","value":{"id":188,"title":"Methodology","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--resources","type":"question","value":{"id":189,"title":"Resources","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--supervision","type":"question","value":{"id":190,"title":"Supervision","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--software","type":"question","value":{"id":191,"title":"Software","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--data-curation","type":"question","value":{"id":192,"title":"Data
+      Curation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--project-administration","type":"question","value":{"id":193,"title":"Project
+      Administration","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--validation","type":"question","value":{"id":194,"title":"Validation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--writing-original-draft","type":"question","value":{"id":195,"title":"Writing
+      - Original Draft","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"author--contributions--writing-review-and-editing","type":"question","value":{"id":196,"title":"Writing
+      - Review and Editing","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--funding-acquisition","type":"question","value":{"id":197,"title":"Funding
+      Acquisition","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"author--contributions--formal-analysis","type":"question","value":{"id":198,"title":"Formal
+      Analysis","answer_type":"boolean","answer":null,"attachments":[]},"children":[]}]},{"name":"author--government-employee","type":"question","value":{"id":199,"title":"Is
+      this author an employee of the United States Government?","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":11},{"name":"id","type":"integer","value":11},{"name":"first_name","type":"text","value":"Arthur"},{"name":"last_name","type":"text","value":"Author"},{"name":"middle_initial","type":"text","value":null},{"name":"position","type":"integer","value":3},{"name":"email","type":"text","value":"author@example.com"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":"PLOS"},{"name":"secondary_affiliation","type":"text","value":null},{"name":"ringgold_id","type":"text","value":null},{"name":"secondary_ringgold_id","type":"text","value":null}]},{"name":"group-author","type":"properties","children":[{"name":"group-author--contributions","type":"question","value":{"id":217,"title":"Author
+      Contributions","answer_type":"question-set","answer":null,"attachments":[]},"children":[{"name":"group-author--contributions--conceptualization","type":"question","value":{"id":203,"title":"Conceptualization","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--investigation","type":"question","value":{"id":204,"title":"Investigation","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"group-author--contributions--visualization","type":"question","value":{"id":205,"title":"Visualization","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--methodology","type":"question","value":{"id":206,"title":"Methodology","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--resources","type":"question","value":{"id":207,"title":"Resources","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--supervision","type":"question","value":{"id":208,"title":"Supervision","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--software","type":"question","value":{"id":209,"title":"Software","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--data-curation","type":"question","value":{"id":210,"title":"Data
+      Curation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--project-administration","type":"question","value":{"id":211,"title":"Project
+      Administration","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--validation","type":"question","value":{"id":212,"title":"Validation","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--writing-original-draft","type":"question","value":{"id":213,"title":"Writing
+      - Original Draft","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--writing-review-and-editing","type":"question","value":{"id":214,"title":"Writing
+      - Review and Editing","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--funding-acquisition","type":"question","value":{"id":215,"title":"Funding
+      Acquisition","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"group-author--contributions--formal-analysis","type":"question","value":{"id":216,"title":"Formal
+      Analysis","answer_type":"boolean","answer":null,"attachments":[]},"children":[]}]},{"name":"group-author--government-employee","type":"question","value":{"id":218,"title":"Is
+      this group a United States Government agency, department or organization?","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":2},{"name":"id","type":"integer","value":2},{"name":"contact_first_name","type":"text","value":"Jane"},{"name":"contact_last_name","type":"text","value":"Doe"},{"name":"contact_middle_name","type":"text","value":""},{"name":"position","type":"integer","value":4},{"name":"contact_email","type":"text","value":"jane.doe@example.com"},{"name":"name","type":"text","value":"Group
+      Author"},{"name":"initial","type":"text","value":"GA"}]}]}'
+    - '2016-10-26 19:41:04.939667'
+    - '2016-10-26 19:41:04.939667'
+    - 
+  - - '77'
+    - Task
+    - '172'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"upload-manuscript-task","type":"properties","children":[{"name":"id","type":"integer","value":172}]}'
+    - '2016-10-26 19:41:04.98457'
+    - '2016-10-26 19:41:04.98457'
+    - 
+  - - '78'
+    - Task
+    - '174'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"competing-interests-task","type":"properties","children":[{"name":"competing_interests--has_competing_interests","type":"question","value":{"id":38,"title":"Do
+      any authors of this manuscript have competing interests (as described in the
+      \u003ca target=''_blank'' href=''http://journals.plos.org/plosbiology/s/competing-interests''\u003ePLOS
+      Policy on Declaration and Evaluation of Competing Interests\u003c/a\u003e)?","answer_type":"boolean","answer":true,"attachments":[]},"children":[{"name":"competing_interests--statement","type":"question","value":{"id":39,"title":"Please
+      provide details about any and all competing interests in the box below. Your
+      response should begin with this statement: \"I have read the journal''s policy
+      and the authors of this manuscript have the following competing interests.\"","answer_type":"text","answer":"I
+      forgot I have a competing interest. I''m reviewing a paper on this same topic.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":174}]}'
+    - '2016-10-26 19:41:04.994054'
+    - '2016-10-26 19:41:04.994054'
+    - 
+  - - '79'
+    - Task
+    - '175'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"cover-letter-task","type":"properties","children":[{"name":"cover_letter--text","type":"question","value":{"id":232,"title":null,"answer_type":"text","answer":"This
+      is a cover letter with edits.","attachments":[]},"children":[]},{"name":"cover_letter--attachment","type":"question","value":{"id":233,"title":null,"answer_type":"attachment","answer":null,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":175}]}'
+    - '2016-10-26 19:41:05.004382'
+    - '2016-10-26 19:41:05.004382'
+    - 
+  - - '80'
+    - Task
+    - '176'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"data-availability-task","type":"properties","children":[{"name":"data_availability--data_fully_available","type":"question","value":{"id":36,"title":"Do
+      the authors confirm that all the data underlying the findings described in their
+      manuscript are fully available without restriction?","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"data_availability--data_location","type":"question","value":{"id":37,"title":"Please
+      describe where your data may be found, writing in full sentences.","answer_type":"text","answer":"Data
+      are from the XXX study whose authors may be contacted at XXX","attachments":[]},"children":[]},{"name":"data_availability--additional_information_doi","type":"question","value":{"id":236,"title":"Tick
+      here if the URLs/accession numbers/DOIs will be available only after acceptance
+      of the manuscript for publication so that we can ensure their inclusion before
+      publication.","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"data_availability--additional_information_other","type":"question","value":{"id":237,"title":"Tick
+      here if your circumstances are not covered by the questions above and you need
+      the journal’s help to make your data available.","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":176}]}'
+    - '2016-10-26 19:41:05.014744'
+    - '2016-10-26 19:41:05.014744'
+    - 
+  - - '81'
+    - Task
+    - '177'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"ethics-task","type":"properties","children":[{"name":"ethics--human_subjects","type":"question","value":{"id":30,"title":"Does
+      your study involve human participants and/or tissue?","answer_type":"boolean","answer":true,"attachments":[]},"children":[{"name":"ethics--human_subjects--participants","type":"question","value":{"id":31,"title":"Please
+      enter the name of the IRB or Ethics Committee that approved this study in the
+      space below. Include the approval number and/or a statement indicating approval
+      of this research.","answer_type":"text","answer":"We showed people cards.","attachments":[]},"children":[]}]},{"name":"ethics--animal_subjects","type":"question","value":{"id":33,"title":"Does
+      your study involve animal research (vertebrate animals, embryos or tissues)?","answer_type":"boolean","answer":false,"attachments":[]},"children":[{"name":"ethics--animal_subjects--field_permit","type":"question","value":{"id":34,"title":"Please
+      enter your statement below:","answer_type":"text","answer":null,"attachments":[]},"children":[]},{"name":"ethics--animal_subjects--field_arrive","type":"question","value":{"id":183,"title":"ARRIVE
+      checklist","answer_type":"attachment","answer":null,"attachments":[]},"children":[]}]},{"name":"ethics--field_study","type":"question","value":{"id":179,"title":"Is
+      this a field study, or does it involve collection of plant, animal, or other
+      materials collected from a natural setting?","answer_type":"boolean","answer":false,"attachments":[]},"children":[{"name":"ethics--field_study--field_permit_number","type":"question","value":{"id":178,"title":"Please
+      provide your field permit number and indicate the institution or relevant body
+      that granted permission for use of the land or materials collected.","answer_type":"text","answer":null,"attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":177}]}'
+    - '2016-10-26 19:41:05.027468'
+    - '2016-10-26 19:41:05.027468'
+    - 
+  - - '82'
+    - Task
+    - '178'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"figure-task","type":"properties","children":[{"name":"figures--complies","type":"question","value":{"id":28,"title":"Yes
+      - I confirm our figures comply with the guidelines.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":178},{"name":"figure","type":"properties","children":[{"name":"id","type":"integer","value":8},{"name":"caption","type":"text","value":null},{"name":"category","type":"text","value":null},{"name":"file","type":"text","value":"139.jpg"},{"name":"file_hash","type":"text","value":null},{"name":"label","type":"text","value":null},{"name":"publishable","type":"boolean","value":false},{"name":"status","type":"text","value":"done"},{"name":"title","type":"text","value":"Figure
+      2"},{"name":"url","type":"url","value":"/resource_proxy/UF91o1Sp2kVzQ2fMRYGUVLkU"},{"name":"striking_image","type":"boolean","value":false}]},{"name":"figure","type":"properties","children":[{"name":"id","type":"integer","value":9},{"name":"caption","type":"text","value":null},{"name":"category","type":"text","value":null},{"name":"file","type":"text","value":"140.jpg"},{"name":"file_hash","type":"text","value":null},{"name":"label","type":"text","value":null},{"name":"publishable","type":"boolean","value":false},{"name":"status","type":"text","value":"done"},{"name":"title","type":"text","value":"Figure
+      1"},{"name":"url","type":"url","value":"/resource_proxy/yEUYk9R5AnnMdHu37FBfC5fw"},{"name":"striking_image","type":"boolean","value":false}]}]}'
+    - '2016-10-26 19:41:05.043392'
+    - '2016-10-26 19:41:05.043392'
+    - 
+  - - '83'
+    - Task
+    - '179'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"financial-disclosure-task","type":"properties","children":[{"name":"financial_disclosures--author_received_funding","type":"question","value":{"id":27,"title":"Did
+      any of the authors receive specific funding for this work?","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":179},{"name":"funder","type":"properties","children":[{"name":"funder--had_influence","type":"question","value":{"id":118,"title":"Did
+      the funder have a role in study design, data collection and analysis, decision
+      to publish, or preparation of the manuscript?","answer_type":"boolean","answer":true,"attachments":[]},"children":[{"name":"funder--had_influence--role_description","type":"question","value":{"id":119,"title":"Describe
+      the role of any sponsors or funders in the study design, data collection and
+      analysis, decision to publish, or preparation of the manuscript.","answer_type":"text","answer":"They
+      recruited participants.","attachments":[]},"children":[]}]},{"name":"id","type":"integer","value":5},{"name":"name","type":"text","value":"Jedi
+      Academy"},{"name":"grant_number","type":"text","value":"12345-1"},{"name":"website","type":"text","value":"jedi.edu"},{"name":"additional_comments","type":"text","value":"Additional
+      comments go here."}]}]}'
+    - '2016-10-26 19:41:05.05935'
+    - '2016-10-26 19:41:05.05935'
+    - 
+  - - '84'
+    - Task
+    - '180'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"publishing-related-questions-task","type":"properties","children":[{"name":"publishing_related_questions--published_elsewhere","type":"question","value":{"id":9,"title":"Have
+      the results, data, or figures in this manuscript been published elsewhere? Are
+      they under consideration for publication elsewhere?","answer_type":"boolean","answer":false,"attachments":[]},"children":[{"name":"publishing_related_questions--published_elsewhere--taken_from_manuscripts","type":"question","value":{"id":10,"title":"Please
+      identify which results, data, or figures have been taken from other published
+      or pending manuscripts, and explain why inclusion in this submission does not
+      constitute dual publication.","answer_type":"text","answer":null,"attachments":[]},"children":[]},{"name":"publishing_related_questions--published_elsewhere--upload_related_work","type":"question","value":{"id":11,"title":"Please
+      also upload a copy of the related work with your submission as a ''Related Manuscript''
+      item. Note that reviewers may be asked to comment on the overlap between the
+      related submissions.","answer_type":"attachment","answer":null,"attachments":[]},"children":[]}]},{"name":"publishing_related_questions--submitted_in_conjunction","type":"question","value":{"id":12,"title":"Is
+      this manuscript being submitted in conjunction with another submission?","answer_type":"boolean","answer":false,"attachments":[]},"children":[{"name":"publishing_related_questions--submitted_in_conjunction--corresponding_title","type":"question","value":{"id":13,"title":"Title","answer_type":"text","answer":null,"attachments":[]},"children":[]},{"name":"publishing_related_questions--submitted_in_conjunction--corresponding_author","type":"question","value":{"id":14,"title":"Corresponding
+      author","answer_type":"text","answer":null,"attachments":[]},"children":[]},{"name":"publishing_related_questions--submitted_in_conjunction--corresponding_journal","type":"question","value":{"id":180,"title":"Corresponding
+      journal","answer_type":"text","answer":null,"attachments":[]},"children":[]},{"name":"publishing_related_questions--submitted_in_conjunction--handled_together","type":"question","value":{"id":181,"title":"This
+      submission and the manuscript I''m submitting should be handled together","answer_type":"boolean","answer":null,"attachments":[]},"children":[]}]},{"name":"publishing_related_questions--previous_interactions_with_this_manuscript","type":"question","value":{"id":15,"title":"I
+      have had previous interactions about this manuscript with a staff editor or
+      Academic Editor of this journal.","answer_type":"boolean","answer":null,"attachments":[]},"children":[{"name":"publishing_related_questions--previous_interactions_with_this_manuscript--submission_details","type":"question","value":{"id":16,"title":"Please
+      enter manuscript number and editor name, if known","answer_type":"text","answer":"","attachments":[]},"children":[]}]},{"name":"publishing_related_questions--presubmission_inquiry","type":"question","value":{"id":17,"title":"I
+      submitted a presubmission inquiry for this manuscript.","answer_type":"boolean","answer":null,"attachments":[]},"children":[{"name":"publishing_related_questions--presubmission_inquiry--submission_details","type":"question","value":{"id":18,"title":"Please
+      enter manuscript number and editor name, if known","answer_type":"text","answer":"","attachments":[]},"children":[]}]},{"name":"publishing_related_questions--other_journal_submission","type":"question","value":{"id":20,"title":"This
+      manuscript was previously submitted to a different PLOS journal as either a
+      presubmission inquiry or a full submission.","answer_type":"boolean","answer":null,"attachments":[]},"children":[{"name":"publishing_related_questions--other_journal_submission--submission_details","type":"question","value":{"id":21,"title":"Please
+      enter manuscript number and editor name, if known","answer_type":"text","answer":"","attachments":[]},"children":[]}]},{"name":"publishing_related_questions--author_was_previous_journal_editor","type":"question","value":{"id":23,"title":"One
+      or more of the authors (including myself) currently serve, or have previously
+      served, as an Academic Editor or Guest Editor for this journal.","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"publishing_related_questions--intended_collection","type":"question","value":{"id":24,"title":"If
+      your submission is intended for a \u003ca target=''_blank'' href=''http://collections.plos.org/''\u003ePLOS
+      Collection\u003c/a\u003e, enter the name of the collection in the box below.
+      Please also ensure the name of the collection is included in your cover letter.","answer_type":"text","answer":null,"attachments":[]},"children":[]},{"name":"publishing_related_questions--short_title","type":"question","value":{"id":184,"title":"Please
+      give your paper a short title. Short titles are used as the running header on
+      published PDFs.","answer_type":"text","answer":"Diffable Paper: \u003ci\u003epaper
+      has versioned text and tasks\u003c/i\u003e\u003c!----\u003e","attachments":[]},"children":[]},{"name":"id","type":"integer","value":180}]}'
+    - '2016-10-26 19:41:05.07506'
+    - '2016-10-26 19:41:05.07506'
+    - 
+  - - '85'
+    - Task
+    - '181'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"reporting-guidelines-task","type":"properties","children":[{"name":"reporting_guidelines--clinical_trial","type":"question","value":{"id":1,"title":"Clinical
+      Trial","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"reporting_guidelines--systematic_reviews","type":"question","value":{"id":2,"title":"Systematic
+      Reviews","answer_type":"boolean","answer":null,"attachments":[]},"children":[{"name":"reporting_guidelines--systematic_reviews--checklist","type":"question","value":{"id":3,"title":"Provide
+      a completed PRISMA checklist as supporting information.  You can \u003ca href=''http://www.prisma-statement.org/''
+      target=''_blank''\u003edownload it here\u003c/a\u003e.","answer_type":"attachment","answer":null,"attachments":[]},"children":[]}]},{"name":"reporting_guidelines--meta_analyses","type":"question","value":{"id":4,"title":"Meta-analyses","answer_type":"boolean","answer":null,"attachments":[]},"children":[{"name":"reporting_guidelines--meta_analyses--checklist","type":"question","value":{"id":5,"title":"Provide
+      a completed PRISMA checklist as supporting information.  You can \u003ca href=''http://www.prisma-statement.org/''
+      target=''_blank''\u003edownload it here\u003c/a\u003e.","answer_type":"attachment","answer":null,"attachments":[]},"children":[]}]},{"name":"reporting_guidelines--diagnostic_studies","type":"question","value":{"id":6,"title":"Diagnostic
+      studies","answer_type":"boolean","answer":null,"attachments":[]},"children":[]},{"name":"reporting_guidelines--epidemiological_studies","type":"question","value":{"id":7,"title":"Epidemiological
+      studies","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reporting_guidelines--microarray_studies","type":"question","value":{"id":8,"title":"Microarray
+      studies","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"id","type":"integer","value":181}]}'
+    - '2016-10-26 19:41:05.095001'
+    - '2016-10-26 19:41:05.095001'
+    - 
+  - - '86'
+    - Task
+    - '182'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"reviewer-recommendations-task","type":"properties","children":[{"name":"id","type":"integer","value":182},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer?","answer_type":"boolean","answer":false,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      oppose this reviewer. ","attachments":[]},"children":[]},{"name":"id","type":"integer","value":9},{"name":"first_name","type":"text","value":"Rob"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Reviews"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]},{"name":"reviewer-recommendation","type":"properties","children":[{"name":"reviewer_recommendations--recommend_or_oppose","type":"question","value":{"id":137,"title":"Are
+      you recommending or opposing this reviewer?","answer_type":"boolean","answer":true,"attachments":[]},"children":[]},{"name":"reviewer_recommendations--reason","type":"question","value":{"id":138,"title":"Optional:
+      reason for recommending or opposing this reviewer","answer_type":"text","answer":"I
+      recommend this reviewer.","attachments":[]},"children":[]},{"name":"id","type":"integer","value":10},{"name":"first_name","type":"text","value":"Ruth"},{"name":"last_name","type":"text","value":"Reviewer"},{"name":"middle_initial","type":"text","value":""},{"name":"email","type":"text","value":"r.reviewer@science.org"},{"name":"department","type":"text","value":"Science"},{"name":"title","type":"text","value":"Professor"},{"name":"affiliation","type":"text","value":null}]}]}'
+    - '2016-10-26 19:41:05.110246'
+    - '2016-10-26 19:41:05.110246'
+    - 
+  - - '87'
+    - Attachment
+    - '8'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"figure","type":"properties","children":[{"name":"id","type":"integer","value":8},{"name":"caption","type":"text","value":null},{"name":"category","type":"text","value":null},{"name":"file","type":"text","value":"139.jpg"},{"name":"file_hash","type":"text","value":null},{"name":"label","type":"text","value":null},{"name":"publishable","type":"boolean","value":false},{"name":"status","type":"text","value":"done"},{"name":"title","type":"text","value":"Figure
+      2"},{"name":"url","type":"url","value":"/resource_proxy/UF91o1Sp2kVzQ2fMRYGUVLkU"},{"name":"striking_image","type":"boolean","value":false}]}'
+    - '2016-10-26 19:41:05.129321'
+    - '2016-10-26 19:41:05.129321'
+    - uploads/paper/12/figure/attachment/12/139.jpg
+  - - '88'
+    - Attachment
+    - '9'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"figure","type":"properties","children":[{"name":"id","type":"integer","value":9},{"name":"caption","type":"text","value":null},{"name":"category","type":"text","value":null},{"name":"file","type":"text","value":"140.jpg"},{"name":"file_hash","type":"text","value":null},{"name":"label","type":"text","value":null},{"name":"publishable","type":"boolean","value":false},{"name":"status","type":"text","value":"done"},{"name":"title","type":"text","value":"Figure
+      1"},{"name":"url","type":"url","value":"/resource_proxy/yEUYk9R5AnnMdHu37FBfC5fw"},{"name":"striking_image","type":"boolean","value":false}]}'
+    - '2016-10-26 19:41:05.141602'
+    - '2016-10-26 19:41:05.141602'
+    - uploads/paper/12/figure/attachment/13/140.jpg
+  - - '89'
+    - Attachment
+    - '13'
+    - '12'
+    - '4'
+    - '0'
+    - '{"name":"supporting-information-file","type":"properties","children":[{"name":"id","type":"integer","value":13},{"name":"caption","type":"text","value":"Another
+      cat"},{"name":"category","type":"text","value":"Figure"},{"name":"file","type":"text","value":"140.jpg"},{"name":"file_hash","type":"text","value":null},{"name":"label","type":"text","value":null},{"name":"publishable","type":"boolean","value":true},{"name":"status","type":"text","value":"done"},{"name":"title","type":"text","value":"140.jpg"},{"name":"url","type":"url","value":"/resource_proxy/EXxRBJ9WzLn3KTQLjm5Nc6dC"},{"name":"striking_image","type":"boolean","value":false}]}'
+    - '2016-10-26 19:41:05.153313'
+    - '2016-10-26 19:41:05.153313'
+    - uploads/attachments/5/supporting_information_file/attachment/5/140.jpg
 
 ---
 systems:
@@ -22502,7 +24239,7 @@ tasks:
     - '45'
     - false
     - '2016-04-12 18:43:35.023066'
-    - '2016-04-12 19:05:54.30308'
+    - '2016-10-26 19:41:03.67719'
     - editor
     - "[]"
     - '1'
@@ -22514,7 +24251,7 @@ tasks:
     - '45'
     - true
     - '2016-04-12 18:57:26.99737'
-    - '2016-04-12 19:05:50.941045'
+    - '2016-10-26 19:40:58.237065'
     - author
     - '[[{"type":"text","value":"Dear Dr. Author,\n\nThank you for submitting your
       manuscript, \u003cb\u003eDiffable Paper:\u003c/b\u003e \u003cem\u003ePaper has
@@ -22531,7 +24268,7 @@ tasks:
       us.\n\nYours sincerely,\n\n[YOUR NAME]\nAcademic Editor\nPLOS Yeti\n"}]]'
     - '2'
     - '12'
-    - '2016-04-12 19:05:50.940757'
+    - '2016-10-26 19:40:58.236409'
   - - '192'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -22736,6 +24473,30 @@ tasks:
     - '1'
     - '13'
     - 
+  - - '209'
+    - Invite Academic Editor
+    - TahiStandardTasks::PaperEditorTask
+    - '43'
+    - false
+    - '2016-10-26 19:20:58.070525'
+    - '2016-10-26 19:20:58.070525'
+    - admin
+    - "[]"
+    - '3'
+    - '12'
+    - 
+  - - '210'
+    - Review by Adam Administrator
+    - TahiStandardTasks::ReviewerReportTask
+    - '44'
+    - true
+    - '2016-10-26 19:33:22.214482'
+    - '2016-10-26 19:34:04.991987'
+    - reviewer
+    - '{"decision_id":21,"previous_decision_ids":null,"submitted":true}'
+    - '3'
+    - '12'
+    - '2016-10-26 19:34:04.991447'
 
 ---
 user_roles:
@@ -25320,6 +27081,138 @@ versioned_texts:
       </div>
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="6" data-figure-rank="" src="/resource_proxy/figures/qt3FhbrR5Q4KNM1F35DXTHNx/detail">
             <img class="paper-body-figure" data-figure-id="7" data-figure-rank="" src="/resource_proxy/figures/2vM873Fqxyfm22GtB5VDqEND/detail">
+  - - '19'
+    - '1'
+    - '12'
+    - '4'
+    - '0'
+    - |
+      <!--TEI front--><!--TEI body--><p class="Body A">
+        <span style="font-weight:bold">Diffable Paper: </span>
+        <span style="font-style:italic">Paper has versioned text and tasks</span>
+      </p><p class="Body A">Fiona Maisels<sup>1,2,<sup style="font-family:Symbol;">α</sup></sup>, Samantha Strindberg<sup>1,<sup style="font-family:Symbol;">α</sup></sup>, Stephen Blake<sup>1,3†</sup>, George Wittemyer<sup>4,26</sup>, John Hart<sup>1,5†</sup>, Elizabeth Williamson<sup>2</sup>, Rostand Aba'a<sup>1</sup>, Gaspard Abitsi<sup>1</sup>, Ruffin D. Ambahe<sup>1</sup>, Fidel Amsini<sup>1,6†</sup>, Parfait C. Bakabana<sup>1</sup>, Thurston Cleveland Hicks<sup>7,8†</sup>, Rosine E. Bayogo<sup>9</sup>, Martha Bechem<sup>1,10†</sup>, Rene Beyers<sup>11</sup>, Anicet N. Bezangoye<sup>12</sup>, Patrick Boudjan<sup>1</sup>, Nicolas Bout<sup>1,13†</sup>, Marc Ella Akou<sup>12,14†</sup>, Lambert Bene Bene<sup>14</sup>‡, Bernard Fosso<sup>1</sup>, Elizabeth Greengrass<sup>1,15†</sup>, Falk Grossmann<sup>1</sup>, Clement Ikamba-Nkulu<sup>1</sup>, Omari Ilambu<sup>1,14†</sup>, Bila-Isia Inogwabini<sup>1,16†</sup>, Fortune Iyenguet<sup>1</sup>, Frank Kiminou<sup>1</sup>, Max Kokangoye<sup>1,12†</sup>‡, Deo Kujirakwinja<sup>1</sup>, Stephanie Latour<sup>1,17,18†</sup>, Innocent Liengola<sup>1</sup>, Quevain Mackaya<sup>1</sup>, Jacob Madidi<sup>1</sup>, Bola Madzoke<sup>1</sup>, Calixte Makoumbou<sup>1, 19†</sup>, Guy-Aimé Malanda<sup>1</sup>, Richard Malonga<sup>1</sup>, Olivier Mbani<sup>1</sup>, Valentin Mbendzo<sup>1,14†</sup>, Edgar Ambassa<sup>1,20†</sup>, Albert Ekinde<sup>1</sup>, Yves Mihindou<sup>1</sup>, Bethan J. Morgan<sup>2, 21</sup>, Prosper Motsaba<sup>1</sup>, Gabin Moukala<sup>1</sup>, Anselme Mounguengui<sup>14</sup>, Brice S. Mowawa<sup>1,22†</sup>, Christian Ndzai<sup>1</sup>, Stuart Nixon<sup>23</sup>, Pele Nkumu<sup>1</sup>, Fabian Nzolani<sup>1</sup>, Lilian Pintea<sup>17</sup>, Andy Plumptre<sup>1</sup>, Hugo Rainey<sup>1</sup>, Bruno de Semboli<sup>9</sup>, Adeline Serckx<sup>24</sup>, Emma Stokes<sup>1, </sup>Andrea Turkalo<sup>1</sup>, Hilde Vanleeuwe<sup>1</sup>, Ashley Vosper<sup>1†,5, 25</sup>, Ymke Warren<sup>1</sup>‡.</p><p class="Body A"><sup>1.</sup> Wildlife Conservation Society, 2300 Southern Blvd., Bronx, NY 10460, USA. <sup>2.</sup> University of Stirling, Stirling FK9 4LA, Scotland, UK. <sup>3.</sup> Max Planck Institute for Ornithology, Vogelwarte Radolfzell, Schlossallee 2, 78315 Radolfzell, Germany. <sup>4. </sup>Colorado State University, Fort Collins, USA. <sup>5.</sup> Lukuru Wildlife Research Foundation, 1235 Avenue Poids Lourds, Kinshasa, DRC. <sup>6.</sup> Frankfurt Zoological Society, Bernhard-Grzimek-Allee 1 | D-60316 Frankfurt, Germany. <sup>7.</sup> The Institute of Biodiversity and Ecosystem Dynamics, University of Amsterdam, Postbus 94248, 1090 GE Amsterdam, The Netherlands. <sup>8.</sup> Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany. <sup>9.</sup> Ministère des Eaux, Forêts, Chasse et Pêche, Bangui, Central African Republic. <sup>10.</sup> MIKE Subregional Office, Yaoundé, Central Africa. <sup>11.</sup> Beatty Biodiversity Centre, University of British Columbia, Vancouver, BC, Canada. <sup>12.</sup> Direction de la Gestion de la Faune et de la Chasse, Ministère des Eaux et Forêts, BP 1128, Libreville, Gabon. <sup>13.</sup> The Aspinall Foundation, B.P. 583, Franceville, Gabon. <sup>14.</sup> World Wildlife Fund Central Africa Regional Programme Office, Yaoundé, Cameroon. <sup>15.</sup> 52, Greenland Mills, Bradford on Avon, Wiltshire, BA15 1BL UK. <sup>16. </sup>Swedish University of Agricultural Sciences. Department of Aquatic Sciences and Assessment. Box 7050-75007, Uppsala, Sweden.<sup>17. </sup><span style="color:292526">The Jane Goodall Institute, Arlington, Virginia 22203, USA.</span><sup> 18. </sup>27 avenue Le Notre 92420 Vaucresson France. <sup>19.</sup> Mokabi SA (Rougier Group), 77, Rue Mpissa Makélékélé, Brazzaville<span style="font-style:italic">, </span>Republic of Congo. <sup>20.</sup> Ministry of Forestry and Wildlife, Government of Cameroon. <sup>21.</sup> Zoological Society of San Diego, Central Africa Program, Yaoundé, Cameroon. <sup>22.</sup> Ministère de l’Economie Forestière, Brazzaville, Republic of Congo. <sup>23.</sup> Zoological Society of London, Regents Park, London NW1 4RY, United Kingdom.<sup> 24.</sup> Behavioral Biology Unit, University of Liege, Quai Van Beneden, 22 B-4020 Liege, Belgium. <sup>25</sup> African Wildlife Foundation, Avenue Comité Urbain n°12, Kinshasa/Gombe, Democratic Republic of Congo. <sup>26. </sup>Save The Elephants, Marula Manor, Marula Lane, Karen, P.O. Box 54667, Nairobi 00200 Kenya.</p><p class="Body A"><sup><sup style="font-family:Symbol;">α</sup></sup> Joint first authors.† Present address. ‡ Deceased.</p><p class="Body A">
+        <span style="font-weight:bold">Abstract</span>
+      </p><p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002–2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p><p class="Body A">
+        <span style="font-weight:bold">Introduction</span>
+      </p><p class="Body A">The information required for effective conservation management of a species includes population status and distribution, identification and prioritization of threats, and trends in all of the above [1]. These metrics are the basis by which the IUCN Red List assesses the conservation status of species [2], and conservation policymakers and managers in the field decide on the management strategies which best serve the taxon in question. However, these requirements are notoriously difficult to ascertain and, therefore, lacking for numerous species including one of the world's largest terrestrial mammals, the African forest elephant.</p><p class="Body A">In 2003, the IUCN African Elephant Specialist Group (AfESG) listed them as subspecies <span style="font-style:italic">(L. a. cyclotis</span> and <span style="font-style:italic">L. a. africana, </span>respectively), due to perceived data gaps [3]. There are two distinct types of African elephants, often considered to be two species: savannah elephants<span style="font-style:italic"> Loxodonta africana </span>(Blumenbach, 1797) and forest elephants <span style="font-style:italic">L. cyclotis</span> (Matschie, 1900). However, in 2008 they suggested that further research may reveal more than one African elephant species [4]. It was proposed that they should be considered two species on morphological grounds [5] and are considered as such by the Convention on Migratory Species [6]. Genetic evidence also supports this view [7-15]. The AfESG do, however, stress that it is important to recognize the different challenges to the conservation of forest and savannah elephants [3,16].</p><p class="Body A">African forest elephants have deep ecological differences from savannah elephants. They are highly frugivorous [17-20] and thus play an important role in one of Earth’s primary carbon-sequestering forests [17,21,22]. They can move great quantities of large seeds many kilometres from the parent tree [17] and are thus integral for maintaining forest structure and diversity. They also maintain [23], and possibly create, forest clearings in mineral-rich soil, on which a wide variety of African forest fauna are dependent [24,25]. </p><p class="Body A">The history of African elephant abundance and distribution is strongly linked to the commerce in ivory, and their decline since the 1800s has been documented across the continent [26-28]. Even in the forests of Central Africa, a century ago, there were very few elephants remaining anywhere along the Gabonese coast, or around Brazzaville, in what is now the Republic of Congo [29]. It was thought that there was a slow decline in elephant populations during the 19<sup>th</sup> century, flattening off in the first half of the 20<sup>th</sup> century, and then a steep drop between 1950 and 1989 [28]. Modern African elephant density, based on data up to 2007, has recently been shown to be correlated with human factors rather than ecological factors [30].</p><p class="Body A">The elephant subpopulation of Central Africa (which included some savannah populations in Chad and northern Cameroon) was recognized in 2008 as Endangered by the IUCN [4]. In 2010, the African Elephant Action Plan [31] drawn up by all of the African elephant range states, ranked poaching and illegal trade in elephant products as the top threat to elephants across the continent. In the last few years there have been very large and frequent ivory seizures in Africa and Asia, and the combination of seizure data analysed by the Elephant Trade Information System (ETIS) and of elephant carcass data documented and analysed by the Monitoring the Illegal Killing of Elephants (MIKE) programme demonstrate that the illegal trade is escalating [16,32-36]. This increasing trade has been linked to increasing demand and value of ivory in China [37,38]. The proportion of elephant carcasses found that had been killed illegally in 2010 was the highest on record [39] only to be exceeded by 2011 levels [16,35]. Elephant meat is an important by-product, but ivory is the primary reason for elephant poaching [40]. It is now clear that elephants in general, and especially the elephants of Central Africa, are under serious threat [33] and that the poaching since 2011 , may be at the level at which all elephant populations are in net decline [16,31].</p><p class="Body A">The scale of historical forest elephant decline, although substantial [28,41], has been difficult to quantify due to a lack of comprehensive, range-wide information on distribution and density. Previous analyses, collected over a relatively short period and limited in geographic extent relative to their range, suggested a growing crisis for elephants in the Central African forests [42]. It is critical that a broader assessment is provided to understand range and demographic trends [16]. The Central African forest block covers about 95% of the current “known” and “possible” range of forest elephants [43]; the remaining 5% are in the forests of West Africa, to the west of the Cameroon-Nigeria border. We present the analysis of eighty surveys carried out over the nine-year period between 2002-2011 across the Central African forest block. The area stretches from the western Cameroon across to the eastern border of the Democratic Republic of Congo (DRC). The analysis responds to recent demands for a rigorous, range-wide assessment of forest elephant conservation status [16,31]. Trends inferred from dung surveys are presented. In addition, landscape covariates correlated with dung density (a proxy for elephant density) were analyzed and results discussed with the aim of providing information to enhance effective conservation policy and management.</p><p class="Body A">
+        <span style="font-weight:bold">Results</span>
+      </p><p class="Body A">Our results demonstrate a widespread and catastrophic decline in numbers of forest elephants, in the order of 26%, and a corresponding range contraction of approximately 30%, during the nine-year period 2002-2011 represented by this study (Figs 1 and 2, Tables S2 and S3). Forest elephants now have likely declined to extremely low density over 75% of their potential range (Tables S3, S6), and probably have been extirpated from large sections of this range. Considering 2002–2011 range contraction relative to elephant habitat per country, ca. 95% of DRC’s forests are likely to be almost empty of elephants, a country historically thought to have held the highest numbers (Table S3). About half of the surviving elephants are in Gabon, and under a fifth in DRC, despite these countries covering 13% and 62% of the total forest area, respectively (Table S6). In 2011, less than 2% of the Central African forest contained elephants at high density (Table S3). Even for Gabon, in 2011 high density populations were found in only 14% of the forest (a decline of over 18% between 2002 and 2011). No high density areas remained in DRC even in 2002. </p><p class="Body A">
+        <span style="font-style:italic">Correlates of decline in multi-variable models</span>
+      </p><p class="Body A">The overall top-ranked multi-variable model of elephant dung pile density by increasing Un-Biased Risk Estimator (UBRE) score included the explanatory variables: hunter-sign frequency, survey year, proximity to roads, human population density, corruption, and presence or absence of wildlife guards (Table S5 and Fig. 3). Site-specific dung-encounter rates and hunter-sign frequency were significantly negatively correlated—elephants occur where people do not—and both were strongly influenced by guard presence/absence (Figs 4-6). Survey year and corruption were included in almost all of the top-ranking models that included hunter sign. Models that included hunter-sign frequency were always better when considering UBRE score than otherwise identical models that excluded this variable and able to explain on average 50% of the variability in the data with satisfactory model fit diagnostics (Table S5 and Fig. 3). The top-ranking models without the hunter sign covariate were similar to each other in terms of UBRE score and were able to explain on average 45% of the variability in the data with satisfactory model fit diagnostics with models including the HII (Human Influence Index: [44]), in place of road proximity and human population density, generally a few percentage points lower; (Table S2 and Fig. S1). Again, survey year and corruption were included in almost all of these models. While hunter sign was clearly an important variable, it was one of the few for which data were collected directly during the surveys at each site (rather than extracting the information from GIS data layers, for example). Because it was site collected and not part of a global dataset such as the HII, it was not available at all locations across the Central African forests. Therefore, models containing hunter sign could not be used to produce predicted dung density surfaces and to estimate elephant range and abundance across the entire area of interest.</p><p class="Body A">For the set of top-ranked models that used the variables across Central Africa, dung density was significantly higher at sites with wildlife guards and with a designated official protection status (Fig. 4). Dung density was inversely correlated with corruption as measured by Transparency International’s Corruption Perception Index (CPI) [45]; with more widespread distributions and higher densities in less corrupt countries: Gabon was significantly higher and DRC significantly lower than the roughly similar Cameroon, Central African Republic (CAR) and Republic of Congo (Congo) (Table S3). The regional proxy variables latitude and longitude appeared frequently among the top-ranking models and also captured significant variation. Longitude was the better covariate. In most of the models including either of these variables, these proxies indicated higher dung densities closer to the equator and significant decreases further east, which potentially represents site differences not accounted for by other variables, such as political instability in the Southeast (Eastern DRC) of the study area [46]. </p><p class="Body A">The inclusion of variables such as human population density, HII, and the presence/absence of wildlife guards always improved the UBRE score and were always statistically significant. Inclusion of variables such as proximity to roads, survey year and corruption in the models also improved the UBRE score, but these variables were occasionally non-significant. Either the HII or the combination of proximity to roads and human population density was used (with only human population density in some models), as the composite variable HII was highly correlated with the other two variables that comprise two of several variables used to generate the HII [44]. When considering the relative performance of the significantly correlated variables official protection and the presence/absence of guards (where official protection was low, there were no guards), the latter was much better in terms of improvements to the UBRE score and its effect on deviance explained, and was thus the preferred variable in top-ranking models. Corruption, as measured by the CPI was very highly correlated and almost identical to the country factor in terms of improvements to the UBRE score and its effect on deviance explained; with the added benefit of providing insights on how corruption, conceptually associated with poaching, may be influencing elephant distribution and density by country. </p><p class="Body A">
+        <span style="font-style:italic">Correlates of decline in single-variable models</span>
+      </p><p class="Body A">The single variable modelling results were similar to the multi-variable models, where all variables considered were significantly related to elephant dung density (Fig. S2 and Table S4). Univariate models with the variables longitude, country, corruption, and survey year were highly ranked, whereas the model with official protection received the lowest ranking (the UBRE scores for the remaining variables are also shown in Table S4). Univariate models predicted that dung density decreased by (i) 89% as hunter-sign frequency increased from zero to four per km, (ii) 85% when guards were absent, (iii) 30% or 76% as proximity to road decreased from 50 to 25 or zero km, (iv) 48%, 75% or 92% as human density increased from one to five, 10 or 20 people/km<sup>2</sup>, and (v) 17% for each unit increase in the HII. Among the survey site specific variables, human population density had the highest value for deviance explained, followed by the hunter-sign frequency, the presence/absence of guards, and the HII. For the remaining site specific variables (official protection status, proximity to roads, and survey year) the values were considerably smaller. The highest deviance explained corresponded to country-level variables, such as country itself and corruption. The proxy variable longitude also had one of the largest values for deviance explained, whereas latitude did not (Table S4).</p><p class="Body A">
+        <span style="font-style:italic">Predictive modelling of decline</span>
+      </p><p class="Body A">We used the top-ranking multi-variable models with available regional data to predict forest elephant dung density across Central Africa (Fig. 1 and Table S2). We chose to highlight two models including predictor variables that elephants might be responding to directly, rather than latitude and longitude, so as to avoid using spatial location as a proxy for other processes. These models also include survey year as a covariate, which allows for predictions by year and comparisons over time. Results were consistent across models, and predicted dung density across Central Africa reflected the map of actual dung encounter rate (Fig. 5) and also most of the “Known” range described by the African Elephant Database (AED) [47]. Broadly speaking, whether using the HII or a combination of road proximity and human population density, the forested regions of Gabon, northern Congo, southwestern CAR and southeastern Cameroon contained the region’s highest elephant densities and almost all the nationally important elephant populations, while most of DRC, eastern Congo and southern CAR had very low densities (Fig. 1). The most country-specific important sites for elephants are as follows: in Gabon, most of the National Parks and their surroundings (often Forest Stewardship Council (FSC)-certified logging concessions), especially all of those in the centre and northeast of the country, plus a long section along the coast. In Congo, about half of the north of the country can be classed as an important elephant site, including not only the National Parks of Odzala and Nouabale-Ndoki (and the soon-to-be declared Ntokou-Pikounda National Park) but several huge areas of FSC certified timber concessions that connect and surround these Parks. In the Central African Republic, the Dzanga-Sangha National Park, and in Cameroon the whole of the southeast corner of the country, which includes three National Parks and large areas of FSC-certified logging concessions. Finally, the two significant sites in DRC are the Okapi Faunal Reserve and the Salonga National Park, with smaller but still significant numbers in some of the other forest areas (including one which may soon be gazetted as a protected area, known as the Tshuapa-Lomami area).</p><p class="Body A">In areas where there is little or no poaching, elephant density is usually 0.5–1.0/km<sup>2</sup> (data included in this study). Using a conservative density of 0.5 elephants/km<sup>2</sup>, historically the 2.2 million km<sup>2</sup> Central African forest could have harboured over a million individuals [28,41] (Fig. 7). Even in 1993, it was estimated that roughly half of this projected original population remained [41] (based on their model predictions). Our analysis suggests that in 2011 just 10% (ca. 100,000 individuals) still survive (99,869 with 95% bootstrapped confidence interval (49,867–187,340) for the predictive model shown in Fig. 1b). Gabon maintains 30–50% of its probable historical numbers; DRC only 1% - it was thought that DRC originally contained almost 60% of all forest elephants, and had 40% in 1989<span class="page_number"> </span>[41].</p><p class="Body A">
+        <span style="font-weight:bold">Discussion</span>
+      </p><p class="Body A">Elephants have been recently extirpated from extensive areas of Africa [30,34,46,47,48] and even sites thought to be well-protected are no longer safe from ivory poaching [32]. Bouché et al.’s (2011) study examined the West and Central African savannahs, and showed that the once large savannah elephant populations had been reduced to several small pockets of a few hundred animals in many cases, with only about 7,000 individuals remaining in total. Shortly after that publication, in early 2012, several hundred elephants were killed in a matter of a few months, in the Park holding most of Cameroon’s savannah elephants [49,50]; the poachers were well-armed and on horseback. In mid-November 2012, the same poachers were heading back to the same Park – but the Cameroon army were alerted before they arrived [51]. In February 2013, the Gabonese Government announced the loss of at least half of the elephants in Minkebe National Park; as many as 11,000 individuals may have been killed between 2004 and 2012<span class="page_number"> </span>[52]. The rapid increases in demand for, and price of, ivory in China, and the ease of sale of ivory in China [37,38], the persistent lack of effective governance in Central Africa [53] and a proliferation of unprotected roads that provide access to hunters [54,55] combine to facilitate illegal ivory poaching, transport and trade. Forest elephant population and range will continue to decline unless conditions change dramatically.</p><p class="Body A">Other threats and management issues also affect forest elephants. Unlike other tropical forests, deforestation is very low in Central Africa, although increasing [56,57]. Nevertheless, land use pressure, habitat loss, and human-elephant conflict also threaten this species [16] and will likely increase as industrial agriculture, such as oil palm for biofuel production, develops in the near future in Africa in general and Central Africa in particular [58,59]. While these management issues will likely increase with accelerating land use changes, the immediate, and very serious threat to the persistence of this species remains ivory poaching.</p><p class="Body A">Our analysis identified several factors likely to contribute to decline and demonstrated the importance of law enforcement for persistence of elephants. Similar factors were also found to be important in recent analyses of a very different dataset- carcass data from the MIKE sites [16,33] – where higher levels of elephant poaching, as expressed by the proportion of illegally killed elephants (PIKE) were associated with sites where law enforcement capacity was lower, and in countries with poor governance. Governance in our study was represented by the CPI [45], whereas the MIKE analysis up to 2009 [33] incorporated both CPI and several government effectiveness indicators used by the World Bank (which can be found in their website <a class="link_ref" href="HYPERLINK"></a><span class="None">). However, in 2012, the MIKE analysis used only the CPI as the proxy for governance [16]. Because the CPI is strongly associated with other factors within countries (rule of law, governance, development), it may be considered as a proxy for overall functioning of civil society of each country, and indeed development variables associated with poverty were also found to be associated with PIKE in both 2009 and 2012 [16,33]. A previous analysis using data from the African Elephant Database [60] suggesting a link between elephant decline and poor governance was criticized [61], because latitude was a better explanatory variable and the data were collected using different methods of varying quality [4,47]. The more recent analysis using the 2007 AED showed that the “country” variable, a complex interaction of human development and governance factors, explained elephant density very well [30]. In contrast to the AED’s quite variable data, we used highly comparable data obtained within a single vegetation type (closed canopy forest). Corruption in general is increasingly a focus of international attention, whether in the wildlife realm [62-64] or more broadly [65]. </span></p><p class="Body A">
+        <span class="None">Currently the Red List classifies African elephants (<span style="font-style:italic">L. africana</span>) as Vulnerable, and the Central African population as Endangered [4]. Current losses (62% between 2002-2011) combined with previous losses [28,41] indicate a decline of more than 80% in less than two elephant generations, ca. 25 years</span>
+        <span class="page_number"> </span>
+        <span class="None">[47]. The criterion for listing a species as Critically Endangered is when that species has declined by &gt;80% in ten years, or three generations, whichever is the longer. If, conservatively, there were half a million forest elephants in the Congo Basin in 1937 (three elephant generations ago) then about 80% have now been lost. The causes of the decline are unlikely to abate in the short term, and indeed may worsen</span>
+        <span class="page_number">.</span>
+        <span class="None"> This strongly suggests consideration of an uplisting of the Central African forest elephant subpopulation status to Critically Endangered, under the IUCN red list criteria A4b,d (population reduction, and current and projected levels of exploitation) [66].</span>
+      </p><p class="Body A">
+        <span class="None">Remaining large landscapes of major importance for elephants comprise national parks embedded in land-use matrices including logging concessions, where wildlife guards operate in both park and concession</span>
+        <span class="page_number"> </span>
+        <span class="None">[67,68]. However, current site-based interventions in the region are generally inadequate to protect elephants, because conservation budgets are below that needed to achieve management success [42,69] and local interventions do not mitigate macro-scale threats (i.e. infrastructure development, governance issues, and ivory demand). Effective multi-level action is imperative to save forest elephants. We strongly agree with the recommendations of the African Elephant Action plan, of which the highest priority objective was the reduction of poaching and trade in elephant products. </span>
+      </p><p class="Body A">
+        <span class="None">In 2012, China submitted a document to CITES on how it will improve its internal ivory trade [70], as internal and international awareness of the problem grows [16,35,36,71]. China’s wildlife officials, among others, attended a wildlife anti-trafficking workshop in Gabon in early 2012 [72]. At the 2012 World Conservation Congress, two specific resolutions were passed [73,74] to enhance the protection of elephants both in the range states and in the ivory-consuming countries, and a specific wildlife-crime related resolution was passed at the same time [75]. In November 2012, the US State department clearly outlined a zero-tolerance approach to wildlife crime [76,77] and many governments, INTERPOL, the World Customs Association and others are collaborating in international efforts to curb ivory (and other wildlife product) trafficking [63,78]- partly for the wildlife itself, and also because the strong links with global organised crime and security are recognised [64,79]. These diplomatic efforts are critical, but we emphasize the importance of <span style="font-style:italic">in situ</span> enforcement investment to protect the remaining populations of this species. However, curbing demand for ivory is key, if forest elephants are to survive. </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-weight:bold">Materials and Methods</span>
+        </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-style:italic">Ethics statement</span>
+        </span>
+      </p><p class="Body A">
+        <span class="None">All research was conducted using observation of indirect signs of forest elephants (dung). </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-style:italic">Data collection and standardization</span>
+        </span>
+      </p><p class="Body A">
+        <span class="None">We modelled temporal and spatial trends using data collected during 13,000 km of elephant-dung foot-surveys in 80 sites during 91,600 person-days from 2002 to 2011 (Fig. S3 shows temporal coverage). Field protocol followed the standardized 2003 methods of the Monitoring the Illegal Killing of Elephants (MIKE) [80] program</span>
+        <span class="page_number"> </span>
+        <span class="None">of the Convention on International Trade in Endangered Species (CITES). Surveys covered the five countries holding the majority (95%) [43] of extant forest elephant range: Cameroon, Central African Republic (CAR), Republic of Congo (Congo), Democratic Republic of Congo (DRC) and Gabon, across 257,145 km<sup>2 </sup>(about 12% of Central Africa’s forests; Table S1, Figs 5 and 6). There were 9, 5, 25, 22 and 19 surveys in each country with ca. 11%, 2%, 26%, 43% and 18% of total effort (13,000 km) and ca. 4%, 6%, 32%, 41% and 17% of the total area covered (257,145 km<sup>2</sup>). For sites surveyed more than once, only the most recent data was used. In just over 25% of sites surveyed wildlife guards were absent. </span>
+      </p><p class="Body A">
+        <span class="None">All surveys were carried out independently for site-based or landscape-based conservation needs. Limited resources for these purposes resulted in surveys being restricted to areas known or suspected to harbour wildlife, but with very variable elephant densities. Over half of the surveys were of existing or prospective protected areas, and the rest were areas in logging concessions, or with potential for wildlife conservation. Although there were some sites where elephant populations were known to be very low, few sites thought to be completely devoid of them were surveyed. Survey data was obtained across the range of values for each of the covariates considered in the analysis. </span>
+      </p><p class="Body A">
+        <span class="None">Either standard systematic line-transect distance sampling surveys (perpendicular distance to each dung pile recorded) [81], or systematic reconnaissance surveys [82] (elephant dung only recorded within a metre of the centre line) were walked. Both transect and recce survey designs allowed for random placement of the sampling units being drawn up using Distance software [83], and orientation of both transects and recces were perpendicular to roads, and major rivers to potentially improve precision. Usually at least 15 transects per stratum were used; usually more, giving reasonable replication to ensure a representative sample was obtained. Transects and recces were usually placed systematically with a random start across the entire area surveyed. At some sites both recces and transects were walked; we have used only the transect data for these sites. Data from recce surveys were used when straight lines were walked, thereby ensuring minimal bias. Other data from less strict recces (where roads or elephant paths might have been used) were not used in the analysis. Most recces were from areas known to have high hunting pressure (and thus low wildlife density). This is because transects are much more expensive to implement than recces. Occasionally, recces were done in areas where resources for a transect survey were not available at the time. Transect data were truncated to one metre of the centre line using the Distance software and the resulting plot checked to ensure that detection was 100% within that distance [83]. For reconnaissance data, detectability of dung piles was assumed certain within the narrow sampling strip (one metre each side of the observer). </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-style:italic">Data Analysis</span>
+        </span>
+      </p><p class="SOM Text"><span class="None"><span style="font-weight:bold">Statistical modelling</span>. We assessed known or suspected drivers of elephant density and distribution</span> [16,17,30,33,54,55] <span class="None">using Generalized Additive Models (GAMs) [84] due to their flexibility and capacity for non-linear responses. </span></p><p class="SOM Text">
+        <span class="None">The standardized response variable was elephant dung pile counts within one metre of the centre line, adjusted for survey effort. GAMs were fit to elephant dung pile count data of the form:</span>
+      </p><p class="SOM Text">
+        <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
+      </p>      <img class="paper-body-figure pdf-image pdf-image-with-caption" data-figure-id="8" data-figure-rank="2" src="/resource_proxy/UF91o1Sp2kVzQ2fMRYGUVLkU/detail">
+            <p class="paper-body-figure-caption">Figure 2.</p>
+            <img class="paper-body-figure pdf-image pdf-image-with-caption" data-figure-id="9" data-figure-rank="1" src="/resource_proxy/yEUYk9R5AnnMdHu37FBfC5fw/detail">
+            <p class="paper-body-figure-caption">Figure 1.</p>
+    - '2016-10-26 19:34:48.106583'
+    - '2016-10-26 19:41:03.623568'
+    - |-
+      <!--TEI front--><!--TEI body--><p class="Body A">
+        <span style="font-weight:bold">Diffable Paper: </span>
+        <span style="font-style:italic">Paper has versioned text and tasks</span>
+      </p><p class="Body A">Fiona Maisels<sup>1,2,<sup style="font-family:Symbol;">&#x3B1;</sup></sup>, Samantha Strindberg<sup>1,<sup style="font-family:Symbol;">&#x3B1;</sup></sup>, Stephen Blake<sup>1,3&#x2020;</sup>, George Wittemyer<sup>4,26</sup>, John Hart<sup>1,5&#x2020;</sup>, Elizabeth Williamson<sup>2</sup>, Rostand Aba'a<sup>1</sup>, Gaspard Abitsi<sup>1</sup>, Ruffin D. Ambahe<sup>1</sup>, Fidel Amsini<sup>1,6&#x2020;</sup>, Parfait C. Bakabana<sup>1</sup>, Thurston Cleveland Hicks<sup>7,8&#x2020;</sup>, Rosine E. Bayogo<sup>9</sup>, Martha Bechem<sup>1,10&#x2020;</sup>, Rene Beyers<sup>11</sup>, Anicet N. Bezangoye<sup>12</sup>, Patrick Boudjan<sup>1</sup>, Nicolas Bout<sup>1,13&#x2020;</sup>, Marc Ella Akou<sup>12,14&#x2020;</sup>, Lambert Bene Bene<sup>14</sup>&#x2021;, Bernard Fosso<sup>1</sup>, Elizabeth Greengrass<sup>1,15&#x2020;</sup>, Falk Grossmann<sup>1</sup>, Clement Ikamba-Nkulu<sup>1</sup>, Omari Ilambu<sup>1,14&#x2020;</sup>, Bila-Isia Inogwabini<sup>1,16&#x2020;</sup>, Fortune Iyenguet<sup>1</sup>, Frank Kiminou<sup>1</sup>, Max Kokangoye<sup>1,12&#x2020;</sup>&#x2021;, Deo Kujirakwinja<sup>1</sup>, Stephanie Latour<sup>1,17,18&#x2020;</sup>, Innocent Liengola<sup>1</sup>, Quevain Mackaya<sup>1</sup>, Jacob Madidi<sup>1</sup>, Bola Madzoke<sup>1</sup>, Calixte Makoumbou<sup>1, 19&#x2020;</sup>, Guy-Aim&#xE9; Malanda<sup>1</sup>, Richard Malonga<sup>1</sup>, Olivier Mbani<sup>1</sup>, Valentin Mbendzo<sup>1,14&#x2020;</sup>, Edgar Ambassa<sup>1,20&#x2020;</sup>, Albert Ekinde<sup>1</sup>, Yves Mihindou<sup>1</sup>, Bethan J. Morgan<sup>2, 21</sup>, Prosper Motsaba<sup>1</sup>, Gabin Moukala<sup>1</sup>, Anselme Mounguengui<sup>14</sup>, Brice S. Mowawa<sup>1,22&#x2020;</sup>, Christian Ndzai<sup>1</sup>, Stuart Nixon<sup>23</sup>, Pele Nkumu<sup>1</sup>, Fabian Nzolani<sup>1</sup>, Lilian Pintea<sup>17</sup>, Andy Plumptre<sup>1</sup>, Hugo Rainey<sup>1</sup>, Bruno de Semboli<sup>9</sup>, Adeline Serckx<sup>24</sup>, Emma Stokes<sup>1, </sup>Andrea Turkalo<sup>1</sup>, Hilde Vanleeuwe<sup>1</sup>, Ashley Vosper<sup>1&#x2020;,5, 25</sup>, Ymke Warren<sup>1</sup>&#x2021;.</p><p class="Body A"><sup>1.</sup> Wildlife Conservation Society, 2300 Southern Blvd., Bronx, NY 10460, USA. <sup>2.</sup> University of Stirling, Stirling FK9 4LA, Scotland, UK. <sup>3.</sup> Max Planck Institute for Ornithology, Vogelwarte Radolfzell, Schlossallee 2, 78315 Radolfzell, Germany. <sup>4. </sup>Colorado State University, Fort Collins, USA. <sup>5.</sup> Lukuru Wildlife Research Foundation, 1235 Avenue Poids Lourds, Kinshasa, DRC. <sup>6.</sup> Frankfurt Zoological Society, Bernhard-Grzimek-Allee 1 | D-60316 Frankfurt, Germany. <sup>7.</sup> The Institute of Biodiversity and Ecosystem Dynamics, University of Amsterdam, Postbus 94248, 1090 GE Amsterdam, The Netherlands. <sup>8.</sup> Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany. <sup>9.</sup> Minist&#xE8;re des Eaux, For&#xEA;ts, Chasse et P&#xEA;che, Bangui, Central African Republic. <sup>10.</sup> MIKE Subregional Office, Yaound&#xE9;, Central Africa. <sup>11.</sup> Beatty Biodiversity Centre, University of British Columbia, Vancouver, BC, Canada. <sup>12.</sup> Direction de la Gestion de la Faune et de la Chasse, Minist&#xE8;re des Eaux et For&#xEA;ts, BP 1128, Libreville, Gabon. <sup>13.</sup> The Aspinall Foundation, B.P. 583, Franceville, Gabon. <sup>14.</sup> World Wildlife Fund Central Africa Regional Programme Office, Yaound&#xE9;, Cameroon. <sup>15.</sup> 52, Greenland Mills, Bradford on Avon, Wiltshire, BA15 1BL UK. <sup>16. </sup>Swedish University of Agricultural Sciences. Department of Aquatic Sciences and Assessment. Box 7050-75007, Uppsala, Sweden.<sup>17. </sup><span style="color:292526">The Jane Goodall Institute, Arlington, Virginia 22203, USA.</span><sup> 18. </sup>27 avenue Le Notre 92420 Vaucresson France. <sup>19.</sup> Mokabi SA (Rougier Group), 77, Rue Mpissa Mak&#xE9;l&#xE9;k&#xE9;l&#xE9;, Brazzaville<span style="font-style:italic">, </span>Republic of Congo. <sup>20.</sup> Ministry of Forestry and Wildlife, Government of Cameroon. <sup>21.</sup> Zoological Society of San Diego, Central Africa Program, Yaound&#xE9;, Cameroon. <sup>22.</sup> Minist&#xE8;re de l&#x2019;Economie Foresti&#xE8;re, Brazzaville, Republic of Congo. <sup>23.</sup> Zoological Society of London, Regents Park, London NW1 4RY, United Kingdom.<sup> 24.</sup> Behavioral Biology Unit, University of Liege, Quai Van Beneden, 22 B-4020 Liege, Belgium. <sup>25</sup> African Wildlife Foundation, Avenue Comit&#xE9; Urbain n&#xB0;12, Kinshasa/Gombe, Democratic Republic of Congo. <sup>26. </sup>Save The Elephants, Marula Manor, Marula Lane, Karen, P.O. Box 54667, Nairobi 00200 Kenya.</p><p class="Body A"><sup><sup style="font-family:Symbol;">&#x3B1;</sup></sup> Joint first authors.&#x2020; Present address. &#x2021; Deceased.</p><p class="Body A">
+        <span style="font-weight:bold">Abstract</span>
+      </p><p class="Body A">African forest elephants are being poached at accelerating rates, but we lack range-wide information on the repercussions. Analysis of the largest survey dataset ever assembled for forest elephants (80 foot-surveys; covering 13,000 km; 91,600 person-days of fieldwork) revealed that population size declined by ca. 62% between 2002&#x2013;2011, and the taxon lost 30% of its geographical range. The population is now less than 10% of its potential size, occupying less than 25% of its potential range. High human population density, hunting intensity, absence of law enforcement, poor governance, and proximity to expanding infrastructure are the strongest predictors of decline. To save the remaining African forest elephants, illegal poaching for ivory and encroachment into core elephant habitat must be stopped. In addition, the international demand for ivory, which fuels illegal trade, must be dramatically reduced.</p><p class="Body A">
+        <span style="font-weight:bold">Introduction</span>
+      </p><p class="Body A">The information required for effective conservation management of a species includes population status and distribution, identification and prioritization of threats, and trends in all of the above [1]. These metrics are the basis by which the IUCN Red List assesses the conservation status of species [2], and conservation policymakers and managers in the field decide on the management strategies which best serve the taxon in question. However, these requirements are notoriously difficult to ascertain and, therefore, lacking for numerous species including one of the world's largest terrestrial mammals, the African forest elephant.</p><p class="Body A">In 2003, the IUCN African Elephant Specialist Group (AfESG) listed them as subspecies <span style="font-style:italic">(L. a. cyclotis</span> and <span style="font-style:italic">L. a. africana, </span>respectively), due to perceived data gaps [3]. There are two distinct types of African elephants, often considered to be two species: savannah elephants<span style="font-style:italic"> Loxodonta africana </span>(Blumenbach, 1797) and forest elephants <span style="font-style:italic">L. cyclotis</span> (Matschie, 1900). However, in 2008 they suggested that further research may reveal more than one African elephant species [4]. It was proposed that they should be considered two species on morphological grounds [5] and are considered as such by the Convention on Migratory Species [6]. Genetic evidence also supports this view [7-15]. The AfESG do, however, stress that it is important to recognize the different challenges to the conservation of forest and savannah elephants [3,16].</p><p class="Body A">African forest elephants have deep ecological differences from savannah elephants. They are highly frugivorous [17-20] and thus play an important role in one of Earth&#x2019;s primary carbon-sequestering forests [17,21,22]. They can move great quantities of large seeds many kilometres from the parent tree [17] and are thus integral for maintaining forest structure and diversity. They also maintain [23], and possibly create, forest clearings in mineral-rich soil, on which a wide variety of African forest fauna are dependent [24,25]. </p><p class="Body A">The history of African elephant abundance and distribution is strongly linked to the commerce in ivory, and their decline since the 1800s has been documented across the continent [26-28]. Even in the forests of Central Africa, a century ago, there were very few elephants remaining anywhere along the Gabonese coast, or around Brazzaville, in what is now the Republic of Congo [29]. It was thought that there was a slow decline in elephant populations during the 19<sup>th</sup> century, flattening off in the first half of the 20<sup>th</sup> century, and then a steep drop between 1950 and 1989 [28]. Modern African elephant density, based on data up to 2007, has recently been shown to be correlated with human factors rather than ecological factors [30].</p><p class="Body A">The elephant subpopulation of Central Africa (which included some savannah populations in Chad and northern Cameroon) was recognized in 2008 as Endangered by the IUCN [4]. In 2010, the African Elephant Action Plan [31] drawn up by all of the African elephant range states, ranked poaching and illegal trade in elephant products as the top threat to elephants across the continent. In the last few years there have been very large and frequent ivory seizures in Africa and Asia, and the combination of seizure data analysed by the Elephant Trade Information System (ETIS) and of elephant carcass data documented and analysed by the Monitoring the Illegal Killing of Elephants (MIKE) programme demonstrate that the illegal trade is escalating [16,32-36]. This increasing trade has been linked to increasing demand and value of ivory in China [37,38]. The proportion of elephant carcasses found that had been killed illegally in 2010 was the highest on record [39] only to be exceeded by 2011 levels [16,35]. Elephant meat is an important by-product, but ivory is the primary reason for elephant poaching [40]. It is now clear that elephants in general, and especially the elephants of Central Africa, are under serious threat [33] and that the poaching since 2011 , may be at the level at which all elephant populations are in net decline [16,31].</p><p class="Body A">The scale of historical forest elephant decline, although substantial [28,41], has been difficult to quantify due to a lack of comprehensive, range-wide information on distribution and density. Previous analyses, collected over a relatively short period and limited in geographic extent relative to their range, suggested a growing crisis for elephants in the Central African forests [42]. It is critical that a broader assessment is provided to understand range and demographic trends [16]. The Central African forest block covers about 95% of the current &#x201C;known&#x201D; and &#x201C;possible&#x201D; range of forest elephants [43]; the remaining 5% are in the forests of West Africa, to the west of the Cameroon-Nigeria border. We present the analysis of eighty surveys carried out over the nine-year period between 2002-2011 across the Central African forest block. The area stretches from the western Cameroon across to the eastern border of the Democratic Republic of Congo (DRC). The analysis responds to recent demands for a rigorous, range-wide assessment of forest elephant conservation status [16,31]. Trends inferred from dung surveys are presented. In addition, landscape covariates correlated with dung density (a proxy for elephant density) were analyzed and results discussed with the aim of providing information to enhance effective conservation policy and management.</p><p class="Body A">
+        <span style="font-weight:bold">Results</span>
+      </p><p class="Body A">Our results demonstrate a widespread and catastrophic decline in numbers of forest elephants, in the order of 26%, and a corresponding range contraction of approximately 30%, during the nine-year period 2002-2011 represented by this study (Figs 1 and 2, Tables S2 and S3). Forest elephants now have likely declined to extremely low density over 75% of their potential range (Tables S3, S6), and probably have been extirpated from large sections of this range. Considering 2002&#x2013;2011 range contraction relative to elephant habitat per country, ca. 95% of DRC&#x2019;s forests are likely to be almost empty of elephants, a country historically thought to have held the highest numbers (Table S3). About half of the surviving elephants are in Gabon, and under a fifth in DRC, despite these countries covering 13% and 62% of the total forest area, respectively (Table S6). In 2011, less than 2% of the Central African forest contained elephants at high density (Table S3). Even for Gabon, in 2011 high density populations were found in only 14% of the forest (a decline of over 18% between 2002 and 2011). No high density areas remained in DRC even in 2002. </p><p class="Body A">
+        <span style="font-style:italic">Correlates of decline in multi-variable models</span>
+      </p><p class="Body A">The overall top-ranked multi-variable model of elephant dung pile density by increasing Un-Biased Risk Estimator (UBRE) score included the explanatory variables: hunter-sign frequency, survey year, proximity to roads, human population density, corruption, and presence or absence of wildlife guards (Table S5 and Fig. 3). Site-specific dung-encounter rates and hunter-sign frequency were significantly negatively correlated&#x2014;elephants occur where people do not&#x2014;and both were strongly influenced by guard presence/absence (Figs 4-6). Survey year and corruption were included in almost all of the top-ranking models that included hunter sign. Models that included hunter-sign frequency were always better when considering UBRE score than otherwise identical models that excluded this variable and able to explain on average 50% of the variability in the data with satisfactory model fit diagnostics (Table S5 and Fig. 3). The top-ranking models without the hunter sign covariate were similar to each other in terms of UBRE score and were able to explain on average 45% of the variability in the data with satisfactory model fit diagnostics with models including the HII (Human Influence Index: [44]), in place of road proximity and human population density, generally a few percentage points lower; (Table S2 and Fig. S1). Again, survey year and corruption were included in almost all of these models. While hunter sign was clearly an important variable, it was one of the few for which data were collected directly during the surveys at each site (rather than extracting the information from GIS data layers, for example). Because it was site collected and not part of a global dataset such as the HII, it was not available at all locations across the Central African forests. Therefore, models containing hunter sign could not be used to produce predicted dung density surfaces and to estimate elephant range and abundance across the entire area of interest.</p><p class="Body A">For the set of top-ranked models that used the variables across Central Africa, dung density was significantly higher at sites with wildlife guards and with a designated official protection status (Fig. 4). Dung density was inversely correlated with corruption as measured by Transparency International&#x2019;s Corruption Perception Index (CPI) [45]; with more widespread distributions and higher densities in less corrupt countries: Gabon was significantly higher and DRC significantly lower than the roughly similar Cameroon, Central African Republic (CAR) and Republic of Congo (Congo) (Table S3). The regional proxy variables latitude and longitude appeared frequently among the top-ranking models and also captured significant variation. Longitude was the better covariate. In most of the models including either of these variables, these proxies indicated higher dung densities closer to the equator and significant decreases further east, which potentially represents site differences not accounted for by other variables, such as political instability in the Southeast (Eastern DRC) of the study area [46]. </p><p class="Body A">The inclusion of variables such as human population density, HII, and the presence/absence of wildlife guards always improved the UBRE score and were always statistically significant. Inclusion of variables such as proximity to roads, survey year and corruption in the models also improved the UBRE score, but these variables were occasionally non-significant. Either the HII or the combination of proximity to roads and human population density was used (with only human population density in some models), as the composite variable HII was highly correlated with the other two variables that comprise two of several variables used to generate the HII [44]. When considering the relative performance of the significantly correlated variables official protection and the presence/absence of guards (where official protection was low, there were no guards), the latter was much better in terms of improvements to the UBRE score and its effect on deviance explained, and was thus the preferred variable in top-ranking models. Corruption, as measured by the CPI was very highly correlated and almost identical to the country factor in terms of improvements to the UBRE score and its effect on deviance explained; with the added benefit of providing insights on how corruption, conceptually associated with poaching, may be influencing elephant distribution and density by country. </p><p class="Body A">
+        <span style="font-style:italic">Correlates of decline in single-variable models</span>
+      </p><p class="Body A">The single variable modelling results were similar to the multi-variable models, where all variables considered were significantly related to elephant dung density (Fig. S2 and Table S4). Univariate models with the variables longitude, country, corruption, and survey year were highly ranked, whereas the model with official protection received the lowest ranking (the UBRE scores for the remaining variables are also shown in Table S4). Univariate models predicted that dung density decreased by (i) 89% as hunter-sign frequency increased from zero to four per km, (ii) 85% when guards were absent, (iii) 30% or 76% as proximity to road decreased from 50 to 25 or zero km, (iv) 48%, 75% or 92% as human density increased from one to five, 10 or 20 people/km<sup>2</sup>, and (v) 17% for each unit increase in the HII. Among the survey site specific variables, human population density had the highest value for deviance explained, followed by the hunter-sign frequency, the presence/absence of guards, and the HII. For the remaining site specific variables (official protection status, proximity to roads, and survey year) the values were considerably smaller. The highest deviance explained corresponded to country-level variables, such as country itself and corruption. The proxy variable longitude also had one of the largest values for deviance explained, whereas latitude did not (Table S4).</p><p class="Body A">
+        <span style="font-style:italic">Predictive modelling of decline</span>
+      </p><p class="Body A">We used the top-ranking multi-variable models with available regional data to predict forest elephant dung density across Central Africa (Fig. 1 and Table S2). We chose to highlight two models including predictor variables that elephants might be responding to directly, rather than latitude and longitude, so as to avoid using spatial location as a proxy for other processes. These models also include survey year as a covariate, which allows for predictions by year and comparisons over time. Results were consistent across models, and predicted dung density across Central Africa reflected the map of actual dung encounter rate (Fig. 5) and also most of the &#x201C;Known&#x201D; range described by the African Elephant Database (AED) [47]. Broadly speaking, whether using the HII or a combination of road proximity and human population density, the forested regions of Gabon, northern Congo, southwestern CAR and southeastern Cameroon contained the region&#x2019;s highest elephant densities and almost all the nationally important elephant populations, while most of DRC, eastern Congo and southern CAR had very low densities (Fig. 1). The most country-specific important sites for elephants are as follows: in Gabon, most of the National Parks and their surroundings (often Forest Stewardship Council (FSC)-certified logging concessions), especially all of those in the centre and northeast of the country, plus a long section along the coast. In Congo, about half of the north of the country can be classed as an important elephant site, including not only the National Parks of Odzala and Nouabale-Ndoki (and the soon-to-be declared Ntokou-Pikounda National Park) but several huge areas of FSC certified timber concessions that connect and surround these Parks. In the Central African Republic, the Dzanga-Sangha National Park, and in Cameroon the whole of the southeast corner of the country, which includes three National Parks and large areas of FSC-certified logging concessions. Finally, the two significant sites in DRC are the Okapi Faunal Reserve and the Salonga National Park, with smaller but still significant numbers in some of the other forest areas (including one which may soon be gazetted as a protected area, known as the Tshuapa-Lomami area).</p><p class="Body A">In areas where there is little or no poaching, elephant density is usually 0.5&#x2013;1.0/km<sup>2</sup> (data included in this study). Using a conservative density of 0.5 elephants/km<sup>2</sup>, historically the 2.2 million km<sup>2</sup> Central African forest could have harboured over a million individuals [28,41] (Fig. 7). Even in 1993, it was estimated that roughly half of this projected original population remained [41] (based on their model predictions). Our analysis suggests that in 2011 just 10% (ca. 100,000 individuals) still survive (99,869 with 95% bootstrapped confidence interval (49,867&#x2013;187,340) for the predictive model shown in Fig. 1b). Gabon maintains 30&#x2013;50% of its probable historical numbers; DRC only 1% - it was thought that DRC originally contained almost 60% of all forest elephants, and had 40% in 1989<span class="page_number"> </span>[41].</p><p class="Body A">
+        <span style="font-weight:bold">Discussion</span>
+      </p><p class="Body A">Elephants have been recently extirpated from extensive areas of Africa [30,34,46,47,48] and even sites thought to be well-protected are no longer safe from ivory poaching [32]. Bouch&#xE9; et al.&#x2019;s (2011) study examined the West and Central African savannahs, and showed that the once large savannah elephant populations had been reduced to several small pockets of a few hundred animals in many cases, with only about 7,000 individuals remaining in total. Shortly after that publication, in early 2012, several hundred elephants were killed in a matter of a few months, in the Park holding most of Cameroon&#x2019;s savannah elephants [49,50]; the poachers were well-armed and on horseback. In mid-November 2012, the same poachers were heading back to the same Park &#x2013; but the Cameroon army were alerted before they arrived [51]. In February 2013, the Gabonese Government announced the loss of at least half of the elephants in Minkebe National Park; as many as 11,000 individuals may have been killed between 2004 and 2012<span class="page_number"> </span>[52]. The rapid increases in demand for, and price of, ivory in China, and the ease of sale of ivory in China [37,38], the persistent lack of effective governance in Central Africa [53] and a proliferation of unprotected roads that provide access to hunters [54,55] combine to facilitate illegal ivory poaching, transport and trade. Forest elephant population and range will continue to decline unless conditions change dramatically.</p><p class="Body A">Other threats and management issues also affect forest elephants. Unlike other tropical forests, deforestation is very low in Central Africa, although increasing [56,57]. Nevertheless, land use pressure, habitat loss, and human-elephant conflict also threaten this species [16] and will likely increase as industrial agriculture, such as oil palm for biofuel production, develops in the near future in Africa in general and Central Africa in particular [58,59]. While these management issues will likely increase with accelerating land use changes, the immediate, and very serious threat to the persistence of this species remains ivory poaching.</p><p class="Body A">Our analysis identified several factors likely to contribute to decline and demonstrated the importance of law enforcement for persistence of elephants. Similar factors were also found to be important in recent analyses of a very different dataset- carcass data from the MIKE sites [16,33] &#x2013; where higher levels of elephant poaching, as expressed by the proportion of illegally killed elephants (PIKE) were associated with sites where law enforcement capacity was lower, and in countries with poor governance. Governance in our study was represented by the CPI [45], whereas the MIKE analysis up to 2009 [33] incorporated both CPI and several government effectiveness indicators used by the World Bank (which can be found in their website <a class="link_ref" href="HYPERLINK"/><span class="None">). However, in 2012, the MIKE analysis used only the CPI as the proxy for governance [16]. Because the CPI is strongly associated with other factors within countries (rule of law, governance, development), it may be considered as a proxy for overall functioning of civil society of each country, and indeed development variables associated with poverty were also found to be associated with PIKE in both 2009 and 2012 [16,33]. A previous analysis using data from the African Elephant Database [60] suggesting a link between elephant decline and poor governance was criticized [61], because latitude was a better explanatory variable and the data were collected using different methods of varying quality [4,47]. The more recent analysis using the 2007 AED showed that the &#x201C;country&#x201D; variable, a complex interaction of human development and governance factors, explained elephant density very well [30]. In contrast to the AED&#x2019;s quite variable data, we used highly comparable data obtained within a single vegetation type (closed canopy forest). Corruption in general is increasingly a focus of international attention, whether in the wildlife realm [62-64] or more broadly [65]. </span></p><p class="Body A">
+        <span class="None">Currently the Red List classifies African elephants (<span style="font-style:italic">L. africana</span>) as Vulnerable, and the Central African population as Endangered [4]. Current losses (62% between 2002-2011) combined with previous losses [28,41] indicate a decline of more than 80% in less than two elephant generations, ca. 25 years</span>
+        <span class="page_number"> </span>
+        <span class="None">[47]. The criterion for listing a species as Critically Endangered is when that species has declined by &gt;80% in ten years, or three generations, whichever is the longer. If, conservatively, there were half a million forest elephants in the Congo Basin in 1937 (three elephant generations ago) then about 80% have now been lost. The causes of the decline are unlikely to abate in the short term, and indeed may worsen</span>
+        <span class="page_number">.</span>
+        <span class="None"> This strongly suggests consideration of an uplisting of the Central African forest elephant subpopulation status to Critically Endangered, under the IUCN red list criteria A4b,d (population reduction, and current and projected levels of exploitation) [66].</span>
+      </p><p class="Body A">
+        <span class="None">Remaining large landscapes of major importance for elephants comprise national parks embedded in land-use matrices including logging concessions, where wildlife guards operate in both park and concession</span>
+        <span class="page_number"> </span>
+        <span class="None">[67,68]. However, current site-based interventions in the region are generally inadequate to protect elephants, because conservation budgets are below that needed to achieve management success [42,69] and local interventions do not mitigate macro-scale threats (i.e. infrastructure development, governance issues, and ivory demand). Effective multi-level action is imperative to save forest elephants. We strongly agree with the recommendations of the African Elephant Action plan, of which the highest priority objective was the reduction of poaching and trade in elephant products. </span>
+      </p><p class="Body A">
+        <span class="None">In 2012, China submitted a document to CITES on how it will improve its internal ivory trade [70], as internal and international awareness of the problem grows [16,35,36,71]. China&#x2019;s wildlife officials, among others, attended a wildlife anti-trafficking workshop in Gabon in early 2012 [72]. At the 2012 World Conservation Congress, two specific resolutions were passed [73,74] to enhance the protection of elephants both in the range states and in the ivory-consuming countries, and a specific wildlife-crime related resolution was passed at the same time [75]. In November 2012, the US State department clearly outlined a zero-tolerance approach to wildlife crime [76,77] and many governments, INTERPOL, the World Customs Association and others are collaborating in international efforts to curb ivory (and other wildlife product) trafficking [63,78]- partly for the wildlife itself, and also because the strong links with global organised crime and security are recognised [64,79]. These diplomatic efforts are critical, but we emphasize the importance of <span style="font-style:italic">in situ</span> enforcement investment to protect the remaining populations of this species. However, curbing demand for ivory is key, if forest elephants are to survive. </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-weight:bold">Materials and Methods</span>
+        </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-style:italic">Ethics statement</span>
+        </span>
+      </p><p class="Body A">
+        <span class="None">All research was conducted using observation of indirect signs of forest elephants (dung). </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-style:italic">Data collection and standardization</span>
+        </span>
+      </p><p class="Body A">
+        <span class="None">We modelled temporal and spatial trends using data collected during 13,000 km of elephant-dung foot-surveys in 80 sites during 91,600 person-days from 2002 to 2011 (Fig. S3 shows temporal coverage). Field protocol followed the standardized 2003 methods of the Monitoring the Illegal Killing of Elephants (MIKE) [80] program</span>
+        <span class="page_number"> </span>
+        <span class="None">of the Convention on International Trade in Endangered Species (CITES). Surveys covered the five countries holding the majority (95%) [43] of extant forest elephant range: Cameroon, Central African Republic (CAR), Republic of Congo (Congo), Democratic Republic of Congo (DRC) and Gabon, across 257,145 km<sup>2 </sup>(about 12% of Central Africa&#x2019;s forests; Table S1, Figs 5 and 6). There were 9, 5, 25, 22 and 19 surveys in each country with ca. 11%, 2%, 26%, 43% and 18% of total effort (13,000 km) and ca. 4%, 6%, 32%, 41% and 17% of the total area covered (257,145 km<sup>2</sup>). For sites surveyed more than once, only the most recent data was used. In just over 25% of sites surveyed wildlife guards were absent. </span>
+      </p><p class="Body A">
+        <span class="None">All surveys were carried out independently for site-based or landscape-based conservation needs. Limited resources for these purposes resulted in surveys being restricted to areas known or suspected to harbour wildlife, but with very variable elephant densities. Over half of the surveys were of existing or prospective protected areas, and the rest were areas in logging concessions, or with potential for wildlife conservation. Although there were some sites where elephant populations were known to be very low, few sites thought to be completely devoid of them were surveyed. Survey data was obtained across the range of values for each of the covariates considered in the analysis. </span>
+      </p><p class="Body A">
+        <span class="None">Either standard systematic line-transect distance sampling surveys (perpendicular distance to each dung pile recorded) [81], or systematic reconnaissance surveys [82] (elephant dung only recorded within a metre of the centre line) were walked. Both transect and recce survey designs allowed for random placement of the sampling units being drawn up using Distance software [83], and orientation of both transects and recces were perpendicular to roads, and major rivers to potentially improve precision. Usually at least 15 transects per stratum were used; usually more, giving reasonable replication to ensure a representative sample was obtained. Transects and recces were usually placed systematically with a random start across the entire area surveyed. At some sites both recces and transects were walked; we have used only the transect data for these sites. Data from recce surveys were used when straight lines were walked, thereby ensuring minimal bias. Other data from less strict recces (where roads or elephant paths might have been used) were not used in the analysis. Most recces were from areas known to have high hunting pressure (and thus low wildlife density). This is because transects are much more expensive to implement than recces. Occasionally, recces were done in areas where resources for a transect survey were not available at the time. Transect data were truncated to one metre of the centre line using the Distance software and the resulting plot checked to ensure that detection was 100% within that distance [83]. For reconnaissance data, detectability of dung piles was assumed certain within the narrow sampling strip (one metre each side of the observer). </span>
+      </p><p class="Body A">
+        <span class="None">
+          <span style="font-style:italic">Data Analysis</span>
+        </span>
+      </p><p class="SOM Text"><span class="None"><span style="font-weight:bold">Statistical modelling</span>. We assessed known or suspected drivers of elephant density and distribution</span> [16,17,30,33,54,55] <span class="None">using Generalized Additive Models (GAMs) [84] due to their flexibility and capacity for non-linear responses. </span></p><p class="SOM Text">
+        <span class="None">The standardized response variable was elephant dung pile counts within one metre of the centre line, adjusted for survey effort. GAMs were fit to elephant dung pile count data of the form:</span>
+      </p><p class="SOM Text">
+        <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
+      </p>
 
 ---
 versions:

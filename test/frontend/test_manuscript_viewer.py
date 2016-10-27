@@ -22,23 +22,6 @@ This test case validates the article editor page and its associated overlays.
 """
 __author__ = 'sbassi@plos.org'
 
-"""
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         reviewer_login,
-         handling_editor_login,
-         cover_editor_login,
-         academic_editor_login,
-         internal_editor_login,
-         staff_admin_login,
-         pub_svcs_login,
-         prod_staff_login,
-         super_admin_login,
-         ]
-"""
 
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):
@@ -96,7 +79,6 @@ class ManuscriptViewerTest(CommonTest):
     """
     APERTA-3: Validates role aware menus
     """
-
     roles = { 'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
               'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
               'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
@@ -105,7 +87,6 @@ class ManuscriptViewerTest(CommonTest):
 
     user = random.choice(users + editorial_users + external_editorial_users + admin_users)
     logging.info('Logging in as user: {0}'.format(user))
-    ##logging.info('role: {0}'.format(roles[user['user']]))
     dashboard_page = self.cas_login(user['email'])
     dashboard_page.set_timeout(120)
     if dashboard_page.get_dashboard_ms(user):

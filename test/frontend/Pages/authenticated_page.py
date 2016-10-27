@@ -40,6 +40,7 @@ aperta_grey_dark = 'rgba(135, 135, 135, 1)'
 aperta_black = 'rgba(51, 51, 51, 1)'
 aperta_error = 'rgba(206, 11, 36, 1)'
 white = 'rgba(255, 255, 255, 1)'
+black = 'rgba(0, 0, 0, 1)'
 aperta_flash_error = 'rgba(122, 51, 78, 1)'
 aperta_flash_error_bkgrnd = 'rgba(230, 221, 210, 1)'
 aperta_flash_success = aperta_green
@@ -161,7 +162,8 @@ class AuthenticatedPage(PlosPage):
     self._new_taxon_task = None
     self._report_guide_task = None
     self._review_cands_task = None
-    self._reviewer_report_task = None
+    self._research_reviewer_report_task = None
+    self._front_matter_reviewer_report_task = None
     self._revise_task = None
     self._supporting_info_task = None
     self._upload_manu_task = None
@@ -574,8 +576,10 @@ class AuthenticatedPage(PlosPage):
       task_title = self._get(self._cfa_task)
     elif taskname.lower() == 'initial_decision':
       task_title = self._get(self._initial_decision_card)
-    elif taskname.lower() == 'reviewer_report':
-      task_title = self._get(self._reviewer_report_task)
+    elif taskname.lower() == 'research_reviewer_report':
+      task_title = self._get(self._research_reviewer_report_task)
+    elif taskname.lower() == 'front_matter_reviewer_report':
+      task_title = self._get(self._front_matter_reviewer_report_task)
     else:
       logging.info('Unknown Task')
       return False
@@ -781,7 +785,7 @@ class AuthenticatedPage(PlosPage):
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
-    assert title.value_of_css_property('line-height') == '19.8px', title.value_of_css_property('line-height')
+    assert title.value_of_css_property('line-height') == '18px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
 
@@ -1049,9 +1053,12 @@ class AuthenticatedPage(PlosPage):
     :param olul: ol or ul
     :return: Void function
     """
-    assert application_typeface in olul.value_of_css_property('font-family'), olul.value_of_css_property('font-family')
-    assert olul.value_of_css_property('font-size') == '14px', olul.value_of_css_property('font-size')
-    assert olul.value_of_css_property('line-height') == '20px', olul.value_of_css_property('line-height')
+    assert application_typeface in olul.value_of_css_property('font-family'), \
+        olul.value_of_css_property('font-family')
+    assert olul.value_of_css_property('font-size') == '19.6px', \
+        olul.value_of_css_property('font-size')
+    assert olul.value_of_css_property('line-height') == '23.5167px', \
+        olul.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert olul.value_of_css_property('color') == aperta_black, olul.value_of_css_property('color')
 
@@ -1745,7 +1752,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('font-style') == 'normal', button.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert button.value_of_css_property('color') == aperta_black, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '18px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('margin-top') == '4px', button.value_of_css_property('margin-top')
 

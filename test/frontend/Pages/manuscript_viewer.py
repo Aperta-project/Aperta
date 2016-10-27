@@ -24,6 +24,7 @@ from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
+from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -65,7 +66,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_more_link = (By.CSS_SELECTOR, 'div#more-dropdown-menu > div > span')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
-    self._tb_workflow_link = (By.ID, 'go-to-workflow')
+    self._tb_workflow_link = (By.ID, 'nav-workflow')
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
@@ -120,7 +121,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
     self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
     self._review_cands_task = (By.CLASS_NAME, 'reviewer-recommendations-task')
-    self._reviewer_report_task = (By.CLASS_NAME, 'reviewer-report-task')
+    self._research_reviewer_report_task = (By.CLASS_NAME, 'reviewer-report-task')
+    self._front_matter_reviewer_report_task = (By.CLASS_NAME, 'front-matter-reviewer-report-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox
@@ -533,30 +535,30 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
-    :param click_override:
+    :param click_override: If True, do not prosecute task click to open (when already open)
     :param data:
     """
+    logging.info('Complete task called for task: {0}'.format(task_name))
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        if task.text == task_name and 'active' \
+        if task_name in task.text and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
           self.click_covered_element(task)
           time.sleep(.5)
           break
-        elif task.text == task_name and 'active' \
+        elif task_name in task.text and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           return None
       else:
         return None
     else:
       for task in tasks:
-        if task.text == task_name:
-          task.click()
+        if task_name in task.text:
           break
       else:
         return None
@@ -580,12 +582,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
       tasks = self._gets(self._task_headings)
       self.click_covered_element(task)
       time.sleep(2)
+    elif task_name == 'Review by':
+      review_report = ReviewerReportTask(self._driver)
+      review_report.complete_reviewer_report()
+      # complete task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+        # close task
+        task.click()
+      time.sleep(1)
     elif task_name == 'Revise Manuscript':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
       revise_manuscript.validate_empty_response()
       revise_manuscript.response_to_reviewers(data)
-      # complete_billing task
+      # complete revise task
       if not base_task.completed_state():
         base_task.click_completion_button()
         task.click()

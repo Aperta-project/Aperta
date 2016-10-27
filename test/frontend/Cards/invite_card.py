@@ -57,12 +57,15 @@ class InviteCard(BaseCard):
     """
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
+    self._wait_for_element(self._get(self._compose_invitation_button))
     self._get(self._compose_invitation_button).click()
     self._wait_for_element(self._get(self._edit_invite_text_save))
     self._get(self._edit_invite_text_save).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
     self._get(self._invite_send_invite_button).click()
-    self._wait_for_element(self._get(self._rescind_button))
+    # The problem with this next item is that it requires the button to be clickable - when after
+    #  send, the whole invite element is in a readonly state.
+    # self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 
   def validate_invite(self, invitee, title, creator, ms_id):

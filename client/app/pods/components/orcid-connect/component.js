@@ -31,6 +31,14 @@ export default Ember.Component.extend({
     }
   },
 
+  // Returns true when the user has an orcidAccount and the given user is
+  // the same as the currently logged in user. Otherwise, return false.
+  orcidConnectEnabled: Ember.computed('orcidAccount', function(){
+    const userId = this.get('user.id'),
+      currentUserId = this.get('currentUser.id');
+    return this.get('orcidAccount') && Ember.isEqual(userId, currentUserId);
+  }),
+
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }
     this.set('orcidOauthResult', null);
@@ -42,7 +50,7 @@ export default Ember.Component.extend({
   oauthInProgress: false,
 
   buttonDisabled: Ember.computed('oauthInProgress',
-                                 'orcidOauthResult', 
+                                 'orcidOauthResult',
                                  'orcid.identifier',
                                  'orcidAccount.isLoaded',
                                  function(){

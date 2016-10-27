@@ -288,9 +288,11 @@ class ReviewerReportTask(BaseTask):
     elif recommendation == 'Major Revision':
       majrevrb = self._get(self._q1_majrev_radio)
       majrevrb.click()
-    else:
-      minrevrb = self._get(self._q1_majrev_radio)
+    elif recommendation == 'Minor Revision':
+      minrevrb = self._get(self._q1_minrev_radio)
       minrevrb.click()
+    else:
+      logging.info('Requested recommendation: {0} is invalid'.format(recommendation))
     if research_type:
       q2radval = self.get_random_bool()
       if q2radval:

@@ -1,6 +1,7 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
-import { manualSetup }  from 'ember-data-factory-guy';
+import { manualSetup } from 'ember-data-factory-guy';
+import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 
 import hbs from 'htmlbars-inline-precompile';
 
@@ -24,34 +25,23 @@ moduleForComponent(
       this.set("toggleEditForm", () => {});
       this.set("validateField", () => {});
 
-      let createQA = (owner, ident, answerValue) => {
-        let answer = FactoryGuy.make('nested-question-answer', {value: answerValue, owner: owner});
-        let question = FactoryGuy.make('nested-question', {
-          ident: ident,
-          answers: [answer],
-          owner: owner
-        });
-
-        owner.get('nestedQuestions').addObject(question);
-      };
-
-      createQA(author, 'author--published_as_corresponding_author', true);
-      createQA(author, 'author--deceased', false);
-      createQA(author, 'author--government-employee', false);
-      createQA(author, 'author--contributions--conceptualization', false);
-      createQA(author, 'author--contributions--investigation', false);
-      createQA(author, 'author--contributions--visualization', false);
-      createQA(author, 'author--contributions--methodology', false);
-      createQA(author, 'author--contributions--resources', false);
-      createQA(author, 'author--contributions--supervision', false);
-      createQA(author, 'author--contributions--software', false);
-      createQA(author, 'author--contributions--data-curation', false);
-      createQA(author, 'author--contributions--project-administration', false);
-      createQA(author, 'author--contributions--validation', false);
-      createQA(author, 'author--contributions--writing-original-draft', false);
-      createQA(author, 'author--contributions--writing-review-and-editing', false);
-      createQA(author, 'author--contributions--funding-acquisition', false);
-      createQA(author, 'author--contributions--formal-analysis', false);
+      createQuestionWithAnswer(author, 'author--published_as_corresponding_author', true);
+      createQuestionWithAnswer(author, 'author--deceased', false);
+      createQuestionWithAnswer(author, 'author--government-employee', false);
+      createQuestionWithAnswer(author, 'author--contributions--conceptualization', false);
+      createQuestionWithAnswer(author, 'author--contributions--investigation', false);
+      createQuestionWithAnswer(author, 'author--contributions--visualization', false);
+      createQuestionWithAnswer(author, 'author--contributions--methodology', false);
+      createQuestionWithAnswer(author, 'author--contributions--resources', false);
+      createQuestionWithAnswer(author, 'author--contributions--supervision', false);
+      createQuestionWithAnswer(author, 'author--contributions--software', false);
+      createQuestionWithAnswer(author, 'author--contributions--data-curation', false);
+      createQuestionWithAnswer(author, 'author--contributions--project-administration', false);
+      createQuestionWithAnswer(author, 'author--contributions--validation', false);
+      createQuestionWithAnswer(author, 'author--contributions--writing-original-draft', false);
+      createQuestionWithAnswer(author, 'author--contributions--writing-review-and-editing', false);
+      createQuestionWithAnswer(author, 'author--contributions--funding-acquisition', false);
+      createQuestionWithAnswer(author, 'author--contributions--formal-analysis', false);
     }
   }
 );

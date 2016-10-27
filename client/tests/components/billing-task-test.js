@@ -1,6 +1,7 @@
 import { test, moduleForComponent } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
+import { createQuestion, createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import registerCustomAssertions from '../helpers/custom-assertions';
 import FakeCanService from '../helpers/fake-can-service';
 import Ember from 'ember';
@@ -15,27 +16,6 @@ moduleForComponent('billing-task', 'Integration | Component | billing task', {
 
 let template = hbs`{{billing-task
                       task=task}}`;
-
-
-let createQA = (task, ident, answerValue) => {
-  let answer = make('nested-question-answer', {value: answerValue, owner: task});
-  let question = make('nested-question', {
-    ident: ident,
-    answers: [answer],
-    owner: task
-  });
-
-  task.get('nestedQuestions').addObject(question);
-};
-
-let createQuestion = (task, ident) => {
-  let question = make('nested-question', {
-    ident: ident,
-    owner: task
-  });
-
-  task.get('nestedQuestions').addObject(question);
-};
 
 test('validates numericality of a few fields', function(assert) {
   this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
@@ -55,31 +35,31 @@ test('validates numericality of a few fields', function(assert) {
   // exist, but they don't have to have answers.  I've put them
   // in for kicks.
 
-  createQA(task, 'plos_billing--first_name', 'John');
-  createQA(task, 'plos_billing--last_name', 'Doe');
-  createQA(task, 'plos_billing--title', 'Prof');
-  createQA(task, 'plos_billing--department', 'Fun');
-  createQA(task, 'plos_billing--affiliation1', 'Some Uni');
-  createQA(task, 'plos_billing--affiliation2', 'Another Uni');
-  createQA(task, 'plos_billing--phone_number', '123-335-1223');
-  createQA(task, 'plos_billing--email', 'foo@bar.com');
-  createQA(task, 'plos_billing--address1', '101 foo st.');
-  createQA(task, 'plos_billing--address2', '');
-  createQA(task, 'plos_billing--city', 'Columbus');
-  createQA(task, 'plos_billing--state', 'OH');
-  createQA(task, 'plos_billing--postal_code', 12345);
-  createQA(task, 'plos_billing--country', 'USA');
-  createQA(task, 'plos_billing--payment_method', 'pfa');
-  createQA(task, 'plos_billing--pfa_question_1', true);
-  createQA(task, 'plos_billing--pfa_question_1a', 'foo');
-  createQA(task, 'plos_billing--pfa_question_2', true);
-  createQA(task, 'plos_billing--pfa_question_2a', '');
-  createQA(task, 'plos_billing--pfa_question_3', true);
-  createQA(task, 'plos_billing--pfa_question_4', true);
-  createQA(task, 'plos_billing--pfa_amount_to_pay', 'foo');
-  createQA(task, 'plos_billing--pfa_supporting_docs', 'foo');
-  createQA(task, 'plos_billing--pfa_additional_comments', 'foo');
-  createQA(task, 'plos_billing--affirm_true_and_complete', false);
+  createQuestionWithAnswer(task, 'plos_billing--first_name', 'John');
+  createQuestionWithAnswer(task, 'plos_billing--last_name', 'Doe');
+  createQuestionWithAnswer(task, 'plos_billing--title', 'Prof');
+  createQuestionWithAnswer(task, 'plos_billing--department', 'Fun');
+  createQuestionWithAnswer(task, 'plos_billing--affiliation1', 'Some Uni');
+  createQuestionWithAnswer(task, 'plos_billing--affiliation2', 'Another Uni');
+  createQuestionWithAnswer(task, 'plos_billing--phone_number', '123-335-1223');
+  createQuestionWithAnswer(task, 'plos_billing--email', 'foo@bar.com');
+  createQuestionWithAnswer(task, 'plos_billing--address1', '101 foo st.');
+  createQuestionWithAnswer(task, 'plos_billing--address2', '');
+  createQuestionWithAnswer(task, 'plos_billing--city', 'Columbus');
+  createQuestionWithAnswer(task, 'plos_billing--state', 'OH');
+  createQuestionWithAnswer(task, 'plos_billing--postal_code', 12345);
+  createQuestionWithAnswer(task, 'plos_billing--country', 'USA');
+  createQuestionWithAnswer(task, 'plos_billing--payment_method', 'pfa');
+  createQuestionWithAnswer(task, 'plos_billing--pfa_question_1', true);
+  createQuestionWithAnswer(task, 'plos_billing--pfa_question_1a', 'foo');
+  createQuestionWithAnswer(task, 'plos_billing--pfa_question_2', true);
+  createQuestionWithAnswer(task, 'plos_billing--pfa_question_2a', '');
+  createQuestionWithAnswer(task, 'plos_billing--pfa_question_3', true);
+  createQuestionWithAnswer(task, 'plos_billing--pfa_question_4', true);
+  createQuestionWithAnswer(task, 'plos_billing--pfa_amount_to_pay', 'foo');
+  createQuestionWithAnswer(task, 'plos_billing--pfa_supporting_docs', 'foo');
+  createQuestionWithAnswer(task, 'plos_billing--pfa_additional_comments', 'foo');
+  createQuestionWithAnswer(task, 'plos_billing--affirm_true_and_complete', false);
 
   // these fields have PFA validation, which we'll test
   createQuestion(task, 'plos_billing--pfa_question_1b');

@@ -108,8 +108,7 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report(research_type=False)
     manuscript_page.click_task('front_matter_reviewer_report')
-    manuscript_page.complete_task('front_matter_reviewer_report')
-
+    manuscript_page.complete_task('Review by', click_override=True)
 
   def test_core_rev_rep_research_actions(self):
     """
@@ -177,8 +176,7 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report()
-    manuscript_page.click_task('research_reviewer_report')
-    manuscript_page.complete_task('research_reviewer_report')
+    manuscript_page.complete_task('Review by', click_override=True)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

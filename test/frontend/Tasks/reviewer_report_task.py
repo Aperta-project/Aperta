@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from random import choice
 
 from loremipsum import generate_paragraph
 
@@ -166,7 +167,7 @@ class ReviewerReportTask(BaseTask):
       q6fmta = self._get(self._fm_q6_form)
       self.validate_textarea_style(q6fmta)
     submit_btn = self._get(self._submit_button)
-    assert submit_btn.text == 'SUBMIT THIS REPORT', submit_btn.text
+    assert submit_btn.text == u'SUBMIT THIS REPORT', submit_btn.text
     self.validate_primary_big_green_button_style(submit_btn)
     # Need to move to an appropriate place so this button is not under the toolbar.
     self._actions.move_to_element(qb6).perform()
@@ -177,7 +178,7 @@ class ReviewerReportTask(BaseTask):
     # APERTA-8079
     # self.validate_application_h4_style(confirm_text)
     confirm_yes = self._get(self._submit_confirm_yes_btn)
-    assert confirm_yes.text == 'YES, I\u2019M SURE', confirm_yes.text
+    assert confirm_yes.text == u'YES, I\u2019M SURE', confirm_yes.text
     self.validate_primary_big_green_button_style(confirm_yes)
     confirm_no = self._get(self._submit_confirm_no_btn)
     assert confirm_no.text == 'NOPE', confirm_no.text
@@ -191,6 +192,7 @@ class ReviewerReportTask(BaseTask):
       True uses research type reviewer report content
     :return None
     """
+    logging.info('Validating reviewer report')
     self._wait_for_element(self._get(self._review_note))
     review_note = self._get(self._review_note)
     if research_type:
@@ -258,23 +260,34 @@ class ReviewerReportTask(BaseTask):
                          u'research or publication ethics.', qh5.text
       assert qh6.text == u'Your name and review will not be published with the manuscript.', \
           qh6.text
-    submit_button = self._get(self._submit_button)
-    assert submit_button.text == u'SUBMIT THIS REPORT', submit_button.text
-    self.validate_primary_big_green_button_style(submit_button)
-    # TODO: Check options when APERTA-7321 is ready
 
   def complete_reviewer_report(self):
     """
     Completes and submits the reviewer report
     :return: void function
     """
+    logging.info('Complete Reviewer Report called')
     research_type = False
-    self._wait_for_element(self._get(self._review_note))
     review_note = self._get(self._review_note)
+    self._actions.move_to_element(review_note).perform()
     if u'Please refer to our referee guidelines for detailed instructions.' in review_note.text:
-      research_type=True
+      research_type = True
     question_block_list = self._gets(self._question_block)
     qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    choices = ['Accept', 'Reject', 'Major Revision', 'Minor Revision']
+    reccommendation = choice(choices)
+    if reccommendation == 'Accept':
+      accrb = self._get(self._q1_accept_radio)
+      accrb.click()
+    elif reccommendation == 'Reject':
+      rejrb = self._get(self._q1_reject_radio)
+      rejrb.click()
+    elif reccommendation == 'Major Revision':
+      majrevrb = self._get(self._q1_majrev_radio)
+      majrevrb.click()
+    else:
+      minrevrb = self._get(self._q1_majrev_radio)
+      minrevrb.click()
     if research_type:
       q2radval = self.get_random_bool()
       if q2radval:
@@ -296,6 +309,7 @@ class ReviewerReportTask(BaseTask):
       q5response = generate_paragraph()
       q5rta.send_keys(q5response)
       q6radval = self.get_random_bool()
+      self._actions.move_to_element(qb5).perform()
       if q6radval:
         q6yesradio = qb6.find_element(*self._res_yes_radio)
         q6yesradio.click()

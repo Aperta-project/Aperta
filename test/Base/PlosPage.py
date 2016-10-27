@@ -219,7 +219,8 @@ class PlosPage(object):
     Returns True of False when called.
     :return: True or False
     """
-    outval = random.choice(True, False)
+    choices = [True, False]
+    outval = random.choice(choices)
     return outval
 
   def traverse_to_frame(self, frame):

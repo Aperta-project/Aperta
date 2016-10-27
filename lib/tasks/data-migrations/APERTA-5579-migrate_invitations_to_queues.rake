@@ -22,9 +22,9 @@ namespace :data do
 
   def put_invitations_into_queue(invitations, queue)
     grouped_primaries = []
-    # get grouped invitations
+    # get grouped primaries in order of creation
+    #
     invitations.each do |invitation|
-      invitation.update(invitation_queue: queue)
       if invitation.has_alternates?
         grouped_primaries << invitation
       end
@@ -34,41 +34,32 @@ namespace :data do
 
     # Newly associated primaries bubble to the top
     grouped_primaries.sort! do |a,b|
-      result = a.alternates.newest_first.first.created_at <=> b.alternates.newest_first.first.created_at
-      # binding.pry
-      result
+      b.alternates.newest_first.first.created_at <=> a.alternates.newest_first.first.created_at
     end
 
     grouped_primaries.each do |primary|
-      newest_alternate = primary.alternates.newest_first.first
-      queue.create_primary_group(newest_alternate, primary)
-      if primary.alternates.count > 2
-        remaining_alternates = primary.alternates.newest_first
-      end
-
-      grouped_invitations.concat(primary.alternates.rescinded.order(:rescinded_at).all)
-      grouped_invitations.concat(primary.alternates.invited.order(:invited_at).all)
-      grouped_invitations.concat(primary.alternates.pending.order(:created_at).all)
+      grouped_invitations << primary
+      grouped_invitations.concat(primary.alternates.not_pending.order(invited_at: :desc).all)
+      grouped_invitations.concat(primary.alternates.pending.order(created_at: :desc).all)
     end
 
-    #grouped_invitations.each do |invitation| puts "invitation.id #{invitation.id} position: #{invitation.position} body: #{invitation.body}" end && nil
-
-    grouped_invitations = grouped_invitations.select(&:present?)
+    grouped_invitations.flatten!
 
     remaining_invitations = invitations - grouped_invitations
-    #TODO: put sent invitations first, sort sent by invited_at, sort the rest by created_at
 
-    reordered_invitations = grouped_invitations + remaining_invitations
+    # 'sent' is really everything that's not pending anymore
+    remaining_sent = remaining_invitations.select { |i| i.state != 'pending' }.sort_by(&:invited_at)
+    remaining_pending = remaining_invitations.select { |i| i.state == 'pending' }.sort_by(&:created_at)
 
-    # reordered_invitations = reordered_invitations.each_with_index do |i, pos|
-    #   Invitation.update_all(position: pos + 1)
-    #   i.reload
-    # end
-    #TODO: manually assign the 'position' field to reordered_invitations in the order they're in at this point.
-    # The tests should make sure that the positions are correct
+    reordered_invitations = grouped_invitations + remaining_sent + remaining_pending
+
     queue.invitations = reordered_invitations
-
     queue.save
+
+    # manually reorder according to our sorted positions.
+    reordered_invitations.each_with_index do |i, pos|
+      i.update_columns(position: pos + 1)
+    end
   end
 
   desc <<-DESC

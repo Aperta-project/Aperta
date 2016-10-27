@@ -23,6 +23,7 @@ export const contributionIdents = [
 
 export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
+  user: belongsTo('user'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),

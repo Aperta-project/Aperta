@@ -9,6 +9,8 @@ class AuthorSerializer < ActiveModel::Serializer
              :current_address_country,
              :current_address_postal
 
+  has_one :user, serializer: UserSerializer, embed: :ids, include: true
+
   has_many :nested_questions,
            serializer: NestedQuestionSerializer,
            embed: :ids,

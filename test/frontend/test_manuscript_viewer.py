@@ -112,8 +112,9 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page.restore_timeout()
       self.select_preexisting_article(first=True)
       manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+      # Check if paper is loaded by calling an element in paper viewer
+      self._get(self._paper_title)
       journal_id = manuscript_viewer.get_journal_id()
-      time.sleep(3)  # needed to give time to retrieve new menu items
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
       paper_id = manuscript_viewer.get_paper_id_from_url()
       journal_permissions = PgSQL().query('select name from roles where id in (select role_id'

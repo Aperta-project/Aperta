@@ -1,4 +1,3 @@
-# TODO: Make a data migration to go with this once it's actually working
 namespace :data do
   namespace :migrate do
     desc <<-DESC
@@ -25,15 +24,13 @@ namespace :data do
     # get grouped primaries in order of creation
     #
     invitations.each do |invitation|
-      if invitation.has_alternates?
-        grouped_primaries << invitation
-      end
+      grouped_primaries << invitation if invitation.has_alternates?
     end
     # put grouped primaries and alternates in queue
     grouped_invitations = []
 
     # Newly associated primaries bubble to the top
-    grouped_primaries.sort! do |a,b|
+    grouped_primaries.sort! do |a, b|
       b.alternates.newest_first.first.created_at <=> a.alternates.newest_first.first.created_at
     end
 

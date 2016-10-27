@@ -245,7 +245,7 @@ describe "migrate invitations to queues rake task" do
       })
 
       run_rake_task
-      expect(InvitationQueue.last.invitations.first).to eq(another_group_1_primary)
+      expect(InvitationQueue.last.invitations.order(:position).first).to eq(another_group_1_primary)
     end
 
     it 'sorts the second grouped primary on top if its primary was most recently created' do
@@ -264,7 +264,7 @@ describe "migrate invitations to queues rake task" do
       })
 
       run_rake_task
-      expect(InvitationQueue.last.invitations.first).to eq(another_group_2_primary)
+      expect(InvitationQueue.last.invitations.order(:position).first).to eq(another_group_2_primary)
     end
 
     it 'sorts stuff by groups, then by sent/unsent, then by creation date' do

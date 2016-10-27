@@ -35,10 +35,17 @@ namespace :data do
     # Newly associated primaries bubble to the top
     grouped_primaries.sort! do |a,b|
       result = a.alternates.newest_first.first.created_at <=> b.alternates.newest_first.first.created_at
+      # binding.pry
+      result
     end
 
     grouped_primaries.each do |primary|
-      grouped_invitations << primary
+      newest_alternate = primary.alternates.newest_first.first
+      queue.create_primary_group(newest_alternate, primary)
+      if primary.alternates.count > 2
+        remaining_alternates = primary.alternates.newest_first
+      end
+
       grouped_invitations.concat(primary.alternates.rescinded.order(:rescinded_at).all)
       grouped_invitations.concat(primary.alternates.invited.order(:invited_at).all)
       grouped_invitations.concat(primary.alternates.pending.order(:created_at).all)
@@ -59,7 +66,7 @@ namespace :data do
     # end
     #TODO: manually assign the 'position' field to reordered_invitations in the order they're in at this point.
     # The tests should make sure that the positions are correct
-    queue.invitations = reordered_invitations.reverse
+    queue.invitations = reordered_invitations
 
     queue.save
   end

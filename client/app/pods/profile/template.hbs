@@ -22,7 +22,10 @@
           <h2>{{model.email}}</h2>
         </div>
 
-        {{orcid-connect user=model}}
+         {{! No orcidAccount means orcid integration is not available. }}
+        {{#if model.orcidAccount}}
+          {{orcid-connect user=model}}
+        {{/if}}
 
         {{user-affiliation user=model}}
 

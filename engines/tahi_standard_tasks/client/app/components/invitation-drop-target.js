@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
 export default Ember.Component.extend(DragNDrop.DroppableMixin, {
-  classNameBindings: [':author-drop-target'],
+  classNameBindings: [':invitation-drop-target'],
 
   notAdjacent(thisPosition, dragItemPosition) {
     return thisPosition <= (dragItemPosition - 1) ||

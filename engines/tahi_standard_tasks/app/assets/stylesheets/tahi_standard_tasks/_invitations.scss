@@ -366,3 +366,16 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-size: 20px;
   background: $aperta-grey-xlight;
 }
+
+
+/* Invitation Drop Target
+---------------------------------------------------------------------------- */
+
+.invitation-drop-target {
+  height: 6px;
+
+  &.current-drop-target {
+    height: 80px;
+    border: 2px dashed $aperta-green-light;
+  }
+}

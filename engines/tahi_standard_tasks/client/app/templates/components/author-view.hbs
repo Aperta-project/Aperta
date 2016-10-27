@@ -1,5 +1,5 @@
 {{#if viewState}}
-  <div class="author-task-item-view flex-group">
+  <div class="author-task-item-view flex-group {{if isAuthorCurrentUser 'current-user' ''}}">
     {{#unless isNotEditable}}
       <div class="author-task-item-view-drag-handle flex-element"></div>
     {{/unless}}
@@ -7,7 +7,9 @@
     <div class="author-task-item-position flex-element">.</div>
 
     <div class="author-task-item-view-text flex-element flex-group" {{action "toggleEditForm"}}>
-      <div class="author-name flex-element">{{author.displayName}}</div>
+      <div class="author-name flex-element">
+        {{displayName}}
+      </div>
       <div class="author-email flex-element">{{or author.email author.contactEmail}}</div>
     </div>
 

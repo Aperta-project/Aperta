@@ -78,8 +78,16 @@ export default Ember.Service.extend({
       text: message,
       type: type
     });
+    var that = this;
+    setTimeout(function() { that.checkDisplay(); }, 5000);
   },
 
+  checkDisplay() {
+    var flashMessage = $('.flash-messages')[0];
+    if (this.get('messages').length > 0 && flashMessage.innerHTML === '<!---->') {
+      flashMessage.innerHTML = '<div class="flash-message flash-message--error"><div class="flash-message-content">There was an error with the application. Please refresh your browser.</div></div>';
+    }
+  },
   /**
     The array of messages for each key under `errors` will be joined into a single string, separated by comma.
     ```

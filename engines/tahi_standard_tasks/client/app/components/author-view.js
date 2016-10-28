@@ -31,7 +31,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
-    DragNDrop.dragItem = this.get('author');
+    DragNDrop.set('dragItem', this.get('author'));
 
     // REQUIRED for Firefox to let something drag
     // http://html5doctor.com/native-drag-and-drop

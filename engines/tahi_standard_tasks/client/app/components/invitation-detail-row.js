@@ -59,10 +59,14 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   model: computed.alias('invitation'),
   dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
-    DragNDrop.dragItem = this.get('invitation');
+    DragNDrop.set('dragItem', this.get('invitation'));
     // REQUIRED for Firefox to let something drag
     // http://html5doctor.com/native-drag-and-drop
     e.dataTransfer.setData('Text', 'someId');
+  },
+
+  dragEnd() {
+    DragNDrop.set('dragItem', null);
   },
 
   invitationStateClass: computed('invitation.state', function() {

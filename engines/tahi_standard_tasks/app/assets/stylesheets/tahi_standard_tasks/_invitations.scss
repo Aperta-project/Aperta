@@ -372,10 +372,16 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-drop-target {
-  height: 6px;
+  transition: all 0.2s;
+  height: 2px;
+
+  &.valid-drop-target {
+    height: 35px;
+    border: 2px dashed $aperta-green-light;
+  }
 
   &.current-drop-target {
-    height: 80px;
+    height: 70px;
     border: 2px dashed $aperta-green-light;
   }
 }

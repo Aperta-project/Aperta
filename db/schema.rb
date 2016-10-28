@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027212155) do
+ActiveRecord::Schema.define(version: 20161028211446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -309,7 +309,10 @@ ActiveRecord::Schema.define(version: 20161027212155) do
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
   add_index "invitations", ["decision_id"], name: "index_invitations_on_decision_id", using: :btree
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
+  add_index "invitations", ["invitation_queue_id"], name: "index_invitations_on_invitation_queue_id", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
+  add_index "invitations", ["primary_id"], name: "index_invitations_on_primary_id", using: :btree
+  add_index "invitations", ["state"], name: "index_invitations_on_state", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
 
   create_table "journal_task_types", force: :cascade do |t|

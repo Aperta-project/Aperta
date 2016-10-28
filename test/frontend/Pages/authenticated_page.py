@@ -888,11 +888,17 @@ class AuthenticatedPage(PlosPage):
     :return: None
     TODO: APERTA-7212
     """
-    assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == font_size
-    assert title.value_of_css_property('font-weight') == font_weight
-    assert title.value_of_css_property('line-height') == line_height
-    assert title.value_of_css_property('color') == color
+    assert application_typeface in title.value_of_css_property('font-family'), \
+        '{0} not found in {1}'.format(application_typeface,
+                                      title.value_of_css_property('font-family'))
+    assert title.value_of_css_property('font-size') == font_size, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('font-size'), font_size)
+    assert title.value_of_css_property('font-weight') == font_weight, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('font-weight'), font_weight)
+    assert title.value_of_css_property('line-height') == line_height, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('line-height'), line_height)
+    assert title.value_of_css_property('color') == color, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('color'), color)
 
 
   @staticmethod
@@ -1372,7 +1378,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_grey_dark, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')

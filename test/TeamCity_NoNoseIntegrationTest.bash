@@ -1,4 +1,4 @@
-!/bin/bash
+#!/usr/bin/env bash
 # Command Line script for TeamCity build job for test run
 # Depends on
 # env.APERTA_PSQL_DBNAME
@@ -10,16 +10,40 @@
 # env.SELENIUM_GRID_URL
 # env.WEBDRIVER_TARGET_URL
 # being set as Environment Variables
-cd test/frontend/assets
+
+# Stop the script if any single command fails
+set -e
+
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ASSETS_DIR=$SCRIPT_DIR/frontend/assets
+
+# Use a virtualenv if it exists
+VENV_ACTIVATE="venv/bin/activate"
+if [ -e $VENV_ACTIVATE ]; then
+  source $VENV_ACTIVATE
+fi
+
+cd $ASSETS_DIR
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
-gunzip testing_assets.tar.gz
-tar --warning=no-unknown-keyword -xf testing_assets.tar
-rm testing_assets.tar
-cd ../..
+TESTING_ASSETS="testing_assets.tar.gz"
+if tar --version | grep -q 'gnu'; then
+  echo "Detected GNU tar"
+  tar --warning=no-unknown-keyword -vxf $TESTING_ASSETS
+else
+  echo "Detected non-GNU tar"
+  tar -vxf $TESTING_ASSETS
+fi
+rm $TESTING_ASSETS
+cd $SCRIPT_DIR
+
+# Reverses 'set -e'. Allows the script to continue through failures.
+set +e 
+
 rm Output/*.png
 rm Base/*.pyc
 rm frontend/*.pyc
 rm frontend/Pages/*.pyc
+
 python -m frontend.test_addl_info_task
 python -m frontend.test_admin
 python -m frontend.test_assign_team

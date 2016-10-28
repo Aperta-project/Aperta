@@ -5,6 +5,7 @@ import json
 import logging
 import platform
 import os
+import random
 import re
 import tempfile
 from time import sleep
@@ -211,6 +212,16 @@ class PlosPage(object):
       assert string_1 == string_2, \
         'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
     return True
+
+  @staticmethod
+  def get_random_bool():
+    """
+    Returns True of False when called.
+    :return: True or False
+    """
+    choices = [True, False]
+    outval = random.choice(choices)
+    return outval
 
   def traverse_to_frame(self, frame):
     print '\t[WebDriver] About to switch to frame "%s"...' % frame,

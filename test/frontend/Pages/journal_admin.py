@@ -102,7 +102,7 @@ class JournalAdminPage(AdminPage):
     self._mmt_template_back_link = (By.CSS_SELECTOR,
                                     'a#control-bar-journal-back-button')
     self._mmt_template_resrev_checkbox = (By.CSS_SELECTOR,
-                                          'input.uses-research-article-reviewer-report')
+                                          'div.uses-research-article-reviewer-report input')
     self._mmt_template_resrev_label = (By.CSS_SELECTOR,
                                        'label.uses-research-article-reviewer-report')
     self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')

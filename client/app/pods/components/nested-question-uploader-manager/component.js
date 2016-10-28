@@ -7,7 +7,7 @@ export default NestedQuestionComponent.extend({
 
   store: Ember.inject.service(),
 
-  attachments: Ember.computed.alias('model.answer.attachments'),
+  attachments: Ember.computed.alias('answer.attachments'),
 
   // Do not propagate to parent component as this component is in charge
   // of saving itself (otherwise the parent component may issue another
@@ -32,7 +32,7 @@ export default NestedQuestionComponent.extend({
       Ember.assert(s3Url, 'Must provide an s3Url');
       Ember.assert(file, 'Must provide a file');
 
-      const answer = this.get('model.answer');
+      const answer = this.get('answer');
       const store =  this.get('store');
       answer.save().then( (savedAnswer) => {
         if(!attachment){
@@ -53,7 +53,7 @@ export default NestedQuestionComponent.extend({
     },
 
     deleteAttachment(attachment){
-     attachment.destroyRecord();
+      attachment.destroyRecord();
     }
   }
 });

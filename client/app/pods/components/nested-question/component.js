@@ -1,39 +1,23 @@
 import Ember from 'ember';
-import NestedQuestionProxy from 'tahi/models/nested-question-proxy';
 
 const { Component, computed } = Ember;
 
 export default Component.extend({
-  displayQuestionText: true,
   displayQuestionAsPlaceholder: false,
   inputClassNames: null,
   disabled: false,
   noResponseText: '[No response]',
   additionalData: null,
 
-  placeholder: null,
   textClassNames: ['question-text'],
 
-  init(){
-    this._super(...arguments);
-    this.setup();
-  },
-
-  setup: Ember.observer('owner', 'ident', function() {
-    const ident = this.get('ident');
-    const model = this.get('model');
-    Ember.assert(
-      'Expecting to be given an ident or a model, but wasn\'t given either',
-      (ident || model)
-    );
-
-    const owner = this.get('owner');
-    if (!owner) return;
-    Ember.assert('Expecting to be given a owner, but wasn\'t', owner);
-
-    const decision = this.get('decision');
-
-    const question = owner.findQuestion(ident);
+  owner: null,
+  question: computed('owner', 'ident', 'additionalData', function() {
+    let owner = this.get('owner');
+    if (!owner) return null;
+    let ident=this.get('ident');
+    Ember.assert('Expecting to be given a ident, but wasn\'t', this.get('ident'));
+    let question = owner.findQuestion(ident);
     Ember.assert(`Expecting to find question matching ident '${ident}' but
       didn't. Make sure the owner's questions are loaded before this
       initializer is called.`,
@@ -44,31 +28,49 @@ export default Component.extend({
       question.set('additionalData', this.get('additionalData'));
     }
 
-    this.set('model', NestedQuestionProxy.create({
-       nestedQuestion: question,
-       owner: owner,
-       decision: decision
-    }));
+    return question;
+  }),
 
-    if(this.get('displayQuestionAsPlaceholder')){
-      this.set('displayQuestionText', false);
-      this.set('placeholder', question.get('text'));
+  _cachedAnswer: null,
+  answer: computed('owner', 'question', 'decision', '_cachedAnswer.isDeleted', function() {
+    let cachedAnswer = this.get('_cachedAnswer');
+    if (cachedAnswer && !cachedAnswer.get('isDeleted')) { return cachedAnswer; }
+
+    let question = this.get('question');
+    if (!question) { return null; }
+    let newAnswer =  this.get('question').answerForOwner(this.get('owner'), this.get('decision'));
+    this.set('_cachedAnswer', newAnswer);
+    return newAnswer;
+  }),
+
+  decision: null,
+
+  _displayQuestionText: true,
+  displayQuestionText: Ember.computed('_displayQuestionText', 'displayQuestionAsPlaceholder', {
+    get() {
+      return !this.get('displayQuestionAsPlaceholder') && this.get('_displayQuestionText');
+    },
+    set(_, newVal) {
+      this.set('_displayQuestionText', newVal);
     }
   }),
 
-  ident: computed('model', function(){
-    return this.get('model.ident');
-  }),
-
-  questionText: computed('model', function(){
-    return this.get('model.text');
-  }),
-
-  shouldDisplayQuestionText: computed('model', 'displayQuestionText',
-    function(){
-      return this.get('model') && this.get('displayQuestionText');
+  _placeholder: '',
+  placeholder: Ember.computed('displayQuestionAsPlaceholder', 'question.text', '_placeholder', {
+    get() {
+      if (this.get('displayQuestionAsPlaceholder')) {
+        return this.get('question.text');
+      } else {
+        return this.get('_placeholder');
+      }
+    },
+    set(_, newVal) {
+      this.set('_placeholder', newVal);
     }
-  ),
+  }),
+
+  questionText: computed.reads('question.text'),
+  shouldDisplayQuestionText: computed.reads('displayQuestionText'),
 
   errorPresent: computed('errors', function() {
     return !Ember.isEmpty(this.get('errors'));
@@ -80,13 +82,14 @@ export default Component.extend({
 
   save(){
     if(this.attrs.validate) {
-      this.attrs.validate(this.get('ident'), this.get('model.answer.value'));
+      this.attrs.validate(this.get('ident'), this.get('answer.value'));
     }
 
-    Ember.run.debounce(this, this._saveAnswer, this.get('model.answer'), 200);
+    Ember.run.debounce(this, this._saveAnswer, this.get('answer'), 200);
     return false;
   },
 
+  //TODO: test that this works
   _saveAnswer(answer){
     if(answer.get('owner.isNew')){
       // no-op

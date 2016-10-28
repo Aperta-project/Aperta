@@ -137,9 +137,7 @@ let dropInvitation = (originalPosition, dropTargetIndex) => {
   let mockEvent = MockDataTransfer.makeMockEvent();
   Ember.run(() => {
     triggerEvent($invitation, 'dragstart', mockEvent);
-    triggerEvent($invitation, 'dragend', mockEvent);
 
-    triggerEvent($target, 'dragend', mockEvent);
     triggerEvent($target, 'drop', mockEvent);
   });
 };

@@ -7,15 +7,7 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
   DragNDrop: DragNDrop,
 
   currentDropTarget: false,
-
-  notAdjacent(thisPosition, dragItemPosition) {
-    return thisPosition <= (dragItemPosition - 1) ||
-           thisPosition > (dragItemPosition + 1);
-  },
-
-  removeDragStyles() {
-    this.$().removeClass('current-drop-target');
-  },
+  isLast: false,
 
   dragEnter(e) {
     if(this.get('validDropTarget')) {
@@ -35,16 +27,28 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
 
   validDropTarget: Ember.computed('DragNDrop.dragItem.id', 'index', 'position', function() {
     if (Ember.isEmpty(DragNDrop.get('dragItem'))) { return false; }
-    return this.notAdjacent(this.get('index'), DragNDrop.dragItem.get('position')) &&
-    DragNDrop.dragItem.get('validNewPositionsForInvitation')
-                    .includes(this.get('position'));
+
+    let validPositions = DragNDrop.dragItem.get('validNewPositionsForInvitation');
+    let currentPosition = DragNDrop.dragItem.get('position');
+
+    let validIndices = validPositions.map((p) => {
+      if (p < currentPosition) {
+        return p;
+      } else {
+        return p + 1;
+      }
+    });
+
+    return validIndices.includes(this.get('index'));
   }),
 
   drop(e) {
     this.set('currentDropTarget', false);
     if(this.get('validDropTarget')) {
       // if the new position is higher than current, decrement that new position
-      // by 1 first, but not if it's the last item.
+      // by 1 first, but not if it's the last item. acts_as_list needs to receive
+      // a position that's 1 higher than the last position in order to properly move
+      // something to the bottom of the list
       let position = this.get('position');
       let newPosition = position;
       if (position > DragNDrop.dragItem.get('position') && !this.get('isLast')) {

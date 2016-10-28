@@ -373,7 +373,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-drop-target {
   transition: all 0.2s;
-  height: 2px;
+  height: 0px;
 
   &.valid-drop-target {
     height: 35px;

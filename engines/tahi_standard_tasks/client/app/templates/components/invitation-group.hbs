@@ -12,11 +12,10 @@
 
 {{#with (sort-by "position" invitations) as |sortedInvitations|}}
   {{#each sortedInvitations as |invitation|}}
-    {{#invitation-drop-target
+    {{invitation-drop-target
         position=invitation.position
         index=invitation.position
         changePosition=(action changePosition)}}
-    {{/invitation-drop-target}}
 
     {{invitation-detail-row invitation=invitation
                             invitations=invitations
@@ -31,10 +30,9 @@
                             activeInvitationState=activeInvitationState}}
   {{/each}}
 
-  {{#invitation-drop-target
+  {{invitation-drop-target
       isLast=true
       position=sortedInvitations.length
       index=(inc sortedInvitations.length)
       changePosition=(action changePosition)}}
-  {{/invitation-drop-target}}
 {{/with}}

@@ -121,7 +121,12 @@ class InviteCard(BaseCard):
     fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png')
     self.attach_file(fn)
     # Wait for file to attach
-    time.sleep(5)
+    counter = 0
+    while True:
+      if len(self._gets(self._replace_attachment)) == 2 or counter == 60:
+        break
+      counter += 1
+      time.sleep(.5)
     attachments = self.get_attached_file_names()
     fn = fn.split('/')[-1].replace(' ', '+')
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)

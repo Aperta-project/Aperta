@@ -30,8 +30,8 @@ class JournalAdminPage(AdminPage):
     # Locators - Instance members
     # Journals Admin Page
     self._journal_admin_users_title = (By.CLASS_NAME, 'admin-section-title')
-    self._journal_admin_user_search_field = (By.CLASS_NAME, 'admin-user-search-input')
-    self._journal_admin_user_search_button = (By.CLASS_NAME, 'admin-user-search-button')
+    self._journal_admin_user_search_field = (By.NAME, 'Admin Search Input')
+    self._journal_admin_user_search_button = (By.CSS_SELECTOR, 'div.admin-search > button')
     self._journal_admin_user_search_default_state_text = (By.CLASS_NAME,
                                                           'admin-user-search-default-state-text')
     self._journal_admin_user_search_results_table = (By.CLASS_NAME, 'admin-users')
@@ -96,11 +96,11 @@ class JournalAdminPage(AdminPage):
     self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
     self._mmt_template_error_msg = (By.CSS_SELECTOR, 'div.mmt-edit-error-message')
     self._mmt_template_save_button = (By.CSS_SELECTOR,
-                                      'div.paper-type-form a.paper-type-save-button')
+                                      'a.paper-type-save-button')
     self._mmt_template_cancel_link = (By.CSS_SELECTOR,
-                                      'div.paper-type-form a.paper-type-cancel-button')
+                                      'a.paper-type-cancel-button')
     self._mmt_template_back_link = (By.CSS_SELECTOR,
-                                    'div.paper-type-form a.button-link')
+                                    'a#control-bar-journal-back-button')
     self._mmt_template_resrev_checkbox = (By.CSS_SELECTOR,
                                           'input.uses-research-article-reviewer-report')
     self._mmt_template_resrev_label = (By.CSS_SELECTOR,
@@ -493,7 +493,8 @@ class JournalAdminPage(AdminPage):
       except ElementDoesNotExistAssertionError:
         self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
         self._get(self._mmt_template_name_link)
-        self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
+        self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR,
+                                                  'a#control-bar-journal-back-button')
         back_btn = self._get(self._journal_admin_manu_mgr_back_link)
         back_btn.click()
         self.restore_timeout()

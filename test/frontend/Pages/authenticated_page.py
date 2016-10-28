@@ -175,7 +175,7 @@ class AuthenticatedPage(PlosPage):
     self._attachment_div = (By.CSS_SELECTOR, 'div.attachment-manager')
     self._att_item = (By.CSS_SELECTOR, 'div.attachment-item')
     self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
-
+    self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -199,6 +199,14 @@ class AuthenticatedPage(PlosPage):
         item.find_element(*(By.CSS_SELECTOR, 'span.delete-attachment')).click()
         break
     return None
+
+  def get_attached_file_names(self):
+    """
+    Return a list with the file names in the attachment section
+    :return: A list with file names as displayed in the attachment section
+    """
+    attachments = [x.text.split(' ')[0] for x in self._gets(self._attachments)]
+    return attachments
 
   def click_profile_nav(self):
     """

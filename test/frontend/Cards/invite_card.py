@@ -49,6 +49,7 @@ class InviteCard(BaseCard):
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
     self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
     self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    self._replace_attachment = (By.CLASS_NAME, 'replace-attachment')
 
   # POM Actions
   def invite(self, user):
@@ -111,12 +112,19 @@ class InviteCard(BaseCard):
     # Attach a file
     fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/plos.gif')
     self.attach_file(fn)
-    time.sleep(3)
+    # look for file name and replace attachment link
+    self._wait_for_element(self._get(self._replace_attachment))
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
     # Attach a sencond file
     fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png')
     self.attach_file(fn)
     # Wait for file to attach
     time.sleep(5)
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
     # Delete the second file from the attach
     self.delete_attach_file(fn)
     time.sleep(2)

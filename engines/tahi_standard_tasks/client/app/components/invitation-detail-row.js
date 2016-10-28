@@ -27,6 +27,12 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   allowAttachments: true,
   currentRound: computed.not('previousRound'),
+
+  draggable: computed('previousRound', 'invitation.canReposition', function(){
+    if (this.get('previousRound')) { return false; }
+    return this.get('invitation.canReposition');
+  }),
+
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
   }),

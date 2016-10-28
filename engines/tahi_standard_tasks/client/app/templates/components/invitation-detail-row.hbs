@@ -1,7 +1,6 @@
 {{#unless (eq uiState "edit")}}
   <div class="invitation-item-header" {{action "toggleDetails"}}>
-
-    <div class="invitation-item-drag-handle flex-element"></div>
+    <div class="invitation-item-drag-handle {{if draggable "active"}} flex-element"></div>
     <div class="invitation-item-full-name">
       {{#if invitation.isAlternate}}
         <i class="fa fa-link alternate-link-icon" aria-hidden="true"></i>

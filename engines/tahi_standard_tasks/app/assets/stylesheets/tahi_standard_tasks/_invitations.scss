@@ -101,7 +101,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 
   .invitation-item-full-name {
-    padding-left: 3rem;
+    padding-left: 2rem;
     .alternate-link-icon {
        padding-right: 0.3rem;
     }
@@ -198,6 +198,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item-full-name {
   width: 32%;
   cursor: pointer;
+  padding-left: 0.5rem;
 }
 
 .invitation-state--accepted .invitation-item-full-name {
@@ -246,13 +247,16 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-drag-handle {
-  @include align-self(stretch);
+  padding: 6px;
   max-width: 12px;
-  cursor: move;
-  cursor: -webkit-grab;
-  background: url(image-path('drag-circle.svg'));
-  background-size: 6px;
-  opacity: 0;
+  &.active {
+    @include align-self(stretch);
+    cursor: move;
+    cursor: -webkit-grab;
+    background: url(image-path('drag-circle.svg'));
+    background-size: 6px;
+    opacity: 0;
+  }
 }
 
 /* Invitation Item Header and Details state changes

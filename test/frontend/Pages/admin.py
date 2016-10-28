@@ -28,8 +28,8 @@ class AdminPage(AuthenticatedPage):
     # Locators - Instance members
     # Base Admin Page
     # User Search Area
-    self._base_admin_user_search_field = (By.CLASS_NAME, 'admin-user-search-input')
-    self._base_admin_user_search_button = (By.CLASS_NAME, 'admin-user-search-button')
+    self._base_admin_user_search_field = (By.CSS_SELECTOR, 'div.admin-user-search input')
+    self._base_admin_user_search_button = (By.CSS_SELECTOR, 'div.admin-user-search button')
     self._base_admin_user_search_default_state_text = (By.CLASS_NAME,
                                                        'admin-user-search-default-state-text')
     self._base_admin_user_search_results_table = (By.CLASS_NAME, 'admin-users')
@@ -51,14 +51,14 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_journals_edit_logo_upload_note = (By.CLASS_NAME,
                                                        'journal-thumbnail-logo-upload-note')
     self._base_admin_journals_edit_logo_input_field = (By.ID, 'journal-logo-null')
-    self._base_admin_journals_edit_title_label = (By.XPATH,
-                                                  '//div[@class="inset-form-control-text"]/label')
-    self._base_admin_journals_edit_title_field = (
-        By.XPATH, '//div[@class="inset-form-control required "]/input')
+    self._base_admin_journals_edit_title_label = (By.CSS_SELECTOR,
+                                                 'div.inset-form-control-text > label')
+    self._base_admin_journals_edit_title_field = (By.CSS_SELECTOR, 'div.inset-form-control > input')
     self._base_admin_journals_edit_desc_label = (
-        By.XPATH, '//div[@class="inset-form-control required "][2]/div/label')
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control '
+                         '> div.inset-form-control-text > label')
     self._base_admin_journals_edit_desc_field = (
-        By.XPATH, '//div[@class="inset-form-control required "][2]/textarea')
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control > textarea')
     self._base_admin_journals_edit_cancel_link = (By.XPATH,
                                                   '//div[@class="journal-edit-buttons"]/a[1]')
     self._base_admin_journals_edit_save_button = (By.XPATH,
@@ -275,7 +275,7 @@ class AdminPage(AuthenticatedPage):
       assert save_button.value_of_css_property('background-color') == white, \
           save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
-      assert cancel_link.text == 'Cancel', cancel_link.text
+      assert cancel_link.text == 'cancel', cancel_link.text
       assert application_typeface in cancel_link.value_of_css_property('font-family'), \
           cancel_link.value_of_css_property('font-family')
       assert cancel_link.value_of_css_property('font-size') == '14px', \
@@ -347,7 +347,7 @@ class AdminPage(AuthenticatedPage):
       assert save_button.text == 'SAVE'
       self.validate_blue_on_blue_button_style(save_button)
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
-      assert cancel_link.text == 'Cancel'
+      assert cancel_link.text == 'cancel'
       cancel_link.click()
 
   def validate_search_edit_user(self, username):

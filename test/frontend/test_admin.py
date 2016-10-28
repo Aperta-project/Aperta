@@ -45,6 +45,7 @@ class ApertaAdminTest(CommonTest):
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
+    adm_page._wait_for_element(adm_page._get(adm_page._base_admin_journals_section_journal_block))
     adm_page.validate_page_elements_styles(user_type['user'])
     logging.info('Validating journal block display for {0}'.format(user_type['user']))
     adm_page.validate_journal_block_display(user_type['user'])

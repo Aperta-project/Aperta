@@ -60,15 +60,14 @@ class InviteCard(BaseCard):
     """
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
-    self._wait_for_element(self._get(self._compose_invitation_button))
     self._get(self._compose_invitation_button).click()
     self._wait_for_element(self._get(self._edit_invite_text_save))
     self._get(self._edit_invite_text_save).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
     self._get(self._invite_send_invite_button).click()
-    # The problem with this next item is that it requires the button to be clickable - when after
-    #  send, the whole invite element is in a readonly state.
-    # self._wait_for_element(self._get(self._rescind_button))
+    # The problem with this next item is that it requires the button to be clickable
+    # when after send, the whole invite element is in a readonly state.
+    self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 
   def validate_invite(self, invitee, title, creator, ms_id):
@@ -135,16 +134,23 @@ class InviteCard(BaseCard):
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
     # Delete the second file from the attach
     self.delete_attach_file(fn)
-    time.sleep(2)
+    # Test that there is only one attach after the delete
+    counter = 0
+    while True:
+      if len(self._gets(self._replace_attachment)) == 1 or counter == 60:
+        break
+      counter += 1
+      time.sleep(.5)
     self._get(self._edit_save_invitation_btn).click()
-    time.sleep(1)
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])
     self._get(self._invitee_updated_at)
     # Make the actual invitation
     self._get(self._send_invitation_button).click()
+    # This wait is needed for the invite text to appear
     time.sleep(2)
+    invitees = self._gets(self._invitee_listing)
     assert any('Invited' in s for s in [x.text for x in invitees]), \
         'Invited not found in {0}'.format([x.text for x in invitees])
     self._gets(self._rescind_button)

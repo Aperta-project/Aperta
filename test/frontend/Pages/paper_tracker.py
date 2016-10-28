@@ -39,7 +39,7 @@ class PaperTrackerPage(AuthenticatedPage):
     self._paper_tracker_search_button = (By.ID, 'search')
     self._paper_tracker_save_search_link = (By.CSS_SELECTOR, 'a.save-search-button')
     self._paper_tracker_saved_search_heading = (By.CSS_SELECTOR,
-                                                'div.paper-tracker-saved-searches > h3')
+                                                'div#paper-tracker-saved-searches > h3')
     self._paper_tracker_saved_search_new_query_title_field = (By.ID, 'new-query-title')
     self._paper_tracker_saved_search_list_div = (By.CSS_SELECTOR, 'div.paper-tracker-query')
     self._paper_tracker_saved_search_query_link = (By.CSS_SELECTOR, 'a')

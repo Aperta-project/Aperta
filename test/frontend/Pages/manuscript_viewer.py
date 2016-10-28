@@ -13,7 +13,7 @@ from datetime import datetime
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface
+from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import affiliation, users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login
@@ -63,7 +63,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
     self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
-    self._tb_more_link = (By.CSS_SELECTOR, 'div#more-dropdown-menu > div > span')
+    self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
     self._tb_workflow_link = (By.ID, 'nav-workflow')
@@ -433,7 +433,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'Are you sure?' == modal_title.text
       # TODO: Style parametrized due to lack of styleguide for modals
       self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
-                                      font_weight='500', color='rgba(119, 119, 119, 1)')
+                                      font_weight='500', color=aperta_grey_dark)
       withdraw_modal_text = self._get(self._wm_modal_text)
       # TODO: Leave comment out until solved. Pivotal bug#103864752
       # self.validate_application_ptext(withdraw_modal_text)
@@ -450,9 +450,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # self.validate_secondary_grey_small_button_modal_style(no_btn)
       close_icon_overlay = self._get(self._overlay_header_close)
       # TODO: Change following line after bug #102078080 is solved
-      assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-      assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
-      assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+      assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px'), \
+        close_icon_overlay.value_of_css_property('font-size')
+      assert application_typeface in close_icon_overlay.value_of_css_property('font-family'), \
+        close_icon_overlay.value_of_css_property('font-family')
+      assert close_icon_overlay.value_of_css_property('color') == aperta_grey_dark, \
+          close_icon_overlay.value_of_css_property('color')
       close_icon_overlay.click()
 
   def withdraw_manuscript(self):

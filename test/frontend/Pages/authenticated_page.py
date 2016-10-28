@@ -69,8 +69,8 @@ class AuthenticatedPage(PlosPage):
     self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
     self._nav_feedback_link = (By.ID, 'nav-give-feedback')
-    self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
-    self._nav_profile_img = (By.CSS_SELECTOR, 'span.main-nav-item img')
+    self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu-trigger')
+    self._nav_profile_img = (By.CSS_SELECTOR, 'div#profile-dropdown-menu-trigger > div > img')
     self._nav_profile_text = (By.CLASS_NAME, 'profile-dropdown-menu-text')
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
@@ -888,11 +888,17 @@ class AuthenticatedPage(PlosPage):
     :return: None
     TODO: APERTA-7212
     """
-    assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == font_size
-    assert title.value_of_css_property('font-weight') == font_weight
-    assert title.value_of_css_property('line-height') == line_height
-    assert title.value_of_css_property('color') == color
+    assert application_typeface in title.value_of_css_property('font-family'), \
+        '{0} not found in {1}'.format(application_typeface,
+                                      title.value_of_css_property('font-family'))
+    assert title.value_of_css_property('font-size') == font_size, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('font-size'), font_size)
+    assert title.value_of_css_property('font-weight') == font_weight, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('font-weight'), font_weight)
+    assert title.value_of_css_property('line-height') == line_height, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('line-height'), line_height)
+    assert title.value_of_css_property('color') == color, \
+        '{0) is not equal to {1}'.format(title.value_of_css_property('color'), color)
 
 
   @staticmethod
@@ -1372,7 +1378,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == aperta_grey_dark, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')

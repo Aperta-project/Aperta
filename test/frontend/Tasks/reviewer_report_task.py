@@ -292,7 +292,7 @@ class ReviewerReportTask(BaseTask):
       minrevrb = self._get(self._q1_minrev_radio)
       minrevrb.click()
     else:
-      logging.info('Requested recommendation: {0} is invalid'.format(recommendation))
+      logging.error('Requested recommendation: {0} is invalid'.format(recommendation))
     if research_type:
       q2radval = self.get_random_bool()
       if q2radval:

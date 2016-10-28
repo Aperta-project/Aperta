@@ -131,6 +131,10 @@ export default Ember.Component.extend({
 
   decisionSorting: ['id:desc'],
 
+  changePosition: concurrencyTask(function * (newPosition, invitation) {
+    return yield invitation.changePosition(newPosition);
+  }),
+
   sortedPreviousDecisionsWithFilteredInvitations: Ember.computed.sort(
       'previousDecisionsWithFilteredInvitations', 'decisionSorting'),
 
@@ -141,7 +145,7 @@ export default Ember.Component.extend({
     },
 
     changePosition(newPosition, invitation) {
-      invitation.changePosition(newPosition);
+      this.get('changePosition').perform(newPosition, invitation);
     },
 
     composeInvite() {

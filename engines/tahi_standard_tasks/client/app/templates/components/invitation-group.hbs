@@ -15,10 +15,11 @@
     {{invitation-drop-target
         position=invitation.position
         index=invitation.position
-        changePosition=(action changePosition)}}
+        changePosition=(action 'changePosition')}}
 
     {{invitation-detail-row invitation=invitation
                             invitations=invitations
+                            changePositionPending=changePositionPending
                             setRowState=(action attrs.setRowState invitation)
                             deleteOnCancel=(eq invitation composedInvitation)
                             composedInvitation=composedInvitation
@@ -34,5 +35,5 @@
       isLast=true
       position=sortedInvitations.length
       index=(inc sortedInvitations.length)
-      changePosition=(action changePosition)}}
+      changePosition=(action 'changePosition')}}
 {{/with}}

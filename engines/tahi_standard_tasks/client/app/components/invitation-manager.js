@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
-import { task } from 'ember-concurrency';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   computed,
@@ -32,6 +32,9 @@ export default Ember.Component.extend({
 
   inviteeRole: computed.reads('task.inviteeRole'),
 
+  loadDecisions: concurrencyTask(function * () {
+    return yield this.get('task.decisions');
+  }),
 
   applyTemplateReplacements(str) {
     const name = this.get('selectedUser.full_name');
@@ -69,7 +72,7 @@ export default Ember.Component.extend({
     return user.full_name + ' <' + user.email + '>';
   },
 
-  createInvitation: task(function * (props) {
+  createInvitation: concurrencyTask(function * (props) {
     let invitation = this.get('store').createRecord('invitation', props);
 
     this.set('pendingInvitation', invitation);

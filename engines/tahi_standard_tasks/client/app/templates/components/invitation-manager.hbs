@@ -1,4 +1,4 @@
-{{#util/async-content task=loadDecisions}}
+{{#util/async-content concurrencyTask=loadDecisions}}
   {{#with (hash group=(component 'invitation-group'
                         activeInvitation=activeInvitation
                         activeInvitationState=activeInvitationState

@@ -6,10 +6,6 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
-#from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, \
-#    creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-#    internal_editor_login, cover_editor_login, staff_admin_login, pub_svcs_login, \
-#    prod_staff_login, super_admin_login
 from Base.Resources import users, editorial_users, external_editorial_users, admin_users
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -82,41 +78,42 @@ class ManuscriptViewerTest(CommonTest):
     roles = { 'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
               'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
               'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
-              'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 7,
-              'Cover Editor': 7, 'Reviewer': 7}
-
-    user = random.choice(users + editorial_users + external_editorial_users + admin_users)
-    logging.info('Logging in as user: {0}'.format(user))
-    dashboard_page = self.cas_login(user['email'])
-    dashboard_page.set_timeout(120)
-    if dashboard_page.get_dashboard_ms(user):
-      dashboard_page.restore_timeout()
-      self.select_preexisting_article(first=True)
-      manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-      # Check if paper is loaded by calling an element in paper viewer
-      self._get(self._paper_title)
-      journal_id = manuscript_viewer.get_journal_id()
-      uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
-      paper_id = manuscript_viewer.get_paper_id_from_url()
-      journal_permissions = PgSQL().query('select name from roles where id in (select role_id'
-                                          ' from assignments where ((assigned_to_id = %s and '
-                                          'assigned_to_type = \'Journal\' and user_id = %s)));',
-                                          (journal_id, uid))
-      paper_permissions = PgSQL().query('select name from roles where id in (select role_id '
-                                        'from assignments where ((assigned_to_id = %s and '
-                                        'assigned_to_type = \'Paper\' and user_id = %s)));',
-                                        (paper_id, uid))
-      system_permissions = PgSQL().query('select name from roles where id in (select role_id '
-                                         'from assignments where ((assigned_to_type = '
-                                         '\'System\' and user_id = %s)));',(uid,))
-      permissions = journal_permissions + paper_permissions + system_permissions
-      max_elements = max([roles[item] for sublist in permissions for item in sublist])
-      logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
-                   .format(user, paper_id, permissions, max_elements))
-      manuscript_viewer.validate_roles(max_elements)
-    else:
-      dashboard_page.restore_timeout()
-      logging.info('No manuscripts present for user: {0}'.format(user['user']))
+              'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 6,
+              'Cover Editor': 6, 'Reviewer': 7}
+    users = [random.choice(users), random.choice(editorial_users),
+             random.choice(external_editorial_users), random.choice(admin_users)]
+    for user in users:
+      logging.info('Logging in as user: {0}'.format(user))
+      dashboard_page = self.cas_login(user['email'])
+      dashboard_page.set_timeout(120)
+      if dashboard_page.get_dashboard_ms(user):
+        dashboard_page.restore_timeout()
+        self.select_preexisting_article(first=True)
+        manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+        # Check if paper is loaded by calling an element in paper viewer
+        self._get(self._paper_title)
+        journal_id = manuscript_viewer.get_journal_id()
+        uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
+        paper_id = manuscript_viewer.get_paper_id_from_url()
+        journal_permissions = PgSQL().query('select name from roles where id in (select role_id'
+                                            ' from assignments where ((assigned_to_id = %s and '
+                                            'assigned_to_type = \'Journal\' and user_id = %s)));',
+                                            (journal_id, uid))
+        paper_permissions = PgSQL().query('select name from roles where id in (select role_id '
+                                          'from assignments where ((assigned_to_id = %s and '
+                                          'assigned_to_type = \'Paper\' and user_id = %s)));',
+                                          (paper_id, uid))
+        system_permissions = PgSQL().query('select name from roles where id in (select role_id '
+                                          'from assignments where ((assigned_to_type = '
+                                          '\'System\' and user_id = %s)));',(uid,))
+        permissions = journal_permissions + paper_permissions + system_permissions
+        max_elements = max([roles[item] for sublist in permissions for item in sublist])
+        logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
+                    .format(user, paper_id, permissions, max_elements))
+        manuscript_viewer.validate_roles(max_elements)
+      else:
+        dashboard_page.restore_timeout()
+        logging.info('No manuscripts present for user: {0}'.format(user['user']))
     return self
 
   def test_initial_submission_infobox(self):
@@ -185,7 +182,9 @@ class ManuscriptViewerTest(CommonTest):
     self._driver.get(paper_url)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Note: Request title to make sure the required page is loaded
-    manuscript_page.get_paper_title_from_page(timeout=60)
+    manuscript_page.set_timeout(60)
+    manuscript_page.get_paper_title_from_page()
+    manuscript_page.restore_timeout()
     manuscript_page.set_timeout(.5)
     try:
       manuscript_page.get_infobox()
@@ -205,7 +204,7 @@ class ManuscriptViewerTest(CommonTest):
     paper_id = manuscript_page.get_current_url().split('/')[-1]
     # Complete IMG card to force display of submission status project
     time.sleep(1)
-    logging.info('Opening the Figures task')
+    logging.debug('Opening the Figures task')
     manuscript_page.click_task('Figures')
     time.sleep(5)
     manuscript_page.complete_task('Figures')

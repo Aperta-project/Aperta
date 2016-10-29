@@ -129,7 +129,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._question_mark_icon = (By.ID, 'submission-process-toggle')
     # While IDs are normally king, for this element, we don't hide the element, we just change
     # its class to "hide" it
-    self._infobox = (By.CSS_SELECTOR, 'div.show-process')
+    self._infobox = (By.ID, 'inner')
     self._infobox_closer = (By.ID, 'sp-close')
     self._manuscript_viewer_status_area = (By.ID, 'submission-state-information')
     self._status_info_initial_submit_todo = (By.CSS_SELECTOR,
@@ -173,8 +173,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     version_btn.click()
     self._get(self._tb_versions_diff_div)
     bar_items = self._gets(self._bar_items)
-    assert 'Now viewing:' in bar_items[1].text, bar_items[1].text
-    assert 'Compare With:' in bar_items[2].text, bar_items[2].text
+    assert 'Now viewing:' in bar_items[0].text, bar_items[0].text
+    assert 'Compare With:' in bar_items[1].text, bar_items[1].text
     self._get(self._tb_versions_closer).click()
 
   def get_ui_manuscript_version(self):

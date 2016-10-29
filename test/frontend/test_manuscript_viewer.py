@@ -6,7 +6,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import users, editorial_users, external_editorial_users, admin_users
+from Base.Resources import users, editorial_users, external_editorial_users, \
+    admin_users, super_admin_login
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -41,7 +42,8 @@ class ManuscriptViewerTest(CommonTest):
       - button for workflow
       - button for more options
     """
-    user = random.choice(users)
+    all_users = users + editorial_users + external_editorial_users + admin_users
+    user = random.choice(all_users)
     logging.info('Running test_validate_components_styles')
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
@@ -65,7 +67,7 @@ class ManuscriptViewerTest(CommonTest):
     time.sleep(5)
     manuscript_viewer.validate_independent_scrolling()
     manuscript_viewer.validate_nav_toolbar_elements(user)
-    if user in (staff_admin_login, super_admin_login):
+    if user in admin_users:
       manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=True)
     else:
       manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=False)
@@ -80,8 +82,8 @@ class ManuscriptViewerTest(CommonTest):
               'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
               'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 6,
               'Cover Editor': 6, 'Reviewer': 7}
-    users = [random.choice(users), random.choice(editorial_users),
-             random.choice(external_editorial_users), random.choice(admin_users)]
+    random_users = [random.choice(users), random.choice(editorial_users),
+                    random.choice(external_editorial_users), random.choice(admin_users)]
     for user in users:
       logging.info('Logging in as user: {0}'.format(user))
       dashboard_page = self.cas_login(user['email'])
@@ -91,7 +93,7 @@ class ManuscriptViewerTest(CommonTest):
         self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         # Check if paper is loaded by calling an element in paper viewer
-        self._get(self._paper_title)
+        manuscript_viewer._get(manuscript_viewer._paper_title)
         journal_id = manuscript_viewer.get_journal_id()
         uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
         paper_id = manuscript_viewer.get_paper_id_from_url()
@@ -114,6 +116,7 @@ class ManuscriptViewerTest(CommonTest):
       else:
         dashboard_page.restore_timeout()
         logging.info('No manuscripts present for user: {0}'.format(user['user']))
+      dashboard_page.logout()
     return self
 
   def test_initial_submission_infobox(self):
@@ -139,8 +142,9 @@ class ManuscriptViewerTest(CommonTest):
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
-    logging.info('Logging in as user: {0}'.format(creator_login5))
-    dashboard_page = self.cas_login(email=creator_login5['email'])
+    user = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user))
+    dashboard_page = self.cas_login(email=user['email'])
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
@@ -237,7 +241,7 @@ class ManuscriptViewerTest(CommonTest):
 
     # Approve initial Decision
     logging.info('Logging in as user: {0}'.format(super_admin_login['user']))
-    dashboard_page = self.cas_login(email=super_admin_login['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=super_admin_login['email'])
     time.sleep(1)
     # the following call should only succeed for superadm
     dashboard_page.go_to_manuscript(paper_id)
@@ -252,8 +256,8 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_page.logout()
 
     # Test for AC8
-    logging.info('Logging in as user: {0}'.format(creator_login5))
-    dashboard_page = self.cas_login(email=creator_login5['email'])
+    logging.info('Logging in as user: {0}'.format(user))
+    dashboard_page = self.cas_login(email=user['email'])
     time.sleep(1)
     # the following call should only succeed for sa_login
     dashboard_page.go_to_manuscript(paper_id)

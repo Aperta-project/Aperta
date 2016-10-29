@@ -87,9 +87,7 @@
      {{/if}}
     </div>
   </div>
-{{/unless}}
-
-{{#if (eq uiState "edit")}}
+{{else}}
   <div class="invitation-item-header">
     <div class="invitation-item-full-name">
      {{#unless (eq invitation composedInvitation)}}
@@ -105,7 +103,7 @@
       {{/if}}
     </div>
   </div>
-{{/if}}
+{{/unless}}
 
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
@@ -149,9 +147,7 @@
     {{/if}}
   </div>
 </div>
-{{/if}}
-
-{{#if (eq uiState "edit")}}
+{{else if (eq uiState "edit")}}
   <div class="invitation-item-details">
     {{content-editable value=invitation.body
                        class="invitation-edit-body"

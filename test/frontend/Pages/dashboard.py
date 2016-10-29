@@ -46,9 +46,9 @@ class DashboardPage(AuthenticatedPage):
         'section#dashboard-my-submissions button.button-primary.button--green')
     self._dash_active_section_title = (By.CSS_SELECTOR, 'thead.active-papers tr th')
     self._dash_active_role_th = (By.XPATH,
-                                 "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
+                                 "//table[contains(@class,'table-borderless')][1]/thead/tr/th[2]")
     self._dash_active_status_th = (By.XPATH,
-                                   "//div[@class='table-responsive'][1]/table/thead/tr/th[3]")
+                                   "//table[contains(@class,'table-borderless')][1]/thead/tr/th[3]")
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
     self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
@@ -57,9 +57,9 @@ class DashboardPage(AuthenticatedPage):
 
     self._dash_inactive_section_title = (By.CSS_SELECTOR, 'thead.inactive-papers tr th')
     self._dash_inactive_role_th = (By.XPATH,
-                                   "//div[@class='table-responsive'][2]/table/thead/tr/th[2]")
+                                   "//table[contains(@class,'table-borderless')][2]/thead/tr/th[2]")
     self._dash_inactive_status_th = (By.XPATH,
-                                     "//div[@class='table-responsive'][2]/table/thead/tr/th[3]")
+                                     "//table[contains(@class,'table-borderless')][2]/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
     self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')

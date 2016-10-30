@@ -1,0 +1,15 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <p>A copy of your uncorrected proof will be published online ahead of the final version of your manuscript, should your manuscript be accepted. If you do NOT consent to having an early version of your paper published online, please uncheck the box below. Please note, if you change your mind, you may choose to opt out up until final acceptance.</p>
+  <p>
+    <strong>
+      {{#nested-question-check ident='early-posting--consent'
+      owner=task
+      disabled=isNotEditable
+      as |selected|}}
+
+      {{/nested-question-check}}
+    </strong>
+  </p>
+</div>

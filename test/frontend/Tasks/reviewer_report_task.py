@@ -407,7 +407,6 @@ class ReviewerReportTask(BaseTask):
         q2noradio.click()
       q2rta = self._get(self._res_q2_form)
       q2response = generate_paragraph()[2]
-      logging.info(q2response)
       q2rta.send_keys(q2response)
       q3rta = self._get(self._res_q3_form)
       q3response = generate_paragraph()[2]

@@ -540,7 +540,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
     :param data:
+    :return outdata or None: returns a list of the values used to fill out the form or None if
+      nothing is captured.
     """
+    outdata = ()
     logging.info('Complete task called for task: {0}'.format(task_name))
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
@@ -587,7 +590,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(2)
     elif task_name == 'Review by':
       review_report = ReviewerReportTask(self._driver)
-      review_report.complete_reviewer_report()
+      outdata = review_report.complete_reviewer_report()
       # complete task
       if not base_task.completed_state():
         base_task.click_completion_button()
@@ -632,6 +635,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()
+    if outdata:
+      return outdata
+    else:
+      return None
 
   def get_paper_title_from_page(self):
     """
@@ -643,7 +650,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def click_submit_btn(self):
     """Press the submit button"""
-    self._wait_for_element(self._get(self._submit_button))
+    self._wait_for_element(self._get(self._submit_button), multiplier=7)
     self._get(self._submit_button).click()
 
   def confirm_submit_btn(self):

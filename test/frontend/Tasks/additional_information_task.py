@@ -108,6 +108,7 @@ class AITask(BaseTask):
       # wait for the element to be attached to the DOM
       time.sleep(2)
       checkboxes = questions[2].find_elements_by_tag_name('input')
+      self.set_timeout(5)
       for order, cbx in enumerate(q3ans):
         if cbx == 1:
           try:
@@ -121,7 +122,7 @@ class AITask(BaseTask):
               questions[2].find_elements_by_tag_name('textarea')[i].send_keys(q3cans)
           except IndexError:
             continue
-
+      self.restore_timeout()
     self.scroll_element_into_view_below_toolbar(question_3)
     q4ans = random.choice(q4_answers)
     logging.debug('The answers to question 4 is {0}'.format(q4ans))

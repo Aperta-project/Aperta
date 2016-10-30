@@ -15,6 +15,7 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import reviewer_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
+from Cards.reviewer_report_card import ReviewerReportCard
 from Tasks.reviewer_report_task import ReviewerReportTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -32,9 +33,6 @@ class ReviewerReportTest(CommonTest):
       and the card view - ordering should not chnage between these modes.
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
-
-  def rest_smoke_rev_rep_research_elements_styles(self):
-    pass
 
   def test_core_rev_rep_non_research_actions(self):
     """
@@ -106,9 +104,34 @@ class ReviewerReportTest(CommonTest):
     assert manuscript_page.click_task('front_matter_reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles(research_type=False)
-    reviewer_report_task.validate_reviewer_report(research_type=False)
+    reviewer_report_task.validate_reviewer_report_edit_mode(research_type=False)
     manuscript_page.click_task('front_matter_reviewer_report')
-    manuscript_page.complete_task('Review by', click_override=True)
+    outdata = manuscript_page.complete_task('Review by', click_override=True)
+    logging.debug(outdata)
+    validate_view_in_place = manuscript_page.get_random_bool()
+    if validate_view_in_place:
+      logging.info('Validating in task view')
+      reviewer_report_task.validate_view_mode_report_in_task(outdata)
+    else:
+      logging.info('Validating in card view')
+      manuscript_page.logout()
+      # Then login as staff user and validate report in card view
+      editorial_user = random.choice(editorial_users)
+      logging.info(editorial_user)
+      dashboard_page = self.cas_login(email=editorial_user['email'])
+      dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+      dashboard_page.go_to_manuscript(research_paper_id)
+      self._driver.navigated = True
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+      # go to wf
+      paper_viewer.click_workflow_link()
+      workflow_page = WorkflowPage(self.getDriver())
+      workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+      workflow_page.click_card('review_by')
+      reviewer_report_card = ReviewerReportCard(self.getDriver())
+      reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
   def test_core_rev_rep_research_actions(self):
     """
@@ -175,8 +198,33 @@ class ReviewerReportTest(CommonTest):
     assert manuscript_page.click_task('research_reviewer_report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles()
-    reviewer_report_task.validate_reviewer_report()
-    manuscript_page.complete_task('Review by', click_override=True)
+    reviewer_report_task.validate_reviewer_report_edit_mode()
+    outdata = manuscript_page.complete_task('Review by', click_override=True)
+    validate_view_in_place = manuscript_page.get_random_bool()
+    logging.info(validate_view_in_place)
+    if validate_view_in_place:
+      logging.info('Validating in task view')
+      reviewer_report_task.validate_view_mode_report_in_task(outdata)
+    else:
+      logging.info('Validating in card view')
+      manuscript_page.logout()
+      # Then login as staff user and validate report in card view
+      editorial_user = random.choice(editorial_users)
+      logging.info(editorial_user)
+      dashboard_page = self.cas_login(email=editorial_user['email'])
+      dashboard_page._wait_for_element(
+        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+      dashboard_page.go_to_manuscript(research_paper_id)
+      self._driver.navigated = True
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+      # go to wf
+      paper_viewer.click_workflow_link()
+      workflow_page = WorkflowPage(self.getDriver())
+      workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+      workflow_page.click_card('review_by')
+      reviewer_report_card = ReviewerReportCard(self.getDriver())
+      reviewer_report_card.validate_reviewer_report(outdata)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

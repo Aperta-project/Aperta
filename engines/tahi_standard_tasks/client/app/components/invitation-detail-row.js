@@ -102,12 +102,6 @@ export default Component.extend({
       invitation.rescind();
     },
 
-    destroyInvitation(invitation) {
-      if (invitation.get('pending')) {
-        invitation.destroyRecord();
-      }
-    },
-
     saveDuringType(invitation) {
       Ember.run.debounce(invitation, 'save', 500);
     },

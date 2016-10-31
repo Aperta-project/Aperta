@@ -124,6 +124,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   width: 100%;
   font-size: 1.4rem;
   cursor: pointer;
+  user-select: none; // This is important so as not to have strange drag and drop behavior
 }
 
 .invitation-item-header > * {

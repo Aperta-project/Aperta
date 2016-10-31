@@ -1,25 +1,8 @@
-namespace :data do
-  namespace :migrate do
-    desc <<-DESC
-      APERTA-5579: Migrates invitations to place them within queues instead of tasks.
-    DESC
-    task migrate_invitations_to_queues: :environment do
-      Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
-        task.paper.decisions.each do |decision|
-          puts "making queue for decision #{decision.id}"
-          queue = decision.invitation_queue || decision.create_invitation_queue!(task: task)
-          put_invitations_into_queue(decision.invitations, queue)
-        end
-      end
-      Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
-        puts "making queue for task #{task.id}"
-        queue = task.invitation_queue || task.create_invitation_queue!(task: task)
-        put_invitations_into_queue(task.invitations, queue)
-      end
-    end
-  end
 
-  def put_invitations_into_queue(invitations, queue)
+# Module to contain the migration's functions rather than
+# defining them on Kernel
+module QueueMigration
+  def self.put_invitations_into_queue(invitations, queue)
     grouped_primaries = []
     # get grouped primaries in order of creation
     #
@@ -59,12 +42,42 @@ namespace :data do
     end
   end
 
+  def self.migrate_up
+    Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
+      task.paper.decisions.each do |decision|
+        puts "making queue for decision #{decision.id}"
+        queue = decision.invitation_queue || decision.create_invitation_queue!(task: task)
+        put_invitations_into_queue(decision.invitations, queue)
+      end
+    end
+    Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
+      puts "making queue for task #{task.id}"
+      queue = task.invitation_queue || task.create_invitation_queue!(task: task)
+      put_invitations_into_queue(task.invitations, queue)
+    end
+  end
+
+  def self.migrate_down
+    InvitationQueue.destroy_all
+  end
+end
+
+namespace :data do
+  namespace :migrate do
+    desc <<-DESC
+      APERTA-5579: Migrates invitations to place them within queues instead of tasks.
+    DESC
+    task migrate_invitations_to_queues: :environment do
+      QueueMigration.migrate_up
+    end
+  end
+
   desc <<-DESC
       APERTA-5579: Migration removes queues to default to task-invitations association
 
       This is intended to be run as part of a down migration.
   DESC
   task :migrate_queues_back_to_invitations do
-    InvitationQueue.destroy_all
+    QueueMigration.migrate_down
   end
 end

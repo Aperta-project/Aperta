@@ -10,7 +10,7 @@
   {{/unless}}
 {{/if}}
 
-{{#each sortedInvitations key="id" as |invitation|}}
+{{#each sortedInvitations as |invitation|}}
   {{invitation-drop-target
       position=invitation.position
       index=invitation.position

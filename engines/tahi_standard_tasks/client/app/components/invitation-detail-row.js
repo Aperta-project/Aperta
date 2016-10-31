@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import DragNDrop from 'tahi/services/drag-n-drop';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Component,
@@ -108,6 +109,14 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   closedState: equal('uiState', 'closed'),
   editState: equal('uiState', 'edit'),
 
+  rescindInvitation: concurrencyTask(function * (invitation) {
+    return yield invitation.rescind();
+  }).drop(),
+
+  sendInvitation: concurrencyTask(function * (invitation) {
+    return yield invitation.send();
+  }).drop(),
+
   actions: {
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
@@ -143,7 +152,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     },
 
     rescindInvitation(invitation) {
-      invitation.rescind();
+      this.get('rescindInvitation').perform(invitation);
     },
 
     saveDuringType(invitation) {
@@ -180,7 +189,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     sendInvitation(invitation) {
       if (this.get('disabled')) { return; }
 
-      invitation.send();
+      this.get('sendInvitation').perform(invitation);
     }
   }
 });

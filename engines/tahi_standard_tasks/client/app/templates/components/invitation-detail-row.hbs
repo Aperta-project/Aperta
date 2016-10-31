@@ -55,16 +55,16 @@
         </span>
       {{/if}}
       {{#if displayRescindButton}}
-        <span class="invitation-item-action invitation-item-action-rescind"
-{{action "rescindInvitation" invitation bubbles=false}}>
+        <span class="invitation-item-action invitation-item-action-rescind {{if rescindInvitation.isRunning "invitation-item-action--disabled"}}"
+              {{action "rescindInvitation" invitation bubbles=false}}>
           <span class="fa fa-ban invite-rescind"></span>
           {{#unless disabled}}
             <span class="invitation-item-action-text">Rescind</span>
           {{/unless}}
         </span>
-      {{/if}}
+        {{/if}}
       {{#if displaySendButton}}
-        <span class="invitation-item-action invitation-item-action-send {{if disabled "invitation-item-action--disabled"}}"
+        <span class="invitation-item-action invitation-item-action-send {{if (or disabled sendInvitation.isRunning) "invitation-item-action--disabled"}}"
               {{action "sendInvitation" invitation bubbles=false}}>
           <span class="fa fa-send invite-send"></span>
           {{#unless disabled}}

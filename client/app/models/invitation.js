@@ -26,6 +26,8 @@ export default DS.Model.extend({
   title: DS.attr('string'),
 
   isAlternate: Ember.computed.notEmpty('primary'),
+  isPrimary: Ember.computed.notEmpty('alternates'),
+
   canReposition: Ember.computed.notEmpty('validNewPositionsForInvitation'),
 
   updatedAt: DS.attr('date'),

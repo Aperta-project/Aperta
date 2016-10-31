@@ -80,10 +80,6 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return 'invitation-state--' + this.get('invitation.state');
   }),
 
-  sendButtonClass: computed('sendDisabled', function() {
-    return this.get('sendDisabled') ? 'invitation-item-action--disabled' : '';
-  }),
-
   invitee: reads('invitation.invitee'),
   invitationBodyStateBeforeEdit: null,
 
@@ -98,6 +94,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }),
 
   displayRescindButton: or('invitation.invited', 'invitation.accepted'),
+
+  destroyDisabled: or('disabled', 'invitation.isPrimary'),
 
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
@@ -124,6 +122,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     },
 
     editInvitation(invitation) {
+      if (this.get('disabled')) { return; }
+
       this.setProperties({
         invitationBodyStateBeforeEdit: invitation.get('body')
       });
@@ -170,13 +170,16 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     },
 
     destroyInvitation(invitation) {
+      if (this.get('disabled')) { return; }
+
       if (invitation.get('pending')) {
         this.get('destroyInvite')(invitation);
       }
     },
 
     sendInvitation(invitation) {
-      if(this.get('sendDisabled')) { return; }
+      if (this.get('disabled')) { return; }
+
       invitation.send();
     }
   }

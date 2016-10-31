@@ -13,6 +13,13 @@ moduleForComponent(
     beforeEach: function() {
       manualSetup(this.container);
 
+      $.mockjax({url: '/api/countries', status: 200, responseText: {
+        countries: [],
+      }});
+      $.mockjax({url: '/api/institutional_accounts', status: 200, responseText: {
+        institutional_accounts: [],
+      }});
+
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');
       let author = FactoryGuy.make('author', { user: user });

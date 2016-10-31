@@ -12,6 +12,13 @@ moduleForComponent(
     beforeEach: function() {
       manualSetup(this.container);
 
+      $.mockjax({url: '/api/countries', status: 200, responseText: {
+        countries: [],
+      }});
+      $.mockjax({url: '/api/institutional_accounts', status: 200, responseText: {
+        institutional_accounts: [],
+      }});
+
       let authorsTask = FactoryGuy.make('authors-task');
       let author = FactoryGuy.make('author');
       let user = FactoryGuy.make('user');
@@ -50,8 +57,6 @@ test("component lists the author when they are the current user", function(asser
   Ember.run( () => {
     this.get('author').set('user', this.get('currentUser'));
   });
-
   this.render(template);
-
   assert.textPresent('.author-task-item-view .author-name', 'Bob Smith (you)');
 });

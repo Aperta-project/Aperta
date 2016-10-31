@@ -77,7 +77,7 @@ class WorkflowPage(AuthenticatedPage):
     self._related_articles_card = (By.XPATH, "//a/div[contains(., 'Related Articles')]")
     self._report_guide_card = (By.XPATH, "//a/div[contains(., 'Reporting Guidelines')]")
     self._review_cands_card = (By.XPATH, "//a/div[contains(., 'Reviewer Candidates')]")
-    self._reviewer_report_card = (By.XPATH, "//a/div[contains(., 'Reviewer Report')]")
+    self._reviewer_report_card = (By.XPATH, "//a/div[contains(., 'Review by')]")
     self._revise_task_card = (By.XPATH, "//a/div[contains(., 'Revise Task')]")
     self._revision_tech_check_card = (By.XPATH, "//a/div[contains(., 'Revision Tech Check')]")
     self._send_to_apex_card = (By.XPATH, "//a/div[contains(., 'Send to Apex')]")

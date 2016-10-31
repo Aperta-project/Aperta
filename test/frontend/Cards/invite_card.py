@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import re
 import time
 
@@ -63,9 +64,11 @@ class InviteCard(BaseCard):
     self._get(self._edit_invite_text_save).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
     self._get(self._invite_send_invite_button).click()
-    # The problem with this next item is that it requires the button to be clickable - when after
-    #  send, the whole invite element is in a readonly state.
-    # self._wait_for_element(self._get(self._rescind_button))
+    try:
+      self.check_for_flash_error()
+    except NoSuchElementException:
+      logging.error('Error fired on send invite.')
+    self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 
   def validate_invite(self, invitee, title, creator, ms_id):

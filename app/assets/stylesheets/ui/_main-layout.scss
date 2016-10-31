@@ -27,7 +27,11 @@ body, html, #layout-container,
   .ember-application > .ember-view,
   #layout-container { flex-direction: column; }
 
-  #main-content { flex: 1;  }
+  #main-content {
+    flex: 1;
+    // firefox fix; without, entire body scrolls:
+    overflow: auto;
+  }
 
   #main-content .main-content-section {
     overflow: auto;

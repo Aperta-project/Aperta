@@ -113,11 +113,21 @@ class InvitationsController < ApplicationController
   private
 
   def invitations_in_queue(queue = nil)
-    if queue
-      queue.invitations.reorder(id: :desc)
-    else
-      invitation.invitation_queue.invitations.reorder(id: :desc)
-    end
+    invitations = if queue
+                    queue.invitations
+                  else
+                    invitation.invitation_queue.invitations
+                  end
+
+    invitations
+      .reorder(id: :desc)
+      .includes(
+        :task,
+        :invitee,
+        :primary,
+        :alternates,
+        :invitation_queue,
+        :attachments)
   end
 
   def send_and_notify(invitation)

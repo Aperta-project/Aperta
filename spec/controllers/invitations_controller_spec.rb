@@ -226,8 +226,10 @@ describe InvitationsController do
       FactoryGirl.create :invitation,
         invitee: invitee,
         task: task,
-        invitation_queue: queue
+        invitation_queue: queue,
+        position: 2
     end
+
     subject(:do_request) do
       post(
         :update,
@@ -375,7 +377,7 @@ describe InvitationsController do
       it 'removes the invitation from the queue and destroys it' do
         allow(Invitation).to receive(:find).and_call_original
         allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
-        expect(invitation.invitation_queue).to receive(:remove_invitation).with(invitation)
+        expect(invitation.invitation_queue).to receive(:destroy_invitation).with(invitation).and_call_original
 
         do_request
 

@@ -83,13 +83,12 @@ class InvitationQueue < ActiveRecord::Base
     invitation.reload.move_to_bottom
   end
 
-  def remove_invitation(invitation)
+  def destroy_invitation(invitation)
     raise_primary_error(invitation, "a primary with alternates cannot be removed") if invitation.has_alternates?
 
-    invitation.remove_from_list
     existing_primary = invitation.primary
+    invitation.destroy!
 
-    invitation.update(primary: nil, invitation_queue: nil)
     existing_primary.move_to_bottom if existing_primary.try(:ungrouped_primary?)
   end
 

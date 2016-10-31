@@ -56,8 +56,7 @@ class InvitationsController < ApplicationController
     end
 
     queue = invitation.invitation_queue
-    queue.remove_invitation(invitation)
-    invitation.destroy!
+    queue.destroy_invitation(invitation)
 
     render json: invitations_in_queue(queue)
   end

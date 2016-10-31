@@ -83,13 +83,13 @@ describe InvitationQueue do
     end
 
     it "an ungrouped primary can go to the position of other ungrouped primaries" do
-      expect(full_queue.valid_new_positions_for_invitation(ungrouped_1)).to eq([12, 11])
-      expect(full_queue.valid_new_positions_for_invitation(ungrouped_2)).to eq([12, 10])
+      expect(full_queue.valid_new_positions_for_invitation(ungrouped_1)).to contain_exactly(12, 11)
+      expect(full_queue.valid_new_positions_for_invitation(ungrouped_2)).to contain_exactly(12, 10)
     end
 
     it "an alternate can go to the position of another unsent alternate in its group" do
-      expect(full_queue.valid_new_positions_for_invitation(g1_alternate_1)).to eq([4, 3])
-      expect(full_queue.valid_new_positions_for_invitation(g1_alternate_2)).to eq([4, 2])
+      expect(full_queue.valid_new_positions_for_invitation(g1_alternate_1)).to contain_exactly(4, 3)
+      expect(full_queue.valid_new_positions_for_invitation(g1_alternate_2)).to contain_exactly(4, 2)
       expect(full_queue.valid_new_positions_for_invitation(g2_alternate_2)).to eq([])
     end
 
@@ -243,7 +243,7 @@ describe InvitationQueue do
     end
   end
 
-  describe "#remove_invitation" do
+  describe "#destroy_invitation" do
     context "the invitation is an ungrouped primary" do
       let(:small_queue) do
         make_queue [
@@ -253,7 +253,7 @@ describe InvitationQueue do
       end
 
       it "removes the invitation from the list and repositions the other invitations" do
-        small_queue.remove_invitation(ungrouped_1)
+        small_queue.destroy_invitation(ungrouped_1)
         expect(small_queue.invitations.pluck(:id)).to_not include(ungrouped_1.id)
         expect(ungrouped_2.reload.position).to eq(1)
       end
@@ -270,10 +270,10 @@ describe InvitationQueue do
           ]
         end
 
-        it "removes the invitation from the queue, unsets the primary, and reorders the list" do
-          small_queue.remove_invitation(g1_alternate_1)
+        it "removes the invitation from the queue, destroys it, and reorders the list" do
+          small_queue.destroy_invitation(g1_alternate_1)
           expect(small_queue.invitations.pluck(:id)).to_not include(g1_alternate_1.id)
-          expect(g1_alternate_1.primary_id).to be_blank
+          expect(g1_alternate_1).to be_destroyed
           expect(group_1_primary.reload.position).to eq(1) # the primary should stay put
           expect(ungrouped_1.reload.position).to eq(3)
         end
@@ -289,7 +289,7 @@ describe InvitationQueue do
         end
 
         it "removes the invitation from the queue's invitations and moves the newly-ungrouped primary to the bottom of the list" do
-          small_queue.remove_invitation(g1_alternate_1)
+          small_queue.destroy_invitation(g1_alternate_1)
           expect(small_queue.invitations.pluck(:id)).to_not include(g1_alternate_1.id)
           expect(group_1_primary.reload.position).to eq(2)
         end
@@ -305,7 +305,7 @@ describe InvitationQueue do
       end
 
       it "blows up. invitations must be first ungrouped before they can be removed from the queue" do
-        expect { small_queue.remove_invitation(group_1_primary) }
+        expect { small_queue.destroy_invitation(group_1_primary) }
           .to raise_error(ActiveRecord::RecordInvalid)
       end
     end

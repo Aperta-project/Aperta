@@ -55,7 +55,8 @@
         </span>
       {{/if}}
       {{#if displayRescindButton}}
-        <span class="invitation-item-action invitation-item-action-rescind" {{action "rescindInvitation" invitation}}>
+        <span class="invitation-item-action invitation-item-action-rescind"
+{{action "rescindInvitation" invitation bubbles=false}}>
           <span class="fa fa-ban invite-rescind"></span>
           {{#unless disabled}}
             <span class="invitation-item-action-text">Rescind</span>

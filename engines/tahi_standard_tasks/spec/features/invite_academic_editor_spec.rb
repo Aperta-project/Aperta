@@ -85,7 +85,7 @@ feature "Invite Academic Editor", js: true do
     # Make sure we get the attachment in the actual email
     overlay.find('.invitation-item-action-send').click
     process_sidekiq_jobs
-    email = find_email(reviewer1.email)
+    email = find_email(editor1.email)
     expect(email).to be
     expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
   end

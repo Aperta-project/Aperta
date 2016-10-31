@@ -296,71 +296,71 @@ class ReviewerReportTask(BaseTask):
     question_block_list = self._gets(self._question_block)
     qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
     if research_type:
-      recc_entry, q2bentry, q2entry, q3entry, q4entry, q5entry, q6bentry, q6entry = data
+      recc_data, q2_bool_data, q2_data, q3_data, q4_data, q5_data, q6_bool_entry, q6_data = data
       recommendation = qb1.find_element(*self._res_q1_answer)
-      assert recommendation.text.lower() == recc_entry.lower(), \
-          '{0} != {1}'.format(recommendation.text, recc_entry)
+      assert recommendation.text.lower() == recc_data.lower(), \
+          '{0} != {1}'.format(recommendation.text, recc_data)
       self.validate_application_ptext(recommendation)
-      q2bool = qb2.find_element(*self._res_q2_answer_bool)
-      self.validate_application_ptext(q2bool)
-      if q2bentry:
-        assert q2bool.text == 'Yes', q2bool.text
+      q2_page_bool = qb2.find_element(*self._res_q2_answer_bool)
+      self.validate_application_ptext(q2_page_bool)
+      if q2_bool_data:
+        assert q2_page_bool.text == 'Yes', q2_page_bool.text
       else:
-        assert q2bool.text == 'No', q2bool.text
-      q2ans = qb2.find_element(*self._res_q2_answer)
-      self.validate_application_ptext(q2ans)
-      assert q2ans.text == q2entry, '{0} != {1}'.format(q2ans.text, q2entry)
-      q3ans = qb3.find_element(*self._res_q3_answer)
-      self.validate_application_ptext(q3ans)
-      assert q3ans.text == q3entry, '{0} != {1}'.format(q3ans.text, q3entry)
-      q4ans = qb4.find_element(*self._res_q4_answer)
-      self.validate_application_ptext(q4ans)
-      assert q4ans.text == q4entry, '{0} != {1}'.format(q4ans.text, q4entry)
-      q5ans = qb5.find_element(*self._res_q5_answer)
-      self.validate_application_ptext(q5ans)
-      assert q5ans.text == q5entry, '{0} != {1}'.format(q5ans.text, q5entry)
-      q6bool = qb6.find_element(*self._res_q6_answer_bool)
-      self.validate_application_ptext(q6bool)
-      if q6bentry:
-        assert q6bool.text == 'Yes', q6bool.text
+        assert q2_page_bool.text == 'No', q2_page_bool.text
+      q2_page_ans = qb2.find_element(*self._res_q2_answer)
+      self.validate_application_ptext(q2_page_ans)
+      assert q2_page_ans.text == q2_data, '{0} != {1}'.format(q2_page_ans.text, q2_data)
+      q3_page_ans = qb3.find_element(*self._res_q3_answer)
+      self.validate_application_ptext(q3_page_ans)
+      assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text, q3_data)
+      q4_page_ans = qb4.find_element(*self._res_q4_answer)
+      self.validate_application_ptext(q4_page_ans)
+      assert q4_page_ans.text == q4_data, '{0} != {1}'.format(q4_page_ans.text, q4_data)
+      q5_page_ans = qb5.find_element(*self._res_q5_answer)
+      self.validate_application_ptext(q5_page_ans)
+      assert q5_page_ans.text == q5_data, '{0} != {1}'.format(q5_page_ans.text, q5_data)
+      q6_page_bool = qb6.find_element(*self._res_q6_answer_bool)
+      self.validate_application_ptext(q6_page_bool)
+      if q6_bool_entry:
+        assert q6_page_bool.text == 'Yes', q6_page_bool.text
       else:
-        assert q6bool.text == 'No', q6bool.text
-      q6ans = self._get(self._res_q6_answer)
-      self.validate_application_ptext(q6ans)
-      assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
+        assert q6_page_bool.text == 'No', q6_page_bool.text
+      q6_page_ans = self._get(self._res_q6_answer)
+      self.validate_application_ptext(q6_page_ans)
+      assert q6_page_ans.text == q6_data, '{0} != {1}'.format(q6_page_ans.text, q6_data)
     else:
-      recc_entry, q2entry, q3bentry, q3entry, q4bentry, q4entry, q5entry, q6entry = data
+      recc_data, q2_data, q3_bool_data, q3_data, q4_bool_data, q4_data, q5_data, q6_data = data
       recommendation = qb1.find_element(*self._fm_q1_answer)
       self.validate_application_ptext(recommendation)
-      assert recommendation.text.lower() == recc_entry.lower(), \
-          '{0} != {1}'.format(recommendation.text, recc_entry)
-      q2ans = qb2.find_element(*self._fm_q2_answer)
-      self.validate_application_ptext(q2ans)
-      assert q2ans.text == q2entry, '{0} != {1}'.format(q2ans.text, q2entry)
-      q3bool = qb3.find_element(*self._fm_q3_answer_bool)
-      self.validate_application_ptext(q3bool)
-      if q3bentry:
-        assert q3bool.text == 'Yes', q3bool.text
+      assert recommendation.text.lower() == recc_data.lower(), \
+          '{0} != {1}'.format(recommendation.text, recc_data)
+      q2_page_ans = qb2.find_element(*self._fm_q2_answer)
+      self.validate_application_ptext(q2_page_ans)
+      assert q2_page_ans.text == q2_data, '{0} != {1}'.format(q2_page_ans.text, q2_data)
+      q3_page_bool = qb3.find_element(*self._fm_q3_answer_bool)
+      self.validate_application_ptext(q3_page_bool)
+      if q3_bool_data:
+        assert q3_page_bool.text == 'Yes', q3_page_bool.text
       else:
-        assert q3bool.text == 'No', q3bool.text
-      q3ans = qb3.find_element(*self._fm_q3_answer)
-      self.validate_application_ptext(q3ans)
-      assert q3ans.text == q3entry, '{0} != {1}'.format(q3ans.text, q3entry)
-      q4bool = qb4.find_element(*self._fm_q4_answer_bool)
-      self.validate_application_ptext(q4bool)
-      if q4bentry:
-        assert q4bool.text == 'Yes', q4bool.text
+        assert q3_page_bool.text == 'No', q3_page_bool.text
+      q3_page_ans = qb3.find_element(*self._fm_q3_answer)
+      self.validate_application_ptext(q3_page_ans)
+      assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text, q3_data)
+      q4_page_bool = qb4.find_element(*self._fm_q4_answer_bool)
+      self.validate_application_ptext(q4_page_bool)
+      if q4_bool_data:
+        assert q4_page_bool.text == 'Yes', q4_page_bool.text
       else:
-        assert q4bool.text == 'No', q4bool.text
-      q4ans = qb4.find_element(*self._fm_q4_answer)
-      self.validate_application_ptext(q4ans)
-      assert q4ans.text == q4entry, '{0} != {1}'.format(q4ans.text, q4entry)
-      q5ans = qb5.find_element(*self._fm_q5_answer)
-      self.validate_application_ptext(q5ans)
-      assert q5ans.text == q5entry, '{0} != {1}'.format(q5ans.text, q5entry)
-      q6ans = qb6.find_element(*self._fm_q6_answer)
-      self.validate_application_ptext(q6ans)
-      assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
+        assert q4_page_bool.text == 'No', q4_page_bool.text
+      q4_page_ans = qb4.find_element(*self._fm_q4_answer)
+      self.validate_application_ptext(q4_page_ans)
+      assert q4_page_ans.text == q4_data, '{0} != {1}'.format(q4_page_ans.text, q4_data)
+      q5_page_ans = qb5.find_element(*self._fm_q5_answer)
+      self.validate_application_ptext(q5_page_ans)
+      assert q5_page_ans.text == q5_data, '{0} != {1}'.format(q5_page_ans.text, q5_data)
+      q6_page_ans = qb6.find_element(*self._fm_q6_answer)
+      self.validate_application_ptext(q6_page_ans)
+      assert q6_page_ans.text == q6_data, '{0} != {1}'.format(q6_page_ans.text, q6_data)
     report_submit_status = self._get(self._submitted_status)
     assert report_submit_status.text == 'This report has been submitted', report_submit_status.text
     self.validate_action_status_text(report_submit_status)
@@ -465,21 +465,21 @@ class ReviewerReportTask(BaseTask):
     confirm_yes = self._get(self._submit_confirm_yes_btn)
     confirm_yes.click()
     if research_type:
-      outdata = (recommendation,
+      outdata = [recommendation,
                  q2radval,
                  q2response,
                  q3response,
                  q4response,
                  q5response,
                  q6radval,
-                 q6response)
+                 q6response]
     else:
-      outdata = (recommendation,
+      outdata = [recommendation,
                  q2response,
                  q3radval,
                  q3response,
                  q4radval,
                  q4response,
                  q5response,
-                 q6response)
+                 q6response]
     return outdata

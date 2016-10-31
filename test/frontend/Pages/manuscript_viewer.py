@@ -543,7 +543,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """
-    outdata = ()
+    outdata = None
     logging.info('Complete task called for task: {0}'.format(task_name))
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
@@ -635,10 +635,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()
-    if outdata:
-      return outdata
-    else:
-      return None
+    return outdata
 
   def get_paper_title_from_page(self):
     """

@@ -3,6 +3,7 @@
 import re
 import time
 import os
+import random
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -112,7 +113,15 @@ class InviteCard(BaseCard):
     else:
       assert 'Abstract is not available' in invite_text, invite_text
     # Attach a file
-    fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/plos.gif')
+    sample_files = ('frontend/assets/docs/UserTest4_MS_File_2.docx',
+                    'frontend/assets/imgs/plos.gif',
+                    'frontend/assets/NC3Rs_ARRIVE_Guidelines_2013.pdf',
+                    'frontend/assets/PRISMA_2009_checklist.doc',
+                    'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png',
+                    'frontend/assets/supportingInfo/S1_File 2.xlsx'
+                    )
+    file_1, file_2 = random.sample(sample_files, 2)
+    fn = os.path.join(os.getcwd(), file_1)
     self.attach_file(fn)
     # look for file name and replace attachment link
     self._wait_for_element(self._get(self._replace_attachment))
@@ -120,7 +129,7 @@ class InviteCard(BaseCard):
     fn = fn.split('/')[-1].replace(' ', '+')
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
     # Attach a sencond file
-    fn = os.path.join(os.getcwd(), 'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png')
+    fn = os.path.join(os.getcwd(), file_2)
     self.attach_file(fn)
     # Wait for file to attach
     counter = 0

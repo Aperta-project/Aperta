@@ -33,7 +33,7 @@ class OrcidAccount < ActiveRecord::Base
 
   def profile_url
     return unless identifier
-    'https://' + TahiEnv.orcid_site_host + '/' + identifier
+    'http://' + TahiEnv.orcid_site_host + '/' + identifier
   end
 
   def access_token_valid

@@ -247,7 +247,7 @@ describe Typesetter::AuthorSerializer do
       describe 'orcid_profile_url' do
         it 'returns the profile url' do
           expect(output[:orcid_profile_url])
-            .to eq('https://sandbox.orcid.org/0000-0001-0002-0003')
+            .to eq('http://sandbox.orcid.org/0000-0001-0002-0003')
         end
       end
 

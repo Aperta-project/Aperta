@@ -131,7 +131,7 @@ describe OrcidAccount do
       let(:orcid_account) do
         FactoryGirl.build_stubbed(:orcid_account, identifier: 'my_id')
       end
-      let(:profile_url) { 'https://sandbox.orcid.org/my_id' }
+      let(:profile_url) { 'http://sandbox.orcid.org/my_id' }
 
       it 'returns the remote profile url' do
         expect(orcid_account.profile_url).to eq(profile_url)

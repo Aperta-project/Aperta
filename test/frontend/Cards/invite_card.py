@@ -113,11 +113,13 @@ class InviteCard(BaseCard):
     else:
       assert 'Abstract is not available' in invite_text, invite_text
     # Attach a file
-    sample_files = ('frontend/assets/docs/UserTest4_MS_File_2.docx',
-                    'frontend/assets/imgs/plos.gif',
+    sample_files = ('frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
                     'frontend/assets/NC3Rs_ARRIVE_Guidelines_2013.pdf',
-                    'frontend/assets/PRISMA_2009_checklist.doc',
+                    'frontend/assets/Chemical_Synthesis_of_Bacteriophage_G4.doc',
+                    'frontend/assets/imgs/plos.gif',
+                    'frontend/assets/imgs/fig1.eps',
                     'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png',
+                    'frontend/assets/imgs/are_you_edible_packbits.tiff'
                     'frontend/assets/supportingInfo/S1_File 2.xlsx'
                     )
     file_1, file_2 = random.sample(sample_files, 2)

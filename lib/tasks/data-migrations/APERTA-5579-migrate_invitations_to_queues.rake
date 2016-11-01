@@ -34,7 +34,7 @@ module QueueMigration
     reordered_invitations = grouped_invitations + remaining_sent + remaining_pending
 
     queue.invitations = reordered_invitations
-    queue.save
+    queue.save!
 
     # manually reorder according to our sorted positions.
     reordered_invitations.each_with_index do |i, pos|

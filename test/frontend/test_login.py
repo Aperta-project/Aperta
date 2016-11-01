@@ -75,7 +75,7 @@ class ApertaNativeLoginTest(CommonTest):
      - validate remember me function (only by cookie validation)
      - validate forgot password function (excludes email receipt validation)
   """
-  def rest_validate_native_login(self):
+  def test_validate_native_login(self):
     """
     test_login: Validate Native Login function, if enabled.
     Validates the presence of the following provided elements:
@@ -84,43 +84,46 @@ class ApertaNativeLoginTest(CommonTest):
     :return: void function
     """
     login_page = LoginPage(self.getDriver())
-    # Valid email, invalid pw
-    login_page.enter_login_field(login_valid_email)
-    login_page.enter_password_field(login_invalid_pw)
-    login_page.click_sign_in_button()
-    login_page.validate_invalid_login_attempt()
+    native_login_enabled = login_page.validate_initial_page_elements_styles()
+    logging.info('Native Login is enabled: {0}'.format(str(native_login_enabled)))
+    if native_login_enabled:
+      # Valid email, invalid pw
+      login_page.enter_login_field(login_valid_email)
+      login_page.enter_password_field(login_invalid_pw)
+      login_page.click_sign_in_button()
+      login_page.validate_invalid_login_attempt()
 
-    # Invalid email, invalid pw
-    login_page.enter_login_field(login_invalid_email)
-    login_page.enter_password_field(login_invalid_pw)
-    login_page.click_sign_in_button()
-    login_page.validate_invalid_login_attempt()
+      # Invalid email, invalid pw
+      login_page.enter_login_field(login_invalid_email)
+      login_page.enter_password_field(login_invalid_pw)
+      login_page.click_sign_in_button()
+      login_page.validate_invalid_login_attempt()
 
-    # valid email login
-    login_page.enter_login_field(login_valid_email)
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    login_page.sign_out()
-    login_page.validate_signed_out_msg()
+      # valid email login
+      login_page.enter_login_field(login_valid_email)
+      login_page.enter_password_field(login_valid_pw)
+      login_page.click_sign_in_button()
+      login_page.sign_out()
+      login_page.validate_signed_out_msg()
 
-    # valid uname login
-    login_page.enter_login_field(login_valid_uid)
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    login_page.sign_out()
-    login_page.validate_signed_out_msg()
+      # valid uname login
+      login_page.enter_login_field(login_valid_uid)
+      login_page.enter_password_field(login_valid_pw)
+      login_page.click_sign_in_button()
+      login_page.sign_out()
+      login_page.validate_signed_out_msg()
 
-    # forgotten password send email
-    login_page.open_fyp()
-    login_page.enter_fyp_field(login_valid_uid)
-    login_page.click_sri_button()
-    login_page.validate_fyp_email_fmt_error()
-    login_page.enter_fyp_field(login_valid_email)
-    login_page.click_sri_button()
-    login_page.validate_reset_pw_msg()
+      # forgotten password send email
+      login_page.open_fyp()
+      login_page.enter_fyp_field(login_valid_uid)
+      login_page.click_sri_button()
+      login_page.validate_fyp_email_fmt_error()
+      login_page.enter_fyp_field(login_valid_email)
+      login_page.click_sri_button()
+      login_page.validate_reset_pw_msg()
 
-    # Remember me function
-    login_page.validate_remember_me(login_valid_email, login_valid_pw)
+      # Remember me function
+      login_page.validate_remember_me(login_valid_email, login_valid_pw)
 
 
 @MultiBrowserFixture
@@ -170,7 +173,7 @@ class ApertaORCIDLoginTest(CommonTest):
   Self imposed AC:
      - validate sign in and sign out using ORCID and accompanying error messages
   """
-  def rest_validate_orcid_login(self):
+  def test_validate_orcid_login(self):
     """
     test_login: Validates ORCID sign-in wiring, elements and styles
     Does not validate actual sign-in
@@ -180,10 +183,13 @@ class ApertaORCIDLoginTest(CommonTest):
     :return: void function
     """
     login_page = LoginPage(self.getDriver())
-    # Valid email, valid pw
-    login_page.login_orcid()
-    orcid_login = OrcidLoginPage(self.getDriver())
-    orcid_login.validate_orcid_login_elements()
+    orcid_login_enabled = login_page.validate_initial_page_elements_styles()
+    logging.info('ORCID Login is enabled: {0}'.format(str(orcid_login_enabled)))
+    if orcid_login_enabled:
+      # Valid email, valid pw
+      login_page.login_orcid()
+      orcid_login = OrcidLoginPage(self.getDriver())
+      orcid_login.validate_orcid_login_elements()
 
 
 if __name__ == '__main__':

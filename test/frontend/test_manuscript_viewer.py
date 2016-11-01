@@ -90,7 +90,7 @@ class ManuscriptViewerTest(CommonTest):
       manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=False)
     return self
 
-  def _test_role_aware_menus(self):
+  def test_role_aware_menus(self):
     """
     APERTA-3: Validates role aware menus
     """

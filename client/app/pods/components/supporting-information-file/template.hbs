@@ -3,7 +3,7 @@
     <div class="si-file-filename">
       <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
 
-      <button class="fileinput-button">
+      <div class="fileinput-button">
         {{fa-icon icon="refresh"}}
         <span>Replace File</span>
         {{file-uploader url=attachmentUrl
@@ -11,7 +11,7 @@
                         multiple=false
                         filePrefix="supporting-info"
                         cancel="cancelUploads"}}
-      </button>
+      </div>
     </div>
     <div class="flex-group">
       {{input class="form-control flex-element si-file-label-input"

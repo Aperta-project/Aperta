@@ -8,6 +8,10 @@ export default Ember.Component.extend({
   positionSort: ['position:asc'],
   sortedInvitations: Ember.computed.sort('invitations', 'positionSort'),
 
+  invitationsInFlight: Ember.computed('invitations.@each.isSaving', function() {
+    return this.get('invitations').isAny('isSaving');
+  }),
+
   actions: {
     changePosition(newPosition, invitation) {
 

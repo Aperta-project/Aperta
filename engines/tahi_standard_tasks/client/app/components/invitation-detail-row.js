@@ -28,10 +28,10 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   allowAttachments: true,
   currentRound: computed.not('previousRound'),
-  changePositionPending: false,
+  invitationsInFlight: false,
 
-  draggable: computed('previousRound', 'invitation.canReposition', 'changePositionPending', function(){
-    if (this.get('previousRound') || this.get('changePositionPending')) { return false; }
+  draggable: computed('previousRound', 'invitation.canReposition', 'invitationsInFlight', function(){
+    if (this.get('previousRound') || this.get('invitationsInFlight')) { return false; }
     return this.get('invitation.canReposition');
   }),
 

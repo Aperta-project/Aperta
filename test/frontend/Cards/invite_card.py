@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import logging
 import re
 import time
 import os
@@ -68,6 +69,10 @@ class InviteCard(BaseCard):
     self._get(self._invite_send_invite_button).click()
     # The problem with this next item is that it requires the button to be clickable
     # when after send, the whole invite element is in a readonly state.
+    try:
+      self.check_for_flash_error()
+    except NoSuchElementException:
+      logging.error('Error fired on send invite.')
     self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 

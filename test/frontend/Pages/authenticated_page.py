@@ -521,6 +521,8 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._new_taxon_card)
     elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
+    elif cardname.lower() == 'review_by':
+      card_title = self._get(self._reviewer_report_card)
     elif cardname.lower() == 'reviewer_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':
@@ -967,6 +969,18 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('line-height') == '40px', title.value_of_css_property('line-height')
     assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+
+  @staticmethod
+  def validate_action_status_text(message):
+    """In some places in the app, we give a status message in a large green font"""
+    assert application_typeface in message.value_of_css_property('font-family'), \
+      message.value_of_css_property('font-family')
+    assert message.value_of_css_property('font-size') == '16px', message.value_of_css_property(
+      'font-size')
+    assert message.value_of_css_property('line-height') == '22.85px', message.value_of_css_property(
+      'line-height')
+    assert message.value_of_css_property('color') == aperta_green, message.value_of_css_property(
+      'color')
 
   # Ordinary Text Styles ============================
   @staticmethod

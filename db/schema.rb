@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031153002) do
+ActiveRecord::Schema.define(version: 20161031203655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,16 @@ ActiveRecord::Schema.define(version: 20161031153002) do
     t.string   "current_address_postal"
     t.integer  "user_id"
   end
+
+  create_table "bibitems", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "format"
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
@@ -264,6 +274,20 @@ ActiveRecord::Schema.define(version: 20161031153002) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
+  create_table "figures", force: :cascade do |t|
+    t.string   "attachment"
+    t.integer  "paper_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.text     "caption"
+    t.string   "status",     default: "processing"
+    t.string   "token"
+  end
+
+  add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
+  add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
+
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
@@ -319,7 +343,6 @@ ActiveRecord::Schema.define(version: 20161031153002) do
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
     t.string  "title"
-    t.string  "old_role"
     t.string  "kind"
     t.json    "required_permissions"
     t.boolean "system_generated"
@@ -571,6 +594,20 @@ ActiveRecord::Schema.define(version: 20161031153002) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
+  create_table "question_attachments", force: :cascade do |t|
+    t.integer  "nested_question_answer_id"
+    t.string   "attachment"
+    t.string   "title"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "token"
+    t.string   "caption"
+  end
+
+  add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
+  add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
+
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true
@@ -666,11 +703,41 @@ ActiveRecord::Schema.define(version: 20161031153002) do
 
   add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
 
+  create_table "supporting_information_files", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "attachment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",      default: "processing"
+    t.boolean  "publishable", default: true
+    t.string   "token"
+    t.string   "label"
+    t.string   "category"
+    t.integer  "si_task_id"
+  end
+
+  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
+  add_index "supporting_information_files", ["si_task_id"], name: "index_supporting_information_files_on_si_task_id", using: :btree
+  add_index "supporting_information_files", ["token"], name: "index_supporting_information_files_on_token", unique: true, using: :btree
+
   create_table "systems", force: :cascade do |t|
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  create_table "tables", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "title"
+    t.string   "caption"
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
 
   create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
     t.integer  "paper_id"

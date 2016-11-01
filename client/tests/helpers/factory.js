@@ -744,7 +744,6 @@ FactoryAttributes.JournalTaskType = {
   task_type_id: null,
   title: null,
   journal_id: null,
-  old_role: null
 };
 
 FactoryAttributes.TaskTemplate = {

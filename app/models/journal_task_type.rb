@@ -1,6 +1,6 @@
 class JournalTaskType < ActiveRecord::Base
   belongs_to :journal, inverse_of: :journal_task_types
-  validates :old_role, :title, presence: true
+  validates :title, presence: true
   after_create :log_created_record
 
   def required_permissions

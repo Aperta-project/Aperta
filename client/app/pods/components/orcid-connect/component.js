@@ -33,7 +33,7 @@ export default Ember.Component.extend({
 
   // Returns true when the user has an orcidAccount and the given user is
   // the same as the currently logged in user. Otherwise, return false.
-  orcidConnectEnabled: Ember.computed('orcidAccount', function(){
+  orcidConnectEnabled: Ember.computed('orcidAccount', 'user.id', 'currentUser.id', function(){
     const userId = this.get('user.id'),
       currentUserId = this.get('currentUser.id');
     return this.get('orcidAccount') && Ember.isEqual(userId, currentUserId);

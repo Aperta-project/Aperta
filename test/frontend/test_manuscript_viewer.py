@@ -6,10 +6,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, \
-    creator_login4, creator_login5, reviewer_login, handling_editor_login, academic_editor_login, \
-    internal_editor_login, cover_editor_login, staff_admin_login, pub_svcs_login, \
-    prod_staff_login, super_admin_login
+from Base.Resources import users, editorial_users, external_editorial_users, \
+    admin_users, super_admin_login
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -20,22 +18,6 @@ from frontend.common_test import CommonTest
 This test case validates the article editor page and its associated overlays.
 """
 __author__ = 'sbassi@plos.org'
-
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
-         reviewer_login,
-         handling_editor_login,
-         cover_editor_login,
-         academic_editor_login,
-         internal_editor_login,
-         staff_admin_login,
-         pub_svcs_login,
-         prod_staff_login,
-         super_admin_login,
-         ]
 
 
 @MultiBrowserFixture
@@ -60,7 +42,8 @@ class ManuscriptViewerTest(CommonTest):
       - button for workflow
       - button for more options
     """
-    user = random.choice(users)
+    all_users = users + editorial_users + external_editorial_users + admin_users
+    user = random.choice(all_users)
     logging.info('Running test_validate_components_styles')
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
@@ -84,7 +67,7 @@ class ManuscriptViewerTest(CommonTest):
     time.sleep(5)
     manuscript_viewer.validate_independent_scrolling()
     manuscript_viewer.validate_nav_toolbar_elements(user)
-    if user in (staff_admin_login, super_admin_login):
+    if user in admin_users:
       manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=True)
     else:
       manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=False)
@@ -94,44 +77,46 @@ class ManuscriptViewerTest(CommonTest):
     """
     APERTA-3: Validates role aware menus
     """
-    roles = {creator_login1['email']: 7,
-             creator_login2['email']: 7,
-             creator_login3['email']: 7,
-             creator_login4['email']: 7,
-             creator_login5['email']: 7,
-             reviewer_login['email']: 7,
-             academic_editor_login['email']: 7,
-             handling_editor_login['email']: 8,
-             super_admin_login['email']: 8,
-             staff_admin_login['email']: 8,
-             pub_svcs_login['email']: 7,
-             internal_editor_login['email']: 8,
-             }
-
-    for user in users:
+    roles = { 'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
+              'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
+              'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
+              'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 6,
+              'Cover Editor': 6, 'Reviewer': 7}
+    random_users = [random.choice(users), random.choice(editorial_users),
+                    random.choice(external_editorial_users), random.choice(admin_users)]
+    for user in random_users:
       logging.info('Logging in as user: {0}'.format(user))
-      logging.info('role: {0}'.format(roles[user['user']]))
-      uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
       dashboard_page = self.cas_login(user['email'])
       dashboard_page.set_timeout(120)
-      if dashboard_page.validate_manuscript_section_main_title(user['user']) > 0:
+      if dashboard_page.get_dashboard_ms(user):
         dashboard_page.restore_timeout()
-        self.select_preexisting_article(init=False, first=True)
+        self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-        time.sleep(3)  # needed to give time to retrieve new menu items
-        if user['user'] == academic_editor_login['user']:
-          paper_id = manuscript_viewer.get_paper_id_from_url()
-          permissions = PgSQL().query('SELECT paper_roles.old_role FROM paper_roles '
-                                      'WHERE user_id = %s AND paper_id = %s;', (uid, paper_id))
-          for x in permissions:
-            if ('editor',) == x:
-              roles[user['user']] = 8
-        manuscript_viewer.validate_roles(roles[user['user']])
+        # Check if paper is loaded by calling an element in paper viewer
+        manuscript_viewer._get(manuscript_viewer._paper_title)
+        journal_id = manuscript_viewer.get_journal_id()
+        uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
+        paper_id = manuscript_viewer.get_paper_id_from_url()
+        journal_permissions = PgSQL().query('select name from roles where id in (select role_id'
+                                            ' from assignments where ((assigned_to_id = %s and '
+                                            'assigned_to_type = \'Journal\' and user_id = %s)));',
+                                            (journal_id, uid))
+        paper_permissions = PgSQL().query('select name from roles where id in (select role_id '
+                                          'from assignments where ((assigned_to_id = %s and '
+                                          'assigned_to_type = \'Paper\' and user_id = %s)));',
+                                          (paper_id, uid))
+        system_permissions = PgSQL().query('select name from roles where id in (select role_id '
+                                          'from assignments where ((assigned_to_type = '
+                                          '\'System\' and user_id = %s)));',(uid,))
+        permissions = journal_permissions + paper_permissions + system_permissions
+        max_elements = max([roles[item] for sublist in permissions for item in sublist])
+        logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
+                    .format(user, paper_id, permissions, max_elements))
+        manuscript_viewer.validate_roles(max_elements)
       else:
         dashboard_page.restore_timeout()
         logging.info('No manuscripts present for user: {0}'.format(user['user']))
-    # Logout
-    dashboard_page.logout()
+      dashboard_page.logout()
     return self
 
   def test_initial_submission_infobox(self):
@@ -157,8 +142,9 @@ class ManuscriptViewerTest(CommonTest):
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
-    logging.info('Logging in as user: {0}'.format(creator_login5))
-    dashboard_page = self.cas_login(email=creator_login5['email'])
+    user = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user))
+    dashboard_page = self.cas_login(email=user['email'])
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
@@ -200,7 +186,7 @@ class ManuscriptViewerTest(CommonTest):
     self._driver.get(paper_url)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Note: Request title to make sure the required page is loaded
-    manuscript_page.set_timeout(20)
+    manuscript_page.set_timeout(60)
     manuscript_page.get_paper_title_from_page()
     manuscript_page.restore_timeout()
     manuscript_page.set_timeout(.5)
@@ -222,7 +208,7 @@ class ManuscriptViewerTest(CommonTest):
     paper_id = manuscript_page.get_current_url().split('/')[-1]
     # Complete IMG card to force display of submission status project
     time.sleep(1)
-    print('Opening the Figures task')
+    logging.debug('Opening the Figures task')
     manuscript_page.click_task('Figures')
     time.sleep(5)
     manuscript_page.complete_task('Figures')
@@ -234,8 +220,6 @@ class ManuscriptViewerTest(CommonTest):
         manuscript_page.get_submission_status_ready2submit_text()
     # APERTA-6840 - we disabled add collaborators temporarily
     # manuscript_page.logout()
-
-
     # dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
     # dashboard_page.go_to_manuscript(paper_id)
     # time.sleep(1)
@@ -257,7 +241,7 @@ class ManuscriptViewerTest(CommonTest):
 
     # Approve initial Decision
     logging.info('Logging in as user: {0}'.format(super_admin_login['user']))
-    dashboard_page = self.cas_login(email=super_admin_login['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=super_admin_login['email'])
     time.sleep(1)
     # the following call should only succeed for superadm
     dashboard_page.go_to_manuscript(paper_id)
@@ -272,8 +256,8 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_page.logout()
 
     # Test for AC8
-    logging.info('Logging in as user: {0}'.format(creator_login5))
-    dashboard_page = self.cas_login(email=creator_login5['email'])
+    logging.info('Logging in as user: {0}'.format(user))
+    dashboard_page = self.cas_login(email=user['email'])
     time.sleep(1)
     # the following call should only succeed for sa_login
     dashboard_page.go_to_manuscript(paper_id)
@@ -289,14 +273,14 @@ class ManuscriptViewerTest(CommonTest):
   def test_paper_download(self):
     """
     test_manuscript_viewer: Validates the download functions, formats, UI elements and styles
-    :return void function
+    :return: void function
     """
     user = random.choice(users)
     logging.info('Running test_paper_download')
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
     # Checking if there is already a manuscript one can use
-    if dashboard_page.validate_manuscript_section_main_title(user)[0]:
+    if dashboard_page.get_dashboard_ms(user):
       self.select_preexisting_article(first=True)
     else:
       # create a new manuscript

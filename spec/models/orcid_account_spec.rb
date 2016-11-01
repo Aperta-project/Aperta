@@ -25,7 +25,7 @@ describe OrcidAccount do
     end
   end
 
-  describe '#authenticated_identifier?' do
+  describe '#authenticated?' do
     context 'with access token' do
       let(:orcid_account) do
         FactoryGirl.build_stubbed(:orcid_account,
@@ -33,7 +33,7 @@ describe OrcidAccount do
         )
       end
       it 'returns truthy' do
-        expect(orcid_account.authenticated_identifier?).to be_truthy
+        expect(orcid_account.authenticated?).to be_truthy
       end
     end
 
@@ -42,7 +42,7 @@ describe OrcidAccount do
         FactoryGirl.build_stubbed(:orcid_account, identifier: 'a')
       end
       it 'returns truthy' do
-        expect(orcid_account.authenticated_identifier?).to be_falsey
+        expect(orcid_account.authenticated?).to be_falsey
       end
     end
   end

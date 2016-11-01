@@ -27,7 +27,7 @@ class OrcidAccount < ActiveRecord::Base
     raise OrcidAccount::APIError, ex.to_s
   end
 
-  def authenticated_identifier?
+  def authenticated?
     access_token && identifier
   end
 

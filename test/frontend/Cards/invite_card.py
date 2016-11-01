@@ -115,7 +115,7 @@ class InviteCard(BaseCard):
     # Attach a file
     sample_files = ('frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
                     'frontend/assets/NC3Rs_ARRIVE_Guidelines_2013.pdf',
-                    'frontend/assets/Chemical_Synthesis_of_Bacteriophage_G4.doc',
+                    'frontend/assets/docs/Chemical_Synthesis_of_Bacteriophage_G4.doc',
                     'frontend/assets/imgs/plos.gif',
                     'frontend/assets/imgs/fig1.eps',
                     'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png',

@@ -28,7 +28,7 @@ class ManuscriptViewerTest(CommonTest):
     APERTA-3
   """
 
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     test_manuscript_viewer: Validate elements and styles for the manuscript viewer page
     APERTA-3: validate page elements and styles
@@ -119,7 +119,7 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page.logout()
     return self
 
-  def _test_initial_submission_infobox(self):
+  def test_initial_submission_infobox(self):
     """
     test_manuscript_viewer: Validate elements and styles of the initial submission infobox
     Aperta-5515
@@ -270,7 +270,7 @@ class ManuscriptViewerTest(CommonTest):
         manuscript_page.get_submission_status_ready2submit_text()
     return self
 
-  def _test_paper_download(self):
+  def test_paper_download(self):
     """
     test_manuscript_viewer: Validates the download functions, formats, UI elements and styles
     :return: void function

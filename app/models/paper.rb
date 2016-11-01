@@ -607,7 +607,10 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_doi!
-    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
+    return unless journal
+    update!(doi: DoiService.new(journal: journal).next_doi!)
+    doi_parts = doi.split('.')
+    update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])
   end
 
   def create_versioned_texts

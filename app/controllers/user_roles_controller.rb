@@ -1,6 +1,5 @@
 class UserRolesController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
   respond_to :json
 
   # TODO: look into this
@@ -35,9 +34,5 @@ class UserRolesController < ApplicationController
         UserRole.new(user_role_params)
       end
     end
-  end
-
-  def enforce_policy
-    authorize_action!(resource: user_role)
   end
 end

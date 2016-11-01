@@ -21,7 +21,10 @@ class PapersController < ApplicationController
       :supporting_information_files,
       { paper_roles: [:user] },
       :journal
-    ).find(params[:id])
+    ).find_by_short_doi(params[:short_doi])
+    puts '--------------------------------------'
+    puts paper
+    puts '--------------------------------------'
     requires_user_can(:view, paper)
     respond_with(paper)
   end

@@ -12,6 +12,7 @@ class AddShortDoi < ActiveRecord::Migration
         Paper.all.each do |p|
           parts = p.doi.split('/').last.split('.')
           p.short_doi = parts[-2] + '.' + parts[-1]
+          p.save!
         end
       end
 

@@ -88,6 +88,10 @@ class Paper < ActiveRecord::Base
     journal_prefix_and_number.try(:join, '.')
   end
 
+  def to_param
+    short_doi
+  end
+
   after_create :assign_doi!
   after_create :create_versioned_texts
   after_commit :state_transition_notifications

@@ -110,7 +110,8 @@ Tahi::Application.routes.draw do
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
-    resources :papers, only: [:index, :create, :show, :update] do
+    resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z]+\.[0-9]+/ }, \
+                       only: [:index, :create, :show, :update] do
       resources :roles, only: [], controller: 'paper_roles' do
         resources :eligible_users, only: [:index], controller: 'paper_role_eligible_users'
       end

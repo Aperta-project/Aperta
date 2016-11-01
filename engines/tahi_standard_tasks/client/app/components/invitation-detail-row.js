@@ -94,8 +94,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return this.get('invitation.pending') && !this.get('closedState') && this.get('currentRound');
   }),
 
-  displayRescindButton: computed('invitation.invited', 'invitation.accepted', 'currentRound', function() {
-    return this.get('currentRound') && (this.get('invitation.invited') || this.get('invitation.accepted'));
+  displayRescindButton: computed('invitation.{invited,accepted}', 'closedState', 'currentRound', function() {
+    return this.get('currentRound') && !this.get('closedState') && (this.get('invitation.invited') || this.get('invitation.accepted'));
   }),
 
   destroyDisabled: or('disabled', 'invitation.isPrimary'),

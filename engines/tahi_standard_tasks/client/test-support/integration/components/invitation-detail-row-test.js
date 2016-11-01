@@ -67,6 +67,18 @@ test('the row is in the closed state, in the current round', function(assert) {
   assert.elementFound('.invitation-item-action-send', 'send button shown when the invitation is pending');
 });
 
+test('the row is in the closed state, invitation is invited, in the current round', function(assert) {
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'closed'
+  });
+  this.render(openTemplate);
+  assert.elementNotFound('.invitation-item-action-delete', 'destroy button not shown if the row is closed');
+  assert.elementNotFound('.invitation-item-action-rescind', 'rescind not shown when the invitation is invited');
+  assert.elementNotFound('.invitation-item-action-send', 'send button not shown when the invitation is invited');
+});
+
 test('the row is in the closed state, in the previous round', function(assert) {
   this.setProperties({
     'invitation.state': 'pending',

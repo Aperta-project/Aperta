@@ -70,7 +70,7 @@ var newInvitation = function(email) {
     body: 'Hello',
     alternates: [],
     save() { return Ember.RSVP.resolve(this); },
-    send() { return Ember.RSVP.resolve(this); }
+    invite() { return Ember.RSVP.resolve(this); }
   });
 };
 

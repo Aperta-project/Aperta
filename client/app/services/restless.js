@@ -62,12 +62,15 @@ export default Ember.Service.extend({
   },
 
   putUpdate(model, path, data) {
+    // set the model's state to 'updated.inFlight' so we can ask if it's 'isSaving'
+    model.send('willCommit');
     return this.putModel(model, path, data).then(function(response) {
       return model.get('store').pushPayload(response);
     }, function(xhr) {
-      let errors, modelErrors;
+      let modelErrors;
 
-      if (errors = xhr.responseJSON.errors) {
+      let errors = xhr.responseJSON.errors;
+      if (errors) {
         errors = camelizeKeys(errors);
         modelErrors = model.get('errors');
         Object.keys(errors).forEach(function(key) {
@@ -79,6 +82,10 @@ export default Ember.Service.extend({
         status: xhr.status,
         model: model
       };
+    }).finally(() => {
+      // for now always send 'didCommit' rather than sending 'becameError' on error
+      // in order to avoid possibly breaking in some other places
+      model.send('didCommit');
     });
   },
 

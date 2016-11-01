@@ -98,7 +98,7 @@ export default DS.Model.extend({
      });
   },
 
-  send() {
+  invite() {
     return this.get('restless').putUpdate(this, '/send_invite');
   },
 

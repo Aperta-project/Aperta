@@ -116,7 +116,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }).drop(),
 
   sendInvitation: concurrencyTask(function * (invitation) {
-    return yield invitation.send();
+    return yield invitation.invite();
   }).drop(),
 
   actions: {

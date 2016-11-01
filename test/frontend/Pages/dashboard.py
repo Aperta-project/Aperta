@@ -46,9 +46,9 @@ class DashboardPage(AuthenticatedPage):
         'section#dashboard-my-submissions button.button-primary.button--green')
     self._dash_active_section_title = (By.CSS_SELECTOR, 'thead.active-papers tr th')
     self._dash_active_role_th = (By.XPATH,
-                                 "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
+                                 "//table[contains(@class,'table-borderless')][1]/thead/tr/th[2]")
     self._dash_active_status_th = (By.XPATH,
-                                   "//div[@class='table-responsive'][1]/table/thead/tr/th[3]")
+                                   "//table[contains(@class,'table-borderless')][1]/thead/tr/th[3]")
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
     self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
@@ -57,9 +57,9 @@ class DashboardPage(AuthenticatedPage):
 
     self._dash_inactive_section_title = (By.CSS_SELECTOR, 'thead.inactive-papers tr th')
     self._dash_inactive_role_th = (By.XPATH,
-                                   "//div[@class='table-responsive'][2]/table/thead/tr/th[2]")
+                                   "//table[contains(@class,'table-borderless')][2]/thead/tr/th[2]")
     self._dash_inactive_status_th = (By.XPATH,
-                                     "//div[@class='table-responsive'][2]/table/thead/tr/th[3]")
+                                     "//table[contains(@class,'table-borderless')][2]/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
     self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
@@ -102,7 +102,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
-    self._first_paper = (By.CSS_SELECTOR, 'div.table-responsive a')
+    self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless a')
     # View invitations
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
     self._view_invitations = (By.TAG_NAME, 'button')
@@ -279,6 +279,58 @@ class DashboardPage(AuthenticatedPage):
       self.validate_application_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
+
+  def get_dashboard_ms(self, user):
+    """
+    Get amount of related manuscripts of a user
+    :param user: user dictionary to get related manuscripts
+    :return: A count of active_manuscripts
+    """
+    user = user['user']
+    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (user,))[0][0]
+    # Get count of distinct papers from paper_roles for validating count of manuscripts on
+    # dashboard welcome message
+    active_manuscript_list = []
+    try:
+      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                                'papers.updated_at '
+                                                'FROM assignments '
+                                                'JOIN roles ON assignments.role_id=roles.id '
+                                                'JOIN papers ON '
+                                                'papers.id=assignments.assigned_to_id '
+                                                'WHERE assignments.user_id=%s AND '
+                                                'roles.participates_in_papers=True AND '
+                                                'assignments.assigned_to_type=\'Paper\' AND '
+                                                'papers.publishing_state NOT '
+                                                'IN (\'withdrawn\', \'rejected\', \'submitted\', '
+                                                '\'checking\', \'initially_submitted\', '
+                                                '\'in_revision\', \'invited_for_full_submission\') '
+                                                ';', (uid,))
+      # APERTA-6352 We are not correctly sorting active submitted documents on the dashboard
+      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+                                               'assignments.created_at '
+                                               'FROM assignments '
+                                               'JOIN roles ON assignments.role_id=roles.id '
+                                               'JOIN papers ON '
+                                               'papers.id=assignments.assigned_to_id '
+                                               'WHERE assignments.user_id=%s AND '
+                                               'roles.participates_in_papers=True AND '
+                                               'assignments.assigned_to_type=\'Paper\' AND '
+                                               'papers.publishing_state '
+                                               'IN (\'submitted\', \'checking\', '
+                                               '\'initially_submitted\', \'in_revision\', '
+                                               '\'invited_for_full_submission\') '
+                                               ';', (uid,))
+      for amt in activ_manu_unsbmtd_tuples:
+        active_manuscript_list.append(amt[0])
+      for amt in active_manu_sbmtd_tuples:
+        active_manuscript_list.append(amt[0])
+      logging.info(active_manuscript_list)
+    except DatabaseError:
+      logging.error('Database access error.')
+      raise
+    return len(active_manuscript_list)
+
 
   def validate_manuscript_section_main_title(self, user):
     """

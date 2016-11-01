@@ -84,8 +84,8 @@ class AuthenticatedPage(PlosPage):
     self._discussions_icon = (By.CSS_SELECTOR, 'a.control-bar-item--last div')
     self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
     # TODO: Change this when APERTA-5531 is completed
-    self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
-    self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar.toot div.bar-item')
+    self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-button')
+    self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar label.bar-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.overlay-header-title')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
@@ -172,8 +172,44 @@ class AuthenticatedPage(PlosPage):
     self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
     self._overlay_action_button_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a.button-link')
     self._overlay_action_button_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons button.button-primary')
+    # Attachment component
+    self._replace_attachment = (By.CSS_SELECTOR, 'span.replace-attachment')
+    self._attachment_div = (By.CSS_SELECTOR, 'div.attachment-manager')
+    self._att_item = (By.CSS_SELECTOR, 'div.attachment-item')
+    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
 
   # POM Actions
+  def attach_file(self, file_name):
+    """
+    Attach a file to the attach component that is located in Invite AE and other places
+    :param file_name: File name with the full path
+    :return: None
+    """
+    self._gets(self._file_attach_btn)[0].send_keys(file_name)
+    return None
+
+  def delete_attach_file(self, file_name):
+    """
+    Delete a file from the attach component that is located in Invite AE and other places
+    :param file_name: File name with the full path
+    :return: None
+    """
+    items = self._get(self._attachment_div).find_elements(*self._att_item)
+    for item in items:
+      if file_name.split('/')[-1] in item.text:
+        item.find_element(*(By.CSS_SELECTOR, 'span.delete-attachment')).click()
+        break
+    return None
+
+  def get_attached_file_names(self):
+    """
+    Return a list with the file names in the attachment section
+    :return: A list with file names as displayed in the attachment section
+    """
+    attachments = [x.text.split(' ')[0] for x in self._gets(self._attachments)]
+    return attachments
+
   def click_profile_nav(self):
     """
     Click profile navigation

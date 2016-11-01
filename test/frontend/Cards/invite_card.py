@@ -3,6 +3,8 @@
 import logging
 import re
 import time
+import os
+import random
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -48,6 +50,8 @@ class InviteCard(BaseCard):
     self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
     self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
+    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    self._replace_attachment = (By.CLASS_NAME, 'replace-attachment')
 
   # POM Actions
   def invite(self, user):
@@ -58,12 +62,13 @@ class InviteCard(BaseCard):
     """
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
-    self._wait_for_element(self._get(self._compose_invitation_button))
     self._get(self._compose_invitation_button).click()
     self._wait_for_element(self._get(self._edit_invite_text_save))
     self._get(self._edit_invite_text_save).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
     self._get(self._invite_send_invite_button).click()
+    # The problem with this next item is that it requires the button to be clickable
+    # when after send, the whole invite element is in a readonly state.
     try:
       self.check_for_flash_error()
     except NoSuchElementException:
@@ -79,6 +84,7 @@ class InviteCard(BaseCard):
         or username
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
+    :param attach: filename to attach to the invitation
     :param ms_id: paper id of the manuscript
     :return void function
     """
@@ -111,15 +117,56 @@ class InviteCard(BaseCard):
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
+    # Attach a file
+    sample_files = ('frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
+                    'frontend/assets/NC3Rs_ARRIVE_Guidelines_2013.pdf',
+                    'frontend/assets/docs/Chemical_Synthesis_of_Bacteriophage_G4.doc',
+                    'frontend/assets/imgs/plos.gif',
+                    'frontend/assets/imgs/fig1.eps',
+                    'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png',
+                    'frontend/assets/imgs/are_you_edible_packbits.tiff'
+                    'frontend/assets/supportingInfo/S1_File 2.xlsx'
+                    )
+    file_1, file_2 = random.sample(sample_files, 2)
+    fn = os.path.join(os.getcwd(), file_1)
+    self.attach_file(fn)
+    # look for file name and replace attachment link
+    self._wait_for_element(self._get(self._replace_attachment))
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
+    # Attach a sencond file
+    fn = os.path.join(os.getcwd(), file_2)
+    self.attach_file(fn)
+    # Wait for file to attach
+    counter = 0
+    while True:
+      if len(self._gets(self._replace_attachment)) == 2 or counter == 60:
+        break
+      counter += 1
+      time.sleep(.5)
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
+    # Delete the second file from the attach
+    self.delete_attach_file(fn)
+    # Test that there is only one attach after the delete
+    counter = 0
+    while True:
+      if len(self._gets(self._replace_attachment)) == 1 or counter == 60:
+        break
+      counter += 1
+      time.sleep(.5)
     self._get(self._edit_save_invitation_btn).click()
-    time.sleep(1)
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])
     self._get(self._invitee_updated_at)
     # Make the actual invitation
     self._get(self._send_invitation_button).click()
+    # This wait is needed for the invite text to appear
     time.sleep(2)
+    invitees = self._gets(self._invitee_listing)
     assert any('Invited' in s for s in [x.text for x in invitees]), \
         'Invited not found in {0}'.format([x.text for x in invitees])
     self._gets(self._rescind_button)

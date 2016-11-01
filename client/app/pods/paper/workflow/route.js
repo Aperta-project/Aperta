@@ -19,8 +19,6 @@ export default AuthorizedRoute.extend({
 
       let promises = [];
 
-      // TODO: We need to do this via another method/route so that we can
-      // use a hook to create the queue for a PaperEditor task
       taskTypeList.forEach((task) => {
         let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
         let newTaskPromise = this.store.createRecord(unNamespacedKind, {

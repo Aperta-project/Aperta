@@ -10,6 +10,13 @@ export default Ember.Component.extend({
 
   _tooltipExists: false,
 
+  willDestroyElement() {
+    if (this.get('_tooltipExists')) {
+      this.$().tooltip('destroy');
+      this.set('_tooltipExists', false);
+    }
+  },
+
   didRender() {
     this._super(...arguments);
     if (this.get('enabled') && !this.get('_tooltipExists')) {

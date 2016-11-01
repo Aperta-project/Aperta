@@ -78,10 +78,6 @@ export default Ember.Component.extend({
     this.set('pendingInvitation', invitation);
     try {
       yield invitation.save();
-      // The nature of the server response should let us skip the stuff below
-      // if (this.get('groupByDecision')) {
-      //   this.get('latestDecision.invitations').addObject(invitation);
-      // }
 
       this.setProperties({
         activeInvitation: invitation,

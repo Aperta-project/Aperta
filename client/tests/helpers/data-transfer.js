@@ -1,5 +1,6 @@
 // Shamelessly taken from the https://github.com/mharris717/ember-drag-drop addon
 //
+// ****Usage example in tests********
 // let event = MockDataTransfer.makeMockEvent();
 //  let $component = this.$('.draggable-object');
 //
@@ -8,6 +9,7 @@
 // });
 //
 // assert.equal($component.hasClass('is-dragging-object'), true);
+// ******end usage example
 import Ember from 'ember';
 
 var c = Ember.Object.extend({

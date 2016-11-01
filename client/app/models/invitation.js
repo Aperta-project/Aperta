@@ -46,7 +46,7 @@ export default DS.Model.extend({
   declined: currentState('declined'),
   rescinded: currentState('rescinded'),
 
-  validNewPositionsForInvitation: DS.attr(),
+  validNewPositionsForInvitation: DS.attr(), // will come in as an array of integers
 
   invitationFeedbackIsBlank: Ember.computed(
     'reviewerSuggestions',

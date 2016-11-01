@@ -108,6 +108,20 @@ test('the row is in the show state, invitation is invited, and in current round'
   assert.elementNotFound('.invitation-item-action-send');
 });
 
+test('the row is in the show state, invitation is invited, and in previous round', function(assert) {
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: false,
+    uiState: 'show'
+  });
+
+  this.render(openTemplate);
+
+  assert.elementNotFound('.invitation-item-action-delete');
+  assert.elementNotFound('.invitation-item-action-rescind');
+  assert.elementNotFound('.invitation-item-action-send');
+});
+
 test('the row is in the show state, invitation is declined, and in current round', function(assert) {
   this.setProperties({
     'invitation.state': 'declined',
@@ -121,7 +135,6 @@ test('the row is in the show state, invitation is declined, and in current round
   assert.elementNotFound('.invitation-item-action-rescind');
   assert.elementNotFound('.invitation-item-action-send');
 });
-
 
 test('grouped invitations are disabled when their primary has been invited or accepted', function(assert) {
   this.set('invitation', make('invitation', {

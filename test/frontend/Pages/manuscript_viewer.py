@@ -188,7 +188,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # allow time for components to attach to DOM
     time.sleep(1)
     bar_items = self._gets(self._bar_items)
-    version_number = bar_items[1].text.split('\n')[1].split()[0]
+    version_number = bar_items[1].text.split('\n')[2].split()[0]
     self._get(self._tb_versions_closer).click()
     return version_number
 

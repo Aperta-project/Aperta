@@ -19,7 +19,7 @@ class IhatJobRequest
   end
 
   def self.recipe_name(from_format:, to_format:)
-    from, to = [from_format, to_format].map(&:to_sym)
+    from, to = [from_format.downcase, to_format.downcase].map(&:to_sym)
     case [from, to]
     when [:doc, :html]
       'doc_to_html'

@@ -8,6 +8,12 @@ describe IhatJobRequest do
           IhatJobRequest.recipe_name(from_format: "doc", to_format: "html")
         ).to eq("doc_to_html")
       end
+
+      it "downcases extensions" do
+        expect(
+          IhatJobRequest.recipe_name(from_format: "DOC", to_format: "html")
+        ).to eq("doc_to_html")
+      end
     end
 
     context "invalid input/output formats" do

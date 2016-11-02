@@ -11,7 +11,6 @@ module Typesetter
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
     attribute :abstract, key: :paper_abstract
-    attribute :this_is_a_test
 
     has_one :competing_interests,
             serializer: Typesetter::CompetingInterestsSerializer
@@ -19,7 +18,7 @@ module Typesetter
             serializer: Typesetter::FinancialDisclosureSerializer
     has_one :data_availability,
             serializer: Typesetter::DataAvailabilitySerializer
-    has_one :early_article_posting,
+    has_one :early_posting,
             serializer: Typesetter::EarlyPostingSerializer
 
     has_many :author_list_items,
@@ -72,7 +71,7 @@ module Typesetter
       task('TahiStandardTasks::DataAvailabilityTask')
     end
 
-    def early_article_posting
+    def early_posting
       task('TahiStandardTasks::EarlyPostingTask')
     end
 

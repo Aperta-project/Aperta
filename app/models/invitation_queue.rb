@@ -17,17 +17,19 @@ class InvitationQueue < ActiveRecord::Base
   def add_invitation(invitation)
     # acts_as_list always puts new items at the bottom of the list by default,
     # so we don't need to do anything further.
-    invitation.update(invitation_queue: self)
-    invitation.move_to_bottom
+    validates_unique_positions(invitation) do
+      invitation.update(invitation_queue: self)
+      invitation.move_to_bottom
+    end
   end
 
   def valid_new_positions_for_invitation(invitation)
     return [] if invitation.has_alternates? || !invitation.pending?
     valid_invitations = if invitation.is_alternate?
-                      invitation.primary.alternates
-                    else
-                      invitations.reload.select(&:ungrouped_primary?)
-                    end
+                          invitation.primary.alternates
+                        else
+                          invitations.reload.select(&:ungrouped_primary?)
+                        end
 
     valid_invitations
       .select(&:pending?)
@@ -37,19 +39,19 @@ class InvitationQueue < ActiveRecord::Base
 
   def move_invitation_to_position(invitation, pos)
     raise_position_error(invitation, "unpersisted invitation called") unless invitation.persisted?
+    raise_position_error(invitation, "new position is not valid") unless valid_new_positions_for_invitation(invitation).include?(pos)
 
-    if valid_new_positions_for_invitation(invitation).include? pos
+    validates_unique_positions(invitation) do
       invitation.insert_at(pos)
-    else
-      invitation.errors.add(:position, "is not valid.")
-      raise ActiveRecord::RecordInvalid, invite
     end
   end
 
   def create_primary_group(invitation:, primary:)
-    invitation.update(primary: primary)
-    primary.move_to_top
-    invitation.insert_at(2)
+    validates_unique_positions(invitation) do
+      invitation.update(primary: primary)
+      primary.move_to_top
+      invitation.insert_at(2)
+    end
   end
 
   def assign_primary(invitation:, primary:)
@@ -59,13 +61,15 @@ class InvitationQueue < ActiveRecord::Base
     raise_primary_error(invitation, "an alternate cannot be assigned as a primary") if primary.is_alternate?
     raise_primary_error(invitation, "sent invitations cannot have their primary assignment changed") unless invitation.pending?
 
-    if primary.has_alternates?
-      last_alternate = primary.alternates.maximum(:position)
-      invitation.update(primary: primary)
+    validates_unique_positions(invitation) do
+      if primary.has_alternates?
+        last_alternate = primary.alternates.maximum(:position)
+        invitation.update(primary: primary)
 
-      invitation.reload.insert_at(last_alternate + 1)
-    else
-      create_primary_group(invitation: invitation, primary: primary)
+        invitation.reload.insert_at(last_alternate + 1)
+      else
+        create_primary_group(invitation: invitation, primary: primary)
+      end
     end
   end
 
@@ -74,38 +78,55 @@ class InvitationQueue < ActiveRecord::Base
     raise_primary_error(invitation, "a primary with alternates is not valid for unassigning") if invitation.has_alternates?
     raise_primary_error(invitation, "sent invitations cannot have their primary assignment changed") unless invitation.pending?
 
-    existing_primary = invitation.primary
-    invitation.update(primary: nil)
+    validates_unique_positions(invitation) do
+      existing_primary = invitation.primary
+      invitation.update(primary: nil)
 
-    # if the primary has no more alternates it's ungrouped
-    existing_primary.move_to_bottom unless existing_primary.has_alternates?
+      # if the primary has no more alternates it's ungrouped
+      existing_primary.move_to_bottom unless existing_primary.has_alternates?
 
-    invitation.reload.move_to_bottom
+      invitation.reload.move_to_bottom
+    end
   end
 
   def destroy_invitation(invitation)
     raise_primary_error(invitation, "a primary with alternates cannot be removed") if invitation.has_alternates?
 
-    existing_primary = invitation.primary
-    invitation.destroy!
+    validates_unique_positions(invitation) do
+      existing_primary = invitation.primary
+      invitation.destroy!
 
-    existing_primary.move_to_bottom if existing_primary.try(:ungrouped_primary?)
+      existing_primary.move_to_bottom if existing_primary.try(:ungrouped_primary?)
+    end
   end
 
   def send_invitation(invitation)
-    # Grouped primaries don't get reordered, just sent
-    return invitation.invite! if invitation.has_alternates?
+    validates_unique_positions(invitation) do
+      # Grouped primaries don't get reordered, just sent
+      return invitation.invite! if invitation.has_alternates?
 
-    new_position = if invitation.is_alternate?
-                     sent_alternate_position(invitation)
-                   else
-                     sent_ungrouped_invitation_position
-                   end
-    invitation.invite!
-    invitation.insert_at(new_position)
+      new_position = if invitation.is_alternate?
+                       sent_alternate_position(invitation)
+                     else
+                       sent_ungrouped_invitation_position
+                     end
+      invitation.invite!
+      invitation.insert_at(new_position)
+    end
   end
 
   private
+
+  # We're unable to use a DB constraint to validate the uniqueness of positions within
+  # the list due to how acts_as_list modifies them, but we can check after the fact.
+  def validates_unique_positions(invitation)
+    Invitation.transaction do
+      yield
+
+      positions = invitations.pluck(:position)
+      raise_position_error(invitation, "unique position violation") if positions.uniq.count != positions.count
+    end
+  end
 
   def sent_alternate_position(invitation)
     primary = invitation.primary

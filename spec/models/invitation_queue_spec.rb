@@ -333,6 +333,16 @@ describe InvitationQueue do
           expect(ungrouped_2).to receive(:invite!)
           queue.send_invitation(ungrouped_2)
         end
+
+        # note that this condition is impossible to reasonably simulate except by
+        # making the test data bad before performing the operation.  In reality this
+        # method and all of the other ones that modify invitation positions will fail
+        # if there are duplicate positions at the end of the operation
+        it "will blow up if any invitations happen to have duplicate positions" do
+          queue.invitations.find_by(position: 4).update_column(:position, 5)
+          expect { queue.send_invitation(g2_alternate_2) }
+            .to raise_error(ActiveRecord::RecordInvalid)
+        end
       end
 
       context "there are groups but no sent invitations" do

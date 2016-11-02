@@ -86,54 +86,57 @@ class LoginPage(AuthenticatedPage):
     assert avail_jrnls_list.text == 'PLOS Biology', avail_jrnls_list.text
     avail_jrnls_info_link = self._get(self._avail_journals_more_info_link)
     assert avail_jrnls_info_link.get_attribute('href') == \
-        'http://journals.plos.org/plosbiology/s/submit-now'
+        'http://journals.plos.org/plosbiology/s/submit-now', \
+        avail_jrnls_info_link.get_attribute('href')
     assert avail_jrnls_info_link.text == 'More information', avail_jrnls_info_link.text
     avail_jrnls_em_link = self._get(self._avail_journals_em_link)
     assert avail_jrnls_em_link.get_attribute('href') == \
-        'https://www.plos.org/which-journal-is-right-for-me'
+        'https://www.plos.org/which-journal-is-right-for-me', \
+        avail_jrnls_em_link.get_attribute('href')
     assert avail_jrnls_em_link.text == 'here', avail_jrnls_em_link.text
     # APERTA-6107 Filed for the following
     # self.validate_application_title_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?
-    assert welcome_msg.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'
+    assert welcome_msg.value_of_css_property('color') == 'rgba(0, 0, 0, 1)', \
+        welcome_msg.value_of_css_property('color')
     self.set_timeout(1)
     try:
       forgot_msg = self._get(self._forgot_pw_link)
     except ElementDoesNotExistAssertionError:
       native_login_enabled = False
-      logging.info('Native Signin is present: {0}'.format(native_login_enabled))
+      logging.debug('Native Login is present: {0}'.format(native_login_enabled))
     self.restore_timeout()
     if native_login_enabled:
-      assert forgot_msg.text == 'Forgot your password?'
+      assert forgot_msg.text == 'Forgot your password?', forgot_msg.text
       self.validate_default_link_style(forgot_msg)
       remember_cb = self._get(self._remember_me_cb)
       assert not remember_cb.is_selected()
       self._get(self._remember_me_cb)
-      remember_msg = self._get(self._remember_me_label).text
-      assert remember_msg == 'Remember me'
+      remember_msg = self._get(self._remember_me_label)
+      assert remember_msg.text == 'Remember me', remember_msg.text
       self._get(self._signup_link)
     self.set_timeout(1)
     try:
-      cas_signin = self._get(self._cas_signin)
+      self._get(self._cas_signin)
     except ElementDoesNotExistAssertionError:
       cas_login_enabled = False
-      logging.info('Cas Signin is present: {0}'.format(cas_login_enabled))
+      logging.debug('CAS Login is present: {0}'.format(cas_login_enabled))
     self.restore_timeout()
     if cas_login_enabled:
       # APERTA-5717
       # self.validate_primary_big_blue_button_style(cas_signin)
-      cas_signup = self._get(self._cas_signup)
+      self._get(self._cas_signup)
       # APERTA-5717
       # self.validate_secondary_big_green_button_style(cas_signup)
     self.set_timeout(1)
     try:
-      orcid_signin = self._get(self._orcid_signin)
+      self._get(self._orcid_signin)
     except ElementDoesNotExistAssertionError:
       orcid_login_enabled = False
-      logging.info('ORCID Signin is present: {0}'.format(orcid_login_enabled))
+      logging.debug('ORCID Login is present: {0}'.format(orcid_login_enabled))
     self.restore_timeout()
     if orcid_login_enabled:
-      print('ORCID enabled')
+      logging.debug('ORCID enabled')
       # APERTA-5717
       # self.validate_primary_big_green_button_style(orcid_signin)
     return native_login_enabled
@@ -141,7 +144,7 @@ class LoginPage(AuthenticatedPage):
   def enter_login_field(self, username):
     """
     Inputs the Email or Username for the test user
-    :param email: email address or username
+    :param username: username or email address
     :return: None
     """
     self._get(self._login_textbox).clear()
@@ -182,7 +185,7 @@ class LoginPage(AuthenticatedPage):
         signout_msg.value_of_css_property('color')
     assert signout_msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
         signout_msg.value_of_css_property('background-color')
-    assert 'Signed out successfully.' in signout_msg.text  # why is there an extra span here?
+    assert 'Signed out successfully.' in signout_msg.text, signout_msg.text
 
   def validate_reset_pw_msg(self):
     """
@@ -203,7 +206,7 @@ class LoginPage(AuthenticatedPage):
     assert reset_msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
         reset_msg.value_of_css_property('background-color')
     assert 'You will receive an email with instructions about how to reset your password in a ' \
-           'few minutes.' in reset_msg.text  # why is there an extra span here?
+           'few minutes.' in reset_msg.text, reset_msg.text
 
   def validate_invalid_login_attempt(self):
     """
@@ -251,22 +254,26 @@ class LoginPage(AuthenticatedPage):
     :return: None
     """
     pw_reset_ttl = self._get(self._fyp_title)
-    assert pw_reset_ttl.text == 'Forgot your password?'
+    assert pw_reset_ttl.text == 'Forgot your password?', pw_reset_ttl.text
     # APERTA-6107 has been filed for the font-size mismatch
     # self.validate_application_title_style(pw_reset_ttl)
     email_input = self._get(self._fyp_email_field)
-    assert email_input.get_attribute('placeholder') == 'Email'
-    assert email_input.value_of_css_property('width') == '205px'
-    assert email_input.value_of_css_property('line-height') == '18px'
+    assert email_input.get_attribute('placeholder') == 'Email', \
+        email_input.get_attribute('placeholder')
+    assert email_input.value_of_css_property('width') == '205px', \
+        email_input.value_of_css_property('width')
+    assert email_input.value_of_css_property('line-height') == '18px', \
+        email_input.value_of_css_property('line-height')
     send_reset_btn = self._get(self._fyp_send_reset_btn)
-    assert send_reset_btn.get_attribute('value') == 'Send reset instructions'
+    assert send_reset_btn.get_attribute('value') == 'Send reset instructions', \
+        send_reset_btn.get_attribute('value')
     self.validate_primary_big_green_button_style(send_reset_btn)
     send_reset_btn.click()
     fyp_error = self._get(self._fyp_error)
-    assert fyp_error.text == "Email can't be blank"
+    assert fyp_error.text == "Email can't be blank", fyp_error.text
     self.validate_flash_error_style(fyp_error)
     signin_btn = self._get(self._fyp_signin_btn)
-    assert signin_btn.text == 'Sign in'
+    assert signin_btn.text == 'Sign in', signin_btn.text
     #self.validate_primary_big_grey_button_style(signin_btn)
 
   def validate_fyp_email_fmt_error(self):
@@ -277,10 +284,14 @@ class LoginPage(AuthenticatedPage):
     """
     email_field = self._get(self._fyp_email_field)
     # This error highlighting of the field seems unique in the whole application
-    assert email_field.value_of_css_property('border-top-color') == 'rgba(204, 204, 205, 1)'
-    assert email_field.value_of_css_property('border-bottom-color') == 'rgba(204, 204, 205, 1)'
-    assert email_field.value_of_css_property('border-left-color') == 'rgba(204, 204, 205, 1)'
-    assert email_field.value_of_css_property('border-right-color') == 'rgba(204, 204, 205, 1)'
+    assert email_field.value_of_css_property('border-top-color') == 'rgba(204, 204, 205, 1)', \
+        email_field.value_of_css_property('border-top-color')
+    assert email_field.value_of_css_property('border-bottom-color') == 'rgba(204, 204, 205, 1)', \
+        email_field.value_of_css_property('border-bottom-color')
+    assert email_field.value_of_css_property('border-left-color') == 'rgba(204, 204, 205, 1)', \
+        email_field.value_of_css_property('border-left-color')
+    assert email_field.value_of_css_property('border-right-color') == 'rgba(204, 204, 205, 1)', \
+        email_field.value_of_css_property('border-right-color')
 
   def click_remember_me(self):
     """

@@ -1,38 +1,38 @@
 {{#if orcidConnectEnabled}}
-    {{#if accessTokenExpired}}
-      {{!-- Users have the option of choosing to give temporary access to
-      Aperta. This state allows the user to re-authenticate with ORCID in the
-      future to grant Aperta access again without removing their ORCID ID --}}
-      <h1><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/> ORCID ID: </h1>
-      <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
+  {{#if accessTokenExpired}}
+    {{!-- Users have the option of choosing to give temporary access to
+    Aperta. This state allows the user to re-authenticate with ORCID in the
+    future to grant Aperta access again without removing their ORCID ID --}}
+    <h1><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/> ORCID ID: </h1>
+    <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
+    <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
+    <div class="orcid-access-expired">
+      <a href="{{orcidAccount.oauthAuthorizeUrl}}"
+         class="button-secondary button--green"
+         target="_blank">
+         Reauthorize Expired ORCID Access
+      </a>
+    </div>
+
+  {{else if orcidAccount.identifier}}
+    <!-- orcid account linked -->
+    <div class="orcid-linked">
+      <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>
+      ORCID ID: <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
       <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
-      <div class="orcid-access-expired">
-        <a href="{{orcidAccount.oauthAuthorizeUrl}}"
-           class="button-secondary button--green"
-           target="_blank">
-           Reauthorize Expired ORCID Access
-        </a>
-      </div>
+    </div>
 
-    {{else if orcidAccount.identifier}}
-      <!-- orcid account linked -->
-      <div class="orcid-linked">
+  {{else}}
+    <!-- no orcid account linked -->
+    <div class="orcid-not-linked">
+      <button
+        class="button-secondary button--green"
+        disabled={{buttonDisabled}}
+        {{action 'openOrcid'}}>
         <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>
-        ORCID ID: <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
-        <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
-      </div>
-
-    {{else}}
-      <!-- no orcid account linked -->
-      <div class="orcid-not-linked">
-        <button
-          class="button-secondary button--green"
-          disabled={{buttonDisabled}}
-          {{action 'openOrcid'}}>
-          <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>
-          {{buttonText}}
-        </button>
-      </div>
-      <a href="https://plos.org/orcid" target="_blank" class="what-is-orcid">?</a>
-    {{/if}}
+        {{buttonText}}
+      </button>
+    </div>
+    <a href="https://plos.org/orcid" target="_blank" class="what-is-orcid">?</a>
+  {{/if}}
 {{/if}}

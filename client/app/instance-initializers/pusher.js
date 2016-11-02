@@ -13,6 +13,16 @@ export function initialize(instance) {
 
   const pusher = new window.Pusher(pusherOptions.key, pusherOptions.connection);
 
+  // Pusher is not supported by the browser. This implies that WebSockets are
+  // not natively available and an HTTP-based transport could not be found.
+  // This is not fired as an event, but set as the connection's state.
+  if(Ember.isEqual(pusher.connection.state, "failed")){
+    bugsnagService.notifyException(
+      'PusherNotSupported',
+      'Pusher.js is not supported by the browser.'
+    );
+  };
+
   /*
     Tell somebody about Pusher error states
     =========================================
@@ -25,15 +35,6 @@ export function initialize(instance) {
     bugsnagService.notifyException(
       'PusherDisconnected',
       'Pusher.js has disconnected'
-    );
-  });
-
-  // Pusher is not supported by the browser. This implies that WebSockets are
-  // not natively available and an HTTP-based transport could not be found.
-  pusher.connection.bind('failed', function(){
-    bugsnagService.notifyException(
-      'PusherNotSupported',
-      'Pusher.js is not supported by the browser.'
     );
   });
 

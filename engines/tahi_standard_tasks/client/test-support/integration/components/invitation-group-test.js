@@ -28,12 +28,9 @@ let template = hbs`{{invitation-group
   previousRound=false
   activeInvitation=null
   activeInvitationState=null
-  changePosition=(action changePosition)
 }}`;
 
 let noop = () => {};
-
-let changePosition = () => {};
 
 let makeInvitations = () => {
   return [
@@ -57,7 +54,7 @@ let makeInvitations = () => {
 test('it renders the invitations and drop targets', function(assert) {
   let invitations = makeInvitations();
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
 
   assert.equal($('.invitation-item').length, 2);
@@ -67,7 +64,7 @@ test('it renders the invitations and drop targets', function(assert) {
 test('dragging an invitation item', function(assert) {
   let invitations = makeInvitations();
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
 
   let mockEvent = MockDataTransfer.makeMockEvent();
@@ -143,8 +140,7 @@ let dropInvitation = (originalPosition, dropTargetIndex) => {
 };
 
 let assertChange = (assert, invitation, assertedPosition) => {
-  return (newPosition, item) => {
-    assert.equal(item, invitation, 'sends changePosition with the dropped invitation');
+  invitation.changePosition = (newPosition) => {
     assert.equal(newPosition, assertedPosition, 'the new position should be the position of the last item');
   };
 };
@@ -182,48 +178,48 @@ let makeThreeInvitations = () => {
 };
 
 test('dropping an invitation in a lower position', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   let invitations = makeThreeInvitations();
-  let changePosition = assertChange(assert, invitations[0], 2);
+  assertChange(assert, invitations[0], 2);
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
 
   dropInvitation(1, 2);
 });
 
 test('dropping an invitation to the bottom position', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   let invitations = makeThreeInvitations();
   let changePosition = assertChange(assert, invitations[0], 3);
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
 
   dropInvitation(1, 3);
 });
 
 test('dropping an invitation in a higher position', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   let invitations = makeThreeInvitations();
   let changePosition = assertChange(assert, invitations[2], 2);
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
   dropInvitation(3, 1);
 
 });
 
 test('dropping an invitation in the top position', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   let invitations = makeThreeInvitations();
   let changePosition = assertChange(assert, invitations[2], 1);
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
   dropInvitation(3, 0);
 
@@ -235,7 +231,7 @@ test('dropping an invitation on an adjacent target is a noop', function(assert) 
   let invitations = makeThreeInvitations();
   let changePosition = failIfCalled(assert);
 
-  this.setProperties({invitations, noop, changePosition});
+  this.setProperties({invitations, noop});
   this.render(template);
   dropInvitation(1, 0);
   dropInvitation(1, 1);

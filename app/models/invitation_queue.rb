@@ -48,9 +48,11 @@ class InvitationQueue < ActiveRecord::Base
 
   def create_primary_group(invitation:, primary:)
     validates_unique_positions(invitation) do
+      new_position = (invitations.grouped_alternates.maximum(:position) || 0) + 1
+
       invitation.update(primary: primary)
-      primary.move_to_top
-      invitation.insert_at(2)
+      primary.insert_at(new_position)
+      invitation.reload.insert_at(new_position + 1)
     end
   end
 

@@ -214,7 +214,7 @@ Tahi::Application.routes.draw do
 
   # epub/pdf paper download formats
   #
-  resources :papers, only: [] do
+  resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z]+\.[0-9]+/ }, only: [] do
     get :download, on: :member
   end
 

@@ -62,6 +62,6 @@ class PaperConversionsController < ApplicationController
   private
 
   def paper
-    @paper ||= Paper.find(params[:id])
+    @paper ||= Paper.find_by_short_doi(params[:short_doi])
   end
 end

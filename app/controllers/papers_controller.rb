@@ -22,9 +22,6 @@ class PapersController < ApplicationController
       { paper_roles: [:user] },
       :journal
     ).find_by_short_doi(params[:short_doi])
-    puts '--------------------------------------'
-    puts paper
-    puts '--------------------------------------'
     requires_user_can(:view, paper)
     respond_with(paper)
   end
@@ -203,6 +200,6 @@ class PapersController < ApplicationController
   end
 
   def paper
-    @paper ||= Paper.find(params[:id])
+    @paper ||= Paper.find_by_short_doi(params[:short_doi])
   end
 end

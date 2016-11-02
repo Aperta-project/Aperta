@@ -108,7 +108,7 @@ class EpubConverter
       if this.include_source && this.paper.latest_version.present?
         this._embed_source(workdir)
         # keep same file extension as original file
-        source_file_name = "source#{this._manuscript_source_path.extname}"
+        source_file_name = "source#{this._manuscript_source_path.extname.downcase}"
         optional_file "input/#{source_file_name}" => this._path_to_source(workdir)
       end
       resources(workdir: workdir) do

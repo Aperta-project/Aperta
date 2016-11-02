@@ -18,7 +18,7 @@ class Figure < Attachment
   end
 
   def alt
-    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
+    filename.split('.').first.gsub(/#{File.extname(filename.downcase)}$/, '').humanize if filename.present?
   end
 
   def rank

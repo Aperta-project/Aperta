@@ -87,7 +87,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     if file.respond_to?('content_type')
       ["image/tiff", "application/postscript", "image/x-eps"].include?(file.content_type)
     else
-      !!(File.extname(file) =~ /(tif?f|eps)/i)
+      !!(File.extname(file).downcase =~ /(tif?f|eps)/)
     end
   end
 
@@ -95,7 +95,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     if file.respond_to?('content_type')
       ["image/tiff", "application/postscript", "image/x-eps", "image/jpeg", "image/png", "image/gif"].include?(file.content_type)
     else
-      !!(File.extname(file) =~ /(tif?f|eps|jpg|jpeg|gif|png)/i)
+      !!(File.extname(file).downcase =~ /(tif?f|eps|jpg|jpeg|gif|png)/)
     end
   end
 end

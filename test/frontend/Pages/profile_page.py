@@ -28,7 +28,7 @@ class ProfilePage(AuthenticatedPage):
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
     self._profile_affiliation_title = (By.CSS_SELECTOR, 'div.user-affiliation h1')
     self._profile_link = (By.CSS_SELECTOR, 'div.profile-link a')
-    self._affiliation_btn = (By.CSS_SELECTOR, 'a.button--green')
+    self._affiliation_btn = (By.CSS_SELECTOR, 'div.user-affiliation a')
     self._reset_btn = (By.CSS_SELECTOR, 'a.reset-password-link')
     self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
@@ -40,7 +40,7 @@ class ProfilePage(AuthenticatedPage):
     # Following two selectors will be used until specific class is added (APERTA-7868)
     self._affiliation_field = (By.CLASS_NAME, 'affiliation-field')
     self._datepicker = (By.CLASS_NAME, 'datepicker')
-    self._add_done_btn = (By.CSS_SELECTOR, 'button.button--green')
+    self._buttons = (By.TAG_NAME, 'button')
     self._add_cancel_btn = (By.CSS_SELECTOR, 'a.author-cancel')
     self._profile_affiliations = (By.CLASS_NAME, 'affiliation-existing')
     self._remove_affiliation_icon = (By.CLASS_NAME, 'affiliation-remove')
@@ -48,6 +48,18 @@ class ProfilePage(AuthenticatedPage):
     self._error_message = (By.CLASS_NAME, 'error-message')
     self._country_input = (By.CSS_SELECTOR, 'input.select2-input')
   # POM Actions
+
+  def _get_add_done_btn(self):
+    """
+    Helper method to retrieve done button
+    :return: button
+    """
+    buttons = self._gets(self._buttons)
+    for button in buttons:
+      if button.text == "DONE":
+        return button
+    else:
+      raise('Done button not found')
 
   @staticmethod
   def validate_profile_title_style_big(title):
@@ -113,7 +125,7 @@ class ProfilePage(AuthenticatedPage):
     :return: None
     """
     self.click_add_affiliation_button()
-    add_done_btn = self._get(self._add_done_btn)
+    add_done_btn = self._get_add_done_btn()
     add_done_btn.click()
     # Watch for error
     error = self._get(self._error_message)
@@ -168,7 +180,7 @@ class ProfilePage(AuthenticatedPage):
     # self.validate_input_field_style(datepicker_2)
     # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_input_field_style(email)
-    add_done_btn = self._get(self._add_done_btn)
+    add_done_btn = self._get_add_done_btn()
     # APERTA-6358 Commenting out until style implementation fixed.
     # self.validate_secondary_big_green_button_style(add_done_btn)
     add_cancel_btn = self._get(self._add_cancel_btn)
@@ -189,7 +201,6 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(.5)
     email.send_keys(affiliation['email'])
     time.sleep(.5)
-
     add_done_btn.send_keys(Keys.SPACE)
     # Look for data
     # Give some time to end AJAX call

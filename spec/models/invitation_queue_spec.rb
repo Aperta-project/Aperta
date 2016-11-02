@@ -109,6 +109,7 @@ describe InvitationQueue do
       sent_1, # 3
       ungrouped_1, # 4
       ungrouped_2, # 5
+      ungrouped_3  # 6
     ]
   end
 
@@ -154,10 +155,10 @@ describe InvitationQueue do
     end
 
     context "the invitation and the primary are both ungrouped" do
-      it "places the primary and the new alternate at the very top of the queue" do
+      it "places the primary and the new alternate at the bottom of the other grouped primaries" do
         small_queue.assign_primary(invitation: ungrouped_2, primary: ungrouped_1)
-        expect(ungrouped_1.reload.position).to eq(1)
-        expect(ungrouped_2.reload.position).to eq(2)
+        expect(ungrouped_1.reload.position).to eq(3)
+        expect(ungrouped_2.reload.position).to eq(4)
       end
     end
 
@@ -332,16 +333,6 @@ describe InvitationQueue do
         it "calls 'invite!'" do
           expect(ungrouped_2).to receive(:invite!)
           queue.send_invitation(ungrouped_2)
-        end
-
-        # note that this condition is impossible to reasonably simulate except by
-        # making the test data bad before performing the operation.  In reality this
-        # method and all of the other ones that modify invitation positions will fail
-        # if there are duplicate positions at the end of the operation
-        it "will blow up if any invitations happen to have duplicate positions" do
-          queue.invitations.find_by(position: 4).update_column(:position, 5)
-          expect { queue.send_invitation(g2_alternate_2) }
-            .to raise_error(ActiveRecord::RecordInvalid)
         end
       end
 

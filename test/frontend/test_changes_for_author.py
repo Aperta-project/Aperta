@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
@@ -44,6 +45,9 @@ class CFACardTest(CommonTest):
     publishing state transitions
     :return: void function
     """
+    logging.info('Test Changes For Author::cfa_from_itc')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -157,6 +161,9 @@ class CFACardTest(CommonTest):
     publishing state transitions
     :return: void function
     """
+    logging.info('Test Changes For Author::cfa_from_rtc')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -270,6 +277,9 @@ class CFACardTest(CommonTest):
     publishing state transitions
     :return: void function
     """
+    logging.info('Test Changes For Author::cfa_from_ftc')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])

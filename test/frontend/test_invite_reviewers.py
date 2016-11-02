@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
@@ -34,6 +35,9 @@ class InviteReviewersCardTest(CommonTest):
       the invitees dashboard, acceptance and rejections
     :return: void function
     """
+    logging.info('Test Invite Reviewers::actions')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -103,13 +107,14 @@ class InviteReviewersCardTest(CommonTest):
                                       'FROM journals '
                                       'WHERE name = \'PLOS Wombat\';')[0][0]
     reviewer_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'areviewer\';')[0][0]
-    reviewer_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                      'name = \'Reviewer\';',
-                                      (wombat_journal_id,))[0][0]
+    reviewer_role_for_env = PgSQL().query('SELECT id '
+                                          'FROM roles '
+                                          'WHERE journal_id = %s '
+                                          'AND name = \'Reviewer\';', (wombat_journal_id,))[0][0]
     try:
       test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
-                                  'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
-                                  (reviewer_user_id, paper_id))[0][0]
+                                    'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
+                                    (reviewer_user_id, paper_id))[0][0]
     except IndexError:
       test_for_role = False
     if invite_response == 'Accept':
@@ -119,10 +124,16 @@ class InviteReviewersCardTest(CommonTest):
     elif invite_response == 'Reject':
       assert not test_for_role
       # search for reply
-      reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions FROM '
-          'invitations WHERE invitee_id = %s AND state=\'declined\' AND invitee_role '
-          '=\'Reviewer\' AND decline_reason LIKE %s AND reviewer_suggestions LIKE %s;',
-          (reviewer_user_id, response_data[0]+'%', response_data[1]+'%'))[0]
+      reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions '
+                                           'FROM invitations '
+                                           'WHERE invitee_id = %s '
+                                           'AND state=\'declined\' '
+                                           'AND invitee_role=\'Reviewer\' '
+                                           'AND decline_reason LIKE %s '
+                                           'AND reviewer_suggestions LIKE %s;',
+                                           (reviewer_user_id,
+                                            response_data[0]+'%',
+                                            response_data[1]+'%'))[0]
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
     workflow_page.logout()
@@ -143,9 +154,8 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.validate_response(reviewer_login, invite_response,
-        response_data[0], response_data[1])
-
+    invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
+                                       response_data[1])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

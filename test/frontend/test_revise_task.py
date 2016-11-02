@@ -5,6 +5,7 @@ This test case validates the Revise Manuscript task
 Automated test case for: fill response to reviweres and attach a file in Revise Manuscript task
 """
 import logging
+import os
 import random
 import time
 
@@ -40,6 +41,9 @@ class ReviseManuscriptTest(CommonTest):
     create an article, make a decision about the manuscript and the author will use the revise task
     card.
     """
+    logging.info('Test Revise task::response_to_reviewers')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))

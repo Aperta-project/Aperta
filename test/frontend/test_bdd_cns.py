@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -117,6 +118,9 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission
     """
+    logging.info('Test BDDCNStoSubmitTest::validate_create_to_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())

@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
@@ -33,6 +34,9 @@ class ProductionMetadataCardTest(CommonTest):
     invitees dashboard, acceptance and rejections
     :return: void function
     """
+    logging.info('Test Production Metadata')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -80,12 +84,13 @@ class ProductionMetadataCardTest(CommonTest):
     product_metadata_card.refresh()
     data = product_metadata_card.complete_card()
     # read card data from the DB and compare
-    task_id = PgSQL().query(
-        'SELECT id from tasks WHERE paper_id = %s and title = %s;',
-        (paper_id,'Production Metadata'))[0][0]
-    nested_queston = PgSQL().query(
-        'SELECT nested_question_id, value from nested_question_answers '
-        'WHERE owner_id = %s and owner_type=%s;', (task_id, 'Task'))
+    task_id = PgSQL().query('SELECT id '
+                            'FROM tasks '
+                            'WHERE paper_id = %s '
+                            'AND title = %s;', (paper_id, 'Production Metadata'))[0][0]
+    nested_queston = PgSQL().query('SELECT nested_question_id, value '
+                                   'FROM nested_question_answers '
+                                   'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))
     answers_in_db = [x[1].replace('\n','') for x in nested_queston]
     logging.info('nested_queston {0}'.format(nested_queston))
     logging.info('answers in DB {0}'.format(answers_in_db))

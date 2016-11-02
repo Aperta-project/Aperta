@@ -8,6 +8,7 @@ The test document tarball from http://bighector.plos.org/aperta/testing_assets.t
     frontend/assets/
 """
 import logging
+import os
 import random
 import time
 
@@ -36,6 +37,9 @@ class WithdrawManuscriptTest(CommonTest):
     manuscript process and UI elements
     :return: void function
     """
+    logging.info('Test Reactivate MS::withdraw_ms')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])

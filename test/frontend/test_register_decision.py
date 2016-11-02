@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/testing_assets.t
     frontend/assets/
 """
 import logging
+import os
 import random
 import time
 
@@ -40,6 +41,9 @@ class RegisterDecisionCardTest(CommonTest):
     test_register_decision: Validate components and styles of the Register Decision card
     :return: void function
     """
+    logging.info('Test Register Decision::styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
@@ -94,6 +98,9 @@ class RegisterDecisionCardTest(CommonTest):
       final decision
     :return: void function
     """
+    logging.info('Test Register Decision::actions')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])

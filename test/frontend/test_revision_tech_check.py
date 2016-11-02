@@ -7,14 +7,12 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
-from selenium.common.exceptions import NoSuchElementException
-
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.revision_tech_check_card import RTCCard
@@ -34,6 +32,9 @@ class RTCCardTest(CommonTest):
     test_revision_tech_check: Validates the elements, styles, and functions of RTC Card
     :return: void function
     """
+    logging.info('Test RTC')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])

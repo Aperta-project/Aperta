@@ -20,6 +20,7 @@ The test document tarball from http://bighector.plos.org/aperta/testing_assets.t
     frontend/assets/
 """
 import logging
+import os
 import random
 import time
 
@@ -45,7 +46,9 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the elements and styles of the figures task
     :return: void function
     """
-    logging.info('test_smoke_figures_task_styles')
+    logging.info('Test Figures::styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -83,7 +86,9 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the upload function of the figures task
     :return: void function
     """
-    logging.info('test_core_figures_task_upload')
+    logging.info('Test Figures::upload')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -131,7 +136,9 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the replacement function of the figures task
     :return: void function
     """
-    logging.info('test_core_figures_task_replace')
+    logging.info('Test Figures::replace')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -164,7 +171,9 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the delete function of the figures task
     :return: void function
     """
-    logging.info('test_core_figures_task_delete')
+    logging.info('Test Figures::delete')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -194,7 +203,9 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the download function of the figures task
     :return: void function
     """
-    logging.info('test_core_figures_task_download')
+    logging.info('Test Figures::download')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -225,7 +236,9 @@ class FigureTaskTest(CommonTest):
     test_figure_task: Validates the edit function of the figures task, including re-ordering
     :return: void function
     """
-    logging.info('test_core_figures_task_edit_reorder')
+    logging.info('Test Figures::edit_reorder')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])

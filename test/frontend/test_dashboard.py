@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -43,6 +44,9 @@ class ApertaDashboardTest(CommonTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission
     """
+    logging.info('Test Dashboard::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.validate_mmt_ordering()

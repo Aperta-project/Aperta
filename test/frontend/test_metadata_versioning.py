@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -43,6 +44,9 @@ class MetadataVersioningTest(CommonTest):
     are not implemented in this method
     :return: void function
     """
+    logging.info('Test Metadata Versioning')
+    current_path = os.getcwd()
+    logging.info(current_path)
     title = 'For metadata versioning'
     types = ('Research', 'Research w/Initial Decision Card')
     paper_type = random.choice(types)

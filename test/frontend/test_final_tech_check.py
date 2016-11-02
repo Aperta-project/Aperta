@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
@@ -35,6 +36,9 @@ class FTCCardTest(CommonTest):
     test_final_tech_check: Validates the elements, styles, and functions of FTC Card
     :return: void function
     """
+    logging.info('Test FTC')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])

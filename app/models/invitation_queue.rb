@@ -56,12 +56,13 @@ class InvitationQueue < ActiveRecord::Base
 
   def assign_primary(invitation:, primary:)
     raise_primary_error(invitation, "invitation and primary must belong to the same queue") if invitation.invitation_queue_id != primary.invitation_queue_id
-    raise_primary_error(invitation, "alternates must be ungrouped before being reassigned") if invitation.is_alternate?
     raise_primary_error(invitation, "a primary with alternates must be ungrouped before being reassigned") if invitation.has_alternates?
     raise_primary_error(invitation, "an alternate cannot be assigned as a primary") if primary.is_alternate?
     raise_primary_error(invitation, "sent invitations cannot have their primary assignment changed") unless invitation.pending?
 
     validates_unique_positions(invitation) do
+      unassign_primary_from(invitation) if invitation.primary
+
       if primary.has_alternates?
         last_alternate = primary.alternates.maximum(:position)
         invitation.update(primary: primary)

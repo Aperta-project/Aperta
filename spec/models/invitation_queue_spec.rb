@@ -162,6 +162,25 @@ describe InvitationQueue do
       end
     end
 
+    context "the invitation and the primary are already grouped" do
+      let(:small_queue) do
+        make_queue [
+          group_1_primary, # 1
+          g1_alternate_1, # 2
+          g1_alternate_2, # 3
+          group_2_primary, # 4
+          g2_alternate_2, # 5
+        ]
+      end
+      context "assigning the invitation to another primary" do
+        it "assigns and reorders successfully" do
+          small_queue.assign_primary(invitation: g1_alternate_2, primary: group_2_primary)
+          expect(g1_alternate_2.reload.position).to eq(5)
+          expect(g1_alternate_2.primary_id).to eq(group_2_primary.id)
+        end
+      end
+    end
+
     context "the invitation is ungrouped, the primary already has alternates" do
       it "places the new alternate below the existing alternates" do
         small_queue.assign_primary(invitation: ungrouped_1, primary: group_1_primary)
@@ -333,6 +352,16 @@ describe InvitationQueue do
         it "calls 'invite!'" do
           expect(ungrouped_2).to receive(:invite!)
           queue.send_invitation(ungrouped_2)
+        end
+
+        # note that this condition is impossible to reasonably simulate except by
+        # making the test data bad before performing the operation.  In reality this
+        # method and all of the other ones that modify invitation positions will fail
+        # if there are duplicate positions at the end of the operation
+        it "will blow up if any invitations happen to have duplicate positions" do
+          queue.invitations.find_by(position: 4).update_column(:position, 5)
+          expect { queue.send_invitation(g2_alternate_2) }
+            .to raise_error(ActiveRecord::RecordInvalid)
         end
       end
 

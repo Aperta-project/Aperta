@@ -8,7 +8,6 @@ export function initialize(instance) {
     typeof pusherOptions !== 'undefined'
   );
 
-
   let bugsnagService = instance.lookup('service:bugsnag');
 
   const pusher = new window.Pusher(pusherOptions.key, pusherOptions.connection);

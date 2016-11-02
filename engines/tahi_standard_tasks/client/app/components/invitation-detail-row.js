@@ -112,11 +112,19 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   editState: equal('uiState', 'edit'),
 
   rescindInvitation: concurrencyTask(function * (invitation) {
-    return yield invitation.rescind();
+    try {
+      return yield invitation.rescind();
+    } catch (e) {
+      this.get('displayError')();
+    }
   }).drop(),
 
   sendInvitation: concurrencyTask(function * (invitation) {
-    return yield invitation.invite();
+    try {
+      return yield invitation.invite();
+    } catch (e) {
+      this.get('displayError')();
+    }
   }).drop(),
 
   actions: {

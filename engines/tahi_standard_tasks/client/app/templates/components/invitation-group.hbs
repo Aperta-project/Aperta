@@ -1,3 +1,5 @@
+{{error-message message=invitationErrorMessage displayIcon=true}}
+
 {{#if linkedInvitations.length}}
   {{#unless previousRound}}
     <div class="invitation-alternates-info">
@@ -21,6 +23,7 @@
                           invitationsInFlight=invitationsInFlight
                           setRowState=(action attrs.setRowState invitation)
                           deleteOnCancel=(eq invitation composedInvitation)
+                          displayError=(action 'displayError')
                           composedInvitation=composedInvitation
                           toggleActiveInvitation=toggleActiveInvitation
                           destroyInvite=destroyInvite

@@ -19,7 +19,7 @@ export function initialize(instance) {
   if(Ember.isEqual(pusher.connection.state, "failed")){
     bugsnagService.notifyException(
       'PusherNotSupported',
-      'Pusher.js is not supported by the browser.'
+      'Pusher.js is not supported by the browser'
     );
   };
 
@@ -46,7 +46,7 @@ export function initialize(instance) {
   pusher.connection.bind('unavailable', function(){
     bugsnagService.notifyException(
       'PusherUnavailable',
-      'Pusher.js is unavailable.'
+      'Pusher.js service unavailable'
     );
   });
 

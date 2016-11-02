@@ -88,8 +88,12 @@ TIMEFRAMES.each_with_index do |timeframe, i|
 end
 output.puts "#{attachment_klass.name}(s) that errored out"
 output.puts "-------------------------------------------"
-attachments_stuck_in_errored.each_pair do |timeframe, count|
-  output.puts "Count in error state in the past #{timeframe.inspect}: #{count}"
+if attachments_stuck_in_errored.empty?
+  output.puts "  [none]"
+else
+  attachments_stuck_in_errored.each_pair do |timeframe, count|
+    output.puts "Count in error state in the past #{timeframe.inspect}: #{count}"
+  end
 end
 output.puts
 
@@ -101,20 +105,32 @@ attachments_stuck_in_errored = {}
 TIMEFRAMES.each_with_index do |timeframe, i|
   output.puts "Errors in the past #{timeframe.inspect}"
   if i == 0
-    attachments_errored.where(
+    attachments_by_error = attachments_errored.where(
       created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
     ).each do |a|
       a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
-    end.group_by(&:error_message).each do |error_message, attachments|
-      output.puts "  #{attachments.length} failed with error: #{error_message}"
+    end
+
+    if attachments_by_error.empty?
+      output.puts "  [none]"
+    else
+      attachments_by_error.group_by(&:error_message).each do |error_message, attachments|
+        output.puts "  #{attachments.length} failed with error: #{error_message}"
+      end
     end
   else
-    attachments_errored.where(
+    attachments_by_error = attachments_errored.where(
       created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES[i-1].ago.end_of_day.utc)
     ).each do |a|
       a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
-    end.group_by(&:error_message).each do |error_message, attachments|
-      output.puts "  #{attachments.length} failed with error: #{error_message}"
+    end
+
+    if attachments_by_error.empty?
+      output.puts "  [none]"
+    else
+      attachments_by_error.group_by(&:error_message).each do |error_message, attachments|
+        output.puts "  #{attachments.length} failed with error: #{error_message}"
+      end
     end
   end
   output.puts

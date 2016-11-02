@@ -26,6 +26,12 @@ class PapersController < ApplicationController
     respond_with(paper)
   end
 
+  def redirect_to_short_doi
+    paper = Paper.find(params[:id])
+    requires_user_can(:view, paper)
+    redirect_to paper
+  end
+
   # The create action does not require a permission, it's available to any
   # signed in user.
   def create

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import startApp from 'tahi/tests/helpers/start-app';
+import startApp from '../helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';

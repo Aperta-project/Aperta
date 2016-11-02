@@ -11,6 +11,7 @@ module Typesetter
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
     attribute :abstract, key: :paper_abstract
+    attribute :this_is_a_test
 
     has_one :competing_interests,
             serializer: Typesetter::CompetingInterestsSerializer
@@ -18,6 +19,8 @@ module Typesetter
             serializer: Typesetter::FinancialDisclosureSerializer
     has_one :data_availability,
             serializer: Typesetter::DataAvailabilitySerializer
+    has_one :early_article_posting,
+            serializer: Typesetter::EarlyPostingSerializer
 
     has_many :author_list_items,
              serializer: Typesetter::AuthorListItemSerializer,
@@ -69,8 +72,13 @@ module Typesetter
       task('TahiStandardTasks::DataAvailabilityTask')
     end
 
+    def early_article_posting
+      task('TahiStandardTasks::EarlyPostingTask')
+    end
+
+
     def serializable_hash
-      fail Typesetter::MetadataError.not_accepted unless valid?
+      # fail Typesetter::MetadataError.not_accepted unless valid?  # TODO: re-enable!
       super
     end
 

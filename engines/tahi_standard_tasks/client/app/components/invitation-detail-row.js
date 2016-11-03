@@ -152,6 +152,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     cancelEdit(invitation) {
       this.set('potentialPrimary', null);
       if (this.get('deleteOnCancel') && invitation.get('pending')) {
+        this.get('setRowState')('show');
         invitation.destroyRecord();
       } else {
         invitation.rollbackAttributes();

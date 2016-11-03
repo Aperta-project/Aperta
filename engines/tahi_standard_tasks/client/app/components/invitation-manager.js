@@ -19,10 +19,14 @@ export default Ember.Component.extend({
 
   //internal stuff
   activeInvitation: null,
-  activeInvitationState: 'closed',
+  activeInvitationState: 'closed', // 'closed', 'show', 'edit'
   composedInvitation: null,
   selectedUser: null,
   autoSuggestSelectedText: null,
+
+  isEditingInvitation: Ember.computed('activeInvitation', 'activeInvitationState', function() {
+    return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
+  }),
 
   // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),

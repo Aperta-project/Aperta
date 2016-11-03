@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.29.0] - {2016-11-03}
+### Added
 * A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
 ### Changed
 ### Deprecated

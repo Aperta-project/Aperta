@@ -4,11 +4,11 @@ import { task as concurrencyTask } from 'ember-concurrency';
 let errorText = 'There was a problem saving your invitation. Please refresh.';
 
 export default Ember.Component.extend({
+  flash: Ember.inject.service(),
+
   linkedInvitations: Ember.computed.filter('invitations.@each.primary', function(inv) {
     return inv.get('alternates.length');
   }),
-
-  invitationErrorMessage: null,
 
   positionSort: ['position:asc'],
   sortedInvitations: Ember.computed.sort('invitations', 'positionSort'),
@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     try {
       return yield invitation.changePosition(newPosition);
     } catch (e) {
-      this.set('invitationErrorMessage', errorText);
+      this.get('flash').displayMessage('error', errorText);
     }
   }).drop(),
 
@@ -36,7 +36,7 @@ export default Ember.Component.extend({
     },
 
     displayError() {
-      this.set('invitationErrorMessage', errorText);
+      this.get('flash').displayMessage('error', errorText);
     }
   }
 });

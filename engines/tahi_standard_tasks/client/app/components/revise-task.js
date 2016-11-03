@@ -21,7 +21,7 @@ export default TaskComponent.extend({
       type: 'presence',
       message: 'Please provide a response or attach a file',
       validation() {
-        return !isEmpty(this.get('task.attachments')) || !isEmpty(this.get('latestDecision.authorResponse'));
+        return !isEmpty(this.get('task.attachments')) || !isEmpty(this.get('task.paper.latestRegisteredDecision.authorResponse'));
       }
     }]
   },
@@ -36,8 +36,6 @@ export default TaskComponent.extend({
     return this.get('editingAuthorResponse') && this.get('isEditable');
   }),
 
-  latestDecision: computed.alias('task.paper.latestRegisteredDecision'),
-
   previousDecisions: computed.alias('task.paper.previousDecisions'),
 
   editingAuthorResponse: false,
@@ -46,7 +44,7 @@ export default TaskComponent.extend({
     this._super(...arguments);
     this.set(
       'editingAuthorResponse',
-      isEmpty(this.get('latestDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
+      isEmpty(this.get('task.paper.latestRegisteredDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
     );
   },
 
@@ -72,7 +70,7 @@ export default TaskComponent.extend({
       this.validateData();
       if(this.validationErrorsPresent()) { return; }
 
-      this.get('latestDecision').save().then(()=> {
+      this.get('task.paper.latestRegisteredDecision').save().then(()=> {
         this.set('editingAuthorResponse', false);
       });
     },

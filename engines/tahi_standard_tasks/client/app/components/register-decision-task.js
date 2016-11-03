@@ -33,7 +33,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     return this.get('decisions.firstObject');
   }),
   previousDecisions: computed.alias('paper.previousDecisions'),
-  latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 

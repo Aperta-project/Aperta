@@ -152,6 +152,14 @@ export default function() {
       message || 'spy should have been called.');
   };
 
+  QUnit.assert.spyNotCalled = function(spy, message) {
+    return this.push(
+      spy.notCalled,
+      'called',
+      'not called',
+      message || 'spy should not have been called.');
+  };
+
   QUnit.assert.selectorAttibuteIncludes = function(attribute, selector, values, message, expectedFoundElementsCount) {
 
     let elements = Ember.$(selector);

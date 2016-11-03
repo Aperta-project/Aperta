@@ -7,7 +7,7 @@ export default Task.extend({
   decisions: DS.hasMany('decision'),
   isSubmitted: DS.attr('boolean'),
 
-  previousDecisions: Ember.computed.filterBy('decisions', 'latest', false),
+  previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
 
   decision: Ember.computed('decisions', function() {
     return this.get('decisions').findBy('latest', true);

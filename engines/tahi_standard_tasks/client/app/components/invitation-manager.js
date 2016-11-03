@@ -111,9 +111,8 @@ export default Ember.Component.extend({
       }
     }
   ),
-  previousDecisions: computed('decisions', function() {
-    return this.get('decisions').without(this.get('latestDecision'));
-  }),
+
+  previousDecisions: computed.alias('task.paper.previousDecisions'),
 
   previousDecisionsWithFilteredInvitations: computed(
     'previousDecisions.@each.inviteeRole', function() {

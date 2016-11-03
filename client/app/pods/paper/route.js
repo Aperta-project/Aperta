@@ -7,10 +7,6 @@ export default AuthorizedRoute.extend({
     return this.store.queryRecord('paper', { shortDoi: params.paper_shortDoi });
   },
 
-  serialize(model) {
-    return { paper_shortDoi: model.get('shortDoi') };
-  },
-
   setupController(controller, model) {
     this._super(...arguments);
     this.setupPusher(model);

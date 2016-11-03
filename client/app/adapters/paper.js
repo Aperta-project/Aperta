@@ -1,7 +1,7 @@
 import ApplicationAdapter from 'tahi/adapters/application';
 
 export default ApplicationAdapter.extend({
-  urlForQueryRecord(query) {
-    return `/api/papers/${query.shortDoi}`;
+  queryRecord(store, type, query) {
+    return this.ajax(`/api/papers/${query.shortDoi}`, 'GET');
   }
 });

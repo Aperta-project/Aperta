@@ -1,4 +1,4 @@
-
+{{#if orcidConnectEnabled}}
     {{#if accessTokenExpired}}
       {{!-- Users have the option of choosing to give temporary access to
       Aperta. This state allows the user to re-authenticate with ORCID in the
@@ -34,3 +34,4 @@
         </button>
       </div>
     {{/if}}
+{{/if}}

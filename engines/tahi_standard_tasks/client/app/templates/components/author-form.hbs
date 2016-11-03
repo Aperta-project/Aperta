@@ -128,6 +128,14 @@
                              placeholder="Secondary Institution"}}
       </div>
     </div>
+
+    {{#if author.orcidAccount}}
+      <div class="flex-group">
+        <div class="flex-element">
+            {{orcid-connect user=author.user}}
+        </div>
+      </div>
+    {{/if}}
   </fieldset>
 
   <fieldset>

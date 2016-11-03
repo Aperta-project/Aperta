@@ -17,6 +17,20 @@ export default Component.extend(DragNDrop.DraggableMixin, {
                .match(/group/) ? 'group-author-form' : 'author-form';
   }),
 
+  isAuthorCurrentUser: computed('author.user.id', 'currentUser.id', function() {
+    return Ember.isPresent(this.get('author.user.id')) &&
+      Ember.isEqual(this.get('author.user.id'), this.get('currentUser.id'));
+  }),
+
+  displayName: computed('isAuthorCurrentUser', 'author.displayName', function(){
+    let displayName = this.get('author.displayName');
+    if(this.get('isAuthorCurrentUser')){
+      return `${displayName} (you)`;
+    } else {
+      return displayName;
+    }
+  }),
+
   editState: computed.or('errorsPresent', 'editing'),
   editing: false,
   errorsPresent: alias('model.errorsPresent'),

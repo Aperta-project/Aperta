@@ -23,6 +23,9 @@ export const contributionIdents = [
 
 export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
+  user: belongsTo('user'),
+
+  orcidAccount: Ember.computed.alias('user.orcidAccount'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),

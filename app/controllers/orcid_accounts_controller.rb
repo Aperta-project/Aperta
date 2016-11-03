@@ -1,5 +1,6 @@
 class OrcidAccountsController < ApplicationController
   before_action :authenticate_user!
+  before_action :disabled_response, unless: -> { TahiEnv.orcid_connect_enabled? }
   respond_to :json
 
   def show
@@ -36,5 +37,15 @@ class OrcidAccountsController < ApplicationController
              ':' + request.port.to_s
            end
     request.protocol + request.host + port + '/api/orcid/oauth'
+  end
+
+  def disabled_response
+    render(
+      status: 404,
+      json: {
+        message: 'Orcid integration is not currently enabled.'
+      },
+      serializer: ErrorSerializer
+    )
   end
 end

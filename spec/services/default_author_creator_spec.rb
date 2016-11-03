@@ -3,29 +3,33 @@ require 'rails_helper'
 
 describe DefaultAuthorCreator do
 
-  describe 'set_default_author' do
-    let(:creator) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper) }
-    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+  describe '#create!' do
+    let(:creator) { FactoryGirl.build_stubbed(:user) }
+    let(:paper) { FactoryGirl.create(:paper_with_phases) }
 
-    it 'Creates an author' do
-
-      expect {
+    it 'creates an author on the paper' do
+      expect do
         DefaultAuthorCreator.new(paper, creator).create!
-      }.to change(Author, :count).by(1)
+      end.to change { paper.authors.count }.by(1)
     end
 
-    it 'Author created have the same values as creator' do
-      DefaultAuthorCreator.new(paper, creator).create!
+    it 'links the creator with the author' do
+      author = DefaultAuthorCreator.new(paper, creator).create!
+      expect(author.user).to eq creator
+    end
 
-      author = Author.last
+    it 'populates the author with values from the creator' do
+      author = DefaultAuthorCreator.new(paper, creator).create!
       expect(author.first_name).to eq(creator.first_name)
       expect(author.last_name).to eq(creator.last_name)
       expect(author.email).to eq(creator.email)
       expect(author.paper).to eq(paper)
     end
 
-    it 'Author have the affiliation info from the creator' do
+    it <<-DESC do
+      sets the author affiliation information to the creator's
+      first affiliation
+    DESC
       FactoryGirl.create(
         :affiliation,
         user: creator,
@@ -34,27 +38,24 @@ describe DefaultAuthorCreator do
         title: 'Señor Developero'
       )
 
-      DefaultAuthorCreator.new(paper, creator).create!
-
-      author = Author.last
-
+      author = DefaultAuthorCreator.new(paper, creator).create!
       expect(author.affiliation).to eq('Harvard University')
       expect(author.department).to eq('Computer Science')
       expect(author.title).to eq('Señor Developero')
     end
 
-    it 'Author record has the association with the paper Authors Task' do
+    it 'associates the author with the AuthorsTask on the paper' do
       authors_task = TahiStandardTasks::AuthorsTask.create(
         title: "Authors",
         old_role: "author",
         paper: paper,
-        phase: phase
+        phase: paper.phases.first
       )
 
-      DefaultAuthorCreator.new(paper, creator).create!
-      author = Author.last
-
-      expect(author.task).to eq(authors_task)
+      expect do
+        author = DefaultAuthorCreator.new(paper, creator).create!
+        expect(author.task).to eq(authors_task)
+      end.to change { authors_task.authors.count }.by(1)
     end
   end
 end

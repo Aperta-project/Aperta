@@ -34,9 +34,6 @@ describe FilteredUserSerializer do
 
   before do
     JournalFactory.new(journal).ensure_default_roles_and_permissions_exist
-    create :paper_role, :editor, user: editor, paper: paper
-    create :paper_role, :reviewer, user: reviewer, paper: paper
-    create :paper_role, :collaborator, user: collaborator, paper: paper
 
     allow_any_instance_of(FakeFilteredUserSerializer).to receive(:current_user).and_return(user)
   end

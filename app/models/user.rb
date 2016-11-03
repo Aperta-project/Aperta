@@ -12,8 +12,6 @@ class User < ActiveRecord::Base
 
   has_many :affiliations, inverse_of: :user
 
-  has_many :paper_roles
-  has_many :papers, -> { uniq }, through: :paper_roles
   has_many :user_roles, inverse_of: :user
   has_many :old_roles, through: :user_roles
   has_many(
@@ -39,12 +37,6 @@ class User < ActiveRecord::Base
     source_type: 'Task' # source_type is a table name, not a specific subtype of Task
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
-  has_many \
-    :assigned_papers,
-    -> { uniq },
-    through: :paper_roles,
-    class_name: 'Paper',
-    source: :paper
   has_many :invitations, foreign_key: :invitee_id, inverse_of: :invitee
   has_many :invitations_from_me, foreign_key: :inviter_id, inverse_of: :inviter
   has_many \

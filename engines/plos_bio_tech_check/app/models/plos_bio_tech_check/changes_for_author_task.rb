@@ -49,7 +49,7 @@ module PlosBioTechCheck
     private
 
     def notify_tech_fixed
-      paper.admins.each do |admin|
+      paper.journal.staff_admins.each do |admin|
         PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_paper_tech_fixed(
           admin_id: admin.id,
           paper_id: paper.id

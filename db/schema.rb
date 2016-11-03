@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031203655) do
+ActiveRecord::Schema.define(version: 20161103135406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -465,19 +465,6 @@ ActiveRecord::Schema.define(version: 20161031203655) do
 
   add_index "orcid_accounts", ["user_id"], name: "index_orcid_accounts_on_user_id", using: :btree
 
-  create_table "paper_roles", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "old_role"
-  end
-
-  add_index "paper_roles", ["old_role"], name: "index_paper_roles_on_old_role", using: :btree
-  add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
-  add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
-  add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
-
   create_table "paper_tracker_queries", force: :cascade do |t|
     t.string   "query"
     t.string   "title"
@@ -516,16 +503,6 @@ ActiveRecord::Schema.define(version: 20161031203655) do
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
-
-  create_table "participations", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree
-  add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
   create_table "permission_requirements", force: :cascade do |t|
     t.integer  "permission_id"

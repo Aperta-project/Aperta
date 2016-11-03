@@ -37,8 +37,6 @@ module TahiHelperMethods
 
   def assign_handling_editor_role(paper, editor)
     editor.assign_to!(assigned_to: paper, role: paper.journal.handling_editor_role)
-    # this is an old role:
-    paper.paper_roles.create user: editor, old_role: PaperRole::EDITOR
   end
 
   def assign_internal_editor_role(paper, editor)

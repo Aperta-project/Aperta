@@ -19,7 +19,6 @@ class PapersController < ApplicationController
   def show
     paper = Paper.eager_load(
       :supporting_information_files,
-      { paper_roles: [:user] },
       :journal
     ).find(params[:id])
     requires_user_can(:view, paper)

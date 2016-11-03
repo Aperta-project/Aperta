@@ -100,10 +100,6 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.order('id asc').pluck(:paper_type)
   end
 
-  def valid_old_roles
-    PaperRole::ALL_ROLES | old_roles.map(&:name)
-  end
-
   # Try to block other services from directly updating last_doi_issued to avoid
   # issues where last_doi_issued gets out-of-sync.
   # instead those services should call #next_doi_number!

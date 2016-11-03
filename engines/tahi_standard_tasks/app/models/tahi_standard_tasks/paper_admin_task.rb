@@ -50,11 +50,11 @@ module TahiStandardTasks
       if admin_id
         # if the admin for this task doesn't in the paper's admins (in reality there's only going
         # to be 1) then this admin must be a new one.
-        !paper.admins.exists?(id: admin_id)
+        !paper.journal.staff_admins.exists?(id: admin_id)
       else
         # maybe we're trying to get rid of the current admin.
         # if an admin PaperRole exists and we're setting admin_id to nil, return true.
-        paper.admins.exists?
+        paper.journal.staff_admins.exists?
       end
     end
   end

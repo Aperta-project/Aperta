@@ -236,7 +236,6 @@ FactoryGirl.define do
 
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)
-        FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
 
         phase = create(:phase, paper: paper)
 

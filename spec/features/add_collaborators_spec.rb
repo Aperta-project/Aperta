@@ -11,11 +11,10 @@ feature "Adding collaborators", js: true do
   before do
     make_user_paper_admin(author, paper)
     login_as(author, scope: :user)
-    visit "/"
+    visit "/papers/#{paper.id}"
   end
 
   scenario "Managing collaborators" do
-    click_link paper.title
     edit_paper = PaperPage.new
     collaborators_overlay = edit_paper.show_contributors
     collaborators_overlay.add_collaborators(user)

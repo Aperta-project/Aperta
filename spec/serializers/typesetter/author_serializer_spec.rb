@@ -32,6 +32,7 @@ describe Typesetter::AuthorSerializer do
       secondary_affiliation: secondary_affiliation
     )
   end
+
   let(:user) { FactoryGirl.create(:user) }
 
   let(:contributes_question) do
@@ -59,6 +60,7 @@ describe Typesetter::AuthorSerializer do
       value_type: 'boolean'
     )
   end
+
   let!(:answer2) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -68,6 +70,7 @@ describe Typesetter::AuthorSerializer do
       value_type: 'boolean'
     )
   end
+
   let!(:answer3) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -77,6 +80,7 @@ describe Typesetter::AuthorSerializer do
       value_type: 'text'
     )
   end
+
   let!(:deceased_answer) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -121,9 +125,11 @@ describe Typesetter::AuthorSerializer do
     it 'includes question text when the answer is true' do
       expect(output[:contributions]).to include(question1.text)
     end
+
     it 'does not include question text when the answer is false' do
       expect(output[:contributions]).to_not include(question2.text)
     end
+
     it 'includes the `other` text if answered' do
       expect(output[:contributions]).to include(answer3.value)
     end
@@ -175,7 +181,7 @@ describe Typesetter::AuthorSerializer do
           .and_return [author.email]
       end
 
-      it 'is true'do
+      it 'is true' do
         expect(output[:corresponding]).to eq(true)
       end
     end
@@ -189,7 +195,7 @@ describe Typesetter::AuthorSerializer do
           .and_return ['some-other-email@example.com']
       end
 
-      it 'is false'do
+      it 'is false' do
         expect(output[:corresponding]).to eq(false)
       end
     end
@@ -237,6 +243,7 @@ describe Typesetter::AuthorSerializer do
       allow(author).to receive(:user).and_return(user)
       allow(user).to receive(:orcid_account).and_return(orcid_account)
     end
+
     context 'author has an OrcidAccount associated' do
       let(:orcid_account) do
         FactoryGirl.build_stubbed(:orcid_account,
@@ -244,6 +251,7 @@ describe Typesetter::AuthorSerializer do
           access_token: 'has_access_token'
         )
       end
+
       describe 'orcid_profile_url' do
         it 'returns the profile url' do
           expect(output[:orcid_profile_url])
@@ -262,6 +270,7 @@ describe Typesetter::AuthorSerializer do
         end
       end
     end
+
     context 'author does not have an OrcidAccount associated' do
       describe 'orcid_profile_url' do
         it 'returns the profile url' do

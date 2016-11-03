@@ -197,9 +197,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     cancel(){
       if (this.get('model.isNew')){
+        const journal = this.get('journal');
         this.get('model').deleteRecord();
         this.resetProperties();
-        this.transitionToRoute('admin.journal', this.get('journal'));
+        this.transitionToRoute('admin.journal', journal);
       } else {
         this.store.unloadAll('task-template');
         this.store.unloadAll('phase-template');

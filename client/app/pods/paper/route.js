@@ -4,7 +4,11 @@ export default AuthorizedRoute.extend({
   channelName: null,
 
   model(params) {
-    return this.store.findRecord('paper', params.paper_id, { reload: true });
+    return this.store.queryRecord('paper', { shortDoi: params.paper_shortDoi });
+  },
+
+  serialize(model) {
+    return { paper_shortDoi: model.get('shortDoi') };
   },
 
   setupController(controller, model) {

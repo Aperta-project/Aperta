@@ -11,7 +11,7 @@ Router.map(function() {
 
   this.route('paper_tracker', function() {});
 
-  this.route('paper', { path: '/papers/:paper_id' }, function() {
+  this.route('paper', { path: '/papers/:paper_shortDoi' }, function() {
     this.route('index', { path: '/' }, function() {
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });

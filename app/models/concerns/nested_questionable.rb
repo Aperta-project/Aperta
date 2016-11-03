@@ -45,9 +45,4 @@ module NestedQuestionable
   def answer_for(ident)
     nested_question_answers.includes(:nested_question).find_by(nested_questions: { ident: ident } )
   end
-
-  def question_for(ident)
-    nested_questions.find_by( ident: ident )
-  end
-
 end

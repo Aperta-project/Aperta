@@ -73,20 +73,6 @@ class Task < ActiveRecord::Base
       update_all(old_role: self::DEFAULT_ROLE, title: self::DEFAULT_TITLE)
     end
 
-    # Public: Scopes the tasks with a given old_role
-    #
-    # old_role  - The String of old_role name.
-    #
-    # Examples
-    #
-    #   for_old_role('editor')
-    #   # => #<ActiveRecord::Relation [<#Task:123>]>
-    #
-    # Returns ActiveRecord::Relation with tasks.
-    def for_old_role(old_role)
-      where(old_role: old_role)
-    end
-
     # Public: Scopes the tasks for a given paper
     #
     # paper  - The paper object

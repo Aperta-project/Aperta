@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   rules automatically for which invitations can be reordered and into which groups
 - Display of article type in invitations
 - Caching of unsaved Discussion responses
+- ORCID IDs are included in the metadata export to Apex
 ### Changed
 ### Deprecated
 ### Removed

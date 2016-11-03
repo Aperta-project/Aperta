@@ -9,6 +9,14 @@ module Typesetter
 
     private
 
+    def include_orcid_profile_url?
+      TahiEnv.orcid_connect_enabled?
+    end
+
+    def include_orcid_authenticated?
+      TahiEnv.orcid_connect_enabled?
+    end
+
     def orcid_profile_url
       orcid_account.try(:profile_url)
     end

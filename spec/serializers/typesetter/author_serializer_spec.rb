@@ -97,7 +97,7 @@ describe Typesetter::AuthorSerializer do
     allow(author).to receive(:answer_for).and_call_original
   end
 
-  it 'has author interests fields' do
+  it 'includes author fields' do
     expect(output.keys).to contain_exactly(
       :first_name,
       :last_name,
@@ -111,9 +111,7 @@ describe Typesetter::AuthorSerializer do
       :secondary_affiliation,
       :contributions,
       :government_employee,
-      :type,
-      :orcid_profile_url,
-      :orcid_authenticated
+      :type
     )
   end
 
@@ -244,44 +242,68 @@ describe Typesetter::AuthorSerializer do
       allow(user).to receive(:orcid_account).and_return(orcid_account)
     end
 
-    context 'author has an OrcidAccount associated' do
-      let(:orcid_account) do
-        FactoryGirl.build_stubbed(:orcid_account,
-          identifier: '0000-0001-0002-0003',
-          access_token: 'has_access_token'
-        )
-      end
-
-      describe 'orcid_profile_url' do
-        it 'returns the profile url' do
-          expect(output[:orcid_profile_url])
-            .to eq('http://sandbox.orcid.org/0000-0001-0002-0003')
+    context 'when ORCID_CONNECT_ENABLED is true' do
+      around do |example|
+        ClimateControl.modify(ORCID_CONNECT_ENABLED: 'true') do
+          example.run
         end
       end
 
-      describe 'orcid_authenticated' do
-        it 'returns true' do
-          expect(output[:orcid_authenticated]).to eq true
+      context 'author has an OrcidAccount associated' do
+        let(:orcid_account) do
+          FactoryGirl.build_stubbed(:orcid_account,
+            identifier: '0000-0001-0002-0003',
+            access_token: 'has_access_token'
+          )
         end
 
-        it 'returns false if access token is nil' do
-          orcid_account.access_token = nil
-          expect(output[:orcid_authenticated]).to eq false
+        describe 'orcid_profile_url' do
+          it 'returns the profile url' do
+            expect(output[:orcid_profile_url])
+              .to eq('http://sandbox.orcid.org/0000-0001-0002-0003')
+          end
+        end
+
+        describe 'orcid_authenticated' do
+          it 'returns true' do
+            expect(output[:orcid_authenticated]).to eq true
+          end
+
+          it 'returns false if access token is nil' do
+            orcid_account.access_token = nil
+            expect(output[:orcid_authenticated]).to eq false
+          end
+        end
+      end
+
+      context 'author does not have an OrcidAccount associated' do
+        describe 'orcid_profile_url' do
+          it 'returns the profile url' do
+            expect(output[:orcid_profile_url]).to be_nil
+          end
+        end
+
+        describe 'orcid_authenticated' do
+          it 'returns false' do
+            expect(output[:orcid_authenticated]).to eq false
+          end
         end
       end
     end
 
-    context 'author does not have an OrcidAccount associated' do
-      describe 'orcid_profile_url' do
-        it 'returns the profile url' do
-          expect(output[:orcid_profile_url]).to be_nil
+    context 'when ORCID_CONNECT_ENABLED is false' do
+      around do |example|
+        ClimateControl.modify(ORCID_CONNECT_ENABLED: 'false') do
+          example.run
         end
       end
 
-      describe 'orcid_authenticated' do
-        it 'returns false' do
-          expect(output[:orcid_authenticated]).to eq false
-        end
+      it 'does not include orcid_profile_url' do
+        expect(output).to_not have_key(:orcid_profile_url)
+      end
+
+      it 'does not include orcid_authenticated' do
+        expect(output).to_not have_key(:orcid_authenticated)
       end
     end
   end

@@ -28,7 +28,7 @@ class OrcidAccount < ActiveRecord::Base
   end
 
   def authenticated?
-    access_token && identifier
+    !!(access_token && identifier)
   end
 
   def profile_url

@@ -14,7 +14,7 @@ module Typesetter
     end
 
     def orcid_authenticated
-      !!orcid_account.try(:authenticated?)
+      orcid_account.try(:authenticated?)
     end
 
     def type

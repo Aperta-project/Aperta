@@ -1,7 +1,8 @@
 {{#unless (eq uiState "edit")}}
   <div class="invitation-item-header" {{action "toggleDetails"}}>
+    <div class="invitation-item-drag-handle {{if draggable "active"}} flex-element"></div>
     <div class="invitation-item-full-name">
-      {{#if alternate}}
+      {{#if invitation.isAlternate}}
         <i class="fa fa-link alternate-link-icon" aria-hidden="true"></i>
       {{/if}}
       {{#if invitee}}
@@ -33,61 +34,47 @@
     </div>
     <div class="invitation-item-spacer"></div>
     <div class="invitation-item-actions">
-      {{#if (not disabled)}}
-        {{#if displayEditButton}}
-          <span class="invitation-item-action invitation-item-action-edit"
-                {{action "editInvitation" invitation bubbles=false}}>
-            <span class="fa fa-pencil invite-edit"></span>
+      {{#if displayEditButton}}
+        <span class="invitation-item-action invitation-item-action-edit {{if disabled "invitation-item-action--disabled"}}"
+              {{action "editInvitation" invitation bubbles=false}}>
+          <span class="fa fa-pencil invite-edit"></span>
+          {{#unless disabled}}
             <span class="invitation-item-action-text">Edit</span>
-          </span>
-        {{/if}}
-        {{#if displayDestroyButton}}
-          <span class="invitation-item-action invitation-item-action-delete"
-                {{action "destroyInvitation" invitation bubbles=false}}>
-            <span class="fa fa-trash invite-remove" ></span>
-            <span class="invitation-item-action-text">Delete</span>
-          </span>
-        {{/if}}
-        {{#if displayRescindButton}}
-          <span class="invitation-item-action invitation-item-action-rescind" {{action "rescindInvitation" invitation}}>
-            <span class="fa fa-ban invite-rescind"></span>
+          {{/unless}}
+        </span>
+      {{/if}}
+      {{#if displayDestroyButton}}
+        <span class="invitation-item-action invitation-item-action-delete {{if destroyDisabled "invitation-item-action--disabled"}}"
+              {{action "destroyInvitation" invitation bubbles=false}}>
+          {{#tool-tip enabled=invitation.isPrimary title="Unlink alternates before deleting this primary"}}
+            <span class="fa fa-trash invite-remove"></span>
+            {{#unless disabled}}
+              <span class="invitation-item-action-text">Delete</span>
+            {{/unless}}
+          {{/tool-tip}}
+        </span>
+      {{/if}}
+      {{#if displayRescindButton}}
+        <span class="invitation-item-action invitation-item-action-rescind {{if invitationsInFlight "invitation-item-action--disabled"}}"
+              {{action "rescindInvitation" invitation bubbles=false}}>
+          <span class="fa fa-ban invite-rescind"></span>
+          {{#unless disabled}}
             <span class="invitation-item-action-text">Rescind</span>
-          </span>
+          {{/unless}}
+        </span>
         {{/if}}
-        {{#if displaySendButton}}
-          <span class="invitation-item-action invitation-item-action-send {{sendButtonClass}}"
-                {{action "sendInvitation" invitation bubbles=false}}>
-            <span class="fa fa-send invite-send"></span>
+      {{#if displaySendButton}}
+        <span class="invitation-item-action invitation-item-action-send {{if (or disabled invitationsInFlight) "invitation-item-action--disabled"}}"
+              {{action "sendInvitation" invitation bubbles=false}}>
+          <span class="fa fa-send invite-send"></span>
+          {{#unless disabled}}
             <span class="invitation-item-action-text">Send</span>
-          </span>
-        {{/if}}
-     {{else}}
-        {{#if displayEditButton}}
-          <span class="invitation-item-action invitation-item-action-edit invitation-item-action--disabled">
-            <span class="fa fa-pencil invite-edit"></span>
-          </span>
-        {{/if}}
-        {{#if displayDestroyButton}}
-          <span class="invitation-item-action invitation-item-action-delete invitation-item-action--disabled">
-            <span class="fa fa-trash invite-remove" ></span>
-          </span>
-        {{/if}}
-        {{#if displayRescindButton}}
-          <span class="invitation-item-action invitation-item-action-rescind invitation-item-action--disabled">
-            <span class="fa fa-ban invite-rescind"></span>
-          </span>
-        {{/if}}
-        {{#if displaySendButton}}
-          <span class="invitation-item-action invitation-item-action-send invitation-item-action--disabled">
-            <span class="fa fa-send invite-send"></span>
-          </span>
-        {{/if}}
-     {{/if}}
+          {{/unless}}
+        </span>
+      {{/if}}
     </div>
   </div>
-{{/unless}}
-
-{{#if (eq uiState "edit")}}
+{{else}}
   <div class="invitation-item-header">
     <div class="invitation-item-full-name">
      {{#unless (eq invitation composedInvitation)}}
@@ -103,7 +90,7 @@
       {{/if}}
     </div>
   </div>
-{{/if}}
+{{/unless}}
 
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
@@ -147,9 +134,7 @@
     {{/if}}
   </div>
 </div>
-{{/if}}
-
-{{#if (eq uiState "edit")}}
+{{else if (eq uiState "edit")}}
   <div class="invitation-item-details">
     {{content-editable value=invitation.body
                        class="invitation-edit-body"

@@ -1,32 +1,24 @@
 require "rails_helper"
 
-class TestTask < Task
-  include Invitable
-
-  DEFAULT_TITLE = 'Test Task'
-  DEFAULT_ROLE = 'user'
-
-  def invitation_rescinded(*)
-    true
-  end
-end
-
 describe InvitationsController do
   let(:user) { invitee }
+  let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:invitee) { FactoryGirl.create(:user) }
-  let(:phase) { FactoryGirl.create(:phase) }
-  let(:task) { FactoryGirl.create :invitable_task }
+  let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
+  let!(:queue) { FactoryGirl.create(:invitation_queue, task: task) }
 
   describe 'GET /invitations' do
-    subject(:do_request) { get :index, format: :json }
     let!(:invitation) do
-      FactoryGirl.create(:invitation, :invited, invitee: invitee)
+      FactoryGirl.create(:invitation, :invited, invitee: invitee, invitation_queue: queue)
     end
+    subject(:do_request) { get :index, format: :json }
 
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authenticated' do
-      before { stub_sign_in user }
+      before { stub_sign_in invitee }
 
       it 'returns required fields' do
         do_request
@@ -43,10 +35,137 @@ describe InvitationsController do
     end
   end
 
+  describe 'put /invitation/:id/update_position/' do
+    let!(:invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invitation_queue: queue
+    end
+
+    let!(:other_invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invitation_queue: queue
+    end
+
+    subject(:do_request) do
+      put :update_position,
+        format: :json,
+        id: invitation.id,
+        position: 2
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'the user is authorized' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return true
+      end
+
+      it 'calls invitation_queue#move_invitation_to_position' do
+        allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+        expect(invitation.invitation_queue).to receive(:move_invitation_to_position).with(invitation, 2)
+        do_request
+        data = res_body.with_indifferent_access
+        expect(data[:invitations].length).to eq(2)
+      end
+
+      context "when the user does not have access" do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:manage_invitations, task)
+            .and_return false
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+    end
+  end
+
+  describe 'put /invitation/:id/update_primary/' do
+    let!(:invitation) { FactoryGirl.create(:invitation, task: task, invitation_queue: queue, invitee: invitee) }
+    let!(:primary) { FactoryGirl.create(:invitation, task: task, invitation_queue: queue, invitee: invitee) }
+    subject(:do_request) do
+      put :update_primary,
+        format: :json,
+        id: invitation.id,
+        primary_id: primary.id
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'the user is authorized' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return true
+      end
+
+      context 'the primary id is present' do
+        it 'calls invitation_queue#assign_primary' do
+          allow(Invitation).to receive(:find).and_return(primary)
+          allow(Invitation).to receive(:find).with(primary.to_param).and_return(primary)
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          expect(invitation.invitation_queue).to receive(:assign_primary).with(primary: primary, invitation: invitation)
+
+          do_request
+        end
+
+        it "responds with all the invitations in the invitation queue" do
+          do_request
+          data = res_body.with_indifferent_access
+          expect(data[:invitations].length).to eq(2)
+        end
+      end
+
+      context 'the primary id is not present' do
+        subject(:do_request) do
+          put :update_primary,
+            format: :json,
+            id: invitation.id
+        end
+
+        before do
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          allow(invitation.invitation_queue).to receive(:unassign_primary_from).with(invitation)
+        end
+
+        it 'calls invitation_queue#unassign_primary_from' do
+          expect(invitation.invitation_queue).to receive(:unassign_primary_from).with(invitation)
+          do_request
+        end
+
+        it "responds with all the invitations in the invitation queue" do
+          do_request
+
+          data = res_body.with_indifferent_access
+          expect(data[:invitations].length).to eq(2)
+        end
+      end
+
+      context "when the user does not have access" do
+        before do
+          allow(user).to receive(:can?)
+            .with(:manage_invitations, task)
+            .and_return false
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+    end
+  end
+
   describe 'GET /invitation/:id' do
     subject(:do_request) { get(:show, format: :json, id: invitation.id) }
 
-    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, invitation_queue: queue) }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -93,6 +212,81 @@ describe InvitationsController do
     end
   end
 
+  describe 'PUT /invitations/:id' do
+    let!(:invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invitation_queue: queue,
+        position: 1,
+        primary: nil
+    end
+
+    let!(:other_invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invitation_queue: queue,
+        position: 2
+    end
+
+    subject(:do_request) do
+      post(
+        :update,
+        format: 'json',
+        id: invitation.id,
+        invitation: {
+          email: "foo@bar.com",
+          task_id: task.id,
+          body: "other body",
+          primary_id: other_invitation.id,
+          position: 5
+        }
+      )
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task).and_return(true)
+      end
+      it "updates the body and email" do
+        do_request
+        expect(invitation.reload.body).to eq("other body")
+        expect(invitation.reload.email).to eq("foo@bar.com")
+      end
+
+      it "responds with the updated invitation" do
+        do_request
+        expect(res_body["invitation"]["id"]).to eq(invitation.id)
+      end
+
+      it "does not update the invitation's primary" do
+        do_request
+        expect(invitation.reload.primary_id).to eq(nil)
+      end
+
+      it "does not update the invitation's position" do
+        do_request
+        expect(invitation.reload.position).to eq(1)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+
   describe 'POST /invitations' do
     subject(:do_request) do
       post(
@@ -101,13 +295,12 @@ describe InvitationsController do
         invitation: {
           email: email_to_invite,
           task_id: task.id,
-          body: invitation_body,
-          state: invitation_state
-        })
+          body: invitation_body
+        }
+      )
     end
 
     let(:email_to_invite) { invitee.email }
-    let(:invitation_state) { nil }
     let(:invitation_body) do
       'Hard to find a black cat in a dark room, especially if there is no cat.'
     end
@@ -121,71 +314,82 @@ describe InvitationsController do
           .with(:manage_invitations, task).and_return(true)
       end
 
-      context 'when the invitation state is pending' do
-        let(:invitation_state) { 'pending' }
-        context 'with an email matching an existing user' do
-          it 'creates a pending invitation for that user' do
-            do_request
-            expect(response.status).to eq(201)
+      context 'with an email matching an existing user' do
+        it 'creates a pending invitation for that user' do
+          do_request
+          expect(response.status).to eq(200)
 
-            data = res_body.with_indifferent_access
-            invitation = Invitation.find(data[:invitation][:id])
+          data = res_body.with_indifferent_access
+          invitation = Invitation.find(data[:invitations][0][:id])
+          expect(invitation.invitation_queue).to eq(task.active_invitation_queue)
 
-            expect(invitation.state).to eq('pending')
-            expect(invitation.invitee).to eq(invitee)
-            expect(invitation.email).to eq(invitee.email)
-          end
+          expect(invitation.state).to eq('pending')
+          expect(invitation.invitee).to eq(invitee)
+          expect(invitation.email).to eq(invitee.email)
         end
       end
+    end
 
-      context 'when the invitation state is blank' do
-        context 'and the invitee already exists' do
-          before do
-            expect(invitee.id).to be
-          end
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task)
+          .and_return false
+      end
 
-          it 'creates a invited invitation' do
-            do_request
-            expect(response.status).to eq(201)
+      it { is_expected.to responds_with(403) }
+    end
+  end
 
-            data = res_body.with_indifferent_access
-            invitation = Invitation.find(data[:invitation][:id])
+  describe 'DELETE /invitations/:id' do
+    let!(:invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invitation_queue: queue
+    end
 
-            expect(invitation.invitee).to eq(invitee)
-            expect(invitation.email).to eq(invitee.email)
-            expect(invitation.token).to be_present
-            expect(invitation.actor).to be_nil
-            expect(invitation.state).to eq('invited')
-            expect(invitation.body).to eq(invitation_body)
-          end
-        end
+    let!(:other_invitation) do
+      FactoryGirl.create :invitation,
+        invitee: invitee,
+        task: task,
+        invitation_queue: queue
+    end
 
-        context 'and the invitee does not exist in the system' do
-          let(:email_to_invite) { 'custom-email@example.com' }
-          it 'creates an invitation for new user' do
-            do_request
+    subject(:do_request) do
+      delete(
+        :destroy,
+        format: 'json',
+        id: invitation.id
+      )
+    end
 
-            expect(response.status).to eq 201
+    it_behaves_like 'an unauthenticated json request'
 
-            data = res_body.with_indifferent_access
-            invitation = Invitation.find(data[:invitation][:id])
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_invitations, task).and_return(true)
+      end
 
-            expect(invitation.invitee).to eq nil
-            expect(invitation.email).to eq(email_to_invite)
-            expect(invitation.token).to be_present
-            expect(invitation.actor).to be_nil
-            expect(invitation.state).to eq('invited')
-          end
-        end
+      it 'removes the invitation from the queue and destroys it' do
+        allow(Invitation).to receive(:find).and_call_original
+        allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+        expect(invitation.invitation_queue).to receive(:destroy_invitation).with(invitation).and_call_original
 
-        it 'creates an Activity' do
-          expected_activity = {
-            message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
-            feed_name: "workflow"
-          }
-          expect(Activity).to receive(:create).with hash_including(expected_activity)
-          do_request
-        end
+        do_request
+
+        expect(invitation).to be_destroyed
+      end
+
+      it 'renders the remaining invitations in the queue' do
+        do_request
+
+        data = res_body.with_indifferent_access
+        expect(data[:invitations].length).to eq(1)
+        expect(data[:invitations][0][:id]).to eq(other_invitation.id)
       end
     end
 
@@ -205,16 +409,19 @@ describe InvitationsController do
     let!(:invitation) do
       FactoryGirl.create(
         :invitation,
+        body: 'Invitation sent!',
         state: 'pending',
         invitee: invitee,
-        task: task
+        task: task,
+        invitation_queue: queue
       )
     end
     subject(:do_request) do
       post(
         :send_invite,
         format: 'json',
-        id: invitation.to_param)
+        id: invitation.to_param
+      )
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -235,10 +442,9 @@ describe InvitationsController do
         end
 
         it 'sends the invitation' do
+          allow(Invitation).to receive(:find).with(invitation.to_param).and_return(invitation)
+          expect(invitation.invitation_queue).to receive(:send_invitation).with(invitation)
           do_request
-          data = res_body.with_indifferent_access
-          saved_invitation = Invitation.find(data[:invitation][:id])
-          expect(saved_invitation.state).to eq('invited')
         end
 
         it 'creates an activity' do
@@ -258,7 +464,8 @@ describe InvitationsController do
       put(
         :rescind,
         format: "json",
-        id: invitation.to_param)
+        id: invitation.to_param
+      )
     end
 
     let(:invitation) do
@@ -305,8 +512,6 @@ describe InvitationsController do
   end
 
   context "transitioning state" do
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
     let(:invitation) do
       FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task)
     end
@@ -361,7 +566,8 @@ describe InvitationsController do
           format: :json,
           invitation: {
             decline_reason: 'This is my decline reason',
-            reviewer_suggestions: 'Added reviewer suggesions' }
+            reviewer_suggestions: 'Added reviewer suggesions'
+          }
         )
       end
 

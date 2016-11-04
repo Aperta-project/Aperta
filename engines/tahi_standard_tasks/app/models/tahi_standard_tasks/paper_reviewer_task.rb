@@ -38,6 +38,11 @@ module TahiStandardTasks
       end
     end
 
+    def active_invitation_queue
+      paper.draft_decision.invitation_queue ||
+        InvitationQueue.create(task: self, decision: paper.draft_decision)
+    end
+
     def array_attributes
       super + [:reviewer_ids]
     end

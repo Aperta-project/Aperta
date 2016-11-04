@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
-import { task } from 'ember-concurrency';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   computed,
@@ -9,6 +9,7 @@ const {
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
+  restless: Ember.inject.service(),
 
   // external props
   replaceTargetName: '', // used in template replacements
@@ -18,17 +19,25 @@ export default Ember.Component.extend({
 
   //internal stuff
   activeInvitation: null,
-  activeInvitationState: 'closed',
+  activeInvitationState: 'closed', // 'closed', 'show', 'edit'
   composedInvitation: null,
   selectedUser: null,
   autoSuggestSelectedText: null,
 
+  isEditingInvitation: Ember.computed('activeInvitation', 'activeInvitationState', function() {
+    return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
+  }),
+
+  // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),
+  latestDecision: computed.alias('task.paper.latestDecision'),
+
   invitations: computed.alias('task.invitations'),
 
   inviteeRole: computed.reads('task.inviteeRole'),
-  latestDecision: computed('decisions', 'decisions.@each.latest', function() {
-    return this.get('decisions').findBy('latest', true);
+
+  loadDecisions: concurrencyTask(function * () {
+    return yield this.get('task.decisions');
   }),
 
   applyTemplateReplacements(str) {
@@ -67,14 +76,12 @@ export default Ember.Component.extend({
     return user.full_name + ' <' + user.email + '>';
   },
 
-  createInvitation: task(function * (props) {
+  createInvitation: concurrencyTask(function * (props) {
     let invitation = this.get('store').createRecord('invitation', props);
+
     this.set('pendingInvitation', invitation);
     try {
       yield invitation.save();
-      if (this.get('groupByDecision')) {
-        this.get('latestDecision.invitations').addObject(invitation);
-      }
 
       this.setProperties({
         activeInvitation: invitation,
@@ -133,20 +140,32 @@ export default Ember.Component.extend({
       this.set('activeInvitation', null);
     },
 
+    changePosition(newPosition, invitation) {
+      this.get('changePosition').perform(newPosition, invitation);
+    },
+
     composeInvite() {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
       this.get('createInvitation').perform({
         task: this.get('task'),
         email: this.get('selectedUser.email'),
-        body: this.buildInvitationBody(),
-        state: 'pending'
+        body: this.buildInvitationBody()
       });
     },
 
     // auto-suggest action
     didSelectUser(selectedUser) {
       this.set('selectedUser', selectedUser);
+    },
+
+    saveInvite(invitation) {
+      this.set('composedInvitation', null);
+      return invitation.save();
+    },
+
+    destroyInvite(invitation) {
+      invitation.destroyRecord();
     },
 
     toggleActiveInvitation(invitation, rowState) {

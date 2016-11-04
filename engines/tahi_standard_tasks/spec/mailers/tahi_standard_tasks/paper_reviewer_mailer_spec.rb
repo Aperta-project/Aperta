@@ -19,7 +19,7 @@ describe TahiStandardTasks::PaperReviewerMailer do
     end
 
     it "has the correct body content" do
-      expect(email.body).to include "You've been invited to"
+      expect(email.body).to include "Hiya, chief!"
       expect(email.body).to include invitation.body
     end
 

@@ -4,7 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
-* A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
+- Invitations can now be reordered through drag and drop. This also enforces
+  rules automatically for which invitations can be reordered and into which groups
+- A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
 ### Changed
 ### Deprecated
 ### Removed

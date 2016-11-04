@@ -6,13 +6,13 @@ class DecisionsController < ApplicationController
     paper = Paper.find(params[:paper_id])
     requires_user_can(:view, paper)
 
-    decisions = paper.decisions.completed
+    decisions = if current_user.can?(:view_decisions, paper)
+                  paper.decisions
+                else
+                  paper.decisions.completed
+                end
 
-    if current_user.can?(:view_decisions, paper)
-      decisions = paper.decisions
-    end
-
-    render json: decisions,
+    render json: decisions.includes(invitations: [:task, :invitee, :primary, :alternates, :invitation_queue, :attachments]),
            each_serializer: DecisionSerializer,
            root: 'decisions'
   end

@@ -220,7 +220,7 @@ FactoryGirl.define do
         phase = create(:phase, paper: paper)
         evaluator.task_params[:title] ||= "Ad Hoc"
         evaluator.task_params[:old_role] ||= "user"
-        evaluator.task_params[:type] ||= "Task"
+        evaluator.task_params[:type] ||= "AdHocTask"
         evaluator.task_params[:paper] ||= paper
 
         phase.tasks.create(evaluator.task_params)

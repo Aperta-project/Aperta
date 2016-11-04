@@ -24,7 +24,7 @@
       <label class="decision-label">
         {{radio-button
           value=verdict
-          selection=latestDecision.verdict
+          selection=draftDecision.verdict
           disabled=nonPublishable
           name="decision"
           action=(action "setDecisionTemplate")}}
@@ -36,12 +36,12 @@
   {{error-message message=validationErrors.errors}}
 
   {{letter-template disabled=nonPublishableOrUnselected
-                    letterValue=latestDecision.letter
+                    letterValue=draftDecision.letter
                     class='letter-template-placeholder'
                     toField=toField
                     subjectLine=subjectLine
                     task=task
-                    templateDecision=latestDecision.verdict
+                    templateDecision=draftDecision.verdict
                     templateSelected=(action 'templateSelected')
                     registerDecision=(action 'registerDecision')
   }}

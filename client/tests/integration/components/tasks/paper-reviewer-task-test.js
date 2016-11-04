@@ -23,7 +23,7 @@ moduleForComponent(
   }
 );
 
-let decision = Ember.Object.create({id: 2, latest: true, invitations: []});
+let decision = Ember.Object.create({id: 2, draft: true, invitations: []});
 
 test('User can add a new reviewer after tweaking the email of an exiting user',
   function(assert){
@@ -89,7 +89,8 @@ var newTask = function() {
     },
 
     paper: {
-      latestDecision: decision,
+      draftDecision: decision,
+      previousDecisions: [],
       decisions: {
         reload() {
           // noop

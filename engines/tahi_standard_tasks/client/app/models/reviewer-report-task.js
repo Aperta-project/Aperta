@@ -10,6 +10,6 @@ export default Task.extend({
   previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
 
   decision: Ember.computed('decisions', function() {
-    return this.get('decisions').findBy('latest', true);
+    return this.get('decisions').findBy('draft', true);
   })
 });

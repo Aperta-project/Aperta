@@ -16,7 +16,7 @@ let createTask = function() {
       decisions: [
         {
           id: 1,
-          latest: true
+          draft: true
         },
         { id: 2,
           verdict: 'accept', registeredAt: new Date()},

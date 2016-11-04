@@ -30,7 +30,7 @@ export default Ember.Component.extend({
 
   // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),
-  latestDecision: computed.alias('task.paper.latestDecision'),
+  draftDecision: computed.alias('task.paper.draftDecision'),
 
   invitations: computed.alias('task.invitations'),
 
@@ -102,11 +102,11 @@ export default Ember.Component.extend({
     return invitations.rejectBy('isNew');
   }),
 
-  latestDecisionInvitations: computed(
-    'latestDecision.invitations.@each.inviteeRole', function() {
+  draftDecisionInvitations: computed(
+    'draftDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');
-      if (this.get('latestDecision.invitations')) {
-        return this.get('latestDecision.invitations')
+      if (this.get('draftDecision.invitations')) {
+        return this.get('draftDecision.invitations')
                     .filterBy('inviteeRole', type);
       }
     }

@@ -40,13 +40,13 @@ test('displayTitle displays title if present', function(assert) {
   assert.equal(paper.get('displayTitle'), title);
 });
 
-test('previousDecisions returns decisions that have registeredAt set', function(assert){
+test('previousDecisions returns decisions that are not drafts', function(assert){
   var noVerdictDecision = FactoryGuy.make(
-    'decision', { registeredAt: null });
+    'decision', { draft: true });
   var acceptedDecision = FactoryGuy.make(
-    'decision', { registeredAt: new Date() });
+    'decision', { draft: false });
   var rejectedDecision = FactoryGuy.make(
-    'decision', { registeredAt: new Date() });
+    'decision', { draft: false });
 
   var paper = FactoryGuy.make('paper', {
     decisions: [noVerdictDecision, acceptedDecision, rejectedDecision]

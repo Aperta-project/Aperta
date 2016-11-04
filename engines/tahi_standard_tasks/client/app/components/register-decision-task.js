@@ -18,8 +18,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
   publishable: computed.and('submitted', 'uncompleted'),
   nonPublishable: computed.not('publishable'),
-  nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
-    return this.get('nonPublishable') || !this.get('latestDecision.verdict');
+  nonPublishableOrUnselected: computed('draftDecision.verdict', 'task.completed', function() {
+    return this.get('nonPublishable') || !this.get('draftDecision.verdict');
   }),
 
   toField: null,
@@ -28,10 +28,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   revisionNumberDesc: ['revisionNumber:desc'],
 
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
-  // was `alias('decisions.firstObject')` but blows the call stack - Jerry (ember 2.0.2)
-  latestDecision: computed('decisions.[]', function() {
-    return this.get('decisions.firstObject');
-  }),
+  draftDecision: computed.alias('task.paper.draftDecision'),
   previousDecisions: computed.alias('paper.previousDecisions'),
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
@@ -45,10 +42,10 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
 
-  onDecisionLetterUpdate: Ember.observer('latestDecision.letter', function() {
-    let latestDecision = this.get('latestDecision');
-    if (latestDecision && latestDecision.get('hasDirtyAttributes')) {
-      Ember.run.debounce(latestDecision, latestDecision.save, 500);
+  onDecisionLetterUpdate: Ember.observer('draftDecision.letter', function() {
+    let draftDecision = this.get('draftDecision');
+    if (draftDecision && draftDecision.get('hasDirtyAttributes')) {
+      Ember.run.debounce(draftDecision, draftDecision.save, 500);
     }
   }),
 
@@ -56,10 +53,10 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     registerDecision() {
       let task = this.get('task');
 
-      this.set('decidedDecision', this.get('latestDecision.verdict'));
+      this.set('decidedDecision', this.get('draftDecision.verdict'));
 
       this.busyWhile(
-        this.get('latestDecision').register(task)
+        this.get('draftDecision').register(task)
           .then(() => {
             // reload to pick up completed flag on current task and possibly new
             // Revise Manuscript task
@@ -82,8 +79,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
       const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
       toAnswer.set('value', to);
       subjectAnswer.set('value', subject);
-      this.get('latestDecision').set('verdict', template.templateDecision);
-      this.get('latestDecision').set('letter', letter); // will trigger save
+      this.get('draftDecision').set('verdict', template.templateDecision);
+      this.get('draftDecision').set('letter', letter); // will trigger save
       return template;
     },
 

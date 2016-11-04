@@ -4,6 +4,8 @@ import logging
 import random
 import time
 
+from loremipsum import generate_paragraph
+
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, admin_users
@@ -32,7 +34,7 @@ class DiscussionForumTest(CommonTest):
 
   """
 
-  def test_notification(self):
+  def _test_notification(self):
     """
     Validates red circle on discussion icon on manuscript, discussion and message topic
     when added to a discussion and when mentioned in a topic.
@@ -197,10 +199,21 @@ class DiscussionForumTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.invite(reviewer_2)
+    msg_1 = generate_paragraph()[2][15]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
-    ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                  participants=[reviewer_1['user'], reviewer_2['user']])
-
+    ms_viewer.post_new_discussion(topic='Testing discussion on paper {0}'.format(paper_id),
+                                  msg=msg_1, participants=[reviewer_1['user'],
+                                  reviewer_2['user']])
+    # Staff user logout
+    ms_viewer.logout()
+    # reviewer 1
+    logging.info(u'Logging in as user: {0}'.format(reviewer_1))
+    dashboard_page = self.cas_login(email=reviewer_1['email'])
+    # go to article id paper_id
+    dashboard_page.go_to_manuscript(paper_id)
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
+    ####
     # Admin user logout
     ms_viewer.logout()
     logging.info(u'Logging in as user: {0}'.format(creator))

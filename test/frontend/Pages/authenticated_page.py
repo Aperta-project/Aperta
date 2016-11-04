@@ -93,7 +93,7 @@ class AuthenticatedPage(PlosPage):
     # Discussion related items
     self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
     self._create_new_topic = (By.CSS_SELECTOR, 'div.discussions-index-header a')
-    self._topic_title_field = (By.CSS_SELECTOR, 'input')
+    self._topic_title_field = (By.ID, 'topic-title-field')
     self._create_topic = (By.CSS_SELECTOR, 'div.sheet-content button')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._participant_field = (By.CSS_SELECTOR, 'input.active')
@@ -115,6 +115,11 @@ class AuthenticatedPage(PlosPage):
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Task list id needed in task and manuscript page
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
+    #XXXXX
+    self._first_comment = (By.CLASS_NAME, 'discussion-topic-comment-field')
+
+
+
     self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
@@ -634,14 +639,19 @@ class AuthenticatedPage(PlosPage):
     :return: None.
     """
     participants = participants or []
-    self._get(self._discussion_link).click()
+    self.click_covered_element(self._get(self._discussion_link))
+    ##self._get(self._discussion_link).click()
     self._get(self._create_new_topic).click()
     time.sleep(1)
     if topic:
       self._get(self._topic_title_field).send_keys(topic)
     else:
       self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
-    # create topic btn
+    msg_body = self._get(self._message_body_field)
+    if msg:
+      msg_body.send_keys(msg)
+    else:
+      msg_body.send_keys(generate_paragraph()[2])
     time.sleep(1)
     self._get(self._create_topic).click()
     # add paper creator to the discussion
@@ -653,31 +663,6 @@ class AuthenticatedPage(PlosPage):
         self._get(self._participant_field).send_keys(participant + Keys.ENTER)
         time.sleep(5)
         self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
-    time.sleep(2)
-    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    self._driver.execute_script(js_cmd)
-    message_body_div = self._get(self._message_body_div)
-    count = 0
-    while 'editing' not in message_body_div.get_attribute('class'):
-      time.sleep(.5)
-      if count > 60:
-        break
-    msg_body = self._get(self._message_body_field)
-    if msg:
-      msg_body.send_keys(msg)
-    else:
-      msg_body.send_keys(generate_paragraph()[2])
-    show_form = (By.CSS_SELECTOR, 'div.discussions-show-form')
-    time.sleep(1)
-    form_element = self._get(show_form)
-    self.click_covered_element(form_element)
-    # Click twice for butons to appear
-    self.click_covered_element(form_element)
-    time.sleep(1)
-    self._wait_for_element(self._get(self._post_message_btn))
-    self.click_covered_element(self._get(self._post_message_btn))
-    # Need to wait for make sure the post is sent
-    time.sleep(3)
     return None
 
   def post_discussion(self, msg=''):

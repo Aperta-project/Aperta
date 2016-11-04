@@ -140,11 +140,11 @@ class User < ActiveRecord::Base
     site_admin? ? Journal.all : journals_thru_old_roles
   end
 
-  def invitations_from_latest_revision
+  def invitations_from_draft_decision
     # Includes, here, to enable selecting from the latest revision w/o
     # further db queries.
     invitations.includes([{ decision: [:paper] }, :paper]).select do |invitation|
-      invitation.decision && invitation.decision.latest?
+      invitation.decision && invitation.decision.draft?
     end
   end
 

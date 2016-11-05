@@ -247,7 +247,7 @@ class DiscussionForumTest(CommonTest):
     # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
     # in Windows, we should detect OS and pass an alternative solution.
     db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
-    comment_header_db = '{0} posted {1}'.format(staff_user['name'], front_end_time_text)
+    comment_header_db = '{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
     comment_name = ms_viewer._get(ms_viewer._comment_name).text
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
     header_fe = '{0} {1}'.format(comment_name, comment_date)
@@ -284,7 +284,7 @@ class DiscussionForumTest(CommonTest):
     # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
     # in Windows, we should detect OS and pass an alternative solution.
     db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
-    comment_header_db = '{0} posted {1}'.format(reviewer_1['name'], front_end_time_text)
+    comment_header_db = '{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
     comment_name = ms_viewer._get(ms_viewer._comment_name).text
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
     header_fe = '{0} {1}'.format(comment_name, comment_date)

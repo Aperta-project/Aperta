@@ -109,6 +109,12 @@ class AuthenticatedPage(PlosPage):
     self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
     self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
     self._post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+
+    self._comment_name = (By.CLASS_NAME, 'comment-name')
+    self._comment_date = (By.CLASS_NAME, 'comment-date')
+    self._comment_body = (By.CLASS_NAME, 'comment-body')
+
+
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
@@ -630,6 +636,14 @@ class AuthenticatedPage(PlosPage):
     self._actions.click_and_hold(task_title).release().perform()
     return True
 
+  def click_discussion_link(self):
+    """
+    Click on discussion link
+    :return: None
+    """
+    self.click_covered_element(self._get(self._discussion_link))
+    return None
+
   def post_new_discussion(self, topic='', msg='', participants=None):
     """
     Post a message on a new discussion
@@ -639,8 +653,7 @@ class AuthenticatedPage(PlosPage):
     :return: None.
     """
     participants = participants or []
-    self.click_covered_element(self._get(self._discussion_link))
-    ##self._get(self._discussion_link).click()
+    self.click_discussion_link()
     self._get(self._create_new_topic).click()
     time.sleep(1)
     if topic:
@@ -671,9 +684,10 @@ class AuthenticatedPage(PlosPage):
     :param msg: Message to post. If empty, will post a random text.
     :return: None.
     """
-    self._wait_for_element(self._get(self._discussion_link))
-    post_discussion_btn = self._get(self._discussion_link)
-    post_discussion_btn.click()
+    self.click_discussion_link()
+    ##self._wait_for_element(self._get(self._discussion_link))
+    ##post_discussion_btn = self._get(self._discussion_link)
+    ##post_discussion_btn.click()
     # click on first discussion
     self._wait_for_element(self._get(self._first_discussion_lnk))
     first_disc_link = self._get(self._first_discussion_lnk)

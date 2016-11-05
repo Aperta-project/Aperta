@@ -5,9 +5,11 @@ import random
 import time
 
 from loremipsum import generate_paragraph
+from dateutil import tz
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
+from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users, admin_users
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
@@ -136,6 +138,19 @@ class DiscussionForumTest(CommonTest):
 
     """
     creator, reviewer_1, reviewer_2 = random.sample(users, 3)
+    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
+      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
+      print 141
+    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
+      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
+      print 144
+    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
+      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
+      print 147
+    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
+      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
+      print 150
+
     print creator, reviewer_1, reviewer_2
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
@@ -199,21 +214,90 @@ class DiscussionForumTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.invite(reviewer_2)
-    msg_1 = generate_paragraph()[2][15]
+    msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
-    ms_viewer.post_new_discussion(topic='Testing discussion on paper {0}'.format(paper_id),
-                                  msg=msg_1, participants=[reviewer_1['user'],
-                                  reviewer_2['user']])
+    topic = 'Testing discussion on paper {0}'.format(paper_id)
+    ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
+                                  participants=[reviewer_1['user'], reviewer_2['user']])
     # Staff user logout
     ms_viewer.logout()
+
     # reviewer 1
     logging.info(u'Logging in as user: {0}'.format(reviewer_1))
     dashboard_page = self.cas_login(email=reviewer_1['email'])
+    dashboard_page.click_view_invitations()
+    dashboard_page.accept_all_invitations()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
+    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
+    # accept invitation
+    ms_viewer.click_discussion_link()
+    discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
+    discussion_title = discussion_link.text
+    assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
+    discussion_link.click()
+    created, discussion_topic_id = PgSQL().query(
+      'select created_at, id from discussion_topics where paper_id = %s;',
+      (paper_id,))[0]
+    from_zone = tz.gettz('UTC')
+    to_zone = tz.tzlocal()
+    created = created.replace(tzinfo=from_zone)
+    db_time = created.astimezone(to_zone)
+    # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
+    # in Windows, we should detect OS and pass an alternative solution.
+    db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
+    comment_header_db = '{0} posted {1}'.format(staff_user['name'], front_end_time_text)
+    comment_name = ms_viewer._get(ms_viewer._comment_name).text
+    comment_date = ms_viewer._get(ms_viewer._comment_date).text
+    header_fe = '{0} {1}'.format(comment_name, comment_date)
+    header_db = '{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
+    assert header_fe == header_db, (header_fe, header_db)
+    comment_body = ms_viewer._get(ms_viewer._comment_body).text
+    assert msg_1 == comment_body, (msg_1, comment_body)
+    msg_2 = generate_paragraph()[2]
+    ms_viewer.post_discussion(msg_2)
+    ms_viewer.logout()
+
+
+    # reviewer 2
+    logging.info(u'Logging in as user: {0}'.format(reviewer_2))
+    dashboard_page = self.cas_login(email=reviewer_2['email'])
+    dashboard_page.click_view_invitations()
+    dashboard_page.accept_all_invitations()
+    # go to article id paper_id
+    dashboard_page.go_to_manuscript(paper_id)
+    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
+    # accept invitation
+    ms_viewer.click_discussion_link()
+    discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
+    discussion_title = discussion_link.text
+    assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
+    discussion_link.click()
+    created = PgSQL().query('select created_at from discussion_replies where discussion_topic_id = %s;',
+      (discussion_topic_id,))[0][0]
+    from_zone = tz.gettz('UTC')
+    to_zone = tz.tzlocal()
+    created = created.replace(tzinfo=from_zone)
+    db_time = created.astimezone(to_zone)
+    # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
+    # in Windows, we should detect OS and pass an alternative solution.
+    db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
+    comment_header_db = '{0} posted {1}'.format(reviewer_1['name'], front_end_time_text)
+    comment_name = ms_viewer._get(ms_viewer._comment_name).text
+    comment_date = ms_viewer._get(ms_viewer._comment_date).text
+    header_fe = '{0} {1}'.format(comment_name, comment_date)
+    header_db = '{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
+    assert header_fe == header_db, (header_fe, header_db)
+    comment_body = ms_viewer._get(ms_viewer._comment_body).text
+    assert msg_2 == comment_body, (msg_2, comment_body)
+
+    import pdb; pdb.set_trace()
+
+
     ####
+
     # Admin user logout
     ms_viewer.logout()
     logging.info(u'Logging in as user: {0}'.format(creator))

@@ -220,13 +220,13 @@ class ReviewerCandidatesTaskTest(CommonTest):
     logging.info(current_path)
     #  First check for required initial data
     mmts = []
-    journal_id = PgSQL().query('select id from journals where name="PLOS Wombat";')[0][0]
+    journal_id = PgSQL().query("SELECT id FROM journals j WHERE j.name = 'PLOS Wombat';")[0][0]
     mmt_tuples = PgSQL().query('SELECT paper_type '
                                'FROM manuscript_manager_templates '
                                'WHERE journal_id = %s;', (journal_id,))
     for mmt_tuple in mmt_tuples:
       mmts.append(mmt_tuple[0])
-    if not 'OnlyReviewerCandidates' in mmts:
+    if 'OnlyReviewerCandidates' not in mmts:
       logging.info('Required Data not present, aborting')
       raise(StandardError, 'Required seed data not present: '
                            'PLOS Wombat journal, Only ReviewerCandidates mmt')

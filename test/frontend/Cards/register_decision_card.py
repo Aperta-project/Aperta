@@ -177,24 +177,40 @@ class RegisterDecisionCard(BaseCard):
                                     'raised by the reviewers.',
                         'Accept': "On behalf of my colleagues and the Academic Editor, [*INSERT "
                                   "AE'S NAME*], I am pleased to inform you that we will be "
-                                  "delighted to publish your manuscript in PLOS Biology."}
+                                  "delighted to publish your manuscript in PLOS Wombat."}
     if decision == 'Accept':
-      assert template_letters['Accept'] in letter_text, letter_text
+      assert template_letters['Accept'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['Accept'],
+                                                                      letter_text)
     elif decision == 'Minor Revision':
-      assert template_letters['MinorRev'] in letter_text, letter_text
+      assert template_letters['MinorRev'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['MinorRev'],
+                                                                      letter_text)
     elif decision == 'Major Revision':
-      assert template_letters['MajorRev'] in letter_text, letter_text
+      assert template_letters['MajorRev'] in letter_text, \
+        'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['MajorRev'],
+                                                                    letter_text)
     else:
       if reject_selection == 'Editor Decision - Reject After Review':
-        assert template_letters['Reject-ED-RAR'] in letter_text, letter_text
+        assert template_letters['Reject-ED-RAR'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
+          template_letters['Reject-ED-RAR'], letter_text)
       elif reject_selection == 'Editor Decision - Reject After Review CJs':
-        assert template_letters['Reject-ED-RAR-CJ'] in letter_text, letter_text
+        assert template_letters['Reject-ED-RAR-CJ'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
+          template_letters['Reject-ED-RAR-CJ'], letter_text)
       elif reject_selection == 'Editor Decision - Reject After Review ONE':
-        assert template_letters['Reject-ED-RAR-ONE'] in letter_text, letter_text
+        assert template_letters['Reject-ED-RAR-ONE'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
+          template_letters['Reject-ED-RAR-ONE'], letter_text)
       elif reject_selection == 'Reject After Review ONE':
-        assert template_letters['Reject-RAR-ONE'] in letter_text, letter_text
+        assert template_letters['Reject-RAR-ONE'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
+          template_letters['Reject-RAR-ONE'], letter_text)
       else:
-        assert template_letters['Reject-RARAR-ONE'] in letter_text, letter_text
+        assert template_letters['Reject-RARAR-ONE'] in letter_text, \
+          'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
+          template_letters['Reject-RARAR-ONE'], letter_text)
 
   def register_decision(self, decision='', reject_template='', commit=True):
     """

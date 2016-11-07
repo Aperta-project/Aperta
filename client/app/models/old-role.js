@@ -2,7 +2,6 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   journal: DS.belongsTo('admin-journal', { async: false }),
-  userRoles: DS.hasMany('user-role', { async: false }),
 
   canAdministerJournal: DS.attr('boolean'),
   canViewAssignedManuscriptManagers: DS.attr('boolean'),
@@ -12,7 +11,6 @@ export default DS.Model.extend({
   required: DS.attr('boolean'),
 
   destroyRecord() {
-    this.get('userRoles').invoke('unloadRecord');
     this._super();
   }
 });

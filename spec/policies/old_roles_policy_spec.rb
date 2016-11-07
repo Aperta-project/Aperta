@@ -31,10 +31,4 @@ describe OldRolesPolicy do
     it_behaves_like "person who can administer journal old_roles"
   end
 
-  context "user who has a old_role" do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:old_role) { assign_journal_role(journal, user, OldRole.first) }
-
-    specify { expect(policy.show?).to be(true) }
-  end
 end

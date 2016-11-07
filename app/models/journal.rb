@@ -6,11 +6,6 @@ class Journal < ActiveRecord::Base
   has_many :discussion_topics, through: :papers, inverse_of: :journal
   has_many :letter_templates
 
-  # Old Roles and Permissions
-  has_many :old_roles, inverse_of: :journal
-  has_many :user_roles, through: :old_roles
-  has_many :users, through: :user_roles
-
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
@@ -74,16 +69,8 @@ class Journal < ActiveRecord::Base
     all.flat_map(&:staff_admins)
   end
 
-  def admins
-    users.merge(OldRole.admins)
-  end
-
   def staff_admins
     User.with_role(staff_admin_role, assigned_to: self)
-  end
-
-  def reviewers
-    users.merge(OldRole.reviewers)
   end
 
   def logo_url
@@ -127,7 +114,6 @@ class Journal < ActiveRecord::Base
 
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)
-    JournalServices::CreateDefaultRoles.call(self)
     JournalServices::CreateDefaultTaskTypes.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
   end

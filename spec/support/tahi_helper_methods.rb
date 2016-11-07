@@ -51,21 +51,10 @@ module TahiHelperMethods
   end
 
   def assign_journal_role(journal, user, role_or_type)
-    # New Roles
     if role_or_type == :admin
       user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
     elsif role_or_type == :editor
       user.assign_to!(assigned_to: journal, role: journal.internal_editor_role)
-    end
-
-    # Old Roles
-    if role_or_type.is_a?(OldRole)
-      old_role = role_or_type
-      UserRole.create!(user: user, old_role: old_role).old_role
-    else
-      old_role = journal.old_roles.where(kind: role_or_type).first
-      old_role ||= FactoryGirl.create(:old_role, role_or_type, journal: journal)
-      UserRole.create!(user: user, old_role: old_role).old_role
     end
   end
 

@@ -14,13 +14,13 @@ feature 'Ethics Task', js: true do
   end
 
   def view_ethics_card_on_the_manuscript_page
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     page = DashboardPage.new
     page.view_card_in_task_sidebar 'Ethics Statement'
   end
 
   def view_ethics_card_directly
-    visit "/papers/#{paper.id}/tasks/#{paper.tasks.last.id}"
+    Page.view_task paper.tasks.first
   end
 
   background do

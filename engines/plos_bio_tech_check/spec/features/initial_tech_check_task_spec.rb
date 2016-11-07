@@ -31,7 +31,7 @@ feature 'Initial Tech Check', js: true do
     overlay.dismiss
 
     # Creator cannot access initial tech check task
-    visit "/papers/#{paper.short_doi}/tasks/#{task.id}"
+    Page.view_task task
     expect(page).to have_content("You don't have access to that content")
   end
 

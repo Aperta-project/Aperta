@@ -26,7 +26,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     login_as(reviewer, scope: :user)
     visit "/"
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
   end
 
   scenario "A paper's creator cannot access the Reviewer Report" do
@@ -47,7 +47,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
   scenario 'A reviewer can see their previous rounds of review' do
     # Revision 0
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 0'
 
@@ -59,7 +59,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     paper.submit! paper.creator
     reviewer_report_task.update!(decision: paper.draft_decision)
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 1'
 
@@ -72,7 +72,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     paper.submit! paper.creator
     reviewer_report_task.update!(decision: paper.draft_decision)
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
@@ -86,7 +86,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     paper.submit! paper.creator
     reviewer_report_task.update!(decision: paper.draft_decision)
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
     t.ensure_review_history(

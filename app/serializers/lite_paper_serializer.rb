@@ -3,6 +3,8 @@ class LitePaperSerializer < ActiveModel::Serializer
              :processing, :publishing_state, :related_at_date, :title,
              :updated_at
 
+  has_one :journal, embed: :id
+
   def related_at_date
     return unless scoped_user.present?
     my_roles.map(&:created_at).sort.last

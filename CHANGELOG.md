@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Invitations can now be reordered through drag and drop. This also enforces
   rules automatically for which invitations can be reordered and into which groups
 - Display of article type in invitations
+- Caching of unsaved Discussion responses
 ### Changed
 ### Deprecated
 ### Removed

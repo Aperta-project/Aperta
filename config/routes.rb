@@ -111,7 +111,7 @@ Tahi::Application.routes.draw do
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, param: :id, constraints: { id: /[0-9]+/ }, only: [:redirect_to_short_doi]
-    resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z]+\.[0-9]+/ }, \
+    resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z0-9]+\.[0-9]+/ }, \
                        only: [:index, :create, :show, :update] do
       resources :roles, only: [], controller: 'paper_roles' do
         resources :eligible_users, only: [:index], controller: 'paper_role_eligible_users'
@@ -215,7 +215,7 @@ Tahi::Application.routes.draw do
 
   # epub/pdf paper download formats
   #
-  resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z]+\.[0-9]+/ }, only: [] do
+  resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z0-9]+\.[0-9]+/ }, only: [] do
     get :download, on: :member
   end
 

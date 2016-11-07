@@ -15,7 +15,7 @@ feature "Editor Discussion", js: true, flaky: true do
   end
 
   scenario "journal admin can see the 'Editor Discussion' card" do
-    visit "/papers/#{paper.id}/tasks/#{task.id}"
+    visit "/papers/#{paper.short_doi}/tasks/#{task.id}"
     expect(find('.overlay-body-title')).to have_content "Editor Discussion"
   end
 end

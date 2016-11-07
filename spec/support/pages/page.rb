@@ -38,6 +38,10 @@ class Page < PageFragment
     def view_task(task)
       new.view_task(task)
     end
+
+    def view_paper_workflow(paper)
+      new.view_paper_workflow(paper)
+    end
   end
 
   def initialize(element = nil, context: nil)
@@ -55,6 +59,10 @@ class Page < PageFragment
 
   def view_task(task)
     visit "/papers/#{task.paper.short_doi}/tasks/#{task.id}"
+  end
+
+  def view_paper_workflow(paper)
+    visit "/papers/#{paper.short_doi}/workflow"
   end
 
   def notice

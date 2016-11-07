@@ -7,7 +7,7 @@ describe AssignmentsController, type: :controller do
 
   describe '#index' do
     subject(:do_request) do
-      get :index, format: 'json', paper_id: paper.to_param
+      get :index, format: 'json', short_doi: paper.short_doi
     end
 
     let(:paper_assignments) do

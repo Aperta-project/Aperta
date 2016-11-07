@@ -26,7 +26,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     login_as(reviewer, scope: :user)
     visit "/"
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
   end
 
   scenario "A paper's creator cannot access the Reviewer Report" do
@@ -49,7 +49,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   scenario 'A review can see their previous rounds of review' do
     # Revision 0
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
 
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
@@ -62,7 +62,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}",
                              ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
@@ -76,7 +76,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'answer for round 2'
@@ -90,7 +90,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
     t.ensure_review_history(

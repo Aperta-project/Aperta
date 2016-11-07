@@ -4,6 +4,11 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Early Article Posting cards have been added to workflows, to allow authors to opt into
+  allowing manuscripts to be published before all proofreading and copyediting is done.
+
+## [{version}] - {release_date}
+### Added
 - Manuscript diffing has been enhanced. Words that have changed are now highlighted
   inside of changed sentences.
 ### Changed

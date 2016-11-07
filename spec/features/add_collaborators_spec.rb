@@ -9,7 +9,7 @@ feature "Adding collaborators", js: true do
   let!(:user) { FactoryGirl.create :user }
 
   before do
-    make_user_paper_admin(author, paper)
+    assign_journal_role(journal, author, :admin)
     login_as(author, scope: :user)
     visit "/papers/#{paper.id}"
   end

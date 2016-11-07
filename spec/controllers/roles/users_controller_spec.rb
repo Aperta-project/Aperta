@@ -15,7 +15,10 @@ describe OldRoles::UsersController do
 
   describe "GET 'index'" do
     it "lists all of the users that belong to that old_role in the journal" do
-      get :index, old_role_id: old_role.id
+      ClimateControl.modify(ORCID_CONNECT_ENABLED: 'true') do
+        get :index, old_role_id: old_role.id
+      end
+
       expected_response = {
         "id" => admin.id,
         "full_name" => admin.full_name,

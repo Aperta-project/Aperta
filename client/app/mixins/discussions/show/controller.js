@@ -2,22 +2,17 @@ import Ember from 'ember';
 import { discussionUsersPath } from 'tahi/lib/api-path-helpers';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 import { task } from 'ember-concurrency';
-
-// keep comment cache around for 30 days
-const STORAGE_LENGTH = ((60*24)*30);
+import ENV from 'tahi/config/environment';
 
 const {
   computed,
   Mixin,
-  isEmpty,
-  run
+  isEmpty
 } = Ember;
 
 export default Mixin.create(DiscussionsRoutePathsMixin, {
+  storage: Ember.inject.service('discussions-storage'),
   inProgressComment: '',
-  localStorageKey: computed('model.id', function() {
-    return 'discussion:' + this.get('model.id');
-  }),
 
   participants: computed('model.discussionParticipants.@each.user', function() {
     return this.get('model.discussionParticipants').mapBy('user');
@@ -30,14 +25,12 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
     return discussionUsersPath(this.get('model.id'));
   }),
 
-  cacheComment(value) {
-    window.lscache.setBucket('aperta');
-    window.lscache.set(this.get('localStorageKey'), value, STORAGE_LENGTH);
+  storeComment(value) {
+    this.get('storage').setItem(this.get('model.id'), value);
   },
 
-  clearCachedComment() {
-    window.lscache.setBucket('aperta');
-    window.lscache.remove(this.get('localStorageKey'));
+  clearStoredComment() {
+    this.get('storage').removeItem(this.get('model.id'));
   },
 
   replyCreation: task(function * (body) {
@@ -48,16 +41,17 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
     }).save();
 
     this.set('inProgressComment', '');
-    this.clearCachedComment();
+    this.clearStoredComment();
   }),
 
   actions: {
     commentDidChange(value) {
-      this.cacheComment(value);
+      const delay = (Ember.testing || ENV.environment === 'test') ? 0 : 1000;
+      Ember.run.debounce(this, this.storeComment, value, delay);
     },
 
     commentDidCancel() {
-      this.clearCachedComment();
+      this.clearStoredComment();
     },
 
     saveTopic() {

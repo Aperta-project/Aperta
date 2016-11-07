@@ -3,6 +3,7 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   notifications: Ember.inject.service(),
+  storage: Ember.inject.service('discussions-storage'),
   channelName: null,
 
   model(params) {
@@ -50,10 +51,8 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   _setupInProgressComment(controller, model) {
-    window.lscache.setBucket('aperta');
-    const comment = window.lscache.get(
-      'discussion:' + model.get('id')
-    );
+    const comment = this.get('storage')
+                        .getItem(model.get('id'));
 
     controller.set(
       'inProgressComment',

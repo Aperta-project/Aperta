@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import AtWhoSupport from 'ember-cli-at-js/mixins/at-who-support';
 import {PropTypes} from 'ember-prop-types';
-import ENV from 'tahi/config/environment';
 
 export default Ember.TextArea.extend(AtWhoSupport, {
   propTypes: {
@@ -36,14 +35,12 @@ export default Ember.TextArea.extend(AtWhoSupport, {
 
   didInsertElement() {
     this._super(...arguments);
-    Ember.run.schedule('afterRender', this, function() {
-      const action = this.get('onChange');
-      const delay = (Ember.testing || ENV.environment === 'test') ? 0 : 1000;
-      if(Ember.isEmpty(action)) { return; }
-      const that = this;
-      this.$().on('keyup', function() {
-        Ember.run.debounce(that, action, this.value, delay);
-      });
+
+    const action = this.get('onChange');
+    if(Ember.isEmpty(action)) { return; }
+
+    this.$().on('keyup', function() {
+      action(this.value);
     });
   },
 

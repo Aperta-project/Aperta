@@ -7,6 +7,12 @@ FactoryGirl.define do
 
     uses_research_article_reviewer_report true
 
+    after(:stub) do |paper|
+      doi_number = paper.journal.last_doi_issued.to_i + 1
+      paper.journal.last_doi_issued = doi_number.to_s
+      paper.short_doi = "#{paper.journal.doi_publisher_prefix}.#{doi_number}"
+    end
+
     trait :with_integration_journal do
       association :journal, factory: :journal_with_roles_and_permissions
     end

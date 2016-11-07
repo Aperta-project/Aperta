@@ -30,6 +30,14 @@ class Page < PageFragment
     def view_task_overlay(paper, task, opts = {})
       new.view_task_overlay(paper, task, opts)
     end
+
+    def view_paper(paper)
+      new.view_paper(paper)
+    end
+
+    def view_task(task)
+      new.view_task(task)
+    end
   end
 
   def initialize(element = nil, context: nil)
@@ -39,6 +47,14 @@ class Page < PageFragment
   def reload(sync_on:nil)
     visit page.current_path
     page.has_content? sync_on if sync_on
+  end
+
+  def view_paper(paper)
+    visit "/papers/#{paper.short_doi}"
+  end
+
+  def view_task(task)
+    visit "/papers/#{task.paper.short_doi}/tasks/#{task.id}"
   end
 
   def notice

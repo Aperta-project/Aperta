@@ -128,6 +128,14 @@
                              placeholder="Secondary Institution"}}
       </div>
     </div>
+
+    {{#if author.orcidAccount}}
+      <div class="flex-group">
+        <div class="flex-element">
+            {{orcid-connect user=author.user}}
+        </div>
+      </div>
+    {{/if}}
   </fieldset>
 
   <fieldset>
@@ -190,7 +198,7 @@
           Loading countries
         {{/if}}
         {{#if countries.error}}
-          <i class="fa fa-exclamation-triangle"></i>
+          {{fa-icon icon="exclamation-triangle"}}
           Error loading countries
         {{/if}}
       </div>

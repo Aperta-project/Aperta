@@ -1,10 +1,9 @@
 import Ember from 'ember';
+import ControlBar from 'tahi/pods/components/control-bar/component';
 
 const { computed } = Ember;
 
-export default Ember.Component.extend({
-  classNames: ['control-bar'],
-  classNameBindings: ['submenuVisible:control-bar--sub-items-active'],
+export default ControlBar.extend({
   paperWithdrawn: computed.equal('paper.publishingState', 'withdrawn'),
   submenuVisible: false,
   contributorsVisible: false,

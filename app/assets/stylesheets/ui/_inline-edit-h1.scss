@@ -9,7 +9,7 @@
   top: -7px;
 
   &:hover {
-    color: $tahi-green-dark;
+    color: $aperta-green-dark;
   }
 }
 
@@ -39,7 +39,7 @@
 .inline-edit.editing { display: none; }
 
 .inline-edit-body-part {
-  @include transition(min-height, 0.2s);
+  transition: min-height, 0.2s;
   position: relative;
   border-top: 1px solid #ccc;
 
@@ -83,7 +83,7 @@
     }
     .item-remove {
       margin: 10px;
-      color: $tahi-green;
+      color: $aperta-green;
       @extend .fa, .fa-times-circle-o;
     }
   }
@@ -166,8 +166,7 @@
 .bodypart-display {
   position: relative;
   margin: 10px 0;
-
-  @include transition(min-height, 0.3s);
+  transition: min-height, 0.3s;
 
   .fa.inline-edit-icon {
     top: 3px;
@@ -184,7 +183,7 @@
 
 .bodypart-last-sent {
   margin-right: 10px;
-  color: $tahi-green;
+  color: $aperta-green;
   font-size: 11px;
   font-style: italic;
 }

@@ -91,7 +91,7 @@ test('all users can see their username', function(assert) {
   });
 
   andThen(function() {
-    assert.elementFound( '#profile-dropdown-menu:contains("Fake User")');
+    assert.elementFound( '#profile-dropdown-menu-trigger:contains("Fake User")');
   });
 });
 
@@ -99,7 +99,7 @@ test('(200 response) can see the Admin link', function(assert) {
   respondAuthorized();
   visit('/');
   andThen(function() {
-    assert.elementFound('.main-nav:contains("Admin")');
+    assert.elementFound('.main-navigation-item:contains("Admin")');
   });
 });
 
@@ -107,7 +107,7 @@ test('(403 response) cannot see the Admin link', function(assert) {
   respondUnauthorized();
   visit('/');
   andThen(function() {
-    assert.elementNotFound('.main-nav:contains("Admin")');
+    assert.elementNotFound('.main-navigation-item:contains("Admin")');
   });
 });
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161018143343) do
+ActiveRecord::Schema.define(version: 20161031153002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20161018143343) do
     t.string   "current_address_state"
     t.string   "current_address_country"
     t.string   "current_address_postal"
+    t.integer  "user_id"
   end
 
   create_table "billing_log_reports", force: :cascade do |t|
@@ -274,19 +275,26 @@ ActiveRecord::Schema.define(version: 20161018143343) do
     t.datetime "updated_at"
   end
 
+  create_table "invitation_queues", force: :cascade do |t|
+    t.integer  "task_id"
+    t.integer  "decision_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "invitations", force: :cascade do |t|
     t.string   "email"
     t.integer  "task_id"
     t.integer  "invitee_id"
     t.integer  "actor_id"
-    t.string   "state"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.string   "state",                default: "pending", null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "decision_id"
     t.string   "information"
     t.text     "body"
     t.integer  "inviter_id"
-    t.string   "invitee_role",         null: false
+    t.string   "invitee_role",                             null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
     t.string   "token"
@@ -295,12 +303,17 @@ ActiveRecord::Schema.define(version: 20161018143343) do
     t.datetime "declined_at"
     t.datetime "accepted_at"
     t.datetime "rescinded_at"
+    t.integer  "position",                                 null: false
+    t.integer  "invitation_queue_id"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
   add_index "invitations", ["decision_id"], name: "index_invitations_on_decision_id", using: :btree
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
+  add_index "invitations", ["invitation_queue_id"], name: "index_invitations_on_invitation_queue_id", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
+  add_index "invitations", ["primary_id"], name: "index_invitations_on_primary_id", using: :btree
+  add_index "invitations", ["state"], name: "index_invitations_on_state", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
 
   create_table "journal_task_types", force: :cascade do |t|
@@ -747,14 +760,14 @@ ActiveRecord::Schema.define(version: 20161018143343) do
   add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name",             default: "",    null: false
-    t.string   "last_name",              default: "",    null: false
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "first_name",             default: "", null: false
+    t.string   "last_name",              default: "", null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"

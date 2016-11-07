@@ -1,0 +1,139 @@
+/* CONTROL BAR
+
+Elements do not have any default styles.
+All properties are applied in a media query.
+
+----------------------------------------------------------------------------- */
+
+
+#control-bar {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  height: $control-bar-height-large-screen;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+
+  .spacer { flex-grow: 1; }
+}
+
+#control-bar .control-bar-button {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 0 1rem;
+  padding: 1.2rem 0.4rem 1.0rem 0.4rem;
+  color: $aperta-green;
+  font-size: 1.2rem;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  @include user-select(none);
+
+  &.last {
+    margin-right: 0;
+    padding-right: 2.6rem;
+  }
+
+  path {
+    fill: $aperta-green;
+  }
+  .fa { font-size: 1.8rem; }
+
+  .badge {
+    position: absolute;
+    top: 4px;
+    right: 7px;
+    bottom: auto;
+    left: auto;
+  }
+
+  &#nav-recent-activity svg {
+    width: 20px;
+  }
+}
+
+#control-bar.control-bar--blue a {
+  color: $aperta-blue;
+}
+
+#control-bar {
+  #nav-manuscript,
+  #nav-workflow {
+    justify-content: center;
+    margin-right: 1.4rem;
+    padding-right: 2.8rem;
+
+    .fa { display: none; }
+
+    &:after {
+      position: absolute;
+      top: 1.3rem;
+      right: 0;
+      content: '';
+      width: 1px;
+      height: $control-bar-height-large-screen - 2.6rem;
+      background: #ddd;
+    }
+  }
+}
+
+#control-bar-paper-title {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-left: 2rem;
+  font-size: 1.4rem;
+
+  span { overflow: hidden; }
+}
+
+#control-bar-paper-journal-logo {
+  padding-left: 2rem;
+}
+
+#control-bar-cover { display: none; }
+
+#control-bar-journal-nav {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-left: 2rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+
+  .journal-name {
+    overflow: hidden;
+    padding-left: 2rem;
+  }
+
+  .fa {
+    display: flex;
+    align-items: center;
+    color: $aperta-blue;
+  }
+
+  .fa > * {
+    padding-left: 4px;
+    color: $aperta-blue;
+    font-family: $aperta-font-family;
+    font-size: 1.5rem;
+  }
+}
+
+
+.control-bar-sub-items {
+  @include position(absolute, $control-bar-height-large-screen - 1 0 auto 0);
+  display: flex;
+  justify-content: flex-end;
+  height: $control-bar-height-large-screen;
+  border-bottom: 1px solid #ddd;
+  font-size: 12px;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  z-index: z(control-bar-sub-items);
+  animation: animation-popover 0.2s;
+}

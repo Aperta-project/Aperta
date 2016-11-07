@@ -1,4 +1,4 @@
-@include keyframes(rotate) {
+@keyframes rotate {
   0% {
     transform: rotateZ(-360deg);
   }

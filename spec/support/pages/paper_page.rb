@@ -61,23 +61,23 @@ class PaperPage < Page
   end
 
   def contributors_link
-    find '.contributors-link'
+    find '#nav-collaborators'
   end
 
   def downloads_link
-    find '.downloads-link'
+    find '#nav-downloads'
   end
 
   def add_contributors_link
-    find '.contributors-add'
+    find '#nav-add-collaborators'
   end
 
   def recent_activity_button
-    first(:css, '.activity-link')
+    first(:css, '#nav-recent-activity')
   end
 
   def version_button
-    first(:css, '.versions-link')
+    first(:css, '#nav-versions')
   end
 
   def visit_task_manager
@@ -177,10 +177,8 @@ HERE
   end
 
   def withdraw_paper
-    within '.control-bar' do
-      find('.control-bar-link', text: 'More').click
-      find('.withdraw-link', text: 'Withdraw Manuscript').click
-    end
+    find('.more-dropdown-menu').click
+    find('.withdraw-link').click
 
     expect(page).to have_css('.paper-withdraw-wrapper')
     within '.paper-withdraw-wrapper' do

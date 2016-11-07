@@ -5,8 +5,7 @@ import { task as concurrencyTask, timeout } from 'ember-concurrency';
 const {
   computed,
   inject: {service},
-  isEmpty,
-  on
+  isEmpty
 } = Ember;
 
 export default TaskComponent.extend({
@@ -43,12 +42,13 @@ export default TaskComponent.extend({
 
   editingAuthorResponse: false,
 
-  _editIfResponseIsEmpty: on('didInsertElement', function() {
+  init() {
+    this._super(...arguments);
     this.set(
       'editingAuthorResponse',
       isEmpty(this.get('latestDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
     );
-  }),
+  },
 
   attachmentsPath: computed('task.id', function() {
     return `/api/tasks/${this.get('task.id')}/attachments`;

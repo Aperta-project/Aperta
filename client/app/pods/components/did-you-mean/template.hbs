@@ -2,7 +2,7 @@
   <div class="did-you-mean-what-you-meant">
     {{yield selectedItem}}
     {{#if recognized}}
-      <i class="fa fa-check-circle"></i>
+      {{fa-icon icon="check-circle"}}
     {{/if}}
     <span {{action "tryAgain" disabled}} class="did-you-mean-change">change</span>
   </div>
@@ -22,10 +22,8 @@
     {{#if search.isRunning}}
       {{progress-spinner visible=true size="small"}}
     {{else}}
-      <button class="did-you-mean-button"
-        tabindex=-1
-        {{action "search"}}>
-        <i class="fa fa-search"></i>
+      <button class="did-you-mean-button" tabindex=-1 {{action "search"}}>
+        {{fa-icon icon="search"}}
       </button>
     {{/if}}
   </div>

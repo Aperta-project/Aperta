@@ -8,7 +8,7 @@
   {{#each stages as |stage|}}
     <div class="col-xs-4"> 
       {{#if stage.complete}}
-        <span class='ball img-circle check'><i class='fa fa-check'></i></span>
+        <span class='ball img-circle check'>{{fa-icon icon="check"}}</span>
       {{else}}
         <span class="ball img-circle">{{stage.number}}</span>
       {{/if}}

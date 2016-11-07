@@ -72,6 +72,12 @@ describe PaperFactory do
       end
     end
 
+    it "calls the task_added_to_workflow hook for each task" do
+      expect(TahiStandardTasks::PaperAdminTask).to receive(:task_added_to_workflow)
+      expect(TahiStandardTasks::DataAvailabilityTask).to receive(:task_added_to_workflow)
+      subject
+    end
+
     it "sets the creator" do
       expect(subject.creator).to eq(user)
     end

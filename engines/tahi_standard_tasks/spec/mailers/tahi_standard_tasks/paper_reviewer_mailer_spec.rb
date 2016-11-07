@@ -1,63 +1,61 @@
 require 'rails_helper'
-include ClientRouteHelper
-
-shared_examples_for 'an invitation notification email' do |email_identifier_word:|
-  it "implements an `email` object" do
-    expect(self).to respond_to :email
-  end
-
-  it "sends an invitation email to the invitee" do
-    expect(email.to.length).to eq 1
-    expect(email.to.first).to eq invitation.email
-  end
-
-  specify { expect(email.body).to match(/#{email_identifier_word}/) }
-end
 
 describe TahiStandardTasks::PaperReviewerMailer do
-  let(:task) { create(:paper_reviewer_task) }
-  let(:invitation) do
-    create(
-      :invitation,
-      body: "Dear SoAndSo, You've been invited to be a reviewer on a manuscript",
-      task: task
-    )
-  end
+  include ClientRouteHelper
 
   describe ".notify_invited" do
-    let(:email) { described_class.notify_invited invitation_id: invitation.id }
-    it_behaves_like 'an invitation notification email', email_identifier_word: 'invited'
+    subject(:email) do
+      described_class.notify_invited(invitation_id: invitation.id)
+    end
 
-    describe "email content and formatting" do
-      it "has correct subject line" do
-        expect(email.subject).to eq "You have been invited as a reviewer for the manuscript, \"#{task.paper.display_title}\""
-      end
+    let(:invitation) do
+      FactoryGirl.create(:invitation, body: "Hiya, chief!", task: task)
+    end
 
-      it "includes the invitation body as part of the email" do
-        expect(email.body).to include invitation.body
-      end
+    let(:task) { FactoryGirl.create(:paper_reviewer_task) }
 
-      it "has a dashboard link" do
+    it "has the correct subject line" do
+      expect(email.subject).to eq "You have been invited as a reviewer for the manuscript, \"#{task.paper.display_title}\""
+    end
+
+    it "has the correct body content" do
+      expect(email.body).to include "Hiya, chief!"
+      expect(email.body).to include invitation.body
+    end
+
+    it "sends the email to the invitee's email" do
+      expect(email.to).to contain_exactly(invitation.email)
+    end
+
+    it "bcc's apertachasing@plos.org to support chasing in Salesforce" do
+      expect(email.bcc).to contain_exactly('apertachasing@plos.org')
+    end
+
+    it "attaches attachments on the invitation" do
+      invitation.attachments << FactoryGirl.build(
+        :invitation_attachment,
+        file: File.open(Rails.root.join("spec/fixtures/bill_ted1.jpg"))
+      )
+      invitation.attachments << FactoryGirl.build(
+        :invitation_attachment,
+        file: File.open(Rails.root.join("spec/fixtures/yeti.gif"))
+      )
+
+      expect(email.attachments.length).to eq(2)
+      expect(email.attachments.map(&:filename)).to contain_exactly(
+        "bill_ted1.jpg",
+        "yeti.gif"
+      )
+    end
+
+    describe "links" do
+      it "has a link to Aperta's dashboard for accepting the invitation in the email body" do
         expect(email.body).to include client_dashboard_url
       end
 
-      it "has an accept link" do
-        expect(email.body).to include "Accept"
-      end
-
-      it "has a decline link" do
+      it "has a link to decline the invitation in the email body" do
         expect(email.body).to include
         confirm_decline_invitation_url(invitation.token)
-      end
-
-      it "bcc's apertachasing@plos.org to support chasing in Salesforce" do
-        expect(email.bcc).to include('apertachasing@plos.org')
-      end
-    end
-
-    describe "email body content" do
-      it "includes appropriate body text" do
-        expect(email.body).to include "You've been invited to"
       end
     end
   end

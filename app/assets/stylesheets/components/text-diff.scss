@@ -8,13 +8,13 @@
   display: inline-block;
 
   .added {
-    background-color: rgba($tahi-green-light, .5);
+    background-color: rgba($aperta-green-light, 0.5);
     padding: 1px;
   }
 
   .removed {
-    opacity: .8;
-    background-color: rgba($tahi-red-light, .5);
+    opacity: 0.8;
+    background-color: rgba($aperta-red-light, 0.5);
     padding: 1px;
     text-decoration: line-through;
   }

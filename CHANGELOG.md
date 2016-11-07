@@ -4,6 +4,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Invitations can now be reordered through drag and drop. This also enforces
+  rules automatically for which invitations can be reordered and into which groups
+- A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
+- Display of article type in invitations
 - Ad-hoc cards have editing and managing permissions
 ### Changed
 ### Deprecated
@@ -27,6 +31,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - PLOS Biology name is no longer hard coded in letter templates
 - Fixed issue where roles couldn't be assigned in the admin page in some journals
 - Fixed ad-hoc email component to expand properly
+- Fixed scrolling on manuscript page
 - Notifications when FTP uploads fail are now being emailed out to the Journal Staff Admins for associated papers
 ### Security
 

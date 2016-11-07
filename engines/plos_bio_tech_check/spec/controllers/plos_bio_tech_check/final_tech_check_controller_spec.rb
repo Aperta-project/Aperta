@@ -1,34 +1,59 @@
 require 'rails_helper'
 
-describe PlosBioTechCheck::FinalTechCheckController do
-  routes { PlosBioTechCheck::Engine.routes }
-  let(:admin) { create :user, :site_admin, first_name: "Admin" }
-  let(:paper) do
-    FactoryGirl.create(
-      :paper_with_phases,
-      :with_integration_journal,
-      :submitted,
-      creator: admin
-    )
-  end
-  let(:task) { create :final_tech_check_task, paper: paper }
+module PlosBioTechCheck
+  describe FinalTechCheckController do
+    routes { Engine.routes }
 
-  before do
-    task.body["finalTechCheckBody"] = "words"
-    sign_in admin
-  end
-
-  describe "#letter_text" do
-    it "return ITC task.body" do
-      expect(subject.letter_text(task)).to eq "words"
+    let(:user) { FactoryGirl.build_stubbed :user }
+    let(:task) { FactoryGirl.build_stubbed :final_tech_check_task }
+    let(:notify_service) do
+      instance_double(NotifyAuthorOfChangesNeededService, notify!: nil)
     end
-  end
 
-  describe "#send_email" do
-    it 'makes the paper editable' do
-      post :send_email, id: task.id, format: :json
-      task.paper.reload
-      expect(task.paper.editable).to eq true
+    describe '#send_email' do
+      subject(:do_request) do
+        post :send_email, id: task.id, format: :json
+      end
+
+      before do
+        allow(FinalTechCheckTask).to receive(:find)
+          .with(task.to_param)
+          .and_return task
+      end
+
+      it_behaves_like 'an unauthenticated json request'
+
+      context 'when the user has access' do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return true
+          allow(NotifyAuthorOfChangesNeededService).to receive(:new)
+            .and_return notify_service
+        end
+
+        it 'tells notify service to notify the author' do
+          allow(NotifyAuthorOfChangesNeededService).to receive(:new)
+            .with(task, submitted_by: user)
+            .and_return notify_service
+          expect(notify_service).to receive(:notify!)
+          do_request
+        end
+
+        it { is_expected.to responds_with(200) }
+      end
+
+      context 'when the user does not have access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:edit, task)
+            .and_return false
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
     end
   end
 end

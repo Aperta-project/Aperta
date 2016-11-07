@@ -1,16 +1,4 @@
 // CSS here meant to style paper view page, and paper body
-.paper-container {
-  @include position(relative, 0px 0px 0px 0px);
-  top: 60px;
-  z-index: z('paper-container');
-
-  &.versions-expanded {
-    top: 131px;
-  }
-  &.paper-container--versions {
-    top: 131px;
-  }
-}
 
 .manuscript-pane {
   margin-right: 20px;
@@ -27,7 +15,6 @@
 
 .manuscript-container {
   position: relative;
-  max-width: 880px;
   margin: 0 auto;
 }
 
@@ -41,7 +28,7 @@
 
 #paper-title {
   margin-bottom: 0px;
-  font-family: $tahi-article-font-family;
+  font-family: $aperta-article-font-family;
   font-size: 38px;
   padding-bottom: 15px;
 
@@ -57,7 +44,7 @@
 
 .manuscript {
   padding: 30px 20px;
-  font-family: $tahi-article-font-family;
+  font-family: $aperta-article-font-family;
 
   figure {
     h1 {
@@ -110,4 +97,19 @@
   .paper-body-figure-caption {
     font-weight: bold;
   }
+}
+
+#nav-paper-editable {
+  align-self: center;
+  margin: 0 1rem;
+}
+
+@include min-screen-width($layout-large-screen) {
+  #main-content.paper-container--versions .split-pane-element {
+    padding-top: 75px;
+  }
+}
+
+.add-new-author-dropdown {
+  transform: translate(-20px, -1px);
 }

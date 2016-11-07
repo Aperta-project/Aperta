@@ -1,11 +1,16 @@
+.dashboard-plos-logo svg {
+  width: 16rem;
+  margin-bottom: 4rem;
+}
+
 .manuscript-list-heading {
-  color: $tahi-black;
+  color: $aperta-black;
   font-weight: bold;
   cursor: pointer;
   margin-top: 60px;
   padding-bottom: .35em;
   &.gray-line {
-    border-bottom: 1px solid $tahi-grey-light;
+    border-bottom: 1px solid $aperta-grey-light;
   }
 }
 
@@ -34,9 +39,6 @@
   line-height: 1;
 }
 
-.dashboard-plos-logo {
-  padding-bottom: 40px;
-}
 
 .dashboard-submitted-papers {
   list-style-type: none;
@@ -51,7 +53,7 @@
 }
 
 .dashboard-manuscript-id {
-  color: $tahi-grey;
+  color: $aperta-grey;
 }
 
 .dashboard-paper-title {
@@ -62,7 +64,7 @@
 
   a {
     color: #333;
-    font-family: $tahi-article-font-family;
+    font-family: $aperta-article-font-family;
     font-size: 18px;
     line-height: 1.5;
   }
@@ -73,7 +75,7 @@
 }
 
 .role-tag {
-  color: $tahi-grey-dark;
+  color: $aperta-grey-dark;
 }
 
 .status-tag {

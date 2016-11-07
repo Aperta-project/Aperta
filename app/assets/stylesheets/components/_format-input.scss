@@ -1,4 +1,5 @@
 .format-input {
+  height: auto;
   border: 1px solid #d5d5d5;
   background: #fff;
 
@@ -39,7 +40,7 @@
   }
 
   &.format-input--active .format-input-button--active {
-    color: $tahi-green;
+    color: $aperta-green;
   }
 
   &.form-control.format-input--active {
@@ -47,7 +48,7 @@
   }
 
   &.error {
-    border: 1px solid $tahi-error-red;
+    border: 1px solid $aperta-red;
     color: #555555;
   }
 }

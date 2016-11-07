@@ -533,7 +533,7 @@ class Paper < ActiveRecord::Base
   end
 
   def new_draft_decision!
-    decisions.create unless draft_decision
+    decisions.create.tap(&:create_invitation_queue!) unless draft_decision
   end
 
   def draft

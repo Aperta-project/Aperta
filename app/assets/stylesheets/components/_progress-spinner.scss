@@ -14,7 +14,7 @@ $progress-spinner-size-mini:   18px;
 .progress-spinner {
   display: none;
   border-radius: 100%;
-  @include animation(rotate 2s linear infinite);
+  @include animation(rotate 1.25s linear infinite);
 }
 
 .progress-spinner--block  { display: block; }
@@ -23,9 +23,9 @@ $progress-spinner-size-mini:   18px;
 
 // - Color Modifiers ----------------------
 
-.progress-spinner--green { @include color-way($tahi-green-dark, $tahi-green-light); }
-.progress-spinner--blue  { @include color-way($tahi-blue-dark, $tahi-blue-light); }
-.progress-spinner--white { @include color-way($tahi-grey-light, $tahi-white); }
+.progress-spinner--green { @include color-way($aperta-green-dark, $aperta-green-light); }
+.progress-spinner--blue  { @include color-way($aperta-blue-dark, $aperta-blue-light); }
+.progress-spinner--white { @include color-way($aperta-grey-light, $aperta-white); }
 
 
 // - Size Modifiers -----------------------

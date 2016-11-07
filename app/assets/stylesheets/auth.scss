@@ -1,8 +1,9 @@
 @import 'bourbon';
-@import 'variables';
-@import 'webfonts';
+@import 'config/variables';
+@import 'config/colors';
+@import 'config/webfonts';
 @import 'ui/buttons';
-@import 'invitations';
+@import 'auth-invitations';
 
 html { box-sizing: border-box; }
 *, *:before, *:after { box-sizing: inherit; }
@@ -22,7 +23,7 @@ body {
 }
 
 body, h1, input {
-  font-family: $tahi-font-family;
+  font-family: $aperta-font-family;
   font-weight: normal;
 }
 
@@ -46,22 +47,22 @@ html.bg-2 { background-image: url(image-path('auth/bg-2.jpg'));
   text-decoration: underline;
 }
 
-#tahi-container {
+#aperta-container {
   max-width: 860px;
   margin: 0 auto;
   padding: 120px 0 20px 0;
-  @include display(flex);
-  @include flex-flow(row wrap);
-  @include justify-content(center);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 input { font-size: 14px; }
 input:focus, textarea:focus, *[contenteditable] { outline: none; }
 
-a, button, .fa, { @include transition(all 0.1s ease-in-out); }
+a, button, .fa, { transition: all 0.1s ease-in-out; }
 
 a {
-  color: $tahi-green;
+  color: $aperta-green;
   text-decoration: none;
 
   &:focus, &:hover {
@@ -70,7 +71,7 @@ a {
 }
 
 .auth-flash {
-  @include flex(0 0 100%);
+  flex: 0 0 100%;
   padding: 15px 20px;
 
   span {
@@ -102,7 +103,7 @@ a {
 
 .auth-flash--notice {
   border: 1px solid #d7f0d1;
-  color: $tahi-green;
+  color: $aperta-green;
   background: #eafde7;
 }
 
@@ -111,10 +112,10 @@ a {
   background: rgba(255,255,255, 0.95);
 
   .methods {
-    @include flex(0 1 auto);
-    @include display(flex);
-    @include flex-flow(row wrap);
-    @include justify-content(center);
+    flex: 0 1 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
   }
 
   .logo {
@@ -122,7 +123,7 @@ a {
   }
 
   h1 {
-    @include flex(0 0 100%);
+    flex: 0 0 100%;
     margin-top: 1px;
     margin-bottom: 0px;
     text-align: center;
@@ -166,15 +167,15 @@ a {
 }
 
 .auth-group {
-  @include flex(1 0 auto);
-  @include display(flex);
-  @include flex-flow(column nowrap);
-  @include align-items(center);
+  flex: 1 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
   padding: 10px 0;
   border-left: 1px solid #cccccd;
 
   & > * {
-    @include flex(0 0 auto);
+    flex: 0 0 auto;
   }
 
   &:first-of-type {
@@ -214,10 +215,10 @@ a {
 
 .button-secondary.auth-3rd-party-button {
   background: transparent;
-  border-color: $tahi-green;
+  border-color: $aperta-green;
   text-transform: none;
 
-  &:hover { color: $tahi-green; }
+  &:hover { color: $aperta-green; }
 }
 
 .auth-orcid {
@@ -225,7 +226,7 @@ a {
 }
 
 .auth-cas {
-  background: $tahi-green;
+  background: $aperta-green;
 }
 
 .auth-linkedin {

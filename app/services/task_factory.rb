@@ -2,7 +2,9 @@ class TaskFactory
   attr_reader :task, :task_klass, :creator, :notify
 
   def self.create(task_klass, options = {})
-    new(task_klass, options).save
+    task = new(task_klass, options).save
+    task_klass.task_added_to_workflow(task)
+    task
   end
 
   def initialize(task_klass, options = {})

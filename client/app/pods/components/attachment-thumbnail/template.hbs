@@ -21,9 +21,8 @@
         <div class="image-hover-buttons">
 
           {{#if preview}}
-            <button class="button-secondary button--green knockout view-attachment-detail"
-              {{action "togglePreview"}}>
-              <span class="fa fa-search-plus"></span>View Detail
+            <button class="button-secondary button--green knockout view-attachment-detail" {{action "togglePreview"}}>
+              {{fa-icon icon="search-plus"}} View Detail
             </button>
           {{/if}}
 
@@ -109,7 +108,7 @@
 
           {{#if attachment.strikingImage}}
             <div class="striking">
-              <span class="fa fa-check"></span> This is the striking image
+              {{fa-icon icon="check"}} This is the striking image
             </div>
           {{/if}}
         </div>

@@ -1,107 +1,120 @@
-<div class="control-bar-inner-wrapper">
-  <img id='control-bar-paper-journal-logo' src={{paper.journal.logoUrl}} />
+<nav role="navigation" id="control-bar">
+  <img id="control-bar-paper-journal-logo" src={{paper.journal.logoUrl}} />
 
-  <div class="control-bar-item control-bar-item--first" id="control-bar-paper-title">
+  <div id="control-bar-paper-title">
     <span>{{{paper.title}}}</span>
   </div>
 
-  <div class="control-bar-item-spacer"></div>
+  <span class="spacer" aria-hidden="true"></span>
 
-  {{#if (can 'manage_workflow' paper)}}
-    {{#link-to "paper.workflow" paper class="control-bar-item control-bar-link paper-navigation-link" id="go-to-workflow"}}
+  {{#if (can "manage_workflow" paper)}}
+    {{#link-to "paper.workflow" paper class="control-bar-button" id="nav-workflow"}}
       Go to Workflow
     {{/link-to}}
   {{/if}}
 
   {{#if versioningMode}}
-    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link" id="nav-exit-versions"}}
-      <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+    {{#link-to "paper.index" paper class="control-bar-button" id="nav-exit-versions"}}
+      {{fa-icon icon="files-o"}}
       Exit Versions
     {{/link-to}}
   {{else}}
-    {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link" id="nav-versions"}}
-      <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+    {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
+      {{fa-icon icon="files-o"}}
       Versions
     {{/link-to}}
   {{/if}}
 
-  <div class="control-bar-item control-bar-link contributors-link" {{action "showSubNav" "contributors"}} id="nav-collaborators">
-    <div class="control-bar-link-icon"><span class="fa fa-user"></span></div>
+  <div class="control-bar-button" {{action "showSubNav" "contributors"}} id="nav-collaborators">
+    {{fa-icon icon="user"}}
     Collaborators
   </div>
 
-  <div class="control-bar-item control-bar-link downloads-link" {{action "showSubNav" "downloads"}} id="nav-downloads">
-    <div class="control-bar-link-icon"><span class="fa fa-download"></span></div>
+  <div class="control-bar-button" {{action "showSubNav" "downloads"}} id="nav-downloads">
+    {{fa-icon icon="download"}}
     Downloads
   </div>
 
-  <div class="control-bar-item control-bar-link activity-link" {{action "showActivity" "manuscript"}} id="nav-recent-activity">
-    <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
+  <div class="control-bar-button" {{action "showActivity" "manuscript"}} id="nav-recent-activity">
+    {{partial "svg/heartbeat"}}
     Recent Activity
   </div>
 
-  {{#link-to topicsIndexPath paper class="control-bar-item control-bar-link discussions-link"  id="nav-discussions"}}
-    <div class="control-bar-link-icon"><span class="fa fa-comments"></span></div>
+  {{#link-to topicsIndexPath paper class="control-bar-button"  id="nav-discussions"}}
+    {{fa-icon icon="comments"}}
     {{notification type="paper" id=paper.id}}
     Discussions
   {{/link-to}}
 
-  <div class="control-bar-item control-bar-link control-bar-item--last" id="more-dropdown-menu" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-    <div class="control-bar-link-icon">
-      <span class="fa fa-ellipsis-v"></span>
-    </div>
-    More
-  </div>
+  {{#basic-popover as |popover|}}
+    {{#popover.trigger class="control-bar-button last more-dropdown-menu"}}
+      {{fa-icon icon="ellipsis-v"}}
+      More
+    {{/popover.trigger}}
+    {{#popover.content}}
+      <div class="popover-menu-content">
+        {{#unless paperWithdrawn}}
+          {{#if (can "withdraw" paper)}}
+            <a href="#" class="popover-menu-item withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
+              <span class="fa fa-trash fa-lg"></span>
+              Withdraw Manuscript
+            </a>
+          {{/if}}
+        {{/unless}}
+      </div>
+    {{/popover.content}}
+  {{/basic-popover}}
 
-  <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="more-dropdown-menu">
-    {{#unless paperWithdrawn}}
-      {{#if (can 'withdraw' paper)}}
-      <li>
-        <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
-          <span class="fa fa-trash fa-lg"></span>
-          Withdraw Manuscript
-        </a>
-      </li>
+
+  {{#basic-dropdown as |dropdown|}}
+    {{#dropdown.content class="popover-menu"}}
+      {{#unless paperWithdrawn}}
+        {{#if (can "withdraw" paper)}}
+          <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
+            <span class="fa fa-trash fa-lg"></span>
+            Withdraw Manuscript
+          </a>
+        {{/if}}
+      {{/unless}}
+    {{/dropdown.content}}
+  {{/basic-dropdown}}
+
+  {{#if submenuVisible}}
+    <div class="control-bar-sub-items">
+      {{#if contributorsVisible}}
+        <div class="contributors active animation-fade-in">
+          {{#if (can "manage_collaborators" paper)}}
+            <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
+          {{/if}}
+
+          {{#each paper.collaborators as |contributor|}}
+            <div class="contributor">{{unbound contributor.fullName}}</div>
+          {{/each}}
+        </div>
       {{/if}}
-    {{/unless}}
-  </ul>
-</div>
 
-<div class="control-bar-sub-items">
-  {{#if contributorsVisible}}
-    <div class="contributors active">
-      {{#if (can 'manage_collaborators' paper)}}
-        <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
+      {{#if versionsVisible}}
+        {{paper-version-picker paper=paper
+                               setQueryParam=setQueryParam
+                               viewingVersion=viewingVersion
+                               comparisonVersion=comparisonVersion}}
       {{/if}}
 
-      {{#each paper.collaborators as |contributor|}}
-        <div class="contributor">{{unbound contributor.fullName}}</div>
-      {{/each}}
+      {{#if downloadsVisible}}
+        <div class="manuscript-download-links active animation-fade-in">
+          {{#each supportedDownloadFormats as |downloadType|}}
+            <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">
+              {{downloadType.display}}
+              {{partial downloadType.icon}}
+            </a>
+          {{/each}}
+
+          {{#direct-download-link link=downloadLink extension=".pdf"}}
+            pdf
+            {{partial "svg/pdf-icon"}}
+          {{/direct-download-link}}
+        </div>
+      {{/if}}
     </div>
   {{/if}}
-
-  {{paper-version-picker
-      paper=paper
-      setQueryParam=setQueryParam
-      versionsVisible=versionsVisible
-      viewingVersion=viewingVersion
-      comparisonVersion=comparisonVersion
-  }}
-
-  {{#if downloadsVisible}}
-    <div class="manuscript-download-links active">
-
-      {{#each supportedDownloadFormats as |downloadType|}}
-        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">
-        {{downloadType.display}}
-        {{partial downloadType.icon}}
-        </a>
-      {{/each}}
-
-      {{#direct-download-link link=downloadLink extension=".pdf"}}
-        pdf
-        {{partial "svg/pdf-icon"}}
-      {{/direct-download-link}}
-    </div>
-  {{/if}}
-</div>
+</nav>

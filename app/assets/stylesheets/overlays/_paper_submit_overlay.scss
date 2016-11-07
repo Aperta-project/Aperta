@@ -38,7 +38,7 @@
   }
 
   span.overlay-close-x {
-    color: $tahi-white;
+    color: $aperta-white;
   }
 
   .delete-card-title {
@@ -58,12 +58,12 @@
   }
 
   .button-primary {
-    color: $tahi-green;
+    color: $aperta-green;
     background-color: #fff;
 
     &:focus, &:hover {
       color: #fff;
-      background-color: $tahi-green-light;
+      background-color: $aperta-green-light;
       text-decoration: none;
     }
   }

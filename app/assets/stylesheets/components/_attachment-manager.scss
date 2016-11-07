@@ -7,7 +7,7 @@
   }
 
   .upload-cancel-button {
-    color: $tahi-green;
+    color: $aperta-green;
     font-size: 30px;
     margin-left: 15px;
     text-decoration: none;
@@ -18,7 +18,7 @@
   }
 
   .file-action {
-    color: $tahi-grey-dark;
+    color: $aperta-grey-dark;
     margin-left: 10px;
     cursor: pointer;
   }
@@ -41,7 +41,7 @@
 
   .processing-attachment {
     line-height: 30px;
-    color: $tahi-grey-dark;
+    color: $aperta-grey-dark;
     font-size: 18px;
 
     .progress-spinner {
@@ -49,5 +49,4 @@
       margin-right: 15px;
     }
   }
-
 }

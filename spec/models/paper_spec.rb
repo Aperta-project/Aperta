@@ -1511,6 +1511,11 @@ describe Paper do
       expect { paper.send(:new_draft_decision!) }
         .not_to change { paper.decisions.count }
     end
+
+    it 'creates an invitation queue for the decision' do
+      paper.new_draft_decision!
+      expect(paper.decisions.last.invitation_queue).to be_present
+    end
   end
 
   describe '#last_of_task' do

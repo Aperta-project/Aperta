@@ -28,7 +28,7 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it "contains link to the task" do
-        expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{reviewer_task.id}})
+        expect(email.body).to match(%r{\/papers\/#{paper.short_doi}\/tasks\/#{reviewer_task.id}})
       end
     end
 
@@ -71,7 +71,7 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it "contains link to the task" do
-        expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{reviewer_task.id}})
+        expect(email.body).to match(%r{\/papers\/#{paper.short_doi}\/tasks\/#{reviewer_task.id}})
       end
 
       it "contains 'No feedback provided' for decline reason when not set" do

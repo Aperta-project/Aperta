@@ -93,29 +93,6 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
     end
   end
 
-  describe "#previous_decisions" do
-    let(:decision_1) { FactoryGirl.create(:decision, paper: paper) }
-    let(:decision_2) { FactoryGirl.create(:decision, paper: paper) }
-    let(:decision_3) { FactoryGirl.create(:decision, paper: paper) }
-
-    before do
-      task.update(body: {})
-    end
-
-    it "returns the previous decisions that this task was assigned to" do
-      task.update!(decision: decision_1)
-      expect(task.previous_decisions).to eq([])
-      expect(task.previous_decision_ids).to eq([])
-
-      task.update!(decision: decision_2)
-      expect(task.previous_decisions).to eq([decision_1])
-      expect(task.previous_decision_ids).to eq([decision_1.id])
-
-      task.update!(decision: decision_3)
-      expect(task.previous_decision_ids.sort).to eq([decision_1, decision_2].map(&:id).sort)
-    end
-  end
-
   describe "#can_change?" do
     let!(:answer) { FactoryGirl.build(:nested_question_answer) }
 

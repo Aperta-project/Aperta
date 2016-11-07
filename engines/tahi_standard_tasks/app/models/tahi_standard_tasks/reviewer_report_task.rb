@@ -73,29 +73,11 @@ module TahiStandardTasks
     end
 
     def decision=(new_decision)
-      previous_decision_ids = body["previous_decision_ids"] || []
       current_decision_id = body["decision_id"]
 
-      if current_decision_id
-        previous_decision_ids.push current_decision_id
-      end
-
       update_body(
-        "decision_id" => new_decision.try(:id),
-        "previous_decision_ids" => previous_decision_ids
+        "decision_id" => new_decision.try(:id)
       )
-    end
-
-    def previous_decision_ids
-      if body["previous_decision_ids"]
-        body["previous_decision_ids"]
-      else
-        []
-      end
-    end
-
-    def previous_decisions
-      paper.decisions.where(id: previous_decision_ids)
     end
 
     def submitted?

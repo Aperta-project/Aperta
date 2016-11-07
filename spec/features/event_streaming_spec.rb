@@ -28,7 +28,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           title: "Wicked Awesome Card",
           type: "AdHocTask",
           body: text_body,
-          old_role: "admin",
           paper: submission_phase.paper
         )
         expect(page).to have_content "Wicked Awesome Card"

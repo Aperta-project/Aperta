@@ -16,20 +16,14 @@ describe TaskFactory do
     TaskFactory.create(klass, paper: paper, phase: phase)
   end
 
-  it "Sets the default title and old_role if is not indicated" do
+  it "Sets the default title if is not indicated" do
     task = TaskFactory.create(klass, paper: paper, phase: phase)
     expect(task.title).to eq('Revise Manuscript')
-    expect(task.old_role).to eq('author')
   end
 
   it "Sets the title from params" do
     task = TaskFactory.create(klass, paper: paper, phase: phase, title: 'Test')
     expect(task.title).to eq('Test')
-  end
-
-  it "Sets the old_role from params" do
-    task = TaskFactory.create(klass, paper: paper, phase: phase, old_role: 'editor')
-    expect(task.old_role).to eq('editor')
   end
 
   it "Sets the phase on the task" do

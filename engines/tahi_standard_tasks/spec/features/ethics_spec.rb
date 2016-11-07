@@ -4,13 +4,12 @@ feature 'Ethics Task', js: true do
   given(:author) { FactoryGirl.create :user }
   given!(:paper) do
     FactoryGirl.create :paper_with_task,
-                       :with_integration_journal,
-                       creator: author,
-                       task_params: {
-                         title: 'Ethics Statement',
-                         type: 'TahiStandardTasks::EthicsTask',
-                         old_role: 'author'
-                       }
+      :with_integration_journal,
+      creator: author,
+      task_params: {
+        title: 'Ethics Statement',
+        type: 'TahiStandardTasks::EthicsTask'
+      }
   end
 
   def view_ethics_card_on_the_manuscript_page

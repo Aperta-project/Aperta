@@ -58,19 +58,18 @@ class Task < ActiveRecord::Base
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
-  validates :title, :old_role, presence: true
+  validates :title, presence: true
   validates :title, length: { maximum: 255 }
 
   class << self
     # Public: Restores the task defaults to all of its instances/models
     #
     # * restores title to DEFAULT_TITLE
-    # * restores old_role to DEFAULT_ROLE
     #
-    # Note: this will not restore the +title+ or +old_role+ on ad-hoc tasks.
+    # Note: this will not restore the +title+ on ad-hoc tasks.
     def restore_defaults
       return if self == Task
-      update_all(old_role: self::DEFAULT_ROLE, title: self::DEFAULT_TITLE)
+      update_all(title: self::DEFAULT_TITLE)
     end
 
     # Public: Scopes the tasks for a given paper

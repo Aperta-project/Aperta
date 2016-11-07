@@ -100,13 +100,7 @@ Tahi::Application.routes.draw do
         put :update_attachment, on: :member
       end
     end
-    resources :journals, only: [:index, :show] do
-      resources :old_roles, only: :index, shallow: true do
-        namespace 'old_roles', path: '' do
-          resources :users, only: :index
-        end
-      end
-    end
+    resources :journals, only: [:index, :show]
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]

@@ -11,11 +11,10 @@ module TahiStandardTasks
     before_create :assign_to_draft_decision
     has_many :decisions, -> { uniq }, through: :paper
 
-    # Overrides Task#restore_defaults to be only restore +old_role+. This
+    # Overrides Task#restore_defaults to not restore +title+. This
     # will never update +title+ as that is dynamically determined. If you
     # need to change the reviewer report title write a data migration.
     def self.restore_defaults
-      update_all(old_role: self::DEFAULT_ROLE)
     end
 
     # find_or_build_answer_for(...) will return the associated answer for this

@@ -20,7 +20,6 @@ class Journal < ActiveRecord::Base
 
   after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
-  before_destroy :destroy_roles
 
   mount_uploader :logo, LogoUploader
 
@@ -116,13 +115,6 @@ class Journal < ActiveRecord::Base
     # TODO: remove these from being a callback (when we aren't using rails_admin)
     JournalServices::CreateDefaultTaskTypes.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
-  end
-
-  def destroy_roles
-    # old_roles that are marked as 'required' are prevented from being destroyed, so you cannot use
-    # a dependent_destroy on the AR relationship.
-    mark_for_destruction
-    old_roles.destroy_all
   end
 
   def confirm_no_papers

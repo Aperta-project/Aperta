@@ -12,14 +12,6 @@ class User < ActiveRecord::Base
 
   has_many :affiliations, inverse_of: :user
 
-  has_many :user_roles, inverse_of: :user
-  has_many :old_roles, through: :user_roles
-  has_many(
-    :journals_thru_old_roles,
-    -> { uniq },
-    through: :old_roles,
-    source: :journal
-  )
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many \
     :participations,
@@ -87,8 +79,8 @@ class User < ActiveRecord::Base
   # invitation. See invitation.rb
   def associate_invites
     Invitation.where_email_matches(email)
-      .where(invitee: nil)
-      .update_all(invitee_id: id)
+              .where(invitee: nil)
+              .update_all(invitee_id: id)
   end
 
   def ensure_orcid_acccount!
@@ -107,8 +99,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def auto_generate_password(length=50)
-    self.password = SecureRandom.urlsafe_base64(length-1) if password_required?
+  def auto_generate_password(length = 50)
+    if password_required?
+      self.password = SecureRandom.urlsafe_base64(length - 1)
+    end
   end
 
   def journal_admin?(journal)
@@ -118,18 +112,14 @@ class User < ActiveRecord::Base
   # Returns the journals that this user administers. If you pass a block
   # this will yield an ActiveRecord::Relation query object that you can
   # use to put further conditions on.
-  def administered_journals(&blk)
+  def administered_journals
     journal_query = Journal.all
-    journal_query = blk.call(journal_query) if block_given?
+    journal_query = yield(journal_query) if block_given?
     if site_admin?
       journal_query
     else
       filter_authorized(:administer, journal_query).objects
     end
-  end
-
-  def accessible_journals
-    site_admin? ? Journal.all : journals_thru_old_roles
   end
 
   def invitations_from_latest_revision

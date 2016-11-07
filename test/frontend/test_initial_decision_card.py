@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from decimal import Decimal
 import logging
+import os
 import random
 import time
 
@@ -55,6 +56,9 @@ class InitialDecisionCardTest(CommonTest):
     Validates AC 1, 2, 3, 5 and 6 from APERTA-5400
     :return: void function
     """
+    logging.info('Test Initial Decision::submit_actions')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -142,7 +146,6 @@ class InitialDecisionCardTest(CommonTest):
     version = manuscript_page.get_ui_manuscript_version()
     # After the user is invited, the ms version goes back to draft
     assert 'draft' in version, version
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -164,22 +164,15 @@ class AuthorsTask(BaseTask):
         authors_note.text
     self.validate_application_ptext(authors_text)
     self.validate_application_ptext(authors_note)
-
     add_new_author_btn = self._get(self._add_new_author_btn)
     assert 'ADD A NEW AUTHOR' in add_new_author_btn.text, add_new_author_btn.text
     self.validate_primary_big_green_button_style(add_new_author_btn)
-    add_new_author_btn.click()
-    add_ind_link = self._get(self._add_individual_author_link)
-    assert 'Add Individual Author' in add_ind_link.text, add_ind_link.text
-    add_grp_link = self._get(self._add_group_author_link)
-    assert 'Add Group Author' in add_grp_link.text, add_grp_link.text
     completion_btn = self._get(self._completion_button)
     self._actions.move_to_element(completion_btn).perform()
-    add_new_author_btn.click()
-    self.validate_individual_author_form_styles(add_new_author_btn, add_ind_link)
-    self.validate_group_author_form_styles(add_new_author_btn, add_grp_link)
+    self.validate_individual_author_form_styles(add_new_author_btn)
+    self.validate_group_author_form_styles(add_new_author_btn)
 
-  def validate_individual_author_form_styles(self, add_new_author_btn, add_ind_link):
+  def validate_individual_author_form_styles(self, add_new_author_btn):
     """
     Validates the elements and styles of the individual author form
     :param add_new_author_btn: the WebDriver element for the Add New Author button
@@ -187,6 +180,8 @@ class AuthorsTask(BaseTask):
     :return: void function
     """
     add_new_author_btn.click()
+    add_ind_link = self._get(self._add_individual_author_link)
+    assert 'Add Individual Author' in add_ind_link.text, add_ind_link.text
     add_ind_link.click()
     ind_auth_form = self._get(self._individual_author_form)
     ind_auth_form_title = self._get(self._individual_author_edit_label)
@@ -236,11 +231,11 @@ class AuthorsTask(BaseTask):
     assert institution_input.get_attribute('placeholder') == '* Institution', \
         institution_input.get_attribute('placeholder')
     institution_icon = institution_div.find_element_by_css_selector('button i')
-    assert set(['fa', 'fa-search']) == set(institution_icon.get_attribute('class').split(' '))
+    assert 'fa-search' in institution_icon.get_attribute('class')
     sec_institution_input = sec_institution_div.find_element_by_tag_name('input')
     assert sec_institution_input.get_attribute('placeholder') == 'Secondary Institution'
     sec_institution_icon = sec_institution_div.find_element_by_css_selector('button i')
-    assert set(['fa', 'fa-search']) == set(sec_institution_icon.get_attribute('class').split(' '))
+    assert 'fa-search' in sec_institution_icon.get_attribute('class')
     corresponding_lbl, deceased_lbl, conceptualization_lbl, investigation_lbl, visualization_lbl, \
         methodology_lbl, resources_lbl, supervision_lbl, software_lbl, data_curation_lbl, \
         project_admin_lbl, validation_lbl, writing_od_lbl, writing_re_lbl, funding_lbl,  \
@@ -312,19 +307,20 @@ class AuthorsTask(BaseTask):
     self._actions.move_to_element(govt_div).perform()
     add_author_cancel_lnk.click()
 
-  def validate_group_author_form_styles(self, add_new_author_btn, add_grp_link):
+  def validate_group_author_form_styles(self, add_new_author_btn):
     """
     Validates the elements and styles of the group author form
     :param add_new_author_btn: the WebDriver element for the Add New Author button
     :param add_grp_link: the WebDriver element for the Add New Group Author link
     :return: void function
     """
-    self.click_covered_element(add_new_author_btn)
+    add_new_author_btn.click()
+    add_grp_link = self._get(self._add_group_author_link)
+    assert 'Add Group Author' in add_grp_link.text, add_grp_link.text
     add_grp_link.click()
     grp_auth_form = self._get(self._group_author_form)
     grp_auth_form_title = self._get(self._group_author_edit_label)
     assert 'Group Author' in grp_auth_form_title.text, grp_auth_form_title.text
-
     group_name_lbl = self._get(self._group_name_lbl)
     assert group_name_lbl.text == 'Group Name', group_name_lbl.text
     group_name_input = self._get(self._group_name_input)

@@ -9,6 +9,7 @@ This test also requires a new mmt in PLOS Wombat: OnlyReviewerCandidates
 """
 
 import logging
+import os
 import random
 import time
 
@@ -39,6 +40,9 @@ class ReviewerCandidatesTaskTest(CommonTest):
       view of that data on the reviewer candidates card
     :return: void function
     """
+    logging.info('Test Reviewer Candidates::styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -91,6 +95,9 @@ class ReviewerCandidatesTaskTest(CommonTest):
       covered in the style validation due to lack of an entry.
     :return: void function
     """
+    logging.info('Test Reviewer Candidates::add_candidate')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -145,6 +152,9 @@ class ReviewerCandidatesTaskTest(CommonTest):
       Validates no submitted data present on the workflow card.
     :return: void function
     """
+    logging.info('Test Reviewer Candidates::delete_candidate')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -205,15 +215,18 @@ class ReviewerCandidatesTaskTest(CommonTest):
         recommendations card
     :return: void function
     """
+    logging.info('Test Reviewer Candidates::permissions')
+    current_path = os.getcwd()
+    logging.info(current_path)
     #  First check for required initial data
     mmts = []
-    journal_id = PgSQL().query("select id from journals where name='PLOS Wombat';")[0][0]
-    mmt_tuples = PgSQL().query("SELECT paper_type "
-                               "FROM manuscript_manager_templates "
-                               "WHERE journal_id = %s;", (journal_id,))
+    journal_id = PgSQL().query("SELECT id FROM journals j WHERE j.name = 'PLOS Wombat';")[0][0]
+    mmt_tuples = PgSQL().query('SELECT paper_type '
+                               'FROM manuscript_manager_templates '
+                               'WHERE journal_id = %s;', (journal_id,))
     for mmt_tuple in mmt_tuples:
       mmts.append(mmt_tuple[0])
-    if not 'OnlyReviewerCandidates' in mmts:
+    if 'OnlyReviewerCandidates' not in mmts:
       logging.info('Required Data not present, aborting')
       raise(StandardError, 'Required seed data not present: '
                            'PLOS Wombat journal, Only ReviewerCandidates mmt')

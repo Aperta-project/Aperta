@@ -5,6 +5,7 @@ This test case validates the Aperta login page and associated forgot password pa
 
 """
 import logging
+import os
 import random
 
 from Base.Decorators import MultiBrowserFixture
@@ -39,6 +40,9 @@ class ApertaLoginPageLayoutTest(CommonTest):
       in with ORCID button
     :return: void function
     """
+    logging.info('Test Login::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     login_page = LoginPage(self.getDriver())
     native_login_enabled = login_page.validate_initial_page_elements_styles()
     logging.info('Native Login is enabled: {0}'.format(native_login_enabled))
@@ -68,6 +72,9 @@ class ApertaNativeLoginTest(CommonTest):
       button, Sign Up link
     :return: void function
     """
+    logging.info('Test Login::Native Login')
+    current_path = os.getcwd()
+    logging.info(current_path)
     login_page = LoginPage(self.getDriver())
     native_login_enabled = login_page.validate_initial_page_elements_styles()
     logging.info('Native Login is enabled: {0}'.format(native_login_enabled))
@@ -122,6 +129,9 @@ class ApertaCASLoginTest(CommonTest):
     test_login: Validates signin via NED CAS account, if enabled
     :return: void function
     """
+    logging.info('Test Login::CAS Login')
+    current_path = os.getcwd()
+    logging.info(current_path)
     test_user = random.choice(users)
     login_page = LoginPage(self.getDriver())
     # Valid email, valid pw
@@ -140,6 +150,9 @@ class ApertaCASLoginTest(CommonTest):
       Does not actually register a new account
     :return: void function
     """
+    logging.info('Test Login::CAS sign-up')
+    current_path = os.getcwd()
+    logging.info(current_path)
     login_page = LoginPage(self.getDriver())
     environment_url = login_page.get_current_url()
     logging.info(environment_url)
@@ -165,6 +178,9 @@ class ApertaORCIDLoginTest(CommonTest):
     that we are pointing at the correct page.
     :return: void function
     """
+    logging.info('Test Login::ORCID Login')
+    current_path = os.getcwd()
+    logging.info(current_path)
     login_page = LoginPage(self.getDriver())
     orcid_login_enabled = login_page.validate_initial_page_elements_styles()
     logging.info('ORCID Login is enabled: {0}'.format(orcid_login_enabled))

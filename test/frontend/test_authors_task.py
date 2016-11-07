@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -30,7 +31,9 @@ class AuthorsTaskTest(CommonTest):
     test_authors_task: Validates the elements, styles and functions for the author task
     :return: void function
     """
-    logging.info('test_smoke_validate_components_styles')
+    logging.info('Test Authors Task::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -48,7 +51,9 @@ class AuthorsTaskTest(CommonTest):
     test_authors_task: Validates add and delete individual author functions for the author task
     :return: void function
     """
-    logging.info('test_core_add_delete_individual_author')
+    logging.info('Test Authors Task::add_delete_individual_author')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
@@ -84,6 +89,9 @@ class AuthorsTaskTest(CommonTest):
     :return: void function
     """
     logging.info('test_core_add_delete_group_author')
+    logging.info('Test Authors Task::add_delete_group_author')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])

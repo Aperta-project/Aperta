@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -117,9 +118,12 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission
     """
+    logging.info('Test BDDCNStoSubmitTest::validate_create_to_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
+    dashboard_page = self.cas_login(email=user_type['email']) if init \
+        else DashboardPage(self.getDriver())
     dashboard_page.click_create_new_submission_button()
     # Temporary changing timeout
     dashboard_page.set_timeout(60)
@@ -135,6 +139,11 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
+    # Outputting the title allows us to validate update following conversion
+    db_id = manuscript_page.get_paper_id_from_url()
+    logging.info('Paper database id is: {0}'.format(db_id))
+    title = manuscript_page.get_paper_title_from_page()
+    logging.info('Paper page title is: {0}'.format(title))
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

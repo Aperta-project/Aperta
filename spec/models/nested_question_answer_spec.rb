@@ -35,6 +35,25 @@ describe NestedQuestionAnswer do
         expect(nested_question_answer.valid?).to be true
       end
     end
+
+    context "when there is a related decision" do
+      let(:decision) { build(:decision) }
+      subject(:nested_question_answer) do
+        build(:nested_question_answer, decision: decision)
+      end
+
+      it "is valid when the decision is a draft" do
+        expect(decision).to receive(:completed?).and_return(false)
+        expect(nested_question_answer).to receive(:changed?).and_return(true)
+        expect(nested_question_answer).to be_valid
+      end
+
+      it "is not valid when the decision is completed" do
+        expect(decision).to receive(:completed?).and_return(true)
+        expect(nested_question_answer).to receive(:changed?).and_return(true)
+        expect(nested_question_answer).not_to be_valid
+      end
+    end
   end
 
   describe '#attachments' do

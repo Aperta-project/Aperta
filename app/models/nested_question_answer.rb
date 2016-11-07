@@ -23,6 +23,12 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   validate :verify_from_owner
 
+  validate do
+    if changed? && decision.present? && decision.completed?
+      errors.add(:base, 'Cannot modify an answer for a registered decision.')
+    end
+  end
+
   def self.find_or_build(nested_question:, decision: nil, value: nil)
     query_params = { nested_question_id: nested_question.id }
     query_params[:decision_id] = decision.id if decision

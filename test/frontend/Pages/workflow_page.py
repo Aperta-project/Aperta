@@ -411,3 +411,10 @@ class WorkflowPage(AuthenticatedPage):
     """
     editable_checkbox = self._get(self._editable_checkbox)
     editable_checkbox.click()
+
+  def page_ready(self):
+    """
+    Validate the page is loaded - use to validate page is ready for test
+    :return: Void Function
+    """
+    self._wait_for_element(self._get(self._add_new_card_button))

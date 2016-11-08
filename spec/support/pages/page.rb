@@ -99,6 +99,7 @@ class Page < PageFragment
 
   def sign_out
     # Don't visit CAS logout route in CI
+    reload
     ClimateControl.modify CAS_LOGOUT_URL: nil do
       find('#profile-dropdown-menu-trigger').click
       find('#nav-signout').click

@@ -1,22 +1,13 @@
 import Ember from 'ember';
 
-const { computed } = Ember;
-const {
-  alias,
-  filterBy,
-  setDiff,
-  sort
-} = computed;
+const { computed: { filterBy, sort } } = Ember;
 
 export default Ember.Component.extend({
   //paper: passed to component
-  taskSorting: ['phase.position', 'position'],
 
-  tasks: alias('paper.tasks'),
-
-  currentUserTasks: filterBy('paper.tasks', 'assignedToMe'),
-  assignedTasks: setDiff('currentUserTasks', 'paper.submissionTasks'),
-  sortedAssignedTasks: sort('assignedTasks', 'taskSorting'),
+  sidebarTasks: filterBy('paper.tasks', 'isSidebarTask', true),
+  taskSorting: ['isSubmissionTask', 'assignedToMe:desc', 'phase.position', 'position'],
+  sortedTasks: sort('sidebarTasks', 'taskSorting'),
 
   actions: {
     toggleSubmissionProcess(){

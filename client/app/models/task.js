@@ -67,5 +67,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, 
   responseToQuestion(key) {
     var questionResponse = (this.answerForQuestion(key) || Ember.ObjectProxy.create());
     return questionResponse.get('value');
-  }
+  },
+
+  isSidebarTask: Ember.computed.or('assignedToMe', 'isSubmissionTask')
 });

@@ -42,32 +42,14 @@
     <hr>
   </div>
 
-  {{#if assignedTasks}}
-    <div id="paper-assigned-tasks">
-      {{#each sortedAssignedTasks as |task|}}
-        {{#task-disclosure title=task.title completed=task.completed class=task.componentName}}
-          {{#task-load task=task}}
-            {{component task.componentName task=task}}
-          {{else}}
-            {{partial "task-loading-section"}}
-          {{/task-load}}
-        {{/task-disclosure}}
-      {{/each}}
-    </div>
-  {{/if}}
-
-  {{#if paper.submissionTasks}}
-    <div id="paper-submission-tasks">
-      {{#each paper.sortedSubmissionTasks as |task|}}
-        {{#task-disclosure title=task.title completed=task.completed class=task.componentName}}
-          {{#task-load task=task}}
-            {{component task.componentName task=task}}
-          {{else}}
-            {{partial "task-loading-section"}}
-          {{/task-load}}
-        {{/task-disclosure}}
-      {{/each}}
-    </div>
-  {{/if}}
+  {{#each sortedTasks as |task|}}
+    {{#task-disclosure title=task.title completed=task.completed class=task.componentName}}
+      {{#task-load task=task}}
+        {{component task.componentName task=task}}
+      {{else}}
+        {{partial "task-loading-section"}}
+      {{/task-load}}
+    {{/task-disclosure}}
+  {{/each}}
 
 {{/sticky-headers}}

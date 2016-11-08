@@ -90,6 +90,8 @@ GEM
       activemodel (= 4.2.7.1)
       activesupport (= 4.2.7.1)
       arel (~> 6.0)
+    activerecord-import (0.16.1)
+      activerecord (>= 3.2)
     activerecord-sqlserver-adapter (4.2.4)
       activerecord (~> 4.2.1)
     activesupport (4.2.7.1)
@@ -688,6 +690,7 @@ DEPENDENCIES
   aasm (~> 4.9.0)
   active_model_serializers (= 0.8.3)
   activemodel-globalid!
+  activerecord-import
   activerecord-sqlserver-adapter
   acts_as_list
   acts_as_paranoid!

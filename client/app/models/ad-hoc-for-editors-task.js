@@ -1,3 +1,5 @@
 import AdHocTask from 'tahi/models/ad-hoc-task';
 
-export default AdHocTask.extend({});
+export default AdHocTask.extend({
+  componentName: 'ad-hoc-task'
+});

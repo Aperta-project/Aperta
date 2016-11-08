@@ -52,6 +52,10 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, 
   type: DS.attr('string'),
   assignedToMe: DS.attr(),
 
+  componentName: Ember.computed('type', function() {
+    return Ember.String.dasherize(this.get('type'));
+  }),
+
   paperTitle: Ember.computed('paper', function() {
     return this.get('paper.displayTitle');
   }),

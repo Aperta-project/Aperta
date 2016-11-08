@@ -54,7 +54,7 @@ class AssignTeamCardTest(CommonTest):
     # Abbreviating the timeout for success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    paper_url = manuscript_page.get_current_url()
+    paper_url = manuscript_page.get_current_url_without_args()
     paper_id = manuscript_page.get_paper_id_from_url()
 
     # Giving just a little extra time here so the title on the paper gets updated

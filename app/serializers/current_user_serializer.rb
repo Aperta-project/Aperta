@@ -15,4 +15,10 @@ class CurrentUserSerializer < ActiveModel::Serializer
   def site_admin
     object.site_admin?
   end
+
+  private
+
+  def include_orcid_account?
+    TahiEnv.orcid_connect_enabled?
+  end  
 end

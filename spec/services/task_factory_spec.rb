@@ -1,15 +1,19 @@
 require 'rails_helper'
 
 describe TaskFactory do
-
   let(:paper) { FactoryGirl.create(:paper) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:klass) { TahiStandardTasks::ReviseTask }
 
   it "Creates a task" do
-    expect {
+    expect do
       TaskFactory.create(klass, paper: paper, phase: phase)
-    }.to change{ Task.count }.by(1)
+    end.to change { Task.count }.by(1)
+  end
+
+  it "calls the task class's task_added_to_workflow hook with the task" do
+    expect(klass).to receive(:task_added_to_workflow)
+    TaskFactory.create(klass, paper: paper, phase: phase)
   end
 
   it "Sets the default title and old_role if is not indicated" do
@@ -49,8 +53,8 @@ describe TaskFactory do
   end
 
   it "Sets the body from params" do
-    task = TaskFactory.create(klass, paper: paper, phase: phase, body: {key: 'value'})
-    expect(task.body).to eq({'key' => 'value'})
+    task = TaskFactory.create(klass, paper: paper, phase: phase, body: { key: 'value' })
+    expect(task.body).to eq('key' => 'value')
   end
 
   it "Sets the participants from params" do

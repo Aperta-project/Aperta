@@ -10,7 +10,7 @@ moduleForComponent('util/async-content', 'Integration | Component | async conten
 
   beforeEach() {
     this.template = hbs`
-      {{#util/async-content task=task as |resolved|}}
+      {{#util/async-content concurrencyTask=task as |resolved|}}
         <span>resolved value is {{resolved}}</span>
       {{else}}
         loading

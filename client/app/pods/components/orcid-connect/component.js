@@ -6,6 +6,9 @@ export default Ember.Component.extend({
   orcidAccount: null, // of these in
   store: Ember.inject.service(),
 
+   // function to use for asking the user to confirm an action
+  confirm: window.confirm,
+
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
@@ -31,6 +34,14 @@ export default Ember.Component.extend({
     }
   },
 
+  // Returns true when the user has an orcidAccount and the given user is
+  // the same as the currently logged in user. Otherwise, return false.
+  orcidConnectEnabled: Ember.computed('orcidAccount', 'user.id', 'currentUser.id', function(){
+    const userId = this.get('user.id'),
+      currentUserId = this.get('currentUser.id');
+    return this.get('orcidAccount') && Ember.isEqual(userId, currentUserId);
+  }),
+
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }
     this.set('orcidOauthResult', null);
@@ -42,7 +53,7 @@ export default Ember.Component.extend({
   oauthInProgress: false,
 
   buttonDisabled: Ember.computed('oauthInProgress',
-                                 'orcidOauthResult', 
+                                 'orcidOauthResult',
                                  'orcid.identifier',
                                  'orcidAccount.isLoaded',
                                  function(){
@@ -75,9 +86,12 @@ export default Ember.Component.extend({
 
   actions: {
     removeOrcidAccount(orcidAccount) {
-      orcidAccount.clearRecord();
-      this.set('oauthInProgress', false);
-      this.set('orcidOauthResult', null);
+      let confirm = this.get('confirm');
+      if(confirm("Are you sure you want to remove your ORCID record?")){
+        orcidAccount.clearRecord();
+        this.set('oauthInProgress', false);
+        this.set('orcidOauthResult', null);
+      }
     },
 
     openOrcid() {

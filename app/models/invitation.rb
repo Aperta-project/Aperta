@@ -8,17 +8,40 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
-  has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   has_many :alternates, class_name: 'Invitation', foreign_key: 'primary_id'
+  has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
 
   scope :where_email_matches,
-        ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
+    ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
   validates :email, format: /.+@.+/
+  validates :task, presence: true
+
+  belongs_to :invitation_queue
+  acts_as_list scope: :invitation_queue, add_new_at: :bottom
+
+  scope :not_pending, -> { where.not(state: "pending") }
+  scope :pending, -> { where(state: "pending") }
+  scope :rescinded, -> { where(state: "rescinded") }
+  scope :invited, -> { where(state: "invited") }
+  scope :grouped_alternates, -> { where.not(primary: nil) }
+  scope :newest_first, -> { order(created_at: :desc) }
+
+  def ungrouped_primary?
+    !has_alternates? && !is_alternate?
+  end
+
+  def has_alternates?
+    alternates.exists?
+  end
+
+  def is_alternate?
+    primary_id.present?
+  end
 
   aasm column: :state do
     state :pending, initial: true
@@ -32,27 +55,25 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite, {
-          after: [:generate_token, :set_invitee, :set_invited_at],
-          after_commit: :notify_invitation_invited
-    }) do
+    event(:invite, after: [:generate_token, :set_invitee, :set_invited_at],
+                   after_commit: :notify_invitation_invited) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
 
     event(:rescind,
-          after: [:set_rescinded_at],
-          after_commit: :notify_invitation_rescinded) do
+      after: [:set_rescinded_at],
+      after_commit: :notify_invitation_rescinded) do
       transitions from: [:invited, :accepted], to: :rescinded
     end
 
     event(:accept,
-          after: [:set_accepted_at],
-          after_commit: :notify_invitation_accepted) do
+      after: [:set_accepted_at],
+      after_commit: :notify_invitation_accepted) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
-          after: [:set_declined_at],
-          after_commit: :notify_invitation_declined) do
+      after: [:set_declined_at],
+      after_commit: :notify_invitation_declined) do
       transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
   end

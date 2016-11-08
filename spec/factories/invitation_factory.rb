@@ -8,10 +8,12 @@ FactoryGirl.define do
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
     decision { paper.draft_decision || paper.new_draft_decision! }
+    invitation_queue { create(:invitation_queue, task: task) }
+    body "You've been invited to"
+    position 0 # position column is null: false
 
     after(:build) do |invitation, evaluator|
       invitation.email = evaluator.invitee.email if evaluator.invitee
-      invitation.body = "You've been invited to"
     end
 
     # Ensure that these associations are saved if necessary.

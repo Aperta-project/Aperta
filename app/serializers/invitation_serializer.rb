@@ -11,11 +11,18 @@ class InvitationSerializer < ActiveModel::Serializer
              :invited_at,
              :declined_at,
              :accepted_at,
-             :rescinded_at
+             :rescinded_at,
+             :position,
+             :decision_id,
+             :valid_new_positions_for_invitation
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true
   has_many :attachments, embed: :id, polymorphic: true, include: true
   has_one :primary, embed: :id
   has_many :alternates, embed: :id
+
+  def valid_new_positions_for_invitation
+    object.invitation_queue.valid_new_positions_for_invitation(object)
+  end
 end

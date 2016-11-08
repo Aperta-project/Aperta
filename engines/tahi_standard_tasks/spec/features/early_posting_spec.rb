@@ -29,9 +29,9 @@ feature 'Early Posting Task', js: true do
 
   scenario 'It shows 1 question', flaky: true do
     view_early_posting_card_on_the_manuscript_page
-    expect(page).to have_selector('.question-text', count: 1)
+    expect(page).to have_selector('.question-checkbox', count: 1)
 
     view_early_posting_card_directly
-    expect(page).to have_selector('.question-text', count: 1)
+    expect(page).to have_selector('.question-checkbox', count: 1)
   end
 end

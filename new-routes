@@ -1,0 +1,313 @@
+                                       Prefix Verb     URI Pattern                                                                 Controller#Action
+                               standard_tasks          /api                                                                        TahiStandardTasks::Engine
+                     plos_bio_internal_review          /api                                                                        PlosBioInternalReview::Engine
+                          plos_bio_tech_check          /api                                                                        PlosBioTechCheck::Engine
+                                 plos_billing          /api                                                                        PlosBilling::Engine
+                             new_user_session GET      /users/sign_in(.:format)                                                    devise/sessions#new
+                                 user_session POST     /users/sign_in(.:format)                                                    devise/sessions#create
+                         destroy_user_session DELETE   /users/sign_out(.:format)                                                   devise/sessions#destroy
+                      user_omniauth_authorize GET|POST /users/auth/:provider(.:format)                                             tahi_devise/omniauth_callbacks#passthru {:provider=>/(?!)/}
+                       user_omniauth_callback GET|POST /users/auth/:action/callback(.:format)                                      tahi_devise/omniauth_callbacks#(?-mix:(?!))
+                                user_password POST     /users/password(.:format)                                                   devise/passwords#create
+                            new_user_password GET      /users/password/new(.:format)                                               devise/passwords#new
+                           edit_user_password GET      /users/password/edit(.:format)                                              devise/passwords#edit
+                                              PATCH    /users/password(.:format)                                                   devise/passwords#update
+                                              PUT      /users/password(.:format)                                                   devise/passwords#update
+                     cancel_user_registration GET      /users/cancel(.:format)                                                     tahi_devise/registrations#cancel
+                            user_registration POST     /users(.:format)                                                            tahi_devise/registrations#create
+                        new_user_registration GET      /users/sign_up(.:format)                                                    tahi_devise/registrations#new
+                       edit_user_registration GET      /users/edit(.:format)                                                       tahi_devise/registrations#edit
+                                              PATCH    /users(.:format)                                                            tahi_devise/registrations#update
+                                              PUT      /users(.:format)                                                            tahi_devise/registrations#update
+                                              DELETE   /users(.:format)                                                            tahi_devise/registrations#destroy
+                               users_sign_out GET      /users/sign_out(.:format)                                                   devise/sessions#destroy
+                                  sidekiq_web          /sidekiq                                                                    Sidekiq::Web
+                                    countries GET      /api/countries(.:format)                                                    countries#index {:format=>:json}
+                       institutional_accounts GET      /api/institutional_accounts(.:format)                                       institutional_accounts#index {:format=>:json}
+                                paper_tracker GET      /api/paper_tracker(.:format)                                                paper_tracker#index {:format=>:json}
+update_attachment_supporting_information_file PUT      /api/supporting_information_files/:id/update_attachment(.:format)           supporting_information_files#update_attachment {:format=>:json}
+                 supporting_information_files POST     /api/supporting_information_files(.:format)                                 supporting_information_files#create {:format=>:json}
+                  supporting_information_file GET      /api/supporting_information_files/:id(.:format)                             supporting_information_files#show {:format=>:json}
+                                              PATCH    /api/supporting_information_files/:id(.:format)                             supporting_information_files#update {:format=>:json}
+                                              PUT      /api/supporting_information_files/:id(.:format)                             supporting_information_files#update {:format=>:json}
+                                              DELETE   /api/supporting_information_files/:id(.:format)                             supporting_information_files#destroy {:format=>:json}
+                                              GET      /api/affiliations/user/:user_id(.:format)                                   affiliations#for_user {:format=>:json}
+                                 affiliations GET      /api/affiliations(.:format)                                                 affiliations#index {:format=>:json}
+                                              POST     /api/affiliations(.:format)                                                 affiliations#create {:format=>:json}
+                                  affiliation PATCH    /api/affiliations/:id(.:format)                                             affiliations#update {:format=>:json}
+                                              PUT      /api/affiliations/:id(.:format)                                             affiliations#update {:format=>:json}
+                                              DELETE   /api/affiliations/:id(.:format)                                             affiliations#destroy {:format=>:json}
+                                  orcid_oauth GET      /api/orcid/oauth(.:format)                                                  orcid_oauth#callback {:format=>:json}
+                          clear_orcid_account PUT      /api/orcid_accounts/:id/clear(.:format)                                     orcid_accounts#clear {:format=>:json}
+                                orcid_account GET      /api/orcid_accounts/:id(.:format)                                           orcid_accounts#show {:format=>:json}
+                            cancel_attachment PUT      /api/attachments/:id/cancel(.:format)                                       adhoc_attachments#cancel {:format=>:json}
+                                   attachment GET      /api/attachments/:id(.:format)                                              adhoc_attachments#show {:format=>:json}
+                                              PATCH    /api/attachments/:id(.:format)                                              adhoc_attachments#update {:format=>:json}
+                                              PUT      /api/attachments/:id(.:format)                                              adhoc_attachments#update {:format=>:json}
+                                              DELETE   /api/attachments/:id(.:format)                                              adhoc_attachments#destroy {:format=>:json}
+                        manuscript_attachment GET      /api/manuscript_attachments/:id(.:format)                                   manuscript_attachments#show {:format=>:json}
+                         at_mentionable_users GET      /api/at_mentionable_users(.:format)                                         at_mentionable_users#index {:format=>:json}
+                                      authors POST     /api/authors(.:format)                                                      authors#create {:format=>:json}
+                                       author GET      /api/authors/:id(.:format)                                                  authors#show {:format=>:json}
+                                              PATCH    /api/authors/:id(.:format)                                                  authors#update {:format=>:json}
+                                              PUT      /api/authors/:id(.:format)                                                  authors#update {:format=>:json}
+                                              DELETE   /api/authors/:id(.:format)                                                  authors#destroy {:format=>:json}
+                               collaborations POST     /api/collaborations(.:format)                                               collaborations#create {:format=>:json}
+                                collaboration DELETE   /api/collaborations/:id(.:format)                                           collaborations#destroy {:format=>:json}
+                                     comments POST     /api/comments(.:format)                                                     comments#create {:format=>:json}
+                                      comment GET      /api/comments/:id(.:format)                                                 comments#show {:format=>:json}
+                                comment_looks GET      /api/comment_looks(.:format)                                                comment_looks#index {:format=>:json}
+                                 comment_look GET      /api/comment_looks/:id(.:format)                                            comment_looks#show {:format=>:json}
+                                              DELETE   /api/comment_looks/:id(.:format)                                            comment_looks#destroy {:format=>:json}
+                             rescind_decision PUT      /api/decisions/:id/rescind(.:format)                                        decisions#rescind {:format=>:json}
+                            register_decision PUT      /api/decisions/:id/register(.:format)                                       decisions#register {:format=>:json}
+                                    decisions POST     /api/decisions(.:format)                                                    decisions#create {:format=>:json}
+                                     decision GET      /api/decisions/:id(.:format)                                                decisions#show {:format=>:json}
+                                              PATCH    /api/decisions/:id(.:format)                                                decisions#update {:format=>:json}
+                                              PUT      /api/decisions/:id(.:format)                                                decisions#update {:format=>:json}
+                       users_discussion_topic GET      /api/discussion_topics/:id/users(.:format)                                  discussion_topics#users {:format=>:json}
+                            discussion_topics GET      /api/discussion_topics(.:format)                                            discussion_topics#index {:format=>:json}
+                                              POST     /api/discussion_topics(.:format)                                            discussion_topics#create {:format=>:json}
+                             discussion_topic GET      /api/discussion_topics/:id(.:format)                                        discussion_topics#show {:format=>:json}
+                                              PATCH    /api/discussion_topics/:id(.:format)                                        discussion_topics#update {:format=>:json}
+                                              PUT      /api/discussion_topics/:id(.:format)                                        discussion_topics#update {:format=>:json}
+                      discussion_participants POST     /api/discussion_participants(.:format)                                      discussion_participants#create {:format=>:json}
+                       discussion_participant GET      /api/discussion_participants/:id(.:format)                                  discussion_participants#show {:format=>:json}
+                                              DELETE   /api/discussion_participants/:id(.:format)                                  discussion_participants#destroy {:format=>:json}
+                           discussion_replies POST     /api/discussion_replies(.:format)                                           discussion_replies#create {:format=>:json}
+                             discussion_reply GET      /api/discussion_replies/:id(.:format)                                       discussion_replies#show {:format=>:json}
+                                              PATCH    /api/discussion_replies/:id(.:format)                                       discussion_replies#update {:format=>:json}
+                                              PUT      /api/discussion_replies/:id(.:format)                                       discussion_replies#update {:format=>:json}
+                                       errors POST     /api/errors(.:format)                                                       errors#create {:format=>:json}
+                               feedback_index POST     /api/feedback(.:format)                                                     feedback#create {:format=>:json}
+                     update_attachment_figure PUT      /api/figures/:id/update_attachment(.:format)                                figures#update_attachment {:format=>:json}
+                                cancel_figure PUT      /api/figures/:id/cancel(.:format)                                           figures#cancel {:format=>:json}
+                                       figure GET      /api/figures/:id(.:format)                                                  figures#show {:format=>:json}
+                                              PATCH    /api/figures/:id(.:format)                                                  figures#update {:format=>:json}
+                                              PUT      /api/figures/:id(.:format)                                                  figures#update {:format=>:json}
+                                              DELETE   /api/figures/:id(.:format)                                                  figures#destroy {:format=>:json}
+                                group_authors POST     /api/group_authors(.:format)                                                group_authors#create {:format=>:json}
+                                 group_author GET      /api/group_authors/:id(.:format)                                            group_authors#show {:format=>:json}
+                                              PATCH    /api/group_authors/:id(.:format)                                            group_authors#update {:format=>:json}
+                                              PUT      /api/group_authors/:id(.:format)                                            group_authors#update {:format=>:json}
+                                              DELETE   /api/group_authors/:id(.:format)                                            group_authors#destroy {:format=>:json}
+                                     bibitems POST     /api/bibitems(.:format)                                                     bibitems#create {:format=>:json}
+                                      bibitem PATCH    /api/bibitems/:id(.:format)                                                 bibitems#update {:format=>:json}
+                                              PUT      /api/bibitems/:id(.:format)                                                 bibitems#update {:format=>:json}
+                                              DELETE   /api/bibitems/:id(.:format)                                                 bibitems#destroy {:format=>:json}
+                                              GET      /api/filtered_users/users/:paper_id(.:format)                               filtered_users#users {:format=>:json}
+                               filtered_users GET      /api/filtered_users(.:format)                                               filtered_users#index {:format=>:json}
+                                              POST     /api/filtered_users(.:format)                                               filtered_users#create {:format=>:json}
+                            new_filtered_user GET      /api/filtered_users/new(.:format)                                           filtered_users#new {:format=>:json}
+                           edit_filtered_user GET      /api/filtered_users/:id/edit(.:format)                                      filtered_users#edit {:format=>:json}
+                                filtered_user GET      /api/filtered_users/:id(.:format)                                           filtered_users#show {:format=>:json}
+                                              PATCH    /api/filtered_users/:id(.:format)                                           filtered_users#update {:format=>:json}
+                                              PUT      /api/filtered_users/:id(.:format)                                           filtered_users#update {:format=>:json}
+                                              DELETE   /api/filtered_users/:id(.:format)                                           filtered_users#destroy {:format=>:json}
+                                      formats GET      /api/formats(.:format)                                                      formats#index {:format=>:json}
+                            accept_invitation PUT      /api/invitations/:id/accept(.:format)                                       invitations#accept {:format=>:json}
+                           decline_invitation PUT      /api/invitations/:id/decline(.:format)                                      invitations#decline {:format=>:json}
+                           rescind_invitation PUT      /api/invitations/:id/rescind(.:format)                                      invitations#rescind {:format=>:json}
+                       send_invite_invitation PUT      /api/invitations/:id/send_invite(.:format)                                  invitations#send_invite {:format=>:json}
+                   update_position_invitation PUT      /api/invitations/:id/update_position(.:format)                              invitations#update_position {:format=>:json}
+                    update_primary_invitation PUT      /api/invitations/:id/update_primary(.:format)                               invitations#update_primary {:format=>:json}
+                           details_invitation GET      /api/invitations/:id/details(.:format)                                      invitations#details {:format=>:json}
+      update_attachment_invitation_attachment PUT      /api/invitations/:invitation_id/attachments/:id/update_attachment(.:format) invitation_attachments#update_attachment {:format=>:json}
+                       invitation_attachments GET      /api/invitations/:invitation_id/attachments(.:format)                       invitation_attachments#index {:format=>:json}
+                                              POST     /api/invitations/:invitation_id/attachments(.:format)                       invitation_attachments#create {:format=>:json}
+                        invitation_attachment GET      /api/invitations/:invitation_id/attachments/:id(.:format)                   invitation_attachments#show {:format=>:json}
+                                              PATCH    /api/invitations/:invitation_id/attachments/:id(.:format)                   invitation_attachments#update {:format=>:json}
+                                              PUT      /api/invitations/:invitation_id/attachments/:id(.:format)                   invitation_attachments#update {:format=>:json}
+                                              DELETE   /api/invitations/:invitation_id/attachments/:id(.:format)                   invitation_attachments#destroy {:format=>:json}
+                                  invitations GET      /api/invitations(.:format)                                                  invitations#index {:format=>:json}
+                                              POST     /api/invitations(.:format)                                                  invitations#create {:format=>:json}
+                                   invitation GET      /api/invitations/:id(.:format)                                              invitations#show {:format=>:json}
+                                              PATCH    /api/invitations/:id(.:format)                                              invitations#update {:format=>:json}
+                                              PUT      /api/invitations/:id(.:format)                                              invitations#update {:format=>:json}
+                                              DELETE   /api/invitations/:id(.:format)                                              invitations#destroy {:format=>:json}
+                     old_role_old_roles_users GET      /api/old_roles/:old_role_id/users(.:format)                                 old_roles/users#index {:format=>:json}
+                            journal_old_roles GET      /api/journals/:journal_id/old_roles(.:format)                               old_roles#index {:format=>:json}
+                                     journals GET      /api/journals(.:format)                                                     journals#index {:format=>:json}
+                                      journal GET      /api/journals/:id(.:format)                                                 journals#show {:format=>:json}
+                 manuscript_manager_templates POST     /api/manuscript_manager_templates(.:format)                                 manuscript_manager_templates#create {:format=>:json}
+                  manuscript_manager_template GET      /api/manuscript_manager_templates/:id(.:format)                             manuscript_manager_templates#show {:format=>:json}
+                                              PATCH    /api/manuscript_manager_templates/:id(.:format)                             manuscript_manager_templates#update {:format=>:json}
+                                              PUT      /api/manuscript_manager_templates/:id(.:format)                             manuscript_manager_templates#update {:format=>:json}
+                                              DELETE   /api/manuscript_manager_templates/:id(.:format)                             manuscript_manager_templates#destroy {:format=>:json}
+                                notifications GET      /api/notifications(.:format)                                                notifications#index {:format=>:json}
+                                 notification GET      /api/notifications/:id(.:format)                                            notifications#show {:format=>:json}
+                                              DELETE   /api/notifications/:id(.:format)                                            notifications#destroy {:format=>:json}
+                                  assignments GET      /api/assignments(.:format)                                                  assignments#index {:format=>:json}
+                                              POST     /api/assignments(.:format)                                                  assignments#create {:format=>:json}
+                                   assignment DELETE   /api/assignments/:id(.:format)                                              assignments#destroy {:format=>:json}
+                    paper_role_eligible_users GET      /api/papers/:paper_short_doi/roles/:role_id/eligible_users(.:format)        paper_role_eligible_users#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                 paper_editor DELETE   /api/papers/:paper_short_doi/editor(.:format)                               editors#destroy {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                     paper_manuscript_manager GET      /api/papers/:paper_short_doi/manuscript_manager(.:format)                   manuscript_managers#show {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                paper_figures GET      /api/papers/:paper_short_doi/figures(.:format)                              figures#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              POST     /api/papers/:paper_short_doi/figures(.:format)                              figures#create {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                 paper_tables POST     /api/papers/:paper_short_doi/tables(.:format)                               tables#create {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                               paper_bibitems POST     /api/papers/:paper_short_doi/bibitems(.:format)                             bibitems#create {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                 paper_phases GET      /api/papers/:paper_short_doi/phases(.:format)                               phases#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                              paper_decisions GET      /api/papers/:paper_short_doi/decisions(.:format)                            decisions#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                      paper_discussion_topics GET      /api/papers/:paper_short_doi/discussion_topics(.:format)                    discussion_topics#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                             paper_task_types GET      /api/papers/:paper_short_doi/task_types(.:format)                           paper_task_types#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                          paper_task_comments POST     /api/papers/:paper_short_doi/tasks/:task_id/comments(.:format)              comments#create {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                  paper_tasks GET      /api/papers/:paper_short_doi/tasks(.:format)                                tasks#index {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              POST     /api/papers/:paper_short_doi/tasks(.:format)                                tasks#create {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                   paper_task PATCH    /api/papers/:paper_short_doi/tasks/:id(.:format)                            tasks#update {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              PUT      /api/papers/:paper_short_doi/tasks/:id(.:format)                            tasks#update {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              DELETE   /api/papers/:paper_short_doi/tasks/:id(.:format)                            tasks#destroy {:format=>:json, :paper_short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              GET      /api/papers/:short_doi/status/:id(.:format)                                 paper_conversions#status {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                      activity_workflow_paper GET      /api/papers/:short_doi/activity/workflow(.:format)                          papers#workflow_activities {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                    activity_manuscript_paper GET      /api/papers/:short_doi/activity/manuscript(.:format)                        papers#manuscript_activities {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                          comment_looks_paper GET      /api/papers/:short_doi/comment_looks(.:format)                              papers#comment_looks {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                        versioned_texts_paper GET      /api/papers/:short_doi/versioned_texts(.:format)                            papers#versioned_texts {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                 export_paper GET      /api/papers/:short_doi/export(.:format)                                     paper_conversions#export {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                              snapshots_paper GET      /api/papers/:short_doi/snapshots(.:format)                                  papers#snapshots {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                       related_articles_paper GET      /api/papers/:short_doi/related_articles(.:format)                           papers#related_articles {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                 submit_paper PUT      /api/papers/:short_doi/submit(.:format)                                     papers#submit {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                               withdraw_paper PUT      /api/papers/:short_doi/withdraw(.:format)                                   papers#withdraw {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                             reactivate_paper PUT      /api/papers/:short_doi/reactivate(.:format)                                 papers#reactivate {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                        toggle_editable_paper PUT      /api/papers/:short_doi/toggle_editable(.:format)                            papers#toggle_editable {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                       papers GET      /api/papers(.:format)                                                       papers#index {:format=>:json}
+                                              POST     /api/papers(.:format)                                                       papers#create {:format=>:json}
+                                        paper GET      /api/papers/:short_doi(.:format)                                            papers#show {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              PATCH    /api/papers/:short_doi(.:format)                                            papers#update {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                                              PUT      /api/papers/:short_doi(.:format)                                            papers#update {:format=>:json, :short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                        paper_tracker_queries GET      /api/paper_tracker_queries(.:format)                                        paper_tracker_queries#index {:format=>:json}
+                                              POST     /api/paper_tracker_queries(.:format)                                        paper_tracker_queries#create {:format=>:json}
+                          paper_tracker_query PATCH    /api/paper_tracker_queries/:id(.:format)                                    paper_tracker_queries#update {:format=>:json}
+                                              PUT      /api/paper_tracker_queries/:id(.:format)                                    paper_tracker_queries#update {:format=>:json}
+                                              DELETE   /api/paper_tracker_queries/:id(.:format)                                    paper_tracker_queries#destroy {:format=>:json}
+                               participations POST     /api/participations(.:format)                                               participations#create {:format=>:json}
+                                participation GET      /api/participations/:id(.:format)                                           participations#show {:format=>:json}
+                                              DELETE   /api/participations/:id(.:format)                                           participations#destroy {:format=>:json}
+                              phase_templates GET      /api/phase_templates(.:format)                                              phase_templates#index {:format=>:json}
+                                              POST     /api/phase_templates(.:format)                                              phase_templates#create {:format=>:json}
+                           new_phase_template GET      /api/phase_templates/new(.:format)                                          phase_templates#new {:format=>:json}
+                          edit_phase_template GET      /api/phase_templates/:id/edit(.:format)                                     phase_templates#edit {:format=>:json}
+                               phase_template GET      /api/phase_templates/:id(.:format)                                          phase_templates#show {:format=>:json}
+                                              PATCH    /api/phase_templates/:id(.:format)                                          phase_templates#update {:format=>:json}
+                                              PUT      /api/phase_templates/:id(.:format)                                          phase_templates#update {:format=>:json}
+                                              DELETE   /api/phase_templates/:id(.:format)                                          phase_templates#destroy {:format=>:json}
+                                       phases POST     /api/phases(.:format)                                                       phases#create {:format=>:json}
+                                        phase GET      /api/phases/:id(.:format)                                                   phases#show {:format=>:json}
+                                              PATCH    /api/phases/:id(.:format)                                                   phases#update {:format=>:json}
+                                              PUT      /api/phases/:id(.:format)                                                   phases#update {:format=>:json}
+                                              DELETE   /api/phases/:id(.:format)                                                   phases#destroy {:format=>:json}
+                                   permission GET      /api/permissions/:id(.:format)                                              permissions#show {:format=>:json}
+                         question_attachments POST     /api/question_attachments(.:format)                                         question_attachments#create {:format=>:json}
+                          question_attachment GET      /api/question_attachments/:id(.:format)                                     question_attachments#show {:format=>:json}
+                                              PATCH    /api/question_attachments/:id(.:format)                                     question_attachments#update {:format=>:json}
+                                              PUT      /api/question_attachments/:id(.:format)                                     question_attachments#update {:format=>:json}
+                                              DELETE   /api/question_attachments/:id(.:format)                                     question_attachments#destroy {:format=>:json}
+                                    questions POST     /api/questions(.:format)                                                    questions#create {:format=>:json}
+                                     question PATCH    /api/questions/:id(.:format)                                                questions#update {:format=>:json}
+                                              PUT      /api/questions/:id(.:format)                                                questions#update {:format=>:json}
+                      nested_question_answers POST     /api/nested_questions/:nested_question_id/answers(.:format)                 nested_question_answers#create {:format=>:json}
+                       nested_question_answer PATCH    /api/nested_questions/:nested_question_id/answers/:id(.:format)             nested_question_answers#update {:format=>:json}
+                                              PUT      /api/nested_questions/:nested_question_id/answers/:id(.:format)             nested_question_answers#update {:format=>:json}
+                                              DELETE   /api/nested_questions/:nested_question_id/answers/:id(.:format)             nested_question_answers#destroy {:format=>:json}
+                             nested_questions GET      /api/nested_questions(.:format)                                             nested_questions#index {:format=>:json}
+                                    old_roles POST     /api/old_roles(.:format)                                                    old_roles#create {:format=>:json}
+                                     old_role GET      /api/old_roles/:id(.:format)                                                old_roles#show {:format=>:json}
+                                              PATCH    /api/old_roles/:id(.:format)                                                old_roles#update {:format=>:json}
+                                              PUT      /api/old_roles/:id(.:format)                                                old_roles#update {:format=>:json}
+                                              DELETE   /api/old_roles/:id(.:format)                                                old_roles#destroy {:format=>:json}
+                             related_articles POST     /api/related_articles(.:format)                                             related_articles#create {:format=>:json}
+                              related_article GET      /api/related_articles/:id(.:format)                                         related_articles#show {:format=>:json}
+                                              PATCH    /api/related_articles/:id(.:format)                                         related_articles#update {:format=>:json}
+                                              PUT      /api/related_articles/:id(.:format)                                         related_articles#update {:format=>:json}
+                                              DELETE   /api/related_articles/:id(.:format)                                         related_articles#destroy {:format=>:json}
+                        task_nested_questions GET      /api/tasks/:task_id/nested_questions(.:format)                              tasks#nested_questions {:format=>:json}
+                 task_nested_question_answers GET      /api/tasks/:task_id/nested_question_answers(.:format)                       tasks#nested_question_answers {:format=>:json}
+            update_attachment_task_attachment PUT      /api/tasks/:task_id/attachments/:id/update_attachment(.:format)             adhoc_attachments#update_attachment {:format=>:json}
+                             task_attachments GET      /api/tasks/:task_id/attachments(.:format)                                   adhoc_attachments#index {:format=>:json}
+                                              POST     /api/tasks/:task_id/attachments(.:format)                                   adhoc_attachments#create {:format=>:json}
+                              task_attachment PATCH    /api/tasks/:task_id/attachments/:id(.:format)                               adhoc_attachments#update {:format=>:json}
+                                              PUT      /api/tasks/:task_id/attachments/:id(.:format)                               adhoc_attachments#update {:format=>:json}
+                                              DELETE   /api/tasks/:task_id/attachments/:id(.:format)                               adhoc_attachments#destroy {:format=>:json}
+                                task_comments GET      /api/tasks/:task_id/comments(.:format)                                      comments#index {:format=>:json}
+                          task_participations GET      /api/tasks/:task_id/participations(.:format)                                participations#index {:format=>:json}
+                               task_questions GET      /api/tasks/:task_id/questions(.:format)                                     questions#index {:format=>:json}
+                               task_snapshots GET      /api/tasks/:task_id/snapshots(.:format)                                     snapshots#index {:format=>:json}
+                            send_message_task PUT      /api/tasks/:id/send_message(.:format)                                       tasks#send_message {:format=>:json}
+                   task_eligible_users_admins GET      /api/tasks/:task_id/eligible_users/admins(.:format)                         task_eligible_users#admins {:format=>:json}
+         task_eligible_users_academic_editors GET      /api/tasks/:task_id/eligible_users/academic_editors(.:format)               task_eligible_users#academic_editors {:format=>:json}
+                task_eligible_users_reviewers GET      /api/tasks/:task_id/eligible_users/reviewers(.:format)                      task_eligible_users#reviewers {:format=>:json}
+                                        tasks POST     /api/tasks(.:format)                                                        tasks#create {:format=>:json}
+                                         task GET      /api/tasks/:id(.:format)                                                    tasks#show {:format=>:json}
+                                              PATCH    /api/tasks/:id(.:format)                                                    tasks#update {:format=>:json}
+                                              PUT      /api/tasks/:id(.:format)                                                    tasks#update {:format=>:json}
+                                              DELETE   /api/tasks/:id(.:format)                                                    tasks#destroy {:format=>:json}
+                               task_templates GET      /api/task_templates(.:format)                                               task_templates#index {:format=>:json}
+                                              POST     /api/task_templates(.:format)                                               task_templates#create {:format=>:json}
+                            new_task_template GET      /api/task_templates/new(.:format)                                           task_templates#new {:format=>:json}
+                           edit_task_template GET      /api/task_templates/:id/edit(.:format)                                      task_templates#edit {:format=>:json}
+                                task_template GET      /api/task_templates/:id(.:format)                                           task_templates#show {:format=>:json}
+                                              PATCH    /api/task_templates/:id(.:format)                                           task_templates#update {:format=>:json}
+                                              PUT      /api/task_templates/:id(.:format)                                           task_templates#update {:format=>:json}
+                                              DELETE   /api/task_templates/:id(.:format)                                           task_templates#destroy {:format=>:json}
+                                  reset_users GET      /api/users/reset(.:format)                                                  users#reset {:format=>:json}
+                          update_avatar_users PUT      /api/users/update_avatar(.:format)                                          users#update_avatar {:format=>:json}
+                                        users GET      /api/users(.:format)                                                        users#index {:format=>:json}
+                                         user GET      /api/users/:id(.:format)                                                    users#show {:format=>:json}
+                                   user_roles GET      /api/user_roles(.:format)                                                   user_roles#index {:format=>:json}
+                                              POST     /api/user_roles(.:format)                                                   user_roles#create {:format=>:json}
+                                    user_role DELETE   /api/user_roles/:id(.:format)                                               user_roles#destroy {:format=>:json}
+                               versioned_text GET      /api/versioned_texts/:id(.:format)                                          versioned_texts#show {:format=>:json}
+                     reset_admin_journal_user GET      /api/admin/journal_users/:id/reset(.:format)                                admin/journal_users#reset {:format=>:json}
+                          admin_journal_users GET      /api/admin/journal_users(.:format)                                          admin/journal_users#index {:format=>:json}
+                           admin_journal_user PATCH    /api/admin/journal_users/:id(.:format)                                      admin/journal_users#update {:format=>:json}
+                                              PUT      /api/admin/journal_users/:id(.:format)                                      admin/journal_users#update {:format=>:json}
+                 authorization_admin_journals GET      /api/admin/journals/authorization(.:format)                                 admin/journals#authorization {:format=>:json}
+                    upload_logo_admin_journal PUT      /api/admin/journals/:id/upload_logo(.:format)                               admin/journals#upload_logo {:format=>:json}
+                               admin_journals GET      /api/admin/journals(.:format)                                               admin/journals#index {:format=>:json}
+                                              POST     /api/admin/journals(.:format)                                               admin/journals#create {:format=>:json}
+                                admin_journal GET      /api/admin/journals/:id(.:format)                                           admin/journals#show {:format=>:json}
+                                              PATCH    /api/admin/journals/:id(.:format)                                           admin/journals#update {:format=>:json}
+                                              PUT      /api/admin/journals/:id(.:format)                                           admin/journals#update {:format=>:json}
+                                    ihat_jobs POST     /api/ihat/jobs(.:format)                                                    ihat/jobs#create {:format=>:json}
+                            auth_event_stream POST     /api/event_stream/auth(.:format)                                            event_stream#auth {:format=>:json}
+                                      s3_sign GET      /api/s3/sign(.:format)                                                      s3/forms#sign {:format=>:json}
+                               download_paper GET      /papers/:short_doi/download(.:format)                                       papers#download {:short_doi=>/[a-zA-Z0-9]+\.[0-9]+/}
+                   confirm_decline_invitation GET      /invitations/:token(.:format)                                               token_invitations#show
+                     decline_token_invitation POST     /invitations/:token/decline(.:format)                                       token_invitations#decline
+                     invitation_feedback_form GET      /invitations/:token/feedback(.:format)                                      token_invitations#feedback_form
+                                post_feedback POST     /invitations/:token/feedback(.:format)                                      token_invitations#feedback
+                         invitation_thank_you GET      /invitations/:token/thank_you(.:format)                                     token_invitations#thank_you
+                           old_resource_proxy GET      /resource_proxy/:resource/:token(/:version)(.:format)                       resource_proxy#url {:resource=>/
+          adhoc_attachments
+          | attachments
+          | question_attachments
+          | figures
+          | supporting_information_files
+        /x}
+                               resource_proxy GET      /resource_proxy/:token(/:version)(.:format)                                 resource_proxy#url
+                                         root GET      /                                                                           ember_cli/ember#index
+                                              GET      /(*rest)(.:format)                                                          ember_cli/ember#index {:ember_app=>:client}
+                                                       /                                                                           #<Rack::File:0x007fecebcc8550 @root="/Users/mercieca/MH-Projects/tahi/tmp/ember-cli/apps/client", @headers={}, @default_mime="text/plain">
+
+Routes for TahiStandardTasks::Engine:
+         apex_deliveries POST   /apex_deliveries(.:format)              tahi_standard_tasks/apex_deliveries#create
+           apex_delivery GET    /apex_deliveries/:id(.:format)          tahi_standard_tasks/apex_deliveries#show
+                 funders POST   /funders(.:format)                      tahi_standard_tasks/funders#create
+                  funder PATCH  /funders/:id(.:format)                  tahi_standard_tasks/funders#update
+                         PUT    /funders/:id(.:format)                  tahi_standard_tasks/funders#update
+                         DELETE /funders/:id(.:format)                  tahi_standard_tasks/funders#destroy
+reviewer_recommendations POST   /reviewer_recommendations(.:format)     tahi_standard_tasks/reviewer_recommendations#create
+ reviewer_recommendation PATCH  /reviewer_recommendations/:id(.:format) tahi_standard_tasks/reviewer_recommendations#update
+                         PUT    /reviewer_recommendations/:id(.:format) tahi_standard_tasks/reviewer_recommendations#update
+                         DELETE /reviewer_recommendations/:id(.:format) tahi_standard_tasks/reviewer_recommendations#destroy
+       upload_manuscript PUT    /tasks/:id/upload_manuscript(.:format)  tahi_standard_tasks/upload_manuscript#upload_manuscript
+
+Routes for PlosBioInternalReview::Engine:
+
+
+Routes for PlosBioTechCheck::Engine:
+submit_tech_check POST /changes_for_author/:id/submit_tech_check(.:format) plos_bio_tech_check/changes_for_author#submit_tech_check
+   send_itc_email POST /initial_tech_check/:id/send_email(.:format)        plos_bio_tech_check/initial_tech_check#send_email
+   send_rtc_email POST /revision_tech_check/:id/send_email(.:format)       plos_bio_tech_check/revision_tech_check#send_email
+   send_ftc_email POST /final_tech_check/:id/send_email(.:format)          plos_bio_tech_check/final_tech_check#send_email
+
+Routes for PlosBilling::Engine:

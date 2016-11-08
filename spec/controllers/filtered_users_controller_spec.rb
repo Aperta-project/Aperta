@@ -9,7 +9,7 @@ describe FilteredUsersController do
       get(
         :users,
         format: 'json',
-        paper_id: paper.to_param,
+        paper_short_doi: paper.to_param,
         query: 'Kangaroo'
       )
     end

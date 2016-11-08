@@ -8,7 +8,7 @@ class FilteredUsersController < ApplicationController
   def users
     users = User.fuzzy_search params[:query]
     respond_with users, each_serializer: FilteredUserSerializer,
-                        paper_id: params[:paper_id],
+                        paper_short_doi: params[:paper_short_doi],
                         root: :users
   end
 end

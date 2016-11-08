@@ -4,7 +4,7 @@ class FilteredUserSerializer < ActiveModel::Serializer
   private
 
   def old_roles
-    old_roles = object.paper_roles.where(paper_id: options[:paper_id])
+    old_roles = object.paper_roles.where(paper_id: paper_id)
     unless current_user.site_admin? || journal_admin?(current_user)
       old_roles = old_roles.where(old_role: PaperRole::COLLABORATOR)
     end
@@ -12,7 +12,11 @@ class FilteredUserSerializer < ActiveModel::Serializer
   end
 
   def journal_admin?(user)
-    paper = Paper.find_by(id: options[:paper_id])
+    paper = Paper.find_by(id: paper_id)
     user.can?(:administer, paper.journal)
+  end
+
+  def paper_id
+    Paper.find_by_short_doi(options[:paper_short_doi]).id
   end
 end

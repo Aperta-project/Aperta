@@ -52,6 +52,7 @@ export default Ember.Component.extend({
 
   canEdit: true,
   canManage: true,
+  classNames: ['ad-hoc-body'],
 
   // BuildsTaskTemplate stuff
   emailSentStates: Ember.computed(() => { return []; }),

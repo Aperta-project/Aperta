@@ -56,7 +56,7 @@ moduleForAcceptance('Integration: AdHoc Card', {
 test('Changing the title on an AdHoc Task', function(assert) {
   const paper = make('paper');
   const task  = make('ad-hoc-task', { paper: paper, body: [], title: 'Custom title' });
-  Factory.createPermission('AdHocTask', task.id, ['edit', 'view']);
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -73,7 +73,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
 test('AdHoc Task text block', function(assert) {
   let paper = make('paper');
   let task  = make('ad-hoc-task', { paper: paper, body: [] });
-  Factory.createPermission('AdHocTask', task.id, ['edit', 'view']);
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -98,7 +98,7 @@ test('AdHoc Task text block', function(assert) {
 test('AdHoc Task list block', function(assert) {
   const paper = make('paper');
   const task  = make('ad-hoc-task', { paper: paper, body: [] });
-  Factory.createPermission('AdHocTask', task.id, ['edit', 'view']);
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
@@ -126,7 +126,7 @@ test('AdHoc Task list block', function(assert) {
 test('AdHoc Task email block', function(assert) {
   const paper = make('paper');
   const task  = make('ad-hoc-task', { paper: paper, body: [] });
-  Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'add_email_participants']);
+  Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'add_email_participants', 'manage']);
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });

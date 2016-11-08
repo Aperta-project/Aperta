@@ -47,7 +47,9 @@ class FtpUploaderService
       rescue Net::FTPPermError
       end
       @ftp.rename(tmp_file, @final_filename)
-      Rails.logger.info "Transfer successful for #{@final_filename}"
+      Rails.logger.info(
+        "Transfer successful for #{File.join(@directory, @final_filename)}"
+      )
       return true
     else
       raise FtpTransferError, "FTP Transfer failed: #{@ftp.last_response}"

@@ -446,9 +446,11 @@ class Paper < ActiveRecord::Base
   end
 
   def add_collaboration(user)
-    assignments
+    assignment = assignments
       .where(user: user, role: journal.collaborator_role)
       .first_or_create!
+    notify(action: "add_collaboration")
+    assignment
   end
 
   def remove_collaboration(collaboration)
@@ -459,6 +461,8 @@ class Paper < ActiveRecord::Base
     end
 
     collaboration.destroy if collaboration.role == journal.collaborator_role
+    notify(action: "remove_collaboration")
+
     collaboration
   end
 

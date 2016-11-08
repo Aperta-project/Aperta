@@ -253,6 +253,10 @@ describe User do
     let(:journal_admin) { FactoryGirl.create(:user) }
     let(:regular_user) { FactoryGirl.create(:user) }
 
+    before do
+      journal_admin.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+    end
+
     it "returns true if user is an admin for a given journal" do
       expect(journal_admin.can?(:administer, journal)).to be true
     end

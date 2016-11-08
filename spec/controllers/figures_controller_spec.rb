@@ -12,7 +12,7 @@ describe FiguresController do
 
     subject(:do_request) do
       get :index, format: 'json',
-                  paper_id: paper.to_param
+                  paper_short_doi: paper.to_param
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -91,7 +91,7 @@ describe FiguresController do
   describe "POST 'create'" do
     let(:paper) { FactoryGirl.create(:paper) }
     subject(:do_request) do
-      post :create, format: "json", paper_id: paper.to_param, url: url
+      post :create, format: "json", paper_short_doi: paper.to_param, url: url
     end
     let(:url) { "http://someawesomeurl.com" }
 

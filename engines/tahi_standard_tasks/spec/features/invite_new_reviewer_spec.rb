@@ -61,7 +61,7 @@ feature "Inviting a new reviewer", js: true do
   scenario "Invitation token cannot be re-used" do
     invite_new_reviewer_for_paper "malz@example.com", paper
     ensure_email_got_sent_to "malz@example.com"
-    Page.new.sign_out
+    Page.sign_out
 
     open_email "malz@example.com"
     invitation_link = root_path

@@ -42,6 +42,10 @@ class Page < PageFragment
     def view_paper_workflow(paper)
       new.view_paper_workflow(paper)
     end
+
+    def sign_out
+      new.sign_out
+    end
   end
 
   def initialize(element = nil, context: nil)

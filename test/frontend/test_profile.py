@@ -1,7 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import time
+
 import logging
+import os
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
@@ -30,6 +31,9 @@ class ApertaProfileTest(CommonTest):
     test_profile: Validates elements and styles of the profile page
     :return: void function
     """
+    logging.info('Test Profile::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     profile_user = self.select_cas_user()
     logging.info(profile_user)
     dashboard = self.cas_login(email=profile_user['email'])
@@ -44,6 +48,9 @@ class ApertaProfileTest(CommonTest):
     test_profile: Validates function of adding/deleting affiliations
     :return: void function
     """
+    logging.info('Test Profile::affiliations')
+    current_path = os.getcwd()
+    logging.info(current_path)
     dashboard = self.cas_login()
     dashboard.click_profile_link()
     profile_page = ProfilePage(self.getDriver())

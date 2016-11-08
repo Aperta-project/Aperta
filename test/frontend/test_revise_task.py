@@ -5,6 +5,7 @@ This test case validates the Revise Manuscript task
 Automated test case for: fill response to reviweres and attach a file in Revise Manuscript task
 """
 import logging
+import os
 import random
 import time
 
@@ -33,13 +34,16 @@ class ReviseManuscriptTest(CommonTest):
      - Upload files to Response to Reviewers (NOTE: Testing only one file due to APERTA-6672)
      - Fill a response in a text area in Response to Reviewers
   """
-  def _test_response_to_reviewers(self):
+  def test_response_to_reviewers(self):
     """
     NOTE: Disabled due to bug APERTA-6994
     test_revise_manuscript: Functional test of revise task. This test walks through the path to
     create an article, make a decision about the manuscript and the author will use the revise task
     card.
     """
+    logging.info('Test Revise task::response_to_reviewers')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))

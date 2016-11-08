@@ -275,7 +275,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     newest_file = files[-1]
     logging.debug(newest_file)
     while newest_file.split('.')[-1] == 'part':
-      time.sleep(5)
+      time.sleep(.5)
       files = filter(os.path.isfile, os.listdir('/tmp'))
       files = [os.path.join('/tmp', f) for f in files]  # add path to each file
       files.sort(key=lambda x: os.path.getmtime(x))
@@ -284,7 +284,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.debug(newest_file)
     os.remove(newest_file)
     # Tiny delay between download types to keep clean
-    time.sleep(1)
+    time.sleep(.5)
     pdf_link = self._get(self._tb_dl_pdf_link)
     pdf_link.click()
     # This lengthy delay is here because the file must begin downloading before we can start

@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -15,7 +16,6 @@ from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
-from selenium.webdriver.common.by import By
 
 """
 This test case validates the Aperta Discussion Forum
@@ -44,6 +44,9 @@ class DiscussionForumTest(CommonTest):
     that topic and reset of notifications every time the user click into a discussion
     message.
     """
+    logging.info('Test Discussion Forum::notification')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))

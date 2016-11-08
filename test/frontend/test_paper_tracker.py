@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 
 from Base.Decorators import MultiBrowserFixture
@@ -38,6 +39,9 @@ class ApertaPaperTrackerTest(CommonTest):
     Validates the presence of the following elements:
       Welcome Text, subhead, table presentation
     """
+    logging.info('Test Paper Tracker:: components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()
@@ -50,6 +54,9 @@ class ApertaPaperTrackerTest(CommonTest):
     """
     test_paper_tracker: Validate the contents of the dynamic table
     """
+    logging.info('Test Paper Tracker::table_content')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()
@@ -65,6 +72,9 @@ class ApertaPaperTrackerTest(CommonTest):
     Validate the Aperta Query Language Usage, Search function elements, including saved search, and
     the Saved Search functions
     """
+    logging.info('Test Paper Tracker::search')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()

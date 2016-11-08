@@ -285,10 +285,20 @@ class PlosPage(object):
 
   def get_current_url(self):
     """
-    Returns the url of the current page
+    Returns the url of the current page, with any trailing arguments, if present
     :return: url
     """
     url = self._driver.current_url
+    return url
+
+  def get_current_url_without_args(self):
+    """
+    Returns the url of the current page excluding any trailing arguments
+    :return: url
+    """
+    url = self._driver.current_url
+    if '?' in url:
+      url = url.split('?')[0]
     return url
 
   def is_element_present(self, locator):

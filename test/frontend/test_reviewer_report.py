@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
@@ -40,6 +41,9 @@ class ReviewerReportTest(CommonTest):
       reviewer report.
     :return: None
     """
+    logging.info('Test Reviewer Report::front_matter')
+    current_path = os.getcwd()
+    logging.info(current_path)
     logging.info('test_core_rev_rep_non_research_actions')
     # Create base data - new papers
     creator_user = random.choice(users)
@@ -139,6 +143,9 @@ class ReviewerReportTest(CommonTest):
       reviewer report.
     :return: None
     """
+    logging.info('Test Reviewer Report::research')
+    current_path = os.getcwd()
+    logging.info(current_path)
     logging.info('test_core_rev_rep_research_actions')
     # Create base data - new papers
     creator_user = random.choice(users)

@@ -1,12 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import internal_editor_login, staff_admin_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login
+from Base.Resources import editorial_users, admin_users
 from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
@@ -43,12 +43,10 @@ class ApertaWorkflowTest(CommonTest):
     test_workflow: Validates elements and styles of the workflow page
     :return: void function
     """
-    workflow_users = [internal_editor_login,
-                      staff_admin_login,
-                      prod_staff_login,
-                      pub_svcs_login,
-                      super_admin_login,
-                      ]
+    logging.info('Test Workflow::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
+    workflow_users = editorial_users + admin_users
     workflow_user = random.choice(workflow_users)
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
@@ -72,13 +70,11 @@ class ApertaWorkflowTest(CommonTest):
     test_workflow: Testing adding a new card
     :return: void function
     """
+    logging.info('Test Workflow::add_new_card')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # APERTA-6186 stops the internal editor and publication services logins from adding a new card
-    workflow_users = [internal_editor_login,
-                      staff_admin_login,
-                      prod_staff_login,
-                      pub_svcs_login,
-                      super_admin_login,
-                      ]
+    workflow_users = editorial_users + admin_users
     workflow_user = random.choice(workflow_users)
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])

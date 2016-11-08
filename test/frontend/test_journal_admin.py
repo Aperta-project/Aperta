@@ -5,6 +5,7 @@ This test case validates the Aperta Journal-specific Admin page.
 """
 
 import logging
+import os
 import random
 import time
 
@@ -44,7 +45,9 @@ class ApertaJournalAdminTest(CommonTest):
       toolbar elements
       section headings save for user and roles that are validated separately
     """
-    logging.info('Validating journal admin component display and function')
+    logging.info('Test Journal Admin::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -64,7 +67,9 @@ class ApertaJournalAdminTest(CommonTest):
       user section heading and user search form elements, user search icon
       result set elements
     """
-    logging.info('Validating journal user search display and function')
+    logging.info('Test Journal Admin::user_search')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -84,7 +89,9 @@ class ApertaJournalAdminTest(CommonTest):
       default and non-default role display
       permission display per role
     """
-    logging.info('Validating journal role display and function')
+    logging.info('Test Journal Admin::roles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -114,7 +121,9 @@ class ApertaJournalAdminTest(CommonTest):
       manipulating role for task/card type.
     :return: void function
     """
-    logging.info('Validating journal task types display and function')
+    logging.info('Test Journal Admin::task_types')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -139,7 +148,9 @@ class ApertaJournalAdminTest(CommonTest):
     :return: void function
     NOTE: Not working due to APERTA-7465
     """
-    logging.info('Validating journal mmt (paper type) display and function')
+    logging.info('Test Journal Admin::mmt_display_function')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -159,7 +170,9 @@ class ApertaJournalAdminTest(CommonTest):
     :return: void function
     NOTE: Not working due to APERTA-7465
     """
-    logging.info('Validating journal add mmt (paper type) function')
+    logging.info('Test Journal Admin::add_delete_mmt')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -194,7 +207,9 @@ class ApertaJournalAdminTest(CommonTest):
       Save button
     :return: void function
     """
-    logging.info('Validating Journal Style Settings display and function')
+    logging.info('Test Journal Admin::style settings')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
     dashboard_page = self.cas_login(email=user_type['email'])

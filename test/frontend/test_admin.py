@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 
 from Base.Decorators import MultiBrowserFixture
@@ -39,6 +40,9 @@ class ApertaAdminTest(CommonTest):
     test_admin: Validate elements and styles for the base Admin page
     :return: void function
     """
+    logging.info('Test Admin::validate_components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     logging.info('Validating Admin page components and styles')
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}'.format(user_type))
@@ -63,6 +67,9 @@ class ApertaAdminTest(CommonTest):
     test_admin: Validate the function of the base Admin page user search function
     :return: void function
     """
+    logging.info('Test Admin::validate_user_search')
+    current_path = os.getcwd()
+    logging.info(current_path)
     logging.info('Validating base admin page user search function')
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}'.format(user_type))
@@ -81,7 +88,9 @@ class ApertaAdminTest(CommonTest):
     This test stops short of creating a new journal
     :return: void function
     """
-    logging.info('Validating add new journal function')
+    logging.info('Test Admin::validate_add_new_journal')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -94,7 +103,9 @@ class ApertaAdminTest(CommonTest):
     test_admin: Validates the edit journal function, form elements and styles.
     :return: void function
     """
-    logging.info('Validating edit journal function')
+    logging.info('Test Admin::validate_edit_journal')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])

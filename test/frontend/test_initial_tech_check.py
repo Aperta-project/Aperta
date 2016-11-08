@@ -7,14 +7,12 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
-from selenium.common.exceptions import NoSuchElementException
-
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_tech_check_card import ITCCard
@@ -34,6 +32,9 @@ class ITCCardTest(CommonTest):
     test_initial_tech_check: Validates the elements, styles, and functions of ITC Card
     :return: None
     """
+    logging.info('Test ITC')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -101,8 +102,8 @@ class ITCCardTest(CommonTest):
     try:
       itc_card._get(itc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
-      #raise ElementExistsAssertionError('There is an unexpected error message')
-      #logging.warning('There is an error message because of APERTA-7012')
+      # raise ElementExistsAssertionError('There is an unexpected error message')
+      # logging.warning('There is an error message because of APERTA-7012')
     except ElementDoesNotExistAssertionError:
       pass
 

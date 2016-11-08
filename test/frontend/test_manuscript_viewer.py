@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -42,6 +43,9 @@ class ManuscriptViewerTest(CommonTest):
       - button for workflow
       - button for more options
     """
+    logging.info('Test Manuscript Viewer::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     all_users = users + editorial_users + external_editorial_users + admin_users
     user = random.choice(all_users)
     logging.info('Running test_validate_components_styles')
@@ -77,6 +81,9 @@ class ManuscriptViewerTest(CommonTest):
     """
     APERTA-3: Validates role aware menus
     """
+    logging.info('Test Manuscript Viewer::Role Aware Menus')
+    current_path = os.getcwd()
+    logging.info(current_path)
     roles = { 'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
               'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
               'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
@@ -275,6 +282,9 @@ class ManuscriptViewerTest(CommonTest):
     test_manuscript_viewer: Validates the download functions, formats, UI elements and styles
     :return: void function
     """
+    logging.info('Test Manuscript Viewer::paper_download')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user = random.choice(users)
     logging.info('Running test_paper_download')
     logging.info('Logging in as {0}'.format(user))

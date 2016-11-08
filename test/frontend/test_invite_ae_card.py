@@ -7,13 +7,13 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import staff_admin_login, internal_editor_login, prod_staff_login, \
-    pub_svcs_login, super_admin_login, academic_editor_login, users, editorial_users
+from Base.Resources import academic_editor_login, users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -35,6 +35,9 @@ class InviteAECardTest(CommonTest):
     dashboard, acceptance and rejections
     :return: void function
     """
+    logging.info('Test Invite AE')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -143,8 +146,8 @@ class InviteAECardTest(CommonTest):
     workflow_page.click_card('invite_academic_editor')
     time.sleep(3)
     invite_ae = InviteAECard(self.getDriver())
-    invite_ae.validate_response(academic_editor_login, invite_response,
-        response_data[0], response_data[1])
+    invite_ae.validate_response(academic_editor_login, invite_response, response_data[0],
+                                response_data[1])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

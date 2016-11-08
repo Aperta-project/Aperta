@@ -4,6 +4,7 @@
 This test case validates the Title and Abstract Card
 """
 import logging
+import os
 import random
 import time
 
@@ -29,6 +30,9 @@ class TitleAbstractTest(CommonTest):
     test_title_abstract_card: Validate components and styles of the Title and Abstract card
     :return: void function
     """
+    logging.info('Test Title Abstract Card::components_styles')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
@@ -87,6 +91,9 @@ class TitleAbstractTest(CommonTest):
       re-upload
     :return: void function
     """
+    logging.info('Test Title Abstract Card::function')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator = random.choice(users)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))

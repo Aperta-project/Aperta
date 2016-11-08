@@ -7,6 +7,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
+import os
 import random
 import time
 
@@ -34,6 +35,9 @@ class AssignTeamCardTest(CommonTest):
       editor
     :return: void function
     """
+    logging.info('Test Assign Team::actions')
+    current_path = os.getcwd()
+    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -50,7 +54,7 @@ class AssignTeamCardTest(CommonTest):
     # Abbreviating the timeout for success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    paper_url = manuscript_page.get_current_url()
+    paper_url = manuscript_page.get_current_url_without_args()
     paper_id = manuscript_page.get_paper_id_from_url()
 
     # Giving just a little extra time here so the title on the paper gets updated
@@ -70,17 +74,17 @@ class AssignTeamCardTest(CommonTest):
     # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     # go to card
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
-    time.sleep(10)
+    workflow_page.page_ready()
     workflow_page.click_card('assign_team')
-    time.sleep(3)
     assign_team = AssignTeamCard(self.getDriver())
+    assign_team.card_ready()
     assign_team.validate_card_elements_styles(paper_id)
     assign_team.assign_role(academic_editor_login, 'Academic Editor')
     assign_team.assign_role(cover_editor_login, 'Cover Editor')

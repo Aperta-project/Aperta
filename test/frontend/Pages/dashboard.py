@@ -211,8 +211,9 @@ class DashboardPage(AuthenticatedPage):
     :return: String with manuscript title
     """
     first_article_link = self._get(self._first_paper)
+    title = first_article_link.text
     first_article_link.click()
-    return first_article_link.text
+    return title
 
   def get_upload_button(self):
     """Returns the upload button in the dashboard submit manuscript modal"""

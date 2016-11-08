@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
 import time
 
@@ -70,6 +71,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     :param init: Determine if login is needed
     :return: void function
     """
+    logging.info('Test BDDCreatetoNormalSubmitTest::validate_full_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
@@ -185,6 +189,9 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     :param init: Determine if login is needed
     :return: void function
     """
+    logging.info('Test BDDCreatetoNormalSubmitTest::validate_initial_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
     creator_user = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -226,7 +233,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       else:
         break
       logging.warning('Conversion never completed - still showing interim title')
-
 
     # Give a little time for the submit button to attach to the DOM
     time.sleep(5)

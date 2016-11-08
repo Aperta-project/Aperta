@@ -6,7 +6,7 @@ This test case validates the Additional Information Task.
 __author__ = 'jgray@plos.org'
 
 import logging
-import time
+import os
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.Tasks.additional_information_task import AITask
@@ -38,6 +38,9 @@ class AddlInfoTaskTest(CommonTest):
     test_addl_info_task: Validates the elements, styles and functions of the Additional Info Task
     :return: void function
     """
+    logging.info('Test Addl Info Task')
+    current_path = os.getcwd()
+    logging.info(current_path)
     addl_info_task, title = self._go_to_addl_info_task()
     addl_info_task.complete_ai()
     return self

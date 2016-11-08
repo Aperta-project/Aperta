@@ -8,8 +8,8 @@ describe TahiStandardTasks::ReviewerReportTask do
     it { is_expected.to eq('Reviewer Report') }
   end
 
-  context 'DEFAULT_ROLE' do
-    subject { TahiStandardTasks::ReviewerReportTask::DEFAULT_ROLE }
+  context 'DEFAULT_ROLE_HINT' do
+    subject { TahiStandardTasks::ReviewerReportTask::DEFAULT_ROLE_HINT }
     it { is_expected.to eq('reviewer') }
   end
 

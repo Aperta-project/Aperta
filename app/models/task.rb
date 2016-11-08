@@ -5,9 +5,9 @@ class Task < ActiveRecord::Base
   include Snapshottable
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
-  DEFAULT_ROLE = 'user'.freeze
+  DEFAULT_ROLE_HINT = 'user'.freeze
 
-  REQUIRED_PERMISSIONS = {}
+  REQUIRED_PERMISSIONS = {}.freeze
   SYSTEM_GENERATED = false
 
   cattr_accessor :metadata_types
@@ -139,7 +139,7 @@ class Task < ActiveRecord::Base
     end
 
     def safe_constantize(str)
-      fail StandardError, 'Attempted to constantize disallowed value' \
+      raise StandardError, 'Attempted to constantize disallowed value' \
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
@@ -251,11 +251,7 @@ class Task < ActiveRecord::Base
   end
 
   def update_completed_at
-    if completed
-      self.completed_at = Time.zone.now
-    else
-      self.completed_at = nil
-    end
+    self.completed_at = (Time.zone.now if completed)
   end
 end
 

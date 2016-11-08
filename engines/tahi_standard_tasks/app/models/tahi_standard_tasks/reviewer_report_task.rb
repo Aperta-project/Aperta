@@ -4,8 +4,8 @@ module TahiStandardTasks
   # up in the "ALL REVIEWS COMPLETE" query, it should inherit from
   # ReviewerReportTask.
   class ReviewerReportTask < Task
-    DEFAULT_TITLE = 'Reviewer Report'
-    DEFAULT_ROLE = 'reviewer'
+    DEFAULT_TITLE = 'Reviewer Report'.freeze
+    DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
     before_create :assign_to_draft_decision
@@ -75,9 +75,7 @@ module TahiStandardTasks
       previous_decision_ids = body["previous_decision_ids"] || []
       current_decision_id = body["decision_id"]
 
-      if current_decision_id
-        previous_decision_ids.push current_decision_id
-      end
+      previous_decision_ids.push current_decision_id if current_decision_id
 
       update_body(
         "decision_id" => new_decision.try(:id),

@@ -2,15 +2,15 @@ module TahiStandardTasks
   class SupportingInformationTask < Task
     include MetadataTask
 
-    DEFAULT_TITLE = 'Supporting Info'
-    DEFAULT_ROLE = 'author'
+    DEFAULT_TITLE = 'Supporting Info'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
 
     has_many :supporting_information_files, as: :owner, class_name: 'SupportingInformationFile'
 
     validates_with AssociationValidator,
-                   association: :supporting_information_files,
-                   fail: :set_completion_error,
-                   if: :completed?
+      association: :supporting_information_files,
+      fail: :set_completion_error,
+      if: :completed?
 
     def file_access_details
       paper.files.map(&:access_details)

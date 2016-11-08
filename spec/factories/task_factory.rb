@@ -192,7 +192,7 @@ class InvitableTestTask < Task
   include Invitable
 
   DEFAULT_TITLE = 'Test Task'.freeze
-  DEFAULT_ROLE = 'user'.freeze
+  DEFAULT_ROLE_HINT = 'user'.freeze
 
   def invitation_invited(_invitation)
     :invited

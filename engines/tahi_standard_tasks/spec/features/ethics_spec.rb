@@ -14,8 +14,8 @@ feature 'Ethics Task', js: true do
   end
 
   def view_ethics_card_on_the_manuscript_page
-    Page.view_paper paper
     page = DashboardPage.new
+    Page.view_paper paper
     page.view_card_in_task_sidebar 'Ethics Statement'
   end
 

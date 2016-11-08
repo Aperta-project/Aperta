@@ -36,7 +36,7 @@ class DiscussionForumTest(CommonTest):
 
   """
 
-  def _test_notification(self):
+  def test_notification(self):
     """
     Validates red circle on discussion icon on manuscript, discussion and message topic
     when added to a discussion and when mentioned in a topic.
@@ -135,23 +135,12 @@ class DiscussionForumTest(CommonTest):
 
   def test_discussion(self):
     """
-
+    This test validates a dicussion with multiple participants, an admin user post
+    a discussion and adds two particpiants. These participants are invited as reviewers.
+    The reviewers accepts the role and checks for messages and post their own.
+    All participants checks for content, user and time.
     """
     creator, reviewer_1, reviewer_2 = random.sample(users, 3)
-    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
-      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
-      print 141
-    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
-      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
-      print 144
-    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
-      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
-      print 147
-    if len(reviewer_1['user']) < 3 or len(reviewer_2['user']) < 3:
-      creator, reviewer_1, reviewer_2 = random.sample(users, 3)
-      print 150
-
-    print creator, reviewer_1, reviewer_2
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -188,6 +177,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # Login as Staff user
+    # This will fail when superadmin is chosen due to a app bug
     staff_user = random.choice(staff_users)
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
@@ -259,7 +249,6 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.post_discussion(msg_2)
     ms_viewer.logout()
 
-
     # reviewer 2
     logging.info(u'Logging in as user: {0}'.format(reviewer_2))
     dashboard_page = self.cas_login(email=reviewer_2['email'])
@@ -292,20 +281,46 @@ class DiscussionForumTest(CommonTest):
     assert header_fe == header_db, (header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_2 == comment_body, (msg_2, comment_body)
-
-    import pdb; pdb.set_trace()
-
-
-    ####
-
-    # Admin user logout
+    msg_3 = generate_paragraph()[2]
+    ms_viewer.post_discussion(msg_3)
     ms_viewer.logout()
-    logging.info(u'Logging in as user: {0}'.format(creator))
-    dashboard_page = self.cas_login(email=creator['email'])
+
+    # Login as Staff user
+    logging.info(u'Logging in as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
+    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
+    ms_viewer.click_discussion_link()
+    discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
+    discussion_title = discussion_link.text
+    assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
+    discussion_link.click()
 
-
+    created = PgSQL().query('select created_at from discussion_replies where discussion_topic_id = %s;',
+      (discussion_topic_id,))[0][0]
+    ui_msg_3, ui_msg_2, ui_msg_1, = ms_viewer._gets(ms_viewer._comment_body)
+    ui_msg_1 = ui_msg_1.text
+    ui_msg_2 = ui_msg_2.text
+    ui_msg_3 = ui_msg_3.text
+    from_zone = tz.gettz('UTC')
+    to_zone = tz.tzlocal()
+    created = created.replace(tzinfo=from_zone)
+    db_time = created.astimezone(to_zone)
+    # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
+    # in Windows, we should detect OS and pass an alternative solution.
+    db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
+    comment_header_db = '{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
+    comment_name = ms_viewer._get(ms_viewer._comment_name).text
+    comment_date = ms_viewer._get(ms_viewer._comment_date).text
+    header_fe = '{0} {1}'.format(comment_name, comment_date)
+    header_db = '{0} posted {1}'.format(reviewer_2['name'], db_time_fe_format)
+    assert header_fe == header_db, (header_fe, header_db)
+    comment_body = ms_viewer._get(ms_viewer._comment_body).text
+    assert msg_1 == ui_msg_1, (msg_1, ui_msg_1)
+    assert msg_2 == ui_msg_2, (msg_2, ui_msg_2)
+    assert msg_3 == ui_msg_3, (msg_3, ui_msg_3)
 
 
 

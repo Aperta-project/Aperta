@@ -2,15 +2,15 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  border-top: 2px solid $tahi-grey-light;
+  border-top: 2px solid $aperta-grey-light;
 
   &.si-file-delete {
-    background-color: $tahi-grey-xlight;
+    background-color: $aperta-grey-xlight;
     transition: background-color 0.1s;
   }
 
   &:last-of-type {
-    border-bottom: 2px solid $tahi-grey-light;
+    border-bottom: 2px solid $aperta-grey-light;
   }
 
   .si-file-viewing {
@@ -36,10 +36,10 @@
     }
 
     .fileinput-button {
-      color: $tahi-grey;
+      color: $aperta-grey;
       font-size: 1.3rem;
       display: inline;
-      margin-left: 3px;
+      margin-left: 6px;
       background: transparent;
       border: none;
       i {
@@ -88,17 +88,17 @@
     float: right;
     >i {
       cursor: pointer;
-      color: $tahi-grey-light;
+      color: $aperta-grey-light;
       padding-left: 7px;
 
       &:hover {
-        color: $tahi-green;
+        color: $aperta-green;
       }
     }
   }
 
   .si-file-filename {
-    color: $tahi-green;
+    color: $aperta-green;
 
     i {
       padding-right: 4px;
@@ -123,7 +123,7 @@
     position: absolute;
     top: 0;
     right: -275px;
-    background-color: $tahi-green;
+    background-color: $aperta-green;
     width: 275px;
     height: 53px;
     transition: right 0.1s;
@@ -146,21 +146,21 @@
     .si-file-cancel-delete-button {
       float: right;
       width: 30%;
-      background-color: $tahi-green-light;
-      color: $tahi-white;
+      background-color: $aperta-green-light;
+      color: $aperta-white;
       &:focus,
       &:hover {
-        background-color: darken($tahi-green-light, 10%);
+        background-color: darken($aperta-green-light, 10%);
       }
     }
 
     .si-file-delete-button {
       width: 70%;
-      background-color: $tahi-green;
-      color: $tahi-white;
+      background-color: $aperta-green;
+      color: $aperta-white;
       &:focus,
       &:hover {
-        background-color: darken($tahi-green, 5%);
+        background-color: darken($aperta-green, 5%);
       }
     }
   }

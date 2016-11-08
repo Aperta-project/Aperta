@@ -1,9 +1,10 @@
 import Ember from 'ember';
 import PaperBase from 'tahi/mixins/controllers/paper-base';
-import Discussions from 'tahi/mixins/discussions/route-paths';
 
-export default Ember.Component.extend(PaperBase, Discussions, {
- 
+export default Ember.Component.extend(PaperBase, {
+  elementId: 'versioning-bar',
+  classNames: ['versions', 'active'],
+
   actions: {
     setViewingVersion(version) {
       this.set('viewingVersion', version);

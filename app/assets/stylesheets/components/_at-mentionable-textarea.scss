@@ -6,34 +6,34 @@
 
     .at-who-name {
       strong {
-        color: $tahi-black;
+        color: $aperta-black;
       }
     }
 
     .at-who-username, .at-who-email {
-      color: $tahi-grey;
-      font-size: $tahi-font-size-small;
+      color: $aperta-grey;
+      font-size: 12px;
       padding-left: 3px;
 
       strong {
-        color: $tahi-grey;
+        color: $aperta-grey;
       }
     }
 
     .cur {
       .at-who-name {
-        color: $tahi-white;
+        color: $aperta-white;
 
         strong {
-          color: $tahi-white;
+          color: $aperta-white;
         }
       }
 
       .at-who-username, .at-who-email {
-        color: $tahi-black;
+        color: $aperta-black;
 
         strong {
-          color: $tahi-black;
+          color: $aperta-black;
         }
       }
     }

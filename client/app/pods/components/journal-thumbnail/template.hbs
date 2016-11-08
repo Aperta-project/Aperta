@@ -1,7 +1,7 @@
 <div id="journal-{{journal.id}}">
 {{#if showForm}}
 
-  <div class="journal-thumbnail-edit-form clearfix">
+  <div class="journal-thumbnail-edit-form animation-fade-in clearfix">
 
     <div class="journal-thumbnail-logo-upload">
       <div class="journal-thumbnail-logo">
@@ -51,10 +51,9 @@
               placeholder="PLOS Yeti"}}
     </div>
 
-    <div class="inset-form-control required {{if validationErrors.description "error"}}">
+    <div class="inset-form-control">
       <div class="inset-form-control-text">
         <label>Journal Description</label>
-        {{error-message message=validationErrors.description}}
       </div>
       {{textarea value=journal.description
                  class="journal-description-edit inset-form-control-textarea"
@@ -62,7 +61,7 @@
     </div>
 
     <div class="journal-edit-buttons">
-      <a href="#" class="button-link button--white" {{action "cancel"}}>Cancel</a>
+      <a href="#" class="button-link button--white" {{action "cancel"}}>cancel</a>
       <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
     </div>
 
@@ -70,7 +69,7 @@
 
 {{else}}
 
-  {{#link-to "admin.journal" journal class="journal-thumbnail-show clearfix"}}
+  {{#link-to "admin.journal" journal class="journal-thumbnail-show animation-fade-in clearfix"}}
     <div class="journal-thumbnail-logo">
       {{#if journal.logoUrl}}
         <img src={{journal.logoUrl}}>

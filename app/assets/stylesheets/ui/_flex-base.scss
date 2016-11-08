@@ -1,0 +1,40 @@
+.flex-group {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+
+  &.flex-group--divider {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid $aperta-grey;
+  }
+}
+
+.flex-element {
+  flex: 10 10 auto;
+
+  input[type=text],
+  select {
+    width: 100%;
+  }
+}
+
+
+.flex-form {
+  margin: 1.5rem 0;
+  padding: 2.0rem;
+
+  // probably should not be on generic selector:
+  background: #eee;
+
+  .flex-element {
+    margin-bottom: 1.5rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .flex-group.flex-element {
+    margin-bottom: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

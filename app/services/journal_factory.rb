@@ -92,7 +92,14 @@ class JournalFactory
 
       # Tasks
       task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask, TahiStandardTasks::PaperEditorTask]
+
+      # Cover editors cannot view, edit, or otherwise do anything on the
+      # BillingTask, the ChangesForAuthorTask, or the PaperEditorTask
+      task_klasses -= [
+        PlosBilling::BillingTask,
+        PlosBioTechCheck::ChangesForAuthorTask,
+        TahiStandardTasks::PaperEditorTask
+      ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
@@ -261,7 +268,14 @@ class JournalFactory
 
       # Tasks
       task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask, TahiStandardTasks::PaperEditorTask]
+
+      # Handling editors cannot view, edit, or otherwise do anything on the
+      # BillingTask, the ChangesForAuthorTask, or the PaperEditorTast
+      task_klasses -= [
+        PlosBilling::BillingTask,
+        PlosBioTechCheck::ChangesForAuthorTask,
+        TahiStandardTasks::PaperEditorTask
+      ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
@@ -402,11 +416,12 @@ class JournalFactory
 
       task_klasses = Task.submission_task_types
 
-      # AEs cannot view billing task or register decision tasks.
-      # AEs can view all ReviewerReportTask(s) and descendants, but cannot
-      # edit them.
+      # AEs cannot view Billing task, Register Decision tasks, or
+      # Changes For Author tasks. However, AEs can view all
+      # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
         PlosBilling::BillingTask,
+        PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask

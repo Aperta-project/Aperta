@@ -59,7 +59,7 @@
 
             {{#if figure.strikingImage}}
               <div class="striking">
-                <span class="fa fa-check"></span> This is the striking image
+                {{fa-icon icon="check"}} This is the striking image
               </div>
             {{/if}}
           {{/if}}
@@ -76,7 +76,7 @@
           </div>
           {{#if isEditable}}
             <div class="replace-file-button fileinput-button" >
-              <span class="fa fa-refresh"></span>
+              {{fa-icon icon="refresh"}}
               <span>Replace</span>
               {{file-uploader
                 url=figureUrl

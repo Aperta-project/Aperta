@@ -18,14 +18,14 @@
   margin-right: 35px;
 
   label {
-    color: $tahi-green;
+    color: $aperta-green;
     text-transform: uppercase;
   }
 
   input {
     margin-right: 10px;
     vertical-align: 2px;
-    @include transform(scale(2));
+    transform: scale(2);
   }
 }
 
@@ -39,7 +39,7 @@
 }
 
 .overlay-supporting-text {
-  color: $tahi-grey-dark;
+  color: $aperta-grey-dark;
   padding-bottom: 75px;
   text-align: center;
 }
@@ -50,7 +50,7 @@
 }
 
 .overlay-footer .participant-selector {
-  @include flex-grow(1);
+  flex-grow: 1;
 }
 
 .overlay-action-buttons {

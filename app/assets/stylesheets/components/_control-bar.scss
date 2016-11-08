@@ -7,147 +7,6 @@
     .control-bar-sub-items
 */
 
-#control-bar-paper-journal-logo {
-  height: 30px;
-  margin: 15px;
-
-  div { padding-top: 6px; }
-  img {
-    display: block;
-    height: 40px;
-  }
-}
-
-
-#control-bar-paper-short-title {
-  min-width: 5px;
-  font-size: 18px;
-  max-width: 80%;
-  z-index: 1;
-  h2 {
-    overflow: hidden;
-    padding: 21px 0 0 15px;
-    font-family: $tahi-article-font-family;
-    font-size: 18px;
-    line-height: 22px;
-    white-space: nowrap;
-    display: none;
-  }
-  @media(min-width: 970px) {
-    h2 {
-      display: inline-block;
-    }
-  }
-}
-
-
-.control-bar {
-  @include position(fixed, $main-nav-height 0px auto 0px);
-  width: 100%;
-  height: $tahi-control-bar-height;
-  border-bottom: 1px solid #ddd;
-  background: rgba(255,255,255, 0.94);
-  z-index: z('control-bar');
-  @include transition(height 0.2s ease-in-out);
-
-  &.control-bar--sub-items-active {
-    @include transition(height 0.2s ease-in-out);
-    height: 105px;
-  }
-}
-
-.control-bar-inner-wrapper {
-  position: relative;
-  height: $tahi-control-bar-height;
-  @include display(flex);
-  @include align-content(center);
-  @include justify-content(flex-end);
-}
-
-.control-bar-sub-items {
-  overflow: hidden;
-  height: 0;
-  font-size: 12px;
-  @include transition(height 0.2s);
-}
-
-.control-bar--sub-items-active .control-bar-sub-items {
-  height: 45px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.05);
-}
-
-.control-bar-item-spacer {
-  @include flex-grow(1);
-}
-
-.control-bar-item {
-  @include display(flex);
-  @include flex-direction(column);
-  @include justify-content(center);
-  padding-right: 1.25rem;
-  padding-left: 1.25rem;
-}
-
-.control-bar-item--first { padding-left:  25px; }
-.control-bar-item--last  { padding-right: 25px; }
-
-.control-bar-link {
-  position: relative;
-  color: $tahi-green;
-  font-size: 1.2rem;
-  text-align: center;
-  cursor: pointer;
-  background: none;
-  @include user-select(none);
-
-  .fa { font-size: 16px; }
-
-  svg {
-    display: block;
-    margin: 0 auto;
-  }
-
-  svg polygon,
-  svg path,
-  svg rect { fill: $tahi-green; }
-
-  &:focus, &:hover { text-decoration: none; }
-
-  .badge {
-    @include position(absolute, 4px 7px auto auto);
-  }
-}
-
-.control-bar-link-icon {
-  height: 22px;
-}
-
-.activity-link {
-  white-space: nowrap;
-  overflow: hidden;
-  svg {
-    position: relative;
-    top: -5px;
-  }
-}
-
-.paper-navigation-link {
-  position: relative;
-  margin-right: 1.2rem;
-  padding-right: 2.5rem;
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 1px;
-    height: 32px;
-    margin-top: -16px;
-    background: #ddd;
-  }
-}
 
 
 // contributors section -------------------------
@@ -159,12 +18,15 @@
   line-height: 30px;
   text-align: right;
 
-  &.active { display: block; }
+  &.active {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .contributors-add {
   margin-right: 15px;
-  color: $tahi-green;
+  color: $aperta-green;
   cursor: pointer;
 }
 
@@ -179,13 +41,12 @@
     width: $circle-radius;
     height: $circle-radius;
     margin-right: 4px;
-    border: 2px solid $tahi-green;
+    border: 2px solid $aperta-green;
     border-radius: $circle-radius / 2;
     vertical-align: middle;
-    background-color: $tahi-green-light;
+    background-color: $aperta-green-light;
   }
 }
-
 
 
 // manuscript-download-links section -------------
@@ -194,13 +55,14 @@
 .manuscript-download-links {
   display: none;
   height: 100%;
-  @include justify-content(flex-end);
+  justify-content: flex-end;
+  align-items: center;
 
-  &.active { @include display(flex); }
+  &.active { display: flex; }
 
   a {
-    @include display(flex);
-    @include align-items(center);
+    display: flex;
+    align-items: center;
     margin-right: 25px;
     font-size: 1.4rem;
     text-decoration: none;
@@ -212,13 +74,13 @@
       margin-left: 5px;
     }
 
-    svg path { fill: $tahi-green; }
+    svg path { fill: $aperta-green; }
   }
 
   a:hover {
-    color: $tahi-green-dark;
+    color: $aperta-green-dark;
     text-decoration: none;
 
-    svg path { fill: $tahi-green-dark; }
+    svg path { fill: $aperta-green-dark; }
   }
 }

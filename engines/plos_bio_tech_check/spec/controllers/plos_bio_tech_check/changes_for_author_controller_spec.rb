@@ -1,61 +1,73 @@
 require 'rails_helper'
 
 describe PlosBioTechCheck::ChangesForAuthorController do
-
-  let(:admin) { FactoryGirl.create :user, :site_admin, first_name: "Admin" }
-  let(:paper) do
-    FactoryGirl.create(
-      :paper,
-      :with_integration_journal,
-      :submitted,
-      creator: admin
-    )
-  end
+  let(:user) { FactoryGirl.build_stubbed :user }
+  let(:paper) { FactoryGirl.build_stubbed :paper }
   let(:task) do
-    FactoryGirl.create(
+    FactoryGirl.build_stubbed(
       :changes_for_author_task,
-      paper: paper,
-      participants: [admin]
+      paper: paper
     )
   end
 
   before do
     @routes = PlosBioTechCheck::Engine.routes
-    sign_in(admin)
   end
 
-  describe "POST 'send_email'" do
-    it "return JSON success response" do
-      post :send_email, id: task.id
-      expect(response.status).to eq 200
-      expect(res_body["success"]).to be true
+  describe 'POST #submit_tech_check' do
+    subject(:do_request) do
+      post :submit_tech_check, { id: task.to_param, format: 'json' }
     end
-  end
 
-  describe "POST 'submit_tech_check'" do
-    context "with an existing ITC card" do
-      let(:itc_task) { FactoryGirl.create :initial_tech_check_task, paper: paper }
+    before do
+      allow(Task).to receive(:find)
+        .with(task.to_param)
+        .and_return task
+    end
 
-      context "Paper in minor_revision state" do
-        it "return JSON updated response" do
-          paper.minor_check!
-          expect(itc_task.body["round"]).to eq 1
+    it_behaves_like 'an unauthenticated json request'
 
-          post :submit_tech_check, id: task.id
-          expect(response.status).to eq 200
-          expect(itc_task.reload.body["round"]).to eq 2
+    context 'when the user has access' do
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:edit, task)
+          .and_return true
+        allow(task).to receive(:submit_tech_check!)
+          .and_return true
+      end
+
+      it 'submits the tech check' do
+        expect(task).to receive(:submit_tech_check!)
+          .with(submitted_by: user)
+          .and_return true
+        do_request
+      end
+
+      context 'and the tech check completes successfully' do
+        it { is_expected.to responds_with(200) }
+      end
+
+      context 'and the tech check is not submitted successfully' do
+        before do
+          expect(task).to receive(:submit_tech_check!)
+            .with(submitted_by: user)
+            .and_return false
         end
+
+        it { is_expected.to responds_with(422) }
       end
     end
 
-    context "without an existing ITC card" do
-      context "Paper in minor_revision state" do
-        it "return JSON updated response" do
-          paper.minor_check!
-          post :submit_tech_check, id: task.id
-          expect(response.status).to eq 200
-        end
+    context 'when the user does not have access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
       end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 end

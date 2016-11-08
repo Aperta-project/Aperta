@@ -75,7 +75,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-item {
-  border-top: 2px solid $tahi-grey-light;
+  border-top: 2px solid $aperta-grey-light;
 
   &:last-child {
     margin-bottom: 1px;
@@ -88,7 +88,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item--alternate {
   position: relative;
-  border-top: 1px dashed $tahi-grey-light;
+  border-top: 1px dashed $aperta-grey-light;
 
   &:last-child:after {
     position: absolute;
@@ -130,7 +130,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item--closed {
   &:hover {
-    background: $tahi-grey-xlight;
+    background: $aperta-grey-xlight;
   }
 
   .invitation-item-action-text { display: none; }
@@ -139,14 +139,14 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--show {
   .invitation-item-header,
   .invitation-item-details {
-    background-color: $tahi-grey-light;
+    background-color: $aperta-grey-light;
   }
 }
 
 .invitation-item--edit {
   .invitation-item-header,
   .invitation-item-details {
-    background-color: $tahi-grey-light;
+    background-color: $aperta-grey-light;
   }
 }
 
@@ -222,25 +222,25 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   display: inline-block;
   margin-left: 2rem;
   padding: $invite-padding-vertical 0;
-  color: $tahi-grey;
+  color: $aperta-grey;
   cursor: pointer;
 
   .fa { font-size: 1.7rem; }
 }
 
 .invitation-item-action:hover {
-  color: $tahi-green;
+  color: $aperta-green;
 
-  .fa { color: $tahi-green; }
+  .fa { color: $aperta-green; }
 }
 
 .invitation-item-action.invitation-item-action--disabled {
   cursor: default;
-  color: $tahi-grey-lighter;
+  color: $aperta-grey-lighter;
 
-  &:hover { color: $tahi-grey-lighter; }
+  &:hover { color: $aperta-grey-lighter; }
 
-  .fa { color: $tahi-grey-lighter; }
+  .fa { color: $aperta-grey-lighter; }
 }
 
 .invitation-item--closed {
@@ -254,21 +254,21 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item--closed {
   .invitation-item-header:hover {
-    background: $tahi-grey-xlight;
+    background: $aperta-grey-xlight;
   }
 }
 
 .invitation-item--show {
   .invitation-item-header,
   .invitation-item-details {
-    background-color: $tahi-grey-xlight;
+    background-color: $aperta-grey-xlight;
   }
 }
 
 .invitation-item--edit {
   .invitation-item-header,
   .invitation-item-details {
-    background-color: $tahi-grey-light;
+    background-color: $aperta-grey-light;
   }
 }
 
@@ -308,10 +308,11 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 }
 
+// NOTE not used?
 .invite-edit-save-message {
   margin-right: 30px;
   padding-bottom: 0.75rem;
-  color: $tahi-grey-dark;
+  color: $aperta-grey;
   font-size: 1.4rem;
 }
 
@@ -322,9 +323,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 
+// NOTE not used?
 .invite-edit-save-confirmation {
   margin-right: 30px;
-  color: $tahi-grey-dark;
+  color: $aperta-grey;
   font-size: 1.4rem;
 }
 
@@ -350,7 +352,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   padding: 12px 20px;
-  color: $tahi-black;
+  color: $aperta-black;
   font-size: 20px;
-  background: $tahi-grey-xlight;
+  background: $aperta-grey-xlight;
 }

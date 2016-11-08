@@ -1,0 +1,71 @@
+/*
+------------------------------------------------------------------------------
+ Are you sure your styles don't have a home?
+ See application.scss for an explanation on how the file structure works
+-------------------------------------------------------------------------------
+*/
+
+
+.error {
+  input, select, textarea,
+  .did-you-mean-input, .select2-container .select2-choice {
+    border: 1px solid $aperta-red;
+  }
+}
+
+.clear {
+  clear: both;
+}
+
+.left-indent {
+  margin-left: 20px;
+}
+
+
+// for old style forms
+.form-group {
+  position: relative;
+
+  p {
+    margin: 15px 0;
+    font-size: 18px;
+  }
+
+  &.required {
+    position: relative;
+    &::before {
+      content: "*";
+      font-size: 24pt;
+      font-weight: bold;
+      position: absolute;
+      color: #5d4aac;
+      left: -20px;
+    }
+  }
+}
+
+// for new style forms
+.form-inline {
+  .required {
+    &::before {
+      content: "*";
+      margin: 0 3px 0 -3px;
+      color: $aperta-green;
+      font-size: 18pt;
+      float: left;
+    }
+  }
+}
+
+
+.preserve-line-breaks {
+  white-space: pre-line;
+}
+
+
+/*
+------------------------------------------------------------------------------
+ Are you sure your styles don't have a home?
+ See application.scss for an explanation on how the file structure works
+-------------------------------------------------------------------------------
+*/

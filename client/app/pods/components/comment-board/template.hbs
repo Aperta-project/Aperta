@@ -15,7 +15,7 @@
 {{#unless showingAllComments}}
   <div class="comment-actions">
     <a class="load-all-comments" href="#" {{action "showAllComments"}}>
-      <span class="fa fa-comment"></span>
+      {{fa-icon icon="comment"}}
       View older {{pluralize-string count=omittedCommentsCount string="comment"}}
     </a>
   </div>

@@ -52,9 +52,23 @@ describe JournalFactory, flaky: true do
     let(:restricted_invite_klasses) do
       [TahiStandardTasks::PaperEditorTask]
     end
+    let(:changes_for_author_task_klasses) do
+      [PlosBioTechCheck::ChangesForAuthorTask] +
+        PlosBioTechCheck::ChangesForAuthorTask.descendants
+    end
     let(:reviewer_report_klasses) do
       [TahiStandardTasks::ReviewerReportTask] +
         TahiStandardTasks::ReviewerReportTask.descendants
+    end
+    let(:tech_check_klasses) do
+      [
+        PlosBioTechCheck::InitialTechCheckTask,
+        PlosBioTechCheck::RevisionTechCheckTask,
+        PlosBioTechCheck::FinalTechCheckTask
+      ] +
+        PlosBioTechCheck::InitialTechCheckTask.descendants +
+        PlosBioTechCheck::RevisionTechCheckTask.descendants +
+        PlosBioTechCheck::FinalTechCheckTask.descendants
     end
 
     it 'creates a new journal with the given params' do
@@ -142,51 +156,77 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'permissions on tasks' do
-          let(:accessible_task_klasses) do
-            ::Task.submission_task_types + [PlosBioTechCheck::ChangesForAuthorTask]
-          end
-          let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
-          end
-
-          it 'can :view and :edit all Tasks except ProductionMetadataTask' do
-            accessible_task_klasses.each do |klass|
-              expect(permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.joins(:states).where(
-                  action: 'edit',
-                  applies_to: klass.name,
-                  permission_states: { name: Paper::EDITABLE_STATES }
-                ).first
-              )
-            end
-
-            all_inaccessible_task_klasses.each do |klass|
-              expect(permissions).to_not include(
-                Permission.find_by(action: :view, applies_to: klass.name),
-                Permission.joins(:states).where(
-                  action: 'edit',
-                  applies_to: klass.name,
-                  permission_states: { name: Paper::EDITABLE_STATES }
-                ).first
-              )
-            end
+          let(:submission_task_klasses) { ::Task.submission_task_types }
+          let(:inaccessible_task_klasses) do
+            ::Task.descendants -
+              submission_task_klasses -
+              changes_for_author_task_klasses
           end
 
-          it 'can view/add/remove participants on all Tasks except ProductionMetadataTask' do
-            accessible_task_klasses.each do |klass|
+          it <<-DESC.strip_heredoc do
+            can :view submission tasks in any state
+          DESC
+            expected_view_permissions = Permission.joins(:states).where(
+              action: 'view',
+              applies_to: submission_task_klasses.map(&:name),
+              permission_states: { name: PermissionState.wildcard.name }
+            ).all
+            expect(permissions).to include(*expected_view_permissions)
+          end
+
+          it <<-DESC.strip_heredoc do
+            can :edit all submission tasks when the paper is in an editable state
+          DESC
+            expected_edit_permissions = Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: submission_task_klasses.map(&:name),
+              permission_states: { name: Paper::EDITABLE_STATES }
+            ).all
+            expect(permissions).to include(*expected_edit_permissions)
+          end
+
+          it 'has no permissions on inaccessible tasks' do
+            expect(permissions).to_not include(
+              *Permission.where(
+                applies_to: inaccessible_task_klasses.map(&:name)
+              ).all
+            )
+          end
+
+          it <<-DESC.strip_heredoc do
+            can :view the PlosBioTechCheck ChangesForAuthorTask in any paper state
+            can :edit the PlosBioTechCheck ChangesForAuthorTask in editable paper states
+          DESC
+            task_klass_names = changes_for_author_task_klasses.map(&:name)
+            expected_view_permissions = Permission.joins(:states).where(
+              action: 'view',
+              applies_to: task_klass_names,
+              permission_states: { name: PermissionState.wildcard.name }
+            ).all
+            expect(permissions).to include(*expected_view_permissions)
+
+            expected_edit_permissions = Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: task_klass_names,
+              permission_states: { name: Paper::EDITABLE_STATES }
+            ).all
+            expect(permissions).to include(*expected_edit_permissions)
+          end
+
+          it 'can view/add/remove participants on all submission tasks except ProductionMetadataTask' do
+            submission_task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
+          end
 
-            all_inaccessible_task_klasses.each do |klass|
-              expect(permissions).to_not include(
-                Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :manage_participant, applies_to: klass.name)
-              )
-            end
+          it 'can do nothing on any of the PlosBioTechCheck tasks' do
+            tech_check_permissions = Permission.where(
+              applies_to: tech_check_klasses.map(&:name)
+            ).all
+            expect(permissions).not_to include(*tech_check_permissions)
           end
         end
       end
@@ -266,6 +306,13 @@ describe JournalFactory, flaky: true do
               )
             end
           end
+
+          it 'can do nothing on any of the PlosBioTechCheck tasks' do
+            tech_check_permissions = Permission.where(
+              applies_to: tech_check_klasses.map(&:name)
+            ).all
+            expect(permissions).not_to include(*tech_check_permissions)
+          end
         end
       end
 
@@ -309,7 +356,12 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'Task permissions' do
-          let(:task_klasses) { ::Task.descendants - billing_task_klasses - restricted_invite_klasses }
+          let(:task_klasses) do
+            ::Task.descendants -
+              billing_task_klasses -
+              changes_for_author_task_klasses -
+              restricted_invite_klasses
+          end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -
@@ -329,7 +381,11 @@ describe JournalFactory, flaky: true do
           DESC
             task_klasses.each do |klass|
               expect(permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name)
+                Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
+                Permission.find_by(action: :manage_participant, applies_to: klass.name),
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
               )
             end
           end
@@ -367,11 +423,18 @@ describe JournalFactory, flaky: true do
             end
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
-            expect(permissions).not_to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
+          end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
           end
         end
 
@@ -466,6 +529,20 @@ describe JournalFactory, flaky: true do
               )
             end
           end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
+          end
+
+          it 'can do nothing on any of the PlosBioTechCheck tasks' do
+            tech_check_permissions = Permission.where(
+              applies_to: tech_check_klasses.map(&:name)
+            ).all
+            expect(permissions).not_to include(*tech_check_permissions)
+          end
         end
       end
 
@@ -527,7 +604,12 @@ describe JournalFactory, flaky: true do
         end
 
         describe 'Task permissions' do
-          let(:task_klasses) { ::Task.descendants - billing_task_klasses - restricted_invite_klasses }
+          let(:task_klasses) do
+            ::Task.descendants -
+              billing_task_klasses -
+              changes_for_author_task_klasses -
+              restricted_invite_klasses
+          end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
             task_klasses -
@@ -547,7 +629,11 @@ describe JournalFactory, flaky: true do
           DESC
             task_klasses.each do |klass|
               expect(permissions).to include(
-                Permission.find_by(action: :view, applies_to: klass.name)
+                Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
+                Permission.find_by(action: :manage_participant, applies_to: klass.name),
+                Permission.find_by(action: :view, applies_to: klass.name),
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
               )
             end
           end
@@ -585,11 +671,18 @@ describe JournalFactory, flaky: true do
             end
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
-            expect(permissions).not_to include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
-            )
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
+          end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
           end
         end
 
@@ -988,34 +1081,54 @@ describe JournalFactory, flaky: true do
             ::Task.descendants - accessible_task_klasses
           end
 
-          it 'can :view and :view_participants on accessible task klasses' do
-            accessible_task_klasses.each do |klass|
-              klass_permissions = Permission.where(applies_to: klass.name)
-              expect(permissions).to include(
-                klass_permissions.find_by(action: :view),
-                klass_permissions.find_by(action: :view_participants)
-              )
-            end
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'cannot :view or :view_participants on inaccessible task klasses' do
-            all_inaccessible_task_klasses.each do |klass|
-              klass_permissions = Permission.where(applies_to: klass.name)
-              expect(permissions).to_not include(
-                klass_permissions.find_by(action: :view),
-                klass_permissions.find_by(action: :view_participants)
-              )
-            end
+          it 'can do nothing on the TahiStandardTasks::CoverLetterTask' do
+            cover_letter_permissions = Permission.where(
+              applies_to: 'TahiStandardTasks::CoverLetterTask'
+            ).all
+            expect(permissions).not_to include(*cover_letter_permissions)
           end
-        end
 
-        it 'cannot :view or :edit the ReviewerRecommendationsTask' do
-          expect(permissions).to_not include(
-            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
-          )
-          expect(permissions).to_not include(
-            Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
-          )
+          it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do
+            register_decision_permissions = Permission.where(
+              applies_to: 'TahiStandardTasks::RegisterDecisionTask'
+            ).all
+            expect(permissions).not_to include(*register_decision_permissions)
+          end
+
+          it 'can do nothing on the TahiStandardTasks::ReviewerRecommendationsTask' do
+            reviewer_recommendations_permissions = Permission.where(
+              applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask'
+            ).all
+            expect(permissions).not_to include(*reviewer_recommendations_permissions)
+          end
+
+          it 'can do nothing on the PlosBilling::BillingTask' do
+            billing_permissions = Permission.where(
+              applies_to: 'PlosBilling::BillingTask'
+            ).all
+            expect(permissions).not_to include(*billing_permissions)
+          end
+
+          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+            changes_for_author_permissions = Permission.where(
+              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+            ).all
+            expect(permissions).not_to include(*changes_for_author_permissions)
+          end
+
+          it 'can do nothing on any of the PlosBioTechCheck tasks' do
+            tech_check_permissions = Permission.where(
+              applies_to: tech_check_klasses.map(&:name)
+            ).all
+            expect(permissions).not_to include(*tech_check_permissions)
+          end
         end
       end
 

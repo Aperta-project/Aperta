@@ -7,7 +7,13 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Early Article Posting cards have been added to workflows, to allow authors to opt into
   allowing manuscripts to be published before all proofreading and copyediting is done.
 
-## [{version}] - {release_date}
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.28.0] - {2016-10-21}
 ### Added
 - Manuscript diffing has been enhanced. Words that have changed are now highlighted
   inside of changed sentences.
@@ -23,6 +29,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - PLOS Biology name is no longer hard coded in letter templates
 - Fixed issue where roles couldn't be assigned in the admin page in some journals
 - Fixed ad-hoc email component to expand properly
+- Fixed scrolling on manuscript page
 - Notifications when FTP uploads fail are now being emailed out to the Journal Staff Admins for associated papers
 ### Security
 
@@ -66,7 +73,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Keeps all uploaded manuscripts
 - Can view old versions of figures and supporting information
 - Aperta is now configured to clean out temporary files every 24 hours on the backend.
-- Queuing Alternates and subqueues for Invite Reviewers and Invite Editors tasks 
+- Queuing Alternates and subqueues for Invite Reviewers and Invite Editors tasks
 ### Changed
 ### Deprecated
 ### Removed

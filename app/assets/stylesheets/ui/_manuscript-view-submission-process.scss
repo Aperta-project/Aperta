@@ -1,20 +1,10 @@
 .paper-submission-process {
-  #submission-process {
-    display: none;
-    position: relative;
-    top: 60px;
-    z-index: z('submission-process');
-  }
-
   &.show-process #submission-process {
     display: inline-block;;
   }
 }
 
 #submission-process {
-  background-color: #F5F5F5;
-  padding: 30px;
-
   #inner {
     position: relative;
     padding:20px 30px 30px 50px;
@@ -23,16 +13,11 @@
   }
 
   #sp-close {
-    color: $tahi-green;
-    font-size: 25px;
-    opacity: 0.5;
-    cursor: pointer;
     @include position(absolute, 0px 0px auto auto);
-    padding: 3px 13px;
-
-    &:hover {
-      opacity: 1;
-    }
+    padding: 3px 20px 3px 13px;
+    color: $aperta-green;
+    font-size: 4rem;
+    cursor: pointer;
   }
 
   p {
@@ -66,7 +51,7 @@
 }
 
 #submission-process-toggle {
-  color: $tahi-green;
+  color: $aperta-green;
   font-size: 17px;
   float:right;
   margin: 0px 5px 10px 10px;

@@ -5,6 +5,17 @@
   margin-top: 40px;
 
   .progress-bar {
-    background: $tahi-green;
+    background: $aperta-green;
+  }
+}
+
+.aperta-generic-loading {
+  @include position(absolute, 30% 30% auto 30%);
+  text-align: center;
+
+  .quote {
+    padding-top: 4rem;
+    font-size: 1.5em;
+    font-style: italic;
   }
 }

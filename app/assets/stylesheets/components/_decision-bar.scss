@@ -2,11 +2,11 @@
   position: relative;
   margin-bottom: 10px;
   border-radius: 4px;
-  border: 1px solid $tahi-grey-light;
+  border: 1px solid $aperta-grey-light;
 
   .decision-bar-bar {
     color: #333333;
-    background-color: $tahi-grey-xlight;
+    background-color: $aperta-grey-xlight;
     padding: 10px 15px;
     border-radius: 3px;
     cursor: pointer;
@@ -29,7 +29,7 @@
   }
 
   .decision-bar-contents {
-    border-top: 1px solid $tahi-grey-light;
+    border-top: 1px solid $aperta-grey-light;
     padding: 15px 15px 25px 15px;
 
     h4 {

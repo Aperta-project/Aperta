@@ -25,7 +25,7 @@
 
 .reviewer-task-item-view {
   @include align-items(center);
-  background: $tahi-grey-xlight;
+  background: $aperta-grey-xlight;
   /* Overriding overflow-y: scroll to remove scrollbars */
   overflow: inherit;
   .flex-group {
@@ -34,7 +34,7 @@
 }
 
 .reviewer-task-item-view.last {
-  border-bottom: 1px solid $tahi-grey-light;
+  border-bottom: 1px solid $aperta-grey-light;
 }
 
 .reviewer-task-item-view-text {
@@ -65,7 +65,7 @@
 .reviewer-overlay-item-delete {
   padding: 10px 15px;
   color: #fff;
-  background-color: $tahi-green;
+  background-color: $aperta-green;
   z-index: 1;
 }
 
@@ -95,7 +95,7 @@
 .reviewer-overlay-item-delete {
   padding: 10px 15px;
   color: #fff;
-  background-color: $tahi-green;
+  background-color: $aperta-green;
   z-index: 1;
 }
 

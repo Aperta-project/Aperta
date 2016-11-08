@@ -60,8 +60,8 @@ class AdminDashboardPage < Page
   end
 
   def search(query)
-    find(".admin-user-search-input").set(query)
-    find(".admin-user-search-button").click
+    find(".admin-user-search input").set(query)
+    find(".admin-user-search button").click
   end
 
   def search_results
@@ -139,6 +139,6 @@ class EditJournalFragment < PageFragment
   end
 
   def cancel
-    click_on "Cancel"
+    click_on "cancel"
   end
 end

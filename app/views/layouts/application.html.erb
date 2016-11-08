@@ -46,14 +46,14 @@
         var matches = navigator.userAgent.match(IERegex);
 
         if (matches != null && parseInt(matches[1]) >= 10) {
-          $('#tahi-container').prepend("<h3 class='browsehappy'>You are using an <strong>unsupported</strong> browser. #{app_name} works best in open source browsers, such as Firefox and Chrome. Please <a href='http://browsehappy.com/'>upgrade your browser</a> to improve your experience.</h3>");
+          $('#aperta-container').prepend("<h3 class='browsehappy'>You are using an <strong>unsupported</strong> browser. #{app_name} works best in open source browsers, such as Firefox and Chrome. Please <a href='http://browsehappy.com/'>upgrade your browser</a> to improve your experience.</h3>");
         }
       }
 
       showIENotification();
     </script>
 
-    <div id="tahi-container" class="<%= yield(:tahi_container_class) %>">
+    <div id="aperta-container" class="<%= yield(:tahi_container_class) %>">
       <%= yield %>
     </div>
     <div id="login-attribution">

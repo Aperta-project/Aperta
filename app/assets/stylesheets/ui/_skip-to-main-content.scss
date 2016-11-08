@@ -1,0 +1,14 @@
+#skip-to-main-content {
+  position: absolute;
+  top: -4.0rem;
+  left: 0;
+  color: #fff;
+  background: transparent;
+  z-index: 100;
+
+  &:focus {
+    top: 0;
+    padding: 0.5rem 1rem;
+    background: green;
+  }
+}

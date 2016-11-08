@@ -18,7 +18,7 @@
     border-radius: 50%;
     color: #fff;
     text-align: center;
-    background: $tahi-green;
+    background: $aperta-green;
     counter-increment: questionList;
     content: counter(questionList);
   }
@@ -41,7 +41,7 @@
   &.required::after {
     content: ' *';
     margin: 0 3px 0 -3px;
-    color: $tahi-green;
+    color: $aperta-green;
   }
 
   p {
@@ -75,7 +75,7 @@
 
   li:before {
     content: ">";
-    color: $tahi-green-dark;
+    color: $aperta-green-dark;
     font-size: 1.4em;
     font-weight: 700;
     margin-right: 0.1em;

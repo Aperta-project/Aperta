@@ -50,9 +50,7 @@ test('show download links on control bar', function(assert) {
     });
     currentPaper = records[0];
     paperPayload = Factory.createPayload('paper');
-    console.log("LOG:", "before add records");
     paperPayload.addRecords(records.concat([fakeUser]));
-    console.log("LOG:", "after add records");
     paperResponse = paperPayload.toJSON();
     jobId = '232134-324-1234-1234';
     exportUrl = "/api/papers/" + currentPaper.id + "/export?export_format=docx";

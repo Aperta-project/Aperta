@@ -7,7 +7,7 @@ A {{if decision.terminal 'final'}} decision of <span class="rescind-decision-ver
     <button disabled={{not isEditable}}
             {{action "confirmRescind"}}
             class="rescind-decision-button display-while-disabled">
-      <i class="fa fa-undo"></i>
+      {{fa-icon icon="undo"}}
       Rescind
     </button>
   {{/if}}

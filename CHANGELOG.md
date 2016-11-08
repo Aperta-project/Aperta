@@ -4,6 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Invitations can now be reordered through drag and drop. This also enforces
+  rules automatically for which invitations can be reordered and into which groups
+- Display of article type in invitations
 ### Changed
 ### Deprecated
 ### Removed

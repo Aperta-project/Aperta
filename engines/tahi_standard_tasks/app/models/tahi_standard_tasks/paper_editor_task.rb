@@ -7,6 +7,10 @@ module TahiStandardTasks
 
     include Invitable
 
+    def self.task_added_to_workflow(paper_editor_task)
+      paper_editor_task.create_invitation_queue!
+    end
+
     def academic_editors
       paper.academic_editors
     end
@@ -30,6 +34,10 @@ module TahiStandardTasks
         invitation.invitee.resign_from!(assigned_to: invitation.task.journal,
                                         role: invitation.invitee_role)
       end
+    end
+
+    def active_invitation_queue
+      self.invitation_queue || InvitationQueue.create(task: self)
     end
 
     def invitee_role
@@ -77,6 +85,8 @@ module TahiStandardTasks
 
         ***************** CONFIDENTIAL *****************
 
+        %{paper_type}
+
         Manuscript Title:
         %{manuscript_title}
 
@@ -103,6 +113,7 @@ module TahiStandardTasks
     def template_data
       {
         manuscript_title: paper.display_title(sanitized: false),
+        paper_type: paper.paper_type,
         journal_name: paper.journal.name,
         author_name: paper.creator.full_name,
         authors: AuthorsList.authors_list(paper),

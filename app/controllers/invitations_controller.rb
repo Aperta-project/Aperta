@@ -9,14 +9,40 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    fail AuthorizationError unless invitation.can_be_viewed_by?(current_user)
+    raise AuthorizationError unless invitation.can_be_viewed_by?(current_user)
     respond_with invitation
   end
 
   def update
     requires_user_can(:manage_invitations, invitation.task)
-    invitation.update_attributes(invitation_update_params)
+    invitation.update_attributes!(invitation_update_params)
     respond_with invitation
+  end
+
+  # non restful route for drag and drop changes
+  def update_position
+    requires_user_can(:manage_invitations, invitation.task)
+    invitation.invitation_queue.move_invitation_to_position(
+      invitation, params[:position]
+    )
+
+    render json: invitations_in_queue
+  end
+
+  # non restful route for assigning and unassigning primaries
+  def update_primary
+    requires_user_can(:manage_invitations, invitation.task)
+    if params[:primary_id].present?
+      new_primary = Invitation.find(params[:primary_id])
+      invitation.invitation_queue.assign_primary(
+        primary: new_primary,
+        invitation: invitation
+      )
+    else
+      invitation.invitation_queue.unassign_primary_from(invitation)
+    end
+
+    render json: invitations_in_queue
   end
 
   def destroy
@@ -26,32 +52,33 @@ class InvitationsController < ApplicationController
         :invited,
         "This invitation has been sent and must be rescinded."
       )
-      fail ActiveRecord::RecordInvalid, invitation
+      raise ActiveRecord::RecordInvalid, invitation
     end
 
-    invitation.destroy!
+    queue = invitation.invitation_queue
+    queue.destroy_invitation(invitation)
 
-    respond_with invitation
+    render json: invitations_in_queue(queue)
   end
 
   def send_invite
     requires_user_can(:manage_invitations, invitation.task)
     send_and_notify(invitation)
-    render json: invitation
+    render json: invitations_in_queue
   end
 
   def create
     requires_user_can(:manage_invitations, task)
-    invitation = task.invitations.build(
+    @invitation = task.invitations.build(
       invitation_params.merge(inviter: current_user)
     )
-    if invitation_params[:state] == 'pending'
-      invitation.set_invitee
-      invitation.save
-    else
-      send_and_notify(invitation)
-    end
-    respond_with(invitation)
+    invitation_queue = task.active_invitation_queue
+    invitation_queue.add_invitation(invitation)
+
+    @invitation.set_invitee
+    @invitation.save
+
+    render json: invitations_in_queue
   end
 
   def rescind
@@ -63,7 +90,7 @@ class InvitationsController < ApplicationController
   end
 
   def accept
-    fail AuthorizationError unless invitation.invitee == current_user
+    raise AuthorizationError unless invitation.invitee == current_user
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)
@@ -71,7 +98,7 @@ class InvitationsController < ApplicationController
   end
 
   def decline
-    fail AuthorizationError unless invitation.invitee == current_user
+    raise AuthorizationError unless invitation.invitee == current_user
     invitation.update_attributes(
       actor: current_user,
       decline_reason: invitation_params[:decline_reason],
@@ -84,8 +111,26 @@ class InvitationsController < ApplicationController
 
   private
 
+  def invitations_in_queue(queue = nil)
+    invitations = if queue
+                    queue.invitations
+                  else
+                    invitation.invitation_queue.invitations
+                  end
+
+    invitations
+      .reorder(id: :desc)
+      .includes(
+        :task,
+        :invitee,
+        :primary,
+        :alternates,
+        :invitation_queue,
+        :attachments)
+  end
+
   def send_and_notify(invitation)
-    invitation.invite!
+    invitation.invitation_queue.send_invitation(invitation)
     Activity.invitation_sent!(invitation, user: current_user)
   end
 
@@ -95,17 +140,17 @@ class InvitationsController < ApplicationController
       .permit(:actor_id,
         :body,
         :decline_reason,
+        :decision_id,
         :email,
         :state,
         :reviewer_suggestions,
-        :task_id,
-        :primary_id)
+        :task_id)
   end
 
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:body, :email, :primary_id)
+      .permit(:id, :body, :email)
   end
 
   def task

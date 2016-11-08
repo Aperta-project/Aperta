@@ -51,16 +51,19 @@ class PaperFactory
 
   def create_task_from_template(task_template, phase)
     journal_task_type = task_template.journal_task_type
+    task_class = Task.safe_constantize(task_template.journal_task_type.kind)
     task = TaskFactory.create(
-      Task.safe_constantize(task_template.journal_task_type.kind),
+      task_class,
       phase: phase,
       paper: phase.paper,
       creator: creator,
       title: task_template.title,
       body: task_template.template,
       old_role: journal_task_type.old_role,
-      notify: false)
-    task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
+      notify: false
+    )
+    task_class.task_added_to_paper(paper)
+    task
   end
 
   def add_creator_assignment!

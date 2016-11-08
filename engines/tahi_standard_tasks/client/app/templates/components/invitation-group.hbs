@@ -1,3 +1,5 @@
+{{flash-messages}}
+
 {{#if linkedInvitations.length}}
   {{#unless previousRound}}
     <div class="invitation-alternates-info">
@@ -9,27 +11,30 @@
     </div>
   {{/unless}}
 {{/if}}
-{{#each linkedInvitations as |invitation|}}
-  {{invitation-queue invitation=invitation
-                     invitations=invitations
-                     setRowState=(action attrs.setRowState)
-                     deleteOnCancel=(eq invitation composedInvitation)
-                     composedInvitation=composedInvitation
-                     toggleActiveInvitation=toggleActiveInvitation
-                     previousRound=previousRound
-                     activeInvitation=activeInvitation
-                     activeInvitationState=activeInvitationState
-                     alternateQueuing=true}}
-{{/each}}
 
-{{#each mainQueueInvitations as |invitation|}}
+{{#each sortedInvitations as |invitation|}}
+  {{invitation-drop-target
+      position=invitation.position
+      index=invitation.position
+      changePosition=(action 'changePosition')}}
+
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
+                          invitationsInFlight=invitationsInFlight
                           setRowState=(action attrs.setRowState invitation)
                           deleteOnCancel=(eq invitation composedInvitation)
+                          displayError=(action 'displayError')
                           composedInvitation=composedInvitation
                           toggleActiveInvitation=toggleActiveInvitation
+                          destroyInvite=destroyInvite
+                          saveInvite=saveInvite
                           previousRound=previousRound
                           activeInvitation=activeInvitation
                           activeInvitationState=activeInvitationState}}
 {{/each}}
+
+{{invitation-drop-target
+    isLast=true
+    position=sortedInvitations.length
+    index=(inc sortedInvitations.length)
+    changePosition=(action 'changePosition')}}

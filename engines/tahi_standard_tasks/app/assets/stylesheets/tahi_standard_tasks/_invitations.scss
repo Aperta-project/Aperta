@@ -99,6 +99,13 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
     height: 2px;
     background: #B2B2B2;
   }
+
+  .invitation-item-full-name {
+    padding-left: 2rem;
+    .alternate-link-icon {
+       padding-right: 0.3rem;
+    }
+  }
 }
 
 .invitation-item--disabled {
@@ -117,6 +124,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   width: 100%;
   font-size: 1.4rem;
   cursor: pointer;
+  user-select: none; // This is important so as not to have strange drag and drop behavior
 }
 
 .invitation-item-header > * {
@@ -163,6 +171,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--edit {
   .invitation-item-full-name {
     cursor: default;
+    padding-left: 2rem;
   }
 }
 
@@ -179,16 +188,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   }
 }
 
-.invitation-item--alternate {
-  .invitation-item-full-name {
-    padding-left: 3rem;
-
-    .alternate-link-icon {
-       padding-right: 0.3rem;
-    }
-  }
-}
-
 .invitation-item-body-preview {
   display: none;
   overflow: hidden;
@@ -201,6 +200,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item-full-name {
   width: 32%;
   cursor: pointer;
+  padding-left: 0.5rem;
 }
 
 .invitation-state--accepted .invitation-item-full-name {
@@ -248,6 +248,18 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   .invitation-item-action-text { display: none; }
 }
 
+.invitation-item-drag-handle {
+  padding: 6px;
+  max-width: 12px;
+  &.active {
+    @include align-self(stretch);
+    cursor: move;
+    cursor: -webkit-grab;
+    background: url(image-path('drag-circle.svg'));
+    background-size: 6px;
+    opacity: 0;
+  }
+}
 
 /* Invitation Item Header and Details state changes
 ---------------------------------------------------------------------------- */
@@ -255,6 +267,10 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--closed {
   .invitation-item-header:hover {
     background: $aperta-grey-xlight;
+
+    .invitation-item-drag-handle {
+      opacity: 1;
+    }
   }
 }
 
@@ -355,4 +371,23 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   color: $aperta-black;
   font-size: 20px;
   background: $aperta-grey-xlight;
+}
+
+
+/* Invitation Drop Target
+---------------------------------------------------------------------------- */
+
+.invitation-drop-target {
+  transition: all 0.2s;
+  height: 0px;
+
+  &.valid-drop-target {
+    height: 35px;
+    border: 2px dashed $aperta-green-light;
+  }
+
+  &.current-drop-target {
+    height: 70px;
+    border: 2px dashed $aperta-green-light;
+  }
 }

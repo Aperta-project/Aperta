@@ -348,3 +348,10 @@ class BaseCard(AuthenticatedPage):
         if 'Rescinded' not in state:
           raise ElementExistsAssertionError('Invitation for {0} and {1} - should have been '
                                             'Rescinded'.format(invitee['name'], role))
+
+  def card_ready(self):
+    """
+    Used to validate the card is ready to be interacted with.
+    :return: Void function
+    """
+    self._wait_for_element(self._get(self._completion_button))

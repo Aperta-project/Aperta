@@ -74,17 +74,17 @@ class AssignTeamCardTest(CommonTest):
     # login as editorial user
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     # go to card
     workflow_page = WorkflowPage(self.getDriver())
     # Need to provide time for the workflow page to load and for the elements to attach to DOM,
     #   otherwise failures
-    time.sleep(10)
+    workflow_page.page_ready()
     workflow_page.click_card('assign_team')
-    time.sleep(3)
     assign_team = AssignTeamCard(self.getDriver())
+    assign_team.card_ready()
     assign_team.validate_card_elements_styles(paper_id)
     assign_team.assign_role(academic_editor_login, 'Academic Editor')
     assign_team.assign_role(cover_editor_login, 'Cover Editor')

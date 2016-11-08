@@ -113,19 +113,13 @@ class AuthenticatedPage(PlosPage):
     self._comment_name = (By.CLASS_NAME, 'comment-name')
     self._comment_date = (By.CLASS_NAME, 'comment-date')
     self._comment_body = (By.CLASS_NAME, 'comment-body')
-
-
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Task list id needed in task and manuscript page
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
-    #XXXXX
     self._first_comment = (By.CLASS_NAME, 'discussion-topic-comment-field')
-
-
-
     self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None

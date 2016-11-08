@@ -67,14 +67,9 @@ class DashboardPage(AuthenticatedPage):
 
     self._dashboard_paper_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._dashboard_info_text = (By.CLASS_NAME, 'dashboard-info-text')
-
     # View Invitations Modal Static Locators
     self._view_invites_title = (By.CLASS_NAME, 'overlay-header-title')
     self._view_invites_invite_listing = (By.CSS_SELECTOR, 'div.pending-invitation')
-    ###
-
-
-
     self._invite_yes_btn = (By.CSS_SELECTOR, 'button.invitation-accept')
     self._invite_no_btn = (By.CSS_SELECTOR, 'button.invitation-decline')
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')

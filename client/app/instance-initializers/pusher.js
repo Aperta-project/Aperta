@@ -12,6 +12,16 @@ export function initialize(instance) {
 
   const pusher = new window.Pusher(pusherOptions.key, pusherOptions.connection);
 
+  /*
+    Tell somebody about Pusher error states
+    =========================================
+    Note: if pusher.connection starts in a bad state it will NOT emit
+    any events. It will just start in a bad state. Events are only emitted
+    if pusher.connection transitions from one known state to the next.
+
+    Reference: https://pusher.com/docs/client_api_guide/client_connect
+  */
+
   // Pusher is not supported by the browser. This implies that WebSockets are
   // not natively available and an HTTP-based transport could not be found.
   // This is not fired as an event, but set as the connection's state.
@@ -22,11 +32,16 @@ export function initialize(instance) {
     );
   };
 
-  /*
-    Tell somebody about Pusher error states
-    =========================================
-    Reference: https://pusher.com/docs/client_api_guide/client_connect
-  */
+  // The connection is unavailable. When the server is unavailable
+  // on application load the pusher.connection starts out in the unavailable
+  // state rather than transitioning to the unavailable state, so we must
+  // check it first.
+  if(Ember.isEqual(pusher.connection.state, "unavailable")){
+    bugsnagService.notifyException(
+      'PusherUnavailable',
+      'Pusher.js service unavailable on app load'
+    );
+  };
 
   // The Pusher connection was previously connected and has now intentionally
   // been closed.
@@ -37,15 +52,13 @@ export function initialize(instance) {
     );
   });
 
-  // The connection is temporarily unavailable. In most cases this means that
-  // there is no internet connection. It could also mean that Pusher is down, or
-  //  some intermediary is blocking the connection. In this state, Pusher will
-  // automatically retry the connection every ten seconds. connecting_in events
-  // will still be triggered.
+  // The connection has become unavailable. This implies that the
+  // pusher.connection was in another state first. If the pusherjs server
+  // is unavailable when the application loads then this will not be triggered.
   pusher.connection.bind('unavailable', function(){
     bugsnagService.notifyException(
       'PusherUnavailable',
-      'Pusher.js service unavailable'
+      'Pusher.js service became unavailable during app use'
     );
   });
 

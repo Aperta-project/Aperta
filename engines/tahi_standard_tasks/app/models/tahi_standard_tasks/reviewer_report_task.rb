@@ -8,7 +8,10 @@ module TahiStandardTasks
     DEFAULT_ROLE = 'reviewer'
     SYSTEM_GENERATED = true
 
-    before_create :assign_to_draft_decision
+    # NOTE As of 8 Nov 2016, I do not think this is necessary. However, it
+    # seems to be necessary in order to update the decisions when the task is
+    # loaded - at least the Reviewer Report Task feature spec fails without it.
+    # So I am leaving it here for now, but please consider removing it.
     has_many :decisions, -> { uniq }, through: :paper
 
     # Overrides Task#restore_defaults to be only restore +old_role+. This
@@ -56,28 +59,20 @@ module TahiStandardTasks
     end
 
     def incomplete!
-      assign_to_draft_decision
       update!(
         completed: false,
         body: body.except("submitted")
       )
     end
 
-    # +decision+ returns the _relevant_ decision to this task. This is so
-    # the appropriate questions and responses for this task can be determined.
-    #
-    # This is impacted by the concept of "latest decision" in the app as it's
-    # not always the latest rendered decision by an Academic Editor.
+    # NOTE As of 8 Nov 2016, I do not think this is necessary. Ideally, on the
+    # client side the reviewer report task should just find the draftDecision.
+    # However, it seems to be necessary in order to update the decisions when
+    # the task is loaded - at least the Reviewer Report Task feature spec fails
+    # without it. So I am leaving it here for now, but please consider removing
+    # it.
     def decision
-      paper.decisions.find(body["decision_id"]) if body["decision_id"]
-    end
-
-    def decision=(new_decision)
-      current_decision_id = body["decision_id"]
-
-      update_body(
-        "decision_id" => new_decision.try(:id)
-      )
+      paper.draft_decision
     end
 
     def submitted?
@@ -85,10 +80,6 @@ module TahiStandardTasks
     end
 
     private
-
-    def assign_to_draft_decision
-      self.decision = paper.draft_decision
-    end
 
     def update_body(hsh)
       self.body = body.merge(hsh)

@@ -41,10 +41,6 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
     let(:decision) { FactoryGirl.create(:decision, paper: paper) }
     let(:nested_question) { FactoryGirl.create(:nested_question) }
 
-    before do
-      task.update(decision: decision)
-    end
-
     context "when there is no answer for the given question" do
       it "returns a new answer for the question and current decision" do
         answer = task.find_or_build_answer_for(
@@ -71,24 +67,6 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       it "returns the existing answer" do
         answer = task.find_or_build_answer_for(nested_question: nested_question)
         expect(answer).to eq(existing_answer)
-      end
-    end
-  end
-
-  describe "#decision" do
-    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
-
-    it "returns the current decision" do
-      task.decision = decision
-      task.save!
-      expect(task.decision).to eq(decision)
-    end
-
-    context "when there is no decision set" do
-      it "returns nil" do
-        task.decision = nil
-        task.save!
-        expect(task.decision).to be(nil)
       end
     end
   end

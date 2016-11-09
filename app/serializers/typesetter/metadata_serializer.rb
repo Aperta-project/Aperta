@@ -75,7 +75,7 @@ module Typesetter
 
 
     def serializable_hash
-      # fail Typesetter::MetadataError.not_accepted unless valid?  # TODO: re-enable!
+      fail Typesetter::MetadataError.not_accepted unless valid?
       super
     end
 

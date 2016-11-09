@@ -50,6 +50,12 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   }),
 
   actions: {
+    updateVerdict(verdict) {
+      const decision = this.get('draftDecision');
+      decision.set('verdict', verdict);
+      decision.save();
+    },
+
     registerDecision() {
       let task = this.get('task');
 

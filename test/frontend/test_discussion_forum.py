@@ -36,7 +36,7 @@ class DiscussionForumTest(CommonTest):
 
   """
 
-  def test_notification(self):
+  def _test_notification(self):
     """
     Validates red circle on discussion icon on manuscript, discussion and message topic
     when added to a discussion and when mentioned in a topic.
@@ -85,7 +85,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                  participants=[creator['user']])
+                                  participants=[creator])
     ms_viewer.logout()
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -136,10 +136,11 @@ class DiscussionForumTest(CommonTest):
       logging.info('There is no badge')
     ms_viewer.restore_timeout()
 
-  def test_discussion(self):
+  def test_discussion_ms_viewer(self):
     """
-    This test validates a dicussion with multiple participants, an admin user post
-    a discussion and adds two particpiants. These participants are invited as reviewers.
+    This test validates a dicussion from the manuscript view. It involves multiple
+    participants, an admin user post a discussion and adds two particpiants. These
+    participants are invited as reviewers.
     The reviewers accepts the role and checks for messages and post their own.
     All participants checks for content, user and time.
     """
@@ -192,7 +193,7 @@ class DiscussionForumTest(CommonTest):
     # go to wf
     ms_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    ##workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.invite(reviewer_1)
@@ -203,15 +204,14 @@ class DiscussionForumTest(CommonTest):
     # go to wf
     ms_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    ##workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.invite(reviewer_2)
     msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
-    ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
-                                  participants=[reviewer_1['user'], reviewer_2['user']])
+    ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[reviewer_1, reviewer_2])
     # Staff user logout
     ms_viewer.logout()
 
@@ -240,11 +240,10 @@ class DiscussionForumTest(CommonTest):
     # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
     # in Windows, we should detect OS and pass an alternative solution.
     db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
-    comment_header_db = '{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
     comment_name = ms_viewer._get(ms_viewer._comment_name).text
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
-    header_fe = '{0} {1}'.format(comment_name, comment_date)
-    header_db = '{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
+    header_fe = u'{0} {1}'.format(comment_name, comment_date)
+    header_db = u'{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
     assert header_fe == header_db, (header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == comment_body, (msg_1, comment_body)
@@ -276,11 +275,10 @@ class DiscussionForumTest(CommonTest):
     # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
     # in Windows, we should detect OS and pass an alternative solution.
     db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
-    comment_header_db = '{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
     comment_name = ms_viewer._get(ms_viewer._comment_name).text
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
-    header_fe = '{0} {1}'.format(comment_name, comment_date)
-    header_db = '{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
+    header_fe = u'{0} {1}'.format(comment_name, comment_date)
+    header_db = u'{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
     assert header_fe == header_db, (header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_2 == comment_body, (msg_2, comment_body)
@@ -314,11 +312,11 @@ class DiscussionForumTest(CommonTest):
     # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
     # in Windows, we should detect OS and pass an alternative solution.
     db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
-    comment_header_db = '{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
+    comment_header_db = u'{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
     comment_name = ms_viewer._get(ms_viewer._comment_name).text
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
-    header_fe = '{0} {1}'.format(comment_name, comment_date)
-    header_db = '{0} posted {1}'.format(reviewer_2['name'], db_time_fe_format)
+    header_fe = u'{0} {1}'.format(comment_name, comment_date)
+    header_db = u'{0} posted {1}'.format(reviewer_2['name'], db_time_fe_format)
     assert header_fe == header_db, (header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == ui_msg_1, (msg_1, ui_msg_1)

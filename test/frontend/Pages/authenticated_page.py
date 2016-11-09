@@ -643,7 +643,8 @@ class AuthenticatedPage(PlosPage):
     Post a message on a new discussion
     :param topic: Topic to post. If empty, will post a random text.
     :param msg: Message to post. If empty, will post a random text.
-    :param participants: List of participants to add
+    :param participants: List of participants to add, each element in the list is
+    a user object.
     :return: None.
     """
     participants = participants or []
@@ -661,13 +662,12 @@ class AuthenticatedPage(PlosPage):
       msg_body.send_keys(generate_paragraph()[2])
     time.sleep(1)
     self._get(self._create_topic).click()
-    # add paper creator to the discussion
     if participants:
-      # the_creator (tm)
       for participant in participants:
+        user_key = random.choice(['name', 'email', 'user'])
         self._get(self._add_participant_btn).click()
         time.sleep(.5)
-        self._get(self._participant_field).send_keys(participant + Keys.ENTER)
+        self._get(self._participant_field).send_keys(participant[user_key] + Keys.ENTER)
         time.sleep(5)
         self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     return None
@@ -679,9 +679,6 @@ class AuthenticatedPage(PlosPage):
     :return: None.
     """
     self.click_discussion_link()
-    ##self._wait_for_element(self._get(self._discussion_link))
-    ##post_discussion_btn = self._get(self._discussion_link)
-    ##post_discussion_btn.click()
     # click on first discussion
     self._wait_for_element(self._get(self._first_discussion_lnk))
     first_disc_link = self._get(self._first_discussion_lnk)

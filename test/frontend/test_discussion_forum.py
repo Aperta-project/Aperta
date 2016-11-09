@@ -298,15 +298,18 @@ class DiscussionForumTest(CommonTest):
     discussion_title = discussion_link.text
     assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
     discussion_link.click()
-
-    created = PgSQL().query('select created_at from discussion_replies where discussion_topic_id = %s;',
-      (discussion_topic_id,))[0][0]
+    # Get the date when the last comment was made
+    created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE '
+                            'discussion_topic_id = %s;', (discussion_topic_id,))[0][0]
+    # Get all comments, note they are ordered backwards (first posted go last)
     ui_msg_3, ui_msg_2, ui_msg_1, = ms_viewer._gets(ms_viewer._comment_body)
     ui_msg_1 = ui_msg_1.text
     ui_msg_2 = ui_msg_2.text
     ui_msg_3 = ui_msg_3.text
     from_zone = tz.gettz('UTC')
     to_zone = tz.tzlocal()
+    # Convert the message timezone from the one stored in the DB (UTC) to current one
+    # since the JS in the browsers shows dates in the user TZ
     created = created.replace(tzinfo=from_zone)
     db_time = created.astimezone(to_zone)
     # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running

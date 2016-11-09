@@ -117,7 +117,8 @@ class DiscussionForumTest(CommonTest):
     time.sleep(2)
     red_badge = ms_viewer._get(ms_viewer._badge_red)
     red_badge_last = int(red_badge.text)
-    assert red_badge_first + 1 == red_badge_last, (red_badge_first, red_badge_last)
+    assert red_badge_first + 1 == red_badge_last, '{0} is different from {1}'.format(
+        red_badge_first + 1, red_badge_last)
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
@@ -125,7 +126,8 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     red_badge = ms_viewer._get(ms_viewer._comment_sheet_badge_red)
     red_badge_current = int(red_badge.text)
-    assert red_badge_first == red_badge_current, (red_badge_first, red_badge_current)
+    assert red_badge_first == red_badge_current, '{0} is different from {1}'.format(
+        red_badge_first, red_badge_last)
     # close and check if any badge
     ms_viewer.close_sheet()
     ms_viewer.set_timeout(2)
@@ -193,9 +195,10 @@ class DiscussionForumTest(CommonTest):
     # go to wf
     ms_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    ##workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
+    logging.info(u'Inviting reviewer 1 as user: {0}'.format(reviewer_1))
     invite_reviewers.invite(reviewer_1)
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
@@ -204,9 +207,10 @@ class DiscussionForumTest(CommonTest):
     # go to wf
     ms_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    ##workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
+    logging.info(u'Inviting reviewer 2 as user: {0}'.format(reviewer_2))
     invite_reviewers.invite(reviewer_2)
     # Include a mention in the message
     mention = u'@'.format(reviewer_1['user'])
@@ -218,7 +222,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # reviewer 1
-    logging.info(u'Logging in as user: {0}'.format(reviewer_1))
+    logging.info(u'Logging in as user Reviewer 1')
     dashboard_page = self.cas_login(email=reviewer_1['email'])
     dashboard_page.click_view_invitations()
     dashboard_page.accept_all_invitations()
@@ -233,7 +237,7 @@ class DiscussionForumTest(CommonTest):
     assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
     discussion_link.click()
     created, discussion_topic_id = PgSQL().query(
-      'select created_at, id from discussion_topics where paper_id = %s;',
+      'SELECT created_at, id FROM discussion_topics WHERE paper_id = %s;',
       (paper_id,))[0]
     from_zone = tz.gettz('UTC')
     to_zone = tz.tzlocal()
@@ -254,7 +258,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # reviewer 2
-    logging.info(u'Logging in as user: {0}'.format(reviewer_2))
+    logging.info(u'Logging in as user Reviewer 2')
     dashboard_page = self.cas_login(email=reviewer_2['email'])
     dashboard_page.click_view_invitations()
     dashboard_page.accept_all_invitations()
@@ -268,7 +272,7 @@ class DiscussionForumTest(CommonTest):
     discussion_title = discussion_link.text
     assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
     discussion_link.click()
-    created = PgSQL().query('select created_at from discussion_replies where discussion_topic_id = %s;',
+    created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE discussion_topic_id = %s;',
       (discussion_topic_id,))[0][0]
     from_zone = tz.gettz('UTC')
     to_zone = tz.tzlocal()
@@ -281,9 +285,11 @@ class DiscussionForumTest(CommonTest):
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
     header_fe = u'{0} {1}'.format(comment_name, comment_date)
     header_db = u'{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
-    assert header_fe == header_db, (header_fe, header_db)
+    assert header_fe == header_db, 'Header from front end: {0}, is not the same as '\
+        'header from the DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
-    assert msg_2 == comment_body, (msg_2, comment_body)
+    assert msg_2 == comment_body, 'Message sent: {0} is not the message found in the '\
+        'front end {1}'.format(msg_2, comment_body)
     msg_3 = generate_paragraph()[2]
     ms_viewer.post_discussion(msg_3)
     ms_viewer.logout()
@@ -298,7 +304,8 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.click_discussion_link()
     discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     discussion_title = discussion_link.text
-    assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
+    assert topic in discussion_title, 'Sent topic: {0} is not in the front end: {1}'.format(
+        topic, discussion_title)
     discussion_link.click()
     # Get the date when the last comment was made
     created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE '
@@ -322,13 +329,15 @@ class DiscussionForumTest(CommonTest):
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
     header_fe = u'{0} {1}'.format(comment_name, comment_date)
     header_db = u'{0} posted {1}'.format(reviewer_2['name'], db_time_fe_format)
-    assert header_fe == header_db, (header_fe, header_db)
+    assert header_fe == header_db, 'Header from the front end: {0} is not the same as from '\
+        ' DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
-    assert msg_1 == ui_msg_1, (msg_1, ui_msg_1)
-    assert msg_2 == ui_msg_2, (msg_2, ui_msg_2)
-    assert msg_3 == ui_msg_3, (msg_3, ui_msg_3)
-
-
+    assert msg_1 == ui_msg_1, 'Sent message {0} is not the same from front end: {1}'\
+        .format(msg_1, ui_msg_1)
+    assert msg_2 == ui_msg_2, 'Sent message {0} is not the same from front end: {1}'\
+        .format(msg_2, ui_msg_2)
+    assert msg_3 == ui_msg_3, 'Sent message {0} is not the same from front end: {1}'\
+        .format(msg_3, ui_msg_3)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

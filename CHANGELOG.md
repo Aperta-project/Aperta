@@ -19,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Removed 'Assign Admin' card
 - Removed 'Available Task Types' section in journal administration
 ### Fixed
+- Emails are properly rendered in all clients
 ### Security
 
 ## [1.29.0] - {2016-11-03}
@@ -96,7 +97,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 - Production staff, publishing services, and staff admin can no longer view the billing card
 ### Fixed
-- Emails are properly displated in all clients
 - Emails are not sent when a decision is rescinded
 ### Security
 

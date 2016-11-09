@@ -72,7 +72,18 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
       );
     },
 
-    templateSelected(template) {
+    updateTemplate() {
+      const templates = this.get('task.letterTemplates')
+            .filterBy('templateDecision', this.get('draftDecision.verdict'));
+      let template;
+      if (templates.get('length') === 1) {
+        template = templates.get('firstObject').toJSON();
+      } else {
+        const selectedTemplate = this.get('task')
+              .findQuestion('register_decision_questions--selected-template')
+              .get('answers.firstObject.value');
+        template = templates.findBy('text', selectedTemplate).toJSON();
+      }
       const letter = this.applyTemplateReplacements(template.letter);
       const to = this.applyTemplateReplacements(template.to);
       const subject = this.applyTemplateReplacements(template.subject);
@@ -82,15 +93,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
       const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
       toAnswer.set('value', to);
       subjectAnswer.set('value', subject);
-      this.get('draftDecision').set('verdict', template.templateDecision);
       this.get('draftDecision').set('letter', letter); // will trigger save
-      return template;
-    },
-
-    setDecisionTemplate(decision) {
-      const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
-      const template = templates.get('firstObject');
-      this.send('templateSelected', template.toJSON());
     }
   }
 });

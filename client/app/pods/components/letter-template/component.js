@@ -7,25 +7,21 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   //passed-in stuff
   templateDecision: null,
   letterValue: null,
-  templateSelected: null, //action
+  updateTemplate: null,
 
-  decisionTemplates: Ember.computed('task.letterTemplates.[]',
-                                    'templateDecision', function() {
-                                      return this.get('task.letterTemplates'
-        ).filterBy(
-        'templateDecision', this.get('templateDecision')
-        ).map(function(letterTemplate) {
+  decisionTemplates: Ember.computed(
+    'task.letterTemplates.[]',
+    'templateDecision',
+    function() {
+      return this.get('task.letterTemplates')
+        .filterBy('templateDecision', this.get('templateDecision'))
+        .map(function(letterTemplate) {
           return {
             id: letterTemplate.get('text'),
-            text: letterTemplate.get('text'),
-            templateDecision: letterTemplate.get('templateDecision'),
-            to: letterTemplate.get('to'),
-            subject: letterTemplate.get('subject'),
-            letter: letterTemplate.get('letter')
+            text: letterTemplate.get('text')
           };
         });
-  }),
+    }),
   showDropdowns: Ember.computed.gt('decisionTemplates.length', 1),
   inputClassNames: ['form-control']
 });
-

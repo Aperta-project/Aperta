@@ -4,6 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
 import { manualSetup, make, mockReload } from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
+import sinon from 'sinon';
 
 let createTask = function() {
   return make('register-decision-task', {
@@ -83,42 +84,72 @@ moduleForComponent(
 const template = hbs`{{register-decision-task task=task container=container}}`;
 
 test('it renders decision selections', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   assert.elementsFound('.decision-label', 4);
   this.selectDecision('Accept');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', 'Dear');
+  assert.ok(stub.called);
 });
 
 test('it switches the letter contents on change', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', 'who Accepts');
   this.selectDecision('Reject');
+  assert.inputContains('.decision-letter-field', 'who Accepts');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', 'who Rejects');
+  assert.ok(stub.called);
 });
 
 test('it replaces [LAST NAME] with the authors last name', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
+  assert.ok(stub.called);
 });
 
 test('it replaces [JOURNAL STAFF EMAIL] with the journal staff email', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
+  assert.ok(stub.called);
 });
 
 test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
   let journalName = this.task.get('paper.journal.name');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', journalName);
+  assert.ok(stub.called);
 });
 
 test('it replaces [PAPER TITLE] with the paper title', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
+  this.$('.update-template-action').click();
   assert.inputContains('.decision-letter-field', 'GREAT TITLE');
+  assert.ok(stub.called);
 });
 
 test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
+  let stub = sinon.stub();
+  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
+  this.$('.update-template-action').click();
   assert.inputContains('.to-field', 'author@example.com');
+  assert.ok(stub.called);
 });
 
 

@@ -257,5 +257,5 @@ Tahi::Application.routes.draw do
                                            as: :resource_proxy
 
   root to: 'ember_cli/ember#index'
-  mount_ember_app :client, to: '/', format: false
+  mount_ember_app :client, to: '/'
 end

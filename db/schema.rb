@@ -132,16 +132,6 @@ ActiveRecord::Schema.define(version: 20161108163558) do
     t.integer  "user_id"
   end
 
-  create_table "bibitems", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "format"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "bibitems", ["paper_id"], name: "index_bibitems_on_paper_id", using: :btree
-
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
     t.date     "from_date"
@@ -274,20 +264,6 @@ ActiveRecord::Schema.define(version: 20161108163558) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
-  create_table "figures", force: :cascade do |t|
-    t.string   "attachment"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title"
-    t.text     "caption"
-    t.string   "status",     default: "processing"
-    t.string   "token"
-  end
-
-  add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
-  add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
-
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
@@ -299,19 +275,26 @@ ActiveRecord::Schema.define(version: 20161108163558) do
     t.datetime "updated_at"
   end
 
+  create_table "invitation_queues", force: :cascade do |t|
+    t.integer  "task_id"
+    t.integer  "decision_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "invitations", force: :cascade do |t|
     t.string   "email"
     t.integer  "task_id"
     t.integer  "invitee_id"
     t.integer  "actor_id"
-    t.string   "state"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.string   "state",                default: "pending", null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "decision_id"
     t.string   "information"
     t.text     "body"
     t.integer  "inviter_id"
-    t.string   "invitee_role",         null: false
+    t.string   "invitee_role",                             null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
     t.string   "token"
@@ -320,12 +303,17 @@ ActiveRecord::Schema.define(version: 20161108163558) do
     t.datetime "declined_at"
     t.datetime "accepted_at"
     t.datetime "rescinded_at"
+    t.integer  "position",                                 null: false
+    t.integer  "invitation_queue_id"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
   add_index "invitations", ["decision_id"], name: "index_invitations_on_decision_id", using: :btree
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
+  add_index "invitations", ["invitation_queue_id"], name: "index_invitations_on_invitation_queue_id", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
+  add_index "invitations", ["primary_id"], name: "index_invitations_on_primary_id", using: :btree
+  add_index "invitations", ["state"], name: "index_invitations_on_state", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
 
   create_table "journal_task_types", force: :cascade do |t|
@@ -547,20 +535,6 @@ ActiveRecord::Schema.define(version: 20161108163558) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
-  create_table "question_attachments", force: :cascade do |t|
-    t.integer  "nested_question_answer_id"
-    t.string   "attachment"
-    t.string   "title"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "token"
-    t.string   "caption"
-  end
-
-  add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
-  add_index "question_attachments", ["token"], name: "index_question_attachments_on_token", unique: true, using: :btree
-
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true
@@ -656,41 +630,11 @@ ActiveRecord::Schema.define(version: 20161108163558) do
 
   add_index "snapshots", ["key"], name: "index_snapshots_on_key", using: :btree
 
-  create_table "supporting_information_files", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.string   "attachment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",      default: "processing"
-    t.boolean  "publishable", default: true
-    t.string   "token"
-    t.string   "label"
-    t.string   "category"
-    t.integer  "si_task_id"
-  end
-
-  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
-  add_index "supporting_information_files", ["si_task_id"], name: "index_supporting_information_files_on_si_task_id", using: :btree
-  add_index "supporting_information_files", ["token"], name: "index_supporting_information_files_on_token", unique: true, using: :btree
-
   create_table "systems", force: :cascade do |t|
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
-
-  create_table "tables", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
 
   create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
     t.integer  "paper_id"

@@ -110,7 +110,7 @@ Tahi::Application.routes.draw do
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
-    resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z0-9]+\.[0-9]+/ }, \
+    resources :papers, param: :short_doi, constraints: { short_doi: DoiService::SHORT_DOI_FORMAT }, \
                        only: [:index, :create, :show, :update] do
       resources :roles, only: [], controller: 'paper_roles' do
         resources :eligible_users, only: [:index], controller: 'paper_role_eligible_users'
@@ -214,7 +214,7 @@ Tahi::Application.routes.draw do
 
   # epub/pdf paper download formats
   #
-  resources :papers, param: :short_doi, constraints: { short_doi: /[a-zA-Z0-9]+\.[0-9]+/ }, only: [] do
+  resources :papers, param: :short_doi, constraints: { short_doi: DoiService::SHORT_DOI_FORMAT }, only: [] do
     get :download, on: :member
   end
 
@@ -255,6 +255,13 @@ Tahi::Application.routes.draw do
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',
                                            as: :resource_proxy
+
+  scope constraints: lambda { |request| request.fullpath =~ DoiService::SHORT_DOI_FORMAT } do
+    get('/(*rest)', controller: "ember_cli/ember",
+                    action: "index",
+                    format: :html,
+                    defaults: { ember_app: :client })
+  end
 
   root to: 'ember_cli/ember#index'
   mount_ember_app :client, to: '/'

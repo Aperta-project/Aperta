@@ -208,7 +208,9 @@ class DiscussionForumTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.invite(reviewer_2)
-    msg_1 = generate_paragraph()[2]
+    # Include a mention in the message
+    mention = u'@'.format(reviewer_1['user'])
+    msg_1 = '{0} {1}'.format(generate_paragraph()[2], mention)
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
     ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[reviewer_1, reviewer_2])

@@ -11,7 +11,7 @@ class BillingLogReport < ActiveRecord::Base
   end
 
   def log_creation
-    Rails.logger.info "Billing log created"
+    logger.info "Billing log created"
   end
 
   def save_and_send_to_s3!

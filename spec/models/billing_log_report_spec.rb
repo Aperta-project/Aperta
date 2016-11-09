@@ -14,7 +14,7 @@ describe BillingLogReport do
     )
   end
 
-  context '.create_paper' do
+  context '.create_report' do
     context 'has from_date parameter' do
       it 'returns new BillingLogReport with given from date' do
         from_date = Date.new(2016, 1, 1)
@@ -127,6 +127,26 @@ describe BillingLogReport do
         report = BillingLogReport.new(from_date: today - 1.day)
         expect(report.papers_to_process).to eq([new_paper])
       end
+    end
+  end
+
+  context 'logging' do
+    let(:logger) do
+      log = Logger.new(logger_io)
+      log.formatter = lambda do |severity, datetime, progname, msg|
+        "#{severity}: #{msg}"
+      end
+      log
+    end
+
+    let(:logger_io) { StringIO.new }
+    let(:logged_content) { logger_io.tap(&:rewind).read }
+
+    it 'logs that it was created' do
+      billing_log = BillingLogReport.new
+      allow(billing_log).to receive(:logger).and_return(logger)
+      billing_log.save
+      expect(logged_content).to match('INFO: Billing log created')
     end
   end
 end

@@ -5481,6 +5481,7 @@ journal_task_types:
   - kind
   - required_permissions
   - system_generated
+  - role_hint
   records: 
   - - '2'
     - '1'
@@ -5488,198 +5489,231 @@ journal_task_types:
     - TahiStandardTasks::AuthorsTask
     - "{}"
     - false
+    - 
   - - '3'
     - '1'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
     - "{}"
     - false
+    - 
   - - '4'
     - '1'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
     - "{}"
     - false
+    - 
   - - '5'
     - '1'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
     - "{}"
     - false
+    - 
   - - '6'
     - '1'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
     - "{}"
     - false
+    - 
   - - '7'
     - '1'
     - Figures
     - TahiStandardTasks::FigureTask
     - "{}"
     - false
+    - 
   - - '8'
     - '1'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
     - "{}"
     - false
+    - 
   - - '10'
     - '1'
     - Invite Academic Editor
     - TahiStandardTasks::PaperEditorTask
     - "{}"
     - false
+    - 
   - - '11'
     - '1'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
     - "{}"
     - false
+    - 
   - - '12'
     - '1'
     - Production Metadata
     - TahiStandardTasks::ProductionMetadataTask
     - "{}"
     - false
+    - 
   - - '13'
     - '1'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - "{}"
     - false
+    - 
   - - '14'
     - '1'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
     - "{}"
     - false
+    - 
   - - '15'
     - '1'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
     - "{}"
     - false
+    - 
   - - '16'
     - '1'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
     - "{}"
     - false
+    - 
   - - '17'
     - '1'
     - Reviewer Report
     - TahiStandardTasks::ReviewerReportTask
     - "{}"
     - true
+    - 
   - - '18'
     - '1'
     - Revise Manuscript
     - TahiStandardTasks::ReviseTask
     - "{}"
     - true
+    - 
   - - '19'
     - '1'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
     - "{}"
     - false
+    - 
   - - '20'
     - '1'
     - New Taxon
     - TahiStandardTasks::TaxonTask
     - "{}"
     - false
+    - 
   - - '21'
     - '1'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
     - "{}"
     - false
+    - 
   - - '22'
     - '1'
     - Changes For Author
     - PlosBioTechCheck::ChangesForAuthorTask
     - "{}"
     - true
+    - 
   - - '23'
     - '1'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
     - "{}"
     - false
+    - 
   - - '24'
     - '1'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
     - "{}"
     - false
+    - 
   - - '25'
     - '1'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
     - "{}"
     - false
+    - 
   - - '26'
     - '1'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
     - "{}"
     - false
+    - 
   - - '27'
     - '1'
     - Billing
     - PlosBilling::BillingTask
     - '[{"action":"view","applies_to":"PlosBilling::BillingTask"},{"action":"edit","applies_to":"PlosBilling::BillingTask"}]'
     - false
+    - 
   - - '28'
     - '1'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
     - "{}"
     - false
+    - 
   - - '29'
     - '1'
     - Test Task
     - InvitableTask
     - 
     - false
+    - 
   - - '30'
     - '1'
     - Initial Decision
     - TahiStandardTasks::InitialDecisionTask
     - "{}"
     - false
+    - 
   - - '31'
     - '1'
     - Send to Apex
     - TahiStandardTasks::SendToApexTask
     - "{}"
     - false
+    - 
   - - '32'
     - '1'
     - Related Articles
     - TahiStandardTasks::RelatedArticlesTask
     - "{}"
     - false
+    - 
   - - '33'
     - '1'
     - Title And Abstract
     - TahiStandardTasks::TitleAndAbstractTask
     - "{}"
     - false
+    - 
   - - '34'
     - '1'
     - Front Matter Reviewer Report
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - "{}"
     - true
+    - 
   - - '35'
     - '1'
     - Ad-hoc
     - AdHocTask
     - "{}"
     - false
+    - 
 
 ---
 journals:

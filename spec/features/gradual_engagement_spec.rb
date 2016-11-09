@@ -16,8 +16,8 @@ feature 'Gradual Engagement', js: true do
                   subsequent page views' do
           paper = FactoryGirl.create :paper,
                                      :with_integration_journal,
-                                     creator: user,
-                                     gradual_engagement: true
+                                     :gradual_engagement,
+                                     creator: user
           visit "/papers/#{paper.id}?firstView=true"
           expect(find('#submission-process'))
             .to have_content(paper.journal.name)

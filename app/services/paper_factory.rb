@@ -62,7 +62,7 @@ class PaperFactory
       old_role: journal_task_type.old_role,
       notify: false
     )
-    task_class.task_added_to_paper(paper)
+    task.task_added_to_paper(paper)
     task
   end
 

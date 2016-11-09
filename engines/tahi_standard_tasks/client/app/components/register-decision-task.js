@@ -10,7 +10,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     this._super(...arguments);
     this.get('task.paper.decisions').reload();
   },
-  decidedDecision: null,
   restless: Ember.inject.service('restless'),
   paper: computed.alias('task.paper'),
   submitted: computed.equal('paper.publishingState', 'submitted'),
@@ -58,8 +57,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
     registerDecision() {
       let task = this.get('task');
-
-      this.set('decidedDecision', this.get('draftDecision.verdict'));
 
       this.busyWhile(
         this.get('draftDecision').register(task)

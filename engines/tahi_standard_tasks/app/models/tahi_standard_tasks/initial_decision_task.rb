@@ -12,7 +12,7 @@ module TahiStandardTasks
       InitialDecisionTaskSerializer
     end
 
-    def task_added_to_paper(paper)
+    def self.task_added_to_paper(paper)
       paper.update_column(:gradual_engagement, true)
     end
 

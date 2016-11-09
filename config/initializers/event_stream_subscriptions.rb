@@ -10,14 +10,17 @@ stream_to_orcid_account_channel = EventStream::StreamToOrcidAccountChannel
 
 Subscriptions.configure do
 
+  # Assgnments
+
+  add 'assignment:created', Assignment::NotifyAssignee
+  add 'assignment:updated', Assignment::NotifyAssignee
+  add 'assignment:destroyed', Assignment::NotifyAssignee
+
   # Papers:
 
   add 'paper:updated', stream_to_paper_channel
   add 'paper:destroyed', stream_to_everyone
   add 'paper:data_extracted', Paper::DataExtracted::FinishUploadManuscriptTask, Paper::DataExtracted::NotifyUser
-
-  add 'paper:add_collaboration', Paper::AddCollaboration::NotifyEveryone
-  add 'paper:remove_collaboration', Paper::RemoveCollaboration::NotifyEveryone
 
   # Paper constituents:
 

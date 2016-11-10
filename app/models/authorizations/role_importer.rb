@@ -1,6 +1,9 @@
 module Authorizations
   # RoleImporter is used to efficiently import/recreate a role in the database.
   class RoleImporter
+    class Error < ::StandardError ; end
+    class MissingColumn < Error ; end
+
     attr_reader :role
 
     def initialize(role_definition)
@@ -125,7 +128,24 @@ module Authorizations
       ).first_or_create!
 
       @role_definition.participates_in.each do |klass|
-        @role.update("participates_in_#{klass.to_s.downcase.pluralize}" => true)
+        column_name = "participates_in_#{klass.to_s.downcase.pluralize}"
+        if @role.class.column_names.include?(column_name)
+          @role.update(column_name => true)
+        else
+          raise MissingColumn, <<-ERROR.strip_heredoc
+            The #{@role.class.table_name} table doesn't have a column named
+            '#{column_name}', but the role definition has indicated that the
+            #{@role.name} role should participate in #{klass.name}.
+
+            Please update the role definition to remove #{klass.name} from
+            the participates_in OR add the ''#{column_name}' column to the
+            #{@role.class.table_name} table. Thank you!
+
+            Sincerely,
+
+            Your neighborhood #{self.class.name}
+          ERROR
+        end
       end
     end
 

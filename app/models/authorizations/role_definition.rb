@@ -19,11 +19,6 @@ module Authorizations
       @name = name
       @journal = journal
       @participates_in = participates_in || []
-
-      whitelist = [::Task, ::Paper]
-      fail StandardError, "Bad participates_in: #{participates_in}" unless \
-        ((whitelist | participates_in) == whitelist)
-
       @permission_definitions = []
     end
 

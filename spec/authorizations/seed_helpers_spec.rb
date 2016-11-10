@@ -29,9 +29,12 @@ describe 'SeedHelpers' do
       expect(role.participates_in_papers).to be(true)
     end
 
-    it 'does not allow bad participates_in_*' do
+    it 'raises an error when the participaties_in_* column is not present' do
       expect { Role.ensure_exists('role', participates_in: [String]) }
-        .to raise_error(StandardError, /Bad participates_in/)
+        .to raise_error(
+          Authorizations::RoleImporter::MissingColumn,
+          /The roles table doesn't have a column named.*'participates_in_strings'/m
+        )
     end
 
     it 'returns the new role' do

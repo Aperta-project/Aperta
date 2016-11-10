@@ -7,6 +7,12 @@ namespace :'roles-and-permissions' do
         applies_to: 'User',
         states: ['*']
       )
+
+      role.ensure_permission_exists(
+        :view,
+        applies_to: 'User',
+        states: ['*']
+      )
     end
 
     Role.ensure_exists(Role::SITE_ADMIN_ROLE) do |role|

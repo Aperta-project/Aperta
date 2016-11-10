@@ -33,13 +33,9 @@ module Authorizations
     end
 
     def can?(permission, target)
-      if (permission == :view) && (target == self)
-        true
-      else
-        !filter_authorized(
-          permission, target, participations_only: false
-        ).objects.empty?
-      end
+      !filter_authorized(
+        permission, target, participations_only: false
+      ).objects.empty?
     end
 
     def filter_authorized(permission, target, participations_only: :default)

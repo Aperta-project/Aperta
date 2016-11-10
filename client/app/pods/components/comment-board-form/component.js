@@ -1,7 +1,13 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
-export default Ember.Component.extend({
+const {
+  computed,
+  Component,
+  isEmpty
+} = Ember;
+
+export default Component.extend({
   propTypes: {
     participants: PropTypes.array,
     atMentionableStaffUsers: PropTypes.array
@@ -18,9 +24,9 @@ export default Ember.Component.extend({
   editing: false,
   comment: '',
 
-  atMentionableUsersUnion: Ember.computed.union('participants', 'atMentionableStaffUsers'),
+  atMentionableUsersUnion: computed.union('participants', 'atMentionableStaffUsers'),
 
-  atMentionableUsers: Ember.computed('atMentionableUsersUnion.[]', function() {
+  atMentionableUsers: computed('atMentionableUsersUnion.[]', function() {
     const uniqueUsers = [];
     const currentUsername = this.get('currentUser.username');
 
@@ -40,18 +46,28 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    cancel() { this.clear(); },
+    onChange(value) {
+      const action = this.get('onChange');
+      if(isEmpty(action)) { return; }
+      action(value);
+    },
+
+    cancel() {
+      this.clear();
+      const action = this.get('onCancel');
+      if(!isEmpty(action)) { action(); }
+    },
 
     startEditing() {
       this.set('editing', true);
     },
 
     save() {
-      if(Ember.isEmpty(this.get('comment'))) {
+      if(isEmpty(this.get('comment'))) {
         return;
       }
 
-      this.sendAction('save', this.get('comment'));
+      this.get('save')(this.get('comment'));
       this.clear();
     }
   }

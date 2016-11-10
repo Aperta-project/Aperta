@@ -3,6 +3,7 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   notifications: Ember.inject.service(),
+  storage: Ember.inject.service('discussions-storage'),
   channelName: null,
 
   model(params) {
@@ -45,7 +46,18 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('validationErrors', {});
     this._super(controller, model);
+    this._setupInProgressComment(controller, model);
     model.reload();
+  },
+
+  _setupInProgressComment(controller, model) {
+    const comment = this.get('storage')
+                        .getItem(model.get('id'));
+
+    controller.set(
+      'inProgressComment',
+      (Ember.isEmpty(comment) ? '' : comment)
+    );
   },
 
   _pusherEventsId() {

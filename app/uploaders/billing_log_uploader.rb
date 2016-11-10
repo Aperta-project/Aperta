@@ -12,6 +12,6 @@ class BillingLogUploader < CarrierWave::Uploader::Base
   end
 
   def log_file_location(_)
-    Rails.logger.info "Saved Billing log to #{@file.path}"
+    model.logger.info "Saved Billing log to #{@file.path}"
   end
 end

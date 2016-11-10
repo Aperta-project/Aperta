@@ -22,6 +22,5 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
           };
         });
     }),
-  showDropdowns: Ember.computed.gt('decisionTemplates.length', 1),
   inputClassNames: ['form-control']
 });

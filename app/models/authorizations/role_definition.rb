@@ -34,8 +34,9 @@ module Authorizations
     def ensure_permission_exists(action, applies_to:, states: [Permission::WILDCARD])
       if applies_to.is_a?(Class) && applies_to.try(:name).nil?
         Rails.logger.warn <<-WARN
-          Skippping #ensure_permission_exists for class without a name. If
-          this is in the text environment it can be ignored.
+          Skipping #ensure_permission_exists for a class without a name. If
+          this is in the test environment it can be safely ignored as this
+          happens when anonymous subclasses are created for tests.
         WARN
       else
         @permission_definitions << PermissionDefinition.new(

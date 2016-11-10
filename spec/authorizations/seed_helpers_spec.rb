@@ -47,7 +47,7 @@ describe 'SeedHelpers' do
       expect(role.reload.journal).to eq(journal)
     end
 
-    it 'removes no longer used permissions from the role' do
+    it 'removes unused permissions from the role' do
       Role.ensure_exists('role', journal: journal) do |role|
         role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
         role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])

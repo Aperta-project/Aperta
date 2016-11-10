@@ -7,6 +7,6 @@ export default DS.Model.extend({
   position: DS.attr('number'),
   template: DS.attr(),
   title: DS.attr('string'),
-  type: 'adHocTemplate',
-  kind: Ember.computed.alias('journalTaskType.kind')
+  type: Ember.computed.readOnly('kind'),
+  kind: Ember.computed.readOnly('journalTaskType.kind')
 });

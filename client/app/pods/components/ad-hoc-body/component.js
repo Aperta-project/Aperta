@@ -76,6 +76,17 @@ export default Ember.Component.extend({
     return this.get('blockObjects').isAny('isNew');
   }),
 
+
+  correspondingRole: Ember.computed('task.type', function() {
+    const mapping = {
+      'AdHocTask': 'Staff-only',
+      'AdHocForAuthorsTask': 'Author',
+      'AdHocForEditorsTask': 'Editor',
+      'AdHocForReviewersTask': 'Reviewer'
+    };
+    return mapping[this.get('task.type')];
+  }),
+
   saveBlocks() {
     let blockPath = this.get('isEditingTemplate') ? 'template' : 'body';
     this.get('task').set(blockPath, this.get('displayedBlocks').mapBy('items'));

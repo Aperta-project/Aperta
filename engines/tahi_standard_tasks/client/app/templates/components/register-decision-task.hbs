@@ -35,16 +35,20 @@
 
   {{error-message message=validationErrors.errors}}
 
-  {{letter-template disabled=nonPublishableOrUnselected
-                    letterValue=draftDecision.letter
-                    class='letter-template-placeholder'
-                    toField=toField
-                    subjectLine=subjectLine
-                    task=task
-                    templateDecision=draftDecision.verdict
-                    updateTemplate=(action 'updateTemplate')
-                    registerDecision=(action 'registerDecision')
-  }}
+  {{#if draftDecision.verdict}}
+    {{letter-template disabled=nonPublishableOrUnselected
+      letterValue=draftDecision.letter
+      class='letter-template-placeholder'
+      toField=toField
+      subjectLine=subjectLine
+      task=task
+      templateDecision=draftDecision.verdict
+      updateTemplate=(action 'updateTemplate')
+      registerDecision=(action 'registerDecision')
+    }}
+  {{else}}
+    <p>No decision has been registered.</p>
+  {{/if}}
 
   {{#if previousDecisions}}
     <hr>

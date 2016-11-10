@@ -274,6 +274,11 @@ class Paper < ActiveRecord::Base
       'assignments.assigned_to_type' => 'Paper')
   end
 
+  def self.find_by_id_or_short_doi(lookup_id)
+    return find_by_short_doi(lookup_id) if lookup_id.to_s =~ DoiService::SHORT_DOI_FORMAT
+    find(lookup_id)
+  end
+
   def inactive?
     !active?
   end

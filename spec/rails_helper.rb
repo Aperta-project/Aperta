@@ -106,6 +106,14 @@ RSpec.configure do |config|
       ENV['SELENIUM_FIREFOX_PATH']
     Capybara.register_driver :selenium do |app|
       profile = Selenium::WebDriver::Firefox::Profile.new
+      ember_inspector_path = Rails.root.join('tmp/addon-470970-latest.xpi')
+      # https://addons.mozilla.org/firefox/downloads/latest/ember-inspector/addon-470970-latest.xpi
+      if File.exist?(ember_inspector_path)
+        profile.add_extension(ember_inspector_path)
+      elsif $stdout.tty?
+        puts "\e[33mEmber inspector not installed in #{ember_inspector_path}\e[0m"
+      end
+
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.timeout = 90
       Capybara::Selenium::Driver

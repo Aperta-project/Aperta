@@ -15,7 +15,7 @@ describe PaperConversionsController, type: :controller do
 
   describe 'GET export' do
     subject(:do_request) do
-      get :export, id: paper.to_param, export_format: 'docx', format: :json
+      get :export, short_doi: paper.to_param, export_format: 'docx', format: :json
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -35,7 +35,7 @@ describe PaperConversionsController, type: :controller do
       context 'with a paper that needs conversion' do
         subject(:do_request) do
           VCR.use_cassette('convert_to_docx') do
-            get :export, id: paper.id, export_format: 'docx', format: :json
+            get :export, short_doi: paper.id, export_format: 'docx', format: :json
           end
         end
 

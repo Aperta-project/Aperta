@@ -26,6 +26,7 @@ describe Typesetter::MetadataSerializer do
       FactoryGirl.create(:data_availability_task, paper: paper),
       FactoryGirl.create(:financial_disclosure_task, paper: paper),
       FactoryGirl.create(:production_metadata_task, paper: paper),
+      FactoryGirl.create(:early_posting_task, paper: paper),
       FactoryGirl.create(:publishing_related_questions_task, paper: paper)
     ]
   end

@@ -59,46 +59,16 @@ class Role < ActiveRecord::Base
     find_by(name: Role::SITE_ADMIN_ROLE, journal: nil)
   end
 
-  def self.ensure_exists(name, journal: nil,
-    participates_in: [],
-    delete_stray_permissions: true)
-    role = Role.where(name: name, journal: journal).first_or_create!
-
-    # Ensure user passed in valid participates_in
-    whitelist = [Task, Paper]
-    raise StandardError, "Bad participates_in: #{participates_in}" unless \
-      (whitelist | participates_in) == whitelist
-
-    participates_in.each do |klass|
-      role.update("participates_in_#{klass.to_s.downcase.pluralize}" => true)
-    end
-
-    role.send(:reset_tracked_permissions)
-    yield(role) if block_given?
-    role.send(:delete_stray_permissions) if delete_stray_permissions
-    role
+  def self.ensure_exists(*args, &blk)
+    Authorizations::RoleDefinition.ensure_exists(*args, &blk)
   end
 
-  def ensure_permission_exists(action, applies_to:, states: ['*'])
-    perm = Permission.ensure_exists(action, applies_to: applies_to, role: self,
-                                            states: states)
-    ensured_permission_ids << perm.id
-    perm
-  end
-
-  private
-
-  def ensured_permission_ids
-    @ensured_permission_ids ||= []
-  end
-
-  def reset_tracked_permissions
-    @ensured_permission_ids = []
-  end
-
-  def delete_stray_permissions
-    return if ensured_permission_ids.empty?
-    permissions.delete(permissions.where.not(id: ensured_permission_ids))
-    reset_tracked_permissions
+  def ensure_permission_exists(action, applies_to:, role: nil, states: [Permission::WILDCARD])
+    Permission.ensure_exists(
+      action,
+      applies_to: applies_to,
+      role: self,
+      states: states
+    )
   end
 end

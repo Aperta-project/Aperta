@@ -9,10 +9,12 @@ describe 'SeedHelpers' do
     # wrapped in a transaction
     Role.delete_all
     Permission.delete_all
+    PermissionsRole.delete_all
     PermissionState.delete_all
+    PermissionStatesPermission.delete_all
   end
 
-  describe 'Role::ensure_exists' do
+  describe 'Role.ensure_exists' do
     it 'creates a role' do
       role_q = Role.where(name: 'role')
       expect(role_q).not_to exist
@@ -27,15 +29,17 @@ describe 'SeedHelpers' do
       expect(role.participates_in_papers).to be(true)
     end
 
-    it 'does not allow bad participates_in_*' do
+    it 'raises an error when the participaties_in_* column is not present' do
       expect { Role.ensure_exists('role', participates_in: [String]) }
-        .to raise_error(StandardError, /Bad participates_in/)
+        .to raise_error(
+          Authorizations::RoleImporter::MissingColumn,
+          /The roles table doesn't have a column named.*'participates_in_strings'/m
+        )
     end
 
-    it 'yields the new role' do
-      Role.ensure_exists('role') do |role|
-        expect(role).to eq(Role.where(name: 'role').first)
-      end
+    it 'returns the new role' do
+      role = Role.ensure_exists('role')
+      expect(role).to eq(Role.where(name: 'role').first)
     end
 
     it 'sets the journal if provided' do
@@ -43,39 +47,34 @@ describe 'SeedHelpers' do
       expect(role.reload.journal).to eq(journal)
     end
 
-    it 'removes stray permissions from the role' do
+    it 'removes unused permissions from the role' do
       Role.ensure_exists('role', journal: journal) do |role|
         role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
         role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       end
-      expect(Role.where(name: 'role').first.reload.permissions
-              .map(&:action)).to contain_exactly('view', 'edit')
+      expect(
+        Role.where(name: 'role').first.reload.permissions.map(&:action)
+      ).to contain_exactly('view', 'edit')
 
       Role.ensure_exists('role', journal: journal) do |role|
         role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       end
-      expect(Role.where(name: 'role').first.reload.permissions.map(&:action))
-        .to match(%w(view))
+      expect(
+        Role.where(name: 'role').first.reload.permissions.map(&:action)
+      ).to match(%w(view))
 
       # The permission should still exist though
-      expect(Permission.joins(:states)
-                       .where(action: 'edit',
-                              applies_to: Task,
-                              permission_states: { id: PermissionState.wildcard })).to exist
+      expect(
+        Permission.joins(:states).where(
+          action: 'edit',
+          applies_to: Task,
+          permission_states: { id: PermissionState.wildcard }
+        )
+      ).to exist
     end
   end
 
-  describe 'Role#ensure_exists_permission' do
-    it 'calls Permission::ensure_exists with proper arguments' do
-      expect_any_instance_of(Role).to \
-        receive(:ensure_permission_exists).with(:view, applies_to: Task, states: ['*'])
-      Role.ensure_exists('role') do |role|
-        role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      end
-    end
-  end
-
-  describe 'Permission::ensure_exists' do
+  describe 'Permission.ensure_exists' do
     it 'creates a permission' do
       perm_q = Permission.where(action: 'view', applies_to: Task)
       expect(perm_q).not_to exist
@@ -95,46 +94,46 @@ describe 'SeedHelpers' do
     end
 
     it 'sets role' do
-      Role.ensure_exists('role') do |role|
-        perm = Permission.ensure_exists('view', role: role, applies_to: Task)
-        expect(perm.reload.roles).to match([role])
-      end
+      role = FactoryGirl.create(:role)
+      perm = Permission.ensure_exists('view', role: role, applies_to: Task)
+      expect(perm.reload.roles).to match([role])
     end
   end
 
   describe 'with an existing role' do
-    before do
-      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
-        Permission.ensure_exists(:view, role: role, applies_to: Task)
+    subject!(:role) do
+      Role.ensure_exists('Enthuasist').tap do |_role|
+        Permission.ensure_exists(:view, role: _role, applies_to: Task)
       end
     end
 
     it 'can add a new permission' do
-      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
-        Permission.ensure_exists(:edit, role: role, applies_to: Task)
-      end
-      expect(Role.where(name: 'role').first.permissions).to contain_exactly(
+      role.ensure_permission_exists(:edit, applies_to: Task)
+      permissions = Role.where(name: 'Enthuasist').first.permissions
+      expect(permissions).to contain_exactly(
         Permission.where(action: :view, applies_to: Task).first,
-        Permission.where(action: :edit, applies_to: Task).first)
+        Permission.where(action: :edit, applies_to: Task).first
+      )
     end
 
     it 'does nothing if the permission already exists' do
-      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
-        Permission.ensure_exists(:view, role: role, applies_to: Task)
-      end
-      expect(Role.where(name: 'role').first.permissions).to contain_exactly(
+      expect(role.permissions).to contain_exactly(
         Permission.where(action: :view, applies_to: Task).first)
     end
 
-    it 'can will add a new permission if the states do not match' do
-      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
-        Permission.ensure_exists(:view, role: role, applies_to: Task,
-                                        states: ['madness'])
-      end
+    it 'adds a new permission if the states do not match' do
+      expect do
+        role.ensure_permission_exists(
+          :view,
+          applies_to: Task,
+          states: ['madness']
+        )
+      end.to change { Permission.count }.by(1)
 
-      perms = Role.where(name: 'role').first.permissions
-              .map { |p| p.states.map(&:name) }
-      expect(perms).to contain_exactly(['*'], ['madness'])
+      permission_states = role.permissions.reload.map do |permission|
+        permission.states.map(&:name)
+      end
+      expect(permission_states).to contain_exactly(['*'], ['madness'])
     end
   end
 end

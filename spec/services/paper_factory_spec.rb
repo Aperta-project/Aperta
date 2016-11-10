@@ -73,7 +73,6 @@ describe PaperFactory do
     end
 
     it "calls the task_added_to_workflow hook for each task" do
-      expect(TahiStandardTasks::PaperAdminTask).to receive(:task_added_to_workflow)
       expect(TahiStandardTasks::DataAvailabilityTask).to receive(:task_added_to_workflow)
       subject
     end

@@ -51,12 +51,6 @@ FactoryGirl.define do
     title "Financial Disclosure"
   end
 
-  factory :paper_admin_task, class: 'TahiStandardTasks::PaperAdminTask' do
-    phase
-    paper
-    title "Assign Admin"
-  end
-
   factory :paper_editor_task, class: 'TahiStandardTasks::PaperEditorTask' do
     phase
     paper

@@ -3,12 +3,6 @@ namespace :'roles-and-permissions' do
   task seed: 'environment' do
     Role.ensure_exists(Role::USER_ROLE) do |role|
       role.ensure_permission_exists(
-        :view_profile,
-        applies_to: 'User',
-        states: ['*']
-      )
-
-      role.ensure_permission_exists(
         :view,
         applies_to: 'User',
         states: ['*']

@@ -8,15 +8,12 @@
     owner=task
     displayQuestionText=false
     defaultSelection=firstDecisionTemplate
+    selectionSelected=(action updateTemplate)
     placeholder="Please select the letter template"
     source=decisionTemplates
     readOnly=disabled
     noResponseText=nil
     width="300"}}
-
-<button class="button-primary button--green update-template-action" {{action updateTemplate}}>
-  Update template text
-</button>
 
 <div class='input-group'>
   <div class='input-group-addon email-header'>

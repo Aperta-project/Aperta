@@ -8,7 +8,7 @@ describe FtpUploaderService do
     # format for the application is set to, just that we're logging
     # correctly
     log.formatter = lambda do |severity, datetime, progname, msg|
-      "#{severity}: #{msg}"
+      "#{severity}: #{msg}\n"
     end
     log
   end

@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/yamldb/yaml_db.git
-  revision: f980a67dfcfef76824676f3938b176b68c260e68
-  ref: f980a67dfcfef76824676f3938b176b68c260e68
-  specs:
-    yaml_db (0.3.0)
-      rails (>= 3.0, < 4.3)
-      rake (>= 0.8.7)
-
-GIT
   remote: https://github.com/ActsAsParanoid/acts_as_paranoid
   revision: c2db19554ddaedcac0a2b8d6a0563dea83c972c5
   ref: c2db19554ddaedcac0a2b8d6a0563dea83c972c5
@@ -23,6 +14,15 @@ GIT
     activemodel-globalid (0.1.1)
       activemodel (>= 4.1.0)
       activesupport (>= 4.1.0)
+
+GIT
+  remote: https://github.com/yamldb/yaml_db
+  revision: f980a67dfcfef76824676f3938b176b68c260e68
+  ref: f980a67dfcfef76824676f3938b176b68c260e68
+  specs:
+    yaml_db (0.3.0)
+      rails (>= 3.0, < 4.3)
+      rake (>= 0.8.7)
 
 PATH
   remote: engines/plos_billing

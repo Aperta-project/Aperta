@@ -84,7 +84,8 @@ Tahi::Application.routes.draw do
     resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
-        get 'users/:paper_short_doi', to: 'filtered_users#users'
+        get 'users/:paper_short_doi', constraints: { paper_short_doi: DoiService::SHORT_DOI_FORMAT },
+          to: 'filtered_users#users'
       end
     end
     resources :formats, only: [:index]

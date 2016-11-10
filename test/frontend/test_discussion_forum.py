@@ -212,12 +212,11 @@ class DiscussionForumTest(CommonTest):
     invite_reviewers = InviteReviewersCard(self.getDriver())
     logging.info(u'Inviting reviewer 2 as user: {0}'.format(reviewer_2))
     invite_reviewers.invite(reviewer_2)
-    # Include a mention in the message
-    mention = u'@'.format(reviewer_1['user'])
-    msg_1 = '{0} {1}'.format(generate_paragraph()[2], mention)
+    msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
-    ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[reviewer_1, reviewer_2])
+    ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
+        participants=[reviewer_1, reviewer_2])
     # Staff user logout
     ms_viewer.logout()
 
@@ -250,11 +249,13 @@ class DiscussionForumTest(CommonTest):
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
     header_fe = u'{0} {1}'.format(comment_name, comment_date)
     header_db = u'{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
-    assert header_fe == header_db, (header_fe, header_db)
+    assert header_fe == header_db, 'Header from the front end: {0} not the same as '\
+        'in DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
-    assert msg_1 == comment_body, (msg_1, comment_body)
+    assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
+         'front end: {1}'.format(msg_1, comment_body)
     msg_2 = generate_paragraph()[2]
-    ms_viewer.post_discussion(msg_2)
+    ms_viewer.post_discussion(msg_2, mention=reviewer_2['user'])
     ms_viewer.logout()
 
     # reviewer 2
@@ -288,8 +289,8 @@ class DiscussionForumTest(CommonTest):
     assert header_fe == header_db, 'Header from front end: {0}, is not the same as '\
         'header from the DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
-    assert msg_2 == comment_body, 'Message sent: {0} is not the message found in the '\
-        'front end {1}'.format(msg_2, comment_body)
+    assert msg_2 in comment_body, 'Message sent: {0} is not in the front end {1}'\
+        .format(msg_2, comment_body)
     msg_3 = generate_paragraph()[2]
     ms_viewer.post_discussion(msg_3)
     ms_viewer.logout()

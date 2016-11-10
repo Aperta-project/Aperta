@@ -639,11 +639,12 @@ class AuthenticatedPage(PlosPage):
     self.click_covered_element(self._get(self._discussion_link))
     return None
 
-  def post_new_discussion(self, topic='', msg='', participants=None):
+  def post_new_discussion(self, topic='', msg='', mention='', participants=[]):
     """
     Post a message on a new discussion
     :param topic: Topic to post. If empty, will post a random text.
     :param msg: Message to post. If empty, will post a random text.
+    :param mention: User to mention. A string with the username.
     :param participants: List of participants to add, each element in the list is
     a user object.
     :return: None.
@@ -658,11 +659,17 @@ class AuthenticatedPage(PlosPage):
       self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
     msg_body = self._get(self._message_body_field)
     if msg:
-      msg_body.send_keys(msg)
+      msg_body.send_keys(msg + ' ')
     else:
-      msg_body.send_keys(generate_paragraph()[2])
+      msg_body.send_keys(generate_paragraph()[2] + ' ')
+    if mention:
+      # Note: At this stage only Staff users can be mentioned.
+      msg_body.send_keys('@' + mention + Keys.ENTER)
+      time.sleep(1)
+      msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     time.sleep(1)
     self._get(self._create_topic).click()
+    time.sleep(1)
     if participants:
       for participant in participants:
         user_key = random.choice(['name', 'email', 'user'])
@@ -673,10 +680,11 @@ class AuthenticatedPage(PlosPage):
         self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     return None
 
-  def post_discussion(self, msg=''):
+  def post_discussion(self, msg='', mention=''):
     """
     Post a message on an ongoing discussion
     :param msg: Message to post. If empty, will post a random text.
+    :param mention: User to mention. A string with the username.
     :return: None.
     """
     self.click_discussion_link()
@@ -693,8 +701,14 @@ class AuthenticatedPage(PlosPage):
     self._driver.execute_script(js_cmd);
     time.sleep(.5)
     msg_body = self._get(self._message_body_field)
-    msg_body.send_keys(msg)
+    msg_body.send_keys(msg + ' ')
     time.sleep(1)
+    import pdb; pdb.set_trace()
+    if mention:
+      # Note: At this stage only Staff users can be mentioned.
+      msg_body.send_keys('@' + mention + Keys.ENTER)
+      time.sleep(1)
+      msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
     self._get(post_message_btn).click()
     # Need to wait for make sure the post is sent

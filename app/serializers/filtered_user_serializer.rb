@@ -17,6 +17,6 @@ class FilteredUserSerializer < ActiveModel::Serializer
   end
 
   def paper_id
-    Paper.find_by_short_doi(options[:paper_short_doi]).id
+    Paper.find_by_id_or_short_doi(options[:paper_id]).id
   end
 end

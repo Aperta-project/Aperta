@@ -16,7 +16,7 @@ describe TahiStandardTasks::InitialDecisionTask do
     end
   end
 
-  describe '#task_added_to_paper' do
+  describe '.task_added_to_paper' do
     it 'sets gradual_engagement attribute to true' do
       expect { task.class.task_added_to_paper(paper) }
         .to change { paper.reload.gradual_engagement }.from(false).to(true)

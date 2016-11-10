@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 /* Template:
  * {{#auto-suggest endpoint="/api/filtered_users"
@@ -134,24 +135,21 @@ export default Ember.Component.extend({
   searchAllowed: true,
   searchResults: null,
   selectedItem: null,
-  searching: 0,
+  searching: Ember.computed.reads('search.isRunning'),
 
-  search() {
+  search: concurrencyTask(function * (debounce) {
     if (!this.get('resultText')) { return; }
+    yield timeout(debounce);
 
-    this.incrementProperty('searching');
     let url = this.get('endpoint');
     let data = {};
     data[this.get('queryParameter')] = this.get('resultText');
 
-    this.get('restless').get(url, data).then((response) => {
-      let results = this.get('parseResponseFunction')(response);
-      if (!this.get('resultText')) { return; }
-      this.set('searchResults',  results);
-    }).finally(() => {
-      this.decrementProperty('searching');
-    });
-  },
+    let response = yield this.get('restless').get(url, data);
+    let results = this.get('parseResponseFunction')(response);
+    if (!this.get('resultText')) { return; }
+    this.set('searchResults',  results);
+  }).restartable(),
 
   _resultTextChanged: Ember.observer('resultText', function() {
     if (!this.get('resultText')) {
@@ -159,7 +157,7 @@ export default Ember.Component.extend({
     }
 
     if(this.get('searchAllowed')) {
-      Ember.run.debounce(this, this.search, this.get('debounce'));
+      this.get('search').perform(this.get('debounce'));
     }
 
     this.set('searchAllowed', true);

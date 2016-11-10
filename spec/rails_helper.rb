@@ -89,9 +89,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this come after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions roles permissions
-                 permission_states permission_states_permissions
-                 permissions_roles) }
+      except: %w(task_types nested_questions) }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
@@ -128,8 +126,7 @@ RSpec.configure do |config|
     # to be rolled back as part of a transaction
     Rake::Task['nested-questions:seed'].reenable
     Rake::Task['nested-questions:seed'].invoke
-    Rake::Task['roles-and-permissions:seed'].reenable
-    Rake::Task['roles-and-permissions:seed'].invoke
+
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars
   end
@@ -152,6 +149,8 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     Authorizations.reload_configuration
     Subscriptions.reload
+    Rake::Task['roles-and-permissions:seed'].reenable
+    Rake::Task['roles-and-permissions:seed'].invoke
   end
 
   config.before(:each, type: :controller) do

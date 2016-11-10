@@ -358,7 +358,6 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
-      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
@@ -420,8 +419,7 @@ class JournalFactory
 
     Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,
                        journal: @journal,
-                       participates_in: [Paper],
-                       delete_stray_permissions: true) do |role|
+                       participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
 
       task_klasses = Task.submission_task_types

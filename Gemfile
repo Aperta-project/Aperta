@@ -15,6 +15,7 @@ gem 'tahi-assign_team', path: 'engines/tahi-assign_team'
 gem 'aasm', '~> 4.9.0'
 gem 'active_model_serializers', '0.8.3'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
+gem 'activerecord-import'
 gem 'activerecord-sqlserver-adapter'
 gem 'acts_as_list'
 gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid',

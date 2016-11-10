@@ -6,7 +6,7 @@ describe ManuscriptManagersPolicy do
   let(:policy) { ManuscriptManagersPolicy.new(current_user: user, paper: paper) }
 
   before(:all) do
-    @journal = JournalFactory.create(name: 'Genetics Journal')
+    @journal = FactoryGirl.create(:journal) #JournalFactory.create(name: 'Genetics Journal')
   end
 
   after(:all) do

@@ -646,7 +646,7 @@ figures = [
            'reggie-watts_15057274790_o.tif',
            'snakebite_journal.pntd.0002302.g001.tiff',
            'stripedshorecrab.eps',
-           'unuploadable_Fig_1.tif',
+           # 'unuploadable_Fig_1.tif',
            'wild rhinos_journal.pone.0136643.g001.tiff',
            ]
 

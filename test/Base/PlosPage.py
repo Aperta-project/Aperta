@@ -161,6 +161,24 @@ class PlosPage(object):
     self._wait.until(CustomExpectedConditions.ElementToBeClickable(element))
     self.restore_timeout()
 
+  def _wait_for_not_element(self, locator, multiplier):
+    """
+    Waits for an element to go invisible or detach from the DOM
+    :param locator: the page locator, not element, to check on
+    :param multiplier: the multiplier of Config.wait_timeout to wait for a locator to be not present
+    :return: True or Error
+    """
+    timeout = Config.wait_timeout * multiplier
+    self.set_timeout(timeout)
+    try:
+      return self._wait.until_not(expected_conditions.visibility_of_element_located(locator))
+    except TimeoutException:
+      print '\t[WebDriver Error] Found element using {0} (test was for element ' \
+            'absence).'.format(locator)
+      raise ElementExistsAssertionError(locator)
+    finally:
+      self.restore_timeout()
+
   def _is_link_valid(self, link):
     return self.__linkVerifier.is_link_valid(link.get_attribute('href'))
 

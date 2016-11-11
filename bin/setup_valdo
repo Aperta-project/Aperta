@@ -23,7 +23,7 @@ if ! command_exists s3cmd ; then
   exit 1
 fi
 
-if [ ! -d "$VALDO_REPO_DIR"]; then
+if [ ! -d "$VALDO_REPO_DIR" ]; then
   git clone git@github.com:PLOS/valdo.git --recursive $VALDO_REPO_DIR
 fi
 cd "$VALDO_REPO_DIR"

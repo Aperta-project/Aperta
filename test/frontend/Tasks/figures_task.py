@@ -346,7 +346,10 @@ class FiguresTask(BaseTask):
           os.remove(newest_file)
           os.chdir(orig_dir)
           try:
-            assert fig == newest_file, newest_file
+            assert fig == newest_file, 'Figure from page: {0} doesn\'t match the newest file ' \
+                                       'in the /tmp directory: {1}. This should usually succeed ' \
+                                       'but when the OS is active it can fail and be ' \
+                                       'fine.'.format(fig, newest_file)
           except AssertionError:
             logging.warning('Newest file: {0} is not the file we expected: {1}. '
                             'Another process may have written to /tmp'.format(newest_file, fig))

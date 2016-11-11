@@ -9,7 +9,7 @@ const isAdHocTask = function(kind) {
     'AdHocForEditorsTask',
     'AdHocForReviewersTask'
   ];
-  return (adHocTaskTypes.indexOf(kind) !== -1);
+  return adHocTaskTypes.includes(kind);
 };
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {

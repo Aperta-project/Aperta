@@ -25,7 +25,7 @@ class InviteCard(BaseCard):
     # Locators - Instance members
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invitation-item-action-send')
-    self._rescind_button = (By.CSS_SELECTOR, 'span.invitation-item-action-text')
+    self._rescind_button = (By.CSS_SELECTOR, 'span.invite-rescind')
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')

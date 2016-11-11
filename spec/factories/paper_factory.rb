@@ -147,6 +147,22 @@ FactoryGirl.define do
       end
     end
 
+    trait(:gradual_engagement) do
+      after(:create) do |paper|
+        task_type_id = JournalTaskType.find_by(title: 'Initial Decision').id.to_s
+        initial_decision_params = {"paper_type"=>"Gradual Engagement", "journal_id"=>paper.journal.id,
+                        "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
+                          "task_templates"=>[
+                            {"title"=>"Initial Decision", "journal_task_type_id"=> task_type_id, "position"=>2}
+                          ]},
+                        {"name"=>"Phase 2", "position"=>2},
+                        {"name"=>"Phase 3", "position"=>3}]}
+        ManuscriptManagerTemplateForm.new(initial_decision_params).create!
+        paper.update_column(:paper_type, 'Gradual Engagement')
+        PaperFactory.new(paper.reload, paper.creator).add_phases_and_tasks
+      end
+    end
+
     trait(:with_author) do
       after(:create) do |paper|
         FactoryGirl.create(

@@ -70,8 +70,7 @@ gem 'whenever'
 
 # We need any version of yaml_db after 0.3.0 since it will
 # namespace SerializationHelper
-gem 'yaml_db',
-    github: 'yamldb/yaml_db',
+gem 'yaml_db', git: 'https://github.com/yamldb/yaml_db',
     ref: 'f980a67dfcfef76824676f3938b176b68c260e68'
 
 # has_secure_token has been accepted into rails, but isn't yet in the most

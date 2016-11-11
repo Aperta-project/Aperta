@@ -209,6 +209,6 @@ class InvitableTestTask < Task
   end
 
   def invitee_role
-    'test old_role'
+    'test role'
   end
 end

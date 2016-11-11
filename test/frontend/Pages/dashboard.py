@@ -51,7 +51,8 @@ class DashboardPage(AuthenticatedPage):
                                    "//table[contains(@class,'table-borderless')][1]/thead/tr/th[3]")
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
-    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
+    self._dash_active_journal = (By.CSS_SELECTOR, 'td.active-paper-title span')
+    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title span + span')
     self._dash_active_role = (By.CSS_SELECTOR, 'td.active-paper-title + td')
     self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
 
@@ -61,7 +62,8 @@ class DashboardPage(AuthenticatedPage):
     self._dash_inactive_status_th = (By.XPATH,
                                      "//table[contains(@class,'table-borderless')][2]/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
-    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
+    self._dash_inactive_journal = (By.CSS_SELECTOR, 'td.inactive-paper-title span')
+    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title span + span')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
     self._dash_inactive_status = (By.CSS_SELECTOR, 'td.inactive-paper-title + td + td div')
 
@@ -530,6 +532,7 @@ class DashboardPage(AuthenticatedPage):
     if list_ == 'inactive':
       paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
+      journals = self._gets(self._dash_inactive_journal)
       manu_ids = self._gets(self._dash_inactive_manu_id)
       roles = self._gets(self._dash_inactive_role)
       statuses = self._gets(self._dash_inactive_status)
@@ -537,6 +540,7 @@ class DashboardPage(AuthenticatedPage):
       logging.info('The Inactive papers list from the db is {0}'.format(db_papers_list))
     else:
       papers = self._gets(self._dash_active_title)
+      journals = self._gets(self._dash_active_journal)
       manu_ids = self._gets(self._dash_active_manu_id)
       roles = self._gets(self._dash_active_role)
       statuses = self._gets(self._dash_active_status)

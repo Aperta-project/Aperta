@@ -57,6 +57,7 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -97,6 +98,7 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -147,6 +149,7 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -154,9 +157,9 @@ class FigureTaskTest(CommonTest):
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     # Need, apparently more time, at times for the figures card to open and populated enough to see
     #   the completion button.
-    time.sleep(5)
+    figures_task.task_ready()
     figures_task.check_question()
-    figures_list = figures_task.upload_figure('figure1_tiff_lzw.tiff')
+    figures_task.upload_figure('figure1_tiff_lzw.tiff')
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 22s
     time.sleep(25)
@@ -182,6 +185,7 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
@@ -214,14 +218,13 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]
     figures_task = FiguresTask(self.getDriver())
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Need, apparently more time, at times for the figures card to opn and populated enough to see
-    #   the completion button.
-    time.sleep(5)
+    figures_task.task_ready()
     figures_task.check_question()
     figures_list = figures_task.upload_figure()
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
@@ -247,6 +250,7 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1].split('?')[0]

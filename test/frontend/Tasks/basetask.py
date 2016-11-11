@@ -45,7 +45,7 @@ class BaseTask(AuthenticatedPage):
 
   def completed_state(self):
     """Returns the selected state of the task completed button as a boolean"""
-    time.sleep(.5)
+    self._wait_for_element(self._get(self._completion_button))
     btn_label = self._get(self._completion_button).text
     if btn_label == 'I am done with this task':
       return False
@@ -119,3 +119,10 @@ class BaseTask(AuthenticatedPage):
       logging.warning(error_msg.text)
     except ElementDoesNotExistAssertionError:
       pass
+
+  def task_ready(self):
+    """
+    A basic method to test that a task is fully populated before we interact with it.
+    :return: Void Function
+    """
+    self._wait_for_element(self._get(self._completion_button))

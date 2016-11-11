@@ -8,7 +8,8 @@ import urllib
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import figures
@@ -38,7 +39,7 @@ class FiguresTask(BaseTask):
     self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
     self._figure_preview = (By.CSS_SELECTOR, 'img.image-thumbnail')
     self._figure_label = (By.CSS_SELECTOR, 'h2.title')
-    self._figure_striking_chkmrk = (By.CSS_SELECTOR, 'div.striking > span.fa-check')
+    self._figure_striking_chkmrk = (By.CSS_SELECTOR, 'div.striking > i.fa-check')
     self._figure_striking_status = (By.CSS_SELECTOR, 'div.striking')
     self._figure_error_msg_a = (By.CSS_SELECTOR, 'div.info > h2 + div.error-message')
     self._figure_error_icon = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
@@ -149,6 +150,7 @@ class FiguresTask(BaseTask):
       self._get(self._question_check).click()
     else:
       self.click_completion_button()
+      self._wait_for_element(self._get(self._question_check))
       self._get(self._question_check).click()
       self.click_completion_button()
 
@@ -225,14 +227,16 @@ class FiguresTask(BaseTask):
       fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(new_figure))
     logging.info('Replacing figure: {0}, with {1}'.format(figure, new_figure))
     self._reset_position_to_conformance_question()
-    # time.sleep(5)
+    self._wait_for_element(self._get(self._figure_listing).find_element(*self._figure_replace_btn))
     replace_input = self._get(self._figure_listing).find_element(*self._figure_replace_input)
     replace_input.send_keys(fn)
     try:
       replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
-    except StaleElementReferenceException:
-        time.sleep(10)
-        replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
+      replace_btn.click()
+    except StaleElementReferenceException or NoSuchElementException:
+      logging.info('Replace button find timed-out.')
+      time.sleep(10)
+      replace_btn = self._get(self._figure_listing).find_element(*self._figure_replace_btn)
     replace_btn.click()
     # Time needed for script execution. Have had intermittent failures at 25s delay, leads to a
     #   stale reference error. Sadly, it looks like we put up a spinner, briefly return the old
@@ -312,25 +316,43 @@ class FiguresTask(BaseTask):
             self.click_covered_element(page_fig_item)
           time.sleep(1)
           orig_dir = os.getcwd()
+          # If anything fails between the next line and line 333, we end up in a bogus state for
+          #   the next test
           os.chdir('/tmp')
           files = filter(os.path.isfile, os.listdir('/tmp'))
           files = [os.path.join('/tmp', f) for f in files]  # add path to each file
           files.sort(key=lambda x: os.path.getmtime(x))
-          newest_file = files[-1]
+          # the following can fail if other processes write/clean-up files in /tmp
+          try:
+            newest_file = files[-1]
+          except IndexError:
+            os.chdir(orig_dir)
+            raise
           logging.debug(newest_file)
           while newest_file.split('.')[-1] == 'part':
             time.sleep(5)
             files = filter(os.path.isfile, os.listdir('/tmp'))
             files = [os.path.join('/tmp', f) for f in files]  # add path to each file
             files.sort(key=lambda x: os.path.getmtime(x))
-            newest_file = files[-1]
+            try:
+              newest_file = files[-1]
+            except IndexError:
+              os.chdir(orig_dir)
+              raise
             logging.debug(newest_file.split('.')[-1])
           newest_file = newest_file.split('/')[-1]
           # doing the following ahead of the assert to ensure we end up in the right directory
           #   whether the assert fails or succeeds
           os.remove(newest_file)
           os.chdir(orig_dir)
-          assert fig == newest_file, newest_file
+          try:
+            assert fig == newest_file, 'Figure from page: {0} doesn\'t match the newest file ' \
+                                       'in the /tmp directory: {1}. This should usually succeed ' \
+                                       'but when the OS is active it can fail and be ' \
+                                       'fine.'.format(fig, newest_file)
+          except AssertionError:
+            logging.warning('Newest file: {0} is not the file we expected: {1}. '
+                            'Another process may have written to /tmp'.format(newest_file, fig))
           return
     if not matched:
       raise(ElementDoesNotExistAssertionError, 'No match found for {0}'.format(figure))
@@ -388,11 +410,10 @@ class FiguresTask(BaseTask):
         self._reset_position_to_conformance_question()
         try:
           label_field.click()
+          label_field.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
         except WebDriverException:
           self.click_covered_element(label_field)
-        # The label field click above is not registering in all cases, so doing it a second time
-        #   to ensure it gets registered.
-        label_field.click()
+          label_field.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
         time.sleep(.5)
         try:
           save_link.click()

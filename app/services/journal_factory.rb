@@ -433,8 +433,12 @@ class JournalFactory
         TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
-      task_klasses << AdHocForEditorsTask
       task_klasses.each do |klass|
+        role.ensure_permission_exists(:view, applies_to: klass)
+      end
+
+      AdHocForEditorsTask.tap do |klass|
+        role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
       end
     end

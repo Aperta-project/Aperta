@@ -538,6 +538,14 @@ describe JournalFactory, flaky: true do
             end
           end
 
+          it 'can :edit and :view AdHocForEditorsTasks' do
+            [:edit, :view].each do |action|
+              expect(permissions).to include(
+                Permission.find_by(action: action, applies_to: AdHocForEditorsTask.name)
+              )
+            end
+          end
+
           it 'is not able to edit the ReviewerRecommendationsTask' do
             expect(permissions).to_not include(
               Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last

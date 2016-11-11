@@ -418,12 +418,12 @@ describe JournalFactory, flaky: true do
             paper is in an editable state
           DESC
             editable_task_klasses_based_on_paper_state.each do |klass|
-              permission = Permission.joins(:states).find_by(
+              permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
                 permission_states: { name: Paper::EDITABLE_STATES }
               )
-              expect(permissions).to include(permission)
+              expect(permission_for_klass).to be
             end
 
             reviewer_report_klasses.each do |klass|
@@ -678,12 +678,12 @@ describe JournalFactory, flaky: true do
             paper is in an editable state
           DESC
             editable_task_klasses_based_on_paper_state.each do |klass|
-              permission = Permission.joins(:states).find_by(
+              permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
                 permission_states: { name: Paper::EDITABLE_STATES }
               )
-              expect(permissions).to include(permission)
+              expect(permission_for_klass).to be
             end
 
             reviewer_report_klasses.each do |klass|

@@ -15,6 +15,10 @@
 
   .si-file-viewing {
     padding: 10px 15px;
+
+    .error-message {
+      margin-left: 0; //override base
+    }
   }
 
   .si-file-editor {
@@ -49,12 +53,9 @@
     }
 
     .si-file-label-input {
-      max-width: 50px;
+      max-width: 75px;
+      width: 75px;
       flex: none;
-    }
-
-    .si-file-category-input {
-      width: 125px;
     }
 
     textarea {

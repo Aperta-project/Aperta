@@ -13,5 +13,5 @@ export default DS.Model.extend(Snapshottable, {
   label: DS.attr('string'),
   caption: DS.attr('string'),
   publishable: DS.attr('boolean'),
-  strikingImage: DS.attr('boolean')  
+  strikingImage: DS.attr('boolean')
 });

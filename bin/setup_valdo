@@ -18,12 +18,9 @@ command_exists () {
 }
 
 if ! command_exists s3cmd ; then
-  if ! command_exists pip ; then
-    sudo pip install s3cmd
-  else
-    echo "You need to install s3cmd"
-    exit 1
-  fi
+  echo "You need to install s3cmd"
+  echo "Try `pip install s3cmd`. For more information, visit https://github.com/s3tools/s3cmd/blob/master/INSTALL"
+  exit 1
 fi
 
 if [ ! -d "$VALDO_REPO_DIR"]; then

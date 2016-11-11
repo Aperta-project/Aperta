@@ -89,11 +89,6 @@ All properties are applied in a media query.
   font-size: 1.4rem;
   overflow: hidden;
 
-  span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
 }
 
 #control-bar-paper-journal-logo {

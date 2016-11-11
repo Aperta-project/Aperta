@@ -203,32 +203,6 @@ class FiguresTask(BaseTask):
       self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
       add_new_figures_btn.click()
       self._validate_processing(figure)
-      # try:
-      #   self._wait_for_element(self._get(self._figure_processing_div), multiplier=1)
-      # except ElementDoesNotExistAssertionError:
-      #   logging.info('The spinner either cleared too fast, or never appeared.')
-      #
-      # # Check for processing elements, then when they disappear, move on. The loading div
-      # #   Can disappear at any time during this check, so wrap in a try/except block
-      # try:
-      #   self.set_timeout(1)
-      #   self._get(self._figure_processing_spinner)
-      #   processing_stanza = self._get(self._figure_processing_text)
-      #   assert processing_stanza.text == u'Figure Processing ... but you can continue ' \
-      #                                    u'working!', processing_stanza.text
-      #   processing_cancel_link = self._get(self._figure_processing_cancel)
-      #   assert processing_cancel_link.text == 'cancel'
-      #   # THIS IS THE spot to wait for an element to NOT be in the DOM
-      #   multiplier = 2  # timeout multiplier
-      #   try:
-      #     self._wait_for_not_element(self._figure_processing_div, multiplier)
-      #   except ElementExistsAssertionError:
-      #     disappearance_timeout = wait_timeout * multiplier
-      #     logging.error('Figure processing took longer than {0} seconds for '
-      #                   'figure: {1}'.format(disappearance_timeout, figure))
-      # except ElementDoesNotExistAssertionError:
-      #   logging.info('The loading div cleared before all elements could be verified')
-      #   self.restore_timeout()
 
       figure_candidates_list.remove(figure)
       chosen_figures_list.append(figure)
@@ -270,32 +244,6 @@ class FiguresTask(BaseTask):
         #   the upload.
         replace_input.send_keys(fn)
     self._validate_processing(replacement_figure)
-    # try:
-    #   self._wait_for_element(self._get(self._figure_processing_div), multiplier=1)
-    # except ElementDoesNotExistAssertionError:
-    #   logging.info('The spinner either cleared too fast, or never appeared.')
-    #
-    # # Check for processing elements, then when they disappear, move on. The loading div
-    # #   Can disappear at any time during this check, so wrap in a try/except block
-    # try:
-    #   self.set_timeout(1)
-    #   self._get(self._figure_processing_spinner)
-    #   processing_stanza = self._get(self._figure_processing_text)
-    #   assert processing_stanza.text == u'Figure Processing ... but you can continue ' \
-    #                                    u'working!', processing_stanza.text
-    #   processing_cancel_link = self._get(self._figure_processing_cancel)
-    #   assert processing_cancel_link.text == 'cancel'
-    #   # THIS IS THE spot to wait for an element to NOT be in the DOM
-    #   multiplier = 2  # timeout multiplier
-    #   try:
-    #     self._wait_for_not_element(self._figure_processing_div, multiplier)
-    #   except ElementExistsAssertionError:
-    #     disappearance_timeout = wait_timeout * multiplier
-    #     logging.error('Figure processing took longer than {0} seconds for '
-    #                   'figure: {1}'.format(disappearance_timeout, replacement_figure))
-    # except ElementDoesNotExistAssertionError:
-    #   logging.info('The loading div cleared before all elements could be verified')
-    #   self.restore_timeout()
 
     fig_list = []
     fig_list.append(new_figure)

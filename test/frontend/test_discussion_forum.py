@@ -146,6 +146,8 @@ class DiscussionForumTest(CommonTest):
     The reviewers accepts the role and checks for messages and post their own.
     All participants checks for content, user and time.
     """
+    web_page = random.choice(['manuscript viewer', 'workflow'])
+    logging.info('Test discussion on: {0}'.format(web_page))
     creator, reviewer_1, reviewer_2 = random.sample(users, 3)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
@@ -215,8 +217,21 @@ class DiscussionForumTest(CommonTest):
     msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
-    ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
+
+    ##
+    web_page = 'workflow'
+    if web_page == 'workflow':
+      ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[reviewer_1, reviewer_2])
+    elif web_page == 'manuscript viewer':
+      dashboard_page.go_to_manuscript(paper_id)
+      ms_viewer = ManuscriptViewerPage(self.getDriver())
+      # Add R1 y R2
+      ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
+      ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
+        participants=[reviewer_1, reviewer_2])
+
+
     # Staff user logout
     ms_viewer.logout()
 
@@ -256,6 +271,10 @@ class DiscussionForumTest(CommonTest):
          'front end: {1}'.format(msg_1, comment_body)
     msg_2 = generate_paragraph()[2]
     ms_viewer.post_discussion(msg_2, mention=reviewer_2['user'])
+    # Look for the mention and check style
+    mention = ms_viewer.get_mention(reviewer_2['user'])
+    assert mention, 'Mention {0} is not present in the post'.format(reviewer_2['user'])
+    ms_viewer.validate_mention_style(mention)
     ms_viewer.logout()
 
     # reviewer 2

@@ -110,10 +110,10 @@ class AuthenticatedPage(PlosPage):
     self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
     self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
     self._post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-
     self._comment_name = (By.CLASS_NAME, 'comment-name')
     self._comment_date = (By.CLASS_NAME, 'comment-date')
     self._comment_body = (By.CLASS_NAME, 'comment-body')
+    self._mention = (By.CLASS_NAME, 'discussion-at-mention')
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
@@ -664,7 +664,7 @@ class AuthenticatedPage(PlosPage):
       msg_body.send_keys(generate_paragraph()[2] + ' ')
     if mention:
       # Note: At this stage only Staff users can be mentioned.
-      msg_body.send_keys('@' + mention + Keys.ENTER)
+      msg_body.send_keys('@' + mention)
       time.sleep(1)
       msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     time.sleep(1)
@@ -703,10 +703,9 @@ class AuthenticatedPage(PlosPage):
     msg_body = self._get(self._message_body_field)
     msg_body.send_keys(msg + ' ')
     time.sleep(1)
-    import pdb; pdb.set_trace()
     if mention:
       # Note: At this stage only Staff users can be mentioned.
-      msg_body.send_keys('@' + mention + Keys.ENTER)
+      msg_body.send_keys('@' + mention)
       time.sleep(1)
       msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
@@ -714,6 +713,19 @@ class AuthenticatedPage(PlosPage):
     # Need to wait for make sure the post is sent
     time.sleep(3)
     return None
+
+  def get_mention(self, user):
+    """
+    Get the object of a mention
+    :param user:
+    :return: object of a mention
+    """
+    comment_body = self._get(self._comment_body)
+    mention = comment_body.find_element(*self._mention)
+    if mention.text[1:] == user:
+      return mention
+    else:
+      raise('{0} not found'.format(user))
 
   def scroll_element_into_view_below_toolbar(self, element):
     """
@@ -763,6 +775,18 @@ class AuthenticatedPage(PlosPage):
     assert border.value_of_css_property('color') == 'rgba(128, 128, 128, 1)', border.value_of_css_property('color')
     assert border.value_of_css_property('background-color') in (aperta_green_light, aperta_blue_light, aperta_grey_light), \
         border.value_of_css_property('background-color')
+
+  @staticmethod
+  def validate_mention_style(element):
+    """
+    Validate style of the mention
+    """
+    assert application_typeface in element.value_of_css_property('font-family'), \
+        element.value_of_css_property('font-family')
+    assert element.value_of_css_property('color') == aperta_green, element.value_of_css_property('color')
+    assert element.value_of_css_property('font-size') == '14px', element.value_of_css_property('font-size')
+    assert element.value_of_css_property('line-height') == '18.2px', element.value_of_css_property('line-height')
+    assert element.value_of_css_property('font-weight') == '400', element.value_of_css_property('font-weight')
 
   @staticmethod
   def validate_standard_border(border):

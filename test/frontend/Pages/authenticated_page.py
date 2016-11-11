@@ -418,7 +418,7 @@ class AuthenticatedPage(PlosPage):
     :return: void function
     """
     error_msg = ''
-    self.set_timeout(15)
+    self.set_timeout(3)
     try:
       # no need to include the closer character in message
       error_msg = self._get(self._flash_error_msg).text.strip(u'\xd7')

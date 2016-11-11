@@ -159,11 +159,12 @@ class FigureTaskTest(CommonTest):
     #   the completion button.
     figures_task.task_ready()
     figures_task.check_question()
-    figures_task.upload_figure('figure1_tiff_lzw.tiff')
+    figures_task.upload_figure(figure2send='figure1_tiff_lzw.tiff')
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 22s
     time.sleep(25)
-    figures_list = figures_task.replace_figure('figure2_tiff_lzw.tiff')
+    figures_list = figures_task.replace_figure(figure2replace='figure1_tiff_lzw.tiff',
+                                               replacement_figure='figure2_tiff_lzw.tiff')
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)
     time.sleep(5)

@@ -538,7 +538,9 @@ class FiguresTask(BaseTask):
       assert processing_stanza.text == u'Figure Processing ... but you can continue ' \
                                        u'working!', processing_stanza.text
       processing_cancel_link = self._get(self._figure_processing_cancel).text
-      assert processing_cancel_link == 'cancel'
+      assert processing_cancel_link == 'cancel', 'Processing Cancel link text: {0} is not ' \
+                                                 'what is expected: ' \
+                                                 'cancel'.format(processing_cancel_link)
       # THIS IS THE spot to wait for an element to NOT be in the DOM
       multiplier = 2  # timeout multiplier
       try:

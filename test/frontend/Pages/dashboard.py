@@ -346,12 +346,12 @@ class DashboardPage(AuthenticatedPage):
                                   uid (of user))
     """
     logging.debug(user)
-    username = user['user']
+    email = user['email']
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
-    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;',
-                               (username,))[0][0]
-    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE email = %s;',
+                               (email,))[0][0]
+    uid = PgSQL().query('SELECT id FROM users WHERE email = %s;', (email,))[0][0]
     # Get count of distinct papers from paper_roles for validating count of manuscripts on
     # dashboard welcome message
     active_manuscript_list = []
@@ -740,9 +740,9 @@ class DashboardPage(AuthenticatedPage):
                                                  an email address ('email')
     :return: Count of unaccepted invites (does not include rejected or accepted invites)
     """
-    username = username['user']
-    logging.info('Checking dashboard invite stanza for user {0}'.format(username))
-    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+    email = username['email']
+    logging.info(u'Checking dashboard invite stanza for user {0}'.format(username))
+    uid = PgSQL().query('SELECT id FROM users WHERE email = %s;', (email,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
                                      'WHERE state = %s '
                                      'AND invitee_id = %s;', ('invited', uid))[0][0]

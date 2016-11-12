@@ -1,3 +1,5 @@
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/1efd84a51e2e43b48595bbcce5d08c73/badge.svg)](https://www.quantifiedcode.com/app/project/1efd84a51e2e43b48595bbcce5d08c73)
+    
 # tahi-integration
 Contains the base integration test framework and tahi core test cases and page object models. 
 

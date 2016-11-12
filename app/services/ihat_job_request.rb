@@ -28,6 +28,8 @@ class IhatJobRequest
       'docx_to_html'
     when [:html, :docx]
       'html_to_docx'
+    when [:pdf, :html]
+      'pdf_to_html'
     else
       fail "Unable to find ihat recipe name for converting '#{from_format}' to '#{to_format}'"
     end

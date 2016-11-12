@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PaperConversionsController, type: :controller do
   include Rails.application.routes.url_helpers
 
-  let(:paper) { instance_double(Paper, id: 99, file: nil, to_param: '99') }
+  let(:paper) { instance_double(Paper, id: 99, file: nil, to_param: 'JOURNAL1.10099', short_doi: 'JOURNAL1.10099') }
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
   let(:user) { FactoryGirl.create :user }
 
@@ -15,7 +15,7 @@ describe PaperConversionsController, type: :controller do
 
   describe 'GET export' do
     subject(:do_request) do
-      get :export, short_doi: paper.to_param, export_format: 'docx', format: :json
+      get :export, id: paper.to_param, export_format: 'docx', format: :json
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -35,7 +35,7 @@ describe PaperConversionsController, type: :controller do
       context 'with a paper that needs conversion' do
         subject(:do_request) do
           VCR.use_cassette('convert_to_docx') do
-            get :export, short_doi: paper.id, export_format: 'docx', format: :json
+            get :export, id: paper.id, export_format: 'docx', format: :json
           end
         end
 
@@ -129,7 +129,7 @@ describe PaperConversionsController, type: :controller do
       end
 
       it 'returns the download url when the status is checked' do
-        get :status, id: paper.id, job_id: 'source', export_format: 'docx', format: :json
+        get :status, short_doi: paper.id, job_id: 'source', export_format: 'docx', format: :json
         expect(response.status).to eq(200)
         expect(res_body['url']).to eq(manuscript_attachment.url)
       end
@@ -148,3 +148,4 @@ describe PaperConversionsController, type: :controller do
     end
   end
 end
+

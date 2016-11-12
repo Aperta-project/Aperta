@@ -8,7 +8,7 @@ class PhasesController < ApplicationController
   end
 
   def create
-    paper = Paper.find_by_short_doi(params[:phase][:paper_short_doi])
+    paper = Paper.find_by_id_or_short_doi(params[:phase][:paper_short_doi])
     phase = paper.phases.create!(new_phase_params)
     respond_with phase
   end

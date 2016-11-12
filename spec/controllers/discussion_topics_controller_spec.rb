@@ -13,7 +13,7 @@ describe DiscussionTopicsController do
 
   describe 'GET index' do
     subject(:do_request) do
-      xhr :get, :index, format: :json, paper_id: paper.id
+      xhr :get, :index, format: :json, paper_short_doi: paper.short_doi
     end
 
     it_behaves_like 'an unauthenticated json request'

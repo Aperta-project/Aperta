@@ -75,14 +75,12 @@ class AuthenticatedPage(PlosPage):
     self._nav_profile_link = (By.ID, 'nav-profile')
     self._nav_signout_link = (By.ID, 'nav-signout')
     # Global toolbar Icons
-    self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
-    self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
-    self._editable_checkbox = (By.ID, 'nav-paper-editable')
+    self._toolbar_items = (By.CLASS_NAME, 'control-bar-button')
+    self._editable_label = (By.ID, 'nav-paper-editable')
+    self._editable_checkbox = (By.CSS_SELECTOR, 'label#nav-paper-editable > span > input')
     self._recent_activity = (By.ID, 'nav-recent-activity')
-    self._recent_activity_label = (By.CSS_SELECTOR, 'div.control-bar-link')
     self._discussion_link = (By.ID, 'nav-discussions')
-    self._discussions_icon = (By.CSS_SELECTOR, 'a.control-bar-item--last div')
-    self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
+    self._discussions_icon = (By.CSS_SELECTOR, 'a#nav-discussions > i')
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-button')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar label.bar-item')
@@ -288,7 +286,7 @@ class AuthenticatedPage(PlosPage):
     #             '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
     #             '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
     # assert recent_activity_icon.value_of_css_property('color') == aperta_green
-    recent_activity_text = self._get(self._recent_activity_label)
+    recent_activity_text = self._get(self._recent_activity)
     assert recent_activity_text
     assert 'Recent Activity' in recent_activity_text.text, recent_activity_text.text
     # assert recent_activity_text.value_of_css_property('font-size') == '10px'
@@ -306,7 +304,7 @@ class AuthenticatedPage(PlosPage):
     # assert discussions_icon.value_of_css_property('font-weight') == '400'
     # assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
     # assert discussions_icon.value_of_css_property('font-style') == 'normal'
-    discussions_label = self._get(self._discussions_label)
+    discussions_label = self._get(self._discussion_link)
     assert discussions_label
     assert discussions_label.text.lower() == 'discussions', discussions_label.text
 
@@ -435,14 +433,15 @@ class AuthenticatedPage(PlosPage):
       # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
       logging.error('Error Message found: {0}'.format(error_msg_string))
 
-  def check_for_flash_success(self):
+  def check_for_flash_success(self, timeout=15):
     """
     Check that any process (submit, save, send, etc) triggered a flash success message
     use where we are supposed to explicitly put up a success message - though not for
     new manuscript creation - there is a custom method for that. Closes message, if found.
+    :param timeout: a time in seconds to wait for the success message (optional, default 15s)
     :return: text of flash success message
     """
-    self.set_timeout(15)
+    self.set_timeout(timeout)
     success_msg = self._get(self._flash_success_msg)
     self.close_flash_message()
     return success_msg.text

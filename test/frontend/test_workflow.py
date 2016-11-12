@@ -32,12 +32,6 @@ class ApertaWorkflowTest(CommonTest):
     - After adding card, go to the workflow page
   """
 
-  def _go_to_workflow(self):
-    """Internal method to reach workflow page"""
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_workflow_link()
-    return WorkflowPage(self.getDriver())
-
   def test_validate_components_styles(self):
     """
     test_workflow: Validates elements and styles of the workflow page
@@ -59,8 +53,11 @@ class ApertaWorkflowTest(CommonTest):
                         random_bit=True,
                         title='Created Document for Workflow test',
                         )
-    time.sleep(12)
-    workflow_page = self._go_to_workflow()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    manuscript_page.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
     workflow_page.validate_initial_page_elements_styles()
     workflow_page.validate_nav_toolbar_elements(workflow_user)
     return self
@@ -87,10 +84,12 @@ class ApertaWorkflowTest(CommonTest):
                           random_bit=True,
                           title='Created Document for Workflow test',
                           )
-    time.sleep(12)
-    workflow_page = self._go_to_workflow()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    manuscript_page.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
     # GET URL
-    time.sleep(2)
     workflow_url = self._driver.current_url
     # Count cards in first column
     start_cards = workflow_page.count_cards_first_column()

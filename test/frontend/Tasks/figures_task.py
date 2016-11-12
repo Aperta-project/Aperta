@@ -324,6 +324,7 @@ class FiguresTask(BaseTask):
           files = filter(os.path.isfile, os.listdir('/tmp'))
           files = [os.path.join('/tmp', f) for f in files]  # add path to each file
           files.sort(key=lambda x: os.path.getmtime(x))
+          logging.info(files)
           # the following can fail if other processes write/clean-up files in /tmp
           try:
             newest_file = files[-1]
@@ -338,6 +339,7 @@ class FiguresTask(BaseTask):
             files = filter(os.path.isfile, os.listdir('/tmp'))
             files = [os.path.join('/tmp', f) for f in files]  # add path to each file
             files.sort(key=lambda x: os.path.getmtime(x))
+            logging.info(files)
             try:
               newest_file = files[-1]
             except IndexError:

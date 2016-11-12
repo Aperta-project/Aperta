@@ -311,7 +311,7 @@ class FiguresTask(BaseTask):
       for fig in figure:
         fig = urllib.quote_plus(fig)
         if fig in page_fig_item.text:
-          logging.info('Match!')
+          logging.debug('Match!')
           try:
             page_fig_item.click()
           except WebDriverException:
@@ -329,7 +329,9 @@ class FiguresTask(BaseTask):
             newest_file = files[-1]
           except IndexError:
             os.chdir(orig_dir)
-            raise
+            logging.warning('Another process may deleted files from /tmp. While rare, '
+                            'this should not be considered a failure.')
+            return
           logging.debug(newest_file)
           while newest_file.split('.')[-1] == 'part':
             time.sleep(5)
@@ -340,7 +342,9 @@ class FiguresTask(BaseTask):
               newest_file = files[-1]
             except IndexError:
               os.chdir(orig_dir)
-              raise
+              logging.warning('Another process may deleted files from /tmp. While rare, '
+                              'this should not be considered a failure.')
+              return
             logging.debug(newest_file.split('.')[-1])
           newest_file = newest_file.split('/')[-1]
           # doing the following ahead of the assert to ensure we end up in the right directory

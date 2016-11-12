@@ -73,7 +73,7 @@ export default Ember.Component.extend({
   },
 
   resetAuthor() {
-    this.get('author').rollback();
+    this.get('author').rollbackAttributes();
   },
 
   actions: {

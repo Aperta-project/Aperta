@@ -41,7 +41,7 @@ class InviteReviewersCardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
 
@@ -58,7 +58,7 @@ class InviteReviewersCardTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -93,7 +93,7 @@ class InviteReviewersCardTest(CommonTest):
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.click_view_invites_button()
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
@@ -136,7 +136,7 @@ class InviteReviewersCardTest(CommonTest):
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())

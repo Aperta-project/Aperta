@@ -13,6 +13,7 @@ from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 from Cards.initial_decision_card import InitialDecisionCard
+from Tasks.figures_task import FiguresTask
 from frontend.common_test import CommonTest
 
 """
@@ -51,21 +52,13 @@ class ManuscriptViewerTest(CommonTest):
     logging.info('Running test_validate_components_styles')
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
-    # Checking if there is already a manuscript one can use
-    if dashboard_page.validate_manuscript_section_main_title(user)[0]:
-      self.select_preexisting_article(first=True)
-    else:
-      # create a new manuscript
-      dashboard_page.click_create_new_submission_button()
-      # We recently became slow drawing this overlay (20151006)
-      time.sleep(.5)
-      # Temporary changing timeout
-      dashboard_page.set_timeout(120)
-      self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
-      # Time needed for iHat conversion. This is not quite enough time in all circumstances
-      time.sleep(5)
+    dashboard_page.page_ready()
+    # create a new manuscript
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(5)
+    manuscript_viewer.page_ready_post_create()
+    manuscript_viewer.close_infobox()
     manuscript_viewer.validate_independent_scrolling()
     manuscript_viewer.validate_nav_toolbar_elements(user)
     if user in admin_users:
@@ -91,11 +84,12 @@ class ManuscriptViewerTest(CommonTest):
     for user in random_users:
       logging.info('Logging in as user: {0}'.format(user))
       dashboard_page = self.cas_login(user['email'])
-      dashboard_page.set_timeout(120)
+      dashboard_page.page_ready()
       if dashboard_page.get_dashboard_ms(user):
         dashboard_page.restore_timeout()
         self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+        manuscript_viewer.page_ready()
         # Check if paper is loaded by calling an element in paper viewer
         manuscript_viewer._get(manuscript_viewer._paper_title)
         journal_id = manuscript_viewer.get_journal_id()
@@ -118,7 +112,6 @@ class ManuscriptViewerTest(CommonTest):
                     .format(user, paper_id, permissions, max_elements))
         manuscript_viewer.validate_roles(max_elements)
       else:
-        dashboard_page.restore_timeout()
         logging.info('No manuscripts present for user: {0}'.format(user['user']))
       dashboard_page.logout()
     return self
@@ -149,30 +142,22 @@ class ManuscriptViewerTest(CommonTest):
     user = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
-    # create a new manuscript
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    # We recently became slow drawing this overlay (20151006)
-    time.sleep(.5)
-    # Temporary changing timeout
-    dashboard_page.set_timeout(120)
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # AC1 Test for info box
-    infobox = manuscript_page.get_infobox()
-    dashboard_page.restore_timeout()
-    # Note: Request title to make sure the required page is loaded
+    manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
-
+    # AC1 Test for info box
+    infobox = manuscript_page.get_infobox()
     # AC5 Test for Message for initial submission
-    assert "Please provide the following information to submit your manuscript for "\
-        "Initial Submission." in manuscript_page.get_submission_status_initial_submission_todo(),\
-        manuscript_page.get_submission_status_initial_submission_todo()
+    assert 'Please provide the following information to submit your manuscript for Initial ' \
+           'Submission.' in manuscript_page.get_submission_status_initial_submission_todo(), \
+           manuscript_page.get_submission_status_initial_submission_todo()
     # AC2 Test closing the infobox
     infobox.find_element_by_id('sp-close').click()
-    time.sleep(3)
+    time.sleep(1)
     manuscript_page.set_timeout(1)
     try:
       manuscript_page.get_infobox()
@@ -186,10 +171,7 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_page.click_dashboard_link()
     self._driver.get(paper_url)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Note: Request title to make sure the required page is loaded
-    manuscript_page.set_timeout(60)
-    manuscript_page.get_paper_title_from_page()
-    manuscript_page.restore_timeout()
+    manuscript_page.page_ready()
     manuscript_page.set_timeout(.5)
     try:
       manuscript_page.get_infobox()
@@ -207,11 +189,11 @@ class ManuscriptViewerTest(CommonTest):
     # APERTA-6840 - we disabled add collaborators temporarily
     # manuscript_page.add_collaborators(creator_login4)
     paper_id = manuscript_page.get_current_url().split('/')[-1]
-    # Complete IMG card to force display of submission status project
-    time.sleep(1)
+    # Complete IMG card to force display of submission status
     logging.debug('Opening the Figures task')
     manuscript_page.click_task('Figures')
-    time.sleep(5)
+    figures_task = FiguresTask(self.getDriver())
+    figures_task.task_ready()
     manuscript_page.complete_task('Figures')
     manuscript_page.click_task('Figures')
     # NOTE: At this point browser renders the page with errors only on automation runs
@@ -222,9 +204,10 @@ class ManuscriptViewerTest(CommonTest):
     # APERTA-6840 - we disabled add collaborators temporarily
     # manuscript_page.logout()
     # dashboard_page = self.cas_login(email=creator_login4['email'], password=login_valid_pw)
+    # dashboard_page.page_ready()
     # dashboard_page.go_to_manuscript(paper_id)
-    # time.sleep(1)
     # manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # manuscript_page.page_ready()
     # manuscript_page.set_timeout(.5)
     # # AC4 Green info box does not appear for collaborators
     # try:
@@ -243,29 +226,27 @@ class ManuscriptViewerTest(CommonTest):
     # Approve initial Decision
     logging.info('Logging in as user: {0}'.format(super_admin_login['user']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
-    time.sleep(1)
-    # the following call should only succeed for superadm
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
-    time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_card('initial_decision')
     initial_decision_card = InitialDecisionCard(self.getDriver())
+    initial_decision_card.card_ready()
     initial_decision_card.execute_decision('invite')
-    time.sleep(5)
-    manuscript_page.logout()
+    workflow_page.logout()
 
     # Test for AC8
     logging.info('Logging in as user: {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
-    time.sleep(1)
-    # the following call should only succeed for sa_login
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     # AC8: Message for full submission when is ready for submission
     manuscript_page._get(manuscript_page._nav_aperta_dashboard_link)
-    time.sleep(5)
     assert 'Your manuscript is ready for Full Submission.' in \
         manuscript_page.get_submission_status_ready2submit_text(), \
         manuscript_page.get_submission_status_ready2submit_text()
@@ -283,19 +264,13 @@ class ManuscriptViewerTest(CommonTest):
     logging.info('Running test_paper_download')
     logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
-    # Checking if there is already a manuscript one can use
-    if dashboard_page.get_dashboard_ms(user):
-      self.select_preexisting_article(first=True)
-    else:
-      # create a new manuscript
-      dashboard_page.click_create_new_submission_button()
-      dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
-      # Temporary changing timeout
-      dashboard_page.set_timeout(120)
-      self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
+    dashboard_page.page_ready()
+    # create a new manuscript
+    dashboard_page.click_create_new_submission_button()
+    dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
+    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    # check for flash message
-    manuscript_viewer.validate_ihat_conversions_success(timeout=45)
+    manuscript_viewer.page_ready_post_create()
 
     # Need to wait for url to update
     count = 0

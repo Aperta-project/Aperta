@@ -41,7 +41,7 @@ class InviteAECardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -62,7 +62,7 @@ class InviteAECardTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
@@ -96,7 +96,7 @@ class InviteAECardTest(CommonTest):
     workflow_page.logout()
 
     dashboard_page = self.cas_login(email=academic_editor_login['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.click_view_invites_button()
     # AE accepts or declines invite
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
@@ -139,7 +139,7 @@ class InviteAECardTest(CommonTest):
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     # go to card

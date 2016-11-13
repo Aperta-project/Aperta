@@ -124,7 +124,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email']) if init \
         else DashboardPage(self.getDriver())
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='bdd_cns',
                         journal='PLOS Wombat',

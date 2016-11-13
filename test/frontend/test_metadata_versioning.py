@@ -56,7 +56,7 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
@@ -129,7 +129,7 @@ class MetadataVersioningTest(CommonTest):
     # Log in as a author to make some changes
     logging.info('Logging in as creator to make changes')
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()

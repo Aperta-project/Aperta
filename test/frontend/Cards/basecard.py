@@ -52,31 +52,11 @@ class BaseCard(AuthenticatedPage):
     # Versioning locators - only applicable to metadata cards
     self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
-    self._invite_text = (By.CSS_SELECTOR, 'div.invite-editors label')
-    self._invite_box = (By.ID, 'invitation-recipient')
-    self._compose_invite_button = (By.CLASS_NAME,'compose-invite-button')
-    # The invite table is shared between the invite ae and invite reviewer cards
-    self._invitees_table = (By.CLASS_NAME, 'invitees')
-    # There can be an arbitrary number of invitees, but once one is accepted, all others are
-    #   revoked - we retain information about revoked invitations.
-    self._invitee_listing = (By.CSS_SELECTOR, 'tr.invitation')
-    # the following locators assume they will be searched for by find element within the scope of
-    #   the above, enclosing div
-    self._invitee_avatar = (By.CSS_SELECTOR, 'img.invitee-thumbnail')
-    self._invitee_full_name = (By.CSS_SELECTOR, 'span.invitee-full-name')
-    self._invitee_updated_at = (By.CSS_SELECTOR, 'span.invitation-updated-at')
-    self._invitee_state = (By.CSS_SELECTOR, 'span.invitation-state')
-    self._invitee_revoke = (By.CLASS_NAME, 'invitation-item-action-text')
-    self._invitation_state = (By.CLASS_NAME, 'invitation-item-status')
+
     # Error message associated with form validation
     self._error_msg = (By.CLASS_NAME, 'error-message')
 
   # Common actions for all cards
-  def click_task_completed_checkbox(self):
-    """Click task completed checkbox"""
-    self._get(self._completed_check).click()
-    return self
-
   def click_close_button_bottom(self):
     """Click close button on bottom"""
     self._get(self._bottom_close_button).click()
@@ -101,10 +81,6 @@ class BaseCard(AuthenticatedPage):
       return True
     else:
       raise ValueError('Completed button in unexpected state {0}'.format(btn_label))
-
-  def click_completed_checkbox(self):
-    """Click completed checkbox"""
-    self._get(self._completed_check).click()
 
   def click_close_button(self):
     """Click close button"""
@@ -195,15 +171,15 @@ class BaseCard(AuthenticatedPage):
     self.compare_unicode(html_header_title.text, title)
     # Validate Styles
     assert application_typeface in html_header_author.value_of_css_property('font-family'), \
-      html_header_author.value_of_css_property('font-family')
+        html_header_author.value_of_css_property('font-family')
     assert application_typeface in html_header_msid.value_of_css_property('font-family'), \
-      html_header_msid.value_of_css_property('font-family')
+        html_header_msid.value_of_css_property('font-family')
     assert application_typeface in html_header_paper_type.value_of_css_property('font-family'), \
-      html_header_paper_type.value_of_css_property('font-family')
+        html_header_paper_type.value_of_css_property('font-family')
     assert application_typeface in html_header_state.value_of_css_property('font-family'), \
-      html_header_state.value_of_css_property('font-family')
+        html_header_state.value_of_css_property('font-family')
     assert application_typeface in html_header_title.value_of_css_property('font-family'), \
-      html_header_title.value_of_css_property('font-family')
+        html_header_title.value_of_css_property('font-family')
     # APERTA-6497
     # assert html_header_title.value_of_css_property('font-size') == '18px', \
     #    html_header_title.value_of_css_property('font-size')
@@ -292,62 +268,6 @@ class BaseCard(AuthenticatedPage):
     :return: Version string
     """
     return self.get(self._versioned_metadata_version_string).text
-
-  def revoke_invitee(self, invitee, role):
-    """
-    A method to revoke an invitation for a user
-    :param invitee: The user with the invite to revoke
-    :param role: The role whose invitation you want to revoke
-    :return: void function
-    """
-    invited = self._gets(self._invitee_listing)
-    for invitation in invited:
-      pagefullname = invitation.find_element(*self._invitee_full_name)
-      revoke = invitation.find_element(*self._invitee_revoke)
-      logging.info('Checking for match between invitee to be revoked: {0} and '
-                   'invitation listing {1}'.format(invitee['name'], pagefullname.text))
-      if invitee['name'] in pagefullname.text:
-        logging.info('Removing role {0} for {1}'.format(role, invitee['name']))
-        revoke.click()
-        time.sleep(5)
-    self._validate_invitation_revocation(invitee, role)
-
-  def validate_invitation(self, invitee, role):
-    """
-    A method to validate the invitation for a role for a user
-    :param invitee: person for whom the invite should have been sent
-    :param role: role whose invite should have been extended for the assignee
-    :return: void function
-    """
-    invited = self._gets(self._invitee_listing)
-    for invitation in invited:
-      pagefullname = invitation.find_element(*self._invitee_full_name)
-      logging.info('Checking invitee ({0}) for match among invitees'.format(invitee['name']))
-      if invitee['name'] in pagefullname.text:
-        match = True
-      else:
-        continue
-      if not match:
-        raise ElementDoesNotExistAssertionError('No Invitation found for {0} and '
-                                                '{1}'.format(invitee['name'], role))
-
-  def _validate_invitation_revocation(self, invitee, role):
-    """
-    An internal method to validate the revocation of an invite for a role for a user
-    :param invitee: person for whom the invite should have been revoked
-    :param role: role whose invite should have been revoked for the assignee
-    :return: void function
-    """
-    invited = self._gets(self._invitee_listing)
-    for invitation in invited:
-      pagefullname = invitation.find_element(*self._invitee_full_name)
-      logging.info('Checking invitee ({0}) for match among remaining '
-                   'invitees'.format(invitee['name']))
-      if invitee['name'] in pagefullname.text:
-        state = invitation.find_element(*self._invitation_state).text
-        if 'Rescinded' not in state:
-          raise ElementExistsAssertionError('Invitation for {0} and {1} - should have been '
-                                            'Rescinded'.format(invitee['name'], role))
 
   def card_ready(self):
     """

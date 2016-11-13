@@ -10,7 +10,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
+from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.PostgreSQL import PgSQL
+from Base.Resources import docs, supporting_info_files, figures, pdfs
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'sbassi@plos.org'
@@ -23,35 +25,32 @@ class InviteCard(BaseCard):
     super(InviteCard, self).__init__(driver)
 
     # Locators - Instance members
-    self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invitation-item-action-send')
     self._rescind_button = (By.CSS_SELECTOR, 'span.invite-rescind')
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
-    self._edit_save_invitation_btn = (By.CLASS_NAME, 'invitation-save-button')
+    self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-save-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
-    self._edit_invite_text_save = (By.CSS_SELECTOR, 'button.invitation-save-button')
-
     # new action buttons
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
     self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
     self._invite_send_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-send')
-
-    self._invitees_table = (By.CLASS_NAME, 'invitees')
     # There can be an arbitrary number of invitees, but once one is accepted, all others are
     #   revoked - we retain information about revoked invitations.
-    self._invitee_listing = (By.CLASS_NAME, 'invitation-item')
-    self._reason_suggestions = (By.CLASS_NAME, 'invitation-item-decline-info')
+    self._invitee_listing = (By.CSS_SELECTOR, 'div.invitation-item')
+    self._closed_invitee_listing = (By.CSS_SELECTOR, 'div.invitation-item--closed')
+    self._open_invitee_listing = (By.CSS_SELECTOR, 'div.invitation-item--show')
+    self._reason_suggestions = (By.CSS_SELECTOR, 'div.invitation-item-decline-info')
 
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
     self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
-    self._invitee_state = (By.CLASS_NAME, 'invitation-item-status')
-    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    self._invitee_state = (By.CSS_SELECTOR, 'div.invitation-item-status > span')
     self._replace_attachment = (By.CLASS_NAME, 'replace-attachment')
+
 
   # POM Actions
   def invite(self, user):
@@ -63,8 +62,8 @@ class InviteCard(BaseCard):
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
-    self._wait_for_element(self._get(self._edit_invite_text_save))
-    self._get(self._edit_invite_text_save).click()
+    self._wait_for_element(self._get(self._edit_add_to_queue_btn))
+    self._get(self._edit_add_to_queue_btn).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
     self._get(self._invite_send_invite_button).click()
     # The problem with this next item is that it requires the button to be clickable
@@ -117,47 +116,23 @@ class InviteCard(BaseCard):
       assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
     else:
       assert 'Abstract is not available' in invite_text, invite_text
+
+    # APERTA-8305 Currently QA lacks a method to attach a file to the invite cards.
     # Attach a file
-    sample_files = ('frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
-                    'frontend/assets/NC3Rs_ARRIVE_Guidelines_2013.pdf',
-                    'frontend/assets/docs/Chemical_Synthesis_of_Bacteriophage_G4.doc',
-                    'frontend/assets/imgs/plos.gif',
-                    'frontend/assets/imgs/fig1.eps',
-                    'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.png',
-                    'frontend/assets/imgs/are_you_edible_packbits.tiff'
-                    'frontend/assets/supportingInfo/S1_File 2.xlsx'
-                    )
-    file_1, file_2 = random.sample(sample_files, 2)
-    fn = os.path.join(os.getcwd(), file_1)
-    self.attach_file(fn)
-    # look for file name and replace attachment link
-    self._wait_for_element(self._get(self._replace_attachment))
-    attachments = self.get_attached_file_names()
-    fn = fn.split('/')[-1].replace(' ', '+')
-    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
-    # Attach a sencond file
-    fn = os.path.join(os.getcwd(), file_2)
-    self.attach_file(fn)
-    # Wait for file to attach
-    counter = 0
-    while True:
-      if len(self._gets(self._replace_attachment)) == 2 or counter == 60:
-        break
-      counter += 1
-      time.sleep(.5)
-    attachments = self.get_attached_file_names()
-    fn = fn.split('/')[-1].replace(' ', '+')
-    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
-    # Delete the second file from the attach
-    self.delete_attach_file(fn)
-    # Test that there is only one attach after the delete
-    counter = 0
-    while True:
-      if len(self._gets(self._replace_attachment)) == 1 or counter == 60:
-        break
-      counter += 1
-      time.sleep(.5)
-    self._get(self._edit_save_invitation_btn).click()
+    # sample_files = docs + pdfs + figures + supporting_info_files
+    # file_1, file_2 = random.sample(sample_files, 2)
+    # logging.info('File 1 is {0}\nFile 2 is {1}'.format(file_1, file_2))
+    # fn = os.path.join(os.getcwd(), file_1)
+    # self.attach_file(fn)
+    # # look for file name and replace attachment link
+    # self._wait_for_element(self._get(self._replace_attachment))
+    # attachments = self.get_attached_file_names()
+    # fn = fn.split('/')[-1].replace(' ', '+')
+    # assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
+
+    # Attach a second file
+
+    self._get(self._edit_add_to_queue_btn).click()
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])
@@ -214,7 +189,7 @@ class InviteCard(BaseCard):
     self.validate_common_elements_styles(paper_id)
     # There is no definition of this external label style in the style guide. APERTA-7311
     #   currently, a new style validator has been implemented to match this UI
-    user_input = self._get(self._invite_box)
+    user_input = self._get(self._recipient_field)
     card_title = self._get(self._card_heading)
     if card_type == 'reviewer':
       assert card_title.text == 'Invite Reviewers', card_title.text
@@ -238,3 +213,77 @@ class InviteCard(BaseCard):
     self.validate_secondary_big_green_button_style(btn)
     user_input.clear()
     return None
+
+  def revoke_invitee(self, invitee, role):
+    """
+    A method to revoke an invitation for a user
+    :param invitee: The user with the invite to revoke
+    :param role: The role whose invitation you want to revoke
+    :return: void function
+    """
+    invited = self._gets(self._invitee_listing)
+    for invitation in invited:
+      pagefullname = invitation.find_element(*self._invitee_full_name)
+      revoke = self._get(self._rescind_button)
+      logging.info('Checking for match between invitee to be revoked: {0} and '
+                   'invitation listing {1}'.format(invitee['name'], pagefullname.text))
+      if invitee['name'] in pagefullname.text:
+        logging.info('Removing role {0} for {1}'.format(role, invitee['name']))
+        revoke.click()
+        # Close the open revoked invite so the status will be present
+        logging.info('Closing Revoked invite...')
+        pagefullname.click()
+    self._validate_invitation_revocation(invitee, role)
+
+  def validate_invitation(self, invitee, role):
+    """
+    A method to validate the invitation for a role for a user
+    :param invitee: person for whom the invite should have been sent
+    :param role: role whose invite should have been extended for the assignee
+    :return: void function
+    """
+    invited = self._gets(self._invitee_listing)
+    for invitation in invited:
+      pagefullname = invitation.find_element(*self._invitee_full_name)
+      logging.info('Checking invitee ({0}) for match among invitees'.format(invitee['name']))
+      if invitee['name'] in pagefullname.text:
+        match = True
+      else:
+        continue
+      if not match:
+        raise ElementDoesNotExistAssertionError('No Invitation found for {0} and '
+                                                '{1}'.format(invitee['name'], role))
+
+  def _validate_invitation_revocation(self, invitee, role):
+    """
+    An internal method to validate the revocation of an invite for a role for a user
+    :param invitee: person for whom the invite should have been revoked
+    :param role: role whose invite should have been revoked for the assignee
+    :return: void function
+    """
+    # It is very important to CLOSE any open invites or state information will not be present where
+    #   we are looking for it.
+    oes = False
+    self.set_timeout(5)
+    try:
+      opened_invitations = self._gets(self._open_invitee_listing)
+      oes = True
+    except ElementDoesNotExistAssertionError:
+      logging.info('There are no expanded invitation listings')
+    self.restore_timeout()
+    if oes:
+      for opened_invite in opened_invitations:
+        pagefullname = opened_invite.find_element(*self._invitee_full_name)
+        pagefullname.click()
+
+    invited = self._gets(self._invitee_listing)
+    for invitation in invited:
+      pagefullname = invitation.find_element(*self._invitee_full_name)
+      logging.info('Checking invitee ({0}) for match among remaining '
+                   'invitees'.format(invitee['name']))
+      if invitee['name'] in pagefullname.text:
+        state = invitation.find_element(*self._invitee_state).text
+        logging.info(state)
+        if 'Rescinded' not in state:
+          raise ElementExistsAssertionError('Invitation for {0} and {1} - should have been '
+                                            'Rescinded'.format(invitee['name'], role))

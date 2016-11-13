@@ -174,7 +174,8 @@ class AuthenticatedPage(PlosPage):
     self._replace_attachment = (By.CSS_SELECTOR, 'span.replace-attachment')
     self._attachment_div = (By.CSS_SELECTOR, 'div.attachment-manager')
     self._att_item = (By.CSS_SELECTOR, 'div.attachment-item')
-    self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
+    self._file_attach_btn = (By.CSS_SELECTOR, 'div.fileinput-button')
+    self._file_attach_input = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
 
   # POM Actions
@@ -184,7 +185,16 @@ class AuthenticatedPage(PlosPage):
     :param file_name: File name with the full path
     :return: None
     """
-    self._gets(self._file_attach_btn)[0].send_keys(file_name)
+    logging.info('Attach file called with {0}'.format(file_name))
+    attach_button = self._get(self._file_attach_btn)
+    # The following element is inside a hidden div so must use iget()
+    attach_input = self._iget(self._file_attach_input)
+    logging.info('Sending filename to input field')
+    attach_input.send_keys(file_name + Keys.ENTER)
+    # As soon as we send the file to the input field, the attach button becomes disabled
+    # APERTA-8305
+    # logging.info('About to click attach button')
+    # attach_button.click()
     return None
 
   def delete_attach_file(self, file_name):

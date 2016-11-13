@@ -13,7 +13,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import academic_editor_login, users, editorial_users
+from Base.Resources import academic_editor_login, users, editorial_users, pub_svcs_login
 from frontend.common_test import CommonTest
 from Cards.invite_ae_card import InviteAECard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -41,19 +41,15 @@ class InviteAECardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page._wait_for_page_load()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.set_timeout(15)
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-    manuscript_page.restore_timeout()
+    manuscript_page.page_ready_post_create()
+    manuscript_page.close_infobox()
     paper_url = manuscript_page.get_current_url()
     paper_id = paper_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
@@ -65,15 +61,15 @@ class InviteAECardTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page._wait_for_page_load()
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(10)
+    workflow_page.page_ready()
     # add card invite AE with add new card
     # Check if card is there
     if not workflow_page.is_card('Invite Academic Editor'):
@@ -81,6 +77,7 @@ class InviteAECardTest(CommonTest):
     # click on invite academic editor
     workflow_page.click_card('invite_academic_editor')
     invite_ae_card = InviteAECard(self.getDriver())
+    invite_ae_card.card_ready()
     invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', paper_id)
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
     manuscript_title = unicode(manuscript_title,
@@ -88,34 +85,36 @@ class InviteAECardTest(CommonTest):
                            errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_ae_card.validate_invite(academic_editor_login,
-                                          manuscript_title,
-                                          creator_user,
-                                          paper_id)
+                                   manuscript_title,
+                                   creator_user,
+                                   paper_id)
     # Invite a second user to delete
     invite_ae_card.validate_invite(pub_svcs_login,
-                                      manuscript_title,
-                                      creator_user,
-                                      paper_id)
+                                   manuscript_title,
+                                   creator_user,
+                                   paper_id)
+    logging.info('Revoking invite for {0}'.format(pub_svcs_login['name']))
     invite_ae_card.revoke_invitee(pub_svcs_login, 'Academic Editor')
     time.sleep(.5)
     workflow_page.logout()
+
     dashboard_page = self.cas_login(email=academic_editor_login['email'])
-    time.sleep(2)
+    dashboard_page._wait_for_page_load()
     dashboard_page.click_view_invites_button()
     # AE accepts or declines invite
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
-    wombat_journal_id = PgSQL().query('SELECT id FROM journals WHERE name = '
-        '\'PLOS Wombat\';')[0][0]
+    wombat_journal_id = PgSQL().query('SELECT id FROM journals '
+                                      'WHERE name = \'PLOS Wombat\';')[0][0]
     ae_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'aacadedit\';')[0][0]
-    ae_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                        'name = \'Academic Editor\';',
-                                        (wombat_journal_id,))[0][0]
+    ae_role_for_env = PgSQL().query('SELECT id FROM roles '
+                                    'WHERE journal_id = %s '
+                                    'AND name = \'Academic Editor\';', (wombat_journal_id,))[0][0]
     try:
       test_for_role = PgSQL().query('SELECT role_id FROM assignments WHERE user_id = %s '
-                                  'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
-                                  (ae_user_id, paper_id))[0][0]
+                                    'AND assigned_to_type=\'Paper\' and assigned_to_id = %s;',
+                                    (ae_user_id, paper_id))[0][0]
     except IndexError:
       test_for_role = False
     assert invite_response in ['Accept', 'Decline']
@@ -126,28 +125,36 @@ class InviteAECardTest(CommonTest):
       assert not test_for_role
       # search for reply
       # Note: This is working but pending on result of APERTA-7259
-      reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions FROM '
-          'invitations WHERE invitee_id = %s AND state=\'declined\' AND invitee_role '
-          '=\'Academic Editor\' AND decline_reason LIKE %s AND reviewer_suggestions LIKE %s;',
-          (ae_user_id, response_data[0]+'%', response_data[1]+'%'))[0]
+      reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions '
+                                           'FROM invitations '
+                                           'WHERE invitee_id = %s '
+                                           'AND state=\'declined\' '
+                                           'AND invitee_role =\'Academic Editor\' '
+                                           'AND decline_reason LIKE %s '
+                                           'AND reviewer_suggestions LIKE %s;',
+                                           (ae_user_id,
+                                            response_data[0]+'%',
+                                            response_data[1]+'%'))[0]
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
     dashboard_page.logout()
+
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
-    self.cas_login(email=editorial_user['email'])
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page._wait_for_page_load()
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     # go to card
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
+    workflow_page.page_ready()
     workflow_page.click_card('invite_academic_editor')
-    time.sleep(3)
-    invite_ae = InviteAECard(self.getDriver())
-    invite_ae.validate_response(academic_editor_login, invite_response, response_data[0],
-                                response_data[1])
+    invite_ae_card = InviteAECard(self.getDriver())
+    invite_ae_card.card_ready()
+    invite_ae_card.validate_response(academic_editor_login,
+                                     invite_response,
+                                     response_data[0],
+                                     response_data[1])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

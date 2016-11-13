@@ -41,19 +41,16 @@ class InviteReviewersCardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page._wait_for_page_load()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat',
                         type_='OnlyInitialDecisionCard',
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
+
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Abbreviate the timeout for conversion success message
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # Note: Request title to make sure the required page is loaded
+    manuscript_page.page_ready_post_create()
+    manuscript_page.close_infobox()
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -64,18 +61,18 @@ class InviteReviewersCardTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page._wait_for_page_load()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
     invite_reviewers.validate_card_elements_styles(reviewer_login, 'reviewer', paper_id)
     logging.info('Paper id is: {0}.'.format(paper_id))
     manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
@@ -99,6 +96,7 @@ class InviteReviewersCardTest(CommonTest):
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
+    dashboard_page._wait_for_page_load()
     dashboard_page.click_view_invites_button()
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
@@ -136,17 +134,16 @@ class InviteReviewersCardTest(CommonTest):
                                             response_data[1]+'%'))[0]
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
-    workflow_page.logout()
+    dashboard_page.logout()
 
     # log back in as editorial user and validate status display on card
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page._wait_for_page_load()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -154,6 +151,7 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
     invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
                                        response_data[1])
 

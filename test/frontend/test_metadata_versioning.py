@@ -64,7 +64,6 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
-    ms_viewer.close_infobox()
     paper_id = ms_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))

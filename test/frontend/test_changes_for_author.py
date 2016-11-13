@@ -51,17 +51,14 @@ class CFACardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
-    dashboard_page.restore_timeout()
-
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-
     manuscript_page.close_modal()
     # Paper MUST be in submitted state to continue
     db_submission_data = manuscript_page.get_db_submission_data(paper_id)
@@ -75,23 +72,23 @@ class CFACardTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     # add card ITC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Initial Tech Check'):
       workflow_page.add_card('Initial Tech Check')
     # click on ITC
-    itc_card = ITCCard(self.getDriver())
     workflow_page.click_initial_tech_check_card()
+    itc_card = ITCCard(self.getDriver())
+    itc_card.card_ready()
     data = itc_card.complete_card()
     itc_card.click_autogenerate_btn()
     # TODO: Figure out a way to eliminate this explicit wait
@@ -132,17 +129,17 @@ class CFACardTest(CommonTest):
 
     # Now log back in as the creator user and access Changes for Author card from accordion view
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
+    manuscript_page.page_ready()
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
+    cfa_task.task_ready()
     cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
     cfa_task.validate_styles()
-    cfa_task.complete_cfa_card()
+    cfa_task.complete_cfa_task()
     cfa_task.check_flash_messages('Thank you. Your changes have been sent to PLOS Wombat.')
 
     # Finally validate publishing state transition
@@ -164,47 +161,42 @@ class CFACardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
-    dashboard_page.restore_timeout()
-
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-
     manuscript_page.close_modal()
     # Paper MUST be in submitted state to continue
     db_submission_data = manuscript_page.get_db_submission_data(paper_id)
     initial_post_submit_state = db_submission_data[0][0]
     logging.info('Current publishing state is {0}'.format(initial_post_submit_state))
     assert initial_post_submit_state == 'submitted', initial_post_submit_state
-
     # logout and enter as editor
     manuscript_page.logout()
 
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # go to wf
     paper_viewer.click_workflow_link()
-
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     # add card RTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Revision Tech Check'):
       workflow_page.add_card('Revision Tech Check')
     # click on RTC
-    rtc_card = RTCCard(self.getDriver())
     workflow_page.click_revision_tech_check_card()
+    rtc_card = RTCCard(self.getDriver())
+    rtc_card.card_ready()
     data = rtc_card.complete_card()
     rtc_card.click_autogenerate_btn()
     # TODO: Figure out a way to eliminate this explicit wait
@@ -245,17 +237,17 @@ class CFACardTest(CommonTest):
 
     # Now log back in as the creator user and access Changes for Author card from accordion view
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
+    manuscript_page.page_ready()
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
+    cfa_task.task_ready()
     cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
     cfa_task.validate_styles()
-    cfa_task.complete_cfa_card()
+    cfa_task.complete_cfa_task()
     cfa_task.check_flash_messages('Thank you. Your changes have been sent to PLOS Wombat.')
 
     # Finally validate publishing state transition
@@ -277,46 +269,44 @@ class CFACardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
-    dashboard_page.restore_timeout()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_id_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-
     manuscript_page.close_modal()
     # Paper MUST be in submitted state to continue
     db_submission_data = manuscript_page.get_db_submission_data(paper_id)
     initial_post_submit_state = db_submission_data[0][0]
     logging.info('Current publishing state is {0}'.format(initial_post_submit_state))
     assert initial_post_submit_state == 'submitted', initial_post_submit_state
-
     # logout and enter as editor
     manuscript_page.logout()
 
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
 
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     # add card FTC with add new card if not present
     # Check if card is there
     if not workflow_page.is_card('Final Tech Check'):
       workflow_page.add_card('Final Tech Check')
     # click on FTC
-    ftc_card = FTCCard(self.getDriver())
     workflow_page.click_final_tech_check_card()
+    ftc_card = FTCCard(self.getDriver())
+    ftc_card.card_ready()
     data = ftc_card.complete_card()
     ftc_card.click_autogenerate_btn()
     # TODO: Figure out a way to eliminate this explicit wait
@@ -357,17 +347,17 @@ class CFACardTest(CommonTest):
 
     # Now log back in as the creator user and access Changes for Author card from accordion view
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._cfa_task))
+    manuscript_page.page_ready()
     manuscript_page.click_task('changes_for_author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
+    cfa_task.task_ready()
     cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
     cfa_task.validate_styles()
-    cfa_task.complete_cfa_card()
+    cfa_task.complete_cfa_task()
     cfa_task.check_flash_messages('Thank you. Your changes have been sent to PLOS Wombat.')
 
     # Finally validate publishing state transition

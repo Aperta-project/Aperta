@@ -184,6 +184,8 @@ class AuthenticatedPage(PlosPage):
     self._att_item = (By.CSS_SELECTOR, 'div.attachment-item')
     self._file_attach_btn = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
+    # Add participant
+    self._add_participant_lst = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -672,12 +674,29 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     if participants:
       for participant in participants:
-        user_key = random.choice(['name', 'email', 'user'])
+        user_key = random.choice(['email', 'user'])
+        user_key ='user'
+        logging.info('Participant key to retrieve user: {0}'.format(user_key))
+        logging.info('Participant to add: {0}'.format(participant))
         self._get(self._add_participant_btn).click()
         time.sleep(.5)
         self._get(self._participant_field).send_keys(participant[user_key] + Keys.ENTER)
         time.sleep(5)
-        self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
+        add_participant_lst = self._get(self._add_participant_lst)
+        items = add_participant_lst.find_elements_by_tag_name('li')
+        # Have to scan all items because of the fuzzy search it may return many results
+        for index, item in enumerate(items):
+          if participant[user_key] in item.text:
+            break
+        time.sleep(2)
+        import pdb; pdb.set_trace()
+        if index == 0:
+          item.click()
+          #self._get(self._participant_field).send_keys(Keys.ARROW_DOWN)
+        else:
+          self._get(self._participant_field).send_keys(Keys.ARROW_DOWN * (index))
+          self._get(self._participant_field).send_keys(Keys.ENTER)
+        time.sleep(1)
     return None
 
   def post_discussion(self, msg='', mention=''):
@@ -717,7 +736,7 @@ class AuthenticatedPage(PlosPage):
   def get_mention(self, user):
     """
     Get the object of a mention
-    :param user:
+    :param user: String with username
     :return: object of a mention
     """
     comment_body = self._get(self._comment_body)
@@ -725,7 +744,7 @@ class AuthenticatedPage(PlosPage):
     if mention.text[1:] == user:
       return mention
     else:
-      raise('{0} not found'.format(user))
+      raise Exception('{0} not found'.format(user))
 
   def scroll_element_into_view_below_toolbar(self, element):
     """

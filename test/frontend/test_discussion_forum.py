@@ -219,7 +219,7 @@ class DiscussionForumTest(CommonTest):
     topic = 'Testing discussion on paper {0}'.format(paper_id)
 
     ##
-    web_page = 'workflow'
+    web_page = 'manuscript viewer'
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[reviewer_1, reviewer_2])
@@ -278,22 +278,23 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # reviewer 2
+    import pdb; pdb.set_trace()
     logging.info(u'Logging in as user Reviewer 2')
     dashboard_page = self.cas_login(email=reviewer_2['email'])
     dashboard_page.click_view_invitations()
+    # accept invitation
     dashboard_page.accept_all_invitations()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
-    # accept invitation
     ms_viewer.click_discussion_link()
     discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     discussion_title = discussion_link.text
     assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
     discussion_link.click()
-    created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE discussion_topic_id = %s;',
-      (discussion_topic_id,))[0][0]
+    created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE '
+      'discussion_topic_id = %s;', (discussion_topic_id,))[0][0]
     from_zone = tz.gettz('UTC')
     to_zone = tz.tzlocal()
     created = created.replace(tzinfo=from_zone)
@@ -310,6 +311,7 @@ class DiscussionForumTest(CommonTest):
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_2 in comment_body, 'Message sent: {0} is not in the front end {1}'\
         .format(msg_2, comment_body)
+    ##import pdb; pdb.set_trace()
     msg_3 = generate_paragraph()[2]
     ms_viewer.post_discussion(msg_3)
     ms_viewer.logout()
@@ -354,7 +356,7 @@ class DiscussionForumTest(CommonTest):
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == ui_msg_1, 'Sent message {0} is not the same from front end: {1}'\
         .format(msg_1, ui_msg_1)
-    assert msg_2 == ui_msg_2, 'Sent message {0} is not the same from front end: {1}'\
+    assert msg_2 in ui_msg_2, 'Sent message {0} is not in the front end: {1}'\
         .format(msg_2, ui_msg_2)
     assert msg_3 == ui_msg_3, 'Sent message {0} is not the same from front end: {1}'\
         .format(msg_3, ui_msg_3)

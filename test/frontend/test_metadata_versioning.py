@@ -56,7 +56,7 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
-    dashboard_page.set_timeout(120)
+    dashboard_page._wait_for_page_load()
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
@@ -67,8 +67,8 @@ class MetadataVersioningTest(CommonTest):
                         )
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    # check for flash message
-    ms_viewer.validate_ihat_conversions_success(timeout=45)
+    ms_viewer.page_ready_post_create()
+    ms_viewer.close_infobox()
     paper_id = ms_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {0}".format(paper_id))
@@ -134,17 +134,20 @@ class MetadataVersioningTest(CommonTest):
     # Log in as a author to make some changes
     logging.info('Logging in as creator to make changes')
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
+    dashboard_page._wait_for_page_load()
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
     paper_viewer.complete_task('Additional Information',
                                click_override=True,
                                data=new_prq)
     # check versioning
     version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
     version_btn.click()
+    paper_viewer._wait_for_element(paper_viewer._gets(paper_viewer._bar_items)[1])
     bar_items = paper_viewer._gets(paper_viewer._bar_items)
     # click on
-    bar_items[2].find_elements_by_tag_name('option')[1].click()
+    bar_items[1].find_elements_by_tag_name('option')[1].click()
     # Following command disabled due to bug APERTA-5849
     # paper_viewer.click_task('prq')
     return self

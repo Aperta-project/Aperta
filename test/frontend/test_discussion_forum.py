@@ -50,11 +50,8 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     paper_type = 'Research'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Discussion Forum notifications',
-                        journal=journal,
-                        type_=paper_type,
-                        random_bit=True,
-                        )
+    self.create_article(title='Testing Discussion Forum notifications', journal=journal,
+                        type_=paper_type, random_bit=True)
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message

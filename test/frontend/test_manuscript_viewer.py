@@ -61,10 +61,7 @@ class ManuscriptViewerTest(CommonTest):
       time.sleep(.5)
       # Temporary changing timeout
       dashboard_page.set_timeout(120)
-      self.create_article(journal='PLOS Wombat',
-                          type_='Images+InitialDecision',
-                          random_bit=True,
-                          )
+      self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
       # Time needed for iHat conversion. This is not quite enough time in all circumstances
       time.sleep(5)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
@@ -158,10 +155,7 @@ class ManuscriptViewerTest(CommonTest):
     time.sleep(.5)
     # Temporary changing timeout
     dashboard_page.set_timeout(120)
-    self.create_article(journal='PLOS Wombat',
-                        type_='Images+InitialDecision',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -298,10 +292,7 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
       # Temporary changing timeout
       dashboard_page.set_timeout(120)
-      self.create_article(journal='PLOS Wombat',
-                          type_='Images+InitialDecision',
-                          random_bit=True,
-                          )
+      self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     manuscript_viewer.validate_ihat_conversions_success(timeout=45)

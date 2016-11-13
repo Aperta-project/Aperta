@@ -48,11 +48,8 @@ class ApertaWorkflowTest(CommonTest):
     manuscript_count = dashboard_page.validate_manuscript_section_main_title(workflow_user)[0]
     logging.info(manuscript_count)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='Research',
-                        random_bit=True,
-                        title='Created Document for Workflow test',
-                        )
+    self.create_article(title='Created Document for Workflow test', journal='PLOS Wombat',
+                        type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_workflow_link()
@@ -79,11 +76,8 @@ class ApertaWorkflowTest(CommonTest):
     #   on which these users possess the relevant role (super_admin_login excepted) - therefore
     # switching this from click on first manuscript to an explicit create
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                          type_='Research',
-                          random_bit=True,
-                          title='Created Document for Workflow test',
-                          )
+    self.create_article(title='Created Document for Workflow test', journal='PLOS Wombat',
+                        type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_workflow_link()

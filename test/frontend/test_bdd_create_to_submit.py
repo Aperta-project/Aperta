@@ -82,11 +82,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    self.create_article(journal='PLOS Wombat',
-                        type_='NoCards',
-                        random_bit=True,
-                        title='full submit',
-                        )
+    self.create_article(title='full submit', journal='PLOS Wombat', type_='NoCards',
+                        random_bit=True)
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
@@ -200,11 +197,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     dashboard_page.set_timeout(60)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    self.create_article(journal='PLOS Wombat',
-                        type_='OnlyInitialDecisionCard',
-                        random_bit=True,
-                        title='initial submit',
-                        )
+    self.create_article(title='initial submit', journal='PLOS Wombat',
+                        type_='OnlyInitialDecisionCard', random_bit=True)
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)

@@ -43,10 +43,7 @@ class InviteAECardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page._wait_for_page_load()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='OnlyInitialDecisionCard',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()

@@ -53,10 +53,7 @@ class CFACardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='NoCards',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     dashboard_page.restore_timeout()
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -169,10 +166,7 @@ class CFACardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='NoCards',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     dashboard_page.restore_timeout()
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -285,10 +279,7 @@ class CFACardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='NoCards',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     dashboard_page.restore_timeout()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)

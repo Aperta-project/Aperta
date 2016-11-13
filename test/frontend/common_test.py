@@ -99,17 +99,17 @@ class CommonTest(FrontEndTest):
     else:
       return dashboard_page.click_on_existing_manuscript_link_partial_title(title)
 
-  def create_article(self, title='', journal='journal', type_='Research1',
-                     random_bit=False, doc='random'):
+  def create_article(self, title='', journal='', type_='', document='', random_bit=False):
     """
     Create a new article.
-    title: Title of the article.
-    journal: Journal name of the article.
-    type_: Type of article
-    random_bit: If true, append some random string
-    doc: Name of the document to upload. If blank will default to 'random', this will choose
-    on of available papers
-    Return the title of the article.
+    :param title: Title of the article.
+    :param journal: Journal name of the article.
+    :param type_: Type of article
+    :param random_bit: If true, append some random string
+    :param document: Name of the document to upload. If blank will default to 'random', this will
+    choose
+      one of available papers
+    :return title: Return the title of the article.
     """
     dashboard = DashboardPage(self.getDriver())
     # Create new submission
@@ -125,11 +125,12 @@ class CommonTest(FrontEndTest):
     #   directory, catch and abort - no good will follow
     assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
                                    'incorrect value, aborting: {0}'.format(current_path)
-    if doc == 'random':
+    logging.info(document)
+    if document:
+      fn = os.path.join(current_path, 'frontend/assets/docs/{0}'.format(document))
+    else:
       doc2upload = random.choice(docs)
       fn = os.path.join(current_path, 'frontend/assets/docs/{0}'.format(doc2upload))
-    else:
-      fn = os.path.join(current_path, 'frontend/assets/docs/', doc)
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)

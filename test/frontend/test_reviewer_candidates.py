@@ -48,11 +48,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='generateCompleteApexData',
-                        random_bit=True,
-                        title='Reviewer Candidates Test'
-                        )
+    self.create_article(title='Reviewer Candidates Test', journal='PLOS Wombat',
+                        type_='generateCompleteApexData', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     dashboard_page.restore_timeout()
     time.sleep(5)
@@ -103,11 +100,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='generateCompleteApexData',
-                        random_bit=True,
-                        title='Reviewer Candidates Test'
-                        )
+    self.create_article(title='Reviewer Candidates Test', journal='PLOS Wombat',
+                        type_='generateCompleteApexData', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     dashboard_page.restore_timeout()
     time.sleep(5)
@@ -160,11 +154,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='generateCompleteApexData',
-                        random_bit=True,
-                        title='Reviewer Candidates Test'
-                        )
+    self.create_article(title='Reviewer Candidates Test', journal='PLOS Wombat',
+                        type_='generateCompleteApexData', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     dashboard_page.restore_timeout()
     time.sleep(5)
@@ -239,11 +230,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='OnlyReviewerCandidates',
-                        random_bit=True,
-                        title='Reviewer Candidates Test'
-                        )
+    self.create_article(title='Reviewer Candidates Test', journal='PLOS Wombat',
+                        type_='OnlyReviewerCandidates', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     dashboard_page.restore_timeout()
     time.sleep(25)

@@ -124,26 +124,21 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email']) if init \
         else DashboardPage(self.getDriver())
+    dashboard_page._wait_for_page_load()
     dashboard_page.click_create_new_submission_button()
-    # Temporary changing timeout
-    dashboard_page.set_timeout(60)
-    # We recently became slow drawing this overlay (20151006)
-    time.sleep(.5)
-    self.create_article(journal='PLOS Wombat',
+    self.create_article(title='bdd_cns',
+                        journal='PLOS Wombat',
                         type_='Research',
-                        random_bit=True,
-                        title='bdd_cns',
+                        random_bit=True
                         )
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
     # Outputting the title allows us to validate update following conversion
     db_id = manuscript_page.get_paper_id_from_url()
     logging.info('Paper database id is: {0}'.format(db_id))
     title = manuscript_page.get_paper_title_from_page()
-    logging.info('Paper page title is: {0}'.format(title))
+    logging.info(u'Paper page title is: {0}'.format(title))
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

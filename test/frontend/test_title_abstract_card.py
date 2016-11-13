@@ -44,11 +44,8 @@ class TitleAbstractTest(CommonTest):
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Title and Abstract Card',
-                        journal=journal,
-                        type_=paper_type,
-                        random_bit=True,
-                        )
+    self.create_article(title='Testing Title and Abstract Card', journal=journal, type_=paper_type,
+                        random_bit=True)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     paper_viewer.validate_ihat_conversions_success(timeout=45)
@@ -105,11 +102,8 @@ class TitleAbstractTest(CommonTest):
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Title and Abstract Card',
-                        journal=journal,
-                        type_=paper_type,
-                        random_bit=True,
-                        )
+    self.create_article(title='Testing Title and Abstract Card', journal=journal, type_=paper_type,
+                        random_bit=True)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     paper_viewer.validate_ihat_conversions_success(timeout=45)

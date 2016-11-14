@@ -5490,182 +5490,182 @@ journal_task_types:
     - TahiStandardTasks::AuthorsTask
     - "{}"
     - false
-    - 
+    - author
   - - '3'
     - '1'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
     - "{}"
     - false
-    - 
+    - author
   - - '4'
     - '1'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
     - "{}"
     - false
-    - 
+    - author
   - - '5'
     - '1'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
     - "{}"
     - false
-    - 
+    - author
   - - '6'
     - '1'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
     - "{}"
     - false
-    - 
+    - author
   - - '7'
     - '1'
     - Figures
     - TahiStandardTasks::FigureTask
     - "{}"
     - false
-    - 
+    - author
   - - '8'
     - '1'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
     - "{}"
     - false
-    - 
+    - author
   - - '10'
     - '1'
     - Invite Academic Editor
     - TahiStandardTasks::PaperEditorTask
     - "{}"
     - false
-    - 
+    - admin
   - - '11'
     - '1'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
     - "{}"
     - false
-    - 
+    - editor
   - - '12'
     - '1'
     - Production Metadata
     - TahiStandardTasks::ProductionMetadataTask
     - "{}"
     - false
-    - 
+    - admin
   - - '13'
     - '1'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - "{}"
     - false
-    - 
+    - author
   - - '14'
     - '1'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
     - "{}"
     - false
-    - 
+    - editor
   - - '15'
     - '1'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
     - "{}"
     - false
-    - 
+    - author
   - - '16'
     - '1'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
     - "{}"
     - false
-    - 
+    - author
   - - '17'
     - '1'
     - Reviewer Report
     - TahiStandardTasks::ReviewerReportTask
     - "{}"
     - true
-    - 
+    - reviewer
   - - '18'
     - '1'
     - Revise Manuscript
     - TahiStandardTasks::ReviseTask
     - "{}"
     - true
-    - 
+    - author
   - - '19'
     - '1'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
     - "{}"
     - false
-    - 
+    - author
   - - '20'
     - '1'
     - New Taxon
     - TahiStandardTasks::TaxonTask
     - "{}"
     - false
-    - 
+    - author
   - - '21'
     - '1'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
     - "{}"
     - false
-    - 
+    - author
   - - '22'
     - '1'
     - Changes For Author
     - PlosBioTechCheck::ChangesForAuthorTask
     - "{}"
     - true
-    - 
+    - author
   - - '23'
     - '1'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
     - "{}"
     - false
-    - 
+    - editor
   - - '24'
     - '1'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
     - "{}"
     - false
-    - 
+    - editor
   - - '25'
     - '1'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
     - "{}"
     - false
-    - 
+    - editor
   - - '26'
     - '1'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
     - "{}"
     - false
-    - 
+    - admin
   - - '27'
     - '1'
     - Billing
     - PlosBilling::BillingTask
     - '[{"action":"view","applies_to":"PlosBilling::BillingTask"},{"action":"edit","applies_to":"PlosBilling::BillingTask"}]'
     - false
-    - 
+    - author
   - - '28'
     - '1'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
     - "{}"
     - false
-    - 
+    - admin
   - - '29'
     - '1'
     - Test Task
@@ -5679,63 +5679,63 @@ journal_task_types:
     - TahiStandardTasks::InitialDecisionTask
     - "{}"
     - false
-    - 
+    - editor
   - - '31'
     - '1'
     - Send to Apex
     - TahiStandardTasks::SendToApexTask
     - "{}"
     - false
-    - 
+    - editor
   - - '32'
     - '1'
     - Related Articles
     - TahiStandardTasks::RelatedArticlesTask
     - "{}"
     - false
-    - 
+    - editor
   - - '33'
     - '1'
     - Title And Abstract
     - TahiStandardTasks::TitleAndAbstractTask
     - "{}"
     - false
-    - 
+    - editor
   - - '34'
     - '1'
     - Front Matter Reviewer Report
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - "{}"
     - true
-    - 
+    - reviewer
   - - '35'
     - '1'
     - Ad-hoc for Staff Only
     - AdHocTask
     - "{}"
     - false
-    - 
+    - user
   - - '36'
     - '1'
     - Ad-hoc for Authors
     - AdHocForAuthorsTask
     - "{}"
     - false
-    - 
+    - user
   - - '37'
     - '1'
     - Ad-hoc for Editors
     - AdHocForEditorsTask
     - "{}"
     - false
-    - 
+    - user
   - - '38'
     - '1'
     - Ad-hoc for Reviewers
     - AdHocForReviewersTask
     - "{}"
     - false
-    - 
+    - user
 
 ---
 journals:

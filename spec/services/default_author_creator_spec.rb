@@ -2,7 +2,6 @@
 require 'rails_helper'
 
 describe DefaultAuthorCreator do
-
   describe '#create!' do
     let(:creator) { FactoryGirl.build_stubbed(:user) }
     let(:paper) { FactoryGirl.create(:paper_with_phases) }
@@ -47,7 +46,6 @@ describe DefaultAuthorCreator do
     it 'associates the author with the AuthorsTask on the paper' do
       authors_task = TahiStandardTasks::AuthorsTask.create(
         title: "Authors",
-        old_role: "author",
         paper: paper,
         phase: paper.phases.first
       )

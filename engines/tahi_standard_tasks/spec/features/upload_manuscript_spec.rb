@@ -8,8 +8,7 @@ feature "Upload paper", js: true, sidekiq: :inline! do
       creator: author,
       task_params: {
         title: "Upload Manuscript",
-        type: "TahiStandardTasks::UploadManuscriptTask",
-        old_role: "author"
+        type: "TahiStandardTasks::UploadManuscriptTask"
       }
   end
 

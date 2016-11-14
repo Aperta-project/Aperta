@@ -33,6 +33,8 @@ describe Typesetter::AuthorSerializer do
     )
   end
 
+  let(:user) { FactoryGirl.create(:user) }
+
   let(:contributes_question) do
     NestedQuestion.find_by(ident: "author--contributions")
   end
@@ -58,6 +60,7 @@ describe Typesetter::AuthorSerializer do
       value_type: 'boolean'
     )
   end
+
   let!(:answer2) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -67,6 +70,7 @@ describe Typesetter::AuthorSerializer do
       value_type: 'boolean'
     )
   end
+
   let!(:answer3) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -76,6 +80,7 @@ describe Typesetter::AuthorSerializer do
       value_type: 'text'
     )
   end
+
   let!(:deceased_answer) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -92,7 +97,7 @@ describe Typesetter::AuthorSerializer do
     allow(author).to receive(:answer_for).and_call_original
   end
 
-  it 'has author interests fields' do
+  it 'includes author fields' do
     expect(output.keys).to contain_exactly(
       :first_name,
       :last_name,
@@ -111,16 +116,18 @@ describe Typesetter::AuthorSerializer do
   end
 
   before do
-    allow(author.paper).to receive(:creator).and_return(FactoryGirl.create(:user))
+    allow(author.paper).to receive(:creator).and_return(user)
   end
 
   describe 'contributions' do
     it 'includes question text when the answer is true' do
       expect(output[:contributions]).to include(question1.text)
     end
+
     it 'does not include question text when the answer is false' do
       expect(output[:contributions]).to_not include(question2.text)
     end
+
     it 'includes the `other` text if answered' do
       expect(output[:contributions]).to include(answer3.value)
     end
@@ -172,7 +179,7 @@ describe Typesetter::AuthorSerializer do
           .and_return [author.email]
       end
 
-      it 'is true'do
+      it 'is true' do
         expect(output[:corresponding]).to eq(true)
       end
     end
@@ -186,7 +193,7 @@ describe Typesetter::AuthorSerializer do
           .and_return ['some-other-email@example.com']
       end
 
-      it 'is false'do
+      it 'is false' do
         expect(output[:corresponding]).to eq(false)
       end
     end
@@ -225,6 +232,79 @@ describe Typesetter::AuthorSerializer do
   describe 'type' do
     it 'has a type of author' do
       expect(output[:type]).to eq 'author'
+    end
+  end
+
+  describe 'OrcidAccount fields' do
+    let(:orcid_account) { FactoryGirl.build_stubbed(:orcid_account, user: user) }
+    before do
+      allow(author).to receive(:user).and_return(user)
+      allow(user).to receive(:orcid_account).and_return(orcid_account)
+    end
+
+    context 'when ORCID_CONNECT_ENABLED is true' do
+      around do |example|
+        ClimateControl.modify(ORCID_CONNECT_ENABLED: 'true') do
+          example.run
+        end
+      end
+
+      context 'author has an OrcidAccount associated' do
+        let(:orcid_account) do
+          FactoryGirl.build_stubbed(:orcid_account,
+            identifier: '0000-0001-0002-0003',
+            access_token: 'has_access_token'
+          )
+        end
+
+        describe 'orcid_profile_url' do
+          it 'returns the profile url' do
+            expect(output[:orcid_profile_url])
+              .to eq('http://sandbox.orcid.org/0000-0001-0002-0003')
+          end
+        end
+
+        describe 'orcid_authenticated' do
+          it 'returns true' do
+            expect(output[:orcid_authenticated]).to eq true
+          end
+
+          it 'returns false if access token is nil' do
+            orcid_account.access_token = nil
+            expect(output[:orcid_authenticated]).to eq false
+          end
+        end
+      end
+
+      context 'author does not have an OrcidAccount associated' do
+        describe 'orcid_profile_url' do
+          it 'returns the profile url' do
+            expect(output[:orcid_profile_url]).to be_nil
+          end
+        end
+
+        describe 'orcid_authenticated' do
+          it 'returns false' do
+            expect(output[:orcid_authenticated]).to eq false
+          end
+        end
+      end
+    end
+
+    context 'when ORCID_CONNECT_ENABLED is false' do
+      around do |example|
+        ClimateControl.modify(ORCID_CONNECT_ENABLED: 'false') do
+          example.run
+        end
+      end
+
+      it 'does not include orcid_profile_url' do
+        expect(output).to_not have_key(:orcid_profile_url)
+      end
+
+      it 'does not include orcid_authenticated' do
+        expect(output).to_not have_key(:orcid_authenticated)
+      end
     end
   end
 end

@@ -80,7 +80,7 @@ class TasksController < ApplicationController
       task = Task.find(params[:id] || params[:task_id])
       paper_id = task.paper_id
     end
-    @paper ||= Paper.find(paper_id)
+    @paper ||= Paper.find_by_id_or_short_doi(paper_id)
   end
 
   def task

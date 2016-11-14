@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161110191143) do
+ActiveRecord::Schema.define(version: 20161114214719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20161110191143) do
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
     t.string   "staff_email"
+    t.string   "reviewer_email_bcc"
+    t.string   "editor_email_bcc"
   end
 
   create_table "letter_templates", force: :cascade do |t|

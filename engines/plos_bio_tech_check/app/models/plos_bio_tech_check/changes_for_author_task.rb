@@ -6,8 +6,8 @@ module PlosBioTechCheck
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 
-    DEFAULT_TITLE = 'Changes For Author'
-    DEFAULT_ROLE = 'author'
+    DEFAULT_TITLE = 'Changes For Author'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
     SYSTEM_GENERATED = true
 
     def active_model_serializer
@@ -42,14 +42,14 @@ module PlosBioTechCheck
     def notify_changes_for_author
       PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_changes_for_author(
         author_id: paper.creator.id,
-        task_id: self.id
+        task_id: id
       )
     end
 
     private
 
     def notify_tech_fixed
-      paper.admins.each do |admin|
+      paper.journal.staff_admins.each do |admin|
         PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_paper_tech_fixed(
           admin_id: admin.id,
           paper_id: paper.id

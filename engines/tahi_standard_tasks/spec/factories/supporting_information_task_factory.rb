@@ -3,6 +3,5 @@ FactoryGirl.define do
     paper
     phase
     title "Supporting Information"
-    old_role "author"
   end
 end

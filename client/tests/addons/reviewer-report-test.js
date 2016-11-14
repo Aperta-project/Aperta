@@ -34,8 +34,7 @@ module('Integration: Reviewer Report', {
 
     records = paperWithTask('ReviewerReportTask', {
       id: taskId,
-      title: 'Reviewer Report by Bob Jones',
-      oldRole: 'reviewer'
+      title: 'Reviewer Report by Bob Jones'
     });
 
     currentPaper = records[0];

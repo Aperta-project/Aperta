@@ -3,6 +3,5 @@ FactoryGirl.define do
     paper
     phase
     title "Reviewer Candidates"
-    old_role "author"
   end
 end

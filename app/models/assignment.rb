@@ -1,4 +1,5 @@
 class Assignment < ActiveRecord::Base
+  include EventStream::Notifiable
   belongs_to :user
   belongs_to :role
   belongs_to :assigned_to, polymorphic: true

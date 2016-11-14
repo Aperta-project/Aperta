@@ -37,7 +37,7 @@ class FtpUploaderService
     fail FtpTransferError, 'final_filename is required' if @final_filename.blank?
 
     @ftp = Net::FTP.new
-    Rails.logger.info "Beginning transfer for #{@final_filename}"
+    logger.info "Beginning transfer for #{@final_filename}"
     connect_to_server
     enter_packages_directory
     tmp_file = upload_to_temporary_file
@@ -47,7 +47,9 @@ class FtpUploaderService
       rescue Net::FTPPermError
       end
       @ftp.rename(tmp_file, @final_filename)
-      Rails.logger.info "Transfer successful for #{@final_filename}"
+      logger.info(
+        "Transfer successful for #{File.join(@directory, @final_filename)}"
+      )
       return true
     else
       raise FtpTransferError, "FTP Transfer failed: #{@ftp.last_response}"
@@ -60,6 +62,10 @@ class FtpUploaderService
       @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
       @ftp.close
     end
+  end
+
+  def logger
+    Rails.logger
   end
 
   private
@@ -77,7 +83,7 @@ class FtpUploaderService
       transfer_error += "\nException Detail:\n" + exception.message
       transfer_error += "\nBacktrace:\n" + exception.backtrace.join("\n")
     end
-    Rails.logger.warn(transfer_error)
+    logger.warn(transfer_error)
     Bugsnag.notify(transfer_error)
     GenericMailer.delay.send_email(
       subject: transfer_failed,
@@ -87,17 +93,17 @@ class FtpUploaderService
   end
 
   def connect_to_server
-    Rails.logger.info "FTP connecting to #{@host}: #{@port}"
+    logger.info "FTP connecting to #{@host}: #{@port}"
     @ftp.connect(@host, @port)
     @ftp.passive = @passive_mode
-    Rails.logger.info "FTP logging in as #{@user}"
+    logger.info "FTP logging in as #{@user}"
     @ftp.login(@user, @password)
   end
 
   def enter_packages_directory
     @ftp.chdir(@directory)
   rescue Net::FTPPermError
-    Rails.logger.info "Attempting to create ftp directory: #{@directory}"
+    logger.info "Attempting to create ftp directory: #{@directory}"
     @ftp.mkdir(@directory)
     @ftp.chdir(@directory)
   end
@@ -105,7 +111,7 @@ class FtpUploaderService
   def upload_to_temporary_file
     upload_time = Time.zone.now.strftime "%Y-%m-%d-%H%M%S"
     "temp_#{upload_time}_#{@final_filename}".tap do |temp_name|
-      Rails.logger.info "Beginning transfer to temp location at #{temp_name}"
+      logger.info "Beginning transfer to temp location at #{temp_name}"
       @ftp.putbinaryfile(@file_io, temp_name, 1000)
     end
   end

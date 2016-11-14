@@ -3,9 +3,15 @@ require 'csv'
 class BillingLogReport < ActiveRecord::Base
   mount_uploader :csv_file, BillingLogUploader
 
+  after_create :log_creation
+
   def self.create_report(from_date: nil)
     from_date ||= BillingLogReport.last.created_at if BillingLogReport.any?
     BillingLogReport.new(from_date: from_date)
+  end
+
+  def log_creation
+    logger.info "Billing log created"
   end
 
   def save_and_send_to_s3!

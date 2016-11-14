@@ -20,6 +20,13 @@ export default AuthorizedRoute.extend({
     model.get('commentLooks');
   },
 
+  redirect(model, transition) {
+    var url = transition.intent.url.replace(`/papers/${model.get('id')}/`, `/papers/${model.get('shortDoi')}/`);
+    if (url !== transition.intent.url) {
+      this.transitionTo(url);
+    }
+  },
+
   setupPusher(model) {
     let pusher = this.get('pusher');
     this.set('channelName', 'private-paper@' + model.get('id'));

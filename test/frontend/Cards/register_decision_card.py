@@ -34,7 +34,7 @@ class RegisterDecisionCard(BaseCard):
     self._rescind_button = (By.CLASS_NAME, 'rescind-decision-button')
     self._decision_labels = (By.CLASS_NAME, 'decision-label')
 
-    self._register_decision_button = (By.CLASS_NAME, 'send-email-action')
+    self._register_decision_button = (By.CSS_SELECTOR, 'button.send-email-action')
     self._decision_history_heading = (By.CSS_SELECTOR, 'div.task-main-content > h3')
     self._previous_decision_history_item = (By.CSS_SELECTOR,
                                             'div.previous-decisions > div.decision_bar')

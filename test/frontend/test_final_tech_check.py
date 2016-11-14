@@ -43,10 +43,7 @@ class FTCCardTest(CommonTest):
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='NoCards',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     manuscript_page.validate_ihat_conversions_success(timeout=45)

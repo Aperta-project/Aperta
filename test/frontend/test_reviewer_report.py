@@ -51,10 +51,7 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='Front-Matter-type',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='Front-Matter-type', random_bit=True)
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
@@ -153,10 +150,7 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='NoCards',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)

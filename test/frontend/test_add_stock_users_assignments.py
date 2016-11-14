@@ -42,7 +42,7 @@ class ApertaPopulateUsersTest(CommonTest):
     for user in all_users:
       logging.info('Logging in as user: {0}, {1}'.format(user['name'], user['email']))
       dashboard_page = self.cas_login(email=user['email'])
-      dashboard_page._wait_for_page_load()
+      dashboard_page.page_ready()
       dashboard_page.logout()
 
     self.set_staff_in_db()

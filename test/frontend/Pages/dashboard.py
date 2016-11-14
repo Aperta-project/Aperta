@@ -283,7 +283,8 @@ class DashboardPage(AuthenticatedPage):
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
-  def get_dashboard_ms(self, user):
+  @staticmethod
+  def get_dashboard_ms(user):
     """
     Get amount of related manuscripts of a user
     :param user: user dictionary to get related manuscripts
@@ -334,7 +335,6 @@ class DashboardPage(AuthenticatedPage):
       raise
     return len(active_manuscript_list)
 
-
   def validate_manuscript_section_main_title(self, user):
     """
     Validates the title section of the manuscript presentation part of the page
@@ -349,8 +349,7 @@ class DashboardPage(AuthenticatedPage):
     email = user['email']
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
-    first_name = PgSQL().query('SELECT first_name FROM users WHERE email = %s;',
-                               (email,))[0][0]
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE email = %s;', (email,))[0][0]
     uid = PgSQL().query('SELECT id FROM users WHERE email = %s;', (email,))[0][0]
     # Get count of distinct papers from paper_roles for validating count of manuscripts on
     # dashboard welcome message
@@ -398,17 +397,20 @@ class DashboardPage(AuthenticatedPage):
     logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
     if active_manuscripts > 1:
       assert 'Hi, {0}. You have {1} active manuscripts.'.format(first_name, active_manuscripts) \
-             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscripts.'.\
-                format(first_name, active_manuscripts), welcome_msg.text.encode('utf-8'))
+        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscripts.'.
+                                              format(first_name, active_manuscripts),
+                                              welcome_msg.text.encode('utf-8'))
     elif active_manuscripts == 1:
       assert 'Hi, {0}. You have {1} active manuscript.'.format(first_name, active_manuscripts) \
-             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscript.'.\
-                format(first_name, active_manuscripts), welcome_msg.text.encode('utf-8'))
+        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscript.'.
+                                              format(first_name, active_manuscripts),
+                                              welcome_msg.text.encode('utf-8'))
     else:
       active_manuscripts = 0
       assert 'Hi, {0}. You have no manuscripts.'.format(first_name) \
-             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
-                format(first_name), welcome_msg.text.encode('utf-8'))
+        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
+                                              format(first_name),
+                                              welcome_msg.text.encode('utf-8'))
     self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
 
@@ -904,11 +906,11 @@ class DashboardPage(AuthenticatedPage):
     """Method for debugging purposes only"""
     return self._get(self._cns_base_overlay_div)
 
-  def _wait_for_page_load(self):
+  def page_ready(self):
     """
     A fuction to validate that the dashboard page is loaded before interacting with it
     """
-    self.set_timeout(15)
+    self.set_timeout(10)
     try:
       self._wait_for_element(self._get(self._dash_inactive_section_title))
     except ElementDoesNotExistAssertionError:

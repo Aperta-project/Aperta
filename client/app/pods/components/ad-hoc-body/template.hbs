@@ -1,5 +1,15 @@
 <div class="task-main-content">
-  {{inline-edit-h1 title=task.title setTitle="setTitle"}}
+
+  <div class="ad-hoc-body-header">
+    {{inline-edit-h1 title=task.title canManage=canManage setTitle="setTitle"}}
+
+    {{#if canManage}}
+      <div class="ad-hoc-corresponding-role">
+        <span class="ad-hoc-corresponding-role-label">Corresponding Role</span>
+        <span class="ad-hoc-corresponding-role-value">{{correspondingRole}}</span>
+      </div>
+    {{/if}}
+  </div>
 
   <div class="task-body">
     {{#each displayedBlocks as |block|}}

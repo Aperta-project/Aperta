@@ -1,6 +1,8 @@
 <h1 class="inline-edit {{if editing "editing"}}">
   {{title}}
-  <span class="fa fa-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+  {{#if canManage}}
+    <span class="fa fa-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+  {{/if}}
 </h1>
 
 <div class="large-edit inline-edit-form {{if editing "editing"}}">

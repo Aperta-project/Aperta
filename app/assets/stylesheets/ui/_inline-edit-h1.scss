@@ -190,7 +190,7 @@
 
 .bodypart-overlay {
   @include position(absolute, 0px 0px 0px 0px);
-  background-color: $tahi-green;
+  background-color: $aperta-green;
   z-index: 1; // higher index to ensure overlay stays above all other content
 
   h4, p {

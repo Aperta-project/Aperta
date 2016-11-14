@@ -160,7 +160,8 @@ describe JournalFactory, flaky: true do
           let(:inaccessible_task_klasses) do
             ::Task.descendants -
               submission_task_klasses -
-              changes_for_author_task_klasses
+              changes_for_author_task_klasses -
+              [AdHocForAuthorsTask]
           end
 
           it <<-DESC.strip_heredoc do
@@ -213,6 +214,25 @@ describe JournalFactory, flaky: true do
             expect(permissions).to include(*expected_edit_permissions)
           end
 
+          it <<-DESC.strip_heredoc do
+            can :view the AdHocForAuthorTask in any paper state
+            can :edit the AdHocForAuthorTask in editable paper states
+          DESC
+            expected_view_permissions = Permission.joins(:states).where(
+              action: 'view',
+              applies_to: 'AdHocForAuthorTask',
+              permission_states: { name: PermissionState.wildcard.name }
+            ).all
+            expect(permissions).to include(*expected_view_permissions)
+
+            expected_edit_permissions = Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: 'AdHocForAuthorTask',
+              permission_states: { name: Paper::EDITABLE_STATES }
+            ).all
+            expect(permissions).to include(*expected_edit_permissions)
+          end
+
           it 'can view/add/remove participants on all submission tasks except ProductionMetadataTask' do
             submission_task_klasses.each do |klass|
               expect(permissions).to include(
@@ -260,6 +280,7 @@ describe JournalFactory, flaky: true do
             accessible_for_role = ::Task.descendants.select do |klass|
               klass <=> SubmissionTask
             end
+            accessible_for_role << AdHocForAuthorsTask
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
@@ -374,6 +395,7 @@ describe JournalFactory, flaky: true do
 
           it <<-DESC do
             can :add_email_participants on all Tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks
@@ -382,6 +404,7 @@ describe JournalFactory, flaky: true do
             task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage, applies_to: klass.name),
                 Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
@@ -395,12 +418,12 @@ describe JournalFactory, flaky: true do
             paper is in an editable state
           DESC
             editable_task_klasses_based_on_paper_state.each do |klass|
-              permission = Permission.joins(:states).find_by(
+              permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
                 permission_states: { name: Paper::EDITABLE_STATES }
               )
-              expect(permissions).to include(permission)
+              expect(permission_for_klass).to be
             end
 
             reviewer_report_klasses.each do |klass|
@@ -485,7 +508,9 @@ describe JournalFactory, flaky: true do
 
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::ReviewerReportTask]
+            accessible_for_role = ::Task.submission_task_types
+            accessible_for_role << TahiStandardTasks::ReviewerReportTask
+            accessible_for_role << AdHocForEditorsTask
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
@@ -509,6 +534,14 @@ describe JournalFactory, flaky: true do
             all_inaccessible_task_klasses.each do |klass|
               expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :edit and :view AdHocForEditorsTasks' do
+            [:edit, :view].each do |action|
+              expect(permissions).to include(
+                Permission.find_by(action: action, applies_to: AdHocForEditorsTask.name)
               )
             end
           end
@@ -622,6 +655,7 @@ describe JournalFactory, flaky: true do
 
           it <<-DESC do
             can :add_email_participants on all Tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks
@@ -630,6 +664,7 @@ describe JournalFactory, flaky: true do
             task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage, applies_to: klass.name),
                 Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
@@ -643,12 +678,12 @@ describe JournalFactory, flaky: true do
             paper is in an editable state
           DESC
             editable_task_klasses_based_on_paper_state.each do |klass|
-              permission = Permission.joins(:states).find_by(
+              permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
                 permission_states: { name: Paper::EDITABLE_STATES }
               )
-              expect(permissions).to include(permission)
+              expect(permission_for_klass).to be
             end
 
             reviewer_report_klasses.each do |klass|
@@ -766,6 +801,7 @@ describe JournalFactory, flaky: true do
             [
               'add_email_participants',
               'edit',
+              'manage',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -776,6 +812,7 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks
@@ -884,6 +921,7 @@ describe JournalFactory, flaky: true do
           let(:task_actions) do
             [
               'add_email_participants',
+              'manage',
               'edit',
               'manage_invitations',
               'manage_participant',
@@ -895,6 +933,7 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks
@@ -1000,6 +1039,7 @@ describe JournalFactory, flaky: true do
             [
               'add_email_participants',
               'edit',
+              'manage',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -1010,6 +1050,7 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks
@@ -1068,7 +1109,9 @@ describe JournalFactory, flaky: true do
 
         describe 'has Task permission to' do
           let(:accessible_task_klasses) do
-            Task.submission_task_types - inaccessible_task_klasses
+            accessible_for_role = Task.submission_task_types
+            accessible_for_role << AdHocForReviewersTask
+            accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
             [
@@ -1114,6 +1157,12 @@ describe JournalFactory, flaky: true do
               applies_to: 'PlosBilling::BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
+          end
+
+          it 'can :edit AdHocTasksForReviewers' do
+            permission = Permission.find_by(applies_to: 'AdHocForReviewersTask', action: :edit)
+            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+            expect(journal.reviewer_role.permissions).to include permission
           end
 
           it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
@@ -1222,6 +1271,7 @@ describe JournalFactory, flaky: true do
             [
               'add_email_participants',
               'edit',
+              'manage',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -1232,6 +1282,7 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks

@@ -13,12 +13,12 @@ describe JournalServices::CreateDefaultTaskTypes do
   end
 
   it 'Updates title and old_role on an existing journal' do
-    jtt = journal.journal_task_types.find_by(title: 'Ad-hoc')
+    jtt = journal.journal_task_types.find_by(title: 'Ad-hoc for Staff Only')
     jtt.update(title: 'Old Title', old_role: 'author') # Simulate old values
 
     JournalServices::CreateDefaultTaskTypes.call(journal)
 
-    expect(jtt.reload.title).to eq('Ad-hoc')
+    expect(jtt.reload.title).to eq('Ad-hoc for Staff Only')
     expect(jtt.old_role).to eq('user')
   end
 end

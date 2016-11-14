@@ -52,6 +52,7 @@ export default Ember.Component.extend({
 
   canEdit: true,
   canManage: true,
+  classNames: ['ad-hoc-body'],
 
   // BuildsTaskTemplate stuff
   emailSentStates: Ember.computed(() => { return []; }),
@@ -73,6 +74,17 @@ export default Ember.Component.extend({
   displayedBlocks: Ember.computed.sort('blockObjects', 'blockSort'),
   hasNewBlock: Ember.computed('blockObjects.@each.isNew', function() {
     return this.get('blockObjects').isAny('isNew');
+  }),
+
+
+  correspondingRole: Ember.computed('task.type', function() {
+    const mapping = {
+      'AdHocTask': 'Staff-only',
+      'AdHocForAuthorsTask': 'Author',
+      'AdHocForEditorsTask': 'Editor',
+      'AdHocForReviewersTask': 'Reviewer'
+    };
+    return mapping[this.get('task.type')];
   }),
 
   saveBlocks() {

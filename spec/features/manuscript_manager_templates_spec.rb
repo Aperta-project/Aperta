@@ -100,7 +100,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase.find('a', text: 'ADD NEW CARD').click
 
       within '.overlay' do
-        find('label', text: 'Ad-hoc').click
+        find('label', text: 'Ad-hoc for Staff Only').click
         find('button', text: 'ADD').click
       end
 

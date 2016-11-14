@@ -125,7 +125,7 @@ test('on paper.index as a participant on a task but not author of paper', functi
     }, JSON.stringify(paperResponse)
   ]);
   return visit('/papers/' + currentPaper.id).then(function() {
-    return assert.ok(!!find('#paper-assigned-tasks .task-disclosure-heading:contains("ReviewMe")').length);
+    return assert.ok(!!find('.task-disclosure-heading:contains("ReviewMe")').length);
   });
 });
 
@@ -149,7 +149,8 @@ test('on paper.index as a participant on a task and author of paper', function(a
     }, JSON.stringify(paperResponse)
   ]);
   return visit('/papers/' + currentPaper.id).then(function() {
-    return assert.ok(!!find('#paper-assigned-tasks .card-content:contains("Revise Task")'), "Participant task is displayed in '#paper-assigned-tasks' for author");
+    return assert.ok(!!find('.card-content:contains("Revise Task")'),
+      'Participant task is displayed in the sidebar for author');
   });
 });
 

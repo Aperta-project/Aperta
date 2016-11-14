@@ -3,7 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNameBindings: [
     ':task-disclosure',
-    '_taskVisible:task-disclosure--open'
+    '_taskVisible:task-disclosure--open',
+    'typeIdentifier'
   ],
 
   /**
@@ -27,6 +28,16 @@ export default Ember.Component.extend({
   title: '',
 
   /**
+   *  The type of the task
+   *
+   *  @property type
+   *  @type String
+   *  @default ''
+   *  @required
+   **/
+  type: '',
+
+  /**
    *  Is the task completed?
    *
    *  @property completed
@@ -35,6 +46,11 @@ export default Ember.Component.extend({
    *  @required
   **/
   completed: false,
+
+  typeIdentifier: Ember.computed('type', function() {
+    const dasherizedType = Ember.String.dasherize(this.get('type'));
+    return `task-type-${dasherizedType}`;
+  }),
 
   actions: {
     toggleVisibility() {

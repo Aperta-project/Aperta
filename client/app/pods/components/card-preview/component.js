@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
-import taskComponentName from 'tahi/lib/task-component-name';
 
 const { getOwner } = Ember;
 
@@ -8,10 +7,7 @@ export default Ember.Component.extend({
   classNames: ['card'],
   classNameBindings: ['task.completed:card--completed', 'classComponentName'],
 
-  classComponentName: Ember.computed('task.type', function() {
-    if (!this.get('task.type')) return '';
-    return taskComponentName(this.get('task.type'));
-  }),
+  classComponentName: Ember.computed.readOnly('task.componentName'),
 
   _propertiesCheck: Ember.on('init', function() {
     Ember.assert('You must pass a task property to the CardPreviewComponent', this.hasOwnProperty('task'));

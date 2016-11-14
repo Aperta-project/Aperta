@@ -21,7 +21,7 @@ class PapersController < ApplicationController
       :supporting_information_files,
       { paper_roles: [:user] },
       :journal
-    ).find_by_id_or_short_doi(params[:short_doi])
+    ).find_by_id_or_short_doi(params[:lookup_id])
     requires_user_can(:view, paper)
     respond_with(paper)
   end
@@ -206,6 +206,6 @@ class PapersController < ApplicationController
   end
 
   def paper
-    @paper ||= Paper.find_by_id_or_short_doi(params[:short_doi])
+    @paper ||= Paper.find_by_id_or_short_doi(params[:lookup_id])
   end
 end

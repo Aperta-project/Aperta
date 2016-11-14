@@ -11,7 +11,7 @@ describe PaperRoleEligibleUsersController do
       get(
         :index,
         format: 'json',
-        paper_short_doi: paper.to_param,
+        paper_lookup_id: paper.to_param,
         role_id: role.to_param,
         query: 'Kangaroo'
       )

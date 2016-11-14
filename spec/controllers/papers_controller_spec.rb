@@ -45,7 +45,7 @@ describe PapersController do
   end
 
   describe 'GET show' do
-    subject(:do_request) { get :show, short_doi: paper.to_param, format: :json }
+    subject(:do_request) { get :show, lookup_id: paper.to_param, format: :json }
     let(:paper) { FactoryGirl.create(:paper) }
 
     it_behaves_like "an unauthenticated json request"
@@ -163,7 +163,7 @@ describe PapersController do
     subject(:do_request) do
       put(
         :update,
-        short_doi: paper.to_param,
+        lookup_id: paper.to_param,
         format: :json,
         paper: { title: 'My new title' }
       )
@@ -229,7 +229,7 @@ describe PapersController do
 
   describe 'GET comment_looks' do
     subject(:do_request) do
-      get :comment_looks, short_doi: paper.to_param, format: :json
+      get :comment_looks, lookup_id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper)}
@@ -285,7 +285,7 @@ describe PapersController do
 
   describe 'GET versioned_texts' do
     subject(:do_request) do
-      get :versioned_texts, short_doi: paper.to_param, format: :json
+      get :versioned_texts, lookup_id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -332,7 +332,7 @@ describe PapersController do
 
   describe 'GET workflow_activities' do
     subject(:do_request) do
-      get :workflow_activities, short_doi: paper.to_param, format: :json
+      get :workflow_activities, lookup_id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -384,7 +384,7 @@ describe PapersController do
 
   describe 'GET manuscript_activities' do
     subject(:do_request) do
-      get :manuscript_activities, short_doi: paper.to_param, format: :json
+      get :manuscript_activities, lookup_id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -433,7 +433,7 @@ describe PapersController do
 
   describe 'GET snapshots' do
     subject(:do_request) do
-      get :snapshots, short_doi: paper.to_param, format: :json
+      get :snapshots, lookup_id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:snapshot_1) { FactoryGirl.build(:snapshot) }
@@ -463,7 +463,7 @@ describe PapersController do
 
   describe 'GET related_articles' do
     subject(:do_request) do
-      get :related_articles, short_doi: paper.id, format: :json
+      get :related_articles, lookup_id: paper.id, format: :json
     end
     let!(:paper) { FactoryGirl.create(:paper) }
     let!(:related_article) { FactoryGirl.create(:related_article, paper: paper) }
@@ -503,7 +503,7 @@ describe PapersController do
 
   describe "GET download" do
     subject(:do_request) do
-      get :download, short_doi: paper.id, format: format
+      get :download, lookup_id: paper.id, format: format
     end
     let(:format) { :docx }
 
@@ -581,7 +581,7 @@ describe PapersController do
 
   describe 'PUT toggle_editable' do
     subject(:do_request) do
-      put :toggle_editable, short_doi: paper.short_doi, format: :json
+      put :toggle_editable, lookup_id: paper.short_doi, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -641,7 +641,7 @@ describe PapersController do
 
   describe 'PUT submit' do
     subject(:do_request) do
-      put :submit, short_doi: paper.short_doi, format: :json
+      put :submit, lookup_id: paper.short_doi, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -708,7 +708,7 @@ describe PapersController do
 
   describe 'PUT reactivate' do
     subject(:do_request) do
-      put :reactivate, short_doi: paper.to_param, format: :json
+      put :reactivate, lookup_id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
@@ -766,7 +766,7 @@ describe PapersController do
 
   describe 'PUT withdraw' do
     subject(:do_request) do
-      put :withdraw, short_doi: paper.to_param, format: :json, reason: withdrawal_reason
+      put :withdraw, lookup_id: paper.to_param, format: :json, reason: withdrawal_reason
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
     let(:withdrawal_reason) { 'It was a whoopsie' }

@@ -21,7 +21,7 @@ describe TasksController, redis: true do
   describe "GET #index" do
     subject(:do_request) do
       get :index, format: 'json',
-                  paper_short_doi: paper.to_param
+                  paper_lookup_id: paper.to_param
     end
     let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
 
@@ -72,7 +72,7 @@ describe TasksController, redis: true do
       post :create, format: 'json',
                     task: {
                       type: 'TahiStandardTasks::AuthorsTask',
-                      short_doi: paper.to_param,
+                      lookup_id: paper.to_param,
                       phase_id: paper.phases.last.id,
                       title: 'Verify Signatures'
                     }

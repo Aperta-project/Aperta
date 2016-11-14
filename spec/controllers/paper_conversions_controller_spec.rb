@@ -15,7 +15,7 @@ describe PaperConversionsController, type: :controller do
 
   describe 'GET export' do
     subject(:do_request) do
-      get :export, id: paper.to_param, export_format: 'docx', format: :json
+      get :export, lookup_id: paper.to_param, export_format: 'docx', format: :json
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -35,7 +35,7 @@ describe PaperConversionsController, type: :controller do
       context 'with a paper that needs conversion' do
         subject(:do_request) do
           VCR.use_cassette('convert_to_docx') do
-            get :export, id: paper.id, export_format: 'docx', format: :json
+            get :export, lookup_id: paper.id, export_format: 'docx', format: :json
           end
         end
 
@@ -129,7 +129,7 @@ describe PaperConversionsController, type: :controller do
       end
 
       it 'returns the download url when the status is checked' do
-        get :status, short_doi: paper.id, job_id: 'source', export_format: 'docx', format: :json
+        get :status, lookup_id: paper.id, job_id: 'source', export_format: 'docx', format: :json
         expect(response.status).to eq(200)
         expect(res_body['url']).to eq(manuscript_attachment.url)
       end

@@ -75,10 +75,10 @@ class TasksController < ApplicationController
   private
 
   def paper
-    paper_short_doi = params[:short_doi] || params[:paper_short_doi] ||
-      params.dig(:task, :short_doi)
-    return @paper ||= Paper.find_by_id_or_short_doi(paper_short_doi) \
-      if paper_short_doi
+    paper_lookup_id = params[:lookup_id] || params[:paper_lookup_id] ||
+      params.dig(:task, :lookup_id)
+    return @paper ||= Paper.find_by_id_or_short_doi(paper_lookup_id) \
+      if paper_lookup_id
 
     task = Task.find(params[:id] || params[:task_id])
     return @paper = task.paper if task
@@ -104,7 +104,7 @@ class TasksController < ApplicationController
   end
 
   def new_task_params
-    paper = Paper.find_by_id_or_short_doi(params[:task][:short_doi])
+    paper = Paper.find_by_id_or_short_doi(params[:task][:lookup_id])
     task_params(task_type).merge(paper: paper, creator: paper.creator)
   end
 

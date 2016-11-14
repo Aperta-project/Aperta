@@ -10,7 +10,7 @@ describe ManuscriptManagersController do
   before { sign_in user }
 
   it "will allow access" do
-    get :show, paper_short_doi: paper.to_param
+    get :show, paper_lookup_id: paper.to_param
     expect(response.status).to eq(200)
   end
 end

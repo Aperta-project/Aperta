@@ -25,8 +25,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   select2RemoteSource: Ember.computed(function(){
     let collaborators = this.get('collaborators');
 
-    let paperId = this.get('paper.id');
-    let url = `/api/filtered_users/users/${paperId}`;
+    let paperShortDoi = this.get('paper.shortDoi');
+    let url = `/api/filtered_users/users/${paperShortDoi}`;
 
     let existingCollaborator = (user) => {
       return !!collaborators.findBy('id', user.id.toString());

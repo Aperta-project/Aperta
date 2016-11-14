@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031153002) do
+ActiveRecord::Schema.define(version: 20161101134629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -341,6 +341,8 @@ ActiveRecord::Schema.define(version: 20161031153002) do
     t.string   "staff_email"
   end
 
+  add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
+
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"
     t.string   "template_decision"
@@ -487,11 +489,13 @@ ActiveRecord::Schema.define(version: 20161031153002) do
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
+    t.string   "short_doi"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
+  add_index "papers", ["short_doi"], name: "index_papers_on_short_doi", unique: true, using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "participations", force: :cascade do |t|

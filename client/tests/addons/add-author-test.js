@@ -13,6 +13,7 @@ let App      = null;
 let fakeUser = null;
 let server   = null;
 let paperId  = null;
+let paperShortDoi = null;
 const taskId = 90210;
 
 const openNewAuthorForm = function() {
@@ -45,13 +46,14 @@ module('Integration: adding an author', {
     // -- Paper Setup
 
     const paperPayload = Factory.createPayload('paper');
-    let paper = paperPayload.createRecord('Paper', {id: 1});
+    let paper = paperPayload.createRecord('Paper');
+    paperShortDoi = paper.shortDoi;
     paperId = paper.id;
     paperPayload.addRecords(records.concat([fakeUser]));
     const paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
 
-    server.respondWith('GET', '/api/papers/' + paperId, [
+    server.respondWith('GET', '/api/papers/' + paperShortDoi, [
       200, {
         'Content-Type': 'application/json'
       }, JSON.stringify(paperResponse)
@@ -142,7 +144,7 @@ module('Integration: adding an author', {
 test('can add a new author', function(assert) {
   const firstName = 'James';
 
-  visit(`/papers/${paperId}/tasks/${taskId}`);
+  visit('/papers/' + paperShortDoi + `/tasks/${taskId}`);
   openNewAuthorForm();
   fillIn('.author-first', firstName);
   click('.author-form-buttons .button-secondary:contains("done")');
@@ -156,7 +158,8 @@ test('can add a new author', function(assert) {
 });
 
 test('validation works', function(assert) {
-  visit(`/papers/${paperId}/tasks/${taskId}`);
+  let url = '/papers/' + paperShortDoi + '/tasks/' + taskId;
+  visit(url);
   openNewAuthorForm();
   click('.author-form-buttons .button-secondary:contains("done")');
   click('.author-task-item-view-text');

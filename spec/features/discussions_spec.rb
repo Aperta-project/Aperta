@@ -18,7 +18,7 @@ feature "Discussions", js: true, selenium: true do
       assign_journal_role journal, admin, :admin
 
       login_as(admin, scope: :user)
-      visit "/papers/#{paper.id}"
+      Page.view_paper paper
 
       find('#nav-discussions').click
 
@@ -38,7 +38,7 @@ feature "Discussions", js: true, selenium: true do
 
     scenario 'can view paper, no discussions load' do
       login_as(user, scope: :user)
-      visit "/papers/#{paper.id}"
+      Page.view_paper paper
       find('#nav-discussions').click
       discussion_page.expect_no_create_button
       discussion_page.expect_view_no_discussions
@@ -57,7 +57,7 @@ feature "Discussions", js: true, selenium: true do
 
     scenario 'can see discussion and add reply', flaky: true do
       login_as(user, scope: :user)
-      visit "/papers/#{paper.id}/discussions"
+      visit "/papers/#{paper.short_doi}/discussions"
 
       discussion_page.expect_no_create_button
       discussion_page.click_topic

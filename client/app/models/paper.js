@@ -44,6 +44,7 @@ export default DS.Model.extend({
   createdAt: attr('date'),
   creator: belongsTo('user', { async: true }),
   doi: attr('string'),
+  shortDoi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
   eventName: attr('string'),
@@ -67,6 +68,8 @@ export default DS.Model.extend({
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
   url: attr('string'),
+
+  paper_shortDoi: computed.oneWay('shortDoi'),
 
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
   allAuthorsSortingAsc: ['position:asc'],

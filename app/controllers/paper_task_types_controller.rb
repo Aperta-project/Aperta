@@ -11,6 +11,6 @@ class PaperTaskTypesController < ApplicationController
   private
 
   def paper
-    @paper ||= Paper.find(params[:paper_id])
+    @paper ||= Paper.find_by_id_or_short_doi(params[:paper_lookup_id])
   end
 end

@@ -26,7 +26,7 @@ feature 'Assign team', js: true do
     )
 
     login_as(user, scope: :user)
-    visit "/papers/#{assign_team_task.paper.id}/tasks/#{assign_team_task.id}"
+    Page.view_task assign_team_task
     expect(page).to have_content("You don't have access to that content")
 
     # User with permission(s) can view and use the assign team task

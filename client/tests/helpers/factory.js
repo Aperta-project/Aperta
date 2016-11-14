@@ -250,28 +250,32 @@ Factory = {
     return [].concat(paper, litePaper, journal, phases, allTasks);
   },
   createLitePaper: function(paper) {
-    var id, paperAttrs, paper_id, publishingState, short_title, title;
-    short_title = paper.short_title, title = paper.title, id = paper.id, publishingState = paper.publishingState;
+    var id, paperAttrs, paper_id, publishingState, short_title, title, shortDoi;
+    short_title = paper.short_title, title = paper.title, id = paper.id, publishingState = paper.publishingState, paper.shortDoi = shortDoi;
     paper_id = id;
+    shortDoi = 'test.000' + paper_id;
     paperAttrs = {
       short_title: short_title,
       title: title,
       id: id,
       publishingState: publishingState,
-      paper_id: paper_id
+      paper_id: paper_id,
+      shortDoi: shortDoi
     };
     return Factory.createRecord('LitePaper', paperAttrs);
   },
   createLitePaperWithRoles: function(paper, oldRoles) {
-    var id, lp, paperAttrs, paper_id, publishingState, short_title, title;
-    short_title = paper.short_title, title = paper.title, id = paper.id, publishingState = paper.publishingState;
+    var id, lp, paperAttrs, paper_id, publishingState, short_title, title, shortDoi;
+    short_title = paper.short_title, title = paper.title, id = paper.id, publishingState = paper.publishingState, shortDoi = paper.shortDoi;
     paper_id = id;
+    shortDoi = 'test.000' + paper_id;
     paperAttrs = {
       short_title: short_title,
       title: title,
       id: id,
       publishingState: publishingState,
-      paper_id: paper_id
+      paper_id: paper_id,
+      shortDoi: shortDoi
     };
     lp = Factory.createRecord('LitePaper', paperAttrs);
     lp.oldRoles = oldRoles;
@@ -438,7 +442,7 @@ FactoryAttributes.Author = {
 
 FactoryAttributes.Paper = {
   _rootKey: 'paper',
-  id: 1,
+  id: this.id,
   short_title: 'Paper',
   title: 'Foo',
   body: null,
@@ -453,7 +457,8 @@ FactoryAttributes.Paper = {
   editor_ids: [],
   reviewer_ids: [],
   tasks: [],
-  journal_id: null
+  journal_id: null,
+  shortDoi: 'test.0001'
 };
 
 FactoryAttributes.LitePaper = {
@@ -461,6 +466,7 @@ FactoryAttributes.LitePaper = {
   id: null,
   title: 'Foo',
   paper_id: null,
+  shortDoi: null,
   short_title: 'Paper',
   publishing_state: 'submitted',
   oldRoles: []

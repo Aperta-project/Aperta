@@ -3,7 +3,7 @@ class DecisionsController < ApplicationController
   respond_to :json
 
   def index
-    paper = Paper.find(params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:paper_lookup_id])
     requires_user_can(:view, paper)
 
     decisions = if current_user.can?(:view_decisions, paper)

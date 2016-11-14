@@ -15,7 +15,7 @@ feature 'Adhoc cards', js: true do
     before do
       paper.tasks.each { |t| t.add_participant(author) }
       login_as(author, scope: :user)
-      visit "/papers/#{paper.id}/tasks/#{paper.tasks.first.id}"
+      Page.view_task paper.tasks.first
     end
 
     scenario 'uploads an image to ad-hoc card' do
@@ -51,7 +51,7 @@ feature 'Adhoc cards', js: true do
   context 'As someone who can manage email participants' do
     before do
       login_as(admin, scope: :user)
-      visit "/papers/#{paper.id}/tasks/#{paper.tasks.first.id}"
+      Page.view_task paper.tasks.first
     end
 
     scenario 'allows sending email from ad-hoc card', flaky: true do

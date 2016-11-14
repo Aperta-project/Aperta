@@ -20,7 +20,7 @@ describe TahiStandardTasks::PaperAdminMailer do
     end
 
     it "contains a link to the paper" do
-      expect(email.body.raw_source).to match(%r{http://www.example.com/papers/#{invitation.paper.id}})
+      expect(email.body.raw_source).to match(%r{http://www.example.com/papers/#{invitation.paper.short_doi}})
     end
 
     context "without a paper.admin" do

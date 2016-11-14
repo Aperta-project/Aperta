@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   respond_to :json
 
   def index
-    paper = Paper.find(params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:lookup_id])
     requires_user_can(:assign_roles, paper)
 
     render(

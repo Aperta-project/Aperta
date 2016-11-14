@@ -30,6 +30,22 @@ class Page < PageFragment
     def view_task_overlay(paper, task, opts = {})
       new.view_task_overlay(paper, task, opts)
     end
+
+    def view_paper(paper)
+      new.view_paper(paper)
+    end
+
+    def view_task(task)
+      new.view_task(task)
+    end
+
+    def view_paper_workflow(paper)
+      new.view_paper_workflow(paper)
+    end
+
+    def sign_out
+      new.sign_out
+    end
   end
 
   def initialize(element = nil, context: nil)
@@ -39,6 +55,18 @@ class Page < PageFragment
   def reload(sync_on:nil)
     visit page.current_path
     page.has_content? sync_on if sync_on
+  end
+
+  def view_paper(paper)
+    visit "/papers/#{paper.short_doi}"
+  end
+
+  def view_task(task)
+    visit "/papers/#{task.paper.short_doi}/tasks/#{task.id}"
+  end
+
+  def view_paper_workflow(paper)
+    visit "/papers/#{paper.short_doi}/workflow"
   end
 
   def notice
@@ -53,9 +81,9 @@ class Page < PageFragment
 
   def view_task_overlay(paper, task, opts = {})
     if opts[:without_waiting] == true
-      visit_without_waiting "/papers/#{paper.id}/tasks/#{task.id}"
+      visit_without_waiting "/papers/#{paper.short_doi}/tasks/#{task.id}"
     else
-      visit "/papers/#{paper.id}/tasks/#{task.id}"
+      visit "/papers/#{paper.short_doi}/tasks/#{task.id}"
     end
     class_name =
       (task.title.split(' ')
@@ -71,8 +99,9 @@ class Page < PageFragment
 
   def sign_out
     # Don't visit CAS logout route in CI
+    reload
     ClimateControl.modify CAS_LOGOUT_URL: nil do
-      find('.main-nav-user-section-header').click
+      find('#profile-dropdown-menu-trigger').click
       find('#nav-signout').click
 
       within ".auth-container" do

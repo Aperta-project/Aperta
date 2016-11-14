@@ -49,7 +49,7 @@ export default Ember.Controller.extend({
     hideTaskOverlay() {
       const r = this.get('routing.router.router');
       const lastRoute = r.currentHandlerInfos[r.currentHandlerInfos.length - 1];
-      r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('id')));
+      r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('shortDoi')));
       this.set('showTaskOverlay', false);
     },
 

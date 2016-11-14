@@ -9,7 +9,7 @@ class ManuscriptManagersController < ApplicationController
   private
 
   def paper
-    Paper.find(params[:paper_id])
+    Paper.find_by_id_or_short_doi!(params[:paper_lookup_id])
   end
 
   def enforce_policy

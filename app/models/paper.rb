@@ -88,6 +88,10 @@ class Paper < ActiveRecord::Base
     journal_prefix_and_number.try(:join, '.')
   end
 
+  def to_param
+    short_doi
+  end
+
   after_create :assign_doi!
   after_create :create_versioned_texts
   after_commit :state_transition_notifications
@@ -268,6 +272,11 @@ class Paper < ActiveRecord::Base
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,
       'assignments.assigned_to_type' => 'Paper')
+  end
+
+  def self.find_by_id_or_short_doi(lookup_id)
+    return find_by_short_doi(lookup_id) if lookup_id.to_s =~ DoiService::SHORT_DOI_FORMAT
+    find(lookup_id)
   end
 
   def inactive?
@@ -607,7 +616,10 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_doi!
-    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
+    return unless journal
+    update!(doi: DoiService.new(journal: journal).next_doi!)
+    doi_parts = doi.split('.')
+    update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])
   end
 
   def create_versioned_texts

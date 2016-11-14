@@ -9,7 +9,7 @@ import {
 
 let fakeUser = null;
 let server   = null;
-let paperId  = null;
+let paperShortDoi  = null;
 const taskId = 90210;
 
 const openNewAuthorForm = function() {
@@ -68,12 +68,12 @@ moduleForAcceptance('Integration: adding an author', {
     paper.author_ids = [fakeUser.id];
     paper.creator_id = fakeUser.id;
 
-    paperId = paper.id;
+    paperShortDoi = paper.shortDoi;
     paperPayload.addRecords(records.concat([fakeUser]));
     const paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
 
-    server.respondWith('GET', '/api/papers/' + paperId, [
+    server.respondWith('GET', '/api/papers/' + paperShortDoi, [
       200, {
         'Content-Type': 'application/json'
       }, JSON.stringify(paperResponse)
@@ -135,11 +135,7 @@ moduleForAcceptance('Integration: adding an author', {
     server.respondWith('POST', '/api/authors', [
       200, {
         'Content-Type': 'application/json'
-      }, JSON.stringify({authors: [{
-        id: 5,
-        first_name: 'James',
-        paper_id: paperId
-      }]})
+      }, JSON.stringify({authors: [{id: 5, first_name: 'James', paper_short_doi: paperShortDoi}]})
     ]);
 
     server.respondWith('GET', '/api/countries', [
@@ -153,7 +149,7 @@ moduleForAcceptance('Integration: adding an author', {
 test('can add a new author', function(assert) {
   const firstName = 'James';
 
-  visit(`/papers/${paperId}/tasks/${taskId}`);
+  visit(`/papers/${paperShortDoi}/tasks/${taskId}`);
   openNewAuthorForm();
   fillIn('.author-first', firstName);
   click('.author-form-buttons .button-secondary:contains("done")');
@@ -168,7 +164,7 @@ test('can add a new author', function(assert) {
 
 test('validation works for currentUser/paper creator', function(assert) {
   window.RailsEnv.orcidConnectEnabled = true;
-  visit(`/papers/${paperId}/tasks/${taskId}`);
+  visit(`/papers/${paperShortDoi}/tasks/${taskId}`);
   click('.task-completed');
 
   andThen(function() {
@@ -194,7 +190,7 @@ test('validation works for currentUser/paper creator', function(assert) {
 test('validation works for non currentUser/paper creator', function(assert) {
   const authorItem = '.author-task-item:not(.author-task-item-current-user) ';
   window.RailsEnv.orcidConnectEnabled = true;
-  visit(`/papers/${paperId}/tasks/${taskId}`);
+  visit(`/papers/${paperShortDoi}/tasks/${taskId}`);
   openNewAuthorForm();
   click('.author-form-buttons .button-secondary:contains("done")');
   click(authorItem + '.author-task-item-view-text');
@@ -230,7 +226,7 @@ test('validation works for non currentUser/paper creator', function(assert) {
 
 test('orcid validation does not fire', function(assert) {
   window.RailsEnv.orcidConnectEnabled = false;
-  visit(`/papers/${paperId}/tasks/${taskId}`);
+  visit(`/papers/${paperShortDoi}/tasks/${taskId}`);
   openNewAuthorForm();
   click('.author-form-buttons .button-secondary:contains("done")');
   click('.author-task-item-view-text');

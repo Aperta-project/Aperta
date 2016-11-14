@@ -6,7 +6,8 @@ FactoryGuy.define('paper', {
     shortTitle: '',
     publishingState: 'unsubmitted',
     relatedAtDate: '2014-09-28T13:54:58.028Z',
-    editable: true
+    editable: true,
+    shortDoi: 'dev.dev10001'
   },
 
   paper_with_discussion: {
@@ -20,6 +21,7 @@ FactoryGuy.define('paper', {
       title: 'Tech Check Discussion',
       discussionReplies: [],
       discussionParticipants: []
-    }]
+    }],
+    shortDoi: 'dev.10001'
   }
 });

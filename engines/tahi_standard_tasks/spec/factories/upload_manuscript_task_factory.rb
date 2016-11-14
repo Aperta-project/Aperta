@@ -3,6 +3,5 @@ FactoryGirl.define do
     paper
     phase
     title "Upload Manuscript"
-    old_role "author"
   end
 end

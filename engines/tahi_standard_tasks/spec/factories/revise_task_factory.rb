@@ -3,6 +3,5 @@ FactoryGirl.define do
     paper
     phase
     title "Revise Manusript"
-    old_role "author"
   end
 end

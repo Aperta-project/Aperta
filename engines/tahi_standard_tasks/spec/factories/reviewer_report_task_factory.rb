@@ -3,13 +3,11 @@ FactoryGirl.define do
     paper
     phase
     title "Reviewer Report"
-    old_role "reviewer"
   end
 
   factory :front_matter_reviewer_report_task, class: 'TahiStandardTasks::FrontMatterReviewerReportTask' do
     paper
     phase
     title "Front Matter Reviewer Report"
-    old_role "reviewer"
   end
 end

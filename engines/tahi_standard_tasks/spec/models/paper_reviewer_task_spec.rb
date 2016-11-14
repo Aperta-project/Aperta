@@ -12,7 +12,6 @@ describe TahiStandardTasks::PaperReviewerTask do
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
-    it_behaves_like '<Task class>.restore_defaults update old_role to the default'
   end
 
   describe "#invitation_invited" do
@@ -22,7 +21,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       invitee_role: Role::REVIEWER_ROLE
 
     it "notifies the invited reviewer" do
-      expect {task.invitation_invited invitation}.to change {
+      expect { task.invitation_invited invitation }.to change {
         Sidekiq::Extensions::DelayedMailer.jobs.length
       }.by(1)
     end
@@ -32,8 +31,8 @@ describe TahiStandardTasks::PaperReviewerTask do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
     before do
       allow(ReviewerReportTaskCreator).to \
-        receive(:new).
-        and_return double(process: nil)
+        receive(:new)
+        .and_return double(process: nil)
     end
 
     context "with an academic editor" do
@@ -49,7 +48,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
 
       it "queues the email" do
-        expect {task.invitation_accepted invitation}.to change {
+        expect { task.invitation_accepted invitation }.to change {
           Sidekiq::Extensions::DelayedMailer.jobs.length
         }.by(1)
       end
@@ -58,11 +57,11 @@ describe TahiStandardTasks::PaperReviewerTask do
     context "without a paper editor" do
       before do
         paper.assignments.where(role: paper.journal.academic_editor_role)
-          .destroy_all
+             .destroy_all
       end
 
       it "queues the email" do
-        expect {task.invitation_accepted invitation}.to change {
+        expect { task.invitation_accepted invitation }.to change {
           Sidekiq::Extensions::DelayedMailer.jobs.length
         }.by(1)
       end
@@ -83,7 +82,7 @@ describe TahiStandardTasks::PaperReviewerTask do
     context "without a paper editor" do
       before do
         paper.assignments.where(role: paper.journal.academic_editor_role)
-          .destroy_all
+             .destroy_all
       end
 
       it "queues the email" do

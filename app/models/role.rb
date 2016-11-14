@@ -4,34 +4,34 @@ class Role < ActiveRecord::Base
   has_many :assignments, dependent: :destroy
   has_many :users, through: :assignments
 
-  ACADEMIC_EDITOR_ROLE = 'Academic Editor'
-  BILLING_ROLE = 'Billing Staff'
-  COLLABORATOR_ROLE = 'Collaborator'
-  COVER_EDITOR_ROLE = 'Cover Editor'
-  CREATOR_ROLE = 'Creator'
-  DISCUSSION_PARTICIPANT = 'Discussion Participant'
-  FREELANCE_EDITOR_ROLE = 'Freelance Editor'
-  HANDLING_EDITOR_ROLE = 'Handling Editor'
-  INTERNAL_EDITOR_ROLE = 'Internal Editor'
-  PRODUCTION_STAFF_ROLE = 'Production Staff'
-  PUBLISHING_SERVICES_ROLE = 'Publishing Services'
-  REVIEWER_ROLE = 'Reviewer'
-  SITE_ADMIN_ROLE = 'Site Admin'
-  STAFF_ADMIN_ROLE = 'Staff Admin'
-  TASK_PARTICIPANT_ROLE = 'Participant'
-  USER_ROLE = 'User'
-  REVIEWER_REPORT_OWNER_ROLE = 'Reviewer Report Owner'
+  ACADEMIC_EDITOR_ROLE = 'Academic Editor'.freeze
+  BILLING_ROLE = 'Billing Staff'.freeze
+  COLLABORATOR_ROLE = 'Collaborator'.freeze
+  COVER_EDITOR_ROLE = 'Cover Editor'.freeze
+  CREATOR_ROLE = 'Creator'.freeze
+  DISCUSSION_PARTICIPANT = 'Discussion Participant'.freeze
+  FREELANCE_EDITOR_ROLE = 'Freelance Editor'.freeze
+  HANDLING_EDITOR_ROLE = 'Handling Editor'.freeze
+  INTERNAL_EDITOR_ROLE = 'Internal Editor'.freeze
+  PRODUCTION_STAFF_ROLE = 'Production Staff'.freeze
+  PUBLISHING_SERVICES_ROLE = 'Publishing Services'.freeze
+  REVIEWER_ROLE = 'Reviewer'.freeze
+  SITE_ADMIN_ROLE = 'Site Admin'.freeze
+  STAFF_ADMIN_ROLE = 'Staff Admin'.freeze
+  TASK_PARTICIPANT_ROLE = 'Participant'.freeze
+  USER_ROLE = 'User'.freeze
+  REVIEWER_REPORT_OWNER_ROLE = 'Reviewer Report Owner'.freeze
 
   # These roles (user, discussion topic, task) are automatically
   # assigned by the system
-  USER_ROLES = [USER_ROLE]
+  USER_ROLES = [USER_ROLE].freeze
 
-  DISCUSSION_TOPIC_ROLES = [DISCUSSION_PARTICIPANT]
+  DISCUSSION_TOPIC_ROLES = [DISCUSSION_PARTICIPANT].freeze
 
   TASK_ROLES = [
     REVIEWER_REPORT_OWNER_ROLE,
     TASK_PARTICIPANT_ROLE
-  ]
+  ].freeze
 
   # Paper and Journal roles are set explicitly
   PAPER_ROLES = [
@@ -41,7 +41,7 @@ class Role < ActiveRecord::Base
     CREATOR_ROLE,
     HANDLING_EDITOR_ROLE,
     REVIEWER_ROLE
-  ]
+  ].freeze
 
   JOURNAL_ROLES = [
     FREELANCE_EDITOR_ROLE,
@@ -49,22 +49,7 @@ class Role < ActiveRecord::Base
     PRODUCTION_STAFF_ROLE,
     PUBLISHING_SERVICES_ROLE,
     STAFF_ADMIN_ROLE
-  ]
-
-  def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
-    case old_role
-    when /^admin$/i then paper.journal.staff_admin_role
-    when /^editor$/i then paper.journal.handling_editor_role
-    when /^collaborator$/i then paper.journal.collaborator_role
-    when /^reviewer$/i then paper.journal.reviewer_role
-    else
-      fail NotImplementedError, <<-MSG.strip_heredoc
-        Not sure how to match up old role '#{old_role}' with a new role.
-        Do no fret though. This just needs to be implemented until we are
-        done migrating away from the old roles.
-      MSG
-    end
-  end
+  ].freeze
 
   def self.user_role
     find_by(name: Role::USER_ROLE, journal: nil)

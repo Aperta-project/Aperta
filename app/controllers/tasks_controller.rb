@@ -100,7 +100,7 @@ class TasksController < ApplicationController
   end
 
   def new_task_params
-    paper = Paper.find params[:task][:paper_id]
+    paper = Paper.find_by_id_or_short_doi(params[:task][:paper_id])
     task_params(task_type).merge(paper: paper, creator: paper.creator)
   end
 

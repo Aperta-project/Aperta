@@ -76,7 +76,7 @@ feature "Journal Administration", js: true do
       end
     end
 
-    let!(:asignee) do
+    let!(:assignee) do
       FactoryGirl.create(:user)
     end
 
@@ -85,7 +85,7 @@ feature "Journal Administration", js: true do
     end
 
     scenario 'add a role to a user' do
-      find('.admin-user-search input').send_keys(asignee.last_name, :return)
+      find('.admin-user-search input').send_keys(assignee.last_name, :return)
       find('.assign-role-button').click
       find('.select2-focused').send_keys('publish', :return)
       expect(page).to have_content('Publishing Services')

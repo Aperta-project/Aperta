@@ -23,7 +23,6 @@ export default AuthorizedRoute.extend({
         let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
         let newTaskPromise = this.store.createRecord(unNamespacedKind, {
           phase: phase,
-          oldRole: task.get('oldRole'),
           type: task.get('kind'),
           paper: this.modelFor('paper'),
           title: task.get('title')

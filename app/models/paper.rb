@@ -29,9 +29,6 @@ class Paper < ActiveRecord::Base
   # Everything else
   has_many :versioned_texts, dependent: :destroy
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
-  has_many :paper_roles, dependent: :destroy
-  has_many :users, -> { uniq }, through: :paper_roles
-  has_many :old_assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :assigned_users, -> { uniq }, through: :assignments, source: :user
   has_many :phases, -> { order 'phases.position ASC' },
            dependent: :destroy,
@@ -368,18 +365,6 @@ class Paper < ActiveRecord::Base
     sanitized ? strip_tags(title) : title.html_safe
   end
 
-  # Public: Returns one of the admins from the paper.
-  #
-  # Examples
-  #
-  #   admin
-  #   # => <#124: User>
-  #
-  # Returns a User object.
-  def admin
-    admins.first
-  end
-
   # Public: Returns the academic editors assigned to this paper
   #
   # Examples
@@ -461,9 +446,11 @@ class Paper < ActiveRecord::Base
   end
 
   def add_collaboration(user)
-    assignments
+    assignment = assignments
       .where(user: user, role: journal.collaborator_role)
       .first_or_create!
+    notify(action: "add_collaboration")
+    assignment
   end
 
   def remove_collaboration(collaboration)
@@ -474,6 +461,8 @@ class Paper < ActiveRecord::Base
     end
 
     collaboration.destroy if collaboration.role == journal.collaborator_role
+    notify(action: "remove_collaboration")
+
     collaboration
   end
 
@@ -490,27 +479,6 @@ class Paper < ActiveRecord::Base
 
   def participants_by_role
     group_participants_by_role(participations)
-  end
-
-  %w(admins).each do |relation|
-    ###
-    # :method: <old_roles>
-    # Public: Return user records by old_role in the paper.
-    #
-    # Examples
-    #
-    #   editors   # => [user1, user2]
-    #
-    # Returns an Array of User records.
-    #
-    # Signature
-    #
-    #   #<old_roles>
-    #
-    # old_role - A old_role name on the paper
-    define_method relation.to_sym do
-      old_assigned_users.merge(PaperRole.send(relation))
-    end
   end
 
   # Return the latest version of this paper.

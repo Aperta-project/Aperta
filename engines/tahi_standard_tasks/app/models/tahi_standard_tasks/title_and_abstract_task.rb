@@ -3,8 +3,8 @@ module TahiStandardTasks
   # used by editors to review and edit what iHat extracted from
   # an uploaded docx
   class TitleAndAbstractTask < Task
-    DEFAULT_TITLE = 'Title And Abstract'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Title And Abstract'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     attr_accessor :paper_title, :paper_abstract
     after_save :update_paper

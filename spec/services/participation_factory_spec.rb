@@ -24,23 +24,13 @@ describe ParticipationFactory do
       task.add_participant assignee
       expect do
         ParticipationFactory.create(full_params)
-      end.to_not change(Participation, :count)
+      end.to_not change { task.participations.count }
     end
 
     it 'Creates a new participation assignment' do
       expect do
         ParticipationFactory.create(full_params)
       end.to change { task.participations.count }.by(1)
-    end
-
-    it 'Creates a participation that does not notify the assigner' do
-      participation = ParticipationFactory.create(full_params)
-      expect(participation.notify_requester).to eq(false)
-    end
-
-    it 'Creates a participation that notifies the assigner if is the same' do
-      participation = ParticipationFactory.create(same_params)
-      expect(participation.notify_requester).to eq(true)
     end
 
     it 'Does not email the assignee if is the same as the assigner' do

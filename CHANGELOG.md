@@ -10,9 +10,12 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Display of article type in invitations
 - Caching of unsaved Discussion responses
 - Ad-hoc cards have editing and managing permissions
+- ORCID IDs are included in the metadata export to Apex
 ### Changed
 ### Deprecated
 ### Removed
+- Removed 'Assign Admin' card
+- Removed 'Available Task Types' section in journal administration
 ### Fixed
 ### Security
 

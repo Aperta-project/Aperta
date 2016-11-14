@@ -10,7 +10,7 @@ describe PhasesController do
     subject(:do_request) do
       post :create, format: :json, phase: {
         name: phase_name,
-        paper_short_doi: paper.short_doi,
+        paper_lookup_id: paper.short_doi,
         position: new_position
       }
     end

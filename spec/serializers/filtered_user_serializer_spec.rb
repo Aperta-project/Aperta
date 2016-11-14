@@ -23,7 +23,7 @@ describe FilteredUserSerializer do
   let(:serialized_data) do
     ActiveModel::ArraySerializer.new(users,
       each_serializer: FakeFilteredUserSerializer,
-      paper_id: paper.id).to_json
+      paper_lookup_id: paper.id).to_json
   end
 
   let (:old_roles) do

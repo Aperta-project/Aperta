@@ -16,7 +16,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
     context "on the workflow page" do
       before do
-        click_link(paper.title)
+        visit "/papers/#{paper.id}"
         click_link("Workflow")
       end
 
@@ -28,7 +28,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           title: "Wicked Awesome Card",
           type: "AdHocTask",
           body: text_body,
-          old_role: "admin",
           paper: submission_phase.paper
         )
         expect(page).to have_content "Wicked Awesome Card"
@@ -46,12 +45,10 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       scenario "access to papers" do
         # added as a collaborator
         collaborator_paper.add_collaboration(admin)
-        collaborator_paper.paper_roles.collaborators.create(user: admin)
         expect(page).to have_text(collaborator_paper.title)
 
         # removed as a collaborator
         collaborator_paper.remove_collaboration(admin)
-        collaborator_paper.paper_roles.collaborators.where(user: admin).destroy_all
         expect(page).to_not have_text(collaborator_paper.title)
 
         # added as a task participant
@@ -59,7 +56,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           user: admin,
           role: participant_paper.journal.task_participant_role
         )
-        participant_paper.paper_roles.participants.create(user: admin)
         expect(page).to have_text(participant_paper.title)
 
         # removed as a task participant
@@ -67,7 +63,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           user: admin,
           role: participant_paper.journal.task_participant_role
         ).destroy
-        participant_paper.paper_roles.participants.find_by(user: admin).destroy
         expect(page).to_not have_text(participant_paper.title)
       end
     end

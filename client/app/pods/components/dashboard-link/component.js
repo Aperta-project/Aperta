@@ -17,11 +17,11 @@ export default Ember.Component.extend({
     }
   }),
 
-  oldRoles: Ember.computed('model.oldRoles', function() {
-    if (this.get('model.oldRoles').indexOf('My Paper') > -1) {
+  roles: Ember.computed('model.roles', function() {
+    if (this.get('model.roles').indexOf('My Paper') > -1) {
       return 'Author';
     } else {
-      return this.get('model.oldRoles');
+      return this.get('model.roles');
     }
   }),
 

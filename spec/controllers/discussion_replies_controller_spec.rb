@@ -3,7 +3,6 @@ require 'rails_helper'
 describe DiscussionRepliesController do
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
-  let!(:paper_role) { FactoryGirl.create(:paper_role, :editor, paper: paper, user: user) }
   let!(:topic_a) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:participation) { topic_a.discussion_participants.create!(user: user) }
   let!(:reply) { FactoryGirl.create(:discussion_reply, discussion_topic: topic_a) }

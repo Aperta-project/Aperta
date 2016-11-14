@@ -130,12 +130,12 @@ describe Invitation do
       expect(authors_list).to_not be_empty
       invitation.invite!
       expect(invitation.information)
-        .to eq("#{authors_list}")
+        .to eq(authors_list.to_s)
     end
   end
 
   describe "#accept!" do
-    it "sends an old_role invitation email" do
+    it "sends an invitation email" do
       invitation.invite!
       expect(task).to receive(:accept_allowed?).with(invitation).and_return(true)
       expect(task).to receive(:invitation_accepted).with(invitation)
@@ -203,8 +203,7 @@ describe Invitation do
       [no_invite_user,
        pending_invite_user,
        accepted_invite_user,
-       declined_invite_user
-      ]
+       declined_invite_user]
     end
     context 'Users with invites in various states' do
       before do

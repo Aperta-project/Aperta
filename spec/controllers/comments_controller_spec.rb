@@ -2,26 +2,24 @@ require 'rails_helper'
 
 describe CommentsController do
   let(:paper) do
-     FactoryGirl.create(
-       :paper,
-       :with_tasks,
-       :with_integration_journal,
-       creator: user
-     )
+    FactoryGirl.create(
+      :paper,
+      :with_tasks,
+      :with_integration_journal,
+      creator: user
+    )
   end
   let(:user) { FactoryGirl.create(:user, tasks: []) }
 
   let(:journal) { paper.journal }
   let(:journal_admin) { FactoryGirl.create(:user) }
-  let!(:old_role) { assign_journal_role(journal, journal_admin, :admin) }
 
   let(:task) do
     FactoryGirl.create(
       :ad_hoc_task,
       paper: paper,
       participants: [user],
-      title: "Task",
-      old_role: "admin"
+      title: "Task"
     )
   end
 
@@ -30,10 +28,8 @@ describe CommentsController do
     let!(:comment2) { FactoryGirl.create(:comment, task: task) }
 
     subject(:do_request) do
-      get :index, {
-            format: 'json',
-            task_id: task.to_param,
-          }
+      get :index, format: 'json',
+                  task_id: task.to_param
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -68,9 +64,9 @@ describe CommentsController do
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        comment: {commenter_id: user.id,
-                  body: "My comment",
-                  task_id: task.id}
+                          comment: { commenter_id: user.id,
+                                     body: "My comment",
+                                     task_id: task.id }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -88,13 +84,13 @@ describe CommentsController do
 
       context "the user tries to create a blank comment" do
         it "doesn't work" do
-          expect {
+          expect do
             xhr :post, :create,
-            format: :json,
-            comment: {commenter_id: user.id,
-                      body: "",
-                      task_id: task.id}
-          }.to_not change { Comment.count }
+              format: :json,
+              comment: { commenter_id: user.id,
+                         body: "",
+                         task_id: task.id }
+          end.to_not change { Comment.count }
         end
       end
 
@@ -104,8 +100,8 @@ describe CommentsController do
             :ad_hoc_task,
             paper: paper,
             participants: [],
-            title: "Task",
-            old_role: "admin")
+            title: "Task"
+          )
         end
 
         it "adds the user as a participant" do
@@ -139,9 +135,9 @@ describe CommentsController do
       context "the user is a journal admin" do
         subject(:do_request) do
           xhr :post, :create, format: :json,
-            comment: {commenter_id: journal_admin.id,
-                      body: "My comment RULES",
-                      task_id: task.id}
+                              comment: { commenter_id: journal_admin.id,
+                                         body: "My comment RULES",
+                                         task_id: task.id }
         end
 
         let(:task) do
@@ -149,8 +145,8 @@ describe CommentsController do
             :ad_hoc_task,
             paper: paper,
             participants: [],
-            title: "Task",
-            old_role: "admin")
+            title: "Task"
+          )
         end
 
         before do
@@ -197,11 +193,9 @@ describe CommentsController do
     let!(:comment) { FactoryGirl.create(:comment, task: task) }
 
     subject(:do_request) do
-      get :show, {
-            format: 'json',
-            task_id: task.to_param,
-            id: comment.to_param
-          }
+      get :show,         format: 'json',
+                         task_id: task.to_param,
+                         id: comment.to_param
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -230,5 +224,4 @@ describe CommentsController do
       it { is_expected.to responds_with(403) }
     end
   end
-
 end

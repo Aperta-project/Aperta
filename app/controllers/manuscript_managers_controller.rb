@@ -1,8 +1,8 @@
 class ManuscriptManagersController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
 
   def show
+    requires_user_can(:manage_workflow, paper)
     head :ok
   end
 
@@ -12,7 +12,4 @@ class ManuscriptManagersController < ApplicationController
     Paper.find(params[:paper_id])
   end
 
-  def enforce_policy
-    authorize_action!(paper: paper)
-  end
 end

@@ -10,6 +10,12 @@ stream_to_orcid_account_channel = EventStream::StreamToOrcidAccountChannel
 
 Subscriptions.configure do
 
+  # Assgnments
+
+  add 'assignment:created', Assignment::NotifyAssignee
+  add 'assignment:updated', Assignment::NotifyAssignee
+  add 'assignment:destroyed', Assignment::NotifyAssignee
+
   # Papers:
 
   add 'paper:updated', stream_to_paper_channel
@@ -61,9 +67,6 @@ Subscriptions.configure do
 
   add 'comment_look:created', stream_to_user
   add 'comment_look:destroyed', stream_to_user
-
-  add 'paper_role:created', PaperRole::Created::EventStream::NotifyAssignee, PaperRole::Created::EventStream::NotifyEveryone
-  add 'paper_role:destroyed', PaperRole::Destroyed::EventStream::NotifyAssignee, PaperRole::Destroyed::EventStream::NotifyEveryone
 
   add 'author:created', Author::Created::EventStream
   add 'author:updated', Author::Updated::EventStream

@@ -25,6 +25,28 @@ describe OrcidAccount do
     end
   end
 
+  describe '#authenticated?' do
+    context 'with access token' do
+      let(:orcid_account) do
+        FactoryGirl.build_stubbed(:orcid_account,
+          identifier: 'a', access_token: 'b'
+        )
+      end
+      it 'returns truthy' do
+        expect(orcid_account.authenticated?).to be_truthy
+      end
+    end
+
+    context 'without access token' do
+      let(:orcid_account) do
+        FactoryGirl.build_stubbed(:orcid_account, identifier: 'a')
+      end
+      it 'returns truthy' do
+        expect(orcid_account.authenticated?).to be_falsey
+      end
+    end
+  end
+
   describe '#exchange_code_for_token' do
     # Get this from after authorizing on orcid.org. Click on the oauth link, authorize aperta, and capture the authorization code from the callback.
     let(:authorization_code) { 'C3b6Z2' }
@@ -109,7 +131,7 @@ describe OrcidAccount do
       let(:orcid_account) do
         FactoryGirl.build_stubbed(:orcid_account, identifier: 'my_id')
       end
-      let(:profile_url) { 'https://sandbox.orcid.org/my_id' }
+      let(:profile_url) { 'http://sandbox.orcid.org/my_id' }
 
       it 'returns the remote profile url' do
         expect(orcid_account.profile_url).to eq(profile_url)

@@ -1,8 +1,6 @@
 import Ember from 'ember';
 import { filteredUsersPath } from 'tahi/lib/api-path-helpers';
 
-let hasOldRoles = user => user.old_roles && user.old_roles.length;
-
 export default Ember.Component.extend({
   classNames: ['participant-selector', 'select2-multiple'],
 
@@ -41,8 +39,8 @@ export default Ember.Component.extend({
   resultsTemplate: function(user) {
     // This template accomodates user payloads from two kinds of serializers:
     // 1. SensitiveInformationUserSerializer (id, full_name, avatar_url, email)
-    // 2. FilteredUserSerializer             (id, full_name, avatar_url, username, old_roles)
-    let userInfo = hasOldRoles(user) ? user.email + ", " + (user.old_roles.join(', ')) : user.email;
+    // 2. FilteredUserSerializer             (id, full_name, avatar_url, username)
+    let userInfo = user.email;
     return `<strong>${user.full_name} @${user.username}</strong><br>
             <div class="suggestion-sub-value">${userInfo || ''}</div>`;
   },
@@ -72,18 +70,12 @@ export default Ember.Component.extend({
   }),
 
   sortByCollaboration: function(a, b) {
-    if (hasOldRoles(a) && !hasOldRoles(b)) {
+    if (a.full_name < b.full_name) {
       return -1;
-    } else if (!hasOldRoles(a) && hasOldRoles(b)) {
+    } else if (a.full_name > b.full_name) {
       return 1;
     } else {
-      if (a.full_name < b.full_name) {
-        return -1;
-      } else if (a.full_name > b.full_name) {
-        return 1;
-      } else {
-        return 0;
-      }
+      return 0;
     }
   },
 

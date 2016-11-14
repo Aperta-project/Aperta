@@ -104,7 +104,7 @@ test('transition to route with permission succeedes', function(assert){
   const start = assert.async();
 
   Ember.run.later(function(){
-    Factory.createPermission('User', 1, ['view_profile']);
+    Factory.createPermission('User', 1, ['view']);
 
     visit('/profile');
     andThen(function(){
@@ -120,7 +120,7 @@ test('transition to route with permission succeedes', function(assert){
 
 test('User is linked to thier Akita profile page', function(assert) {
   expect(3);
-  Factory.createPermission('User', 1, ['view_profile']);
+  Factory.createPermission('User', 1, ['view']);
 
   visit('/profile');
   andThen(function() {

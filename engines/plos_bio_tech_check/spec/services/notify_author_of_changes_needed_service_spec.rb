@@ -3,7 +3,7 @@ require 'rails_helper'
 module PlosBioTechCheck
   describe NotifyAuthorOfChangesNeededService do
     subject(:service) do
-      self.described_class.new(task, submitted_by: user)
+      described_class.new(task, submitted_by: user)
     end
 
     let(:paper) do
@@ -46,7 +46,7 @@ module PlosBioTechCheck
         expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
           ChangesForAuthorMailer,
           :notify_changes_for_author,
-          [{author_id: paper.creator.id, task_id: changes_for_author_task.id}]
+          [{ author_id: paper.creator.id, task_id: changes_for_author_task.id }]
         )
       end
 
@@ -55,11 +55,11 @@ module PlosBioTechCheck
           service.notify!
         end.to change { Activity.count }
         expect(Activity.find_by(
-          feed_name: 'workflow',
-          activity_key: 'task.sent_to_author',
-          subject: task.paper,
-          user: user,
-          message: "#{task.title} sent to author"
+                 feed_name: 'workflow',
+                 activity_key: 'task.sent_to_author',
+                 subject: task.paper,
+                 user: user,
+                 message: "#{task.title} sent to author"
         )).to be
       end
 
@@ -114,7 +114,6 @@ module PlosBioTechCheck
           new_task = ChangesForAuthorTask.last
           expect(new_task.body).to eq('initialTechCheckBody' => 'Hello world!')
           expect(new_task.title).to eq ChangesForAuthorTask::DEFAULT_TITLE
-          expect(new_task.old_role).to eq ChangesForAuthorTask::DEFAULT_ROLE
           expect(new_task.paper).to eq task.paper
           expect(new_task.phase).to eq task.phase
         end

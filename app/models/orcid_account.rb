@@ -27,9 +27,13 @@ class OrcidAccount < ActiveRecord::Base
     raise OrcidAccount::APIError, ex.to_s
   end
 
+  def authenticated?
+    !!(access_token && identifier)
+  end
+
   def profile_url
     return unless identifier
-    'https://' + TahiEnv.orcid_site_host + '/' + identifier
+    'http://' + TahiEnv.orcid_site_host + '/' + identifier
   end
 
   def access_token_valid

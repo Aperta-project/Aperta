@@ -34,8 +34,7 @@ module('Integration: Front Matter Reviewer Report', {
 
     records = paperWithTask('FrontMatterReviewerReportTask', {
       id: taskId,
-      title: 'Front Matter Reviewer Report by Bob Jones',
-      oldRole: 'reviewer'
+      title: 'Front Matter Reviewer Report by Bob Jones'
     });
 
     currentPaper = records[0];

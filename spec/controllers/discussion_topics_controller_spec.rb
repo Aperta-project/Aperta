@@ -3,7 +3,6 @@ require 'rails_helper'
 describe DiscussionTopicsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
-  let!(:paper_role) { FactoryGirl.create(:paper_role, :editor, paper: paper, user: user) }
   let!(:topic_a) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:topic_b) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:unrelated_topic) { FactoryGirl.create(:discussion_topic) }

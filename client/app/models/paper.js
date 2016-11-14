@@ -51,7 +51,7 @@ export default DS.Model.extend({
   gradualEngagement: attr('boolean'),
   handlingEditors: attr(),
   manuscript_id: attr('string'),
-  oldRoles: attr(),
+  roles: attr(),
   paperType: attr('string'),
   permissionState: computed.alias('publishingState'),
   processing: attr('boolean'),
@@ -90,8 +90,8 @@ export default DS.Model.extend({
     return this.get('collaborations').mapBy('user');
   }),
 
-  roleList: computed('oldRoles.[]', function() {
-    return this.get('oldRoles').sort().join(', ');
+  roleList: computed('roles.[]', function() {
+    return this.get('roles').sort().join(', ');
   }),
 
   latestDecision: computed('decisions.@each.latest', function() {

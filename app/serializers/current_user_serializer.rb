@@ -3,13 +3,18 @@ class CurrentUserSerializer < ActiveModel::Serializer
 
   has_many :affiliations, include: true, embed: :ids
   has_one  :orcid_account, embed: :id
-  attributes :id, :full_name, :first_name, :avatar_url, :username,
-             :email, :site_admin
+  attributes :id,
+    :full_name,
+    :first_name,
+    :avatar_url,
+    :username,
+    :email,
+    :site_admin
 
   side_load :permissions
 
   def permissions
-    object.filter_authorized(:view_profile, object).serializable
+    object.filter_authorized(:view, object).serializable
   end
 
   def site_admin
@@ -20,5 +25,5 @@ class CurrentUserSerializer < ActiveModel::Serializer
 
   def include_orcid_account?
     TahiEnv.orcid_connect_enabled?
-  end  
+  end
 end

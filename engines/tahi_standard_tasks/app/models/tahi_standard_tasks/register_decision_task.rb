@@ -1,8 +1,8 @@
 module TahiStandardTasks
   class RegisterDecisionTask < Task
     include UrlBuilder
-    DEFAULT_TITLE = 'Register Decision'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Register Decision'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
     delegate :decision_letter, :decision_letter=, to: :paper, prefix: :paper
@@ -22,9 +22,11 @@ module TahiStandardTasks
 
     def send_email
       to_field = answer_for(
-        'register_decision_questions--to-field').try(:value)
+        'register_decision_questions--to-field'
+      ).try(:value)
       subject_field = answer_for(
-        'register_decision_questions--subject-field').try(:value)
+        'register_decision_questions--subject-field'
+      ).try(:value)
 
       RegisterDecisionMailer.delay.notify_author_email(
         to_field: EmailService.new(email: to_field).valid_email_or_nil,

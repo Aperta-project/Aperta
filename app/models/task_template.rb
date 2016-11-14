@@ -6,7 +6,6 @@ class TaskTemplate < ActiveRecord::Base
   has_one :journal, through: :manuscript_manager_template
 
   validates :title, presence: true
-  delegate :old_role, to: :journal_task_type
 
   acts_as_list scope: :phase_template
 end

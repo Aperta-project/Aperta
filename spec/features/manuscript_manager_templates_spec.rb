@@ -72,12 +72,12 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
       expect(task_manager_page).to have_css('.overlay', text: 'Staff task cards')
-      expect(task_manager_page).to have_css('.card', count: 9)
+      expect(task_manager_page).to have_css('.card', count: 8)
       within '.overlay' do
         find('label', text: 'Invite Reviewer').click
         find('button', text: 'ADD').click
       end
-      expect(task_manager_page).to have_css('.card', count: 10)
+      expect(task_manager_page).to have_css('.card', count: 9)
     end
 
     scenario 'Adding multiple Task Templates'do
@@ -86,13 +86,13 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
       expect(task_manager_page).to have_css('.overlay', text: 'Staff task cards')
-      expect(task_manager_page).to have_css('.card', count: 9)
+      expect(task_manager_page).to have_css('.card', count: 8)
       within '.overlay' do
         find('label', text: 'Invite Reviewer').click
         find('label', text: 'Register Decision').click
         find('button', text: 'ADD').click
       end
-      expect(task_manager_page).to have_css('.card', count: 11)
+      expect(task_manager_page).to have_css('.card', count: 10)
     end
 
     scenario 'Adding a new Ad-Hoc Task Template'do
@@ -114,13 +114,13 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
     end
 
     scenario 'Removing a task' do
-      expect(task_manager_page).to have_css('.card', count: 9)
+      expect(task_manager_page).to have_css('.card', count: 8)
       phase = task_manager_page.phase 'Submission Data'
       phase.remove_card('Upload Manuscript')
       within '.overlay' do
         find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
       end
-      expect(task_manager_page).to have_css('.card', count: 8)
+      expect(task_manager_page).to have_css('.card', count: 7)
     end
   end
 end

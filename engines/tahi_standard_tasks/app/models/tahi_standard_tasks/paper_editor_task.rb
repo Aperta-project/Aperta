@@ -2,8 +2,8 @@ module TahiStandardTasks
   class PaperEditorTask < Task
     include ClientRouteHelper
     include Rails.application.routes.url_helpers
-    DEFAULT_TITLE = 'Invite Academic Editor'
-    DEFAULT_ROLE = 'admin'
+    DEFAULT_TITLE = 'Invite Academic Editor'.freeze
+    DEFAULT_ROLE_HINT = 'admin'.freeze
 
     include Invitable
 
@@ -54,7 +54,8 @@ module TahiStandardTasks
     def add_invitation_link(invitation)
       old_invitation_url = client_dashboard_url
       new_invitation_url = client_dashboard_url(
-        invitation_token: invitation.token)
+        invitation_token: invitation.token
+      )
       invitation.body.gsub old_invitation_url, new_invitation_url
     end
 
@@ -64,7 +65,7 @@ module TahiStandardTasks
     # its own file, but we're not sure where. It's here, instead of a
     # mailer template, because users can edit the text before it gets
     # sent out.
-    # rubocop:disable Metrics/LineLength, Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength
     def invitation_body
       template = <<-TEXT.strip_heredoc
         I am writing to seek your advice as the academic editor on a manuscript entitled '%{manuscript_title}'. The corresponding author is %{author_name}, and the manuscript is under consideration at %{journal_name}.

@@ -32,12 +32,7 @@ module TahiPusher
         if system_channel?
           true
         else
-          begin
-            # TODO: When policies are dead, drop this
-            policy_for(user).show?
-          rescue ApplicationPolicy::ApplicationPolicyNotFound
-            user.can?(:view, parsed_channel.target)
-          end
+          user.can?(:view, parsed_channel.target)
         end
       end
     rescue TahiPusher::ChannelResourceNotFound
@@ -45,10 +40,6 @@ module TahiPusher
     end
 
     private
-
-    def policy_for(user)
-      EventStreamPolicy.new(current_user: user, resource: parsed_channel.target)
-    end
 
     def parsed_channel
       @parsed_channel ||= ChannelName.parse(channel_name)

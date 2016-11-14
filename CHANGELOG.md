@@ -12,6 +12,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 ### Deprecated
 ### Removed
+- Removed 'Assign Admin' card
+- Removed 'Available Task Types' section in journal administration
 ### Fixed
 ### Security
 

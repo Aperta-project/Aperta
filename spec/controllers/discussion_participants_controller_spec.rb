@@ -4,7 +4,6 @@ describe DiscussionParticipantsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:another_user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-  let!(:paper_role) { FactoryGirl.create(:paper_role, :editor, paper: paper, user: user) }
   let!(:topic_a) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:participation) { topic_a.discussion_participants.create!(user: user) }
 

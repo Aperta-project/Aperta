@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/yamldb/yaml_db.git
-  revision: f980a67dfcfef76824676f3938b176b68c260e68
-  ref: f980a67dfcfef76824676f3938b176b68c260e68
-  specs:
-    yaml_db (0.3.0)
-      rails (>= 3.0, < 4.3)
-      rake (>= 0.8.7)
-
-GIT
   remote: https://github.com/ActsAsParanoid/acts_as_paranoid
   revision: c2db19554ddaedcac0a2b8d6a0563dea83c972c5
   ref: c2db19554ddaedcac0a2b8d6a0563dea83c972c5
@@ -23,6 +14,15 @@ GIT
     activemodel-globalid (0.1.1)
       activemodel (>= 4.1.0)
       activesupport (>= 4.1.0)
+
+GIT
+  remote: https://github.com/yamldb/yaml_db
+  revision: f980a67dfcfef76824676f3938b176b68c260e68
+  ref: f980a67dfcfef76824676f3938b176b68c260e68
+  specs:
+    yaml_db (0.3.0)
+      rails (>= 3.0, < 4.3)
+      rake (>= 0.8.7)
 
 PATH
   remote: engines/plos_billing
@@ -90,6 +90,8 @@ GEM
       activemodel (= 4.2.7.1)
       activesupport (= 4.2.7.1)
       arel (~> 6.0)
+    activerecord-import (0.16.1)
+      activerecord (>= 3.2)
     activerecord-sqlserver-adapter (4.2.4)
       activerecord (~> 4.2.1)
     activesupport (4.2.7.1)
@@ -688,6 +690,7 @@ DEPENDENCIES
   aasm (~> 4.9.0)
   active_model_serializers (= 0.8.3)
   activemodel-globalid!
+  activerecord-import
   activerecord-sqlserver-adapter
   acts_as_list
   acts_as_paranoid!

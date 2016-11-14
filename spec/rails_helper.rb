@@ -89,9 +89,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this come after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions roles permissions
-                 permission_states permission_states_permissions
-                 permissions_roles) }
+      except: %w(task_types nested_questions) }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
@@ -108,6 +106,14 @@ RSpec.configure do |config|
       ENV['SELENIUM_FIREFOX_PATH']
     Capybara.register_driver :selenium do |app|
       profile = Selenium::WebDriver::Firefox::Profile.new
+      ember_inspector_path = Rails.root.join('tmp/addon-470970-latest.xpi')
+      # https://addons.mozilla.org/firefox/downloads/latest/ember-inspector/addon-470970-latest.xpi
+      if File.exist?(ember_inspector_path)
+        profile.add_extension(ember_inspector_path)
+      elsif $stdout.tty?
+        puts "\e[33mEmber inspector not installed in #{ember_inspector_path}\e[0m"
+      end
+
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.timeout = 90
       Capybara::Selenium::Driver
@@ -128,8 +134,7 @@ RSpec.configure do |config|
     # to be rolled back as part of a transaction
     Rake::Task['nested-questions:seed'].reenable
     Rake::Task['nested-questions:seed'].invoke
-    Rake::Task['roles-and-permissions:seed'].reenable
-    Rake::Task['roles-and-permissions:seed'].invoke
+
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars
   end
@@ -152,6 +157,8 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     Authorizations.reload_configuration
     Subscriptions.reload
+    Rake::Task['roles-and-permissions:seed'].reenable
+    Rake::Task['roles-and-permissions:seed'].invoke
   end
 
   config.before(:each, type: :controller) do

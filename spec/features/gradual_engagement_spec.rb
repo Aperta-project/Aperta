@@ -16,8 +16,8 @@ feature 'Gradual Engagement', js: true do
                   subsequent page views' do
           paper = FactoryGirl.create :paper,
                                      :with_integration_journal,
-                                     creator: user,
-                                     gradual_engagement: true
+                                     :gradual_engagement,
+                                     creator: user
           visit "/papers/#{paper.id}?firstView=true"
           expect(find('#submission-process'))
             .to have_content(paper.journal.name)
@@ -30,8 +30,8 @@ feature 'Gradual Engagement', js: true do
         scenario 'the X in the submission process box closes the box' do
           paper = FactoryGirl.create :paper,
                                      :with_integration_journal,
-                                     creator: user,
-                                     gradual_engagement: true
+                                     :gradual_engagement,
+                                     creator: user
           visit "/papers/#{paper.id}?firstView=true"
           expect(find('#submission-process'))
           find('#sp-close').click
@@ -47,8 +47,8 @@ feature 'Gradual Engagement', js: true do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
                                    :with_tasks,
-                                   creator: user,
-                                   gradual_engagement: true
+                                   :gradual_engagement,
+                                   creator: user
         visit "/papers/#{paper.id}"
         expect(find('#submission-process-toggle-box'))
           .to have_content(paper.journal.name)
@@ -77,8 +77,8 @@ feature 'Gradual Engagement', js: true do
                 fill out info and INITIAL submission state information' do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
-                                   creator: user,
-                                   gradual_engagement: true
+                                   :gradual_engagement,
+                                   creator: user
         visit "/papers/#{paper.id}"
         expect(find('.ready-to-submit.initial'))
           .to have_content('Your manuscript is ready for Initial Submission')
@@ -93,9 +93,9 @@ feature 'Gradual Engagement', js: true do
                 .create :paper,
                         :with_integration_journal,
                         :with_tasks,
+                        :gradual_engagement,
                         creator: user,
-                        publishing_state: :invited_for_full_submission,
-                        gradual_engagement: true
+                        publishing_state: :invited_for_full_submission
         visit "/papers/#{paper.id}"
         expect(find('#submission-process-toggle-box'))
           .to have_content(paper.journal.name)
@@ -113,9 +113,9 @@ feature 'Gradual Engagement', js: true do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
                                    :with_tasks,
+                                   :gradual_engagement,
                                    creator: user,
-                                   publishing_state: :in_revision,
-                                   gradual_engagement: true
+                                   publishing_state: :in_revision
         visit "/papers/#{paper.id}"
         expect(find('.gradual-engagement-presubmission-messaging'))
           .to have_content('Please provide the following information to submit
@@ -129,9 +129,9 @@ feature 'Gradual Engagement', js: true do
                 fill out info FULL submission state information' do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
+                                   :gradual_engagement,
                                    creator: user,
-                                   publishing_state: :in_revision,
-                                   gradual_engagement: true
+                                   publishing_state: :in_revision
         visit "/papers/#{paper.id}"
         expect(find('.ready-to-submit'))
           .to have_content('Your manuscript is ready for Submission')
@@ -145,8 +145,8 @@ feature 'Gradual Engagement', js: true do
                 box' do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
-                                   creator: user,
-                                   gradual_engagement: true
+                                   :gradual_engagement,
+                                   creator: user
         visit "/papers/#{paper.id}"
         expect(page).not_to have_selector('#submission-process.show-process')
         find('#submission-process-toggle').click
@@ -164,8 +164,8 @@ feature 'Gradual Engagement', js: true do
           FactoryGirl.create(
             :paper,
             :with_integration_journal,
-            creator: user,
-            gradual_engagement: true
+            :gradual_engagement,
+            creator: user
           )
         end
 
@@ -184,8 +184,8 @@ feature 'Gradual Engagement', js: true do
           FactoryGirl.create(
             :paper,
             :with_integration_journal,
+            :gradual_engagement,
             creator: user,
-            gradual_engagement: true,
             publishing_state: :invited_for_full_submission
           )
         end
@@ -207,8 +207,8 @@ feature 'Gradual Engagement', js: true do
           FactoryGirl.create(
             :paper,
             :with_integration_journal,
+            :gradual_engagement,
             creator: user,
-            gradual_engagement: true,
             publishing_state: :in_revision
           )
         end

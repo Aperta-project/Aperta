@@ -17,6 +17,11 @@ describe UserSerializer, serializer_test: true do
   let(:orcid_account) { FactoryGirl.build_stubbed(:orcid_account) }
 
   describe '#as_json' do
+    around do |example|
+      ClimateControl.modify(ORCID_CONNECT_ENABLED: 'true') do
+        example.run
+      end
+    end
     let(:json) { serializer.as_json[:user] }
 
     it 'serializes to JSON' do

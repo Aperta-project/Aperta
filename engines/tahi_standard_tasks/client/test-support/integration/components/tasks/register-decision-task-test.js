@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import Factory from '../../../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 import { manualSetup, make, makeList } from 'ember-data-factory-guy';
-import setupMockServer from '../../../helpers/mock-server';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
 
 moduleForComponent(
   'register-decision-task',

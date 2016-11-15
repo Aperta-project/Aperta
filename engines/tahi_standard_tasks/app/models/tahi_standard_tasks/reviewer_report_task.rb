@@ -4,8 +4,8 @@ module TahiStandardTasks
   # up in the "ALL REVIEWS COMPLETE" query, it should inherit from
   # ReviewerReportTask.
   class ReviewerReportTask < Task
-    DEFAULT_TITLE = 'Reviewer Report'
-    DEFAULT_ROLE = 'reviewer'
+    DEFAULT_TITLE = 'Reviewer Report'.freeze
+    DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
     # NOTE As of 8 Nov 2016, I do not think this is necessary. However, it
@@ -14,11 +14,10 @@ module TahiStandardTasks
     # So I am leaving it here for now, but please consider removing it.
     has_many :decisions, -> { uniq }, through: :paper
 
-    # Overrides Task#restore_defaults to be only restore +old_role+. This
+    # Overrides Task#restore_defaults to not restore +title+. This
     # will never update +title+ as that is dynamically determined. If you
     # need to change the reviewer report title write a data migration.
     def self.restore_defaults
-      update_all(old_role: self::DEFAULT_ROLE)
     end
 
     # find_or_build_answer_for(...) will return the associated answer for this

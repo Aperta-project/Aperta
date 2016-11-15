@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :active, :created_at, :editable, :id, :journal_id, :manuscript_id, :old_roles,
+  attributes :active, :created_at, :editable, :id, :journal_id, :manuscript_id, :roles,
              :processing, :publishing_state, :related_at_date, :title,
              :updated_at
 
@@ -8,7 +8,7 @@ class LitePaperSerializer < ActiveModel::Serializer
     my_roles.map(&:created_at).sort.last
   end
 
-  def old_roles
+  def roles
     return unless scoped_user.present?
     object.role_descriptions_for(user: scoped_user)
   end

@@ -32,8 +32,7 @@ module('Integration: FinancialDisclosure', {
     TestHelper.mockFindAll('discussion-topic', 1);
 
     records = paperWithTask('FinancialDisclosureTask', {
-      id: financialDisclosureTaskId,
-      oldRole: 'author'
+      id: financialDisclosureTaskId
     });
 
     Factory.createPermission(

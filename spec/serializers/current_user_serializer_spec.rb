@@ -10,10 +10,10 @@ describe CurrentUserSerializer, serializer_test: true do
   let(:user) { FactoryGirl.create(:user) }
   let(:object_for_serializer) { user }
 
-  permission action: :view_profile, applies_to: 'User', states: ['*']
+  permission action: :view, applies_to: 'User', states: ['*']
 
   role 'User' do
-    has_permission action: 'view_profile', applies_to: 'User'
+    has_permission action: 'view', applies_to: 'User'
   end
 
   describe '#permissions' do
@@ -24,7 +24,7 @@ describe CurrentUserSerializer, serializer_test: true do
         .to match(hash_including(
                     permissions: contain_exactly(
                       object: { id: user.id, type: 'User' },
-                      permissions: { view_profile: { states: ['*'] } },
+                      permissions: { view: { states: ['*'] } },
                       id: "user+#{user.id}")))
     end
   end

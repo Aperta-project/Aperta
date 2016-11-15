@@ -27,7 +27,6 @@ class TaskFactory
   def default_options
     {
       title: task_klass::DEFAULT_TITLE,
-      old_role: task_klass::DEFAULT_ROLE
     }
   end
 

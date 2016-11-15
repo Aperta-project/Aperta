@@ -17,9 +17,7 @@ FactoryGirl.define do
           paper.journal.creator_role || paper.journal.create_creator_role!
         end
 
-        unless paper.creator
-          paper.update!(creator: FactoryGirl.create(:user))
-        end
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
       end
     end
 
@@ -48,7 +46,8 @@ FactoryGirl.define do
           1,
           paper: paper,
           reason: evaluator.reason,
-          withdrawn_by_user: evaluator.withdrawn_by_user)
+          withdrawn_by_user: evaluator.withdrawn_by_user
+        )
       end
     end
 
@@ -137,12 +136,30 @@ FactoryGirl.define do
       after(:create) do |paper, evaluator|
         task = FactoryGirl.create(
           :publishing_related_questions_task,
-          paper: paper)
+          paper: paper
+        )
         nested_question = FactoryGirl.create(
           :nested_question,
-          ident: 'publishing_related_questions--short_title')
+          ident: 'publishing_related_questions--short_title'
+        )
         task.find_or_build_answer_for(nested_question: nested_question,
                                       value: evaluator.short_title).save
+      end
+    end
+
+    trait(:gradual_engagement) do
+      after(:create) do |paper|
+        task_type_id = JournalTaskType.find_by(title: 'Initial Decision').id.to_s
+        initial_decision_params = {"paper_type"=>"Gradual Engagement", "journal_id"=>paper.journal.id,
+                        "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
+                          "task_templates"=>[
+                            {"title"=>"Initial Decision", "journal_task_type_id"=> task_type_id, "position"=>2}
+                          ]},
+                        {"name"=>"Phase 2", "position"=>2},
+                        {"name"=>"Phase 3", "position"=>3}]}
+        ManuscriptManagerTemplateForm.new(initial_decision_params).create!
+        paper.update_column(:paper_type, 'Gradual Engagement')
+        PaperFactory.new(paper.reload, paper.creator).add_phases_and_tasks
       end
     end
 
@@ -174,7 +191,7 @@ FactoryGirl.define do
               Missing role #{role}!
               Do you want to add :with_#{role}_role to your journal?
             ERROR
-            fail ex
+            raise ex
           end
         end
       end
@@ -219,8 +236,7 @@ FactoryGirl.define do
       after(:create) do |paper, evaluator|
         phase = create(:phase, paper: paper)
         evaluator.task_params[:title] ||= "Ad Hoc"
-        evaluator.task_params[:old_role] ||= "user"
-        evaluator.task_params[:type] ||= "AdHocTask"
+        evaluator.task_params[:type] ||= "Task"
         evaluator.task_params[:paper] ||= paper
 
         phase.tasks.create(evaluator.task_params)
@@ -236,7 +252,6 @@ FactoryGirl.define do
 
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)
-        FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
 
         phase = create(:phase, paper: paper)
 
@@ -341,7 +356,8 @@ FactoryGirl.define do
         paper.file = FactoryGirl.create(
           :manuscript_attachment,
           paper: paper,
-          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')))
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+        )
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]
         paper.save!

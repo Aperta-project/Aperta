@@ -4,12 +4,12 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
   given(:admin) { FactoryGirl.create(:user, :site_admin) }
   given(:paper) do
     FactoryGirl.create :paper_with_task,
-                       :with_integration_journal,
-                       :initially_submitted_lite,
-                       task_params: {
-                         title: 'Initial Decision',
-                         type: 'TahiStandardTasks::InitialDecisionTask',
-                         old_role: 'editor' }
+      :with_integration_journal,
+      :initially_submitted_lite,
+      task_params: {
+        title: 'Initial Decision',
+        type: 'TahiStandardTasks::InitialDecisionTask'
+      }
   end
 
   background do
@@ -20,17 +20,18 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
   context 'with a non-submitted Paper' do
     given(:paper) do
       FactoryGirl.create :paper_with_task,
-                         :with_integration_journal,
-                         task_params: {
-                           title: 'Initial Decision',
-                           type: 'TahiStandardTasks::InitialDecisionTask',
-                           old_role: 'editor' }
+        :with_integration_journal,
+        task_params: {
+          title: 'Initial Decision',
+          type: 'TahiStandardTasks::InitialDecisionTask'
+        }
     end
 
     scenario 'Participant cannot register a decision on the paper' do
       expect(page).to have_selector(
         '.button--disabled',
-        text: 'REGISTER DECISION AND EMAIL THE AUTHOR')
+        text: 'REGISTER DECISION AND EMAIL THE AUTHOR'
+      )
     end
   end
 

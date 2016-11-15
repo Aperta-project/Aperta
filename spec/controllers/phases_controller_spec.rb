@@ -43,7 +43,7 @@ describe PhasesController do
       context "and the phase has tasks" do
         before do
           phase.update!(
-            tasks: [Task.new(title: "task", old_role: "author", paper: paper)]
+            tasks: [Task.new(title: "task", paper: paper)]
           )
         end
 
@@ -69,7 +69,7 @@ describe PhasesController do
   describe 'PATCH update' do
     let(:phase) { paper.phases.first }
     subject(:do_request) do
-      patch :update, {format: :json, id: phase.to_param, phase: {name: 'Verify Signatures'} }
+      patch :update, format: :json, id: phase.to_param, phase: { name: 'Verify Signatures' }
     end
 
     it_behaves_like "an unauthenticated json request"

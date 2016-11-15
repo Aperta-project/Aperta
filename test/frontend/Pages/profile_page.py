@@ -26,6 +26,8 @@ class ProfilePage(AuthenticatedPage):
     self._profile_username = (By.XPATH, './/div[@id="profile-username"]/h2')
     self._profile_email_title = (By.XPATH, './/div[@id="profile-email"]/h1')
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
+    self._profile_orcid_div = (By.CLASS_NAME, 'orcid-connect')
+
     self._profile_affiliation_title = (By.CSS_SELECTOR, 'div.user-affiliation h1')
     self._profile_link = (By.CSS_SELECTOR, 'div.profile-link a')
     self._affiliation_btn = (By.CSS_SELECTOR, 'div.user-affiliation a')
@@ -47,7 +49,15 @@ class ProfilePage(AuthenticatedPage):
     self._success_message = (By.CSS_SELECTOR, 'div.success')
     self._error_message = (By.CLASS_NAME, 'error-message')
     self._country_input = (By.CSS_SELECTOR, 'input.select2-input')
+
   # POM Actions
+  def page_ready(self):
+    """
+    A method to validate that the profile page has fully loaded. At time of this writing, it
+      appears as if the orcid information is drawing last. I suspect this will change at some point.
+    :return:  void function
+    """
+    self._wait_for_element(self._get(self._profile_orcid_div))
 
   def _get_add_done_btn(self):
     """
@@ -98,9 +108,9 @@ class ProfilePage(AuthenticatedPage):
     self.validate_profile_title_style(email_title)
     email = self._get(self._profile_email)
     self.validate_profile_title_style_big(email)
-    profile_at = self._get(self._profile_affiliation_title)
-    assert 'Affiliations:' in profile_at.text
-    self.validate_profile_title_style(profile_at)
+    profile_affiliation_title = self._get(self._profile_affiliation_title)
+    assert 'Affiliations:' in profile_affiliation_title.text
+    self.validate_profile_title_style(profile_affiliation_title)
     affiliation_btn = self._get(self._affiliation_btn)
     self.validate_secondary_big_green_button_style(affiliation_btn)
     avatar = self._get(self._avatar)

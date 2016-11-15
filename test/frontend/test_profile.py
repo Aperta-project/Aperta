@@ -18,10 +18,11 @@ __author__ = 'sbassi@plos.org'
 @MultiBrowserFixture
 class ApertaProfileTest(CommonTest):
   """
-  Self imposed AC:
+  AC:
      - validate page elements and styles for:
          - ProfilePage
      - add/delete affiliations
+     - edit affiliations
      - upload image
      - reset password
   """
@@ -37,8 +38,10 @@ class ApertaProfileTest(CommonTest):
     profile_user = self.select_cas_user()
     logging.info(profile_user)
     dashboard = self.cas_login(email=profile_user['email'])
+    dashboard.page_ready()
     dashboard.click_profile_link()
     profile_page = ProfilePage(self.getDriver())
+    profile_page.page_ready()
     profile_page.validate_initial_page_elements_styles(profile_user)
     profile_page.validate_invalid_add_new_affiliation()
     profile_page.validate_nav_toolbar_elements(profile_user)
@@ -52,8 +55,10 @@ class ApertaProfileTest(CommonTest):
     current_path = os.getcwd()
     logging.info(current_path)
     dashboard = self.cas_login()
+    dashboard.page_ready()
     dashboard.click_profile_link()
     profile_page = ProfilePage(self.getDriver())
+    profile_page.page_ready()
     # Validate image upload
     profile_page.validate_image_upload()
     # add affiliations

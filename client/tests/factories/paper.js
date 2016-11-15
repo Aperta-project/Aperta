@@ -22,6 +22,6 @@ FactoryGuy.define('paper', {
       discussionReplies: [],
       discussionParticipants: []
     }],
-    shortDoi: 'dev.10001'
+    shortDoi: 'dev.dev10001'
   }
 });

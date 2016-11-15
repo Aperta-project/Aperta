@@ -69,6 +69,15 @@ export default function startApp(attrs) {
       }
       responseJson[Ember.String.pluralize(modelName)] = json;
       return responseJson;
+    },
+    mockPaperQuery: function(paper) {
+      let mockedQuery = this.mockQuery('paper').returns({models: [paper]});
+      var shortDoi = paper.shortDoi;
+      if (!shortDoi) {
+        shortDoi = paper.get('shortDoi');
+      }
+      mockedQuery.getUrl = function() { return `/api/papers/${shortDoi}`; };
+      return mockedQuery;
     }
   });
 

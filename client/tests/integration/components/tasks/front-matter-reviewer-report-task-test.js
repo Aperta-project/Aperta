@@ -38,6 +38,7 @@ module('Integration: Front Matter Reviewer Report', {
     });
 
     currentPaper = records[0];
+    //TestHelper.mockPaperQuery(currentPaper);
     frontMatterReviewerReportTask = records[1];
     journal = records[2];
     phase = records[3];
@@ -93,12 +94,17 @@ module('Integration: Front Matter Reviewer Report', {
       }, JSON.stringify({})
     ]);
 
+    server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi,
+      [ 200, { 'Content-Type': 'application/json' },
+        JSON.stringify(paperResponse) ]
+    );
     server.respondWith('GET', '/api/papers/' + currentPaper.id,
       [ 200, { 'Content-Type': 'application/json' },
         JSON.stringify(paperResponse) ]
     );
 
-    server.respondWith('GET', '/api/papers/' + currentPaper.id + '/tasks',
+
+    server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi + '/tasks',
       [ 200, { 'Content-Type': 'application/json' },
       JSON.stringify(tasksPayload.toJSON()) ]
     );
@@ -128,7 +134,7 @@ module('Integration: Front Matter Reviewer Report', {
 });
 
 test('Viewing the card', function(assert) {
-  const url = '/papers/' + currentPaper.id + '/tasks/' + taskId;
+  const url = '/papers/' + currentPaper.shortDoi + '/tasks/' + taskId;
   return visit(url).then(function() {
     assert.equal(
       find('.overlay-body-title').text().trim(),
@@ -138,7 +144,7 @@ test('Viewing the card', function(assert) {
 });
 
 test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
-  const url = '/papers/' + currentPaper.id + '/tasks/' + taskId;
+  const url = '/papers/' + currentPaper.shortDoi + '/tasks/' + taskId;
   Factory.createPermission('FrontMatterReviewerReportTask', taskId, ['view']);
   return visit(url).then(function() {
     assert.elementNotFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=accept]', 'User cannot provide an accept for publication recommendation');
@@ -164,9 +170,8 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
   });
 });
 
-
 test('Edit mode: Providing reviewer feedback', function(assert) {
-  const url = '/papers/' + currentPaper.id + '/tasks/' + taskId;
+  const url = '/papers/' + currentPaper.shortDoi + '/tasks/' + taskId;
   Factory.createPermission('FrontMatterReviewerReportTask', taskId, ['edit']);
   return visit(url).then(function() {
     assert.elementFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=accept]', 'User can provide an accept for publication recommendation');

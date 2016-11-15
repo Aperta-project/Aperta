@@ -1,56 +1,9 @@
 import Ember from 'ember';
 import Factory from '../../../helpers/factory';
+import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
-import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
-import { manualSetup, make, mockReload } from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
-import sinon from 'sinon';
-
-let createTask = function() {
-  return make('register-decision-task', {
-    paper: {
-      journal: {
-        id: 1,
-        staffEmail: 'staffpeople@plos.org'
-      },
-      publishingState: 'submitted',
-      decisions: [
-        {
-          id: 1,
-          draft: true
-        },
-        { id: 2,
-          verdict: 'accept', registeredAt: new Date()},
-        { id: 3,
-          verdict: 'minor_revision', registeredAt: new Date()}
-      ],
-      title: 'GREAT TITLE',
-      creator: {
-        id: 5,
-        lastName: 'Jones',
-        email: 'author@example.com'
-      }
-    },
-    letterTemplates: [
-      {
-        id: 1,
-        text: 'RA Accept',
-        templateDecision: 'accept',
-        to: '[AUTHOR EMAIL]',
-        subject: 'Your [JOURNAL NAME] Submission',
-        letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts' },
-      {
-        id: 2,
-        text: 'Editor Reject',
-        templateDecision: 'reject',
-        to: '[AUTHOR EMAIL]',
-        subject: 'Your [JOURNAL NAME] Submission',
-        letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
-    nestedQuestions: [
-      { id: 1, ident: 'register_decision_questions--to-field' },
-      { id: 2, ident: 'register_decision_questions--subject-field' }]
-  });
-};
+import { manualSetup, make, mockUpdate, makeList } from 'ember-data-factory-guy';
 
 moduleForComponent(
   'register-decision-task',
@@ -58,98 +11,145 @@ moduleForComponent(
     integration: true,
 
     beforeEach() {
+      manualSetup(this.container);
+
+      let decisions = makeList('decision',
+        {
+          id: 1,
+          draft: true
+        },
+        { id: 2,
+          verdict: 'accept', registeredAt: new Date()},
+        { id: 3,
+          verdict: 'minor_revision', registeredAt: new Date()});
+
+      let task = make('register-decision-task', {
+        paper: {
+          journal: {
+            id: 1,
+            staffEmail: 'staffpeople@plos.org'
+          },
+          publishingState: 'submitted',
+          decisions: decisions,
+          title: 'GREAT TITLE',
+          creator: {
+            id: 5,
+            lastName: 'Jones',
+            email: 'author@example.com'
+          }
+        },
+        letterTemplates: [
+          {
+            id: 1,
+            text: 'RA Accept',
+            templateDecision: 'accept',
+            to: '[AUTHOR EMAIL]',
+            subject: 'Your [JOURNAL NAME] Submission',
+            letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts' },
+          {
+            id: 2,
+            text: 'Editor Reject',
+            templateDecision: 'reject',
+            to: '[AUTHOR EMAIL]',
+            subject: 'Your [JOURNAL NAME] Submission',
+            letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
+        nestedQuestions: [
+          { id: 1, ident: 'register_decision_questions--to-field' },
+          { id: 2, ident: 'register_decision_questions--subject-field' },
+          { id: 3, ident: 'register_decision_questions--selected-template' }]
+      });
+
       // Mock out pusher
       this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-      manualSetup(this.container);
-      // FactoryGuy.setStore(this.container.lookup("store:main"));
+
       Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
-      initTruthHelpers();
-      const task = createTask();
 
-      this.setProperties({
-        task: task
-      });
+      this.set('task', task);
 
-      this.task.get('decisions').forEach(function (decision) {
-        mockReload('decision', decision.get('id'));
-      });
-      this.render(template);
+      mockUpdate(decisions[0]);
+
       this.selectDecision = function(decision) {
         this.$(`label:contains('${decision}') input[type='radio']`).first().click();
       };
+
+      this.select2 = function(choice) {
+        $('.select2-container').click();
+        let input = $('.select2-input');
+        input.trigger('keydown');
+        input.val(choice);
+        input.trigger('keyup');
+        $('.select2-result-label').click();
+      };
+
+      this.render(hbs`{{register-decision-task task=task container=container}}`);
     }
   }
 );
 
-const template = hbs`{{register-decision-task task=task container=container}}`;
-
 test('it renders decision selections', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
   assert.elementsFound('.decision-label', 4);
   this.selectDecision('Accept');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', 'Dear');
-  assert.ok(stub.called);
+  this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', 'Dear');
+  });
 });
 
 test('it switches the letter contents on change', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', 'who Accepts');
-  this.selectDecision('Reject');
-  assert.inputContains('.decision-letter-field', 'who Accepts');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', 'who Rejects');
-  assert.ok(stub.called);
+  this.select2('RA Accept');
+  // this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', 'who Accepts');
+    this.selectDecision('Reject');
+    return wait().then(()=>{
+      this.select2('Editor Reject');
+      return wait().then(()=>{
+        assert.inputContains('.decision-letter-field', 'who Rejects');
+      });
+    });
+  });
 });
 
 test('it replaces [LAST NAME] with the authors last name', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
-  assert.ok(stub.called);
+  this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
+  });
 });
 
 test('it replaces [JOURNAL STAFF EMAIL] with the journal staff email', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
-  assert.ok(stub.called);
+  this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
+  });
 });
 
 test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
+  const journalName = this.task.get('paper.journal.name');
   this.selectDecision('Accept');
-  let journalName = this.task.get('paper.journal.name');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', journalName);
-  assert.ok(stub.called);
+  this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', journalName);
+  });
 });
 
 test('it replaces [PAPER TITLE] with the paper title', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
-  this.$('.update-template-action').click();
-  assert.inputContains('.decision-letter-field', 'GREAT TITLE');
-  assert.ok(stub.called);
+  this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', 'GREAT TITLE');
+  });
 });
 
 test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
-  let stub = sinon.stub();
-  this.task.get('decisions.firstObject').save = stub;
   this.selectDecision('Accept');
-  this.$('.update-template-action').click();
-  assert.inputContains('.to-field', 'author@example.com');
-  assert.ok(stub.called);
+  this.$('.select2-container input').val('RA Accept').trigger('change');
+  return wait().then(()=>{
+    assert.inputContains('.to-field', 'author@example.com');
+  });
 });
 
 

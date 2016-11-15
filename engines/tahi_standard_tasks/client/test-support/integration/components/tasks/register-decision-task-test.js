@@ -3,7 +3,8 @@ import Factory from '../../../helpers/factory';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
-import { manualSetup, make, mockUpdate, makeList } from 'ember-data-factory-guy';
+import { manualSetup, make, makeList } from 'ember-data-factory-guy';
+import setupMockServer from '../../../helpers/mock-server';
 
 moduleForComponent(
   'register-decision-task',
@@ -12,6 +13,10 @@ moduleForComponent(
 
     beforeEach() {
       manualSetup(this.container);
+      let nestedQuestions = makeList('nested-question',
+                                     { id: 1, ident: 'register_decision_questions--to-field' },
+                                     { id: 2, ident: 'register_decision_questions--subject-field' },
+                                     { id: 3, ident: 'register_decision_questions--selected-template' });
 
       let decisions = makeList('decision',
         {
@@ -53,10 +58,7 @@ moduleForComponent(
             to: '[AUTHOR EMAIL]',
             subject: 'Your [JOURNAL NAME] Submission',
             letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
-        nestedQuestions: [
-          { id: 1, ident: 'register_decision_questions--to-field' },
-          { id: 2, ident: 'register_decision_questions--subject-field' },
-          { id: 3, ident: 'register_decision_questions--selected-template' }]
+        nestedQuestions: nestedQuestions
       });
 
       // Mock out pusher
@@ -66,19 +68,30 @@ moduleForComponent(
 
       this.set('task', task);
 
-      mockUpdate(decisions[0]);
+      // mockCreate('nested-question-answer'); does not work, so we cannot use factory guy here.
+      // TODO: revisit when factory guy update
+      const server = setupMockServer();
+      server.respondWith('POST', `/api/nested_questions/3/answers`, [
+        204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
+      server.respondWith('PUT', `/api/nested_questions/3/answers`, [
+        204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
+      server.respondWith('PUT', `/api/nested_questions/3`, [
+        204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
+      server.respondWith('PUT', `/api/decisions/1`, [
+        200, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
 
       this.selectDecision = function(decision) {
         this.$(`label:contains('${decision}') input[type='radio']`).first().click();
       };
 
       this.select2 = function(choice) {
-        $('.select2-container').click();
-        let input = $('.select2-input');
-        input.trigger('keydown');
-        input.val(choice);
-        input.trigger('keyup');
-        $('.select2-result-label').click();
+        Ember.run(()=>{
+          let input = this.$('.select2-container input');
+          input.trigger('keydown');
+          input.val(choice);
+          input.trigger('keyup');
+          $('.select2-result-selectable').first().trigger('mouseup');
+        });
       };
 
       this.render(hbs`{{register-decision-task task=task container=container}}`);
@@ -89,7 +102,7 @@ moduleForComponent(
 test('it renders decision selections', function(assert) {
   assert.elementsFound('.decision-label', 4);
   this.selectDecision('Accept');
-  this.$('.select2-container input').val('RA Accept').trigger('change');
+  this.select2('RA Accept');
   return wait().then(()=>{
     assert.inputContains('.decision-letter-field', 'Dear');
   });
@@ -98,7 +111,6 @@ test('it renders decision selections', function(assert) {
 test('it switches the letter contents on change', function(assert) {
   this.selectDecision('Accept');
   this.select2('RA Accept');
-  // this.$('.select2-container input').val('RA Accept').trigger('change');
   return wait().then(()=>{
     assert.inputContains('.decision-letter-field', 'who Accepts');
     this.selectDecision('Reject');
@@ -113,7 +125,7 @@ test('it switches the letter contents on change', function(assert) {
 
 test('it replaces [LAST NAME] with the authors last name', function(assert) {
   this.selectDecision('Accept');
-  this.$('.select2-container input').val('RA Accept').trigger('change');
+  this.select2('RA Accept');
   return wait().then(()=>{
     assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
   });
@@ -121,24 +133,24 @@ test('it replaces [LAST NAME] with the authors last name', function(assert) {
 
 test('it replaces [JOURNAL STAFF EMAIL] with the journal staff email', function(assert) {
   this.selectDecision('Accept');
-  this.$('.select2-container input').val('RA Accept').trigger('change');
+  this.select2('RA Accept');
   return wait().then(()=>{
     assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
   });
 });
 
 test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
-  const journalName = this.task.get('paper.journal.name');
   this.selectDecision('Accept');
-  this.$('.select2-container input').val('RA Accept').trigger('change');
+  this.select2('RA Accept');
   return wait().then(()=>{
+    const journalName = this.task.get('paper.journal.name');
     assert.inputContains('.decision-letter-field', journalName);
   });
 });
 
 test('it replaces [PAPER TITLE] with the paper title', function(assert) {
   this.selectDecision('Accept');
-  this.$('.select2-container input').val('RA Accept').trigger('change');
+  this.select2('RA Accept');
   return wait().then(()=>{
     assert.inputContains('.decision-letter-field', 'GREAT TITLE');
   });
@@ -146,7 +158,7 @@ test('it replaces [PAPER TITLE] with the paper title', function(assert) {
 
 test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
   this.selectDecision('Accept');
-  this.$('.select2-container input').val('RA Accept').trigger('change');
+  this.select2('RA Accept');
   return wait().then(()=>{
     assert.inputContains('.to-field', 'author@example.com');
   });

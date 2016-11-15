@@ -58,6 +58,9 @@ module.exports = function(defaults) {
   // JsDiff
   app.import(app.bowerDirectory + '/jsdiff/diff.js');
 
+  // lscache
+  app.import(app.bowerDirectory + '/lscache/lscache.js');
+
   // Bootstrap
   app.import(app.bowerDirectory + '/bootstrap/js/collapse.js');
   app.import(app.bowerDirectory + '/bootstrap/js/dropdown.js');

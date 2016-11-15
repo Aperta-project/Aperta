@@ -24,7 +24,7 @@ export default AuthorizedRoute.extend({
     if (!transition.intent.url) {
       return;
     }
-    var url = transition.intent.url.replace(`/papers/${model.get('id')}/`, `/papers/${model.get('shortDoi')}/`);
+    var url = transition.intent.url.replace(`/papers/${model.get('id')}`, `/papers/${model.get('shortDoi')}`);
     if (url !== transition.intent.url) {
       this.transitionTo(url);
     }

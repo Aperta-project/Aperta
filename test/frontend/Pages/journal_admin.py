@@ -29,6 +29,7 @@ class JournalAdminPage(AdminPage):
 
     # Locators - Instance members
     # Journals Admin Page
+    # User Search widget and result table
     self._journal_admin_users_title = (By.CLASS_NAME, 'admin-section-title')
     self._journal_admin_user_search_field = (By.NAME, 'Admin Search Input')
     self._journal_admin_user_search_button = (By.CSS_SELECTOR, 'div.admin-search > button')
@@ -55,35 +56,31 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_user_row_role_search_result_item = (By. CSS_SELECTOR,
                                                             'ul.select2-results li div')
 
-    self._journal_admin_roles_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
-    self._journal_admin_roles_add_new_role_btn = (By.CSS_SELECTOR, 'div.admin-section button')
-    self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-roles')
-    self._journal_admin_roles_role_name_heading = (By.CSS_SELECTOR,
-                                                   'div.admin-roles div.admin-roles-header')
-    self._journal_admin_roles_permission_heading = (
-        By.CSS_SELECTOR, 'div.admin-roles div.admin-roles-header + div.admin-roles-header')
-    self._journal_admin_roles_role_listing_row = (By.CSS_SELECTOR, 'div.admin-roles div.admin-role')
+    # User Role Management Section
+    self._journal_admin_roles_role_table = (By.CLASS_NAME, 'admin-users')
+    self._journal_admin_roles_rt_first_name_heading = (By.CSS_SELECTOR,
+                                                       'table.admin-users > tr > th')
+    self._journal_admin_roles_rt_last_name_heading = (By.CSS_SELECTOR,
+                                                      'table.admin-users > tr > th + th')
+    self._journal_admin_roles_rt_username_heading = (By.CSS_SELECTOR,
+                                                     'table.admin-users > tr > th + th + th')
+    self._journal_admin_roles_rt_roles_heading = (By.CSS_SELECTOR,
+                                                  'table.admin-users > tr > th + th + th')
 
-    self._journal_admin_avail_task_types_div = (By.XPATH, '//div[@class="admin-section"][1]')
-    self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
-    self._journal_admin_avail_task_types_edit_btn = (By.XPATH,
-                                                     '//div[@class="admin-section"][1]/div')
+    self._journal_admin_roles_rt_listing_row = (By.CSS_SELECTOR, 'table.admin-users > tr.user-role')
 
-    self._journal_admin_att_overlay_task_title_heading = (By.CSS_SELECTOR, 'div.task-headers h3')
-    self._journal_admin_att_overlay_role_heading = (By.CSS_SELECTOR, 'div.task-headers h3 + h3')
-    self._journal_admin_att_overlay_row = (By.CSS_SELECTOR, '.individual-task-type')
-    self._journal_admin_att_overlay_row_taskname = (By.TAG_NAME, 'p')
-    self._journal_admin_att_overlay_row_selector = (By.CSS_SELECTOR, 'div div.select2-container')
-    self._journal_admin_att_overlay_row_clear_btn = (By.CSS_SELECTOR, 'div button')
-
-    self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
+    # Generic
+    self._journal_admin_non_user_section = (By.XPATH, '//div[@class="admin-section"][1]')
+    # Manuscript manager Management Section
+    self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][1]/h2')
     self._journal_admin_manu_mgr_templates_button = (By.XPATH,
-                                                     '//div[@class="admin-section"][2]/button')
+                                                     '//div[@class="admin-section"][1]/button')
     self._journal_admin_manu_mgr_thumbnail = (By.CLASS_NAME, 'mmt-thumbnail')
     self._journal_admin_manu_mgr_thumb_title = (By.CSS_SELECTOR, 'h3.mmt-thumbnail-title')
     self._journal_admin_manu_mgr_thumb_phases = (By.TAG_NAME, 'span')
 
-    self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
+    # Style Settings Section
+    self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
     self._journal_admin_edit_pdf_css_btn = (By.ID, 'edit-pdf-css')
     self._journal_admin_edit_ms_css_btn = (By.ID, 'edit-manuscript-css')
 
@@ -199,10 +196,8 @@ class JournalAdminPage(AdminPage):
     Validate the elements and function of the Roles section of the journal admin page
     :return: void function
     """
-    roles_title = self._get(self._journal_admin_roles_title)
-    self._actions.move_to_element(roles_title).perform()
-    self.validate_application_h2_style(roles_title)
-    self._get(self._journal_admin_roles_add_new_role_btn)
+    roles_table = self._get(self._journal_admin_roles_role_table)
+    self._actions.move_to_element(roles_table).perform()
     journal_id = PgSQL().query('SELECT id FROM journals WHERE name = %s;',
                                (journal,))[0][0]
     # Get list of roles that should be displayed
@@ -271,48 +266,6 @@ class JournalAdminPage(AdminPage):
         assert True
     self.restore_timeout()
 
-  def validate_task_types_section(self, journal):
-    """
-    Assert the existence and function of the elements of the Available Task Types section and
-      overlay. It is expected that this section will change radically following the roles and
-      permissions work, so not investing too much here at present.
-    :param journal: The PLOS Yeti journal is prepopulated with an extra task so requires special
-      handling.
-    :return: void function
-    """
-    att_section = self._get(self._journal_admin_avail_task_types_div)
-    att_title = self._get(self._journal_admin_avail_task_types_title)
-    self.validate_application_h2_style(att_title)
-    assert 'Available Task Types' in att_title.text, att_title.text
-    edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
-    assert 'EDIT TASK TYPES' in edit_tt_btn.text
-    self._actions.move_to_element(att_section).perform()
-    time.sleep(.5)
-    try:
-      edit_tt_btn.click()
-    except WebDriverException:
-      self.click_covered_element(edit_tt_btn)
-    # time for animation of overlay
-    time.sleep(.5)
-    self._get(self._overlay_header_close)
-    title = self._get(self._overlay_header_title)
-    assert 'Available Task Types' in title.text, title.text
-    task_title_heading = self._get(self._journal_admin_att_overlay_task_title_heading)
-    assert 'Title' in task_title_heading.text
-    role_heading = self._get(self._journal_admin_att_overlay_role_heading)
-    assert 'Role' in role_heading.text, role_heading.text
-    tasks = self._gets(self._journal_admin_att_overlay_row)
-    for task in tasks:
-      # There is little value in validating anything other than name as role assignment is up in
-      # the air.
-      name = task.find_element(*self._journal_admin_att_overlay_row_taskname)
-      if journal == 'PLOS Yeti':
-        assert name.text in yeti_task_names, '{0} not in {1}'.format(name.text, yeti_task_names)
-      else:
-        assert name.text in task_names, '{0} not in {1}'.format(name.text, task_names)
-      task.find_element(*self._journal_admin_att_overlay_row_selector)
-      task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
-
   def validate_mmt_section(self):
     """
     Assert the existence and function of the elements of the Manuscript Manager Templates section.
@@ -365,8 +318,8 @@ class JournalAdminPage(AdminPage):
           mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
     # Need to ensure the Add New Template button is not under the top toolbar
-    att_title = self._get(self._journal_admin_avail_task_types_title)
-    self._actions.move_to_element(att_title).perform()
+    admin_sections = self._get(self._journal_admin_non_user_section)
+    self._actions.move_to_element(admin_sections).perform()
     add_mmt_btn.click()
     time.sleep(2)
     self._validate_mmt_template_items()
@@ -471,8 +424,8 @@ class JournalAdminPage(AdminPage):
     if not commit:
       logging.info('Add New Template called')
       # Need to ensure the Add New Template button is not under the top toolbar
-      att_title = self._get(self._journal_admin_avail_task_types_title)
-      self._actions.move_to_element(att_title).perform()
+      admin_sections = self._get(self._journal_admin_non_user_section)
+      self._actions.move_to_element(admin_sections).perform()
       add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
       add_mmt_btn.click()
       self._wait_for_element(self._get(self._mmt_template_name_field))
@@ -510,8 +463,8 @@ class JournalAdminPage(AdminPage):
                                                           staff_tasks,
                                                           uses_resrev_report))
       # Need to ensure the Add New Template button is not under the top toolbar
-      att_title = self._get(self._journal_admin_avail_task_types_title)
-      self._actions.move_to_element(att_title).perform()
+      admin_sections = self._get(self._journal_admin_non_user_section)
+      self._actions.move_to_element(admin_sections).perform()
       add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
       add_mmt_btn.click()
       self._wait_for_element(self._get(self._mmt_template_name_field))

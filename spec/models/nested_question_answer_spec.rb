@@ -44,13 +44,13 @@ describe NestedQuestionAnswer do
 
       it "is valid when the decision is a draft" do
         expect(decision).to receive(:completed?).and_return(false)
-        expect(nested_question_answer).to receive(:changed?).and_return(true)
+        nested_question_answer.value = Faker::Lorem.sentence
         expect(nested_question_answer).to be_valid
       end
 
       it "is not valid when the decision is completed" do
         expect(decision).to receive(:completed?).and_return(true)
-        expect(nested_question_answer).to receive(:changed?).and_return(true)
+        nested_question_answer.value = Faker::Lorem.sentence
         expect(nested_question_answer).not_to be_valid
       end
     end

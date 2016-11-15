@@ -73,6 +73,13 @@
 
 {{else}}
 
+  {{#if (eq file.status "processing")}}
+    {{#progress-spinner-message visible=true
+                                size="mini"}}
+      Prosessing
+    {{/progress-spinner-message}}
+  {{/if}}
+
   <div class="si-file-viewing" {{action "enterEditStateIfEditable" on="doubleClick"}}>
     {{#if isEditable}}
       <div class="si-file-control-icons">

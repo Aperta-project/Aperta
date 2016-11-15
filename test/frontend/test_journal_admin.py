@@ -104,37 +104,6 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_roles_section(journal)
 
-  def test_validate_task_types_display_function(self):
-    """
-    test_journal_admin: validate the display of the journal admin task type section and overlay
-    Validates the presence of the following elements:
-      Section Heading
-      Edit Task Types button
-    Validates the function of the:
-      Edit task types button
-    Validates the elements of the edit task types overlay
-      Title
-      Closer
-      Table display of Title, Role type drop-down selector, clear button
-        for all task types
-    Validates the function of the edit task types overlay
-      manipulating role for task/card type.
-    :return: void function
-    """
-    logging.info('Test Journal Admin::task_types')
-    current_path = os.getcwd()
-    logging.info(current_path)
-    user_type = random.choice(admin_users)
-    logging.info('Logging in as user: {0}, {1}'.format(user_type['name'], user_type['email']))
-    dashboard_page = self.cas_login(email=user_type['email'])
-    dashboard_page.click_admin_link()
-
-    adm_page = AdminPage(self.getDriver())
-    journal = adm_page.select_random_journal()
-    logging.info('Journal: {0}'.format(journal))
-    ja_page = JournalAdminPage(self.getDriver())
-    ja_page.validate_task_types_section(journal)
-
   def test_validate_mmt_display_function(self):
     """
     test_journal_admin: validate the mmt section display and functions of adding/editing an MMT

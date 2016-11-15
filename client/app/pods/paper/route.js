@@ -21,6 +21,9 @@ export default AuthorizedRoute.extend({
   },
 
   redirect(model, transition) {
+    if (!transition.intent.url) {
+      return;
+    }
     var url = transition.intent.url.replace(`/papers/${model.get('id')}/`, `/papers/${model.get('shortDoi')}/`);
     if (url !== transition.intent.url) {
       this.transitionTo(url);

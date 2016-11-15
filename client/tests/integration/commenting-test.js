@@ -33,7 +33,17 @@ module('Integration: Commenting', {
         journals: []
       }
     });
+    var paperResponse = paper.toJSON();
+    paperResponse['id'] = 1;
+    $.mockjax({
+      url: '/api/papers/' + paper.get('shortDoi'),
+      status: 200,
+      responseText: {
+        paper: paperResponse
+      }
+    });
 
+    TestHelper.mockPaperQuery(paper);
     return TestHelper.mockFindAll('discussion-topic', 1);
   }
 });

@@ -650,7 +650,7 @@ class AuthenticatedPage(PlosPage):
     self.click_covered_element(self._get(self._discussion_link))
     return None
 
-  def post_new_discussion(self, topic='', msg='', mention='', participants=[]):
+  def post_new_discussion(self, topic='', msg='', mention='', participants=''):
     """
     Post a message on a new discussion
     :param topic: Topic to post. If empty, will post a random text.

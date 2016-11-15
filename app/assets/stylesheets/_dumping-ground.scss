@@ -57,15 +57,6 @@
   }
 }
 
-.form-inline.required::before {
-  content: "*";
-  margin: 0 3px 0 -3px;
-  color: $aperta-green;
-  font-size: 18pt;
-  float: left;
-}
-
-
 .preserve-line-breaks {
   white-space: pre-line;
 }

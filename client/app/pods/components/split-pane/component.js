@@ -1,7 +1,13 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
-  eventBus: Ember.inject.service('event-bus'),
+const {
+  Component,
+  inject: { service },
+  run
+} = Ember;
+
+export default Component.extend({
+  eventBus: service('event-bus'),
   classNames: ['split-pane'],
 
   minimumWidthPercent: 25,
@@ -16,12 +22,19 @@ export default Ember.Component.extend({
   firstPane() { return this.$('.split-pane-element:first'); },
   lastPane()  { return this.$('.split-pane-element:last'); },
 
-  _go: Ember.on('didInsertElement', function() {
-    Ember.run.scheduleOnce('afterRender', ()=> {
+  didInsertElement() {
+    this._super(...arguments);
+
+    run.scheduleOnce('afterRender', ()=> {
       this._setInitialWidths();
       this._setupDragHandle();
     });
-  }),
+  },
+
+  willDestroyElement() {
+    this._super(...arguments);
+    this.$('.split-pane-drag-handle').off();
+  },
 
   _setInitialWidths() {
     this.firstPane().css(
@@ -127,9 +140,5 @@ export default Ember.Component.extend({
         doc.off(upEvent);
       });
     });
-  },
-
-  _teardownDragHandle: Ember.on('willDestroyElement', function() {
-    this.$('.split-pane-drag-handle').off();
-  })
+  }
 });

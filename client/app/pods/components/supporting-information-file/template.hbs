@@ -15,11 +15,8 @@
       </div>
     </div>
     <div class="flex-group">
-      <div class="inset-form-control flex-element required si-file-label-input {{if model.validationErrors.label "error"}}">
-        <div class="inset-form-control-text">
-          <label>Label</label>
-        </div>
-        {{input class="inset-form-control-input si-file-label-field"
+      <div class="flex-element required si-file-label-input {{if model.validationErrors.label "error"}}">
+        {{input class="form-control si-file-label-field"
                 placeholder="E.g. S1"
                 name="label"
                 key-up="validateLabel"
@@ -41,17 +38,23 @@
       </div>
     </div>
     <div class="flex-group">
-      {{format-input class="form-control flex-element si-file-title-input"
-                     placeholder="Enter a title (optional)"
-                     name="title"
-                     value=file.title
-                     displayBold=false}}
+      <div class="flex-element">
+        {{format-input class="form-control si-file-title-input"
+                       placeholder="Enter a title (optional)"
+                       name="title"
+                       value=file.title
+                       displayBold=false}}
+      </div>
+    </div>
 
-      {{format-input placeholder="Enter a legend (optional)"
-                     name="caption"
-                     class="form-control flex-element si-file-caption-textbox"
-                     value=file.caption
-                     displayBold=false}}
+    <div class="flex-group">
+      <div class="flex-element">
+        {{format-input placeholder="Enter a legend (optional)"
+                       name="caption"
+                       class="form-control flex-element si-file-caption-textbox"
+                       value=file.caption
+                       displayBold=false}}
+      </div>
     </div>
     <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
     {{#if (eq file.category "Figure")}}

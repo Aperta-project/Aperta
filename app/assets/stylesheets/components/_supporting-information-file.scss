@@ -52,18 +52,11 @@
       }
     }
 
-    .si-file-label-input {
-      max-width: 75px;
-      width: 75px;
-      flex: none;
-    }
-
     textarea {
       width: 100%;
     }
 
     .si-file-title-input {
-      width: 350px;
       height: auto;
     }
 
@@ -78,7 +71,22 @@
     }
 
     .si-file-label-input {
-      margin-right: 10px;
+      position: relative;
+      max-width: 85px;
+      width: 85px;
+
+      &::before {
+        content: "*";
+        font-size: 24px;
+        position: absolute;
+        top: 3px;
+        left: 11px;
+        color: $aperta-green;
+      }
+
+      input {
+        padding-left: 22px;
+      }
     }
 
     .si-file-striking-image-checkbox {

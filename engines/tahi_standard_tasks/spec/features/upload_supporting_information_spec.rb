@@ -63,4 +63,22 @@ feature "Upload Supporting Information", js: true do
     task.delete_file
     expect(task).to_not have_selector('.si-file')
   end
+
+  scenario "Author is presented error" do
+    supporting_info_task = paper.tasks.first
+
+    # upload file
+    task = Page.view_task_overlay(paper, supporting_info_task)
+    task.attach_supporting_information
+    expect(task).to have_no_content('Loading')
+    expect(task).to have_no_content('Upload Complete!')
+    expect(task).to have_file 'yeti.jpg'
+
+    # edit file
+    task.edit_file_info
+
+    task.save_file_info
+
+    expect(task.error_message).to eq 'Please edit to add label, category, and optional title and legend'
+  end
 end

@@ -30,7 +30,7 @@ class SupportingInfoOverlay < CardOverlay
   end
 
   def file_label_input=(new_label)
-    label = find('.si-file-label-input')
+    label = find('.si-file-label-field')
     label.set new_label
   end
 
@@ -46,6 +46,10 @@ class SupportingInfoOverlay < CardOverlay
   def toggle_for_publication
     checkbox = find('.si-file-publishable-checkbox')
     checkbox.click
+  end
+
+  def error_message
+    find('.si-file-actions .error-message').text
   end
 
   def file_title

@@ -59,10 +59,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     time.sleep(.5)
     journal_name = os.getenv('JOURNAL', '')
     mmt_type = os.getenv('MMT', '')
-    self.create_article(journal=journal_name,
-                        type_=mmt_type,
-                        title='deployment test document',
-                        )
+    self.create_article(title='deployment test document', journal=journal_name, type_=mmt_type)
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)

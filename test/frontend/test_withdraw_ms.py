@@ -45,10 +45,7 @@ class WithdrawManuscriptTest(CommonTest):
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
     journal = 'PLOS Wombat'
-    self.create_article(journal=journal,
-                        type_='NoCards',
-                        random_bit=True,
-                        )
+    self.create_article(journal=journal, type_='NoCards', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

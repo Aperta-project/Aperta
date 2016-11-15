@@ -43,7 +43,7 @@ class ChangesForAuthorTask(BaseTask):
     assert changes_made_btn.text == "THESE CHANGES HAVE BEEN MADE"
     self.validate_primary_big_green_button_style(changes_made_btn)
 
-  def complete_cfa_card(self):
+  def complete_cfa_task(self):
     """
     Mark the changes for author card as having been addressed
     :return: void function

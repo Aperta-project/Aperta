@@ -51,7 +51,8 @@ class DashboardPage(AuthenticatedPage):
                                    "//table[contains(@class,'table-borderless')][1]/thead/tr/th[3]")
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
-    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
+    self._dash_active_journal = (By.CSS_SELECTOR, 'td.active-paper-title span')
+    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title span + span')
     self._dash_active_role = (By.CSS_SELECTOR, 'td.active-paper-title + td')
     self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
 
@@ -61,7 +62,8 @@ class DashboardPage(AuthenticatedPage):
     self._dash_inactive_status_th = (By.XPATH,
                                      "//table[contains(@class,'table-borderless')][2]/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
-    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
+    self._dash_inactive_journal = (By.CSS_SELECTOR, 'td.inactive-paper-title span')
+    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title span + span')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
     self._dash_inactive_status = (By.CSS_SELECTOR, 'td.inactive-paper-title + td + td div')
 
@@ -280,7 +282,8 @@ class DashboardPage(AuthenticatedPage):
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
-  def get_dashboard_ms(self, user):
+  @staticmethod
+  def get_dashboard_ms(user):
     """
     Get amount of related manuscripts of a user
     :param user: user dictionary to get related manuscripts
@@ -331,7 +334,6 @@ class DashboardPage(AuthenticatedPage):
       raise
     return len(active_manuscript_list)
 
-
   def validate_manuscript_section_main_title(self, user):
     """
     Validates the title section of the manuscript presentation part of the page
@@ -343,12 +345,11 @@ class DashboardPage(AuthenticatedPage):
                                   uid (of user))
     """
     logging.debug(user)
-    username = user['user']
+    email = user['email']
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
-    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;',
-                               (username,))[0][0]
-    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE email = %s;', (email,))[0][0]
+    uid = PgSQL().query('SELECT id FROM users WHERE email = %s;', (email,))[0][0]
     # Get count of distinct papers from paper_roles for validating count of manuscripts on
     # dashboard welcome message
     active_manuscript_list = []
@@ -395,17 +396,20 @@ class DashboardPage(AuthenticatedPage):
     logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
     if active_manuscripts > 1:
       assert 'Hi, {0}. You have {1} active manuscripts.'.format(first_name, active_manuscripts) \
-             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscripts.'.\
-                format(first_name, active_manuscripts), welcome_msg.text.encode('utf-8'))
+        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscripts.'.
+                                              format(first_name, active_manuscripts),
+                                              welcome_msg.text.encode('utf-8'))
     elif active_manuscripts == 1:
       assert 'Hi, {0}. You have {1} active manuscript.'.format(first_name, active_manuscripts) \
-             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscript.'.\
-                format(first_name, active_manuscripts), welcome_msg.text.encode('utf-8'))
+        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscript.'.
+                                              format(first_name, active_manuscripts),
+                                              welcome_msg.text.encode('utf-8'))
     else:
       active_manuscripts = 0
       assert 'Hi, {0}. You have no manuscripts.'.format(first_name) \
-             in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
-                format(first_name), welcome_msg.text.encode('utf-8'))
+        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
+                                              format(first_name),
+                                              welcome_msg.text.encode('utf-8'))
     self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
 
@@ -529,6 +533,7 @@ class DashboardPage(AuthenticatedPage):
     if list_ == 'inactive':
       paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
+      journals = self._gets(self._dash_inactive_journal)
       manu_ids = self._gets(self._dash_inactive_manu_id)
       roles = self._gets(self._dash_inactive_role)
       statuses = self._gets(self._dash_inactive_status)
@@ -536,6 +541,7 @@ class DashboardPage(AuthenticatedPage):
       logging.info('The Inactive papers list from the db is {0}'.format(db_papers_list))
     else:
       papers = self._gets(self._dash_active_title)
+      journals = self._gets(self._dash_active_journal)
       manu_ids = self._gets(self._dash_active_manu_id)
       roles = self._gets(self._dash_active_role)
       statuses = self._gets(self._dash_active_status)
@@ -735,9 +741,9 @@ class DashboardPage(AuthenticatedPage):
                                                  an email address ('email')
     :return: Count of unaccepted invites (does not include rejected or accepted invites)
     """
-    username = username['user']
-    logging.info('Checking dashboard invite stanza for user {0}'.format(username))
-    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+    email = username['email']
+    logging.info(u'Checking dashboard invite stanza for user {0}'.format(username))
+    uid = PgSQL().query('SELECT id FROM users WHERE email = %s;', (email,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
                                      'WHERE state = %s '
                                      'AND invitee_id = %s;', ('invited', uid))[0][0]
@@ -899,11 +905,11 @@ class DashboardPage(AuthenticatedPage):
     """Method for debugging purposes only"""
     return self._get(self._cns_base_overlay_div)
 
-  def _wait_for_page_load(self):
+  def page_ready(self):
     """
     A fuction to validate that the dashboard page is loaded before interacting with it
     """
-    self.set_timeout(15)
+    self.set_timeout(10)
     try:
       self._wait_for_element(self._get(self._dash_inactive_section_title))
     except ElementDoesNotExistAssertionError:

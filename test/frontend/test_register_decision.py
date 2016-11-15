@@ -55,11 +55,8 @@ class RegisterDecisionCardTest(CommonTest):
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Register Decision Card',
-                        journal=journal,
-                        type_=paper_type,
-                        random_bit=True,
-                        )
+    self.create_article(title='Testing Register Decision Card', journal=journal, type_=paper_type,
+                        random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
@@ -106,10 +103,7 @@ class RegisterDecisionCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='Images+InitialDecision',
-                        random_bit=True,
-                        )
+    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     dashboard_page.restore_timeout()
     time.sleep(5)

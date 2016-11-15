@@ -32,7 +32,7 @@ class ApertaPopulateSuperAdmin(CommonTest):
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
-    dashboard_page._wait_for_page_load()
+    dashboard_page.page_ready()
     dashboard_page.logout()
 
     self.set_site_admin_in_db()

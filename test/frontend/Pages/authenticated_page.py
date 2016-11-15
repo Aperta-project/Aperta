@@ -692,11 +692,15 @@ class AuthenticatedPage(PlosPage):
         time.sleep(2)
         if index == 0:
           item.click()
-          #self._get(self._participant_field).send_keys(Keys.ARROW_DOWN)
         else:
-          import pdb; pdb.set_trace()
-          self._get(self._participant_field).send_keys(Keys.ARROW_DOWN * (index))
-          self._get(self._participant_field).send_keys(Keys.ENTER)
+          searching = True
+          while searching:
+            self._get(self._participant_field).send_keys(Keys.ARROW_DOWN)
+            for item in items:
+              if 'select2-highlighted' in item.get_attribute('class') and participant['user'] in item.text:
+                self._get(self._participant_field).send_keys(Keys.ENTER)
+                searching = False
+                break
         time.sleep(1)
     return None
 

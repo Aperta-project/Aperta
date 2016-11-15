@@ -36,7 +36,7 @@ class DiscussionForumTest(CommonTest):
 
   """
 
-  def _test_notification(self):
+  def test_notification(self):
     """
     Validates red circle on discussion icon on manuscript, discussion and message topic
     when added to a discussion and when mentioned in a topic.
@@ -47,7 +47,6 @@ class DiscussionForumTest(CommonTest):
     logging.info('Test Discussion Forum::notification')
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))
-    ## WAYS TO ACCESS
     current_path = os.getcwd()
     logging.info(current_path)
     creator = random.choice(users)
@@ -58,7 +57,7 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    paper_type = 'Research'
+    paper_type = 'OnlyInitialDecisionCard'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications',
                         journal=journal,
@@ -86,9 +85,16 @@ class DiscussionForumTest(CommonTest):
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    # This is failing for Asian Character set usernames of only two characters APERTA-7862
-    ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
+    if web_page == 'manuscript viewer':
+      # This is failing for Asian Character set usernames of only two characters APERTA-7862
+      ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
                                   participants=[creator])
+    elif web_page == 'workflow':
+      ms_viewer.click_workflow_link()
+      workflow_page = WorkflowPage(self.getDriver())
+      workflow_page.page_ready()
+      workflow_page.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
+                                        participants=[creator])
     ms_viewer.logout()
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -221,7 +227,7 @@ class DiscussionForumTest(CommonTest):
     msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
-
+    # How to call the discussion section
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[reviewer_1, reviewer_2])
@@ -232,8 +238,6 @@ class DiscussionForumTest(CommonTest):
       ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[reviewer_1, reviewer_2])
-
-
     # Staff user logout
     ms_viewer.logout()
 

@@ -675,7 +675,6 @@ class AuthenticatedPage(PlosPage):
     if participants:
       for participant in participants:
         user_key = random.choice(['email', 'user'])
-        user_key ='email'
         logging.info('Participant key to retrieve user: {0}'.format(user_key))
         logging.info('Participant to add: {0}'.format(participant))
         ##import pdb; pdb.set_trace()
@@ -690,6 +689,7 @@ class AuthenticatedPage(PlosPage):
           if participant[user_key] in item.text:
             break
         time.sleep(2)
+        # If is first match
         if index == 0:
           item.click()
         else:

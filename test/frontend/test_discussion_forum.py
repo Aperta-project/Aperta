@@ -278,7 +278,6 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # reviewer 2
-    import pdb; pdb.set_trace()
     logging.info(u'Logging in as user Reviewer 2')
     dashboard_page = self.cas_login(email=reviewer_2['email'])
     dashboard_page.click_view_invitations()
@@ -311,8 +310,8 @@ class DiscussionForumTest(CommonTest):
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_2 in comment_body, 'Message sent: {0} is not in the front end {1}'\
         .format(msg_2, comment_body)
-    ##import pdb; pdb.set_trace()
     msg_3 = generate_paragraph()[2]
+    import pdb; pdb.set_trace()
     ms_viewer.post_discussion(msg_3)
     ms_viewer.logout()
 

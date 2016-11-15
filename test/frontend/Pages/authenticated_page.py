@@ -678,6 +678,7 @@ class AuthenticatedPage(PlosPage):
         user_key ='user'
         logging.info('Participant key to retrieve user: {0}'.format(user_key))
         logging.info('Participant to add: {0}'.format(participant))
+        import pdb; pdb.set_trace()
         self._get(self._add_participant_btn).click()
         time.sleep(.5)
         self._get(self._participant_field).send_keys(participant[user_key] + Keys.ENTER)
@@ -689,7 +690,6 @@ class AuthenticatedPage(PlosPage):
           if participant[user_key] in item.text:
             break
         time.sleep(2)
-        import pdb; pdb.set_trace()
         if index == 0:
           item.click()
           #self._get(self._participant_field).send_keys(Keys.ARROW_DOWN)
@@ -720,6 +720,7 @@ class AuthenticatedPage(PlosPage):
     self._driver.execute_script(js_cmd);
     time.sleep(.5)
     msg_body = self._get(self._message_body_field)
+    import pdb; pdb.set_trace()
     msg_body.send_keys(msg + ' ')
     time.sleep(1)
     if mention:

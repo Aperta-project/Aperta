@@ -46,7 +46,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.validate_invalid_add_new_affiliation()
     profile_page.validate_nav_toolbar_elements(profile_user)
 
-  def test_affiliations(self):
+  def rest_affiliations(self):
     """
     test_profile: Validates function of adding/deleting affiliations
     :return: void function

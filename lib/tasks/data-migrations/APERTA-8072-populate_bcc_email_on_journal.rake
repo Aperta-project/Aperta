@@ -9,11 +9,15 @@ namespace :data do
     DESC
     task populate_bcc_email_on_journal: :environment do
       if Rails.env.production?
-        Journal.all.update(reviewer_bcc_email: 'apertachasing@plos.org')
-        Journal.all.update(editor_bcc_email: 'apertachasing@plos.org')
+        Journal.all.update_all(
+          reviewer_email_bcc: 'apertachasing@plos.org',
+          editor_email_bcc: 'apertachasing@plos.org'
+        )
       elsif !Rails.env.development?
-        Journal.all.update(reviewer_bcc_email: 'apertadevteam@plos.org')
-        Journal.all.update(editor_bcc_email: 'apertadevteam@plos.org')
+        Journal.all.update_all(
+          reviewer_email_bcc: 'apertadevteam@plos.org',
+          editor_email_bcc: 'apertadevteam@plos.org'
+        )
       end
     end
   end

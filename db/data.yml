@@ -21275,18 +21275,12 @@ task_templates:
     - Final Tech Check
     - "[]"
     - '3'
-  - - '215'
-    - '9'
-    - '68'
-    - Assign Admin
-    - "[]"
-    - '1'
   - - '216'
     - '26'
     - '68'
     - Editor Discussion
     - "[]"
-    - '2'
+    - '1'
   - - '217'
     - '11'
     - '69'
@@ -21305,126 +21299,114 @@ task_templates:
     - Register Decision
     - "[]"
     - '1'
-  - - '231'
-    - '9'
-    - '74'
-    - Assign Admin
-    - "[]"
-    - '2'
   - - '232'
     - '28'
     - '74'
     - Assign Team
     - "[]"
-    - '3'
+    - '2'
   - - '233'
     - '23'
     - '74'
     - Final Tech Check
     - "[]"
-    - '4'
+    - '3'
   - - '234'
     - '30'
     - '74'
     - Initial Decision
     - "[]"
-    - '5'
+    - '4'
   - - '235'
     - '24'
     - '74'
     - Initial Tech Check
     - "[]"
-    - '6'
+    - '5'
   - - '236'
     - '25'
     - '74'
     - Revision Tech Check
     - "[]"
-    - '7'
+    - '6'
   - - '237'
     - '31'
     - '74'
     - Send to Apex
     - "[]"
-    - '8'
+    - '7'
   - - '238'
     - '33'
     - '74'
     - Title And Abstract
     - "[]"
-    - '9'
+    - '8'
   - - '239'
     - '10'
     - '74'
     - Invite Academic Editor
     - "[]"
-    - '10'
+    - '9'
   - - '240'
     - '11'
     - '74'
     - Invite Reviewers
     - "[]"
-    - '11'
+    - '10'
   - - '241'
     - '14'
     - '75'
     - Register Decision
     - "[]"
     - '1'
-  - - '242'
-    - '9'
-    - '75'
-    - Assign Admin
-    - "[]"
-    - '2'
   - - '243'
     - '28'
     - '75'
     - Assign Team
     - "[]"
-    - '3'
+    - '2'
   - - '244'
     - '23'
     - '75'
     - Final Tech Check
     - "[]"
-    - '4'
+    - '3'
   - - '245'
     - '24'
     - '75'
     - Initial Tech Check
     - "[]"
-    - '5'
+    - '4'
   - - '246'
     - '10'
     - '75'
     - Invite Academic Editor
     - "[]"
-    - '6'
+    - '5'
   - - '247'
     - '11'
     - '75'
     - Invite Reviewers
     - "[]"
-    - '7'
+    - '6'
   - - '248'
     - '25'
     - '75'
     - Revision Tech Check
     - "[]"
-    - '8'
+    - '7'
   - - '249'
     - '33'
     - '75'
     - Title And Abstract
     - "[]"
-    - '9'
+    - '8'
   - - '250'
     - '31'
     - '75'
     - Send to Apex
     - "[]"
-    - '10'
+    - '9'
 
 ---
 tasks:
@@ -23485,17 +23467,6 @@ tasks:
     - '3'
     - '13'
     - 
-  - - '205'
-    - Assign Admin
-    - TahiStandardTasks::PaperAdminTask
-    - '48'
-    - false
-    - '2016-06-02 13:43:23.39417'
-    - '2016-06-02 13:43:23.39417'
-    - "[]"
-    - '1'
-    - '13'
-    - 
   - - '206'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -23504,7 +23475,7 @@ tasks:
     - '2016-06-02 13:43:23.408359'
     - '2016-06-02 13:43:23.408359'
     - "[]"
-    - '2'
+    - '1'
     - '13'
     - 
   - - '207'

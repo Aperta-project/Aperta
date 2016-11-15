@@ -45,6 +45,9 @@ class DiscussionForumTest(CommonTest):
     message.
     """
     logging.info('Test Discussion Forum::notification')
+    web_page = random.choice(['manuscript viewer', 'workflow'])
+    logging.info('Test discussion on: {0}'.format(web_page))
+    ## WAYS TO ACCESS
     current_path = os.getcwd()
     logging.info(current_path)
     creator = random.choice(users)
@@ -143,7 +146,8 @@ class DiscussionForumTest(CommonTest):
     This test validates a dicussion from the manuscript view. It involves multiple
     participants, an admin user post a discussion and adds two particpiants. These
     participants are invited as reviewers.
-    The reviewers accepts the role and checks for messages and post their own.
+    The reviewers accepts the role and checks for messages, one reviewer make a post
+    mentioning the other reviewer and this mention should be highlighted.
     All participants checks for content, user and time.
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
@@ -218,8 +222,6 @@ class DiscussionForumTest(CommonTest):
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
 
-    ##
-    web_page = 'manuscript viewer'
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[reviewer_1, reviewer_2])
@@ -310,9 +312,6 @@ class DiscussionForumTest(CommonTest):
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_2 in comment_body, 'Message sent: {0} is not in the front end {1}'\
         .format(msg_2, comment_body)
-    msg_3 = generate_paragraph()[2]
-    import pdb; pdb.set_trace()
-    ms_viewer.post_discussion(msg_3)
     ms_viewer.logout()
 
     # Login as Staff user
@@ -328,37 +327,13 @@ class DiscussionForumTest(CommonTest):
     assert topic in discussion_title, 'Sent topic: {0} is not in the front end: {1}'.format(
         topic, discussion_title)
     discussion_link.click()
-    # Get the date when the last comment was made
-    created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE '
-                            'discussion_topic_id = %s;', (discussion_topic_id,))[0][0]
-    # Get all comments, note they are ordered backwards (first posted go last)
-    ui_msg_3, ui_msg_2, ui_msg_1, = ms_viewer._gets(ms_viewer._comment_body)
+    ui_msg_2, ui_msg_1, = ms_viewer._gets(ms_viewer._comment_body)
     ui_msg_1 = ui_msg_1.text
     ui_msg_2 = ui_msg_2.text
-    ui_msg_3 = ui_msg_3.text
-    from_zone = tz.gettz('UTC')
-    to_zone = tz.tzlocal()
-    # Convert the message timezone from the one stored in the DB (UTC) to current one
-    # since the JS in the browsers shows dates in the user TZ
-    created = created.replace(tzinfo=from_zone)
-    db_time = created.astimezone(to_zone)
-    # Note: %-d removes leading 0 only in Unix. If this suite ever going to be running
-    # in Windows, we should detect OS and pass an alternative solution.
-    db_time_fe_format = db_time.strftime('%B %-d, %Y %H:%M')
-    comment_header_db = u'{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
-    comment_name = ms_viewer._get(ms_viewer._comment_name).text
-    comment_date = ms_viewer._get(ms_viewer._comment_date).text
-    header_fe = u'{0} {1}'.format(comment_name, comment_date)
-    header_db = u'{0} posted {1}'.format(reviewer_2['name'], db_time_fe_format)
-    assert header_fe == header_db, 'Header from the front end: {0} is not the same as from '\
-        ' DB: {1}'.format(header_fe, header_db)
-    comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == ui_msg_1, 'Sent message {0} is not the same from front end: {1}'\
         .format(msg_1, ui_msg_1)
     assert msg_2 in ui_msg_2, 'Sent message {0} is not in the front end: {1}'\
         .format(msg_2, ui_msg_2)
-    assert msg_3 == ui_msg_3, 'Sent message {0} is not the same from front end: {1}'\
-        .format(msg_3, ui_msg_3)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

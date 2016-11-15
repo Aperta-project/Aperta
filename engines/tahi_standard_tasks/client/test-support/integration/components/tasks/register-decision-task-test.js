@@ -108,6 +108,18 @@ test('it renders decision selections', function(assert) {
   });
 });
 
+test('it does not update the letter contents on change of verdict unless template selection made', function(assert) {
+  this.selectDecision('Accept');
+  this.select2('RA Accept');
+  return wait().then(()=>{
+    assert.inputContains('.decision-letter-field', 'who Accepts');
+    this.selectDecision('Reject');
+    return wait().then(()=>{
+      assert.inputContains('.decision-letter-field', 'who Accepts');
+    });
+  });
+});
+
 test('it switches the letter contents on change', function(assert) {
   this.selectDecision('Accept');
   this.select2('RA Accept');

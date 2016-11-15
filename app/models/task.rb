@@ -151,10 +151,10 @@ class Task < ActiveRecord::Base
     def task_added_to_workflow(task)
       # no-op
     end
+  end
 
-    def task_added_to_paper(paper)
-      # no-op to be overriden and used in the paper factory
-    end
+  def task_added_to_paper(paper)
+    # no-op to be overriden and used in the paper factory
   end
 
   def journal_task_type

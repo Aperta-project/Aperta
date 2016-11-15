@@ -61,7 +61,7 @@ class PaperFactory
       body: task_template.template,
       notify: false
     )
-    task_class.task_added_to_paper(paper)
+    task.task_added_to_paper(paper)
     task
   end
 

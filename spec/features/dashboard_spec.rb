@@ -61,6 +61,18 @@ feature "Dashboard", js: true do
     end
   end
 
+  feature "displaying journal name" do
+    let(:active_paper_count) { 1 }
+    let(:paper) { papers.first }
+
+    scenario "shows journal name with manuscript" do
+      login_as(user, scope: :user)
+      visit "/"
+
+      within('.dashboard-journal-name') { expect(page).to have_content(journal.name) }
+    end
+  end
+
   feature "displaying invitations" do
     let(:active_paper_count) { 1 }
     let(:paper) { FactoryGirl.create :paper_with_phases, :submitted_lite }

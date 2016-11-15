@@ -41,12 +41,9 @@ test('displayTitle displays title if present', function(assert) {
 });
 
 test('previousDecisions returns decisions that are not drafts', function(assert){
-  var noVerdictDecision = FactoryGuy.make(
-    'decision', { draft: true });
-  var acceptedDecision = FactoryGuy.make(
-    'decision', { draft: false });
-  var rejectedDecision = FactoryGuy.make(
-    'decision', { draft: false });
+  var noVerdictDecision = FactoryGuy.make('decision', 'draft');
+  var acceptedDecision = FactoryGuy.make('decision');
+  var rejectedDecision = FactoryGuy.make('decision');
 
   var paper = FactoryGuy.make('paper', {
     decisions: [noVerdictDecision, acceptedDecision, rejectedDecision]

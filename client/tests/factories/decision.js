@@ -5,7 +5,16 @@ FactoryGuy.define('decision', {
     draft: false,
     verdict: null,
     letter: null,
-    minorVersion: null,
-    majorVersion: null
+    registeredAt: new Date(),
+    minorVersion: FactoryGuy.generate((num) => num),
+    majorVersion: FactoryGuy.generate((num) => num)
+  },
+  traits: {
+    draft: {
+      draft: true,
+      registeredAt: null,
+      majorVersion: null,
+      minorVersion: null
+    }
   }
 });

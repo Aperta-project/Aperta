@@ -80,7 +80,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
 test('can delete a pending invitation', function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', { draft: true });
+    let decision = FactoryGuy.make('decision', 'draft');
     task.set('decisions', [decision]);
 
     let invitation = FactoryGuy.make('invitation', {
@@ -114,7 +114,7 @@ test('can delete a pending invitation', function(assert) {
 
 test('can not send or delete a pending invitation from a previous round', function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', { draft: true });
+    let decision = FactoryGuy.make('decision', 'draft');
     let oldDecision = FactoryGuy.make('decision');
     task.set('decisions', [decision, oldDecision]);
 

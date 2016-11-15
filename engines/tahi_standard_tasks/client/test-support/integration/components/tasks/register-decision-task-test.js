@@ -18,16 +18,7 @@ moduleForComponent(
                                      { id: 2, ident: 'register_decision_questions--subject-field' },
                                      { id: 3, ident: 'register_decision_questions--selected-template' });
 
-      let decisions = makeList('decision',
-        {
-          id: 1,
-          draft: true
-        },
-        { id: 2,
-          verdict: 'accept', registeredAt: new Date()},
-        { id: 3,
-          verdict: 'minor_revision', registeredAt: new Date()});
-
+      let decisions = makeList('decision', 'draft', { verdict: 'accept' }, { verdict: 'minor_revision' });
       let task = make('register-decision-task', {
         paper: {
           journal: {
@@ -77,7 +68,7 @@ moduleForComponent(
         204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
       server.respondWith('PUT', `/api/nested_questions/3`, [
         204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
-      server.respondWith('PUT', `/api/decisions/1`, [
+      server.respondWith('PUT', /\/api\/decisions\/[0-9]+/, [
         200, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
 
       this.selectDecision = function(decision) {

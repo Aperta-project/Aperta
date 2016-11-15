@@ -584,7 +584,7 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_doi!
-    return unless journal
+    raise "Invalid paper Journals are required for papers urls." unless journal
     update!(doi: DoiService.new(journal: journal).next_doi!)
     doi_parts = doi.split('.')
     update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])

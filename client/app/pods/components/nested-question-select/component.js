@@ -8,13 +8,16 @@ export default NestedQuestionComponent.extend({
 
   init: function() {
     this._super(...arguments);
-    if (this.get('defaultSelection') && !this.get('model.answer.value')) {
+    if (this.get('setSelectedOnInit') &&
+        this.get('defaultSelection') &&
+        !this.get('model.answer.value')) {
       this.set('selectedData', this.get('defaultSelection'));
       this.sendAction('selectionSelected', this.get('defaultSelection'));
     }
   },
 
   defaultSelection: null,
+  setSelectedOnInit: true,
 
   selectedData: Ember.computed('model.answer.value', function() {
     const value = this.get('model.answer.value');
@@ -30,7 +33,7 @@ export default NestedQuestionComponent.extend({
   actions: {
     selectionSelected(selection) {
       this.set('model.answer.value', selection.id);
-      this.set('model.answer.additionalData', { nav_customer_number: selection.nav_customer_number })
+      this.set('model.answer.additionalData', { nav_customer_number: selection.nav_customer_number });
       this.sendAction('selectionSelected', selection);
       this.save();
 

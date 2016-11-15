@@ -87,8 +87,8 @@ All properties are applied in a media query.
   margin: 0;
   padding-left: 2rem;
   font-size: 1.4rem;
+  overflow: hidden;
 
-  span { overflow: hidden; }
 }
 
 #control-bar-paper-journal-logo {

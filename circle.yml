@@ -48,12 +48,12 @@ database:
 test:
   override:
     - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
-    - bundle exec rspec -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
+    - bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true
         files:
           - "**/spec/**/*_spec.rb"
-    - bundle exec rspec -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
+    - bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
         timeout: 1800
         parallel: true
         files:

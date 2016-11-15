@@ -1,8 +1,8 @@
 # coding: utf-8
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
-    DEFAULT_TITLE = 'Invite Reviewers'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Invite Reviewers'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     include Invitable
 
@@ -103,8 +103,7 @@ module TahiStandardTasks
         paper_type: paper.paper_type,
         journal_name: paper.journal.name,
         abstract: abstract,
-        authors:  AuthorsList.authors_list(paper)
-      }
+        authors:  AuthorsList.authors_list(paper) }
     end
 
     def abstract

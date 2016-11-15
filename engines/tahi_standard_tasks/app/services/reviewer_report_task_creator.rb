@@ -21,7 +21,6 @@ class ReviewerReportTaskCreator
       task = reviewer_report_task_class.create!(
         paper: paper,
         phase: default_phase,
-        old_role: PaperRole::REVIEWER,
         title: "Review by #{assignee.full_name}"
       )
       assignee.assign_to!(assigned_to: task, role: paper.journal.task_participant_role)

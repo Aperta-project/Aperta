@@ -14,7 +14,23 @@ describe BillingLogReport do
     )
   end
 
-  context '.create_paper' do
+  let(:logger) do
+    log = Logger.new(logger_io)
+    log.formatter = lambda do |severity, datetime, progname, msg|
+      "#{severity}: #{msg}\n"
+    end
+    log.level = 1
+    log
+  end
+
+  let(:logger_io) { StringIO.new }
+  let(:logged_content) { logger_io.tap(&:rewind).read }
+
+  before do
+    BillingLogReport.logger = logger
+  end
+
+  context '.create_report' do
     context 'has from_date parameter' do
       it 'returns new BillingLogReport with given from date' do
         from_date = Date.new(2016, 1, 1)
@@ -57,6 +73,10 @@ describe BillingLogReport do
       end
 
       before { report.save_and_send_to_s3! }
+
+      it 'logs where it was saved on s3' do
+        expect(logged_content).to match "Saved Billing log to uploads/billing_log_report/csv_file/#{report.id}/"
+      end
 
       it 'creates a csv file' do
         expect(report.csv_file).to be_an_instance_of(BillingLogUploader)
@@ -127,6 +147,14 @@ describe BillingLogReport do
         report = BillingLogReport.new(from_date: today - 1.day)
         expect(report.papers_to_process).to eq([new_paper])
       end
+    end
+  end
+
+  context 'on create create' do
+    it 'logs that it was created' do
+      billing_log = BillingLogReport.new
+      billing_log.save
+      expect(logged_content).to match('INFO: Billing log created')
     end
   end
 end

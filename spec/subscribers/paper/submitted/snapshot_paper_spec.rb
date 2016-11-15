@@ -4,7 +4,7 @@ describe Paper::Submitted::SnapshotPaper do
   include EventStreamMatchers
 
   let(:mailer) { mock_delayed_class(UserMailer) }
-  let!(:paper) { instance_double(Paper, id: 99, admins: []) }
+  let!(:paper) { instance_double(Paper, id: 99) }
   let!(:user) { FactoryGirl.build_stubbed(:user) }
 
   it 'snapshots the paper' do

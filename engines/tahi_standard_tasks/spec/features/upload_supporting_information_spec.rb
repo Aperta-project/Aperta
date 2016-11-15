@@ -8,7 +8,6 @@ feature "Upload Supporting Information", js: true do
       creator: author,
       task_params: {
         title: "Supporting Info",
-        old_role: "author",
         type: "TahiStandardTasks::SupportingInformationTask"
       }
   end

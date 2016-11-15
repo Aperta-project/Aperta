@@ -33,8 +33,7 @@ module('Integration: adding an author', {
     server   = setupMockServer();
 
     const records = paperWithTask('AuthorsTask', {
-      id: taskId,
-      oldRole: 'author'
+      id: taskId
     });
 
     Factory.createPermission('AuthorsTask', taskId, ['edit']);

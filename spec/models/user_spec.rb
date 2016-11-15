@@ -92,7 +92,7 @@ describe User do
 
   describe '#tasks' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal)}
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
     let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
     let!(:other_role) { FactoryGirl.create(:role) }
@@ -152,10 +152,10 @@ describe User do
   end
 
   describe ".new_with_session" do
-    let(:personal_details) { {"personal_details" => {"given_names" => "Joe", "family_name" => "Smith"}} }
+    let(:personal_details) { { "personal_details" => { "given_names" => "Joe", "family_name" => "Smith" } } }
     let(:orcid_session) do
-      {"devise.provider" => {"orcid" => {"uid" => "myuid",
-                                         "info" => {"orcid_bio" => personal_details}}}}
+      { "devise.provider" => { "orcid" => { "uid" => "myuid",
+                                            "info" => { "orcid_bio" => personal_details } } } }
     end
 
     it "will prefill new user form with orcid info" do
@@ -251,8 +251,11 @@ describe User do
     let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let(:journal) { paper.journal }
     let(:journal_admin) { FactoryGirl.create(:user) }
-    let!(:old_role) { assign_journal_role(journal, journal_admin, :admin) }
     let(:regular_user) { FactoryGirl.create(:user) }
+
+    before do
+      journal_admin.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+    end
 
     it "returns true if user is an admin for a given journal" do
       expect(journal_admin.can?(:administer, journal)).to be true
@@ -349,9 +352,9 @@ describe User do
     shared_examples_for 'resigning from a role' do
       it 'can be used to resign a role on a journal' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: role,
-                           assigned_to: journal)
+          user: user,
+          role: role,
+          assigned_to: journal)
         expect(user).to have_role(role, journal)
         expect { user.resign_from!(assigned_to: journal, role: role_arg) }
           .to change { user.roles.count }.by(-1)
@@ -360,9 +363,9 @@ describe User do
 
       it 'can be used to resign a role on a paper' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: role,
-                           assigned_to: paper)
+          user: user,
+          role: role,
+          assigned_to: paper)
         expect(user).to have_role(role, paper)
         expect { user.resign_from!(assigned_to: paper, role: role_arg) }
           .to change { user.roles.count }.by(-1)
@@ -371,9 +374,9 @@ describe User do
 
       it 'can be used to resign a role on a task' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: role,
-                           assigned_to: task)
+          user: user,
+          role: role,
+          assigned_to: task)
         expect(user).to have_role(role, task)
         expect { user.resign_from!(assigned_to: task, role: role_arg) }
           .to change { user.roles.count }.by(-1)
@@ -411,9 +414,9 @@ describe User do
 
       it 'can be used to resign from role to a thing that does not implement the `journal` method' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: user_role,
-                           assigned_to: user)
+          user: user,
+          role: user_role,
+          assigned_to: user)
         expect { user.resign_from!(assigned_to: user, role: user_role) }
           .to change { user.roles.count }.by(-1)
         expect(user).not_to have_role(user_role, user)

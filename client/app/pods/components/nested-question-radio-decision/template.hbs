@@ -26,6 +26,7 @@
     <label class="flex-element">
       {{radio-button value="accept"
                      name=namePrefix
+                     class=(concat ident "-accept")
                      selection=model.answer.value
                      action=(action "setAnswer")}}
       Accept
@@ -34,6 +35,7 @@
     <label class="flex-element">
       {{radio-button value="reject"
                      name=namePrefix
+                     class=(concat ident "-reject")
                      selection=model.answer.value
                      action=(action "setAnswer")}}
       Reject
@@ -42,6 +44,7 @@
     <label class="flex-element">
       {{radio-button value="major_revision"
                      name=namePrefix
+                     class=(concat ident "-major-revision")
                      selection=model.answer.value
                      action=(action "setAnswer")}}
       Major Revision
@@ -50,6 +53,7 @@
     <label class="flex-element">
       {{radio-button value="minor_revision"
                      name=namePrefix
+                     class=(concat ident "-minor-revision")
                      selection=model.answer.value
                      action=(action "setAnswer")}}
       Minor Revision

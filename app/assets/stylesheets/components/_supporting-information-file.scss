@@ -38,7 +38,8 @@
     .fileinput-button {
       color: $aperta-grey;
       font-size: 1.3rem;
-      display: inline;
+      display: inline-block;
+      vertical-align: sub;
       margin-left: 6px;
       background: transparent;
       border: none;

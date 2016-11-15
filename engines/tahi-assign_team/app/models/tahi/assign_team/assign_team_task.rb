@@ -3,8 +3,8 @@ module Tahi
     # The AssignTeamTask represents the part of the paper workflow
     # responsible for assigning users to various roles on a paper.
     class AssignTeamTask < Task
-      DEFAULT_TITLE = 'Assign Team'
-      DEFAULT_ROLE = 'admin'
+      DEFAULT_TITLE = 'Assign Team'.freeze
+      DEFAULT_ROLE_HINT = 'admin'.freeze
 
       def assignable_roles
         [

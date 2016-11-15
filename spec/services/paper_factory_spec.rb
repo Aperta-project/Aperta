@@ -6,7 +6,7 @@ describe PaperFactory do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
       mmt.phase_templates.create!(name: "Phase With No Tasks")
-      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask]
+      tasks = [TahiStandardTasks::DataAvailabilityTask]
       JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
       journal.manuscript_manager_templates = [mmt]
       journal.save!
@@ -61,8 +61,8 @@ describe PaperFactory do
 
     it "reifies the tasks for the given paper from the correct MMT" do
       new_paper = PaperFactory.create(paper_attrs, user)
-      expect(new_paper.tasks.size).to eq(2)
-      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::PaperAdminTask', 'TahiStandardTasks::DataAvailabilityTask'])
+      expect(new_paper.tasks.size).to eq(1)
+      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask'])
     end
 
     it "adds correct positions to new tasks" do
@@ -73,7 +73,6 @@ describe PaperFactory do
     end
 
     it "calls the task_added_to_workflow hook for each task" do
-      expect(TahiStandardTasks::PaperAdminTask).to receive(:task_added_to_workflow)
       expect(TahiStandardTasks::DataAvailabilityTask).to receive(:task_added_to_workflow)
       subject
     end

@@ -9,7 +9,7 @@ feature "Displaying task", js: true do
       creator: admin,
       task_params: {
         type: 'AdHocTask',
-        title: "Assign Admin"
+        title: "Some Task"
       }
     )
   end

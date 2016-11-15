@@ -3,6 +3,5 @@ FactoryGirl.define do
     paper
     phase
     title "Initial Decision"
-    old_role "editor"
   end
 end

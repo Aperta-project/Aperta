@@ -52,8 +52,13 @@
   }
 }
 
+.dashboard-journal-name,
 .dashboard-manuscript-id {
   color: $aperta-grey;
+}
+
+.dashboard-journal-name {
+  font-weight: bold;
 }
 
 .dashboard-paper-title {

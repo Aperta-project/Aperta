@@ -8,8 +8,7 @@ feature 'Early Posting Task', js: true do
                        creator: author,
                        task_params: {
                          title: 'Early Article Posting',
-                         type: 'TahiStandardTasks::EarlyPostingTask',
-                         old_role: 'author'
+                         type: 'TahiStandardTasks::EarlyPostingTask'
                        }
   end
 

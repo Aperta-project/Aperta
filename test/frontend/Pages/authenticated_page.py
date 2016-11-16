@@ -103,6 +103,7 @@ class AuthenticatedPage(PlosPage):
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
     self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
     self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')
+    self._discussion_back_link = (By.CSS_SELECTOR, 'a.sheet-toolbar-button')
     self._sheet_close_x = (By.CLASS_NAME, 'sheet-close-x')
     # Discussion messages
     self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
@@ -184,6 +185,7 @@ class AuthenticatedPage(PlosPage):
     self._file_attach_input = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
     # Add participant
+    self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
     self._add_participant_list = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
 
   # POM Actions
@@ -647,7 +649,7 @@ class AuthenticatedPage(PlosPage):
     Click on discussion link
     :return: None
     """
-    self.click_covered_element(self._get(self._discussion_link))
+    self._get(self._discussion_link).click()
     return None
 
   def post_new_discussion(self, topic='', msg='', mention='', participants=''):
@@ -687,7 +689,10 @@ class AuthenticatedPage(PlosPage):
         user_search_string = random.choice(['name', 'email', 'user'])
         logging.info('Participant key to retrieve user: {0}'.format(user_search_string))
         logging.info('Participant to add: {0}'.format(participant))
-        self._get(self._add_participant_btn).click()
+        try:
+          self._get(self._add_participant_btn).click()
+        except ElementDoesNotExistAssertionError:
+          raise(ElementDoesNotExistAssertionError, 'This may fail due to APERTA-7862')
         time.sleep(.5)
         participant_field = self._get(self._participant_field)
         participant_field.send_keys(participant[user_search_string] + Keys.ENTER)
@@ -720,21 +725,21 @@ class AuthenticatedPage(PlosPage):
     :param mention: User to mention. A string with the username.
     :return: None.
     """
-    self.click_discussion_link()
-    # click on first discussion
-    self._wait_for_element(self._get(self._first_discussion_lnk))
+    try:
+      self._wait_for_element(self._get(self._first_discussion_lnk))
+    except ElementDoesNotExistAssertionError:
+      raise(ElementDoesNotExistAssertionError, 'This may be caused by APERTA-7902')
     first_disc_link = self._get(self._first_discussion_lnk)
     first_disc_link.click()
     time.sleep(.5)
     # This shouldn't make baby Jesus cry, since there is good reason for this:
     # make textarea visible. Selenium won't do it because running JS is not
     # part of a regular user interaction. Inserting JS is a valid hack when
-    # there is no other way to make this work
-    ##js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    ##self._driver.execute_script(js_cmd);
+    # there is no other way to make this work. Ticket for this: APERTA-8344
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    self._driver.execute_script(js_cmd);
     time.sleep(.5)
     msg_body = self._get(self._message_body_field)
-    ##import pdb; pdb.set_trace()
     msg_body.send_keys(msg + ' ')
     time.sleep(1)
     if mention:
@@ -743,7 +748,10 @@ class AuthenticatedPage(PlosPage):
       time.sleep(1)
       msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-    self._get(post_message_btn).click()
+    try:
+      self._get(post_message_btn).click()
+    except ElementDoesNotExistAssertionError:
+      raise(ElementDoesNotExistAssertionError, 'This may be related with APERTA-8344')
     # Need to wait for make sure the post is sent
     time.sleep(3)
     return None

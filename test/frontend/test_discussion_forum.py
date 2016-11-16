@@ -93,6 +93,7 @@ class DiscussionForumTest(CommonTest):
       workflow_page.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
                                         participants=[creator])
     ms_viewer.logout()
+
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(paper_id)
@@ -107,12 +108,14 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     ms_viewer._get(ms_viewer._badge_red)
     ms_viewer.logout()
+
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
+    ms_viewer.click_discussion_link()
     ms_viewer.post_discussion('@' + creator['user'])
     ms_viewer.logout()
     logging.info(u'Logging in as user: {0}'.format(creator))
@@ -123,8 +126,8 @@ class DiscussionForumTest(CommonTest):
     time.sleep(2)
     red_badge = ms_viewer._get(ms_viewer._badge_red)
     red_badge_last = int(red_badge.text)
-    assert red_badge_first + 1 == red_badge_last, '{0} is different from {1}'.format(
-        red_badge_first + 1, red_badge_last)
+    assert red_badge_first + 1 == red_badge_last, '{0} is different from {1}. This may be '\
+        'caused by APERTA-8303'.format(red_badge_first + 1, red_badge_last)
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
@@ -156,6 +159,8 @@ class DiscussionForumTest(CommonTest):
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))
     creator, collaborator_1, collaborator_2 = random.sample(users, 3)
+    logging.info('Collaborator 1: {0}'.format(collaborator_1))
+    logging.info('Collaborator 2: {0}'.format(collaborator_2))
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -192,13 +197,10 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # Once the paper is created, add collaborator
-    # get user id
     user_id = PgSQL().query('SELECT id FROM users where username = %s;',
         (collaborator_1['user'],))[0][0]
-    # Get journal id
     journal_id = PgSQL().query('SELECT journal_id FROM papers where id = %s;',
         (paper_id,))[0][0]
-    # Get role id
     role_id = PgSQL().query('SELECT id FROM roles where journal_id = %s '
         'AND name = %s;', (journal_id, 'Collaborator'))[0][0]
     # Add collaborator
@@ -269,6 +271,8 @@ class DiscussionForumTest(CommonTest):
     assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
          'front end: {1}'.format(msg_1, comment_body)
     msg_2 = generate_paragraph()[2]
+    discussion_back_link = ms_viewer._get(ms_viewer._discussion_back_link)
+    discussion_back_link.click()
     ms_viewer.post_discussion(msg_2, mention=collaborator_2['user'])
     # Look for the mention and check style
     mention = ms_viewer.get_mention(collaborator_2['user'])
@@ -317,7 +321,10 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
     ms_viewer.click_discussion_link()
-    discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
+    try:
+      discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
+    except ElementDoesNotExistAssertionError:
+      raise(ElementDoesNotExistAssertionError, 'This may be caused by APERTA-7902')
     discussion_title = discussion_link.text
     assert topic in discussion_title, 'Sent topic: {0} is not in the front end: {1}'.format(
         topic, discussion_title)

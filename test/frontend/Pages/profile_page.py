@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface
-from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.Resources import affiliation
 
 __author__ = 'sbassi@plos.org'
@@ -63,6 +63,8 @@ class ProfilePage(AuthenticatedPage):
     self._add_affiliation_form = (By.CLASS_NAME, 'affiliations-form')
     self._add_affiliation_form_title = (By.CSS_SELECTOR, 'div.affiliations-form h3')
     self._add_affiliation_form_subtext = (By.CSS_SELECTOR, 'div.affiliations-form > p')
+    self._add_affiliation_institution_error = (By.CSS_SELECTOR,
+                                               'div.affiliations-form > div.error-message')
     self._add_affiliation_institution_input = (By.CSS_SELECTOR,
                                                'div.affiliations-form div div input')
     self._add_affiliation_department_label = (By.CSS_SELECTOR, 'div.department > div > label')
@@ -81,6 +83,8 @@ class ProfilePage(AuthenticatedPage):
                                               'div.form-group > div > input.datepicker')
     self._add_affiliation_end_date_field = (By.CSS_SELECTOR, 'div.form-group > div > input + input')
     self._add_affiliation_datepicker_selector = (By.CLASS_NAME, 'datepicker-dropdown')
+    self._add_affiliation_email_div = (By.CSS_SELECTOR, 'div.required.email')
+    self._add_affiliation_email_error = (By.CSS_SELECTOR, 'div.required.email div.error-message')
     self._add_affiliation_email_label = (By.CSS_SELECTOR, 'div.required.email > div > label')
     self._add_affiliation_email_field = (By.CSS_SELECTOR, 'div.required.email > input')
 
@@ -91,6 +95,8 @@ class ProfilePage(AuthenticatedPage):
     self._reset_btn = (By.CSS_SELECTOR, 'a.reset-password-link')
 
     self._add_new_affiliation_btn = (By.CSS_SELECTOR, 'div.user-affiliation a')
+    # The following two elements *should* be conditional based on a user being a CAS user
+    #   However, we are not doing the right thing: APERTA-8338
     self._cas_profile_link = (By.CSS_SELECTOR, 'div.profile-link a')
     self._cas_profile_ptext = (By.CLASS_NAME, 'profile-link')
 
@@ -165,7 +171,7 @@ class ProfilePage(AuthenticatedPage):
           orcid_help_icon.get_attribute('target')
     else:
       oid_title = self._get(self._profile_orcid_linked_title)
-      assert oid_title.text == 'ORCID ID:', oid_title.text
+      assert 'ORCID ID:' in oid_title.text, oid_title.text
       oid_link = self._get(self._profile_orcid_linked_id_link)
       assert oid_link.text == username['orcidid'], oid_link.text
       assert oid_link.get_attribute('target') == '_blank', oid_link.get_attribute('target')
@@ -181,14 +187,20 @@ class ProfilePage(AuthenticatedPage):
     affiliation_btn = self._get(self._add_new_affiliation_btn)
     self.validate_secondary_big_green_button_style(affiliation_btn)
     profile_affiliation_form_title = self._get(self._profile_affiliation_form_title)
+    # The following two elements *should* be displayed conditionally based on a user being a CAS
+    #  user - but they are not. APERTA-8338
     profile_link = self._get(self._cas_profile_link)
     assert profile_link.get_attribute('target') == '_blank'
     assert profile_link.get_attribute('href') == \
         'https://community.plos.org/account/edit-profile'
-    self.validate_profile_link_style(profile_link)
+    # APERTA-3085
+    # self.validate_default_link_style(profile_link)
     assert 'View or edit your full profile' in profile_link.text
-    assert application_typeface in profile_link.value_of_css_property('font-family'), \
-        profile_link.value_of_css_property('font-family')
+    profile_link_subtext = self._get(self._cas_profile_ptext)
+    assert 'Any changes to your username or email will be updated ' \
+           'in Aperta on your next login.' in profile_link_subtext.text, profile_link_subtext.text
+    self.validate_application_ptext(profile_link_subtext)
+
     assert 'Affiliations:' in profile_affiliation_form_title.text
     try:
       self._get(self._profile_affiliations)
@@ -225,9 +237,10 @@ class ProfilePage(AuthenticatedPage):
       country_text_list = []
       for country in country_list:
         country_text_list.append(country.text)
+        # Checking for the existence of an arbitrary list member - not ideal, too static
       assert 'Cocos (Keeling) Islands' in country_text_list, 'Not properly populating country ' \
                                                              'list from NED!'
-      country_dropdown.click()
+      country_dropdown.send_keys(Keys.ESCAPE)
       affiliation_dates_label = self._get(self._add_affiliation_dates_label)
       assert 'time at institution:' in affiliation_dates_label.text, affiliation_dates_label.text
       start_date_field = self._get(self._add_affiliation_start_date_field)
@@ -240,10 +253,11 @@ class ProfilePage(AuthenticatedPage):
       self._get(self._add_affiliation_datepicker_selector)
       end_date_field.click()
       self._get(self._add_affiliation_datepicker_selector)
+      email_div = self._get(self._add_affiliation_email_div)
+      assert 'required' in email_div.get_attribute('class'), \
+          email_div.get_attribute('class')
       affiliation_email_lbl = self._get(self._add_affiliation_email_label)
       assert affiliation_email_lbl.text == 'Email Address', affiliation_email_lbl.text
-      assert 'required' in affiliation_email_lbl.get_attribute('class'), \
-          affiliation_email_lbl.get_attribute('class')
       affiliation_email_field = self._get(self._add_affiliation_email_field)
       assert affiliation_email_field.get_attribute('placeholder') == 'Email Address', \
           affiliation_email_field.get_attribute('placeholder')
@@ -252,109 +266,103 @@ class ProfilePage(AuthenticatedPage):
       add_aff_cancel_link = self._get(self._add_affiliation_cancel_link)
       assert add_aff_cancel_link.text == 'cancel', add_aff_cancel_link.text
 
-  def validate_invalid_add_new_affiliation(self):
+  def validate_add_affiliation_validations(self, user):
     """
-    Validate the error message for an invalid adding new affiliation.
+    Validate the adding new affiliation validations
+    :param user: user object (from Resources) whose institution data will be utilized in test
     :return: None
     """
     self.click_add_affiliation_button()
-    add_done_btn = self._get_add_done_btn()
+    add_done_btn = self._get(self._add_affiliation_done_button)
     add_done_btn.click()
-    # Watch for error
-    error = self._get(self._error_message)
-    assert error.text.lower() == "can't be blank", error.text
-    # NOTE: Not validating error message style because lack of styleguide
-    # Placeholder for error style validation:
-    # assert error.value_of_css_property('font-size') == '12px'
-    # assert error.value_of_css_property('font-weight') == '500'
-    # assert error.value_of_css_property('line-height') == '29.7px'
-    # assert error.value_of_css_property('color') == 'rgba(187 ,0 ,0 ,1)'
+    # APERTA-8336
+    # try:
+    #   institution_error = self._get(self._add_affiliation_institution_error)
+    #   # This error should not exist - APERTA-8336
+    #   assert institution_error.text.lower() == "can't be blank", institution_error.text
+    #   raise ElementExistsAssertionError()
+    # except ElementDoesNotExistAssertionError:
+    #   pass
+
+    institution_field = self._get(self._add_affiliation_institution_input)
+    if user['affiliation-name']:
+      institution_field.send_keys(user['affiliation-name'])
+    else:
+      institution_field.send_keys('Trump University')
+    add_done_btn.click()
+    # APERTA-8336
+    # Having not filled in email address - listed as required - should fire an error
+    # try:
+    #   email_error = self._get(self._add_affiliation_email_error)
+    # except ElementDoesNotExistAssertionError:
+    #   raise ElementDoesNotExistAssertionError('Email validation is not functional -
+    #       field required')
 
   def click_add_affiliation_button(self):
     """Click add addiliation button"""
     self._get(self._add_new_affiliation_btn).click()
     return self
 
-  def validate_image_upload(self):
-    """Validate uploading a new image as profile avatar"""
-    # TODO: Check this when Pivotal#101632186 is fixed.
-    self._get(self._profile_name_title)
+  def validate_image_upload(self, user):
+    """
+    Validate uploading a new image as profile avatar
+    Note that this doesn't actually work
+    :param user: user dictionary object from Base/Resources.py
+    :return: void function
+    """
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
-    self._get(self._avatar_hover).click()
     avatar_input = self._iget(self._avatar_input)
-    time.sleep(2)
-    avatar_input.clear()
-    time.sleep(2)
-    avatar_input.send_keys(os.path.join(os.getcwd(),
-                           "/frontend/assets/imgs/plos.gif" + Keys.RETURN + Keys.RETURN))
-    time.sleep(1)
-    return self
+    self._get(self._avatar_hover).click()
+    if user['profile_image']:
+      fn = os.getcwd() + '/frontend/assets/imgs/' + user['profile_image']
+    else:
+      fn = os.getcwd() + '/frontend/assets/imgs/plos.gif'
+    avatar_input.send_keys(fn + Keys.RETURN)
+    # TODO: Figure out how to actually trigger the upload
 
-  def validate_affiliation_form_css(self):
-    """Validate css from add affiliation form"""
-    add_aff_title = self._get(self._add_affiliation_form_title)
-    assert 'helvetica' in add_aff_title.value_of_css_property('font-family')
-    assert add_aff_title.text == 'New Affiliation'
-    self.validate_application_h3_style(add_aff_title)
-    # Note that the sytle guide is silent on this search selector style (APERTA-6358)
-    institution_input = self._get(self._add_affiliation_institution_input)
-    # APERTA-6358 Commenting out until style implementation fixed.
-    department_input, title_input, country, tmp, email = self._gets(self._affiliation_field)
-    # APERTA-6358 Commenting out until style implementation fixed.
-    # self.validate_input_field_style(department_input)
-    # APERTA-6358 Commenting out until style implementation fixed.
-    # self.validate_input_field_style(title_input)
-    # APERTA-6358 Commenting out until style implementation fixed.
-    # self.validate_single_select_dropdown_style(country)
-    # Note that the sytle guide is silent on this date selector style (APERTA-6358)
-    # self.validate_input_field_style(datepicker_1)
-    datepicker_1, datepicker_2 = self._gets(self._datepicker)
-    # Note that the sytle guide is silent on this date selector style (APERTA-6358)
-    # self.validate_input_field_style(datepicker_2)
-    # APERTA-6358 Commenting out until style implementation fixed.
-    # self.validate_input_field_style(email)
-    add_done_btn = self._get_add_done_btn()
-    # APERTA-6358 Commenting out until style implementation fixed.
-    # self.validate_secondary_big_green_button_style(add_done_btn)
-    add_cancel_btn = self._get(self._add_affiliation_cancel_link)
-    self.validate_default_link_style(add_cancel_btn)
-    # Insert affiliation data
-    institution_input.send_keys(affiliation['institution'])
-    department_input.send_keys(affiliation['department'])
-    title_input.send_keys(affiliation['title'])
-    country.click()
-    # Check for the country list selector before sending keys to country field
-    self._get(self._add_affiliation_country_list_items)
-    time.sleep(1)
-    self._get(self._add_affiliation_country_input).send_keys(affiliation['country'] + Keys.RETURN)
-    time.sleep(.5)
-    datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)
-    time.sleep(.5)
-    datepicker_2.send_keys(affiliation['end'] + Keys.RETURN)
-    time.sleep(.5)
-    email.send_keys(affiliation['email'])
-    time.sleep(.5)
-    add_done_btn.send_keys(Keys.SPACE)
-    # Look for data
-    # Give some time to end AJAX call
-    time.sleep(2)
-    affiliations = self._gets(self._profile_affiliations)
-    assert affiliation['institution'] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['institution'], affiliations[-1].text)
-    assert affiliation['department'] in affiliations[-1].text,  '{0} not in {1}'.format(
-        affiliation['department'], affiliations[-1].text)
-    assert affiliation['title'] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['title'], affiliations[-1].text)
-    assert affiliation['start'][-4:] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['start'], affiliations[-1].text)
-    assert affiliation['end'][-4:] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['end'], affiliations[-1].text)
-    assert affiliation['email'] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['email'], affiliations[-1].text)
-    assert affiliation['country'] in affiliations[-1].text, '{0} not in {1}'.format(
-        affiliation['country'], affiliations[-1].text)
-    remove_icons = self._gets(self._remove_affiliation_icon)
-    remove_icons[-1].click()
-    alert = self._driver.switch_to_alert()
-    alert.accept()
-    return self
+  def add_affiliation_cancel(self):
+    """A mini method to cancel the add of a new affiliation"""
+    add_aff_cancel_link = self._get(self._add_affiliation_cancel_link)
+    add_aff_cancel_link.click()
+
+  def add_affiliation(self, user):
+    """
+    A method to add an affilation for user
+    :param user: a user dictionary from Base/Resources.py
+    :return: Affiliation definition list
+    """
+    self._wait_for_element(self._get(self._add_affiliation_form))
+    institution_field = self._get(self._add_affiliation_institution_input)
+
+
+    department_field = self._get(self._add_affiliation_department_field)
+
+
+    title_field = self._get(self._add_affiliation_title_field)
+
+
+    country_dropdown = self._get(self._add_affiliation_country_drop_list_collapsed)
+    country_dropdown.click()
+    country_input = self._get(self._add_affiliation_country_input)
+    country_dropdown.send_keys(Keys.ESCAPE)
+
+    start_date_field = self._get(self._add_affiliation_start_date_field)
+
+    end_date_field = self._get(self._add_affiliation_end_date_field)
+
+
+    affiliation_email_field = self._get(self._add_affiliation_email_field)
+
+    assert add_aff_done_btn.text == 'DONE', add_aff_done_btn.text
+
+  def edit_affiliation(self, user):
+    pass
+
+  def delete_affiliation(self, user):
+    pass
+
+  def validate_affiliation(self, affiliation_definition_list):
+    pass
+
+  def validate_no_affiliation(self, affiliation_definition_list):
+    pass

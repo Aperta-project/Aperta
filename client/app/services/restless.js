@@ -9,7 +9,7 @@ export default Ember.Service.extend({
   pathFor(model) {
     let adapter = model.get('store').adapterFor(model.constructor.modelName);
     let resourceType = model.constructor.modelName;
-    return adapter.buildURL(resourceType, model.get('id'));
+    return adapter.buildURLForModel(model);
   },
 
   ajaxPromise(method, path, data) {

@@ -72,10 +72,7 @@ export default function startApp(attrs) {
     },
     mockPaperQuery: function(paper) {
       let mockedQuery = this.mockQuery('paper').returns({models: [paper]});
-      var shortDoi = paper.shortDoi;
-      if (!shortDoi) {
-        shortDoi = paper.get('shortDoi');
-      }
+      var shortDoi = Ember.get(paper, 'shortDoi');
       mockedQuery.getUrl = function() { return `/api/papers/${shortDoi}`; };
       return mockedQuery;
     }

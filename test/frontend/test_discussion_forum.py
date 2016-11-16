@@ -12,8 +12,8 @@ from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users, admin_users
-from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
+from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -276,7 +276,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.post_discussion(msg_2, mention=collaborator_2['user'])
     # Time needed for the new discussion to appear after AJAX call
     time.sleep(2)
-    # Look for the mention and check style    
+    # Look for the mention and check style
     mention = ms_viewer.get_mention(collaborator_2['user'])
     assert mention, 'Mention {0} is not present in the post'.format(collaborator_2['user'])
     ms_viewer.validate_mention_style(mention)

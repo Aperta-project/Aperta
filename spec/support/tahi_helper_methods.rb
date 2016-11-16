@@ -7,13 +7,6 @@ module TahiHelperMethods
     {id: user.id, full_name: user.full_name, avatar: user.image_url}
   end
 
-  def make_user_paper_admin(user, paper)
-    assign_journal_role(paper.journal, user, :admin)
-    paper_admin_task = paper.tasks.where(title: 'Assign Admin').first
-    paper_admin_task.add_participant(user)
-    paper_admin_task.save!
-  end
-
   # NEW ROLES
   def assign_academic_editor_role(paper, user)
     FactoryGirl.create(:assignment,

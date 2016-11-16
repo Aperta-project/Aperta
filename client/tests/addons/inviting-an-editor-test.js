@@ -52,7 +52,7 @@ module('Integration: Inviting an editor', {
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
     TestHelper.mockFind('task').returns({ model: task });
-    visit(`/papers/${paper.shortDoi}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Editor')");
 
     andThen(function(){
@@ -84,7 +84,7 @@ test('can delete a pending invitation', function(assert) {
     TestHelper.mockFind('task').returns({model: task});
     TestHelper.mockDelete('invitation', invitation.id);
 
-    visit(`/papers/${paper.shortDoi}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Editor')");
 
     andThen(function() {
@@ -107,7 +107,7 @@ test('can not delete an invited invitation', function(assert) {
     task.set('invitations', [invitation]);
     TestHelper.mockFind('task').returns({model: task});
 
-    visit(`/papers/${paper.shortDoi}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Editor')");
 
     andThen(function() {

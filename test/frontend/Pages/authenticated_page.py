@@ -689,7 +689,8 @@ class AuthenticatedPage(PlosPage):
         logging.info('Participant to add: {0}'.format(participant))
         self._get(self._add_participant_btn).click()
         time.sleep(.5)
-        self._get(self._participant_field).send_keys(participant[user_search_string] + Keys.ENTER)
+        participant_field = self._get(self._participant_field)
+        participant_field.send_keys(participant[user_search_string] + Keys.ENTER)
         time.sleep(5)
         add_participant_list = self._get(self._add_participant_list)
         items = add_participant_list.find_elements_by_tag_name('li')
@@ -704,10 +705,10 @@ class AuthenticatedPage(PlosPage):
         else:
           searching = True
           while searching:
-            self._get(self._participant_field).send_keys(Keys.ARROW_DOWN)
+            participant_field.send_keys(Keys.ARROW_DOWN)
             for item in items:
               if 'select2-highlighted' in item.get_attribute('class') and participant['email'] in item.text:
-                self._get(self._participant_field).send_keys(Keys.ENTER)
+                participant_field.send_keys(Keys.ENTER)
                 searching = False
                 break
     return None

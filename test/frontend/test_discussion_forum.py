@@ -155,7 +155,7 @@ class DiscussionForumTest(CommonTest):
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))
-    creator, reviewer_1, reviewer_2 = random.sample(users, 3)
+    creator, collaborator_1, collaborator_2 = random.sample(users, 3)
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -191,6 +191,26 @@ class DiscussionForumTest(CommonTest):
     # Creator logout
     ms_viewer.logout()
 
+    # Once the paper is created, add collaborator
+    # get user id
+    user_id = PgSQL().query('SELECT id FROM users where username = %s;',
+        (collaborator_1['user'],))[0][0]
+    # Get journal id
+    journal_id = PgSQL().query('SELECT journal_id FROM papers where id = %s;',
+        (paper_id,))[0][0]
+    # Get role id
+    role_id = PgSQL().query('SELECT id FROM roles where journal_id = %s '
+        'AND name = %s;', (journal_id, 'Collaborator'))[0][0]
+    # Add collaborator
+    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, '
+                   'assigned_to_type, created_at, updated_at) VALUES (%s, %s, %s, \'Paper\','
+                   ' now(), now());', (user_id, role_id, paper_id))
+    user_id = PgSQL().query('SELECT id FROM users where username = %s;',
+        (collaborator_2['user'],))[0][0]
+    PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, '
+                   'assigned_to_type, created_at, updated_at) VALUES (%s, %s, %s, \'Paper\','
+                   ' now(), now());', (user_id, role_id, paper_id))
+
     # Login as Staff user
     # This will fail when superadmin is chosen due to a app bug
     staff_user = random.choice(staff_users)
@@ -199,55 +219,31 @@ class DiscussionForumTest(CommonTest):
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    # Add R1 y R2
     ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
-    # go to wf
-    ms_viewer.click_workflow_link()
-    workflow_page = WorkflowPage(self.getDriver())
-    workflow_page.page_ready()
-    workflow_page.click_card('invite_reviewers')
-    invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info(u'Inviting reviewer 1 as user: {0}'.format(reviewer_1))
-    invite_reviewers.invite(reviewer_1)
-    dashboard_page.go_to_manuscript(paper_id)
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
-    # Add R1 y R2
-    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
-    # go to wf
-    ms_viewer.click_workflow_link()
-    workflow_page = WorkflowPage(self.getDriver())
-    workflow_page.page_ready()
-    workflow_page.click_card('invite_reviewers')
-    invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info(u'Inviting reviewer 2 as user: {0}'.format(reviewer_2))
-    invite_reviewers.invite(reviewer_2)
     msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)
     # How to call the discussion section
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
-        participants=[reviewer_1, reviewer_2])
+        participants=[collaborator_1, collaborator_2])
     elif web_page == 'manuscript viewer':
       dashboard_page.go_to_manuscript(paper_id)
       ms_viewer = ManuscriptViewerPage(self.getDriver())
       # Add R1 y R2
       ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
-        participants=[reviewer_1, reviewer_2])
+        participants=[collaborator_1, collaborator_2])
     # Staff user logout
     ms_viewer.logout()
 
-    # reviewer 1
-    logging.info(u'Logging in as user Reviewer 1')
-    dashboard_page = self.cas_login(email=reviewer_1['email'])
-    dashboard_page.click_view_invitations()
-    dashboard_page.accept_all_invitations()
+    # Collaborator 1
+    logging.info(u'Logging in as user Collaborator 1: {}'.format(collaborator_1))
+    dashboard_page = self.cas_login(email=collaborator_1['email'])
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
-    # accept invitation
     ms_viewer.click_discussion_link()
     discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     discussion_title = discussion_link.text
@@ -273,19 +269,17 @@ class DiscussionForumTest(CommonTest):
     assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
          'front end: {1}'.format(msg_1, comment_body)
     msg_2 = generate_paragraph()[2]
-    ms_viewer.post_discussion(msg_2, mention=reviewer_2['user'])
+    ms_viewer.post_discussion(msg_2, mention=collaborator_2['user'])
     # Look for the mention and check style
-    mention = ms_viewer.get_mention(reviewer_2['user'])
-    assert mention, 'Mention {0} is not present in the post'.format(reviewer_2['user'])
+    mention = ms_viewer.get_mention(collaborator_2['user'])
+    assert mention, 'Mention {0} is not present in the post'.format(collaborator_2['user'])
     ms_viewer.validate_mention_style(mention)
     ms_viewer.logout()
 
-    # reviewer 2
-    logging.info(u'Logging in as user Reviewer 2')
-    dashboard_page = self.cas_login(email=reviewer_2['email'])
+    # Collaborator 2
+    logging.info(u'Logging in as user Collaborator 2: {0}'.format(collaborator_2))
+    dashboard_page = self.cas_login(email=collaborator_2['email'])
     dashboard_page.click_view_invitations()
-    # accept invitation
-    dashboard_page.accept_all_invitations()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
@@ -307,7 +301,7 @@ class DiscussionForumTest(CommonTest):
     comment_name = ms_viewer._get(ms_viewer._comment_name).text
     comment_date = ms_viewer._get(ms_viewer._comment_date).text
     header_fe = u'{0} {1}'.format(comment_name, comment_date)
-    header_db = u'{0} posted {1}'.format(reviewer_1['name'], db_time_fe_format)
+    header_db = u'{0} posted {1}'.format(collaborator_1['name'], db_time_fe_format)
     assert header_fe == header_db, 'Header from front end: {0}, is not the same as '\
         'header from the DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text

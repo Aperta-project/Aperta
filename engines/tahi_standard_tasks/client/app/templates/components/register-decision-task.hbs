@@ -16,37 +16,38 @@
     <div class="alert alert-warning">
       A decision cannot be registered at this time. The manuscript is {{humanize paper.publishingState}}.
     </div>
-  {{/if}}
-
-  <div class="decision-selections">
-    {{#each verdicts as |verdict|}}
-      <label class="decision-label">
-        {{radio-button
-          value=verdict
-          selection=draftDecision.verdict
-          disabled=nonPublishable
-          name="decision"
-          action=(action "updateVerdict")}}
-        {{humanize verdict}}
-      </label>
-    {{/each}}
-  </div>
-
-  {{error-message message=validationErrors.errors}}
-
-  {{#if draftDecision.verdict}}
-    {{letter-template disabled=nonPublishableOrUnselected
-      letterValue=draftDecision.letter
-      class='letter-template-placeholder'
-      toField=toField
-      subjectLine=subjectLine
-      task=task
-      templateDecision=draftDecision.verdict
-      updateTemplate=(action 'updateTemplate')
-      registerDecision=(action 'registerDecision')
-    }}
   {{else}}
-    <p>No decision has been registered.</p>
+
+    <div class="decision-selections">
+      {{#each verdicts as |verdict|}}
+        <label class="decision-label">
+          {{radio-button
+            value=verdict
+            selection=draftDecision.verdict
+            disabled=nonPublishable
+            name="decision"
+            action=(action "updateVerdict")}}
+          {{humanize verdict}}
+        </label>
+      {{/each}}
+    </div>
+
+    {{error-message message=validationErrors.errors}}
+
+    {{#if draftDecision.verdict}}
+      {{letter-template disabled=nonPublishableOrUnselected
+        letterValue=draftDecision.letter
+        class='letter-template-placeholder'
+        toField=toField
+        subjectLine=subjectLine
+        task=task
+        templateDecision=draftDecision.verdict
+        updateTemplate=(action 'updateTemplate')
+        registerDecision=(action 'registerDecision')
+      }}
+    {{else}}
+      <p>No decision has been registered.</p>
+    {{/if}}
   {{/if}}
 
   {{#if previousDecisions}}

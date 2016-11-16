@@ -19,21 +19,23 @@ moduleForComponent(
                                      { id: 3, ident: 'register_decision_questions--selected-template' });
 
       let decisions = makeList('decision', 'draft', { verdict: 'accept' }, { verdict: 'minor_revision' });
-      let task = make('register-decision-task', {
-        paper: {
-          journal: {
-            id: 1,
-            staffEmail: 'staffpeople@plos.org'
-          },
-          publishingState: 'submitted',
-          decisions: decisions,
-          title: 'GREAT TITLE',
-          creator: {
-            id: 5,
-            lastName: 'Jones',
-            email: 'author@example.com'
-          }
+      let paper = make('paper', {
+        journal: {
+          id: 1,
+          staffEmail: 'staffpeople@plos.org'
         },
+        publishingState: 'submitted',
+        decisions: decisions,
+        title: 'GREAT TITLE',
+        creator: {
+          id: 5,
+          lastName: 'Jones',
+          email: 'author@example.com'
+        }
+      });
+
+      let task = make('register-decision-task', {
+        paper: paper,
         letterTemplates: [
           {
             id: 1,
@@ -167,6 +169,14 @@ test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
   });
 });
 
+['unsubmitted', 'in_revision', 'invited_for_full_submission', 'accepted', 'rejected'].forEach((state)=>{
+  test(`when the paper is ${state}, do not show register stuff`, function(assert) {
+    this.set('task', make('register-decision-task', {
+      'paper': { 'publishingState': state }
+    }));
+    assert.textPresent('.task-main-content', 'A decision cannot be registered at this time');
+  });
+});
 
 test('User has the ability to rescind', function(assert){
   assert.elementFound(

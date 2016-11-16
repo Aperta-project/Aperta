@@ -12,7 +12,7 @@
     isEditable=isEditable
     busyWhile=(action busyWhile)}}
 
-  {{#if paper.isReadyForDecision}}
+  {{#if (not paper.isReadyForDecision)}}
     <div class="alert alert-warning">
       A decision cannot be registered at this time. The manuscript is {{humanize paper.publishingState}}.
     </div>

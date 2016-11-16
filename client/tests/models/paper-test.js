@@ -70,3 +70,26 @@ test('simplifiedRelatedUsers contains no collaborators', function(assert) {
   let remaining = paper.get('simplifiedRelatedUsers').objectAt(0).name;
   assert.equal(remaining, 'Creator');
 });
+
+
+
+['accepted',
+  'in_revision',
+  'invited_for_full_submission',
+  'published',
+  'rejected',
+  'unsubmitted',
+  'withdrawn'].forEach((state)=>{
+    test(`isReadyForDecision is false when publishingState is ${state}`, (assert)=>{
+      let paper = FactoryGuy.make('paper', { publishingState: state });
+      assert.notOk(paper.get('isReadyForDecision'));
+    });
+  });
+
+
+['submitted', 'initially_submitted', 'checking'].forEach((state)=>{
+  test(`isReadyForDecision is true when publishingState is ${state}`, (assert)=>{
+    let paper = FactoryGuy.make('paper', { publishingState: state });
+    assert.ok(paper.get('isReadyForDecision'));
+  });
+});

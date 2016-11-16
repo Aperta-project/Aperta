@@ -11,6 +11,7 @@ const PAPER_SUBMITTABLE_STATES = [
 ];
 
 const TERMINAL_STATES = ['accepted', 'rejected'];
+const DECIDABLE_STATES = ['submitted', 'initially_submitted', 'checking'];
 
 const PAPER_GRADUAL_ENGAGEMENT_STATES = [
   'unsubmitted',
@@ -181,7 +182,7 @@ export default DS.Model.extend({
 
   /* True if a decision can be registered in this state. */
   isReadyForDecision: computed('publishingState', function() {
-    return this.get('isInSubmittableState') || TERMINAL_STATES.includes(this.get('publishingState'));
+    return DECIDABLE_STATES.includes(this.get('publishingState'));
   }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){

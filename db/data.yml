@@ -5490,182 +5490,182 @@ journal_task_types:
     - TahiStandardTasks::AuthorsTask
     - "{}"
     - false
-    - 
+    - author
   - - '3'
     - '1'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
     - "{}"
     - false
-    - 
+    - author
   - - '4'
     - '1'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
     - "{}"
     - false
-    - 
+    - author
   - - '5'
     - '1'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
     - "{}"
     - false
-    - 
+    - author
   - - '6'
     - '1'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
     - "{}"
     - false
-    - 
+    - author
   - - '7'
     - '1'
     - Figures
     - TahiStandardTasks::FigureTask
     - "{}"
     - false
-    - 
+    - author
   - - '8'
     - '1'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
     - "{}"
     - false
-    - 
+    - author
   - - '10'
     - '1'
     - Invite Academic Editor
     - TahiStandardTasks::PaperEditorTask
     - "{}"
     - false
-    - 
+    - admin
   - - '11'
     - '1'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
     - "{}"
     - false
-    - 
+    - editor
   - - '12'
     - '1'
     - Production Metadata
     - TahiStandardTasks::ProductionMetadataTask
     - "{}"
     - false
-    - 
+    - admin
   - - '13'
     - '1'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - "{}"
     - false
-    - 
+    - author
   - - '14'
     - '1'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
     - "{}"
     - false
-    - 
+    - editor
   - - '15'
     - '1'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
     - "{}"
     - false
-    - 
+    - author
   - - '16'
     - '1'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
     - "{}"
     - false
-    - 
+    - author
   - - '17'
     - '1'
     - Reviewer Report
     - TahiStandardTasks::ReviewerReportTask
     - "{}"
     - true
-    - 
+    - reviewer
   - - '18'
     - '1'
     - Revise Manuscript
     - TahiStandardTasks::ReviseTask
     - "{}"
     - true
-    - 
+    - author
   - - '19'
     - '1'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
     - "{}"
     - false
-    - 
+    - author
   - - '20'
     - '1'
     - New Taxon
     - TahiStandardTasks::TaxonTask
     - "{}"
     - false
-    - 
+    - author
   - - '21'
     - '1'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
     - "{}"
     - false
-    - 
+    - author
   - - '22'
     - '1'
     - Changes For Author
     - PlosBioTechCheck::ChangesForAuthorTask
     - "{}"
     - true
-    - 
+    - author
   - - '23'
     - '1'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
     - "{}"
     - false
-    - 
+    - editor
   - - '24'
     - '1'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
     - "{}"
     - false
-    - 
+    - editor
   - - '25'
     - '1'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
     - "{}"
     - false
-    - 
+    - editor
   - - '26'
     - '1'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
     - "{}"
     - false
-    - 
+    - admin
   - - '27'
     - '1'
     - Billing
     - PlosBilling::BillingTask
     - '[{"action":"view","applies_to":"PlosBilling::BillingTask"},{"action":"edit","applies_to":"PlosBilling::BillingTask"}]'
     - false
-    - 
+    - author
   - - '28'
     - '1'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
     - "{}"
     - false
-    - 
+    - admin
   - - '29'
     - '1'
     - Test Task
@@ -5679,42 +5679,42 @@ journal_task_types:
     - TahiStandardTasks::InitialDecisionTask
     - "{}"
     - false
-    - 
+    - editor
   - - '31'
     - '1'
     - Send to Apex
     - TahiStandardTasks::SendToApexTask
     - "{}"
     - false
-    - 
+    - editor
   - - '32'
     - '1'
     - Related Articles
     - TahiStandardTasks::RelatedArticlesTask
     - "{}"
     - false
-    - 
+    - editor
   - - '33'
     - '1'
     - Title And Abstract
     - TahiStandardTasks::TitleAndAbstractTask
     - "{}"
     - false
-    - 
+    - editor
   - - '34'
     - '1'
     - Front Matter Reviewer Report
     - TahiStandardTasks::FrontMatterReviewerReportTask
     - "{}"
     - true
-    - 
+    - reviewer
   - - '35'
     - '1'
     - Ad-hoc
     - AdHocTask
     - "{}"
     - false
-    - 
+    - user
 
 ---
 journals:
@@ -12184,31 +12184,6 @@ permission_states_permissions:
     - '2'
     - '2016-03-03 19:06:16.376737'
     - '2016-03-03 19:06:16.376737'
-  - - '120'
-    - '117'
-    - '2'
-    - '2016-03-03 19:06:16.396971'
-    - '2016-03-03 19:06:16.396971'
-  - - '121'
-    - '118'
-    - '2'
-    - '2016-03-03 19:06:16.418751'
-    - '2016-03-03 19:06:16.418751'
-  - - '122'
-    - '119'
-    - '2'
-    - '2016-03-03 19:06:16.442914'
-    - '2016-03-03 19:06:16.442914'
-  - - '123'
-    - '120'
-    - '2'
-    - '2016-03-03 19:06:16.466114'
-    - '2016-03-03 19:06:16.466114'
-  - - '124'
-    - '121'
-    - '2'
-    - '2016-03-03 19:06:16.497088'
-    - '2016-03-03 19:06:16.497088'
   - - '125'
     - '122'
     - '2'
@@ -12514,11 +12489,6 @@ permission_states_permissions:
     - '2'
     - '2016-03-08 00:13:38.960577'
     - '2016-03-08 00:13:38.960577'
-  - - '186'
-    - '183'
-    - '2'
-    - '2016-03-08 00:13:39.110073'
-    - '2016-03-08 00:13:39.110073'
   - - '187'
     - '184'
     - '2'
@@ -13219,16 +13189,6 @@ permission_states_permissions:
     - '2'
     - '2016-10-18 14:38:34.175713'
     - '2016-10-18 14:38:34.175713'
-  - - '327'
-    - '265'
-    - '2'
-    - '2016-10-18 14:38:34.253159'
-    - '2016-10-18 14:38:34.253159'
-  - - '328'
-    - '266'
-    - '2'
-    - '2016-10-18 14:38:34.276639'
-    - '2016-10-18 14:38:34.276639'
   - - '329'
     - '267'
     - '2'
@@ -13579,26 +13539,6 @@ permission_states_permissions:
     - '6'
     - '2016-10-18 14:38:38.129761'
     - '2016-10-18 14:38:38.129761'
-  - - '399'
-    - '322'
-    - '3'
-    - '2016-10-18 14:38:38.190218'
-    - '2016-10-18 14:38:38.190218'
-  - - '400'
-    - '322'
-    - '4'
-    - '2016-10-18 14:38:38.191653'
-    - '2016-10-18 14:38:38.191653'
-  - - '401'
-    - '322'
-    - '5'
-    - '2016-10-18 14:38:38.193613'
-    - '2016-10-18 14:38:38.193613'
-  - - '402'
-    - '322'
-    - '6'
-    - '2016-10-18 14:38:38.195148'
-    - '2016-10-18 14:38:38.195148'
   - - '403'
     - '323'
     - '3'
@@ -14314,31 +14254,6 @@ permissions:
     - TahiStandardTasks::InitialDecisionTask
     - '2016-03-03 19:06:16.372713'
     - '2016-03-03 19:06:16.372713'
-  - - '117'
-    - view
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-03-03 19:06:16.393481'
-    - '2016-03-03 19:06:16.393481'
-  - - '118'
-    - edit
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-03-03 19:06:16.415202'
-    - '2016-03-03 19:06:16.415202'
-  - - '119'
-    - view_participants
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-03-03 19:06:16.439142'
-    - '2016-03-03 19:06:16.439142'
-  - - '120'
-    - add_participants
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-03-03 19:06:16.462073'
-    - '2016-03-03 19:06:16.462073'
-  - - '121'
-    - remove_participants
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-03-03 19:06:16.490625'
-    - '2016-03-03 19:06:16.490625'
   - - '122'
     - view
     - TahiStandardTasks::PaperEditorTask
@@ -14644,11 +14559,6 @@ permissions:
     - TahiStandardTasks::InitialDecisionTask
     - '2016-03-08 00:13:38.953049'
     - '2016-03-08 00:13:38.953049'
-  - - '183'
-    - manage_participant
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-03-08 00:13:39.098181'
-    - '2016-03-08 00:13:39.098181'
   - - '184'
     - manage_participant
     - TahiStandardTasks::PaperEditorTask
@@ -15054,16 +14964,6 @@ permissions:
     - TahiStandardTasks::InitialDecisionTask
     - '2016-10-18 14:38:34.172495'
     - '2016-10-18 14:38:34.172495'
-  - - '265'
-    - add_email_participants
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-10-18 14:38:34.249753'
-    - '2016-10-18 14:38:34.249753'
-  - - '266'
-    - manage_invitations
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-10-18 14:38:34.273258'
-    - '2016-10-18 14:38:34.273258'
   - - '267'
     - add_email_participants
     - TahiStandardTasks::PaperEditorTask
@@ -15339,11 +15239,6 @@ permissions:
     - TahiStandardTasks::InitialDecisionTask
     - '2016-10-18 14:38:38.12213'
     - '2016-10-18 14:38:38.12213'
-  - - '322'
-    - edit
-    - TahiStandardTasks::PaperAdminTask
-    - '2016-10-18 14:38:38.186897'
-    - '2016-10-18 14:38:38.186897'
   - - '323'
     - edit
     - TahiStandardTasks::PaperEditorTask
@@ -21275,18 +21170,12 @@ task_templates:
     - Final Tech Check
     - "[]"
     - '3'
-  - - '215'
-    - '9'
-    - '68'
-    - Assign Admin
-    - "[]"
-    - '1'
   - - '216'
     - '26'
     - '68'
     - Editor Discussion
     - "[]"
-    - '2'
+    - '1'
   - - '217'
     - '11'
     - '69'
@@ -21305,126 +21194,114 @@ task_templates:
     - Register Decision
     - "[]"
     - '1'
-  - - '231'
-    - '9'
-    - '74'
-    - Assign Admin
-    - "[]"
-    - '2'
   - - '232'
     - '28'
     - '74'
     - Assign Team
     - "[]"
-    - '3'
+    - '2'
   - - '233'
     - '23'
     - '74'
     - Final Tech Check
     - "[]"
-    - '4'
+    - '3'
   - - '234'
     - '30'
     - '74'
     - Initial Decision
     - "[]"
-    - '5'
+    - '4'
   - - '235'
     - '24'
     - '74'
     - Initial Tech Check
     - "[]"
-    - '6'
+    - '5'
   - - '236'
     - '25'
     - '74'
     - Revision Tech Check
     - "[]"
-    - '7'
+    - '6'
   - - '237'
     - '31'
     - '74'
     - Send to Apex
     - "[]"
-    - '8'
+    - '7'
   - - '238'
     - '33'
     - '74'
     - Title And Abstract
     - "[]"
-    - '9'
+    - '8'
   - - '239'
     - '10'
     - '74'
     - Invite Academic Editor
     - "[]"
-    - '10'
+    - '9'
   - - '240'
     - '11'
     - '74'
     - Invite Reviewers
     - "[]"
-    - '11'
+    - '10'
   - - '241'
     - '14'
     - '75'
     - Register Decision
     - "[]"
     - '1'
-  - - '242'
-    - '9'
-    - '75'
-    - Assign Admin
-    - "[]"
-    - '2'
   - - '243'
     - '28'
     - '75'
     - Assign Team
     - "[]"
-    - '3'
+    - '2'
   - - '244'
     - '23'
     - '75'
     - Final Tech Check
     - "[]"
-    - '4'
+    - '3'
   - - '245'
     - '24'
     - '75'
     - Initial Tech Check
     - "[]"
-    - '5'
+    - '4'
   - - '246'
     - '10'
     - '75'
     - Invite Academic Editor
     - "[]"
-    - '6'
+    - '5'
   - - '247'
     - '11'
     - '75'
     - Invite Reviewers
     - "[]"
-    - '7'
+    - '6'
   - - '248'
     - '25'
     - '75'
     - Revision Tech Check
     - "[]"
-    - '8'
+    - '7'
   - - '249'
     - '33'
     - '75'
     - Title And Abstract
     - "[]"
-    - '9'
+    - '8'
   - - '250'
     - '31'
     - '75'
     - Send to Apex
     - "[]"
-    - '10'
+    - '9'
 
 ---
 tasks:
@@ -23485,17 +23362,6 @@ tasks:
     - '3'
     - '13'
     - 
-  - - '205'
-    - Assign Admin
-    - TahiStandardTasks::PaperAdminTask
-    - '48'
-    - false
-    - '2016-06-02 13:43:23.39417'
-    - '2016-06-02 13:43:23.39417'
-    - "[]"
-    - '1'
-    - '13'
-    - 
   - - '206'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -23504,7 +23370,7 @@ tasks:
     - '2016-06-02 13:43:23.408359'
     - '2016-06-02 13:43:23.408359'
     - "[]"
-    - '2'
+    - '1'
     - '13'
     - 
   - - '207'

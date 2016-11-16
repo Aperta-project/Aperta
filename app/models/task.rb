@@ -43,7 +43,7 @@ class Task < ActiveRecord::Base
     through: :participations,
     source: :user
 
-  has_many :permission_requirements, as: :required_on
+  has_many :permission_requirements, as: :required_on, dependent: :destroy
   has_many \
     :required_permissions,
     through: :permission_requirements,

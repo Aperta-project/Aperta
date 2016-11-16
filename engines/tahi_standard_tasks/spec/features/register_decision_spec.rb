@@ -34,7 +34,6 @@ feature "Register Decision", js: true, sidekiq: :inline! do
         wait_for_ajax
         expect(task.reload.completed?).to be true
         expect(overlay).to have_success_state_message
-        expect(overlay).to be_disabled
       end
 
       scenario "persist the decision radio button" do
@@ -114,7 +113,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
     scenario "Participant cannot register a decision on the paper" do
       overlay = Page.view_task_overlay(paper, task)
       expect(overlay.invalid_state_message).to be true
-      expect(overlay).to have_content("No decision has been registered")
+      expect(overlay).to have_content("A decision cannot be registered at this time")
     end
   end
 

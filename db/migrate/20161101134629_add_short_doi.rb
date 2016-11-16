@@ -1,7 +1,4 @@
 class AddShortDoi < ActiveRecord::Migration
-  class Paper < ActiveRecord::Base
-  end
-
   def change
     reversible do |dir|
       dir.up do

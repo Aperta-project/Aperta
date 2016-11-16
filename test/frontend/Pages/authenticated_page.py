@@ -743,7 +743,6 @@ class AuthenticatedPage(PlosPage):
     msg_body.send_keys(msg + ' ')
     time.sleep(1)
     if mention:
-      # Note: At this stage only Staff users can be mentioned.
       msg_body.send_keys('@' + mention)
       time.sleep(1)
       msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
@@ -752,8 +751,6 @@ class AuthenticatedPage(PlosPage):
       self._get(post_message_btn).click()
     except ElementDoesNotExistAssertionError:
       raise(ElementDoesNotExistAssertionError, 'This may be related with APERTA-8344')
-    # Need to wait for make sure the post is sent
-    time.sleep(3)
     return None
 
   def get_mention(self, user):
@@ -763,11 +760,11 @@ class AuthenticatedPage(PlosPage):
     :return: object of a mention
     """
     comment_body = self._get(self._comment_body)
-    mention = comment_body.find_element(*self._mention)
-    if mention.text[1:] == user:
-      return mention
-    else:
-      raise Exception('{0} not found'.format(user))
+    mentions = comment_body.find_elements(*self._mention)
+    for mention in mentions:
+      if mention.text[1:] == user:
+        return mention
+    raise Exception(u'{0} not found'.format(user))
 
   def scroll_element_into_view_below_toolbar(self, element):
     """

@@ -274,7 +274,9 @@ class DiscussionForumTest(CommonTest):
     discussion_back_link = ms_viewer._get(ms_viewer._discussion_back_link)
     discussion_back_link.click()
     ms_viewer.post_discussion(msg_2, mention=collaborator_2['user'])
-    # Look for the mention and check style
+    # Time needed for the new discussion to appear after AJAX call
+    time.sleep(2)
+    # Look for the mention and check style    
     mention = ms_viewer.get_mention(collaborator_2['user'])
     assert mention, 'Mention {0} is not present in the post'.format(collaborator_2['user'])
     ms_viewer.validate_mention_style(mention)

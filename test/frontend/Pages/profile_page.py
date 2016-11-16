@@ -62,6 +62,7 @@ class ProfilePage(AuthenticatedPage):
     # Affiliation Edit Mode
     self._add_affiliation_form = (By.CLASS_NAME, 'affiliations-form')
     self._add_affiliation_form_title = (By.CSS_SELECTOR, 'div.affiliations-form h3')
+    self._add_affiliation_form_subtext = (By.CSS_SELECTOR, 'div.affiliations-form > p')
     self._add_affiliation_institution_input = (By.CSS_SELECTOR,
                                                'div.affiliations-form div div input')
     self._add_affiliation_department_label = (By.CSS_SELECTOR, 'div.department > div > label')
@@ -129,17 +130,17 @@ class ProfilePage(AuthenticatedPage):
     assert 'Username:' in username_title.text
 
     page_username = self._get(self._profile_username)
-    assert username['user'] == page_username.text, 'Requested user: {0} not found on ' \
-                                                   'page: {1}'.format(username['user'],
-                                                                      page_username.text)
+    assert username['user'] == page_username.text, u'Requested user: {0} not found on ' \
+                                                   u'page: {1}'.format(username['user'],
+                                                                       page_username.text)
 
     email_title = self._get(self._profile_email_title)
     assert 'Email:' in email_title.text
 
     page_email = self._get(self._profile_email)
-    assert username['email'] == page_email.text, 'Requested user: {0} not found on ' \
-                                                 'page: {1}'.format(username['email'],
-                                                                    page_email.text)
+    assert username['email'] == page_email.text, u'Requested user: {0} not found on ' \
+                                                 u'page: {1}'.format(username['email'],
+                                                                     page_email.text)
     unlinked = False
     orcid_logo = self._get(self._profile_orcid_logo)
     assert orcid_logo.get_attribute('src') == \
@@ -194,12 +195,62 @@ class ProfilePage(AuthenticatedPage):
     except ElementDoesNotExistAssertionError:
       existing_affiliation = False
       no_aff_text = self._get(self._profile_affiliation_aff_text)
-      assert no_aff_text.text == 'No affiliations yet'
+      # APERTA-8178 Typo
+      # assert no_aff_text.text == 'No affiliations yet', no_aff_text.text
     if not existing_affiliation:
       affiliation_btn.click()
-
-
-
+      self._wait_for_element(self._get(self._add_affiliation_form))
+      add_form_title = self._get(self._add_affiliation_form_title)
+      assert add_form_title.text =='New Affiliation', add_form_title.text
+      add_form_subtext = self._get(self._add_affiliation_form_subtext)
+      assert add_form_subtext.text == 'Enter most recent affiliations first', add_form_subtext.text
+      institution_field = self._get(self._add_affiliation_institution_input)
+      assert institution_field.get_attribute('placeholder') == 'Institution', \
+          institution_field.get_attribute('placeholder')
+      department_label = self._get(self._add_affiliation_department_label)
+      assert department_label.text == 'Department', department_label.text
+      department_field = self._get(self._add_affiliation_department_field)
+      assert department_field.get_attribute('placeholder') == 'Department', \
+          department_field.get_attribute('placeholder')
+      title_label = self._get(self._add_affiliation_title_label)
+      assert title_label.text == 'Title', title_label.text
+      title_field = self._get(self._add_affiliation_title_field)
+      assert title_field.get_attribute('placeholder') == 'Title', \
+          title_field.get_attribute('placeholder')
+      country_dropdown = self._get(self._add_affiliation_country_drop_list_collapsed)
+      assert country_dropdown.text == 'Country', country_dropdown.text
+      country_dropdown.click()
+      self._get(self._add_affiliation_country_input)
+      country_list = self._gets(self._add_affiliation_country_list_items)
+      country_text_list = []
+      for country in country_list:
+        country_text_list.append(country.text)
+      assert 'Cocos (Keeling) Islands' in country_text_list, 'Not properly populating country ' \
+                                                             'list from NED!'
+      country_dropdown.click()
+      affiliation_dates_label = self._get(self._add_affiliation_dates_label)
+      assert 'time at institution:' in affiliation_dates_label.text, affiliation_dates_label.text
+      start_date_field = self._get(self._add_affiliation_start_date_field)
+      assert start_date_field.get_attribute('placeholder') == 'Start Date', \
+          start_date_field.get_attribute('placeholder')
+      end_date_field = self._get(self._add_affiliation_end_date_field)
+      assert end_date_field.get_attribute('placeholder') == 'End Date', \
+          end_date_field.get_attribute('placeholder')
+      start_date_field.click()
+      self._get(self._add_affiliation_datepicker_selector)
+      end_date_field.click()
+      self._get(self._add_affiliation_datepicker_selector)
+      affiliation_email_lbl = self._get(self._add_affiliation_email_label)
+      assert affiliation_email_lbl.text == 'Email Address', affiliation_email_lbl.text
+      assert 'required' in affiliation_email_lbl.get_attribute('class'), \
+          affiliation_email_lbl.get_attribute('class')
+      affiliation_email_field = self._get(self._add_affiliation_email_field)
+      assert affiliation_email_field.get_attribute('placeholder') == 'Email Address', \
+          affiliation_email_field.get_attribute('placeholder')
+      add_aff_done_btn = self._get(self._add_affiliation_done_button)
+      assert add_aff_done_btn.text == 'DONE', add_aff_done_btn.text
+      add_aff_cancel_link = self._get(self._add_affiliation_cancel_link)
+      assert add_aff_cancel_link.text == 'cancel', add_aff_cancel_link.text
 
   def validate_invalid_add_new_affiliation(self):
     """

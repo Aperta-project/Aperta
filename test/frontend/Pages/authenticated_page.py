@@ -184,7 +184,7 @@ class AuthenticatedPage(PlosPage):
     self._file_attach_input = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
     # Add participant
-    self._add_participant_lst = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
+    self._add_participant_list = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -664,10 +664,11 @@ class AuthenticatedPage(PlosPage):
     self.click_discussion_link()
     self._get(self._create_new_topic).click()
     time.sleep(1)
+    topic_title = self._get(self._topic_title_field)
     if topic:
-      self._get(self._topic_title_field).send_keys(topic)
+      topic_title.send_keys(topic)
     else:
-      self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
+      topic_title.send_keys(generate_paragraph()[2][15])
     msg_body = self._get(self._message_body_field)
     if msg:
       msg_body.send_keys(msg + ' ')
@@ -683,19 +684,18 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     if participants:
       for participant in participants:
-        user_key = random.choice(['email', 'user'])
-        logging.info('Participant key to retrieve user: {0}'.format(user_key))
+        user_search_string = random.choice(['name', 'email', 'user'])
+        logging.info('Participant key to retrieve user: {0}'.format(user_search_string))
         logging.info('Participant to add: {0}'.format(participant))
-        ##import pdb; pdb.set_trace()
         self._get(self._add_participant_btn).click()
         time.sleep(.5)
-        self._get(self._participant_field).send_keys(participant[user_key] + Keys.ENTER)
+        self._get(self._participant_field).send_keys(participant[user_search_string] + Keys.ENTER)
         time.sleep(5)
-        add_participant_lst = self._get(self._add_participant_lst)
-        items = add_participant_lst.find_elements_by_tag_name('li')
+        add_participant_list = self._get(self._add_participant_list)
+        items = add_participant_list.find_elements_by_tag_name('li')
         # Have to scan all items because of the fuzzy search it may return many results
         for index, item in enumerate(items):
-          if participant[user_key] in item.text:
+          if participant[user_search_string] in item.text:
             break
         time.sleep(2)
         # If is first match
@@ -706,11 +706,10 @@ class AuthenticatedPage(PlosPage):
           while searching:
             self._get(self._participant_field).send_keys(Keys.ARROW_DOWN)
             for item in items:
-              if 'select2-highlighted' in item.get_attribute('class') and participant['user'] in item.text:
+              if 'select2-highlighted' in item.get_attribute('class') and participant['email'] in item.text:
                 self._get(self._participant_field).send_keys(Keys.ENTER)
                 searching = False
                 break
-        time.sleep(1)
     return None
 
   def post_discussion(self, msg='', mention=''):
@@ -730,8 +729,8 @@ class AuthenticatedPage(PlosPage):
     # make textarea visible. Selenium won't do it because running JS is not
     # part of a regular user interaction. Inserting JS is a valid hack when
     # there is no other way to make this work
-    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    self._driver.execute_script(js_cmd);
+    ##js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
+    ##self._driver.execute_script(js_cmd);
     time.sleep(.5)
     msg_body = self._get(self._message_body_field)
     ##import pdb; pdb.set_trace()

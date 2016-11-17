@@ -52,6 +52,7 @@ class JournalFactory
       task_klasses << PlosBioTechCheck::ChangesForAuthorTask
       task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)

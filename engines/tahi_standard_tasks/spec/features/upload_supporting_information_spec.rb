@@ -15,12 +15,6 @@ feature "Upload Supporting Information", js: true do
   before do
     login_as(author, scope: :user)
     visit "/"
-
-    allow(DownloadAttachmentWorker).to receive(:perform_async) do |supporting_info_id, url|
-      supporting_info = SupportingInformationFile.find(supporting_info_id)
-      supporting_info.save
-    end
-
     click_link paper.title
   end
 

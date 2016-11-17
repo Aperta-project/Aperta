@@ -177,12 +177,16 @@
   .progress-spinner-message {
     display: flex;
     align-items: center;
-    padding: 10px 15px 0 15px;
+    padding: 10px 15px;
   }
 
   .progress-spinner-message-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: inline-block;
-    padding-left: 0.5rem;
-    font-size: 1.1em;
+    padding-left: 1rem;
+    color: $aperta-grey-dark;
+    font-size: 1.2em;
   }
 }

@@ -1,4 +1,9 @@
-{{#if isEditing}}
+{{#if (eq file.status "processing")}}
+  {{#progress-spinner-message visible=true
+                              size="small"}}
+    Processing ...
+  {{/progress-spinner-message}}
+{{else if isEditing}}
   <div class="si-file-editor flex-form visible">
     <div class="si-file-filename">
       <a href="{{file.src}}"><i class="fa {{iconClass}}"></i>{{file.filename}}</a>
@@ -75,13 +80,6 @@
   </div>
 
 {{else}}
-
-  {{#if (eq file.status "processing")}}
-    {{#progress-spinner-message visible=true
-                                size="mini"}}
-      Prosessing
-    {{/progress-spinner-message}}
-  {{/if}}
 
   <div class="si-file-viewing" {{action "enterEditStateIfEditable" on="doubleClick"}}>
     {{#if isEditable}}

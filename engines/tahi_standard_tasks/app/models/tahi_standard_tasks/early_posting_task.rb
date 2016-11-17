@@ -2,7 +2,6 @@ module TahiStandardTasks
   class EarlyPostingTask < Task
     include MetadataTask
     DEFAULT_TITLE = 'Early Article Posting'
-    DEFAULT_ROLE = 'author'
     DEFAULT_ROLE_HINT = 'author'.freeze
 
     def task_added_to_paper(paper)

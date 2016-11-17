@@ -37,7 +37,6 @@ FactoryGirl.define do
     phase
     paper
     title "Early Article Posting"
-    old_role "author"
   end
 
   factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do

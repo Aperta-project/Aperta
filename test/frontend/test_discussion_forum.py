@@ -50,6 +50,9 @@ class DiscussionForumTest(CommonTest):
     current_path = os.getcwd()
     logging.info(current_path)
     creator = random.choice(users)
+    staff_user = random.choice(staff_users)
+    logging.info('Creator: {0}'.format(creator))
+    logging.info('Staff User: {0}'.format(staff_user))
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -67,7 +70,7 @@ class DiscussionForumTest(CommonTest):
     paper_id = ms_viewer.get_paper_id_from_url()
     logging.info(u'Assigned paper id: {0}'.format(paper_id))
     ms_viewer.logout()
-    staff_user = random.choice(staff_users)
+
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
@@ -77,7 +80,7 @@ class DiscussionForumTest(CommonTest):
     if web_page == 'manuscript viewer':
       # This is failing for Asian Character set usernames of only two characters APERTA-7862
       ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
-                                  participants=[creator])
+                                    participants=[creator])
     elif web_page == 'workflow':
       ms_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
@@ -102,6 +105,7 @@ class DiscussionForumTest(CommonTest):
 
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
@@ -109,8 +113,10 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.click_discussion_link()
     ms_viewer.post_discussion('@' + creator['user'])
     ms_viewer.logout()
+
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon

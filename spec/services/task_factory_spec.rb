@@ -11,8 +11,8 @@ describe TaskFactory do
     end.to change { Task.count }.by(1)
   end
 
-  it "calls the task class's task_added_to_workflow hook with the task" do
-    expect(klass).to receive(:task_added_to_workflow)
+  it "calls the task's task_added_to_paper hook" do
+    expect_any_instance_of(klass).to receive(:task_added_to_paper)
     TaskFactory.create(klass, paper: paper, phase: phase)
   end
 

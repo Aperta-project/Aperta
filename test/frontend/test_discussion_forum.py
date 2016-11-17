@@ -54,31 +54,23 @@ class DiscussionForumTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
-    dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     paper_type = 'OnlyInitialDecisionCard'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications', journal=journal,
                         type_=paper_type, random_bit=True)
-    dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    ms_viewer.validate_ihat_conversions_success(timeout=45)
+    ms_viewer.page_ready_post_create()
     logging.info(ms_viewer.get_current_url())
     paper_id = ms_viewer.get_paper_id_from_url()
-    counter = 0
-    while not paper_id:
-      time.sleep(1)
-      paper_id = ms_viewer.get_paper_id_from_url()
-      counter += 1
-      if counter >= 60:
-        raise  ValueError('Page not loaded')
     logging.info(u'Assigned paper id: {0}'.format(paper_id))
     ms_viewer.logout()
     staff_user = random.choice(staff_users)
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
@@ -96,13 +88,12 @@ class DiscussionForumTest(CommonTest):
 
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
+    ms_viewer.page_ready()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
-    time.sleep(2)
-    ms_viewer.set_timeout(120)
     red_badge = ms_viewer._get(ms_viewer._badge_red)
-    ms_viewer.restore_timeout()
     red_badge_first = int(red_badge.text)
     red_badge.click()
     time.sleep(.5)
@@ -147,13 +138,12 @@ class DiscussionForumTest(CommonTest):
       logging.info('There is no badge')
     ms_viewer.restore_timeout()
 
-  def test_discussion_ms_viewer(self):
+  def test_discussions(self):
     """
     This test validates a dicussion from the manuscript view. It involves multiple
-    participants, an admin user post a discussion and adds two particpiants. These
-    participants are invited as reviewers.
-    The reviewers accepts the role and checks for messages, one reviewer make a post
-    mentioning the other reviewer and this mention should be highlighted.
+    participants, an admin user post a discussion and adds two collaborators.
+    The collaborators checks for messages, one collaborator make a post
+    mentioning the other collaborator and this mention should be highlighted.
     All participants checks for content, user and time.
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
@@ -165,7 +155,6 @@ class DiscussionForumTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     # Create paper
-    dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     paper_type = 'NoCards'
@@ -175,19 +164,11 @@ class DiscussionForumTest(CommonTest):
                         type_=paper_type,
                         random_bit=True,
                         )
-    dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer.validate_ihat_conversions_success(timeout=45)
+    ms_viewer.page_ready_post_create()
     logging.info(ms_viewer.get_current_url())
     paper_id = ms_viewer.get_paper_id_from_url()
-    counter = 0
-    while not paper_id:
-      time.sleep(1)
-      paper_id = ms_viewer.get_paper_id_from_url()
-      counter += 1
-      if counter >= 60:
-        raise  ValueError('Page not loaded')
-    logging.info(u'Assigned paper id: {0}'.format(paper_id))
+    logging.info('Assigned paper id: {0}'.format(paper_id))
     # Submit paper
     # reviewer1
     ms_viewer.click_submit_btn()
@@ -232,7 +213,7 @@ class DiscussionForumTest(CommonTest):
     elif web_page == 'manuscript viewer':
       dashboard_page.go_to_manuscript(paper_id)
       ms_viewer = ManuscriptViewerPage(self.getDriver())
-      # Add R1 y R2
+      # Add Collaborator 1 and Collaborator 2
       ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[collaborator_1, collaborator_2])
@@ -242,10 +223,10 @@ class DiscussionForumTest(CommonTest):
     # Collaborator 1
     logging.info(u'Logging in as user Collaborator 1: {}'.format(collaborator_1))
     dashboard_page = self.cas_login(email=collaborator_1['email'])
-    # go to article id paper_id
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
+    ms_viewer.page_ready()
     ms_viewer.click_discussion_link()
     discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     discussion_title = discussion_link.text
@@ -285,11 +266,12 @@ class DiscussionForumTest(CommonTest):
     # Collaborator 2
     logging.info(u'Logging in as user Collaborator 2: {0}'.format(collaborator_2))
     dashboard_page = self.cas_login(email=collaborator_2['email'])
+    dashboard_page.page_ready()
     dashboard_page.click_view_invitations()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
+    ms_viewer.page_ready()
     ms_viewer.click_discussion_link()
     discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     discussion_title = discussion_link.text
@@ -318,10 +300,11 @@ class DiscussionForumTest(CommonTest):
     # Login as Staff user
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._discussion_link))
+    ms_viewer.page_ready()
     ms_viewer.click_discussion_link()
     try:
       discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)

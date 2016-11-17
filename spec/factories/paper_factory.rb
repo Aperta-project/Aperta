@@ -124,7 +124,7 @@ FactoryGirl.define do
 
     trait(:with_tasks) do
       after(:create) do |paper|
-        FactoryGirl.create(:nested_question, ident: 'early-posting--consent')
+        FactoryGirl.create(:early_posting_task)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end

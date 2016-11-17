@@ -256,7 +256,7 @@ describe Paper do
         paper.destroy
 
         expect(Phase.where(paper_id: paper.id).count).to be 0
-        expect(Task.count).to be 0
+        expect(Task.where(paper: paper_id).count).to be 0
       end
     end
   end

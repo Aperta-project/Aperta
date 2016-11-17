@@ -160,6 +160,7 @@ class DiscussionForumTest(CommonTest):
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
@@ -205,10 +206,11 @@ class DiscussionForumTest(CommonTest):
     staff_user = random.choice(staff_users)
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
     # go to article id paper_id
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
+    ms_viewer.page_ready()
     msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(paper_id)

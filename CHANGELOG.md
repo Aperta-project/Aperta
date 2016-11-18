@@ -16,8 +16,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
   allowing manuscripts to be published before all proofreading and copyediting is done.
 - Invitations can now be reordered through drag and drop. This also enforces
   rules automatically for which invitations can be reordered and into which groups
+- A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
 - Display of article type in invitations
 - Caching of unsaved Discussion responses
+- Ad-hoc cards have editing and managing permissions
 - ORCID IDs are included in the metadata export to Apex
 ### Changed
 ### Deprecated

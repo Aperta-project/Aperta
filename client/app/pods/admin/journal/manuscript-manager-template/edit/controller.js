@@ -1,6 +1,17 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
+
+const isAdHocTask = function(kind) {
+  const adHocTaskTypes = [
+    'AdHocTask',
+    'AdHocForAuthorsTask',
+    'AdHocForEditorsTask',
+    'AdHocForReviewersTask'
+  ];
+  return adHocTaskTypes.includes(kind);
+};
+
 export default Ember.Controller.extend(ValidationErrorsMixin, {
   pendingChanges: false,
   editingName: false,
@@ -97,7 +108,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
           template: []
         });
 
-        if (taskType.get('kind') === 'AdHocTask') {
+        if (isAdHocTask(taskType.get('kind'))) {
           hasAdHocType = true;
           this.set('adHocTaskToDisplay', newTaskTemplate);
         }
@@ -187,7 +198,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     editTaskTemplate(taskTemplate){
-      if (taskTemplate.get('kind') === 'AdHocTask') {
+      if (isAdHocTask(taskTemplate.get('kind'))) {
         this.setProperties({
           showAdHocTaskOverlay: true,
           adHocTaskToDisplay: taskTemplate

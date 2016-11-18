@@ -73,12 +73,12 @@ export default Ember.Component.extend({
     }
     this.setValueFromHTML();
 
-    const action = this.attrs['key-up'];
+    const action = this.get('key-up');
     if(action) { action(); }
   },
 
   focusIn() {
-    const action = this.attrs['focus-in'];
+    const action = this.get('focus-in');
     if(action) { action(); }
   },
 
@@ -88,17 +88,17 @@ export default Ember.Component.extend({
       this.setPlaceholder();
     }
 
-    const action = this.attrs['focus-out'];
+    const action = this.get('focus-out');
     if(action) { action(); }
   },
 
   selectionIn() {
-    const action = this.attrs['selection-in'];
+    const action = this.get('selection-in');
     if(action) { action(); }
   },
 
   selectionOut() {
-    const action = this.attrs['selection-out'];
+    const action = this.get('selection-out');
     if(action) { action(); }
   },
 

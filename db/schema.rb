@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20161118035507) do
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
     t.string   "staff_email"
+    t.string   "reviewer_email_bcc"
+    t.string   "editor_email_bcc"
   end
 
   create_table "letter_templates", force: :cascade do |t|

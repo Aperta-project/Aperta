@@ -32,7 +32,7 @@
       <div class="auth-left auth-group">
         <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
           <div class="auth-field auth-field--text-input">
-            <%= f.text_field :login, :autofocus => true, placeholder: "Login" %>
+            <%= f.text_field :login, :autofocus => true, placeholder: "Login", autocapitalize: "none" %>
           </div>
 
           <div class="auth-field auth-field--text-input">

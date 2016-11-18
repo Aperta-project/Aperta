@@ -3,7 +3,7 @@ class TaskFactory
 
   def self.create(task_klass, options = {})
     task = new(task_klass, options).save
-    task_klass.task_added_to_workflow(task)
+    task.task_added_to_paper(task.paper)
     task
   end
 

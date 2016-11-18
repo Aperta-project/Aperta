@@ -26,7 +26,7 @@ feature "Dashboard", js: true do
       login_as(user, scope: :user)
       visit "/"
 
-      expect(Paper.count).to eq(active_paper_count + inactive_paper_count)
+      expect(Paper.where(journal: journal).count).to eq(active_paper_count + inactive_paper_count)
       expect(dashboard.total_active_paper_count).to eq(active_paper_count)
     end
 

@@ -1,5 +1,5 @@
 <div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}} {{if showChooseReceivers "show-choose-receivers"}}">
-  {{#if isSendable}}
+  {{#if (can 'add_email_participants' task)}}
     <div class="send-email">
       {{#if lastSentAt}} <span class="bodypart-last-sent">Sent {{lastSentAt}}</span>{{/if}}
       <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email</div>
@@ -20,21 +20,25 @@
 
 {{#if showChooseReceivers}}
   <div class="bodypart-choose-receiver-overlay bodypart-overlay">
-    <p>Please choose who should receive this email.</p>
+    <h4>Please choose who should receive this email.</h4>
     {{participant-selector currentParticipants=recipients
                            onRemove=(action "removeRecipient")
                            onSelect=(action "addRecipient")
                            label="Recipients:"
                            paperId=paperId
                            canManage=(can 'add_email_participants' task)}}
-    <button class="button-secondary button--green knockout" {{action "toggleChooseReceivers"}}>Cancel</button>
-    <button class="button-secondary button--green knockout send-email-action" {{action "sendEmail" model}}>Send Email</button>
+    <button class="button-link button--white" {{action "toggleChooseReceivers"}}>cancel</button>
+    {{#if isSendable}}
+      <button class="button-secondary button--green send-email-action" {{action "sendEmail"}}>Send Email</button>
+    {{else}}
+      <button class="button-secondary button--disabled send-email-action">Send Email</button>
+    {{/if}}
   </div>
 {{/if}}
 
 {{#if showSentMessage}}
   <div class="bodypart-email-sent-overlay bodypart-overlay">
     <span class="fa fa-remove animation-scale-in" {{action "clearEmailSent"}}></span>
-    <p>Your email has been sent.</p>
+    <h4>Your email has been sent.</h4>
   </div>
 {{/if}}

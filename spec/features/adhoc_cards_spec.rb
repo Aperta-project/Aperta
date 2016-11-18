@@ -10,9 +10,12 @@ feature 'Adhoc cards', js: true do
                        creator: author
   end
   let(:overlay) { AdhocOverlay.new }
+  let(:ad_hoc_task) { AdHocTask.find_by(paper: paper) }
 
   context 'As a participant' do
     before do
+      ad_hoc_task.add_participant(author)
+      ad_hoc_task.update!(body: [[{ type: "attachments", value: "Please select a file." }]])
       paper.tasks.each { |t| t.add_participant(author) }
       login_as(author, scope: :user)
       visit "/papers/#{paper.id}/tasks/#{paper.tasks.first.id}"

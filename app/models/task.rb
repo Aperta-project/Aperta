@@ -43,7 +43,7 @@ class Task < ActiveRecord::Base
     through: :participations,
     source: :user
 
-  has_many :permission_requirements, as: :required_on
+  has_many :permission_requirements, as: :required_on, dependent: :destroy
   has_many \
     :required_permissions,
     through: :permission_requirements,
@@ -143,18 +143,10 @@ class Task < ActiveRecord::Base
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
+  end
 
-    # This hook is intended to give task subclasses an opportunity
-    # to create any extra data they might need to function correctly.
-    # Specifically, PaperEditorTask needs to create an InvitationQueue
-    # for itself.
-    def task_added_to_workflow(task)
-      # no-op
-    end
-
-    def task_added_to_paper(paper)
-      # no-op to be overriden and used in the paper factory
-    end
+  def task_added_to_paper(paper)
+    # no-op to be overriden and used in the paper factory
   end
 
   def journal_task_type

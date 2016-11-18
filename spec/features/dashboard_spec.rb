@@ -26,7 +26,7 @@ feature "Dashboard", js: true do
       login_as(user, scope: :user)
       visit "/"
 
-      expect(Paper.count).to eq(active_paper_count + inactive_paper_count)
+      expect(Paper.where(journal: journal).count).to eq(active_paper_count + inactive_paper_count)
       expect(dashboard.total_active_paper_count).to eq(active_paper_count)
     end
 
@@ -58,6 +58,18 @@ feature "Dashboard", js: true do
       within('.active-paper-table-row') { expect(page).to have_content("DRAFT") }
       within('.inactive-paper-table-row') { expect(page).to have_content("Author") }
       within('.inactive-paper-table-row') { expect(page).to have_content("WITHDRAWN") }
+    end
+  end
+
+  feature "displaying journal name" do
+    let(:active_paper_count) { 1 }
+    let(:paper) { papers.first }
+
+    scenario "shows journal name with manuscript" do
+      login_as(user, scope: :user)
+      visit "/"
+
+      within('.dashboard-journal-name') { expect(page).to have_content(journal.name) }
     end
   end
 

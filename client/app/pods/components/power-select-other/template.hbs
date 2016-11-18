@@ -17,13 +17,12 @@
   <span class="ember-power-select-status-icon" {{action "otherTrigger"}}></span>
 {{/if}}
 
-<div class="{{if _otherOptionSelected "power-select-other-dropdown-hidden"}}">
-  {{#power-select options=_optionsWithOther
-                  selected=selectedValue
-                  searchEnabled=searchEnabled
-                  placeholder=selectPlaceholder
-                  onchange=(action "select")
-                  as |v|}}
-    {{v}}
-  {{/power-select}}
-</div>
+{{#power-select options=_optionsWithOther
+                selected=selectedValue
+                searchEnabled=searchEnabled
+                placeholder=selectPlaceholder
+                triggerClass=(if _otherOptionSelected "power-select-other-dropdown-hidden")
+                onchange=(action "select")
+                as |v|}}
+  {{v}}
+{{/power-select}}

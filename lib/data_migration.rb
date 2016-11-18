@@ -21,26 +21,51 @@
 #    task), while still allowing the migration to succeed (it will be a noop).
 class DataMigration < ActiveRecord::Migration
   def up
-    fail StandardError, "#{self.class}::RAKE_TASK_UP is not a string" \
-      unless self.class::RAKE_TASK_UP.is_a? String
-    if Rake::Task.task_defined?(self.class::RAKE_TASK_UP)
-      Rake::Task[self.class::RAKE_TASK_UP].invoke
+    unless rake_task_up_defined?
+      fail NameError, <<-ERROR.strip_heredoc
+        #{self.class}::RAKE_TASK_UP is not defined (or not defined properly). It
+        should be a string name of the rake task to be run, e.g.
+
+            RAKE_TASK_UP = 'data:migrate:some-task-here'
+      ERROR
+    end
+
+    rake_task = self.class::RAKE_TASK_UP
+    if Rake::Task.task_defined?(rake_task)
+      puts green("  Running rake task: #{rake_task}")
+      Rake::Task[rake_task].invoke
     else
       Rails.logger.warn <<-EOS.strip_heredoc
-        #{self.class::RAKE_TASK_UP} is not a rake task: migration not run
+        #{rake_task} is not a rake task: migration not run
       EOS
     end
   end
 
   def down
-    return unless defined?(self.class::RAKE_TASK_DOWN) &&
-        self.class::RAKE_TASK_DOWN.present?
-    if Rake::Task.task_defined?(self.class::RAKE_TASK_DOWN)
-      Rake::Task[self.class::RAKE_TASK_DOWN].invoke
+    return unless rake_task_down_defined?
+
+    rake_task = self.class::RAKE_TASK_DOWN
+    if Rake::Task.task_defined?(rake_task)
+      puts green("  Running rake task: #{rake_task}")
+      Rake::Task[rake_task].invoke
     else
       Rails.logger.warn <<-EOS.strip_heredoc
-        #{self.class::RAKE_TASK_DOWN} is not a rake task: migration not run
+        #{rake_task} is not a rake task: migration not run
       EOS
     end
+  end
+
+  private
+
+  def green(str)
+    "\e[32m#{str}\e[0m"
+  end
+
+  def rake_task_down_defined?
+    defined?(self.class::RAKE_TASK_DOWN) && self.class::RAKE_TASK_DOWN.present?
+  end
+
+  def rake_task_up_defined?
+    defined?(self.class::RAKE_TASK_UP) && self.class::RAKE_TASK_UP.present?
   end
 end

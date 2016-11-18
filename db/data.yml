@@ -5715,6 +5715,13 @@ journal_task_types:
     - "{}"
     - false
     - user
+  - - '36'
+    - '1'
+    - Early Article Posting
+    - TahiStandardTasks::EarlyPostingTask
+    - "{}"
+    - false
+    - author
 
 ---
 journals:
@@ -9044,7 +9051,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-08-12 16:47:41.709894'
+    - '2016-11-16 17:03:12.966274'
     - PlosBilling::BillingTask
     - 
     - 
@@ -10983,6 +10990,19 @@ nested_questions:
     - '2016-07-28 18:23:32.569432'
     - '2016-07-28 18:23:32.569432'
     - TahiStandardTasks::RegisterDecisionTask
+    - 
+    - 
+  - - '267'
+    - Yes, I agree to publish an early version of my article
+    - boolean
+    - early-posting--consent
+    - 
+    - '385'
+    - '386'
+    - '1'
+    - '2016-11-16 16:48:25.726027'
+    - '2016-11-16 16:48:25.726027'
+    - TahiStandardTasks::EarlyPostingTask
     - 
     - 
 

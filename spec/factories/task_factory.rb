@@ -33,6 +33,17 @@ FactoryGirl.define do
     title "Data Availability"
   end
 
+  factory :early_posting_task, class: 'TahiStandardTasks::EarlyPostingTask' do
+    phase
+    paper
+    title "Early Article Posting"
+
+    before(:create) do
+      early_posting = NestedQuestion.find_by_ident('early-posting--consent')
+      FactoryGirl.create(:nested_question, ident: 'early-posting--consent').save unless early_posting
+    end
+  end
+
   factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do
     phase
     paper

@@ -39,4 +39,10 @@ class SupportingInformationFile < Attachment
   def task_completed?
     task && task.completed?
   end
+
+  protected
+
+  def build_title
+    title
+  end
 end

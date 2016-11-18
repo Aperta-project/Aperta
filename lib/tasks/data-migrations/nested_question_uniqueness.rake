@@ -427,7 +427,12 @@ namespace :data do
               to: "plos_bio_final_tech_check--ethics_statement",
               children: []
             },
-
+            {
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              from: "early_posting",
+              to: "plos_bio_final_tech_check--early_posting",
+              children: []
+            },
             {
               type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "open_rejects",

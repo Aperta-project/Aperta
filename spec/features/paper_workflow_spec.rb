@@ -109,22 +109,4 @@ feature "Paper workflow", js: true, selenium: true, skip: true do
     end
   end
 
-  scenario "Admin can assign a paper to themselves", flaky: true do
-    task_manager_page = TaskManagerPage.new
-
-    needs_editor_phase = task_manager_page.phase 'Invite Editor'
-    needs_editor_phase.view_card 'Assign Admin' do |overlay|
-      expect(overlay).to have_no_admin(admin.email)
-      overlay.admin = admin
-      overlay.mark_as_complete
-      expect(overlay).to be_completed
-      expect(overlay).to have_admin(admin.email)
-    end
-
-    needs_editor_phase = TaskManagerPage.new
-    needs_editor_phase.phase 'Invite Editor'
-    needs_editor_phase.view_card 'Invite Editor' do |overlay|
-      expect(overlay).to_not be_completed
-    end
-  end
 end

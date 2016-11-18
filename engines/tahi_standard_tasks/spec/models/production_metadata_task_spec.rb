@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::ProductionMetadataTask do
-
   def create_task_with_answer(ident:, answer:, value_type: 'text')
     NestedQuestionableFactory.create(
       FactoryGirl.create(:production_metadata_task),
@@ -17,7 +16,6 @@ describe TahiStandardTasks::ProductionMetadataTask do
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
-    it_behaves_like '<Task class>.restore_defaults update old_role to the default'
   end
 
   context "validations" do
@@ -70,9 +68,7 @@ describe TahiStandardTasks::ProductionMetadataTask do
             expect(task.error_on(:publication_date)).to include(/must be a date/)
           end
         end
-
       end
-
     end
   end
 
@@ -88,7 +84,7 @@ describe TahiStandardTasks::ProductionMetadataTask do
     context "when answer present" do
       let(:task) do
         create_task_with_answer(ident: "production_metadata--publication_date",
-                    answer: "12/22/2000")
+                                answer: "12/22/2000")
       end
 
       it "returns the proxied answer" do
@@ -109,7 +105,7 @@ describe TahiStandardTasks::ProductionMetadataTask do
     context "when answer present" do
       let(:task) do
         create_task_with_answer(ident: "production_metadata--volume_number",
-                    answer: "1234")
+                                answer: "1234")
       end
 
       it "returns the proxied answer" do
@@ -130,7 +126,7 @@ describe TahiStandardTasks::ProductionMetadataTask do
     context "when answer present" do
       let(:task) do
         create_task_with_answer(ident: "production_metadata--issue_number",
-                    answer: "1234")
+                                answer: "1234")
       end
 
       it "returns the proxied answer" do

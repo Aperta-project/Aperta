@@ -3,9 +3,13 @@
              id=paperLinkId}}
     {{{model.displayTitle}}}
   {{/link-to}}
-  <div class='dashboard-manuscript-id'>
-    ID: {{model.manuscript_id}}
-  </div>
+  <br>
+  <span class="dashboard-journal-name">
+    {{model.journal.name}}
+  </span>
+  <span class="dashboard-manuscript-id">
+    | ID: {{model.manuscript_id}}
+  </span>
   {{#if unreadCommentsCount}}
     <span class="unread-comments">
       <span class="badge badge--red">
@@ -14,5 +18,5 @@
     </span>
   {{/if}}
 </td>
-<td class="col-xs-1 role-tag text-right">{{oldRoles}}</td>
+<td class="col-xs-1 role-tag text-right">{{roles}}</td>
 <td class="col-xs-1"><div class='status-tag text-center'>{{status}}</div></td>

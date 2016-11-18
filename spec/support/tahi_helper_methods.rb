@@ -7,14 +7,6 @@ module TahiHelperMethods
     {id: user.id, full_name: user.full_name, avatar: user.image_url}
   end
 
-  def make_user_paper_admin(user, paper)
-    assign_journal_role(paper.journal, user, :admin)
-    paper_admin_task = paper.tasks.where(title: 'Assign Admin').first
-    paper_admin_task.admin_id = user.id
-    paper_admin_task.add_participant(user)
-    paper_admin_task.save!
-  end
-
   # NEW ROLES
   def assign_academic_editor_role(paper, user)
     FactoryGirl.create(:assignment,
@@ -37,8 +29,6 @@ module TahiHelperMethods
 
   def assign_handling_editor_role(paper, editor)
     editor.assign_to!(assigned_to: paper, role: paper.journal.handling_editor_role)
-    # this is an old role:
-    paper.paper_roles.create user: editor, old_role: PaperRole::EDITOR
   end
 
   def assign_internal_editor_role(paper, editor)
@@ -54,21 +44,10 @@ module TahiHelperMethods
   end
 
   def assign_journal_role(journal, user, role_or_type)
-    # New Roles
     if role_or_type == :admin
       user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
     elsif role_or_type == :editor
       user.assign_to!(assigned_to: journal, role: journal.internal_editor_role)
-    end
-
-    # Old Roles
-    if role_or_type.is_a?(OldRole)
-      old_role = role_or_type
-      UserRole.create!(user: user, old_role: old_role).old_role
-    else
-      old_role = journal.old_roles.where(kind: role_or_type).first
-      old_role ||= FactoryGirl.create(:old_role, role_or_type, journal: journal)
-      UserRole.create!(user: user, old_role: old_role).old_role
     end
   end
 

@@ -1,8 +1,7 @@
 module TahiStandardTasks
   class InitialDecisionTask < Task
-
-    DEFAULT_TITLE = 'Initial Decision'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Initial Decision'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     def initial_decision
       paper.decisions.last
@@ -12,7 +11,7 @@ module TahiStandardTasks
       InitialDecisionTaskSerializer
     end
 
-    def paper_creation_hook(paper)
+    def task_added_to_paper(paper)
       paper.update_column(:gradual_engagement, true)
     end
 
@@ -20,7 +19,7 @@ module TahiStandardTasks
       decision.initial = true
     end
 
-    def after_register(decision)
+    def after_register(_decision)
       complete!
     end
 

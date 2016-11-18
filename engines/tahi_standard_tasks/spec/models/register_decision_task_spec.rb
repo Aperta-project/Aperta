@@ -22,7 +22,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
   let!(:task) do
     TahiStandardTasks::RegisterDecisionTask.create!(
       title: "Register Decision",
-      old_role: "editor",
       paper: paper,
       phase: paper.phases.first
     )
@@ -31,7 +30,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
-    it_behaves_like '<Task class>.restore_defaults update old_role to the default'
   end
 
   describe "save and retrieve paper decision and decision letter" do
@@ -49,7 +47,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
     let(:task) {
       TahiStandardTasks::RegisterDecisionTask.create(
         title: "Register Decision",
-        old_role: "editor",
         phase: paper.phases.first)
     }
 

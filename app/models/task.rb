@@ -5,9 +5,9 @@ class Task < ActiveRecord::Base
   include Snapshottable
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
-  DEFAULT_ROLE = 'user'.freeze
+  DEFAULT_ROLE_HINT = 'user'.freeze
 
-  REQUIRED_PERMISSIONS = {}
+  REQUIRED_PERMISSIONS = {}.freeze
   SYSTEM_GENERATED = false
 
   cattr_accessor :metadata_types
@@ -43,7 +43,7 @@ class Task < ActiveRecord::Base
     through: :participations,
     source: :user
 
-  has_many :permission_requirements, as: :required_on
+  has_many :permission_requirements, as: :required_on, dependent: :destroy
   has_many \
     :required_permissions,
     through: :permission_requirements,
@@ -58,33 +58,18 @@ class Task < ActiveRecord::Base
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
-  validates :title, :old_role, presence: true
+  validates :title, presence: true
   validates :title, length: { maximum: 255 }
 
   class << self
     # Public: Restores the task defaults to all of its instances/models
     #
     # * restores title to DEFAULT_TITLE
-    # * restores old_role to DEFAULT_ROLE
     #
-    # Note: this will not restore the +title+ or +old_role+ on ad-hoc tasks.
+    # Note: this will not restore the +title+ on ad-hoc tasks.
     def restore_defaults
       return if self == Task
-      update_all(old_role: self::DEFAULT_ROLE, title: self::DEFAULT_TITLE)
-    end
-
-    # Public: Scopes the tasks with a given old_role
-    #
-    # old_role  - The String of old_role name.
-    #
-    # Examples
-    #
-    #   for_old_role('editor')
-    #   # => #<ActiveRecord::Relation [<#Task:123>]>
-    #
-    # Returns ActiveRecord::Relation with tasks.
-    def for_old_role(old_role)
-      where(old_role: old_role)
+      update_all(title: self::DEFAULT_TITLE)
     end
 
     # Public: Scopes the tasks for a given paper
@@ -154,22 +139,14 @@ class Task < ActiveRecord::Base
     end
 
     def safe_constantize(str)
-      fail StandardError, 'Attempted to constantize disallowed value' \
+      raise StandardError, 'Attempted to constantize disallowed value' \
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
+  end
 
-    # This hook is intended to give task subclasses an opportunity
-    # to create any extra data they might need to function correctly.
-    # Specifically, PaperEditorTask needs to create an InvitationQueue
-    # for itself.
-    def task_added_to_workflow(task)
-      # no-op
-    end
-
-    def task_added_to_paper(paper)
-      # no-op to be overriden and used in the paper factory
-    end
+  def task_added_to_paper(paper)
+    # no-op to be overriden and used in the paper factory
   end
 
   def journal_task_type
@@ -266,11 +243,7 @@ class Task < ActiveRecord::Base
   end
 
   def update_completed_at
-    if completed
-      self.completed_at = Time.zone.now
-    else
-      self.completed_at = nil
-    end
+    self.completed_at = (Time.zone.now if completed)
   end
 end
 

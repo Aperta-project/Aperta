@@ -3,7 +3,7 @@ class TaskFactory
 
   def self.create(task_klass, options = {})
     task = new(task_klass, options).save
-    task_klass.task_added_to_workflow(task)
+    task.task_added_to_paper(task.paper)
     task
   end
 
@@ -27,7 +27,6 @@ class TaskFactory
   def default_options
     {
       title: task_klass::DEFAULT_TITLE,
-      old_role: task_klass::DEFAULT_ROLE
     }
   end
 

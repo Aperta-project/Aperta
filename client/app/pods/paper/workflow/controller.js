@@ -7,6 +7,8 @@ export default Ember.Controller.extend({
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
+  paper: Ember.computed.alias('model'),
+
   activityIsLoading: false,
   showActivityOverlay: false,
   activityFeed: null,

@@ -12,6 +12,7 @@
 .flex-element {
   flex: 10 10 auto;
 
+  .format-input,
   input[type=text],
   select {
     width: 100%;

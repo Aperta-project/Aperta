@@ -7,12 +7,11 @@ describe Task do
 
   describe ".without" do
     let!(:tasks) do
-      2.times.map do
+      Array.new(2) do
         Task.create! title: "Paper Admin",
-          completed: true,
-          old_role: 'admin',
-          phase_id: 3,
-          paper_id: 99
+                     completed: true,
+                     phase_id: 3,
+                     paper_id: 99
       end
     end
 
@@ -114,6 +113,22 @@ describe Task do
     end
   end
 
+  describe '#permission_requirements' do
+    subject(:task) { FactoryGirl.create :ad_hoc_task }
+
+    before do
+      FactoryGirl.create(:permission_requirement, required_on: task)
+    end
+
+    context 'on #destroy' do
+      it 'destroy assignments' do
+        expect do
+          task.destroy!
+        end.to change { task.permission_requirements.count }.by(-1)
+      end
+    end
+  end
+
   describe "#invitations" do
     let(:paper) { FactoryGirl.create :paper }
     let(:task) { FactoryGirl.create :invitable_task, paper: paper }
@@ -121,9 +136,9 @@ describe Task do
 
     context "on #destroy" do
       it "destroy invitations" do
-        expect {
+        expect do
           task.destroy!
-        }.to change { Invitation.count }.by(-1)
+        end.to change { Invitation.count }.by(-1)
       end
     end
   end
@@ -134,9 +149,9 @@ describe Task do
       nested_question_answer_ids = task.nested_question_answers.pluck :id
       expect(nested_question_answer_ids).to have_at_least(1).id
 
-      expect {
+      expect do
         task.destroy
-      }.to change {
+      end.to change {
         NestedQuestionAnswer.where(id: nested_question_answer_ids).count
       }.from(nested_question_answer_ids.count).to(0)
     end
@@ -166,10 +181,10 @@ describe Task do
 
     it 'returns all the tasks' do
       tasks_from_source = Dir[Rails.root.join('**/*.rb')]
-        .select { |path| path.match(%r{models/.*task.rb}) }
-        .reject { |path| path.match(/concerns/) }
-        .reject { |path| path.match(%r{models/task.rb}) }
-        .map { |path| path.match(%r{models/(.*).rb})[1] }
+                          .select { |path| path.match(%r{models/.*task.rb}) }
+                          .reject { |path| path.match(/concerns/) }
+                          .reject { |path| path.match(%r{models/task.rb}) }
+                          .map { |path| path.match(%r{models/(.*).rb})[1] }
 
       tasks = Task.descendants.map { |c| c.to_s.underscore }
       expect(tasks).to include(*tasks_from_source)
@@ -209,7 +224,6 @@ describe Task do
         :ad_hoc_task,
         title: "Paper Admin",
         completed: true,
-        old_role: 'admin',
         phase_id: 3,
         paper_id: 99
       )

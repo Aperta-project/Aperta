@@ -27,8 +27,9 @@ describe TahiStandardTasks::PaperReviewerMailer do
       expect(email.to).to contain_exactly(invitation.email)
     end
 
-    it "bcc's apertachasing@plos.org to support chasing in Salesforce" do
-      expect(email.bcc).to contain_exactly('apertachasing@plos.org')
+    it "does not bcc if the journal setting is nil" do
+      expect(invitation.paper.journal.reviewer_email_bcc).to be_nil
+      expect(email.bcc).to be_empty
     end
 
     it "attaches attachments on the invitation" do
@@ -46,6 +47,16 @@ describe TahiStandardTasks::PaperReviewerMailer do
         "bill_ted1.jpg",
         "yeti.gif"
       )
+    end
+
+    describe "when a bcc email address is provided" do
+      before do
+        invitation.paper.journal.update(reviewer_email_bcc: 'reviewer@example.com')
+      end
+
+      it "bcc's the journal setting to support chasing in Salesforce" do
+        expect(email.bcc).to contain_exactly('reviewer@example.com')
+      end
     end
 
     describe "links" do

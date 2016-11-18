@@ -1,24 +1,28 @@
 class TaskTemplatesController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
 
   respond_to :json
 
   def show
+    requires_user_can(:administer, journal)
     respond_with task_template
   end
 
   def create
+    phase = PhaseTemplate.find(task_template_params[:phase_template_id])
+    requires_user_can(:administer, phase.journal)
     task_template.save
     respond_with task_template
   end
 
   def update
+    requires_user_can(:administer, journal)
     task_template.update_attributes(task_template_params)
     respond_with task_template
   end
 
   def destroy
+    requires_user_can(:administer, journal)
     task_template.destroy
     respond_with task_template
   end
@@ -31,15 +35,15 @@ class TaskTemplatesController < ApplicationController
     end
   end
 
+  def journal
+    @journal ||= task_template.journal
+  end
+
   def task_template
     @task_template ||= if params[:id]
       TaskTemplate.find(params[:id])
     else
       TaskTemplate.new(task_template_params)
     end
-  end
-
-  def enforce_policy
-    authorize_action! task_template: task_template
   end
 end

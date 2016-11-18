@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031153002) do
+ActiveRecord::Schema.define(version: 20161118035507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -319,10 +319,10 @@ ActiveRecord::Schema.define(version: 20161031153002) do
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
     t.string  "title"
-    t.string  "old_role"
     t.string  "kind"
     t.json    "required_permissions"
     t.boolean "system_generated"
+    t.string  "role_hint"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20161031153002) do
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
     t.string   "staff_email"
+    t.string   "reviewer_email_bcc"
+    t.string   "editor_email_bcc"
   end
 
   create_table "letter_templates", force: :cascade do |t|
@@ -412,19 +414,6 @@ ActiveRecord::Schema.define(version: 20161031153002) do
   add_index "notifications", ["target_id", "target_type"], name: "index_notifications_on_target_id_and_target_type", using: :btree
   add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
-  create_table "old_roles", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "journal_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "kind",                                  default: "custom", null: false
-    t.boolean  "can_administer_journal",                default: false,    null: false
-    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
-    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
-  end
-
-  add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
-
   create_table "orcid_accounts", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "access_token"
@@ -441,19 +430,6 @@ ActiveRecord::Schema.define(version: 20161031153002) do
   end
 
   add_index "orcid_accounts", ["user_id"], name: "index_orcid_accounts_on_user_id", using: :btree
-
-  create_table "paper_roles", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "old_role"
-  end
-
-  add_index "paper_roles", ["old_role"], name: "index_paper_roles_on_old_role", using: :btree
-  add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
-  add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
-  add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 
   create_table "paper_tracker_queries", force: :cascade do |t|
     t.string   "query"
@@ -493,16 +469,6 @@ ActiveRecord::Schema.define(version: 20161031153002) do
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
-
-  create_table "participations", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree
-  add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
   create_table "permission_requirements", force: :cascade do |t|
     t.integer  "permission_id"
@@ -737,7 +703,6 @@ ActiveRecord::Schema.define(version: 20161031153002) do
     t.boolean  "completed",    default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role",                      null: false
     t.json     "body",         default: [],     null: false
     t.integer  "position",     default: 0
     t.integer  "paper_id",                      null: false
@@ -747,17 +712,7 @@ ActiveRecord::Schema.define(version: 20161031153002) do
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
-
-  create_table "user_roles", force: :cascade do |t|
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "old_role_id"
-  end
-
-  add_index "user_roles", ["old_role_id"], name: "index_user_roles_on_old_role_id", using: :btree
-  add_index "user_roles", ["user_id", "old_role_id"], name: "index_user_roles_on_user_id_and_old_role_id", using: :btree
-  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
+  add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             default: "", null: false

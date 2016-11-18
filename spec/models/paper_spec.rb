@@ -25,8 +25,8 @@ describe Paper do
       Timecop.freeze(Time.current.utc) do |now|
         expect { subject }
           .to change { paper.latest_version.reload.updated_at }
-          .from(within_db_precision.of frozen_time)
-          .to(within_db_precision.of now)
+          .from(within_db_precision.of(frozen_time))
+          .to(within_db_precision.of(now))
       end
     end
 
@@ -35,7 +35,7 @@ describe Paper do
         expect { subject }
           .to change { paper.submitted_at }
           .from(nil)
-          .to(within_db_precision.of now)
+          .to(within_db_precision.of(now))
       end
     end
 
@@ -44,7 +44,7 @@ describe Paper do
         expect { subject }
           .to change { paper.first_submitted_at }
           .from(nil)
-          .to(within_db_precision.of now)
+          .to(within_db_precision.of(now))
       end
     end
 
@@ -58,7 +58,7 @@ describe Paper do
       Timecop.freeze(1.day.from_now) do |time|
         expect { subject }
           .to change { draft.reload.updated_at }
-          .to(within_db_precision.of time)
+          .to(within_db_precision.of(time))
       end
     end
 
@@ -165,7 +165,7 @@ describe Paper do
         paper                   = FactoryGirl.create :paper, journal: journal
 
         expect(paper.doi).to be_truthy
-        expect(last_doi_initial.succ).to eq(journal.last_doi_issued) #is incremented in journal
+        expect(last_doi_initial.succ).to eq(journal.last_doi_issued) # is incremented in journal
         expect(journal.last_doi_issued).to eq(paper.doi.split('.').last)
       end
     end
@@ -256,7 +256,7 @@ describe Paper do
         paper.destroy
 
         expect(Phase.where(paper_id: paper.id).count).to be 0
-        expect(Task.count).to be 0
+        expect(Task.where(paper_id: paper.id).count).to be 0
       end
     end
   end
@@ -306,8 +306,7 @@ describe Paper do
         FactoryGirl.create(:paper,
           :with_short_title,
           journal: journal,
-          short_title: title
-        )
+          short_title: title)
       end
 
       it 'fetches short title from a NestedQuestionAnswer' do
@@ -1072,8 +1071,8 @@ describe Paper do
 
     it "assigns all author tasks to the paper's creator" do
       paper.save!
-      author_tasks = Task.where(old_role: 'author', phase_id: paper.phases.pluck(:id))
-      other_tasks = Task.where("old_role != 'author'", phase_id: paper.phases.pluck(:id))
+      author_tasks = Task.where(phase_id: paper.phases.pluck(:id))
+      other_tasks = Task.where(phase_id: paper.phases.pluck(:id))
       expect(author_tasks.all? { |t| t.assignee == creator }).to eq true
       expect(other_tasks.all? { |t| t.assignee != creator }).to eq true
     end
@@ -1471,7 +1470,8 @@ describe Paper do
           :with_short_title,
           journal: journal,
           short_title: '<b>my paper</b>',
-          title: '<b>my long paper</b>')
+          title: '<b>my long paper</b>'
+        )
       end
 
       context "with sanitization" do
@@ -1544,7 +1544,6 @@ describe Paper do
       allow(paper).to receive(:last_completed_decision).and_return(decision)
 
       expect(paper.latest_decision_rescinded?).to eq(false)
-
     end
 
     it "returns true when the last completed decision has been rescinded" do
@@ -1552,8 +1551,6 @@ describe Paper do
       allow(paper).to receive(:last_completed_decision).and_return(decision)
 
       expect(paper.latest_decision_rescinded?).to eq(true)
-
     end
   end
-
 end

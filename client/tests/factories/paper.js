@@ -5,7 +5,6 @@ FactoryGuy.define('paper', {
     title: '',
     shortTitle: '',
     publishingState: 'unsubmitted',
-    oldRoles: [],
     relatedAtDate: '2014-09-28T13:54:58.028Z',
     editable: true
   },
@@ -14,7 +13,6 @@ FactoryGuy.define('paper', {
     title: '',
     shortTitle: '',
     publishingState: 'unsubmitted',
-    oldRoles: [],
     relatedAtDate: '2014-09-28T13:54:58.028Z',
     editable: true,
     discussionTopics: [{
@@ -23,13 +21,5 @@ FactoryGuy.define('paper', {
       discussionReplies: [],
       discussionParticipants: []
     }]
-  },
-
-  traits: {
-
-    withRoles: {
-      oldRoles: ['participant']
-    }
-
   }
 });

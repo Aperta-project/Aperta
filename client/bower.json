@@ -12,6 +12,7 @@
     "jquery-mockjax": "2.0.1",
     "jquery-ui": "1.11.4",
     "jsdiff": "1.4.0",
+    "lscache": "1.0.5",
     "moment": "2.9.0",
     "pusher": "3.1.0",
     "qunit-notifications": "0.1.0",

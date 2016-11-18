@@ -42,3 +42,32 @@ test('Shows the submit button when the paper is ready to submit and the user is 
   );
 
 });
+
+const createTask = function (opts={}) {
+  return Ember.Object.create(Ember.merge({
+    isSidebarTask: true
+  }, opts));
+};
+
+test('rendering a list of tasks', function(assert) {
+  assert.expect(3);
+
+  const paper =  Ember.Object.create({
+    tasks: [
+      createTask({ type: 'bulbasaur', isSubmissionTask: true }),
+      createTask({ type: 'charmander', assignedToMe: true })
+    ]
+  });
+  this.set('paper', paper);
+
+  this.registry.register('service:can', FakeCanService);
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('submit', paper);
+
+  this.render(hbs`{{paper-sidebar paper=paper}}`);
+
+  assert.equal(this.$('.task-disclosure').length, 2);
+
+  assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-charmander`));
+  assert.ok(this.$('.task-disclosure').eq(1).hasClass(`task-type-bulbasaur`));
+});

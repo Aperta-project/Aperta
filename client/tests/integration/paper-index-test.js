@@ -32,8 +32,7 @@ module('Integration: PaperIndex', {
     TestHelper.mockFindAll('discussion-topic', 1);
     figureTaskId = 94139;
     records = paperWithTask('FigureTask', {
-      id: figureTaskId,
-      oldRole: "author"
+      id: figureTaskId
     });
     currentPaper = records[0], figureTask = records[1], journal = records[2], phase = records[3];
     nestedQuestion = Factory.createRecord('NestedQuestion', {
@@ -111,8 +110,7 @@ test('on paper.index as a participant on a task but not author of paper', functi
   records = paperWithTask('Task', {
     id: 1,
     type: 'AdHocTask',
-    title: 'ReviewMe',
-    oldRole: 'reviewer'
+    title: 'ReviewMe'
   });
   currentPaper = records[0], task = records[1], journal = records[2], litePaper = records[3], phase = records[4];
   paperPayload = Factory.createPayload('paper');
@@ -125,7 +123,7 @@ test('on paper.index as a participant on a task but not author of paper', functi
     }, JSON.stringify(paperResponse)
   ]);
   return visit('/papers/' + currentPaper.id).then(function() {
-    return assert.ok(!!find('#paper-assigned-tasks .task-disclosure-heading:contains("ReviewMe")').length);
+    return assert.ok(!!find('.task-disclosure-heading:contains("ReviewMe")').length);
   });
 });
 
@@ -134,8 +132,7 @@ test('on paper.index as a participant on a task and author of paper', function(a
   assert.expect(1);
   records = paperWithTask('ReviseTask', {
     id: 1,
-    qualifiedType: "TahiStandardTasks::ReviseTask",
-    oldRole: 'author'
+    qualifiedType: 'TahiStandardTasks::ReviseTask'
   });
   currentPaper = records[0], task = records[1], journal = records[2], litePaper = records[3], phase = records[4];
   paperPayload = Factory.createPayload('paper');
@@ -149,7 +146,8 @@ test('on paper.index as a participant on a task and author of paper', function(a
     }, JSON.stringify(paperResponse)
   ]);
   return visit('/papers/' + currentPaper.id).then(function() {
-    return assert.ok(!!find('#paper-assigned-tasks .card-content:contains("Revise Task")'), "Participant task is displayed in '#paper-assigned-tasks' for author");
+    return assert.ok(!!find('.card-content:contains("Revise Task")'),
+      'Participant task is displayed in the sidebar for author');
   });
 });
 

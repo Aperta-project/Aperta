@@ -57,7 +57,10 @@
   {{#split-pane-element class="manuscript-pane main-content-section"}}
     {{#rendered-manuscript paper=model}}
       {{#if model.processing}}
-        {{#progress-spinner-message visible=true size="large" align="middle"}}
+        {{#progress-spinner-message class="paper-index-progress-spinner"
+                                    visible=true
+                                    size="large"
+                                    align="middle"}}
           Loading . . .
         {{/progress-spinner-message}}
       {{else}}

@@ -8,7 +8,6 @@ feature "Upload Supporting Information", js: true do
       creator: author,
       task_params: {
         title: "Supporting Info",
-        old_role: "author",
         type: "TahiStandardTasks::SupportingInformationTask"
       }
   end
@@ -16,12 +15,6 @@ feature "Upload Supporting Information", js: true do
   before do
     login_as(author, scope: :user)
     visit "/"
-
-    allow(DownloadAttachmentWorker).to receive(:perform_async) do |supporting_info_id, url|
-      supporting_info = SupportingInformationFile.find(supporting_info_id)
-      supporting_info.save
-    end
-
     click_link paper.title
   end
 
@@ -63,5 +56,23 @@ feature "Upload Supporting Information", js: true do
     # delete file
     task.delete_file
     expect(task).to_not have_selector('.si-file')
+  end
+
+  scenario "Author is presented error" do
+    supporting_info_task = paper.tasks.first
+
+    # upload file
+    task = Page.view_task_overlay(paper, supporting_info_task)
+    task.attach_supporting_information
+    expect(task).to have_no_content('Loading')
+    expect(task).to have_no_content('Upload Complete!')
+    expect(task).to have_file 'yeti.jpg'
+
+    # edit file
+    task.edit_file_info
+
+    task.save_file_info
+
+    expect(task.error_message).to eq 'Please edit to add label, category, and optional title and legend'
   end
 end

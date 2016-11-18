@@ -7,7 +7,6 @@ describe TahiStandardTasks::PaperEditorTask do
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
-    it_behaves_like '<Task class>.restore_defaults update old_role to the default'
   end
 
   describe "#invitation_invited" do
@@ -15,8 +14,7 @@ describe TahiStandardTasks::PaperEditorTask do
       described_class.create!(
         paper: paper,
         phase: paper.phases.first,
-        title: "Invite Editor",
-        old_role: "admin"
+        title: "Invite Editor"
       )
     end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
@@ -40,8 +38,7 @@ describe TahiStandardTasks::PaperEditorTask do
       described_class.create!(
         paper: paper,
         phase: paper.phases.first,
-        title: "Invite Editor",
-        old_role: "admin"
+        title: "Invite Editor"
       )
     end
 
@@ -53,10 +50,10 @@ describe TahiStandardTasks::PaperEditorTask do
     end
   end
 
-  describe "PaperEditorTask.task_added_to_workflow" do
+  describe "PaperEditorTask.task_added_to_paper" do
     it "creates a queue for the task" do
       task = FactoryGirl.create(:paper_editor_task)
-      described_class.task_added_to_workflow(task)
+      task.task_added_to_paper(task)
       expect(task.invitation_queue).to be_present
     end
   end
@@ -72,8 +69,7 @@ describe TahiStandardTasks::PaperEditorTask do
       described_class.create!(
         paper: paper,
         phase: paper.phases.first,
-        title: 'Invite Editor',
-        old_role: 'admin'
+        title: 'Invite Editor'
       )
     end
 

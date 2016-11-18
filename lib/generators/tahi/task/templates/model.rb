@@ -3,7 +3,7 @@ module <%= @engine.camelcase %>
   # used by SOMEONE for SOMETHING. FILL ME OUT PLEASE.
   class <%= name %> < Task
     DEFAULT_TITLE = '<%= @task_title %>'
-    DEFAULT_ROLE = 'author'
+    DEFAULT_ROLE_HINT = 'author'
 
     # You should include MetadataTask if the task is required for
     # submission and should be visible to reviewers

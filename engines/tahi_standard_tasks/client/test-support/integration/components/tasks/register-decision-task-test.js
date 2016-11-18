@@ -83,7 +83,7 @@ moduleForComponent(
           input.trigger('keydown');
           input.val(choice);
           input.trigger('keyup');
-          $('.select2-result-selectable').first().trigger('mouseup');
+          $('.select2-result-selectable').trigger('mouseup');
         });
       };
 

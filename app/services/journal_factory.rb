@@ -50,7 +50,9 @@ class JournalFactory
       # Creator(s) only get access to the submission task types
       task_klasses = Task.submission_task_types
       task_klasses << PlosBioTechCheck::ChangesForAuthorTask
+      task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -65,6 +67,7 @@ class JournalFactory
       # Collaborators can view and edit any metadata card except billing
       task_klasses = Task.submission_task_types
       task_klasses -= [PlosBilling::BillingTask]
+      task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -102,6 +105,7 @@ class JournalFactory
       ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -144,10 +148,12 @@ class JournalFactory
         TahiStandardTasks::CoverLetterTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
+      task_klasses << AdHocForReviewersTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name)
         role.ensure_permission_exists(:view_participants, applies_to: klass.name)
       end
+      role.ensure_permission_exists(:edit, applies_to: AdHocForReviewersTask.name, states: Paper::REVIEWABLE_STATES)
     end
 
     # This role exists to give a reviewer the ability to edit their reviewer
@@ -190,6 +196,7 @@ class JournalFactory
       # Tasks
       role.ensure_permission_exists(:add_email_participants, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:manage, applies_to: Task)
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -234,6 +241,7 @@ class JournalFactory
       # Tasks
       role.ensure_permission_exists(:add_email_participants, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:manage, applies_to: Task)
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -278,6 +286,7 @@ class JournalFactory
       ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -337,6 +346,7 @@ class JournalFactory
       # Tasks
       role.ensure_permission_exists(:add_email_participants, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:manage, applies_to: Task)
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -381,6 +391,7 @@ class JournalFactory
       # Tasks
       role.ensure_permission_exists(:add_email_participants, applies_to: Task)
       role.ensure_permission_exists(:edit, applies_to: Task)
+      role.ensure_permission_exists(:manage, applies_to: Task)
       role.ensure_permission_exists(:manage_invitations, applies_to: Task)
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
@@ -424,6 +435,11 @@ class JournalFactory
       ]
       task_klasses << TahiStandardTasks::ReviewerReportTask
       task_klasses.each do |klass|
+        role.ensure_permission_exists(:view, applies_to: klass)
+      end
+
+      AdHocForEditorsTask.tap do |klass|
+        role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
       end
     end

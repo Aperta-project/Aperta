@@ -142,14 +142,6 @@ class PaperPage < Page
     find('#paper-title')
   end
 
-  def cards
-    {
-      metadata: all('#paper-submission-tasks .card-content').map(&:text),
-      assigned: all('#paper-assigned-tasks .card-content').map(&:text),
-      editor: all('#paper-editor-tasks .card-content').map(&:text)
-    }
-  end
-
   def paper_type
     find('#paper_paper_type').find("option[value='#{select.value}']")
   end

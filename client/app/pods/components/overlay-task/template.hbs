@@ -2,13 +2,13 @@
   {{#ember-wormhole to=to}}
     {{#overlay-animate outAnimationComplete=(action outAnimationComplete)
                        as |animateOut|}}
-      <div class="overlay overlay--card {{task-component-name task.type}}-overlay">
+      <div class="overlay overlay--card {{task.componentName}}-overlay">
         <div class="overlay-container">
           {{overlay-task-header task=task animateOut=animateOut}}
           <div class="overlay-body">
             <h1 class="overlay-body-title">{{{task.title}}}</h1>
             {{#task-load task=task}}
-              {{component (task-component-name task.type) task=task}}
+              {{component task.componentName task=task}}
 
               <div class="overlay-discussion-board">
                 <h2>Discussion</h2>

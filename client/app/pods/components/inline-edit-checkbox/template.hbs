@@ -1,6 +1,6 @@
 <div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}}">
   <label>
-    {{check-box checked=checked action="saveChanges"}}
+    {{check-box checked=checked action=(action attrs.save) disabled=(if canEdit false true)}}
     {{{bodyPart.value}}}
   </label>
 </div>
@@ -8,6 +8,6 @@
 <div class="inline-edit-form {{if editing "editing"}}">
   <div class="two-element-form">
     {{content-editable value=bodyPart.value class="editable" tagName='label'}}
-    <span class="item-remove" {{action "deleteItem"}}></span>
+    <span class="item-remove" {{action attrs.delete}}></span>
   </div>
 </div>

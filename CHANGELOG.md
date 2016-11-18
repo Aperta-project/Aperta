@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.30.0] - {2016-11-18}
+### Added
 - Early Article Posting cards have been added to workflows, to allow authors to opt into
   allowing manuscripts to be published before all proofreading and copyediting is done.
 - Invitations can now be reordered through drag and drop. This also enforces

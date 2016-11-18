@@ -63,15 +63,9 @@ moduleForComponent(
 
       // mockCreate('nested-question-answer'); does not work, so we cannot use factory guy here.
       // TODO: revisit when factory guy update
-      const server = setupMockServer();
-      server.respondWith('POST', `/api/nested_questions/3/answers`, [
-        204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
-      server.respondWith('PUT', `/api/nested_questions/3/answers`, [
-        204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
-      server.respondWith('PUT', `/api/nested_questions/3`, [
-        204, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
-      server.respondWith('PUT', /\/api\/decisions\/[0-9]+/, [
-        200, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
+      $.mockjax({url: '/api/nested_questions/3/answers', type: 'PUT', status: 204, responseText: '[]'});
+      $.mockjax({url: '/api/nested_questions/3/answers', type: 'POST', status: 204, responseText: '[]'});
+      $.mockjax({url: /\/api\/decisions\/[0-9]+/, type: 'PUT', status: 204, responseText: '[]'});
 
       this.selectDecision = function(decision) {
         this.$(`label:contains('${decision}') input[type='radio']`).first().click();

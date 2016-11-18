@@ -99,7 +99,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Paper Sidebar and associated items
     self._paper_sidebar = (By.CLASS_NAME, 'paper-sidebar')
     self._paper_sidebar_info = (By.CLASS_NAME, 'paper-sidebar-info')
-    self._paper_submission_tasks = (By.ID, 'paper-submission-tasks')
     self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
     self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
     # Sidebar Info Items
@@ -145,7 +144,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       testing of that page.
     :return: void function
     """
-    self._wait_for_element(self._get(self._paper_submission_tasks))
+    self._wait_for_element(self._get(self._paper_sidebar))
 
   def page_ready_post_create(self):
     """
@@ -155,7 +154,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     self.check_for_flash_success(timeout=120)
     self.close_flash_message()
-    self._wait_for_element(self._get(self._paper_submission_tasks))
+    self._wait_for_element(self._get(self._paper_sidebar))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
     """

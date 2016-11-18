@@ -5738,6 +5738,8 @@ journals:
   - doi_journal_prefix
   - last_doi_issued
   - staff_email
+  - reviewer_email_bcc
+  - editor_email_bcc
   records: 
   - - '1'
     - PLOS Yeti
@@ -5752,6 +5754,8 @@ journals:
     - journal.yetijour
     - '1000002'
     - plos-yeti-staff@example.com
+    - 
+    - 
 
 ---
 letter_templates:

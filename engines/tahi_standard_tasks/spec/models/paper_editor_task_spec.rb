@@ -50,10 +50,10 @@ describe TahiStandardTasks::PaperEditorTask do
     end
   end
 
-  describe "PaperEditorTask.task_added_to_workflow" do
+  describe "PaperEditorTask.task_added_to_paper" do
     it "creates a queue for the task" do
       task = FactoryGirl.create(:paper_editor_task)
-      described_class.task_added_to_workflow(task)
+      task.task_added_to_paper(task)
       expect(task.invitation_queue).to be_present
     end
   end

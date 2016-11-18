@@ -12,6 +12,7 @@ $progress-spinner-size-mini:   18px;
 
 
 .progress-spinner {
+  flex-shrink: 0;
   display: none;
   border-radius: 100%;
   @include animation(rotate 1.25s linear infinite);

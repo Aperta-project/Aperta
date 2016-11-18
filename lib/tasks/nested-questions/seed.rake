@@ -7,6 +7,7 @@ namespace 'nested-questions' do
     'nested-questions:seed:cover-letter-task',
     'nested-questions:seed:data-availability-task',
     'nested-questions:seed:ethics-task',
+    'nested-questions:seed:early-posting-task',
     'nested-questions:seed:figure-task',
     'nested-questions:seed:financial-disclosure-task',
     'nested-questions:seed:funder',

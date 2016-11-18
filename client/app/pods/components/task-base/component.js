@@ -20,6 +20,8 @@ export default Component.extend(ValidationErrorsMixin, {
   ],
   dataLoading: true,
 
+  completedErrorText: 'Please fix all errors',
+
   init() {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
@@ -55,7 +57,7 @@ export default Component.extend(ValidationErrorsMixin, {
 
     if(this.validationErrorsPresent()) {
       this.set('task.completed', false);
-      this.set('validationErrors.completed', 'Please fix all errors');
+      this.set('validationErrors.completed', this.get('completedErrorText'));
       return;
     }
 

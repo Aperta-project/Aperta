@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116041152) do
+ActiveRecord::Schema.define(version: 20161118035507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20161116041152) do
     t.string   "doi_journal_prefix"
     t.string   "last_doi_issued",      default: "0"
     t.string   "staff_email"
+    t.string   "reviewer_email_bcc"
+    t.string   "editor_email_bcc"
   end
 
   create_table "letter_templates", force: :cascade do |t|
@@ -710,6 +712,7 @@ ActiveRecord::Schema.define(version: 20161116041152) do
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             default: "", null: false

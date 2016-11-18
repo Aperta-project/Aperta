@@ -18,7 +18,7 @@ module TahiStandardTasks
       mail(
         to: @invitation.email,
         subject: "You've been invited as an editor for the manuscript, \"#{@paper.display_title}\"",
-        bcc: 'apertachasing@plos.org'
+        bcc: @journal.editor_email_bcc
       )
     end
   end

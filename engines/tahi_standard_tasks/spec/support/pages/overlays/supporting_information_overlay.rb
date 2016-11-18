@@ -4,9 +4,11 @@ class SupportingInfoOverlay < CardOverlay
   end
 
   def attach_supporting_information
-    session.execute_script "$('#file_attachment').css('position', 'relative')"
-    attach_file('file_attachment', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
-    session.execute_script "$('#file_attachment').css('position', 'absolute')"
+    upload_file(
+      element_id: 'file_attachment',
+      file_name: 'yeti.jpg',
+      sentinel: -> { SupportingInformationFile.count }
+    )
   end
 
   def edit_file_info
@@ -30,7 +32,7 @@ class SupportingInfoOverlay < CardOverlay
   end
 
   def file_label_input=(new_label)
-    label = find('.si-file-label-input')
+    label = find('.si-file-label-field')
     label.set new_label
   end
 
@@ -46,6 +48,10 @@ class SupportingInfoOverlay < CardOverlay
   def toggle_for_publication
     checkbox = find('.si-file-publishable-checkbox')
     checkbox.click
+  end
+
+  def error_message
+    find('.si-file-actions .error-message').text
   end
 
   def file_title

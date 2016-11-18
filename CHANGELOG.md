@@ -4,6 +4,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [{version}] - {release_date}
 ### Added
+- Early Article Posting cards have been added to workflows, to allow authors to opt into
+  allowing manuscripts to be published before all proofreading and copyediting is done.
 - Invitations can now be reordered through drag and drop. This also enforces
   rules automatically for which invitations can be reordered and into which groups
 - A user can connect their ORCID account with their author profile via the Authors cards on a manuscript

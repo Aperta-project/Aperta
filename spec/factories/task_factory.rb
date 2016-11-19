@@ -1,4 +1,12 @@
 FactoryGirl.define do
+  # This trait is building a task but using FactoryGirl stubs for associations
+  # it normally depends on. This reduces the time it takes to construct the
+  # task.
+  trait :with_stubbed_associations do
+    paper { FactoryGirl.build_stubbed(:paper) }
+    phase { FactoryGirl.build_stubbed(:phase) }
+  end
+
   factory :ad_hoc_task do
     title "Do something awesome"
     phase

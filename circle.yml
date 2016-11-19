@@ -16,7 +16,7 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "~/.rvm/gems/ruby-2.2.4@tahi"
+    - "/opt/circleci/.rvm/gems/ruby-2.2.4@tahi"
     - "client/node_modules"
     - "client/bower_components"
 

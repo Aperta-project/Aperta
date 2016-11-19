@@ -23,7 +23,8 @@ describe Task do
 
   describe '#add_participant' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
     let(:user) { FactoryGirl.create :user }
 
     it 'adds the user as a participant on the task' do
@@ -63,7 +64,8 @@ describe Task do
 
   describe '#participations' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
 
     let!(:participant_assignment) do
       Assignment.create!(
@@ -89,7 +91,8 @@ describe Task do
 
   describe '#participants' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
 
     let!(:participant_assignment) do
       Assignment.create!(

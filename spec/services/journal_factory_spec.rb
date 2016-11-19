@@ -2,8 +2,6 @@ require 'rails_helper'
 
 describe JournalFactory, flaky: true do
   describe '.create' do
-    include AuthorizationSpecHelper
-
     let(:permissions_on_journal) do
       Permission.joins(:states).where(
         applies_to: 'Journal',

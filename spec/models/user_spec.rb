@@ -19,7 +19,7 @@ describe User do
 
   describe '#created_papers_for_journal' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+    let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
     let!(:other_user) { FactoryGirl.create(:user) }
 
     let!(:created_paper_1) do
@@ -92,9 +92,10 @@ describe User do
 
   describe '#tasks' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
-    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
+    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations, paper: paper) }
+    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations, paper: paper) }
     let!(:other_role) { FactoryGirl.create(:role) }
 
     before do

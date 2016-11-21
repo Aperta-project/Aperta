@@ -1,7 +1,7 @@
 <%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
 <br><br>
 
-<p>Hello <%= @admin.first_name %>,</p>
+<p>Hello,</p>
 
 <p class="paper-info">
   <%= @editor.full_name %> has accepted their editor invitation for "<%= @journal.name %>: <%= @paper.display_title(sanitized: false) %>"

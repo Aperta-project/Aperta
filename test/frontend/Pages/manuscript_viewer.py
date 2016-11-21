@@ -144,7 +144,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       testing of that page.
     :return: void function
     """
-    self._wait_for_element(self._get(self._paper_sidebar))
+    self._wait_for_element(self._get(self._upload_manu_task))
 
   def page_ready_post_create(self):
     """
@@ -154,7 +154,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     self.check_for_flash_success(timeout=120)
     self.close_flash_message()
-    self._wait_for_element(self._get(self._paper_sidebar))
+    self._wait_for_element(self._get(self._upload_manu_task))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
     """

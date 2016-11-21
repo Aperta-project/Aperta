@@ -136,6 +136,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                                              'div.gradual-engagement-presubmission-messaging')
     self._status_info_ready_to_submit = (By.CSS_SELECTOR, 'div.ready-to-submit')
     self._title = (By.ID, 'control-bar-paper-title')
+    self._generic_task_item = (By.CSS_SELECTOR, 'div.paper-sidebar > div.ember-view')
 
   # POM Actions
   def page_ready(self):
@@ -144,7 +145,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       testing of that page.
     :return: void function
     """
-    self._wait_for_element(self._get(self._upload_manu_task))
+    self._wait_for_element(self._get(self._generic_task_item))
 
   def page_ready_post_create(self):
     """
@@ -154,7 +155,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     self.check_for_flash_success(timeout=120)
     self.close_flash_message()
-    self._wait_for_element(self._get(self._upload_manu_task))
+    self._wait_for_element(self._get(self._generic_task_item))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
     """

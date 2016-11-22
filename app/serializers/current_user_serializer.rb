@@ -2,7 +2,7 @@ class CurrentUserSerializer < ActiveModel::Serializer
   include SideloadableSerializerHelper
 
   has_many :affiliations, include: true, embed: :ids
-  has_one  :orcid_account, embed: :id
+  has_one  :orcid_account, include: true, embed: :id
   attributes :id,
     :full_name,
     :first_name,

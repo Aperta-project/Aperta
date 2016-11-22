@@ -253,20 +253,19 @@ class WorkflowPage(AuthenticatedPage):
     assert author_cards[13].text == u'Upload Manuscript', author_cards[13].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
     assert staff_cards[0].text == u'Ad-hoc', staff_cards[0].text
-    assert staff_cards[1].text == u'Assign Admin', staff_cards[1].text
-    assert staff_cards[2].text == u'Assign Team', staff_cards[2].text
-    assert staff_cards[3].text == u'Editor Discussion', staff_cards[3].text
-    assert staff_cards[4].text == u'Final Tech Check', staff_cards[4].text
-    assert staff_cards[5].text == u'Initial Decision', staff_cards[5].text
-    assert staff_cards[6].text == u'Initial Tech Check', staff_cards[6].text
-    assert staff_cards[7].text == u'Invite Academic Editor', staff_cards[7].text
-    assert staff_cards[8].text == u'Invite Reviewers', staff_cards[8].text
-    assert staff_cards[9].text == u'Production Metadata', staff_cards[9].text
-    assert staff_cards[10].text == u'Register Decision', staff_cards[10].text
-    assert staff_cards[11].text == u'Related Articles', staff_cards[11].text
-    assert staff_cards[12].text == u'Revision Tech Check', staff_cards[12].text
-    assert staff_cards[13].text == u'Send to Apex', staff_cards[13].text
-    assert staff_cards[14].text == u'Title And Abstract', staff_cards[14].text
+    assert staff_cards[1].text == u'Assign Team', staff_cards[2].text
+    assert staff_cards[2].text == u'Editor Discussion', staff_cards[3].text
+    assert staff_cards[3].text == u'Final Tech Check', staff_cards[4].text
+    assert staff_cards[4].text == u'Initial Decision', staff_cards[5].text
+    assert staff_cards[5].text == u'Initial Tech Check', staff_cards[6].text
+    assert staff_cards[6].text == u'Invite Academic Editor', staff_cards[7].text
+    assert staff_cards[7].text == u'Invite Reviewers', staff_cards[8].text
+    assert staff_cards[8].text == u'Production Metadata', staff_cards[9].text
+    assert staff_cards[9].text == u'Register Decision', staff_cards[10].text
+    assert staff_cards[10].text == u'Related Articles', staff_cards[11].text
+    assert staff_cards[11].text == u'Revision Tech Check', staff_cards[12].text
+    assert staff_cards[12].text == u'Send to Apex', staff_cards[13].text
+    assert staff_cards[13].text == u'Title And Abstract', staff_cards[14].text
     author_cards_text = [x.text for x in author_cards]
     assert u'Changes For Author' not in author_cards_text, author_cards_text
     assert u'Revise Manuscript' not in author_cards_text, author_cards_text

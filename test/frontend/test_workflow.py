@@ -100,7 +100,8 @@ class ApertaWorkflowTest(CommonTest):
     current_cards = workflow_page.count_cards_first_column()
     # Check that there are two more card after adding a card
     # APERTA-5513 AC 3
-    assert start_cards + 2 == current_cards
+    assert start_cards + 2 == current_cards, ('{0} + 2 is not equal to {1}'.format(
+        start_cards, current_cards))
     # NOTE: Missing deleting a new card
     return self
 

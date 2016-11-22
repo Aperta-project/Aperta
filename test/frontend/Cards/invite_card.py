@@ -72,7 +72,6 @@ class InviteCard(BaseCard):
       self.check_for_flash_error()
     except NoSuchElementException:
       logging.error('Error fired on send invite.')
-    self._wait_for_element(self._get(self._rescind_button))
     self.click_close_button()
 
   def validate_invite(self, invitee, title, creator, ms_id):

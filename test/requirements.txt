@@ -10,3 +10,4 @@ PyPDF2==1.26.0
 requests==2.10.0
 selenium==2.53.6
 teamcity-messages==1.18
+python-dateutil==2.5.3

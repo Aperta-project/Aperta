@@ -69,7 +69,6 @@ class DashboardPage(AuthenticatedPage):
 
     self._dashboard_paper_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._dashboard_info_text = (By.CLASS_NAME, 'dashboard-info-text')
-
     # View Invitations Modal Static Locators
     self._view_invites_title = (By.CLASS_NAME, 'overlay-header-title')
     self._view_invites_invite_listing = (By.CSS_SELECTOR, 'div.pending-invitation')

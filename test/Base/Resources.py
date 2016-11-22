@@ -58,6 +58,7 @@ oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
 
 # Accounts for CAS permissions scheme
+<<<<<<< HEAD
 creator_login1 = {'user'               : 'aauthor1',
                   'name'               : 'atest author1',
                   'email'              : 'sealresq+1000@gmail.com',
@@ -478,6 +479,7 @@ billing_staff_login = {'user'               : 'abillstaff',
                        'affiliation-from'   : '',
                        'affiliation-to'     : '',
                        }
+
 # anyone can be a discussion_participant
 # everyone has a user role for their own profile page
 
@@ -760,6 +762,30 @@ users = [creator_login1,
          creator_login24,
          creator_login25,
          ]
+
+# This list is a, hopefully temporary, need based on bugs in the discussion forums being unable
+#   to handled non-ascii usernames in @mentions, and in floating links to discussions,
+ascii_only_users = [creator_login1,
+                    creator_login2,
+                    creator_login3,
+                    creator_login4,
+                    creator_login5,
+                    creator_login6,
+                    creator_login7,
+                    creator_login8,
+                    creator_login9,
+                    creator_login11,
+                    creator_login13,
+                    creator_login14,
+                    creator_login15,
+                    creator_login16,
+                    creator_login17,
+                    creator_login18,
+                    creator_login19,
+                    creator_login20,
+                    creator_login21,
+                    creator_login22,
+                    ]
 
 editorial_users = [internal_editor_login,
                    staff_admin_login,

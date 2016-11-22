@@ -4,7 +4,7 @@ import ENV from 'tahi/config/environment';
 
 export default Ember.Component.extend({
   paper: null, // passed-in
-  classNames: ['manuscript'],
+  classNames: [],
 
   didRender() {
     this._super(...arguments);

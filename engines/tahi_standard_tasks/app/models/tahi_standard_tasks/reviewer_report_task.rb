@@ -31,7 +31,7 @@ module TahiStandardTasks
     def find_or_build_answer_for(nested_question:, **_kwargs)
       super(
         nested_question: nested_question,
-        decision: decision
+        decision: paper.draft_decision
       )
     end
 
@@ -62,16 +62,6 @@ module TahiStandardTasks
         completed: false,
         body: body.except("submitted")
       )
-    end
-
-    # NOTE As of 8 Nov 2016, I do not think this is necessary. Ideally, on the
-    # client side the reviewer report task should just find the draftDecision.
-    # However, it seems to be necessary in order to update the decisions when
-    # the task is loaded - at least the Reviewer Report Task feature spec fails
-    # without it. So I am leaving it here for now, but please consider removing
-    # it.
-    def decision
-      paper.draft_decision
     end
 
     def submitted?

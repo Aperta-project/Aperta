@@ -251,6 +251,22 @@ export default Mixin.create({
     return errorFound;
   },
 
+  currentValidationErrors() {
+    const errors = this.get('validationErrors');
+
+    return _.compact(
+      _.map(_.keys(errors), key => {
+        if(isEmpty(errors[key]) || Object.keys(errors[key]).length === 0) {
+          return false;
+        }
+
+        let hash = {};
+        hash[key] = errors[key];
+        return hash;
+      })
+    );
+  },
+
   /**
     @method validationErrorsPresentForKey
     @return {Boolean}

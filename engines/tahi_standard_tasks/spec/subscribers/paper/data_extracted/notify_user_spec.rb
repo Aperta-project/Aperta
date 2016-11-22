@@ -5,7 +5,7 @@ describe Paper::DataExtracted::NotifyUser do
 
   let(:pusher_channel) { mock_delayed_class(TahiPusher::Channel) }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :with_creator)
+    FactoryGirl.create(:paper, :with_creator)
   end
   let(:upload_task) do
     FactoryGirl.create(:upload_manuscript_task, paper: paper)

@@ -19,7 +19,8 @@
     <script type="text/javascript">
       window.eventStreamConfig = <%= TahiPusher::Config.to_json.html_safe %>;
       <% if current_user %>
-          window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user, :scope_name => :current_user, :scope => current_user).to_json.html_safe %>;
+        <%# :scope and :scope_name give OrcidAccountSerializer a current_user  %>
+        window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user, :scope_name => :current_user, :scope => current_user).to_json.html_safe %>;
       <% end %>
     </script>
 

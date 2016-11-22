@@ -103,7 +103,7 @@ export default Component.extend({
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
     this.get('author').save().then(() => {
-      this.attrs.saveSuccess();
+      this.get('saveSuccess')();
     });
   },
 
@@ -118,9 +118,16 @@ export default Component.extend({
         }
       });
 
-      this.attrs.saveSuccess();
+      this.get('saveSuccess')();
     });
   },
+
+  validateOrcid: Ember.observer('author.orcidAccount.identifier', function() {
+    const ident = this.get('author.orcidAccount.identifier');
+    if(ident) {
+      this.send('validateField', 'orcidIdentifier', ident);
+    }
+  }),
 
   actions: {
     cancelEdit() {
@@ -174,8 +181,8 @@ export default Component.extend({
     },
 
     validateField(key, value) {
-      if(this.attrs.validateField) {
-        this.attrs.validateField(key, value);
+      if(this.get('validateField')) {
+        this.get('validateField')(key, value);
       }
     }
   }

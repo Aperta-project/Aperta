@@ -3,6 +3,10 @@ import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 
 const { attr, belongsTo } = DS;
+const {
+  computed,
+  computed: { alias }
+} = Ember;
 
 export const contributionIdents = [
   'author--contributions--conceptualization',
@@ -25,7 +29,8 @@ export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
   user: belongsTo('user'),
 
-  orcidAccount: Ember.computed.alias('user.orcidAccount'),
+  orcidAccount: alias('user.orcidAccount'),
+  orcidIdentifier: alias('user.orcidAccount.identifier'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),
@@ -58,6 +63,7 @@ export default NestedQuestionOwner.extend({
     'authorInitial': ['presence'],
     'email': ['presence', 'email'],
     'affiliation': ['presence'],
+    'orcidIdentifier': ['presence'],
     'government': [{
       type: 'presence',
       message: 'A selection must be made',
@@ -82,7 +88,7 @@ export default NestedQuestionOwner.extend({
     }]
   },
 
-  displayName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
+  displayName: computed('firstName', 'middleInitial', 'lastName', function() {
     return [
       this.get('firstName'),
       this.get('middleInitial'),

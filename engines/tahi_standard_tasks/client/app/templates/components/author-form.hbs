@@ -132,7 +132,10 @@
     {{#if author.orcidAccount}}
       <div class="flex-group">
         <div class="flex-element">
-            {{orcid-connect user=author.user journal=author.paper.journal canRemoveOrcid=canRemoveOrcid}}
+           {{orcid-connect user=author.user
+                           journal=author.paper.journal
+                           canRemoveOrcid=canRemoveOrcid
+                           errors=validationErrors.orcidIdentifier}}
         </div>
       </div>
     {{/if}}

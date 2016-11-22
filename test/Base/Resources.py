@@ -58,7 +58,6 @@ oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
 
 # Accounts for CAS permissions scheme
-
 creator_login1 = {'user'               : 'aauthor1',
                   'name'               : 'atest author1',
                   'email'              : 'sealresq+1000@gmail.com',

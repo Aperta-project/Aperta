@@ -5,7 +5,11 @@
     future to grant Aperta access again without removing their ORCID ID --}}
     <h1><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/> ORCID ID: </h1>
     <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
-    <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
+    {{#if canRemoveOrcid}}
+      <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
+    {{else}}
+      Please contact PLOS to remove this ORCID account.
+    {{/if}}
     <div class="orcid-access-expired">
       <a href="{{orcidAccount.oauthAuthorizeUrl}}"
          class="button-secondary button--green"
@@ -19,7 +23,11 @@
     <div class="orcid-linked">
       <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>
       ORCID ID: <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
-      <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
+      {{#if canRemoveOrcid}}
+        <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
+      {{else}}
+        Please contact PLOS to remove this ORCID account.
+      {{/if}}
     </div>
 
   {{else}}

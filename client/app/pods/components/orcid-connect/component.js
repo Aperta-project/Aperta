@@ -5,6 +5,9 @@ export default Ember.Component.extend({
   user: null,         // pass one
   orcidAccount: null, // of these in
   store: Ember.inject.service(),
+  can: Ember.inject.service('can'),
+  canRemoveOrcid: null,
+  journals: null,
 
    // function to use for asking the user to confirm an action
   confirm: window.confirm,
@@ -17,6 +20,23 @@ export default Ember.Component.extend({
         this.set('orcidAccount', account);
       });
     }
+    this.get('store').findAll('journal').then( (journals) => {
+      this.set('journals', journals.toArray());
+      this.setCanRemoveOrcid();
+    });
+  },
+
+  setCanRemoveOrcid() {
+    var that = this;
+    this.get('journals').forEach(function(journal) {
+      that.get('can').can('remove_orcid', journal).then( (value) =>
+        Ember.run(function() {
+          if (value) {
+            that.set('canRemoveOrcid', true);
+          }
+        })
+      );
+    });
   },
 
   willDestroyElement() {
@@ -36,10 +56,8 @@ export default Ember.Component.extend({
 
   // Returns true when the user has an orcidAccount and the given user is
   // the same as the currently logged in user. Otherwise, return false.
-  orcidConnectEnabled: Ember.computed('orcidAccount', 'user.id', 'currentUser.id', function(){
-    const userId = this.get('user.id'),
-      currentUserId = this.get('currentUser.id');
-    return this.get('orcidAccount') && Ember.isEqual(userId, currentUserId);
+  orcidConnectEnabled: Ember.computed('orcidAccount', function(){
+    return this.get('orcidAccount');
   }),
 
   reloadIfNoResponse(){

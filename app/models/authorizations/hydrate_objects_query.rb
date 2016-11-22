@@ -71,9 +71,14 @@ module Authorizations
 
     # This #to_sql will run the query as an unprepared_statement since by default
     # Rails and Postgres will run all queries as prepared statements. The large queries
-    # associated with R&P may adversely memory usage on the database server if run as
+    # associated with R&P may adversely affect memory usage on the database server if run as
     # a prepared statement. Assuming that many of these R&P calls will be relatively unique
-    # per user, we are trading off increased available memory for running an unprepared statement here.
+    # per user, we are trading off increased available memory for not much benefit if we use
+    # prepared statements so we are running this as an unprepared statement here.
+    # Issue links: https://github.com/rails/rails/issues/14645
+    #              https://github.com/rails/rails/issues/21992
+    # Potential fix in Rails 5:
+    #              https://github.com/rails/rails/commit/cbcdecd2c55fca9613722779231de2d8dd67ad02
     def to_sql
       @klass.connection.unprepared_statement do
         to_arel.to_sql

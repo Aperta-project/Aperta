@@ -14,7 +14,6 @@ on_worker_boot do
   ActiveSupport.on_load(:active_record) do
     ar_config = ActiveRecord::Base.configurations[Rails.env]
     ar_config['pool'] = thread_count
-    ar_config['prepared_statements'] = false
     ActiveRecord::Base.establish_connection(ar_config)
   end
 

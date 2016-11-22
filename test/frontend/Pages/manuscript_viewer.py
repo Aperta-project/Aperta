@@ -10,13 +10,12 @@ import random
 import time
 from datetime import datetime
 
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import affiliation, users, staff_admin_login, pub_svcs_login, \
-    internal_editor_login, super_admin_login
+from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
+    super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask

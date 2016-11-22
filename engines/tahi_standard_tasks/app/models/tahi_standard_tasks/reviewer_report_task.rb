@@ -8,12 +8,6 @@ module TahiStandardTasks
     DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
-    # NOTE As of 8 Nov 2016, I do not think this is necessary. However, it
-    # seems to be necessary in order to update the decisions when the task is
-    # loaded - at least the Reviewer Report Task feature spec fails without it.
-    # So I am leaving it here for now, but please consider removing it.
-    has_many :decisions, -> { uniq }, through: :paper
-
     # Overrides Task#restore_defaults to not restore +title+. This
     # will never update +title+ as that is dynamically determined. If you
     # need to change the reviewer report title write a data migration.

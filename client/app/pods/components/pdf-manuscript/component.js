@@ -12,12 +12,16 @@ export default Ember.Component.extend({
   },
 
   loadPdfJs: function() {
-    LazyLoader.loadScripts([ENV.pdfjs.url]).then(() => {
+    LazyLoader.loadScripts(['/assets/pdfviewer.js']).then(() => {
+      console.log('PDFJS-viewer loaded');
+      PDFJS.workerSrc = '/assets/pdfjsviewer-worker.js';
+      var download = this.get('paper.id') + '/download.pdf';
+      PDFJS.webViewerLoad(download);
     });
   },
 
   refreshPdf:  function() {
     if(this.get('isDestroying')) { return; }
-    if (!window.PDFJS) { this.loadPdfJs(); return; }
+    if (!window.PDFJS) { this.loadPdfJs(); }
   }
 });

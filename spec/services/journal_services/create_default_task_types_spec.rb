@@ -7,17 +7,17 @@ describe JournalServices::CreateDefaultTaskTypes do
 
   it 'Creates missing task types for an existing journal' do
     journal.journal_task_types.first.destroy
-    expect {
+    expect do
       JournalServices::CreateDefaultTaskTypes.call(journal)
-    }.to change { journal.reload.journal_task_types.count }.by 1
+    end.to change { journal.reload.journal_task_types.count }.by 1
   end
 
   it 'Updates title on an existing journal' do
-    jtt = journal.journal_task_types.find_by(title: 'Ad-hoc')
+    jtt = journal.journal_task_types.find_by(title: 'Ad-hoc for Staff Only')
     jtt.update(title: 'Old Title') # Simulate old values
 
     JournalServices::CreateDefaultTaskTypes.call(journal)
 
-    expect(jtt.reload.title).to eq('Ad-hoc')
+    expect(jtt.reload.title).to eq('Ad-hoc for Staff Only')
   end
 end

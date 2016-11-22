@@ -3,9 +3,17 @@ require 'rails_helper'
 describe DiscussionParticipantsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:another_user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let!(:topic_a) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:participation) { topic_a.discussion_participants.create!(user: user) }
+
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_creator_role,
+      :with_discussion_participant_role
+    )
+  end
 
   let(:json) { res_body }
 

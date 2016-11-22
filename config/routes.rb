@@ -109,7 +109,6 @@ Tahi::Application.routes.draw do
         resources :eligible_users, only: [:index], controller: 'paper_role_eligible_users'
       end
       resource :editor, only: :destroy
-      resource :manuscript_manager, only: :show
       resources :figures, only: [:create, :index]
       resources :tables, only: :create
       resources :bibitems, only: :create

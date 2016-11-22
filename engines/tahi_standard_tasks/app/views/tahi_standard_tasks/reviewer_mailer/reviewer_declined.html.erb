@@ -1,47 +1,22 @@
-<div class="container">
-  <div class="greeting">
-    <h3 class="user-name">
-      Hello <%= @assigner.first_name %>
-    </h3>
-    <p class="message">
-      <%= @reviewer.full_name %> has declined your invitation
-    </p>
-  </div>
-  <hr>
-  <div class='decline-feedback'>
-    <p class="decline_reason">
-      <strong>Reason: </strong><%= simple_format(@invitation.decline_reason) %>
-    </p>
-    <p class="reviewer_suggestions">
-      <strong>Reviewer Suggestions: </strong><%= simple_format(@invitation.reviewer_suggestions) %>
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @paper.journal.logo_url %>
-        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @paper.journal.name %>
-        </div>
-      <% end %>
-    </div>
-    <div class="paper-name">
-      <%= @paper.display_title(sanitized: false) %>
-    </div>
-    <div class="paper-abstract">
-      <p>
-        <%= @reviewer.full_name %> has declined your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
-      </p>
-      <p>
-        <a href="<%= client_paper_task_url(@paper, @invite_reviewer_task) %>">View your Invitation</a>
-      </p>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-    Sincerely,<br>
-    <%= @journal.name %> Team
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<p>Hello <%= @assigner.first_name %></p>
+
+<p>
+  <%= @reviewer.full_name %> has declined your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
+</p>
+
+<p class="decline_reason">
+  <strong>Reason:</strong> <%= simple_format @invitation.decline_reason %>
+</p>
+<p class="reviewer_suggestions">
+  <strong>Reviewer Suggestions:</strong> <%= simple_format @invitation.reviewer_suggestions %>
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_task_url(@paper, @invite_reviewer_task),
+  text: 'View Your Invitation'
+} %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

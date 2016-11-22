@@ -7,7 +7,14 @@ describe CollaborationsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:collaborator) { FactoryGirl.create(:user) }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    FactoryGirl.create(:paper, creator: user, journal: journal)
+  end
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_creator_role,
+      :with_collaborator_role
+    )
   end
 
   describe '#create' do

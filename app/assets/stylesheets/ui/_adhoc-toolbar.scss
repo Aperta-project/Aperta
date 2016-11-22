@@ -32,15 +32,19 @@
 
 
   &._animate-forward {
-    .adhoc-toolbar-item--text  { @include transition-delay(0.05s); }
-    .adhoc-toolbar-item--email { @include transition-delay(0.10s); }
-    .adhoc-toolbar-item--image { @include transition-delay(0.15s); }
+    .adhoc-toolbar-item--list  { transition-delay: 0.05s; }
+    .adhoc-toolbar-item--text  { transition-delay: 0.10s; }
+    .adhoc-toolbar-item--label  { transition-delay: 0.15s; }
+    .adhoc-toolbar-item--email { transition-delay: 0.20s; }
+    .adhoc-toolbar-item--image { transition-delay: 0.25s; }
   }
 
   &._animate-backward {
-    .adhoc-toolbar-item--list  { @include transition-delay(0.15s); }
-    .adhoc-toolbar-item--text  { @include transition-delay(0.10s); }
-    .adhoc-toolbar-item--email { @include transition-delay(0.05s); }
+    .adhoc-toolbar-item--list  { transition-delay: 0.25s; }
+    .adhoc-toolbar-item--text  { transition-delay: 0.20s; }
+    .adhoc-toolbar-item--label  { transition-delay: 0.15s; }
+    .adhoc-toolbar-item--email { transition-delay: 0.10s; }
+    .adhoc-toolbar-item--image { transition-delay: 0.05s; }
   }
 
   &._active {

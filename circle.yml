@@ -16,12 +16,12 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "~/.rvm/gems/ruby-2.2.4@tahi"
+    - "/opt/circleci/.rvm/gems/ruby-2.2.4@tahi"
     - "client/node_modules"
     - "client/bower_components"
 
   pre:
-    - gem install bundler -v '1.10.6'
+    - gem install bundler -v '1.12.5'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
 

@@ -75,12 +75,12 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it "contains 'No feedback provided' for decline reason when not set" do
-        expect(email.body).to match(%r{<strong>Reason: </strong><p>No feedback provided</p>\n})
+        expect(email.body).to match(%r{<strong>Reason:</strong> <p>No feedback provided</p>\n})
       end
 
       it "contains 'None' for reviewer suggestions when not set" do
         expect(email.body).to match(
-          %r{<strong>Reviewer Suggestions: </strong><p>None</p>\n}
+          %r{<strong>Reviewer Suggestions:</strong> <p>None</p>\n}
         )
       end
 

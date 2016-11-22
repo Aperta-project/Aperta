@@ -34,7 +34,7 @@ class SnapshotService::Registry
     unless registered_serializer_klass_string
       raise NoSerializerRegisteredError, <<-ERROR.strip_heredoc
         No serializer found for #{object.inspect} or any of its ancestors!
-        Please check your serializer registrations.
+        Please register your snapshot serializer in config/initializers/snapshot_serializer_registrations.rb.
       ERROR
     end
 

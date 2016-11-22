@@ -19,7 +19,7 @@ describe User do
 
   describe '#created_papers_for_journal' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+    let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
     let!(:other_user) { FactoryGirl.create(:user) }
 
     let!(:created_paper_1) do
@@ -56,7 +56,7 @@ describe User do
   describe '#username' do
     it 'validates username' do
       user = FactoryGirl.build(:user, username: 'mihaly')
-      expect(user.save!).to eq true
+      expect(user).to be_valid
     end
 
     it 'validates a username with dashes' do
@@ -92,9 +92,10 @@ describe User do
 
   describe '#tasks' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
-    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
+    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations, paper: paper) }
+    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations, paper: paper) }
     let!(:other_role) { FactoryGirl.create(:role) }
 
     before do
@@ -248,21 +249,29 @@ describe User do
   end
 
   describe "#journal_admin?" do
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let(:journal) { paper.journal }
-    let(:journal_admin) { FactoryGirl.create(:user) }
-    let(:regular_user) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let(:user) { FactoryGirl.create(:user) }
+    let!(:administer_journal_permission) do
+      FactoryGirl.create(
+        :permission,
+        action: :administer,
+        applies_to: Journal.name,
+        states: [PermissionState.wildcard]
+      )
+    end
 
     before do
-      journal_admin.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+      journal.staff_admin_role.permissions << administer_journal_permission
     end
 
     it "returns true if user is an admin for a given journal" do
-      expect(journal_admin.can?(:administer, journal)).to be true
+      user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+      expect(user.journal_admin?(journal)).to be true
     end
 
     it "returns false if user is not an admin for a given journal" do
-      expect(regular_user.can?(:administer, journal)).to be false
+      expect(user.journal_admin?(journal)).to be false
     end
   end
 

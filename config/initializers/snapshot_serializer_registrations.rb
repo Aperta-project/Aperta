@@ -23,6 +23,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::CompetingInterestsTask, with: Snapshot::CompetingInterestsTaskSerializer
       serialize TahiStandardTasks::DataAvailabilityTask, with: Snapshot::DataAvailabilityTaskSerializer
       serialize TahiStandardTasks::EthicsTask, with: Snapshot::EthicsTaskSerializer
+      serialize TahiStandardTasks::EarlyPostingTask, with: Snapshot::EarlyPostingTaskSerializer
       serialize TahiStandardTasks::FigureTask, with: Snapshot::FigureTaskSerializer
       serialize TahiStandardTasks::FinancialDisclosureTask, with: Snapshot::FinancialDisclosureTaskSerializer
       serialize TahiStandardTasks::Funder, with: Snapshot::FunderSerializer

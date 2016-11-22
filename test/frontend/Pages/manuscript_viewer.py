@@ -154,7 +154,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: void function
     """
     self.check_for_flash_success(timeout=120)
-    self.close_flash_message()
     self._wait_for_element(self._get(self._generic_task_item))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):

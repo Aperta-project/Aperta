@@ -11,7 +11,7 @@ from dateutil import tz
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import nonascii_users, editorial_users, admin_users
+from Base.Resources import ascii_only_users, editorial_users, admin_users
 from Cards.invite_reviewer_card import InviteReviewersCard
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -22,7 +22,7 @@ This test case validates the Aperta Discussion Forum
 Automated test case for:
  * test discussion forum notification icons to MS
  * test discussion interactions
-Note: Due to bug APERTA-8303 we import non ascii users instead of all users
+Note: Due to bug APERTA-8303 we import ascii only users instead of all users
 """
 __author__ = 'sbassi@plos.org'
 
@@ -52,13 +52,14 @@ class DiscussionForumTest(CommonTest):
     logging.info('Test discussion on: {0}'.format(web_page))
     current_path = os.getcwd()
     logging.info(current_path)
-    creator = random.choice(nonascii_users)
+    creator = random.choice(ascii_only_users)
     staff_user = random.choice(staff_users)
     logging.info('Creator: {0}'.format(creator))
     logging.info('Staff User: {0}'.format(staff_user))
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
@@ -158,7 +159,7 @@ class DiscussionForumTest(CommonTest):
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))
-    creator, collaborator_1, collaborator_2 = random.sample(nonascii_users, 3)
+    creator, collaborator_1, collaborator_2 = random.sample(ascii_only_users, 3)
     logging.info('Collaborator 1: {0}'.format(collaborator_1))
     logging.info('Collaborator 2: {0}'.format(collaborator_2))
     journal = 'PLOS Wombat'

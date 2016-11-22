@@ -19,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Removed 'Assign Admin' card
 - Removed 'Available Task Types' section in journal administration
 ### Fixed
+- Emails are properly rendered in all clients
 ### Security
 
 ## [1.29.0] - {2016-11-03}

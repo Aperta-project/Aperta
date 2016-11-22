@@ -102,6 +102,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                         logo='WombatPVC_web-01.jpg',
                                         commit=True)
       adm_page.select_named_journal('PLOS Wombat', click=True)
+      adm_page.populate_journal_db_values()
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
     for mmt in all_mmts:

@@ -6,6 +6,7 @@ the navigation menu also vital for ensuring style consistency across the applica
 """
 import logging
 import time
+import random
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -91,7 +92,7 @@ class AuthenticatedPage(PlosPage):
     # Discussion related items
     self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
     self._create_new_topic = (By.CSS_SELECTOR, 'div.discussions-index-header a')
-    self._topic_title_field = (By.CSS_SELECTOR, 'input')
+    self._topic_title_field = (By.ID, 'topic-title-field')
     self._create_topic = (By.CSS_SELECTOR, 'div.sheet-content button')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._participant_field = (By.CSS_SELECTOR, 'input.active')
@@ -102,17 +103,23 @@ class AuthenticatedPage(PlosPage):
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
     self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
     self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')
+    self._discussion_back_link = (By.CSS_SELECTOR, 'a.sheet-toolbar-button')
     self._sheet_close_x = (By.CLASS_NAME, 'sheet-close-x')
     # Discussion messages
     self._badge_red = (By.CSS_SELECTOR, 'span.badge--red')
     self._comment_sheet_badge_red = (By.CSS_SELECTOR, 'div.sheet-content span.badge--red')
     self._post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
+    self._comment_name = (By.CLASS_NAME, 'comment-name')
+    self._comment_date = (By.CLASS_NAME, 'comment-date')
+    self._comment_body = (By.CLASS_NAME, 'comment-body')
+    self._mention = (By.CLASS_NAME, 'discussion-at-mention')
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Task list id needed in task and manuscript page
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
+    self._first_comment = (By.CLASS_NAME, 'discussion-topic-comment-field')
     self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._addl_info_card = None
@@ -177,6 +184,9 @@ class AuthenticatedPage(PlosPage):
     self._file_attach_btn = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._file_attach_input = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
+    # Add participant
+    self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
+    self._add_participant_list = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -634,90 +644,130 @@ class AuthenticatedPage(PlosPage):
     self._actions.click_and_hold(task_title).release().perform()
     return True
 
-  def post_new_discussion(self, topic='', msg='', participants=None):
+  def click_discussion_link(self):
+    """
+    Click on discussion link
+    :return: None
+    """
+    self._get(self._discussion_link).click()
+    return None
+
+  def post_new_discussion(self, topic='', msg='', mention='', participants=''):
     """
     Post a message on a new discussion
     :param topic: Topic to post. If empty, will post a random text.
     :param msg: Message to post. If empty, will post a random text.
-    :param participants: List of participants to add
+    :param mention: User to mention. A string with the username.
+    :param participants: List of participants to add, each element in the list is
+    a user object.
     :return: None.
     """
     participants = participants or []
-    self._get(self._discussion_link).click()
+    self.click_discussion_link()
     self._get(self._create_new_topic).click()
     time.sleep(1)
+    topic_title = self._get(self._topic_title_field)
     if topic:
-      self._get(self._topic_title_field).send_keys(topic)
+      topic_title.send_keys(topic)
     else:
-      self._get(self._topic_title_field).send_keys(generate_paragraph()[2][15])
-    # create topic btn
-    time.sleep(1)
-    self._get(self._create_topic).click()
-    # add paper creator to the discussion
-    if participants:
-      # the_creator (tm)
-      for participant in participants:
-        self._get(self._add_participant_btn).click()
-        time.sleep(.5)
-        self._get(self._participant_field).send_keys(participant + Keys.ENTER)
-        time.sleep(5)
-        self._get(self._participant_field).send_keys(Keys.ARROW_DOWN + Keys.ENTER)
-    time.sleep(2)
-    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    self._driver.execute_script(js_cmd)
-    message_body_div = self._get(self._message_body_div)
-    count = 0
-    while 'editing' not in message_body_div.get_attribute('class'):
-      time.sleep(.5)
-      if count > 60:
-        break
+      topic_title.send_keys(generate_paragraph()[2][15])
     msg_body = self._get(self._message_body_field)
     if msg:
-      msg_body.send_keys(msg)
+      msg_body.send_keys(msg + ' ')
     else:
-      msg_body.send_keys(generate_paragraph()[2])
-    show_form = (By.CSS_SELECTOR, 'div.discussions-show-form')
+      msg_body.send_keys(generate_paragraph()[2] + ' ')
+    if mention:
+      # Note: At this stage only Staff users can be mentioned.
+      msg_body.send_keys('@' + mention)
+      time.sleep(1)
+      msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     time.sleep(1)
-    form_element = self._get(show_form)
-    self.click_covered_element(form_element)
-    # Click twice for butons to appear
-    self.click_covered_element(form_element)
+    self._get(self._create_topic).click()
     time.sleep(1)
-    self._wait_for_element(self._get(self._post_message_btn))
-    self.click_covered_element(self._get(self._post_message_btn))
-    # Need to wait for make sure the post is sent
-    time.sleep(3)
+    if participants:
+      for participant in participants:
+        user_search_string = random.choice(['name', 'email', 'user'])
+        logging.info('Participant key to retrieve user: {0}'.format(user_search_string))
+        logging.info('Participant to add: {0}'.format(participant))
+        try:
+          self._get(self._add_participant_btn).click()
+        except ElementDoesNotExistAssertionError:
+          raise(ElementDoesNotExistAssertionError, 'This may fail when the user names has '
+            'less than 3 character, we don\'t expect this to happend with current dataset.'
+            ' Reported in APERTA-7862')
+        time.sleep(.5)
+        participant_field = self._get(self._participant_field)
+        participant_field.send_keys(participant[user_search_string] + Keys.ENTER)
+        time.sleep(5)
+        add_participant_list = self._get(self._add_participant_list)
+        items = add_participant_list.find_elements_by_tag_name('li')
+        # Have to scan all items because of the fuzzy search it may return many results
+        for index, item in enumerate(items):
+          if participant[user_search_string] in item.text:
+            break
+        time.sleep(2)
+        # If is first match
+        if index == 0:
+          item.click()
+        else:
+          searching = True
+          while searching:
+            participant_field.send_keys(Keys.ARROW_DOWN)
+            for item in items:
+              if 'select2-highlighted' in item.get_attribute('class') and participant['email'] in item.text:
+                participant_field.send_keys(Keys.ENTER)
+                searching = False
+                break
     return None
 
-  def post_discussion(self, msg=''):
+  def post_discussion(self, msg='', mention=''):
     """
     Post a message on an ongoing discussion
     :param msg: Message to post. If empty, will post a random text.
+    :param mention: User to mention. A string with the username.
     :return: None.
     """
-    self._wait_for_element(self._get(self._discussion_link))
-    post_discussion_btn = self._get(self._discussion_link)
-    post_discussion_btn.click()
-    # click on first discussion
-    self._wait_for_element(self._get(self._first_discussion_lnk))
+    try:
+      self._wait_for_element(self._get(self._first_discussion_lnk))
+    except ElementDoesNotExistAssertionError:
+      raise(ElementDoesNotExistAssertionError, 'This may be caused by APERTA-7902')
     first_disc_link = self._get(self._first_discussion_lnk)
     first_disc_link.click()
     time.sleep(.5)
     # This shouldn't make baby Jesus cry, since there is good reason for this:
     # make textarea visible. Selenium won't do it because running JS is not
     # part of a regular user interaction. Inserting JS is a valid hack when
-    # there is no other way to make this work
+    # there is no other way to make this work. Ticket for this: APERTA-8344
     js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
     self._driver.execute_script(js_cmd);
-    time.sleep(.5)
+    time.sleep(2)
     msg_body = self._get(self._message_body_field)
-    msg_body.send_keys(msg)
+    msg_body.send_keys(msg + ' ')
     time.sleep(1)
+    if mention:
+      msg_body.send_keys('@' + mention)
+      time.sleep(1)
+      msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
     post_message_btn = (By.CSS_SELECTOR, 'div.editing button')
-    self._get(post_message_btn).click()
-    # Need to wait for make sure the post is sent
-    time.sleep(3)
+    try:
+      self._get(post_message_btn).click()
+    except ElementDoesNotExistAssertionError:
+      raise(ElementDoesNotExistAssertionError, 'This may be caused due to dynamic buttons '
+        'not always showing up for selenium. Reported in APERTA-8344')
     return None
+
+  def get_mention(self, user):
+    """
+    Get the object of a mention
+    :param user: String with username
+    :return: object of a mention
+    """
+    comment_body = self._get(self._comment_body)
+    mentions = comment_body.find_elements(*self._mention)
+    for mention in mentions:
+      if mention.text[1:] == user:
+        return mention
+    raise Exception(u'{0} not found'.format(user))
 
   def scroll_element_into_view_below_toolbar(self, element):
     """
@@ -1036,6 +1086,18 @@ class AuthenticatedPage(PlosPage):
         link.value_of_css_property('background-color')
     assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
+
+  @staticmethod
+  def validate_mention_style(element):
+    """
+    Validate style of the mention
+    """
+    assert application_typeface in element.value_of_css_property('font-family'), \
+        element.value_of_css_property('font-family')
+    assert element.value_of_css_property('color') == aperta_green, element.value_of_css_property('color')
+    assert element.value_of_css_property('font-size') == '14px', element.value_of_css_property('font-size')
+    assert element.value_of_css_property('line-height') == '18.2px', element.value_of_css_property('line-height')
+    assert element.value_of_css_property('font-weight') == '400', element.value_of_css_property('font-weight')
 
   @staticmethod
   def validate_profile_link_style(link):

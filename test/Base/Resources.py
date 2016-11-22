@@ -104,7 +104,7 @@ creator_login21 = {'user': 'aauthor21',
 creator_login22 = {'user': 'aauthor22',
                    'name': 'atest author22',
                    'email': 'sealresq+1030@gmail.com'}
-creator_login23 = {'user': u'민성', 'name': u'성 민준', 'email': 'sealresq+1031@gmail.com'}
+creator_login23 = {'user': u'성민준', 'name': u'성 민준', 'email': 'sealresq+1031@gmail.com'}
 creator_login24 = {'user': u'志張', 'name': u'志明 張', 'email': 'sealresq+1032@gmail.com'}
 creator_login25 = {'user': u'文孙', 'name': u'文 孙', 'email': 'sealresq+1033@gmail.com'}
 
@@ -168,6 +168,28 @@ users = [creator_login1,
          creator_login24,
          creator_login25,
          ]
+
+nonascii_users = [creator_login1,
+                  creator_login2,
+                  creator_login3,
+                  creator_login4,
+                  creator_login5,
+                  creator_login6,
+                  creator_login7,
+                  creator_login8,
+                  creator_login9,
+                  creator_login11,
+                  creator_login13,
+                  creator_login14,
+                  creator_login15,
+                  creator_login16,
+                  creator_login17,
+                  creator_login18,
+                  creator_login19,
+                  creator_login20,
+                  creator_login21,
+                  creator_login22,
+                  ]
 
 editorial_users = [internal_editor_login,
                    staff_admin_login,

@@ -30,7 +30,7 @@ describe Typesetter::MetadataSerializer do
       FactoryGirl.create(:publishing_related_questions_task, paper: paper),
       early_posting_task
     ]
-  en
+  end
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|

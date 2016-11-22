@@ -11,7 +11,7 @@ from dateutil import tz
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import users, editorial_users, admin_users
+from Base.Resources import ascii_only_users, editorial_users, admin_users
 from Cards.invite_reviewer_card import InviteReviewersCard
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -19,7 +19,10 @@ from Pages.workflow_page import WorkflowPage
 
 """
 This test case validates the Aperta Discussion Forum
-Automated test case for: add discussion forum notification icons to MS
+Automated test case for:
+ * test discussion forum notification icons to MS
+ * test discussion interactions
+Note: Due to bug APERTA-8303 we import ascii only users instead of all users
 """
 __author__ = 'sbassi@plos.org'
 
@@ -49,13 +52,14 @@ class DiscussionForumTest(CommonTest):
     logging.info('Test discussion on: {0}'.format(web_page))
     current_path = os.getcwd()
     logging.info(current_path)
-    creator = random.choice(users)
+    creator = random.choice(ascii_only_users)
     staff_user = random.choice(staff_users)
     logging.info('Creator: {0}'.format(creator))
     logging.info('Staff User: {0}'.format(staff_user))
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
@@ -78,7 +82,7 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     if web_page == 'manuscript viewer':
-      # This is failing for Asian Character set usernames of only two characters APERTA-7862
+      # This is failing for Asian character set usernames of only two characters APERTA-7862
       ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
                                     participants=[creator])
     elif web_page == 'workflow':
@@ -124,7 +128,8 @@ class DiscussionForumTest(CommonTest):
     red_badge = ms_viewer._get(ms_viewer._badge_red)
     red_badge_last = int(red_badge.text)
     assert red_badge_first + 1 == red_badge_last, '{0} is different from {1}. This may be '\
-        'caused by APERTA-8303'.format(red_badge_first + 1, red_badge_last)
+        'caused by users with non ascii characters (Reported in APERTA-8303)'.format(
+        red_badge_first + 1, red_badge_last)
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
@@ -154,7 +159,7 @@ class DiscussionForumTest(CommonTest):
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))
-    creator, collaborator_1, collaborator_2 = random.sample(users, 3)
+    creator, collaborator_1, collaborator_2 = random.sample(ascii_only_users, 3)
     logging.info('Collaborator 1: {0}'.format(collaborator_1))
     logging.info('Collaborator 2: {0}'.format(collaborator_2))
     journal = 'PLOS Wombat'
@@ -317,7 +322,8 @@ class DiscussionForumTest(CommonTest):
     try:
       discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     except ElementDoesNotExistAssertionError:
-      raise(ElementDoesNotExistAssertionError, 'This may be caused by APERTA-7902')
+      raise(ElementDoesNotExistAssertionError, 'This may be caused by the user {0} not being '
+        'able to see its own discussion (reported at APERTA-7902)'.format(staff_user))
     discussion_title = discussion_link.text
     assert topic in discussion_title, 'Sent topic: {0} is not in the front end: {1}'.format(
         topic, discussion_title)

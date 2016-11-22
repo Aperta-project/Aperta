@@ -10,13 +10,12 @@ import random
 import time
 from datetime import datetime
 
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import affiliation, users, staff_admin_login, pub_svcs_login, \
-    internal_editor_login, super_admin_login
+from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
+    super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask
@@ -99,7 +98,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Paper Sidebar and associated items
     self._paper_sidebar = (By.CLASS_NAME, 'paper-sidebar')
     self._paper_sidebar_info = (By.CLASS_NAME, 'paper-sidebar-info')
-    self._paper_submission_tasks = (By.ID, 'paper-submission-tasks')
     self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
     self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
     # Sidebar Info Items
@@ -137,6 +135,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                                              'div.gradual-engagement-presubmission-messaging')
     self._status_info_ready_to_submit = (By.CSS_SELECTOR, 'div.ready-to-submit')
     self._title = (By.ID, 'control-bar-paper-title')
+    self._generic_task_item = (By.CSS_SELECTOR, 'div.paper-sidebar > div.ember-view')
 
   # POM Actions
   def page_ready(self):
@@ -145,7 +144,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       testing of that page.
     :return: void function
     """
-    self._wait_for_element(self._get(self._paper_submission_tasks))
+    self._wait_for_element(self._get(self._generic_task_item))
 
   def page_ready_post_create(self):
     """
@@ -154,8 +153,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: void function
     """
     self.check_for_flash_success(timeout=120)
-    self.close_flash_message()
-    self._wait_for_element(self._get(self._paper_submission_tasks))
+    self._wait_for_element(self._get(self._generic_task_item))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
     """

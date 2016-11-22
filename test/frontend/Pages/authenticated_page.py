@@ -692,7 +692,9 @@ class AuthenticatedPage(PlosPage):
         try:
           self._get(self._add_participant_btn).click()
         except ElementDoesNotExistAssertionError:
-          raise(ElementDoesNotExistAssertionError, 'This may fail due to APERTA-7862')
+          raise(ElementDoesNotExistAssertionError, 'This may fail when the user names has '
+            'less than 3 character, we don\'t expect this to happend with current dataset.'
+            ' Reported in APERTA-7862')
         time.sleep(.5)
         participant_field = self._get(self._participant_field)
         participant_field.send_keys(participant[user_search_string] + Keys.ENTER)
@@ -750,7 +752,8 @@ class AuthenticatedPage(PlosPage):
     try:
       self._get(post_message_btn).click()
     except ElementDoesNotExistAssertionError:
-      raise(ElementDoesNotExistAssertionError, 'This may be related with APERTA-8344')
+      raise(ElementDoesNotExistAssertionError, 'This may be caused due to dynamic buttons '
+        'not always showing up for selenium. Reported in APERTA-8344')
     return None
 
   def get_mention(self, user):

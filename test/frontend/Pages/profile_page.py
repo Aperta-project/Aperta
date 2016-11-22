@@ -436,6 +436,7 @@ class ProfilePage(AuthenticatedPage):
       affiliation_list.append(user['affiliation-country'])
     else:
       rand_country = random.choice(country_list)
+      logging.info('Selected Country for {0} is: {1}'.format(user, rand_country))
       for item in page_country_list:
         if item.text == rand_country:
           item.click()
@@ -576,6 +577,8 @@ class ProfilePage(AuthenticatedPage):
         return affiliation_list
       else:
         continue
+    # If you hit this point, the affiliation to edit does not exist for a user which is an
+    #   unintended state, so raise this as an error.
     raise(ElementDoesNotExistAssertionError, 'Affiliation: {0} '
                                              'not found'.format(affiliation_to_edit_list))
 

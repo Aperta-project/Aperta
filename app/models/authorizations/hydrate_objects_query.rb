@@ -69,8 +69,15 @@ module Authorizations
         .join(klass.arel_table).on(klass.arel_table[:id].eq(as_table[:id]))
     end
 
+    # This #to_sql will run the query as an unprepared_statement since by default
+    # Rails and Postgres will run all queries as prepared statements. The large queries
+    # associated with R&P may adversely memory usage on the database server if run as
+    # a prepared statement. Assuming that many of these R&P calls will be relatively unique
+    # per user, we are trading off increased available memory for running an unprepared statement here.
     def to_sql
-      to_arel.to_sql
+      @klass.connection.unprepared_statement do
+        to_arel.to_sql
+      end
     end
 
     private

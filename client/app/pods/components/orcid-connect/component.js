@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   store: Ember.inject.service(),
   can: Ember.inject.service('can'),
   canRemoveOrcid: null,
-  journals: null,
+  journal: null,
 
    // function to use for asking the user to confirm an action
   confirm: window.confirm,
@@ -20,23 +20,21 @@ export default Ember.Component.extend({
         this.set('orcidAccount', account);
       });
     }
-    this.get('store').findAll('journal').then( (journals) => {
-      this.set('journals', journals.toArray());
+    if (this.get('journal') !== null) {
       this.setCanRemoveOrcid();
-    });
+    }
   },
 
   setCanRemoveOrcid() {
     var that = this;
-    this.get('journals').forEach(function(journal) {
-      that.get('can').can('remove_orcid', journal).then( (value) =>
-        Ember.run(function() {
-          if (value) {
-            that.set('canRemoveOrcid', true);
-          }
-        })
-      );
-    });
+    var journal = this.get('journal');
+    that.get('can').can('remove_orcid', journal).then( (value) =>
+      Ember.run(function() {
+        if (value) {
+          that.set('canRemoveOrcid', true);
+        }
+      })
+    );
   },
 
   willDestroyElement() {

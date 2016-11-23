@@ -8,7 +8,7 @@
     {{#if canRemoveOrcid}}
       <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
     {{else}}
-      Please contact PLOS to remove this ORCID account.
+      Please contact {{journal.staff_email}} to remove this ORCID account.
     {{/if}}
     <div class="orcid-access-expired">
       <a href="{{orcidAccount.oauthAuthorizeUrl}}"
@@ -26,7 +26,7 @@
       {{#if canRemoveOrcid}}
         <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
       {{else}}
-        Please contact PLOS to remove this ORCID account.
+        Please contact {{journal.staff_email}} to remove this ORCID account.
       {{/if}}
     </div>
 

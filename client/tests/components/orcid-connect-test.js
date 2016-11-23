@@ -13,7 +13,7 @@ moduleForComponent('orcid-connect',
                       this.set('confirm', (message)=>{})
                     }});
 
-var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm}}`;
+var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm journal=null canRemoveOrcid=true}}`;
 
 test("component shows connect to orcid before a user connects to orcid", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account');

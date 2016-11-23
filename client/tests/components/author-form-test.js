@@ -2,6 +2,7 @@ import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 import hbs from 'htmlbars-inline-precompile';
 
@@ -14,11 +15,12 @@ moduleForComponent(
       manualSetup(this.container);
 
       $.mockjax({url: '/api/countries', status: 200, responseText: {
-        countries: [],
+        countries: []
       }});
       $.mockjax({url: '/api/institutional_accounts', status: 200, responseText: {
-        institutional_accounts: [],
+        institutional_accounts: []
       }});
+      
 
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');

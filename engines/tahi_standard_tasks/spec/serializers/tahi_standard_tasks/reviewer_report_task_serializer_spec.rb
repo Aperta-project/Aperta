@@ -6,7 +6,7 @@ describe TahiStandardTasks::ReviewerReportTaskSerializer, serializer_test: true 
   let(:decision) { FactoryGirl.build_stubbed(:decision) }
 
   before do
-    allow(reviewer_report_task).to receive(:decisions).and_return [decision]
+    allow(reviewer_report_task.paper).to receive('decisions').and_return [decision]
     allow(reviewer_report_task).to receive(:submitted?).and_return true
   end
 

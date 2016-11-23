@@ -18,25 +18,6 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
     end
   end
 
-  describe '#create' do
-    before do
-      expect(task.paper.draft_decision).to be
-    end
-
-    it "belongs to the paper's latest decision" do
-      task.save!
-
-      expect(task.decision).to eq(task.paper.draft_decision)
-      expect(task.reload.decision).to eq(task.paper.draft_decision)
-
-      # find again to make sure everything is loaded from the DB without
-      # any in-memory values sticking around
-      refreshed_task = Task.find(task.id)
-      expect(refreshed_task.decision).to eq(task.paper.draft_decision)
-      expect(refreshed_task.reload.decision).to eq(task.paper.draft_decision)
-    end
-  end
-
   describe "#find_or_build_answer_for" do
     let(:decision) { FactoryGirl.create(:decision, paper: paper) }
     let(:nested_question) { FactoryGirl.create(:nested_question) }
@@ -50,7 +31,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
         expect(answer.new_record?).to be(true)
         expect(answer.owner).to eq(task)
         expect(answer.nested_question).to eq(nested_question)
-        expect(answer.decision).to eq(task.decision)
+        expect(answer.decision).to eq(paper.draft_decision)
       end
     end
 
@@ -60,7 +41,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
           :nested_question_answer,
           nested_question: nested_question,
           owner: task,
-          decision: task.decision
+          decision: task.paper.draft_decision
         )
       end
 

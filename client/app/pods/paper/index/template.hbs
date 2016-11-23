@@ -54,8 +54,8 @@
 {{flash-messages}}
 
 {{#split-pane id="main-content" class="main-content" role="main" handleClass="manuscript-handle"}}
-  {{#if false}}
-    {{pdf-manuscript paper=model class="main-content-section"}}
+  {{#if true}}
+    {{pdf-manuscript paper=model class="main-content-section split-pane-element"}}
   {{else}}
     {{#split-pane-element class="manuscript-pane main-content-section"}}
       {{#rendered-manuscript paper=model}}

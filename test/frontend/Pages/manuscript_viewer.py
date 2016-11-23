@@ -10,12 +10,13 @@ import random
 import time
 from datetime import datetime
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
-    super_admin_login
+from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
+    internal_editor_login, super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask
@@ -24,6 +25,7 @@ from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
+from frontend.Tasks.supporting_information_task import SITask
 
 __author__ = 'sbassi@plos.org'
 
@@ -153,6 +155,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: void function
     """
     self.check_for_flash_success(timeout=120)
+    self.close_flash_message()
     self._wait_for_element(self._get(self._generic_task_item))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
@@ -624,7 +627,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
         base_task.click_completion_button()
         task.click()
       time.sleep(1)
-    elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
+    elif task_name == 'Supporting Info':
+      doc2upload = random.choice(docs)
+      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+      supporting_info = SITask(self._driver)
+      supporting_info.add_file(fn)
+      # complete task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+        # close task
+        task.click()
+      time.sleep(1)
+    elif task_name in ('Cover Letter', 'Figures', 'Upload Manuscript',
                        'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open

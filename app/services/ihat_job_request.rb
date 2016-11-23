@@ -47,7 +47,8 @@ class IhatJobRequest
   end
 
   def self.ihat_recipe_name(url)
-    kind = Pathname.new(URI.parse(url).path).extname.delete(".")
+    # ihat recipe names are case insensitive, but let us be careful
+    kind = Pathname.new(URI.parse(url).path).extname.delete(".").downcase
     IhatJobRequest.recipe_name(from_format: kind, to_format: 'html')
   end
 

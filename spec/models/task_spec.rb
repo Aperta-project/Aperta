@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Task do
-  let(:paper) { FactoryGirl.create :paper, :with_tasks }
-
   it_behaves_like 'is not snapshottable'
 
   describe ".without" do
@@ -23,7 +21,8 @@ describe Task do
 
   describe '#add_participant' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
     let(:user) { FactoryGirl.create :user }
 
     it 'adds the user as a participant on the task' do
@@ -42,7 +41,7 @@ describe Task do
   end
 
   describe '#assignments' do
-    subject(:task) { FactoryGirl.create :ad_hoc_task }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
 
     before do
       Assignment.create!(
@@ -63,7 +62,8 @@ describe Task do
 
   describe '#participations' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
 
     let!(:participant_assignment) do
       Assignment.create!(
@@ -89,7 +89,8 @@ describe Task do
 
   describe '#participants' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
 
     let!(:participant_assignment) do
       Assignment.create!(
@@ -114,7 +115,7 @@ describe Task do
   end
 
   describe '#permission_requirements' do
-    subject(:task) { FactoryGirl.create :ad_hoc_task }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
 
     before do
       FactoryGirl.create(:permission_requirement, required_on: task)
@@ -158,7 +159,7 @@ describe Task do
   end
 
   describe "#answer_for" do
-    subject(:task) { FactoryGirl.create(:ad_hoc_task) }
+    subject(:task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations) }
     let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
     let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
 
@@ -220,13 +221,7 @@ describe Task do
 
   describe "#can_change?: associations can use this method to update based on task" do
     let(:task) do
-      FactoryGirl.create(
-        :ad_hoc_task,
-        title: "Paper Admin",
-        completed: true,
-        phase_id: 3,
-        paper_id: 99
-      )
+      FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations)
     end
 
     it "returns true" do

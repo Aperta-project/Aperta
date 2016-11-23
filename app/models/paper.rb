@@ -236,19 +236,19 @@ class Paper < ActiveRecord::Base
   end
 
   # All known paper states
-  STATES = aasm.states.map(&:name)
+  STATES = aasm.states.map(&:name).freeze
   # States which should generally be editable by the creator
   EDITABLE_STATES = [:unsubmitted, :in_revision, :invited_for_full_submission,
-                     :checking]
+                     :checking].freeze
   # States which should generally NOT be editable by the creator
   UNEDITABLE_STATES = [:initially_submitted, :submitted, :accepted, :rejected,
-                       :published, :withdrawn]
+                       :published, :withdrawn].freeze
   # States that represent the creator has submitted their paper
-  SUBMITTED_STATES = [:initially_submitted, :submitted]
+  SUBMITTED_STATES = [:initially_submitted, :submitted].freeze
   # States that represent when a paper can be reviewed by a Reviewer
-  REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
+  REVIEWABLE_STATES = (EDITABLE_STATES + SUBMITTED_STATES).freeze
 
-  TERMINAL_STATES = [:accepted, :rejected]
+  TERMINAL_STATES = [:accepted, :rejected].freeze
 
   def snapshottable_things
     [].concat(tasks)

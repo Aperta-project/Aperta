@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe PaperConverter do
-  let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :with_creator)
-  end
+  let(:paper) { FactoryGirl.create(:paper, :with_creator) }
   let(:user) { FactoryGirl.create(:user) }
 
   describe ".export" do

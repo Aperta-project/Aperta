@@ -37,9 +37,10 @@ class ReviseManuscriptTask(BaseTask):
     """
     # Without the following time, it grabs an empty string
     time.sleep(4)
-    subtitle_1, subtitle_2 = self._gets(self._subtitle)
+    subtitle_1, subtitle_2, subtitle_3 = self._gets(self._subtitle)
     assert subtitle_1.text.lower() == 'current revision', subtitle_1.text
     assert subtitle_2.text.lower() == 'response to reviewers:', subtitle_2.text
+    assert subtitle_3.text.lower() == 'decision history', subtitle_3.text
     response_field = self._get(self._response_field)
     assert response_field.get_attribute('placeholder') == ("Please detail the changes "
       "you've made to your submission here"), response_field.get_attribute('placeholder')

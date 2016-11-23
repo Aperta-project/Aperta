@@ -596,9 +596,11 @@ class AuthorsTask(BaseTask):
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
-      time.sleep(.5)
-      self.click_completion_button()
-      time.sleep(2)
+      while not completed:
+        time.sleep(.5)
+        self.click_completion_button()
+        time.sleep(2)
+        completed = self.completed_state()
       try:
         self.validate_completion_error()
       except ElementDoesNotExistAssertionError:

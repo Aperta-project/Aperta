@@ -108,6 +108,13 @@ namespace :cleanup do
       execute :rm, '-rf', '/tmp/npm-*'
     end
   end
+  desc "Cleanup database dump files"
+  task :dumps do
+    on release_roles(fetch(:assets_roles)) do
+      leave = 2
+      execute :ls, %W(-1t ~/aperta-????-??-??T??:??:??Z.dump | head -n -#{leave} | xargs -d '\n' rm -f --)
+    end
+  end
 end
 
 namespace :check_status do

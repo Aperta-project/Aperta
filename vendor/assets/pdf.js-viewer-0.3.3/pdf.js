@@ -17638,7 +17638,7 @@ window.addEventListener('updateviewarea', function (evt) {
   }
 }, true);
 
-window.addEventListener('resize', function webViewerResize(evt) {
+function webViewerResize(evt) {
   if (PDFViewerApplication.initialized &&
       (document.getElementById('pageAutoOption').selected ||
        /* Note: the scale is constant for |pageActualOption|. */
@@ -17651,7 +17651,9 @@ window.addEventListener('resize', function webViewerResize(evt) {
 
   // Set the 'max-height' CSS property of the secondary toolbar.
   SecondaryToolbar.setMaxHeight(document.getElementById('viewerContainer'));
-});
+}
+
+window.addEventListener('resize', webViewerResize);
 
 window.addEventListener('hashchange', function webViewerHashchange(evt) {
   if (PDFViewerApplication.pdfHistory && PDFViewerApplication.pdfHistory.isHashChangeUnlocked) {

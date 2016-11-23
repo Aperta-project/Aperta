@@ -308,6 +308,11 @@ class AdminPage(AuthenticatedPage):
         page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
         assert len(page_tertiary_journal_count) == db_initial_journal_count + 1, \
             db_initial_journal_count + 1
+        self._populate_journal_db_values(journal_name,
+                                         'apertadevteam@plos.org',
+                                         '10.1371',
+                                         'journal.pwom',
+                                         '1000000')
       else:
         self._actions.move_to_element(cancel_link).perform()
         cancel_link.click()
@@ -450,7 +455,27 @@ class AdminPage(AuthenticatedPage):
     url = '{0}/{1}'.format(self._driver.current_url, journal_id)
     self._driver.get(url)
 
-
-  # TODO: Create method to create journal PLOS Wombat if !exist
-
-  # TODO: Create method to create NoCards and OnlyInitialDecisionCard MMT in PLOS Wombat if !exist
+  @staticmethod
+  def _populate_journal_db_values(jname,
+                                  staff_email,
+                                  doi_pub_prefix,
+                                  doi_journ_prefix,
+                                  last_doi_issued):
+    """
+    A method to populate values into the journal table for journal named jname. There is no current
+      interface to populated these in the GUI.
+    :param jname: The name of the journal
+    :param staff_email: The email address to populate staff_email in journal table for jname
+    :param doi_pub_prefix:  The doi_publisher_prefix to populate in journal table for jname
+    :param doi_journ_prefix: The doi_journal_prefix to populate in journal table for jname
+    :param last_doi_issued:  The last_doi_issued to populate in journal table for jname
+    :return: void function
+    """
+    if jname and staff_email and doi_pub_prefix and doi_journ_prefix and last_doi_issued:
+      PgSQL().modify('UPDATE journals SET  staff_email=%s, doi_publisher_prefix=%s, '
+                     'doi_journal_prefix=%s, last_doi_issued=%s '
+                     'WHERE name=%s;', (staff_email, doi_pub_prefix, doi_journ_prefix,
+                                        last_doi_issued, jname,))
+    else:
+      raise(ValueError, 'Incorrect number of parameters passed. Send, journal_name, staff_email, '
+                        'doi_publisher_prefix, doi_journal_prefix and last_doi_issued,')

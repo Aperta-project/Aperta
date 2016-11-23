@@ -6,7 +6,7 @@ module Typesetter
     validates :paper_is_accepted?, presence: true
 
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
-               :publication_date, :provenance, :special_handling_instructions
+               :publication_date, :provenance, :special_handling_instructions, :early_article_posting
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
@@ -67,6 +67,10 @@ module Typesetter
 
     def data_availability
       task('TahiStandardTasks::DataAvailabilityTask')
+    end
+
+    def early_article_posting
+      task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:value) || false
     end
 
     def serializable_hash

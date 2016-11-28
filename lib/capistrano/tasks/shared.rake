@@ -113,6 +113,7 @@ namespace :cleanup do
     on release_roles(fetch(:assets_roles)) do
       leave = 2
       execute :ls, %W(-1t ~/aperta-????-??-??T??:??:??Z.dump | head -n -#{leave} | xargs -d '\n' rm -f --)
+      # if this doesn't work, try replacing ~ with $HOME
     end
   end
 end

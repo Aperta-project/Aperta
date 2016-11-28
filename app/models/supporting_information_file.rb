@@ -23,7 +23,7 @@ class SupportingInformationFile < Attachment
 
   def alt
     if file.present?
-      filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
+      filename.split('.').first.gsub(/#{::File.extname(filename).downcase}$/, '').humanize
     else
       "no attachment"
     end
